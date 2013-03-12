@@ -1,0 +1,140 @@
+'''
+Created on 9 Nov 2012
+
+@author: George
+'''
+
+'''
+models the failures that servers can have
+'''
+
+
+from SimPy.Simulation import *
+import math
+from RandomNumberGenerator import RandomNumberGenerator
+
+class Failure(Process):
+    
+    def __init__(self, victim, dist, MTTF, MTTR, availability, index, repairman):
+        Process.__init__(self)
+        self.distType=dist      #the distribution that the failure duration follows
+        self.MTTF=MTTF          #the MTTF
+        self.MTTR=MTTR          #the MTTR
+        self.availability=availability    #the availability  
+        self.victim=victim      #the victim of the failure (work center)
+        self.name="F"+str(index)
+        self.repairman=repairman    #the resource that may be needed to fix the failure
+                                    #if now resource is needed this will be "None" 
+        self.type="Failure"
+        self.id=0
+
+        if(self.distType=="Availability"):      
+            
+            #the following are used if we have availability defined (as in plant)
+            #the erlang is a special case of Gamma. 
+            #To model the Mu and sigma that is given in plant as alpha and beta for gamma you should do the following:
+            #beta=(sigma^2)/Mu    
+            #alpha=Mu/beta    
+            self.AvailabilityMTTF=MTTR*(float(availability)/100)/(1-(float(availability)/100))
+            self.sigma=0.707106781185547*MTTR   
+            self.theta=(pow(self.sigma,2))/float(MTTR)             
+            self.beta=self.theta
+            self.alpha=(float(MTTR)/self.theta)        
+
+                
+            self.rngTTF=RandomNumberGenerator(self, "Exp")
+            self.rngTTF.avg=self.AvailabilityMTTF
+            self.rngTTR=RandomNumberGenerator(self, "Erlang")
+            self.rngTTR.alpha=self.alpha
+            self.rngTTR.beta=self.beta       
+        else:   #if the distribution is fixed
+            self.rngTTF=RandomNumberGenerator(self, self.distType)
+            self.rngTTF.avg=MTTF            
+            self.rngTTR=RandomNumberGenerator(self, self.distType)
+            self.rngTTR.avg=MTTR
+        
+    def Run(self):           
+        while 1:
+            #yield hold,self,self.calcTimeToFailure()   
+            yield hold,self,self.rngTTF.generateNumber()    #wait until a failure happens                  
+            try:
+                #print self.name
+                if(len(self.victim.Res.activeQ)>0):
+                    self.interrupt(self.victim)       #when a Machine gets failure while in process it is interrupted
+                self.victim.Up=False
+                self.victim.timeLastFailure=now()
+                #print str(now())+":M"+str(self.victim.id)+" is down"             
+                self.outputTrace("is down")
+
+            except AttributeError:
+                print "AttributeError1"
+                
+                
+            failTime=now()            
+            if(self.repairman!="None"):     #if the failure needs a resource to be fixed, the machine waits until the 
+                                            #resource is available
+                yield request,self,self.repairman.Res
+                timeRepairStarted=now()
+                self.repairman.timeLastRepairStarted=now()
+                                
+            
+            #yield hold,self,self.calcTimeToRepair()     #wait until the repairing process is over
+            yield hold,self,self.rngTTR.generateNumber()    #wait until the repairing process is over
+            self.victim.totalFailureTime+=now()-failTime    
+            
+            try:
+                if(len(self.victim.Res.activeQ)>0):                
+                    reactivate(self.victim)   #since repairing is over, the Machine is reactivated
+                self.victim.Up=True              
+                #print str(now())+":M"+str(self.victim.id)+" is up"
+                self.outputTrace("is up")              
+                if(self.repairman!="None"): #if a resource was used, it is now released
+                    yield release,self,self.repairman.Res 
+                    self.repairman.totalWorkingTime+=now()-timeRepairStarted                                
+                #print "reactivating "+str(self.victim.currentEntity)
+            except AttributeError:
+                print "AttributeError2"    
+    
+    
+    '''     
+    #calculates the time until the next failure            
+    def calcTimeToFailure(self):
+        from Globals import G
+        if self.distType=="Fixed":  #in a fixed distribution every TTF should be equal to MTTF
+            TTF=self.MTTF
+        elif self.distType=="Availability": #if we have availability defined, TTF should follow the exponential distribution
+            TTF=G.Rnd.expovariate(float(1)/self.AvailabilityMTTF)
+        #print self.name+" TTF="+str(TTF)   
+        return TTF
+
+    #calculates the time that it is needed for the repair     
+    def calcTimeToRepair(self):
+        from Globals import G
+        if self.distType=="Fixed":  #in a fixed distribution every TTR should be equal to MTTR
+            TTR=self.MTTR
+        elif self.distType=="Availability":     #if we have availability defined, TTR should follow the Erlang distribution         
+            TTR=G.Rnd.gammavariate(self.alpha,self.beta)    
+        #print self.name+" TTR="+str(TTR)    
+        return TTR
+    '''
+           
+    #outputs message to the trace.xls. Format is (Simulation Time | Machine Name | message)            
+    def outputTrace(self, message):
+        from Globals import G
+        
+        if(G.trace=="Yes"):     #output only if the user has selected to
+            #handle the 3 columns
+            G.traceSheet.write(G.traceIndex,0,str(now()))
+            G.traceSheet.write(G.traceIndex,1, self.victim.objName)
+            G.traceSheet.write(G.traceIndex,2,message)          
+            G.traceIndex+=1      #increment the row
+            #if we reach row 65536 we need to create a new sheet (excel limitation)  
+            if(G.traceIndex==65536):
+                G.traceIndex=0
+                G.sheetIndex+=1
+                G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)
+
+
+    #outputs data to "output.xls"
+    def outputResultsXL(self, MaxSimtime):
+        pass
