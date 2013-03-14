@@ -4,7 +4,7 @@
  */
 jsPlumb.bind("ready", function() {
 
-	jsPlumb.DemoList.init();
+	//jsPlumb.DemoList.init();
 
 	// chrome fix.
 	document.onselectstart = function () { return false; };				
