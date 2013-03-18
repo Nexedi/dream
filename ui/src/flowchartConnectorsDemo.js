@@ -9,7 +9,7 @@
 				// default to blue at one end and green at the other
 				EndpointStyles : [{ fillStyle:'#225588' }, { fillStyle:'#558822' }],
 				// blue endpoints 7 px; green endpoints 11.
-        PaintStyle : {strokeStyle:"#ff0000", lineWidth:2 },
+        PaintStyle : {strokeStyle:"#736AFF", lineWidth:2 },
         HoverPaintStyle : {strokeStyle:"#42a62c", lineWidth:2 },
 				Endpoint : [ "Dot", {radius:2} ],
         ConnectionOverlays : [
@@ -44,9 +44,17 @@
 			// THIS DEMO ONLY USES getSelector FOR CONVENIENCE. Use your library's appropriate selector method!
 			//jsPlumb.draggable(jsPlumb.getSelector(".window"));
 
-            
-      jsPlumb.connect({source:"window7", target: "window8"});
-      jsPlumb.connect({source:"window7", target: "window10"});
+      var line;
+      line = jsPlumb.connect({source:"window1", target: "window2"});
+      line = jsPlumb.connect({source:"window2", target: "window3"});
+      line = jsPlumb.connect({source:"window4", target: "window5"});
+      line = jsPlumb.connect({source:"window5", target: "window6"});
+      // Example to change line color
+      // line.setPaintStyle({strokeStyle:"#42a62c", lineWidth:2 });
+      line = jsPlumb.connect({source:"window3", target: "window7"});
+      line = jsPlumb.connect({source:"window6", target: "window7"});
+      line = jsPlumb.connect({source:"window7", target: "window8"});
+      line = jsPlumb.connect({source:"window7", target: "window10"});
 			//
             
 			//
