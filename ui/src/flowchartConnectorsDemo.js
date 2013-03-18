@@ -79,3 +79,28 @@
 		}
 	};
 })();
+
+(function() {
+   function sendData(url, data, onSuccess, onError) {
+ 
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        //crossDomain: true,
+        success: function(responseJSON) {
+          console.log("got json response",responseJSON);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          onError(errorThrown);
+        }
+    });
+  }
+  setTimeout(function () {
+    console.log("in timeout");
+    sendData("http://localhost:5000/someTest", {"a": "b"},
+             function (response) {console.log("ok", response);},
+             function(foo, bar, baz) {console.log("failure");})
+  }, 1000);
+})();
