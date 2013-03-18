@@ -41,8 +41,6 @@
 						
 			// make all the window divs draggable						
 			jsPlumb.draggable(jsPlumb.getSelector(".window"), { grid: [20, 20] });
-			// THIS DEMO ONLY USES getSelector FOR CONVENIENCE. Use your library's appropriate selector method!
-			//jsPlumb.draggable(jsPlumb.getSelector(".window"));
 
       var line;
       line = jsPlumb.connect({source:"window1", target: "window2"});
