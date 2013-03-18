@@ -33,10 +33,17 @@ filter:alpha(opacity=60);
 	border:1px dotted red;
 }
 
-#window1 { top:34em;left:5em;}
-#window2 { top:7em; left:36em;}
-#window3 { top:27em;left:48em; }
-#window4 { top:23em; left:22em;}
+#window1 { top:10em;left:5em;}
+#window2 { top:10em; left:20em;}
+#window3 { top:10em;left:35em; }
+#window4 { top:30em; left:5em;}
+#window5 { top:30em; left:20em;}
+#window6 { top:30em; left:35em;}
+#window7 { top:20em; left:50em;}
+#window8 { top:10em; left:65em;}
+#window9 { top:10em; left:80em;}
+#window10 { top:30em; left:65em;}
+#window11 { top:30em; left:80em;}
 ._jsPlumb_connector { z-index:4; }
 ._jsPlumb_endpoint, .endpointTargetLabel, .endpointSourceLabel{ z-index:21;cursor:pointer; }
 .hl { border:3px solid red; }

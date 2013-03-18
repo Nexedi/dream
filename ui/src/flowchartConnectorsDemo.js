@@ -87,10 +87,17 @@
 					}
 				};
 
-			_addEndpoints("window4", ["TopCenter", "BottomCenter"], ["LeftMiddle", "RightMiddle"]);			
-			_addEndpoints("window2", ["LeftMiddle", "BottomCenter"], ["TopCenter", "RightMiddle"]);
-			_addEndpoints("window3", ["RightMiddle", "BottomCenter"], ["LeftMiddle", "TopCenter"]);
-			_addEndpoints("window1", ["LeftMiddle", "RightMiddle"], ["TopCenter", "BottomCenter"]);
+			_addEndpoints("window1", ["RightMiddle"], ["LeftMiddle"]);
+      _addEndpoints("window2", ["RightMiddle"], ["LeftMiddle"]);
+      _addEndpoints("window3", ["RightMiddle"], ["LeftMiddle"]);
+      _addEndpoints("window4", ["RightMiddle"], ["LeftMiddle"]);      
+      _addEndpoints("window5", ["RightMiddle"], ["LeftMiddle"]);      
+      _addEndpoints("window6", ["RightMiddle"], ["LeftMiddle"]);      
+      _addEndpoints("window7", ["RightMiddle"], ["LeftMiddle"]);      
+      _addEndpoints("window8", ["RightMiddle"], ["LeftMiddle"]);      
+      _addEndpoints("window9", ["RightMiddle"], ["LeftMiddle"]);      
+      _addEndpoints("window10", ["RightMiddle"], ["LeftMiddle"]);      
+      _addEndpoints("window11", ["RightMiddle"], ["LeftMiddle"]);      
 						
 			// listen for new connections; initialise them the same way we initialise the connections at startup.
 			jsPlumb.bind("jsPlumbConnection", function(connInfo, originalEvent) { 
@@ -104,12 +111,16 @@
 
             
 			// connect a few up
-			jsPlumb.connect({uuids:["window2BottomCenter", "window3TopCenter"], editable:true});
-			jsPlumb.connect({uuids:["window2LeftMiddle", "window4LeftMiddle"], editable:true});
-			jsPlumb.connect({uuids:["window4TopCenter", "window4RightMiddle"], editable:true});
-			jsPlumb.connect({uuids:["window3RightMiddle", "window2RightMiddle"], editable:true});
-			jsPlumb.connect({uuids:["window4BottomCenter", "window1TopCenter"], editable:true});
-			jsPlumb.connect({uuids:["window3BottomCenter", "window1BottomCenter"], editable:true});
+			jsPlumb.connect({uuids:["window1RightMiddle", "window2LeftMiddle"], editable:true});
+      jsPlumb.connect({uuids:["window2RightMiddle", "window3LeftMiddle"], editable:true});
+      jsPlumb.connect({uuids:["window4RightMiddle", "window5LeftMiddle"], editable:true});
+      jsPlumb.connect({uuids:["window5RightMiddle", "window6LeftMiddle"], editable:true});
+      jsPlumb.connect({uuids:["window3RightMiddle", "window7LeftMiddle"], editable:true});
+      jsPlumb.connect({uuids:["window6RightMiddle", "window7LeftMiddle"], editable:true});
+      //jsPlumb.connect({uuids:["window7RightMiddle", "window8LeftMiddle"], editable:true});
+      //jsPlumb.connect({uuids:["window7RightMiddle", "window10LeftMiddle"], editable:true});
+      jsPlumb.connect({source:"window7", target: "window8"});
+      jsPlumb.connect({source:"window7", target: "window10"});
 			//
             
 			//
