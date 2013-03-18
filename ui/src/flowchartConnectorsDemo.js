@@ -9,6 +9,7 @@
 				// default to blue at one end and green at the other
 				EndpointStyles : [{ fillStyle:'#225588' }, { fillStyle:'#558822' }],
 				// blue endpoints 7 px; green endpoints 11.
+        PaintStyle : {strokeStyle:"#ff0000", lineWidth:2 },
         HoverPaintStyle : {strokeStyle:"#42a62c", lineWidth:2 },
 				Endpoint : [ "Dot", {radius:2} ],
         ConnectionOverlays : [
