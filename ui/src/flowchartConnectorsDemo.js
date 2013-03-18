@@ -93,7 +93,8 @@
       _addEndpoints("window4", ["RightMiddle"], ["LeftMiddle"]);      
       _addEndpoints("window5", ["RightMiddle"], ["LeftMiddle"]);      
       _addEndpoints("window6", ["RightMiddle"], ["LeftMiddle"]);      
-      _addEndpoints("window7", ["RightMiddle"], ["LeftMiddle"]);      
+      //_addEndpoints("window7", ["RightMiddle"], ["LeftMiddle"]);
+      //_addEndpoints("window7", ["RightMiddle"]);      
       _addEndpoints("window8", ["RightMiddle"], ["LeftMiddle"]);      
       _addEndpoints("window9", ["RightMiddle"], ["LeftMiddle"]);      
       _addEndpoints("window10", ["RightMiddle"], ["LeftMiddle"]);      
@@ -115,8 +116,8 @@
       jsPlumb.connect({uuids:["window2RightMiddle", "window3LeftMiddle"], editable:true});
       jsPlumb.connect({uuids:["window4RightMiddle", "window5LeftMiddle"], editable:true});
       jsPlumb.connect({uuids:["window5RightMiddle", "window6LeftMiddle"], editable:true});
-      jsPlumb.connect({uuids:["window3RightMiddle", "window7LeftMiddle"], editable:true});
-      jsPlumb.connect({uuids:["window6RightMiddle", "window7LeftMiddle"], editable:true});
+      //jsPlumb.connect({uuids:["window3RightMiddle", "window7LeftMiddle"], editable:true});
+      //jsPlumb.connect({uuids:["window6RightMiddle", "window7LeftMiddle"], editable:true});
       //jsPlumb.connect({uuids:["window7RightMiddle", "window8LeftMiddle"], editable:true});
       //jsPlumb.connect({uuids:["window7RightMiddle", "window10LeftMiddle"], editable:true});
       jsPlumb.connect({source:"window7", target: "window8"});
