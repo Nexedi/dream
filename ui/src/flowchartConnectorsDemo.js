@@ -53,19 +53,6 @@ Object.keys = function( obj ) {
 			// make all the window divs draggable						
 			jsPlumb.draggable(jsPlumb.getSelector(".window"), { grid: [20, 20] });
 
-      var line;
-//       line = jsPlumb.connect({source:"window1", target: "window2"});
-//       line = jsPlumb.connect({source:"window2", target: "window3"});
-//       line = jsPlumb.connect({source:"window4", target: "window5"});
-//       line = jsPlumb.connect({source:"window5", target: "window6"});
-//       // Example to change line color
-//       // line.setPaintStyle({strokeStyle:"#42a62c", lineWidth:2 });
-//       line = jsPlumb.connect({source:"window3", target: "window7"});
-//       line = jsPlumb.connect({source:"window6", target: "window7"});
-//       line = jsPlumb.connect({source:"window7", target: "window8"});
-//       line = jsPlumb.connect({source:"window7", target: "window10"});
-			//
-            
 			//
 			// listen for clicks on connections, and offer to delete connections on click.
 			//
@@ -96,7 +83,7 @@ Object.keys = function( obj ) {
      // So instead of having html filled with data, we will use
      // a structure (like if we got it from json) and we will render it
      var graph_data = {}, i, i_length, render_dom, box, j, j_length,
-         style_string;
+         style_string, line;
      graph_data.box_list = [
        {id: 'window1', title: '1', target_list: ['window2'], coordinate: {top: 10, left: 5}},
        {id: 'window2', title: '2', target_list: ['window3'], coordinate: {top: 10, left: 15}},
@@ -136,6 +123,8 @@ Object.keys = function( obj ) {
          j_length = box.target_list.length;
          for (j=0; j < j_length; j++) {
            line = jsPlumb.connect({source:box.id, target: box.target_list[j]});
+           // Example to change line color
+           // line.setPaintStyle({strokeStyle:"#42a62c", lineWidth:2 });
          }
        }
      }
