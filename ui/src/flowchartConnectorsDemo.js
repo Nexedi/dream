@@ -1,3 +1,14 @@
+Object.keys = function( obj ) {
+  var array = new Array();
+  for ( var prop in obj ) {
+    if ( obj.hasOwnProperty( prop ) ) {
+      array.push( prop );
+    }
+  }
+  return array;
+};
+
+
 ;(function() {
 	
 	window.jsPlumbDemo = {
@@ -84,19 +95,20 @@
    function displayGraph() {
      // So instead of having html filled with data, we will use
      // a structure (like if we got it from json) and we will render it
-     var graph_data = {}, i, i_length, render_dom, box, j, j_length;
+     var graph_data = {}, i, i_length, render_dom, box, j, j_length,
+         style_string;
      graph_data.box_list = [
-       {id: 'window1', title: '1', target_list: ['window2']},
-       {id: 'window2', title: '2', target_list: ['window3']},
-       {id: 'window3', title: '3', target_list: ['window7']},
-       {id: 'window4', title: '4', target_list: ['window5']},
-       {id: 'window5', title: '5', target_list: ['window6']},
-       {id: 'window6', title: '6', target_list: ['window7']},
-       {id: 'window7', title: 'Moulding', target_list: ['window8', 'window10']},
-       {id: 'window8', title: '8', target_list: ['window9']},
-       {id: 'window9', title: '9'},
-       {id: 'window10', title: '10', target_list: ['window11']},
-       {id: 'window11', title: '11'},
+       {id: 'window1', title: '1', target_list: ['window2'], coordinate: {top: 10, left: 5}},
+       {id: 'window2', title: '2', target_list: ['window3'], coordinate: {top: 10, left: 15}},
+       {id: 'window3', title: '3', target_list: ['window7'], coordinate: {top: 10, left: 25}},
+       {id: 'window4', title: '4', target_list: ['window5'], coordinate: {top: 30, left: 5}},
+       {id: 'window5', title: '5', target_list: ['window6'], coordinate: {top: 30, left: 15}},
+       {id: 'window6', title: '6', target_list: ['window7'], coordinate: {top: 30, left: 25}},
+       {id: 'window7', title: 'Moulding', target_list: ['window8', 'window10'], coordinate: {top: 20, left: 35}},
+       {id: 'window8', title: '8', target_list: ['window9'], coordinate: {top: 10, left: 45}},
+       {id: 'window9', title: '9', coordinate: {top: 10, left: 55}},
+       {id: 'window10', title: '10', target_list: ['window11'], coordinate: {top: 30, left: 45}},
+       {id: 'window11', title: '11', coordinate: {top: 30, left: 55}},
      ];
 
      // Add boxes in the render div
@@ -104,8 +116,16 @@
      i_length = graph_data.box_list.length;
      for (i=0; i < i_length; i++) {
        box = graph_data.box_list[i];
+       style_string = ""
+       if (box.coordinate !== undefined) {
+         style_string = 'style="';
+         _.each(box.coordinate, function(value, key, list) {
+           style_string = style_string + key + ':' + value + 'em;';
+         })
+       }
+       style_string = style_string + '"';
        render_dom.append('<div class="window" id="' +
-                         box.id + '"><strong>' + box.title
+                         box.id + '" ' + style_string + '"><strong>' + box.title
                          + '</strong><br/><br/></div>');
      }
 
