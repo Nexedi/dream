@@ -1,14 +1,3 @@
-Object.keys = function( obj ) {
-  var array = new Array();
-  for ( var prop in obj ) {
-    if ( obj.hasOwnProperty( prop ) ) {
-      array.push( prop );
-    }
-  }
-  return array;
-};
-
-
 ;(function() {
 	
 	window.jsPlumbDemo = {
@@ -85,17 +74,17 @@ Object.keys = function( obj ) {
      var graph_data = {}, i, i_length, render_dom, box, j, j_length,
          style_string, line;
      graph_data.box_list = [
-       {id: 'window1', title: '1', target_list: ['window2'], coordinate: {top: 10, left: 5}},
-       {id: 'window2', title: '2', target_list: ['window3'], coordinate: {top: 10, left: 15}},
-       {id: 'window3', title: '3', target_list: ['window7'], coordinate: {top: 10, left: 25}},
-       {id: 'window4', title: '4', target_list: ['window5'], coordinate: {top: 30, left: 5}},
-       {id: 'window5', title: '5', target_list: ['window6'], coordinate: {top: 30, left: 15}},
-       {id: 'window6', title: '6', target_list: ['window7'], coordinate: {top: 30, left: 25}},
-       {id: 'window7', title: 'Moulding', target_list: ['window8', 'window10'], coordinate: {top: 20, left: 35}},
-       {id: 'window8', title: '8', target_list: ['window9'], coordinate: {top: 10, left: 45}},
-       {id: 'window9', title: '9', coordinate: {top: 10, left: 55}},
-       {id: 'window10', title: '10', target_list: ['window11'], coordinate: {top: 30, left: 45}},
-       {id: 'window11', title: '11', coordinate: {top: 30, left: 55}},
+       {id: 'window1', title: '1', target_list: ['window2'], coordinate: {top: 5, left: 5}, style: {"background-color":"#FF0000"}},
+       {id: 'window2', title: '2', target_list: ['window3'], coordinate: {top: 5, left: 15}, style: {"background-color":"#FF0000"}},
+       {id: 'window3', title: '3', target_list: ['window7'], coordinate: {top: 5, left: 25}, style: {"background-color":"#FF0000"}},
+       {id: 'window4', title: '4', target_list: ['window5'], coordinate: {top: 20, left: 5}, style: {"background-color":"#FF0000"}},
+       {id: 'window5', title: '5', target_list: ['window6'], coordinate: {top: 20, left: 15}, style: {"background-color":"#FF0000"}},
+       {id: 'window6', title: '6', target_list: ['window7'], coordinate: {top: 20, left: 25}, style: {"background-color":"#FF0000"}},
+       {id: 'window7', title: 'Moulding', target_list: ['window8', 'window10'], coordinate: {top: 12, left: 35}, style: {"background-color":"#FF0000"}},
+       {id: 'window8', title: '8', target_list: ['window9'], coordinate: {top: 5, left: 45}, style: {"background-color":"#FF0000"}},
+       {id: 'window9', title: '9', coordinate: {top: 5, left: 55}, style: {"background-color":"#FF0000"}},
+       {id: 'window10', title: '10', target_list: ['window11'], coordinate: {top: 20, left: 45}, style: {"background-color":"#FF0000"}},
+       {id: 'window11', title: '11', coordinate: {top: 20, left: 55}, style: {"background-color":"#FF0000"}},
      ];
 
      // Add boxes in the render div
@@ -105,12 +94,18 @@ Object.keys = function( obj ) {
        box = graph_data.box_list[i];
        style_string = ""
        if (box.coordinate !== undefined) {
-         style_string = 'style="';
          _.each(box.coordinate, function(value, key, list) {
            style_string = style_string + key + ':' + value + 'em;';
          })
        }
-       style_string = style_string + '"';
+       if (box.style !== undefined) {
+         _.each(box.style, function(value, key, list) {
+           style_string = style_string + key + ':' + value + ';';
+         })
+       }
+       if (style_string.length > 0) {
+         style_string = 'style="' + style_string + '"';
+       }
        render_dom.append('<div class="window" id="' +
                          box.id + '" ' + style_string + '"><strong>' + box.title
                          + '</strong><br/><br/></div>');
@@ -129,9 +124,32 @@ Object.keys = function( obj ) {
        }
      }
 
+     // Make list of people draggable
+     $("#available li").draggable({appendTo: "body"});
+     $("#not_available li").draggable({appendTo: "body"});
+     $("#available").droppable({
+       drop: function(event, ui) {
+         console.log($(this), event, ui.draggable.text);
+         console.log(ui.draggable.text());
+       }
+     });
 
      // Initial DEMO code : make all the window divs draggable
      jsPlumb.draggable(jsPlumb.getSelector(".window"), { grid: [20, 20] });
+
+     // Now communicate our model to the simulation server
+     $.ajax({
+       url: "http://localhost:5000/setModel",
+       type: 'POST',
+       data: JSON.stringify(graph_data),
+       contentType: "application/json",
+       success: function(response) {
+         console.log("got json response",response);
+       },
+       error: function(xhr, textStatus, error) {
+         onError(error);
+       }
+     });
   }
   setTimeout(function () {
     console.log("in timeout");
@@ -139,6 +157,7 @@ Object.keys = function( obj ) {
   }, 500);
 })();
 
+// Dummy code only to show json communication with server
 (function() {
    function sendData(url, data, onSuccess, onError) {
  
@@ -156,10 +175,10 @@ Object.keys = function( obj ) {
         }
     });
   }
-  setTimeout(function () {
-    console.log("in timeout");
-    sendData("http://localhost:5000/someTest", {"a": "b"},
-             function (response) {console.log("ok", response);},
-             function(foo, bar, baz) {console.log("failure");})
-  }, 1000);
+//   setTimeout(function () {
+//     console.log("in timeout");
+//     sendData("http://localhost:5000/someTest", {"a": "b"},
+//              function (response) {console.log("ok", response);},
+//              function(foo, bar, baz) {console.log("failure");})
+//   }, 1000);
 })();
