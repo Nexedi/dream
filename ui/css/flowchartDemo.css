@@ -34,16 +34,16 @@ filter:alpha(opacity=60);
 }
 
 #window1 { top:10em;left:5em;}
-#window2 { top:10em; left:20em;}
-#window3 { top:10em;left:35em; }
+#window2 { top:10em; left:15em;}
+#window3 { top:10em;left:25em; }
 #window4 { top:30em; left:5em;}
-#window5 { top:30em; left:20em;}
-#window6 { top:30em; left:35em;}
-#window7 { top:20em; left:50em;}
-#window8 { top:10em; left:65em;}
-#window9 { top:10em; left:80em;}
-#window10 { top:30em; left:65em;}
-#window11 { top:30em; left:80em;}
+#window5 { top:30em; left:15em;}
+#window6 { top:30em; left:25em;}
+#window7 { top:20em; left:35em;}
+#window8 { top:10em; left:45em;}
+#window9 { top:10em; left:55em;}
+#window10 { top:30em; left:45em;}
+#window11 { top:30em; left:55em;}
 ._jsPlumb_connector { z-index:3; }
 ._jsPlumb_endpoint, .endpointTargetLabel, .endpointSourceLabel{ z-index:21;cursor:pointer; }
 .hl { border:3px solid red; }

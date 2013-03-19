@@ -43,16 +43,16 @@
 			jsPlumb.draggable(jsPlumb.getSelector(".window"), { grid: [20, 20] });
 
       var line;
-      line = jsPlumb.connect({source:"window1", target: "window2"});
-      line = jsPlumb.connect({source:"window2", target: "window3"});
-      line = jsPlumb.connect({source:"window4", target: "window5"});
-      line = jsPlumb.connect({source:"window5", target: "window6"});
-      // Example to change line color
-      // line.setPaintStyle({strokeStyle:"#42a62c", lineWidth:2 });
-      line = jsPlumb.connect({source:"window3", target: "window7"});
-      line = jsPlumb.connect({source:"window6", target: "window7"});
-      line = jsPlumb.connect({source:"window7", target: "window8"});
-      line = jsPlumb.connect({source:"window7", target: "window10"});
+//       line = jsPlumb.connect({source:"window1", target: "window2"});
+//       line = jsPlumb.connect({source:"window2", target: "window3"});
+//       line = jsPlumb.connect({source:"window4", target: "window5"});
+//       line = jsPlumb.connect({source:"window5", target: "window6"});
+//       // Example to change line color
+//       // line.setPaintStyle({strokeStyle:"#42a62c", lineWidth:2 });
+//       line = jsPlumb.connect({source:"window3", target: "window7"});
+//       line = jsPlumb.connect({source:"window6", target: "window7"});
+//       line = jsPlumb.connect({source:"window7", target: "window8"});
+//       line = jsPlumb.connect({source:"window7", target: "window10"});
 			//
             
 			//
@@ -78,6 +78,56 @@
     
 		}
 	};
+})();
+
+(function() {
+   function displayGraph() {
+     // So instead of having html filled with data, we will use
+     // a structure (like if we got it from json) and we will render it
+     var graph_data = {}, i, i_length, render_dom, box, j, j_length;
+     graph_data.box_list = [
+       {id: 'window1', title: '1', target_list: ['window2']},
+       {id: 'window2', title: '2', target_list: ['window3']},
+       {id: 'window3', title: '3', target_list: ['window7']},
+       {id: 'window4', title: '4', target_list: ['window5']},
+       {id: 'window5', title: '5', target_list: ['window6']},
+       {id: 'window6', title: '6', target_list: ['window7']},
+       {id: 'window7', title: 'Moulding', target_list: ['window8', 'window10']},
+       {id: 'window8', title: '8', target_list: ['window9']},
+       {id: 'window9', title: '9'},
+       {id: 'window10', title: '10', target_list: ['window11']},
+       {id: 'window11', title: '11'},
+     ];
+
+     // Add boxes in the render div
+     render_dom = $("[id=render]");
+     i_length = graph_data.box_list.length;
+     for (i=0; i < i_length; i++) {
+       box = graph_data.box_list[i];
+       render_dom.append('<div class="window" id="' +
+                         box.id + '"><strong>' + box.title
+                         + '</strong><br/><br/></div>');
+     }
+
+     // Now that we have all boxes, connect them
+     for (i=0; i < i_length; i++) {
+       box = graph_data.box_list[i];
+       if (box.target_list !== undefined) {
+         j_length = box.target_list.length;
+         for (j=0; j < j_length; j++) {
+           line = jsPlumb.connect({source:box.id, target: box.target_list[j]});
+         }
+       }
+     }
+
+
+     // Initial DEMO code : make all the window divs draggable
+     jsPlumb.draggable(jsPlumb.getSelector(".window"), { grid: [20, 20] });
+  }
+  setTimeout(function () {
+    console.log("in timeout");
+    displayGraph()
+  }, 500);
 })();
 
 (function() {
