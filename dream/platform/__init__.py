@@ -46,12 +46,15 @@ def setSimulationParameters():
   parameter_dict = request.json
   app.logger.debug("parameter_dict: %r" % (parameter_dict,))
   box_to_enable_list = [1, 2, 3, 7, 8, 9]
-  to_enable = len([x for x in parameter_dict if parameter_dict[x]]) >= 6
+  available_people_list = [x for x in parameter_dict if parameter_dict[x]]
+  to_enable = len(available_people_list) >= 6
   for box in model["box_list"]:
+    box["worker"] = None
+    box["enabled"] = False
     if int(box["id"][len("window"):]) in box_to_enable_list:
       box["enabled"] = to_enable
-    else:
-      box["enabled"] = False
+      if to_enable:
+        box["worker"] = available_people_list.pop()
   return "ok"
 
 @app.route("/getModel", methods=["GET", "OPTIONS"])

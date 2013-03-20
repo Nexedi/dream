@@ -86,6 +86,14 @@ body {
   border-radius: 10px;
 }
 
+li { margin: 3px;
+     /*padding: 1px;*/
+     /*text-align: -webkit-match-parent;*/
+     background: #e6e6e6;
+     border: 1px solid #d3d3d3;
+     list-style-type: none;
+     width: 120px; }
+
 #sidebar {            
     margin-left:auto;
 	margin-right:auto;

@@ -75,17 +75,17 @@
          style_string, line, people_list, setSimulationParameters,
          available_people = {};
      graph_data.box_list = [
-       {id: 'window1', title: '1', target_list: ['window2'], coordinate: {top: 5, left: 5}},
-       {id: 'window2', title: '2', target_list: ['window3'], coordinate: {top: 5, left: 15}},
-       {id: 'window3', title: '3', target_list: ['window7'], coordinate: {top: 5, left: 25}},
-       {id: 'window4', title: '4', target_list: ['window5'], coordinate: {top: 20, left: 5}},
-       {id: 'window5', title: '5', target_list: ['window6'], coordinate: {top: 20, left: 15}},
-       {id: 'window6', title: '6', target_list: ['window7'], coordinate: {top: 20, left: 25}},
+       {id: 'window1', title: 'attach1', target_list: ['window2'], coordinate: {top: 5, left: 5}},
+       {id: 'window2', title: 'attach2', target_list: ['window3'], coordinate: {top: 5, left: 15}},
+       {id: 'window3', title: 'attach3', target_list: ['window7'], coordinate: {top: 5, left: 25}},
+       {id: 'window4', title: 'attach1', target_list: ['window5'], coordinate: {top: 20, left: 5}},
+       {id: 'window5', title: 'attach2', target_list: ['window6'], coordinate: {top: 20, left: 15}},
+       {id: 'window6', title: 'attach3', target_list: ['window7'], coordinate: {top: 20, left: 25}},
        {id: 'window7', title: 'Moulding', target_list: ['window8', 'window10'], coordinate: {top: 12, left: 35}},
-       {id: 'window8', title: '8', target_list: ['window9'], coordinate: {top: 5, left: 45}},
-       {id: 'window9', title: '9', coordinate: {top: 5, left: 55}},
-       {id: 'window10', title: '10', target_list: ['window11'], coordinate: {top: 20, left: 45}},
-       {id: 'window11', title: '11', coordinate: {top: 20, left: 55}},
+       {id: 'window8', title: 'tests', target_list: ['window9'], coordinate: {top: 5, left: 45}},
+       {id: 'window9', title: 'packaging', coordinate: {top: 5, left: 55}},
+       {id: 'window10', title: 'tests', target_list: ['window11'], coordinate: {top: 20, left: 45}},
+       {id: 'window11', title: 'packaging', coordinate: {top: 20, left: 55}},
      ];
 
      // Add boxes in the render div
@@ -108,8 +108,10 @@
          style_string = 'style="' + style_string + '"';
        }
        render_dom.append('<div class="window" id="' +
-                         box.id + '" ' + style_string + '"><strong>' + box.title
-                         + '</strong><br/><br/></div>');
+                         box.id + '" ' + style_string + '">'
+                         //+ '<strong>' + box.title
+                         //+ '</strong><br/><br/>'
+                         + '</div>');
      }
 
      // Now that we have all boxes, connect them
@@ -129,7 +131,7 @@
      people_list = ["Seb", "Jerome", "Jean-Paul", "Anna", "George", "Ivor", "Dipo", "Stephan"];
      i_length = people_list.length;
      for (i = 0; i < i_length; i++) {
-       $("#not_available ul").append("<li>" + people_list[i] + "</li>");
+       $("#not_available ul").append('<li class="ui-state-default">' + people_list[i] + "</li>");
      }
 
      // Define ajax call to update list of available people
@@ -154,14 +156,12 @@
      $("#available").droppable({
        drop: function(event, ui) {
          available_people[ui.draggable.text()] = true;
-         console.log(available_people);
          setSimulationParameters(available_people);
        }
      });
      $("#not_available").droppable({
        drop: function(event, ui) {
          available_people[ui.draggable.text()] = false;
-         console.log(available_people);
          setSimulationParameters(available_people);
        }
      });
@@ -191,6 +191,16 @@
          box.css(key, value);
        })
      };
+     // Utility function to update the content of the box
+     var updateBoxContent = function (box_id, title, worker) {
+       var box, html_string;
+       box = $("#" + box_id);
+       html_string = "<strong>" + title + "</strong>";
+       if (worker !== undefined && worker !== null) {
+         html_string += "<br> (" + worker + ")";
+       }
+       box.html(html_string)
+     };
 
      // Then ask the server from time to time for an update of graph based
      // on the result of some simulation
@@ -207,6 +217,7 @@
            } else {
              updateBoxStyle(box.id, {"background-color": "#FF0000"});
            }
+           updateBoxContent(box.id, box.title, box.worker);
          }
        };
        $.ajax({
