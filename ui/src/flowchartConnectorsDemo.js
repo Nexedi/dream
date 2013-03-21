@@ -1,5 +1,68 @@
 ;(function() {
-	
+  var throughput = $( "#throughput" ),
+    allFields = $( [] ).add( throughput ),
+    tips = $( ".validateTips" ),
+    dialog_connection;
+
+    function updateTips( t ) {
+      tips
+        .text( t )
+        .addClass( "ui-state-highlight" );
+      setTimeout(function() {
+        tips.removeClass( "ui-state-highlight", 1500 );
+      }, 500 );
+    }
+
+    function checkLength( o, n, min, max ) {
+      if ( o.val().length > max || o.val().length < min ) {
+        o.addClass( "ui-state-error" );
+        updateTips( "Length of " + n + " must be between " +
+          min + " and " + max + "." );
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+    function checkRegexp( o, regexp, n ) {
+      if ( !( regexp.test( o.val() ) ) ) {
+        o.addClass( "ui-state-error" );
+        updateTips( n );
+        return false;
+      } else {
+        return true;
+      }
+    }    
+
+  $( "#dialog-form" ).dialog({
+      autoOpen: false,
+      height: 300,
+      width: 350,
+      modal: true,
+      buttons: {
+        "Validate": function() {
+          var bValid = true;
+          allFields.removeClass( "ui-state-error" );
+ 
+          console.log("going to check troughput val", throughput.val());
+          bValid = bValid && checkRegexp( throughput, /^([0-9])+$/, "Througput must be integer." );
+ 
+          if ( bValid ) {
+            console.log("new value is ok...", throughput.val());
+            console.log("dialog_connection", dialog_connection);
+            
+            $( this ).dialog( "close" );
+          }
+        },
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        }
+      },
+      close: function() {
+        allFields.val( "" ).removeClass( "ui-state-error" );
+      }
+    });
+
 	window.jsPlumbDemo = {
 		init : function() {
 				
@@ -19,14 +82,14 @@
                       length:14,
                       foldback:0.8
           } ],
-          [ "Label", { label:"FOO", id:"label" }]
+          //[ "Label", { label:"FOO", id:"label" }]
         ],
         Anchor: "Continuous",
         Connector: ["StateMachine", { curviness:20 }],
 			});			
 
 			init = function(connection) {
-				connection.getOverlay("label").setLabel(connection.sourceId.substring(6) + "-" + connection.targetId.substring(6));
+				//connection.getOverlay("label").setLabel(connection.sourceId.substring(6) + "-" + connection.targetId.substring(6));
 				connection.bind("editCompleted", function(o) {
 					if (typeof console != "undefined")
 						console.log("connection edited. path is now ", o.path);
@@ -46,8 +109,11 @@
 			// listen for clicks on connections, and offer to delete connections on click.
 			//
 			jsPlumb.bind("click", function(conn, originalEvent) {
-				if (confirm("Delete connection from " + conn.sourceId + " to " + conn.targetId + "?"))
-					jsPlumb.detach(conn); 
+				//if (confirm("Delete connection from " + conn.sourceId + " to " + conn.targetId + "?"))
+				//	jsPlumb.detach(conn); 
+				console.log("user click connection", conn);
+        dialog_connection = conn;
+        $( "#dialog-form" ).dialog( "open" );
 			});	
 			
 			jsPlumb.bind("connectionDrag", function(connection) {
@@ -68,12 +134,15 @@
 })();
 
 (function() {
-   function displayGraph() {
+   function displayGraph() {     
      // So instead of having html filled with data, we will use
      // a structure (like if we got it from json) and we will render it
      var graph_data = {}, i, i_length, render_dom, box, j, j_length,
          style_string, line, people_list, setSimulationParameters,
-         available_people = {};
+         available_people = {}, onError;
+     var onError = function(error) {
+       console.log("Error", error);
+     };
      graph_data.box_list = [
        {id: 'window1', title: 'attach1', target_list: ['window2'], coordinate: {top: 5, left: 5}},
        {id: 'window2', title: 'attach2', target_list: ['window3'], coordinate: {top: 5, left: 15}},
@@ -120,7 +189,7 @@
        if (box.target_list !== undefined) {
          j_length = box.target_list.length;
          for (j=0; j < j_length; j++) {
-           line = jsPlumb.connect({source:box.id, target: box.target_list[j]});
+           line = jsPlumb.connect({source:box.id, target: box.target_list[j], label: "foo"});
            // Example to change line color
            // line.setPaintStyle({strokeStyle:"#42a62c", lineWidth:2 });
          }
@@ -199,16 +268,22 @@
        if (worker !== undefined && worker !== null) {
          html_string += "<br> (" + worker + ")";
        }
-       box.html(html_string)
+       box.html(html_string);
      };
 
      // Then ask the server from time to time for an update of graph based
      // on the result of some simulation
      var getModel = function () {
        var refreshGraph = function(model) {
+         //console.log("model", model);
          var i, i_length, box;
+         //console.log("before i_length");
+         //console.log("model", model);
+         //console.log(typeof(model));
+         //console.log("model.box_list", model["box_list"]);
          i_length = model.box_list.length;
-         console.log("model", model);
+         //console.log("after i_length");
+         //console.log("model", model);
          for (i = 0; i < i_length; i++) {
            //, style: {"background-color":"#FF0000"}
            box = model.box_list[i];

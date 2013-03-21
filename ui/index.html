@@ -4,6 +4,7 @@
 		<title>jsPlumb 1.4.0 - flowchart connectors demonstration - jQuery</title>
 		<link rel="stylesheet" href="css/demo-new.css">
 		<link rel="stylesheet" href="css/flowchartDemo.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
 	</head>
 	<body data-demo-id="flowchartConnectorsDemo" data-library="jquery">
 		
@@ -23,12 +24,23 @@
 	    </div>
 		<div id="sidebar">			
             <div id="explanation">
-                <p>This is a demonstration of Flowchart connectors</p>
-				<p>Hover over connections to highlight them, click to delete. </p>
-				<p>Drag new connections from blue dots to green dots. You can also drag connections from green dots onto other green dots or back onto themselves.</p>            
-				<p>This demonstration uses jsPlumb 1.4.0, jQuery 1.8.1 and jQuery UI 1.8.23.</p>
+                <p>This is a demonstration of Flowchart combined with simulation.</p>
+                <p>Drag not available people to the box "Available". If there is enough workers, a green path will be displayed on the Flowchart.</p>
+                <p>Every time there is change to the list of available/not available people, a simulation server get informations and process new calculation.</p>
+                <p>For now, there is no real simulation, only some little code to make this demo working</p>
+                <p>This demonstration uses jsPlumb 1.4.0, jQuery 1.8.1 and jQuery UI 1.8.23.</p>
             </div>			
         </div>
+<div id="dialog-form" title="Change Througput">
+  <p class="validateTips">All form fields are required.</p>
+ 
+  <form>
+  <fieldset>
+    <label for="Throughput">Throughput</label>
+    <input type="text" name="throughput" id="throughput" class="text ui-widget-content ui-corner-all" />
+  </fieldset>
+  </form>
+</div>
 
 	    <!-- DEP -->
       <script type="text/javascript" src="lib/underscore-min.js"></script>
