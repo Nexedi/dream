@@ -1,19 +1,21 @@
 (function($) {
+  "use strict";
   jsPlumb.bind("ready", function() {
     var graph_data = {}, dream_instance, available_people = {}, people_list,
         i, i_length;
+    graph_data.throughput = 0;
     graph_data.box_list = [
-        {id: 'window1', title: 'attach1', target_list: ['window2'], coordinate: {top: 5, left: 5}},
-        {id: 'window2', title: 'attach2', target_list: ['window3'], coordinate: {top: 5, left: 15}},
-        {id: 'window3', title: 'attach3', target_list: ['window7'], coordinate: {top: 5, left: 25}},
-        {id: 'window4', title: 'attach1', target_list: ['window5'], coordinate: {top: 20, left: 5}},
-        {id: 'window5', title: 'attach2', target_list: ['window6'], coordinate: {top: 20, left: 15}},
-        {id: 'window6', title: 'attach3', target_list: ['window7'], coordinate: {top: 20, left: 25}},
-        {id: 'window7', title: 'Moulding', target_list: ['window8', 'window10'], coordinate: {top: 12, left: 35}},
-        {id: 'window8', title: 'tests', target_list: ['window9'], coordinate: {top: 5, left: 45}},
-        {id: 'window9', title: 'packaging', coordinate: {top: 5, left: 55}},
-        {id: 'window10', title: 'tests', target_list: ['window11'], coordinate: {top: 20, left: 45}},
-        {id: 'window11', title: 'packaging', coordinate: {top: 20, left: 55}},
+        {id: 'window1', title: 'attach1', throughput: 23, target_list: ['window2'], coordinate: {top: 5, left: 5}},
+        {id: 'window2', title: 'attach2', throughput: 21, target_list: ['window3'], coordinate: {top: 5, left: 15}},
+        {id: 'window3', title: 'attach3', throughput: 23, target_list: ['window7'], coordinate: {top: 5, left: 25}},
+        {id: 'window4', title: 'attach1', throughput: 22, target_list: ['window5'], coordinate: {top: 20, left: 5}},
+        {id: 'window5', title: 'attach2', throughput: 23, target_list: ['window6'], coordinate: {top: 20, left: 15}},
+        {id: 'window6', title: 'attach3', throughput: 23, target_list: ['window7'], coordinate: {top: 20, left: 25}},
+        {id: 'window7', title: 'Moulding', throughput: 40, target_list: ['window8', 'window10'], coordinate: {top: 12, left: 35}},
+        {id: 'window8', title: 'tests', throughput: 23, target_list: ['window9'], coordinate: {top: 5, left: 45}},
+        {id: 'window9', title: 'packaging', throughput: 23, coordinate: {top: 5, left: 55}},
+        {id: 'window10', title: 'tests', throughput: 23, target_list: ['window11'], coordinate: {top: 20, left: 45}},
+        {id: 'window11', title: 'packaging', throughput: 23, coordinate: {top: 20, left: 55}},
     ];
 
     dream_instance = DREAM.newDream(graph_data);

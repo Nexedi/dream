@@ -48,6 +48,7 @@ def setSimulationParameters():
   box_to_enable_list = [1, 2, 3, 7, 8, 9]
   available_people_list = [x for x in parameter_dict if parameter_dict[x]]
   to_enable = len(available_people_list) >= 6
+  throughput = None
   for box in model["box_list"]:
     box["worker"] = None
     box["enabled"] = False
@@ -55,6 +56,12 @@ def setSimulationParameters():
       box["enabled"] = to_enable
       if to_enable:
         box["worker"] = available_people_list.pop()
+        if throughput is None:
+          throughput = box["throughput"]
+        throughput = min(throughput, box["throughput"])
+  if throughput is None:
+    throughput = 0
+  model["throughput"] = throughput
   return "ok"
 
 @app.route("/getModel", methods=["GET", "OPTIONS"])

@@ -44,7 +44,7 @@
       // listen for clicks on connections, and offer to change values on click.
       jsPlumb.bind("click", function(conn, originalEvent) {
         console.log("user click connection", conn);
-        dialog_connection = conn;
+        priv.dialog_connection = conn;
         $( "#dialog-form" ).dialog( "open" );
       }); 
       
@@ -65,8 +65,7 @@
     priv.initDialog = function() {
       var throughput = $( "#throughput" ),
         allFields = $( [] ).add( throughput ),
-        tips = $( ".validateTips" ),
-        dialog_connection;
+        tips = $( ".validateTips" );
 
       function updateTips( t ) {
         tips
@@ -113,7 +112,7 @@
   
             if ( bValid ) {
               console.log("new value is ok...", throughput.val());
-              console.log("dialog_connection", dialog_connection);
+              console.log("dialog_connection", priv.dialog_connection);
               
               $( this ).dialog( "close" );
             }
@@ -161,7 +160,9 @@
           j_length = box.target_list.length;
           for (j=0; j < j_length; j++) {
             console.log("in dream, jsPlumb.connect", box.id, box.target_list[j]);
-            line = jsPlumb.connect({source:box.id, target: box.target_list[j], label: "foo"});
+            line = jsPlumb.connect({source:box.id, target: box.target_list[j],
+                                   labelStyle : { cssClass:"component label" }});
+            //, label: box.throughput.toString()});
             // Example to change line color
             // line.setPaintStyle({strokeStyle:"#42a62c", lineWidth:2 });
           }
@@ -235,6 +236,18 @@
       });
     };
 
+    priv.updateConnectionLabel = function (source_id, target_id, title) {
+      var connection_array, i, i_length, connection;
+      connection_array = jsPlumb.getConnections({source: source_id, target: target_id});
+      i_length = connection_array.length;
+      for (i = 0; i < i_length; i++) {
+        connection = connection_array[i];
+        if (connection.getLabel() !== title) {
+          connection.setLabel(title);
+        }
+      }
+    };
+
     priv.updateModel = function (success) {
       var refreshGraph = function(model) {
         //console.log("model", model);
@@ -254,8 +267,15 @@
           } else {
             priv.updateBoxStyle(box.id, {"background-color": "#FF0000"});
           }
+          // Update content of the box
           priv.updateBoxContent(box.id, box.title, box.worker);
+          // Update the label
+          if (box.target_list !== undefined) {
+            priv.updateConnectionLabel(box.id, box.target_list[0], box.throughput.toString());
+          };
         }
+        // Refresh total throughput value
+        $("#total_throughput h2").text(model.throughput.toString());
       };
       priv.getModel(refreshGraph);
     };

@@ -86,6 +86,16 @@ body {
   border-radius: 10px;
 }
 
+#total_throughput {
+  position: absolute;
+  width: 100px;
+  height: 80px;
+  border: 2px solid;
+  margin-top: 135px;
+  margin-left: 720px;
+  border-radius: 10px;
+}
+
 /* Setting for dialog */
 
 label, input { display:block; }
@@ -197,4 +207,14 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
 
 ._jsPlumb_endpoint._jsPlumb_hover {
     z-index:22 !important;
+}
+
+._jsPlumb_overlay {
+  border:1px solid #346789; 
+  opacity:0.8; 
+  filter:alpha(opacity=80);
+  background-color:white;
+  color:black;
+  font-family:helvetica;
+  padding:0.5em; 
 }
