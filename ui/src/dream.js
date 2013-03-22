@@ -63,6 +63,8 @@
     };
 
     priv.initDialog = function() {
+      // code to allow changing values on connections. For now we assume
+      // that it is throughput. But we will need more generic code
       var throughput = $( "#throughput" ),
         allFields = $( [] ).add( throughput ),
         tips = $( ".validateTips" );
@@ -104,7 +106,7 @@
         modal: true,
         buttons: {
           "Validate": function() {
-            var bValid = true;
+            var bValid = true, i, i_length, box;
             allFields.removeClass( "ui-state-error" );
   
             console.log("going to check troughput val", throughput.val());
@@ -113,7 +115,15 @@
             if ( bValid ) {
               console.log("new value is ok...", throughput.val());
               console.log("dialog_connection", priv.dialog_connection);
-              
+              // Update the model with new value
+              i_length = model.box_list.length;
+              for (i = 0; i < i_length; i++) {
+                box = model.box_list[i];
+                if (box.id === priv.dialog_connection.sourceId) {
+                  box.throughput = parseInt(throughput.val(), 10);
+                }
+              }
+              priv.setModel();
               $( this ).dialog( "close" );
             }
           },
