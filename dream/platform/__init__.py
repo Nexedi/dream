@@ -34,10 +34,16 @@ def someTest():
 @crossdomain(origin='*')
 def setModel():
   app.logger.debug('setModel')
-  app.logger.debug("request.json: %r" % (request.json,))
-  #model = deunicodeData(request.json)
   data['model'] = request.json
+  data['simulation_parameters'] = {}
   app.logger.debug("model: %r" % (data['model'],))
+  return "ok"
+
+@app.route("/updateModel", methods=["POST", "OPTIONS"])
+@crossdomain(origin='*')
+def setModel():
+  app.logger.debug('updateModel')
+  data['model'] = request.json
   return "ok"
 
 @app.route("/setSimulationParameters", methods=["POST", "OPTIONS"])
