@@ -60,6 +60,7 @@
         dropOptions:{ hoverClass:"dragHover" },
         anchor:"Continuous"     
       });
+
     };
 
     priv.initDialog = function() {
@@ -109,17 +110,14 @@
             var bValid = true, i, i_length, box;
             allFields.removeClass( "ui-state-error" );
   
-            console.log("going to check troughput val", throughput.val());
             bValid = bValid && checkRegexp( throughput, /^([0-9])+$/, "Througput must be integer." );
   
             if ( bValid ) {
-              console.log("new value is ok...", throughput.val());
-              console.log("dialog_connection", priv.dialog_connection);
               // Update the model with new value
               i_length = model.box_list.length;
               for (i = 0; i < i_length; i++) {
                 box = model.box_list[i];
-                if (box.id === priv.dialog_connection.sourceId) {
+                if (box.id === priv.box_id) {
                   box.throughput = parseInt(throughput.val(), 10);
                 }
               }
@@ -172,7 +170,6 @@
             console.log("in dream, jsPlumb.connect", box.id, box.target_list[j]);
             line = jsPlumb.connect({source:box.id, target: box.target_list[j],
                                    labelStyle : { cssClass:"component label" }});
-            //, label: box.throughput.toString()});
             // Example to change line color
             // line.setPaintStyle({strokeStyle:"#42a62c", lineWidth:2 });
           }
@@ -209,13 +206,14 @@
     };
 
     // Utility function to update the content of the box
-    priv.updateBoxContent = function (box_id, title, worker) {
+    priv.updateBoxContent = function (box_id, title, throughput, worker) {
       var box, html_string;
       box = $("#" + box_id);
       html_string = "<strong>" + title + "</strong>";
       if (worker !== undefined && worker !== null) {
         html_string += "<br> (" + worker + ")";
       }
+      html_string += "<br><strong>througput: " + throughput + "</strong>";
       box.html(html_string);
     };
 
@@ -260,15 +258,8 @@
 
     priv.updateModel = function (success) {
       var refreshGraph = function(model) {
-        //console.log("model", model);
-        var i, i_length, box;
-        //console.log("before i_length");
-        //console.log("model", model);
-        //console.log(typeof(model));
-        //console.log("model.box_list", model["box_list"]);
+        var i, i_length, box, box_list, box, box_id;
         i_length = model.box_list.length;
-        //console.log("after i_length");
-        //console.log("model", model);
         for (i = 0; i < i_length; i++) {
           //, style: {"background-color":"#FF0000"}
           box = model.box_list[i];
@@ -278,14 +269,23 @@
             priv.updateBoxStyle(box.id, {"background-color": "#FF0000"});
           }
           // Update content of the box
-          priv.updateBoxContent(box.id, box.title, box.worker);
-          // Update the label
-          if (box.target_list !== undefined) {
-            priv.updateConnectionLabel(box.id, box.target_list[0], box.throughput.toString());
-          };
+          priv.updateBoxContent(box.id, box.title, box.throughput, box.worker);
         }
         // Refresh total throughput value
         $("#total_throughput h2").text(model.throughput.toString());
+        box_list = $(".window");
+        // prevent click event listener to open dialog on every box
+        i_length = box_list.length;
+        for (i = 0; i < i_length; i++) {
+          box = box_list[i];
+          box_id = box.id;
+          $("#" + box_id).click(function (box_id) {
+            return function () {
+            priv.box_id = box_id;
+            $( "#dialog-form" ).dialog( "open" );
+            }
+          }(box_id));
+        }
       };
       priv.getModel(refreshGraph);
     };
