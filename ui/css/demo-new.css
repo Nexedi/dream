@@ -86,12 +86,22 @@ body {
   border-radius: 10px;
 }
 
+#total_workers {
+  position: absolute;
+  width: 100px;
+  height: 80px;
+  border: 2px solid;
+  margin-top: 80px;
+  margin-left: 720px;
+  border-radius: 10px;
+}
+
 #total_throughput {
   position: absolute;
   width: 100px;
   height: 80px;
   border: 2px solid;
-  margin-top: 135px;
+  margin-top: 200px;
   margin-left: 720px;
   border-radius: 10px;
 }

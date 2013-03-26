@@ -1,8 +1,8 @@
-(function($) {
+(function($, _) {
   "use strict";
   jsPlumb.bind("ready", function() {
     var graph_data = {}, dream_instance, available_people = {}, people_list,
-        i, i_length;
+        i, i_length, updateWorkerCount;
     graph_data.throughput = 0;
     graph_data.box_list = [
         {id: 'window1', title: 'attach1', throughput: 30, target_list: ['window2'], coordinate: {top: 5, left: 5}},
@@ -28,6 +28,17 @@
       $("#not_available ul").append('<li class="ui-state-default">' + people_list[i] + "</li>");
     }
 
+    updateWorkerCount = function () {
+      var available_worker_length = 0,
+          available_worker_values =  _.values(available_people);
+      _.each(available_worker_values, function(value) {
+        if (value === true) {
+          available_worker_length += 1;
+        }
+      });
+      $("#total_workers h2").text(available_worker_length.toString());
+    }
+
     // Make list of people draggable, update list of people depending
     // to make them available or not
     $("#available li").draggable({appendTo: "body"});
@@ -36,14 +47,16 @@
       drop: function(event, ui) {
         available_people[ui.draggable.text()] = true;
         dream_instance.setSimulationParameters(available_people);
+        updateWorkerCount();
       }
     });
     $("#not_available").droppable({
       drop: function(event, ui) {
         available_people[ui.draggable.text()] = false;
         dream_instance.setSimulationParameters(available_people);
+        updateWorkerCount();
       }
     });
   })
 
-})(jQuery);
+})(jQuery, _);

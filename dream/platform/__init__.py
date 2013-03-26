@@ -41,7 +41,7 @@ def setModel():
 
 @app.route("/updateModel", methods=["POST", "OPTIONS"])
 @crossdomain(origin='*')
-def setModel():
+def updateModel():
   app.logger.debug('updateModel')
   data['model'] = request.json
   return "ok"
