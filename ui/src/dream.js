@@ -7,6 +7,10 @@
        console.log("Error", error);
     };
 
+    priv.getUrl = function() {
+      return "http://localhost:5000/"
+    };
+
     priv.initJsPlumb = function () {
       jsPlumb.setRenderMode(jsPlumb.SVG);
       jsPlumb.importDefaults({
@@ -189,7 +193,7 @@
 
     priv.setSimulationParameters = function (simulation_parameters) {
       $.ajax({
-        url: "http://localhost:5000/setSimulationParameters",
+        url: priv.getUrl() + "setSimulationParameters",
         type: 'POST',
         data: JSON.stringify(simulation_parameters),
         contentType: "application/json",
@@ -225,7 +229,7 @@
 
     priv.getModel = function (success) {
       $.ajax({
-        url: "http://localhost:5000/getModel",
+        url: priv.getUrl() + "getModel",
         type: 'GET',
         success: success,
         error: function(xhr, textStatus, error) {
@@ -237,7 +241,7 @@
     priv.setModel = function () {
       // Now communicate our model to the simulation server
       $.ajax({
-        url: "http://localhost:5000/setModel",
+        url: priv.getUrl() + "setModel",
         type: 'POST',
         data: JSON.stringify(model),
         contentType: "application/json",
@@ -253,7 +257,7 @@
     priv.updateModel = function () {
       // Now communicate our model to the simulation server
       $.ajax({
-        url: "http://localhost:5000/updateModel",
+        url: priv.getUrl() + "updateModel",
         type: 'POST',
         data: JSON.stringify(model),
         contentType: "application/json",
