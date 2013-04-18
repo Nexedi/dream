@@ -121,7 +121,7 @@
                   box.throughput = parseInt(throughput.val(), 10);
                 }
               }
-              priv.setModel();
+              priv.updateModel();
               $( this ).dialog( "close" );
             }
           },
@@ -134,6 +134,12 @@
         }
       });
     };
+
+    // Prevent enter key to do nasty things
+    $('#dialog-form :input').on("keypress", function(e) {
+      console.log("keyup, e", e);
+      return e.keyCode !== 13;
+    });
 
     priv.displayGraph = function () {
       var render_element, i, i_length, box, style_string, j, j_length, line;
@@ -272,7 +278,7 @@
       }
     };
 
-    priv.updateModel = function (success) {
+    priv.refreshModel = function (success) {
       var refreshGraph = function(model) {
         var i, i_length, box, box_list, box, box_id;
         i_length = model.box_list.length;
@@ -306,12 +312,12 @@
       priv.getModel(refreshGraph);
     };
 
-    priv.updateModelRegularly = function () {
-      var updateRegularly = function() {
-        priv.updateModel();
-        setTimeout(updateRegularly, 1000);
+    priv.refreshModelRegularly = function () {
+      var refreshRegularly = function() {
+        priv.refreshModel();
+        setTimeout(refreshRegularly, 1000);
       };
-      setTimeout(updateRegularly, 1000);
+      setTimeout(refreshRegularly, 1000);
     };
 
     Object.defineProperty(that, "start", {
@@ -323,7 +329,7 @@
         priv.initJsPlumb();
         priv.initDialog();
         priv.displayGraph();
-        priv.updateModelRegularly();
+        priv.refreshModelRegularly();
       }
     });
 
