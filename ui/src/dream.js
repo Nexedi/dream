@@ -8,7 +8,7 @@
     };
 
     priv.getUrl = function() {
-      return "http://localhost:5000/"
+      return $(document)[0].baseURI + "/dream_platform/"
     };
 
     priv.initJsPlumb = function () {
