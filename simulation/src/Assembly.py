@@ -24,6 +24,7 @@ class Assembly(Process):
         Process.__init__(self)
         self.id=id
         self.objName=name
+        self.type="Assembly"   #String that shows the type of object
         self.distType=dist          #the distribution that the procTime follows  
         self.rng=RandomNumberGenerator(self, self.distType)
         self.rng.avg=time[0]
@@ -32,7 +33,11 @@ class Assembly(Process):
         self.rng.max=time[3]                    
         self.next=[]        #list with the next objects in the flow
         self.previousPart=[]    #list with the previous objects that send parts
-        self.previousFrame=[]    #list with the previous objects that send frames    
+        self.previousFrame=[]    #list with the previous objects that send frames 
+        self.nextIds=[]     #list with the ids of the next objects in the flow
+        self.previousIds=[]
+        self.previousPartIds=[]     #list with the ids of the previous objects in the flow that bring parts  
+        self.previousFrameIds=[]     #list with the ids of the previous objects in the flowthat bring frames
         
         #lists to hold statistics of multiple runs
         self.Waiting=[]

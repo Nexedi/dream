@@ -23,6 +23,9 @@ class Source(Process):
         self.totalInterArrivalTime=0    #the total interarrival time 
         self.numberOfArrivals=0         #the number of entities that were created 
         self.next=[]        #list with the next objects in the flow
+        self.nextIds=[]     #list with the ids of the next objects in the flow
+        self.previousIds=[]     #list with the ids of the previous objects in the flow. For the source it is always empty!
+        
         self.type="Source"   #String that shows the type of object
         #self.waitToDispose=False
         self.rng=RandomNumberGenerator(self, self.distType)
@@ -45,9 +48,9 @@ class Source(Process):
                 #self.waitToDispose=True
                 self.numberOfArrivals+=1           #we have one new arrival     
                 #entity=Entity("Ent"+str(i))        
-                entity=self.item(self.item.type+str(i)) #create the Entity object and assign its name 
+                entity=self.item(self.item.type+"_"+self.objName+"_"+str(i)) #create the Entity object and assign its name 
                 entity.creationTime=now()          #assign the current simulation time as the Entity's creation time 
-                self.outputTrace(self.item.type+str(i))     #output the trace
+                self.outputTrace(self.item.type+"_"+self.objName+"_"+str(i))     #output the trace
                 self.Res.activeQ.append(entity)    #append the entity to the resource 
                 i+=1        
                 #yield hold,self,self.interArrivalTime       #one entity at every interArrivalTime   

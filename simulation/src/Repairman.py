@@ -33,7 +33,7 @@ class Repairman(object):
                
     #checks if the worker is available       
     def checkIfWorkerIsAvailable(self): 
-        return len(self.W.activeQ)<self.capacity            
+        return len(self.W.activeQ)<self.capacity         
 
     #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime):

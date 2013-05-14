@@ -22,3 +22,7 @@ class Part(object):
         self.currentStop=None      #contains the current object that the material is in 
         self.creationTime=0
         self.startTime=0           #holds the startTime for the lifespan
+        
+    def __del__(self):
+        pass      
+        #print self.name, now()

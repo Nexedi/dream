@@ -3,7 +3,6 @@ Created on 8 Nov 2012
 
 @author: George
 '''
-
 '''
 Models a machine that can also have failures
 '''
@@ -44,6 +43,8 @@ class Machine(Process):
         
         self.next=[]        #list with the next objects in the flow
         self.previous=[]    #list with the previous objects in the flow
+        self.nextIds=[]     #list with the ids of the next objects in the flow
+        self.previousIds=[]     #list with the ids of the previous objects in the flow
         self.type="Machine"   #String that shows the type of object
                 
         #lists to hold statistics of multiple runs
@@ -51,37 +52,7 @@ class Machine(Process):
         self.Working=[]
         self.Blockage=[]
         self.Waiting=[]
-        
-        
-        
-        '''
-        self.Up=True                    #Boolean that shows if the machine is in failure ("Down") or not ("up")
-        self.currentEntity=None        
-        self.totalBlockageTime=0        #holds the total blockage time
-        self.totalFailureTime=0         #holds the total failure time
-        self.totalWaitingTime=0         #holds the total waiting time
-        self.totalWorkingTime=0         #holds the total working time
-        self.completedJobs=0            #holds the number of completed jobs 
-        
-        self.timeLastEntityEnded=0      #holds the last time that an entity ended processing in the machine
-        self.nameLastEntityEnded=""     #holds the name of the last entity that ended processing in the machine
-        self.timeLastEntityEntered=0    #holds the last time that an entity entered in the machine
-        self.nameLastEntityEntered=""   #holds the name of the last entity that entered in the machine
-        self.downTimeInCurrentEntity=0  #holds the time that the machine was down while processing the current entity
-        self.timeLastFailure=0          #holds the time that the last failure of the machine started
-        self.downTimeInTryingToReleaseCurrentEntity=0 #holds the time that the machine was down while trying 
-                                                      #to release the current entity   
-                                                      
-        self.waitToDispose=False    #shows if the machine waits to dispose an entity          
-        '''
 
-        '''
-        #if the failure distribution for the machine is fixed, activate the failure       
-        if(self.failureDistType=="Fixed" or self.failureDistType=="Availability"):  
-            MFailure=Failure(self,  self.failureDistType, self.MTTF, self.MTTR, self.availability, self.id, self.repairman)
-            activate(MFailure,MFailure.Run())
-        '''
-        #self.initializeForRun()
             
     def initialize(self):
         Process.__init__(self)
@@ -98,10 +69,15 @@ class Machine(Process):
         self.nameLastEntityEnded=""     #holds the name of the last entity that ended processing in the machine
         self.timeLastEntityEntered=0    #holds the last time that an entity entered in the machine
         self.nameLastEntityEntered=""   #holds the name of the last entity that entered in the machine
-        self.downTimeInCurrentEntity=0  #holds the time that the machine was down while processing the current entity
         self.timeLastFailure=0          #holds the time that the last failure of the machine started
+        self.timeLastFailureEnded=0          #holds the time that the last failure of the machine Ended
+        self.downTimeProcessingCurrentEntity=0  #holds the time that the machine was down while processing the current entity
         self.downTimeInTryingToReleaseCurrentEntity=0 #holds the time that the machine was down while trying 
-                                                      #to release the current entity   
+                                                      #to release the current entity  
+        self.downTimeInCurrentEntity=0                  #holds the total time that the machine was down while holding current entity
+        self.timeLastEntityLeft=0        #holds the last time that an entity left the machine
+                                                
+        self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                               
                                                       
         self.waitToDispose=False    #shows if the machine waits to dispose an entity       
         
@@ -116,7 +92,6 @@ class Machine(Process):
     def Run(self):
         #execute all through simulation time
         while 1:
-            failureTime=0
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the machine can accept an entity
                                                                     #and one predecessor requests it      
                                                                                           
@@ -129,10 +104,12 @@ class Machine(Process):
             self.nameLastEntityEntered=self.currentEntity.name    #this holds the name of the last entity that got into Machine
             timeEntered=now()            
             tinMStart=self.rng.generateNumber()         #get the processing time  
-            tinM=tinMStart                        
+            tinM=tinMStart 
+            self.processingTimeOfCurrentEntity=tinMStart                  
             interruption=False    
             processingEndedFlag=True 
-            failureTime=0        
+            failureTime=0       
+            self.downTimeInCurrentEntity=0
             
     
             #this loop is repeated until the processing time is expired with no failure              
@@ -152,7 +129,9 @@ class Machine(Process):
                             
                     breakTime=now()
                     yield passivate,self    #if there is a failure in the machine it is passivated
+                    self.downTimeProcessingCurrentEntity+=now()-breakTime
                     self.downTimeInCurrentEntity+=now()-breakTime
+                    self.timeLastFailureEnded=now()
                     failureTime+=now()-breakTime
                     self.outputTrace("passivated in "+self.objName+" for "+str(now()-breakTime))              
                             
@@ -165,7 +144,7 @@ class Machine(Process):
             self.timeLastEntityEnded=now()      #this holds the last time that an entity ended processing in Machine 
             self.nameLastEntityEnded=self.currentEntity.name  #this holds the name of the last entity that ended processing in Machine
             self.completedJobs+=1               #Machine completed one more Job
-            self.downTimeInCurrentEntity=0      
+            self.downTimeProcessingCurrentEntity=0      
             reqTime=now()           #entity has ended processing in Machine and requests for the next object 
         
         
@@ -182,13 +161,14 @@ class Machine(Process):
                     yield waituntil, self, self.checkIfMachineIsUp
                     failureTime+=now()-failTime      
                     self.downTimeInTryingToReleaseCurrentEntity+=now()-failTime         
-            
+                    self.downTimeInCurrentEntity+=now()-failTime        
+                    self.timeLastFailureEnded=now()           
                             
             totalTime=now()-timeEntered    
             blockageTime=totalTime-(tinMStart+failureTime)
             self.totalBlockageTime+=totalTime-(tinMStart+failureTime)   #the time of blockage is derived from 
                                                                                          #the whole time in the machine
-                                                                                         #minus the processing time and the failure time                           
+                                                                                         #minus the processing time and the failure time            
             
     #sets the routing in and out elements for the queue
     def defineRouting(self, p, n):
@@ -226,6 +206,11 @@ class Machine(Process):
     
     #removes an entity from the Machine
     def removeEntity(self):
+        #the time of blockage is derived from the whole time in the machine minus the processing time and the failure time 
+        #self.totalBlockageTime+=(now()-self.timeLastEntityEntered)-(self.processingTimeOfCurrentEntity+self.downTimeInCurrentEntity)        
+        #print (now()-self.timeLastEntityEntered)-(self.processingTimeOfCurrentEntity+self.downTimeInCurrentEntity)
+        #print self.downTimeInCurrentEntity
+        self.timeLastEntityLeft=now()
         self.outputTrace("releases "+self.objName)
         self.waitToDispose=False                 
         self.Res.activeQ.pop(0)   
@@ -241,6 +226,7 @@ class Machine(Process):
     
     #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime):
+
         alreadyAdded=False      #a flag that shows if the blockage time has already been added
         
         #if there is an entity that finished processing in a Machine but did not get to reach 
@@ -259,8 +245,8 @@ class Machine(Process):
         if(len(self.Res.activeQ)>0) and (not (self.nameLastEntityEnded==self.nameLastEntityEntered)):              
             #if Machine is down we should add this last failure time to the time that it has been down in current entity 
             if(len(self.Res.activeQ)>0) and (self.Up==False):                         
-                self.downTimeInCurrentEntity+=now()-self.timeLastFailure             
-            self.totalWorkingTime+=now()-self.timeLastEntityEntered-self.downTimeInCurrentEntity 
+                self.downTimeProcessingCurrentEntity+=now()-self.timeLastFailure             
+            self.totalWorkingTime+=now()-self.timeLastEntityEntered-self.downTimeProcessingCurrentEntity 
 
         #if Machine is down we have to add this failure time to its total failure time
         #we also need to add the last blocking time to total blockage time     

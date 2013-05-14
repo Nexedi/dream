@@ -17,10 +17,13 @@ class Exit(Process):
           
     def __init__(self, id, name):
         Process.__init__(self)
+        self.predecessorIndex=0   #holds the index of the predecessor from which the Exit will take an entity next
         self.id=id        
         self.objName=name
         self.type="Exit"
         self.previous=[]    #list with the previous objects in the flow
+        self.nextIds=[]     #list with the ids of the next objects in the flow. For the exit it is always empty!
+        self.previousIds=[]     #list with the ids of the previous objects in the flow
         
         #lists to hold statistics of multiple runs
         self.Exits=[]
@@ -49,14 +52,29 @@ class Exit(Process):
     
     #checks if the Exit can accept an entity and there is an entity waiting for it
     def canAcceptAndIsRequested(self):
-        return self.previous[0].haveToDispose()    
+        if(len(self.previous)==1):  
+            return self.previous[0].haveToDispose()    
+    
+        isRequested=False
+        for i in range(len(self.previous)):
+            if(self.previous[i].haveToDispose()):
+                isRequested=True
+                self.predecessorIndex=i
+        return isRequested
     
     #gets an entity from the predecessor     
-    def getEntity(self):   
+    def getEntity(self): 
+        '''  
+        #A=self.previous[0].Res.activeQ[0]
         name=self.previous[0].Res.activeQ[0].name   #get the name of the entity for the trace
         self.totalLifespan+=now()-self.previous[0].Res.activeQ[0].startTime  #Add the entity's lifespan to the total one. 
         self.previous[0].removeEntity()            #remove the entity from the previous object
-        self.outputTrace(name)        
+        #del A
+        '''
+        name=self.previous[self.predecessorIndex].Res.activeQ[0].name   #get the name of the entity for the trace
+        self.totalLifespan+=now()-self.previous[self.predecessorIndex].Res.activeQ[0].startTime  #Add the entity's lifespan to the total one. 
+        self.previous[self.predecessorIndex].removeEntity()            #remove the entity from the previous object
+        self.outputTrace(name)          
     
     #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime):
