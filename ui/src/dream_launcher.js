@@ -22,7 +22,7 @@
     dream_instance.start();
 
     //Fill list of people
-    people_list = ["Seb", "Jerome", "Jean-Paul", "Anna", "George", "Ivor", "Dipo", "Stephan"];
+    people_list = ["Worker1", "Worker2", "Worker3", "Worker4", "Worker5", "Worker6", "Worker7", "Worker8"];
     i_length = people_list.length;
     for (i = 0; i < i_length; i++) {
       $("#not_available ul").append('<li class="ui-state-default">' + people_list[i] + "</li>");
