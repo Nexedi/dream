@@ -1,0 +1,42 @@
+{"_class": "Dream.Simulation",
+  "general": {
+    "_class": "Dream.Configuration",
+    "numberOfReplications": "1",
+    "maxSimTime": "1440",
+    "trace": "Yes",
+    "confidenceLevel": "0.95"
+  },
+    "modelResource": [
+  ],
+  "coreObject": [
+     {"_class": "Dream.Source",
+      "id": "S1",
+      "name": "Raw Material",
+      "interarrivalTime":
+         {
+           "distributionType": "Fixed",
+           "mean": "0.5"
+         },
+      "entity": "Part",
+      "successorList": ["M1"]
+      },
+     {"_class": "Dream.Machine",
+      "id": "M1",
+      "name": "Moulding",
+      "processingTime": {
+        "distributionType": "Fixed",
+        "mean": "0.25"
+        },
+      "failures":{
+           "failureDistribution": "No"
+        },
+	  "predecessorList": ["S1"],
+      "successorList": ["E1"]
+      },
+     {"_class": "Dream.Exit",
+      "id": "E1",
+      "name": "Stock",
+	  "predecessorList": ["M1"]
+      }
+  ]
+}

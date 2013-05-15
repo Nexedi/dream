@@ -1,3 +1,5 @@
 [user]
-	name = george dagkakis
-	email = gdagkakis@yahoo.com
+	name = Georgios Dagkakis
+	email = georgios.dagkakis@ul.ie
+[push]
+	default = simple
