@@ -1,0 +1,93 @@
+{"_class": "Dream.Simulation",
+  "general": {
+    "_class": "Dream.Configuration",
+    "numberOfReplications": "1",
+    "maxSimTime": "1440",
+    "trace": "Yes",
+    "confidenceLevel": "0.95"
+  },
+  "modelResource": [
+  ],	
+  "coreObject": [
+     {"_class": "Dream.Source",
+      "id": "S1",
+      "name": "Raw Material 1",
+      "interarrivalTime":
+         {
+           "distributionType": "Fixed",
+           "mean": "0.5"
+         },
+      "entity": "Part",
+      "successorList": ["M1"]
+      },
+     {"_class": "Dream.Source",
+      "id": "S2",
+      "name": "Raw Material 2",
+      "interarrivalTime":
+         {
+           "distributionType": "Fixed",
+           "mean": "1"
+         },
+      "entity": "Part",
+      "successorList": ["M2"]
+      },
+     {"_class": "Dream.Machine",
+      "id": "M1",
+      "name": "Machine1",
+      "processingTime": {
+        "distributionType": "Fixed",
+        "mean": "0.25"
+        },
+      "failures":{
+           "failureDistribution": "Fixed",
+		   "MTTF": "60",
+		   "MTTR": "5",
+		   "repairman": "None"
+        },
+	  "predecessorList": ["S1"],
+      "successorList": ["Q1"]
+      },
+     {"_class": "Dream.Machine",
+      "id": "M2",
+      "name": "Machine2",
+      "processingTime": {
+        "distributionType": "Fixed",
+        "mean": "1.5"
+        },
+      "failures":{
+           "failureDistribution": "Fixed",
+		   "MTTF": "40",
+		   "MTTR": "10",
+		   "repairman": "None"
+        },
+	  "predecessorList": ["S2"],
+      "successorList": ["Q1"]
+      },
+     {"_class": "Dream.Machine",
+      "id": "M3",
+      "name": "Machine3",
+      "processingTime": {
+        "distributionType": "Fixed",
+        "mean": "1"
+        },
+      "failures":{
+           "failureDistribution": "No"
+        },
+	  "predecessorList": ["Q1"],
+      "successorList": ["E1"]
+      },	  
+     {"_class": "Dream.Queue",
+      "id": "Q1",
+      "name": "Q1",
+	  "isDummy": "False",
+	  "capacity": "1",
+	  "predecessorList": ["M1", "M2"],
+	  "successorList": ["M3"]
+      },	  
+     {"_class": "Dream.Exit",
+      "id": "E1",
+      "name": "Stock",
+	  "predecessorList": ["M3"]
+     }
+  ]
+}
