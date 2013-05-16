@@ -20,6 +20,8 @@ class Machine(Process):
     #initialize the id the capacity, of the resource and the distribution        
     def __init__(self, id, name, capacity, dist, time, fDist, MTTF, MTTR, availability, repairman):
         Process.__init__(self)
+        self.predecessorIndex=0     #holds the index of the predecessor from which the Machine will take an entity next
+        self.successorIndex=0       #holds the index of the successor where the Machine will dispose an entity next
         self.id=id
         self.objName=name
         self.capacity=capacity      
@@ -187,13 +189,53 @@ class Machine(Process):
     def checkIfMachineIsUp(self):
         return self.Up
     
-    #checks if the machine can accept an entity 
+    #checks if the Machine can accept an entity       
+    #it checks also who called it and returns TRUE only to the predecessor that will give the entity.  
     def canAccept(self):
-        return self.Up and len(self.Res.activeQ)==0
+        if(len(self.previous)==1):
+            return self.Up and len(self.Res.activeQ)==0
+        
+        if len(self.Res.activeQ)==self.capacity:
+            return False
+         
+        #identify the caller method 
+        frame = sys._getframe(1)
+        arguments = frame.f_code.co_argcount
+        if arguments == 0:
+            print "Not called from a method"
+            return
+        caller_calls_self = frame.f_code.co_varnames[0]
+        thecaller = frame.f_locals[caller_calls_self]
+        
+        #return true only to the predecessor from which the queue will take 
+        flag=False
+        if thecaller is self.previous[self.predecessorIndex]:
+            flag=True
+        return len(self.Res.activeQ)<self.capacity and flag  
     
-    #checks if the machine can accept an entity and there is an entity waiting for it
+    #checks if the Machine can accept an entity and there is an entity in some predecessor waiting for it
+    #also updates the predecessorIndex to the one that is to be taken
     def canAcceptAndIsRequested(self):
-        return self.Up and len(self.Res.activeQ)==0 and self.previous[0].haveToDispose()      
+        if(len(self.previous)==1):
+            return self.Up and len(self.Res.activeQ)==0 and self.previous[0].haveToDispose() 
+        
+        isRequested=False
+        maxTimeWaiting=0
+        for i in range(len(self.previous)):
+            if(self.previous[i].haveToDispose()):
+                isRequested=True
+                #timeWaiting=now()-(self.previous[i].timeLastEntityEnded+self.previous[i].downTimeInTryingToReleaseCurrentEntity)
+                
+                if(self.previous[i].downTimeInTryingToReleaseCurrentEntity>0):
+                    timeWaiting=now()-self.previous[i].timeLastFailureEnded
+                else:
+                    timeWaiting=now()-self.previous[i].timeLastEntityEnded
+                
+                #if more than one predecessor have to dispose take the part from the one that is blocked longer
+                if(timeWaiting>=maxTimeWaiting): #or maxTimeWaiting==0):
+                    self.predecessorIndex=i  
+                    maxTimeWaiting=timeWaiting                                     
+        return len(self.Res.activeQ)<self.capacity and isRequested               
     
     #checks if the machine down or it can dispose the object
     def ifCanDisposeOrHaveFailure(self):
@@ -202,7 +244,37 @@ class Machine(Process):
      
     #checks if the Machine can dispose an entity to the following object     
     def haveToDispose(self): 
-        return len(self.Res.activeQ)>0 and self.waitToDispose and self.Up
+        if(len(self.next)==1):
+            return len(self.Res.activeQ)>0 and self.waitToDispose and self.Up
+        
+        #if the Machine is empty it returns false right away
+        if(len(self.Res.activeQ)==0):
+            return False
+   
+        #identify the caller method
+        frame = sys._getframe(1)
+        arguments = frame.f_code.co_argcount
+        if arguments == 0:
+            print "Not called from a method"
+            return
+        caller_calls_self = frame.f_code.co_varnames[0]
+        thecaller = frame.f_locals[caller_calls_self]
+               
+        #give the entity to the successor that is waiting for the most time. 
+        #plant does not do this in every occasion!       
+        maxTimeWaiting=0      
+        for i in range(len(self.next)):
+            if(self.next[i].canAccept()):
+                timeWaiting=now()-self.next[i].timeLastEntityLeft
+                if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
+                    maxTimeWaiting=timeWaiting
+                    self.successorIndex=i      
+              
+        #return true only to the predecessor from which the queue will take 
+        flag=False
+        if thecaller is self.next[self.successorIndex]:
+            flag=True
+        return len(self.Res.activeQ)>0 and self.waitToDispose and self.Up and flag       
     
     #removes an entity from the Machine
     def removeEntity(self):
@@ -218,10 +290,12 @@ class Machine(Process):
         #self.outputTrace("got blocked in M"+str(self.id)+" for "
         #                                     +str(self.totalBlockageTime))
         
-    #gets an entity from the predecessor     
+    #gets an entity from the predecessor that the predecessor index points to     
     def getEntity(self):
-        self.Res.activeQ.append(self.previous[0].Res.activeQ[0])    #get the entity from the predecessor
-        self.previous[0].removeEntity()
+        #self.Res.activeQ.append(self.previous[0].Res.activeQ[0])    #get the entity from the predecessor
+        #self.previous[0].removeEntity()    
+        self.Res.activeQ.append(self.previous[self.predecessorIndex].Res.activeQ[0])    #get the entity from the predecessor
+        self.previous[self.predecessorIndex].removeEntity()
     
     
     #actions to be taken after the simulation ends
@@ -280,6 +354,7 @@ class Machine(Process):
             G.traceSheet.write(G.traceIndex,1,self.Res.activeQ[0].name)
             G.traceSheet.write(G.traceIndex,2,message)          
             G.traceIndex+=1       #increment the row
+
             #if we reach row 65536 we need to create a new sheet (excel limitation)  
             if(G.traceIndex==65536):
                 G.traceIndex=0
