@@ -230,8 +230,8 @@ def main():
               
         initialize()                        #initialize the simulation 
         initializeObjects()
-        activateObjects()       
-              
+        activateObjects()
+                            
         simulate(until=G.maxSimTime)      #start the simulation
         
         #carry on the post processing operations for every object in the topology       
@@ -255,6 +255,6 @@ def main():
         G.ObjList[j].outputResultsXL(G.maxSimTime)            
 
     G.outputFile.save("output.xls")      
-    print "execution time="+str(time.time()-start) 
+    print "execution time="+str(time.time()-start)     
         
 if __name__ == '__main__': main()

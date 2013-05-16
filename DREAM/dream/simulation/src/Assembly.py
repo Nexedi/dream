@@ -49,6 +49,21 @@ class Assembly(Process):
         Process.__init__(self)
         self.waitToDispose=False    #flag that shows if the Assembly waits to dispose an entity    
         
+        self.Up=True                    #Boolean that shows if the machine is in failure ("Down") or not ("up")
+        self.currentEntity=None      
+          
+        self.totalFailureTime=0         #holds the total failure time
+        self.timeLastFailure=0          #holds the time that the last failure of the machine started
+        self.timeLastFailureEnded=0          #holds the time that the last failure of the machine Ended
+        self.downTimeProcessingCurrentEntity=0  #holds the time that the machine was down while processing the current entity
+        self.downTimeInTryingToReleaseCurrentEntity=0 #holds the time that the machine was down while trying 
+                                                      #to release the current entity  
+        self.downTimeInCurrentEntity=0                  #holds the total time that the machine was down while holding current entity
+        self.timeLastEntityLeft=0        #holds the last time that an entity left the machine
+                                                
+        self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                               
+                                                      
+
         
         self.totalBlockageTime=0        #holds the total blockage time
         self.totalWaitingTime=0         #holds the total waiting time
