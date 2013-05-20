@@ -21,8 +21,8 @@ class Queue(Process):
         self.id=id
         self.objName=name
         self.capacity=capacity
-        self.nameLastEntityEntered=""   #keeps the name of the last entity that entered in the queue
-        self.timeLastEntityEntered=0    #keeps the time of the last entity that entered in the queue
+        self.nameLastEntityEntered=""   #keeps the name of the last entity that entered in the object
+        self.timeLastEntityEntered=0    #keeps the time of the last entity that entered in the object
 
         self.next=[]        #list with the next objects in the flow
         self.previous=[]    #list with the previous objects in the flow
@@ -34,7 +34,7 @@ class Queue(Process):
     def initialize(self):
         Process.__init__(self)
         self.Res=Resource(self.capacity)        
-        self.Up=True                    #Boolean that shows if the machine is in failure ("Down") or not ("up")
+        self.Up=True                    #Boolean that shows if the object is in failure ("Down") or not ("up")
         self.currentEntity=None      
           
         self.totalBlockageTime=0        #holds the total blockage time
@@ -43,21 +43,21 @@ class Queue(Process):
         self.totalWorkingTime=0         #holds the total working time
         self.completedJobs=0            #holds the number of completed jobs 
         
-        self.timeLastEntityEnded=0      #holds the last time that an entity ended processing in the machine
-        self.nameLastEntityEnded=""     #holds the name of the last entity that ended processing in the machine
-        self.timeLastEntityEntered=0    #holds the last time that an entity entered in the machine
-        self.nameLastEntityEntered=""   #holds the name of the last entity that entered in the machine
-        self.timeLastFailure=0          #holds the time that the last failure of the machine started
-        self.timeLastFailureEnded=0          #holds the time that the last failure of the machine Ended
+        self.timeLastEntityEnded=0      #holds the last time that an entity ended processing in the object
+        self.nameLastEntityEnded=""     #holds the name of the last entity that ended processing in the object
+        self.timeLastEntityEntered=0    #holds the last time that an entity entered in the object
+        self.nameLastEntityEntered=""   #holds the name of the last entity that entered in the object
+        self.timeLastFailure=0          #holds the time that the last failure of the object started
+        self.timeLastFailureEnded=0          #holds the time that the last failure of the object Ended
         self.downTimeProcessingCurrentEntity=0  #holds the time that the machine was down while processing the current entity
-        self.downTimeInTryingToReleaseCurrentEntity=0 #holds the time that the machine was down while trying 
+        self.downTimeInTryingToReleaseCurrentEntity=0 #holds the time that the object was down while trying 
                                                       #to release the current entity  
-        self.downTimeInCurrentEntity=0                  #holds the total time that the machine was down while holding current entity
-        self.timeLastEntityLeft=0        #holds the last time that an entity left the machine
+        self.downTimeInCurrentEntity=0                  #holds the total time that the object was down while holding current entity
+        self.timeLastEntityLeft=0        #holds the last time that an entity left the object
                                                 
         self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                               
                                                       
-        self.waitToDispose=False    #shows if the machine waits to dispose an entity  
+        self.waitToDispose=False    #shows if the object waits to dispose an entity  
                 
     def run(self):  
         while 1:  
@@ -81,6 +81,7 @@ class Queue(Process):
     #checks if the Queue can accept an entity       
     #it checks also who called it and returns TRUE only to the predecessor that will give the entity.  
     def canAccept(self): 
+        #if we have only one predecessor just check if there is a place available
         if(len(self.previous)==1):
             return len(self.Res.activeQ)<self.capacity   
     
@@ -106,6 +107,7 @@ class Queue(Process):
     #it checks also who called it and returns TRUE only to the successor that will give the entity. 
     #this is kind of slow I think got to check   
     def haveToDispose(self): 
+        #if we have only one successor just check if the Queue holds one or more entities
         if(len(self.next)==1):
             return len(self.Res.activeQ)>0 
         
@@ -141,23 +143,24 @@ class Queue(Process):
     #checks if the Queue can accept an entity and there is an entity in some predecessor waiting for it
     #also updates the predecessorIndex to the one that is to be taken
     def canAcceptAndIsRequested(self):
+        #if we have only one predecessor just check if there is a place available and the predecessor has an entity to dispose
         if(len(self.previous)==1):
             return len(self.Res.activeQ)<self.capacity and self.previous[0].haveToDispose() 
     
         isRequested=False
         maxTimeWaiting=0
+        
+        #loop through the predecessors to see which have to dispose and which is the one blocked for longer
         for i in range(len(self.previous)):
             if(self.previous[i].haveToDispose()):
-                isRequested=True
-                #timeWaiting=now()-(self.previous[i].timeLastEntityEnded+self.previous[i].downTimeInTryingToReleaseCurrentEntity)
-                
+                isRequested=True                
                 if(self.previous[i].downTimeInTryingToReleaseCurrentEntity>0):
                     timeWaiting=now()-self.previous[i].timeLastFailureEnded
                 else:
                     timeWaiting=now()-self.previous[i].timeLastEntityEnded
                 
                 #if more than one predecessor have to dispose take the part from the one that is blocked longer
-                if(timeWaiting>=maxTimeWaiting): #or maxTimeWaiting==0):
+                if(timeWaiting>=maxTimeWaiting): 
                     self.predecessorIndex=i  
                     maxTimeWaiting=timeWaiting                                     
         return len(self.Res.activeQ)<self.capacity and isRequested  

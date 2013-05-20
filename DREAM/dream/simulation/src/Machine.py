@@ -67,23 +67,23 @@ class Machine(Process):
         self.totalWorkingTime=0         #holds the total working time
         self.completedJobs=0            #holds the number of completed jobs 
         
-        self.timeLastEntityEnded=0      #holds the last time that an entity ended processing in the machine
-        self.nameLastEntityEnded=""     #holds the name of the last entity that ended processing in the machine
-        self.timeLastEntityEntered=0    #holds the last time that an entity entered in the machine
-        self.nameLastEntityEntered=""   #holds the name of the last entity that entered in the machine
-        self.timeLastFailure=0          #holds the time that the last failure of the machine started
-        self.timeLastFailureEnded=0          #holds the time that the last failure of the machine Ended
+        self.timeLastEntityEnded=0      #holds the last time that an entity ended processing in the object
+        self.nameLastEntityEnded=""     #holds the name of the last entity that ended processing in the object
+        self.timeLastEntityEntered=0    #holds the last time that an entity entered in the object
+        self.nameLastEntityEntered=""   #holds the name of the last entity that entered in the object
+        self.timeLastFailure=0          #holds the time that the last failure of the object started
+        self.timeLastFailureEnded=0          #holds the time that the last failure of the object Ended
         self.downTimeProcessingCurrentEntity=0  #holds the time that the machine was down while processing the current entity
-        self.downTimeInTryingToReleaseCurrentEntity=0 #holds the time that the machine was down while trying 
+        self.downTimeInTryingToReleaseCurrentEntity=0 #holds the time that the object was down while trying 
                                                       #to release the current entity  
-        self.downTimeInCurrentEntity=0                  #holds the total time that the machine was down while holding current entity
-        self.timeLastEntityLeft=0        #holds the last time that an entity left the machine
+        self.downTimeInCurrentEntity=0                  #holds the total time that the object was down while holding current entity
+        self.timeLastEntityLeft=0        #holds the last time that an entity left the object
                                                 
         self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                               
                                                       
-        self.waitToDispose=False    #shows if the machine waits to dispose an entity       
+        self.waitToDispose=False    #shows if the object waits to dispose an entity       
         
-        #if the failure distribution for the machine is fixed, activate the failure       
+        #if the failure distribution for the object is fixed, activate the failure       
         if(self.failureDistType=="Fixed" or self.failureDistType=="Availability"):  
             MFailure=Failure(self,  self.failureDistType, self.MTTF, self.MTTR, self.availability, self.id, self.repairman)
             activate(MFailure,MFailure.run())
@@ -98,7 +98,6 @@ class Machine(Process):
                                                                     #and one predecessor requests it      
                                                                                           
             self.getEntity()    #get the entity from the predecessor
-            #self.previous[0].removeEntity()
 
             self.outputTrace("got into "+self.objName)
             self.currentEntity=self.Res.activeQ[0]                 #entity is the current entity processed in Machine  
@@ -192,9 +191,11 @@ class Machine(Process):
     #checks if the Machine can accept an entity       
     #it checks also who called it and returns TRUE only to the predecessor that will give the entity.  
     def canAccept(self):
-        if(len(self.previous)==1):
+        #if we have only one predecessor just check if there is a place and the machine is up
+        if(len(self.previous)==1):      
             return self.Up and len(self.Res.activeQ)==0
         
+        #if the machine is busy return False immediately
         if len(self.Res.activeQ)==self.capacity:
             return False
          
@@ -216,23 +217,24 @@ class Machine(Process):
     #checks if the Machine can accept an entity and there is an entity in some predecessor waiting for it
     #also updates the predecessorIndex to the one that is to be taken
     def canAcceptAndIsRequested(self):
+        #if we have only one predecessor just check if there is a place, the machine is up and the predecessor has an entity to dispose
         if(len(self.previous)==1):
             return self.Up and len(self.Res.activeQ)==0 and self.previous[0].haveToDispose() 
         
         isRequested=False
         maxTimeWaiting=0
+        
+        #loop through the predecessors to see which have to dispose and which is the one blocked for longer
         for i in range(len(self.previous)):
             if(self.previous[i].haveToDispose()):
-                isRequested=True
-                #timeWaiting=now()-(self.previous[i].timeLastEntityEnded+self.previous[i].downTimeInTryingToReleaseCurrentEntity)
-                
+                isRequested=True               
                 if(self.previous[i].downTimeInTryingToReleaseCurrentEntity>0):
                     timeWaiting=now()-self.previous[i].timeLastFailureEnded
                 else:
                     timeWaiting=now()-self.previous[i].timeLastEntityEnded
                 
                 #if more than one predecessor have to dispose take the part from the one that is blocked longer
-                if(timeWaiting>=maxTimeWaiting): #or maxTimeWaiting==0):
+                if(timeWaiting>=maxTimeWaiting): 
                     self.predecessorIndex=i  
                     maxTimeWaiting=timeWaiting                                     
         return len(self.Res.activeQ)<self.capacity and isRequested               
@@ -244,6 +246,7 @@ class Machine(Process):
      
     #checks if the Machine can dispose an entity to the following object     
     def haveToDispose(self): 
+        #if we have only one successor just check if machine waits to dispose and also is up        
         if(len(self.next)==1):
             return len(self.Res.activeQ)>0 and self.waitToDispose and self.Up
         
@@ -278,22 +281,14 @@ class Machine(Process):
     
     #removes an entity from the Machine
     def removeEntity(self):
-        #the time of blockage is derived from the whole time in the machine minus the processing time and the failure time 
-        #self.totalBlockageTime+=(now()-self.timeLastEntityEntered)-(self.processingTimeOfCurrentEntity+self.downTimeInCurrentEntity)        
-        #print (now()-self.timeLastEntityEntered)-(self.processingTimeOfCurrentEntity+self.downTimeInCurrentEntity)
-        #print self.downTimeInCurrentEntity
         self.timeLastEntityLeft=now()
         self.outputTrace("releases "+self.objName)
         self.waitToDispose=False                 
         self.Res.activeQ.pop(0)   
         self.downTimeInTryingToReleaseCurrentEntity=0          
-        #self.outputTrace("got blocked in M"+str(self.id)+" for "
-        #                                     +str(self.totalBlockageTime))
-        
+
     #gets an entity from the predecessor that the predecessor index points to     
     def getEntity(self):
-        #self.Res.activeQ.append(self.previous[0].Res.activeQ[0])    #get the entity from the predecessor
-        #self.previous[0].removeEntity()    
         self.Res.activeQ.append(self.previous[self.predecessorIndex].Res.activeQ[0])    #get the entity from the predecessor
         self.previous[self.predecessorIndex].removeEntity()
     

@@ -47,19 +47,19 @@ class Assembly(Process):
 
     def initialize(self):
         Process.__init__(self)
-        self.waitToDispose=False    #flag that shows if the Assembly waits to dispose an entity    
+        self.waitToDispose=False    #flag that shows if the object waits to dispose an entity    
         
-        self.Up=True                    #Boolean that shows if the machine is in failure ("Down") or not ("up")
+        self.Up=True                    #Boolean that shows if the object is in failure ("Down") or not ("up")
         self.currentEntity=None      
           
         self.totalFailureTime=0         #holds the total failure time
-        self.timeLastFailure=0          #holds the time that the last failure of the machine started
-        self.timeLastFailureEnded=0          #holds the time that the last failure of the machine Ended
-        self.downTimeProcessingCurrentEntity=0  #holds the time that the machine was down while processing the current entity
-        self.downTimeInTryingToReleaseCurrentEntity=0 #holds the time that the machine was down while trying 
+        self.timeLastFailure=0          #holds the time that the last failure of the object started
+        self.timeLastFailureEnded=0          #holds the time that the last failure of the object Ended
+        self.downTimeProcessingCurrentEntity=0  #holds the time that the object was down while processing the current entity
+        self.downTimeInTryingToReleaseCurrentEntity=0 #holds the time that the object was down while trying 
                                                       #to release the current entity  
-        self.downTimeInCurrentEntity=0                  #holds the total time that the machine was down while holding current entity
-        self.timeLastEntityLeft=0        #holds the last time that an entity left the machine
+        self.downTimeInCurrentEntity=0                  #holds the total time that the object was down while holding current entity
+        self.timeLastEntityLeft=0        #holds the last time that an entity left the object
                                                 
         self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                               
                                                       
@@ -70,12 +70,12 @@ class Assembly(Process):
         self.totalWorkingTime=0         #holds the total working time
         self.completedJobs=0            #holds the number of completed jobs   
         
-        self.timeLastEntityEnded=0      #holds the last time that an entity ended processing in the Assembly     
-        self.timeLastEntityEntered=0      #holds the last time that an entity ended processing in the Assembly   
+        self.timeLastEntityEnded=0      #holds the last time that an entity ended processing in the object     
+        self.timeLastEntityEntered=0      #holds the last time that an entity ended processing in the object   
         self.timeLastFrameWasFull=0     #holds the time that the last frame was full, ie that assembly process started  
         self.nameLastFrameWasFull=""    #holds the name of the last frame that was full, ie that assembly process started
-        self.nameLastEntityEntered=""   #holds the name of the last frame that entered processing in the Assembly
-        self.nameLastEntityEnded=""     #holds the name of the last frame that ended processing in the Assembly            
+        self.nameLastEntityEntered=""   #holds the name of the last frame that entered processing in the object
+        self.nameLastEntityEnded=""     #holds the name of the last frame that ended processing in the object            
         self.Res=Resource(1)    
         self.Res.activeQ=[]  
         self.Res.waitQ=[]  

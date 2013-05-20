@@ -26,7 +26,7 @@ import json
 from random import Random
 import sys
 
-#read general simulation inputs
+#reads general simulation inputs
 def readGeneralInput():
     general=G.JSONData['general']
     G.numberOfReplications=int(general.get('numberOfReplications', 'not found'))
@@ -34,7 +34,7 @@ def readGeneralInput():
     G.trace=general.get('trace', 'not found')
     G.confidenceLevel=float(general.get('confidenceLevel', 'not found'))
 
-#create the simulation objects
+#creates the simulation objects
 def createObjects():
     #Read the json data
     coreObject=G.JSONData['coreObject']
@@ -147,7 +147,7 @@ def createObjects():
             G.AssemblyList.append(A)
             G.ObjList.append(A)
 
-#reads the topology and defines it for the objects
+#defines the topology (predecessors and successors for all the objects)
 def setTopology():
     
     #loop through all the objects  
@@ -164,10 +164,13 @@ def setTopology():
                 if G.ObjList[q].id==G.ObjList[i].nextIds[j]:
                     next.append(G.ObjList[q])      
                     
+                    
         if G.ObjList[i].type=="Source":
             G.ObjList[i].defineRouting(next)
         elif G.ObjList[i].type=="Exit":
             G.ObjList[i].defineRouting(previous)
+        #Assembly should be changed to identify what the entity that it receives is.
+        #previousPart and previousFrame will become problematic    
         elif G.ObjList[i].type=="Assembly":
             previousPart=[]
             previousFrame=[]
@@ -204,10 +207,11 @@ def activateObjects():
 
 #the main  script that is ran                                 
 def main():
-    
-    #topologyId=raw_input("give the topology id\n")
+ 
+    #create an empty list to store all the objects in   
     G.ObjList=[]
     
+    #user inputs the id of the JSON file
     topologyId=raw_input("give the topology id\n")
     try:
         G.JSONFile=open('JSONInputs/Topology'+str(topologyId)+'.JSON', "r")
@@ -216,13 +220,15 @@ def main():
         sys.exit()
 
     start=time.time()   #start counting execution time 
+    
+    #read the input from the JSON file and create the line
     G.InputData=G.JSONFile.read()
     G.JSONData=json.loads(G.InputData)
-    #print G.JSONData
     readGeneralInput()
     createObjects()
     setTopology() 
               
+    #run the experiment (replications)          
     for i in range(G.numberOfReplications):
         print "start run number "+str(i+1) 
         G.seed+=1
