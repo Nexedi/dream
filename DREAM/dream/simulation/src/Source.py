@@ -65,7 +65,7 @@ class Source(Process):
                                                       
         self.waitToDispose=False    #shows if the machine waits to dispose an entity   
         
-    def Run(self):
+    def run(self):
         i=0
         if(self.distType=="Fixed"): #if the distribution type is fixed
             from Globals import G            

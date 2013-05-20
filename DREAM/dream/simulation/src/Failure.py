@@ -53,7 +53,7 @@ class Failure(Process):
             self.rngTTR=RandomNumberGenerator(self, self.distType)
             self.rngTTR.avg=MTTR
         
-    def Run(self):           
+    def run(self):           
         while 1:
             #yield hold,self,self.calcTimeToFailure()   
             yield hold,self,self.rngTTF.generateNumber()    #wait until a failure happens                  

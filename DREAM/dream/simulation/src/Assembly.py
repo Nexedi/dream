@@ -81,7 +81,7 @@ class Assembly(Process):
         self.Res.waitQ=[]  
     
     
-    def Run(self):
+    def run(self):
         while 1:
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Assembly can accept a frame
                                                                     #and one "frame" predecessor requests it   
