@@ -60,7 +60,7 @@ class Exit(Process):
                                                       
         self.waitToDispose=False    #shows if the machine waits to dispose an entity  
         
-    def Run(self):
+    def run(self):
         while 1:
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity
                                                                     #and one predecessor requests it  

@@ -198,7 +198,7 @@ def initializeObjects():
 def activateObjects():   
     for j in range(len(G.ObjList)):
         try:
-            activate(G.ObjList[j],G.ObjList[j].Run())   
+            activate(G.ObjList[j],G.ObjList[j].run())   
         except AttributeError:
             pass
 

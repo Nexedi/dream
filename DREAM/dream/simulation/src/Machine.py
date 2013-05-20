@@ -86,12 +86,12 @@ class Machine(Process):
         #if the failure distribution for the machine is fixed, activate the failure       
         if(self.failureDistType=="Fixed" or self.failureDistType=="Availability"):  
             MFailure=Failure(self,  self.failureDistType, self.MTTF, self.MTTR, self.availability, self.id, self.repairman)
-            activate(MFailure,MFailure.Run())
+            activate(MFailure,MFailure.run())
 
         self.Res=Resource(self.capacity)      
     
     #the main process of the machine
-    def Run(self):
+    def run(self):
         #execute all through simulation time
         while 1:
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the machine can accept an entity
