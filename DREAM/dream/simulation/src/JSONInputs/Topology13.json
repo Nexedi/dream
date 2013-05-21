@@ -56,12 +56,28 @@
 		   "repairman": "None"
         },
 	  "predecessorList": ["A1"],
-      "successorList": ["E1"]
+      "successorList": ["D1"]
+      },
+	 {"_class": "Dream.Dismantle",
+      "id": "D1",
+      "name": "Dismantle",
+      "processingTime": {
+        "distributionType": "Fixed",
+        "mean": "1"
+        },
+	  "successorPartList": ["E1"],
+	  "successorFrameList": ["E2"],
+      "predecessorList": ["M1"]
       },
      {"_class": "Dream.Exit",
       "id": "E1",
-      "name": "Stock",
-	  "predecessorList": ["M1"]
-      }
+      "name": "Parts Stock",
+	  "predecessorList": ["D1"]
+      },
+	 {"_class": "Dream.Exit",
+      "id": "E2",
+      "name": "Frames Stock",
+	  "predecessorList": ["D1"]
+     }
   ]
 }

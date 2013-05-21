@@ -38,7 +38,6 @@
         "distributionType": "Fixed",
         "mean": "2"
         },
-      "entity": "Frame",
 	  "predecessorPartList": ["S1"],
 	  "predecessorFrameList": ["S2"],
       "successorList": ["M1"]

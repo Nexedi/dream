@@ -1,53 +1,50 @@
 '''
-Created on 18 Feb 2013
+Created on 21 May 2013
 
 @author: George
 '''
-
-
 '''
-Models an assembly object 
-it gathers frames and parts which are loaded to the frames
+Models a dicmantle object 
+it gathers frames that have parts loaded, unloads the parts and sends the frame to one destination and the parts to another
 '''
-
 
 from SimPy.Simulation import *
 import xlwt
 from RandomNumberGenerator import RandomNumberGenerator
 import scipy.stats as stat
 
-#the Assembly object
-class Assembly(Process):
+#the Dismantle object
+class Dismantle(Process):
 
     #initialize the object      
     def __init__(self, id, name, dist, time):
-        Process.__init__(self)
         self.id=id
         self.objName=name
-        self.type="Assembly"   #String that shows the type of object
+        self.type="Dismantle"   #String that shows the type of object
         self.distType=dist          #the distribution that the procTime follows  
         self.rng=RandomNumberGenerator(self, self.distType)
         self.rng.avg=time[0]
         self.rng.stdev=time[1]
         self.rng.min=time[2]
         self.rng.max=time[3]                    
-        self.next=[]        #list with the next objects in the flow
-        self.previousPart=[]    #list with the previous objects that send parts
-        self.previousFrame=[]    #list with the previous objects that send frames 
+        self.previous=[]        #list with the previous objects in the flow
+        self.previousIds=[]     #list with the ids of the previous objects in the flow
+        self.nextPart=[]    #list with the next objects that receive parts
+        self.nextFrame=[]    #list with the next objects that receive frames 
         self.nextIds=[]     #list with the ids of the next objects in the flow
-        self.previousIds=[]
-        self.previousPartIds=[]     #list with the ids of the previous objects in the flow that bring parts  
-        self.previousFrameIds=[]     #list with the ids of the previous objects in the flowthat bring frames
+        self.nextPartIds=[]     #list with the ids of the next objects that receive parts 
+        self.nextFrameIds=[]     #list with the ids of the next objects that receive frames 
         
         #lists to hold statistics of multiple runs
         self.Waiting=[]
         self.Working=[]
         self.Blockage=[]
-               
-
+        
     def initialize(self):
         Process.__init__(self)
         self.waitToDispose=False    #flag that shows if the object waits to dispose an entity    
+        self.waitToDisposePart=False    #flag that shows if the object waits to dispose a part   
+        self.waitToDisposeFrame=False    #flag that shows if the object waits to dispose a frame   
         
         self.Up=True                    #Boolean that shows if the object is in failure ("Down") or not ("up")
         self.currentEntity=None      
@@ -76,104 +73,102 @@ class Assembly(Process):
         self.nameLastFrameWasFull=""    #holds the name of the last frame that was full, ie that assembly process started
         self.nameLastEntityEntered=""   #holds the name of the last frame that entered processing in the object
         self.nameLastEntityEnded=""     #holds the name of the last frame that ended processing in the object            
-        self.Res=Resource(1)    
+        self.Res=Resource(capacity=Infinity)    
         self.Res.activeQ=[]  
-        self.Res.waitQ=[]  
-    
-    
+        self.Res.waitQ=[]     
+        
+        
     def run(self):
         while 1:
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Assembly can accept a frame
                                                                     #and one "frame" predecessor requests it   
-            self.getEntity("Frame")                                 #get the Frame
-                                                                    
-            for i in range(self.Res.activeQ[0].numOfParts):         #this loop will be carried until the Frame is full with the parts
-                yield waituntil, self, self.isRequestedFromPart     #wait until a part is requesting for the assembly
-                self.getEntity("Part")
-               
-            self.outputTrace(self.Res.activeQ[0].name, "is now full in "+ self.objName)               
+            self.getEntity()                                 #get the Frame with the parts 
             
-            self.timeLastFrameWasFull=now()
-            self.nameLastFrameWasFull=self.Res.activeQ[0].name    
-                
-            startWorkingTime=now()    
-            yield hold,self,self.rng.generateNumber()   #hold for the time the assembly operation is carried    
+            self.outputTrace(self.Res.activeQ[0].name, " got into "+ self.objName)   
+            
+            startWorkingTime=now()   
+            yield hold,self,self.rng.generateNumber()   #hold for the time the dismantle operation is carried 
             self.totalWorkingTime+=now()-startWorkingTime
             
-            self.outputTrace(self.Res.activeQ[0].name, "ended processing in " + self.objName)
             self.timeLastEntityEnded=now()
-            self.nameLastEntityEnded=self.Res.activeQ[0].name
-            
-            startBlockageTime=now()
-            self.completedJobs+=1                       #Assembly completed a job            
-            self.waitToDispose=True                     #since all the frame is full
-            yield waituntil, self, self.next[0].canAccept       #wait until the next object is free
+                      
+            startBlockageTime=now()          
+            self.waitToDisposePart=True     #Dismantle is in state to dispose a part
+            yield waituntil, self, self.frameIsEmpty       #wait until all the parts are disposed
+            self.waitToDisposePart=False     #Dismantle has no parts now
+            self.waitToDisposeFrame=True     #Dismantle is in state to dispose a part
+            yield waituntil, self, self.isEmpty       #wait until all the frame is disposed            
+                        
+            self.completedJobs+=1                       #Dismantle completed a job            
+            self.waitToDisposeFrame=False                     #the Dismantle has no Frame to dispose now
             self.totalBlockageTime+=now()-startBlockageTime     #add the blockage time
             
-  
-    #checks if the Assembly can accept an entity 
+            
+    #checks if the Dismantle can accept an entity and there is a Frame waiting for it
+    def canAcceptAndIsRequested(self):
+        return len(self.Res.activeQ)==0 and self.previous[0].haveToDispose()  
+    
+    #checks if the Dismantle can accept an entity 
     def canAccept(self):
         return len(self.Res.activeQ)==0  
             
-    #checks if the Assembly can accept an entity and there is a Frame waiting for it
-    def canAcceptAndIsRequested(self):
-        return len(self.Res.activeQ)==0 and self.previousFrame[0].haveToDispose()     
-    
-    #checks if the Assembly can accept an entity and there is a Frame waiting for it
-    def isRequestedFromPart(self):
-        return len(self.Res.activeQ)==1 and self.previousPart[0].haveToDispose()   
-    
-    #checks if the Assembly can dispose an entity to the following object     
+    #sets the routing in and out elements for the Dismantle
+    def defineRouting(self, p, np, nf):
+        self.previous=p
+        self.nextPart=np
+        self.nextFrame=nf              
+
+    #checks if the caller waits for a part or a frame and if the Dismantle is in the state of disposing one it returnse true     
     def haveToDispose(self): 
-        return len(self.Res.activeQ)>0 and self.waitToDispose                                  
-                                            
-    #sets the routing in and out elements for the Assembly
-    def defineRouting(self, pp, pf, n):
-        self.next=n
-        self.previousPart=pp
-        self.previousFrame=pf  
+        #identify the caller method
+        frame = sys._getframe(1)
+        arguments = frame.f_code.co_argcount
+        if arguments == 0:
+            print "Not called from a method"
+            return
+        caller_calls_self = frame.f_code.co_varnames[0]
+        thecaller = frame.f_locals[caller_calls_self]    
+        
+        #according to the caller return true or false
+        if thecaller in self.nextPart:
+            return len(self.Res.activeQ)>1 and self.waitToDisposePart
+        elif thecaller in self.nextFrame:
+            return len(self.Res.activeQ)==1 and self.waitToDisposeFrame
+                 
+    #checks if the frame is emptied
+    def frameIsEmpty(self):
+        return len(self.Res.activeQ)==1
     
-    #removes an entity from the Assembly
+    #checks if Dismantle is emptied
+    def isEmpty(self):
+        return len(self.Res.activeQ)==0
+    
+    #gets a frame from the predecessor that the predecessor index points to     
+    def getEntity(self):
+        self.Res.activeQ.append(self.previous[0].Res.activeQ[0])    #get the frame from the predecessor
+        self.previous[0].removeEntity()
+        #append also the parts in the res so that they can be popped
+        for i in range(self.Res.activeQ[0].numOfParts):         
+            #self.Res.activeQ.append(self.Res.activeQ[0].Res.activeQ[self.Res.activeQ[0].numOfParts-1-i])
+            self.Res.activeQ.append(self.Res.activeQ[0].Res.activeQ[i])
+        self.Res.activeQ[0].Res.activeQ=[]
+        self.Res.activeQ.append(self.Res.activeQ[0])
+        self.Res.activeQ.pop(0)        
+    
+    #removes an entity from the Dismantle
     def removeEntity(self):
-        self.outputTrace(self.Res.activeQ[0].name, "releases "+ self.objName)              
-        self.Res.activeQ.pop(0)   
-        self.waitToDispose=False
+        #to release the Frame if it is empty
+        if(len(self.Res.activeQ)==1):
+            self.outputTrace(self.Res.activeQ[0].name, " releases "+ self.objName)              
+            self.Res.activeQ.pop(0)   
+            self.waitToDisposeFrame=False
+        elif(len(self.Res.activeQ)>1):
+            self.outputTrace(self.Res.activeQ[0].name, " releases "+ self.objName)              
+            self.Res.activeQ.pop(0)
+            if(len(self.Res.activeQ)==1):   
+               self.waitToDisposePart=False
+                
 
-    
-    #gets an entity from the predecessor   
-    #it may handle both Parts and Frames  
-    def getEntity(self, type):
-        if(type=="Part"):
-            self.Res.activeQ[0].Res.activeQ.append(self.previousPart[0].Res.activeQ[0])    #get the part from the predecessor and append it to the frame!
-            self.previousPart[0].removeEntity()     #remove the part from the previews object
-            self.outputTrace(self.Res.activeQ[0].Res.activeQ[-1].name, "got into "+ self.objName)                       
-        elif(type=="Frame"):
-            self.Res.activeQ.append(self.previousFrame[0].Res.activeQ[0])    #get the frame from the predecessor
-            self.previousFrame[0].removeEntity()   #remove the frame from the previews object
-            self.outputTrace(self.Res.activeQ[0].name, "got into "+ self.objName)
-            self.nameLastEntityEntered=self.Res.activeQ[0].name  
-            self.timeLastEntityEntered=now()
-      
-    #actions to be taken after the simulation ends
-    def postProcessing(self, MaxSimtime):
-        
-        #if there is an entity that finished processing in Assembly but did not get to reach 
-        #the following Object
-        #till the end of simulation, we have to add this blockage to the percentage of blockage in Machine
-        #we should exclude the blockage time in current entity though!
-        if (len(self.next[0].Res.activeQ)>0) and ((self.nameLastEntityEntered == self.nameLastEntityEnded)):              
-            self.totalBlockageTime+=now()-self.timeLastEntityEnded       
-
-        #if Assembly is currently processing an entity we should count this working time    
-        if(len(self.Res.activeQ)>0) and (not (self.nameLastEntityEnded==self.nameLastFrameWasFull)):              
-            self.totalWorkingTime+=now()-self.timeLastFrameWasFull
-        
-        self.totalWaitingTime=MaxSimtime-self.totalWorkingTime-self.totalBlockageTime 
-        
-        self.Waiting.append(100*self.totalWaitingTime/MaxSimtime)
-        self.Working.append(100*self.totalWorkingTime/MaxSimtime)
-        self.Blockage.append(100*self.totalBlockageTime/MaxSimtime)
-        
     #outputs message to the trace.xls. Format is (Simulation Time | Entity or Frame Name | message)
     def outputTrace(self, name, message):
         from Globals import G
@@ -190,6 +185,46 @@ class Assembly(Process):
                 G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)    
 
 
+    #actions to be taken after the simulation ends
+    def postProcessing(self, MaxSimtime):
+        
+        '''
+        #if there is an entity that finished processing in Dismantle but did not get to reach 
+        #the following Object
+        #till the end of simulation, we have to add this blockage to the percentage of blockage in Machine
+        #we should exclude the blockage time in current entity though!
+        if (len(self.next[0].Res.activeQ)>0) and ((self.nameLastEntityEntered == self.nameLastEntityEnded)):              
+            self.totalBlockageTime+=now()-self.timeLastEntityEnded       
+        '''
+        
+        #if Dismantle is currently processing an entity we should count this working time    
+        if(len(self.Res.activeQ)>0) and (not (self.nameLastEntityEnded==self.nameLastFrameWasFull)):              
+            self.totalWorkingTime+=now()-self.timeLastEntityEnded
+        
+        self.totalWaitingTime=MaxSimtime-self.totalWorkingTime-self.totalBlockageTime 
+
+                
+        self.Waiting.append(100*self.totalWaitingTime/MaxSimtime)
+        self.Working.append(100*self.totalWorkingTime/MaxSimtime)
+        self.Blockage.append(100*self.totalBlockageTime/MaxSimtime)
+
+
+    #outputs message to the trace.xls. Format is (Simulation Time | Entity or Frame Name | message)
+    def outputTrace(self, name, message):
+        from Globals import G
+        if(G.trace=="Yes"):         #output only if the user has selected to
+            #handle the 3 columns
+            G.traceSheet.write(G.traceIndex,0,str(now()))
+            G.traceSheet.write(G.traceIndex,1,name)  
+            G.traceSheet.write(G.traceIndex,2,message)          
+            G.traceIndex+=1       #increment the row
+            #if we reach row 65536 we need to create a new sheet (excel limitation)  
+            if(G.traceIndex==65536):
+                G.traceIndex=0
+                G.sheetIndex+=1
+                G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)  
+
+
     #outputs data to "output.xls"
     def outputResultsXL(self, MaxSimtime):
         from Globals import G
@@ -203,7 +238,7 @@ class Assembly(Process):
             G.outputSheet.write(G.outputIndex,0, "The percentage of Waiting of "+self.objName +" is:")
             G.outputSheet.write(G.outputIndex,1,100*self.totalWaitingTime/MaxSimtime)
             G.outputIndex+=1   
-        else:        #if we had multiple replications we output confidence intervals to excel
+        else:   #if we had multiple replications we output confidence intervals to excel
                 #for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
                 #so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
                 #so for each output value we check if there was difference in the runs' results
@@ -239,9 +274,8 @@ class Assembly(Process):
                 G.outputSheet.write(G.outputIndex,3,self.Waiting[0]) 
             G.outputIndex+=1
         G.outputIndex+=1 
-        
-        
-        
+
+
     #takes the array and checks if all its values are identical (returns false) or not (returns true) 
     #needed because if somebody runs multiple runs in deterministic case it would crash!          
     def checkIfArrayHasDifValues(self, array):
@@ -250,3 +284,5 @@ class Assembly(Process):
            if(array[i]!=array[1]):
                difValuesFlag=True
         return difValuesFlag     
+    
+    
