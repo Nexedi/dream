@@ -3,7 +3,6 @@ Created on 6 Feb 2013
 
 @author: George
 '''
-
 '''
 models the exit of the model
 '''
@@ -130,10 +129,10 @@ class Exit(Process):
     def outputResultsXL(self, MaxSimtime):
         from Globals import G   
         if(G.numberOfReplications==1): #if we had just one replication output the results to excel
-            G.outputSheet.write(G.outputIndex,0, "The Throughput is:")
+            G.outputSheet.write(G.outputIndex,0, "The Throughput in " +self.objName + " is:")
             G.outputSheet.write(G.outputIndex,1,self.numOfExits)
             G.outputIndex+=1
-            G.outputSheet.write(G.outputIndex,0, "The average lifespan of an entity is:")
+            G.outputSheet.write(G.outputIndex,0, "The average lifespan of an entity that exited from "+ self.objName  +" is:")
             G.outputSheet.write(G.outputIndex,1,((self.totalLifespan)/self.numOfExits)/G.Base)
             G.outputIndex+=1
         else:        #if we had multiple replications we output confidence intervals to excel
@@ -141,7 +140,7 @@ class Exit(Process):
                 #so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
                 #so for each output value we check if there was difference in the runs' results
                 #if yes we output the Confidence Intervals. if not we output just the fix value                 
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean Throughput is:")
+            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean Throughput in " +self.objName + " is:")
             if self.checkIfArrayHasDifValues(self.Exits): 
                 G.outputSheet.write(G.outputIndex,1,stat.bayes_mvs(self.Exits, G.confidenceLevel)[0][1][0])
                 G.outputSheet.write(G.outputIndex,2,stat.bayes_mvs(self.Exits, G.confidenceLevel)[0][0])
@@ -151,7 +150,7 @@ class Exit(Process):
                 G.outputSheet.write(G.outputIndex,2,self.Exits[0])
                 G.outputSheet.write(G.outputIndex,3,self.Exits[0])                            
             G.outputIndex+=1
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean Lifespan of an entity is:")            
+            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean Lifespan of an entity that exited from "+ self.objName  + " is:")            
             if self.checkIfArrayHasDifValues(self.Lifespan):
                 G.outputSheet.write(G.outputIndex,1,stat.bayes_mvs(self.Lifespan, G.confidenceLevel)[0][1][0])
                 G.outputSheet.write(G.outputIndex,2,stat.bayes_mvs(self.Lifespan, G.confidenceLevel)[0][0])

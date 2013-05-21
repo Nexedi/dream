@@ -18,6 +18,7 @@ from Repairman import Repairman
 from Part import Part
 from Frame import Frame
 from Assembly import Assembly
+from Dismantle import Dismantle
 import xlwt
 import xlrd
 import time
@@ -47,6 +48,7 @@ def createObjects():
     G.QueueList=[]    
     G.RepairmanList=[]
     G.AssemblyList=[]
+    G.DismantleList=[]
     
     #loop through all the model resources 
     #read the data and create them
@@ -146,6 +148,25 @@ def createObjects():
             A.nextIds=successorList
             G.AssemblyList.append(A)
             G.ObjList.append(A)
+            
+        elif objClass=='Dream.Dismantle':
+            id=coreObject[i].get('id', 'not found')
+            name=coreObject[i].get('name', 'not found')
+            processingTime=coreObject[i].get('processingTime', 'not found')
+            distributionType=processingTime.get('distributionType', 'not found')
+            mean=float(processingTime.get('mean', '0'))  
+            stdev=float(processingTime.get('stdev', '0'))  
+            min=float(processingTime.get('min', '0')) 
+            max=float(processingTime.get('stdev', '0'))
+            successorPartList=coreObject[i].get('successorPartList', 'not found')
+            successorFrameList=coreObject[i].get('successorFrameList', 'not found')
+            predecessorList=coreObject[i].get('predecessorList', 'not found')
+            D=Dismantle(id, name, distributionType, [mean,stdev,min,max])
+            D.nextPartIds=successorPartList
+            D.nextFrameIds=successorFrameList
+            D.previousIds=predecessorList
+            G.DismantleList.append(D)
+            G.ObjList.append(D)
 
 #defines the topology (predecessors and successors for all the objects)
 def setTopology():
@@ -169,6 +190,7 @@ def setTopology():
             G.ObjList[i].defineRouting(next)
         elif G.ObjList[i].type=="Exit":
             G.ObjList[i].defineRouting(previous)
+            
         #Assembly should be changed to identify what the entity that it receives is.
         #previousPart and previousFrame will become problematic    
         elif G.ObjList[i].type=="Assembly":
@@ -183,6 +205,20 @@ def setTopology():
                     if G.ObjList[q].id==G.ObjList[i].previousFrameIds[j]:
                         previousFrame.append(G.ObjList[q])
             G.ObjList[i].defineRouting(previousPart, previousFrame, next)
+        #Assembly should be changed to identify what the entity that it receives is.
+        #previousPart and previousFrame will become problematic    
+        elif G.ObjList[i].type=="Dismantle":
+            nextPart=[]
+            nextFrame=[]
+            for j in range(len(G.ObjList[i].nextPartIds)):
+                for q in range(len(G.ObjList)):
+                    if G.ObjList[q].id==G.ObjList[i].nextPartIds[j]:
+                        nextPart.append(G.ObjList[q])
+            for j in range(len(G.ObjList[i].nextFrameIds)):
+                for q in range(len(G.ObjList)):
+                    if G.ObjList[q].id==G.ObjList[i].nextFrameIds[j]:
+                        nextFrame.append(G.ObjList[q])
+            G.ObjList[i].defineRouting(previous, nextPart, nextFrame)
         else:
             G.ObjList[i].defineRouting(previous, next)
 
