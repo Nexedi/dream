@@ -65,19 +65,54 @@
         "distributionType": "Fixed",
         "mean": "1"
         },
-	  "successorPartList": ["E2"],
-	  "successorFrameList": ["E1"],
+	  "successorPartList": ["M3"],
+	  "successorFrameList": ["M2"],
       "predecessorList": ["M1"]
       },
+
+     {"_class": "Dream.Machine",
+      "id": "M2",
+      "name": "Frame Wash",
+      "processingTime": {
+        "distributionType": "Fixed",
+        "mean": "1"
+        },
+      "failures":{
+           "failureDistribution": "No",
+		   "MTTF": "60",
+		   "MTTR": "5",
+		   "repairman": "None"
+        },
+	  "predecessorList": ["D1"],
+      "successorList": ["E1"]
+      },
+
+     {"_class": "Dream.Machine",
+      "id": "M3",
+      "name": "Part Wash",
+      "processingTime": {
+        "distributionType": "Fixed",
+        "mean": "0.20"
+        },
+      "failures":{
+           "failureDistribution": "No",
+		   "MTTF": "60",
+		   "MTTR": "5",
+		   "repairman": "None"
+        },
+	  "predecessorList": ["D1"],
+      "successorList": ["E2"]
+      },	  
+	  
      {"_class": "Dream.Exit",
       "id": "E1",
       "name": "Parts Stock",
-	  "predecessorList": ["D1"]
-      },
+	  "predecessorList": ["M2"]
+      },	  
 	 {"_class": "Dream.Exit",
       "id": "E2",
       "name": "Frames Stock",
-	  "predecessorList": ["D1"]
+	  "predecessorList": ["M3"]
      }
   ]
 }

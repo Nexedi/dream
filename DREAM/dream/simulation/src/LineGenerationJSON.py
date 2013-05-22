@@ -205,8 +205,8 @@ def setTopology():
                     if G.ObjList[q].id==G.ObjList[i].previousFrameIds[j]:
                         previousFrame.append(G.ObjList[q])
             G.ObjList[i].defineRouting(previousPart, previousFrame, next)
-        #Assembly should be changed to identify what the entity that it receives is.
-        #previousPart and previousFrame will become problematic    
+        #Dispatch should be changed to identify what the the successor is.
+        #nextPart and nextFrame will become problematic    
         elif G.ObjList[i].type=="Dismantle":
             nextPart=[]
             nextFrame=[]

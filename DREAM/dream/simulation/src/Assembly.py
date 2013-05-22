@@ -159,8 +159,7 @@ class Assembly(Process):
         
         #if there is an entity that finished processing in Assembly but did not get to reach 
         #the following Object
-        #till the end of simulation, we have to add this blockage to the percentage of blockage in Machine
-        #we should exclude the blockage time in current entity though!
+        #till the end of simulation, we have to add this blockage to the percentage of blockage in Assembly
         if (len(self.next[0].Res.activeQ)>0) and ((self.nameLastEntityEntered == self.nameLastEntityEnded)):              
             self.totalBlockageTime+=now()-self.timeLastEntityEnded       
 

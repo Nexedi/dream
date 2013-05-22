@@ -302,12 +302,10 @@ class Machine(Process):
         #the following Object
         #till the end of simulation, we have to add this blockage to the percentage of blockage in Machine
         #we should exclude the failure time in current entity though!
-        if (len(self.next[0].Res.activeQ)>0) and ((self.nameLastEntityEntered == self.nameLastEntityEnded)):              
+        if (len(self.Res.activeQ)>0) and (len(self.next[0].Res.activeQ)>0) and ((self.nameLastEntityEntered == self.nameLastEntityEnded)):       
             self.totalBlockageTime+=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)
-            #X=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)
             if self.Up==False:
                 self.totalBlockageTime-=now()-self.timeLastFailure
-                #X-=now()-self.timeLastFailure
                 alreadyAdded=True
 
         #if Machine is currently processing an entity we should count this working time    
