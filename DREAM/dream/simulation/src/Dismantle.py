@@ -83,8 +83,9 @@ class Dismantle(Process):
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Assembly can accept a frame
                                                                     #and one "frame" predecessor requests it   
             self.getEntity()                                 #get the Frame with the parts 
+            self.timeLastEntityEntered=now()
             
-            self.outputTrace(self.Res.activeQ[0].name, " got into "+ self.objName)   
+            self.outputTrace(self.Res.activeQ[0].name, "got into "+ self.objName)   
             
             startWorkingTime=now()   
             yield hold,self,self.rng.generateNumber()   #hold for the time the dismantle operation is carried 
@@ -188,18 +189,15 @@ class Dismantle(Process):
     #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime):
         
-        '''
         #if there is an entity that finished processing in Dismantle but did not get to reach 
         #the following Object
-        #till the end of simulation, we have to add this blockage to the percentage of blockage in Machine
-        #we should exclude the blockage time in current entity though!
-        if (len(self.next[0].Res.activeQ)>0) and ((self.nameLastEntityEntered == self.nameLastEntityEnded)):              
+        #till the end of simulation, we have to add this blockage to the percentage of blockage in Dismantle
+        if (len(self.Res.activeQ)>0) and (self.waitToDisposeFrame) or (self.waitToDisposePart):         
             self.totalBlockageTime+=now()-self.timeLastEntityEnded       
-        '''
         
         #if Dismantle is currently processing an entity we should count this working time    
-        if(len(self.Res.activeQ)>0) and (not (self.nameLastEntityEnded==self.nameLastFrameWasFull)):              
-            self.totalWorkingTime+=now()-self.timeLastEntityEnded
+        if(len(self.Res.activeQ)>0) and (not ((self.waitToDisposeFrame) or (self.waitToDisposePart))):       
+            self.totalWorkingTime+=now()-self.timeLastEntityEntered
         
         self.totalWaitingTime=MaxSimtime-self.totalWorkingTime-self.totalBlockageTime 
 
