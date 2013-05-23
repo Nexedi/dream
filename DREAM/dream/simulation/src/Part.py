@@ -22,6 +22,10 @@ class Part(object):
         self.currentStop=None      #contains the current object that the material is in 
         self.creationTime=0
         self.startTime=0           #holds the startTime for the lifespan
+        #dimension data
+        self.width=1
+        self.height=1
+        self.length=1
         
     def __del__(self):
         pass      
