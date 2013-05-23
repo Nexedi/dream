@@ -22,5 +22,9 @@ class Frame(object):
         self.creationTime=0
         self.startTime=0           #holds the startTime for the lifespan
         self.Res=Resource(self.numOfParts)
+        #dimension data
+        self.width=2
+        self.height=2
+        self.lenght=2        
         
 

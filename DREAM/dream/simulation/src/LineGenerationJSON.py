@@ -19,6 +19,7 @@ from Part import Part
 from Frame import Frame
 from Assembly import Assembly
 from Dismantle import Dismantle
+from Conveyer import Conveyer
 import xlwt
 import xlrd
 import time
@@ -49,6 +50,7 @@ def createObjects():
     G.RepairmanList=[]
     G.AssemblyList=[]
     G.DismantleList=[]
+    G.ConveyerList=[]
     
     #loop through all the model resources 
     #read the data and create them
@@ -167,6 +169,19 @@ def createObjects():
             D.previousIds=predecessorList
             G.DismantleList.append(D)
             G.ObjList.append(D)
+            
+        elif objClass=='Dream.Conveyer':
+            id=coreObject[i].get('id', 'not found')
+            name=coreObject[i].get('name', 'not found')
+            length=float(coreObject[i].get('length', '10'))
+            speed=float(coreObject[i].get('speed', '1'))
+            successorList=coreObject[i].get('successorList', 'not found')
+            predecessorList=coreObject[i].get('predecessorList', 'not found')
+            C=Conveyer(id, name, length, speed)
+            C.previousIds=predecessorList
+            C.nextIds=successorList
+            G.ObjList.append(C)
+            G.ConveyerList.append(C)
 
 #defines the topology (predecessors and successors for all the objects)
 def setTopology():

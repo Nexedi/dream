@@ -84,7 +84,7 @@ class Assembly(Process):
     def run(self):
         while 1:
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Assembly can accept a frame
-                                                                    #and one "frame" predecessor requests it   
+                                                                    #and one "frame" predecessor requests it 
             self.getEntity("Frame")                                 #get the Frame
                                                                     
             for i in range(self.Res.activeQ[0].numOfParts):         #this loop will be carried until the Frame is full with the parts

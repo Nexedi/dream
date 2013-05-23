@@ -93,9 +93,8 @@ class Exit(Process):
     
     #gets an entity from the predecessor     
     def getEntity(self): 
-        name=self.previous[self.predecessorIndex].Res.activeQ[0].name   #get the name of the entity for the trace
-        self.totalLifespan+=now()-self.previous[self.predecessorIndex].Res.activeQ[0].startTime  #Add the entity's lifespan to the total one. 
-        self.previous[self.predecessorIndex].removeEntity()            #remove the entity from the previous object
+        name=self.previous[0].Res.activeQ[0].name   #get the name of the entity for the trace
+        self.previous[0].removeEntity()            #remove the entity from the previous object
         self.outputTrace(name)          
     
     #actions to be taken after the simulation ends
