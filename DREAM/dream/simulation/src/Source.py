@@ -75,6 +75,7 @@ class Source(Process):
                 #entity=Entity("Ent"+str(i))        
                 entity=self.item(self.item.type+"_"+self.objName+"_"+str(i)) #create the Entity object and assign its name 
                 entity.creationTime=now()          #assign the current simulation time as the Entity's creation time 
+                entity.startTime=now()             #assign the current simulation time as the Entity's start time 
                 self.outputTrace(self.item.type+"_"+self.objName+"_"+str(i))     #output the trace
                 self.Res.activeQ.append(entity)    #append the entity to the resource 
                 i+=1        
@@ -88,6 +89,7 @@ class Source(Process):
                 #entity=Entity("Ent"+str(i))     #create the Entity object and assign its name 
                 entity=self.item(self.item.type+str(i)) #create the Entity object and assign its name                 
                 entity.creationTime=now()          #assign the current simulation time as the Entity's creation time
+                entity.startTime=now()             #assign the current simulation time as the Entity's start time 
                 self.outputTrace(self.item.type+str(i))      #output the trace
                 i+=1
                 self.Res.activeQ.append(entity)     #append the entity to the resource           

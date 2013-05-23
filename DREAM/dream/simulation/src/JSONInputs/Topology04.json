@@ -60,7 +60,7 @@
      {"_class": "Dream.Queue",
       "id": "DummyQ",
       "name": "DummyQ",
-	  "isDummy": "True",
+	  "isDummy": "1",
 	  "capacity": "1",
 	  "predecessorList": ["S1"],
 	  "successorList": ["M2"]
@@ -68,7 +68,7 @@
      {"_class": "Dream.Queue",
       "id": "Q1",
       "name": "Q1",
-	  "isDummy": "False",
+	  "isDummy": "0",
 	  "capacity": "1",
 	  "predecessorList": ["M2"],
 	  "successorList": ["M1"]

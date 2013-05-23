@@ -77,7 +77,7 @@
 	 {"_class": "Dream.Queue",
       "id": "Q1",
       "name": "Q1",
-	  "isDummy": "False",
+	  "isDummy": "0",
 	  "capacity": "1",
 	  "predecessorList": ["M1"],
 	  "successorList": ["M2"]

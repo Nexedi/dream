@@ -123,7 +123,7 @@ def createObjects():
             successorList=coreObject[i].get('successorList', 'not found')
             predecessorList=coreObject[i].get('predecessorList', 'not found')
             capacity=int(coreObject[i].get('capacity', '1'))
-            isDummy=bool(coreObject[i].get('isDummy', 'False'))
+            isDummy=bool(int(coreObject[i].get('isDummy', '0')))
             Q=Queue(id, name, capacity, isDummy)
             Q.previousIds=predecessorList
             Q.nextIds=successorList
@@ -298,5 +298,5 @@ def main():
 
     G.outputFile.save("output.xls")      
     print "execution time="+str(time.time()-start)     
-        
+    
 if __name__ == '__main__': main()
