@@ -55,7 +55,10 @@ class Exit(Process):
         self.downTimeInCurrentEntity=0                  #holds the total time that the object was down while holding current entity
         self.timeLastEntityLeft=0        #holds the last time that an entity left the object
                                                 
-        self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                               
+        self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required      
+        
+        self.totalTaktTime=0        #the total time between to consecutive exits    
+        self.TaktTime=[]        #list that holds the avg time between to consecutive exits                                       
                                                       
         self.waitToDispose=False    #shows if the object waits to dispose an entity  
         
@@ -65,6 +68,8 @@ class Exit(Process):
                                                                     #and one predecessor requests it  
             self.getEntity()                                                                                                  
             self.numOfExits+=1      #increase the exits by one
+            self.totalTaktTime+=now()-self.timeLastEntityLeft   #add the takt time
+            self.timeLastEntityLeft=now()   #update the time that the last entity left from the Exit
 
     #sets the routing in element for the Exit
     def defineRouting(self, p):
@@ -88,13 +93,6 @@ class Exit(Process):
     
     #gets an entity from the predecessor     
     def getEntity(self): 
-        '''  
-        #A=self.previous[0].Res.activeQ[0]
-        name=self.previous[0].Res.activeQ[0].name   #get the name of the entity for the trace
-        self.totalLifespan+=now()-self.previous[0].Res.activeQ[0].startTime  #Add the entity's lifespan to the total one. 
-        self.previous[0].removeEntity()            #remove the entity from the previous object
-        #del A
-        '''
         name=self.previous[self.predecessorIndex].Res.activeQ[0].name   #get the name of the entity for the trace
         self.totalLifespan+=now()-self.previous[self.predecessorIndex].Res.activeQ[0].startTime  #Add the entity's lifespan to the total one. 
         self.previous[self.predecessorIndex].removeEntity()            #remove the entity from the previous object
@@ -108,6 +106,10 @@ class Exit(Process):
             self.Lifespan.append(((self.totalLifespan)/self.numOfExits)/G.Base)
         except ZeroDivisionError:
             self.Lifespan.append(0)
+        try:
+            self.TaktTime.append(((self.totalTaktTime)/self.numOfExits)/G.Base)
+        except ZeroDivisionError:
+            self.TaktTime.append(0)
 
     
    #outputs message to the trace.xls. Format is (Simulation Time | Entity Name | "generated")            
@@ -133,8 +135,17 @@ class Exit(Process):
             G.outputSheet.write(G.outputIndex,1,self.numOfExits)
             G.outputIndex+=1
             G.outputSheet.write(G.outputIndex,0, "The average lifespan of an entity that exited from "+ self.objName  +" is:")
-            G.outputSheet.write(G.outputIndex,1,((self.totalLifespan)/self.numOfExits)/G.Base)
+            try:
+                G.outputSheet.write(G.outputIndex,1,((self.totalLifespan)/self.numOfExits)/G.Base)
+            except ZeroDivisionError:
+                G.outputSheet.write(G.outputIndex,1,0)
             G.outputIndex+=1
+            G.outputSheet.write(G.outputIndex,0, "The average tatk time in "+ self.objName  +" is:")            
+            try:
+                G.outputSheet.write(G.outputIndex,1,((self.totalTaktTime)/self.numOfExits)/G.Base)
+            except ZeroDivisionError:
+                G.outputSheet.write(G.outputIndex,1,0)
+            G.outputIndex+=1            
         else:        #if we had multiple replications we output confidence intervals to excel
                 #for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
                 #so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
@@ -160,9 +171,19 @@ class Exit(Process):
                 G.outputSheet.write(G.outputIndex,2,self.Lifespan[0])
                 G.outputSheet.write(G.outputIndex,3,self.Lifespan[0]) 
             G.outputIndex+=1
+            
+            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the avg takt time in "+ self.objName  + " is:")            
+            if self.checkIfArrayHasDifValues(self.TaktTime):
+                G.outputSheet.write(G.outputIndex,1,stat.bayes_mvs(self.TaktTime, G.confidenceLevel)[0][1][0])
+                G.outputSheet.write(G.outputIndex,2,stat.bayes_mvs(self.TaktTime, G.confidenceLevel)[0][0])
+                G.outputSheet.write(G.outputIndex,3,stat.bayes_mvs(self.TaktTime, G.confidenceLevel)[0][1][1])
+            else: 
+                G.outputSheet.write(G.outputIndex,1,self.TaktTime[0])
+                G.outputSheet.write(G.outputIndex,2,self.TaktTime[0])
+                G.outputSheet.write(G.outputIndex,3,self.TaktTime[0]) 
+            G.outputIndex+=1
         G.outputIndex+=1
-        
-        
+               
     #takes the array and checks if all its values are identical (returns false) or not (returns true) 
     #needed because if somebody runs multiple runs in deterministic case it would crash!          
     def checkIfArrayHasDifValues(self, array):
