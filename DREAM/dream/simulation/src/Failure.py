@@ -55,15 +55,12 @@ class Failure(Process):
         
     def run(self):           
         while 1:
-            #yield hold,self,self.calcTimeToFailure()   
             yield hold,self,self.rngTTF.generateNumber()    #wait until a failure happens                  
             try:
-                #print self.name
                 if(len(self.victim.Res.activeQ)>0):
                     self.interrupt(self.victim)       #when a Machine gets failure while in process it is interrupted
                 self.victim.Up=False
-                self.victim.timeLastFailure=now()
-                #print str(now())+":M"+str(self.victim.id)+" is down"             
+                self.victim.timeLastFailure=now()           
                 self.outputTrace("is down")
 
             except AttributeError:
@@ -77,8 +74,6 @@ class Failure(Process):
                 timeRepairStarted=now()
                 self.repairman.timeLastRepairStarted=now()
                                 
-            
-            #yield hold,self,self.calcTimeToRepair()     #wait until the repairing process is over
             yield hold,self,self.rngTTR.generateNumber()    #wait until the repairing process is over
             self.victim.totalFailureTime+=now()-failTime    
             
@@ -86,37 +81,12 @@ class Failure(Process):
                 if(len(self.victim.Res.activeQ)>0):                
                     reactivate(self.victim)   #since repairing is over, the Machine is reactivated
                 self.victim.Up=True              
-                #print str(now())+":M"+str(self.victim.id)+" is up"
                 self.outputTrace("is up")              
                 if(self.repairman!="None"): #if a resource was used, it is now released
                     yield release,self,self.repairman.Res 
                     self.repairman.totalWorkingTime+=now()-timeRepairStarted                                
-                #print "reactivating "+str(self.victim.currentEntity)
             except AttributeError:
                 print "AttributeError2"    
-    
-    
-    '''     
-    #calculates the time until the next failure            
-    def calcTimeToFailure(self):
-        from Globals import G
-        if self.distType=="Fixed":  #in a fixed distribution every TTF should be equal to MTTF
-            TTF=self.MTTF
-        elif self.distType=="Availability": #if we have availability defined, TTF should follow the exponential distribution
-            TTF=G.Rnd.expovariate(float(1)/self.AvailabilityMTTF)
-        #print self.name+" TTF="+str(TTF)   
-        return TTF
-
-    #calculates the time that it is needed for the repair     
-    def calcTimeToRepair(self):
-        from Globals import G
-        if self.distType=="Fixed":  #in a fixed distribution every TTR should be equal to MTTR
-            TTR=self.MTTR
-        elif self.distType=="Availability":     #if we have availability defined, TTR should follow the Erlang distribution         
-            TTR=G.Rnd.gammavariate(self.alpha,self.beta)    
-        #print self.name+" TTR="+str(TTR)    
-        return TTR
-    '''
            
     #outputs message to the trace.xls. Format is (Simulation Time | Machine Name | message)            
     def outputTrace(self, message):
@@ -133,7 +103,6 @@ class Failure(Process):
                 G.traceIndex=0
                 G.sheetIndex+=1
                 G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)
-
 
     #outputs data to "output.xls"
     def outputResultsXL(self, MaxSimtime):

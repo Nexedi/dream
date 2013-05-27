@@ -139,7 +139,7 @@ class Exit(Process):
             except ZeroDivisionError:
                 G.outputSheet.write(G.outputIndex,1,0)
             G.outputIndex+=1
-            G.outputSheet.write(G.outputIndex,0, "The average tatk time in "+ self.objName  +" is:")            
+            G.outputSheet.write(G.outputIndex,0, "The average takt time in "+ self.objName  +" is:")            
             try:
                 G.outputSheet.write(G.outputIndex,1,((self.totalTaktTime)/self.numOfExits)/G.Base)
             except ZeroDivisionError:

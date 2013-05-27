@@ -1,0 +1,354 @@
+<CMSDDocument xmlns="urn:cmsd:main"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:cmsd:main main.xsd">
+<!--<CMSDDocument>-->
+	<DataSection>
+	     <ResourceClass>
+			<Identifier>Source</Identifier>
+			<Description>This element describes a class of entrance</Description>
+			<ResourceType>other</ResourceType>
+			<Name>RawMaterial</Name>
+		 </ResourceClass>
+		<ResourceClass>
+			<Identifier>Machine</Identifier>
+			<Description>This element describes a class of machines</Description>
+			<ResourceType>machine</ResourceType>
+			<Name>Machine</Name>
+		 </ResourceClass>	
+		<ResourceClass>
+			<Identifier>Queue</Identifier>
+			<Description>This element describes a class of queues</Description>
+			<ResourceType>other</ResourceType>
+			<Name>Queue</Name>
+		 </ResourceClass>
+		<ResourceClass>
+			<Identifier>Repairman</Identifier>
+			<Description>This element describes a class of employees</Description>
+			<ResourceType>employee</ResourceType>
+			<Name>W1</Name>
+		</ResourceClass>
+		<ResourceClass>
+			<Identifier>Exit</Identifier>
+			<Description>This element describes a class of exit</Description>
+			<ResourceType>other</ResourceType>
+			<Name>Stock</Name>
+		 </ResourceClass>		 
+		<PartType>
+			<Identifier>Part</Identifier>
+		</PartType>
+		<PartType>
+			<Identifier>UnfinishedPart1</Identifier>
+		</PartType>
+************************************************Resource S1*****************************************		
+		<Resource>
+			<Identifier>S1</Identifier>
+			<Description>The source of the topology</Description>
+			<ResourceType>other</ResourceType>
+			<ResourceClass>
+				<ResourceClassIdentifier>Source</ResourceClassIdentifier>
+			</ResourceClass>
+			<Name>RawMaterial</Name>
+			<Property>
+				<Name>interarrivalTime</Name>
+					<Unit>minutes</Unit>
+					<Distribution>
+						<Name>Fixed</Name>
+						<DistributionParameter>
+						    <Name>mean</Name>
+							<Value>0.5</Value>
+						</DistributionParameter>
+					</Distribution>
+			</Property>
+			<Property>
+				<Name>partType</Name>
+				<Value>Part</Value>
+			</Property>
+		</Resource>
+********************************Resource M1******************************************************			
+		<Resource>
+			<Identifier>M1</Identifier>
+			<Description>The lathe of the topology</Description>
+			<ResourceType>machine</ResourceType>
+			<ResourceClass>
+				<ResourceClassIdentifier>Machine</ResourceClassIdentifier>
+			</ResourceClass>
+			<Name>Machine1</Name>
+			<Property>
+				<Name>ProcessTime</Name>
+				<Unit>minutes</Unit>
+				<Distribution>
+					<Name>Fixed</Name>
+					<DistributionParameter>
+					    <Name>mean</Name>
+						<Value>0.25</Value>
+					</DistributionParameter>
+				</Distribution>
+			</Property>
+			<Property>
+				<Name>MeanTimeToFailure</Name>
+				<Unit>minutes</Unit>
+				<Distribution>
+					<Name>Fixed</Name>
+					<DistributionParameter>
+					    <Name>mean</Name>
+						<Value>60</Value>
+					</DistributionParameter>
+				</Distribution>
+			</Property>
+			<Property>
+				<Name>MeanTimeToRepair</Name>
+				<Unit>minutes</Unit>
+				<Distribution>
+					<Name>Fixed</Name>
+					<DistributionParameter>
+					    <Name>mean</Name>
+						<Value>5</Value>
+					</DistributionParameter>
+				</Distribution>
+				<Property>
+					<Name>RepairmanRequired</Name>
+					<ResourcesRequired>
+						<Description>The employee performing the operation.</Description>
+						<ResourceIdentifier>W1</ResourceIdentifier>
+					</ResourcesRequired>
+				</Property>
+			</Property>
+		</Resource>
+************************************Resource Q1***********************************************		
+		<Resource>
+			<Identifier>Q1</Identifier>
+			<Description>The queue of the topology</Description>
+			<ResourceType>other</ResourceType>
+			<ResourceClass>
+				<ResourceClassIdentifier>Queue</ResourceClassIdentifier>
+			</ResourceClass>
+			<Name>Q1</Name>
+			<Property>
+				<Name>capacity</Name>
+				<Value>1</Value>
+			</Property>
+		</Resource>
+**********************************Resource M2***************************************************			
+		<Resource>
+			<Identifier>M2</Identifier>
+			<Description>The moulding machine of the topology</Description>
+			<ResourceType>machine</ResourceType>
+			<ResourceClass>
+				<ResourceClassIdentifier>Machine</ResourceClassIdentifier>
+			</ResourceClass>
+			<Name>Machine2</Name>
+			<Property>
+				<Name>ProcessTime</Name>
+				<Unit>minutes</Unit>
+				<Distribution>
+					<Name>Fixed</Name>
+					<DistributionParameter>
+						<Name>mean</Name>
+						<Value>1.5</Value>
+					</DistributionParameter>
+				</Distribution>
+			</Property>
+			<Property>
+				<Name>MeanTimeToFailure</Name>
+				<Unit>minutes</Unit>
+				<Distribution>
+					<Name>Fixed</Name>
+					<DistributionParameter>
+					    <Name>mean</Name>
+						<Value>40</Value>
+					</DistributionParameter>
+				</Distribution>
+			</Property>
+			<Property>
+				<Name>MeanTimeToRepair</Name>
+				<Unit>minutes</Unit>
+				<Distribution>
+					<Name>Fixed</Name>
+					<DistributionParameter>
+					    <Name>mean</Name>
+						<Value>10</Value>
+					</DistributionParameter>
+				</Distribution>
+				<Property>
+					<ResourcesRequired>
+					    <Name>RepairmanRequired</Name>
+						<Description>The employee performing the operation.</Description>
+						<ResourceIdentifier>W1</ResourceIdentifier>
+					</ResourcesRequired>
+				</Property>
+			</Property>
+		</Resource>	
+**********************************Resource M3***************************************************			
+		<Resource>
+			<Identifier>M3</Identifier>
+			<Description>The moulding machine of the topology</Description>
+			<ResourceType>machine</ResourceType>
+			<ResourceClass>
+				<ResourceClassIdentifier>Machine</ResourceClassIdentifier>
+			</ResourceClass>
+			<Name>Machine3</Name>
+			<Property>
+				<Name>ProcessTime</Name>
+				<Unit>minutes</Unit>
+				<Distribution>
+					<Name>Fixed</Name>
+					<DistributionParameter>
+						<Name>mean</Name>
+						<Value>3</Value>
+					</DistributionParameter>
+				</Distribution>
+			</Property>
+		</Resource>	
+****************************************Resource Exit ****************************************			
+		<Resource>
+			<Identifier>E1</Identifier>
+			<Description>The exit of the topology</Description>
+			<ResourceType>other</ResourceType>
+			<ResourceClass>
+				<ResourceClassIdentifier>Exit</ResourceClassIdentifier>
+			</ResourceClass>
+			<Name>Stock</Name>
+		</Resource>	
+****************************************Resource Repairman**************************************
+		<Resource>
+			<Identifier>W1</Identifier>
+			<ResourceType>employee</ResourceType>
+			<Name>Bob</Name>
+			<ResourceClass>
+				<ResourceClassIdentifier>Repairman</ResourceClassIdentifier>
+			</ResourceClass>
+			<Property>
+				<Name>capacity</Name>
+				<Value>1</Value>
+			</Property>
+		</Resource>
+********************************Process Plan*****************************************************		
+		<ProcessPlan>
+			<Identifier>ProcessPlan:Part1</Identifier>
+			<PartsProduced>
+				<Description>The part produced the process</Description>
+				<PartType>
+					<PartTypeIdentifier>Part1</PartTypeIdentifier>
+				</PartType>
+				<PartQuantity>1</PartQuantity>
+			</PartsProduced>
+			<PartsConsumed>
+				<Description>The part(s) consumed the process</Description>
+				<PartType>
+					<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+				</PartType>
+				<PartQuantity>1</PartQuantity>
+			</PartsConsumed>
+			<FirstProcess>
+				<ProcessIdentifier>MainProcessSequence</ProcessIdentifier>
+			</FirstProcess>
+			<Process>
+				<Identifier>MainProcessSequence</Identifier>
+				<RepetitionCount>1</RepetitionCount>
+				<SubProcessGroup>
+					<Type>sequence</Type>
+					<Process>
+						<ProcessIdentifier>A010</ProcessIdentifier>
+					</Process>
+					<Process>
+						<ProcessIdentifier>A020</ProcessIdentifier>
+					</Process>
+					<Process>
+						<ProcessIdentifier>A030</ProcessIdentifier>
+					</Process>
+					<Process>
+						<ProcessIdentifier>A040</ProcessIdentifier>
+					</Process>
+					<Process>
+						<ProcessIdentifier>A050</ProcessIdentifier>
+					</Process>
+					<Process>
+						<ProcessIdentifier>A060</ProcessIdentifier>
+					</Process>
+				</SubProcessGroup>
+			</Process>
+***********************************************Process************************************************			
+			<Process>
+				<Identifier>A010</Identifier>
+				<Description>Process 1</Description>
+				<PartsProduced>
+					<Description>The part produced the process. Production resources have
+						transformed the part in some way, but it is not yet finished. If it is not
+						important to track unfinished part forms between processes, the
+						PartsProduced and PartsProduced information can be left out.</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsProduced>
+				<PartsConsumed>
+					<Description>The part that is an input to this process</Description>
+					<PartType>
+						<PartTypeIdentifier>UnfinishedPart1</PartTypeIdentifier>
+					</PartType>
+					<PartQuantity>1</PartQuantity>
+				</PartsConsumed>
+				<ResourcesRequired>
+					<Description>Source.</Description>
+					<Resource>
+						<ResourceIdentifier>S1</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+			</Process>
+	
+			<Process>
+				<Identifier>A020</Identifier>
+				<Description>Process 2</Description>
+				<ResourcesRequired>
+					<Description>Machine1.</Description>
+					<Resource>
+						<ResourceIdentifier>M1</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+			</Process>
+			
+			<Process>
+				<Identifier>A030</Identifier>
+				<Description>Process 3</Description>
+				<ResourcesRequired>
+					<Description>Queue1.</Description>
+					<Resource>
+						<ResourceIdentifier>Q1</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+			</Process>	
+				
+			<Process>
+				<Identifier>A040</Identifier>
+				<Description>Process 4</Description>
+				<ResourcesRequired>
+					<Description>Machine2.</Description>
+					<Resource>
+						<ResourceIdentifier>M2</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+			</Process>
+		
+			<Process>
+				<Identifier>A060</Identifier>
+				<Description>Process 6</Description>
+				<ResourcesRequired>
+					<Description>Exit.</Description>
+					<Resource>
+						<ResourceIdentifier>E1</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+			</Process>
+			<Process>
+				<Identifier>A050</Identifier>
+				<Description>Process 5</Description>
+				<ResourcesRequired>
+					<Description>Machine3.</Description>
+					<Resource>
+						<ResourceIdentifier>M3</ResourceIdentifier>
+					</Resource>
+				</ResourcesRequired>
+			</Process>
+		</ProcessPlan>
+	</DataSection>
+</CMSDDocument>
