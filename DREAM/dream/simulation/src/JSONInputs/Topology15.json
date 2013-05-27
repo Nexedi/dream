@@ -2,7 +2,7 @@
   "general": {
     "_class": "Dream.Configuration",
     "numberOfReplications": "1",
-    "maxSimTime": "60",
+    "maxSimTime": "5",
     "trace": "Yes",
     "confidenceLevel": "0.95"
   },

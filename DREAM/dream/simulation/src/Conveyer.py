@@ -7,7 +7,6 @@ Created on 23 May 2013
 Models a conveyer object 
 it gathers entities and transfers them with a certain speed
 '''
-
 from SimPy.Simulation import *
 import xlwt
 import scipy.stats as stat
@@ -63,6 +62,9 @@ class Conveyer(Process):
         self.timeLastMoveHappened=0   #holds the last time that the move was performed (in reality it is 
                                         #continues, in simulation we have to handle it as discrete)
         self.justDisposed=False
+        self.timeToReachEnd=-1
+        self.justReachedEnd=False
+        
         
     def run(self):
         #these are just for the first Entity
@@ -70,15 +72,19 @@ class Conveyer(Process):
         self.getEntity()                                        #get the entity 
         self.timeLastMoveHappened=now() 
         while 1:
+            if(len(self.position)>0 and (not self.length==self.position[0])):
+                self.timeToReachEnd=now()*60.0+self.speed/(self.length-self.position[0])
+                
+            print now(), "timeToReachEnd=",self.timeToReachEnd/60.0
+            activate(self,self.reachedEnd())
             yield waituntil, self, self.somethingHappened     #wait for an important event in order to move the items
-            #print now()
             self.moveEntities()
             if self.canAcceptAndIsRequested():
+                print now(), ":canAcceptAndIsRequested"
                 self.getEntity()              
             if self.waitToDispose:
-                #yield waituntil, self, self.entityJustDisposed
-                #self.justDisposed=False
-                pass
+                print now(), ":waitToDispose"
+                continue
             '''
             now we have to wait until something happens. The things that are important are (may be not a full list)
             one item reaches the end
@@ -187,10 +193,22 @@ class Conveyer(Process):
         else:
             return False   
     '''
+    
+    def reachedEnd(self):
+        print "-"*50
+        yield waituntil, self, self.somethingHappened     #wait for an important event in order to move the items
        
     def somethingHappened(self):
-        return self.canAcceptAndIsRequested() or self.entityJustReachedEnd()
-       
+        print now()
+        if(len(self.position)>0):    
+            if(self.timeToReachEnd==now() and (not self.position[0]==self.length)):
+                self.waitToDispose==True
+                return True
+            else:
+                return self.canAcceptAndIsRequested()
+        else:
+            return self.canAcceptAndIsRequested()
+
     #checks if the Conveyer is requested by the predecessor
     def isRequested(self):
         return self.previous[0].haveToDispose    
