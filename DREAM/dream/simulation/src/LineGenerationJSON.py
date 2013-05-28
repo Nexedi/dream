@@ -312,6 +312,12 @@ def main():
         G.ObjList[j].outputResultsXL(G.maxSimTime)            
 
     G.outputFile.save("output.xls")      
-    print "execution time="+str(time.time()-start)     
+    print "execution time="+str(time.time()-start)  
     
+    #print len(G.ConveyerList[0].Res.activeQ)   
+    '''
+    for i in range(len(G.ConveyerList[0].Res.activeQ)):
+        print G.ConveyerList[0].Res.activeQ[i].name
+    print (G.ConveyerList[0].position)   
+    '''
 if __name__ == '__main__': main()
