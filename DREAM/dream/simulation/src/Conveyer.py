@@ -64,26 +64,32 @@ class Conveyer(Process):
         self.justDisposed=False
         self.timeToReachEnd=-1
         self.justReachedEnd=False
+        self.conveyerMover=ConveyerMover(self)
+        self.call=False
         
         
     def run(self):
         #these are just for the first Entity
+        activate(self.conveyerMover,self.conveyerMover.run())
         yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity                                                             #and one predecessor requests it  
         self.getEntity()                                        #get the entity 
         self.timeLastMoveHappened=now() 
         while 1:
             if(len(self.position)>0 and (not self.length==self.position[0])):
                 self.timeToReachEnd=now()*60.0+self.speed/(self.length-self.position[0])
+                print self.speed/(self.length-self.position[0])
                 
             print now(), "timeToReachEnd=",self.timeToReachEnd/60.0
-            activate(self,self.reachedEnd())
+            self.call=True
+            self.conveyerMover.timeToWait=self.timeToReachEnd/60.0
+            
             yield waituntil, self, self.somethingHappened     #wait for an important event in order to move the items
-            self.moveEntities()
+            #self.moveEntities()
             if self.canAcceptAndIsRequested():
-                print now(), ":canAcceptAndIsRequested"
+                #print now(), ":canAcceptAndIsRequested"
                 self.getEntity()              
             if self.waitToDispose:
-                print now(), ":waitToDispose"
+                #print now(), ":waitToDispose"
                 continue
             '''
             now we have to wait until something happens. The things that are important are (may be not a full list)
@@ -194,12 +200,15 @@ class Conveyer(Process):
             return False   
     '''
     
+    def callMover(self):
+        return self.call
+    
     def reachedEnd(self):
         print "-"*50
         yield waituntil, self, self.somethingHappened     #wait for an important event in order to move the items
        
     def somethingHappened(self):
-        print now()
+        #print now()
         if(len(self.position)>0):    
             if(self.timeToReachEnd==now() and (not self.position[0]==self.length)):
                 self.waitToDispose==True
@@ -310,5 +319,21 @@ class Conveyer(Process):
            if(array[i]!=array[1]):
                difValuesFlag=True
         return difValuesFlag    
+    
+#Process that handles the moves of the conveyer
+class ConveyerMover(Process):
+    def __init__(self, conveyer):
+        Process.__init__(self)
+        self.conveyer=conveyer
+        self.timeToWait=0
+    
+    def run(self):
+        while 1:
+            yield waituntil,self,self.conveyer.callMover
+            yield hold,self,self.timeToWait
+            #print now()
+            self.conveyer.moveEntities()
+            self.conveyer.call=False
+            
 
     
