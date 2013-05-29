@@ -23,9 +23,9 @@ class Part(object):
         self.creationTime=0
         self.startTime=0           #holds the startTime for the lifespan
         #dimension data
-        self.width=1
-        self.height=1
-        self.length=1
+        self.width=1.0
+        self.height=1.0
+        self.length=1.0
         
     def __del__(self):
         pass      
