@@ -55,7 +55,7 @@
 		   "repairman": "W1"
         },
 	  "predecessorList": ["C1"],
-      "successorList": ["E1"]
+      "successorList": ["M3"]
       },
      {"_class": "Dream.Queue",
       "id": "DummyQ",
@@ -72,11 +72,27 @@
 	  "speed": "1",
 	  "predecessorList": ["M1"],
 	  "successorList": ["M2"]
+      },
+     {"_class": "Dream.Machine",
+      "id": "M3",
+      "name": "Machine3",
+      "processingTime": {
+        "distributionType": "Fixed",
+        "mean": "3"
+        },
+      "failures":{
+           "failureDistribution": "No",
+		   "MTTF": "40",
+		   "MTTR": "10",
+		   "repairman": "W1"
+        },
+	  "predecessorList": ["M2"],
+      "successorList": ["E1"]
       },	  
      {"_class": "Dream.Exit",
       "id": "E1",
       "name": "Stock",
-	  "predecessorList": ["M2"]
+	  "predecessorList": ["M3"]
      }
   ]
 }
