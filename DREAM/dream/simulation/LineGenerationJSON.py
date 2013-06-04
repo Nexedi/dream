@@ -27,6 +27,7 @@ import numpy as np
 import json
 from random import Random
 import sys
+import os.path
 
 #reads general simulation inputs
 def readGeneralInput():
@@ -256,19 +257,20 @@ def activateObjects():
         except AttributeError:
             pass
 
-#the main  script that is ran                                 
-def main():
- 
+#the main script that is ran
+def main(argv=[]):
+    argv = argv or sys.argv[1:]
+
     #create an empty list to store all the objects in   
     G.ObjList=[]
-    
-    #user inputs the id of the JSON file
-    topologyId=raw_input("give the topology id\n")
+
+    # user passes the topology filename as first argument to the program
+    filename = argv[0]
     try:
-        G.JSONFile=open('JSONInputs/Topology'+str(topologyId)+'.JSON', "r")
+        G.JSONFile=open(filename, "r")
     except IOError:
-        print "no such topology file. The programm is terminated"
-        sys.exit()
+        print "%s could not be open" % filename
+        return "ERROR"
 
     start=time.time()   #start counting execution time 
     
@@ -314,4 +316,5 @@ def main():
     G.outputFile.save("output.xls")      
     print "execution time="+str(time.time()-start)  
     
-if __name__ == '__main__': main()
+if __name__ == '__main__':
+  main()
