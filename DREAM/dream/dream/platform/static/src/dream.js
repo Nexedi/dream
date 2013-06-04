@@ -8,7 +8,7 @@
     };
 
     priv.getUrl = function() {
-      return $(document)[0].baseURI + "/dream_platform/"
+      return "/";
     };
 
     priv.initJsPlumb = function () {
