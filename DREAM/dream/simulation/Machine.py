@@ -7,10 +7,10 @@ Created on 8 Nov 2012
 Models a machine that can also have failures
 '''
 
-from SimPy.Simulation import *
+from SimPy.Simulation import Process, Resource
+from SimPy.Simulation import activate, passivate, waituntil, now, hold
+
 from Failure import Failure
-import xlwt
-import xlrd
 from RandomNumberGenerator import RandomNumberGenerator
 import scipy.stats as stat
 
@@ -29,10 +29,7 @@ class Machine(Process):
         self.failureDistType=fDist  #the distribution that the failure follows   
                     
         self.repairman=repairman         
-        #self.xls = xlwt.Workbook()     #create excel file     
-        #self.sheet = self.xls.add_sheet('sheet ', cell_overwrite_ok=True)  #create excel sheet
-        #self.xlindex=0
-        
+
         self.rng=RandomNumberGenerator(self, self.distType)
         self.rng.avg=time[0]
         self.rng.stdev=time[1]
