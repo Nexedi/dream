@@ -76,6 +76,16 @@ body {
   border-radius: 10px;
 }
 
+#tools {
+  position: absolute;
+  width: 200px;
+  height: 500px;
+  border: 2px solid;
+  margin-top: 20px;
+  margin-left: 35px;
+  border-radius: 10px;
+}
+
 #not_available {
   position: absolute;
   width: 200px;
