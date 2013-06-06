@@ -18,8 +18,10 @@
         {id: 'window11', title: 'packaging', throughput: 27, coordinate: {top: 20, left: 55}},
     ];
 
-    dream_instance = DREAM.newDream(graph_data);
-    dream_instance.start();
+    //dream_instance = DREAM.newDream(graph_data);
+    //dream_instance.start();
+    dream_instance = jsonPlumb.newJsonPlumb();
+    dream_instance.newElement({id : 'foo'})
 
     //Fill list of people
     people_list = ["Worker1", "Worker2", "Worker3", "Worker4", "Worker5", "Worker6", "Worker7", "Worker8"];
