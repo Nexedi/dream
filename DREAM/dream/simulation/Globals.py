@@ -36,9 +36,13 @@ class G:
     traceSheet = traceFile.add_sheet('sheet '+str(sheetIndex), cell_overwrite_ok=True)  #create excel sheet    
     
     
-    #the output excel 
+    #variables for excel output
     outputIndex=0    #index that shows in what row we are
     sheetIndex=1    #index that shows in what sheet we are
     outputFile = xlwt.Workbook()     #create excel file
     outputSheet = outputFile.add_sheet('sheet '+str(sheetIndex), cell_overwrite_ok=True)  #create excel sheet
+    
+    #variables for json output
+    outputJSON={}
+    outputJSONFile=None
     

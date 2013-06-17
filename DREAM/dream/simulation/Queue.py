@@ -9,6 +9,7 @@ Models a FIFO queue where entities can wait in order to get into a server
 
 
 from SimPy.Simulation import *
+#import sys
 
 #the Queue object
 class Queue(Process):
@@ -196,4 +197,8 @@ class Queue(Process):
 
     #outputs data to "output.xls"
     def outputResultsXL(self, MaxSimtime):
+        pass
+    
+    #outputs results to JSON File
+    def outputResultsJSON(self):
         pass

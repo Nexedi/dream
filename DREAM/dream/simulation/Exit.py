@@ -183,6 +183,19 @@ class Exit(Process):
                 G.outputSheet.write(G.outputIndex,3,self.TaktTime[0]) 
             G.outputIndex+=1
         G.outputIndex+=1
+
+    #outputs results to JSON File
+    def outputResultsJSON(self):
+        from Globals import G
+        if(G.numberOfReplications==1): #if we had just one replication output the results to excel
+            json={}
+            json['_class'] = 'Dream.Exit';
+            json['id'] = str(self.id)
+            json['results'] = {}
+            json['results']['throughput']=self.numOfExits
+            json['results']['lifespan']=((self.totalLifespan)/self.numOfExits)/G.Base
+            json['results']['takt_time']=((self.totalTaktTime)/self.numOfExits)/G.Base
+            G.outputJSON['coreObject'].append(json)
                
     #takes the array and checks if all its values are identical (returns false) or not (returns true) 
     #needed because if somebody runs multiple runs in deterministic case it would crash!          

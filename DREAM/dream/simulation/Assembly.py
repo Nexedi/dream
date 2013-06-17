@@ -239,7 +239,18 @@ class Assembly(Process):
             G.outputIndex+=1
         G.outputIndex+=1 
         
-        
+    #outputs results to JSON File
+    def outputResultsJSON(self):
+        from Globals import G
+        if(G.numberOfReplications==1): #if we had just one replication output the results to excel
+            json={}
+            json['_class'] = 'Dream.Assembly';
+            json['id'] = str(self.id)
+            json['results'] = {}
+            json['results']['working_ratio']=100*self.totalWorkingTime/G.maxSimTime
+            json['results']['blockage_ratio']=100*self.totalBlockageTime/G.maxSimTime
+            json['results']['waiting_ratio']=100*self.totalWaitingTime/G.maxSimTime
+            G.outputJSON['coreObject'].append(json)
         
     #takes the array and checks if all its values are identical (returns false) or not (returns true) 
     #needed because if somebody runs multiple runs in deterministic case it would crash!          

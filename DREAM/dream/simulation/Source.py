@@ -139,3 +139,7 @@ class Source(Process):
     #outputs data to "output.xls"
     def outputResultsXL(self, MaxSimtime):
         pass
+    
+    #outputs results to JSON File
+    def outputResultsJSON(self):
+        pass
