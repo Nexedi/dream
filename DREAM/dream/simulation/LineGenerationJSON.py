@@ -297,6 +297,10 @@ def main(argv=[]):
         for core_object in G.ObjList:
             core_object.postProcessing(G.maxSimTime)
             
+        #carry on the post processing operations for every model resource in the topology       
+        for model_resource in G.RepairmanList:
+            model_resource.postProcessing(G.maxSimTime)
+            
         #output trace to excel
         if(G.trace=="Yes"):
             G.traceFile.save('trace'+str(i+1)+'.xls')
@@ -308,13 +312,45 @@ def main(argv=[]):
     G.outputSheet.write(G.outputIndex,0, "Execution Time")
     G.outputSheet.write(G.outputIndex,1, str(time.time()-start)+" seconds")
     G.outputIndex+=2 
+
+
+    G.outputJSONFile=open('outputJSON.json', mode='w')
+    G.outputJSON['_class'] = 'Dream.Simulation';
+    G.outputJSON['general'] ={};
+    G.outputJSON['general']['_class'] = 'Dream.Configuration';
+    G.outputJSON['general']['totalExecutionTime'] = (time.time()-start);
+    G.outputJSON['modelResource'] =[];
+    G.outputJSON['coreObject'] =[];
+    
+    #output data to JSON for every object in the topology         
+    for core_object in G.ObjList:
+        try:
+            core_object.outputResultsJSON()
+        except AttributeError:
+            pass
+        
+    #output data to JSON for every resource in the topology         
+    for model_resource in G.RepairmanList:
+        try:
+            model_resource.outputResultsJSON()
+        except AttributeError:
+            pass
+         
+    outputJSONString=str(str(G.outputJSON))
+    outputJSONString=outputJSONString.replace("'", '"')
+    G.outputJSONFile.write(str(outputJSONString))
+       
         
     #output data to excel for every object in the topology         
     for core_object in G.ObjList:
         core_object.outputResultsXL(G.maxSimTime)
+        
+    #output data to excel for every resource in the topology         
+    for model_resource in G.RepairmanList:
+        model_resource.outputResultsXL(G.maxSimTime)
 
     G.outputFile.save("output.xls")      
     print "execution time="+str(time.time()-start)  
-    
+        
 if __name__ == '__main__':
-  main()
+    main()
