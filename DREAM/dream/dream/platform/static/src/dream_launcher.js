@@ -20,45 +20,38 @@
 
     //dream_instance = DREAM.newDream(graph_data);
     //dream_instance.start();
+    var main_div_offset = $("#main").offset();
+    var window_id = 1;
+    var element_id;
+    var id_container = {};
+    $( ".tool" ).draggable({ opacity: 0.7, helper: "clone",
+                             stop: function(tool) {
+                                     console.log("stop event of tool", tool);
+                                     console.log("target id", tool.target.id);
+                                     var box_top, box_left;
+                                     console.log("tool.clientX", tool.clientX);
+                                     console.log("main_div_offset.left", main_div_offset.left);
+                                     console.log("tool.clientY", tool.clientY);
+                                     console.log("main_div_offset.top", main_div_offset.top);
+                                     box_top = (tool.clientY - main_div_offset.top);
+                                     box_left = (tool.clientX - main_div_offset.left);
+                                     console.log("top, left", box_top, box_left);
+                                     console.log("id_container before", id_container);
+                                     console.log("id_container target before", id_container[tool.target.id]);
+                                     id_container[tool.target.id] = (id_container[tool.target.id] || 0) + 1
+                                     console.log("id_container target after", id_container[tool.target.id]);
+                                     console.log("id_container after", id_container);
+                                     dream_instance.newElement({id : tool.target.id.split(".")[1] + "_" + id_container[tool.target.id],
+                                                               coordinate: {top: box_top, left: box_left},
+                                       class: tool.target.id,
+                                     });
+                                     window_id += 1;
+                                  },
+    }
+    );
     dream_instance = jsonPlumb.newJsonPlumb();
-    dream_instance.newElement({id : 'foo'})
+    dream_instance.start();
 
-    //Fill list of people
-    people_list = ["Worker1", "Worker2", "Worker3", "Worker4", "Worker5", "Worker6", "Worker7", "Worker8"];
-    i_length = people_list.length;
-    for (i = 0; i < i_length; i++) {
-      $("#not_available ul").append('<li class="ui-state-default">' + people_list[i] + "</li>");
-    }
-
-    updateWorkerCount = function () {
-      var available_worker_length = 0,
-          available_worker_values =  _.values(available_people);
-      _.each(available_worker_values, function(value) {
-        if (value === true) {
-          available_worker_length += 1;
-        }
-      });
-      $("#total_workers h2").text(available_worker_length.toString());
-    }
-
-    // Make list of people draggable, update list of people depending
-    // to make them available or not
-    $("#available li").draggable({appendTo: "body"});
-    $("#not_available li").draggable({appendTo: "body"});
-    $("#available").droppable({
-      drop: function(event, ui) {
-        available_people[ui.draggable.text()] = true;
-        dream_instance.setSimulationParameters(available_people);
-        updateWorkerCount();
-      }
-    });
-    $("#not_available").droppable({
-      drop: function(event, ui) {
-        available_people[ui.draggable.text()] = false;
-        dream_instance.setSimulationParameters(available_people);
-        updateWorkerCount();
-      }
-    });
   })
 
 })(jQuery, _);
