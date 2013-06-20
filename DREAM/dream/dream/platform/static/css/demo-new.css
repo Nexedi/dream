@@ -66,56 +66,6 @@ body {
     background-color:#eaedef;
 }
 
-#available {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  border: 2px solid;
-  margin-top: 350px;
-  margin-left: 150px;
-  border-radius: 10px;
-}
-
-#tools {
-  position: absolute;
-  width: 200px;
-  height: 500px;
-  border: 2px solid;
-  margin-top: 20px;
-  margin-left: 35px;
-  border-radius: 10px;
-}
-
-#not_available {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  border: 2px solid;
-  margin-top: 350px;
-  margin-left: 500px;
-  border-radius: 10px;
-}
-
-#total_workers {
-  position: absolute;
-  width: 100px;
-  height: 80px;
-  border: 2px solid;
-  margin-top: 80px;
-  margin-left: 720px;
-  border-radius: 10px;
-}
-
-#total_throughput {
-  position: absolute;
-  width: 100px;
-  height: 80px;
-  border: 2px solid;
-  margin-top: 200px;
-  margin-left: 720px;
-  border-radius: 10px;
-}
-
 /* Setting for dialog */
 
 label, input { display:block; }
@@ -238,3 +188,74 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
   font-family:helvetica;
   padding:0.5em; 
 }
+
+/* DREAM specific css */
+
+#available {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border: 2px solid;
+  margin-top: 350px;
+  margin-left: 150px;
+  border-radius: 10px;
+}
+
+#tools {
+  position: absolute;
+  width: 200px;
+  height: 500px;
+  border: 2px solid;
+  margin-top: 20px;
+  margin-left: 35px;
+  border-radius: 10px;
+}
+
+.tool {
+  border: 1px dotted gray;
+  /*margin-top: 20px;
+  margin-left: 35px;*/
+  width:4em;
+  height:2em;
+  z-index: 10001;
+  border-radius: 10px;
+  color: gray;
+  font-family:serif;
+  font-style:italic;
+  padding-top:0.9em;
+  font-size:0.9em;
+  margin-top: 1em;
+  margin-left: 1em;
+  
+}
+
+#not_available {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border: 2px solid;
+  margin-top: 350px;
+  margin-left: 500px;
+  border-radius: 10px;
+}
+
+#total_workers {
+  position: absolute;
+  width: 100px;
+  height: 80px;
+  border: 2px solid;
+  margin-top: 80px;
+  margin-left: 720px;
+  border-radius: 10px;
+}
+
+#total_throughput {
+  position: absolute;
+  width: 100px;
+  height: 80px;
+  border: 2px solid;
+  margin-top: 200px;
+  margin-left: 720px;
+  border-radius: 10px;
+}
+
