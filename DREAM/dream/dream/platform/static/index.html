@@ -31,11 +31,29 @@
         <ul>
         </ul>
       </div>
+      <div id="Dream.Repairman" class="tool">
+        Repairman
+        <ul>
+        </ul>
+      </div>
       </div>
         <div id="main">
 			<div id="render"></div>
       </div>
-		<div id="sidebar">			
+		<div id="sidebar">
+       <table>
+         <tr>
+          <td>Input</td>
+          <td>Result</td>
+         </tr>
+         <tr>
+           <td>
+           <textarea rows="20" cols="47" id="json_output" style="align:left">
+           </textarea></td>
+           <td>
+           <textarea rows="20" cols="47" id="json_result" style="align:right">
+           </textarea></td>
+       </table>
             <div id="explanation">
                 <p>This is a demonstration of Flowchart combined with simulation.</p>
                 <p>Drag not available people to the box "Available". If there is enough workers, a green path will be displayed on the Flowchart.</p>
@@ -44,17 +62,6 @@
                 <p>This demonstration uses jsPlumb 1.4.0, jQuery 1.8.1 and jQuery UI 1.8.23.</p>
             </div>			
         </div>
-<div id="dialog-form" title="Change Througput">
-  <p class="validateTips">All form fields are required.</p>
- 
-  <form>
-  <fieldset>
-    <label for="Throughput">Throughput</label>
-    <input type="text" name="throughput" id="throughput" class="text ui-widget-content ui-corner-all" />
-  </fieldset>
-  </form>
-</div>
-
 	    <!-- DEP -->
       <script type="text/javascript" src="lib/underscore-min.js"></script>
 	    <script type="text/javascript" src="lib/jquery-1.8.1-min.js"></script>
