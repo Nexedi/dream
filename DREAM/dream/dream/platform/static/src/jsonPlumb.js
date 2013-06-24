@@ -64,13 +64,15 @@
       var updateConnectionData = function(connection, remove) {
         console.log("updateConnectionData is being called");
         var i, core_length=priv.graph_data.coreObject.length,
-           element;
-        for (i=0; i<core_length; i++) {
-          element = priv.graph_data.coreObject[i];
-          if (element.id === connection.sourceId) {
-            element.successorList = element.successorList || [];
-            element.successorList.push(connection.targetId);
-          };
+           source_element, destination_element;
+        source_element = priv.element_container[connection.sourceId];
+        destination_element = priv.element_container[connection.targetId];
+        console.log('destination_element._class', destination_element._class);
+        if (destination_element._class === "Dream.Repairman") {
+          source_element.repairman = destination_element.id;
+        } else {
+          source_element.successorList = source_element.successorList || [];
+          source_element.successorList.push(connection.targetId);
         }
         priv.updateJsonOutput();
       };
@@ -95,6 +97,7 @@
           name: element.id,
           capacity: "1",
       };
+      priv.element_container[element.id] = element_data;
       priv.graph_data.modelResource.push(element_data);
       priv.updateJsonOutput();
     };
@@ -104,20 +107,9 @@
       var element_data = {_class: element.class,
           id: element.id,
           name: element.id};
+      priv.element_container[element.id] = element_data;
       priv.graph_data.coreObject.push(element_data);
       priv.updateJsonOutput();
-
-      /*{"_class": "Dream.Source",
-        "id": "S1",
-        "name": "Raw Material",
-        "interarrivalTime":
-          {
-            "distributionType": "Fixed",
-            "mean": "0.5"
-          },
-        "entity": "Part",
-        "successorList": ["DummyQ"]
-        },          */
     };
 
     Object.defineProperty(that, "start", {
@@ -125,10 +117,17 @@
       enumerable: false,
       writable: false,
       value: function () {
-        //priv.setModel();
-        priv.element_list = [];
+        priv.element_container = {};
         priv.graph_data = {coreObject: [],
                            modelResource: [],
+                           _class: "Dream.Simulation",
+                            general: {
+                              "_class": "Dream.Configuration",
+                              "numberOfReplications": "1",
+                              "maxSimTime": "1440",
+                              "trace": "Yes",
+                              "confidenceLevel": "0.95"
+  },
         };
         priv.initJsPlumb();
         //priv.initDialog();
@@ -155,7 +154,6 @@
         render_element.append('<div class="window" id="' +
                           element.id + '" ' + style_string + '">'
                           + element.id + '</div>');
-        priv.element_list.push(element);
         // Initial DEMO code : make all the window divs draggable
         jsPlumb.draggable(jsPlumb.getSelector(".window"), { grid: [20, 20] });
 
