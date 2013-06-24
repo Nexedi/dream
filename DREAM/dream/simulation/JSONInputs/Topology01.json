@@ -1,7 +1,7 @@
 {"_class": "Dream.Simulation",
   "general": {
     "_class": "Dream.Configuration",
-    "numberOfReplications": "1",
+    "numberOfReplications": "10",
     "maxSimTime": "1440",
     "trace": "Yes",
     "confidenceLevel": "0.95"
@@ -19,7 +19,7 @@
       "name": "Raw Material",
       "interarrivalTime":
          {
-           "distributionType": "Fixed",
+           "distributionType": "Exp",
            "mean": "0.5"
          },
       "entity": "Part",
@@ -29,8 +29,11 @@
       "id": "M1",
       "name": "Machine1",
       "processingTime": {
-        "distributionType": "Fixed",
-        "mean": "0.25"
+        "distributionType": "Normal",
+        "mean": "0.25",
+		"stdev": "0.1",
+		"min": "0.1",
+		"max": "1"
         },
       "failures":{
            "failureDistribution": "Fixed",

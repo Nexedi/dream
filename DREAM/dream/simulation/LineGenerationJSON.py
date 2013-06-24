@@ -89,7 +89,7 @@ def createObjects():
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
             min=float(processingTime.get('min', '0')) 
-            max=float(processingTime.get('stdev', '0'))
+            max=float(processingTime.get('max', '0'))
             failures=core_object.get('failures', 'not found')  
             failureDistribution=failures.get('failureDistribution', 'not found')
             MTTF=float(failures.get('MTTF', '0'))   

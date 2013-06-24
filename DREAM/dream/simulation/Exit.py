@@ -195,7 +195,43 @@ class Exit(Process):
             json['results']['throughput']=self.numOfExits
             json['results']['lifespan']=((self.totalLifespan)/self.numOfExits)/G.Base
             json['results']['takt_time']=((self.totalTaktTime)/self.numOfExits)/G.Base
-            G.outputJSON['coreObject'].append(json)
+        else: #if we had multiple replications we output confidence intervals to excel
+                #for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
+                #so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
+                #so for each output value we check if there was difference in the runs' results
+                #if yes we output the Confidence Intervals. if not we output just the fix value           
+            json={}
+            json['_class'] = 'Dream.Exit';
+            json['id'] = str(self.id)
+            json['results'] = {}
+            json['results']['throughput']={}
+            if self.checkIfArrayHasDifValues(self.Exits):
+                json['results']['throughput']['min']=stat.bayes_mvs(self.Exits, G.confidenceLevel)[0][1][0]
+                json['results']['throughput']['avg']=stat.bayes_mvs(self.Exits, G.confidenceLevel)[0][0]
+                json['results']['throughput']['max']=stat.bayes_mvs(self.Exits, G.confidenceLevel)[0][1][1]
+            else:
+                json['results']['throughput']['min']=self.Exits[0]
+                json['results']['throughput']['avg']=self.Exits[0]
+                json['results']['throughput']['max']=self.Exits[0]            
+            json['results']['lifespan']={}
+            if self.checkIfArrayHasDifValues(self.Lifespan):
+                json['results']['lifespan']['min']=stat.bayes_mvs(self.Lifespan, G.confidenceLevel)[0][1][0]
+                json['results']['lifespan']['avg']=stat.bayes_mvs(self.Lifespan, G.confidenceLevel)[0][0]
+                json['results']['lifespan']['max']=stat.bayes_mvs(self.Lifespan, G.confidenceLevel)[0][1][1]
+            else:
+                json['results']['lifespan']['min']=self.Lifespan[0]
+                json['results']['lifespan']['avg']=self.Lifespan[0]
+                json['results']['lifespan']['max']=self.Lifespan[0]                
+            json['results']['taktTime']={}            
+            if self.checkIfArrayHasDifValues(self.TaktTime):
+                json['results']['taktTime']['min']=stat.bayes_mvs(self.TaktTime, G.confidenceLevel)[0][1][0]
+                json['results']['taktTime']['avg']=stat.bayes_mvs(self.TaktTime, G.confidenceLevel)[0][0]
+                json['results']['taktTime']['max']=stat.bayes_mvs(self.TaktTime, G.confidenceLevel)[0][1][1]
+            else:
+                json['results']['taktTime']['min']=self.TaktTime[0]
+                json['results']['taktTime']['avg']=self.TaktTime[0]
+                json['results']['taktTime']['max']=self.TaktTime[0]        
+        G.outputJSON['coreObject'].append(json)
                
     #takes the array and checks if all its values are identical (returns false) or not (returns true) 
     #needed because if somebody runs multiple runs in deterministic case it would crash!          
