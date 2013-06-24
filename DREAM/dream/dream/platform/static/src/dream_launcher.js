@@ -26,21 +26,10 @@
     var id_container = {};
     $( ".tool" ).draggable({ opacity: 0.7, helper: "clone",
                              stop: function(tool) {
-                                     console.log("stop event of tool", tool);
-                                     console.log("target id", tool.target.id);
                                      var box_top, box_left;
-                                     console.log("tool.clientX", tool.clientX);
-                                     console.log("main_div_offset.left", main_div_offset.left);
-                                     console.log("tool.clientY", tool.clientY);
-                                     console.log("main_div_offset.top", main_div_offset.top);
                                      box_top = (tool.clientY - main_div_offset.top);
                                      box_left = (tool.clientX - main_div_offset.left);
-                                     console.log("top, left", box_top, box_left);
-                                     console.log("id_container before", id_container);
-                                     console.log("id_container target before", id_container[tool.target.id]);
                                      id_container[tool.target.id] = (id_container[tool.target.id] || 0) + 1
-                                     console.log("id_container target after", id_container[tool.target.id]);
-                                     console.log("id_container after", id_container);
                                      dream_instance.newElement({id : tool.target.id.split(".")[1] + "_" + id_container[tool.target.id],
                                                                coordinate: {top: box_top, left: box_left},
                                        class: tool.target.id,
