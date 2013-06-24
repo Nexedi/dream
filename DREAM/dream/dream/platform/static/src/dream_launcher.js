@@ -2,7 +2,7 @@
   "use strict";
   jsPlumb.bind("ready", function() {
     var graph_data = {}, dream_instance, available_people = {}, people_list,
-        i, i_length, updateWorkerCount;
+        i, i_length, updateWorkerCount, json_plumb_configuration = {};
     graph_data.throughput = 0;
     graph_data.box_list = [
         {id: 'window1', title: 'attach1', throughput: 30, target_list: ['window2'], coordinate: {top: 5, left: 5}},
@@ -17,7 +17,14 @@
         {id: 'window10', title: 'tests', throughput: 28, target_list: ['window11'], coordinate: {top: 20, left: 45}},
         {id: 'window11', title: 'packaging', throughput: 27, coordinate: {top: 20, left: 55}},
     ];
-
+    /*json_plumb_configuration["Dream.Queue"] = {
+        "id": "DummyQ",
+        "name": "DummyQ",
+        "isDummy": "1",
+        "capacity": "1",
+        "predecessorList": ["S1"],
+        "successorList": ["M1"]
+        };*/
     //dream_instance = DREAM.newDream(graph_data);
     //dream_instance.start();
     var main_div_offset = $("#main").offset();
