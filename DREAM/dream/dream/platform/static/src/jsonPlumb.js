@@ -61,6 +61,20 @@
         anchor:"Continuous"     
       });
 
+      var updateConnectionData = function(connection, remove) {
+        console.log("updateConnectionData is being called");
+        var i, core_length=priv.graph_data.coreObject.length,
+           element;
+        for (i=0; i<core_length; i++) {
+          element = priv.graph_data.coreObject[i];
+          if (element.id === connection.sourceId) {
+            element.successorList = element.successorList || [];
+            element.successorList.push(connection.targetId);
+          };
+        }
+        priv.updateJsonOutput();
+      };
+
       // bind to connection/connectionDetached events, and update the list of connections on screen.
       jsPlumb.bind("connection", function(info, originalEvent) {
         updateConnectionData(info.connection);
@@ -68,8 +82,42 @@
       jsPlumb.bind("connectionDetached", function(info, originalEvent) {
         updateConnectionData(info.connection, true);
       });
+    };
 
+    priv.updateJsonOutput = function() {
+      //temporary method to display json on the screen (for debugging)
+      $("#json_output")[0].value = JSON.stringify(priv.graph_data, null, " ");
+    };
 
+    priv.addModelResourceToGraphData = function(element) {
+      var element_data = {_class: element.class,
+          id: element.id,
+          name: element.id,
+          capacity: "1",
+      };
+      priv.graph_data.modelResource.push(element_data);
+      priv.updateJsonOutput();
+    };
+
+    priv.addElementToGraphData = function(element) {
+      // Now update the graph_data
+      var element_data = {_class: element.class,
+          id: element.id,
+          name: element.id};
+      priv.graph_data.coreObject.push(element_data);
+      priv.updateJsonOutput();
+
+      /*{"_class": "Dream.Source",
+        "id": "S1",
+        "name": "Raw Material",
+        "interarrivalTime":
+          {
+            "distributionType": "Fixed",
+            "mean": "0.5"
+          },
+        "entity": "Part",
+        "successorList": ["DummyQ"]
+        },          */
     };
 
     Object.defineProperty(that, "start", {
@@ -79,7 +127,9 @@
       value: function () {
         //priv.setModel();
         priv.element_list = [];
-        priv.graph_data = {};
+        priv.graph_data = {coreObject: [],
+                           modelResource: [],
+        };
         priv.initJsPlumb();
         //priv.initDialog();
         //priv.displayGraph();
@@ -111,13 +161,19 @@
 
         // Add endPoint to allow drawing connections
         var color = "#00f";
+        var gradient_color = "#09098e";
+        // Different endpoint color for Repairman
+        if (element.class === "Dream.Repairman") {
+          color = "rgb(189,11,11)";
+          gradient_color = "rgb(255,0,0)";
+        };
         var endpoint = {
           endpoint: "Rectangle",
           paintStyle:{ width:25, height:21, fillStyle:color },
           isSource:true,
           scope:"blue rectangle",
           connectorStyle : {
-            gradient:{stops:[[0, color], [0.5, "#09098e"], [1, color]]},
+            gradient:{stops:[[0, color], [0.5, gradient_color], [1, color]]},
             lineWidth:5,
             strokeStyle:color,
             dashstyle:"2 2"
@@ -127,6 +183,7 @@
           isTarget:true,
           //dropOptions : exampleDropOptions
         };
+        var resource_type_list = ["Dream.Repairman"];
         var right_end_point_list = ["Dream.Machine", "Dream.Queue", "Dream.Source"];
         if (right_end_point_list.indexOf(element.class) !== -1) {
           jsPlumb.addEndpoint(element.id, { anchor: "RightMiddle" }, endpoint);
@@ -135,8 +192,16 @@
         if (left_end_point_list.indexOf(element.class) !== -1) {
           jsPlumb.addEndpoint(element.id, { anchor: "LeftMiddle" }, endpoint);
         }
-        
-
+        var repair_point_list = ["Dream.Repairman", "Dream.Machine"]
+        if (repair_point_list.indexOf(element.class) !== -1) {
+          jsPlumb.addEndpoint(element.id, { anchor: "TopCenter" }, endpoint);
+          jsPlumb.addEndpoint(element.id, { anchor: "BottomCenter" }, endpoint);
+        };
+        if (resource_type_list.indexOf(element.class) === -1) {
+          priv.addElementToGraphData(element);
+        } else {
+          priv.addModelResourceToGraphData(element);
+        }
 
       }
     });
