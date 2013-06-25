@@ -63,17 +63,10 @@
 
       var updateConnectionData = function(connection, remove) {
         console.log("updateConnectionData is being called");
-        var i, core_length=priv.graph_data.coreObject.length,
-           source_element, destination_element;
+        var source_element;
         source_element = priv.element_container[connection.sourceId];
-        destination_element = priv.element_container[connection.targetId];
-        console.log('destination_element._class', destination_element._class);
-        if (destination_element._class === "Dream.Repairman") {
-          source_element.repairman = destination_element.id;
-        } else {
-          source_element.successorList = source_element.successorList || [];
-          source_element.successorList.push(connection.targetId);
-        }
+        source_element.successorList = source_element.successorList || [];
+        source_element.successorList.push(connection.targetId);
         priv.updateJsonOutput();
       };
 
@@ -88,27 +81,17 @@
 
     priv.updateJsonOutput = function() {
       //temporary method to display json on the screen (for debugging)
-      $("#json_output")[0].value = JSON.stringify(priv.graph_data, null, " ");
+      $("#json_output")[0].value = JSON.stringify(priv.element_container, null, " ");
     };
 
-    priv.addModelResourceToGraphData = function(element) {
+    priv.addElementToGraphData = function(element, option) {
+      // Now update the container of elements
       var element_data = {_class: element.class,
           id: element.id,
           name: element.id,
-          capacity: "1",
+          option: option
       };
       priv.element_container[element.id] = element_data;
-      priv.graph_data.modelResource.push(element_data);
-      priv.updateJsonOutput();
-    };
-
-    priv.addElementToGraphData = function(element) {
-      // Now update the graph_data
-      var element_data = {_class: element.class,
-          id: element.id,
-          name: element.id};
-      priv.element_container[element.id] = element_data;
-      priv.graph_data.coreObject.push(element_data);
       priv.updateJsonOutput();
     };
 
@@ -116,6 +99,7 @@
       jsPlumb.removeAllEndpoints($("#" + element_id));
       $("#" + element_id).remove();
       delete(priv.element_container[element_id]);
+      priv.updateJsonOutput();
     };
 
     priv.initDialog = function(title, element_id) {
@@ -179,22 +163,9 @@
       writable: false,
       value: function () {
         priv.element_container = {};
-        priv.graph_data = {coreObject: [],
-                           modelResource: [],
-                           _class: "Dream.Simulation",
-                            general: {
-                              "_class": "Dream.Configuration",
-                              "numberOfReplications": "1",
-                              "maxSimTime": "1440",
-                              "trace": "Yes",
-                              "confidenceLevel": "0.95"
-                           },
-        };
         priv.graph_selection = {};
         priv.initJsPlumb();
         priv.initDialog();
-        //priv.displayGraph();
-        //priv.refreshModelRegularly();
       }
     });
 
@@ -212,7 +183,7 @@
       configurable: false,
       enumerable: false,
       writable: false,
-      value: function (element) {
+      value: function (element, option) {
         var render_element, style_string="";
         render_element = $("[id=render]");
         if (element.coordinate !== undefined) {
@@ -237,10 +208,6 @@
           priv.initDialog(element.id, element.id);
           $( "#dialog-form" ).dialog( "open" );
         });
-        /*container.find('.vmail').bind('click', function() {
-        var id = $(this).attr('id').replace("pm_","");
-        getPM(id);
-        });  */
 
         // Add endPoint to allow drawing connections
         var color = "#00f";
@@ -266,26 +233,12 @@
           isTarget:true,
           //dropOptions : exampleDropOptions
         };
-        var resource_type_list = ["Dream.Repairman"];
-        var right_end_point_list = ["Dream.Machine", "Dream.Queue", "Dream.Source"];
-        if (right_end_point_list.indexOf(element.class) !== -1) {
-          jsPlumb.addEndpoint(element.id, { anchor: "RightMiddle" }, endpoint);
-        }
-        var left_end_point_list = ["Dream.Machine", "Dream.Queue", "Dream.Exit"];
-        if (left_end_point_list.indexOf(element.class) !== -1) {
-          jsPlumb.addEndpoint(element.id, { anchor: "LeftMiddle" }, endpoint);
-        }
-        var repair_point_list = ["Dream.Repairman", "Dream.Machine"]
-        if (repair_point_list.indexOf(element.class) !== -1) {
-          jsPlumb.addEndpoint(element.id, { anchor: "TopCenter" }, endpoint);
-          jsPlumb.addEndpoint(element.id, { anchor: "BottomCenter" }, endpoint);
-        };
-        if (resource_type_list.indexOf(element.class) === -1) {
-          priv.addElementToGraphData(element);
-        } else {
-          priv.addModelResourceToGraphData(element);
-        }
-
+        _.each(_.pairs(option.anchor), function(value, key, list) {
+          var anchor = value[0],
+              endpoint_configuration = value[1];
+          jsPlumb.addEndpoint(element.id, { anchor: anchor }, endpoint);
+        })
+        priv.addElementToGraphData(element, option);
       }
     });
 

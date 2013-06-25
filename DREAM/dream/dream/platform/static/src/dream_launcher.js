@@ -46,7 +46,16 @@
                                   },
     }
     );
-    dream_instance = jsonPlumb.newJsonPlumb();
+    //dream_instance = jsonPlumb.newJsonPlumb();
+    //dream_instance.start();
+    var configuration = {
+      "Dream.Source": { anchor: {RightMiddle: {}}},
+      "Dream.Machine": { anchor: {RightMiddle: {}, LeftMiddle: {}, TopCenter: {}, BottomCenter: {}}},
+      "Dream.Queue": { anchor: {RightMiddle: {}, LeftMiddle: {}}},
+      "Dream.Exit": { anchor: {LeftMiddle: {}}},
+      "Dream.Repairman": { anchor: {TopCenter: {}, BottomCenter: {}}},
+    }
+    dream_instance = DREAM.newDream(configuration)
     dream_instance.start();
 
   })
