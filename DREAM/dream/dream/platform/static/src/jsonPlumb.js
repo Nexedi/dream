@@ -38,9 +38,6 @@
         init(connInfo.connection);
       });     
             
-      // make all the window divs draggable           
-      jsPlumb.draggable(jsPlumb.getSelector(".window"), { grid: [20, 20] });
-
       // listen for clicks on connections, and offer to change values on click.
       jsPlumb.bind("click", function(conn, originalEvent) {
         console.log("user click connection", conn);
@@ -77,13 +74,36 @@
       jsPlumb.bind("connectionDetached", function(info, originalEvent) {
         updateConnectionData(info.connection, true);
       });
+      priv.draggable();
     };
 
     priv.updateJsonOutput = function() {
       //temporary method to display json on the screen (for debugging)
-      $("#json_output")[0].value = JSON.stringify(priv.element_container, null, " ");
+      $("#json_output")[0].value = JSON.stringify(priv.element_container, null, " ") + JSON.stringify(priv.selection_container, null, " ");
     };
 
+    priv.updateElementCoordinate = function(element_id, x, y) {
+      var selection = priv.selection_container[element_id] || {};
+      var coordinate = selection.coordinate || {};
+      var main_div_offset = $("#main").offset();
+      coordinate.x = x - main_div_offset.left;
+      coordinate.y = y - main_div_offset.top;
+      console.log("jsonPlumb, updateElementCoordinate, selection", priv.selection_container);
+      selection["coordinate"] = coordinate;
+      priv.selection_container[element_id] = selection;
+      return coordinate;
+    };
+
+    priv.draggable = function() {
+      // make all the window divs draggable
+      var stop = function(el) {
+        var element_id = el.target.id;
+        priv.updateElementCoordinate(element_id, el.clientX, el.clientY);
+      }
+      jsPlumb.draggable(jsPlumb.getSelector(".window"), { grid: [20, 20] ,
+                                                          stop: stop,
+      });
+    };
     priv.addElementToGraphData = function(element, option) {
       // Now update the container of elements
       var element_data = {_class: element.class,
@@ -163,7 +183,7 @@
       writable: false,
       value: function () {
         priv.element_container = {};
-        priv.graph_selection = {};
+        priv.selection_container = {};
         priv.initJsPlumb();
         priv.initDialog();
       }
@@ -179,15 +199,30 @@
       }
     });
 
+    Object.defineProperty(that, "getData", {
+      configurable: false,
+      enumerable: false,
+      writable: false,
+      value: function () {
+        return {"element": priv.element_container, "selection": priv.selection_container};
+      }
+    });
+
     Object.defineProperty(that, "newElement", {
       configurable: false,
       enumerable: false,
       writable: false,
       value: function (element, option) {
-        var render_element, style_string="";
+        var render_element, style_string="", coordinate;
         render_element = $("[id=render]");
         if (element.coordinate !== undefined) {
-          _.each(element.coordinate, function(value, key, list) {
+          coordinate = priv.updateElementCoordinate(element.id, element.coordinate.x, element.coordinate.y)
+          _.each(coordinate, function(value, key, list) {
+            if (key === "x") {
+              key = "left";
+            } else {
+              key = "top";
+            }
             style_string = style_string + key + ':' + value + 'px;';
           })
         }
@@ -198,7 +233,7 @@
                           element.id + '" ' + style_string + '">'
                           + element.id + '</div>');
         // Initial DEMO code : make all the window divs draggable
-        jsPlumb.draggable(jsPlumb.getSelector(".window"), { grid: [20, 20] });
+        priv.draggable();
         
         console.log("window selector", jsPlumb.getSelector(".window"));
         jsPlumb.getSelector("#" + element.id).bind('click', function() {
