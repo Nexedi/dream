@@ -1,9 +1,9 @@
 {"_class": "Dream.Simulation",
   "general": {
     "_class": "Dream.Configuration",
-    "numberOfReplications": "1",
+    "numberOfReplications": "5",
     "maxSimTime": "1440",
-    "trace": "Yes",
+    "trace": "No",
     "confidenceLevel": "0.95"
   },
   "modelResource": [
@@ -45,8 +45,11 @@
       "id": "M2",
       "name": "Machine2",
       "processingTime": {
-        "distributionType": "Fixed",
-        "mean": "1.5"
+        "distributionType": "Normal",
+        "mean": "1.5",
+		"stdev": "0.3",
+		"min": "0.1",
+		"max": "4"
         },
       "failures":{
            "failureDistribution": "Fixed",

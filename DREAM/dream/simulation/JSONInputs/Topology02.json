@@ -1,9 +1,9 @@
 {"_class": "Dream.Simulation",
   "general": {
     "_class": "Dream.Configuration",
-    "numberOfReplications": "1",
+    "numberOfReplications": "10",
     "maxSimTime": "1440",
-    "trace": "Yes",
+    "trace": "No",
     "confidenceLevel": "0.95"
   },
     "modelResource": [
@@ -26,7 +26,7 @@
       "interarrivalTime":
          {
            "distributionType": "Fixed",
-           "mean": "2"
+           "mean": "2"	   
          },
       "entity": "Frame",
       "successorList": ["Α1"]
@@ -34,10 +34,14 @@
      {"_class": "Dream.Assembly",
       "id": "A1",
       "name": "Assembly",
-      "processingTime": {
-        "distributionType": "Fixed",
-        "mean": "2"
-        },
+      "processingTime": 
+	  {
+        "distributionType": "Normal",
+        "mean": "2",
+		"stdev": "0.8",
+		"min": "1",
+		"max": "4"	
+      },
 	  "predecessorPartList": ["S1"],
 	  "predecessorFrameList": ["S2"],
       "successorList": ["M1"]

@@ -3,7 +3,7 @@
     "_class": "Dream.Configuration",
     "numberOfReplications": "10",
     "maxSimTime": "1440",
-    "trace": "Yes",
+    "trace": "No",
     "confidenceLevel": "0.95"
   },
   "modelResource": [
