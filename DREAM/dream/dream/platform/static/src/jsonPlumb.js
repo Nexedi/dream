@@ -64,7 +64,7 @@
         source_element = priv.element_container[connection.sourceId];
         source_element.successorList = source_element.successorList || [];
         source_element.successorList.push(connection.targetId);
-        priv.updateJsonOutput();
+        priv.onDataChange();
       };
 
       // bind to connection/connectionDetached events, and update the list of connections on screen.
@@ -77,20 +77,18 @@
       priv.draggable();
     };
 
-    priv.updateJsonOutput = function() {
-      //temporary method to display json on the screen (for debugging)
-      $("#json_output")[0].value = JSON.stringify(priv.element_container, null, " ") + JSON.stringify(priv.selection_container, null, " ");
-    };
-
     priv.updateElementCoordinate = function(element_id, x, y) {
       var selection = priv.selection_container[element_id] || {};
       var coordinate = selection.coordinate || {};
-      var main_div_offset = $("#main").offset();
-      coordinate.x = x - main_div_offset.left;
-      coordinate.y = y - main_div_offset.top;
+      //var main_div_offset = $("#main").offset();
+      //coordinate.x = x - main_div_offset.left;
+      //coordinate.y = y - main_div_offset.top;
+      coordinate.x = x;
+      coordinate.y = y;
       console.log("jsonPlumb, updateElementCoordinate, selection", priv.selection_container);
       selection["coordinate"] = coordinate;
       priv.selection_container[element_id] = selection;
+      priv.onDataChange();
       return coordinate;
     };
 
@@ -104,7 +102,7 @@
                                                           stop: stop,
       });
     };
-    priv.addElementToGraphData = function(element, option) {
+    priv.addElementToContainer = function(element, option) {
       // Now update the container of elements
       var element_data = {_class: element.class,
           id: element.id,
@@ -112,14 +110,22 @@
           option: option
       };
       priv.element_container[element.id] = element_data;
-      priv.updateJsonOutput();
+      priv.onDataChange();
+    };
+
+    priv.onDataChange = function() {
+      $.publish("Dream.Gui.onDataChange", priv.getData());
+    };
+
+    priv.getData = function() {
+      return {"element": priv.element_container, "selection": priv.selection_container};
     };
 
     priv.removeElement = function(element_id) {
       jsPlumb.removeAllEndpoints($("#" + element_id));
       $("#" + element_id).remove();
       delete(priv.element_container[element_id]);
-      priv.updateJsonOutput();
+      priv.onDataChange();
     };
 
     priv.initDialog = function(title, element_id) {
@@ -204,7 +210,7 @@
       enumerable: false,
       writable: false,
       value: function () {
-        return {"element": priv.element_container, "selection": priv.selection_container};
+        return priv.getData();
       }
     });
 
@@ -213,10 +219,14 @@
       enumerable: false,
       writable: false,
       value: function (element, option) {
-        var render_element, style_string="", coordinate;
+        var render_element, style_string="", coordinate = {};
         render_element = $("[id=render]");
         if (element.coordinate !== undefined) {
-          coordinate = priv.updateElementCoordinate(element.id, element.coordinate.x, element.coordinate.y)
+          priv.updateElementCoordinate(element.id, element.coordinate.x, element.coordinate.y)
+          var main_div_offset = $("#main").offset();
+          coordinate.x = element.coordinate.x - main_div_offset.left;
+          coordinate.y = element.coordinate.y - main_div_offset.top;
+
           _.each(coordinate, function(value, key, list) {
             if (key === "x") {
               key = "left";
@@ -273,7 +283,7 @@
               endpoint_configuration = value[1];
           jsPlumb.addEndpoint(element.id, { anchor: anchor }, endpoint);
         })
-        priv.addElementToGraphData(element, option);
+        priv.addElementToContainer(element, option);
       }
     });
 
