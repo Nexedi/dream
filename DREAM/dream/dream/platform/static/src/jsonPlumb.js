@@ -14,7 +14,7 @@
         DragOptions : { cursor: 'pointer', zIndex:2000 },
         EndpointStyles : [{ fillStyle:'#225588' }, { fillStyle:'#558822' }],
         PaintStyle : {strokeStyle:"#736AFF", lineWidth:2 },
-        HoverPaintStyle : {strokeStyle:"#42a62c", lineWidth:2 },
+        HoverPaintStyle : {strokeStyle:"#42a62c", lineWidth: 4},
         Endpoint : [ "Dot", {radius:2} ],
         ConnectionOverlays : [
           [ "Arrow", { 
@@ -58,7 +58,7 @@
       
       jsPlumb.makeTarget(jsPlumb.getSelector(".w"), {
         dropOptions:{ hoverClass:"dragHover" },
-        anchor:"Continuous"     
+        anchor:"Continuous"
       });
 
       var updateConnectionData = function(connection, remove) {
@@ -112,6 +112,67 @@
       priv.updateJsonOutput();
     };
 
+    priv.removeElement = function(element_id) {
+      jsPlumb.removeAllEndpoints($("#" + element_id));
+      $("#" + element_id).remove();
+      delete(priv.element_container[element_id]);
+    };
+
+    priv.initDialog = function(title, element_id) {
+      // code to allow changing values on connections. For now we assume
+      // that it is throughput. But we will need more generic code
+      var throughput = $( "#throughput" ),
+        allFields = $( [] ).add( throughput ),
+        tips = $( ".validateTips" );
+      $(function() {
+        $( "input[type=submit]" )
+          .button()
+          .click(function( event ) {
+            event.preventDefault();
+          });
+      });
+
+      $( "#dialog-form" ).dialog({
+        autoOpen: false,
+        height: 300,
+        width: 350,
+        modal: true,
+        title: title || "",
+        buttons: {
+          Cancel: function() {
+            $( this ).dialog( "close" );
+          },
+          Delete: function() {
+            console.log("Going to delete $(this)", $(this));
+            priv.removeElement(element_id);
+            $( this ).dialog( "close" );            
+          },
+          "Validate": function() {
+            var bValid = true, i, i_length, box;
+            allFields.removeClass( "ui-state-error" );
+  
+            bValid = bValid && checkRegexp( throughput, /^([0-9])+$/, "Througput must be integer." );
+  
+            if ( bValid ) {
+              // Update the model with new value
+              i_length = model.box_list.length;
+              for (i = 0; i < i_length; i++) {
+                box = model.box_list[i];
+                if (box.id === priv.box_id) {
+                  box.throughput = parseInt(throughput.val(), 10);
+                }
+              }
+              priv.updateModel();
+              $( this ).dialog( "close" );
+            }
+          },
+        },
+        close: function() {
+          allFields.val( "" ).removeClass( "ui-state-error" );
+        }
+      });
+    };
+
     Object.defineProperty(that, "start", {
       configurable: false,
       enumerable: false,
@@ -127,12 +188,23 @@
                               "maxSimTime": "1440",
                               "trace": "Yes",
                               "confidenceLevel": "0.95"
-  },
+                           },
         };
+        priv.graph_selection = {};
         priv.initJsPlumb();
-        //priv.initDialog();
+        priv.initDialog();
         //priv.displayGraph();
         //priv.refreshModelRegularly();
+      }
+    });
+
+    Object.defineProperty(that, "removeElement", {
+      configurable: false,
+      enumerable: false,
+      writable: false,
+      value: function (element_id) {
+        console.log("going to remove element", element_id);
+        priv.removeElement(element_id);
       }
     });
 
@@ -156,6 +228,19 @@
                           + element.id + '</div>');
         // Initial DEMO code : make all the window divs draggable
         jsPlumb.draggable(jsPlumb.getSelector(".window"), { grid: [20, 20] });
+        
+        console.log("window selector", jsPlumb.getSelector(".window"));
+        jsPlumb.getSelector("#" + element.id).bind('click', function() {
+          console.log("bind click on window", $(this));
+          //$("#dialog-form").attr("title", "bar");
+          $( "#dialog-form" ).dialog( "destroy" ) ;
+          priv.initDialog(element.id, element.id);
+          $( "#dialog-form" ).dialog( "open" );
+        });
+        /*container.find('.vmail').bind('click', function() {
+        var id = $(this).attr('id').replace("pm_","");
+        getPM(id);
+        });  */
 
         // Add endPoint to allow drawing connections
         var color = "#00f";
@@ -206,6 +291,7 @@
 
     return that;
   };
+
   var JsonPlumbNamespace = (function () {
     var that = {};
 

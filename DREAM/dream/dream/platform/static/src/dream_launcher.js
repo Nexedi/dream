@@ -2,7 +2,7 @@
   "use strict";
   jsPlumb.bind("ready", function() {
     var graph_data = {}, dream_instance, available_people = {}, people_list,
-        i, i_length, updateWorkerCount, json_plumb_configuration = {};
+        i, i_length, updateWorkerCount, json_plumb_configuration = {}, jio;
     graph_data.throughput = 0;
     graph_data.box_list = [
         {id: 'window1', title: 'attach1', throughput: 30, target_list: ['window2'], coordinate: {top: 5, left: 5}},
@@ -17,6 +17,7 @@
         {id: 'window10', title: 'tests', throughput: 28, target_list: ['window11'], coordinate: {top: 20, left: 45}},
         {id: 'window11', title: 'packaging', throughput: 27, coordinate: {top: 20, left: 55}},
     ];
+    jio = new jIO.newJio({type: "local", username: "dream", applicationname: "dream"});
     /*json_plumb_configuration["Dream.Queue"] = {
         "id": "DummyQ",
         "name": "DummyQ",
