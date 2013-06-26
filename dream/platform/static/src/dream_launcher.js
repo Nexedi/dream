@@ -38,9 +38,9 @@
         _.each(response.data.element, function(value, key, list) {
           console.log("value", value);
           var element_id = value.id;
-          var selection_data = response.data.selection[element_id] || {};
-          _.each(_.pairs(selection_data), function(selection_value, selection_key, selection_list) {
-            value[selection_value[0]] = selection_value[1];
+          var preference_data = response.data.preference[element_id] || {};
+          _.each(_.pairs(preference_data), function(preference_value, preference_key, preference_list) {
+            value[preference_value[0]] = preference_value[1];
           });
           console.log("going to add newElement", value);
           dream_instance.newElement(value);

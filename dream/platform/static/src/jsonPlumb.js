@@ -86,13 +86,13 @@
     };
 
     priv.updateElementCoordinate = function(element_id, x, y) {
-      var selection = priv.selection_container[element_id] || {};
-      var coordinate = selection.coordinate || {};
+      var preference = priv.preference_container[element_id] || {};
+      var coordinate = preference.coordinate || {};
       coordinate.x = x;
       coordinate.y = y;
-      console.log("jsonPlumb, updateElementCoordinate, selection", priv.selection_container);
-      selection["coordinate"] = coordinate;
-      priv.selection_container[element_id] = selection;
+      console.log("jsonPlumb, updateElementCoordinate, preference", priv.preference_container);
+      preference["coordinate"] = coordinate;
+      priv.preference_container[element_id] = preference;
       priv.onDataChange();
       return coordinate;
     };
@@ -123,7 +123,7 @@
     };
 
     priv.getData = function() {
-      return {"element": priv.element_container, "selection": priv.selection_container};
+      return {"element": priv.element_container, "preference": priv.preference_container};
     };
 
     priv.removeElement = function(element_id) {
@@ -194,7 +194,7 @@
       writable: false,
       value: function () {
         priv.element_container = {};
-        priv.selection_container = {};
+        priv.preference_container = {};
         priv.initJsPlumb();
         priv.initDialog();
       }
