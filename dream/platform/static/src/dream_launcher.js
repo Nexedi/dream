@@ -7,21 +7,48 @@
     var window_id = 1;
     var element_id;
     var id_container = {}; // to allow generating next ids, like Machine_1, Machine_2, etc
-    var property_container = {interarrivalTime: {id:"interarrivalTime",
-                                                 property_list: [{id: "mean", type: "string", _class: "Dream.Property"},
-                                                                  {id: "distributionType", type: "string", _class: "Dream.Property"}],
-                                                 _class: "Dream.PropertyList"},
-                              entity: {id: "entity",
-                                       type:"string",
-                                       _class: "Dream.Property"},};
+    var property_container = {entity: {id: "entity", type:"string", _class: "Dream.Property"},
+                              mean: {id: "mean", type: "string", _class: "Dream.Property"},
+                              distributionType: {id: "distributionType", type: "string", _class: "Dream.Property"},
+                              stdev: {id: "stdev", type: "string", _class: "Dream.Property"},
+                              min: {id: "min", type: "string", _class: "Dream.Property"},
+                              max: {id: "max", type: "string", _class: "Dream.Property"},
+                              failureDistribution: {id: "failureDistribution", type: "string", _class: "Dream.Property"},
+                              MTTF: {id: "MTTF", type: "string", _class: "Dream.Property"},
+                              MTTR: {id: "MTTR", type: "string", _class: "Dream.Property"},
+                              repairman: {id: "repairman", type: "string", _class: "Dream.Property"},
+                              isDummy: {id: "isDummy", type: "string", _class: "Dream.Property"},
+                              capacity: {id: "capacity", type: "string", _class: "Dream.Property"},
+    };
+    property_container["interarrivalTime"] =  {id:"interarrivalTime",
+                                               property_list: [property_container["mean"], property_container["distributionType"]],
+                                               _class: "Dream.PropertyList"};
+    property_container["processingTime"] = {id:"processingTime",
+                                            property_list: [property_container["mean"], property_container["distributionType"],
+                                                            property_container["stdev"], property_container["min"],
+                                                            property_container["max"],,
+                                            ],
+                                            _class: "Dream.PropertyList"};
+    property_container["failures"] = {id:"failures",
+                                      property_list: [property_container["failureDistribution"], property_container["MTTF"],
+                                                      property_container["MTTR"], property_container["repairman"],
+                                      ],
+                                      _class: "Dream.PropertyList"};
+
     var configuration = {
       "Dream-Source": { anchor: {RightMiddle: {}},
                         property_list: [property_container["interarrivalTime"], property_container["entity"]],
       },
-      "Dream-Machine": { anchor: {RightMiddle: {}, LeftMiddle: {}, TopCenter: {}, BottomCenter: {}}},
-      "Dream-Queue": { anchor: {RightMiddle: {}, LeftMiddle: {}}},
+      "Dream-Machine": { anchor: {RightMiddle: {}, LeftMiddle: {}, TopCenter: {}, BottomCenter: {}},
+                         property_list: [property_container["processingTime"], property_container["failures"]],
+      },
+      "Dream-Queue": { anchor: {RightMiddle: {}, LeftMiddle: {}},
+                       property_list: [property_container["capacity"], property_container["isDummy"]],
+      },
       "Dream-Exit": { anchor: {LeftMiddle: {}}},
-      "Dream-Repairman": { anchor: {TopCenter: {}, BottomCenter: {}}},
+      "Dream-Repairman": { anchor: {TopCenter: {}, BottomCenter: {}},
+                           property_list: [property_container["capacity"]],
+      },
     }
     dream_instance = DREAM.newDream(configuration)
     dream_instance.start();
