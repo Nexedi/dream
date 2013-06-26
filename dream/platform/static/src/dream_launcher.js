@@ -7,8 +7,17 @@
     var window_id = 1;
     var element_id;
     var id_container = {}; // to allow generating next ids, like Machine_1, Machine_2, etc
+    var property_container = {interarrivalTime: {id:"interarrivalTime",
+                                                 property_list: [{id: "mean", type: "string", _class: "Dream.Property"},
+                                                                  {id: "distributionType", type: "string", _class: "Dream.Property"}],
+                                                 _class: "Dream.PropertyList"},
+                              entity: {id: "entity",
+                                       type:"string",
+                                       _class: "Dream.Property"},};
     var configuration = {
-      "Dream-Source": { anchor: {RightMiddle: {}}},
+      "Dream-Source": { anchor: {RightMiddle: {}},
+                        property_list: [property_container["interarrivalTime"], property_container["entity"]],
+      },
       "Dream-Machine": { anchor: {RightMiddle: {}, LeftMiddle: {}, TopCenter: {}, BottomCenter: {}}},
       "Dream-Queue": { anchor: {RightMiddle: {}, LeftMiddle: {}}},
       "Dream-Exit": { anchor: {LeftMiddle: {}}},

@@ -130,62 +130,8 @@
       jsPlumb.removeAllEndpoints($("#" + element_id));
       $("#" + element_id).remove();
       delete(priv.element_container[element_id]);
+      delete(priv.preference_container[element_id]);
       priv.onDataChange();
-    };
-
-    priv.initDialog = function(title, element_id) {
-      // code to allow changing values on connections. For now we assume
-      // that it is throughput. But we will need more generic code
-      var throughput = $( "#throughput" ),
-        allFields = $( [] ).add( throughput ),
-        tips = $( ".validateTips" );
-      $(function() {
-        $( "input[type=submit]" )
-          .button()
-          .click(function( event ) {
-            event.preventDefault();
-          });
-      });
-
-      $( "#dialog-form" ).dialog({
-        autoOpen: false,
-        height: 300,
-        width: 350,
-        modal: true,
-        title: title || "",
-        buttons: {
-          Cancel: function() {
-            $( this ).dialog( "close" );
-          },
-          Delete: function() {
-            console.log("Going to delete $(this)", $(this));
-            priv.removeElement(element_id);
-            $( this ).dialog( "close" );            
-          },
-          "Validate": function() {
-            var bValid = true, i, i_length, box;
-            allFields.removeClass( "ui-state-error" );
-  
-            bValid = bValid && checkRegexp( throughput, /^([0-9])+$/, "Througput must be integer." );
-  
-            if ( bValid ) {
-              // Update the model with new value
-              i_length = model.box_list.length;
-              for (i = 0; i < i_length; i++) {
-                box = model.box_list[i];
-                if (box.id === priv.box_id) {
-                  box.throughput = parseInt(throughput.val(), 10);
-                }
-              }
-              priv.updateModel();
-              $( this ).dialog( "close" );
-            }
-          },
-        },
-        close: function() {
-          allFields.val( "" ).removeClass( "ui-state-error" );
-        }
-      });
     };
 
     Object.defineProperty(that, "start", {
@@ -196,7 +142,6 @@
         priv.element_container = {};
         priv.preference_container = {};
         priv.initJsPlumb();
-        priv.initDialog();
       }
     });
 
@@ -260,15 +205,6 @@
         // Initial DEMO code : make all the window divs draggable
         priv.draggable();
         
-        console.log("window selector", jsPlumb.getSelector(".window"));
-        jsPlumb.getSelector("#" + element.id).bind('click', function() {
-          console.log("bind click on window", $(this));
-          //$("#dialog-form").attr("title", "bar");
-          $( "#dialog-form" ).dialog( "destroy" ) ;
-          priv.initDialog(element.id, element.id);
-          $( "#dialog-form" ).dialog( "open" );
-        });
-
         // Add endPoint to allow drawing connections
         var color = "#00f";
         var gradient_color = "#09098e";
