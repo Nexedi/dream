@@ -1,16 +1,18 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, redirect, url_for
 from flask import request
 from crossdomain import crossdomain
 from util import deunicodeData
 app = Flask(__name__)
+
 global data
 data = {'model': None,
         'simulation_parameters': {}}
 
 @app.route("/")
 def welcome():
-    app.logger.debug('welcome')
-    return "Welcome to DREAM Simulation"
+  app.logger.debug('welcome')
+  return redirect(url_for('static', filename='index.html'))
+
 
 @app.route("/addModel")
 def addModel():
