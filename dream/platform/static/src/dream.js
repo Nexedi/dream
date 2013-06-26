@@ -52,8 +52,8 @@
     priv.prepareDialogForElement = function(title, element_id) {
       // code to allow changing values on connections. For now we assume
       // that it is throughput. But we will need more generic code
-      var throughput = $( "#throughput" ),
-        allFields = $( [] ).add( throughput );
+      //var throughput = $( "#throughput" ),
+      //  allFields = $( [] ).add( throughput );
       $(function() {
         $( "input[type=submit]" )
           .button()
@@ -65,25 +65,42 @@
       // Render fields for that particular element
       var fieldset = $("#dialog-fieldset");
       $("#dialog-fieldset").children().remove()
-      var render_field = function(property_list, prefix) {
+      var element_id_prefix = element_id.split("_")[0];
+      var property_list = configuration[element_id_prefix].property_list || [];
+      console.log("getData on element_id", element_id);
+      var previous_data = priv.plumb.getData()["element"];
+      previous_data = previous_data[element_id] || {};
+      previous_data = previous_data.data || {};
+      console.log("previous_data", previous_data);
+      var previous_value;
+      var renderField = function(property_list, previous_data, prefix) {
         if (prefix === undefined) {
           prefix = "";
         }
         _.each(property_list, function(property, key, list) {
           if (property._class === "Dream.Property") {
+            console.log("property.id, previous_data", property.id, previous_data);
+            previous_value = previous_data[property.id] || "";
+            if (previous_value.length > 0) {
+              previous_value = ' value="' + previous_value + '"';
+            }
+            //previous_value = ' value="bar"';
+            console.log("previous_value");
             fieldset.append("<label>" + prefix + property.id + "</label>" +
-                            '<input type="text" name="' + property.id + '" id="' + property.id +
-                            '" class="text ui-widget-content ui-corner-all"/>')
+                            '<input type="text" name="' + prefix + property.id + '"' +
+                            previous_value +
+                            ' id="' + prefix + property.id + '"' +
+                            ' class="text ui-widget-content ui-corner-all"/>')
           } else if (property._class === "Dream.PropertyList") {
-            var next_prefix = prefix + property.id + ".";
-            render_field(property.property_list, next_prefix);
+            var next_prefix = prefix + property.id + "-";
+            var next_previous_data = previous_data[property.id] || {};
+            console.log("next_previous_data", next_previous_data);
+            renderField(property.property_list, next_previous_data, next_prefix);
           }
         });
       };
-      var element_id_prefix = element_id.split("_")[0];
-      var property_list = configuration[element_id_prefix].property_list || [];
       console.log("property_list to be rendered", property_list);
-      render_field(property_list);
+      renderField(property_list, previous_data);
 
       $( "#dialog-form" ).dialog({
         autoOpen: false,
@@ -100,28 +117,33 @@
             priv.removeElement(element_id);
             $( this ).dialog( "close" );
           },
-          "Validate": function() {
-            var bValid = true, i, i_length, box;
-            allFields.removeClass( "ui-state-error" );
-
-            bValid = bValid && checkRegexp( throughput, /^([0-9])+$/, "Througput must be integer." );
-
-            if ( bValid ) {
-              // Update the model with new value
-              i_length = model.box_list.length;
-              for (i = 0; i < i_length; i++) {
-                box = model.box_list[i];
-                if (box.id === priv.box_id) {
-                  box.throughput = parseInt(throughput.val(), 10);
-                }
+          Validate: function() {
+            var data = {}, prefixed_property_id, property_element;
+            var updateDataPropertyList = function(property_list, data, prefix) {
+              console.log("updateDataPropertyList, property_list", property_list);
+              if (prefix === undefined) {
+                prefix = "";
               }
-              priv.updateModel();
-              $( this ).dialog( "close" );
-            }
+              _.each(property_list, function(property, key, list) {
+                if (property._class === "Dream.Property") {
+                  prefixed_property_id = prefix + property.id;
+                  console.log("prefixed_property_id", prefixed_property_id);
+                  property_element = $("#" + prefixed_property_id);
+                  data[property.id] = property_element.val();
+                } else if (property._class === "Dream.PropertyList") {
+                  var next_prefix = prefix + property.id + "-";
+                  data[property.id] = {};
+                  updateDataPropertyList(property.property_list, data[property.id], next_prefix);
+                }
+              });
+            };
+            updateDataPropertyList(property_list, data);
+            priv.plumb.updateElementData(element_id, {data: data});
+            $( this ).dialog( "close" );
           },
         },
         close: function() {
-          allFields.val( "" ).removeClass( "ui-state-error" );
+          //allFields.val( "" ).removeClass( "ui-state-error" );
         }
       });
     };
@@ -135,7 +157,6 @@
         priv.plumb.newElement(element, configuration[element_id]);
         $("#" + element.id).bind('click', function() {
           console.log("bind click on window", $(this));
-          //$("#dialog-form").attr("title", "bar");
           $( "#dialog-form" ).dialog( "destroy" ) ;
           priv.prepareDialogForElement(element.id, element.id);
           $( "#dialog-form" ).dialog( "open" );
@@ -161,6 +182,15 @@
       writable: false,
       value: function (source_id, target_id) {
         priv.plumb.connect(source_id, target_id);
+      }
+    });
+
+    Object.defineProperty(that, "updateElementData", {
+      configurable: false,
+      enumerable: false,
+      writable: false,
+      value: function (element_id, data) {
+        priv.plumb.updateElementData(element_id, data);
       }
     });
 

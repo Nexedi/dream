@@ -80,6 +80,7 @@
           });
           console.log("going to add newElement", value);
           dream_instance.newElement(value);
+          dream_instance.updateElementData(element_id, {data: value.data || {}});
         });
         // Now link elements between them and update id_container
         _.each(response.data.element, function(value, key, list) {

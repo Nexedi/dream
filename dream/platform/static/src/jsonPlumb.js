@@ -133,6 +133,16 @@
       priv.onDataChange();
     };
 
+    Object.defineProperty(that, "updateElementData", {
+      configurable: false,
+      enumerable: false,
+      writable: false,
+      value: function (element_id, data) {
+        _.extend(priv.element_container[element_id], data);
+        priv.onDataChange();
+      }
+    });
+
     Object.defineProperty(that, "start", {
       configurable: false,
       enumerable: false,
