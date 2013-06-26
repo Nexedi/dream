@@ -11,84 +11,6 @@
       return "/";
     };
 
-    priv.initDialog = function() {
-      // code to allow changing values on connections. For now we assume
-      // that it is throughput. But we will need more generic code
-      var throughput = $( "#throughput" ),
-        allFields = $( [] ).add( throughput ),
-        tips = $( ".validateTips" );
-
-      function updateTips( t ) {
-        tips
-          .text( t )
-          .addClass( "ui-state-highlight" );
-        setTimeout(function() {
-          tips.removeClass( "ui-state-highlight", 1500 );
-        }, 500 );
-      }
-
-      function checkLength( o, n, min, max ) {
-        if ( o.val().length > max || o.val().length < min ) {
-          o.addClass( "ui-state-error" );
-          updateTips( "Length of " + n + " must be between " +
-            min + " and " + max + "." );
-          return false;
-        } else {
-          return true;
-        }
-      }
-
-      function checkRegexp( o, regexp, n ) {
-        if ( !( regexp.test( o.val() ) ) ) {
-          o.addClass( "ui-state-error" );
-          updateTips( n );
-          return false;
-        } else {
-          return true;
-        }
-      }    
-
-      $( "#dialog-form" ).dialog({
-        autoOpen: false,
-        height: 300,
-        width: 350,
-        modal: true,
-        buttons: {
-          "Validate": function() {
-            var bValid = true, i, i_length, box;
-            allFields.removeClass( "ui-state-error" );
-  
-            bValid = bValid && checkRegexp( throughput, /^([0-9])+$/, "Througput must be integer." );
-  
-            if ( bValid ) {
-              // Update the model with new value
-              i_length = model.box_list.length;
-              for (i = 0; i < i_length; i++) {
-                box = model.box_list[i];
-                if (box.id === priv.box_id) {
-                  box.throughput = parseInt(throughput.val(), 10);
-                }
-              }
-              priv.updateModel();
-              $( this ).dialog( "close" );
-            }
-          },
-          Cancel: function() {
-            $( this ).dialog( "close" );
-          }
-        },
-        close: function() {
-          allFields.val( "" ).removeClass( "ui-state-error" );
-        }
-      });
-    };
-
-    // Prevent enter key to do nasty things
-    $('#dialog-form :input').on("keypress", function(e) {
-      console.log("keyup, e", e);
-      return e.keyCode !== 13;
-    });
-
     // Utility function to update the style of a box
     priv.updateBoxStyle = function (box_id, style) {
       var box;
@@ -110,12 +32,21 @@
       box.html(html_string);
     };
 
+    priv.displayTool = function() {
+      var render_element = $("[id=tools]");
+      _.each(_.pairs(configuration), function(value, key, list) {
+        render_element.append('<div id="' + value[0] + '" class="tool">' +
+                    value[0].split('-')[1] +
+                    "<ul/></div>");
+      });
+    };
+
     Object.defineProperty(that, "newElement", {
       configurable: false,
       enumerable: false,
       writable: false,
       value: function (element) {
-        var element_id = "Dream." + element.id.split('_')[0];
+        var element_id = element.id.split('_')[0]
         priv.plumb.newElement(element, configuration[element_id]);
       }
     });
@@ -127,15 +58,16 @@
       value: function () {
         priv.plumb = jsonPlumb.newJsonPlumb();
         priv.plumb.start();
+        priv.displayTool();
       }
     });
 
-    Object.defineProperty(that, "setSimulationParameters", {
+    Object.defineProperty(that, "connect", {
       configurable: false,
       enumerable: false,
       writable: false,
-      value: function (simulation_parameters) {
-        priv.setSimulationParameters(simulation_parameters);
+      value: function (source_id, target_id) {
+        priv.plumb.connect(source_id, target_id);
       }
     });
 

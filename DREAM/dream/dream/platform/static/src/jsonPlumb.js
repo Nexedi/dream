@@ -9,11 +9,13 @@
 
     priv.initJsPlumb = function () {
       jsPlumb.setRenderMode(jsPlumb.SVG);
+      var color = "#00f";
+      var gradient_color = "#09098e";
       jsPlumb.importDefaults({
         // default drag options
         DragOptions : { cursor: 'pointer', zIndex:2000 },
         EndpointStyles : [{ fillStyle:'#225588' }, { fillStyle:'#558822' }],
-        PaintStyle : {strokeStyle:"#736AFF", lineWidth:2 },
+        //PaintStyle : {strokeStyle:"#736AFF", lineWidth:2 },
         HoverPaintStyle : {strokeStyle:"#42a62c", lineWidth: 4},
         Endpoint : [ "Dot", {radius:2} ],
         ConnectionOverlays : [
@@ -24,6 +26,12 @@
                       foldback:0.8
           } ],
         ],
+        PaintStyle : {
+            gradient:{stops:[[0, color], [0.5, gradient_color], [1, color]]},
+            lineWidth:5,
+            strokeStyle:color,
+            dashstyle:"2 2"
+          },
         Anchor: "Continuous",
         Connector: ["StateMachine", { curviness:20 }],
       });     
@@ -80,9 +88,6 @@
     priv.updateElementCoordinate = function(element_id, x, y) {
       var selection = priv.selection_container[element_id] || {};
       var coordinate = selection.coordinate || {};
-      //var main_div_offset = $("#main").offset();
-      //coordinate.x = x - main_div_offset.left;
-      //coordinate.y = y - main_div_offset.top;
       coordinate.x = x;
       coordinate.y = y;
       console.log("jsonPlumb, updateElementCoordinate, selection", priv.selection_container);
@@ -214,6 +219,16 @@
       }
     });
 
+    Object.defineProperty(that, "connect", {
+      configurable: false,
+      enumerable: false,
+      writable: false,
+      value: function (source_id, target_id) {
+        console.log("jsonPlumb.connect", source_id, target_id);
+        jsPlumb.connect({source: source_id, target: target_id});
+      }
+    });
+
     Object.defineProperty(that, "newElement", {
       configurable: false,
       enumerable: false,
@@ -267,12 +282,12 @@
           paintStyle:{ width:25, height:21, fillStyle:color },
           isSource:true,
           scope:"blue rectangle",
-          connectorStyle : {
+          /*connectorStyle : {
             gradient:{stops:[[0, color], [0.5, gradient_color], [1, color]]},
             lineWidth:5,
             strokeStyle:color,
             dashstyle:"2 2"
-          },
+          },*/
           //connector: ["Bezier", { curviness:63 } ],
           maxConnections:3,
           isTarget:true,
@@ -281,6 +296,7 @@
         _.each(_.pairs(option.anchor), function(value, key, list) {
           var anchor = value[0],
               endpoint_configuration = value[1];
+          console.log("jsonPlub, addEntPoint", element.id, anchor, endpoint);
           jsPlumb.addEndpoint(element.id, { anchor: anchor }, endpoint);
         })
         priv.addElementToContainer(element, option);
