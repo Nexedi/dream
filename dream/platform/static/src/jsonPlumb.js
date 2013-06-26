@@ -107,12 +107,11 @@
                                                           stop: stop,
       });
     };
-    priv.addElementToContainer = function(element, option) {
+    priv.addElementToContainer = function(element) {
       // Now update the container of elements
       var element_data = {_class: element.class,
           id: element.id,
           name: element.id,
-          option: option
       };
       priv.element_container[element.id] = element_data;
       priv.onDataChange();
@@ -235,7 +234,7 @@
           console.log("jsonPlub, addEntPoint", element.id, anchor, endpoint);
           jsPlumb.addEndpoint(element.id, { anchor: anchor }, endpoint);
         })
-        priv.addElementToContainer(element, option);
+        priv.addElementToContainer(element);
       }
     });
 
