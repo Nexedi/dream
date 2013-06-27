@@ -23,16 +23,6 @@ body {
    opacity:0.8;
 }
 
-#header {
-	margin-top:0;
-    height:44px;
-    font-size:80%;
-	margin-left:auto;
-	margin-right:auto;    
-    width:950px;
-    background-image:url(../../img/logo_bw_44h.jpg);
-    background-repeat:no-repeat;    
-}
 
 #intro {
 	margin-top:59px;
