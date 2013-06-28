@@ -76,7 +76,6 @@ li { margin: 3px;
     font-size:13px;    
 }
 
-
 /* demo elements */
 
 .menu,#render, #explanation { 
@@ -182,13 +181,25 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
   border-radius: 10px;
 }
 
+
 #tools {
   position: absolute;
   width: 200px;
-  height: 500px;
+  height: 400px;
   border: 2px solid;
   margin-top: 20px;
   margin-left: 35px;
+  border-radius: 10px;
+}
+
+#simulation_controls {            
+  position: absolute;
+  width: 200px;
+  margin-top: 550px;
+  margin-left: 35px;
+  font-size:13px;    
+  height: 300px;
+  border: 2px solid;
   border-radius: 10px;
 }
 

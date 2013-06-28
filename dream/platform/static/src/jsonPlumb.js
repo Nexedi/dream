@@ -82,6 +82,7 @@
       jsPlumb.bind("connectionDetached", function(info, originalEvent) {
         updateConnectionData(info.connection, true);
       });
+      priv.onDataChange();
       priv.draggable();
     };
 
@@ -90,7 +91,6 @@
       var coordinate = preference.coordinate || {};
       coordinate.x = x;
       coordinate.y = y;
-      console.log("jsonPlumb, updateElementCoordinate, preference", priv.preference_container);
       preference["coordinate"] = coordinate;
       priv.preference_container[element_id] = preference;
       priv.onDataChange();
@@ -109,7 +109,7 @@
     };
     priv.addElementToContainer = function(element) {
       // Now update the container of elements
-      var element_data = {_class: element.class,
+      var element_data = {_class: element._class,
           id: element.id,
           name: element.id,
       };
@@ -122,7 +122,9 @@
     };
 
     priv.getData = function() {
-      return {"element": priv.element_container, "preference": priv.preference_container};
+      return { "element": priv.element_container,
+               "preference": priv.preference_container,
+               "general": priv.general_container };
     };
 
     priv.removeElement = function(element_id) {
@@ -150,6 +152,7 @@
       value: function () {
         priv.element_container = {};
         priv.preference_container = {};
+        priv.general_container = {};
         priv.initJsPlumb();
       }
     });
@@ -178,9 +181,18 @@
       enumerable: false,
       writable: false,
       value: function (source_id, target_id) {
-        console.log("jsonPlumb.connect", source_id, target_id);
         jsPlumb.connect({source: source_id, target: target_id});
       }
+    });
+
+    Object.defineProperty(that, "setGeneralProperties", {
+      configurable: false,
+      enumerable: false,
+      writable: false,
+      value: function (properties) { // XXX or k, v ?
+        priv.general_container = properties;
+        priv.onDataChange();
+      },
     });
 
     Object.defineProperty(that, "newElement", {
@@ -218,7 +230,7 @@
         var color = "#00f";
         var gradient_color = "#09098e";
         // Different endpoint color for Repairman
-        if (element.class === "Dream.Repairman") {
+        if (element._class === "Dream.Repairman") {
           color = "rgb(189,11,11)";
           gradient_color = "rgb(255,0,0)";
         };
@@ -241,7 +253,6 @@
         _.each(_.pairs(option.anchor), function(value, key, list) {
           var anchor = value[0],
               endpoint_configuration = value[1];
-          console.log("jsonPlub, addEntPoint", element.id, anchor, endpoint);
           jsPlumb.addEndpoint(element.id, { anchor: anchor }, endpoint);
         })
         priv.addElementToContainer(element);

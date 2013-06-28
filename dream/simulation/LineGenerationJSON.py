@@ -186,7 +186,6 @@ def createObjects():
 
 #defines the topology (predecessors and successors for all the objects)
 def setTopology():
-    
     #loop through all the objects  
     for core_object in G.ObjList:
         next=[]
@@ -258,29 +257,32 @@ def activateObjects():
             pass
 
 #the main script that is ran
-def main(argv=[]):
+def main(argv=[], input_data=None):
     argv = argv or sys.argv[1:]
 
     #create an empty list to store all the objects in   
     G.ObjList=[]
 
-    # user passes the topology filename as first argument to the program
-    filename = argv[0]
-    try:
-        G.JSONFile=open(filename, "r")
-    except IOError:
-        print "%s could not be open" % filename
-        return "ERROR"
+    if input_data is None:
+      # user passes the topology filename as first argument to the program
+      filename = argv[0]
+      try:
+          G.JSONFile=open(filename, "r")
+      except IOError:
+          print "%s could not be open" % filename
+          return "ERROR"
+      G.InputData=G.JSONFile.read()
+    else:
+      G.InputData = input_data
 
     start=time.time()   #start counting execution time 
-    
+
     #read the input from the JSON file and create the line
-    G.InputData=G.JSONFile.read()
     G.JSONData=json.loads(G.InputData)
     readGeneralInput()
     createObjects()
     setTopology() 
-              
+
     #run the experiment (replications)          
     for i in range(G.numberOfReplications):
         print "start run number "+str(i+1) 
@@ -351,6 +353,8 @@ def main(argv=[]):
 
     G.outputFile.save("output.xls")      
     print "execution time="+str(time.time()-start)  
+    if input_data:
+      return outputJSONString
         
 if __name__ == '__main__':
     main()

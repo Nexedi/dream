@@ -1,7 +1,7 @@
 (function (scope, $, jsPlumb, console, _) {
   "use strict";
   var dream = function (configuration) {
-    var that = {}, priv = {};
+    var that = {}, priv = {}, general = {};
 
     priv.onError = function(error) {
        console.log("Error", error);
@@ -35,9 +35,10 @@
     priv.displayTool = function() {
       var render_element = $("[id=tools]");
       _.each(_.pairs(configuration), function(value, key, list) {
-        render_element.append('<div id="' + value[0] + '" class="tool">' +
-                    value[0].split('-')[1] +
-                    "<ul/></div>");
+        if (value[0] !== 'Dream-Configuration') { // XXX
+          render_element.append('<div id="' + value[0] + '" class="tool">' +
+                      value[0].split('-')[1] + "<ul/></div>");
+        };
       });
     };
 
@@ -45,8 +46,28 @@
       priv.plumb.removeElement(element_id);
     };
 
-    priv.initDialog = function(title, element_id) {
+    priv.initDialog = function() {
       $( "#dialog-form" ).dialog({autoOpen: false});
+    };
+
+    priv.initGeneralProperties = function() {
+      var fieldset = $("#general-fieldset"),
+          previous_data = priv.plumb.getData()['general'],
+          previous_value = "",
+          prefix = "General-";
+      fieldset.children().remove()
+      $.each(configuration['Dream-Configuration']['property_list'],
+        function(idx, property){
+          if (property._class === "Dream.Property") {
+            previous_value = previous_data[property.id] || "";
+            if (previous_value.length > 0) {
+              previous_value = ' value="' + previous_value + '"';
+            }
+            fieldset.append("<label>" + property.id + "</label>" +
+                            '<input type="text" name="' + prefix + property.id + '"' +
+                            previous_value + ' id="' + prefix + property.id + '"' +
+                            ' class="text ui-widget-content ui-corner-all"/>');
+      }});
     };
 
     priv.prepareDialogForElement = function(title, element_id) {
@@ -67,11 +88,9 @@
       $("#dialog-fieldset").children().remove()
       var element_id_prefix = element_id.split("_")[0];
       var property_list = configuration[element_id_prefix].property_list || [];
-      console.log("getData on element_id", element_id);
       var previous_data = priv.plumb.getData()["element"];
       previous_data = previous_data[element_id] || {};
       previous_data = previous_data.data || {};
-      console.log("previous_data", previous_data);
       var previous_value;
       var renderField = function(property_list, previous_data, prefix) {
         if (prefix === undefined) {
@@ -113,7 +132,6 @@
             $( this ).dialog( "close" );
           },
           Delete: function() {
-            console.log("Going to delete $(this)", $(this));
             if (confirm("Are you sure you want to delete " + element_id + " ?")) {
               priv.removeElement(element_id);
             }
@@ -175,6 +193,16 @@
         priv.plumb.start();
         priv.displayTool();
         priv.initDialog();
+        priv.initGeneralProperties();
+      }
+    });
+
+    Object.defineProperty(that, "initGeneralProperties", {
+      configurable: false,
+      enumerable: false,
+      writable: false,
+      value: function () {
+        priv.initGeneralProperties();
       }
     });
 
@@ -195,6 +223,60 @@
         priv.plumb.updateElementData(element_id, data);
       }
     });
+
+    function formatForManpy(data) {
+      var manpy_dict = {}, coreObject = [];
+      $.each(data['element'], function(idx, element) { 
+        var clone_element = {};
+        /* clone the element and put content of 'data' at the top level. */
+        $.each(element, function(k, v) { 
+          if (k == 'data') {
+            $.each(v, function(kk, vv) { 
+              clone_element[kk] = vv;
+            });
+          } else {
+            clone_element[k] = v;
+          }
+        });
+        coreObject.push( clone_element );
+      });
+      manpy_dict['coreObject'] = coreObject;
+      manpy_dict['modelResource'] = [];
+      manpy_dict['general'] = data['general'];
+      return manpy_dict;
+    }
+
+    that.setGeneralProperties = function(properties) {
+      priv.plumb.setGeneralProperties(properties);
+    }
+
+    that.getData = function() { return priv.plumb.getData() };
+
+    that.runSimulation = function(callback) {
+       // handle Dream.General properties (in another function maybe ?)
+       var prefix = "General-", properties = {}, prefixed_property_id;
+
+      $.each(configuration['Dream-Configuration']['property_list'],
+        function(idx, property){
+          if (property._class === "Dream.Property") {
+            prefixed_property_id = prefix + property.id;
+            properties[property.id] = $("#" + prefixed_property_id).val();
+          }
+        });
+       priv.plumb.setGeneralProperties(properties);
+
+       var model = formatForManpy(priv.plumb.getData());
+       $.ajax(
+          '/runSimulation', {
+          data: JSON.stringify({json: model}),
+          contentType: 'application/json',
+          type: 'POST',
+          success: function(data, textStatus, jqXHR){
+            callback(data);
+          }
+      });
+    };
+
 
     return that;
   };

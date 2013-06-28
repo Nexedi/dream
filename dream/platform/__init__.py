@@ -1,7 +1,9 @@
+import json
+import subprocess
+from pprint import pformat
 from flask import Flask, jsonify, redirect, url_for
 from flask import request
-from crossdomain import crossdomain
-from util import deunicodeData
+
 app = Flask(__name__)
 
 global data
@@ -21,8 +23,8 @@ def addModel():
 def main(*args):
   app.run(debug=True)
 
+
 @app.route("/someTest", methods=["POST", "OPTIONS"])
-@crossdomain(origin='*')
 def someTest():
   app.logger.debug('someTest')
   app.logger.debug(request)
@@ -33,7 +35,6 @@ def someTest():
   return jsonify(request.json)
 
 @app.route("/setModel", methods=["POST", "OPTIONS"])
-@crossdomain(origin='*')
 def setModel():
   app.logger.debug('setModel')
   data['model'] = request.json
@@ -42,14 +43,12 @@ def setModel():
   return "ok"
 
 @app.route("/updateModel", methods=["POST", "OPTIONS"])
-@crossdomain(origin='*')
 def updateModel():
   app.logger.debug('updateModel')
   data['model'] = request.json
   return "ok"
 
 @app.route("/setSimulationParameters", methods=["POST", "OPTIONS"])
-@crossdomain(origin='*')
 def setSimulationParameters():
   app.logger.debug('setSimulationParameters')
   parameter_dict = request.json
@@ -81,11 +80,25 @@ def _simulate():
   data['model']["throughput"] = throughput
 
 @app.route("/getModel", methods=["GET", "OPTIONS"])
-@crossdomain(origin='*')
 def getModel():
   app.logger.debug('getModel')
   _simulate()
   return jsonify(data['model'])
+
+
+@app.route("/runSimulation", methods=["POST", "OPTIONS"])
+def runSimulation():
+  parameter_dict = request.json['json']
+  app.logger.debug("running with:\n%s" % (pformat(parameter_dict,)))
+  if 0:
+    p = subprocess.Popen(['./bin/dream_simulation', '-', '-'], shell=True, bufsize=8192,
+              stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
+    p.stdin.write(json.dumps(parameter_dict))
+    app.logger.debug(p.stdout.read())
+
+  from dream.simulation.LineGenerationJSON import main
+  return jsonify(json.loads(main(input_data=json.dumps(parameter_dict))))
+
 
 if __name__ == "__main__":
   main()
