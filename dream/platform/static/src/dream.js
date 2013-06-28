@@ -114,7 +114,9 @@
           },
           Delete: function() {
             console.log("Going to delete $(this)", $(this));
-            priv.removeElement(element_id);
+            if (confirm("Are you sure you want to delete " + element_id + " ?")) {
+              priv.removeElement(element_id);
+            }
             $( this ).dialog( "close" );
           },
           Validate: function() {
