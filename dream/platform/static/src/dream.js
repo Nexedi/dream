@@ -225,7 +225,7 @@
     });
 
     function formatForManpy(data) {
-      var manpy_dict = {}, coreObject = [];
+      var manpy_dict = {}, coreObject = [], core_object_dict = {};
       $.each(data['element'], function(idx, element) { 
         var clone_element = {};
         /* clone the element and put content of 'data' at the top level. */
@@ -238,8 +238,21 @@
             clone_element[k] = v;
           }
         });
+        clone_element['predecessorList'] = [];
         coreObject.push( clone_element );
+        /* keep a mapping for predecessorList */
+        core_object_dict[clone_element['id']] = clone_element;
       });
+
+      /* calculate predecessorList from sucessorList.
+       * In the future we have to update ManPy to use sucessorList only
+       */
+      $.each(core_object_dict, function(k, v) {
+        $.each(v['successorList'] || [], function(i, successor) {
+          core_object_dict[successor].predecessorList.push( k );
+        });
+      });
+
       manpy_dict['coreObject'] = coreObject;
       manpy_dict['modelResource'] = [];
       manpy_dict['general'] = data['general'];
