@@ -67,11 +67,14 @@
       });
 
       var updateConnectionData = function(connection, remove) {
-        console.log("updateConnectionData is being called");
         var source_element;
         source_element = priv.element_container[connection.sourceId];
         source_element.successorList = source_element.successorList || [];
-        source_element.successorList.push(connection.targetId);
+        if (remove) {
+          source_element.successorList.splice(source_element.successorList.indexOf(connection.targetId));
+        } else {
+          source_element.successorList.push(connection.targetId);
+        }
         priv.onDataChange();
       };
 
