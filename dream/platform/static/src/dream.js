@@ -173,14 +173,32 @@
       enumerable: false,
       writable: false,
       value: function (element) {
-        var element_id = element.id.split('_')[0]
-        priv.plumb.newElement(element, configuration[element_id]);
+        var element_prefix = element.id.split('_')[0]
+        priv.plumb.newElement(element, configuration[element_prefix]);
         $("#" + element.id).bind('click', function() {
           console.log("bind click on window", $(this));
           $( "#dialog-form" ).dialog( "destroy" ) ;
           priv.prepareDialogForElement(element.id, element.id);
           $( "#dialog-form" ).dialog( "open" );
         });
+        // Store default values
+        var data = {}, property_list = configuration[element_prefix]["property_list"] || [];
+        var updateDefaultData = function(data, property_list) {
+          _.each(property_list, function(element, key) {
+            console.log("going to parse property_list, element", element);
+            if(element._class === "Dream.Property") {
+              data[element.id] = element.default;
+            } else if (element._class === "Dream.PropertyList") {
+              data[element.id] = {};
+              var next_data = data[element.id];
+              var next_property_list = element.property_list || [];
+              updateDefaultData(next_data, next_property_list);
+            }
+          });
+        }
+        updateDefaultData(data, property_list);
+        priv.plumb.updateElementData(element.id, {data: data});
+
       }
     });
 
@@ -193,6 +211,13 @@
         priv.plumb.start();
         priv.displayTool();
         priv.initDialog();
+        // save general configuration default values
+        var general_properties = {};
+        _.each(configuration["Dream-Configuration"].property_list, function(element, key) {
+          console.log("dream.start, parsing general property", element.id);
+          general_properties[element.id] = element.default;
+        });
+        priv.plumb.setGeneralProperties(general_properties);
         priv.initGeneralProperties();
       }
     });
