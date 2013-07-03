@@ -137,6 +137,15 @@
        e.preventDefault();
        return false;
      });
+    $("#clear_all").button().click(
+      function(e){
+       dream_instance.clearAll(
+          function() {
+            dream_instance.clearAll();
+       });
+       e.preventDefault();
+       return false;
+     });
   })
 
 })(jQuery, _);

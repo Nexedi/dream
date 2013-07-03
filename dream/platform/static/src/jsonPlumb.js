@@ -179,6 +179,18 @@
       }
     });
 
+    Object.defineProperty(that, "clearAll", {
+      configurable: false,
+      enumerable: false,
+      writable: false,
+      value: function () {
+        $("[id=render]").children().remove()
+        _.each(_.pairs(priv.element_container), function(element, index) {
+          priv.removeElement(element[0]);
+        });
+      }
+    });
+
     Object.defineProperty(that, "connect", {
       configurable: false,
       enumerable: false,

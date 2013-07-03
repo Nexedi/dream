@@ -40,6 +40,7 @@
                       value[0].split('-')[1] + "<ul/></div>");
         };
       });
+      render_element.append('<p/><a id="clear_all">Clear All</a>');
     };
 
     priv.removeElement = function(element_id) {
@@ -246,6 +247,15 @@
       writable: false,
       value: function (element_id, data) {
         priv.plumb.updateElementData(element_id, data);
+      }
+    });
+
+    Object.defineProperty(that, "clearAll", {
+      configurable: false,
+      enumerable: false,
+      writable: false,
+      value: function () {
+        priv.plumb.clearAll();
       }
     });
 
