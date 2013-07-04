@@ -284,7 +284,7 @@ def main(argv=[], input_data=None):
     setTopology() 
 
     #run the experiment (replications)          
-    for i in range(G.numberOfReplications):
+    for i in xrange(G.numberOfReplications):
         print "start run number "+str(i+1) 
         G.seed+=1
         G.Rnd=Random(G.seed) 
