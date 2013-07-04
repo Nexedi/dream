@@ -20,7 +20,7 @@ def runSimulation():
   app.logger.debug("running with:\n%s" % (pformat(parameter_dict,)))
 
   try:
-    timeout = int(parameter_dict['general']['simulationTimeout'])
+    timeout = int(parameter_dict['general']['processTimeout'])
   except (KeyError, ValueError, TypeError):
     timeout = 60
 

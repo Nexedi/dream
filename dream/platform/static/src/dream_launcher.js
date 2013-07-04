@@ -23,6 +23,7 @@
                               numberOfReplications: {id: "numberOfReplications", type: "string", _class: "Dream.Property", default: "10"},
                               maxSimTime: {id: "maxSimTime", type: "string", _class: "Dream.Property", default: "100"},
                               confidenceLevel: {id: "confidenceLevel", type: "string", _class: "Dream.Property", default: "0.5"},
+                              processTimeout: {id: "processTimeout", type: "string", _class: "Dream.Property", default: "0.5"},
     };
     property_container["interarrivalTime"] =  {id:"interarrivalTime",
                                                property_list: [property_container["mean"], property_container["distributionType"]],
@@ -59,7 +60,8 @@
       },
       "Dream-Configuration": { property_list: [ property_container["numberOfReplications"],
                                                 property_container["maxSimTime"],
-                                                property_container["confidenceLevel"], ],
+                                                property_container["confidenceLevel"],
+                                                property_container["processTimeout"], ],
                                _class: 'Dream.Repairman', },
     }
 
