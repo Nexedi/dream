@@ -127,12 +127,16 @@
       function(e){
        dream_instance.runSimulation(
           function(data) {
-            $("#json_result").text(JSON.stringify(data, undefined, " "));
-            $.each(data.coreObject, function(idx, obj){
-               var e = $("#" + obj.id);
-               /* attach something to each corresponding core object */
-               // e.tooltip(JSON.stringify(obj['results'], undefined, " "));
-            })
+            if (data['success']) {
+              $("#json_result").text(JSON.stringify(data['success'], undefined, " "));
+              $.each(data.coreObject, function(idx, obj){
+                 var e = $("#" + obj.id);
+                 /* attach something to each corresponding core object */
+                 // e.tooltip(JSON.stringify(obj['results'], undefined, " "));
+              })
+            } else {
+              $("#json_result").effect('shake', 50).text(data['traceback']);
+            }
        });
        e.preventDefault();
        return false;
