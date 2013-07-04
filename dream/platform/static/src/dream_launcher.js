@@ -135,7 +135,7 @@
                  // e.tooltip(JSON.stringify(obj['results'], undefined, " "));
               })
             } else {
-              $("#json_result").effect('shake', 50).text(data['traceback']);
+              $("#json_result").effect('shake', 50).text(data['error']);
             }
        });
        e.preventDefault();
