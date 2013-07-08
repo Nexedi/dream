@@ -28,7 +28,6 @@ Models an assembly object
 it gathers frames and parts which are loaded to the frames
 '''
 
-
 from SimPy.Simulation import *
 import xlwt
 from RandomNumberGenerator import RandomNumberGenerator
@@ -50,17 +49,20 @@ class Assembly(Process):
         self.rng.min=time[2]
         self.rng.max=time[3]                    
         self.next=[]        #list with the next objects in the flow
+        self.previous=[]     #list with the previous objects in the flow
         self.previousPart=[]    #list with the previous objects that send parts
         self.previousFrame=[]    #list with the previous objects that send frames 
         self.nextIds=[]     #list with the ids of the next objects in the flow
-        self.previousIds=[]
+        self.previousIds=[]   #list with the ids of the previous objects in the flow
         self.previousPartIds=[]     #list with the ids of the previous objects in the flow that bring parts  
-        self.previousFrameIds=[]     #list with the ids of the previous objects in the flowthat bring frames
+        self.previousFrameIds=[]     #list with the ids of the previous objects in the flow that bring frames
         
         #lists to hold statistics of multiple runs
         self.Waiting=[]
         self.Working=[]
         self.Blockage=[]
+        
+        self.predecessorIndex=0     #holds the index of the predecessor from which the Queue will take an entity next
                
 
     def initialize(self):
@@ -135,21 +137,55 @@ class Assembly(Process):
             
     #checks if the Assembly can accept an entity and there is a Frame waiting for it
     def canAcceptAndIsRequested(self):
-        return len(self.Res.activeQ)==0 and self.previousFrame[0].haveToDispose()     
+        i=0
+        #loop through the predecessors
+        for coreObject in self.previous:
+            #activate only if the predecessor is not empty
+            if(len(coreObject.Res.activeQ)>0):
+                #activate only if the caller carries Frame
+                if(coreObject.Res.activeQ[0].type=='Frame'):
+                    #update the predecessorIndex
+                    self.predecessorIndex=i
+                    return len(self.Res.activeQ)==0 and coreObject.haveToDispose()
+            i=i+1 
+        return False    
     
     #checks if the Assembly can accept an entity and there is a Frame waiting for it
     def isRequestedFromPart(self):
-        return len(self.Res.activeQ)==1 and self.previousPart[0].haveToDispose()   
+        i=0
+        #loop through the predecessors
+        for coreObject in self.previous:
+            #activate only if the predecessor is not empty
+            if(len(coreObject.Res.activeQ)>0):
+                #activate only if the caller carries Part
+                if(coreObject.Res.activeQ[0].type=='Part'):
+                    #update the predecessorIndex
+                    self.predecessorIndex=i
+                    return len(self.Res.activeQ)==1 and coreObject.haveToDispose()
+            i=i+1 
+        return False 
+
+        #activate only if the caller is not empty
+        if(len(thecaller.Res.activeQ)>0):
+            #activate only if the caller carries Part
+            if(thecaller.Res.activeQ[0].type=='Part'):
+                #update the predecessorIndex
+                i=0
+                for coreObject in self.previous:
+                    if coreObject is thecaller:
+                        self.predecessorIndex=i
+                        i=i+1
+                return len(self.Res.activeQ)==1 and thecaller.haveToDispose() 
+        return False  
     
     #checks if the Assembly can dispose an entity to the following object     
     def haveToDispose(self): 
         return len(self.Res.activeQ)>0 and self.waitToDispose                                  
                                             
     #sets the routing in and out elements for the Assembly
-    def defineRouting(self, pp, pf, n):
+    def defineRouting(self, p, n):
         self.next=n
-        self.previousPart=pp
-        self.previousFrame=pf  
+        self.previous=p
     
     #removes an entity from the Assembly
     def removeEntity(self):
@@ -162,12 +198,12 @@ class Assembly(Process):
     #it may handle both Parts and Frames  
     def getEntity(self, type):
         if(type=="Part"):
-            self.Res.activeQ[0].Res.activeQ.append(self.previousPart[0].Res.activeQ[0])    #get the part from the predecessor and append it to the frame!
-            self.previousPart[0].removeEntity()     #remove the part from the previews object
+            self.Res.activeQ[0].Res.activeQ.append(self.previous[self.predecessorIndex].Res.activeQ[0])    #get the part from the predecessor and append it to the frame!
+            self.previous[self.predecessorIndex].removeEntity()     #remove the part from the previews object
             self.outputTrace(self.Res.activeQ[0].Res.activeQ[-1].name, "got into "+ self.objName)                       
         elif(type=="Frame"):
-            self.Res.activeQ.append(self.previousFrame[0].Res.activeQ[0])    #get the frame from the predecessor
-            self.previousFrame[0].removeEntity()   #remove the frame from the previews object
+            self.Res.activeQ.append(self.previous[self.predecessorIndex].Res.activeQ[0])    #get the frame from the predecessor
+            self.previous[self.predecessorIndex].removeEntity()   #remove the frame from the previews object
             self.outputTrace(self.Res.activeQ[0].name, "got into "+ self.objName)
             self.nameLastEntityEntered=self.Res.activeQ[0].name  
             self.timeLastEntityEntered=now()
