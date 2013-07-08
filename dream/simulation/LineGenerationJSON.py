@@ -50,10 +50,10 @@ import os.path
 #reads general simulation inputs
 def readGeneralInput():
     general=G.JSONData['general']
-    G.numberOfReplications=int(general.get('numberOfReplications', 'not found'))
-    G.maxSimTime=float(general.get('maxSimTime', 'not found'))
-    G.trace=general.get('trace', 'not found')
-    G.confidenceLevel=float(general.get('confidenceLevel', 'not found'))
+    G.numberOfReplications=int(general.get('numberOfReplications', '1'))
+    G.maxSimTime=float(general.get('maxSimTime', '100'))
+    G.trace=general.get('trace', 'No')
+    G.confidenceLevel=float(general.get('confidenceLevel', '0.95'))
 
 #creates the simulation objects
 def createObjects():
@@ -80,7 +80,7 @@ def createObjects():
             name = model_resource.get('name', 'not found')
             capacity = int(model_resource.get('capacity', '1'))
             R = Repairman(id, name, capacity)
-            G.RepairmanList.append(R)
+            G.RepairmanList.append(R)                   
     
     #loop through all the core objects    
     #read the data and create them
@@ -120,11 +120,9 @@ def createObjects():
                 for j in range(len(G.RepairmanList)):
                     if(G.RepairmanList[j].id==needRepairman):
                         repairman=G.RepairmanList[j]
-            predecessorList=core_object.get('predecessorList', 'not found')
             successorList=core_object.get('successorList', 'not found')
             M=Machine(id, name, 1, distributionType, [mean,stdev,min,max], failureDistribution,
                                                     MTTF, MTTR, availability, repairman)
-            M.previousIds=predecessorList
             M.nextIds=successorList
             G.MachineList.append(M)
             G.ObjList.append(M)
@@ -132,9 +130,7 @@ def createObjects():
         elif objClass=='Dream.Exit':
             id=core_object.get('id', 'not found')
             name=core_object.get('name', 'not found')
-            predecessorList=core_object.get('predecessorList', 'not found')
             E=Exit(id, name)
-            E.previousIds=predecessorList
             G.ExitList.append(E)
             G.ObjList.append(E)
             
@@ -142,11 +138,9 @@ def createObjects():
             id=core_object.get('id', 'not found')
             name=core_object.get('name', 'not found')
             successorList=core_object.get('successorList', 'not found')
-            predecessorList=core_object.get('predecessorList', 'not found')
             capacity=int(core_object.get('capacity', '1'))
             isDummy=bool(int(core_object.get('isDummy', '0')))
             Q=Queue(id, name, capacity, isDummy)
-            Q.previousIds=predecessorList
             Q.nextIds=successorList
             G.QueueList.append(Q)
             G.ObjList.append(Q)
@@ -160,12 +154,12 @@ def createObjects():
             stdev=float(processingTime.get('stdev', '0'))  
             min=float(processingTime.get('min', '0')) 
             max=float(processingTime.get('max', '0'))
-            predecessorPartList=core_object.get('predecessorPartList', 'not found')
-            predecessorFrameList=core_object.get('predecessorFrameList', 'not found')
+            #predecessorPartList=core_object.get('predecessorPartList', 'not found')
+            #predecessorFrameList=core_object.get('predecessorFrameList', 'not found')
             successorList=core_object.get('successorList', 'not found')
             A=Assembly(id, name, distributionType, [mean,stdev,min,max])
-            A.previousPartIds=predecessorPartList
-            A.previousFrameIds=predecessorFrameList
+            #A.previousPartIds=predecessorPartList
+            #A.previousFrameIds=predecessorFrameList
             A.nextIds=successorList
             G.AssemblyList.append(A)
             G.ObjList.append(A)
@@ -179,13 +173,13 @@ def createObjects():
             stdev=float(processingTime.get('stdev', '0'))  
             min=float(processingTime.get('min', '0')) 
             max=float(processingTime.get('max', '0'))
+            successorList=core_object.get('successorList', 'not found')
             successorPartList=core_object.get('successorPartList', 'not found')
             successorFrameList=core_object.get('successorFrameList', 'not found')
-            predecessorList=core_object.get('predecessorList', 'not found')
             D=Dismantle(id, name, distributionType, [mean,stdev,min,max])
             D.nextPartIds=successorPartList
             D.nextFrameIds=successorFrameList
-            D.previousIds=predecessorList
+            D.nextIds=successorList
             G.DismantleList.append(D)
             G.ObjList.append(D)
             
@@ -195,12 +189,20 @@ def createObjects():
             length=float(core_object.get('length', '10'))
             speed=float(core_object.get('speed', '1'))
             successorList=core_object.get('successorList', 'not found')
-            predecessorList=core_object.get('predecessorList', 'not found')
             C=Conveyer(id, name, length, speed)
-            C.previousIds=predecessorList
             C.nextIds=successorList
             G.ObjList.append(C)
             G.ConveyerList.append(C)
+            
+    #loop through all the core objects    
+    #to read predecessors
+    for core_object in G.ObjList:
+        #loop through all the nextIds of the object
+        for nextId in core_object.nextIds:
+            #loop through all the core objects to find the on that has the id that was read in the successorList
+            for possible_successor in G.ObjList:
+                if possible_successor.id==nextId:
+                    possible_successor.previousIds.append(core_object.id)            
 
 #defines the topology (predecessors and successors for all the objects)
 def setTopology():
@@ -223,22 +225,7 @@ def setTopology():
             core_object.defineRouting(next)
         elif core_object.type=="Exit":
             core_object.defineRouting(previous)
-            
-        #Assembly should be changed to identify what the entity that it receives is.
-        #previousPart and previousFrame will become problematic    
-        elif core_object.type=="Assembly":
-            previousPart=[]
-            previousFrame=[]
-            for j in range(len(core_object.previousPartIds)):
-                for q in range(len(G.ObjList)):
-                    if G.ObjList[q].id==core_object.previousPartIds[j]:
-                        previousPart.append(G.ObjList[q])
-            for j in range(len(core_object.previousFrameIds)):
-                for q in range(len(G.ObjList)):
-                    if G.ObjList[q].id==core_object.previousFrameIds[j]:
-                        previousFrame.append(G.ObjList[q])
-            core_object.defineRouting(previousPart, previousFrame, next)
-        #Dispatch should be changed to identify what the the successor is.
+        #Dismantle should be changed to identify what the the successor is.
         #nextPart and nextFrame will become problematic    
         elif core_object.type=="Dismantle":
             nextPart=[]
@@ -301,6 +288,7 @@ def main(argv=[], input_data=None):
     createObjects()
     setTopology() 
 
+    
     #run the experiment (replications)          
     for i in xrange(G.numberOfReplications):
         print "start run number "+str(i+1) 
@@ -321,6 +309,7 @@ def main(argv=[], input_data=None):
         for model_resource in G.RepairmanList:
             model_resource.postProcessing(G.maxSimTime)
             
+        '''    
         #output trace to excel
         if(G.trace=="Yes"):
             G.traceFile.save('trace'+str(i+1)+'.xls')
@@ -328,12 +317,12 @@ def main(argv=[], input_data=None):
             G.sheetIndex=1    #index that shows in what sheet we are
             G.traceFile = xlwt.Workbook()     #create excel file
             G.traceSheet = G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)  #create excel sheet
-    
+        
     G.outputSheet.write(G.outputIndex,0, "Execution Time")
     G.outputSheet.write(G.outputIndex,1, str(time.time()-start)+" seconds")
     G.outputIndex+=2 
-
-
+    '''
+    
     G.outputJSONFile=open('outputJSON.json', mode='w')
     G.outputJSON['_class'] = 'Dream.Simulation';
     G.outputJSON['general'] ={};
@@ -360,7 +349,7 @@ def main(argv=[], input_data=None):
     outputJSONString=outputJSONString.replace("'", '"')
     G.outputJSONFile.write(str(outputJSONString))
        
-        
+    '''    
     #output data to excel for every object in the topology         
     for core_object in G.ObjList:
         core_object.outputResultsXL(G.maxSimTime)
@@ -368,11 +357,14 @@ def main(argv=[], input_data=None):
     #output data to excel for every resource in the topology         
     for model_resource in G.RepairmanList:
         model_resource.outputResultsXL(G.maxSimTime)
-
+      
     G.outputFile.save("output.xls")      
+    '''
+    
     print "execution time="+str(time.time()-start)  
     if input_data:
       return outputJSONString
         
 if __name__ == '__main__':
     main()
+
