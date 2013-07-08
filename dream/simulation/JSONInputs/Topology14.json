@@ -3,7 +3,7 @@
     "_class": "Dream.Configuration",
     "numberOfReplications": "1",
     "maxSimTime": "1440",
-    "trace": "Yes",
+    "trace": "No",
     "confidenceLevel": "0.95"
   },
     "modelResource": [
@@ -18,7 +18,7 @@
            "mean": "0.5"
          },
       "entity": "Part",
-      "successorList": ["Α1"]
+      "successorList": ["A1"]
       },
      {"_class": "Dream.Source",
       "id": "S2",
@@ -29,7 +29,7 @@
            "mean": "2"
          },
       "entity": "Frame",
-      "successorList": ["Α1"]
+      "successorList": ["A1"]
       },
      {"_class": "Dream.Assembly",
       "id": "A1",
@@ -38,8 +38,6 @@
         "distributionType": "Fixed",
         "mean": "2"
         },
-	  "predecessorPartList": ["S1"],
-	  "predecessorFrameList": ["S2"],
       "successorList": ["M1"]
       },
      {"_class": "Dream.Machine",
@@ -55,7 +53,6 @@
 		   "MTTR": "5",
 		   "repairman": "None"
         },
-	  "predecessorList": ["A1"],
       "successorList": ["D1"]
       },
 	 {"_class": "Dream.Dismantle",
@@ -67,7 +64,7 @@
         },
 	  "successorPartList": ["M3"],
 	  "successorFrameList": ["M2"],
-      "predecessorList": ["M1"]
+      "successorList": ["M2","M3"]
       },
 
      {"_class": "Dream.Machine",
@@ -83,7 +80,6 @@
 		   "MTTR": "5",
 		   "repairman": "None"
         },
-	  "predecessorList": ["D1"],
       "successorList": ["E1"]
       },
 
@@ -100,19 +96,16 @@
 		   "MTTR": "5",
 		   "repairman": "None"
         },
-	  "predecessorList": ["D1"],
       "successorList": ["E2"]
       },	  
 	  
      {"_class": "Dream.Exit",
       "id": "E1",
-      "name": "Parts Stock",
-	  "predecessorList": ["M2"]
+      "name": "Parts Stock"
       },	  
 	 {"_class": "Dream.Exit",
       "id": "E2",
-      "name": "Frames Stock",
-	  "predecessorList": ["M3"]
+      "name": "Frames Stock"
      }
   ]
 }
