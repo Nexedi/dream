@@ -4,7 +4,7 @@
         "_class": "Dream.Configuration",
         "numberOfReplications": "1",
         "maxSimTime": "1440",
-        "trace": "Yes",
+        "trace": "No",
         "confidenceLevel": "0.95"
     },
     "modelResource": [
@@ -41,7 +41,6 @@
                 "MTTR": "5",
                 "repairman": "W1"
             },
-            "predecessorList": ["Q1"],
             "successorList": ["M3","M4"]
         },
         {
@@ -58,7 +57,6 @@
                 "MTTR": "10",
                 "repairman": "W1"
             },
-            "predecessorList": ["Q1"],
             "successorList": ["M3","M4"]
         },
         {
@@ -72,7 +70,6 @@
             "failures": {
                 "failureDistribution": "No"
             },
-            "predecessorList": ["M1","M2"],
             "successorList": ["E1"]
         },
         {
@@ -86,7 +83,6 @@
             "failures": {
                 "failureDistribution": "No"
             },
-            "predecessorList": ["M1","M2"],
             "successorList": ["E1"]
         },
         {
@@ -95,7 +91,6 @@
             "name": "DummyQ",
             "isDummy": "1",
             "capacity": "1",
-            "predecessorList": ["S1"],
             "successorList": ["Q1"]
         },
         {
@@ -104,14 +99,12 @@
             "name": "Q1",
             "isDummy": "0",
             "capacity": "1",
-            "predecessorList": ["DummyQ"],
             "successorList": ["M1","M2"]
         },
         {
             "_class": "Dream.Exit",
             "id": "E1",
-            "name": "Stock",
-            "predecessorList": ["M3","M4"]
+            "name": "Stock"
         }
     ]
 }

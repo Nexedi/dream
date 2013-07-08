@@ -3,7 +3,7 @@
     "_class": "Dream.Configuration",
     "numberOfReplications": "1",
     "maxSimTime": "1440",
-    "trace": "Yes",
+    "trace": "No",
     "confidenceLevel": "0.95"
   },
   "modelResource": [
@@ -38,7 +38,6 @@
 		   "MTTR": "5",
 		   "repairman": "W1"
         },
-	  "predecessorList": ["DummyQ"],
       "successorList": ["C1"]
       },
      {"_class": "Dream.Machine",
@@ -54,7 +53,6 @@
 		   "MTTR": "10",
 		   "repairman": "W1"
         },
-	  "predecessorList": ["C1"],
       "successorList": ["M3"]
       },
      {"_class": "Dream.Queue",
@@ -62,7 +60,6 @@
       "name": "DummyQ",
 	  "isDummy": "1",
 	  "capacity": "1",
-	  "predecessorList": ["S1"],
 	  "successorList": ["M1"]
       },	
      {"_class": "Dream.Conveyer",
@@ -70,7 +67,6 @@
       "name": "C1",
 	  "length": "8",
 	  "speed": "1",
-	  "predecessorList": ["M1"],
 	  "successorList": ["M2"]
       },
      {"_class": "Dream.Machine",
@@ -86,13 +82,11 @@
 		   "MTTR": "10",
 		   "repairman": "W1"
         },
-	  "predecessorList": ["M2"],
       "successorList": ["E1"]
       },	  
      {"_class": "Dream.Exit",
       "id": "E1",
-      "name": "Stock",
-	  "predecessorList": ["M3"]
+      "name": "Stock"
      }
   ]
 }
