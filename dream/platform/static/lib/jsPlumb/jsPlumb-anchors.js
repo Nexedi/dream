@@ -1,7 +1,7 @@
 /*
  * jsPlumb
  * 
- * Title:jsPlumb 1.4.0
+ * Title:jsPlumb 1.4.1
  * 
  * Provides a way to visually connect elements on an HTML page, using either SVG, Canvas
  * elements, or VML.  
@@ -108,23 +108,24 @@
         
                 return a;
             },
-            // used by edgeSortFunctions
-            standardEdgeSort = function(a, b) { return a[0] > b[0] ? 1 : -1 },
             // used by edgeSortFunctions        
             currySort = function(reverseAngles) {
                 return function(a,b) {
                     var r = true;
                     if (reverseAngles) {
-                        if (a[0][0] < b[0][0])
+                        /*if (a[0][0] < b[0][0])
                             r = true;
                         else
-                            r = a[0][1] > b[0][1];
+                            r = a[0][1] > b[0][1];*/
+                        r = a[0][0] < b[0][0];
                     }
                     else {
-                        if (a[0][0] > b[0][0])
+                        /*if (a[0][0] > b[0][0])
                             r= true;
                         else
                             r =a[0][1] > b[0][1];
+                        */
+                        r = a[0][0] > b[0][0];
                     }
                     return r === false ? -1 : 1;
                 };
@@ -139,15 +140,13 @@
             },
                 // used by placeAnchors
             edgeSortFunctions = {
-                "top":standardEdgeSort,
+                "top":function(a, b) { return a[0] > b[0] ? 1 : -1 },
                 "right":currySort(true),
                 "bottom":currySort(true),
                 "left":leftSort
             },
                 // used by placeAnchors
-            _sortHelper = function(_array, _fn) {
-              return _array.sort(_fn);
-            },
+            _sortHelper = function(_array, _fn) { return _array.sort(_fn); },
                 // used by AnchorManager.redraw
             placeAnchors = function(elementId, _anchorLists) {		
                 var cd = jsPlumbInstance.getCachedData(elementId), sS = cd.s, sO = cd.o,
@@ -210,10 +209,21 @@
             if (doRegisterTarget)
             	registerConnection(1, ep[1], ep[1].anchor, sourceId, conn);
 		};
+        var removeEndpointFromAnchorLists = function(endpoint) {
+            (function(list, eId) {
+                if (list) {  // transient anchors dont get entries in this list.
+                    var f = function(e) { return e[4] == eId; };
+                    jsPlumbUtil.removeWithFunction(list["top"], f);
+                    jsPlumbUtil.removeWithFunction(list["left"], f);
+                    jsPlumbUtil.removeWithFunction(list["bottom"], f);
+                    jsPlumbUtil.removeWithFunction(list["right"], f);
+                }
+            })(anchorLists[endpoint.elementId], endpoint.id);
+        };
 		this.connectionDetached = function(connInfo) {
             var connection = connInfo.connection || connInfo,
-			    sourceId = connection.sourceId,
-                targetId = connection.targetId,
+			    sourceId = connInfo.sourceId,
+                targetId = connInfo.targetId,
 				ep = connection.endpoints,
 				removeConnection = function(otherIndex, otherEndpoint, otherAnchor, elId, c) {
 					if (otherAnchor.constructor == jsPlumb.FloatingAnchor) {
@@ -229,25 +239,12 @@
 			removeConnection(1, ep[1], ep[1].anchor, sourceId, connection);
 			removeConnection(0, ep[0], ep[0].anchor, targetId, connection);
 
-            // remove from anchorLists
-            var sEl = connection.sourceId,
-                tEl = connection.targetId,
-                sE =  connection.endpoints[0].id,
-                tE = connection.endpoints[1].id,
-                _remove = function(list, eId) {
-                    if (list) {  // transient anchors dont get entries in this list.
-                        var f = function(e) { return e[4] == eId; };
-                        jsPlumbUtil.removeWithFunction(list["top"], f);
-                        jsPlumbUtil.removeWithFunction(list["left"], f);
-                        jsPlumbUtil.removeWithFunction(list["bottom"], f);
-                        jsPlumbUtil.removeWithFunction(list["right"], f);
-                    }
-                };
-            
-            _remove(anchorLists[sEl], sE);
-            _remove(anchorLists[tEl], tE);
-            self.redraw(sEl);
-            self.redraw(tEl);
+            // remove from anchorLists            
+            removeEndpointFromAnchorLists(connection.endpoints[0]);
+            removeEndpointFromAnchorLists(connection.endpoints[1]);
+
+            self.redraw(connection.sourceId);
+            self.redraw(connection.targetId);
 		};
 		this.add = function(endpoint, elementId) {
 			jsPlumbUtil.addToList(_amEndpoints, elementId, endpoint);
@@ -268,6 +265,7 @@
 			jsPlumbUtil.removeWithFunction(_amEndpoints[endpoint.elementId], function(e) {
 				return e.id == endpoint.id;
 			});
+            removeEndpointFromAnchorLists(endpoint);
 		};
 		this.clearFor = function(elementId) {
 			delete _amEndpoints[elementId];
@@ -297,6 +295,7 @@
                     for (var i = 0; i < listToRemoveFrom.length; i++) {
                         jsPlumbUtil.addWithFunction(connsToPaint, listToRemoveFrom[i][1], function(c) { return c.id == listToRemoveFrom[i][1].id });
                         jsPlumbUtil.addWithFunction(endpointsToPaint, listToRemoveFrom[i][1].endpoints[idx], function(e) { return e.id == listToRemoveFrom[i][1].endpoints[idx].id });
+                        jsPlumbUtil.addWithFunction(endpointsToPaint, listToRemoveFrom[i][1].endpoints[oIdx], function(e) { return e.id == listToRemoveFrom[i][1].endpoints[oIdx].id });
                     }
                 }
             }
@@ -306,6 +305,7 @@
                     firstMatchingElIdx = i;
                 jsPlumbUtil.addWithFunction(connsToPaint, listToAddTo[i][1], function(c) { return c.id == listToAddTo[i][1].id });                
                 jsPlumbUtil.addWithFunction(endpointsToPaint, listToAddTo[i][1].endpoints[idx], function(e) { return e.id == listToAddTo[i][1].endpoints[idx].id });
+                jsPlumbUtil.addWithFunction(endpointsToPaint, listToAddTo[i][1].endpoints[oIdx], function(e) { return e.id == listToAddTo[i][1].endpoints[oIdx].id });
             }
             if (exactIdx != -1) {
                 listToAddTo[exactIdx] = values;
@@ -342,7 +342,6 @@
 									
 				// valid for one paint cycle.
 				var myOffset = jsPlumbInstance.updateOffset( { elId : elementId, offset : ui, recalc : false, timestamp : timestamp }),
-	                myWH = jsPlumbInstance.getSize(elementId),
 	                orientationCache = {};
 				
 				// actually, first we should compute the orientation of this element to all other elements to which
@@ -426,7 +425,7 @@
 	            // TODO performance: add the endpoint ids to a temp array, and then when iterating in the next
 	            // loop, check that we didn't just paint that endpoint. we can probably shave off a few more milliseconds this way.
 				for (var i = 0; i < ep.length; i++) {				
-                    ep[i].paint( { timestamp : timestamp, offset : myOffset, dimensions : myWH });
+                    ep[i].paint( { timestamp : timestamp, offset : myOffset, dimensions : myOffset.s });
 				}
 	            // ... and any other endpoints we came across as a result of the continuous anchors.
 	            for (var i = 0; i < endpointsToPaint.length; i++) {
@@ -475,6 +474,7 @@
 		};
         
         var ContinuousAnchor = function(anchorParams) {
+            jsPlumbUtil.EventGenerator.apply(this);
             this.type = "Continuous";
             this.isDynamic = true;
             this.isContinuous = true;
@@ -485,7 +485,8 @@
                 clockwiseOptions = { "top":"right", "right":"bottom","left":"top","bottom":"left" },
                 antiClockwiseOptions = { "top":"left", "right":"top","left":"bottom","bottom":"right" },
                 secondBest = clockwise ? clockwiseOptions : antiClockwiseOptions,
-                lastChoice = clockwise ? antiClockwiseOptions : clockwiseOptions;
+                lastChoice = clockwise ? antiClockwiseOptions : clockwiseOptions,
+                cssClass = anchorParams.cssClass || "";
             
             for (var i = 0; i < faces.length; i++) { availableFaces[faces[i]] = true; }
           
@@ -514,6 +515,8 @@
             this.setUserDefinedLocation = function(loc) { 
                 userDefinedContinuousAnchorLocations[anchorParams.elementId] = loc; 
             };            
+            this.getCssClass = function() { return cssClass; };
+            this.setCssClass = function(c) { cssClass = c; };
         };        
         
         // continuous anchors
@@ -539,11 +542,16 @@
         var self = this;
         this.x = params.x || 0;
         this.y = params.y || 0;
-        this.elementId = params.elementId;
+        this.elementId = params.elementId;        
+
+        jsPlumbUtil.EventGenerator.apply(this);
         
         var orientation = params.orientation || [ 0, 0 ],
             jsPlumbInstance = params.jsPlumbInstance,
-            lastTimestamp = null, lastReturnValue = null, userDefinedLocation = null;
+            lastTimestamp = null, lastReturnValue = null, userDefinedLocation = null,
+            cssClass = params.cssClass || "";
+
+        this.getCssClass = function() { return cssClass; };
         
         this.offsets = params.offsets || [ 0, 0 ];
         self.timestamp = null;        
@@ -685,22 +693,24 @@
      * feature for some applications.
      * 
      */
-    jsPlumb.DynamicAnchor = function(anchors, anchorSelector, elementId, jsPlumbInstance) {
+    jsPlumb.DynamicAnchor = function(params) {
         jsPlumb.Anchor.apply(this, arguments);
         
         this.isSelective = true;
         this.isDynamic = true;			
-        var _anchors = [], self = this,
-        _convert = function(anchor) { 
-            return anchor.constructor == jsPlumb.Anchor ? anchor: jsPlumbInstance.makeAnchor(anchor, elementId, jsPlumbInstance); 
-        };
-        for (var i = 0; i < anchors.length; i++) 
-            _anchors[i] = _convert(anchors[i]);			
+        var _anchors = [], self = this,            
+            _convert = function(anchor) { 
+                return anchor.constructor == jsPlumb.Anchor ? anchor: params.jsPlumbInstance.makeAnchor(anchor, params.elementId, params.jsPlumbInstance); 
+            };
+
+        for (var i = 0; i < params.anchors.length; i++) 
+            _anchors[i] = _convert(params.anchors[i]);			
         this.addAnchor = function(anchor) { _anchors.push(_convert(anchor)); };
         this.getAnchors = function() { return _anchors; };
         this.locked = false;
         var _curAnchor = _anchors.length > 0 ? _anchors[0] : null,
             _curIndex = _anchors.length > 0 ? 0 : -1,
+            _lastAnchor = _curAnchor,
             self = this,
         
             // helper method to calculate the distance between the centers of the two elements.
@@ -717,7 +727,7 @@
             // txy - xy loc of the element of the other anchor in the connection
             // twh - dimensions of the element of the other anchor in the connection.
             // anchors - the list of selectable anchors
-            _anchorSelector = anchorSelector || function(xy, wh, txy, twh, anchors) {
+            _anchorSelector = params.selector || function(xy, wh, txy, twh, anchors) {
                 var cx = txy[0] + (twh[0] / 2), cy = txy[1] + (twh[1] / 2);
                 var minIdx = -1, minDist = Infinity;
                 for ( var i = 0; i < anchors.length; i++) {
@@ -751,7 +761,12 @@
             
             _curAnchor = _anchorSelector(xy, wh, txy, twh, _anchors);
             self.x = _curAnchor.x;
-            self.y = _curAnchor.y;
+            self.y = _curAnchor.y;        
+
+            if (_curAnchor != _lastAnchor)
+                self.fire("anchorChanged", _curAnchor);
+
+            _lastAnchor = _curAnchor;
             
             return _curAnchor.compute(params);
         };
@@ -763,6 +778,8 @@
         this.getOrientation = function(_endpoint) { return _curAnchor != null ? _curAnchor.getOrientation(_endpoint) : [ 0, 0 ]; };
         this.over = function(anchor) { if (_curAnchor != null) _curAnchor.over(anchor); };
         this.out = function() { if (_curAnchor != null) _curAnchor.out(); };
+
+        this.getCssClass = function() { return (_curAnchor && _curAnchor.getCssClass()) || ""; };
     };            
     
 // -------- basic anchors ------------------    
@@ -779,7 +796,7 @@
     _curryAnchor(0.5, 1, 0, 1, "BottomCenter");
     _curryAnchor(0, 0.5, -1, 0, "LeftMiddle");
     _curryAnchor(1, 0.5, 1, 0, "RightMiddle");
-    // from 1.4.0: Top, Right, Bottom, Left
+    // from 1.4.1: Top, Right, Bottom, Left
     _curryAnchor(0.5, 0, 0,-1, "Top");
     _curryAnchor(0.5, 1, 0, 1, "Bottom");
     _curryAnchor(0, 0.5, -1, 0, "Left");

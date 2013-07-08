@@ -124,13 +124,16 @@
 
         var makeConnector = function(renderMode, connectorName, connectorArgs) {
             var c = new Object();
+            if (!_jsPlumb.Defaults.DoNotThrowErrors && jsPlumb.Connectors[connectorName] == null)
+                    throw { msg:"jsPlumb: unknown connector type '" + connectorName + "'" };
+
             jsPlumb.Connectors[connectorName].apply(c, [connectorArgs]);
             jsPlumb.ConnectorRenderers[renderMode].apply(c, [connectorArgs]);	
             return c;
         };                        
                 
         this.setConnector = function(connectorSpec, doNotRepaint) {
-            if (connector != null) jsPlumbUtil.removeElements(connector.getDisplayElements());
+            if (connector != null) _ju.removeElements(connector.getDisplayElements());
             var connectorArgs = { 
                 _jsPlumb:self._jsPlumb, 
                 parent:params.parent, 
@@ -147,7 +150,7 @@
                 if (connectorSpec.length == 1)
                     connector = makeConnector(renderMode, connectorSpec[0], connectorArgs);
                 else
-                    connector = makeConnector(renderMode, connectorSpec[0], jsPlumbUtil.merge(connectorSpec[1], connectorArgs));
+                    connector = makeConnector(renderMode, connectorSpec[0], _ju.merge(connectorSpec[1], connectorArgs));
             }
             // binds mouse listeners to the current connector.
             self.bindListeners(connector, self, _internalHover);
@@ -298,30 +301,32 @@
         var _suspendedAt = _jsPlumb.getSuspendedAt();
         _jsPlumb.updateOffset( { elId : this.sourceId, timestamp:_suspendedAt });
         _jsPlumb.updateOffset( { elId : this.targetId, timestamp:_suspendedAt });
-        
-        // paint the endpoints
-        var myInfo = _jsPlumb.getCachedData(this.sourceId),
-            myOffset = myInfo.o, myWH = myInfo.s,
-            otherInfo = _jsPlumb.getCachedData(this.targetId),
-            otherOffset = otherInfo.o,
-            otherWH = otherInfo.s,
-            initialTimestamp = _suspendedAt || _jsPlumb.timestamp(),
-            anchorLoc = this.endpoints[0].anchor.compute( {
-                xy : [ myOffset.left, myOffset.top ], wh : myWH, element : this.endpoints[0],
-                elementId:this.endpoints[0].elementId,
-                txy : [ otherOffset.left, otherOffset.top ], twh : otherWH, tElement : this.endpoints[1],
-                timestamp:initialTimestamp
+
+        if(!_jsPlumb.isSuspendDrawing()) {                    
+            // paint the endpoints
+            var myInfo = _jsPlumb.getCachedData(this.sourceId),
+                myOffset = myInfo.o, myWH = myInfo.s,
+                otherInfo = _jsPlumb.getCachedData(this.targetId),
+                otherOffset = otherInfo.o,
+                otherWH = otherInfo.s,
+                initialTimestamp = _suspendedAt || _jsPlumb.timestamp(),
+                anchorLoc = this.endpoints[0].anchor.compute( {
+                    xy : [ myOffset.left, myOffset.top ], wh : myWH, element : this.endpoints[0],
+                    elementId:this.endpoints[0].elementId,
+                    txy : [ otherOffset.left, otherOffset.top ], twh : otherWH, tElement : this.endpoints[1],
+                    timestamp:initialTimestamp
+                });
+
+            this.endpoints[0].paint( { anchorLoc : anchorLoc, timestamp:initialTimestamp });
+
+            anchorLoc = this.endpoints[1].anchor.compute( {
+                xy : [ otherOffset.left, otherOffset.top ], wh : otherWH, element : this.endpoints[1],
+                elementId:this.endpoints[1].elementId,				
+                txy : [ myOffset.left, myOffset.top ], twh : myWH, tElement : this.endpoints[0],
+                timestamp:initialTimestamp				
             });
-
-        this.endpoints[0].paint( { anchorLoc : anchorLoc, timestamp:initialTimestamp });
-
-        anchorLoc = this.endpoints[1].anchor.compute( {
-            xy : [ otherOffset.left, otherOffset.top ], wh : otherWH, element : this.endpoints[1],
-            elementId:this.endpoints[1].elementId,				
-            txy : [ myOffset.left, myOffset.top ], twh : myWH, tElement : this.endpoints[0],
-            timestamp:initialTimestamp				
-        });
-        this.endpoints[1].paint({ anchorLoc : anchorLoc, timestamp:initialTimestamp });
+            this.endpoints[1].paint({ anchorLoc : anchorLoc, timestamp:initialTimestamp });
+        }
                                 
 // END INITIALISATION CODE			
         
@@ -451,8 +456,6 @@
                         targetPos:tAnchorP, 
                         sourceEndpoint:this.endpoints[sIdx],
                         targetEndpoint:this.endpoints[tIdx],
-                        sourceAnchor:this.endpoints[sIdx].anchor,
-                        targetAnchor:this.endpoints[tIdx].anchor, 
                         lineWidth:self.paintStyleInUse.lineWidth,                        					
                         sourceInfo:sourceInfo,
                         targetInfo:targetInfo,
@@ -478,8 +481,8 @@
                         }
                     }
 
-                    var lineWidth = (self.paintStyleInUse.lineWidth || 1) / 2,
-                        outlineWidth = self.paintStyleInUse.lineWidth || 0,
+                    var lineWidth = parseFloat(self.paintStyleInUse.lineWidth || 1) / 2,
+                        outlineWidth = parseFloat(self.paintStyleInUse.lineWidth || 0),
                         extents = {
                             xmin : Math.min(connector.bounds.minX - (lineWidth + outlineWidth), overlayExtents.minX),
                             ymin : Math.min(connector.bounds.minY - (lineWidth + outlineWidth), overlayExtents.minY),

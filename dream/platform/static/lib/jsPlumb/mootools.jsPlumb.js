@@ -1,7 +1,7 @@
 /*
  * jsPlumb
  * 
- * Title:jsPlumb 1.4.0
+ * Title:jsPlumb 1.4.1
  * 
  * Provides a way to visually connect elements on an HTML page, using either SVG, Canvas
  * elements, or VML.  
@@ -257,7 +257,7 @@
 			return el.hasClass(clazz);
 		},
 		
-		initDraggable : function(el, options, isPlumbedComponent) {
+		initDraggable : function(el, options, isPlumbedComponent, _jsPlumb) {
 			var id = jsPlumb.getId(el);
 			var drag = _draggablesById[id];
 			if (!drag) {
@@ -386,6 +386,10 @@
 		 */
 		setAttribute : function(el, attName, attValue) {
 			el.set(attName, attValue);
+		},
+
+		setDragFilter : function(el, filter) {
+			jsPlumb.log("NOT IMPLEMENTED: setDragFilter")
 		},
 		
 		setDraggable : function(el, draggable) {

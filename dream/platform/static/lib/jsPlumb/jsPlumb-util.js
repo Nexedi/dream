@@ -1,7 +1,7 @@
 /*
  * jsPlumb
  * 
- * Title:jsPlumb 1.4.0
+ * Title:jsPlumb 1.4.1
  * 
  * Provides a way to visually connect elements on an HTML page, using either SVG or VML.  
  * 
@@ -27,14 +27,18 @@
         isArray : function(a) {
             return Object.prototype.toString.call(a) === "[object Array]";	
         },
+        isNumber : function(n) {
+            return Object.prototype.toString.call(n) === "[object Number]";  
+        },
         isString : function(s) {
             return typeof s === "string";
         },
         isBoolean: function(s) {
             return typeof s === "boolean";
         },
+        isNull : function(s) { return s == null; },  
         isObject : function(o) {
-            return Object.prototype.toString.call(o) === "[object Object]";	
+            return o == null ? false : Object.prototype.toString.call(o) === "[object Object]";	
         },
         isDate : function(o) {
             return Object.prototype.toString.call(o) === "[object Date]";
@@ -85,6 +89,10 @@
             }
             return c;
         },
+        copyValues:function(names, from, to) {
+            for (var i = 0; i < names.length; i++)
+                to[names[i]] = from[names[i]];
+        },
         //
         // chain a list of functions, supplied by [ object, method name, args ], and return on the first
         // one that returns the failValue. if none return the failValue, return the successValue.
@@ -106,7 +114,7 @@
                     if (matches != null) {
                         for (var i = 0; i < matches.length; i++) {
                             var val = values[matches[i].substring(2, matches[i].length - 1)];
-                            if (val) {
+                            if (val != null) {
                                 fromString = fromString.replace(matches[i], val);
                             }
                         }							

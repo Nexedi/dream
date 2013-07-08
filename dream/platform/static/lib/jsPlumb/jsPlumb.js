@@ -1,7 +1,7 @@
 /*
  * jsPlumb
  * 
- * Title:jsPlumb 1.4.0
+ * Title:jsPlumb 1.4.1
  * 
  * Provides a way to visually connect elements on an HTML page, using either SVG, Canvas
  * elements, or VML.  
@@ -87,6 +87,11 @@
 			
 			// all components can generate events
 			jsPlumbUtil.EventGenerator.apply(this);
+			if (params.events) {
+				for (var i in params.events)
+					self.bind(i, params.events[i]);
+			}
+
 			// all components get this clone function.
 			// TODO issue 116 showed a problem with this - it seems 'a' that is in
 			// the clone function's scope is shared by all invocations of it, the classic
@@ -111,7 +116,7 @@
 			// is performed; returning false prevents the detach.
 			var beforeDetach = params.beforeDetach;
 			this.isDetachAllowed = function(connection) {
-				var r = self._jsPlumb.checkCondition("beforeDetach", connection );
+				var r = true;
 				if (beforeDetach) {
 					try { 
 						r = beforeDetach(connection); 
@@ -241,8 +246,10 @@
                     }
 		   		 	if (hoverPaintStyle != null) {
 						self.paintStyleInUse = hover ? hoverPaintStyle : paintStyle;
-						timestamp = timestamp || _timestamp();
-						self.repaint({timestamp:timestamp, recalc:false});
+						if (!self._jsPlumb.isSuspendDrawing()) {
+							timestamp = timestamp || _timestamp();
+							self.repaint({timestamp:timestamp, recalc:false});
+						}
 					}
 					// get the list of other affected elements, if supported by this component.
 					// for a connection, its the endpoints.  for an endpoint, its the connections! surprise.
@@ -269,7 +276,9 @@
                         _self.fire("mouseexit", _self, e);
                     }
                 });	  
-            }
+                obj.bind("mousedown", function(ep, e) { _self.fire("mousedown", _self, e); });
+                obj.bind("mouseup", function(ep, e) { _self.fire("mouseup", _self, e); });
+            };
 		
 			var jpcl = jsPlumb.CurrentLibrary,
 				events = [ "click", "dblclick", "mouseenter", "mouseout", "mousemove", "mousedown", "mouseup", "contextmenu" ],
@@ -331,7 +340,11 @@
 						if (!doNotRepaint) self.repaint();
 					}
 				};
-				
+			
+			/*
+				Function: setType	
+				Sets the type, removing all existing types.
+			*/
 			self.setType = function(typeId, params, doNotRepaint) {				
 				_types = _splitType(typeId) || [];
 				_applyTypes(params, doNotRepaint);									
@@ -344,11 +357,23 @@
 			self.getType = function() {
 				return _types;
 			};
+
+			/**
+				Function: reapplyTypes
+				Reapply all existing types, but with the given new params.
+			*/
+			self.reapplyTypes = function(params, doNotRepaint) {
+				_applyTypes(params, doNotRepaint);
+			};
 			
 			self.hasType = function(typeId) {
 				return jsPlumbUtil.indexOf(_types, typeId) != -1;
 			};
 			
+			/*
+				Function: addType
+				adds a type. will not be re-added it already exists.
+			*/
 			self.addType = function(typeId, params, doNotRepaint) {
 				var t = _splitType(typeId), _cont = false;
 				if (t != null) {
@@ -413,8 +438,7 @@
             this.removeClass = function(clazz) {
                 if (self.canvas != null)
                     _removeClass(self.canvas, clazz);
-            };            
-            
+            };                    
 		},
 
 		overlayCapableJsPlumbUIComponent = window.overlayCapableJsPlumbUIComponent = function(params) {
@@ -432,12 +456,7 @@
 						// make a copy of the object so as not to mess up anyone else's reference...
 						p = jsPlumb.extend({component:self, _jsPlumb:self._jsPlumb}, o[1]);
 					if (o.length == 3) jsPlumb.extend(p, o[2]);
-					_newOverlay = new jsPlumb.Overlays[self._jsPlumb.getRenderMode()][type](p);
-					if (p.events) {
-						for (var evt in p.events) {
-							_newOverlay.bind(evt, p.events[evt]);
-						}
-					}
+					_newOverlay = new jsPlumb.Overlays[self._jsPlumb.getRenderMode()][type](p);					
 				} else if (o.constructor == String) {
 					_newOverlay = new jsPlumb.Overlays[self._jsPlumb.getRenderMode()][o]({component:self, _jsPlumb:self._jsPlumb});
 				} else {
@@ -621,39 +640,7 @@
 
 		var jsPlumbInstance = function(_defaults) {
 		
-		/*
-		 * Property: Defaults 
-		 * 
-		 * These are the default settings for jsPlumb.  They are what will be used if you do not supply specific pieces of information 
-		 * to the various API calls. A convenient way to implement your own look and feel can be to override these defaults 
-		 * by including a script somewhere after the jsPlumb include, but before you make any calls to jsPlumb.
-		 * 
-		 * Properties:
-		 * 	-	*Anchor*				    The default anchor to use for all connections (both source and target). Default is "BottomCenter".
-		 * 	-	*Anchors*				    The default anchors to use ([source, target]) for all connections. Defaults are ["BottomCenter", "BottomCenter"].
-		 *  -   *ConnectionsDetachable*		Whether or not connections are detachable by default (using the mouse). Defaults to true.
-		 *  -   *ConnectionOverlays*		The default overlay definitions for Connections. Defaults to an empty list.
-		 * 	-	*Connector*				The default connector definition to use for all connections.  Default is "Bezier".
-		 *  -   *Container*				Optional selector or element id that instructs jsPlumb to append elements it creates to a specific element.
-		 * 	-	*DragOptions*			The default drag options to pass in to connect, makeTarget and addEndpoint calls. Default is empty.
-		 * 	-	*DropOptions*			The default drop options to pass in to connect, makeTarget and addEndpoint calls. Default is empty.
-		 * 	-	*Endpoint*				The default endpoint definition to use for all connections (both source and target).  Default is "Dot".
-		 *  -   *EndpointOverlays*		The default overlay definitions for Endpoints. Defaults to an empty list.
-		 * 	-	*Endpoints*				The default endpoint definitions ([ source, target ]) to use for all connections.  Defaults are ["Dot", "Dot"].
-		 * 	-	*EndpointStyle*			The default style definition to use for all endpoints. Default is fillStyle:"#456".
-		 * 	-	*EndpointStyles*		The default style definitions ([ source, target ]) to use for all endpoints.  Defaults are empty.
-		 * 	-	*EndpointHoverStyle*	The default hover style definition to use for all endpoints. Default is null.
-		 * 	-	*EndpointHoverStyles*	The default hover style definitions ([ source, target ]) to use for all endpoints. Defaults are null.
-		 * 	-	*HoverPaintStyle*		The default hover style definition to use for all connections. Defaults are null.
-		 * 	-	*LabelStyle*			The default style to use for label overlays on connections.
-		 * 	-	*LogEnabled*			Whether or not the jsPlumb log is enabled. defaults to false.
-		 * 	-	*Overlays*				The default overlay definitions (for both Connections and Endpoint). Defaults to an empty list.
-		 * 	-	*MaxConnections*		The default maximum number of connections for an Endpoint.  Defaults to 1.		 
-		 * 	-	*PaintStyle*			The default paint style for a connection. Default is line width of 8 pixels, with color "#456".
-		 * 	-	*ReattachConnections*	Whether or not to reattach Connections that a user has detached with the mouse and then dropped. Default is false.
-		 * 	-	*RenderMode*			What mode to use to paint with.  If you're on IE<9, you don't really get to choose this.  You'll just get VML.  Otherwise, the jsPlumb default is to use SVG.
-		 * 	-	*Scope*				The default "scope" to use for connections. Scope lets you assign connections to different categories. 
-		 */
+		
 		this.Defaults = {
 			Anchor : "BottomCenter",
 			Anchors : [ null, null ],
@@ -661,6 +648,7 @@
             ConnectionOverlays : [ ],
             Connector : "Bezier",
 			Container : null,
+			DoNotThrowErrors:false,
 			DragOptions : { },
 			DropOptions : { },
 			Endpoint : "Dot",
@@ -727,7 +715,7 @@
 			if ("ready" === event && initialized) fn();
 			else _bb.apply(_currentInstance,[event, fn]);
 		};
-  
+
 		_currentInstance.importDefaults = function(d) {
 			for (var i in d) {
 				_currentInstance.Defaults[i] = d[i];
@@ -848,8 +836,7 @@
 		_initDraggableIfNecessary = function(element, isDraggable, dragOptions) {
 			// TODO move to DragManager?
 			if (!jsPlumbAdapter.headless) {
-				var draggable = isDraggable == null ? false : isDraggable,
-					jpcl = jsPlumb.CurrentLibrary;
+				var draggable = isDraggable == null ? false : isDraggable, jpcl = jsPlumb.CurrentLibrary;
 				if (draggable) {
 					if (jpcl.isDragSupported(element) && !jpcl.isAlreadyDraggable(element)) {
 						var options = dragOptions || _currentInstance.Defaults.DragOptions || jsPlumb.Defaults.DragOptions;
@@ -859,7 +846,9 @@
 							startEvent = jpcl.dragEvents["start"];
 	
 						options[startEvent] = _wrap(options[startEvent], function() {
-							_currentInstance.setHoverSuspended(true);
+							_currentInstance.setHoverSuspended(true);							
+							_currentInstance.select({source:element}).addClass(_currentInstance.elementDraggingClass + " " + _currentInstance.sourceElementDraggingClass, true);
+							_currentInstance.select({target:element}).addClass(_currentInstance.elementDraggingClass + " " + _currentInstance.targetElementDraggingClass, true);
 						});
 	
 						options[dragEvent] = _wrap(options[dragEvent], function() {                            
@@ -871,13 +860,15 @@
 							var ui = jpcl.getUIPosition(arguments, _currentInstance.getZoom());
 							_draw(element, ui);
 							_removeClass(element, "jsPlumb_dragged");
-							_currentInstance.setHoverSuspended(false);
+							_currentInstance.setHoverSuspended(false);							
+							_currentInstance.select({source:element}).removeClass(_currentInstance.elementDraggingClass + " " + _currentInstance.sourceElementDraggingClass, true);
+							_currentInstance.select({target:element}).removeClass(_currentInstance.elementDraggingClass + " " + _currentInstance.targetElementDraggingClass, true);
 						});
 						var elId = _getId(element); // need ID
 						draggableStates[elId] = true;  
 						var draggable = draggableStates[elId];
 						options.disabled = draggable == null ? false : !draggable;
-						jpcl.initDraggable(element, options, false);
+						jpcl.initDraggable(element, options, false, _currentInstance);
 						_currentInstance.dragManager.register(element);
 					}
 				}
@@ -919,8 +910,8 @@
 			
 			// at this point, if we have source or target Endpoints, they were not new and we should mark the
 			// flag to reflect that.  this is for use later with the deleteEndpointsOnDetach flag.
-			if (_p.sourceEndpoint) _p.sourceIsNew = false;
-			if (_p.targetEndpoint) _p.targetIsNew = false;
+			if (_p.sourceEndpoint && !_p.sourceEndpoint.addedViaMouse) _p.sourceIsNew = false;
+			if (_p.targetEndpoint && !_p.targetEndpoint.addedViaMouse) _p.targetIsNew = false;
 			
 			// if source endpoint mandates connection type and nothing specified in our params, use it.
 			if (!_p.type && _p.sourceEndpoint)
@@ -1332,26 +1323,20 @@
         this.isConnectionBeingDragged = function() { return _connectionBeingDragged != null; };
         this.setConnectionBeingDragged = function(c) {_connectionBeingDragged = c; };
             
-		/*
-		 * Property: connectorClass 
-		 *   The CSS class to set on Connection elements. This value is a String and can have multiple classes; the entire String is appended as-is.
-		 */
-		this.connectorClass = "_jsPlumb_connector";            
-		/*
-		 * Property: hoverClass 
-		 *   The CSS class to set on Connection or Endpoint elements when hovering. This value is a String and can have multiple classes; the entire String is appended as-is.
-		 */
-		this.hoverClass = "_jsPlumb_hover";            
-		/*
-		 * Property: endpointClass 
-		 *   The CSS class to set on Endpoint elements. This value is a String and can have multiple classes; the entire String is appended as-is.
-		 */
-		this.endpointClass = "_jsPlumb_endpoint";
-		/*
-		 * Property: overlayClass 
-		 * The CSS class to set on an Overlay that is an HTML element. This value is a String and can have multiple classes; the entire String is appended as-is.
-		 */
-		this.overlayClass = "_jsPlumb_overlay";		
+		this.connectorClass = "_jsPlumb_connector";            		
+		this.hoverClass = "_jsPlumb_hover";            		
+		this.endpointClass = "_jsPlumb_endpoint";		
+		this.endpointConnectedClass = "_jsPlumb_endpoint_connected";		
+		this.endpointFullClass = "_jsPlumb_endpoint_full";		
+		this.endpointDropAllowedClass = "_jsPlumb_endpoint_drop_allowed";		
+		this.endpointDropForbiddenClass = "_jsPlumb_endpoint_drop_forbidden";		
+		this.overlayClass = "_jsPlumb_overlay";				
+		this.draggingClass = "_jsPlumb_dragging";		
+		this.elementDraggingClass = "_jsPlumb_element_dragging";			
+		this.sourceElementDraggingClass = "_jsPlumb_source_element_dragging";
+		this.targetElementDraggingClass = "_jsPlumb_target_element_dragging";
+		this.endpointAnchorClassPrefix = "_jsPlumb_endpoint_anchor";	
+
 		this.Anchors = {};		
 		this.Connectors = {  "canvas":{}, "svg":{}, "vml":{} };				
 		this.Endpoints = { "canvas":{}, "svg":{}, "vml":{} };
@@ -1364,26 +1349,7 @@
 		this.addClass = function(el, clazz) { return jsPlumb.CurrentLibrary.addClass(el, clazz); };		
 		this.removeClass = function(el, clazz) { return jsPlumb.CurrentLibrary.removeClass(el, clazz); };		
 		this.hasClass = function(el, clazz) { return jsPlumb.CurrentLibrary.hasClass(el, clazz); };
-		
-		/*
-		  Function: addEndpoint 
-		  	
-		  Adds an <Endpoint> to a given element or elements.
-		  			  
-		  Parameters:
-		   
-		  	el - Element to add the endpoint to. Either an element id, a selector representing some element(s), or an array of either of these. 
-		  	params - Object containing Endpoint constructor arguments.  For more information, see <Endpoint>.
-		  	referenceParams - Object containing more Endpoint constructor arguments; it will be merged with params by jsPlumb.  You would use this if you had some 
-		  					  shared parameters that you wanted to reuse when you added Endpoints to a number of elements. The allowed values in
-		  					  this object are anything that 'params' can contain.  See <Endpoint>.
-		  	 
-		  Returns: 
-		  	The newly created <Endpoint>, if el referred to a single element.  Otherwise, an array of newly created <Endpoint>s. 
-		  	
-		  See Also: 
-		  	<addEndpoints>
-		 */
+				
 		this.addEndpoint = function(el, params, referenceParams) {
 			referenceParams = referenceParams || {};
 			var p = jsPlumb.extend({}, referenceParams);
@@ -1391,9 +1357,10 @@
 			p.endpoint = p.endpoint || _currentInstance.Defaults.Endpoint || jsPlumb.Defaults.Endpoint;
 			p.paintStyle = p.paintStyle || _currentInstance.Defaults.EndpointStyle || jsPlumb.Defaults.EndpointStyle;
             // YUI wrapper
-			el = _convertYUICollection(el);			
-			
-			var results = [], inputs = el.length && el.constructor != String ? el : [ el ];
+			el = _convertYUICollection(el);							
+
+			var results = [], 
+				inputs = (_isArray(el) || (el.length != null && !_isString(el))) ? el : [ el ];
 						
 			for (var i = 0, j = inputs.length; i < j; i++) {
 				var _el = _gel(inputs[i]), id = _getId(_el);
@@ -1405,8 +1372,10 @@
 				var myOffset = offsets[id], myWH = sizes[id];
 				var anchorLoc = e.anchor.compute( { xy : [ myOffset.left, myOffset.top ], wh : myWH, element : e, timestamp:_suspendedAt });
 				var endpointPaintParams = { anchorLoc : anchorLoc, timestamp:_suspendedAt };
+				
 				if (_suspendDrawing) endpointPaintParams.recalc = false;
-				e.paint(endpointPaintParams);
+				if (!_suspendDrawing) e.paint(endpointPaintParams);
+				
 				results.push(e);
 				//if (!jsPlumbAdapter.headless)
 					//_currentInstance.dragManager.endpointAdded(_el);
@@ -1415,21 +1384,7 @@
 			return results.length == 1 ? results[0] : results;
 		};
 		
-		/*
-		  Function: addEndpoints 
-		  Adds a list of <Endpoint>s to a given element or elements.
-		  
-		  Parameters: 
-		  	target - element to add the Endpoint to. Either an element id, a selector representing some element(s), or an array of either of these. 
-		  	endpoints - List of objects containing Endpoint constructor arguments. one Endpoint is created for each entry in this list.  See <Endpoint>'s constructor documentation. 
-			referenceParams - Object containing more Endpoint constructor arguments; it will be merged with params by jsPlumb.  You would use this if you had some shared parameters that you wanted to reuse when you added Endpoints to a number of elements.		  	 
-
-		  Returns: 
-		  	List of newly created <Endpoint>s, one for each entry in the 'endpoints' argument. 
-		  	
-		  See Also:
-		  	<addEndpoint>
-		 */
+		
 		this.addEndpoints = function(el, endpoints, referenceParams) {
 			var results = [];
 			for ( var i = 0, j = endpoints.length; i < j; i++) {
@@ -1441,20 +1396,7 @@
 			return results;
 		};
 
-		/*
-		  Function: animate 
-		  This is a wrapper around the supporting library's animate function; it injects a call to jsPlumb in the 'step' function (creating
-		  the 'step' function if necessary). This only supports the two-arg version of the animate call in jQuery, the one that takes an 'options' object as
-		  the second arg. MooTools has only one method, a two arg one. Which is handy.  YUI has a one-arg method, so jsPlumb merges 'properties' and 'options' together for YUI.
-		   
-		  Parameters: 
-		  	el - Element to animate. Either an id, or a selector representing the element. 
-		  	properties - The 'properties' argument you want passed to the library's animate call. 
-		   	options - The 'options' argument you want passed to the library's animate call.
-		    
-		  Returns: 
-		  	void
-		 */
+		
 		this.animate = function(el, properties, options) {
 			var ele = _gel(el), id = _att(el, "id");
 			options = options || {};
@@ -1519,18 +1461,7 @@
 			}	
 		};
 
-		/*
-		  Function: connect 
-		  Establishes a <Connection> between two elements (or <Endpoint>s, which are themselves registered to elements).
-		  
-		  Parameters: 
-		    params - Object containing constructor arguments for the Connection. See <Connection>'s constructor documentation.
-		    referenceParams - Optional object containing more constructor arguments for the Connection. Typically you would pass in data that a lot of 
-		    Connections are sharing here, such as connector style etc, and then use the main params for data specific to this Connection.
-		     
-		  Returns: 
-		  	The newly created <Connection>.
-		 */
+		
 		this.connect = function(params, referenceParams) {
 			// prepare a final set of parameters to create connection with
 			var _p = _prepareConnectionParams(params, referenceParams), jpc;
@@ -1552,64 +1483,55 @@
 			return jpc;
 		};
 		
-		/*
-		 Function: deleteEndpoint		 
-		 Deletes an Endpoint and removes all Connections it has (which removes the Connections from the other Endpoints involved too)
-		 
-		 Parameters:
-		 	object - either an <Endpoint> object (such as from an addEndpoint call), or a String UUID.
-		 	
-		 Returns:
-		 	void		  
-		 */
-		this.deleteEndpoint = function(object) {
-			var endpoint = (typeof object == "string") ? endpointsByUUID[object] : object;			
-			if (endpoint) {					
-				var uuid = endpoint.getUuid();
-				if (uuid) endpointsByUUID[uuid] = null;				
-				endpoint.detachAll();
-				if (endpoint.endpoint.cleanup) endpoint.endpoint.cleanup();
-				jsPlumbUtil.removeElements(endpoint.endpoint.getDisplayElements());
-				_currentInstance.anchorManager.deleteEndpoint(endpoint);
-				for (var e in endpointsByElement) {
-					var endpoints = endpointsByElement[e];
-					if (endpoints) {
-						var newEndpoints = [];
-						for (var i = 0, j = endpoints.length; i < j; i++)
-							if (endpoints[i] != endpoint) newEndpoints.push(endpoints[i]);
-						
-						endpointsByElement[e] = newEndpoints;
-					}
+		// delete the given endpoint: either an Endpoint here, or its UUID.
+		this.deleteEndpoint = function(object, doNotRepaintAfterwards) {
+			_currentInstance.doWhileSuspended(function() {
+				var endpoint = (typeof object == "string") ? endpointsByUUID[object] : object;			
+				if (endpoint) {					
+					var uuid = endpoint.getUuid();
+					if (uuid) endpointsByUUID[uuid] = null;				
+					endpoint.detachAll().cleanup();
+					if (endpoint.endpoint.cleanup) endpoint.endpoint.cleanup();
+					jsPlumbUtil.removeElements(endpoint.endpoint.getDisplayElements());
+					_currentInstance.anchorManager.deleteEndpoint(endpoint);
+					for (var e in endpointsByElement) {
+						var endpoints = endpointsByElement[e];
+						if (endpoints) {
+							var newEndpoints = [];
+							for (var i = 0, j = endpoints.length; i < j; i++)
+								if (endpoints[i] != endpoint) newEndpoints.push(endpoints[i]);
+							
+							endpointsByElement[e] = newEndpoints;
+						}
+						if(endpointsByElement[e].length <1){
+							delete endpointsByElement[e];
+						}
+					}				
+					if (!jsPlumbAdapter.headless)
+						_currentInstance.dragManager.endpointDeleted(endpoint);								
 				}
-				if (!jsPlumbAdapter.headless)
-					_currentInstance.dragManager.endpointDeleted(endpoint);								
-			}									
+				return _currentInstance;									
+			}, doNotRepaintAfterwards);
 		};
 		
-		/*
-		 Function: deleteEveryEndpoint
-		  Deletes every <Endpoint>, and their associated <Connection>s, in this instance of jsPlumb. Does not unregister any event listeners (this is the only difference
-between this method and jsPlumb.reset).  
-		  
-		 Returns: 
-		 	void 
-		 */
+		
+		// delete every endpoint and their connections. distinct from reset because we dont clear listeners here.
 		this.deleteEveryEndpoint = function() {
-			_currentInstance.setSuspendDrawing(true);
-			for ( var id in endpointsByElement) {
-				var endpoints = endpointsByElement[id];
-				if (endpoints && endpoints.length) {
-					for ( var i = 0, j = endpoints.length; i < j; i++) {
-						_currentInstance.deleteEndpoint(endpoints[i]);
+			_currentInstance.doWhileSuspended(function() {
+				for ( var id in endpointsByElement) {
+					var endpoints = endpointsByElement[id];
+					if (endpoints && endpoints.length) {
+						for ( var i = 0, j = endpoints.length; i < j; i++) {
+							_currentInstance.deleteEndpoint(endpoints[i], true);
+						}
 					}
-				}
-			}			
-			endpointsByElement = {};			
-			endpointsByUUID = {};
-			_currentInstance.anchorManager.reset();
-			_currentInstance.dragManager.reset();
-			
-			_currentInstance.setSuspendDrawing(false, true);
+				}			
+				endpointsByElement = {};			
+				endpointsByUUID = {};
+				_currentInstance.anchorManager.reset();
+				_currentInstance.dragManager.reset();							
+			});
+			return _currentInstance;
 		};
 
 		var fireDetachEvent = function(jpc, doFireEvent, originalEvent) {
@@ -1631,21 +1553,7 @@ between this method and jsPlumb.reset).
             _currentInstance.anchorManager.connectionDetached(params);
 		};	
 
-		/*
-		  Function: detach 
-		  Detaches and then removes a <Connection>.  
-		  		   
-		  Parameters: 
-		    connection  -   the <Connection> to detach
-		    params      -   optional parameters to the detach call.  valid values here are
-		                    fireEvent   :   defaults to false; indicates you want jsPlumb to fire a connection
-		                                    detached event. The thinking behind this is that if you made a programmatic
-		                                    call to detach an event, you probably don't need the callback.
-		                    forceDetach :   defaults to false. allows you to override any beforeDetach listeners that may be registered.
-
-		    Returns: 
-		    	true if successful, false if not.
-		 */
+		// detach a connection
 		this.detach = function() {
 
             if (arguments.length == 0) return;
@@ -1687,18 +1595,7 @@ between this method and jsPlumb.reset).
 				}
 		};
 
-		/*
-		  Function: detachAllConnections
-		  Removes all an element's Connections.
-		   
-		  Parameters:
-		  	el - either the id of the element, or a selector for the element.
-		  	params - optional parameters.  alowed values:
-		  	        fireEvent : defaults to true, whether or not to fire the detach event.
-		  	
-		  Returns: 
-		  	void
-		 */
+		// detach all connections from some element.
 		this.detachAllConnections = function(el, params) {
             params = params || {};
             el = _gel(el);
@@ -1709,23 +1606,10 @@ between this method and jsPlumb.reset).
 					endpoints[i].detachAll(params.fireEvent);
 				}
 			}
+			return _currentInstance;
 		};
 
-		/*
-		  Function: detachEveryConnection 
-		  Remove all Connections from all elements, but leaves Endpoints in place.
-
-		  Parameters:
-		    params  - optional params object containing:
-		            fireEvent : whether or not to fire detach events. defaults to true.
-
-		   
-		  Returns: 
-		  	void
-		  	 
-		  See Also:
-		  	<removeEveryEndpoint>
-		 */
+		// detach every connection but leave endpoints in place (unless a connection is set to auto delete them)
 		this.detachEveryConnection = function(params) {
             params = params || {};
 			for ( var id in endpointsByElement) {
@@ -1737,22 +1621,11 @@ between this method and jsPlumb.reset).
 				}
 			}
 			connectionsByScope = {};
+			return _currentInstance;
 		};
 
 
-		/*
-		  Function: draggable 
-		  Initialises the draggability of some element or elements.  You should use this instead of your 
-		  library's draggable method so that jsPlumb can setup the appropriate callbacks.  Your 
-		  underlying library's drag method is always called from this method.
-		  
-		  Parameters: 
-		  	el - either an element id, a list of element ids, or a selector. 
-		  	options - options to pass through to the underlying library
-		  	 
-		  Returns: 
-		  	void
-		 */		 
+		 
 		this.draggable = function(el, options) {
 			if (typeof el == 'object' && el.length) {
 				for ( var i = 0, j = el.length; i < j; i++) {
@@ -1771,48 +1644,21 @@ between this method and jsPlumb.reset).
 				var ele = _gel(el);
 				if (ele) _initDraggableIfNecessary(ele, true, options);
 			}
+			return _currentInstance;
 		};
 
-		/*
-		  Function: extend 
-		  Wraps the underlying library's extend functionality.
-		  
-		  Parameters: 
-		  	o1 - object to extend 
-		  	o2 - object to extend o1 with
-		  	
-		  Returns: 
-		  	o1, extended with all properties from o2.
-		 */
+
+		// just a library-agnostic wrapper.
 		this.extend = function(o1, o2) {
 			return jsPlumb.CurrentLibrary.extend(o1, o2);
 		};
 		
-		/*
-		 * Function: getDefaultEndpointType
-		 * 	Returns the default Endpoint type. Used when someone wants to subclass Endpoint and have jsPlumb return instances of their subclass.
-		 *  you would make a call like this in your class's constructor:
-		 *  
-		 *  : jsPlumb.getDefaultEndpointType().apply(this, arguments);
-		 *  
-		 * 
-		 * Returns:
-		 * 	the default Endpoint function used by jsPlumb.
-		 */
+		// gets the default endpoint type. used when subclassing. see wiki.
 		this.getDefaultEndpointType = function() {
 			return jsPlumb.Endpoint;
 		};
 		
-		/*
-		 * Function: getDefaultConnectionType
-		 * 	Returns the default Connection type. Used when someone wants to subclass Connection and have jsPlumb return instances of their subclass.
-		 *  you would make a call like this in your class's constructor:
-		 *  
-		 *  : jsPlumb.getDefaultConnectionType().apply(this, arguments);
-		 * 
-		 * Returns:
-		 * 	the default Connection function used by jsPlumb.
-		 */
+		// gets the default connection type. used when subclassing.  see wiki.
 		this.getDefaultConnectionType = function() {
 			return jsPlumb.Connection;
 		};
@@ -1863,27 +1709,7 @@ between this method and jsPlumb.reset).
 				return list.length > 0 ? _indexOf(list, value) != -1 : !missingIsFalse;
 			};
 
-		/*
-		 * Function: getConnections 
-		 * Gets all or a subset of connections currently managed by this jsPlumb instance.  If only one scope is passed in to this method,
-		 * the result will be a list of connections having that scope (passing in no scope at all will result in jsPlumb assuming you want the
-		 * default scope).
-		 *
-		 * If multiple scopes are passed in, the return value will be a map of
-		 *
-		 * : { scope -> [ connection... ] }
-		 * 
-		 *  Parameters:
-		 *  	scope	-	if the only argument to getConnections is a string, jsPlumb will treat that string as a scope filter, and return a list
-		 *                  of connections that are in the given scope. use '*' for all scopes.
-		 *      options	-	if the argument is a JS object, you can specify a finer-grained filter:
-		 *      
-		 *      		-	*scope* may be a string specifying a single scope, or an array of strings, specifying multiple scopes. Also may have the value '*', indicating any scope.
-		 *      		-	*source* either a string representing an element id, a selector, or an array of ids. Also may have the value '*', indicating any source.  Constrains the result to connections having this/these element(s) as source.
-		 *      		-	*target* either a string representing an element id, a selector, or an array of ids. Also may have the value '*', indicating any target.  Constrains the result to connections having this/these element(s) as target.		 
-		 *		flat    -	return results in a flat array (don't return an object whose keys are scopes and whose values are lists per scope).
-		 * 
-		 */
+		// get some connections, specifying source/target/scope
 		this.getConnections = function(options, flat) {
 			if (!options) {
 				options = {};
@@ -1974,82 +1800,21 @@ between this method and jsPlumb.reset).
 		var	_makeEndpointSelectHandler = function(list) {
 			var common = _makeCommonSelectHandler(list, _makeEndpointSelectHandler);
 			return jsPlumb.CurrentLibrary.extend(common, {
-				setEnabled:setter(list, "setEnabled", _makeEndpointSelectHandler),
+				setEnabled:setter(list, "setEnabled", _makeEndpointSelectHandler),				
+				setAnchor:setter(list, "setAnchor", _makeEndpointSelectHandler),
 				isEnabled:getter(list, "isEnabled"),
 				detachAll:function() {
 					for (var i = 0, ii = list.length; i < ii; i++)
 						list[i].detachAll();
 				},
-				"delete":function() {
+				"remove":function() {
 					for (var i = 0, ii = list.length; i < ii; i++)
 						_currentInstance.deleteEndpoint(list[i]);
 				}
 			});
 		};
 			
-		/*
-		* Function: select
-		* Selects a set of Connections, using the filter options from the getConnections method, and returns an object
-		* that allows you to perform an operation on all of the Connections at once.
-		*
-		* The return value from any of these operations is the original list of Connections, allowing operations to be
-		* chained (for 'setter' type operations). 'getter' type operations return an array of values, where each entry is
-		* of the form:
-		*
-		* : [ Connection, return value ]
-		* 
-		* Parameters:
-		*	scope - see getConnections
-		* 	source - see getConnections
-		*	target - see getConnections
-        *   connections - an existing list of Connections.  If you supply this, 'source' and 'target' will be ignored.
-		*
-		* Returns:
-		* A list of Connections on which operations may be executed. 'Setter' type operations can be chained; 'getter' type operations
-		* return an array of [Connection, value] pairs, one entry for each Connection in the list returned. The full list of operations 
-		* is as follows (where not specified, the operation's effect or return value is the same as the corresponding method on Connection) :
-		* 				
-        *   -   addClass
-		*	-	addOverlay
-		*	-	addType
-		*	-	detach : detaches all the connections in the list. not chainable and does not return anything.		
-		*	-	each(function(connection)...) : allows you to specify your own function to execute; this function is chainable.		
-		*	-	get(index) : returns the Connection at 'index' in the list.			
-		*	-	getHoverPaintStyle		
-		*   - 	getLabel
-		*	-	getOverlay
-		*	-	getPaintStyle		
-		*	-	getParameter
-		*	-	getParameters
-		*	-	getType
-		*	-	getZIndex
-		*	-	hasType		
-		*	-	hideOverlay
-		*	-	hideOverlays		
-		*	-	isDetachable		
-		*	-	isHover
-		*	-	isReattach
-		*	-	isVisible		
-		*	-	length : returns the length of the list.
-		*	-	removeAllOverlays		
-        *   -   removeClass
-		*	-	removeOverlay
-		*	-	removeOverlays
-		*	-	removeType
-		*	-	repaint	
-		*	-	setConnector		
-		*	-	setDetachable
-		*	-	setHover		
-		*	-	setHoverPaintStyle		
-		*	-	setLabel		
-		*	-	setPaintStyle		
-		*	-	setParameter
-		*	-	setParameters
-		*	- 	setReattach	
-		*	-	setType	
-		*	-	showOverlay		
-		*	-	showOverlays
-		*/
+
 		this.select = function(params) {
 			params = params || {};
 			params.scope = params.scope || "*";
@@ -2057,57 +1822,7 @@ between this method and jsPlumb.reset).
 			return _makeConnectionSelectHandler(c);							
 		};
 		
-		/*
-		* Function: selectEndpoints
-		* Selects a set of Endpoints and returns an object that allows you to execute various different methods on them at once. The return 
-		* value from any of these operations is the original list of Endpoints, allowing operations to be chained (for 'setter' type 
-		* operations). 'getter' type operations return an array of values, where each entry is of the form:
-		*
-		* : [ Endpoint, return value ]
-		* 
-		* Parameters:
-		*	scope - either a string or an array of strings.
-		* 	source - either a string, a dom element, or a selector, or an array of any mix of these. limits returned endpoints to those that are declared as a source endpoint on any elements identified.
-		*	target - either a string, a dom element, or a selector, or an array of any mix of these. limits returned endpoints to those that are declared as a target endpoint on any elements identified.
-		*	element - either a string, a dom element, or a selector, or an array of any mix of these. limits returned endpoints to those that are declared as either a source OR a target endpoint on any elements identified.		
-		*
-		* Returns:
-		* A list of Endpoints on which operations may be executed. 'Setter' type operations can be chained; 'getter' type operations
-		* return an array of [Endpoint, value] pairs, one entry for each Endpoint in the list returned. 
-		*
-		* The full list of operations is as follows (where not specified, the operation's effect or return value is the
-		* same as the corresponding method on Endpoint) :
-		* 
-		*	-	setHover								
-		*	-	removeAllOverlays
-		*	-	setLabel
-        *   -   addClass
-		*	-	addOverlay
-        *   -   removeClass
-		*	-	removeOverlay
-		*	-	removeOverlays
-		*	-	showOverlay
-		*	-	hideOverlay
-		*	-	showOverlays
-		*	-	hideOverlays
-		*	-	setPaintStyle
-		*	-	setHoverPaintStyle
-		*	-	setParameter
-		*	-	setParameters
-		*   - 	getLabel
-		*	-	getOverlay
-		*	-	isHover
-		*	-	isDetachable
-		*	-	getParameter
-		*	-	getParameters
-		*	-	getPaintStyle
-		*	-	getHoverPaintStyle
-		*	-	detachAll : Detaches all the Connections from every Endpoint in the list. not chainable and does not return anything.
-		*	-	delete : Deletes every Endpoint in the list. not chainable and does not return anything.		
-		*	-	length : returns the length of the list.
-		*	-	get(index) : returns the Endpoint at 'index' in the list.
-		*	-	each(function(endpoint)...) : allows you to specify your own function to execute; this function is chainable.
-		*/
+
 		this.selectEndpoints = function(params) {
 			params = params || {};
 			params.scope = params.scope || "*";
@@ -2148,53 +1863,20 @@ between this method and jsPlumb.reset).
 			return _makeEndpointSelectHandler(ep);
 		};
 
-		/*
-		 * Function: getAllConnections
-		 * Gets all connections, as a map of the form:
-		 *
-		 * : { scope -> [ connection... ] } 
-		 */
+		// get all connections managed by the instance of jsplumb.
 		this.getAllConnections = function() {
 			return connectionsByScope;
 		};
 
-		/*
-		 * Function: getDefaultScope 
-		 * Gets the default scope for connections and  endpoints.
-		 *
-		 * A scope defines a type of endpoint/connection; supplying a
-		 * scope to an Endpoint or Connection allows you to support different
-		 * types of connections in the same UI. but if you're only interested in
-		 * one type of connection, you don't need to supply a scope. this method
-		 * will probably be used by very few people; it's good for testing
-		 * though.
-		 */
+
 		this.getDefaultScope = function() {
 			return DEFAULT_SCOPE;
 		};
 
-		/*
-		  Function: getEndpoint 
-		  Gets an Endpoint by UUID
-		   
-		  Parameters: 
-		  	uuid - the UUID for the Endpoint
-		  	 
-		  Returns: 
-		  	Endpoint with the given UUID, null if nothing found.
-		 */
+		// get an endpoint by uuid.
 		this.getEndpoint = _getEndpoint;
 				
-		/**
-		 * Function: getEndpoints
-		 * Gets the list of Endpoints for a given element.
-		 *
-		 * Parameters:
-		 * 	el - element id, dom element, or selector.
-		 *
-		 * Returns:
-		 * 	An array of Endpoints for the specified element.
-		 */
+		// get endpoints for some element.
 		this.getEndpoints = function(el) {
 			return endpointsByElement[_getId(el)];
 		};		
@@ -2211,19 +1893,8 @@ between this method and jsPlumb.reset).
 			return _updateOffset({elId:id});
 		};
 		
-		/*
-		 * Function: getSelector
-		 * This method takes the given selector spec and, using the current underlying library, turns it into
-		 * a selector from that library.  This method exists really as a helper function for those applications
-		 * where you're writing jsPlumb code that will target more than one library (such as in the case of the
-		 * jsPlumb demo pages).
-		 *
-		 * Parameters:
-         *  context  -   an element to search from. may be omitted (not null: omitted. as in you only pass one argument to the function)
-		 * 	spec 	-	a valid selector string.
-         *
-            
-		 */ 	
+		// gets a library-agnostic selector.  not necessary for use outside of jsplumb, since
+		// you already know what library you're using it with.	
 		this.getSelector = function() {
 			return jsPlumb.CurrentLibrary.getSelector.apply(null, arguments);
 		};
@@ -2250,19 +1921,10 @@ between this method and jsPlumb.reset).
 		this.isSVGAvailable = _isAvailable("svg");
 		this.isVMLAvailable = _isAvailable("vml");
 
-		/*
-		  Function: hide 
-		  Sets an element's connections to be hidden.
-		  
-		  Parameters: 
-		  	el - either the id of the element, or a selector for the element.
-		  	changeEndpoints - whether not to also hide endpoints on the element. by default this is false.  
-		  	 
-		  Returns: 
-		  	void
-		 */
+		// set an element's connections to be hidden
 		this.hide = function(el, changeEndpoints) {
 			_setVisible(el, "none", changeEndpoints);
+			return _currentInstance;
 		};
 		
 		// exposed for other objects to use to get a unique id.
@@ -2289,15 +1951,22 @@ between this method and jsPlumb.reset).
 		 * 
 		 * 
 		 * Returns: The newly created Anchor.
+		 * Throws: an error if a named anchor was not found.
 		 */
 		this.makeAnchor = function() {
+			var _a = function(t, p) {
+				if (jsPlumb.Anchors[t]) return new jsPlumb.Anchors[t](p);
+				if (!_currentInstance.Defaults.DoNotThrowErrors)
+					throw { msg:"jsPlumb: unknown anchor type '" + t + "'" };
+			};
 			if (arguments.length == 0) return null;
 			var specimen = arguments[0], elementId = arguments[1], jsPlumbInstance = arguments[2], newAnchor = null;			
 			// if it appears to be an anchor already...
 			if (specimen.compute && specimen.getOrientation) return specimen;  //TODO hazy here about whether it should be added or is already added somehow.
 			// is it the name of an anchor type?
 			else if (typeof specimen == "string") {
-				newAnchor = jsPlumb.Anchors[arguments[0]]({elementId:elementId, jsPlumbInstance:_currentInstance});
+				//newAnchor = jsPlumb.Anchors[arguments[0]]({elementId:elementId, jsPlumbInstance:_currentInstance});
+				newAnchor = _a(arguments[0], {elementId:elementId, jsPlumbInstance:_currentInstance});
 			}
 			// is it an array? it will be one of:
 			// 		an array of [name, params] - this defines a single anchor
@@ -2307,18 +1976,20 @@ between this method and jsPlumb.reset).
 				if (_isArray(specimen[0]) || _isString(specimen[0])) {
 					if (specimen.length == 2 && _isString(specimen[0]) && _isObject(specimen[1])) {
 						var pp = jsPlumb.extend({elementId:elementId, jsPlumbInstance:_currentInstance}, specimen[1]);
-						newAnchor = jsPlumb.Anchors[specimen[0]](pp);
+						//newAnchor = new jsPlumb.Anchors[specimen[0]](pp);
+						newAnchor = _a(specimen[0], pp);
 					}
 					else
-						newAnchor = new jsPlumb.DynamicAnchor(specimen, null, elementId, jsPlumbInstance);
+						newAnchor = new jsPlumb.DynamicAnchor({anchors:specimen, selector:null, elementId:elementId, jsPlumbInstance:jsPlumbInstance});
 				}
 				else {
 					var anchorParams = {
 						x:specimen[0], y:specimen[1],
 						orientation : (specimen.length >= 4) ? [ specimen[2], specimen[3] ] : [0,0],
-						offsets : (specimen.length == 6) ? [ specimen[4], specimen[5] ] : [ 0, 0 ],
+						offsets : (specimen.length >= 6) ? [ specimen[4], specimen[5] ] : [ 0, 0 ],
 						elementId:elementId,
-                        jsPlumbInstance:jsPlumbInstance
+                        jsPlumbInstance:jsPlumbInstance,
+                        cssClass:specimen.length == 7 ? specimen[6] : null
 					};						
 					newAnchor = new jsPlumb.Anchor(anchorParams);
 					newAnchor.clone = function() { return new jsPlumb.Anchor(anchorParams); };						 					
@@ -2350,33 +2021,10 @@ between this method and jsPlumb.reset).
 		 * not need to provide this - i think). 
 		 */
 		this.makeDynamicAnchor = function(anchors, anchorSelector) {
-			return new jsPlumb.DynamicAnchor(anchors, anchorSelector, null, _currentInstance);
+			return new jsPlumb.DynamicAnchor({anchors:anchors, selector:anchorSelector, elementId:null, jsPlumbInstance:_currentInstance});
 		};
 		
-		/**
-		 * Function: makeTarget
-		 * Makes some DOM element a Connection target, allowing you to drag connections to it
-		 * without having to register any Endpoints on it first.  When a Connection is established,
-		 * the endpoint spec that was passed in to this method is used to create a suitable 
-		 * Endpoint (the default will be used if you do not provide one).
-		 * 
-		 * Parameters:
-		 *  el		-	string id or element selector for the element to make a target.
-		 * 	params	-	JS object containing parameters:
-		 * 	  - *endpoint*	optional.	specification of an Endpoint to create when a Connection is established.
-		 * 	  - *scope*		optional.   scope for the drop zone.
-		 * 	  - *dropOptions* optional. same stuff as you would pass to dropOptions of an Endpoint definition.
-		 * 	  - *deleteEndpointsOnDetach*  optional, defaults to true. whether or not to delete
-		 *                             any Endpoints created by a connection to this target if
-		 *                             the connection is subsequently detached. this will not 
-		 *                             remove Endpoints that have had more Connections attached
-		 *                             to them after they were created.
-		 *   - *maxConnections*  optional. Specifies the maximum number of Connections that can be made to this element as a target. Default is no limit.
-		 *   - *onMaxConnections* optional. Function to call when user attempts to drop a connection but the limit has been reached.
-		 *   		The callback is passed two arguments: a JS object with:
-		 *   		: { element, connection, maxConnection }
-		 *   		...and the original event.		 
-		 */
+		
 		var _targetEndpointDefinitions = {},
 			_targetEndpoints = {},
 			_targetEndpointsUnique = {},
@@ -2406,6 +2054,7 @@ between this method and jsPlumb.reset).
 							  jsPlumb.Defaults.Endpoint;
 			};
 
+		// see API docs
 		this.makeTarget = function(el, params, referenceParams) {						
 			
 			var p = jsPlumb.extend({_jsPlumb:_currentInstance}, referenceParams);
@@ -2569,16 +2218,7 @@ between this method and jsPlumb.reset).
 			return _currentInstance;
 		};
 
-		/*
-		*	Function: unmakeTarget
-		*	Sets the given element to no longer be a connection target.
-		*	
-		*	Parameters:
-		*		el - a string id, a dom element, or a selector representing the element.
-		*		
-		*	Returns:
-		*	The current jsPlumb instance.
-		*/
+		// see api docs
 		this.unmakeTarget = function(el, doNotClearArrays) {
 			el = jsPlumb.CurrentLibrary.getElementObject(el);
 			var elid = _getId(el);			
@@ -2595,58 +2235,34 @@ between this method and jsPlumb.reset).
 			return _currentInstance;
 		};
 		
-		/*
-		 * Function: makeTargets
-		 * Makes all elements in some array or a selector connection targets.
-		 * 
-		 * Parameters:
-		 * 	els 	- 	either an array of ids or a selector
-		 *  params  -   parameters to configure each element as a target with
-		 *  referenceParams - extra parameters to configure each element as a taretsource with.
-		 *
-		 * Returns:
-		 * The current jsPlumb instance.
-		 */
+		// see api docs
 		this.makeTargets = function(els, params, referenceParams) {
 			for ( var i = 0, ii = els.length; i < ii; i++) {
 				_currentInstance.makeTarget(els[i], params, referenceParams);				
 			}
 		};
 		
-		/**
-		 * Function: makeSource
-		 * Makes some DOM element a Connection source, allowing you to drag connections from it
-		 * without having to register any Endpoints on it first.  When a Connection is established,
-		 * the endpoint spec that was passed in to this method is used to create a suitable 
-		 * Endpoint (the default will be used if you do not provide one).
-		 * 
-		 * Parameters:
-		 *  el		-	string id or element selector for the element to make a source.
-		 * 	params	-	JS object containing parameters:
-		 * 	  - *endpoint*	optional.	specification of an endpoint to create when a connection is created.
-		 * 	  - *parent*	optional.   the element to add Endpoints to when a Connection is established.  if you omit this, 
-		 *                          Endpoints will be added to 'el'.
-		 * 	  - *scope*		optional.   scope for the connections dragged from this element.
-		 * 	  - *dragOptions* optional. same stuff as you would pass to dragOptions of an Endpoint definition.
-		 * 	  - *deleteEndpointsOnDetach*  optional, defaults to false. whether or not to delete
-		 *                             any Endpoints created by a connection from this source if
-		 *                             the connection is subsequently detached. this will not 
-		 *                             remove Endpoints that have had more Connections attached
-		 *                             to them after they were created.
-		 * 	  - *filter* - optional function to call when the user presses the mouse button to start a drag. This function is passed the original 
-		 * event and the element on which the associated makeSource call was made.  If it returns anything other than false,
-		 * the drag begins as usual. But if it returns false (the boolean false, not just something falsey), the drag is aborted.
-		 *                   	
-		 * 
-		 */
+		
 		var _sourceEndpointDefinitions = {},
 			_sourceEndpoints = {},
 			_sourceEndpointsUnique = {},
 			_sourcesEnabled = {},
 			_sourceTriggers = {},
 			_sourceMaxConnections = {},
-			_targetsEnabled = {};
+			_targetsEnabled = {},
+			selectorFilter = function(evt, _el, selector) {	            
+                var t = evt.target || evt.srcElement, ok = false, 
+                    sel = _currentInstance.getSelector(_el, selector);
+                for (var j = 0; j < sel.length; j++) {
+                    if (sel[j] == t) {
+                        ok = true;
+                        break;
+                    }
+                }
+                return ok;	            
+	        };
 
+	    // see api docs
 		this.makeSource = function(el, params, referenceParams) {
 			var p = jsPlumb.extend({}, referenceParams);
 			jsPlumb.extend(p, params);
@@ -2654,182 +2270,190 @@ between this method and jsPlumb.reset).
 			var jpcl = jsPlumb.CurrentLibrary,
 				maxConnections = p.maxConnections || -1,
 				onMaxConnections = p.onMaxConnections,
-			_doOne = function(_el) {
-				// get the element's id and store the endpoint definition for it.  jsPlumb.connect calls will look for one of these,
-				// and use the endpoint definition if found.
-				var elid = _getId(_el),
-					parent = p.parent,
-					idToRegisterAgainst = parent != null ? _currentInstance.getId(jpcl.getElementObject(parent)) : elid;
+				_doOne = function(_el) {
+					// get the element's id and store the endpoint definition for it.  jsPlumb.connect calls will look for one of these,
+					// and use the endpoint definition if found.
+					var elid = _getId(_el),
+						parentElement = function() {
+							return p.parent == null ? p.parent : p.parent === "parent" ? jpcl.getElementObject(jpcl.getDOMElement(_el).parentNode) : jpcl.getElementObject(p.parent);
+						},
+						idToRegisterAgainst = p.parent != null ? _currentInstance.getId(parentElement()) : elid;
+					
+					_sourceEndpointDefinitions[idToRegisterAgainst] = p;
+					_sourceEndpointsUnique[idToRegisterAgainst] = p.uniqueEndpoint;
+					_sourcesEnabled[idToRegisterAgainst] = true;
+
+					var stopEvent = jpcl.dragEvents["stop"],
+						dragEvent = jpcl.dragEvents["drag"],
+						dragOptions = jsPlumb.extend({ }, p.dragOptions || {}),
+						existingDrag = dragOptions.drag,
+						existingStop = dragOptions.stop,
+						ep = null,
+						endpointAddedButNoDragYet = false;
 				
-				_sourceEndpointDefinitions[idToRegisterAgainst] = p;
-				_sourceEndpointsUnique[idToRegisterAgainst] = p.uniqueEndpoint;
-				_sourcesEnabled[idToRegisterAgainst] = true;
+					_sourceMaxConnections[idToRegisterAgainst] = maxConnections;	
 
-				var stopEvent = jpcl.dragEvents["stop"],
-					dragEvent = jpcl.dragEvents["drag"],
-					dragOptions = jsPlumb.extend({ }, p.dragOptions || {}),
-					existingDrag = dragOptions.drag,
-					existingStop = dragOptions.stop,
-					ep = null,
-					endpointAddedButNoDragYet = false;
-				
-				_sourceMaxConnections[idToRegisterAgainst] = maxConnections;	
+					// set scope if its not set in dragOptions but was passed in in params
+					dragOptions["scope"] = dragOptions["scope"] || p.scope;
 
-				// set scope if its not set in dragOptions but was passed in in params
-				dragOptions["scope"] = dragOptions["scope"] || p.scope;
-
-				dragOptions[dragEvent] = _wrap(dragOptions[dragEvent], function() {
-					if (existingDrag) existingDrag.apply(this, arguments);
-					endpointAddedButNoDragYet = false;
-				});
+					dragOptions[dragEvent] = _wrap(dragOptions[dragEvent], function() {
+						if (existingDrag) existingDrag.apply(this, arguments);
+						endpointAddedButNoDragYet = false;
+					});
 					
-				dragOptions[stopEvent] = _wrap(dragOptions[stopEvent], function() { 							
-					if (existingStop) existingStop.apply(this, arguments);								
+					dragOptions[stopEvent] = _wrap(dragOptions[stopEvent], function() { 							
+						if (existingStop) existingStop.apply(this, arguments);								
 
-                    //_currentlyDown = false;
-					_currentInstance.currentlyDragging = false;
-					
-					if (ep.connections.length == 0)
-						_currentInstance.deleteEndpoint(ep);
-					else {
+	                    //_currentlyDown = false;
+						_currentInstance.currentlyDragging = false;
 						
-						jpcl.unbind(ep.canvas, "mousedown"); 
-								
-						// reset the anchor to the anchor that was initially provided. the one we were using to drag
-						// the connection was just a placeholder that was located at the place the user pressed the
-						// mouse button to initiate the drag.
-						var anchorDef = p.anchor || _currentInstance.Defaults.Anchor,
-							oldAnchor = ep.anchor,
-							oldConnection = ep.connections[0];
-
-						ep.anchor = _currentInstance.makeAnchor(anchorDef, elid, _currentInstance);																							
-						
-						if (p.parent) {						
-							var parent = jpcl.getElementObject(p.parent);
-							if (parent) {	
-								var currentId = ep.elementId;
-											
-								var potentialParent = p.container || _currentInstance.Defaults.Container || jsPlumb.Defaults.Container;			
-																
-								ep.setElement(parent, potentialParent);
-								ep.endpointWillMoveAfterConnection = false;														
-								_currentInstance.anchorManager.rehomeEndpoint(currentId, parent);																					
-								oldConnection.previousConnection = null;
-								// remove from connectionsByScope
-								_removeWithFunction(connectionsByScope[oldConnection.scope], function(c) {
-									return c.id === oldConnection.id;
-								});										
-								_currentInstance.anchorManager.connectionDetached({
-									sourceId:oldConnection.sourceId,
-									targetId:oldConnection.targetId,
-									connection:oldConnection
-								});											
-								_finaliseConnection(oldConnection);					
-							}
-						}						
-						
-						ep.repaint();			
-						_currentInstance.repaint(ep.elementId);																		
-						_currentInstance.repaint(oldConnection.targetId);
-
-					}				
-				});
-				// when the user presses the mouse, add an Endpoint, if we are enabled.
-				var mouseDownListener = function(e) {
-
-					// if disabled, return.
-					if (!_sourcesEnabled[idToRegisterAgainst]) return;
-                    
-                    // if a filter was given, run it, and return if it says no.
-					if (p.filter) {
-						// pass the original event to the user: 
-						var r = p.filter(jpcl.getOriginalEvent(e), _el);
-						if (r === false) return;
-					}
-					
-					// if maxConnections reached
-					var sourceCount = _currentInstance.select({source:idToRegisterAgainst}).length
-					if (_sourceMaxConnections[idToRegisterAgainst] >= 0 && sourceCount >= _sourceMaxConnections[idToRegisterAgainst]) {
-						if (onMaxConnections) {
-							onMaxConnections({
-								element:_el,
-								maxConnections:maxConnections
-							}, e);
-						}
-						return false;
-					}					
-
-					// make sure we have the latest offset for this div 
-					var myOffsetInfo = _updateOffset({elId:elid}).o,
-						z = _currentInstance.getZoom();		
-
-					var x = ( ((e.pageX || e.page.x) / z) - myOffsetInfo.left) / myOffsetInfo.width, 
-					    y = ( ((e.pageY || e.page.y) / z) - myOffsetInfo.top) / myOffsetInfo.height,
-					    parentX = x, 
-					    parentY = y;					
-							
-					// if there is a parent, the endpoint will actually be added to it now, rather than the div
-					// that was the source.  in that case, we have to adjust the anchor position so it refers to
-					// the parent.
-					if (p.parent) {
-						var pEl = jpcl.getElementObject(p.parent),
-							pId = _getId(pEl);
-						myOffsetInfo = _updateOffset({elId:pId}).o;
-						parentX = ((e.pageX || e.page.x) - myOffsetInfo.left) / myOffsetInfo.width, 
-					    parentY = ((e.pageY || e.page.y) - myOffsetInfo.top) / myOffsetInfo.height;
-					}											
-					
-					// we need to override the anchor in here, and force 'isSource', but we don't want to mess with
-					// the params passed in, because after a connection is established we're going to reset the endpoint
-					// to have the anchor we were given.
-					var tempEndpointParams = {};
-					jsPlumb.extend(tempEndpointParams, p);
-					tempEndpointParams.isSource = true;
-					tempEndpointParams.anchor = [x,y,0,0];
-					tempEndpointParams.parentAnchor = [ parentX, parentY, 0, 0 ];
-					tempEndpointParams.dragOptions = dragOptions;
-					// if a parent was given we need to turn that into a "container" argument.  this is, by default,
-					// the parent of the element we will move to, so parent of p.parent in this case.  however, if
-					// the user has specified a 'container' on the endpoint definition or on 
-					// the defaults, we should use that.
-					if (p.parent) {
-						var potentialParent = tempEndpointParams.container || _currentInstance.Defaults.Container || jsPlumb.Defaults.Container;
-						if (potentialParent)
-							tempEndpointParams.container = potentialParent;
-						else
-							tempEndpointParams.container = jsPlumb.CurrentLibrary.getParent(p.parent);
-					}
-					
-					ep = _currentInstance.addEndpoint(elid, tempEndpointParams);
-
-					endpointAddedButNoDragYet = true;
-					// we set this to prevent connections from firing attach events before this function has had a chance
-					// to move the endpoint.
-					ep.endpointWillMoveAfterConnection = p.parent != null;
-					ep.endpointWillMoveTo = p.parent ? jpcl.getElementObject(p.parent) : null;
-
-                    var _delTempEndpoint = function() {
-						// this mouseup event is fired only if no dragging occurred, by jquery and yui, but for mootools
-						// it is fired even if dragging has occurred, in which case we would blow away a perfectly
-						// legitimate endpoint, were it not for this check.  the flag is set after adding an
-						// endpoint and cleared in a drag listener we set in the dragOptions above.
-						if(endpointAddedButNoDragYet) {
+						if (ep.connections.length == 0)
 							_currentInstance.deleteEndpoint(ep);
-                        }
-					};
+						else {
+							
+							jpcl.unbind(ep.canvas, "mousedown"); 
+									
+							// reset the anchor to the anchor that was initially provided. the one we were using to drag
+							// the connection was just a placeholder that was located at the place the user pressed the
+							// mouse button to initiate the drag.
+							var anchorDef = p.anchor || _currentInstance.Defaults.Anchor,
+								oldAnchor = ep.anchor,
+								oldConnection = ep.connections[0];
 
-					_currentInstance.registerListener(ep.canvas, "mouseup", _delTempEndpoint);
-                    _currentInstance.registerListener(_el, "mouseup", _delTempEndpoint);
-					
-					// and then trigger its mousedown event, which will kick off a drag, which will start dragging
-					// a new connection from this endpoint.
-					jpcl.trigger(ep.canvas, "mousedown", e);
+							ep.setAnchor(_currentInstance.makeAnchor(anchorDef, elid, _currentInstance));																							
+							
+							if (p.parent) {						
+								var parent = parentElement();
+								if (parent) {	
+									var currentId = ep.elementId,
+										potentialParent = p.container || _currentInstance.Defaults.Container || jsPlumb.Defaults.Container;			
+																	
+									ep.setElement(parent, potentialParent);
+									ep.endpointWillMoveAfterConnection = false;														
+									_currentInstance.anchorManager.rehomeEndpoint(currentId, parent);																					
+									oldConnection.previousConnection = null;
+									// remove from connectionsByScope
+									_removeWithFunction(connectionsByScope[oldConnection.scope], function(c) {
+										return c.id === oldConnection.id;
+									});										
+									_currentInstance.anchorManager.connectionDetached({
+										sourceId:oldConnection.sourceId,
+										targetId:oldConnection.targetId,
+										connection:oldConnection
+									});											
+									_finaliseConnection(oldConnection);					
+								}
+							}						
+							
+							ep.repaint();			
+							_currentInstance.repaint(ep.elementId);																		
+							_currentInstance.repaint(oldConnection.targetId);
+						}				
+					});
+					// when the user presses the mouse, add an Endpoint, if we are enabled.
+					var mouseDownListener = function(e) {
+
+						// if disabled, return.
+						if (!_sourcesEnabled[idToRegisterAgainst]) return;
+	                    
+	                    // if a filter was given, run it, and return if it says no.
+						if (p.filter) {
+							var evt = jpcl.getOriginalEvent(e),
+								r = jsPlumbUtil.isString(p.filter) ? selectorFilter(evt, _el, p.filter) : p.filter(evt, _el);
+							
+							if (r === false) return;
+						}
+						
+						// if maxConnections reached
+						var sourceCount = _currentInstance.select({source:idToRegisterAgainst}).length
+						if (_sourceMaxConnections[idToRegisterAgainst] >= 0 && sourceCount >= _sourceMaxConnections[idToRegisterAgainst]) {
+							if (onMaxConnections) {
+								onMaxConnections({
+									element:_el,
+									maxConnections:maxConnections
+								}, e);
+							}
+							return false;
+						}					
+
+						// make sure we have the latest offset for this div 
+						var myOffsetInfo = _updateOffset({elId:elid}).o,
+							z = _currentInstance.getZoom(),		
+							x = ( ((e.pageX || e.page.x) / z) - myOffsetInfo.left) / myOffsetInfo.width, 
+						    y = ( ((e.pageY || e.page.y) / z) - myOffsetInfo.top) / myOffsetInfo.height,
+						    parentX = x, 
+						    parentY = y;					
+								
+						// if there is a parent, the endpoint will actually be added to it now, rather than the div
+						// that was the source.  in that case, we have to adjust the anchor position so it refers to
+						// the parent.
+						if (p.parent) {
+							var pEl = parentElement(), pId = _getId(pEl);
+							myOffsetInfo = _updateOffset({elId:pId}).o;
+							parentX = ((e.pageX || e.page.x) - myOffsetInfo.left) / myOffsetInfo.width, 
+						    parentY = ((e.pageY || e.page.y) - myOffsetInfo.top) / myOffsetInfo.height;
+						}											
+						
+						// we need to override the anchor in here, and force 'isSource', but we don't want to mess with
+						// the params passed in, because after a connection is established we're going to reset the endpoint
+						// to have the anchor we were given.
+						var tempEndpointParams = {};
+						jsPlumb.extend(tempEndpointParams, p);
+						tempEndpointParams.isSource = true;
+						tempEndpointParams.anchor = [x,y,0,0];
+						tempEndpointParams.parentAnchor = [ parentX, parentY, 0, 0 ];
+						tempEndpointParams.dragOptions = dragOptions;
+						// if a parent was given we need to turn that into a "container" argument.  this is, by default,
+						// the parent of the element we will move to, so parent of p.parent in this case.  however, if
+						// the user has specified a 'container' on the endpoint definition or on 
+						// the defaults, we should use that.
+						if (p.parent) {
+							var potentialParent = tempEndpointParams.container || _currentInstance.Defaults.Container || jsPlumb.Defaults.Container;
+							if (potentialParent)
+								tempEndpointParams.container = potentialParent;
+							else
+								tempEndpointParams.container = jsPlumb.CurrentLibrary.getParent(parentElement());
+						}
+						
+						ep = _currentInstance.addEndpoint(elid, tempEndpointParams);
+
+						endpointAddedButNoDragYet = true;
+						// we set this to prevent connections from firing attach events before this function has had a chance
+						// to move the endpoint.
+						ep.endpointWillMoveAfterConnection = p.parent != null;
+						ep.endpointWillMoveTo = p.parent ? parentElement() : null;
+						ep.addedViaMouse = true;
+
+	                    var _delTempEndpoint = function() {
+							// this mouseup event is fired only if no dragging occurred, by jquery and yui, but for mootools
+							// it is fired even if dragging has occurred, in which case we would blow away a perfectly
+							// legitimate endpoint, were it not for this check.  the flag is set after adding an
+							// endpoint and cleared in a drag listener we set in the dragOptions above.
+							if(endpointAddedButNoDragYet) {
+								_currentInstance.deleteEndpoint(ep);
+	                        }
+						};
+
+						_currentInstance.registerListener(ep.canvas, "mouseup", _delTempEndpoint);
+	                    _currentInstance.registerListener(_el, "mouseup", _delTempEndpoint);
+						
+						// and then trigger its mousedown event, which will kick off a drag, which will start dragging
+						// a new connection from this endpoint.
+						jpcl.trigger(ep.canvas, "mousedown", e);
+						
+					};
+	               
+	                // register this on jsPlumb so that it can be cleared by a reset.
+	                _currentInstance.registerListener(_el, "mousedown", mouseDownListener);
+	                _sourceTriggers[elid] = mouseDownListener;
+
+	                // lastly, if a filter was provided, set it as a dragFilter on the element,
+	                // to prevent the element drag function from kicking in when we want to
+	                // drag a new connection
+	                if (p.filter && jsPlumbUtil.isString(p.filter)) {
+	                	jpcl.setDragFilter(_el, p.filter);
+	                }
 				};
-               
-                // register this on jsPlumb so that it can be cleared by a reset.
-                _currentInstance.registerListener(_el, "mousedown", mouseDownListener);
-                _sourceTriggers[elid] = mouseDownListener;
-			};
 			
 			el = _convertYUICollection(el);			
 			
@@ -2841,17 +2465,8 @@ between this method and jsPlumb.reset).
 
 			return _currentInstance;
 		};
-
-		/**
-		*	Function: unmakeSource
-		*	Sets the given element to no longer be a connection source.
-		*	
-		*	Parameters:
-		*		el - a string id, a dom element, or a selector representing the element.
-		*		
-		*	Returns:
-		*	The current jsPlumb instance.
-		*/
+	
+		// see api docs		
 		this.unmakeSource = function(el, doNotClearArrays) {
 			el = jsPlumb.CurrentLibrary.getElementObject(el);
 			var id = _getId(el),
@@ -2871,13 +2486,7 @@ between this method and jsPlumb.reset).
 			return _currentInstance;
 		};
 
-		/*
-		*	Function: unmakeEverySource
-		*	Resets all elements in this instance of jsPlumb so that none of them are connection sources.
-		*	
-		*	Returns:
-		*	The current jsPlumb instance.
-		*/
+		// see api docs
 		this.unmakeEverySource = function() {
 			for (var i in _sourcesEnabled)
 				_currentInstance.unmakeSource(i, true);
@@ -2887,14 +2496,8 @@ between this method and jsPlumb.reset).
 			_sourcesEnabled = {};
 			_sourceTriggers = {};
 		};
-
-		/*
-		*	Function: unmakeEveryTarget
-		*	Resets all elements in this instance of jsPlumb so that none of them are connection targets.
-		*	
-		*	Returns:
-		*	The current jsPlumb instance.
-		*/
+		
+		// see api docs
 		this.unmakeEveryTarget = function() {
 			for (var i in _targetsEnabled)
 				_currentInstance.unmakeTarget(i, true);
@@ -2907,18 +2510,7 @@ between this method and jsPlumb.reset).
 			return _currentInstance;
 		};
 		
-		/*
-		 * Function: makeSources
-		 * Makes all elements in some array or a selector connection sources.
-		 * 
-		 * Parameters:
-		 * 	els 	- 	either an array of ids or a selector
-		 *  params  -   parameters to configure each element as a source with
-		 *  referenceParams - extra parameters to configure each element as a source with.
-		 *
-		 * Returns:
-		 * The current jsPlumb instance.
-		 */
+		
 		this.makeSources = function(els, params, referenceParams) {
 			for ( var i = 0, ii = els.length; i < ii; i++) {
 				_currentInstance.makeSource(els[i], params, referenceParams);				
@@ -2942,153 +2534,57 @@ between this method and jsPlumb.reset).
 			return _currentInstance;
 		};
 
-		/*
-		* Function: setSourceEnabled
-		* Sets the enabled state of one or more elements that were previously made a connection source with the makeSource
-		* method.
-		*
-		* Parameters:
-		*	el 	- 	either a string representing some element's id, or an array of ids, or a selector.
-		*	state - true to enable the element(s), false to disable it.
-		*
-		* Returns:
-		*	The current jsPlumb instance.
-		*/
+		
 		this.setSourceEnabled = function(el, state) {
 			return _setEnabled("source", el, state);
 		};
 
-		/*
-		*	Function: toggleSourceEnabled
-		*	Toggles the source enabled state of the given element or elements.
-		*
-		* 	Parameters:
-		*		el 	- 	either a string representing some element's id, or an array of ids, or a selector.
-		*		state - true to enable the element(s), false to disable it.
-		*
-		*	Returns:
-		*	The current enabled state of the source.
-		*/	
+			
 		this.toggleSourceEnabled = function(el) {
 			_setEnabled("source", el, null, true);	
 			return _currentInstance.isSourceEnabled(el);
 		};
 
-		/*
-		*	Function: isSource
-		*	Returns whether or not the given element is registered as a connection source.
-		*
-		*	Parameters:
-		*		el 	- 	a string id, a dom element, or a selector representing a single element.
-		*
-		*	Returns:
-		*	True if source, false if not.
-		*/
+		
 		this.isSource = function(el) {
 			el = jsPlumb.CurrentLibrary.getElementObject(el);
 			return _sourcesEnabled[_getId(el)] != null;
 		};
 
-		/*
-		*	Function: isSourceEnabled
-		*	Returns whether or not the given connection source is enabled.
-		*
-		*	Parameters:
-		*	el 	- 	a string id, a dom element, or a selector representing a single element.
-		*
-		*	Returns:
-		*	True if enabled, false if not.
-		*/
+		
 		this.isSourceEnabled = function(el) {
 			el = jsPlumb.CurrentLibrary.getElementObject(el);
 			return _sourcesEnabled[_getId(el)] === true;
 		};
 
-		/*
-		*	Function: setTargetEnabled
-		*	Sets the enabled state of one or more elements that were previously made a connection target with the makeTarget method.
-		*	method.
-		*
-		*	Parameters:
-		*		el 	- 	either a string representing some element's id, or an array of ids, or a selector.
-		*		state - true to enable the element(s), false to disable it.
-		*
-		*	Returns:
-		*	The current jsPlumb instance.
-		*/
+		
 		this.setTargetEnabled = function(el, state) {
 			return _setEnabled("target", el, state);
 		};
 
-		/*
-		*	Function: toggleTargetEnabled
-		*	Toggles the target enabled state of the given element or elements.
-		*
-		*	Parameters:
-		*		el 	- 	either a string representing some element's id, or an array of ids, or a selector.
-		*		state - true to enable the element(s), false to disable it.
-		*
-		*	Returns:
-		*	The current enabled state of the target.
-		*/	
+			
 		this.toggleTargetEnabled = function(el) {
 			_setEnabled("target", el, null, true);	
 			return _currentInstance.isTargetEnabled(el);
 		};
 
-		/*
-			Function: isTarget
-			Returns whether or not the given element is registered as a connection target.
-
-			Parameters:
-				el 	- 	a string id, a dom element, or a selector representing a single element.
-
-			Returns:
-			True if source, false if not.
-		*/
+		
 		this.isTarget = function(el) {
 			el = jsPlumb.CurrentLibrary.getElementObject(el);
 			return _targetsEnabled[_getId(el)] != null;
 		};
 
-		/*
-			Function: isTargetEnabled
-			Returns whether or not the given connection target is enabled.
-
-			Parameters:
-				el 	- 	a string id, a dom element, or a selector representing a single element.
-
-			Returns:
-			True if enabled, false if not.
-		*/
+		
 		this.isTargetEnabled = function(el) {
 			el = jsPlumb.CurrentLibrary.getElementObject(el);
 			return _targetsEnabled[_getId(el)] === true;
 		};
-		
-		/*
-		* Function: ready
-		* Helper method to bind a function to jsPlumb's ready event. You should use this method instead of your
-		* library's equivalent, to ensure that jsPlumb has loaded properly before you start to use it. This is
-		* particularly true in the case of YUI, because of the asynchronous nature of the module loading process.
-		 */
+				
 		this.ready = function(fn) {
 			_currentInstance.bind("ready", fn);
 		};
 
-		/*
-		* Function: repaint 
-		* Repaints an element and its connections. This method gets new sizes for the elements before painting anything.
-		*  
-		* Parameters: 
-		*	el - id of the element, a dom element, or a selector representing the element.
-		*  	 
-		* Returns: 
-		*	The current jsPlumb instance.
-		*  	 
-		* See Also: 
-		*	<repaintEverything>
-		*/
+		// repaint some element's endpoints and connections
 		this.repaint = function(el, ui, timestamp) {
 			// support both lists...
 			if (typeof el == 'object' && el.length)
@@ -3101,37 +2597,16 @@ between this method and jsPlumb.reset).
 			return _currentInstance;
 		};
 
-		/*
-		* Function: repaintEverything 
-		* Repaints all connections.
-		*  
-		* Returns: 
-		*	The current jsPlumb instance.
-		* 	
-		* See Also: 
-		*	<repaint>
-		*/
-		this.repaintEverything = function() {				
+		// repaint every endpoint and connection.
+		this.repaintEverything = function() {	
+			var timestamp = null;// _timestamp();			
 			for ( var elId in endpointsByElement) {
-				_draw(_gel(elId));
+				_draw(_gel(elId), null, timestamp);				
 			}
 			return _currentInstance;
 		};
 
-		/*
-		* Function: removeAllEndpoints 
-		* Removes all Endpoints associated with a given element. Also removes all Connections associated with each Endpoint it removes.
-		* 
-		* Parameters: 
-		*	el - either an element id, or a selector for an element.
-        *   recurse - whether or not to recurse down through this elements children and remove their endpoints too. defaults to false.
-		*  	 
-		* Returns: 
-		* The current jsPlumb instance.
-		*  	 
-		* See Also: 
-		* <removeEndpoint>
-		*/
+		
 		this.removeAllEndpoints = function(el, recurse) {
             var _one = function(_el) {                
                 var elId = jsPlumbUtil.isString(_el) ? _el : _getId(_gel(_el)),
@@ -3155,19 +2630,15 @@ between this method and jsPlumb.reset).
             _one(el);
 			return _currentInstance;
 		};
-            
-        /*
-        * Function: remove
-        * Removes the given element from the DOM, along with all Endpoints associated with it,
-        * and their connections.
-        *
-        * Parameters:
-        *  el - either an element id, a DOM element, or a selector for the element.
-        */
-        this.remove = function(el, doNotFireEvent) {
-            el = _gel(el);
-            _currentInstance.removeAllEndpoints(el, true);
-            jsPlumb.CurrentLibrary.removeElement(el);
+                    
+        this.remove = function(el) {
+            var _el = _gel(el);
+            var id = jsPlumbUtil.isString(el) ? el : _getId(_el);
+            _currentInstance.doWhileSuspended(function() {
+            	_currentInstance.removeAllEndpoints(id, true);
+            	_currentInstance.dragManager.elementRemoved(id);
+            });
+            jsPlumb.CurrentLibrary.removeElement(_el);
         };
 
 		var _registeredListeners = {},
@@ -3195,12 +2666,7 @@ between this method and jsPlumb.reset).
         	});
         };
 
-		/*
-		* Function:reset 
-		* Removes all endpoints and connections and clears the listener list. To keep listeners call
-		* : jsPlumb.deleteEveryEndpoint()
-		* instead of this.
-		*/
+		
 		this.reset = function() {			
 			_currentInstance.deleteEveryEndpoint();
 			_currentInstance.unbind();
@@ -3218,48 +2684,16 @@ between this method and jsPlumb.reset).
 				_currentInstance.dragManager.reset();
 		};
 		
-		/*
-		 * Function: setDefaultScope 
-		 * Sets the default scope for Connections and Endpoints. A scope defines a type of Endpoint/Connection; supplying a
-		 * scope to an Endpoint or Connection allows you to support different
-		 * types of Connections in the same UI.  If you're only interested in
-		 * one type of Connection, you don't need to supply a scope. This method
-		 * will probably be used by very few people; it just instructs jsPlumb
-		 * to use a different key for the default scope.
-		 * 
-		 * Parameters:
-		 * 	scope - scope to set as default.
-		 *
-		 * Returns:
-		 * The current jsPlumb instance.
-		 */
+
 		this.setDefaultScope = function(scope) {
 			DEFAULT_SCOPE = scope;
 			return _currentInstance;
 		};
 
-		/*
-		 * Function: setDraggable 
-		 * Sets whether or not a given element is
-		 * draggable, regardless of what any jsPlumb command may request.
-		 * 
-		 * Parameters: 
-		 * 	el - either the id for the element, or a selector representing the element.
-		 * 	draggable - whether or not the element should be draggable.
-		 *  
-		 * Returns: 
-		 * 	void
-		 */
+		// sets whether or not some element should be currently draggable.
 		this.setDraggable = _setDraggable;
 
-		/*
-		* Function: setId
-		* Changes the id of some element, adjusting all connections and endpoints
-		*
-		* Parameters:
-		* 	el - a selector, a DOM element, or a string. 
-		* 	newId - string.
-		*/
+		// sets the id of some element, changing whatever we need to to keep track.
 		this.setId = function(el, newId, doNotSetAttribute) {
 		
 			var id = el.constructor == String ? el : _currentInstance.getId(el),
@@ -3301,19 +2735,8 @@ between this method and jsPlumb.reset).
 			_currentInstance.repaint(newId);
 		};
 
-		/*
-		* Function: setIdChanged
-		* Notify jsPlumb that the element with oldId has had its id changed to newId.
-		*
-		* This method is equivalent to what jsPlumb does itself in the second step of the setId method above.
-		*
-		* Parameters:
-		* 	oldId	- 	previous element id
-		* 	newId	-	element's new id
-		*
-		* See Also:
-		* 	<setId>
-		*/
+		// called to notify us that an id WAS changed, and we should do our changes, but we
+		// dont need to change the element's DOM attribute.
 		this.setIdChanged = function(oldId, newId) {
 			_currentInstance.setId(oldId, newId, true);
 		};
@@ -3325,31 +2748,35 @@ between this method and jsPlumb.reset).
 		
 		var _suspendDrawing = false,
             _suspendedAt = null;
-		/*
-		 * Function: setSuspendDrawing
-		 * Suspends drawing operations.  This can (and should!) be used when you have a lot of connections to make or endpoints to register;
-		 * it will save you a lot of time.
-		 *
-		 * Parameters:
-		 * 	val	-	boolean indicating whether to suspend or not
-		 * 	repaintAfterwards	-	optional boolean instructing jsPlumb to do a full repaint after changing the suspension
-		 * 	state. defaults to false.
-		 */
+
+         // set whether or not drawing is suspended. you should use this when doing bulk painting,
+         // like when first drawing a UI.
 		this.setSuspendDrawing = function(val, repaintAfterwards) {
 		    _suspendDrawing = val;
 				if (val) _suspendedAt = new Date().getTime(); else _suspendedAt = null;
 		    if (repaintAfterwards) _currentInstance.repaintEverything();
 		};
-        
-		/*
-		* Function: isSuspendDrawing
-		* Returns whether or not drawing is currently suspended.
-		*/
+        	
+        // returns whether or not drawing is currently suspended.		
 		this.isSuspendDrawing = function() {
 			return _suspendDrawing;
 		};
             
+        // return timestamp for when drawing was suspended.
         this.getSuspendedAt = function() { return _suspendedAt; };
+
+        // suspends drawing, runs the given function, then re-enables drawing (and repaints,
+        // unless you tell it not to)
+        this.doWhileSuspended = function(fn, doNotRepaintAfterwards) {
+			_currentInstance.setSuspendDrawing(true);
+			try {
+				fn();
+			}
+			catch (e) {
+				_log("Function run while suspended failed", e);
+			}
+			_currentInstance.setSuspendDrawing(false, !doNotRepaintAfterwards);
+        };
             
         this.updateOffset = _updateOffset;
         this.getOffset = function(elId) { return offsets[elId]; };
@@ -3361,12 +2788,18 @@ between this method and jsPlumb.reset).
 		 * Property: SVG
 		 * Constant for use with the setRenderMode method
 		 */
-		this.SVG = "svg";
-		
+		 /*
+		  * Property: VML
+		  * Constant for use with the setRenderMode method
+		  */
 		/*
-		 * Property: VML
+		 * Property: CANVAS
 		 * Constant for use with the setRenderMode method
 		 */
+		this.SVG = "svg";
+		
+		this.CANVAS = "canvas";
+		
 		this.VML = "vml";
 		
 		/*
@@ -3394,18 +2827,7 @@ between this method and jsPlumb.reset).
 		 */
 		this.getRenderMode = function() { return renderMode; };
 
-		/*
-		 * Function: show 
-		 * Sets an element's connections to be visible.
-		 * 
-		 * Parameters: 
-		 * 	el - either the id of the element, or a selector for the element.
-		 *  changeEndpoints - whether or not to also change the visible state of the endpoints on the element.  this also has a bearing on
-		 *  other connections on those endpoints: if their other endpoint is also visible, the connections are made visible.  
-		 *  
-		 * Returns: 
-		 * 	The current jsPlumb instance.
-		 */
+		
 		this.show = function(el, changeEndpoints) {
 			_setVisible(el, "block", changeEndpoints);
 			return _currentInstance;
@@ -3458,37 +2880,10 @@ between this method and jsPlumb.reset).
 				makeDynamicAnchor:self.makeDynamicAnchor
 			};
 		};
-
-		/**
-		 * Toggles visibility of an element's connections. kept for backwards
-		 * compatibility
-		 */
-		this.toggle = _toggleVisible;
-
-		/*
-		 * Function: toggleVisible 
-		 * Toggles visibility of an element's Connections.
-		 *  
-		 * Parameters: 
-		 * 	el - either the element's id, or a selector representing the element.
-		 *  changeEndpoints - whether or not to also toggle the endpoints on the element.
-		 *  
-		 * Returns: 
-		 * 	void, but should be updated to return the current state
-		 */
+		
+		
 		// TODO: update this method to return the current state.
 		this.toggleVisible = _toggleVisible;
-
-		/*
-		 * Function: toggleDraggable 
-		 * Toggles draggability (sic?) of an element's Connections.
-		 *  
-		 * Parameters: 
-		 * 	el - either the element's id, or a selector representing the element.
-		 *  
-		 * Returns: 
-		 * 	The current draggable state.
-		 */
 		this.toggleDraggable = _toggleDraggable;		
 
 		/*
@@ -3532,21 +2927,11 @@ between this method and jsPlumb.reset).
 			
 		};
 
-	if (!jsPlumbAdapter.headless) {
-		_currentInstance.dragManager = jsPlumbAdapter.getDragManager(_currentInstance);
-		_currentInstance.recalculateOffsets = _currentInstance.dragManager.updateOffsets;
-    }
-		
-		/*
-		 * Function: recalculateOffsets
-		 * Recalculates the offsets of all child elements of some element. If you have Endpoints registered on the
-		 * descendants of some element and you make changes to that element's markup, it is possible that the location
-		 * of each Endpooint relative to the origin of the element may have changed. So you call this to tell jsPlumb to
-		 * recalculate.  You need to do this because, for performance reasons, jsplumb won't calculate these offsets on
-		 * the fly.
-		 * Parameters:
-		 * el - either a string id, or a selector.
-		 */    
+		if (!jsPlumbAdapter.headless) {
+			_currentInstance.dragManager = jsPlumbAdapter.getDragManager(_currentInstance);
+			_currentInstance.recalculateOffsets = _currentInstance.dragManager.updateOffsets;
+	    }
+				    
     };
 
 // --------------------- static instance + AMD registration -------------------------------------------	
