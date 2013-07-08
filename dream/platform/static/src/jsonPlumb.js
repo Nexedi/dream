@@ -30,28 +30,21 @@
             gradient:{stops:[[0, color], [0.5, gradient_color], [1, color]]},
             lineWidth:5,
             strokeStyle:color,
-            dashstyle:"2 2"
           },
         Anchor: "Continuous",
         Connector: ["StateMachine", { curviness:20 }],
       });     
 
-      var init = function(connection) {
-        connection.bind("editCompleted", function(o) {
-        });
-      };      
-            
-      // listen for new connections; initialise them the same way we initialise the connections at startup.
-      jsPlumb.bind("jsPlumbConnection", function(connInfo, originalEvent) { 
-        init(connInfo.connection);
-      });     
-            
       // listen for clicks on connections, and offer to change values on click.
-      jsPlumb.bind("click", function(conn, originalEvent) {
+      jsPlumb.bind("click", function(conn) {
         console.log("user click connection", conn);
-        priv.dialog_connection = conn;
-        $( "#dialog-form" ).dialog( "open" );
-      }); 
+        //priv.dialog_connection = conn;
+        jsPlumb.detach(conn);
+      });
+
+      jsPlumb.bind("beforeDetach", function(conn) {
+        return confirm("Delete connection?");
+      });
       
       jsPlumb.bind("connectionDrag", function(connection) {
         console.log("connection " + connection.id + " is being dragged");
