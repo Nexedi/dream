@@ -66,7 +66,7 @@
       $( "#dialog-form" ).dialog({autoOpen: false});
     };
 
-    priv.initGeneralProperties = function() {
+    that.initGeneralProperties = function() {
       var fieldset = $("#general-fieldset"),
           previous_data = that.getData()['general'],
           previous_value = "",
@@ -226,10 +226,6 @@
       });
       that.setGeneralProperties(general_properties);
       that.initGeneralProperties();
-    };
-
-    that.initGeneralProperties = function() {
-      priv.initGeneralProperties();
     };
 
     priv.formatForManpy = function(data) {
