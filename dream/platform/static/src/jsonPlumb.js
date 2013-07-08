@@ -19,7 +19,7 @@
 
 (function (scope, $, jsPlumb, console, _) {
   "use strict";
-  var jsonPlumb = function (model) {
+  scope.jsonPlumb = function (model) {
     var that = {}, priv = {};
 
     priv.onError = function(error) {
@@ -150,172 +150,103 @@
       priv.onDataChange();
     };
 
-    Object.defineProperty(that, "updateElementData", {
-      configurable: false,
-      enumerable: false,
-      writable: false,
-      value: function (element_id, data) {
-        _.extend(priv.element_container[element_id], data);
-        priv.onDataChange();
-      }
-    });
+    that.updateElementData = function (element_id, data) {
+      _.extend(priv.element_container[element_id], data);
+      priv.onDataChange();
+    };
 
-    Object.defineProperty(that, "start", {
-      configurable: false,
-      enumerable: false,
-      writable: false,
-      value: function () {
-        priv.element_container = {};
-        priv.preference_container = {};
-        priv.general_container = {};
-        priv.initJsPlumb();
-      }
-    });
+    that.start = function () {
+      priv.element_container = {};
+      priv.preference_container = {};
+      priv.general_container = {};
+      priv.initJsPlumb();
+    };
 
-    Object.defineProperty(that, "removeElement", {
-      configurable: false,
-      enumerable: false,
-      writable: false,
-      value: function (element_id) {
-        console.log("going to remove element", element_id);
-        priv.removeElement(element_id);
-      }
-    });
+    that.removeElement = function (element_id) {
+      console.log("going to remove element", element_id);
+      priv.removeElement(element_id);
+    };
 
-    Object.defineProperty(that, "getData", {
-      configurable: false,
-      enumerable: false,
-      writable: false,
-      value: function () {
-        return priv.getData();
-      }
-    });
+    that.getData = function () {
+      return priv.getData();
+    };
 
-    Object.defineProperty(that, "clearAll", {
-      configurable: false,
-      enumerable: false,
-      writable: false,
-      value: function () {
-        $("[id=render]").children().remove()
-        _.each(_.pairs(priv.element_container), function(element, index) {
-          priv.removeElement(element[0]);
-        });
-      }
-    });
+    that.clearAll = function () {
+      $("[id=render]").children().remove()
+      _.each(_.pairs(priv.element_container), function(element, index) {
+        priv.removeElement(element[0]);
+      });
+    };
 
-    Object.defineProperty(that, "connect", {
-      configurable: false,
-      enumerable: false,
-      writable: false,
-      value: function (source_id, target_id) {
-        jsPlumb.connect({source: source_id, target: target_id});
-      }
-    });
+    that.connect = function (source_id, target_id) {
+      jsPlumb.connect({source: source_id, target: target_id});
+    };
 
-    Object.defineProperty(that, "setGeneralProperties", {
-      configurable: false,
-      enumerable: false,
-      writable: false,
-      value: function (properties) { // XXX or k, v ?
-        priv.general_container = properties;
-        priv.onDataChange();
-      },
-    });
+    that.setGeneralProperties = function (properties) {
+      priv.general_container = properties;
+      priv.onDataChange();
+    };
 
-    Object.defineProperty(that, "newElement", {
-      configurable: false,
-      enumerable: false,
-      writable: false,
-      value: function (element, option) {
-        var render_element, style_string="", coordinate = {};
-        render_element = $("[id=render]");
-        if (element.coordinate !== undefined) {
-          priv.updateElementCoordinate(element.id, element.coordinate.x, element.coordinate.y)
-          var main_div_offset = $("#main").offset();
-          coordinate.x = element.coordinate.x - main_div_offset.left;
-          coordinate.y = element.coordinate.y - main_div_offset.top;
+    that.newElement = function (element, option) {
+      var render_element, style_string="", coordinate = {};
+      render_element = $("[id=render]");
+      if (element.coordinate !== undefined) {
+        priv.updateElementCoordinate(element.id, element.coordinate.x, element.coordinate.y)
+        var main_div_offset = $("#main").offset();
+        coordinate.x = element.coordinate.x - main_div_offset.left;
+        coordinate.y = element.coordinate.y - main_div_offset.top;
 
-          _.each(coordinate, function(value, key, list) {
-            if (key === "x") {
-              key = "left";
-            } else {
-              key = "top";
-            }
-            style_string = style_string + key + ':' + value + 'px;';
-          })
-        }
-        if (style_string.length > 0) {
-          style_string = 'style="' + style_string + '"';
-        }
-        render_element.append('<div class="window" id="' +
-                          element.id + '" ' + style_string + '">'
-                          + element.id + '</div>');
-        // Initial DEMO code : make all the window divs draggable
-        priv.draggable();
-        
-        // Add endPoint to allow drawing connections
-        var color = "#00f";
-        var gradient_color = "#09098e";
-        // Different endpoint color for Repairman
-        if (element._class === "Dream.Repairman") {
-          color = "rgb(189,11,11)";
-          gradient_color = "rgb(255,0,0)";
-        };
-        var endpoint = {
-          endpoint: "Rectangle",
-          paintStyle:{ width:25, height:21, fillStyle:color },
-          isSource:true,
-          scope:"blue rectangle",
-          /*connectorStyle : {
-            gradient:{stops:[[0, color], [0.5, gradient_color], [1, color]]},
-            lineWidth:5,
-            strokeStyle:color,
-            dashstyle:"2 2"
-          },*/
-          //connector: ["Bezier", { curviness:63 } ],
-          maxConnections:3,
-          isTarget:true,
-          //dropOptions : exampleDropOptions
-        };
-        _.each(_.pairs(option.anchor), function(value, key, list) {
-          var anchor = value[0],
-              endpoint_configuration = value[1];
-          jsPlumb.addEndpoint(element.id, { anchor: anchor }, endpoint);
+        _.each(coordinate, function(value, key, list) {
+          if (key === "x") {
+            key = "left";
+          } else {
+            key = "top";
+          }
+          style_string = style_string + key + ':' + value + 'px;';
         })
-        priv.addElementToContainer(element);
       }
-    });
+      if (style_string.length > 0) {
+        style_string = 'style="' + style_string + '"';
+      }
+      render_element.append('<div class="window" id="' +
+                        element.id + '" ' + style_string + '">'
+                        + element.id + '</div>');
+      // Initial DEMO code : make all the window divs draggable
+      priv.draggable();
+
+      // Add endPoint to allow drawing connections
+      var color = "#00f";
+      var gradient_color = "#09098e";
+      // Different endpoint color for Repairman
+      if (element._class === "Dream.Repairman") {
+        color = "rgb(189,11,11)";
+        gradient_color = "rgb(255,0,0)";
+      };
+      var endpoint = {
+        endpoint: "Rectangle",
+        paintStyle:{ width:25, height:21, fillStyle:color },
+        isSource:true,
+        scope:"blue rectangle",
+        /*connectorStyle : {
+          gradient:{stops:[[0, color], [0.5, gradient_color], [1, color]]},
+          lineWidth:5,
+          strokeStyle:color,
+          dashstyle:"2 2"
+        },*/
+        //connector: ["Bezier", { curviness:63 } ],
+        maxConnections:3,
+        isTarget:true,
+        //dropOptions : exampleDropOptions
+      };
+      _.each(_.pairs(option.anchor), function(value, key, list) {
+        var anchor = value[0],
+            endpoint_configuration = value[1];
+        jsPlumb.addEndpoint(element.id, { anchor: anchor }, endpoint);
+      })
+      priv.addElementToContainer(element);
+    };
 
     return that;
   };
-
-  var JsonPlumbNamespace = (function () {
-    var that = {};
-
-    /**
-    * Creates a new dream instance.
-    * @method newDream
-    * @param  {object} model The model definition
-    * @return {object} The new Dream instance.
-    */
-    Object.defineProperty(that, "newJsonPlumb", {
-      configurable: false,
-      enumerable: false,
-      writable: false,
-      value: function (model) {
-        var instance = jsonPlumb(model);
-        return instance;
-      }
-    });
-
-    return that;
-  })();
-
-  Object.defineProperty(scope, "jsonPlumb", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: JsonPlumbNamespace
-  });
 
 }(window, jQuery, jsPlumb, console, _));

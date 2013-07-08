@@ -84,7 +84,7 @@
                                _class: 'Dream.Repairman', },
     }
 
-    dream_instance = DREAM.newDream(configuration)
+    dream_instance = Dream(configuration)
     dream_instance.start();
     $( ".tool" ).draggable({ opacity: 0.7, helper: "clone",
                              stop: function(tool) {
