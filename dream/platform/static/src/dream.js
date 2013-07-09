@@ -186,7 +186,7 @@
 
     priv.super_newElement = that.newElement;
     that.newElement = function (element) {
-      var element_prefix = element.id.split('_')[0]
+      var element_prefix = element.id.split('_')[0];
       priv.super_newElement(element, configuration[element_prefix]);
       $("#" + element.id).bind('click', function() {
         console.log("bind click on window", $(this));

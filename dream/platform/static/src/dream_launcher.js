@@ -89,12 +89,13 @@
     $( ".tool" ).draggable({ opacity: 0.7, helper: "clone",
                              stop: function(tool) {
                                      var box_top, box_left, _class;
-                                     box_top = tool.clientY;
-                                     box_left = tool.clientX;
+                                     var offset = $("[id=render]").offset();
+                                     box_top = tool.clientY - offset.top + "px";
+                                     box_left = tool.clientX - offset.left + "px";
                                      id_container[tool.target.id] = (id_container[tool.target.id] || 0) + 1;
                                      _class = tool.target.id.replace('-', '.'); // XXX - vs .
                                      dream_instance.newElement({id : tool.target.id + "_" + id_container[tool.target.id],
-                                                               coordinate: {y: box_top, x: box_left},
+                                                               coordinate: {top: box_top, left: box_left},
                                        _class: _class,
                                      });
                                      window_id += 1;

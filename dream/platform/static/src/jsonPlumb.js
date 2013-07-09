@@ -101,11 +101,14 @@
       priv.draggable();
     };
 
-    priv.updateElementCoordinate = function(element_id, x, y) {
-      var preference = priv.preference_container[element_id] || {};
-      var coordinate = preference.coordinate || {};
-      coordinate.x = x;
-      coordinate.y = y;
+    priv.updateElementCoordinate = function(element_id, coordinate) {
+      var preference = priv.preference_container[element_id] || {}, element;
+      if (coordinate === undefined) {
+        coordinate = {};
+        element = $("#" + element_id);
+        coordinate.top = element.css("top");
+        coordinate.left = element.css("left");
+      }
       preference["coordinate"] = coordinate;
       priv.preference_container[element_id] = preference;
       priv.onDataChange();
@@ -116,7 +119,7 @@
       // make all the window divs draggable
       var stop = function(el) {
         var element_id = el.target.id;
-        priv.updateElementCoordinate(element_id, el.clientX, el.clientY);
+        priv.updateElementCoordinate(element_id);
       }
       jsPlumb.draggable(jsPlumb.getSelector(".window"), { grid: [20, 20] ,
                                                           stop: stop,
@@ -188,29 +191,18 @@
     };
 
     that.newElement = function (element, option) {
-      var render_element, style_string="", coordinate = {};
+      var render_element, style_string="", coordinate=element.coordinate,
+          box;
       render_element = $("[id=render]");
-      if (element.coordinate !== undefined) {
-        priv.updateElementCoordinate(element.id, element.coordinate.x, element.coordinate.y)
-        var main_div_offset = $("#main").offset();
-        coordinate.x = element.coordinate.x - main_div_offset.left;
-        coordinate.y = element.coordinate.y - main_div_offset.top;
-
-        _.each(coordinate, function(value, key, list) {
-          if (key === "x") {
-            key = "left";
-          } else {
-            key = "top";
-          }
-          style_string = style_string + key + ':' + value + 'px;';
-        })
-      }
-      if (style_string.length > 0) {
-        style_string = 'style="' + style_string + '"';
+      if (coordinate !== undefined) {
+        coordinate = priv.updateElementCoordinate(element.id, coordinate)
       }
       render_element.append('<div class="window" id="' +
-                        element.id + '" ' + style_string + '">'
-                        + element.id + '</div>');
+                        element.id + '">' + element.id + '</div>');
+      box = $("#" + element.id);
+      box.css("top", coordinate.top);
+      box.css("left", coordinate.left);
+
       // Initial DEMO code : make all the window divs draggable
       priv.draggable();
 
