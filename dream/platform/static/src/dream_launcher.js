@@ -111,7 +111,7 @@
             value[preference_key] = preference_value;
           });
           dream_instance.newElement(value);
-          dream_instance.updateElementData(element_id, {data: value.data || {}});
+          dream_instance.updateElementData(value.id, {data: value.data || {}});
         });
 
         // Now link elements between them and update id_container
