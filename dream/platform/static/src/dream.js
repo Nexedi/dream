@@ -17,7 +17,7 @@
  * along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
  * =========================================================================== */
 
-(function (scope, $, jsPlumb, console, _) {
+(function (scope, $, jsPlumb, console) {
   "use strict";
   scope.Dream = function (configuration) {
     var that = jsonPlumb(), priv = {};
@@ -34,7 +34,7 @@
     priv.updateBoxStyle = function (box_id, style) {
       var box;
       box = $("#" + box_id);
-      _.each(style, function(value, key, list) {
+      $.each(style, function(key, value) {
         box.css(key, value);
       })
     };
@@ -53,12 +53,12 @@
 
     priv.displayTool = function() {
       var render_element = $("[id=tools]");
-      _.each(_.pairs(configuration), function(value, key, list) {
-        if (value[0] !== 'Dream-Configuration') { // XXX
-          render_element.append('<div id="' + value[0] + '" class="tool">' +
-                      value[0].split('-')[1] + "<ul/></div>");
+      for (var key in configuration) {
+        if (key !== 'Dream-Configuration') {
+          render_element.append('<div id="' + key + '" class="tool">' +
+                      key.split('-')[1] + "<ul/></div>");
         };
-      });
+      };
       render_element.append('<p/><a id="clear_all">Clear All</a>');
     };
 
@@ -83,7 +83,8 @@
                             '<input type="text" name="' + prefix + property.id + '"' +
                             previous_value + ' id="' + prefix + property.id + '"' +
                             ' class="text ui-widget-content ui-corner-all"/>');
-      }});
+          }
+      });
     };
 
     priv.prepareDialogForElement = function(title, element_id) {
@@ -112,7 +113,7 @@
         if (prefix === undefined) {
           prefix = "";
         }
-        _.each(property_list, function(property, key, list) {
+        $.each(property_list, function(key, property) {
           if (property._class === "Dream.Property") {
             console.log("property.id, previous_data", property.id, previous_data);
             previous_value = previous_data[property.id] || "";
@@ -160,10 +161,9 @@
               if (prefix === undefined) {
                 prefix = "";
               }
-              _.each(property_list, function(property, key, list) {
+              $.each(property_list, function(key, property) {
                 if (property._class === "Dream.Property") {
                   prefixed_property_id = prefix + property.id;
-                  console.log("prefixed_property_id", prefixed_property_id);
                   property_element = $("#" + prefixed_property_id);
                   data[property.id] = property_element.val();
                 } else if (property._class === "Dream.PropertyList") {
@@ -197,7 +197,7 @@
       // Store default values
       var data = {}, property_list = configuration[element_prefix]["property_list"] || [];
       var updateDefaultData = function(data, property_list) {
-        _.each(property_list, function(element, key) {
+        $.each(property_list, function(key, element) {
           console.log("going to parse property_list, element", element);
           if(element._class === "Dream.Property") {
             data[element.id] = element.default;
@@ -220,8 +220,7 @@
       priv.initDialog();
       // save general configuration default values
       var general_properties = {};
-      _.each(configuration["Dream-Configuration"].property_list, function(element, key) {
-        console.log("dream.start, parsing general property", element.id);
+      $.each(configuration["Dream-Configuration"].property_list, function(idx, element) {
         general_properties[element.id] = element.default;
       });
       that.setGeneralProperties(general_properties);
@@ -280,4 +279,4 @@
     return that;
   };
 
-}(window, jQuery, jsPlumb, console, _));
+}(window, jQuery, jsPlumb, console));

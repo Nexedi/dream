@@ -17,7 +17,7 @@
  * along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
  * =========================================================================== */
 
-(function($, _) {
+(function($) {
   "use strict";
   jsPlumb.bind("ready", function() {
     var dream_instance, available_people = {}, people_list,
@@ -107,28 +107,27 @@
       console.log("jio get:", response);
       if (response !== undefined && response.data !== undefined) {
         // Add all elements
-        _.each(response.data.element, function(value, key, list) {
+        $.each(response.data.element, function(key, value) {
           var element_id = value.id;
           var preference_data = response.data.preference !== undefined ? response.data.preference[element_id] :  {};
-          _.each(_.pairs(preference_data), function(preference_value, preference_key, preference_list) {
-            value[preference_value[0]] = preference_value[1];
+          $.each(preference_data, function(preference_key, preference_value){
+            value[preference_key] = preference_value;
           });
           dream_instance.newElement(value);
           dream_instance.updateElementData(element_id, {data: value.data || {}});
         });
+
         // Now link elements between them and update id_container
-        _.each(response.data.element, function(value, key, list) {
+        $.each(response.data.element, function(key, value) {
           var element_id = value.id, prefix, suffix, splitted_element_id,
               successor_list = value.successorList || [];
           splitted_element_id = element_id.split("_");
           prefix = splitted_element_id[0];
           suffix = splitted_element_id[1];
           id_container[prefix] = Math.max((id_container[prefix] || 0), parseInt(suffix, 10));
-          if (successor_list.length > 0) {
-            _.each(successor_list, function(successor_value, successor_key, list) {
-              dream_instance.connect(value.id, successor_value);
-            });
-          }
+          $.each(successor_list, function(idx, successor_value) {
+            dream_instance.connect(value.id, successor_value);
+          });
         });
         dream_instance.setGeneralProperties(response.data.general);
         dream_instance.initGeneralProperties(); // XXX
@@ -151,7 +150,7 @@
           function(data) {
             if (data['success']) {
               $("#json_result").text(JSON.stringify(data['success'], undefined, " "));
-              $.each(data.coreObject, function(idx, obj){
+              $.each(data['success'].coreObject, function(idx, obj){
                  var e = $("#" + obj.id);
                  /* attach something to each corresponding core object */
                  // e.tooltip(JSON.stringify(obj['results'], undefined, " "));
@@ -174,4 +173,4 @@
      });
   })
 
-})(jQuery, _);
+})(jQuery);

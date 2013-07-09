@@ -17,7 +17,7 @@
  * along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
  * =========================================================================== */
 
-(function (scope, $, jsPlumb, console, _) {
+(function (scope, $, jsPlumb, console) {
   "use strict";
   scope.jsonPlumb = function (model) {
     var that = {}, priv = {};
@@ -154,7 +154,7 @@
     };
 
     that.updateElementData = function (element_id, data) {
-      _.extend(priv.element_container[element_id], data);
+      $.extend(priv.element_container[element_id], data);
       priv.onDataChange();
     };
 
@@ -176,8 +176,8 @@
 
     that.clearAll = function () {
       $("[id=render]").children().remove()
-      _.each(_.pairs(priv.element_container), function(element, index) {
-        priv.removeElement(element[0]);
+      $.each(priv.element_container, function(idx, element) {
+        priv.removeElement(element);
       });
     };
 
@@ -230,15 +230,13 @@
         isTarget:true,
         //dropOptions : exampleDropOptions
       };
-      _.each(_.pairs(option.anchor), function(value, key, list) {
-        var anchor = value[0],
-            endpoint_configuration = value[1];
-        jsPlumb.addEndpoint(element.id, { anchor: anchor }, endpoint);
-      })
+      for (var key in option.anchor) {
+        jsPlumb.addEndpoint(element.id, { anchor: key }, endpoint);
+      };
       priv.addElementToContainer(element);
     };
 
     return that;
   };
 
-}(window, jQuery, jsPlumb, console, _));
+}(window, jQuery, jsPlumb, console));
