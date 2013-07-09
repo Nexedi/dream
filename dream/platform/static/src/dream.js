@@ -229,7 +229,7 @@
     };
 
     priv.formatForManpy = function(data) {
-      var manpy_dict = {}, coreObject = [], core_object_dict = {};
+      var manpy_dict = {}, coreObject = [];
       $.each(data['element'], function(idx, element) { 
         var clone_element = {};
         /* clone the element and put content of 'data' at the top level. */
@@ -242,10 +242,8 @@
             clone_element[k] = v;
           }
         });
-        clone_element['predecessorList'] = [];
         coreObject.push( clone_element );
         /* keep a mapping for predecessorList */
-        core_object_dict[clone_element['id']] = clone_element;
       });
 
       manpy_dict['coreObject'] = coreObject;
