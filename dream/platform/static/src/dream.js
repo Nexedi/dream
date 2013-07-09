@@ -248,15 +248,6 @@
         core_object_dict[clone_element['id']] = clone_element;
       });
 
-      /* calculate predecessorList from sucessorList.
-       * In the future we have to update ManPy to use sucessorList only
-       */
-      $.each(core_object_dict, function(k, v) {
-        $.each(v['successorList'] || [], function(i, successor) {
-          core_object_dict[successor].predecessorList.push( k );
-        });
-      });
-
       manpy_dict['coreObject'] = coreObject;
       manpy_dict['modelResource'] = [];
       manpy_dict['general'] = data['general'];
