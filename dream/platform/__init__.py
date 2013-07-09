@@ -2,7 +2,6 @@ import json
 import traceback
 import multiprocessing
 
-from pprint import pformat
 from flask import Flask, jsonify, redirect, url_for
 from flask import request
 
@@ -17,7 +16,8 @@ def front_page():
 @app.route("/runSimulation", methods=["POST", "OPTIONS"])
 def runSimulation():
   parameter_dict = request.json['json']
-  app.logger.debug("running with:\n%s" % (pformat(parameter_dict,)))
+  app.logger.debug("running with:\n%s" % (json.dumps(parameter_dict,
+                                          sort_keys=True, indent=2)))
 
   try:
     timeout = int(parameter_dict['general']['processTimeout'])
