@@ -22,14 +22,6 @@
   scope.Dream = function (configuration) {
     var that = jsonPlumb(), priv = {};
 
-    priv.onError = function(error) {
-       console.log("Error", error);
-    };
-
-    priv.getUrl = function() {
-      return "/";
-    };
-
     // Utility function to update the style of a box
     priv.updateBoxStyle = function (box_id, style) {
       var box;
@@ -242,7 +234,6 @@
           }
         });
         coreObject.push( clone_element );
-        /* keep a mapping for predecessorList */
       });
 
       manpy_dict['coreObject'] = coreObject;
@@ -251,6 +242,9 @@
       return manpy_dict;
     }
 
+    /** Runs the simulation, and call the callback with results once the
+     * simulation is finished.
+     */
     that.runSimulation = function(callback) {
       // handle Dream.General properties (in another function maybe ?)
       var prefix = "General-", properties = {}, prefixed_property_id;

@@ -20,11 +20,10 @@
 (function($) {
   "use strict";
   jsPlumb.bind("ready", function() {
-    var dream_instance, available_people = {}, people_list,
-        i, i_length, updateWorkerCount, json_plumb_configuration = {}, jio;
+    var dream_instance, jio;
     jio = new jIO.newJio({type: "local", username: "dream", applicationname: "dream"});
+
     var window_id = 1;
-    var element_id;
     var id_container = {}; // to allow generating next ids, like Machine_1, Machine_2, etc
     var property_container = {entity: {id: "entity", type:"string", _class: "Dream.Property", default: "Part"},
                               // XXX is it possible not to repeat id ?
@@ -95,8 +94,8 @@
                                      id_container[tool.target.id] = (id_container[tool.target.id] || 0) + 1;
                                      _class = tool.target.id.replace('-', '.'); // XXX - vs .
                                      dream_instance.newElement({id : tool.target.id + "_" + id_container[tool.target.id],
-                                                               coordinate: {top: box_top, left: box_left},
-                                       _class: _class,
+                                                                coordinate: {top: box_top, left: box_left},
+                                                                _class: _class,
                                      });
                                      window_id += 1;
                                   },
@@ -104,12 +103,10 @@
 
     // Check if there is already data when we first load the page, if yes, then build graph from it
     jio.get({_id: "dream_demo"}, function(err, response) {
-      console.log("jio get:", response);
       if (response !== undefined && response.data !== undefined) {
         // Add all elements
         $.each(response.data.element, function(key, value) {
-          var element_id = value.id;
-          var preference_data = response.data.preference !== undefined ? response.data.preference[element_id] :  {};
+          var preference_data = response.data.preference !== undefined ? response.data.preference[value.id] :  {};
           $.each(preference_data, function(preference_key, preference_value){
             value[preference_key] = preference_value;
           });
@@ -144,6 +141,9 @@
       });
     });
 
+
+
+    // Enable "Run Simulation" button
     $("#run_simulation").button().click(
       function(e){
        dream_instance.runSimulation(
@@ -162,12 +162,11 @@
        e.preventDefault();
        return false;
      });
+
+    // Enable "Clear All" button
     $("#clear_all").button().click(
       function(e){
-       dream_instance.clearAll(
-          function() {
-            dream_instance.clearAll();
-       });
+       dream_instance.clearAll();
        e.preventDefault();
        return false;
      });

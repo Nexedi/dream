@@ -22,10 +22,6 @@
   scope.jsonPlumb = function (model) {
     var that = {}, priv = {};
 
-    priv.onError = function(error) {
-       console.log("Error", error);
-    };
-
     priv.initJsPlumb = function () {
       jsPlumb.setRenderMode(jsPlumb.SVG);
       var color = "#00f";
@@ -219,16 +215,8 @@
         paintStyle:{ width:25, height:21, fillStyle:color },
         isSource:true,
         scope:"blue rectangle",
-        /*connectorStyle : {
-          gradient:{stops:[[0, color], [0.5, gradient_color], [1, color]]},
-          lineWidth:5,
-          strokeStyle:color,
-          dashstyle:"2 2"
-        },*/
-        //connector: ["Bezier", { curviness:63 } ],
         maxConnections:3,
         isTarget:true,
-        //dropOptions : exampleDropOptions
       };
       for (var key in option.anchor) {
         jsPlumb.addEndpoint(element.id, { anchor: key }, endpoint);
