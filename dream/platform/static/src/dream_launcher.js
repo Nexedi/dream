@@ -133,11 +133,8 @@
 
       // once the data is read, we can subscribe to every changes
       $.subscribe("Dream.Gui.onDataChange", function(event, data) {
-        console.log("onDataChange, data", data);
         $("#json_output").text(JSON.stringify(data, undefined, " "));
-        jio.put({_id: "dream_demo", data: data}, function(err, response) {
-          console.log("jio put:", response);}
-        );
+        jio.put({_id: "dream_demo", data: data}, function(err, response) { } );
       });
     });
 

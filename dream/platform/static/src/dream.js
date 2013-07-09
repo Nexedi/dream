@@ -107,13 +107,10 @@
         }
         $.each(property_list, function(key, property) {
           if (property._class === "Dream.Property") {
-            console.log("property.id, previous_data", property.id, previous_data);
             previous_value = previous_data[property.id] || "";
             if (previous_value.length > 0) {
               previous_value = ' value="' + previous_value + '"';
             }
-            //previous_value = ' value="bar"';
-            console.log("previous_value");
             fieldset.append("<label>" + prefix + property.id + "</label>" +
                             '<input type="text" name="' + prefix + property.id + '"' +
                             previous_value +
@@ -122,12 +119,10 @@
           } else if (property._class === "Dream.PropertyList") {
             var next_prefix = prefix + property.id + "-";
             var next_previous_data = previous_data[property.id] || {};
-            console.log("next_previous_data", next_previous_data);
             renderField(property.property_list, next_previous_data, next_prefix);
           }
         });
       };
-      console.log("property_list to be rendered", property_list);
       renderField(property_list, previous_data);
 
       $( "#dialog-form" ).dialog({
@@ -149,7 +144,6 @@
           Validate: function() {
             var data = {}, prefixed_property_id, property_element;
             var updateDataPropertyList = function(property_list, data, prefix) {
-              console.log("updateDataPropertyList, property_list", property_list);
               if (prefix === undefined) {
                 prefix = "";
               }
@@ -181,7 +175,6 @@
       var element_prefix = element.id.split('_')[0];
       priv.super_newElement(element, configuration[element_prefix]);
       $("#" + element.id).bind('click', function() {
-        console.log("bind click on window", $(this));
         $( "#dialog-form" ).dialog( "destroy" ) ;
         priv.prepareDialogForElement(element.id, element.id);
         $( "#dialog-form" ).dialog( "open" );
@@ -190,7 +183,6 @@
       var data = {}, property_list = configuration[element_prefix]["property_list"] || [];
       var updateDefaultData = function(data, property_list) {
         $.each(property_list, function(key, element) {
-          console.log("going to parse property_list, element", element);
           if(element._class === "Dream.Property") {
             data[element.id] = element.default;
           } else if (element._class === "Dream.PropertyList") {

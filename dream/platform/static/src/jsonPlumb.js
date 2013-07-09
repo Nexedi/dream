@@ -52,7 +52,6 @@
 
       // listen for clicks on connections, and offer to change values on click.
       jsPlumb.bind("click", function(conn) {
-        console.log("user click connection", conn);
         //priv.dialog_connection = conn;
         jsPlumb.detach(conn);
       });
@@ -62,11 +61,9 @@
       });
       
       jsPlumb.bind("connectionDrag", function(connection) {
-        console.log("connection " + connection.id + " is being dragged");
       });   
       
       jsPlumb.bind("connectionDragStop", function(connection) {
-        console.log("connection " + connection.id + " was dragged");
       });
       
       jsPlumb.makeTarget(jsPlumb.getSelector(".w"), {
@@ -162,7 +159,6 @@
     };
 
     that.removeElement = function (element_id) {
-      console.log("going to remove element", element_id);
       priv.removeElement(element_id);
     };
 
