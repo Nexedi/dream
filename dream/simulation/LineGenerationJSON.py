@@ -307,21 +307,7 @@ def main(argv=[], input_data=None):
             
         #carry on the post processing operations for every model resource in the topology       
         for model_resource in G.RepairmanList:
-            model_resource.postProcessing(G.maxSimTime)
-            
-        '''    
-        #output trace to excel
-        if(G.trace=="Yes"):
-            G.traceFile.save('trace'+str(i+1)+'.xls')
-            G.traceIndex=0    #index that shows in what row we are
-            G.sheetIndex=1    #index that shows in what sheet we are
-            G.traceFile = xlwt.Workbook()     #create excel file
-            G.traceSheet = G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)  #create excel sheet
-        
-    G.outputSheet.write(G.outputIndex,0, "Execution Time")
-    G.outputSheet.write(G.outputIndex,1, str(time.time()-start)+" seconds")
-    G.outputIndex+=2 
-    '''
+            model_resource.postProcessing(G.maxSimTime)          
     
     G.outputJSONFile=open('outputJSON.json', mode='w')
     G.outputJSON['_class'] = 'Dream.Simulation';
@@ -348,18 +334,6 @@ def main(argv=[], input_data=None):
     outputJSONString=str(str(G.outputJSON))
     outputJSONString=outputJSONString.replace("'", '"')
     G.outputJSONFile.write(str(outputJSONString))
-       
-    '''    
-    #output data to excel for every object in the topology         
-    for core_object in G.ObjList:
-        core_object.outputResultsXL(G.maxSimTime)
-        
-    #output data to excel for every resource in the topology         
-    for model_resource in G.RepairmanList:
-        model_resource.outputResultsXL(G.maxSimTime)
-      
-    G.outputFile.save("output.xls")      
-    '''
     
     print "execution time="+str(time.time()-start)  
     if input_data:
