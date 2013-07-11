@@ -8,10 +8,13 @@ from flask import request
 from dream.simulation.LineGenerationJSON import main as simulate_line_json
 
 app = Flask(__name__)
+# Serve static file with no cache
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 @app.route("/")
 def front_page():
   return redirect(url_for('static', filename='index.html'))
+
 
 @app.route("/runSimulation", methods=["POST", "OPTIONS"])
 def runSimulation():
