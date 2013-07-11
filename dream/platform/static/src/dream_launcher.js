@@ -160,6 +160,14 @@
        return false;
      });
 
+    // Enable "Layout Graph" button
+    $("#layout_graph").button().click(
+      function(e){
+       dream_instance.positionGraph();
+       // XXX dirty way to redisplay after jio is saved
+       setTimeout(function() {window.history.go(0)}, 500);
+     });
+
     // Enable "Clear All" button
     $("#clear_all").button().click(
       function(e){

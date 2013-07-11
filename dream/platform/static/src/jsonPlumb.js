@@ -132,6 +132,24 @@
       $.publish("Dream.Gui.onDataChange", priv.getData());
     };
 
+
+    that.positionGraph = function() {
+      $.ajax(
+        '/positionGraph', {
+        data: JSON.stringify(priv.getData()),
+        contentType: 'application/json',
+        type: 'POST',
+        success: function(data, textStatus, jqXHR){
+          $.each(data, function(node, pos) {
+            priv.updateElementCoordinate(node,
+              {top: (Math.floor(pos.top*$("#main").height()) - 45) + "px",
+               left: Math.floor(pos.left*$("#main").width()) + "px"});
+          });
+        }
+      });
+
+    }
+
     priv.getData = function() {
       return { "element": priv.element_container,
                "preference": priv.preference_container,
