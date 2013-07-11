@@ -42,7 +42,9 @@ class Repairman(object):
         #lists to hold statistics of multiple runs
         self.Waiting=[]
         self.Working=[]
-
+        
+        self.coreObjectIds=[]   #list with the coreObjects that the repairman repairs
+                
     def initialize(self):
         self.totalWorkingTime=0     #holds the total working time
         self.totalWaitingTime=0     #holds the total waiting time
@@ -140,7 +142,7 @@ class Repairman(object):
                 json['results']['waiting_ratio']['avg']=self.Waiting[0]
                 json['results']['waiting_ratio']['max']=self.Waiting[0] 
                 
-        G.outputJSON['coreObject'].append(json)
+        G.outputJSON['elementList'].append(json)
         
     #takes the array and checks if all its values are identical (returns false) or not (returns true) 
     #needed because if somebody runs multiple runs in deterministic case it would crash!          

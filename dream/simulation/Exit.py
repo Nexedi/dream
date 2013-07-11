@@ -249,7 +249,7 @@ class Exit(Process):
                 json['results']['taktTime']['min']=self.TaktTime[0]
                 json['results']['taktTime']['avg']=self.TaktTime[0]
                 json['results']['taktTime']['max']=self.TaktTime[0]        
-        G.outputJSON['coreObject'].append(json)
+        G.outputJSON['elementList'].append(json)
                
     #takes the array and checks if all its values are identical (returns false) or not (returns true) 
     #needed because if somebody runs multiple runs in deterministic case it would crash!          

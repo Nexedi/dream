@@ -58,8 +58,8 @@ def readGeneralInput():
 #creates the simulation objects
 def createObjects():
     #Read the json data
-    coreObjectList = G.JSONData['coreObject']
-    modelResourceList = G.JSONData['modelResource']
+    elementList = G.JSONData['elementList']
+    #modelResourceList = G.JSONData['modelResource']
    
     #define the lists
     G.SourceList=[]
@@ -71,92 +71,94 @@ def createObjects():
     G.DismantleList=[]
     G.ConveyerList=[]
     
-    #loop through all the model resources 
-    #read the data and create them
-    for model_resource in modelResourceList:
-        resourceClass = model_resource.get('_class', 'not found')
-        if resourceClass=='Dream.Repairman':
-            id = model_resource.get('id', 'not found')
-            name = model_resource.get('name', 'not found')
-            capacity = int(model_resource.get('capacity', '1'))
-            R = Repairman(id, name, capacity)
-            G.RepairmanList.append(R)                   
     
-    #loop through all the core objects    
+    #loop through all the model resources 
+    #search for repairmen in order to create them
     #read the data and create them
-    for core_object in coreObjectList:
-        objClass=core_object.get('_class', 'not found')   
+    for element in elementList:
+        resourceClass = element.get('_class', 'not found')
+        if resourceClass=='Dream.Repairman':
+            id = element.get('id', 'not found')
+            name = element.get('name', 'not found')
+            capacity = int(element.get('capacity', '1'))
+            successorList=element.get('successorList', 'not found')
+            R = Repairman(id, name, capacity)
+            R.coreObjectIds=successorList
+            G.RepairmanList.append(R)                           
+    
+    #loop through all the elements    
+    #read the data and create them
+    for element in elementList:
+        objClass=element.get('_class', 'not found')   
         if objClass=='Dream.Source':
-            id=core_object.get('id', 'not found')
-            name=core_object.get('name', 'not found')
-            interarrivalTime=core_object.get('interarrivalTime', 'not found')
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            interarrivalTime=element.get('interarrivalTime', 'not found')
             distributionType=interarrivalTime.get('distributionType', 'not found')
             mean=float(interarrivalTime.get('mean', '0'))        
-            entity=str_to_class(core_object.get('entity', 'not found'))
-            successorList=core_object.get('successorList', 'not found')
+            entity=str_to_class(element.get('entity', 'not found'))
+            successorList=element.get('successorList', 'not found')
             S=Source(id, name, distributionType, mean, entity)
             S.nextIds=successorList
             G.SourceList.append(S)
             G.ObjList.append(S)
             
         elif objClass=='Dream.Machine':
-            id=core_object.get('id', 'not found')
-            name=core_object.get('name', 'not found')
-            processingTime=core_object.get('processingTime', 'not found')
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            processingTime=element.get('processingTime', 'not found')
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
             min=float(processingTime.get('min', '0')) 
             max=float(processingTime.get('max', '0'))
-            failures=core_object.get('failures', 'not found')  
+            failures=element.get('failures', 'not found')  
             failureDistribution=failures.get('failureDistribution', 'not found')
             MTTF=float(failures.get('MTTF', '0'))   
             MTTR=float(failures.get('MTTR', '0')) 
             availability=float(failures.get('availability', '0'))  
-            needRepairman=failures.get('repairman', 'None')
-            if(needRepairman=='None'):
-                repairman=needRepairman
-            else: 
-                for j in range(len(G.RepairmanList)):
-                    if(G.RepairmanList[j].id==needRepairman):
-                        repairman=G.RepairmanList[j]
-            successorList=core_object.get('successorList', 'not found')
+            r='None'
+            for repairman in G.RepairmanList:
+                if(id in repairman.coreObjectIds):
+                    r=repairman
+                    
+            successorList=element.get('successorList', 'not found')
             M=Machine(id, name, 1, distributionType, [mean,stdev,min,max], failureDistribution,
-                                                    MTTF, MTTR, availability, repairman)
+                                                    MTTF, MTTR, availability, r)
             M.nextIds=successorList
             G.MachineList.append(M)
             G.ObjList.append(M)
             
         elif objClass=='Dream.Exit':
-            id=core_object.get('id', 'not found')
-            name=core_object.get('name', 'not found')
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
             E=Exit(id, name)
             G.ExitList.append(E)
             G.ObjList.append(E)
             
         elif objClass=='Dream.Queue':
-            id=core_object.get('id', 'not found')
-            name=core_object.get('name', 'not found')
-            successorList=core_object.get('successorList', 'not found')
-            capacity=int(core_object.get('capacity', '1'))
-            isDummy=bool(int(core_object.get('isDummy', '0')))
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            successorList=element.get('successorList', 'not found')
+            capacity=int(element.get('capacity', '1'))
+            isDummy=bool(int(element.get('isDummy', '0')))
             Q=Queue(id, name, capacity, isDummy)
             Q.nextIds=successorList
             G.QueueList.append(Q)
             G.ObjList.append(Q)
             
         elif objClass=='Dream.Assembly':
-            id=core_object.get('id', 'not found')
-            name=core_object.get('name', 'not found')
-            processingTime=core_object.get('processingTime', 'not found')
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            processingTime=element.get('processingTime', 'not found')
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
             min=float(processingTime.get('min', '0')) 
             max=float(processingTime.get('max', '0'))
-            #predecessorPartList=core_object.get('predecessorPartList', 'not found')
-            #predecessorFrameList=core_object.get('predecessorFrameList', 'not found')
-            successorList=core_object.get('successorList', 'not found')
+            #predecessorPartList=element.get('predecessorPartList', 'not found')
+            #predecessorFrameList=element.get('predecessorFrameList', 'not found')
+            successorList=element.get('successorList', 'not found')
             A=Assembly(id, name, distributionType, [mean,stdev,min,max])
             #A.previousPartIds=predecessorPartList
             #A.previousFrameIds=predecessorFrameList
@@ -165,17 +167,17 @@ def createObjects():
             G.ObjList.append(A)
             
         elif objClass=='Dream.Dismantle':
-            id=core_object.get('id', 'not found')
-            name=core_object.get('name', 'not found')
-            processingTime=core_object.get('processingTime', 'not found')
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            processingTime=element.get('processingTime', 'not found')
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
             min=float(processingTime.get('min', '0')) 
             max=float(processingTime.get('max', '0'))
-            successorList=core_object.get('successorList', 'not found')
-            successorPartList=core_object.get('successorPartList', 'not found')
-            successorFrameList=core_object.get('successorFrameList', 'not found')
+            successorList=element.get('successorList', 'not found')
+            successorPartList=element.get('successorPartList', 'not found')
+            successorFrameList=element.get('successorFrameList', 'not found')
             D=Dismantle(id, name, distributionType, [mean,stdev,min,max])
             D.nextPartIds=successorPartList
             D.nextFrameIds=successorFrameList
@@ -184,11 +186,11 @@ def createObjects():
             G.ObjList.append(D)
             
         elif objClass=='Dream.Conveyer':
-            id=core_object.get('id', 'not found')
-            name=core_object.get('name', 'not found')
-            length=float(core_object.get('length', '10'))
-            speed=float(core_object.get('speed', '1'))
-            successorList=core_object.get('successorList', 'not found')
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            length=float(element.get('length', '10'))
+            speed=float(element.get('speed', '1'))
+            successorList=element.get('successorList', 'not found')
             C=Conveyer(id, name, length, speed)
             C.nextIds=successorList
             G.ObjList.append(C)
@@ -196,51 +198,51 @@ def createObjects():
             
     #loop through all the core objects    
     #to read predecessors
-    for core_object in G.ObjList:
+    for element in G.ObjList:
         #loop through all the nextIds of the object
-        for nextId in core_object.nextIds:
+        for nextId in element.nextIds:
             #loop through all the core objects to find the on that has the id that was read in the successorList
             for possible_successor in G.ObjList:
                 if possible_successor.id==nextId:
-                    possible_successor.previousIds.append(core_object.id)            
+                    possible_successor.previousIds.append(element.id)            
 
 #defines the topology (predecessors and successors for all the objects)
 def setTopology():
     #loop through all the objects  
-    for core_object in G.ObjList:
+    for element in G.ObjList:
         next=[]
         previous=[]
-        for j in range(len(core_object.previousIds)):
+        for j in range(len(element.previousIds)):
             for q in range(len(G.ObjList)):
-                if G.ObjList[q].id==core_object.previousIds[j]:
+                if G.ObjList[q].id==element.previousIds[j]:
                     previous.append(G.ObjList[q])
                     
-        for j in range(len(core_object.nextIds)):
+        for j in range(len(element.nextIds)):
             for q in range(len(G.ObjList)):
-                if G.ObjList[q].id==core_object.nextIds[j]:
+                if G.ObjList[q].id==element.nextIds[j]:
                     next.append(G.ObjList[q])      
                     
                     
-        if core_object.type=="Source":
-            core_object.defineRouting(next)
-        elif core_object.type=="Exit":
-            core_object.defineRouting(previous)
+        if element.type=="Source":
+            element.defineRouting(next)
+        elif element.type=="Exit":
+            element.defineRouting(previous)
         #Dismantle should be changed to identify what the the successor is.
         #nextPart and nextFrame will become problematic    
-        elif core_object.type=="Dismantle":
+        elif element.type=="Dismantle":
             nextPart=[]
             nextFrame=[]
-            for j in range(len(core_object.nextPartIds)):
+            for j in range(len(element.nextPartIds)):
                 for q in range(len(G.ObjList)):
-                    if G.ObjList[q].id==core_object.nextPartIds[j]:
+                    if G.ObjList[q].id==element.nextPartIds[j]:
                         nextPart.append(G.ObjList[q])
-            for j in range(len(core_object.nextFrameIds)):
+            for j in range(len(element.nextFrameIds)):
                 for q in range(len(G.ObjList)):
-                    if G.ObjList[q].id==core_object.nextFrameIds[j]:
+                    if G.ObjList[q].id==element.nextFrameIds[j]:
                         nextFrame.append(G.ObjList[q])
-            core_object.defineRouting(previous, nextPart, nextFrame)
+            element.defineRouting(previous, nextPart, nextFrame)
         else:
-            core_object.defineRouting(previous, next)
+            element.defineRouting(previous, next)
 
 #used to convert a string read from the input to object type
 def str_to_class(str):
@@ -248,16 +250,16 @@ def str_to_class(str):
 
 #initializes all the objects that are in the topology
 def initializeObjects():
-    for core_object in G.ObjList:
-        core_object.initialize()
+    for element in G.ObjList:
+        element.initialize()
     for repairman in G.RepairmanList:
         repairman.initialize()
 
 #activates all the objects    
 def activateObjects():
-    for core_object in G.ObjList:
+    for element in G.ObjList:
         try:
-            activate(core_object, core_object.run())
+            activate(element, element.run())
         except AttributeError:
             pass
 
@@ -302,8 +304,8 @@ def main(argv=[], input_data=None):
         simulate(until=G.maxSimTime)      #start the simulation
         
         #carry on the post processing operations for every object in the topology       
-        for core_object in G.ObjList:
-            core_object.postProcessing(G.maxSimTime)
+        for element in G.ObjList:
+            element.postProcessing(G.maxSimTime)
             
         #carry on the post processing operations for every model resource in the topology       
         for model_resource in G.RepairmanList:
@@ -314,13 +316,12 @@ def main(argv=[], input_data=None):
     G.outputJSON['general'] ={};
     G.outputJSON['general']['_class'] = 'Dream.Configuration';
     G.outputJSON['general']['totalExecutionTime'] = (time.time()-start);
-    G.outputJSON['modelResource'] =[];
-    G.outputJSON['coreObject'] =[];
+    G.outputJSON['elementList'] =[];
     
     #output data to JSON for every object in the topology         
-    for core_object in G.ObjList:
+    for element in G.ObjList:
         try:
-            core_object.outputResultsJSON()
+            element.outputResultsJSON()
         except AttributeError:
             pass
         

@@ -341,7 +341,7 @@ class Assembly(Process):
                 json['results']['waiting_ratio']['avg']=self.Waiting[0]
                 json['results']['waiting_ratio']['max']=self.Waiting[0] 
                 
-        G.outputJSON['coreObject'].append(json)
+        G.outputJSON['elementList'].append(json)
                 
 
         
