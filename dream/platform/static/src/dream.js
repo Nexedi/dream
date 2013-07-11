@@ -183,13 +183,15 @@
       var data = {}, property_list = configuration[element_prefix]["property_list"] || [];
       var updateDefaultData = function(data, property_list) {
         $.each(property_list, function(key, element) {
-          if(element._class === "Dream.Property") {
-            data[element.id] = element.default;
-          } else if (element._class === "Dream.PropertyList") {
-            data[element.id] = {};
-            var next_data = data[element.id];
-            var next_property_list = element.property_list || [];
-            updateDefaultData(next_data, next_property_list);
+          if (element) {
+            if(element._class === "Dream.Property") {
+              data[element.id] = element.default;
+            } else if (element._class === "Dream.PropertyList") {
+              data[element.id] = {};
+              var next_data = data[element.id];
+              var next_property_list = element.property_list || [];
+              updateDefaultData(next_data, next_property_list);
+            }
           }
         });
       }
