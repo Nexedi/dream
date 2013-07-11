@@ -49,6 +49,8 @@ class Exit(Process):
     def initialize(self):
         Process.__init__(self)
         self.Res=Resource(capacity=infinity)         
+        # The number of resource that exited through this exit.
+        # XXX bug: cannot output as json when nothing has exited.
         self.numOfExits=0
         self.totalLifespan=0
         
