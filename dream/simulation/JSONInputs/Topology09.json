@@ -6,9 +6,7 @@
     "trace": "No",
     "confidenceLevel": "0.95"
   },
-    "modelResource": [
-  ],
-  "coreObject": [
+  "elementList": [
      {"_class": "Dream.Source",
       "id": "S1",
       "name": "Raw Material",
