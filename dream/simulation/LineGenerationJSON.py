@@ -345,9 +345,8 @@ def main(argv=[], input_data=None):
         except AttributeError:
             pass
          
-    outputJSONString=str(str(G.outputJSON))
-    outputJSONString=outputJSONString.replace("'", '"')
-    G.outputJSONFile.write(str(outputJSONString))
+    outputJSONString=json.dumps(G.outputJSON, indent=True)
+    G.outputJSONFile.write(outputJSONString)
        
     '''    
     #output data to excel for every object in the topology         
