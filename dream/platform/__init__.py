@@ -3,6 +3,19 @@ import traceback
 import multiprocessing
 import pydot
 
+try:
+  import scipy
+except ImportError:
+  class scipy:
+    class stats:
+      @staticmethod
+      def bayes_mvs():
+        warn("Scipy is missing, using fake implementation")
+        return [[[0] * 3] * 3] * 3
+  import sys
+  sys.modules['scipy.stats'] = scipy.stats
+  sys.modules['scipy'] = scipy
+
 from flask import Flask, jsonify, redirect, url_for
 from flask import request
 
