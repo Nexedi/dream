@@ -24,6 +24,18 @@ Created on 7 May 2013
 '''
 main script. Reads data from JSON, generates and runs the simulation and prints the results to excel
 '''
+try:
+  import scipy
+except ImportError:
+  class scipy:
+    class stats:
+      @staticmethod
+      def bayes_mvs():
+        warn("Scipy is missing, using fake implementation")
+        return [[[0] * 3] * 3] * 3
+  import sys
+  sys.modules['scipy.stats'] = scipy.stats
+  sys.modules['scipy'] = scipy
 
 from SimPy.Simulation import *
 from Source import Source
