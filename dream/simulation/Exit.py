@@ -211,9 +211,10 @@ class Exit(CoreObject):
             json['_class'] = 'Dream.Exit';
             json['id'] = str(self.id)
             json['results'] = {}
-            json['results']['throughput']=self.numOfExits
-            json['results']['lifespan']=((self.totalLifespan)/self.numOfExits)/G.Base
-            json['results']['takt_time']=((self.totalTaktTime)/self.numOfExits)/G.Base
+            json['results']['throughput']=self.numOfExits        
+            json['results']['lifespan']=self.Lifespan[0]
+            json['results']['takt_time']=self.TaktTime[0]            
+                
         else: #if we had multiple replications we output confidence intervals to excel
                 #for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
                 #so failurePortion will be exactly the same in each run). That will give 0 variability and errors.

@@ -98,7 +98,7 @@ def createObjects():
             distributionType=interarrivalTime.get('distributionType', 'not found')
             mean=float(interarrivalTime.get('mean', '0'))        
             entity=str_to_class(element.get('entity', 'not found'))
-            successorList=element.get('successorList', 'not found')
+            successorList=element.get('successorList', 'not found')            
             S=Source(id, name, distributionType, mean, entity)
             S.nextIds=successorList
             G.SourceList.append(S)
@@ -340,7 +340,7 @@ def main(argv=[], input_data=None):
     print "execution time="+str(time.time()-start)  
     if input_data:
       return outputJSONString
-        
+    
 if __name__ == '__main__':
     main()
 
