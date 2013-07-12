@@ -30,9 +30,10 @@ from SimPy.Simulation import *
 import xlwt
 from RandomNumberGenerator import RandomNumberGenerator
 import scipy.stats as stat
+from CoreObject import CoreObject
 
 #the Dismantle object
-class Dismantle(Process):
+class Dismantle(CoreObject):
 
     #initialize the object      
     def __init__(self, id, name, dist, time):

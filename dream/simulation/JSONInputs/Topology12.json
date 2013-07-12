@@ -12,7 +12,7 @@
 			"id": "W1",
 			"name": "W1",
 			"capacity": "1",
-			"successorList": ["M1", "M2"]
+			"successorList": []
 		},	
 		{		
             "_class": "Dream.Source",

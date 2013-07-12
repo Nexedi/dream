@@ -28,9 +28,10 @@ models the exit of the model
 from SimPy.Simulation import *
 import xlwt
 import scipy.stats as stat
+from CoreObject import CoreObject
 
 #The exit object
-class Exit(Process):    
+class Exit(CoreObject):    
           
     def __init__(self, id, name):
         Process.__init__(self)
@@ -251,11 +252,3 @@ class Exit(Process):
                 json['results']['taktTime']['max']=self.TaktTime[0]        
         G.outputJSON['elementList'].append(json)
                
-    #takes the array and checks if all its values are identical (returns false) or not (returns true) 
-    #needed because if somebody runs multiple runs in deterministic case it would crash!          
-    def checkIfArrayHasDifValues(self, array):
-        difValuesFlag=False 
-        for i in range(1, len(array)):
-           if(array[i]!=array[1]):
-               difValuesFlag=True
-        return difValuesFlag 

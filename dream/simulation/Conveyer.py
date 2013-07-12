@@ -29,9 +29,10 @@ it gathers entities and transfers them with a certain speed
 from SimPy.Simulation import *
 import xlwt
 import scipy.stats as stat
+from CoreObject import CoreObject
 
 #The conveyer object
-class Conveyer(Process):    
+class Conveyer(CoreObject):    
           
     def __init__(self, id, name,length,speed):
         self.id=id        
@@ -223,11 +224,6 @@ class Conveyer(Process):
                                                                                         #only when an entity is at the end of it         
         else:
             return False
-        
-    #sets the routing in and out elements for the Conveyer
-    def defineRouting(self, p, n):
-        self.next=n
-        self.previous=p
 
     #checks if the conveyer is full to count the blockage. for some reason Plant regards 
     #the conveyer full even when it has one place    
@@ -252,7 +248,6 @@ class Conveyer(Process):
                 return self.canAcceptAndIsRequested()
         else:
             return self.canAcceptAndIsRequested()
-
     
     #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime):                      
@@ -383,15 +378,6 @@ class Conveyer(Process):
                 json['results']['waiting_ratio']['avg']=self.Waiting[0]
                 json['results']['waiting_ratio']['max']=self.Waiting[0] 
         G.outputJSON['elementList'].append(json)
-
-    #takes the array and checks if all its values are identical (returns false) or not (returns true) 
-    #needed because if somebody runs multiple runs in deterministic case it would crash!          
-    def checkIfArrayHasDifValues(self, array):
-        difValuesFlag=False 
-        for i in range(1, len(array)):
-           if(array[i]!=array[1]):
-               difValuesFlag=True
-        return difValuesFlag    
     
 #Process that handles the moves of the conveyer
 class ConveyerMover(Process):
