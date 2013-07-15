@@ -132,7 +132,8 @@ class Dismantle(CoreObject):
     #checks if the Dismantle can accept an entity 
     def canAccept(self):
         return len(self.Res.activeQ)==0  
-                              
+            
+    #defines where parts and frames go after they leave the object                          
     def definePartFrameRouting(self, np, nf):
         self.nextPart=np
         self.nextFrame=nf              
