@@ -53,6 +53,7 @@ class Dismantle(CoreObject):
         self.nextIds=[]     #list with the ids of the next objects in the flow
         self.nextPartIds=[]     #list with the ids of the next objects that receive parts 
         self.nextFrameIds=[]     #list with the ids of the next objects that receive frames 
+        self.next=[]
         
         #lists to hold statistics of multiple runs
         self.Waiting=[]
@@ -131,10 +132,8 @@ class Dismantle(CoreObject):
     #checks if the Dismantle can accept an entity 
     def canAccept(self):
         return len(self.Res.activeQ)==0  
-            
-    #sets the routing in and out elements for the Dismantle
-    def defineRouting(self, p, np, nf):
-        self.previous=p
+                              
+    def definePartFrameRouting(self, np, nf):
         self.nextPart=np
         self.nextFrame=nf              
 

@@ -222,8 +222,7 @@ def setTopology():
             for q in range(len(G.ObjList)):
                 if G.ObjList[q].id==element.nextIds[j]:
                     next.append(G.ObjList[q])      
-                    
-                    
+                             
         if element.type=="Source":
             element.defineRouting(next)
         elif element.type=="Exit":
@@ -241,7 +240,8 @@ def setTopology():
                 for q in range(len(G.ObjList)):
                     if G.ObjList[q].id==element.nextFrameIds[j]:
                         nextFrame.append(G.ObjList[q])
-            element.defineRouting(previous, nextPart, nextFrame)
+            element.defineRouting(previous, next)            
+            element.definePartFrameRouting(nextPart, nextFrame)
         else:
             element.defineRouting(previous, next)
 
