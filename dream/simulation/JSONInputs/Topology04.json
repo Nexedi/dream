@@ -49,11 +49,15 @@
             "_class": "Dream.Queue",
             "capacity": "1",
             "isDummy": "1",
-            "name": "DummyQ"
+            "left": 0.6979166666666667,
+            "name": "DummyQ",
+            "top": 0.7720588235294118
         },
         "E1": {
             "_class": "Dream.Exit",
-            "name": "Stock"
+            "left": 0.296875,
+            "name": "Stock",
+            "top": 0.04656862745098034
         },
         "M1": {
             "_class": "Dream.Machine",
@@ -62,11 +66,13 @@
                 "MTTR": "5",
                 "failureDistribution": "Fixed"
             },
+            "left": 0.296875,
             "name": "Machine1",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "0.25"
-            }
+            },
+            "top": 0.2279411764705882
         },
         "M2": {
             "_class": "Dream.Machine",
@@ -75,17 +81,21 @@
                 "MTTR": "10",
                 "failureDistribution": "Fixed"
             },
+            "left": 0.4375,
             "name": "Machine2",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "1.5"
-            }
+            },
+            "top": 0.5906862745098039
         },
         "Q1": {
             "_class": "Dream.Queue",
             "capacity": "1",
             "isDummy": "0",
-            "name": "Q1"
+            "left": 0.4375,
+            "name": "Q1",
+            "top": 0.40931372549019607
         },
         "S1": {
             "_class": "Dream.Source",
@@ -94,41 +104,15 @@
                 "distributionType": "Fixed",
                 "mean": "0.5"
             },
-            "name": "Raw Material"
+            "left": 0.6979166666666667,
+            "name": "Raw Material",
+            "top": 0.9534313725490196
         },
         "W1": {
             "_class": "Dream.Repairman",
             "capacity": "1",
-            "name": "W1"
-        }
-    },
-    "preferences": {
-        "DummyQ": {
-            "left": 0.6979166666666667,
-            "top": 0.7720588235294118
-        },
-        "E1": {
-            "left": 0.296875,
-            "top": 0.04656862745098034
-        },
-        "M1": {
-            "left": 0.296875,
-            "top": 0.2279411764705882
-        },
-        "M2": {
-            "left": 0.4375,
-            "top": 0.5906862745098039
-        },
-        "Q1": {
-            "left": 0.4375,
-            "top": 0.40931372549019607
-        },
-        "S1": {
-            "left": 0.6979166666666667,
-            "top": 0.9534313725490196
-        },
-        "W1": {
             "left": 0.15104166666666663,
+            "name": "W1",
             "top": 0.7720588235294118
         }
     }

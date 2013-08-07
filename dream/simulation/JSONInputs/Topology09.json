@@ -22,18 +22,22 @@
     "nodes": {
         "E1": {
             "_class": "Dream.Exit",
-            "name": "Stock"
+            "left": 0.5,
+            "name": "Stock",
+            "top": 0.10215053763440862
         },
         "M1": {
             "_class": "Dream.Machine",
             "failures": {
                 "failureDistribution": "No"
             },
+            "left": 0.5,
             "name": "Moulding",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "0.25"
-            }
+            },
+            "top": 0.5
         },
         "S1": {
             "_class": "Dream.Source",
@@ -42,20 +46,8 @@
                 "distributionType": "Fixed",
                 "mean": "0.5"
             },
-            "name": "Raw Material"
-        }
-    },
-    "preferences": {
-        "E1": {
             "left": 0.5,
-            "top": 0.10215053763440862
-        },
-        "M1": {
-            "left": 0.5,
-            "top": 0.5
-        },
-        "S1": {
-            "left": 0.5,
+            "name": "Raw Material",
             "top": 0.8978494623655914
         }
     }

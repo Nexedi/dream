@@ -52,14 +52,17 @@
     "nodes": {
         "A1": {
             "_class": "Dream.Assembly",
+            "left": 0.5,
             "name": "Assembly",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "2"
-            }
+            },
+            "top": 0.7720588235294118
         },
         "D1": {
             "_class": "Dream.Dismantle",
+            "left": 0.5,
             "name": "Dismantle",
             "processingTime": {
                 "distributionType": "Fixed",
@@ -70,15 +73,20 @@
             ],
             "successorPartList": [
                 "M3"
-            ]
+            ],
+            "top": 0.40931372549019607
         },
         "E1": {
             "_class": "Dream.Exit",
-            "name": "Parts Stock"
+            "left": 0.2142857142857143,
+            "name": "Parts Stock",
+            "top": 0.04656862745098034
         },
         "E2": {
             "_class": "Dream.Exit",
-            "name": "Frames Stock"
+            "left": 0.7857142857142857,
+            "name": "Frames Stock",
+            "top": 0.04656862745098034
         },
         "M1": {
             "_class": "Dream.Machine",
@@ -88,11 +96,13 @@
                 "failureDistribution": "Fixed",
                 "repairman": "None"
             },
+            "left": 0.5,
             "name": "Moulding",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "0.25"
-            }
+            },
+            "top": 0.5906862745098039
         },
         "M2": {
             "_class": "Dream.Machine",
@@ -102,11 +112,13 @@
                 "failureDistribution": "No",
                 "repairman": "None"
             },
+            "left": 0.2142857142857143,
             "name": "Frame Wash",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "1"
-            }
+            },
+            "top": 0.2279411764705882
         },
         "M3": {
             "_class": "Dream.Machine",
@@ -116,11 +128,13 @@
                 "failureDistribution": "No",
                 "repairman": "None"
             },
+            "left": 0.7857142857142857,
             "name": "Part Wash",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "0.20"
-            }
+            },
+            "top": 0.2279411764705882
         },
         "S1": {
             "_class": "Dream.Source",
@@ -129,7 +143,9 @@
                 "distributionType": "Fixed",
                 "mean": "0.5"
             },
-            "name": "Parts"
+            "left": 0.2142857142857143,
+            "name": "Parts",
+            "top": 0.9534313725490196
         },
         "S2": {
             "_class": "Dream.Source",
@@ -138,44 +154,8 @@
                 "distributionType": "Fixed",
                 "mean": "2"
             },
-            "name": "Frames"
-        }
-    },
-    "preferences": {
-        "A1": {
-            "left": 0.5,
-            "top": 0.7720588235294118
-        },
-        "D1": {
-            "left": 0.5,
-            "top": 0.40931372549019607
-        },
-        "E1": {
-            "left": 0.2142857142857143,
-            "top": 0.04656862745098034
-        },
-        "E2": {
             "left": 0.7857142857142857,
-            "top": 0.04656862745098034
-        },
-        "M1": {
-            "left": 0.5,
-            "top": 0.5906862745098039
-        },
-        "M2": {
-            "left": 0.2142857142857143,
-            "top": 0.2279411764705882
-        },
-        "M3": {
-            "left": 0.7857142857142857,
-            "top": 0.2279411764705882
-        },
-        "S1": {
-            "left": 0.2142857142857143,
-            "top": 0.9534313725490196
-        },
-        "S2": {
-            "left": 0.7857142857142857,
+            "name": "Frames",
             "top": 0.9534313725490196
         }
     }

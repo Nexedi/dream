@@ -42,15 +42,19 @@
     "nodes": {
         "A1": {
             "_class": "Dream.Assembly",
+            "left": 0.5,
             "name": "Assembly",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "2"
-            }
+            },
+            "top": 0.7720588235294118
         },
         "E1": {
             "_class": "Dream.Exit",
-            "name": "Stock"
+            "left": 0.5,
+            "name": "Stock",
+            "top": 0.04656862745098034
         },
         "M1": {
             "_class": "Dream.Machine",
@@ -60,11 +64,13 @@
                 "failureDistribution": "Fixed",
                 "repairman": "None"
             },
+            "left": 0.5,
             "name": "Moulding",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "0.25"
-            }
+            },
+            "top": 0.5906862745098039
         },
         "M2": {
             "_class": "Dream.Machine",
@@ -74,17 +80,21 @@
                 "failureDistribution": "Fixed",
                 "repairman": "None"
             },
+            "left": 0.5,
             "name": "Machine2",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "1.5"
-            }
+            },
+            "top": 0.2279411764705882
         },
         "Q1": {
             "_class": "Dream.Queue",
             "capacity": "1",
             "isDummy": "0",
-            "name": "Q1"
+            "left": 0.5,
+            "name": "Q1",
+            "top": 0.40931372549019607
         },
         "S1": {
             "_class": "Dream.Source",
@@ -93,7 +103,9 @@
                 "distributionType": "Fixed",
                 "mean": "0.5"
             },
-            "name": "Parts"
+            "left": 0.2142857142857143,
+            "name": "Parts",
+            "top": 0.9534313725490196
         },
         "S2": {
             "_class": "Dream.Source",
@@ -102,36 +114,8 @@
                 "distributionType": "Fixed",
                 "mean": "2"
             },
-            "name": "Frames"
-        }
-    },
-    "preferences": {
-        "A1": {
-            "left": 0.5,
-            "top": 0.7720588235294118
-        },
-        "E1": {
-            "left": 0.5,
-            "top": 0.04656862745098034
-        },
-        "M1": {
-            "left": 0.5,
-            "top": 0.5906862745098039
-        },
-        "M2": {
-            "left": 0.5,
-            "top": 0.2279411764705882
-        },
-        "Q1": {
-            "left": 0.5,
-            "top": 0.40931372549019607
-        },
-        "S1": {
-            "left": 0.2142857142857143,
-            "top": 0.9534313725490196
-        },
-        "S2": {
             "left": 0.7857142857142857,
+            "name": "Frames",
             "top": 0.9534313725490196
         }
     }
