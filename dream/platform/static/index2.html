@@ -1,0 +1,193 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DREAM</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+  <link rel="stylesheet" href="css/dream2.css">
+
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.js"></script>
+
+
+  <script type="text/javascript" src="lib/jquery.ui.touch-punch.min.js"></script>
+  <script type="text/javascript" src="lib/md5.js"></script>
+  <script type="text/javascript" src="lib/jio.js"></script>
+  <script type="text/javascript" src="lib/jio.localstorage.js"></script>
+  <script type="text/javascript" src="lib/pubsub.js"></script>
+		
+<!-- JS plumb -->
+<!-- support lib for bezier stuff -->
+<script src="lib/jsBezier-0.5.js"></script>
+<!-- jsplumb util -->
+<script src="lib/jsPlumb/jsPlumb-util.js"></script>
+<!-- base DOM adapter -->
+<script src="lib/jsPlumb/jsPlumb-dom-adapter.js"></script>
+<!-- main jsplumb engine -->
+<script src="lib/jsPlumb/jsPlumb.js"></script>
+<!-- anchors -->
+<script src="lib/jsPlumb/jsPlumb-anchors.js"></script>   
+<!-- endpoint -->
+<script src="lib/jsPlumb/jsPlumb-endpoint.js"></script>      
+<!-- connection -->
+<script src="lib/jsPlumb/jsPlumb-connection.js"></script>
+<!-- connector editors  -->
+<script src="lib/jsPlumb/jsPlumb-connector-editors.js"></script>        
+<!-- connectors, endpoint and overlays  -->
+<script src="lib/jsPlumb/jsPlumb-defaults.js"></script>
+<!-- state machine connectors -->
+<script src="lib/jsPlumb/jsPlumb-connectors-statemachine.js"></script>
+<!-- flowchart connectors -->
+<script src="lib/jsPlumb/jsPlumb-connectors-flowchart.js"></script>        
+<!-- SVG renderer -->
+<script src="lib/jsPlumb/jsPlumb-renderers-svg.js"></script>
+<!-- canvas renderer -->
+<script src="lib/jsPlumb/jsPlumb-renderers-canvas.js"></script>
+<!-- vml renderer -->
+<script src="lib/jsPlumb/jsPlumb-renderers-vml.js"></script>
+<!-- jquery jsPlumb adapter -->
+<script src="lib/jsPlumb/jquery.jsPlumb.js"></script>
+<!-- /JS -->
+		
+<script src="http://raw.github.com/DavidDurman/FlexiJsonEditor/master/jquery.jsoneditor.js"></script>
+<script src="src/dream2.js"></script>
+
+</head>
+
+<body>
+<!--         
+<div class="content-secondary">
+  <div data-role="collapsible" data-collapsed="true" data-theme="b" data-content-theme="d">
+    <h3>Controls<h3>
+    <ul data-role="listview" data-theme="c">
+      <li><a href="menu-general.html">General</a></li>
+      <li><a href="menu-palette.html">Node</a></li>
+      <li><a href="menu-runsimulation.html">Run Simulation</a></li>
+    </ul>
+  </div>
+</div>
+-->
+
+		<div data-role="page" class="ui-responsive-panel">
+
+			<div data-role="header" data-theme="f">
+				<h1>DREAM</h1>
+				<a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+				<a href="#add-form" data-icon="plus" data-iconpos="notext">Add</a>
+			</div><!-- /header -->
+			<div data-role="content">
+				<h2>Panel: Menu + form</h2>
+
+				<p>This is a typical page that has two buttons in the header bar that open panels. The left button opens a left menu with the reveal display mode. The right button opens a form in a right overlay panel.</p>
+				
+<div class="ui-grid-a">
+  <div class="ui-block-a"><strong>I'm Block A</strong> and text inside will
+  wrap
+<div id="main"> </div>
+  </div>
+    <div class="ui-block-b"><strong>I'm Block B</strong> and text inside will
+    wrap
+    
+<div>
+  <label for="node_id">Node ID:</label>
+  <input id="node_id"/>
+  <label for="node_top">Node Top:</label>
+  <input type="range" name="node_top" id="node_top" value="" min="0" max="100" />
+  <label for="node_left">Node Left:</label>
+  <input type="range" name="node_left" id="node_left" value="" min="0" max="100" />
+  <button id="move_node">Move Node</button>
+</div>
+
+<div>
+  <textarea rows="20" cols="47" id="debug_zone" style="align:left"> </textarea>
+  <button id="load_json">Load JSON</button>
+</div>
+    
+</div>
+</div><!-- /grid-a -->
+  <p>Since the panel links are in the top bar, there really isn't a need for the fixed positioning feature on the panel since you will always be scrolled to the top of the page. The fixed positioning impacts animation smoothness so it's off in this demo (<code>data-position-fixed="false"</code>) and the panel will scroll with the page.</p>
+  <p>To make this responsive, the left panel stays open and causes the page to re-flow at wider widths. This allows both the menu and page to be used together when more space is available. This behavior is controlled by CSS media queries. You can create a custom one for a specific breakpoint or use the breakpoint preset by adding the <code> class="ui-responsive-panel"</code> to the page container.</p>
+</div><!-- /content -->
+
+
+
+				<div data-role="panel" data-position="left" data-position-fixed="false" data-display="reveal" id="nav-panel" data-theme="a">
+
+<!-- good style: -->
+  <div data-role="collapsible" data-collapsed="true" data-theme="b" data-content-theme="d">
+    <h3>Controls<h3>
+    <ul data-role="listview" data-theme="c">
+      <li><a href="menu-general.html">General</a></li>
+      <li><a href="menu-palette.html">Node</a></li>
+      <li><a href="menu-runsimulation.html">Run Simulation</a></li>
+    </ul>
+  </div>
+<!-- from example: -->
+					<ul data-role="listview" data-theme="a" data-divider-theme="a" style="margin-top:-16px;" class="nav-search">
+
+						<li data-icon="delete" style="background-color:#111;">
+							<a href="#" data-rel="close">Close menu</a>
+						</li>
+			
+    			<li data-filtertext="wai-aria voiceover accessibility screen reader">
+							<a href="../about/accessibility.html">Accessibility</a>
+						</li>
+						<li data-filtertext="accordions collapsible set collapsible-set collapsed">
+							<a href="../content/content-collapsible-set.html">Accordions</a>
+						</li>
+						<li data-filtertext="ajax navigation model">
+							<a href="../pages/page-navmodel.html">Ajax navigation model</a>
+						</li>
+						<li data-filtertext="anatomy of page viewport">
+							<a href="../pages/page-anatomy.html">Anatomy of a page</a>
+						</li>
+						<li data-filtertext="events api animationComplete transition css">
+							<a href="../api/events.html">Animation events</a>
+						</li>
+						<li data-filtertext="listview autodivider">
+							<a href="../lists/lists-autodividers.html">Automatic listview dividers</a>
+						</li>
+						<li data-filtertext="button link submit cancel image reset mini buttonmarkup enable disable">
+							<a href="../buttons/buttons-types.html">Buttons</a>
+						</li>
+						<li data-filtertext="button icon">
+							<a href="../buttons/buttons-icons.html">Button icons</a>
+						</li>
+						<li data-filtertext="data-prefetch loadpage domCache data-dom-cache size clear cleanup pagehide lazyload spinner loader">
+							<a href="../pages/page-cache.html">Caching pages</a>
+						</li>
+						<li data-filtertext="input forms multi select checkbox checks grouped horizontal toggle legend">
+							<a href="../forms/checkboxes/">Checkbox</a>
+						</li>
+						<li data-filtertext="button icon">
+							<a href="buttons/buttons-icons.html">Button icons</a>
+						</li>
+						<li data-filtertext="data-prefetch loadpage domCache data-dom-cache size clear cleanup pagehide lazyload spinner loader">
+							<a href="../pages/page-cache.html">Caching pages</a>
+						</li>
+						<li data-filtertext="input forms multi select checkbox checks grouped horizontal toggle legend">
+							<a href="../forms/checkboxes/">Checkbox</a>
+						</li>
+					</ul>
+					<!-- panel content goes here -->
+				</div><!-- /panel -->
+
+			  				
+		</div><!-- /page -->
+
+<div data-role="page" data-url="dialog.html" id="dialog">
+  <div data-role="header">
+    <h1>Dialog</h1>
+  </div>
+  <div data-role="content">
+    <p>Is this an answer?</p>
+  </div>
+</div>
+
+
+
+</body>
+</html>
+
