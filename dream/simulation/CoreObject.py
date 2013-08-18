@@ -26,8 +26,6 @@ Class that acts as an abstract. It should have no instances. All the core-object
 '''
 
 from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import hold, now
-import scipy.stats as stat
 
 #the core object
 class CoreObject(Process):
