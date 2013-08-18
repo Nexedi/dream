@@ -26,12 +26,13 @@ Created on 14 Nov 2012
 models a repairman that can fix a machine when it gets failures
 '''
 
-from SimPy.Simulation import *
+from SimPy.Simulation import Resource
 import xlwt
 import scipy.stats as stat
+from ObjectResource import ObjectResource
 
 #the resource that repairs the machines
-class Repairman(object):
+class Repairman(ObjectResource):
     
     def __init__(self, id, name, capacity):    
         self.id=id      
@@ -45,16 +46,7 @@ class Repairman(object):
         
         self.coreObjectIds=[]   #list with the coreObjects that the repairman repairs
                 
-    def initialize(self):
-        self.totalWorkingTime=0     #holds the total working time
-        self.totalWaitingTime=0     #holds the total waiting time
-        self.timeLastRepairStarted=0    #holds the time that the last repair was started        
-        self.Res=Resource(self.capacity) 
-               
-    #checks if the worker is available       
-    def checkIfWorkerIsAvailable(self): 
-        return len(self.W.activeQ)<self.capacity         
-
+    
     #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime):
         #if the repairman is currently working we have to count the time of this work    
@@ -144,11 +136,3 @@ class Repairman(object):
                 
         G.outputJSON['elementList'].append(json)
         
-    #takes the array and checks if all its values are identical (returns false) or not (returns true) 
-    #needed because if somebody runs multiple runs in deterministic case it would crash!          
-    def checkIfArrayHasDifValues(self, array):
-        difValuesFlag=False 
-        for i in range(1, len(array)):
-           if(array[i]!=array[1]):
-               difValuesFlag=True
-        return difValuesFlag 
