@@ -79,7 +79,7 @@ class Queue(CoreObject):
         self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                               
                                                       
         self.waitToDispose=False    #shows if the object waits to dispose an entity  
-                
+             
     def run(self):  
         while 1:  
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity
@@ -88,7 +88,7 @@ class Queue(CoreObject):
             
             #if entity just got to the dummyQ set its startTime as the current time         
             if self.isDummy:               
-                self.Res.activeQ[0].startTime=now()
+                self.Res.activeQ[0].startTime=now() 
             
     #checks if the Q has one available place       
     def checkIfQHasPlace(self): 

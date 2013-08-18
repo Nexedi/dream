@@ -65,7 +65,7 @@ class CoreObject(Process):
     #the main process of the core object
     #this is dummy, every object must have its own implementation
     def run(self):
-        yield hold,self,0 
+        raise NotImplementedError("Subclass must define 'run' method")
         
     #sets the routing in and out elements for the Object
     def defineRouting(self, p, n):
