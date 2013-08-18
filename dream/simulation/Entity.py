@@ -17,26 +17,19 @@
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 '''
-Created on 6 Feb 2013
+Created on 18 Aug 2013
 
 @author: George
 '''
-
 '''
-models a part entity that flows through the system
+Class that acts as an abstract. It should have no instances. All the Entities should inherit from it
 '''
-
-
-from SimPy.Simulation import *
-from Globals import G
-from Entity import Entity
-
 
 #The entity object
-class Part(Entity):    
-    type="Part"
-          
+class Entity(object):
+
     def __init__(self, name):
+        self.type="Entity"
         self.name=name
         self.currentStop=None      #contains the current object that the material is in 
         self.creationTime=0
@@ -45,7 +38,3 @@ class Part(Entity):
         self.width=1.0
         self.height=1.0
         self.length=1.0
-        
-    def __del__(self):
-        pass      
-        #print self.name, now()
