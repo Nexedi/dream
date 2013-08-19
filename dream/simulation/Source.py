@@ -29,9 +29,10 @@ models the source object that generates the entities
 from SimPy.Simulation import *
 from Part import Part
 from RandomNumberGenerator import RandomNumberGenerator
+from CoreObject import CoreObject
 
 #The Source object is a Process
-class Source(Process): 
+class Source(CoreObject): 
     def __init__(self, id, name, dist, time, item):
         Process.__init__(self)
         self.id=id   
@@ -122,21 +123,6 @@ class Source(Process):
     #sets the routing out element for the Source
     def defineRouting(self, n):
         self.next=n  
-        
-    #actions to be taken after the simulation ends
-    def postProcessing(self, MaxSimtime):
-        pass    #no actions for the Source
-
-    #checks if the Source can dispose an entity to the following object     
-    def haveToDispose(self): 
-        #return self.waitToDispose 
-        return len(self.Res.activeQ)>0
-    
-    #removes an entity from the Source 
-    def removeEntity(self):     
-        self.Res.activeQ.pop(0)      
-        #if(len(self.Res.activeQ)==0):
-            #self.waitToDispose=False
             
    #outputs message to the trace.xls. Format is (Simulation Time | Entity Name | "generated")            
     def outputTrace(self, message):
@@ -153,11 +139,3 @@ class Source(Process):
                 G.traceIndex=0
                 G.sheetIndex+=1
                 G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)     
-
-    #outputs data to "output.xls"
-    def outputResultsXL(self, MaxSimtime):
-        pass
-    
-    #outputs results to JSON File
-    def outputResultsJSON(self):
-        pass

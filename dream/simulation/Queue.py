@@ -27,10 +27,12 @@ Models a FIFO queue where entities can wait in order to get into a server
 
 
 from SimPy.Simulation import *
+from CoreObject import CoreObject
+
 #import sys
 
 #the Queue object
-class Queue(Process):
+class Queue(CoreObject):
     
     def __init__(self, id, name, capacity, dummy):
         Process.__init__(self)
@@ -77,7 +79,7 @@ class Queue(Process):
         self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                               
                                                       
         self.waitToDispose=False    #shows if the object waits to dispose an entity  
-                
+             
     def run(self):  
         while 1:  
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity
@@ -86,12 +88,7 @@ class Queue(Process):
             
             #if entity just got to the dummyQ set its startTime as the current time         
             if self.isDummy:               
-                self.Res.activeQ[0].startTime=now()
-
-    #sets the routing in and out elements for the queue
-    def defineRouting(self, p, n):
-        self.next=n
-        self.previous=p
+                self.Res.activeQ[0].startTime=now() 
             
     #checks if the Q has one available place       
     def checkIfQHasPlace(self): 
@@ -183,20 +180,6 @@ class Queue(Process):
                     self.predecessorIndex=i  
                     maxTimeWaiting=timeWaiting                                     
         return len(self.Res.activeQ)<self.capacity and isRequested  
-    
-    #gets an entity from the predecessor that the predecessor index points to     
-    def getEntity(self):
-        self.Res.activeQ=[self.previous[self.predecessorIndex].Res.activeQ[0]]+self.Res.activeQ   #get the entity from the previous object
-                                                                                                      #and put it in front of the activeQ       
-        self.previous[self.predecessorIndex].removeEntity()     #remove the entity from the previous object  
-    
-    #removes an entity from the Queue (this is FIFO for now)
-    def removeEntity(self):
-        self.Res.activeQ.pop(0)
-
-    #actions to be taken after the simulation ends
-    def postProcessing(self, MaxSimtime):
-        pass    #no actions for the Queue
              
     #outputs message to the trace.xls. Format is (Simulation Time | Entity Name | message)
     def outputTrace(self, message):
@@ -212,11 +195,3 @@ class Queue(Process):
                 G.traceIndex=0
                 G.sheetIndex+=1
                 G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)       
-
-    #outputs data to "output.xls"
-    def outputResultsXL(self, MaxSimtime):
-        pass
-    
-    #outputs results to JSON File
-    def outputResultsJSON(self):
-        pass

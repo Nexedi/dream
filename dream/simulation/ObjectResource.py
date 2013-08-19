@@ -1,0 +1,66 @@
+# ===========================================================================
+# Copyright 2013 Georgios Dagkakis
+#
+# This file is part of DREAM.
+#
+# DREAM is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# DREAM is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
+# ===========================================================================
+'''
+Created on 18 Aug 2013
+
+@author: George
+'''
+'''
+Class that acts as an abstract. It should have no instances. All the Resources should inherit from it
+'''
+from SimPy.Simulation import Resource
+
+#the resource that repairs the machines
+class ObjectResource(object):
+    
+    def initialize(self):
+        self.totalWorkingTime=0     #holds the total working time
+        self.totalWaitingTime=0     #holds the total waiting time
+        self.timeLastRepairStarted=0    #holds the time that the last repair was started        
+        self.Res=Resource(self.capacity) 
+
+    #checks if the worker is available       
+    def checkIfResourceIsAvailable(self): 
+        return len(self.W.activeQ)<self.capacity   
+    
+    #actions to be taken after the simulation ends
+    def postProcessing(self, MaxSimtime):
+        pass    
+    
+    #outputs message to the trace.xls
+    def outputTrace(self, message):
+        pass
+    
+    #outputs data to "output.xls"
+    def outputResultsXL(self, MaxSimtime):
+        pass
+    
+    #outputs results to JSON File
+    def outputResultsJSON(self):
+        pass
+    
+    #takes the array and checks if all its values are identical (returns false) or not (returns true) 
+    #needed because if somebody runs multiple runs in deterministic case it would crash!          
+    def checkIfArrayHasDifValues(self, array):
+        difValuesFlag=False 
+        for i in range(1, len(array)):
+           if(array[i]!=array[1]):
+               difValuesFlag=True
+        return difValuesFlag 
+    

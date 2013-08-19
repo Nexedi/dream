@@ -16,36 +16,25 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
+
 '''
-Created on 6 Feb 2013
+Created on 18 Aug 2013
 
 @author: George
 '''
-
 '''
-models a part entity that flows through the system
+Class that acts as an abstract. It should have no instances. All object interruptions (eg failures, breaks) should inherit from it
 '''
 
+from SimPy.Simulation import Process, Resource
 
-from SimPy.Simulation import *
-from Globals import G
-from Entity import Entity
+class ObjectInterruption(Process):
+    
+    #the main process of the core object
+    #this is dummy, every object must have its own implementation
+    def run(self):
+        raise NotImplementedError("Subclass must define 'run' method")
 
-
-#The entity object
-class Part(Entity):    
-    type="Part"
-          
-    def __init__(self, name):
-        self.name=name
-        self.currentStop=None      #contains the current object that the material is in 
-        self.creationTime=0
-        self.startTime=0           #holds the startTime for the lifespan
-        #dimension data
-        self.width=1.0
-        self.height=1.0
-        self.length=1.0
-        
-    def __del__(self):
-        pass      
-        #print self.name, now()
+    #outputs data to "output.xls"
+    def outputResultsXL(self, MaxSimtime):
+        pass

@@ -30,9 +30,10 @@ from SimPy.Simulation import *
 import xlwt
 from RandomNumberGenerator import RandomNumberGenerator
 import scipy.stats as stat
+from CoreObject import CoreObject
 
 #the Dismantle object
-class Dismantle(Process):
+class Dismantle(CoreObject):
 
     #initialize the object      
     def __init__(self, id, name, dist, time):
@@ -52,6 +53,7 @@ class Dismantle(Process):
         self.nextIds=[]     #list with the ids of the next objects in the flow
         self.nextPartIds=[]     #list with the ids of the next objects that receive parts 
         self.nextFrameIds=[]     #list with the ids of the next objects that receive frames 
+        self.next=[]
         
         #lists to hold statistics of multiple runs
         self.Waiting=[]
@@ -131,9 +133,8 @@ class Dismantle(Process):
     def canAccept(self):
         return len(self.Res.activeQ)==0  
             
-    #sets the routing in and out elements for the Dismantle
-    def defineRouting(self, p, np, nf):
-        self.previous=p
+    #defines where parts and frames go after they leave the object                          
+    def definePartFrameRouting(self, np, nf):
         self.nextPart=np
         self.nextFrame=nf              
 
@@ -339,7 +340,7 @@ class Dismantle(Process):
                 json['results']['waiting_ratio']['avg']=self.Waiting[0]
                 json['results']['waiting_ratio']['max']=self.Waiting[0] 
                 
-        G.outputJSON['coreObject'].append(json)
+        G.outputJSON['elementList'].append(json)
             
     #takes the array and checks if all its values are identical (returns false) or not (returns true) 
     #needed because if somebody runs multiple runs in deterministic case it would crash!          

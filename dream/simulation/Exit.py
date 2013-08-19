@@ -28,9 +28,10 @@ models the exit of the model
 from SimPy.Simulation import *
 import xlwt
 import scipy.stats as stat
+from CoreObject import CoreObject
 
 #The exit object
-class Exit(Process):    
+class Exit(CoreObject):    
           
     def __init__(self, id, name):
         Process.__init__(self)
@@ -212,9 +213,10 @@ class Exit(Process):
             json['_class'] = 'Dream.Exit';
             json['id'] = str(self.id)
             json['results'] = {}
-            json['results']['throughput']=self.numOfExits
-            json['results']['lifespan']=((self.totalLifespan)/self.numOfExits)/G.Base
-            json['results']['takt_time']=((self.totalTaktTime)/self.numOfExits)/G.Base
+            json['results']['throughput']=self.numOfExits        
+            json['results']['lifespan']=self.Lifespan[0]
+            json['results']['takt_time']=self.TaktTime[0]            
+                
         else: #if we had multiple replications we output confidence intervals to excel
                 #for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
                 #so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
@@ -251,13 +253,5 @@ class Exit(Process):
                 json['results']['taktTime']['min']=self.TaktTime[0]
                 json['results']['taktTime']['avg']=self.TaktTime[0]
                 json['results']['taktTime']['max']=self.TaktTime[0]        
-        G.outputJSON['coreObject'].append(json)
+        G.outputJSON['elementList'].append(json)
                
-    #takes the array and checks if all its values are identical (returns false) or not (returns true) 
-    #needed because if somebody runs multiple runs in deterministic case it would crash!          
-    def checkIfArrayHasDifValues(self, array):
-        difValuesFlag=False 
-        for i in range(1, len(array)):
-           if(array[i]!=array[1]):
-               difValuesFlag=True
-        return difValuesFlag 

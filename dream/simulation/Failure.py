@@ -26,12 +26,12 @@ Created on 9 Nov 2012
 models the failures that servers can have
 '''
 
-
 from SimPy.Simulation import *
 import math
 from RandomNumberGenerator import RandomNumberGenerator
+from ObjectInterruption import ObjectInterruption
 
-class Failure(Process):
+class Failure(ObjectInterruption):
     
     def __init__(self, victim, dist, MTTF, MTTR, availability, index, repairman):
         Process.__init__(self)
@@ -122,6 +122,3 @@ class Failure(Process):
                 G.sheetIndex+=1
                 G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)
 
-    #outputs data to "output.xls"
-    def outputResultsXL(self, MaxSimtime):
-        pass

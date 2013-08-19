@@ -29,12 +29,14 @@ from SimPy.Simulation import Process, Resource
 from SimPy.Simulation import activate, passivate, waituntil, now, hold
 
 from Failure import Failure
+from CoreObject import CoreObject
+
 from RandomNumberGenerator import RandomNumberGenerator
 import scipy.stats as stat
 import sys
 
 #the Machine object
-class Machine(Process):
+class Machine(CoreObject):
             
     #initialize the id the capacity, of the resource and the distribution        
     def __init__(self, id, name, capacity, dist, time, fDist, MTTF, MTTR, availability, repairman):
@@ -185,13 +187,7 @@ class Machine(Process):
             blockageTime=totalTime-(tinMStart+failureTime)
             self.totalBlockageTime+=totalTime-(tinMStart+failureTime)   #the time of blockage is derived from 
                                                                                          #the whole time in the machine
-                                                                                         #minus the processing time and the failure time            
-            
-    #sets the routing in and out elements for the queue
-    def defineRouting(self, p, n):
-        self.next=n
-        self.previous=p
-
+                                                                                         #minus the processing time and the failure time                        
     #checks if the waitQ of the machine is empty
     def checkIfWaitQEmpty(self):
         return len(self.M.waitQ)==0
@@ -259,6 +255,14 @@ class Machine(Process):
     def ifCanDisposeOrHaveFailure(self):
          return self.Up==False or self.next[0].canAccept() or len(self.Res.activeQ)==0  #the last part is added so that it is not removed and stack
                                                                                         #gotta think of it again    
+  
+    #removes an entity from the Machine
+    def removeEntity(self):
+        self.timeLastEntityLeft=now()
+        self.outputTrace("releases "+self.objName)
+        self.waitToDispose=False                 
+        self.Res.activeQ.pop(0)   
+        self.downTimeInTryingToReleaseCurrentEntity=0    
      
     #checks if the Machine can dispose an entity to the following object     
     def haveToDispose(self): 
@@ -294,19 +298,6 @@ class Machine(Process):
         if thecaller is self.next[self.successorIndex]:
             flag=True
         return len(self.Res.activeQ)>0 and self.waitToDispose and self.Up and flag       
-    
-    #removes an entity from the Machine
-    def removeEntity(self):
-        self.timeLastEntityLeft=now()
-        self.outputTrace("releases "+self.objName)
-        self.waitToDispose=False                 
-        self.Res.activeQ.pop(0)   
-        self.downTimeInTryingToReleaseCurrentEntity=0          
-
-    #gets an entity from the predecessor that the predecessor index points to     
-    def getEntity(self):
-        self.Res.activeQ.append(self.previous[self.predecessorIndex].Res.activeQ[0])    #get the entity from the predecessor
-        self.previous[self.predecessorIndex].removeEntity()
     
     
     #actions to be taken after the simulation ends
@@ -496,14 +487,5 @@ class Machine(Process):
                 json['results']['waiting_ratio']['avg']=self.Waiting[0]
                 json['results']['waiting_ratio']['max']=self.Waiting[0] 
                 
-        G.outputJSON['coreObject'].append(json)
+        G.outputJSON['elementList'].append(json)
     
-    
-    #takes the array and checks if all its values are identical (returns false) or not (returns true) 
-    #needed because if somebody runs multiple runs in deterministic case it would crash!          
-    def checkIfArrayHasDifValues(self, array):
-        difValuesFlag=False 
-        for i in range(1, len(array)):
-           if(array[i]!=array[1]):
-               difValuesFlag=True
-        return difValuesFlag  

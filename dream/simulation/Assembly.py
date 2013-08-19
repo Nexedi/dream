@@ -21,8 +21,6 @@ Created on 18 Feb 2013
 
 @author: George
 '''
-
-
 '''
 Models an assembly object 
 it gathers frames and parts which are loaded to the frames
@@ -32,9 +30,10 @@ from SimPy.Simulation import *
 import xlwt
 from RandomNumberGenerator import RandomNumberGenerator
 import scipy.stats as stat
+from CoreObject import CoreObject
 
 #the Assembly object
-class Assembly(Process):
+class Assembly(CoreObject):
 
     #initialize the object      
     def __init__(self, id, name, dist, time):
@@ -181,18 +180,12 @@ class Assembly(Process):
     #checks if the Assembly can dispose an entity to the following object     
     def haveToDispose(self): 
         return len(self.Res.activeQ)>0 and self.waitToDispose                                  
-                                            
-    #sets the routing in and out elements for the Assembly
-    def defineRouting(self, p, n):
-        self.next=n
-        self.previous=p
-    
+                                               
     #removes an entity from the Assembly
     def removeEntity(self):
         self.outputTrace(self.Res.activeQ[0].name, "releases "+ self.objName)              
         self.Res.activeQ.pop(0)   
         self.waitToDispose=False
-
     
     #gets an entity from the predecessor   
     #it may handle both Parts and Frames  
@@ -341,15 +334,5 @@ class Assembly(Process):
                 json['results']['waiting_ratio']['avg']=self.Waiting[0]
                 json['results']['waiting_ratio']['max']=self.Waiting[0] 
                 
-        G.outputJSON['coreObject'].append(json)
+        G.outputJSON['elementList'].append(json)
                 
-
-        
-    #takes the array and checks if all its values are identical (returns false) or not (returns true) 
-    #needed because if somebody runs multiple runs in deterministic case it would crash!          
-    def checkIfArrayHasDifValues(self, array):
-        difValuesFlag=False 
-        for i in range(1, len(array)):
-           if(array[i]!=array[1]):
-               difValuesFlag=True
-        return difValuesFlag     
