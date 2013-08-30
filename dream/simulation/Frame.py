@@ -1,5 +1,5 @@
 # ===========================================================================
-# Copyright 2013 Georgios Dagkakis
+# Copyright 2013 University of Limerick
 #
 # This file is part of DREAM.
 #
