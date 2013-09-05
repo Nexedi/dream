@@ -187,7 +187,7 @@ class Conveyer(CoreObject):
         
     #checks if the Conveyer can accept an entity and there is a Frame waiting for it
     def canAcceptAndIsRequested(self):
-        return self.canAccept(self) and self.previous[0].haveToDispose()
+        return self.canAccept(self) and self.previous[0].haveToDispose(self)
 
     #gets an entity from the predecessor     
     def getEntity(self): 
@@ -217,7 +217,7 @@ class Conveyer(CoreObject):
             self.call=True
     
     #checks if the Conveyer can dispose an entity to the following object     
-    def haveToDispose(self): 
+    def haveToDispose(self, callerObject=None): 
         #it has meaning only if there are one or more entities in the conveyer
         if len(self.position)>0:
             return len(self.Res.activeQ)>0 and self.length-self.position[0]<0.000001    #the conveyer can dispose an object 

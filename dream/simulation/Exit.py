@@ -103,11 +103,11 @@ class Exit(CoreObject):
     #checks if the Exit can accept an entity and there is an entity waiting for it
     def canAcceptAndIsRequested(self):
         if(len(self.previous)==1):  
-            return self.previous[0].haveToDispose()    
+            return self.previous[0].haveToDispose(self)    
     
         isRequested=False
         for i in range(len(self.previous)):
-            if(self.previous[i].haveToDispose()):
+            if(self.previous[i].haveToDispose(self)):
                 isRequested=True
                 self.predecessorIndex=i
         return isRequested

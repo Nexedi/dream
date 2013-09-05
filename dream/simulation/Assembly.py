@@ -149,7 +149,7 @@ class Assembly(CoreObject):
                 if(coreObject.Res.activeQ[0].type=='Frame'):
                     #update the predecessorIndex
                     self.predecessorIndex=i
-                    return len(self.Res.activeQ)==0 and coreObject.haveToDispose()
+                    return len(self.Res.activeQ)==0 and coreObject.haveToDispose(self)
             i=i+1 
         return False    
     
@@ -164,25 +164,12 @@ class Assembly(CoreObject):
                 if(coreObject.Res.activeQ[0].type=='Part'):
                     #update the predecessorIndex
                     self.predecessorIndex=i
-                    return len(self.Res.activeQ)==1 and coreObject.haveToDispose()
+                    return len(self.Res.activeQ)==1 and coreObject.haveToDispose(self)
             i=i+1 
         return False 
 
-        #activate only if the caller is not empty
-        if(len(thecaller.Res.activeQ)>0):
-            #activate only if the caller carries Part
-            if(thecaller.Res.activeQ[0].type=='Part'):
-                #update the predecessorIndex
-                i=0
-                for coreObject in self.previous:
-                    if coreObject is thecaller:
-                        self.predecessorIndex=i
-                        i=i+1
-                return len(self.Res.activeQ)==1 and thecaller.haveToDispose() 
-        return False  
-    
     #checks if the Assembly can dispose an entity to the following object     
-    def haveToDispose(self): 
+    def haveToDispose(self, callerObject=None): 
         return len(self.Res.activeQ)>0 and self.waitToDispose                                  
                                                
     #removes an entity from the Assembly

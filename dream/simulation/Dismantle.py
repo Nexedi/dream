@@ -127,7 +127,7 @@ class Dismantle(CoreObject):
             
     #checks if the Dismantle can accept an entity and there is a Frame waiting for it
     def canAcceptAndIsRequested(self):
-        return len(self.Res.activeQ)==0 and self.previous[0].haveToDispose()  
+        return len(self.Res.activeQ)==0 and self.previous[0].haveToDispose(self)  
     
     #checks if the Dismantle can accept an entity 
     def canAccept(self, callerObject=None):
@@ -139,15 +139,9 @@ class Dismantle(CoreObject):
         self.nextFrame=nf              
 
     #checks if the caller waits for a part or a frame and if the Dismantle is in the state of disposing one it returnse true     
-    def haveToDispose(self): 
-        #identify the caller method
-        frame = sys._getframe(1)
-        arguments = frame.f_code.co_argcount
-        if arguments == 0:
-            print "Not called from a method"
-            return
-        caller_calls_self = frame.f_code.co_varnames[0]
-        thecaller = frame.f_locals[caller_calls_self]    
+    def haveToDispose(self, callerObject=None): 
+
+        thecaller=callerObject
         
         #according to the caller return true or false
         if thecaller in self.nextPart:
