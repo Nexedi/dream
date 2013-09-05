@@ -54,7 +54,6 @@ from Conveyer import Conveyer
 import xlwt
 import xlrd
 import time
-import numpy as np
 import json
 from random import Random
 import sys
