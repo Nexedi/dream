@@ -194,23 +194,17 @@ class Machine(CoreObject):
     
     #checks if the Machine can accept an entity       
     #it checks also who called it and returns TRUE only to the predecessor that will give the entity.  
-    def canAccept(self):
+    def canAccept(self, callerObject=None):
         #if we have only one predecessor just check if there is a place and the machine is up
-        if(len(self.previous)==1):      
+        if(len(self.previous)==1 or callerObject==None):      
             return self.Up and len(self.Res.activeQ)==0
         
         #if the machine is busy return False immediately
         if len(self.Res.activeQ)==self.capacity:
             return False
-         
-        #identify the caller method 
-        frame = sys._getframe(1)
-        arguments = frame.f_code.co_argcount
-        if arguments == 0:
-            print "Not called from a method"
-            return
-        caller_calls_self = frame.f_code.co_varnames[0]
-        thecaller = frame.f_locals[caller_calls_self]
+        
+               
+        thecaller=callerObject
         
         #return true only to the predecessor from which the queue will take 
         flag=False
@@ -245,7 +239,7 @@ class Machine(CoreObject):
     
     #checks if the machine down or it can dispose the object
     def ifCanDisposeOrHaveFailure(self):
-         return self.Up==False or self.next[0].canAccept() or len(self.Res.activeQ)==0  #the last part is added so that it is not removed and stack
+         return self.Up==False or self.next[0].canAccept(self) or len(self.Res.activeQ)==0  #the last part is added so that it is not removed and stack
                                                                                         #gotta think of it again    
   
     #removes an entity from the Machine
@@ -279,7 +273,7 @@ class Machine(CoreObject):
         #plant does not do this in every occasion!       
         maxTimeWaiting=0      
         for i in range(len(self.next)):
-            if(self.next[i].canAccept()):
+            if(self.next[i].canAccept(self)):
                 timeWaiting=now()-self.next[i].timeLastEntityLeft
                 if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
                     maxTimeWaiting=timeWaiting

@@ -92,22 +92,15 @@ class Queue(CoreObject):
                 
     #checks if the Queue can accept an entity       
     #it checks also who called it and returns TRUE only to the predecessor that will give the entity.  
-    def canAccept(self): 
+    def canAccept(self, callerObject=None): 
         #if we have only one predecessor just check if there is a place available
-        if(len(self.previous)==1):
+        if(len(self.previous)==1 or callerObject==None):
             return len(self.Res.activeQ)<self.capacity   
     
         if len(self.Res.activeQ)==self.capacity:
             return False
-         
-        #identify the caller method 
-        frame = sys._getframe(1)
-        arguments = frame.f_code.co_argcount
-        if arguments == 0:
-            print "Not called from a method"
-            return
-        caller_calls_self = frame.f_code.co_varnames[0]
-        thecaller = frame.f_locals[caller_calls_self]
+        
+        thecaller=callerObject
         
         #return true only to the predecessor from which the queue will take 
         flag=False

@@ -105,7 +105,7 @@ class CoreObject(Process):
         pass
     
     #checks if the Object can accept an entity       
-    def canAccept(self): 
+    def canAccept(self, callerObject=None): 
         pass
     
     #takes the array and checks if all its values are identical (returns false) or not (returns true) 

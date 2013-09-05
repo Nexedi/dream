@@ -97,7 +97,7 @@ class Exit(CoreObject):
         self.previous=p
                 
     #checks if the Exit can accept an entity       
-    def canAccept(self): 
+    def canAccept(self, callerObject=None): 
         return True   #the exit always can accept an entity
     
     #checks if the Exit can accept an entity and there is an entity waiting for it

@@ -161,7 +161,7 @@ class Conveyer(CoreObject):
                                                                     #is considered as working time
 
     #checks if the Conveyer can accept an entity 
-    def canAccept(self):
+    def canAccept(self, callerObject=None):
         #if there is no object in the predecessor just return false and set the current requested length to zero
         if len(self.previous[0].Res.activeQ)==0:
             self.currentRequestedLength=0
@@ -187,7 +187,7 @@ class Conveyer(CoreObject):
         
     #checks if the Conveyer can accept an entity and there is a Frame waiting for it
     def canAcceptAndIsRequested(self):
-        return self.canAccept() and self.previous[0].haveToDispose()
+        return self.canAccept(self) and self.previous[0].haveToDispose()
 
     #gets an entity from the predecessor     
     def getEntity(self): 

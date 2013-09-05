@@ -126,12 +126,16 @@ class Assembly(CoreObject):
             startBlockageTime=now()
             self.completedJobs+=1                       #Assembly completed a job            
             self.waitToDispose=True                     #since all the frame is full
-            yield waituntil, self, self.next[0].canAccept       #wait until the next object is free
+            while 1:
+                yield waituntil, self, self.next[0].canAccept       #wait until the next object is free
+                if self.next[0].previous[self.next[0].predecessorIndex]==self:  #if the free object can accept from this Assembly
+                                                                                #break. Else continue
+                    break
             self.totalBlockageTime+=now()-startBlockageTime     #add the blockage time
             
   
     #checks if the Assembly can accept an entity 
-    def canAccept(self):
+    def canAccept(self, callerObject=None):
         return len(self.Res.activeQ)==0  
             
     #checks if the Assembly can accept an entity and there is a Frame waiting for it

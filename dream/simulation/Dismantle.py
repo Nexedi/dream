@@ -130,7 +130,7 @@ class Dismantle(CoreObject):
         return len(self.Res.activeQ)==0 and self.previous[0].haveToDispose()  
     
     #checks if the Dismantle can accept an entity 
-    def canAccept(self):
+    def canAccept(self, callerObject=None):
         return len(self.Res.activeQ)==0  
             
     #defines where parts and frames go after they leave the object                          
