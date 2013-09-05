@@ -98,6 +98,10 @@
       var element_id_prefix = element_id.split("_")[0];
       var property_list = configuration[element_id_prefix].property_list || [];
       var previous_data = that.getData()["element"];
+      
+      var element_name = previous_data[element_id]['name'] || element_id;
+      fieldset.append('<label>Name</label><input type="text" name="name" id="name" value="' + element_name + '" class="text ui-widget-content ui-corner-all"/>');
+      
       previous_data = previous_data[element_id] || {};
       previous_data = previous_data.data || {};
       var previous_value;
@@ -147,6 +151,7 @@
               if (prefix === undefined) {
                 prefix = "";
               }
+              
               $.each(property_list, function(key, property) {
                 if (property._class === "Dream.Property") {
                   prefixed_property_id = prefix + property.id;
@@ -159,8 +164,10 @@
                 }
               });
             };
+
             updateDataPropertyList(property_list, data);
-            that.updateElementData(element_id, {data: data});
+            that.updateElementData(element_id, {data: data, name: $("#name").val() || element_id});
+            
             $( this ).dialog( "close" );
           },
         },

@@ -166,6 +166,9 @@
 
     that.updateElementData = function (element_id, data) {
       $.extend(priv.element_container[element_id], data);
+      if (data['name']) {
+        $("#" + element_id).text(data["name"]);
+      }
       priv.onDataChange();
     };
 
