@@ -89,11 +89,7 @@ class Queue(CoreObject):
             #if entity just got to the dummyQ set its startTime as the current time         
             if self.isDummy:               
                 self.Res.activeQ[0].startTime=now() 
-            
-    #checks if the Q has one available place       
-    def checkIfQHasPlace(self): 
-        return len(self.Q.activeQ)<self.capacity     
-    
+                
     #checks if the Queue can accept an entity       
     #it checks also who called it and returns TRUE only to the predecessor that will give the entity.  
     def canAccept(self): 

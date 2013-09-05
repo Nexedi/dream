@@ -188,14 +188,6 @@ class Machine(CoreObject):
             self.totalBlockageTime+=totalTime-(tinMStart+failureTime)   #the time of blockage is derived from 
                                                                                          #the whole time in the machine
                                                                                          #minus the processing time and the failure time                        
-    #checks if the waitQ of the machine is empty
-    def checkIfWaitQEmpty(self):
-        return len(self.M.waitQ)==0
- 
-    #checks if the activeQ of the machine is empty   
-    def checkIfActiveQEmpty(self):     
-        return len(self.M.activeQ)==0      
-    
     #checks if the machine is Up  
     def checkIfMachineIsUp(self):
         return self.Up

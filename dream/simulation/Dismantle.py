@@ -341,14 +341,5 @@ class Dismantle(CoreObject):
                 json['results']['waiting_ratio']['max']=self.Waiting[0] 
                 
         G.outputJSON['elementList'].append(json)
-            
-    #takes the array and checks if all its values are identical (returns false) or not (returns true) 
-    #needed because if somebody runs multiple runs in deterministic case it would crash!          
-    def checkIfArrayHasDifValues(self, array):
-        difValuesFlag=False 
-        for i in range(1, len(array)):
-           if(array[i]!=array[1]):
-               difValuesFlag=True
-        return difValuesFlag     
     
     

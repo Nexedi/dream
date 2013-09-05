@@ -233,7 +233,7 @@ class Conveyer(CoreObject):
             totalLength+=self.Res.activeQ[i].length
         return self.length<totalLength
     
-    #checks if the Mover shoul be called so that the move is performed
+    #checks if the Mover should be called so that the move is performed
     def callMover(self):
         return self.call  
       
