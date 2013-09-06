@@ -59,6 +59,10 @@ from random import Random
 import sys
 import os.path
 
+import logging
+logger = logging.getLogger("dream.platform")
+
+
 #reads general simulation inputs
 def readGeneralInput():
     general=G.JSONData['general']
@@ -72,7 +76,7 @@ def createObjects():
     #Read the json data
     elementList = G.JSONData['elementList']
     #modelResourceList = G.JSONData['modelResource']
-   
+    
     #define the lists
     G.SourceList=[]
     G.MachineList=[]
@@ -101,6 +105,7 @@ def createObjects():
     #loop through all the elements    
     #read the data and create them
     for element in elementList:
+
         objClass=element.get('_class', 'not found')   
         if objClass=='Dream.Source':
             id=element.get('id', 'not found')
@@ -305,7 +310,7 @@ def main(argv=[], input_data=None):
     
     #run the experiment (replications)          
     for i in xrange(G.numberOfReplications):
-        print "start run number "+str(i+1) 
+        logger.info("start run number "+str(i+1)) 
         G.seed+=1
         G.Rnd=Random(G.seed) 
               
@@ -359,7 +364,7 @@ def main(argv=[], input_data=None):
     G.outputFile.save("output.xls")      
     '''
     
-    print "execution time="+str(time.time()-start)  
+    logger.info("execution time="+str(time.time()-start))
     if input_data:
       return outputJSONString
     
