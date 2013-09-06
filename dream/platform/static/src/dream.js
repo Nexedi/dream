@@ -237,7 +237,7 @@
         coreObject.push( clone_element );
       });
 
-      manpy_dict['coreObject'] = coreObject;
+      manpy_dict['elementList'] = coreObject;
       manpy_dict['modelResource'] = [];
       manpy_dict['general'] = data['general'];
       return manpy_dict;
