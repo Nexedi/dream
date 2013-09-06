@@ -2,6 +2,8 @@ import json
 import traceback
 import multiprocessing
 import pydot
+import os.path
+import logging
 
 from flask import Flask, jsonify, redirect, url_for
 from flask import request
@@ -86,7 +88,11 @@ def _runSimulation(parameter_dict, queue):
 
 
 def main(*args):
-  app.run(debug=True)
+  file_handler = logging.FileHandler(os.path.join(os.path.dirname(__file__), '..', '..', 'log', 'dream.log'))
+  file_handler.setLevel(logging.DEBUG)
+  app.logger.addHandler(file_handler)
+  app.run(debug=True, host="2001:67c:1254:6c::3eb3")
 
 if __name__ == "__main__":
   main()
+ 
