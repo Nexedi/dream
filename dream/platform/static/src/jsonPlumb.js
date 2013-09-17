@@ -189,8 +189,8 @@
 
     that.clearAll = function () {
       $("[id=render]").children().remove()
-      $.each(priv.element_container, function(idx, element) {
-        priv.removeElement(element);
+      $.each(priv.element_container, function(element_id) {
+        priv.removeElement(element_id);
       });
     };
 
