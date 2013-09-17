@@ -25,18 +25,25 @@ Created on 7 May 2013
 '''
 main script. Reads data from JSON, generates and runs the simulation and prints the results to excel
 '''
+
+from warnings import warn
+import logging
+logger = logging.getLogger("dream.platform")
+
+
 try:
   import scipy
 except ImportError:
   class scipy:
     class stats:
       @staticmethod
-      def bayes_mvs():
+      def bayes_mvs(*args, **kw):
         warn("Scipy is missing, using fake implementation")
         return [[[0] * 3] * 3] * 3
   import sys
   sys.modules['scipy.stats'] = scipy.stats
   sys.modules['scipy'] = scipy
+  logger.error("Scipy cannot be imported, using dummy implementation")
 
 from SimPy.Simulation import *
 from Source import Source
@@ -58,10 +65,6 @@ import json
 from random import Random
 import sys
 import os.path
-
-import logging
-logger = logging.getLogger("dream.platform")
-
 
 #reads general simulation inputs
 def readGeneralInput():
