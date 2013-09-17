@@ -278,23 +278,29 @@ class Machine(CoreObject):
         return len(self.Res.activeQ)>0 and self.waitToDispose and self.Up and flag       
     
     
-    #actions to be taken after the simulation ends
+   #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime):
-
         alreadyAdded=False      #a flag that shows if the blockage time has already been added
         
+        #checks all the successors. If no one can accept an Entity then the machine might be blocked
+        mightBeBlocked=True
+        for nextObject in self.next:
+            if nextObject.canAccept():
+                mightBeBlocked=False
+           
         #if there is an entity that finished processing in a Machine but did not get to reach 
         #the following Object
         #till the end of simulation, we have to add this blockage to the percentage of blockage in Machine
         #we should exclude the failure time in current entity though!
-        if (len(self.Res.activeQ)>0) and (len(self.next[0].Res.activeQ)>0) and ((self.nameLastEntityEntered == self.nameLastEntityEnded)):       
+        #if (len(self.Res.activeQ)>0) and (len(self.next[0].Res.activeQ)>0) and ((self.nameLastEntityEntered == self.nameLastEntityEnded)):       
+        if (len(self.Res.activeQ)>0) and (mightBeBlocked) and ((self.nameLastEntityEntered == self.nameLastEntityEnded)):
             self.totalBlockageTime+=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)
             if self.Up==False:
                 self.totalBlockageTime-=now()-self.timeLastFailure
                 alreadyAdded=True
 
         #if Machine is currently processing an entity we should count this working time    
-        if(len(self.Res.activeQ)>0) and (not (self.nameLastEntityEnded==self.nameLastEntityEntered)):              
+        if(len(self.Res.activeQ)>0) and (not (self.nameLastEntityEnded==self.nameLastEntityEntered)):           
             #if Machine is down we should add this last failure time to the time that it has been down in current entity 
             if(len(self.Res.activeQ)>0) and (self.Up==False):                         
                 self.downTimeProcessingCurrentEntity+=now()-self.timeLastFailure             
@@ -305,8 +311,9 @@ class Machine(CoreObject):
         if(self.Up==False):
             self.totalFailureTime+=now()-self.timeLastFailure
             #we add the value only if it hasn't already been added
-            if((len(self.next[0].Res.activeQ)>0) and (self.nameLastEntityEnded==self.nameLastEntityEntered) and (not alreadyAdded)):
-                #self.totalBlockageTime+=self.timeLastFailure-self.timeLastEntityEnded 
+            #if((len(self.next[0].Res.activeQ)>0) and (self.nameLastEntityEnded==self.nameLastEntityEntered) and (not alreadyAdded)):
+            if((self.nameLastEntityEnded==self.nameLastEntityEntered) and (not alreadyAdded)):        
+                print "in"
                 self.totalBlockageTime+=(now()-self.timeLastEntityEnded)-(now()-self.timeLastFailure)-self.downTimeInTryingToReleaseCurrentEntity 
 
         #Machine was idle when it was not in any other state    
