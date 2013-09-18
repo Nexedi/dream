@@ -147,11 +147,44 @@
           function(data) {
             if (data['success']) {
               $("#json_result").text(JSON.stringify(data['success'], undefined, " "));
-              $.each(data['success'].coreObject, function(idx, obj){
-                 var e = $("#" + obj.id);
-                 /* attach something to each corresponding core object */
-                 // e.tooltip(JSON.stringify(obj['results'], undefined, " "));
+              
+              // display demo graph.
+              $("#graph_zone").show();
+              var blockage_data = [], waiting_data = [], failure_data = [], working_data = [], ticks= [], counter = 1;
+              $.each(data['success'].elementList, function(idx, obj){
+                 if (obj.results.working_ratio !== undefined) {
+                    blockage_data.push([counter, obj.results.blockage_ratio.avg]);
+                    waiting_data.push([counter, obj.results.waiting_ratio.avg]);
+                    failure_data.push([counter, obj.results.failure_ratio.avg]);
+                    working_data.push([counter, obj.results.working_ratio.avg]);
+                    ticks.push([counter, dream_instance.getData().element[obj.id].name || obj.id]);
+                    counter ++;
+                 }
               })
+              
+              var series = [
+                {label:"Working", data: working_data},
+                {label:"Waiting", data: waiting_data},
+                {label:"Failures", data: failure_data},
+                {label:"Blockage", data: blockage_data} ];
+            
+              var options = {
+                xaxis: {
+                  minTickSize: 1,
+                  ticks: ticks
+                },
+                yaxis: {max: 100},
+                series: {
+                  bars: {
+                    show: true,
+                    barWidth: .9,
+                    align: "center"
+                  },
+                  stack: true,
+                },
+              };
+              $.plot("#graph", series, options);
+
             } else {
               $("#json_result").effect('shake', 50).text(data['error']);
             }
@@ -176,5 +209,6 @@
        return false;
      });
   })
-
+  
+  $("#graph_zone").hide();
 })(jQuery);
