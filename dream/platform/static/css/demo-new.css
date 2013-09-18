@@ -145,6 +145,14 @@ a:hover {
 }
 path, ._jsPlumb_endpoint { cursor:pointer; }
 
+._jsPlumb_endpoint_drop_allowed {
+    border: 4px solid #123456;
+    box-shadow: 6px 6px 19px #444;
+    -o-box-shadow: 6px 6px 19px #444;
+    -webkit-box-shadow: 6px 6px 19px #444;
+    -moz-box-shadow: 6px 6px 19px #444;
+}
+
 /* z index stuff */
 
 ._jsPlumb_connector { z-index:18; }
