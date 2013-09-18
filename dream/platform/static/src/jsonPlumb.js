@@ -52,14 +52,13 @@
 
       // listen for clicks on connections, and offer to change values on click.
       jsPlumb.bind("click", function(conn) {
-        //priv.dialog_connection = conn;
         jsPlumb.detach(conn);
       });
 
       jsPlumb.bind("beforeDetach", function(conn) {
         return confirm("Delete connection?");
       });
-      
+    
       jsPlumb.bind("connectionDrag", function(connection) {
       });   
       

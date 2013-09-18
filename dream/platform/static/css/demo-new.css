@@ -217,37 +217,9 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
   padding-top:0.9em;
   font-size:0.9em;
   margin-top: 1em;
-  margin-left: 1em;
-  
+  margin-left: 1em; 
 }
 
-#not_available {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  border: 2px solid;
-  margin-top: 350px;
-  margin-left: 500px;
-  border-radius: 10px;
-}
 
-#total_workers {
-  position: absolute;
-  width: 100px;
-  height: 80px;
-  border: 2px solid;
-  margin-top: 80px;
-  margin-left: 720px;
-  border-radius: 10px;
-}
-
-#total_throughput {
-  position: absolute;
-  width: 100px;
-  height: 80px;
-  border: 2px solid;
-  margin-top: 200px;
-  margin-left: 720px;
-  border-radius: 10px;
 }
 
