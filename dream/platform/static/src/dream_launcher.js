@@ -204,6 +204,7 @@
     // Enable "Clear All" button
     $("#clear_all").button().click(
       function(e){
+       id_container = {};
        dream_instance.clearAll();
        e.preventDefault();
        return false;
