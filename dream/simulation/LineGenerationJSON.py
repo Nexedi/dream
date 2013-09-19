@@ -39,7 +39,12 @@ except ImportError:
       @staticmethod
       def bayes_mvs(*args, **kw):
         warn("Scipy is missing, using fake implementation")
-        return [[[0] * 3] * 3] * 3
+        serie, confidence = args
+        import numpy
+        mean = numpy.mean(serie), (numpy.min(serie), numpy.max(serie))
+        var = 0, (0, 0)
+        std = 0, (0, 0) 
+        return mean, var, std
   import sys
   sys.modules['scipy.stats'] = scipy.stats
   sys.modules['scipy'] = scipy
