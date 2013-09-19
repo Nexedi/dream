@@ -153,10 +153,12 @@
               var blockage_data = [], waiting_data = [], failure_data = [], working_data = [], ticks= [], counter = 1;
               $.each(data['success'].elementList, function(idx, obj){
                  if (obj.results.working_ratio !== undefined) {
-                    blockage_data.push([counter, obj.results.blockage_ratio.avg]);
-                    waiting_data.push([counter, obj.results.waiting_ratio.avg]);
-                    failure_data.push([counter, obj.results.failure_ratio.avg]);
-                    working_data.push([counter, obj.results.working_ratio.avg]);
+                    /* when there is only one replication, the ratio is given as a float,
+                      otherwise we have a mapping avg, min max */
+                    blockage_data.push([counter, obj.results.blockage_ratio.avg || obj.results.blockage_ratio]);
+                    waiting_data.push([counter, obj.results.waiting_ratio.avg || obj.results.waiting_ratio]);
+                    failure_data.push([counter, obj.results.failure_ratio.avg || obj.results.failure_ratio]);
+                    working_data.push([counter, obj.results.working_ratio.avg || obj.results.working_ratio]);
                     ticks.push([counter, dream_instance.getData().element[obj.id].name || obj.id]);
                     counter ++;
                  }
