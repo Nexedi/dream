@@ -245,9 +245,10 @@ class Machine(CoreObject):
     def removeEntity(self):
         self.timeLastEntityLeft=now()
         self.outputTrace("releases "+self.objName)
-        self.waitToDispose=False                 
+        self.waitToDispose=False                           
         self.Res.activeQ.pop(0)   
-        self.downTimeInTryingToReleaseCurrentEntity=0    
+        self.downTimeInTryingToReleaseCurrentEntity=0 
+           
      
     #checks if the Machine can dispose an entity to the following object     
     def haveToDispose(self, callerObject=None): 

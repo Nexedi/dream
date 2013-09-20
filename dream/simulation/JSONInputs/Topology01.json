@@ -52,7 +52,7 @@
         },
       "successorList": ["E1"]
       },
-     {"_class": "Dream.Queue",
+     {"_class": "Dream.QueueLIFO",
       "id": "DummyQ",
       "name": "DummyQ",
 	  "isDummy": "1",
