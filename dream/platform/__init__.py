@@ -91,8 +91,8 @@ def main(*args):
   file_handler = logging.FileHandler(os.path.join(os.path.dirname(__file__), '..', '..', 'log', 'dream.log'))
   file_handler.setLevel(logging.DEBUG)
   app.logger.addHandler(file_handler)
-  app.run(debug=True, host="2001:67c:1254:6c::3eb3")
+  app.run(debug=True)
 
 if __name__ == "__main__":
   main()
- 
+
