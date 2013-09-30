@@ -4,7 +4,7 @@
         "_class": "Dream.Configuration",
         "numberOfReplications": "1",
         "maxSimTime": "1440",
-        "trace": "No",
+        "trace": "Yes",
         "confidenceLevel": "0.95"
     },
     "elementList": [

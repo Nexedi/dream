@@ -72,7 +72,7 @@ class CoreObject(Process):
 
     #removes an entity from the Object
     def removeEntity(self):     
-        self.Res.activeQ.pop(0)          
+        self.Res.activeQ.pop(0)                  
         
     #gets an entity from the predecessor that the predecessor index points to     
     def getEntity(self):

@@ -83,7 +83,9 @@ class Queue(CoreObject):
         while 1:  
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity
                                                                     #and one predecessor requests it                                                  
-            self.getEntity()                                                                
+            self.getEntity()     
+            
+            self.outputTrace("got into "+self.objName)                                                           
             
             #if entity just got to the dummyQ set its startTime as the current time         
             if self.isDummy:               
@@ -136,6 +138,12 @@ class Queue(CoreObject):
         if thecaller is self.next[self.successorIndex]:
             flag=True
         return len(self.Res.activeQ)>0 and flag   
+
+    #removes an entity from the Object
+    def removeEntity(self):     
+        self.outputTrace("releases "+self.objName)
+        self.Res.activeQ.pop(0)   
+
 
     #checks if the Queue can accept an entity and there is an entity in some predecessor waiting for it
     #also updates the predecessorIndex to the one that is to be taken
