@@ -1,4 +1,31 @@
 {"_class": "Dream.Simulation",
+ "edges": {
+   "0": [
+        "S1",
+        "DummyQ",
+        {}
+        ],
+   "1": [
+        "M1",
+        "Q1",
+        {}
+        ],
+   "2": [
+        "M2",
+        "E1",
+        {}
+        ],
+   "3": [
+        "DummyQ",
+        "M1",
+        {}
+        ],
+   "4": [
+        "Q1",
+        "M2",
+        {}
+        ]
+ },
   "general": {
     "_class": "Dream.Configuration",
     "numberOfReplications": "1",
@@ -6,8 +33,8 @@
     "trace": "No",
     "confidenceLevel": "0.95"
   },
-  "elementList": [
-     {"_class": "Dream.Source",
+  "nodes": {
+     "S1": {"_class": "Dream.Source",
       "id": "S1",
       "name": "Raw Material",
       "interarrivalTime":
@@ -15,10 +42,9 @@
            "distributionType": "Fixed",
            "mean": "0.5"
          },
-      "entity": "Part",
-      "successorList": ["DummyQ"]
+      "entity": "Part"
       },
-     {"_class": "Dream.Machine",
+     "M1": {"_class": "Dream.Machine",
       "id": "M1",
       "name": "Machine1",
       "processingTime": {
@@ -29,10 +55,9 @@
            "failureDistribution": "Fixed",
 		   "MTTF": "60",
 		   "MTTR": "5"
-        },
-      "successorList": ["Q1"]
+        }
       },
-     {"_class": "Dream.Machine",
+     "M2": {"_class": "Dream.Machine",
       "id": "M2",
       "name": "Machine2",
       "processingTime": {
@@ -43,27 +68,23 @@
            "failureDistribution": "Fixed",
 		   "MTTF": "40",
 		   "MTTR": "10"
-        },
-      "successorList": ["E1"]
+        }
       },
-     {"_class": "Dream.Queue",
+     "DummyQ": {"_class": "Dream.Queue",
       "id": "DummyQ",
       "name": "DummyQ",
 	  "isDummy": "1",
-	  "capacity": "1",
-	  "successorList": ["M1"]
+	  "capacity": "1"
       },	
-     {"_class": "Dream.Queue",
+     "Q1": {"_class": "Dream.Queue",
       "id": "Q1",
       "name": "Q1",
 	  "isDummy": "0",
-	  "capacity": "1",
-	  "predecessorList": ["M1"],
-	  "successorList": ["M2"]
+	  "capacity": "1"
       },	  
-     {"_class": "Dream.Exit",
+     "E1": {"_class": "Dream.Exit",
       "id": "E1",
       "name": "Stock"
      }
-  ]
+  }
 }
