@@ -121,7 +121,7 @@ class Machine(CoreObject):
             self.timeLastEntityEntered=now()        #this holds the last time that an entity got into Machine  
             self.nameLastEntityEntered=self.currentEntity.name    #this holds the name of the last entity that got into Machine
             timeEntered=now()            
-            tinMStart=self.rng.generateNumber()         #get the processing time  
+            tinMStart=self.calculateProcessingTime()         #get the processing time  
             tinM=tinMStart 
             self.processingTimeOfCurrentEntity=tinMStart                  
             interruption=False    
@@ -190,6 +190,9 @@ class Machine(CoreObject):
     #checks if the machine is Up  
     def checkIfMachineIsUp(self):
         return self.Up
+    
+    def calculateProcessingTime(self):
+        return self.rng.generateNumber()
     
     #checks if the Machine can accept an entity       
     #it checks also who called it and returns TRUE only to the predecessor that will give the entity.  
