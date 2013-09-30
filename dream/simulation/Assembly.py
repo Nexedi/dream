@@ -26,7 +26,8 @@ Models an assembly object
 it gathers frames and parts which are loaded to the frames
 '''
 
-from SimPy.Simulation import *
+from SimPy.Simulation import Process, Resource
+from SimPy.Simulation import waituntil, now, hold
 import xlwt
 from RandomNumberGenerator import RandomNumberGenerator
 import scipy.stats as stat

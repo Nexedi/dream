@@ -26,7 +26,7 @@ Created on 18 Feb 2013
 models a frame entity. This can flow through the system and carry parts
 '''
 
-from SimPy.Simulation import *
+from SimPy.Simulation import Resource
 from Globals import G
 from Entity import Entity
 

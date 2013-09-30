@@ -26,7 +26,8 @@ Models a dicmantle object
 it gathers frames that have parts loaded, unloads the parts and sends the frame to one destination and the parts to another
 '''
 
-from SimPy.Simulation import *
+from SimPy.Simulation import Process, Resource
+from SimPy.Simulation import waituntil, now, hold, infinity
 import xlwt
 from RandomNumberGenerator import RandomNumberGenerator
 import scipy.stats as stat
@@ -93,7 +94,7 @@ class Dismantle(CoreObject):
         self.nameLastFrameWasFull=""    #holds the name of the last frame that was full, ie that assembly process started
         self.nameLastEntityEntered=""   #holds the name of the last frame that entered processing in the object
         self.nameLastEntityEnded=""     #holds the name of the last frame that ended processing in the object            
-        self.Res=Resource(capacity=Infinity)    
+        self.Res=Resource(capacity=infinity)    
         self.Res.activeQ=[]  
         self.Res.waitQ=[]     
         

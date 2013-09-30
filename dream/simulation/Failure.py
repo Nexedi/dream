@@ -26,7 +26,7 @@ Created on 9 Nov 2012
 models the failures that servers can have
 '''
 
-from SimPy.Simulation import *
+from SimPy.Simulation import now, Process, hold, request, reactivate, release
 import math
 from RandomNumberGenerator import RandomNumberGenerator
 from ObjectInterruption import ObjectInterruption

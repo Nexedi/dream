@@ -25,7 +25,7 @@ Created on 8 Nov 2012
 carries some global variables
 '''
 
-from SimPy.Simulation import *
+#from SimPy.Simulation import *
 from Machine import Machine
 from Queue import Queue
 from Repairman import Repairman

@@ -313,8 +313,7 @@ class Machine(CoreObject):
             self.totalFailureTime+=now()-self.timeLastFailure
             #we add the value only if it hasn't already been added
             #if((len(self.next[0].Res.activeQ)>0) and (self.nameLastEntityEnded==self.nameLastEntityEntered) and (not alreadyAdded)):
-            if((self.nameLastEntityEnded==self.nameLastEntityEntered) and (not alreadyAdded)):        
-                print "in"
+            if((mightBeBlocked) and (self.nameLastEntityEnded==self.nameLastEntityEntered) and (not alreadyAdded)):        
                 self.totalBlockageTime+=(now()-self.timeLastEntityEnded)-(now()-self.timeLastFailure)-self.downTimeInTryingToReleaseCurrentEntity 
 
         #Machine was idle when it was not in any other state    

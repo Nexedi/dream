@@ -50,7 +50,7 @@ except ImportError:
   sys.modules['scipy'] = scipy
   logger.error("Scipy cannot be imported, using dummy implementation")
 
-from SimPy.Simulation import *
+from SimPy.Simulation import activate, initialize, simulate
 from Source import Source
 from Globals import G
 from Machine import Machine

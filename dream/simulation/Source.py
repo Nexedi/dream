@@ -26,7 +26,7 @@ Created on 8 Nov 2012
 models the source object that generates the entities
 '''
 
-from SimPy.Simulation import *
+from SimPy.Simulation import now, Process, Resource, infinity, hold
 from Part import Part
 from RandomNumberGenerator import RandomNumberGenerator
 from CoreObject import CoreObject
