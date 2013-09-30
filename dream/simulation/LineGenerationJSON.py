@@ -94,6 +94,9 @@ def createObjects():
         if source == node_id:
           if predicate(source, destination, edge_data):
             successor_list.append(destination)
+      # XXX We should probably not need to sort, but there is a bug that
+      # prevents Topology10 to work is this sort is not used.
+      successor_list.sort()
       return successor_list
 
     #define the lists
