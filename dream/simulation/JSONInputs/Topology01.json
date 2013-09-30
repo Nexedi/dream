@@ -2,38 +2,38 @@
     "_class": "Dream.Simulation",
     "edges": {
         "0": [
-            "M1",
             "W1",
+            "M1",
             {}
         ],
         "1": [
-            "M2",
             "W1",
+            "M2",
             {}
         ],
         "2": [
-            "DummyQ",
             "S1",
+            "DummyQ",
             {}
         ],
         "3": [
-            "Q1",
             "M1",
+            "Q1",
             {}
         ],
         "4": [
-            "E1",
             "M2",
+            "E1",
             {}
         ],
         "5": [
-            "M1",
             "DummyQ",
+            "M1",
             {}
         ],
         "6": [
-            "M2",
             "Q1",
+            "M2",
             {}
         ]
     },
@@ -41,7 +41,7 @@
         "_class": "Dream.Configuration",
         "confidenceLevel": "0.95",
         "maxSimTime": "1440",
-        "numberOfReplications": "1",
+        "numberOfReplications": "2",
         "trace": "No"
     },
     "nodes": {

@@ -40,7 +40,7 @@ def format(m):
   edges = m.pop('edges')
   m['edges'] = {}
   for i, (s, d, data) in enumerate(edges):
-    m['edges'][i] = s, d, data
+    m['edges'][i] = d, s, data
   return m
 
 with open(sys.argv[1]) as infile:

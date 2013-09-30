@@ -90,7 +90,7 @@ def createObjects():
     # XXX slow implementation
     def getSuccessorList(node_id, predicate=lambda source, destination, edge_data: True):
       successor_list = []
-      for source, destination, edge_data in edges:
+      for source, destination, edge_data in edges.values():
         if source == node_id:
           if predicate(source, destination, edge_data):
             successor_list.append(destination)
@@ -243,6 +243,7 @@ def createObjects():
             for possible_successor in G.ObjList:
                 if possible_successor.id==nextId:
                     possible_successor.previousIds.append(element.id)            
+
 
 #defines the topology (predecessors and successors for all the objects)
 def setTopology():

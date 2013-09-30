@@ -2,39 +2,39 @@
     "_class": "Dream.Simulation",
     "edges": {
         "0": [
-            "S1",
             "A1",
+            "S1",
             {
                 "entity": "Part"
             }
         ],
         "1": [
-            "S2",
             "A1",
+            "S2",
             {
                 "entity": "Frame"
             }
         ],
         "2": [
-            "A1",
             "M1",
+            "A1",
             {}
         ],
         "3": [
-            "M1",
             "D1",
+            "M1",
             {}
         ],
         "4": [
-            "D1",
             "E1",
+            "D1",
             {
                 "entity": "Frame"
             }
         ],
         "5": [
-            "D1",
             "E2",
+            "D1",
             {
                 "entity": "Part"
             }

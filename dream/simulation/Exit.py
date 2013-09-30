@@ -102,6 +102,7 @@ class Exit(CoreObject):
     
     #checks if the Exit can accept an entity and there is an entity waiting for it
     def canAcceptAndIsRequested(self):
+        result = None
         if(len(self.previous)==1):  
             return self.previous[0].haveToDispose(self)    
     
@@ -255,3 +256,11 @@ class Exit(CoreObject):
                 json['results']['taktTime']['max']=self.TaktTime[0]        
         G.outputJSON['elementList'].append(json)
                
+    #takes the array and checks if all its values are identical (returns false) or not (returns true) 
+    #needed because if somebody runs multiple runs in deterministic case it would crash!          
+    def checkIfArrayHasDifValues(self, array):
+        difValuesFlag=False 
+        for i in range(1, len(array)):
+           if(array[i]!=array[1]):
+               difValuesFlag=True
+        return difValuesFlag
