@@ -1,110 +1,160 @@
 {
     "_class": "Dream.Simulation",
-    "elementList": [
-        {
-            "_class": "Dream.Repairman",
-            "capacity": "1",
-            "id": "W1",
-            "name": "W1",
-            "successorList": [
-                "M1",
-                "M2"
-            ]
-        },
-        {
-            "_class": "Dream.Source",
-            "entity": "Part",
-            "id": "S1",
-            "interarrivalTime": {
-                "distributionType": "Fixed",
-                "mean": "0.5"
-            },
-            "name": "Raw Material",
-            "successorList": [
-                "DummyQ"
-            ]
-        },
-        {
-            "_class": "Dream.Machine",
-            "failures": {
-                "MTTF": "60",
-                "MTTR": "5",
-                "failureDistribution": "No"
-            },
-            "id": "M1",
-            "name": "Machine1",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": "1.5"
-            },
-            "successorList": [
-                "M3"
-            ]
-        },
-        {
-            "_class": "Dream.Machine",
-            "failures": {
-                "MTTF": "40",
-                "MTTR": "10",
-                "failureDistribution": "No"
-            },
-            "id": "M2",
-            "name": "Machine2",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": "1.5"
-            },
-            "successorList": [
-                "M3"
-            ]
-        },
-        {
-            "_class": "Dream.Machine",
-            "failures": {
-                "failureDistribution": "No"
-            },
-            "id": "M3",
-            "name": "Machine3",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": "2"
-            },
-            "successorList": [
-                "E1"
-            ]
-        },
-        {
-            "_class": "Dream.Queue",
-            "capacity": "1",
-            "id": "DummyQ",
-            "isDummy": "1",
-            "name": "DummyQ",
-            "successorList": [
-                "Q1"
-            ]
-        },
-        {
-            "_class": "Dream.Queue",
-            "capacity": "1",
-            "id": "Q1",
-            "isDummy": "0",
-            "name": "Q1",
-            "successorList": [
-                "M1",
-                "M2"
-            ]
-        },
-        {
-            "_class": "Dream.Exit",
-            "id": "E1",
-            "name": "Stock"
-        }
-    ],
+    "edges": {
+        "0": [
+            "M1",
+            "W1",
+            {}
+        ],
+        "1": [
+            "M2",
+            "W1",
+            {}
+        ],
+        "2": [
+            "DummyQ",
+            "S1",
+            {}
+        ],
+        "3": [
+            "M3",
+            "M1",
+            {}
+        ],
+        "4": [
+            "M3",
+            "M2",
+            {}
+        ],
+        "5": [
+            "E1",
+            "M3",
+            {}
+        ],
+        "6": [
+            "Q1",
+            "DummyQ",
+            {}
+        ],
+        "7": [
+            "M1",
+            "Q1",
+            {}
+        ],
+        "8": [
+            "M2",
+            "Q1",
+            {}
+        ]
+    },
     "general": {
         "_class": "Dream.Configuration",
         "confidenceLevel": "0.95",
         "maxSimTime": "1440",
         "numberOfReplications": "1",
         "trace": "No"
+    },
+    "nodes": {
+        "DummyQ": {
+            "_class": "Dream.Queue",
+            "capacity": "1",
+            "isDummy": "1",
+            "name": "DummyQ"
+        },
+        "E1": {
+            "_class": "Dream.Exit",
+            "name": "Stock"
+        },
+        "M1": {
+            "_class": "Dream.Machine",
+            "failures": {
+                "MTTF": "60",
+                "MTTR": "5",
+                "failureDistribution": "No"
+            },
+            "name": "Machine1",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "1.5"
+            }
+        },
+        "M2": {
+            "_class": "Dream.Machine",
+            "failures": {
+                "MTTF": "40",
+                "MTTR": "10",
+                "failureDistribution": "No"
+            },
+            "name": "Machine2",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "1.5"
+            }
+        },
+        "M3": {
+            "_class": "Dream.Machine",
+            "failures": {
+                "failureDistribution": "No"
+            },
+            "name": "Machine3",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "2"
+            }
+        },
+        "Q1": {
+            "_class": "Dream.Queue",
+            "capacity": "1",
+            "isDummy": "0",
+            "name": "Q1"
+        },
+        "S1": {
+            "_class": "Dream.Source",
+            "entity": "Part",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": "0.5"
+            },
+            "name": "Raw Material"
+        },
+        "W1": {
+            "_class": "Dream.Repairman",
+            "capacity": "1",
+            "name": "W1"
+        }
+    },
+    "preferences": {
+        "DummyQ": {
+            "left": 0.639751552795031,
+            "top": 0.7720588235294118
+        },
+        "E1": {
+            "left": 0.40993788819875776,
+            "top": 0.04656862745098034
+        },
+        "M1": {
+            "left": 0.6335403726708074,
+            "top": 0.40931372549019607
+        },
+        "M2": {
+            "left": 0.1863354037267081,
+            "top": 0.40931372549019607
+        },
+        "M3": {
+            "left": 0.40993788819875776,
+            "top": 0.2279411764705882
+        },
+        "Q1": {
+            "left": 0.639751552795031,
+            "top": 0.5906862745098039
+        },
+        "S1": {
+            "left": 0.639751552795031,
+            "top": 0.9534313725490196
+        },
+        "W1": {
+            "left": 0.18012422360248448,
+            "top": 0.5906862745098039
+        }
     }
 }

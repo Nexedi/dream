@@ -1,65 +1,65 @@
 {
     "_class": "Dream.Simulation",
-    "elementList": [
-        {
-            "_class": "Dream.Source",
-            "entity": "Part",
-            "id": "S1",
-            "interarrivalTime": {
-                "distributionType": "Fixed",
-                "mean": "0.5"
-            },
-            "name": "Parts",
-            "successorList": [
-                "A1"
-            ]
-        },
-        {
-            "_class": "Dream.Source",
-            "entity": "Frame",
-            "id": "S2",
-            "interarrivalTime": {
-                "distributionType": "Fixed",
-                "mean": "2"
-            },
-            "name": "Frames",
-            "successorList": [
-                "A1"
-            ]
-        },
-        {
+    "edges": {
+        "0": [
+            "A1",
+            "S1",
+            {}
+        ],
+        "1": [
+            "A1",
+            "S2",
+            {}
+        ],
+        "2": [
+            "M1",
+            "A1",
+            {}
+        ],
+        "3": [
+            "D1",
+            "M1",
+            {}
+        ],
+        "4": [
+            "M2",
+            "D1",
+            {}
+        ],
+        "5": [
+            "M3",
+            "D1",
+            {}
+        ],
+        "6": [
+            "E1",
+            "M2",
+            {}
+        ],
+        "7": [
+            "E2",
+            "M3",
+            {}
+        ]
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "confidenceLevel": "0.95",
+        "maxSimTime": "1440",
+        "numberOfReplications": "1",
+        "trace": "No"
+    },
+    "nodes": {
+        "A1": {
             "_class": "Dream.Assembly",
-            "id": "A1",
             "name": "Assembly",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "2"
-            },
-            "successorList": [
-                "M1"
-            ]
+            }
         },
-        {
-            "_class": "Dream.Machine",
-            "failures": {
-                "MTTF": "60",
-                "MTTR": "5",
-                "failureDistribution": "Fixed",
-                "repairman": "None"
-            },
-            "id": "M1",
-            "name": "Moulding",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": "0.25"
-            },
-            "successorList": [
-                "D1"
-            ]
-        },
-        {
+        "D1": {
             "_class": "Dream.Dismantle",
-            "id": "D1",
             "name": "Dismantle",
             "processingTime": {
                 "distributionType": "Fixed",
@@ -68,15 +68,33 @@
             "successorFrameList": [
                 "M2"
             ],
-            "successorList": [
-                "M2",
-                "M3"
-            ],
             "successorPartList": [
                 "M3"
             ]
         },
-        {
+        "E1": {
+            "_class": "Dream.Exit",
+            "name": "Parts Stock"
+        },
+        "E2": {
+            "_class": "Dream.Exit",
+            "name": "Frames Stock"
+        },
+        "M1": {
+            "_class": "Dream.Machine",
+            "failures": {
+                "MTTF": "60",
+                "MTTR": "5",
+                "failureDistribution": "Fixed",
+                "repairman": "None"
+            },
+            "name": "Moulding",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "0.25"
+            }
+        },
+        "M2": {
             "_class": "Dream.Machine",
             "failures": {
                 "MTTF": "60",
@@ -84,17 +102,13 @@
                 "failureDistribution": "No",
                 "repairman": "None"
             },
-            "id": "M2",
             "name": "Frame Wash",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "1"
-            },
-            "successorList": [
-                "E1"
-            ]
+            }
         },
-        {
+        "M3": {
             "_class": "Dream.Machine",
             "failures": {
                 "MTTF": "60",
@@ -102,32 +116,67 @@
                 "failureDistribution": "No",
                 "repairman": "None"
             },
-            "id": "M3",
             "name": "Part Wash",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "0.20"
+            }
+        },
+        "S1": {
+            "_class": "Dream.Source",
+            "entity": "Part",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": "0.5"
             },
-            "successorList": [
-                "E2"
-            ]
+            "name": "Parts"
         },
-        {
-            "_class": "Dream.Exit",
-            "id": "E1",
-            "name": "Parts Stock"
-        },
-        {
-            "_class": "Dream.Exit",
-            "id": "E2",
-            "name": "Frames Stock"
+        "S2": {
+            "_class": "Dream.Source",
+            "entity": "Frame",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": "2"
+            },
+            "name": "Frames"
         }
-    ],
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "1440",
-        "numberOfReplications": "1",
-        "trace": "No"
+    },
+    "preferences": {
+        "A1": {
+            "left": 0.5,
+            "top": 0.7720588235294118
+        },
+        "D1": {
+            "left": 0.5,
+            "top": 0.40931372549019607
+        },
+        "E1": {
+            "left": 0.2142857142857143,
+            "top": 0.04656862745098034
+        },
+        "E2": {
+            "left": 0.7857142857142857,
+            "top": 0.04656862745098034
+        },
+        "M1": {
+            "left": 0.5,
+            "top": 0.5906862745098039
+        },
+        "M2": {
+            "left": 0.2142857142857143,
+            "top": 0.2279411764705882
+        },
+        "M3": {
+            "left": 0.7857142857142857,
+            "top": 0.2279411764705882
+        },
+        "S1": {
+            "left": 0.2142857142857143,
+            "top": 0.9534313725490196
+        },
+        "S2": {
+            "left": 0.7857142857142857,
+            "top": 0.9534313725490196
+        }
     }
 }

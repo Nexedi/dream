@@ -1,45 +1,58 @@
 {
     "_class": "Dream.Simulation",
-    "elementList": [
-        {
-            "_class": "Dream.Source",
-            "entity": "Part",
-            "id": "S1",
-            "interarrivalTime": {
-                "distributionType": "Fixed",
-                "mean": "0.5"
-            },
-            "name": "Parts",
-            "successorList": [
-                "A1"
-            ]
-        },
-        {
-            "_class": "Dream.Source",
-            "entity": "Frame",
-            "id": "S2",
-            "interarrivalTime": {
-                "distributionType": "Fixed",
-                "mean": "2"
-            },
-            "name": "Frames",
-            "successorList": [
-                "A1"
-            ]
-        },
-        {
+    "edges": {
+        "0": [
+            "A1",
+            "S1",
+            {}
+        ],
+        "1": [
+            "A1",
+            "S2",
+            {}
+        ],
+        "2": [
+            "M1",
+            "A1",
+            {}
+        ],
+        "3": [
+            "Q1",
+            "M1",
+            {}
+        ],
+        "4": [
+            "E1",
+            "M2",
+            {}
+        ],
+        "5": [
+            "M2",
+            "Q1",
+            {}
+        ]
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "confidenceLevel": "0.95",
+        "maxSimTime": "1440",
+        "numberOfReplications": "1",
+        "trace": "No"
+    },
+    "nodes": {
+        "A1": {
             "_class": "Dream.Assembly",
-            "id": "A1",
             "name": "Assembly",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "2"
-            },
-            "successorList": [
-                "M1"
-            ]
+            }
         },
-        {
+        "E1": {
+            "_class": "Dream.Exit",
+            "name": "Stock"
+        },
+        "M1": {
             "_class": "Dream.Machine",
             "failures": {
                 "MTTF": "60",
@@ -47,17 +60,13 @@
                 "failureDistribution": "Fixed",
                 "repairman": "None"
             },
-            "id": "M1",
             "name": "Moulding",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "0.25"
-            },
-            "successorList": [
-                "Q1"
-            ]
+            }
         },
-        {
+        "M2": {
             "_class": "Dream.Machine",
             "failures": {
                 "MTTF": "40",
@@ -65,37 +74,65 @@
                 "failureDistribution": "Fixed",
                 "repairman": "None"
             },
-            "id": "M2",
             "name": "Machine2",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "1.5"
-            },
-            "successorList": [
-                "E1"
-            ]
+            }
         },
-        {
+        "Q1": {
             "_class": "Dream.Queue",
             "capacity": "1",
-            "id": "Q1",
             "isDummy": "0",
-            "name": "Q1",
-            "successorList": [
-                "M2"
-            ]
+            "name": "Q1"
         },
-        {
-            "_class": "Dream.Exit",
-            "id": "E1",
-            "name": "Stock"
+        "S1": {
+            "_class": "Dream.Source",
+            "entity": "Part",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": "0.5"
+            },
+            "name": "Parts"
+        },
+        "S2": {
+            "_class": "Dream.Source",
+            "entity": "Frame",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": "2"
+            },
+            "name": "Frames"
         }
-    ],
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "1440",
-        "numberOfReplications": "1",
-        "trace": "No"
+    },
+    "preferences": {
+        "A1": {
+            "left": 0.5,
+            "top": 0.7720588235294118
+        },
+        "E1": {
+            "left": 0.5,
+            "top": 0.04656862745098034
+        },
+        "M1": {
+            "left": 0.5,
+            "top": 0.5906862745098039
+        },
+        "M2": {
+            "left": 0.5,
+            "top": 0.2279411764705882
+        },
+        "Q1": {
+            "left": 0.5,
+            "top": 0.40931372549019607
+        },
+        "S1": {
+            "left": 0.2142857142857143,
+            "top": 0.9534313725490196
+        },
+        "S2": {
+            "left": 0.7857142857142857,
+            "top": 0.9534313725490196
+        }
     }
 }

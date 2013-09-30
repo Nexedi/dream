@@ -1,114 +1,160 @@
 {
     "_class": "Dream.Simulation",
-    "elementList": [
-        {
-            "_class": "Dream.Source",
-            "entity": "Part",
-            "id": "S1",
-            "interarrivalTime": {
-                "distributionType": "Fixed",
-                "mean": "0.5"
-            },
-            "name": "Raw Material 1",
-            "successorList": [
-                "M1"
-            ]
-        },
-        {
-            "_class": "Dream.Source",
-            "entity": "Part",
-            "id": "S2",
-            "interarrivalTime": {
-                "distributionType": "Fixed",
-                "mean": "1"
-            },
-            "name": "Raw Material 2",
-            "successorList": [
-                "M2"
-            ]
-        },
-        {
-            "_class": "Dream.Machine",
-            "failures": {
-                "failureDistribution": "No"
-            },
-            "id": "M1",
-            "name": "Machine1",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": "0.25"
-            },
-            "successorList": [
-                "Q1"
-            ]
-        },
-        {
-            "_class": "Dream.Machine",
-            "failures": {
-                "failureDistribution": "No"
-            },
-            "id": "M2",
-            "name": "Machine2",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": "1.5"
-            },
-            "successorList": [
-                "Q1"
-            ]
-        },
-        {
-            "_class": "Dream.Machine",
-            "failures": {
-                "failureDistribution": "No"
-            },
-            "id": "M3",
-            "name": "Machine3",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": "1"
-            },
-            "successorList": [
-                "E1"
-            ]
-        },
-        {
-            "_class": "Dream.Machine",
-            "failures": {
-                "failureDistribution": "No"
-            },
-            "id": "M4",
-            "name": "Machine4",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": "1.25"
-            },
-            "successorList": [
-                "E1"
-            ]
-        },
-        {
-            "_class": "Dream.Queue",
-            "capacity": "1",
-            "id": "Q1",
-            "isDummy": "0",
-            "name": "Q1",
-            "successorList": [
-                "M3",
-                "M4"
-            ]
-        },
-        {
-            "_class": "Dream.Exit",
-            "id": "E1",
-            "name": "Stock"
-        }
-    ],
+    "edges": {
+        "0": [
+            "M1",
+            "S1",
+            {}
+        ],
+        "1": [
+            "M2",
+            "S2",
+            {}
+        ],
+        "2": [
+            "Q1",
+            "M1",
+            {}
+        ],
+        "3": [
+            "Q1",
+            "M2",
+            {}
+        ],
+        "4": [
+            "E1",
+            "M3",
+            {}
+        ],
+        "5": [
+            "E1",
+            "M4",
+            {}
+        ],
+        "6": [
+            "M3",
+            "Q1",
+            {}
+        ],
+        "7": [
+            "M4",
+            "Q1",
+            {}
+        ]
+    },
     "general": {
         "_class": "Dream.Configuration",
         "confidenceLevel": "0.95",
         "maxSimTime": "1440",
         "numberOfReplications": "1",
         "trace": "No"
+    },
+    "nodes": {
+        "E1": {
+            "_class": "Dream.Exit",
+            "name": "Stock"
+        },
+        "M1": {
+            "_class": "Dream.Machine",
+            "failures": {
+                "failureDistribution": "No"
+            },
+            "name": "Machine1",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "0.25"
+            }
+        },
+        "M2": {
+            "_class": "Dream.Machine",
+            "failures": {
+                "failureDistribution": "No"
+            },
+            "name": "Machine2",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "1.5"
+            }
+        },
+        "M3": {
+            "_class": "Dream.Machine",
+            "failures": {
+                "failureDistribution": "No"
+            },
+            "name": "Machine3",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "1"
+            }
+        },
+        "M4": {
+            "_class": "Dream.Machine",
+            "failures": {
+                "failureDistribution": "No"
+            },
+            "name": "Machine4",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "1.25"
+            }
+        },
+        "Q1": {
+            "_class": "Dream.Queue",
+            "capacity": "1",
+            "isDummy": "0",
+            "name": "Q1"
+        },
+        "S1": {
+            "_class": "Dream.Source",
+            "entity": "Part",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": "0.5"
+            },
+            "name": "Raw Material 1"
+        },
+        "S2": {
+            "_class": "Dream.Source",
+            "entity": "Part",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": "1"
+            },
+            "name": "Raw Material 2"
+        }
+    },
+    "preferences": {
+        "E1": {
+            "left": 0.5,
+            "top": 0.05688622754491013
+        },
+        "M1": {
+            "left": 0.7857142857142857,
+            "top": 0.721556886227545
+        },
+        "M2": {
+            "left": 0.2142857142857143,
+            "top": 0.721556886227545
+        },
+        "M3": {
+            "left": 0.2142857142857143,
+            "top": 0.2784431137724551
+        },
+        "M4": {
+            "left": 0.7857142857142857,
+            "top": 0.2784431137724551
+        },
+        "Q1": {
+            "left": 0.5,
+            "top": 0.5
+        },
+        "S1": {
+            "left": 0.7857142857142857,
+            "top": 0.9431137724550899
+        },
+        "S2": {
+            "left": 0.2142857142857143,
+            "top": 0.9431137724550899
+        }
     }
 }

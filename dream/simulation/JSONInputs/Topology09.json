@@ -1,45 +1,62 @@
 {
     "_class": "Dream.Simulation",
-    "elementList": [
-        {
-            "_class": "Dream.Source",
-            "entity": "Part",
-            "id": "S1",
-            "interarrivalTime": {
-                "distributionType": "Fixed",
-                "mean": "0.5"
-            },
-            "name": "Raw Material",
-            "successorList": [
-                "M1"
-            ]
-        },
-        {
-            "_class": "Dream.Machine",
-            "failures": {
-                "failureDistribution": "No"
-            },
-            "id": "M1",
-            "name": "Moulding",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": "0.25"
-            },
-            "successorList": [
-                "E1"
-            ]
-        },
-        {
-            "_class": "Dream.Exit",
-            "id": "E1",
-            "name": "Stock"
-        }
-    ],
+    "edges": {
+        "0": [
+            "M1",
+            "S1",
+            {}
+        ],
+        "1": [
+            "E1",
+            "M1",
+            {}
+        ]
+    },
     "general": {
         "_class": "Dream.Configuration",
         "confidenceLevel": "0.95",
         "maxSimTime": "1440",
         "numberOfReplications": "1",
         "trace": "No"
+    },
+    "nodes": {
+        "E1": {
+            "_class": "Dream.Exit",
+            "name": "Stock"
+        },
+        "M1": {
+            "_class": "Dream.Machine",
+            "failures": {
+                "failureDistribution": "No"
+            },
+            "name": "Moulding",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "0.25"
+            }
+        },
+        "S1": {
+            "_class": "Dream.Source",
+            "entity": "Part",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": "0.5"
+            },
+            "name": "Raw Material"
+        }
+    },
+    "preferences": {
+        "E1": {
+            "left": 0.5,
+            "top": 0.10215053763440862
+        },
+        "M1": {
+            "left": 0.5,
+            "top": 0.5
+        },
+        "S1": {
+            "left": 0.5,
+            "top": 0.8978494623655914
+        }
     }
 }

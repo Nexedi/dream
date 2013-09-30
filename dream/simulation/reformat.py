@@ -13,7 +13,7 @@ def positionGraph(g):
   graph = pydot.Dot()
   for node in g['nodes']:
     graph.add_node(pydot.Node(node))
-  for source, destination, data in g['edges']:
+  for edge, (source, destination, data) in g['edges'].items():
     graph.add_edge(pydot.Edge(source, destination))
 
   new_graph = pydot.graph_from_dot_data(graph.create_dot())
@@ -37,7 +37,10 @@ def positionGraph(g):
   return preference_dict
 
 def format(m):
-  # hack here
+  edges = m.pop('edges')
+  m['edges'] = {}
+  for i, (s, d, data) in enumerate(edges):
+    m['edges'][i] = s, d, data
   return m
 
 with open(sys.argv[1]) as infile:

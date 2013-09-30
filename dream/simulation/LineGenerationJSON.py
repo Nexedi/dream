@@ -81,10 +81,21 @@ def readGeneralInput():
 
 #creates the simulation objects
 def createObjects():
+
+    json_data = G.JSONData
     #Read the json data
-    elementList = G.JSONData['elementList']
-    #modelResourceList = G.JSONData['modelResource']
-    
+    nodes = json_data['nodes']
+    edges = json_data['edges']
+
+    # XXX slow implementation
+    def getSuccessorList(node_id, predicate=lambda source, destination, edge_data: True):
+      successor_list = []
+      for source, destination, edge_data in edges:
+        if source == node_id:
+          if predicate(source, destination, edge_data):
+            successor_list.append(destination)
+      return successor_list
+
     #define the lists
     G.SourceList=[]
     G.MachineList=[]
@@ -94,26 +105,25 @@ def createObjects():
     G.AssemblyList=[]
     G.DismantleList=[]
     G.ConveyerList=[]
-    
-    
+
+
     #loop through all the model resources 
     #search for repairmen in order to create them
     #read the data and create them
-    for element in elementList:
+    for (element_id, element) in nodes.iteritems():
+        element['id'] = element_id
         resourceClass = element.get('_class', 'not found')
         if resourceClass=='Dream.Repairman':
             id = element.get('id', 'not found')
             name = element.get('name', 'not found')
             capacity = int(element.get('capacity', '1'))
-            successorList=element.get('successorList', 'not found')
-            R = Repairman(id, name, capacity)
-            R.coreObjectIds=successorList
+            R = Repairman(element_id, name, capacity)
+            R.coreObjectIds=getSuccessorList(id)
             G.RepairmanList.append(R)                           
-    
     #loop through all the elements    
     #read the data and create them
-    for element in elementList:
-
+    for (element_id, element) in nodes.iteritems():
+        element['id'] = element_id
         objClass=element.get('_class', 'not found')   
         if objClass=='Dream.Source':
             id=element.get('id', 'not found')
@@ -122,9 +132,8 @@ def createObjects():
             distributionType=interarrivalTime.get('distributionType', 'not found')
             mean=float(interarrivalTime.get('mean', '0'))        
             entity=str_to_class(element.get('entity', 'not found'))
-            successorList=element.get('successorList', 'not found')            
             S=Source(id, name, distributionType, mean, entity)
-            S.nextIds=successorList
+            S.nextIds=getSuccessorList(id)
             G.SourceList.append(S)
             G.ObjList.append(S)
             
@@ -147,10 +156,9 @@ def createObjects():
                 if(id in repairman.coreObjectIds):
                     r=repairman
                     
-            successorList=element.get('successorList', 'not found')
             M=Machine(id, name, 1, distributionType, [mean,stdev,min,max], failureDistribution,
                                                     MTTF, MTTR, availability, r)
-            M.nextIds=successorList
+            M.nextIds=getSuccessorList(id)
             G.MachineList.append(M)
             G.ObjList.append(M)
             
@@ -164,11 +172,10 @@ def createObjects():
         elif objClass=='Dream.Queue':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            successorList=element.get('successorList', 'not found')
             capacity=int(element.get('capacity', '1'))
             isDummy=bool(int(element.get('isDummy', '0')))
             Q=Queue(id, name, capacity, isDummy)
-            Q.nextIds=successorList
+            Q.nextIds=getSuccessorList(id)
             G.QueueList.append(Q)
             G.ObjList.append(Q)
             
@@ -194,11 +201,10 @@ def createObjects():
             max=float(processingTime.get('max', '0'))
             #predecessorPartList=element.get('predecessorPartList', 'not found')
             #predecessorFrameList=element.get('predecessorFrameList', 'not found')
-            successorList=element.get('successorList', 'not found')
             A=Assembly(id, name, distributionType, [mean,stdev,min,max])
             #A.previousPartIds=predecessorPartList
             #A.previousFrameIds=predecessorFrameList
-            A.nextIds=successorList
+            A.nextIds=getSuccessorList(id)
             G.AssemblyList.append(A)
             G.ObjList.append(A)
             
@@ -211,13 +217,10 @@ def createObjects():
             stdev=float(processingTime.get('stdev', '0'))  
             min=float(processingTime.get('min', '0')) 
             max=float(processingTime.get('max', '0'))
-            successorList=element.get('successorList', 'not found')
-            successorPartList=element.get('successorPartList', 'not found')
-            successorFrameList=element.get('successorFrameList', 'not found')
             D=Dismantle(id, name, distributionType, [mean,stdev,min,max])
-            D.nextPartIds=successorPartList
-            D.nextFrameIds=successorFrameList
-            D.nextIds=successorList
+            D.nextPartIds=getSuccessorList(id, lambda source, destination, edge_data: edge_data.get('entity') == 'Part')
+            D.nextFrameIds=getSuccessorList(id, lambda source, destination, edge_data: edge_data.get('entity') == 'Frame')
+            D.nextIds=getSuccessorList(id)
             G.DismantleList.append(D)
             G.ObjList.append(D)
             
@@ -226,9 +229,8 @@ def createObjects():
             name=element.get('name', 'not found')
             length=float(element.get('length', '10'))
             speed=float(element.get('speed', '1'))
-            successorList=element.get('successorList', 'not found')
             C=Conveyer(id, name, length, speed)
-            C.nextIds=successorList
+            C.nextIds=getSuccessorList(id)
             G.ObjList.append(C)
             G.ConveyerList.append(C)
             

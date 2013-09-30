@@ -1,45 +1,78 @@
 {
     "_class": "Dream.Simulation",
-    "elementList": [
-        {
-            "_class": "Dream.Source",
-            "entity": "Part",
-            "id": "S1",
-            "interarrivalTime": {
-                "distributionType": "Fixed",
-                "mean": "0.5"
-            },
-            "name": "Parts",
-            "successorList": [
-                "A1"
-            ]
-        },
-        {
-            "_class": "Dream.Source",
-            "entity": "Frame",
-            "id": "S2",
-            "interarrivalTime": {
-                "distributionType": "Fixed",
-                "mean": "2"
-            },
-            "name": "Frames",
-            "successorList": [
-                "A1"
-            ]
-        },
-        {
+    "edges": {
+        "0": [
+            "S1",
+            "A1",
+            {
+                "entity": "Part"
+            }
+        ],
+        "1": [
+            "S2",
+            "A1",
+            {
+                "entity": "Frame"
+            }
+        ],
+        "2": [
+            "A1",
+            "M1",
+            {}
+        ],
+        "3": [
+            "M1",
+            "D1",
+            {}
+        ],
+        "4": [
+            "D1",
+            "E1",
+            {
+                "entity": "Frame"
+            }
+        ],
+        "5": [
+            "D1",
+            "E2",
+            {
+                "entity": "Part"
+            }
+        ]
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "confidenceLevel": "0.95",
+        "maxSimTime": "1440",
+        "numberOfReplications": "1",
+        "trace": "No"
+    },
+    "nodes": {
+        "A1": {
             "_class": "Dream.Assembly",
-            "id": "A1",
             "name": "Assembly",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "2"
-            },
-            "successorList": [
-                "M1"
-            ]
+            }
         },
-        {
+        "D1": {
+            "_class": "Dream.Dismantle",
+            "name": "Dismantle",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "1"
+            }
+        },
+        "E1": {
+            "_class": "Dream.Exit",
+            "name": "Parts Stock"
+        },
+        "E2": {
+            "_class": "Dream.Exit",
+            "name": "Frames Stock"
+        },
+        "M1": {
             "_class": "Dream.Machine",
             "failures": {
                 "MTTF": "60",
@@ -47,51 +80,59 @@
                 "failureDistribution": "Fixed",
                 "repairman": "None"
             },
-            "id": "M1",
             "name": "Moulding",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "0.25"
-            },
-            "successorList": [
-                "D1"
-            ]
+            }
         },
-        {
-            "_class": "Dream.Dismantle",
-            "id": "D1",
-            "name": "Dismantle",
-            "processingTime": {
+        "S1": {
+            "_class": "Dream.Source",
+            "entity": "Part",
+            "interarrivalTime": {
                 "distributionType": "Fixed",
-                "mean": "1"
+                "mean": "0.5"
             },
-            "successorFrameList": [
-                "E1"
-            ],
-            "successorList": [
-                "E1",
-                "E2"
-            ],
-            "successorPartList": [
-                "E2"
-            ]
+            "name": "Parts"
         },
-        {
-            "_class": "Dream.Exit",
-            "id": "E1",
-            "name": "Parts Stock"
-        },
-        {
-            "_class": "Dream.Exit",
-            "id": "E2",
-            "name": "Frames Stock"
+        "S2": {
+            "_class": "Dream.Source",
+            "entity": "Frame",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": "2"
+            },
+            "name": "Frames"
         }
-    ],
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "1440",
-        "numberOfReplications": "1",
-        "trace": "No"
+    },
+    "preferences": {
+        "A1": {
+            "left": 0.5,
+            "top": 0.2784431137724551
+        },
+        "D1": {
+            "left": 0.5,
+            "top": 0.721556886227545
+        },
+        "E1": {
+            "left": 0.7857142857142857,
+            "top": 0.9431137724550899
+        },
+        "E2": {
+            "left": 0.2142857142857143,
+            "top": 0.9431137724550899
+        },
+        "M1": {
+            "left": 0.5,
+            "top": 0.5
+        },
+        "S1": {
+            "left": 0.2142857142857143,
+            "top": 0.05688622754491013
+        },
+        "S2": {
+            "left": 0.7857142857142857,
+            "top": 0.05688622754491013
+        }
     }
 }
