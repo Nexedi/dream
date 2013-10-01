@@ -64,8 +64,8 @@ from Assembly import Assembly
 from Dismantle import Dismantle
 from Conveyer import Conveyer
 from Job import Job
-#from MachineJobShop import MachineJobShop
-#from QueueJobShop import QueueJobShop
+from MachineJobShop import MachineJobShop
+from QueueJobShop import QueueJobShop
 #from ExitJobShop import ExitJobShop
 import xlwt
 import xlrd
@@ -210,6 +210,16 @@ def createObjects():
             capacity=int(element.get('capacity', '1'))
             isDummy=bool(int(element.get('isDummy', '0')))
             Q=Queue(id, name, capacity, isDummy)
+            Q.nextIds=getSuccessorList(id)
+            G.QueueList.append(Q)
+            G.ObjList.append(Q)
+            
+        elif objClass=='Dream.QueueJobShop':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            capacity=int(element.get('capacity', '1'))
+            isDummy=bool(int(element.get('isDummy', '0')))
+            Q=QueueJobShop(id, name, capacity, isDummy)
             Q.nextIds=getSuccessorList(id)
             G.QueueList.append(Q)
             G.ObjList.append(Q)
@@ -366,7 +376,7 @@ def setWIP():
 #the main script that is ran
 def main(argv=[], input_data=None):
     argv = argv or sys.argv[1:]
-
+    
     #create an empty list to store all the objects in   
     G.ObjList=[]
 

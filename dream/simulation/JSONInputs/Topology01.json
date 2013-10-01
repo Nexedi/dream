@@ -41,7 +41,7 @@
         "_class": "Dream.Configuration",
         "confidenceLevel": "0.95",
         "maxSimTime": "1440",
-        "numberOfReplications": "1",
+        "numberOfReplications": "2",
         "trace": "Yes"
     },
     "nodes": {

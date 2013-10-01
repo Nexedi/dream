@@ -25,7 +25,7 @@ Created on 12 Jul 2012
 Class that acts as an abstract. It should have no instances. All the core-objects should inherit from it
 '''
 
-from SimPy.Simulation import Process, Resource
+from SimPy.Simulation import Process, Resource, now
 
 #the core object
 class CoreObject(Process):
@@ -76,7 +76,7 @@ class CoreObject(Process):
         
     #gets an entity from the predecessor that the predecessor index points to     
     def getEntity(self):
-        self.Res.activeQ=[self.previous[self.predecessorIndex].Res.activeQ[0]]+self.Res.activeQ   #get the entity from the previous object
+        self.Res.activeQ.append(self.previous[self.predecessorIndex].Res.activeQ[0])   #get the entity from the previous object
                                                                                                       #and put it in front of the activeQ       
         self.previous[self.predecessorIndex].removeEntity()                                           #remove the entity from the previous object  
         

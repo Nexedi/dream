@@ -120,6 +120,40 @@
                     }
                 }
             ]
+        },
+        "J2": {
+            "_class": "Dream.Job",
+            "name": "Job2",
+            "route": [
+                {
+                    "stationId": "Q2",
+                    "processingTime": {
+                        "distributionType": "Fixed",
+                        "mean": "3"
+                    }
+                },
+                {
+                    "stationId": "Q3",
+                    "processingTime": {
+                        "distributionType": "Fixed",
+                        "mean": "1"
+                    }
+                },
+                {
+                    "stationId": "Q2",
+                    "processingTime": {
+                        "distributionType": "Fixed",
+                        "mean": "7"
+                    }
+                },
+                {
+                    "stationId": "E1",
+                    "processingTime": {
+                        "distributionType": "Fixed",
+                        "mean": "0"
+                    }
+                }
+            ]
         }
     }
 }
