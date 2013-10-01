@@ -63,6 +63,7 @@ from Frame import Frame
 from Assembly import Assembly
 from Dismantle import Dismantle
 from Conveyer import Conveyer
+from Job import Job
 import xlwt
 import xlrd
 import time
@@ -108,6 +109,9 @@ def createObjects():
     G.AssemblyList=[]
     G.DismantleList=[]
     G.ConveyerList=[]
+    G.JobList=[]
+    G.WipList=[]
+    G.EntityList=[]  
 
 
     #loop through all the model resources 
@@ -243,16 +247,15 @@ def createObjects():
             JSONRoute=element.get('route', [])
             route=[]
             for routeElement in JSONRoute:
-                print routeElement
                 nextId=routeElement.get('stationId', 'not found')
                 processingTime=routeElement.get('processingTime', 'not found')
                 distributionType=processingTime.get('distributionType', 'not found')
                 mean=int(processingTime.get('mean', 'not found'))
-                print nextId, distributionType, mean
                 route.append([nextId, mean])
-                
-            print route[0][0]
-            
+            J=Job(id, name, route)
+            G.JobList.append(J)   
+            G.WipList.append(J)  
+            G.EntityList.append(J)              
                         
     #loop through all the core objects    
     #to read predecessors

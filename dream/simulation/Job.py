@@ -39,6 +39,7 @@ class Job(Entity):
         self.fullRoute=route    #the route that the job follows, also contains the processing times in each station
         self.remainingRoute=route   #the remaining route. in the beginning this should be the same as the full route
         self.currentStop=route[0][0]    #the starting stop should be the first in the route
+
         
         
         

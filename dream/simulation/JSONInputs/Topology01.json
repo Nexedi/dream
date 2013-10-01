@@ -41,8 +41,8 @@
         "_class": "Dream.Configuration",
         "confidenceLevel": "0.95",
         "maxSimTime": "1440",
-        "numberOfReplications": "2",
-        "trace": "No"
+        "numberOfReplications": "1",
+        "trace": "Yes"
     },
     "nodes": {
         "DummyQ": {
