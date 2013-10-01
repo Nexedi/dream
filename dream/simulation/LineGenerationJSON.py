@@ -64,6 +64,9 @@ from Assembly import Assembly
 from Dismantle import Dismantle
 from Conveyer import Conveyer
 from Job import Job
+#from MachineJobShop import MachineJobShop
+#from QueueJobShop import QueueJobShop
+#from ExitJobShop import ExitJobShop
 import xlwt
 import xlrd
 import time
@@ -112,7 +115,7 @@ def createObjects():
     G.JobList=[]
     G.WipList=[]
     G.EntityList=[]  
-
+    G.MachineJobShopList=[]
 
     #loop through all the model resources 
     #search for repairmen in order to create them
@@ -167,6 +170,31 @@ def createObjects():
                                                     MTTF, MTTR, availability, r)
             M.nextIds=getSuccessorList(id)
             G.MachineList.append(M)
+            G.ObjList.append(M)
+            
+        elif objClass=='Dream.MachineJobShop':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            processingTime=element.get('processingTime', 'not found')
+            distributionType=processingTime.get('distributionType', 'not found')
+            mean=float(processingTime.get('mean', '0'))  
+            stdev=float(processingTime.get('stdev', '0'))  
+            min=float(processingTime.get('min', '0')) 
+            max=float(processingTime.get('max', '0'))
+            failures=element.get('failures', 'not found')  
+            failureDistribution=failures.get('failureDistribution', 'not found')
+            MTTF=float(failures.get('MTTF', '0'))   
+            MTTR=float(failures.get('MTTR', '0')) 
+            availability=float(failures.get('availability', '0'))  
+            r='None'
+            for repairman in G.RepairmanList:
+                if(id in repairman.coreObjectIds):
+                    r=repairman
+                    
+            M=MachineJobShop(id, name, 1, distributionType, [mean,stdev,min,max], failureDistribution,
+                                                    MTTF, MTTR, availability, r)
+            M.nextIds=getSuccessorList(id)
+            G.MachineJobShopList.append(M)
             G.ObjList.append(M)
             
         elif objClass=='Dream.Exit':
