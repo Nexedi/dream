@@ -39,16 +39,18 @@ class QueueJobShop(Queue):
     #it checks also who called it and returns TRUE only to the object that will give the entity.  
     def canAccept(self, callerObject=None): 
         if callerObject!=None:
+            #check it the caller object holds an Entity that requests for current object
             if len(callerObject.Res.activeQ)>0:
                 activeEntity=callerObject.Res.activeQ[0]
                 if activeEntity.remainingRoute[0][0]==self.id:
-                    return len(self.Res.activeQ)<self.capacity
+                    return len(self.Res.activeQ)<self.capacity  #return according to the state of the Queue
         return False
 
     #checks if the Queue can accept an entity and there is an entity in some predecessor waiting for it
     #also updates the predecessorIndex to the one that is to be taken
     def canAcceptAndIsRequested(self):        
         from Globals import G
+        #loop through the objects to see if there is one that holds an Entity requesting for current object
         for obj in G.ObjList:
             if len(obj.Res.activeQ)>0 and now()!=0:
                 activeEntity=obj.Res.activeQ[0]
@@ -60,8 +62,9 @@ class QueueJobShop(Queue):
     #gets an entity from the predecessor that the predecessor index points to     
     def getEntity(self):
         self.Res.activeQ.append(self.previousStation.Res.activeQ[0])    #get the entity from the previous object
-                                                                                                      #and put it in front of the activeQ       
-        self.previousStation.removeEntity()                                           #remove the entity from the previous object 
-        self.Res.activeQ[0].remainingRoute[0][0]=""         
+                                                                        #and put it in front of the activeQ       
+        self.previousStation.removeEntity()                             #remove the entity from the previous object 
+        self.Res.activeQ[0].remainingRoute[0][0]=""                     #remove data from the remaining route. 
+                                                                        #This is needed so that the Queue will not request again for the Entity
         
         

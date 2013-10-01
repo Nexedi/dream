@@ -39,10 +39,11 @@ class MachineJobShop(Machine):
     def getEntity(self):
         Machine.getEntity(self)     #run the default code
         avtiveEntity=self.Res.activeQ[0]
-        self.procTime=avtiveEntity.remainingRoute[0][1]
-        self.nextStationId=avtiveEntity.remainingRoute[1][0]
-        avtiveEntity.remainingRoute.pop(0)
+        self.procTime=avtiveEntity.remainingRoute[0][1]     #read the processing time from the entity
+        self.nextStationId=avtiveEntity.remainingRoute[1][0]    #read the next station id
+        avtiveEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
         from Globals import G
+        #loop through the objects to to assign the next station to the one that has the id
         for obj in G.ObjList:
             if obj.id==self.nextStationId:
                 self.nextStation=obj       
@@ -50,8 +51,6 @@ class MachineJobShop(Machine):
     #checks if the machine down or it can dispose the object
     def ifCanDisposeOrHaveFailure(self):
          return self.Up==False or self.nextStation.canAccept(self) or len(self.Res.activeQ)==0  
-                                                                                        #the last part is added so that it is not removed and stack
-                                                                                        #gotta think of it again     
                                                                                 
     #calculates the processing time
     def calculateProcessingTime(self):
@@ -59,9 +58,10 @@ class MachineJobShop(Machine):
 
     #checks if the Machine can dispose an entity. Returns True only to the potential receiver     
     def haveToDispose(self, callerObject=None):
-        if callerObject!=None:        
+        if callerObject!=None:
+            #check it the object that called the method holds an Entity that requests for current object        
             if self.Res.activeQ[0].remainingRoute[0][0]==callerObject.id:
-                return len(self.Res.activeQ)>0 and self.waitToDispose and self.Up
+                return len(self.Res.activeQ)>0 and self.waitToDispose and self.Up   #return according to the state of the machine
         return False
                 
                 
