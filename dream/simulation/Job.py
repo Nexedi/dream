@@ -17,25 +17,32 @@
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 '''
-Created on 6 Feb 2013
+Created on 01 Oct 2013
 
 @author: George
 '''
-
 '''
-models a part entity that flows through the system
+Job is an Entity that implements the logic of a job shop. Job carries attributes for its route 
+in the system and also in the processing times at each station
 '''
-
 
 from Globals import G
 from Entity import Entity
 
-
 #The part object
-class Part(Entity):    
-    type="Part"
-          
-    def __init__(self, name):
+class Job(Entity):    
+    type="Job"
+    
+    def __init__(self, name, id, route):
         Entity.__init__(self, name)
-   
-        #print self.name, now()
+        self.id=id
+        self.fullRoute=route    #the route that the job follows, also contains the processing times in each station
+        self.remainingRoute=route   #the remaining route. in the beginning this should be the same as the full route
+        self.currentStop=route[0][0]    #the starting stop should be the first in the route
+        
+        
+        
+        
+        
+    
+    

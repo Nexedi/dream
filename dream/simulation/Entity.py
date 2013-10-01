@@ -27,9 +27,9 @@ Class that acts as an abstract. It should have no instances. All the Entities sh
 
 #The entity object
 class Entity(object):
+    type="Entity"
 
     def __init__(self, name):
-        self.type="Entity"
         self.name=name
         self.currentStop=None      #contains the current object that the material is in 
         self.creationTime=0

@@ -1,0 +1,127 @@
+{
+    "_class": "Dream.Simulation",
+    "general": {
+        "_class": "Dream.Configuration",
+        "numberOfReplications": "1",
+        "maxSimTime": "1000",
+        "trace": "Yes",
+        "confidenceLevel": "0.95"
+    },
+    "elementList": [
+        {
+            "_class": "Dream.Machine",
+            "id": "M1",
+            "name": "Machine1",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "0.25"
+            },
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": "60",
+                "MTTR": "5"
+            },
+            "successorList": []
+        },
+        {
+            "_class": "Dream.Machine",
+            "id": "M2",
+            "name": "Machine2",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "1.5"
+            },
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": "40",
+                "MTTR": "10"
+            },
+            "successorList": []
+        },
+        {
+            "_class": "Dream.Machine",
+            "id": "M3",
+            "name": "Machine3",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "1.5"
+            },
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": "40",
+                "MTTR": "10"
+            },
+            "successorList": []
+        },
+        {
+            "_class": "Dream.Queue",
+            "id": "Q1",
+            "name": "Queue1",
+            "isDummy": "0",
+            "capacity": "1000",
+            "successorList": [
+                "M1"
+            ]
+        },
+        {
+            "_class": "Dream.Queue",
+            "id": "Q2",
+            "name": "Queue2",
+            "isDummy": "0",
+            "capacity": "1000",
+            "successorList": [
+                "M2"
+            ]
+        },
+        {
+            "_class": "Dream.Queue",
+            "id": "Q3",
+            "name": "Queue3",
+            "isDummy": "0",
+            "capacity": "1000",
+            "successorList": [
+                "M3"
+            ]
+        },
+        {
+            "_class": "Dream.Exit",
+            "id": "E1",
+            "name": "Exit"
+        },
+        {
+            "_class": "Dream.Job",
+            "id": "J1",
+            "name": "Job1",
+            "route": [
+                {
+                    "stationId": "Q1",
+                    "processingTime": {
+                        "distributionType": "Fixed",
+                        "mean": "1"
+                    }
+                },
+                {
+                    "stationId": "Q3",
+                    "processingTime": {
+                        "distributionType": "Fixed",
+                        "mean": "3"
+                    }
+                },
+                {
+                    "stationId": "Q2",
+                    "processingTime": {
+                        "distributionType": "Fixed",
+                        "mean": "2"
+                    }
+                },
+                {
+                    "stationId": "E1",
+                    "processingTime": {
+                        "distributionType": "Fixed",
+                        "mean": "0"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -237,6 +237,23 @@ def createObjects():
             G.ObjList.append(C)
             G.ConveyerList.append(C)
             
+        elif objClass=='Dream.Job':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            JSONRoute=element.get('route', [])
+            route=[]
+            for routeElement in JSONRoute:
+                print routeElement
+                nextId=routeElement.get('stationId', 'not found')
+                processingTime=routeElement.get('processingTime', 'not found')
+                distributionType=processingTime.get('distributionType', 'not found')
+                mean=int(processingTime.get('mean', 'not found'))
+                print nextId, distributionType, mean
+                route.append([nextId, mean])
+                
+            print route[0][0]
+            
+                        
     #loop through all the core objects    
     #to read predecessors
     for element in G.ObjList:
@@ -384,19 +401,7 @@ def main(argv=[], input_data=None):
          
     outputJSONString=json.dumps(G.outputJSON, indent=True)
     G.outputJSONFile.write(outputJSONString)
-       
-    '''    
-    #output data to excel for every object in the topology         
-    for core_object in G.ObjList:
-        core_object.outputResultsXL(G.maxSimTime)
-        
-    #output data to excel for every resource in the topology         
-    for model_resource in G.RepairmanList:
-        model_resource.outputResultsXL(G.maxSimTime)
-      
-    G.outputFile.save("output.xls")      
-    '''
-    
+          
     logger.info("execution time="+str(time.time()-start))
     if input_data:
       return outputJSONString

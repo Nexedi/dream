@@ -36,11 +36,8 @@ class Frame(Entity):
     numOfParts=4    #the number of parts that the frame can take
           
     def __init__(self, name):
-        self.type="Frame"
-        self.name=name
-        self.currentStop=None      #contains the current object that the material is in 
-        self.creationTime=0
-        self.startTime=0           #holds the startTime for the lifespan
+        Entity.__init__(self, name)
+
         self.Res=Resource(self.numOfParts)
         #dimension data
         self.width=2.0
