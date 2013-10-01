@@ -1,0 +1,45 @@
+{
+ "elementList": [
+  {
+   "_class": "Dream.Exit", 
+   "id": "E1", 
+   "results": {
+    "throughput": 712, 
+    "takt_time": 2.021067415730337, 
+    "lifespan": 5.93433988764045
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "M1", 
+   "results": {
+    "working_ratio": 12.395833333333334, 
+    "blockage_ratio": 78.55902777777777, 
+    "failure_ratio": 9.027777777777779, 
+    "waiting_ratio": 0.017361111111111112
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "M2", 
+   "results": {
+    "working_ratio": 74.23611111111111, 
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 19.791666666666668, 
+    "waiting_ratio": 5.972222222222222
+   }
+  }, 
+  {
+   "_class": "Dream.Repairman", 
+   "id": "W1", 
+   "results": {
+    "working_ratio": 26.73611111111111, 
+    "waiting_ratio": 73.26388888888889
+   }
+  }
+ ], 
+ "_class": "Dream.Simulation", 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}
