@@ -325,6 +325,16 @@ def activateObjects():
         except AttributeError:
             pass
 
+#sets the WIP in the corresponding stations                
+def setWIP():
+    for entity in G.WipList:
+        objectId=entity.currentStop
+        object=None
+        for obj in G.ObjList:
+            if obj.id==objectId:  
+                object=obj
+        object.Res.activeQ.append(entity)        
+
 #the main script that is ran
 def main(argv=[], input_data=None):
     argv = argv or sys.argv[1:]
@@ -361,8 +371,19 @@ def main(argv=[], input_data=None):
               
         initialize()                        #initialize the simulation 
         initializeObjects()
+        setWIP()
         activateObjects()
-                            
+        
+        for obj in G.ObjList:
+            pass
+            #print obj.id, obj.Res.activeQ, obj.haveToDispose(), obj.canAcceptAndIsRequested()
+            '''
+            if obj.type is "Machine":
+                print obj.next[0].id
+            if obj.type is "Queue":
+                print obj.previous[0].id
+            '''
+            
         simulate(until=G.maxSimTime)      #start the simulation
         
         #carry on the post processing operations for every object in the topology       
