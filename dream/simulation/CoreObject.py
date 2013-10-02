@@ -107,7 +107,10 @@ class CoreObject(Process):
     #checks if the Object can accept an entity       
     def canAccept(self, callerObject=None): 
         pass
-    
+
+    #sorts the Entities in the activeQ of the objects
+    def sortEntities(self):
+        pass
     #takes the array and checks if all its values are identical (returns false) or not (returns true) 
     #needed because if somebody runs multiple runs in deterministic case it would crash!          
     def checkIfArrayHasDifValues(self, array):

@@ -218,7 +218,8 @@ def createObjects():
             name=element.get('name', 'not found')
             capacity=int(element.get('capacity', '1'))
             isDummy=bool(int(element.get('isDummy', '0')))
-            Q=Queue(id, name, capacity, isDummy)
+            schedulingRule=element.get('schedulingRule', 'FIFO')
+            Q=Queue(id, name, capacity, isDummy, schedulingRule=schedulingRule)
             Q.nextIds=getSuccessorList(id)
             G.QueueList.append(Q)
             G.ObjList.append(Q)
@@ -228,7 +229,8 @@ def createObjects():
             name=element.get('name', 'not found')
             capacity=int(element.get('capacity', '1'))
             isDummy=bool(int(element.get('isDummy', '0')))
-            Q=QueueJobShop(id, name, capacity, isDummy)
+            schedulingRule=element.get('schedulingRule', 'FIFO')
+            Q=QueueJobShop(id, name, capacity, isDummy, schedulingRule=schedulingRule)
             Q.nextIds=getSuccessorList(id)
             G.QueueJobShopList.append(Q)
             G.ObjList.append(Q)
@@ -253,11 +255,7 @@ def createObjects():
             stdev=float(processingTime.get('stdev', '0'))  
             min=float(processingTime.get('min', '0')) 
             max=float(processingTime.get('max', '0'))
-            #predecessorPartList=element.get('predecessorPartList', 'not found')
-            #predecessorFrameList=element.get('predecessorFrameList', 'not found')
             A=Assembly(id, name, distributionType, [mean,stdev,min,max])
-            #A.previousPartIds=predecessorPartList
-            #A.previousFrameIds=predecessorFrameList
             A.nextIds=getSuccessorList(id)
             G.AssemblyList.append(A)
             G.ObjList.append(A)
@@ -291,6 +289,7 @@ def createObjects():
         elif objClass=='Dream.Job':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
+            priority=int(element.get('priority', '0'))
             JSONRoute=element.get('route', [])
             route=[]
             for i in range(len(JSONRoute)):
@@ -302,7 +301,7 @@ def createObjects():
                 distributionType=processingTime.get('distributionType', 'not found')
                 mean=int(processingTime.get('mean', 'not found'))
                 route[stepNumber]=[nextId, mean]
-            J=Job(id, name, route)
+            J=Job(id, name, route, priority=priority)
             G.JobList.append(J)   
             G.WipList.append(J)  
             G.EntityList.append(J)              
@@ -377,6 +376,7 @@ def activateObjects():
 
 #sets the WIP in the corresponding stations                
 def setWIP():
+    #read the start station of the Entities and assign them to it
     for entity in G.WipList:
         objectId=entity.currentStop
         object=None
@@ -385,6 +385,9 @@ def setWIP():
                 object=obj
         object.Res.activeQ.append(entity)  
         entity.remainingRoute[0][0]=""                     #remove data from the remaining route.    
+    #sort the Entities in the WIP
+    for obj in G.QueueJobShopList:        
+        obj.sortEntities()
 
 #the main script that is ran
 def main(argv=[], input_data=None):

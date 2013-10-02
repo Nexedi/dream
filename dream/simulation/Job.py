@@ -33,14 +33,12 @@ from Entity import Entity
 class Job(Entity):    
     type="Job"
     
-    def __init__(self, id, name, route):
-        Entity.__init__(self, name)
+    def __init__(self, id, name, route, priority=0):
+        Entity.__init__(self, name, priority)
         self.id=id
         self.fullRoute=route    #the route that the job follows, also contains the processing times in each station
         self.remainingRoute=route   #the remaining route. in the beginning this should be the same as the full route
-        self.currentStop=route[0][0]    #the starting stop should be the first in the route
-
-        
+        self.currentStop=route[0][0]    #the starting stop should be the first in the route    
         
         
         

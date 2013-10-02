@@ -176,10 +176,12 @@ class Queue(CoreObject):
 
     #sorts the Entities of the Queue according to the scheduling rule
     def sortEntities(self):
+        activeObjectQ=self.Res.activeQ
         if self.schedulingRule=="FIFO":
             pass
-        
-             
+        elif self.schedulingRule=="Priority":
+            activeObjectQ.sort(key=lambda x: x.priority, reverse=True)        
+                         
     #outputs message to the trace.xls. Format is (Simulation Time | Entity Name | message)
     def outputTrace(self, entityName, message):
         from Globals import G
