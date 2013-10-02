@@ -63,10 +63,10 @@ class QueueJobShop(Queue):
         self.Res.activeQ.append(self.previousStation.Res.activeQ[0])    #get the entity from the previous object
                                                                         #and put it in front of the activeQ       
         self.previousStation.removeEntity()                             #remove the entity from the previous object
-        self.Res.activeQ[-1].remainingRoute[0][0]=""                     #remove data from the remaining route. 
+        self.Res.activeQ[-1].remainingRoute[0][0]=""                    #remove data from the remaining route. 
                                                                         #This is needed so that the Queue will not request again for the Entity
         self.outputTrace(self.Res.activeQ[-1].name, "got into "+self.objName)
-        self.sortEntities()                                             #sort the Entities according to the scheduling rule
+                                          
 
         
         

@@ -51,6 +51,11 @@ class Queue(CoreObject):
         self.type="Queue"   #String that shows the type of object
         self.isDummy=dummy  #Boolean that shows if it is the dummy first Queue
         self.schedulingRule=schedulingRule   #the scheduling rule that the Queue follows
+        self.multipleCriterionList=[]
+        if schedulingRule.startswith("MC"):
+            SRlist = schedulingRule.split("-")
+            self.schedulingRule=SRlist.pop(0)
+            self.multipleCriterionList=SRlist
  
     def initialize(self):
         Process.__init__(self)
@@ -139,7 +144,8 @@ class Queue(CoreObject):
         return len(self.Res.activeQ)>0 and flag   
 
     #removes an entity from the Object
-    def removeEntity(self):     
+    def removeEntity(self):
+        #self.sortEntities()     #sort the Entities
         self.outputTrace(self.Res.activeQ[0].name, "releases "+self.objName)
         self.Res.activeQ.pop(0)   
 
@@ -172,27 +178,64 @@ class Queue(CoreObject):
     def getEntity(self):
         CoreObject.getEntity(self)  #run the default behavior 
         self.outputTrace(self.Res.activeQ[-1].name, "got into "+self.objName)
-        self.sortEntities()     #sort the Entities
-
+    
     #sorts the Entities of the Queue according to the scheduling rule
     def sortEntities(self):
+        #if we have sorting according to multiple criteria we have to call the sorter many times
+        if self.schedulingRule=="MC":
+            for criterion in reversed(self.multipleCriterionList):
+               self.activeQSorter(criterion=criterion) 
+        #else we just use the default scheduling rule
+        else:
+            self.activeQSorter()
+    
+    #sorts the Entities of the Queue according to the scheduling rule
+    def activeQSorter(self, criterion=None):
         activeObjectQ=self.Res.activeQ
-        schedulingRule=self.schedulingRule
+        if criterion==None:
+            criterion=self.schedulingRule           
         #if the schedulingRule is first in first out
-        if schedulingRule=="FIFO": 
+        if criterion=="FIFO": 
             pass
         #if the schedulingRule is based on a pre-defined prioriy
-        elif schedulingRule=="Priority":
+        elif criterion=="Priority":
             activeObjectQ.sort(key=lambda x: x.priority, reverse=True)
         #if the schedulingRule is earliest due date
-        elif schedulingRule=="EDD":
+        elif criterion=="EDD":
             activeObjectQ.sort(key=lambda x: x.dueDate)   
         #if the schedulingRule is earliest order date
-        elif schedulingRule=="EOD":
+        elif criterion=="EOD":
             activeObjectQ.sort(key=lambda x: x.orderDate)      
-        #if the schedulingRule is to short Entities according to the stations they have to visit
-        elif schedulingRule=="NumStations":
-            activeObjectQ.sort(key=lambda x: len(x.remainingRoute), reverse=True)                 
+        #if the schedulingRule is to sort Entities according to the stations they have to visit
+        elif criterion=="NumStages":
+            activeObjectQ.sort(key=lambda x: len(x.remainingRoute), reverse=True)  
+        #if the schedulingRule is to sort Entities according to the their remaining processing time in the system
+        elif criterion=="RPC":
+            for entity in activeObjectQ:
+                RPT=0
+                for step in entity.remainingRoute:
+                    RPT+=step[1]                
+                entity.remainingProcessingTime=RPT
+            activeObjectQ.sort(key=lambda x: x.remainingProcessingTime, reverse=True)      
+        #if the schedulingRule is to sort Entities based on the minimum slackness
+        elif criterion=="MinSlack":
+            for entity in activeObjectQ:
+                RPT=0
+                for step in entity.remainingRoute:
+                    RPT+=step[1]                
+                entity.remainingProcessingTime=RPT
+            activeObjectQ.sort(key=lambda x: (x.dueDate-x.remainingProcessingTime))  
+        #if the schedulingRule is to sort Entities based on the minimum slackness
+        elif criterion=="NextStage":
+            from Globals import G
+            for entity in activeObjectQ:
+                nextObjId=entity.remainingRoute[1][0]
+                for obj in G.ObjList:
+                    if obj.id==nextObjId:
+                        nextObject=obj        
+                entity.nextQueueLength=len(nextObject.Res.activeQ)           
+            activeObjectQ.sort(key=lambda x: x.nextQueueLength, reverse=True)  
+            
                          
     #outputs message to the trace.xls. Format is (Simulation Time | Entity Name | message)
     def outputTrace(self, entityName, message):

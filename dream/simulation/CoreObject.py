@@ -76,9 +76,16 @@ class CoreObject(Process):
         
     #gets an entity from the predecessor that the predecessor index points to     
     def getEntity(self):
-        self.Res.activeQ.append(self.previous[self.predecessorIndex].Res.activeQ[0])   #get the entity from the previous object
+        giverObject=self.getGiverObject()
+        giverObject.sortEntities()      #sort the Entities of the giver according to the scheduling rule if applied
+        activeObject=self.getActiveObject()
+        giverObjectQueue=self.getGiverObjectQueue()
+        activeEntity=giverObjectQueue[0]
+        activeObjectQueue=self.getActiveObjectQueue()
+        
+        activeObjectQueue.append(activeEntity)   #get the entity from the previous object
                                                                                                       #and put it in front of the activeQ       
-        self.previous[self.predecessorIndex].removeEntity()                                           #remove the entity from the previous object  
+        giverObject.removeEntity()                                           #remove the entity from the previous object  
         
     #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime):
@@ -119,3 +126,15 @@ class CoreObject(Process):
            if(array[i]!=array[1]):
                difValuesFlag=True
         return difValuesFlag 
+      
+    def getActiveObject(self):
+        return self
+    
+    def getActiveObjectQueue(self):
+        return self.Res.activeQ
+       
+    def getGiverObject(self):
+        return self.previous[self.predecessorIndex]
+    
+    def getGiverObjectQueue(self):
+        return self.getGiverObject().Res.activeQ

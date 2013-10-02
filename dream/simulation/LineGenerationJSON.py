@@ -387,9 +387,6 @@ def setWIP():
                 object=obj
         object.Res.activeQ.append(entity)  
         entity.remainingRoute[0][0]=""                     #remove data from the remaining route.    
-    #sort the Entities in the WIP
-    for obj in G.QueueJobShopList:        
-        obj.sortEntities()
 
 #the main script that is ran
 def main(argv=[], input_data=None):
