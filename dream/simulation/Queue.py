@@ -177,10 +177,22 @@ class Queue(CoreObject):
     #sorts the Entities of the Queue according to the scheduling rule
     def sortEntities(self):
         activeObjectQ=self.Res.activeQ
-        if self.schedulingRule=="FIFO":
+        schedulingRule=self.schedulingRule
+        #if the schedulingRule is first in first out
+        if schedulingRule=="FIFO": 
             pass
-        elif self.schedulingRule=="Priority":
-            activeObjectQ.sort(key=lambda x: x.priority, reverse=True)        
+        #if the schedulingRule is based on a pre-defined prioriy
+        elif schedulingRule=="Priority":
+            activeObjectQ.sort(key=lambda x: x.priority, reverse=True)
+        #if the schedulingRule is earliest due date
+        elif schedulingRule=="EDD":
+            activeObjectQ.sort(key=lambda x: x.dueDate)   
+        #if the schedulingRule is earliest order date
+        elif schedulingRule=="EOD":
+            activeObjectQ.sort(key=lambda x: x.orderDate)      
+        #if the schedulingRule is to short Entities according to the stations they have to visit
+        elif schedulingRule=="NumStations":
+            activeObjectQ.sort(key=lambda x: len(x.remainingRoute), reverse=True)                 
                          
     #outputs message to the trace.xls. Format is (Simulation Time | Entity Name | message)
     def outputTrace(self, entityName, message):

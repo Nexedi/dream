@@ -290,6 +290,8 @@ def createObjects():
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
             priority=int(element.get('priority', '0'))
+            dueDate=float(element.get('dueDate', '0'))
+            orderDate=float(element.get('orderDate', '0'))
             JSONRoute=element.get('route', [])
             route=[]
             for i in range(len(JSONRoute)):
@@ -301,7 +303,7 @@ def createObjects():
                 distributionType=processingTime.get('distributionType', 'not found')
                 mean=int(processingTime.get('mean', 'not found'))
                 route[stepNumber]=[nextId, mean]
-            J=Job(id, name, route, priority=priority)
+            J=Job(id, name, route, priority=priority, dueDate=dueDate, orderDate=orderDate)
             G.JobList.append(J)   
             G.WipList.append(J)  
             G.EntityList.append(J)              

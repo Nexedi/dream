@@ -74,7 +74,7 @@
         "Q2": {
             "_class": "Dream.QueueJobShop",
             "name": "Queue2",
-			"schedulingRule": "Priority",
+			"schedulingRule": "NumStations",
             "isDummy": "0",
             "capacity": "1000"
         },
@@ -93,6 +93,8 @@
             "_class": "Dream.Job",
             "name": "Job1",
 			"priority": "1",
+			"dueDate": "900",
+			"orderDate": "5",
             "route": [
                 {
                     "stepNumber": "0",
@@ -132,6 +134,8 @@
             "_class": "Dream.Job",
             "name": "Job2",
 			"priority": "7",
+			"dueDate": "100",
+			"orderDate": "3",
             "route": [
                 {
                     "stepNumber": "0",
@@ -171,6 +175,8 @@
             "_class": "Dream.Job",
             "name": "Job3",
 			"priority": "3",
+			"dueDate": "200",
+			"orderDate": "2",
             "route": [
                 {
                     "stepNumber": "0",
@@ -202,6 +208,8 @@
             "_class": "Dream.Job",
             "name": "Job4",
 			"priority": "1",
+			"dueDate": "99",
+			"orderDate": "1.5",
             "route": [
                 {
                     "stepNumber": "0",
