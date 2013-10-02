@@ -66,7 +66,7 @@ from Conveyer import Conveyer
 from Job import Job
 from MachineJobShop import MachineJobShop
 from QueueJobShop import QueueJobShop
-#from ExitJobShop import ExitJobShop
+from ExitJobShop import ExitJobShop
 import xlwt
 import xlrd
 import time
@@ -116,6 +116,8 @@ def createObjects():
     G.WipList=[]
     G.EntityList=[]  
     G.MachineJobShopList=[]
+    G.QueueJobShopList=[]
+    G.ExitJobShopList=[]
 
     #loop through all the model resources 
     #search for repairmen in order to create them
@@ -204,6 +206,13 @@ def createObjects():
             G.ExitList.append(E)
             G.ObjList.append(E)
             
+        elif objClass=='Dream.ExitJobShop':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            E=ExitJobShop(id, name)
+            G.ExitJobShopList.append(E)
+            G.ObjList.append(E)
+            
         elif objClass=='Dream.Queue':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
@@ -221,7 +230,7 @@ def createObjects():
             isDummy=bool(int(element.get('isDummy', '0')))
             Q=QueueJobShop(id, name, capacity, isDummy)
             Q.nextIds=getSuccessorList(id)
-            G.QueueList.append(Q)
+            G.QueueJobShopList.append(Q)
             G.ObjList.append(Q)
             
         elif objClass=='Dream.QueueLIFO':
@@ -371,7 +380,8 @@ def setWIP():
         for obj in G.ObjList:
             if obj.id==objectId:  
                 object=obj
-        object.Res.activeQ.append(entity)        
+        object.Res.activeQ.append(entity)  
+        entity.remainingRoute[0][0]=""                     #remove data from the remaining route.    
 
 #the main script that is ran
 def main(argv=[], input_data=None):
@@ -410,18 +420,12 @@ def main(argv=[], input_data=None):
         initialize()                        #initialize the simulation 
         initializeObjects()
         setWIP()
-        activateObjects()
         
-        for obj in G.ObjList:
+        for Q in G.QueueJobShopList:
             pass
-            #print obj.id, obj.Res.activeQ, obj.haveToDispose(), obj.canAcceptAndIsRequested()
-            '''
-            if obj.type is "Machine":
-                print obj.next[0].id
-            if obj.type is "Queue":
-                print obj.previous[0].id
-            '''
-            
+        
+        activateObjects()
+                    
         simulate(until=G.maxSimTime)      #start the simulation
         
         #carry on the post processing operations for every object in the topology       

@@ -22,7 +22,7 @@ Created on 1 oct 2012
 @author: George
 '''
 '''
-extends the Queue object so that it can act as a jobshop station. Preceding station from the Entity
+extends the Queue object so that it can act as a jobshop station. Preceding station is read from the Entity
 '''
 
 from SimPy.Simulation import Process, Resource
@@ -30,7 +30,6 @@ from SimPy.Simulation import activate, passivate, waituntil, now, hold
 
 from Queue import Queue
 
-from RandomNumberGenerator import RandomNumberGenerator
 
 #the MachineJobShop object
 class QueueJobShop(Queue):
@@ -63,8 +62,12 @@ class QueueJobShop(Queue):
     def getEntity(self):
         self.Res.activeQ.append(self.previousStation.Res.activeQ[0])    #get the entity from the previous object
                                                                         #and put it in front of the activeQ       
-        self.previousStation.removeEntity()                             #remove the entity from the previous object 
-        self.Res.activeQ[0].remainingRoute[0][0]=""                     #remove data from the remaining route. 
+        self.previousStation.removeEntity()                             #remove the entity from the previous object
+        self.Res.activeQ[-1].remainingRoute[0][0]=""                     #remove data from the remaining route. 
                                                                         #This is needed so that the Queue will not request again for the Entity
+        self.outputTrace(self.Res.activeQ[-1].name, "got into "+self.objName)
+        self.sortEntities()                                             #sort the Entities according to the scheduling rule
+
+        
         
         

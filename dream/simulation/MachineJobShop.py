@@ -30,8 +30,6 @@ from SimPy.Simulation import activate, passivate, waituntil, now, hold
 
 from Machine import Machine
 
-from RandomNumberGenerator import RandomNumberGenerator
-
 #the MachineJobShop object
 class MachineJobShop(Machine):
     

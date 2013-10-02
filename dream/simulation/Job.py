@@ -33,7 +33,7 @@ from Entity import Entity
 class Job(Entity):    
     type="Job"
     
-    def __init__(self, name, id, route):
+    def __init__(self, id, name, route):
         Entity.__init__(self, name)
         self.id=id
         self.fullRoute=route    #the route that the job follows, also contains the processing times in each station

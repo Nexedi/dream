@@ -33,7 +33,7 @@ from CoreObject import CoreObject
 #the Queue object
 class Queue(CoreObject):
     
-    def __init__(self, id, name, capacity, dummy):
+    def __init__(self, id, name, capacity, dummy, schedulingRule="FIFO"):
         Process.__init__(self)
         self.predecessorIndex=0     #holds the index of the predecessor from which the Queue will take an entity next
         self.successorIndex=0       #holds the index of the successor where the Queue will dispose an entity next
@@ -50,6 +50,7 @@ class Queue(CoreObject):
         self.previousIds=[]     #list with the ids of the previous objects in the flow
         self.type="Queue"   #String that shows the type of object
         self.isDummy=dummy  #Boolean that shows if it is the dummy first Queue
+        self.schedulingRule=schedulingRule   #the scheduling rule that the Queue follows
  
     def initialize(self):
         Process.__init__(self)
@@ -83,9 +84,7 @@ class Queue(CoreObject):
         while 1:  
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity
                                                                     #and one predecessor requests it                                                  
-            self.getEntity()     
-            
-            self.outputTrace("got into "+self.objName)                                                           
+            self.getEntity()                                                               
             
             #if entity just got to the dummyQ set its startTime as the current time         
             if self.isDummy:               
@@ -141,9 +140,8 @@ class Queue(CoreObject):
 
     #removes an entity from the Object
     def removeEntity(self):     
-        self.outputTrace("releases "+self.objName)
+        self.outputTrace(self.Res.activeQ[0].name, "releases "+self.objName)
         self.Res.activeQ.pop(0)   
-
 
     #checks if the Queue can accept an entity and there is an entity in some predecessor waiting for it
     #also updates the predecessorIndex to the one that is to be taken
@@ -169,14 +167,26 @@ class Queue(CoreObject):
                     self.predecessorIndex=i  
                     maxTimeWaiting=timeWaiting                                     
         return len(self.Res.activeQ)<self.capacity and isRequested  
+
+    #gets an entity from the predecessor that the predecessor index points to     
+    def getEntity(self):
+        CoreObject.getEntity(self)  #run the default behavior 
+        self.outputTrace(self.Res.activeQ[-1].name, "got into "+self.objName)
+        self.sortEntities()     #sort the Entities
+
+    #sorts the Entities of the Queue according to the scheduling rule
+    def sortEntities(self):
+        if self.schedulingRule=="FIFO":
+            pass
+        
              
     #outputs message to the trace.xls. Format is (Simulation Time | Entity Name | message)
-    def outputTrace(self, message):
+    def outputTrace(self, entityName, message):
         from Globals import G
         if(G.trace=="Yes"):         #output only if the user has selected to
             #handle the 3 columns
             G.traceSheet.write(G.traceIndex,0,str(now()))
-            G.traceSheet.write(G.traceIndex,1,self.Res.activeQ[0].name)
+            G.traceSheet.write(G.traceIndex,1,entityName)
             G.traceSheet.write(G.traceIndex,2,message)          
             G.traceIndex+=1       #increment the row
             #if we reach row 65536 we need to create a new sheet (excel limitation)  

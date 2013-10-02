@@ -84,7 +84,7 @@
             "capacity": "1000"
         },
         "E1": {
-            "_class": "Dream.Exit",
+            "_class": "Dream.ExitJobShop",
             "name": "Exit"
         },
         "J1": {
@@ -110,40 +110,6 @@
                     "processingTime": {
                         "distributionType": "Fixed",
                         "mean": "2"
-                    }
-                },
-                {
-                    "stationId": "E1",
-                    "processingTime": {
-                        "distributionType": "Fixed",
-                        "mean": "0"
-                    }
-                }
-            ]
-        },
-        "J2": {
-            "_class": "Dream.Job",
-            "name": "Job2",
-            "route": [
-                {
-                    "stationId": "Q2",
-                    "processingTime": {
-                        "distributionType": "Fixed",
-                        "mean": "3"
-                    }
-                },
-                {
-                    "stationId": "Q3",
-                    "processingTime": {
-                        "distributionType": "Fixed",
-                        "mean": "1"
-                    }
-                },
-                {
-                    "stationId": "Q2",
-                    "processingTime": {
-                        "distributionType": "Fixed",
-                        "mean": "7"
                     }
                 },
                 {
