@@ -92,6 +92,7 @@
             "name": "Job1",
             "route": [
                 {
+					"stepNumber": "0",
                     "stationId": "Q1",
                     "processingTime": {
                         "distributionType": "Fixed",
@@ -99,6 +100,7 @@
                     }
                 },
                 {
+					"stepNumber": "1",
                     "stationId": "Q3",
                     "processingTime": {
                         "distributionType": "Fixed",
@@ -106,6 +108,7 @@
                     }
                 },
                 {
+					"stepNumber": "2",
                     "stationId": "Q2",
                     "processingTime": {
                         "distributionType": "Fixed",
@@ -113,7 +116,8 @@
                     }
                 },
                 {
-                    "stationId": "E1",
+                    "stepNumber": "3",
+					"stationId": "E1",
                     "processingTime": {
                         "distributionType": "Fixed",
                         "mean": "0"

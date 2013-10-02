@@ -293,12 +293,15 @@ def createObjects():
             name=element.get('name', 'not found')
             JSONRoute=element.get('route', [])
             route=[]
+            for i in range(len(JSONRoute)):
+                route.append(None)
             for routeElement in JSONRoute:
+                stepNumber=int(routeElement.get('stepNumber', '0'))
                 nextId=routeElement.get('stationId', 'not found')
                 processingTime=routeElement.get('processingTime', 'not found')
                 distributionType=processingTime.get('distributionType', 'not found')
                 mean=int(processingTime.get('mean', 'not found'))
-                route.append([nextId, mean])
+                route[stepNumber]=[nextId, mean]
             J=Job(id, name, route)
             G.JobList.append(J)   
             G.WipList.append(J)  

@@ -92,28 +92,32 @@
             "name": "Job1",
             "route": [
                 {
-                    "stationId": "Q1",
+                    "stepNumber": "0",
+					"stationId": "Q1",
                     "processingTime": {
                         "distributionType": "Fixed",
                         "mean": "1"
                     }
                 },
                 {
-                    "stationId": "Q3",
+                    "stepNumber": "1",
+					"stationId": "Q3",
                     "processingTime": {
                         "distributionType": "Fixed",
                         "mean": "3"
                     }
                 },
                 {
-                    "stationId": "Q2",
+                    "stepNumber": "2",
+					"stationId": "Q2",
                     "processingTime": {
                         "distributionType": "Fixed",
                         "mean": "2"
                     }
                 },
                 {
-                    "stationId": "E1",
+                    "stepNumber": "3",
+					"stationId": "E1",
                     "processingTime": {
                         "distributionType": "Fixed",
                         "mean": "0"
@@ -126,28 +130,32 @@
             "name": "Job2",
             "route": [
                 {
-                    "stationId": "Q2",
+                    "stepNumber": "0",
+					"stationId": "Q2",
                     "processingTime": {
                         "distributionType": "Fixed",
                         "mean": "3"
                     }
                 },
                 {
-                    "stationId": "Q3",
+                    "stepNumber": "1",
+					"stationId": "Q3",
                     "processingTime": {
                         "distributionType": "Fixed",
                         "mean": "1"
                     }
                 },
                 {
-                    "stationId": "Q2",
+                    "stepNumber": "2",
+					"stationId": "Q2",
                     "processingTime": {
                         "distributionType": "Fixed",
                         "mean": "7"
                     }
                 },
                 {
-                    "stationId": "E1",
+                    "stepNumber": "3",
+					"stationId": "E1",
                     "processingTime": {
                         "distributionType": "Fixed",
                         "mean": "0"
@@ -160,21 +168,24 @@
             "name": "Job3",
             "route": [
                 {
-                    "stationId": "Q2",
+                    "stepNumber": "0",
+					"stationId": "Q2",
                     "processingTime": {
                         "distributionType": "Fixed",
                         "mean": "2"
                     }
                 },
                 {
-                    "stationId": "Q3",
+                    "stepNumber": "1",
+					"stationId": "Q3",
                     "processingTime": {
                         "distributionType": "Fixed",
                         "mean": "1"
                     }
                 },
                 {
-                    "stationId": "E1",
+                    "stepNumber": "2",
+					"stationId": "E1",
                     "processingTime": {
                         "distributionType": "Fixed",
                         "mean": "0"
@@ -187,14 +198,16 @@
             "name": "Job4",
             "route": [
                 {
-                    "stationId": "Q2",
+                    "stepNumber": "0",
+					"stationId": "Q2",
                     "processingTime": {
                         "distributionType": "Fixed",
                         "mean": "7"
                     }
                 },
                 {
-                    "stationId": "E1",
+                    "stepNumber": "1",
+					"stationId": "E1",
                     "processingTime": {
                         "distributionType": "Fixed",
                         "mean": "0"
