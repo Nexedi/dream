@@ -40,6 +40,22 @@ class Job(Entity):
         self.remainingRoute=route   #the remaining route. in the beginning this should be the same as the full route
         self.currentStop=route[0][0]    #the starting stop should be the first in the route    
         
+    #outputs results to JSON File
+    def outputResultsJSON(self):
+        from Globals import G
+        if(G.numberOfReplications==1): #if we had just one replication output the results to excel
+            json={}
+            json['_class'] = 'Dream.Job';
+            json['id'] = str(self.id)
+            json['results'] = {}
+            json['results']['schedule']={}
+            i=0
+            for record in self.schedule:
+                json['results']['schedule'][str(i)]={}
+                json['results']['schedule'][str(i)]['stationId']=record[0]
+                json['results']['schedule'][str(i)]['entranceTime']=record[1]             
+                i+=1             
+        G.outputJSON['elementList'].append(json)
         
         
     

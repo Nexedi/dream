@@ -47,9 +47,18 @@ class ExitJobShop(Exit):
 
     #gets an entity from the previous station     
     def getEntity(self): 
-        name=self.previousStation.Res.activeQ[0].name   #get the name of the entity for the trace
-        self.totalLifespan+=now()-self.previousStation.Res.activeQ[0].startTime  #Add the entity's lifespan to the total one. 
-        self.previousStation.removeEntity()            #remove the entity from the previous object
+        activeObject=self.getActiveObject()
+        activeObjectQueue=self.getActiveObjectQueue()
+        giverObject=self.previousStation
+        giverObjectQueue=giverObject.Res.activeQ
+        activeEntity=giverObjectQueue[0]
+        
+        
+        name=activeEntity.name   #get the name of the entity for the trace
+        self.totalLifespan+=now()-activeEntity.startTime  #Add the entity's lifespan to the total one. 
+        giverObject.removeEntity()            #remove the entity from the previous object
         self.outputTrace(name) 
+        activeEntity.schedule.append([activeObject.id,now()])   #append the time to schedule so that it can be read in the result
+
         
         

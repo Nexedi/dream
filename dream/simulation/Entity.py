@@ -38,7 +38,12 @@ class Entity(object):
         self.width=1.0
         self.height=1.0
         self.length=1.0
+        
         self.priority=priority
         self.dueDate=dueDate
         self.orderDate=orderDate
+        self.schedule=[]     #a list that holds information about the schedule of the entity (when it enters and exits every station)   
         
+    #outputs results to JSON File
+    def outputResultsJSON(self):
+        pass

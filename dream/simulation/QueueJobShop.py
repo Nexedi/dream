@@ -60,13 +60,22 @@ class QueueJobShop(Queue):
                 
     #gets an entity from the predecessor that the predecessor index points to     
     def getEntity(self):
-        self.Res.activeQ.append(self.previousStation.Res.activeQ[0])    #get the entity from the previous object
+        activeObject=self.getActiveObject()
+        activeObjectQueue=self.getActiveObjectQueue()
+        giverObject=self.previousStation
+        giverObjectQueue=giverObject.Res.activeQ
+        activeEntity=giverObjectQueue[0]
+
+        
+                
+        self.Res.activeQ.append(giverObjectQueue[0])    #get the entity from the previous object
                                                                         #and put it in front of the activeQ       
         self.previousStation.removeEntity()                             #remove the entity from the previous object
-        self.Res.activeQ[-1].remainingRoute[0][0]=""                    #remove data from the remaining route. 
+        activeEntity.remainingRoute[0][0]=""                    #remove data from the remaining route. 
                                                                         #This is needed so that the Queue will not request again for the Entity
-        self.outputTrace(self.Res.activeQ[-1].name, "got into "+self.objName)
-                                          
+        self.outputTrace(activeEntity.name, "got into "+activeObject.objName)
+        activeEntity.schedule.append([activeObject.id,now()])   #append the time to schedule so that it can be read in the result
+                                  
 
         
         

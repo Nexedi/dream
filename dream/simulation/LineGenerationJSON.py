@@ -50,7 +50,7 @@ except ImportError:
   sys.modules['scipy'] = scipy
   logger.error("Scipy cannot be imported, using dummy implementation")
 
-from SimPy.Simulation import activate, initialize, simulate
+from SimPy.Simulation import activate, initialize, simulate, now
 from Source import Source
 from Globals import G
 from Machine import Machine
@@ -387,6 +387,8 @@ def setWIP():
                 object=obj
         object.Res.activeQ.append(entity)  
         entity.remainingRoute[0][0]=""                     #remove data from the remaining route.    
+        entity.schedule.append([object.id,now()])   #append the time to schedule so that it can be read in the result
+
 
 #the main script that is ran
 def main(argv=[], input_data=None):
@@ -469,6 +471,9 @@ def main(argv=[], input_data=None):
             model_resource.outputResultsJSON()
         except AttributeError:
             pass
+        
+    for job in G.JobList:
+        job.outputResultsJSON()
          
     outputJSONString=json.dumps(G.outputJSON, indent=True)
     G.outputJSONFile.write(outputJSONString)

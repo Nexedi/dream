@@ -86,6 +86,7 @@ class CoreObject(Process):
         activeObjectQueue.append(activeEntity)   #get the entity from the previous object
                                                                                                       #and put it in front of the activeQ       
         giverObject.removeEntity()                                           #remove the entity from the previous object  
+        activeEntity.schedule.append([activeObject.id,now()])   #append the time to schedule so that it can be read in the result
         
     #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime):
