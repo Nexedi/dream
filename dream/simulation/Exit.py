@@ -102,22 +102,40 @@ class Exit(CoreObject):
     
     #checks if the Exit can accept an entity and there is an entity waiting for it
     def canAcceptAndIsRequested(self):
+        activeObject=self.getActiveObject()
+        activeObjectQueue=self.getActiveObjectQueue()
+        
         result = None
-        if(len(self.previous)==1):  
-            return self.previous[0].haveToDispose(self)    
+        if(len(activeObject.previous)==1):  
+            object=activeObject.previous[0]
+            return object.haveToDispose(self)    
     
         isRequested=False
-        for i in range(len(self.previous)):
-            if(self.previous[i].haveToDispose(self)):
+        i=0
+        for object in self.previous:
+            if(object.haveToDispose(activeObject)):
                 isRequested=True
                 self.predecessorIndex=i
+            i+=1
+            
         return isRequested
     
     #gets an entity from the predecessor     
     def getEntity(self): 
-        name=self.previous[self.predecessorIndex].Res.activeQ[0].name   #get the name of the entity for the trace
-        self.totalLifespan+=now()-self.previous[self.predecessorIndex].Res.activeQ[0].startTime  #Add the entity's lifespan to the total one. 
-        self.previous[self.predecessorIndex].removeEntity()            #remove the entity from the previous object
+        giverObject=self.getGiverObject()
+        giverObject.sortEntities()      #sort the Entities of the giver according to the scheduling rule if applied
+        activeObject=self.getActiveObject()
+        giverObjectQueue=self.getGiverObjectQueue()
+        activeEntity=giverObjectQueue[0]
+        activeObjectQueue=self.getActiveObjectQueue()
+        
+        name=activeEntity.name  #get the name of the entity for the trace
+        activeObjectQueue.append(activeEntity)   #get the entity from the previous object
+                                                                            #and put it in front of the activeQ       
+        giverObject.removeEntity()                                           #remove the entity from the previous object  
+        activeEntity.schedule.append([activeObject.id,now()])   #append the time to schedule so that it can be read in the result
+        
+        self.totalLifespan+=now()-activeEntity.startTime  #Add the entity's lifespan to the total one. 
         self.outputTrace(name)          
     
     #actions to be taken after the simulation ends

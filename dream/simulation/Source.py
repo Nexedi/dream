@@ -85,40 +85,37 @@ class Source(CoreObject):
         self.waitToDispose=False    #shows if the object waits to dispose an entity   
         
     def run(self):
+        activeObject=self.getActiveObject()
+        activeObjectQueue=self.getActiveObjectQueue()
+        
         i=0
         if(self.distType=="Fixed"): #if the distribution type is fixed
             from Globals import G            
             while 1:
-                #self.waitToDispose=True
-                self.numberOfArrivals+=1           #we have one new arrival     
-                #entity=Entity("Ent"+str(i))        
+                self.numberOfArrivals+=1           #we have one new arrival         
                 entity=self.item(self.item.type+"_"+self.objName+"_"+str(i)) #create the Entity object and assign its name 
                 entity.creationTime=now()          #assign the current simulation time as the Entity's creation time 
                 entity.startTime=now()             #assign the current simulation time as the Entity's start time 
                 self.outputTrace(self.item.type+"_"+self.objName+"_"+str(i))     #output the trace
-                self.Res.activeQ.append(entity)    #append the entity to the resource 
+                activeObjectQueue.append(entity)    #append the entity to the resource 
                 i+=1        
-                #yield hold,self,self.interArrivalTime       #one entity at every interArrivalTime   
                 yield hold,self,self.rng.generateNumber()
         elif(self.distType=="Exp"): #if the distribution type is exponential
             from Globals import G
             while 1:
-                #self.waitToDispose=True                
                 self.numberOfArrivals+=1        #we have one new arrival
-                #entity=Entity("Ent"+str(i))     #create the Entity object and assign its name 
                 entity=self.item(self.item.type+str(i)) #create the Entity object and assign its name                 
                 entity.creationTime=now()          #assign the current simulation time as the Entity's creation time
                 entity.startTime=now()             #assign the current simulation time as the Entity's start time 
                 self.outputTrace(self.item.type+str(i))      #output the trace
                 i+=1
-                self.Res.activeQ.append(entity)     #append the entity to the resource           
+                activeObjectQueue.append(entity)     #append the entity to the resource           
                 timeTillNextArrival=G.Rnd.expovariate(1.0/(self.interArrivalTime))  #create a random number that follows the     
                                                                                     #exponential distribution                                                  
-                #yield hold,self,timeTillNextArrival       #one entity at every interArrivalTime   
                 yield hold,self,self.rng.generateNumber()
                 self.totalInterArrivalTime+=timeTillNextArrival                                                
         else:   #if the distribution type is something else it is an error
-            print "Distribution Error in Source "+str(self.id)   
+            print "Distribution Error in "+str(self.objName)   
             
     #sets the routing out element for the Source
     def defineRouting(self, n):

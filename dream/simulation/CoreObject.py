@@ -71,8 +71,9 @@ class CoreObject(Process):
         self.previous=p
 
     #removes an entity from the Object
-    def removeEntity(self):     
-        self.Res.activeQ.pop(0)                  
+    def removeEntity(self): 
+        activeObjectQueue=self.getActiveObjectQueue()    
+        activeObjectQueue.pop(0)      #remove the Entity from the queue            
         
     #gets an entity from the predecessor that the predecessor index points to     
     def getEntity(self):
@@ -106,7 +107,8 @@ class CoreObject(Process):
     
     #checks if the Object can dispose an entity to the following object     
     def haveToDispose(self, callerObject=None): 
-        return len(self.Res.activeQ)>0
+        activeObjectQueue=self.getActiveObjectQueue()    
+        return len(activeObjectQueue)>0
     
     #checks if the Object can accept an entity and there is an entity in some predecessor waiting for it
     def canAcceptAndIsRequested(self):
