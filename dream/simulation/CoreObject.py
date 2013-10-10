@@ -147,7 +147,7 @@ class CoreObject(Process):
     
     #get the receiver object in a removeEntity transaction.  
     def getReceiverObject(self):
-        return self.next[self.predecessorIndex]
+        return self.next[self.successorIndex]
    
     #get the receiver object queue in a removeEntity transaction.    
     def getReceiverObjectQueue(self):
