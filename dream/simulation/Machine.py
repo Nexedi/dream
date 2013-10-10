@@ -228,18 +228,20 @@ class Machine(CoreObject):
         maxTimeWaiting=0
         
         #loop through the predecessors to see which have to dispose and which is the one blocked for longer
-        for i in range(len(activeObject.previous)):
-            if(activeObject.previous[i].haveToDispose(self)):
+        i=0
+        for object in activeObject.previous:
+            if(object.haveToDispose(activeObject)):
                 isRequested=True               
-                if(activeObject.previous[i].downTimeInTryingToReleaseCurrentEntity>0):
-                    timeWaiting=now()-activeObject.previous[i].timeLastFailureEnded
+                if(object.downTimeInTryingToReleaseCurrentEntity>0):
+                    timeWaiting=now()-object.timeLastFailureEnded
                 else:
-                    timeWaiting=now()-activeObject.previous[i].timeLastEntityEnded
+                    timeWaiting=now()-object.timeLastEntityEnded
                 
                 #if more than one predecessor have to dispose take the part from the one that is blocked longer
                 if(timeWaiting>=maxTimeWaiting): 
-                    self.predecessorIndex=i  
-                    maxTimeWaiting=timeWaiting                                     
+                    activeObject.predecessorIndex=i  
+                    maxTimeWaiting=timeWaiting    
+            i+=1                                 
         return len(activeObjectQueue)<activeObject.capacity and isRequested               
     
     #checks if the machine down or it can dispose the object
