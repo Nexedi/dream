@@ -128,14 +128,28 @@ class CoreObject(Process):
                difValuesFlag=True
         return difValuesFlag 
       
+      
+    #get the active object. This always returns self  
     def getActiveObject(self):
         return self
     
+    #get the activeQ of the active object.
     def getActiveObjectQueue(self):
         return self.Res.activeQ
        
+    #get the giver object in a getEntity transaction.       
     def getGiverObject(self):
         return self.previous[self.predecessorIndex]
     
+    #get the giver object queue in a getEntity transaction.      
     def getGiverObjectQueue(self):
         return self.getGiverObject().Res.activeQ
+    
+    #get the receiver object in a removeEntity transaction.  
+    def getReceiverObject(self):
+        return self.next[self.predecessorIndex]
+   
+    #get the receiver object queue in a removeEntity transaction.    
+    def getReceiverObjectQueue(self):
+        return self.getReceiverObject().Res.activeQ
+    

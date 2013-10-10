@@ -50,7 +50,7 @@ except ImportError:
   sys.modules['scipy'] = scipy
   logger.error("Scipy cannot be imported, using dummy implementation")
 
-from SimPy.Simulation import activate, initialize, simulate, now
+from SimPy.Simulation import activate, initialize, simulate, now, infinity
 from Source import Source
 from Globals import G
 from Machine import Machine
@@ -211,6 +211,7 @@ def createObjects():
             name=element.get('name', 'not found')
             E=ExitJobShop(id, name)
             G.ExitJobShopList.append(E)
+            G.ExitList.append(E)
             G.ObjList.append(E)
             
         elif objClass=='Dream.Queue':
@@ -432,8 +433,18 @@ def main(argv=[], input_data=None):
             pass
         
         activateObjects()
-                    
-        simulate(until=G.maxSimTime)      #start the simulation
+        
+        #if the simulation is ran until no more events are scheduled, then we have to find the end time as the time the last entity ended. 
+        if G.maxSimTime==-1:
+            simulate(until=infinity)    #simulate until there are no more events. If someone does it for a model that has always events, then it will run forever!
+            #identify from the exits what is the time that the last entity has ended. 
+            endList=[]
+            for exit in G.ExitList:
+                endList.append(exit.timeLastEntityLeft)
+            G.maxSimTime=float(max(endList))    
+        #else we simulate until the given maxSimTime
+        else:            
+            simulate(until=G.maxSimTime)      #simulate until the given maxSimTime
         
         #carry on the post processing operations for every object in the topology       
         for element in G.ObjList:
