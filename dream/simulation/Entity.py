@@ -47,3 +47,7 @@ class Entity(object):
     #outputs results to JSON File
     def outputResultsJSON(self):
         pass
+    
+    #initializes all the Entity for a new simulation replication
+    def initialize(self):
+        pass

@@ -55,8 +55,11 @@ class Job(Entity):
                 json['results']['schedule'][str(i)]['stationId']=record[0]
                 json['results']['schedule'][str(i)]['entranceTime']=record[1]             
                 i+=1             
-        G.outputJSON['elementList'].append(json)
+            G.outputJSON['elementList'].append(json)
         
-        
+    #initializes all the Entity for a new simulation replication
+    def initialize(self):
+        self.remainingRoute=self.fullRoute   
+        self.currentStop=self.fullRoute[0][0]     
     
     

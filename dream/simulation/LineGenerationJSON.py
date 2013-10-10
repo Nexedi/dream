@@ -368,6 +368,8 @@ def initializeObjects():
         element.initialize()
     for repairman in G.RepairmanList:
         repairman.initialize()
+    for entity in G.EntityList:
+        entity.initialize()
 
 #activates all the objects    
 def activateObjects():
