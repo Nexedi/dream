@@ -168,8 +168,9 @@ def createObjects():
                 if(id in repairman.coreObjectIds):
                     r=repairman
                     
-            M=Machine(id, name, 1, distributionType, [mean,stdev,min,max], failureDistribution,
-                                                    MTTF, MTTR, availability, r)
+            M=Machine(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
+                                                    MTTF=MTTF, MTTR=MTTR, availability=availability, repairman=r,
+                                                    mean=mean,stdev=stdev,min=min,max=max)
             M.nextIds=getSuccessorList(id)
             G.MachineList.append(M)
             G.ObjList.append(M)
@@ -193,10 +194,12 @@ def createObjects():
                 if(id in repairman.coreObjectIds):
                     r=repairman
                     
-            M=MachineJobShop(id, name, 1, distributionType, [mean,stdev,min,max], failureDistribution,
-                                                    MTTF, MTTR, availability, r)
+            M=MachineJobShop(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
+                                                    MTTF=MTTF, MTTR=MTTR, availability=availability, repairman=r,
+                                                    mean=mean,stdev=stdev,min=min,max=max)
             M.nextIds=getSuccessorList(id)
             G.MachineJobShopList.append(M)
+            G.MachineList.append(M)
             G.ObjList.append(M)
             
         elif objClass=='Dream.Exit':
@@ -233,6 +236,7 @@ def createObjects():
             schedulingRule=element.get('schedulingRule', 'FIFO')
             Q=QueueJobShop(id, name, capacity, isDummy, schedulingRule=schedulingRule)
             Q.nextIds=getSuccessorList(id)
+            G.QueueList.append(Q)
             G.QueueJobShopList.append(Q)
             G.ObjList.append(Q)
             

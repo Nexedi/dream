@@ -38,28 +38,27 @@ import scipy.stats as stat
 class Machine(CoreObject):
             
     #initialize the id the capacity, of the resource and the distribution        
-    def __init__(self, id, name, capacity, dist, time, fDist, MTTF, MTTR, availability, repairman):
+    def __init__(self, id, name, capacity, distribution='Fixed', mean=1, stdev=0, min=0, max=10, failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman=None):
         Process.__init__(self)
         self.predecessorIndex=0     #holds the index of the predecessor from which the Machine will take an entity next
         self.successorIndex=0       #holds the index of the successor where the Machine will dispose an entity next
         self.id=id
         self.objName=name
         self.capacity=capacity      
-        self.distType=dist          #the distribution that the procTime follows      
-        self.failureDistType=fDist  #the distribution that the failure follows   
+        self.distType=distribution          #the distribution that the procTime follows      
+        self.failureDistType=failureDistribution  #the distribution that the failure follows   
                     
         self.repairman=repairman         
 
         self.rng=RandomNumberGenerator(self, self.distType)
-        self.rng.avg=time[0]
-        self.rng.stdev=time[1]
-        self.rng.min=time[2]
-        self.rng.max=time[3]
+        self.rng.avg=mean
+        self.rng.stdev=stdev
+        self.rng.min=min
+        self.rng.max=max
         self.MTTF=MTTF
         self.MTTR=MTTR
         self.availability=availability        
-        
-        
+      
         self.next=[]        #list with the next objects in the flow
         self.previous=[]    #list with the previous objects in the flow
         self.nextIds=[]     #list with the ids of the next objects in the flow
