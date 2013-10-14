@@ -30,11 +30,21 @@ from SimPy.Simulation import Process, Resource
 
 class ObjectInterruption(Process):
     
+    def __init__(self, victim):
+        self.victim=victim
+    
     #the main process of the core object
     #this is dummy, every object must have its own implementation
     def run(self):
         raise NotImplementedError("Subclass must define 'run' method")
 
     #outputs data to "output.xls"
-    def outputResultsXL(self, MaxSimtime):
+    def outputTrace(self, message):
         pass
+    
+    #returns the internal queue of the victim
+    def getVictimQueue(self):
+        return self.victim.getActiveObjectQueue()
+        
+        
+        

@@ -37,7 +37,7 @@ class ObjectResource(object):
 
     #checks if the worker is available       
     def checkIfResourceIsAvailable(self): 
-        return len(self.W.activeQ)<self.capacity   
+        return len(self.Res.activeQ)<self.capacity   
     
     #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime):
@@ -64,3 +64,10 @@ class ObjectResource(object):
                difValuesFlag=True
         return difValuesFlag 
     
+    #returns the resource
+    def getResource(self):
+        return self.Res
+    
+    #returns the active queue of the resource
+    def getResourceQueue(self):
+        return self.Res.activeQ

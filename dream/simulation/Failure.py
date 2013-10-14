@@ -75,7 +75,7 @@ class Failure(ObjectInterruption):
         while 1:
             yield hold,self,self.rngTTF.generateNumber()    #wait until a failure happens                  
             try:
-                if(len(self.victim.Res.activeQ)>0):
+                if(len(self.getVictimQueue())>0):
                     self.interrupt(self.victim)       #when a Machine gets failure while in process it is interrupted
                 self.victim.Up=False
                 self.victim.timeLastFailure=now()           
@@ -88,7 +88,7 @@ class Failure(ObjectInterruption):
             failTime=now()            
             if(self.repairman!="None"):     #if the failure needs a resource to be fixed, the machine waits until the 
                                             #resource is available
-                yield request,self,self.repairman.Res
+                yield request,self,self.repairman.getResource()
                 timeRepairStarted=now()
                 self.repairman.timeLastRepairStarted=now()
                                 
@@ -96,12 +96,12 @@ class Failure(ObjectInterruption):
             self.victim.totalFailureTime+=now()-failTime    
             
             try:
-                if(len(self.victim.Res.activeQ)>0):                
+                if(len(self.getVictimQueue())>0):                
                     reactivate(self.victim)   #since repairing is over, the Machine is reactivated
                 self.victim.Up=True              
                 self.outputTrace("is up")              
                 if(self.repairman!="None"): #if a resource was used, it is now released
-                    yield release,self,self.repairman.Res 
+                    yield release,self,self.repairman.getResource() 
                     self.repairman.totalWorkingTime+=now()-timeRepairStarted                                
             except AttributeError:
                 print "AttributeError2"    

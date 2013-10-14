@@ -39,6 +39,7 @@ class Repairman(ObjectResource):
         self.objName=name
         self.capacity=capacity  #repairman is an instance of resource
         self.type="Repairman"
+        self.Res=Resource(self.capacity) 
         
         #lists to hold statistics of multiple runs
         self.Waiting=[]
@@ -50,7 +51,7 @@ class Repairman(ObjectResource):
     #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime):
         #if the repairman is currently working we have to count the time of this work    
-        if len(self.Res.activeQ)>0:
+        if len(self.getResourceQueue())>0:
             self.totalWorkingTime+=now()-self.timeLastRepairStarted
                 
         #Repairman was idle when he was not in any other state

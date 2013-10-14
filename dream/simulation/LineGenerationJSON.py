@@ -433,11 +433,7 @@ def main(argv=[], input_data=None):
               
         initialize()                        #initialize the simulation 
         initializeObjects()
-        setWIP()
-        
-        for Q in G.QueueJobShopList:
-            pass
-        
+        setWIP()        
         activateObjects()
         
         #if the simulation is ran until no more events are scheduled, then we have to find the end time as the time the last entity ended. 
