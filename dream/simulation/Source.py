@@ -33,12 +33,11 @@ from CoreObject import CoreObject
 
 #The Source object is a Process
 class Source(CoreObject): 
-    def __init__(self, id, name, dist, time, item):
+    def __init__(self, id, name, distribution='Fixed', mean=1, item=Part):
         Process.__init__(self)
         self.id=id   
         self.objName=name   
-        self.distType=dist      #label that sets the distribution type
-        self.interArrivalTime=time     #the mean interarrival time 
+        self.distType=distribution      #label that sets the distribution type
         self.totalInterArrivalTime=0    #the total interarrival time 
         self.numberOfArrivals=0         #the number of entities that were created 
         self.next=[]        #list with the next objects in the flow
@@ -48,10 +47,8 @@ class Source(CoreObject):
         self.type="Source"   #String that shows the type of object
         #self.waitToDispose=False
         self.rng=RandomNumberGenerator(self, self.distType)
-        self.rng.avg=time
+        self.rng.avg=mean
         self.item=item      #the type of object that the Source will generate
-        
-        #self.Res=Resource(capacity=infinity) 
         
     def initialize(self):
         Process.__init__(self) 

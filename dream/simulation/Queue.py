@@ -33,7 +33,7 @@ from CoreObject import CoreObject
 #the Queue object
 class Queue(CoreObject):
     
-    def __init__(self, id, name, capacity, dummy=False, schedulingRule="FIFO"):
+    def __init__(self, id, name, capacity=1, dummy=False, schedulingRule="FIFO"):
         Process.__init__(self)
         self.predecessorIndex=0     #holds the index of the predecessor from which the Queue will take an entity next
         self.successorIndex=0       #holds the index of the successor where the Queue will dispose an entity next

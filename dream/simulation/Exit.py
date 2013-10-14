@@ -45,7 +45,7 @@ class Exit(CoreObject):
         
         #lists to hold statistics of multiple runs
         self.Exits=[]
-        self.Lifespan=[]
+        self.Lifespan=[] 
         
     def initialize(self):
         Process.__init__(self)

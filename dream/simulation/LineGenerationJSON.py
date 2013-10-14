@@ -51,8 +51,8 @@ except ImportError:
   logger.error("Scipy cannot be imported, using dummy implementation")
 
 from SimPy.Simulation import activate, initialize, simulate, now, infinity
+from Globals import G 
 from Source import Source
-from Globals import G
 from Machine import Machine
 from Exit import Exit
 from Queue import Queue
