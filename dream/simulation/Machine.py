@@ -38,7 +38,7 @@ import scipy.stats as stat
 class Machine(CoreObject):
             
     #initialize the id the capacity, of the resource and the distribution        
-    def __init__(self, id, name, capacity=1, distribution='Fixed', mean=1, stdev=0, min=0, max=10, failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman=None):
+    def __init__(self, id, name, capacity=1, distribution='Fixed', mean=1, stdev=0, min=0, max=10, failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None'):
         Process.__init__(self)
         self.predecessorIndex=0     #holds the index of the predecessor from which the Machine will take an entity next
         self.successorIndex=0       #holds the index of the successor where the Machine will dispose an entity next

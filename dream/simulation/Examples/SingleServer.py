@@ -1,22 +1,13 @@
-'''
-Created on 14 Oct 2013
-
-@author: George
-'''
-
 from SimPy.Simulation import simulate, activate, initialize
-from dream.simulation.Machine import Machine
-from dream.simulation.Source import Source
-from dream.simulation.Exit import Exit
-from dream.simulation.Part import Part
-from dream.simulation.Globals import G
-from dream.simulation.Entity import Entity
-from dream.simulation.CoreObject import CoreObject
-from random import Random
+from simulation.Machine import Machine
+from simulation.Source import Source
+from simulation.Exit import Exit
+from simulation.Part import Part
+from simulation.Globals import G
 
 #define the objects of the model 
 S=Source('S1','Source',distribution='Fixed', mean=0.5, item=Part)
-M=Machine('M1','Machine',distribution='Fixed', mean=0.25)
+M=Machine('M1','Machine', mean=0.25)
 E=Exit('E1','Exit')  
 
 G.ObjList=[S,M,E]   #add all the objects in G.ObjList so that they can be easier accessed later
@@ -46,4 +37,4 @@ for object in G.ObjList:
 
 #print the results
 print "the system produced", E.numOfExits, "parts"
-print "the total working ration of the Machine is", (M.totalWorkingTime/G.maxSimTime)*100, "%"
+print "the total working ratio of the Machine is", (M.totalWorkingTime/G.maxSimTime)*100, "%"

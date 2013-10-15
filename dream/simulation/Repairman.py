@@ -34,7 +34,7 @@ from ObjectResource import ObjectResource
 #the resource that repairs the machines
 class Repairman(ObjectResource):
     
-    def __init__(self, id, name, capacity):    
+    def __init__(self, id, name, capacity=1):    
         self.id=id      
         self.objName=name
         self.capacity=capacity  #repairman is an instance of resource

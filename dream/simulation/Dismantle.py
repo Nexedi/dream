@@ -38,16 +38,16 @@ from CoreObject import CoreObject
 class Dismantle(CoreObject):
 
     #initialize the object      
-    def __init__(self, id, name, dist, time):
+    def __init__(self, id, name, distribution='Fixed', mean=1, stdev=0.1, min=0, max=5):
         self.id=id
         self.objName=name
         self.type="Dismantle"   #String that shows the type of object
-        self.distType=dist          #the distribution that the procTime follows  
+        self.distType=distribution          #the distribution that the procTime follows  
         self.rng=RandomNumberGenerator(self, self.distType)
-        self.rng.avg=time[0]
-        self.rng.stdev=time[1]
-        self.rng.min=time[2]
-        self.rng.max=time[3]                    
+        self.rng.avg=mean
+        self.rng.stdev=stdev
+        self.rng.min=min
+        self.rng.max=max                    
         self.previous=[]        #list with the previous objects in the flow
         self.previousIds=[]     #list with the ids of the previous objects in the flow
         self.nextPart=[]    #list with the next objects that receive parts
@@ -164,8 +164,7 @@ class Dismantle(CoreObject):
         self.Res.activeQ.append(self.previous[0].Res.activeQ[0])    #get the frame from the predecessor
         self.previous[0].removeEntity()
         #append also the parts in the res so that they can be popped
-        for i in range(self.Res.activeQ[0].numOfParts):         
-            #self.Res.activeQ.append(self.Res.activeQ[0].Res.activeQ[self.Res.activeQ[0].numOfParts-1-i])
+        for i in range(self.Res.activeQ[0].capacity):         
             self.Res.activeQ.append(self.Res.activeQ[0].Res.activeQ[i])
         self.Res.activeQ[0].Res.activeQ=[]
         self.Res.activeQ.append(self.Res.activeQ[0])

@@ -37,17 +37,17 @@ from CoreObject import CoreObject
 class Assembly(CoreObject):
 
     #initialize the object      
-    def __init__(self, id, name, dist, time):
+    def __init__(self, id, name, distribution='Fixed', mean=1, stdev=0.1, min=0, max=5):
         Process.__init__(self)
         self.id=id
         self.objName=name
         self.type="Assembly"   #String that shows the type of object
-        self.distType=dist          #the distribution that the procTime follows  
+        self.distType=distribution          #the distribution that the procTime follows  
         self.rng=RandomNumberGenerator(self, self.distType)
-        self.rng.avg=time[0]
-        self.rng.stdev=time[1]
-        self.rng.min=time[2]
-        self.rng.max=time[3]                    
+        self.rng.avg=mean
+        self.rng.stdev=stdev
+        self.rng.min=min
+        self.rng.max=max                    
         self.next=[]        #list with the next objects in the flow
         self.previous=[]     #list with the previous objects in the flow
         self.previousPart=[]    #list with the previous objects that send parts
@@ -107,7 +107,7 @@ class Assembly(CoreObject):
                                                                     #and one "frame" predecessor requests it 
             self.getEntity("Frame")                                 #get the Frame
                                                                     
-            for i in range(self.Res.activeQ[0].numOfParts):         #this loop will be carried until the Frame is full with the parts
+            for i in range(self.Res.activeQ[0].capacity):         #this loop will be carried until the Frame is full with the parts
                 yield waituntil, self, self.isRequestedFromPart     #wait until a part is requesting for the assembly
                 self.getEntity("Part")
                
