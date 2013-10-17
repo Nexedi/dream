@@ -62,7 +62,8 @@ class Assembly(CoreObject):
         self.Working=[]
         self.Blockage=[]
         
-        self.predecessorIndex=0     #holds the index of the predecessor from which the Queue will take an entity next
+        self.predecessorIndex=0     #holds the index of the predecessor from which the Assembly will take an entity next
+        self.successorIndex=0       #holds the index of the successor where the Assembly will dispose an entity next
                
 
     def initialize(self):
@@ -191,6 +192,7 @@ class Assembly(CoreObject):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
+        giverObject.sortEntities()      #sort the Entities of the giver according to the scheduling rule if applied
         giverObjectQueue=self.getGiverObjectQueue()
         activeEntity=giverObjectQueue[0]
         

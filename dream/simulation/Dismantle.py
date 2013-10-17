@@ -61,6 +61,9 @@ class Dismantle(CoreObject):
         self.Waiting=[]
         self.Working=[]
         self.Blockage=[]
+        self.predecessorIndex=0     #holds the index of the predecessor from which the Dismantle will take an entity next
+        self.successorIndex=0       #holds the index of the successor where the Dismantle will dispose an entity next
+
         
     def initialize(self):
         Process.__init__(self)
@@ -106,9 +109,7 @@ class Dismantle(CoreObject):
                                                                     #and one "frame" predecessor requests it   
             self.getEntity()                                 #get the Frame with the parts 
             self.timeLastEntityEntered=now()
-            
-            self.outputTrace(self.Res.activeQ[0].name, "got into "+ self.objName)   
-            
+                        
             startWorkingTime=now()   
             yield hold,self,self.rng.generateNumber()   #hold for the time the dismantle operation is carried 
             self.totalWorkingTime+=now()-startWorkingTime
@@ -129,16 +130,16 @@ class Dismantle(CoreObject):
             
     #checks if the Dismantle can accept an entity and there is a Frame waiting for it
     def canAcceptAndIsRequested(self):
-        return len(self.Res.activeQ)==0 and self.previous[0].haveToDispose(self)  
+        return len(self.getActiveObjectQueue())==0 and self.getGiverObject().haveToDispose(self)  
     
     #checks if the Dismantle can accept an entity 
     def canAccept(self, callerObject=None):
-        return len(self.Res.activeQ)==0  
+        return len(self.getActiveObjectQueue())==0  
             
     #defines where parts and frames go after they leave the object                          
-    def definePartFrameRouting(self, np, nf):
-        self.nextPart=np
-        self.nextFrame=nf              
+    def definePartFrameRouting(self, successorPartList=[], successorFrameList=[]):
+        self.nextPart=successorPartList
+        self.nextFrame=successorFrameList              
 
     #checks if the caller waits for a part or a frame and if the Dismantle is in the state of disposing one it returnse true     
     def haveToDispose(self, callerObject=None): 
@@ -147,28 +148,37 @@ class Dismantle(CoreObject):
         
         #according to the caller return true or false
         if thecaller in self.nextPart:
-            return len(self.Res.activeQ)>1 and self.waitToDisposePart
+            return len(self.getActiveObjectQueue())>1 and self.waitToDisposePart
         elif thecaller in self.nextFrame:
-            return len(self.Res.activeQ)==1 and self.waitToDisposeFrame
+            return len(self.getActiveObjectQueue())==1 and self.waitToDisposeFrame
                  
     #checks if the frame is emptied
     def frameIsEmpty(self):
-        return len(self.Res.activeQ)==1
+        return len(self.getActiveObjectQueue())==1
     
     #checks if Dismantle is emptied
     def isEmpty(self):
-        return len(self.Res.activeQ)==0
+        return len(self.getActiveObjectQueue())==0
     
     #gets a frame from the predecessor that the predecessor index points to     
     def getEntity(self):
-        self.Res.activeQ.append(self.previous[0].Res.activeQ[0])    #get the frame from the predecessor
-        self.previous[0].removeEntity()
+        activeObjectQueue=self.getActiveObjectQueue()
+        giverObject=self.getGiverObject()
+        giverObject.sortEntities()      #sort the Entities of the giver according to the scheduling rule if applied
+        giverObjectQueue=self.getGiverObjectQueue()
+        activeEntity=giverObjectQueue[0]
+        
+        activeObjectQueue.append(activeEntity)    #get the frame from the predecessor
+        giverObject.removeEntity()
         #append also the parts in the res so that they can be popped
-        for i in range(self.Res.activeQ[0].capacity):         
-            self.Res.activeQ.append(self.Res.activeQ[0].Res.activeQ[i])
-        self.Res.activeQ[0].Res.activeQ=[]
-        self.Res.activeQ.append(self.Res.activeQ[0])
-        self.Res.activeQ.pop(0)        
+        for part in activeEntity.getFrameQueue():         
+            activeObjectQueue.append(part)
+        activeEntity.getFrameQueue=[]           #empty the frame
+        #move the frame to the end of the internal queue since we want the frame to be disposed first
+        activeObjectQueue.append(activeEntity)
+        activeObjectQueue.pop(0)        
+        
+        self.outputTrace(activeEntity.name, "got into "+ self.objName)   
     
     #removes an entity from the Dismantle
     def removeEntity(self):
