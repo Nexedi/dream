@@ -105,6 +105,9 @@ class Machine(CoreObject):
             activate(MFailure,MFailure.run())
 
         self.Res=Resource(self.capacity)      
+        
+        self.predecessorIndex=0     #holds the index of the predecessor from which the Machine will take an entity next
+        self.successorIndex=0       #holds the index of the successor where the Machine will dispose an entity next
     
     #the main process of the machine
     def run(self):

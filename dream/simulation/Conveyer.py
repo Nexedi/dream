@@ -51,6 +51,9 @@ class Conveyer(CoreObject):
         self.Working=[]
         self.Blockage=[]
         
+        self.predecessorIndex=0     #holds the index of the predecessor from which the Conveyer will take an entity next
+        self.successorIndex=0       #holds the index of the successor where the Queue Conveyer dispose an entity next
+        
     def initialize(self):
         Process.__init__(self)
         self.Res=Resource(capacity=infinity)         
@@ -100,6 +103,9 @@ class Conveyer(CoreObject):
         self.currentRequestedLength=0               #the length of the entity that last requested the conveyer
         self.currentAvailableLength=self.length     #the available length in the end of the conveyer
         
+        self.predecessorIndex=0     #holds the index of the predecessor from which the Conveyer will take an entity next
+        self.successorIndex=0       #holds the index of the successor where the Queue Conveyer dispose an entity next       
+        
         
     def run(self):
         #these are just for the first Entity
@@ -148,7 +154,7 @@ class Conveyer(CoreObject):
         #for the other entities        
         for i in range(1,len(self.Res.activeQ)):
             #if it does not reach the preceding entity move it according to speed
-            if self.position[i]+interval*self.speed<self.position[i-1]-self.Res.activeQ[i].length:
+            if self.position[i]+interval*self.speed<self.position[i-1]-self.getActiveObjectQueue()[i].length:
                 moveTime2=interval
                 self.position[i]=self.position[i]+interval*self.speed
             #else move it right before the preceding entity
@@ -156,31 +162,38 @@ class Conveyer(CoreObject):
                 mTime=(self.position[i-1]-self.Res.activeQ[i].length-self.position[i])/self.speed
                 if mTime>moveTime2:
                     moveTime2=mTime
-                self.position[i]=self.position[i-1]-self.Res.activeQ[i-1].length
+                self.position[i]=self.position[i-1]-self.getActiveObjectQueue()[i-1].length
         self.timeLastMoveHappened=now()     #assign this time as the time of last move
         self.totalWorkingTime+=max(moveTime1/60.0, moveTime2/60.0)  #all the time of moving (the max since things move in parallel)
                                                                     #is considered as working time
 
     #checks if the Conveyer can accept an entity 
     def canAccept(self, callerObject=None):
+        activeObjectQueue=self.getActiveObjectQueue()
+        giverObject=self.getGiverObject()
+        giverObjectQueue=self.getGiverObjectQueue()
+
+        
+        
         #if there is no object in the predecessor just return false and set the current requested length to zero
-        if len(self.previous[0].Res.activeQ)==0:
+        if len(giverObjectQueue)==0:
             self.currentRequestedLength=0
             return False
+ 
+        activeEntity=giverObjectQueue[0]
         
-        requestedLength=self.previous[0].Res.activeQ[0].length      #read what length the entity has
+        requestedLength=activeEntity.length      #read what length the entity has
         self.moveEntities()                                         #move the entities so that the available length can be calculated
         #in plant an entity can be accepted even if the available length is exactly zero
         #eg if the conveyer has 8m length and the entities 1m length it can have up to 9 entities.
         #i do not know if this is good but I kept is
-        if len(self.Res.activeQ)==0:
+        if len(activeObjectQueue)==0:
             availableLength=self.length
         else:
             availableLength=self.position[-1]
             
         self.currentAvailableLength=availableLength
         self.currentRequestedLength=requestedLength    
-        #if requestedLength<=availableLength:
         if availableLength-requestedLength>-0.00000001:
             return True
         else:       
@@ -188,14 +201,20 @@ class Conveyer(CoreObject):
         
     #checks if the Conveyer can accept an entity and there is a Frame waiting for it
     def canAcceptAndIsRequested(self):
-        return self.canAccept(self) and self.previous[0].haveToDispose(self)
+        return self.canAccept(self) and self.getGiverObject().haveToDispose(self)
 
     #gets an entity from the predecessor     
-    def getEntity(self): 
-        self.Res.activeQ.append(self.previous[0].Res.activeQ[0])    #get the entity from the predecessor
+    def getEntity(self):
+        activeObjectQueue=self.getActiveObjectQueue()
+        giverObject=self.getGiverObject()
+        giverObjectQueue=self.getGiverObjectQueue()
+        giverObject.sortEntities()      #sort the Entities of the giver according to the scheduling rule if applied
+        activeEntity=giverObjectQueue[0]
+         
+        activeObjectQueue.append(activeEntity)    #get the entity from the predecessor
         self.position.append(0)           #the entity is placed in the start of the conveyer
-        self.previous[0].removeEntity()            #remove the entity from the previous object
-        self.outputTrace(self.Res.activeQ[-1].name, "got into "+ self.objName) 
+        giverObject.removeEntity()            #remove the entity from the previous object
+        self.outputTrace(activeEntity.name, "got into "+ self.objName) 
         #check if the conveyer became full to start counting blockage 
         if self.isFull():
             self.timeBlockageStarted=now()
@@ -203,8 +222,11 @@ class Conveyer(CoreObject):
 
     #removes an entity from the Conveyer
     def removeEntity(self):
-        self.outputTrace(self.Res.activeQ[0].name, "releases "+ self.objName)              
-        self.Res.activeQ.pop(0) 
+        activeObjectQueue=self.getActiveObjectQueue()    
+        activeEntity=activeObjectQueue[0]
+        
+        self.outputTrace(activeEntity.name, "releases "+ self.objName)              
+        activeObjectQueue.pop(0) 
         self.position.pop(0)
         self.waitToDispose=False  
         #if the conveyer was full, it means that it also was blocked
@@ -221,8 +243,7 @@ class Conveyer(CoreObject):
     def haveToDispose(self, callerObject=None): 
         #it has meaning only if there are one or more entities in the conveyer
         if len(self.position)>0:
-            return len(self.Res.activeQ)>0 and self.length-self.position[0]<0.000001    #the conveyer can dispose an object 
-                                                                                        #only when an entity is at the end of it         
+            return len(self.getActiveObjectQueue())>0 and self.length-self.position[0]<0.000001    #the conveyer can dispose an object                                                                                         #only when an entity is at the end of it         
         else:
             return False
 
@@ -230,8 +251,8 @@ class Conveyer(CoreObject):
     #the conveyer full even when it has one place    
     def isFull(self):
         totalLength=0  
-        for i in range(len(self.Res.activeQ)):
-            totalLength+=self.Res.activeQ[i].length
+        for entity in self.getActiveObjectQueue():
+            totalLength+=entity.length
         return self.length<totalLength
     
     #checks if the Mover should be called so that the move is performed
@@ -241,9 +262,9 @@ class Conveyer(CoreObject):
     #checks if the conveyer is ready to receive or dispose an entity  
     def canAcceptAndIsRequestedORwaitToDispose(self):
         if(len(self.position)>0):           
-            if(self.length-self.position[0]<0.000001) and (not self.entityLastReachedEnd==self.Res.activeQ[0]):
+            if(self.length-self.position[0]<0.000001) and (not self.entityLastReachedEnd==self.getActiveObjectQueue()[0]):
                 self.waitToDispose=True
-                self.entityLastReachedEnd=self.Res.activeQ[0]
+                self.entityLastReachedEnd=self.getActiveObjectQueue()[0]
                 return True
             else:
                 return self.canAcceptAndIsRequested()

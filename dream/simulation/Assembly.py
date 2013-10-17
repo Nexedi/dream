@@ -100,6 +100,9 @@ class Assembly(CoreObject):
         self.Res=Resource(1)    
         self.Res.activeQ=[]  
         self.Res.waitQ=[]  
+        
+        self.predecessorIndex=0     #holds the index of the predecessor from which the Assembly will take an entity next
+        self.successorIndex=0       #holds the index of the successor where the Assembly will dispose an entity next
     
     
     def run(self):

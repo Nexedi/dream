@@ -84,6 +84,9 @@ class Queue(CoreObject):
         self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                               
                                                       
         self.waitToDispose=False    #shows if the object waits to dispose an entity  
+        
+        self.predecessorIndex=0     #holds the index of the predecessor from which the Queue will take an entity next
+        self.successorIndex=0       #holds the index of the successor where the Queue will dispose an entity next
              
     def run(self):  
         activeObjectQueue=self.getActiveObjectQueue()

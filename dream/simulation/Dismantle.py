@@ -100,7 +100,10 @@ class Dismantle(CoreObject):
         self.nameLastEntityEnded=""     #holds the name of the last frame that ended processing in the object            
         self.Res=Resource(capacity=infinity)    
         self.Res.activeQ=[]  
-        self.Res.waitQ=[]     
+        self.Res.waitQ=[]  
+        
+        self.predecessorIndex=0     #holds the index of the predecessor from which the Dismantle will take an entity next
+        self.successorIndex=0       #holds the index of the successor where the Dismantle will dispose an entity next   
         
         
     def run(self):
