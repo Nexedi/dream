@@ -25,10 +25,33 @@ Created on 27 May 2013
 main script. Reads data from the CMSD xml files that Panos creates, 
 generates and runs the simulation and prints the results to excel
 '''
+from warnings import warn
+import logging
+logger = logging.getLogger("dream.platform")
 
-from SimPy.Simulation import *
+
+try:
+  import scipy
+except ImportError:
+  class scipy:
+    class stats:
+      @staticmethod
+      def bayes_mvs(*args, **kw):
+        warn("Scipy is missing, using fake implementation")
+        serie, confidence = args
+        import numpy
+        mean = numpy.mean(serie), (numpy.min(serie), numpy.max(serie))
+        var = 0, (0, 0)
+        std = 0, (0, 0) 
+        return mean, var, std
+  import sys
+  sys.modules['scipy.stats'] = scipy.stats
+  sys.modules['scipy'] = scipy
+  logger.error("Scipy cannot be imported, using dummy implementation")
+
+from SimPy.Simulation import activate, initialize, simulate, now, infinity
+from Globals import G 
 from Source import Source
-from Globals import G
 from Machine import Machine
 from Exit import Exit
 from Queue import Queue
@@ -39,13 +62,16 @@ from Frame import Frame
 from Assembly import Assembly
 from Dismantle import Dismantle
 from Conveyer import Conveyer
+from Job import Job
+from MachineJobShop import MachineJobShop
+from QueueJobShop import QueueJobShop
+from ExitJobShop import ExitJobShop
 import xlwt
 import xlrd
 import time
-import numpy as np
-import json
 from random import Random
 import sys
+import os.path
 
 from xml.dom.minidom import parseString
 from xml.dom.minidom import parse
@@ -215,8 +241,9 @@ def readResources():
                             if(G.RepairmanList[j].id==repairmanID):
                                 repairman=G.RepairmanList[j]
             
-            M=Machine(id, name, 1, distributionType, [mean,stdev,min,max], failureDistribution,
-                                                    MTTF, MTTR, availability, repairman)
+            M=Machine(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
+                                                    MTTF=MTTF, MTTR=MTTR, availability=availability, repairman=repairman,
+                                                    mean=mean,stdev=stdev,min=min,max=max)
             G.MachineList.append(M)
             G.ObjList.append(M)
             
@@ -380,17 +407,16 @@ def main():
     G.ObjList=[]
     
     #user inputs the id of the JSON file
-    topologyId=raw_input("give the topology id\n")
+    topologyId=raw_input("give the path to the CMSD file\n")
     try:
-        #G.CMSDFile=open('CMSDInputs/Topology01.xml', "r")
-        G.CMSDFile=open('CMSDInputs/Topology'+str(topologyId)+'.xml', "r")
+        G.CMSDFile=open(str(topologyId), "r")
     except IOError:
-        print "no such topology file. The programm is terminated"
+        print "no such file. The programm is terminated"
         sys.exit()
 
     start=time.time()   #start counting execution time 
     
-    #read the input from the JSON file and create the line
+    #read the input from the CMSD file and create the line
     G.InputData=G.CMSDFile.read()
     G.CMSDData=parseString(G.InputData)
     readGeneralInput()
@@ -405,12 +431,10 @@ def main():
     for i in range(G.numberOfReplications):
         print "start run number "+str(i+1) 
         G.seed+=1
-        G.Rnd=Random(G.seed) 
-              
+        G.Rnd=Random(G.seed)             
         initialize()                        #initialize the simulation 
         initializeObjects()
-        activateObjects()
-                            
+        activateObjects()                            
         simulate(until=G.maxSimTime)      #start the simulation
         
         #carry on the post processing operations for every object in the topology       

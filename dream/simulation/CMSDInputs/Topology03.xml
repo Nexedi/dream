@@ -114,20 +114,6 @@
 				</Property>
 			</Property>
 		</Resource>
-************************************Resource Q1***********************************************		
-		<Resource>
-			<Identifier>Q1</Identifier>
-			<Description>The queue of the topology</Description>
-			<ResourceType>other</ResourceType>
-			<ResourceClass>
-				<ResourceClassIdentifier>Queue</ResourceClassIdentifier>
-			</ResourceClass>
-			<Name>Q1</Name>
-			<Property>
-				<Name>capacity</Name>
-				<Value>1</Value>
-			</Property>
-		</Resource>
 **********************************Resource M2***************************************************			
 		<Resource>
 			<Identifier>M2</Identifier>
@@ -233,10 +219,10 @@
 						<ProcessIdentifier>A020</ProcessIdentifier>
 					</Process>
 					<Process>
-						<ProcessIdentifier>A040</ProcessIdentifier>
+						<ProcessIdentifier>A030</ProcessIdentifier>
 					</Process>
 					<Process>
-						<ProcessIdentifier>A050</ProcessIdentifier>
+						<ProcessIdentifier>A040</ProcessIdentifier>
 					</Process>
 				</SubProcessGroup>
 			</Process>
@@ -267,8 +253,7 @@
 						<ResourceIdentifier>S1</ResourceIdentifier>
 					</Resource>
 				</ResourcesRequired>
-			</Process>
-	
+			</Process>	
 			<Process>
 				<Identifier>A020</Identifier>
 				<Description>Process 2</Description>
@@ -278,22 +263,10 @@
 						<ResourceIdentifier>M1</ResourceIdentifier>
 					</Resource>
 				</ResourcesRequired>
-			</Process>
-			
+			</Process>			
 			<Process>
 				<Identifier>A030</Identifier>
 				<Description>Process 3</Description>
-				<ResourcesRequired>
-					<Description>Queue1.</Description>
-					<Resource>
-						<ResourceIdentifier>Q1</ResourceIdentifier>
-					</Resource>
-				</ResourcesRequired>
-			</Process>	
-				
-			<Process>
-				<Identifier>A040</Identifier>
-				<Description>Process 4</Description>
 				<ResourcesRequired>
 					<Description>Machine2.</Description>
 					<Resource>
@@ -303,8 +276,8 @@
 			</Process>
 		
 			<Process>
-				<Identifier>A050</Identifier>
-				<Description>Process 5</Description>
+				<Identifier>A040</Identifier>
+				<Description>Process 4</Description>
 				<ResourcesRequired>
 					<Description>Exit.</Description>
 					<Resource>
