@@ -35,48 +35,50 @@ from Queue import Queue
 class QueueJobShop(Queue):
     
     #checks if the Queue can accept an entity       
-    #it checks also who called it and returns TRUE only to the object that will give the entity.  
+    #it checks also the next station of the Entity and returns true only if the active object is the next station 
     def canAccept(self, callerObject=None): 
         if callerObject!=None:
             #check it the caller object holds an Entity that requests for current object
-            if len(callerObject.Res.activeQ)>0:
-                activeEntity=callerObject.Res.activeQ[0]
+            if len(callerObject.getActiveObjectQueue())>0:
+                activeEntity=callerObject.getActiveObjectQueue()[0]
                 if activeEntity.remainingRoute[0][0]==self.id:
-                    return len(self.Res.activeQ)<self.capacity  #return according to the state of the Queue
+                    return len(self.getActiveObjectQueue())<self.capacity  #return according to the state of the Queue
         return False
 
     #checks if the Queue can accept an entity and there is an entity in some predecessor waiting for it
     #also updates the predecessorIndex to the one that is to be taken
-    def canAcceptAndIsRequested(self):        
-        from Globals import G
-        #loop through the objects to see if there is one that holds an Entity requesting for current object
-        for obj in G.ObjList:
-            if len(obj.Res.activeQ)>0 and now()!=0:
-                activeEntity=obj.Res.activeQ[0]
-                if activeEntity.remainingRoute[0][0]==self.id:
-                    self.previousStation=obj
-                    return len(self.Res.activeQ)<self.capacity and self.previousStation.haveToDispose(self)
-        return False
+    def canAcceptAndIsRequested(self):         
+        if self.getGiverObject():
+            return self.getGiverObject().haveToDispose(self) and len(self.getActiveObjectQueue())<self.capacity
+        else:
+            return False
                 
     #gets an entity from the predecessor that the predecessor index points to     
     def getEntity(self):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        giverObject=self.previousStation
-        giverObjectQueue=giverObject.Res.activeQ
-        activeEntity=giverObjectQueue[0]
-
-        
+        giverObject=self.getGiverObject()
+        giverObjectQueue=self.getGiverObjectQueue()
+        activeEntity=giverObjectQueue[0]    
                 
-        self.Res.activeQ.append(giverObjectQueue[0])    #get the entity from the previous object
+        activeObjectQueue.append(giverObjectQueue[0])    #get the entity from the previous object
                                                                         #and put it in front of the activeQ       
-        self.previousStation.removeEntity()                             #remove the entity from the previous object
+        giverObject.removeEntity()                             #remove the entity from the previous object
         activeEntity.remainingRoute[0][0]=""                    #remove data from the remaining route. 
                                                                         #This is needed so that the Queue will not request again for the Entity
         self.outputTrace(activeEntity.name, "got into "+activeObject.objName)
         activeEntity.schedule.append([activeObject.id,now()])   #append the time to schedule so that it can be read in the result
                                   
 
-        
+    #get the giver object in a getEntity transaction.       
+    def getGiverObject(self):
+        from Globals import G
+        #loop through the objects to see if there is one that holds an Entity requesting for current object
+        for obj in G.ObjList:
+            if len(obj.getActiveObjectQueue())>0 and now()!=0:
+                activeEntity=obj.getActiveObjectQueue()[0]
+                if activeEntity.remainingRoute[0][0]==self.id:
+                    return obj
+        return None
         
         

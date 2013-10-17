@@ -5,8 +5,8 @@
    "id": "E1", 
    "results": {
     "throughput": 1, 
-    "takt_time": 6, 
-    "lifespan": 6
+    "takt_time": 6.0, 
+    "lifespan": 6.0
    }
   }, 
   {
@@ -23,23 +23,23 @@
       "stationId": "Q1"
      }, 
      "3": {
-      "entranceTime": 1, 
+      "entranceTime": 1.0, 
       "stationId": "M3"
      }, 
      "2": {
-      "entranceTime": 1, 
+      "entranceTime": 1.0, 
       "stationId": "Q3"
      }, 
      "5": {
-      "entranceTime": 4, 
+      "entranceTime": 4.0, 
       "stationId": "M2"
      }, 
      "4": {
-      "entranceTime": 4, 
+      "entranceTime": 4.0, 
       "stationId": "Q2"
      }, 
      "6": {
-      "entranceTime": 6, 
+      "entranceTime": 6.0, 
       "stationId": "E1"
      }
     }

@@ -119,7 +119,7 @@ class Machine(CoreObject):
             self.getEntity()    #get the entity from the predecessor
 
             self.outputTrace("got into "+self.objName)
-            self.currentEntity=self.Res.activeQ[0]                 #entity is the current entity processed in Machine  
+            self.currentEntity=self.getActiveObjectQueue()[0]                 #entity is the current entity processed in Machine  
             self.timeLastEntityEntered=now()        #this holds the last time that an entity got into Machine  
             self.nameLastEntityEntered=self.currentEntity.name    #this holds the name of the last entity that got into Machine
             timeEntered=now()            

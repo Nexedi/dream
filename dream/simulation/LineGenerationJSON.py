@@ -306,7 +306,7 @@ def createObjects():
                 nextId=routeElement.get('stationId', 'not found')
                 processingTime=routeElement.get('processingTime', 'not found')
                 distributionType=processingTime.get('distributionType', 'not found')
-                mean=int(processingTime.get('mean', 'not found'))
+                mean=float(processingTime.get('mean', 'not found'))
                 route[stepNumber]=[nextId, mean]
             J=Job(id, name, route, priority=priority, dueDate=dueDate, orderDate=orderDate)
             G.JobList.append(J)   

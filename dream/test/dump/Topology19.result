@@ -5,8 +5,8 @@
    "id": "E1", 
    "results": {
     "throughput": 2, 
-    "takt_time": 6, 
-    "lifespan": 9
+    "takt_time": 6.5, 
+    "lifespan": 9.5
    }
   }, 
   {
@@ -23,23 +23,23 @@
       "stationId": "Q1"
      }, 
      "3": {
-      "entranceTime": 1, 
+      "entranceTime": 1.0, 
       "stationId": "M3"
      }, 
      "2": {
-      "entranceTime": 1, 
+      "entranceTime": 1.0, 
       "stationId": "Q3"
      }, 
      "5": {
-      "entranceTime": 4, 
+      "entranceTime": 4.0, 
       "stationId": "M2"
      }, 
      "4": {
-      "entranceTime": 4, 
+      "entranceTime": 4.0, 
       "stationId": "Q2"
      }, 
      "6": {
-      "entranceTime": 6, 
+      "entranceTime": 6.0, 
       "stationId": "E1"
      }
     }
@@ -59,23 +59,23 @@
       "stationId": "Q2"
      }, 
      "3": {
-      "entranceTime": 4, 
+      "entranceTime": 4.0, 
       "stationId": "M3"
      }, 
      "2": {
-      "entranceTime": 3, 
+      "entranceTime": 3.0, 
       "stationId": "Q3"
      }, 
      "5": {
-      "entranceTime": 6, 
+      "entranceTime": 6.0, 
       "stationId": "M2"
      }, 
      "4": {
-      "entranceTime": 5, 
+      "entranceTime": 5.0, 
       "stationId": "Q2"
      }, 
      "6": {
-      "entranceTime": 13, 
+      "entranceTime": 13.0, 
       "stationId": "E1"
      }
     }
