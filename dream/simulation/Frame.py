@@ -44,4 +44,5 @@ class Frame(Entity):
         self.height=2.0
         self.lenght=2.0        
         
-
+    def getFrameQueue(self):
+        return self.Res.activeQ

@@ -107,29 +107,29 @@ class Assembly(CoreObject):
                                                                     #and one "frame" predecessor requests it 
             self.getEntity("Frame")                                 #get the Frame
                                                                     
-            for i in range(self.Res.activeQ[0].capacity):         #this loop will be carried until the Frame is full with the parts
+            for i in range(self.getActiveObjectQueue()[0].capacity):         #this loop will be carried until the Frame is full with the parts
                 yield waituntil, self, self.isRequestedFromPart     #wait until a part is requesting for the assembly
                 self.getEntity("Part")
                
-            self.outputTrace(self.Res.activeQ[0].name, "is now full in "+ self.objName)               
+            self.outputTrace(self.getActiveObjectQueue()[0].name, "is now full in "+ self.objName)               
             
             self.timeLastFrameWasFull=now()
-            self.nameLastFrameWasFull=self.Res.activeQ[0].name    
+            self.nameLastFrameWasFull=self.getActiveObjectQueue()[0].name    
                 
             startWorkingTime=now()    
             yield hold,self,self.rng.generateNumber()   #hold for the time the assembly operation is carried    
             self.totalWorkingTime+=now()-startWorkingTime
             
-            self.outputTrace(self.Res.activeQ[0].name, "ended processing in " + self.objName)
+            self.outputTrace(self.getActiveObjectQueue()[0].name, "ended processing in " + self.objName)
             self.timeLastEntityEnded=now()
-            self.nameLastEntityEnded=self.Res.activeQ[0].name
+            self.nameLastEntityEnded=self.getActiveObjectQueue()[0].name
             
             startBlockageTime=now()
             self.completedJobs+=1                       #Assembly completed a job            
             self.waitToDispose=True                     #since all the frame is full
             while 1:
                 yield waituntil, self, self.next[0].canAccept       #wait until the next object is free
-                if self.next[0].previous[self.next[0].predecessorIndex]==self:  #if the free object can accept from this Assembly
+                if self.next[0].getGiverObject()==self:                         #if the free object can accept from this Assembly
                                                                                 #break. Else continue
                     break
             self.totalBlockageTime+=now()-startBlockageTime     #add the blockage time
@@ -137,73 +137,92 @@ class Assembly(CoreObject):
   
     #checks if the Assembly can accept an entity 
     def canAccept(self, callerObject=None):
-        return len(self.Res.activeQ)==0  
+        return len(self.getActiveObjectQueue())==0  
             
     #checks if the Assembly can accept an entity and there is a Frame waiting for it
     def canAcceptAndIsRequested(self):
+        activeObjectQueue=self.getActiveObjectQueue()
+        
         i=0
         #loop through the predecessors
-        for coreObject in self.previous:
+        for giver in self.previous:
             #activate only if the predecessor is not empty
-            if(len(coreObject.Res.activeQ)>0):
+            if(len(giver.getActiveObjectQueue())>0):
                 #activate only if the caller carries Frame
-                if(coreObject.Res.activeQ[0].type=='Frame'):
+                if(giver.getActiveObjectQueue()[0].type=='Frame'):
                     #update the predecessorIndex
                     self.predecessorIndex=i
-                    return len(self.Res.activeQ)==0 and coreObject.haveToDispose(self)
+                    return len(activeObjectQueue)==0 and giver.haveToDispose(self)
             i=i+1 
         return False    
     
     #checks if the Assembly can accept an entity and there is a Frame waiting for it
     def isRequestedFromPart(self):
+        activeObjectQueue=self.getActiveObjectQueue()
+        
         i=0
         #loop through the predecessors
-        for coreObject in self.previous:
+        for giver in self.previous:
             #activate only if the predecessor is not empty
-            if(len(coreObject.Res.activeQ)>0):
+            if(len(giver.getActiveObjectQueue())>0):
                 #activate only if the caller carries Part
-                if(coreObject.Res.activeQ[0].type=='Part'):
+                if(giver.getActiveObjectQueue()[0].type=='Part'):
                     #update the predecessorIndex
                     self.predecessorIndex=i
-                    return len(self.Res.activeQ)==1 and coreObject.haveToDispose(self)
+                    return len(activeObjectQueue)==1 and giver.haveToDispose(self)
             i=i+1 
         return False 
 
     #checks if the Assembly can dispose an entity to the following object     
     def haveToDispose(self, callerObject=None): 
-        return len(self.Res.activeQ)>0 and self.waitToDispose                                  
+        return len(self.getActiveObjectQueue())>0 and self.waitToDispose                                  
                                                
     #removes an entity from the Assembly
     def removeEntity(self):
-        self.outputTrace(self.Res.activeQ[0].name, "releases "+ self.objName)              
-        self.Res.activeQ.pop(0)   
+        activeObjectQueue=self.getActiveObjectQueue()
+        
+        self.outputTrace(activeObjectQueue[0].name, "releases "+ self.objName)              
+        activeObjectQueue.pop(0)   
         self.waitToDispose=False
     
     #gets an entity from the predecessor   
     #it may handle both Parts and Frames  
     def getEntity(self, type):
+        activeObject=self.getActiveObject()
+        activeObjectQueue=self.getActiveObjectQueue()
+        giverObject=self.getGiverObject()
+        giverObjectQueue=self.getGiverObjectQueue()
+        activeEntity=giverObjectQueue[0]
+        
         if(type=="Part"):
-            self.Res.activeQ[0].Res.activeQ.append(self.previous[self.predecessorIndex].Res.activeQ[0])    #get the part from the predecessor and append it to the frame!
-            self.previous[self.predecessorIndex].removeEntity()     #remove the part from the previews object
-            self.outputTrace(self.Res.activeQ[0].Res.activeQ[-1].name, "got into "+ self.objName)                       
+            activeObjectQueue[0].getFrameQueue().append(giverObjectQueue[0])    #get the part from the predecessor and append it to the frame!
+            giverObject.removeEntity()     #remove the part from the previews object
+            self.outputTrace(activeEntity.name, "got into "+ self.objName)                       
         elif(type=="Frame"):
-            self.Res.activeQ.append(self.previous[self.predecessorIndex].Res.activeQ[0])    #get the frame from the predecessor
-            self.previous[self.predecessorIndex].removeEntity()   #remove the frame from the previews object
-            self.outputTrace(self.Res.activeQ[0].name, "got into "+ self.objName)
-            self.nameLastEntityEntered=self.Res.activeQ[0].name  
+            activeObjectQueue.append(giverObjectQueue[0])    #get the frame from the predecessor
+            giverObject.removeEntity()   #remove the frame from the previews object
+            self.outputTrace(activeEntity.name, "got into "+ self.objName)
+            self.nameLastEntityEntered=activeEntity.name  
             self.timeLastEntityEntered=now()
       
     #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime):
+        activeObjectQueue=self.getActiveObjectQueue()
+        
+        #checks all the successors. If no one can accept an Entity then the machine might be blocked
+        mightBeBlocked=True
+        for nextObject in self.next:
+            if nextObject.canAccept():
+                mightBeBlocked=False
         
         #if there is an entity that finished processing in Assembly but did not get to reach 
         #the following Object
         #till the end of simulation, we have to add this blockage to the percentage of blockage in Assembly
-        if (len(self.next[0].Res.activeQ)>0) and ((self.nameLastEntityEntered == self.nameLastEntityEnded)):              
+        if (mightBeBlocked) and ((self.nameLastEntityEntered == self.nameLastEntityEnded)):              
             self.totalBlockageTime+=now()-self.timeLastEntityEnded       
 
         #if Assembly is currently processing an entity we should count this working time    
-        if(len(self.Res.activeQ)>0) and (not (self.nameLastEntityEnded==self.nameLastFrameWasFull)):              
+        if(len(activeObjectQueue)>0) and (not (self.nameLastEntityEnded==self.nameLastFrameWasFull)):              
             self.totalWorkingTime+=now()-self.timeLastFrameWasFull
         
         self.totalWaitingTime=MaxSimtime-self.totalWorkingTime-self.totalBlockageTime 
