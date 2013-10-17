@@ -13,9 +13,9 @@ E=Exit('E1','Exit')
 G.ObjList=[S,M,E]   #add all the objects in G.ObjList so that they can be easier accessed later
 
 #define predecessors and successors for the objects    
-S.defineRouting([M])
-M.defineRouting([S],[E])
-E.defineRouting([M])
+S.defineRouting(successorList=[M])
+M.defineRouting(predecessorList=[S],successorList=[E])
+E.defineRouting(predecessorList=[M])
               
 initialize()                        #initialize the simulation (SimPy method)
     

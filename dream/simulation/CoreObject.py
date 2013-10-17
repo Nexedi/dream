@@ -66,9 +66,9 @@ class CoreObject(Process):
         raise NotImplementedError("Subclass must define 'run' method")
         
     #sets the routing in and out elements for the Object
-    def defineRouting(self, p, n):
-        self.next=n
-        self.previous=p
+    def defineRouting(self, predecessorList=[], successorList=[]):
+        self.next=successorList
+        self.previous=predecessorList
 
     #removes an entity from the Object
     def removeEntity(self): 

@@ -115,8 +115,8 @@ class Source(CoreObject):
             print "Distribution Error in "+str(self.objName)   
             
     #sets the routing out element for the Source
-    def defineRouting(self, n):
-        self.next=n  
+    def defineRouting(self, successorList=[]):
+        self.next=successorList  
             
    #outputs message to the trace.xls. Format is (Simulation Time | Entity Name | "generated")            
     def outputTrace(self, message):

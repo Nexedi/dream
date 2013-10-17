@@ -93,8 +93,8 @@ class Exit(CoreObject):
             self.timeLastEntityLeft=now()   #update the time that the last entity left from the Exit
 
     #sets the routing in element for the Exit
-    def defineRouting(self, p):
-        self.previous=p
+    def defineRouting(self, predecessorList=[]):
+        self.previous=predecessorList
                 
     #checks if the Exit can accept an entity       
     def canAccept(self, callerObject=None): 
