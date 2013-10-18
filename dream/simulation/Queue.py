@@ -220,7 +220,7 @@ class Queue(CoreObject):
         #if the schedulingRule is first in first out
         if criterion=="FIFO": 
             pass
-        #if the schedulingRule is based on a pre-defined prioriy
+        #if the schedulingRule is based on a pre-defined priority
         elif criterion=="Priority":
             activeObjectQ.sort(key=lambda x: x.priority, reverse=True)
         #if the schedulingRule is earliest due date
@@ -248,7 +248,7 @@ class Queue(CoreObject):
                     RPT+=step[1]                
                 entity.remainingProcessingTime=RPT
             activeObjectQ.sort(key=lambda x: (x.dueDate-x.remainingProcessingTime))  
-        #if the schedulingRule is to sort Entities based on the minimum slackness
+        #if the schedulingRule is to sort Entities based on the length of the following Queue
         elif criterion=="NextStage":
             from Globals import G
             for entity in activeObjectQ:

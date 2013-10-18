@@ -33,12 +33,13 @@ from Entity import Entity
 class Job(Entity):    
     type="Job"
     
-    def __init__(self, id, name, route, priority=0, dueDate=0, orderDate=0):
+    def __init__(self, id, name, route=[], priority=0, dueDate=0, orderDate=0):
         Entity.__init__(self, name, priority=priority, dueDate=dueDate, orderDate=orderDate)
         self.id=id
-        self.fullRoute=route    #the route that the job follows, also contains the processing times in each station
+        self.route=route    #the route that the job follows, also contains the processing times in each station
         self.remainingRoute=route   #the remaining route. in the beginning this should be the same as the full route
         self.currentStop=route[0][0]    #the starting stop should be the first in the route    
+        self.schedule=[]            #keeps the result of the simulation. A list with the stations and time of entrance
         
     #outputs results to JSON File
     def outputResultsJSON(self):
@@ -59,7 +60,7 @@ class Job(Entity):
         
     #initializes all the Entity for a new simulation replication
     def initialize(self):
-        self.remainingRoute=self.fullRoute   
-        self.currentStop=self.fullRoute[0][0]     
+        self.remainingRoute=self.route   
+        self.currentStop=self.route[0][0]     
     
     
