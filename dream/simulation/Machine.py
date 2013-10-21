@@ -295,7 +295,11 @@ class Machine(CoreObject):
     
     
    #actions to be taken after the simulation ends
-    def postProcessing(self, MaxSimtime):
+    def postProcessing(self, MaxSimtime=None):
+        if MaxSimtime==None:
+            from Globals import G
+            MaxSimtime=G.maxSimTime
+        
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         
@@ -365,8 +369,11 @@ class Machine(CoreObject):
                 G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)    
                 
     #outputs the the "output.xls"
-    def outputResultsXL(self, MaxSimtime):
+    def outputResultsXL(self, MaxSimtime=None):
         from Globals import G
+        if MaxSimtime==None:
+            MaxSimtime=G.maxSimTime
+        
         if(G.numberOfReplications==1): #if we had just one replication output the results to excel    
             G.outputSheet.write(G.outputIndex,0, "The percentage of Failure of " +self.objName+ " is:")
             G.outputSheet.write(G.outputIndex,1,100*self.totalFailureTime/MaxSimtime)

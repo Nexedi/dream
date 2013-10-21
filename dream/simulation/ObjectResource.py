@@ -40,7 +40,7 @@ class ObjectResource(object):
         return len(self.Res.activeQ)<self.capacity   
     
     #actions to be taken after the simulation ends
-    def postProcessing(self, MaxSimtime):
+    def postProcessing(self, MaxSimtime=None):
         pass    
     
     #outputs message to the trace.xls
@@ -48,7 +48,7 @@ class ObjectResource(object):
         pass
     
     #outputs data to "output.xls"
-    def outputResultsXL(self, MaxSimtime):
+    def outputResultsXL(self, MaxSimtime=None):
         pass
     
     #outputs results to JSON File

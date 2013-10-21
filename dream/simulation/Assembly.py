@@ -211,7 +211,10 @@ class Assembly(CoreObject):
             self.timeLastEntityEntered=now()
       
     #actions to be taken after the simulation ends
-    def postProcessing(self, MaxSimtime):
+    def postProcessing(self, MaxSimtime=None):
+        if MaxSimtime==None:
+            from Globals import G
+            MaxSimtime=G.maxSimTime
         activeObjectQueue=self.getActiveObjectQueue()
         
         #checks all the successors. If no one can accept an Entity then the machine might be blocked
@@ -253,8 +256,10 @@ class Assembly(CoreObject):
 
 
     #outputs data to "output.xls"
-    def outputResultsXL(self, MaxSimtime):
+    def outputResultsXL(self, MaxSimtime=None):
         from Globals import G
+        if MaxSimtime==None:
+            MaxSimtime=G.maxSimTime
         if(G.numberOfReplications==1): #if we had just one replication output the results to excel
             G.outputSheet.write(G.outputIndex,0, "The percentage of Working of "+self.objName +" is:")
             G.outputSheet.write(G.outputIndex,1,100*self.totalWorkingTime/MaxSimtime)

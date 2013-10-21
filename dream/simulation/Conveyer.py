@@ -272,7 +272,10 @@ class Conveyer(CoreObject):
             return self.canAcceptAndIsRequested()
     
     #actions to be taken after the simulation ends
-    def postProcessing(self, MaxSimtime):                      
+    def postProcessing(self, MaxSimtime=None):              
+        if MaxSimtime==None:
+            from Globals import G
+            MaxSimtime=G.maxSimTime        
         self.moveEntities()     #move the entities to count the working time
         #if the conveyer is full count the blockage time
         if self.isFull():
@@ -303,8 +306,10 @@ class Conveyer(CoreObject):
 
 
     #outputs data to "output.xls"
-    def outputResultsXL(self, MaxSimtime):
+    def outputResultsXL(self, MaxSimtime=None):
         from Globals import G
+        if MaxSimtime==None:
+            MaxSimtime=G.maxSimTime
         if(G.numberOfReplications==1): #if we had just one replication output the results to excel
             G.outputSheet.write(G.outputIndex,0, "The percentage of Working of "+self.objName +" is:")
             G.outputSheet.write(G.outputIndex,1,100*self.totalWorkingTime/MaxSimtime)

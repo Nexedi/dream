@@ -49,7 +49,10 @@ class Repairman(ObjectResource):
                 
     
     #actions to be taken after the simulation ends
-    def postProcessing(self, MaxSimtime):
+    def postProcessing(self, MaxSimtime=None):
+        if MaxSimtime==None:
+            from Globals import G
+            MaxSimtime=G.maxSimTime
         #if the repairman is currently working we have to count the time of this work    
         if len(self.getResourceQueue())>0:
             self.totalWorkingTime+=now()-self.timeLastRepairStarted
@@ -61,8 +64,10 @@ class Repairman(ObjectResource):
         self.Working.append(100*self.totalWorkingTime/MaxSimtime)
 
     #outputs data to "output.xls"
-    def outputResultsXL(self, MaxSimtime):
+    def outputResultsXL(self, MaxSimtime=None):
         from Globals import G
+        if MaxSimtime==None:
+            MaxSimtime=G.maxSimTime
         if(G.numberOfReplications==1): #if we had just one replication output the results to excel
             G.outputSheet.write(G.outputIndex,0, "The percentage of working of "+self.objName +" is:")
             G.outputSheet.write(G.outputIndex,1,100*self.totalWorkingTime/MaxSimtime)

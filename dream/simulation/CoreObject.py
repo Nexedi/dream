@@ -90,7 +90,7 @@ class CoreObject(Process):
         activeEntity.schedule.append([activeObject.id,now()])   #append the time to schedule so that it can be read in the result
         
     #actions to be taken after the simulation ends
-    def postProcessing(self, MaxSimtime):
+    def postProcessing(self, MaxSimtime=None):
         pass    
     
     #outputs message to the trace.xls
@@ -98,7 +98,7 @@ class CoreObject(Process):
         pass
     
     #outputs data to "output.xls"
-    def outputResultsXL(self, MaxSimtime):
+    def outputResultsXL(self, MaxSimtime=None):
         pass
     
     #outputs results to JSON File

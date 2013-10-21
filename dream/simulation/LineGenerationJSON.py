@@ -450,11 +450,11 @@ def main(argv=[], input_data=None):
         
         #carry on the post processing operations for every object in the topology       
         for element in G.ObjList:
-            element.postProcessing(G.maxSimTime)
+            element.postProcessing()
             
         #carry on the post processing operations for every model resource in the topology       
         for model_resource in G.RepairmanList:
-            model_resource.postProcessing(G.maxSimTime)       
+            model_resource.postProcessing()       
             
         #output trace to excel      
         if(G.trace=="Yes"):
