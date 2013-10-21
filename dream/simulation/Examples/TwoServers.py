@@ -42,8 +42,8 @@ simulate(until=G.maxSimTime)    #run the simulation
 
 #carry on the post processing operations for every object in the topology       
 for object in G.ObjList:
-    object.postProcessing(G.maxSimTime)
-R.postProcessing(G.maxSimTime)
+    object.postProcessing()
+R.postProcessing()
 
 #print the results
 print "the system produced", E.numOfExits, "parts"

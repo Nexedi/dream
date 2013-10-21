@@ -46,13 +46,13 @@ for i in range(G.numberOfReplications):
 
     #carry on the post processing operations for every object in the topology       
     for object in G.ObjList:
-        object.postProcessing(G.maxSimTime)
-    R.postProcessing(G.maxSimTime)
+        object.postProcessing()
+    R.postProcessing()
                
 #output data to excel for every object        
 for object in G.ObjList:
-    object.outputResultsXL(G.maxSimTime)      
-R.outputResultsXL(G.maxSimTime)        
+    object.outputResultsXL()      
+R.outputResultsXL()        
 
 G.outputFile.save("output.xls")      
 
