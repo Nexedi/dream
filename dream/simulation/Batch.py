@@ -59,7 +59,9 @@ class Batch(Entity):
                                                                                         #it should be the same for all the sub-batches
         for subBatch in self.subBatchList:
             self.numberOfUnits+=subBatch.numberOfUnits      #maybe there are units lost (scrapped), so it has to be re-calculated
-            activeObjectQueue.remove
+            #the sub-batch no longer exists
+            activeObjectQueue.remove(subBatch)              
+            del subBatch
             
             
     
