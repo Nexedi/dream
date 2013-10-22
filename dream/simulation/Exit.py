@@ -137,6 +137,7 @@ class Exit(CoreObject):
         
         self.totalLifespan+=now()-activeEntity.startTime  #Add the entity's lifespan to the total one. 
         self.outputTrace(name)          
+        activeEntity.currentStation=self
     
     #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime=None):

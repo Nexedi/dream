@@ -22,10 +22,11 @@ Created on 22 Oct 2013
 @author: George
 '''
 '''
-Batch is an Entity that contains a number of units
+SubBatch is an Entity that contains a number of units and is derived from a parent Batch
 '''
 
 from Entity import Entity
+from Batch import Batch
 
 #The batch object
 class SubBatch(Entity):
@@ -36,3 +37,5 @@ class SubBatch(Entity):
         self.id=id  
         self.numberOfUnits=numberOfUnits
         self.batchId=batchId
+
+        

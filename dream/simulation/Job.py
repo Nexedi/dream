@@ -38,7 +38,6 @@ class Job(Entity):
         self.id=id
         self.route=route    #the route that the job follows, also contains the processing times in each station
         self.remainingRoute=route   #the remaining route. in the beginning this should be the same as the full route
-        self.currentStop=route[0][0]    #the starting stop should be the first in the route    
         self.schedule=[]            #keeps the result of the simulation. A list with the stations and time of entrance
         
     #outputs results to JSON File
@@ -61,6 +60,6 @@ class Job(Entity):
     #initializes all the Entity for a new simulation replication
     def initialize(self):
         self.remainingRoute=self.route   
-        self.currentStop=self.route[0][0]     
+        self.currentStation=self.route[0][0]     
     
     

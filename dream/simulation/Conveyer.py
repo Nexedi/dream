@@ -215,6 +215,7 @@ class Conveyer(CoreObject):
         self.position.append(0)           #the entity is placed in the start of the conveyer
         giverObject.removeEntity()            #remove the entity from the previous object
         self.outputTrace(activeEntity.name, "got into "+ self.objName) 
+        activeEntity.currentStation=self
         #check if the conveyer became full to start counting blockage 
         if self.isFull():
             self.timeBlockageStarted=now()

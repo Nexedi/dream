@@ -387,7 +387,7 @@ def activateObjects():
 def setWIP():
     #read the start station of the Entities and assign them to it
     for entity in G.WipList:
-        objectId=entity.currentStop
+        objectId=entity.currentStation
         object=None
         for obj in G.ObjList:
             if obj.id==objectId:  
@@ -395,6 +395,7 @@ def setWIP():
         object.getActiveObjectQueue().append(entity)  
         entity.remainingRoute[0][0]=""                     #remove data from the remaining route.    
         entity.schedule.append([object.id,now()])   #append the time to schedule so that it can be read in the result
+        entity.currentStation=object
 
 
 #the main script that is ran

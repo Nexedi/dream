@@ -89,6 +89,7 @@ class Source(CoreObject):
             self.numberOfArrivals+=1           #we have one new arrival         
             entity.creationTime=now()          #assign the current simulation time as the Entity's creation time 
             entity.startTime=now()             #assign the current simulation time as the Entity's start time 
+            entity.currentStation=self
             self.outputTrace(self.item.type+str(self.numberOfArrivals))     #output the trace
             activeObjectQueue.append(entity)    #append the entity to the resource        
             yield hold,self,self.calculateInterarrivalTime()    #wait until the next arrival

@@ -173,9 +173,11 @@ class Dismantle(CoreObject):
         
         activeObjectQueue.append(activeEntity)    #get the frame from the predecessor
         giverObject.removeEntity()
+        activeEntity.currentStation=self
         #append also the parts in the res so that they can be popped
         for part in activeEntity.getFrameQueue():         
             activeObjectQueue.append(part)
+            part.currentStation=self
         activeEntity.getFrameQueue=[]           #empty the frame
         #move the frame to the end of the internal queue since we want the frame to be disposed first
         activeObjectQueue.append(activeEntity)

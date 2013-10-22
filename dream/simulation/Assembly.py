@@ -200,7 +200,7 @@ class Assembly(CoreObject):
         activeEntity=giverObjectQueue[0]
         
         if(type=="Part"):
-            activeObjectQueue[0].getFrameQueue().append(giverObjectQueue[0])    #get the part from the predecessor and append it to the frame!
+            activeObjectQueue[0].getFrameQueue().append(activeEntity)    #get the part from the predecessor and append it to the frame!
             giverObject.removeEntity()     #remove the part from the previews object
             self.outputTrace(activeEntity.name, "got into "+ self.objName)                       
         elif(type=="Frame"):
@@ -209,6 +209,7 @@ class Assembly(CoreObject):
             self.outputTrace(activeEntity.name, "got into "+ self.objName)
             self.nameLastEntityEntered=activeEntity.name  
             self.timeLastEntityEntered=now()
+        activeEntity.currentStation=self
       
     #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime=None):

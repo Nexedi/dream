@@ -43,6 +43,7 @@ class Entity(object):
         self.dueDate=dueDate
         self.orderDate=orderDate
         self.schedule=[]     #a list that holds information about the schedule of the entity (when it enters and exits every station)   
+        self.currentStation=None
         
     #outputs results to JSON File
     def outputResultsJSON(self):

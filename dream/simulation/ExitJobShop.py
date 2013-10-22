@@ -53,6 +53,7 @@ class ExitJobShop(Exit):
         giverObject.removeEntity()            #remove the entity from the previous object
         self.outputTrace(name) 
         activeEntity.schedule.append([activeObject.id,now()])   #append the time to schedule so that it can be read in the result
+        activeEntity.currentStation=self
 
     #get the giver object in a getEntity transaction.       
     def getGiverObject(self):
