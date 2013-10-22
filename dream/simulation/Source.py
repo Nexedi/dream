@@ -84,20 +84,22 @@ class Source(CoreObject):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         
-        i=0
         while 1:
+            entity=self.createEntity()         #create the Entity object and assign its name 
             self.numberOfArrivals+=1           #we have one new arrival         
-            entity=self.item(self.item.type+"_"+self.objName+"_"+str(i)) #create the Entity object and assign its name 
             entity.creationTime=now()          #assign the current simulation time as the Entity's creation time 
             entity.startTime=now()             #assign the current simulation time as the Entity's start time 
-            self.outputTrace(self.item.type+"_"+self.objName+"_"+str(i))     #output the trace
-            activeObjectQueue.append(entity)    #append the entity to the resource 
-            i+=1        
+            self.outputTrace(self.item.type+str(self.numberOfArrivals))     #output the trace
+            activeObjectQueue.append(entity)    #append the entity to the resource        
             yield hold,self,self.calculateInterarrivalTime()    #wait until the next arrival
              
     #sets the routing out element for the Source
     def defineRouting(self, successorList=[]):
         self.next=successorList  
+        
+    #creates an Entity
+    def createEntity(self):
+        return self.item(self.item.type+str(self.numberOfArrivals))     #return the newly created Entity
         
     #calculates the processing time
     def calculateInterarrivalTime(self):
