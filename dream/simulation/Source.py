@@ -85,7 +85,6 @@ class Source(CoreObject):
         activeObjectQueue=self.getActiveObjectQueue()
         
         i=0
-        from Globals import G            
         while 1:
             self.numberOfArrivals+=1           #we have one new arrival         
             entity=self.item(self.item.type+"_"+self.objName+"_"+str(i)) #create the Entity object and assign its name 
