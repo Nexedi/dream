@@ -45,7 +45,6 @@ class Source(CoreObject):
         self.previousIds=[]     #list with the ids of the previous objects in the flow. For the source it is always empty!
         
         self.type="Source"   #String that shows the type of object
-        #self.waitToDispose=False
         self.rng=RandomNumberGenerator(self, self.distType)
         self.rng.avg=mean
         self.item=item      #the type of object that the Source will generate
@@ -86,39 +85,26 @@ class Source(CoreObject):
         activeObjectQueue=self.getActiveObjectQueue()
         
         i=0
-        if(self.distType=="Fixed"): #if the distribution type is fixed
-            from Globals import G            
-            while 1:
-                self.numberOfArrivals+=1           #we have one new arrival         
-                entity=self.item(self.item.type+"_"+self.objName+"_"+str(i)) #create the Entity object and assign its name 
-                entity.creationTime=now()          #assign the current simulation time as the Entity's creation time 
-                entity.startTime=now()             #assign the current simulation time as the Entity's start time 
-                self.outputTrace(self.item.type+"_"+self.objName+"_"+str(i))     #output the trace
-                activeObjectQueue.append(entity)    #append the entity to the resource 
-                i+=1        
-                yield hold,self,self.rng.generateNumber()
-        elif(self.distType=="Exp"): #if the distribution type is exponential
-            from Globals import G
-            while 1:
-                self.numberOfArrivals+=1        #we have one new arrival
-                entity=self.item(self.item.type+str(i)) #create the Entity object and assign its name                 
-                entity.creationTime=now()          #assign the current simulation time as the Entity's creation time
-                entity.startTime=now()             #assign the current simulation time as the Entity's start time 
-                self.outputTrace(self.item.type+str(i))      #output the trace
-                i+=1
-                activeObjectQueue.append(entity)     #append the entity to the resource           
-                timeTillNextArrival=G.Rnd.expovariate(1.0/(self.interArrivalTime))  #create a random number that follows the     
-                                                                                    #exponential distribution                                                  
-                yield hold,self,self.rng.generateNumber()
-                self.totalInterArrivalTime+=timeTillNextArrival                                                
-        else:   #if the distribution type is something else it is an error
-            print "Distribution Error in "+str(self.objName)   
-            
+        from Globals import G            
+        while 1:
+            self.numberOfArrivals+=1           #we have one new arrival         
+            entity=self.item(self.item.type+"_"+self.objName+"_"+str(i)) #create the Entity object and assign its name 
+            entity.creationTime=now()          #assign the current simulation time as the Entity's creation time 
+            entity.startTime=now()             #assign the current simulation time as the Entity's start time 
+            self.outputTrace(self.item.type+"_"+self.objName+"_"+str(i))     #output the trace
+            activeObjectQueue.append(entity)    #append the entity to the resource 
+            i+=1        
+            yield hold,self,self.calculateInterarrivalTime()    #wait until the next arrival
+             
     #sets the routing out element for the Source
     def defineRouting(self, successorList=[]):
         self.next=successorList  
+        
+    #calculates the processing time
+    def calculateInterarrivalTime(self):
+        return self.rng.generateNumber()    #this is if we have a default interarrival  time for all the entities
             
-   #outputs message to the trace.xls. Format is (Simulation Time | Entity Name | "generated")            
+    #outputs message to the trace.xls. Format is (Simulation Time | Entity Name | "generated")            
     def outputTrace(self, message):
         from Globals import G
         
