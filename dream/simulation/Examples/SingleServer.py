@@ -1,9 +1,4 @@
-from SimPy.Simulation import simulate, activate, initialize
-from simulation.Machine import Machine
-from simulation.Source import Source
-from simulation.Exit import Exit
-from simulation.Part import Part
-from simulation.Globals import G
+from simulation.imports import Machine, Source, Exit, Part, G, simulate, activate, initialize
 
 #define the objects of the model 
 S=Source('S1','Source',distribution='Fixed', mean=0.5, item=Part)

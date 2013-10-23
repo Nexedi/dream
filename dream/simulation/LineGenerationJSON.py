@@ -67,6 +67,8 @@ from Job import Job
 from MachineJobShop import MachineJobShop
 from QueueJobShop import QueueJobShop
 from ExitJobShop import ExitJobShop
+from Batch import Batch
+from SubBatch import SubBatch
 import xlwt
 import xlrd
 import time

@@ -26,7 +26,6 @@ SubBatch is an Entity that contains a number of units and is derived from a pare
 '''
 
 from Entity import Entity
-from Batch import Batch
 
 #The batch object
 class SubBatch(Entity):
