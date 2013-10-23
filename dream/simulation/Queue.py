@@ -222,7 +222,7 @@ class Queue(CoreObject):
             pass
         #if the schedulingRule is based on a pre-defined priority
         elif criterion=="Priority":
-            activeObjectQ.sort(key=lambda x: x.priority, reverse=True)
+            activeObjectQ.sort(key=lambda x: x.priority)
         #if the schedulingRule is earliest due date
         elif criterion=="EDD":
             activeObjectQ.sort(key=lambda x: x.dueDate)   
@@ -257,7 +257,7 @@ class Queue(CoreObject):
                     if obj.id==nextObjId:
                         nextObject=obj        
                 entity.nextQueueLength=len(nextObject.Res.activeQ)           
-            activeObjectQ.sort(key=lambda x: x.nextQueueLength, reverse=True)  
+            activeObjectQ.sort(key=lambda x: x.nextQueueLength)  
             
                          
     #outputs message to the trace.xls. Format is (Simulation Time | Entity Name | message)

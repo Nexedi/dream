@@ -92,7 +92,7 @@
         "J1": {
             "_class": "Dream.Job",
             "name": "Job1",
-			"priority": "-1",
+			"priority": "1",
 			"dueDate": "900",
 			"orderDate": "0",
             "route": [
@@ -133,7 +133,7 @@
         "J2": {
             "_class": "Dream.Job",
             "name": "Job2",
-			"priority": "7",
+			"priority": "-7",
 			"dueDate": "100",
 			"orderDate": "-1",
             "route": [
@@ -174,7 +174,7 @@
         "J3": {
             "_class": "Dream.Job",
             "name": "Job3",
-			"priority": "12",
+			"priority": "-12",
 			"dueDate": "60",
 			"orderDate": "2",
             "route": [
