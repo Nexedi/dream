@@ -224,7 +224,7 @@ class Machine(CoreObject):
                 
         #if we have only one predecessor just check if there is a place, the machine is up and the predecessor has an entity to dispose
         if(len(activeObject.previous)==1):
-            return activeObject.Up and len(activeObjectQueue)==0 and giverObject.haveToDispose(activeObject) 
+            return activeObject.Up and len(activeObjectQueue)<activeObject.capacity and giverObject.haveToDispose(activeObject) 
         
         isRequested=False
         maxTimeWaiting=0
@@ -244,7 +244,7 @@ class Machine(CoreObject):
                     activeObject.predecessorIndex=i  
                     maxTimeWaiting=timeWaiting    
             i+=1                                 
-        return len(activeObjectQueue)<activeObject.capacity and isRequested               
+        return len(activeObjectQueue)<activeObject.capacity and isRequested and activeObject.Up             
     
     #checks if the machine down or it can dispose the object
     def ifCanDisposeOrHaveFailure(self):
