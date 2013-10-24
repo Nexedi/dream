@@ -25,30 +25,35 @@ Created on 18 Aug 2013
 Class that acts as an abstract. It should have no instances. All the Entities should inherit from it
 '''
 
-#The entity object
+# ======================== The entity object ================================
 class Entity(object):
     type="Entity"
 
     def __init__(self, name, priority=0, dueDate=0, orderDate=0):
         self.name=name
-        self.currentStop=None      #contains the current object that the material is in 
+        #         information on the object holding the entity
+        #         initialized as None and updated every time an entity enters a new object
+        self.currentStop=None       #contains the current object that the material is in
+        #         information on the lifespan of the entity  
         self.creationTime=0
-        self.startTime=0           #holds the startTime for the lifespan
-        #dimension data
+        self.startTime=0            #holds the startTime for the lifespan
+        #         dimension data of the entity
         self.width=1.0
         self.height=1.0
         self.length=1.0
-        
+        #         information concerning the sorting of the entities inside (for example) queues
         self.priority=priority
         self.dueDate=dueDate
         self.orderDate=orderDate
-        self.schedule=[]     #a list that holds information about the schedule of the entity (when it enters and exits every station)   
-        self.currentStation=None
+        #         a list that holds information about the schedule 
+        #         of the entity (when it enters and exits every station)
+        self.schedule=[]
+        self.currentStation=None             
         
-    #outputs results to JSON File
+    # =============== outputs results to JSON File ==========================
     def outputResultsJSON(self):
         pass
     
-    #initializes all the Entity for a new simulation replication
+    # =====initializes all the Entity for a new simulation replication ======
     def initialize(self):
         pass
