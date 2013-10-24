@@ -35,58 +35,66 @@ class Queue(CoreObject):
     
     def __init__(self, id, name, capacity=1, dummy=False, schedulingRule="FIFO"):
         Process.__init__(self)
-        self.predecessorIndex=0     #holds the index of the predecessor from which the Queue will take an entity next
-        self.successorIndex=0       #holds the index of the successor where the Queue will dispose an entity next
-    
+        # used for the routing of the entities
+        self.predecessorIndex=0     # holds the index of the predecessor from which the Queue will take an entity next
+        self.successorIndex=0       # holds the index of the successor where the Queue will dispose an entity next
+        #     hold the id, name, and type of the Queue instance
         self.id=id
         self.objName=name
+        self.type="Queue"           # String that shows the type of object
+        #     holds the capacity of the Queue
         self.capacity=capacity
-        self.nameLastEntityEntered=""   #keeps the name of the last entity that entered in the object
-        self.timeLastEntityEntered=0    #keeps the time of the last entity that entered in the object
+        # consider removing the following, the are restated in the initialize() method
+#         self.nameLastEntityEntered=""   #keeps the name of the last entity that entered in the object
+#         self.timeLastEntityEntered=0    #keeps the time of the last entity that entered in the object
 
-        self.next=[]        #list with the next objects in the flow
-        self.previous=[]    #list with the previous objects in the flow
-        self.nextIds=[]     #list with the ids of the next objects in the flow
-        self.previousIds=[]     #list with the ids of the previous objects in the flow
-        self.type="Queue"   #String that shows the type of object
-        self.isDummy=dummy  #Boolean that shows if it is the dummy first Queue
-        self.schedulingRule=schedulingRule   #the scheduling rule that the Queue follows
-        self.multipleCriterionList=[]
-        if schedulingRule.startswith("MC"):
-            SRlist = schedulingRule.split("-")
-            self.schedulingRule=SRlist.pop(0)
-            self.multipleCriterionList=SRlist
+        #     No failures are considered for the Queue
+        
+        #     lists that hold the previous and next objects in the flow
+        self.next=[]                    #list with the next objects in the flow
+        self.previous=[]                #list with the previous objects in the flow
+        self.nextIds=[]                 #list with the ids of the next objects in the flow
+        self.previousIds=[]             #list with the ids of the previous objects in the flow
+
+        self.isDummy=dummy                      #Boolean that shows if it is the dummy first Queue
+        self.schedulingRule=schedulingRule      #the scheduling rule that the Queue follows
+        self.multipleCriterionList=[]           #list with the criteria used to sort the Entities in the Queue
+        if schedulingRule.startswith("MC"):     # if the first criterion is MC aka multiple criteria
+            SRlist = schedulingRule.split("-")  # split the string of the criteria (delimiter -)
+            self.schedulingRule=SRlist.pop(0)   # take the first criterion of the list
+            self.multipleCriterionList=SRlist   # hold the criteria list in the property multipleCriterionList
  
     def initialize(self):
         Process.__init__(self)
-        self.Res=Resource(self.capacity)        
+        self.predecessorIndex=0         #holds the index of the predecessor from which the Queue will take an entity next
+        self.successorIndex=0           #holds the index of the successor where the Queue will dispose an entity next
         self.Up=True                    #Boolean that shows if the object is in failure ("Down") or not ("up")
         self.currentEntity=None      
-          
+        # ===================================================================
         self.totalBlockageTime=0        #holds the total blockage time
         self.totalFailureTime=0         #holds the total failure time
         self.totalWaitingTime=0         #holds the total waiting time
         self.totalWorkingTime=0         #holds the total working time
         self.completedJobs=0            #holds the number of completed jobs 
-        
+        # ===================================================================
         self.timeLastEntityEnded=0      #holds the last time that an entity ended processing in the object
         self.nameLastEntityEnded=""     #holds the name of the last entity that ended processing in the object
         self.timeLastEntityEntered=0    #holds the last time that an entity entered in the object
         self.nameLastEntityEntered=""   #holds the name of the last entity that entered in the object
         self.timeLastFailure=0          #holds the time that the last failure of the object started
-        self.timeLastFailureEnded=0          #holds the time that the last failure of the object Ended
-        self.downTimeProcessingCurrentEntity=0  #holds the time that the machine was down while processing the current entity
-        self.downTimeInTryingToReleaseCurrentEntity=0 #holds the time that the object was down while trying 
-                                                      #to release the current entity  
+        self.timeLastFailureEnded=0     #holds the time that the last failure of the object Ended
+        # ===================================================================
+        self.downTimeProcessingCurrentEntity=0          #holds the time that the machine was down while processing the current entity
+        self.downTimeInTryingToReleaseCurrentEntity=0   #holds the time that the object was down while trying 
+                                                        #to release the current entity  
         self.downTimeInCurrentEntity=0                  #holds the total time that the object was down while holding current entity
-        self.timeLastEntityLeft=0        #holds the last time that an entity left the object
+        self.timeLastEntityLeft=0                       #holds the last time that an entity left the object
                                                 
         self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                               
-                                                      
+        # ===================================================================                                              
         self.waitToDispose=False    #shows if the object waits to dispose an entity  
         
-        self.predecessorIndex=0     #holds the index of the predecessor from which the Queue will take an entity next
-        self.successorIndex=0       #holds the index of the successor where the Queue will dispose an entity next
+        self.Res=Resource(self.capacity)   
              
     def run(self):  
         activeObjectQueue=self.getActiveObjectQueue()
@@ -196,11 +204,9 @@ class Queue(CoreObject):
 
     #gets an entity from the predecessor that the predecessor index points to     
     def getEntity(self):
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()
         
-        CoreObject.getEntity(activeObject)  #run the default behavior 
-        self.outputTrace(activeObjectQueue[-1].name, "got into "+self.objName)
+        activeEntity=CoreObject.getEntity(activeObject)  #run the default behavior 
+        self.outputTrace(activeEntity.name, "got into "+self.objName)
     
     #sorts the Entities of the Queue according to the scheduling rule
     def sortEntities(self):
