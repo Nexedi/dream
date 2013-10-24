@@ -100,6 +100,7 @@ class CoreObject(Process):
         # the entity enters a new object
         activeEntity.schedule.append([activeObject.id,now()])
         activeEntity.currentStation=self
+        return activeEntity
         
     # ========================== actions to be taken after the simulation ends ======================
     def postProcessing(self, MaxSimtime=None):
