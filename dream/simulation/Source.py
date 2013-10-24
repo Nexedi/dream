@@ -93,7 +93,7 @@ class Source(CoreObject):
 #         # ============================== waiting flag ==============================================
 #         self.waitToDispose=False    #shows if the object waits to dispose an entity  
          
-        # initialize the internal Queue (type Resource) of the Machine 
+        # initialize the internal Queue (type Resource) of the Source 
         self.Res=Resource(capacity=infinity)
         self.Res.activeQ=[]                                 
         self.Res.waitQ=[]                                   
