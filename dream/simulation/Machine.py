@@ -34,22 +34,30 @@ from CoreObject import CoreObject
 from RandomNumberGenerator import RandomNumberGenerator
 import scipy.stats as stat
 
-#the Machine object
+# ===========================================================================
+# the Machine object
+# ===========================================================================
 class Machine(CoreObject):
             
     #initialize the id the capacity, of the resource and the distribution        
-    def __init__(self, id, name, capacity=1, distribution='Fixed', mean=1, stdev=0, min=0, max=10, failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None'):
+    def __init__(self, id, name, capacity=1, distribution='Fixed', mean=1, stdev=0, min=0, max=10,\
+                  failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None'):
         Process.__init__(self)
-        self.predecessorIndex=0     #holds the index of the predecessor from which the Machine will take an entity next
-        self.successorIndex=0       #holds the index of the successor where the Machine will dispose an entity next
+        # used for the routing of the entities
+        self.predecessorIndex=0                     #holds the index of the predecessor from which the Machine will take an entity next
+        self.successorIndex=0                       #holds the index of the successor where the Machine will dispose an entity next
+        #     hold the id, name, and type of the Machine instance
         self.id=id
         self.objName=name
-        self.capacity=capacity      
-        self.distType=distribution          #the distribution that the procTime follows      
-        self.failureDistType=failureDistribution  #the distribution that the failure follows   
-                    
+        self.type="Machine"                         #String that shows the type of object
+        #     holds the capacity of the machine 
+        self.capacity=capacity
+        #     define the distribution types of the processing and failure times respectively
+        self.distType=distribution                  #the distribution that the procTime follows      
+        self.failureDistType=failureDistribution    #the distribution that the failure follows   
+        #     sets the repairman resource of the Machine
         self.repairman=repairman         
-
+        #     Sets the attributes of the processing (and failure) time(s)
         self.rng=RandomNumberGenerator(self, self.distType)
         self.rng.avg=mean
         self.rng.stdev=stdev
@@ -58,243 +66,282 @@ class Machine(CoreObject):
         self.MTTF=MTTF
         self.MTTR=MTTR
         self.availability=availability        
-      
-        self.next=[]        #list with the next objects in the flow
-        self.previous=[]    #list with the previous objects in the flow
-        self.nextIds=[]     #list with the ids of the next objects in the flow
-        self.previousIds=[]     #list with the ids of the previous objects in the flow
-        self.type="Machine"   #String that shows the type of object
-                
-        #lists to hold statistics of multiple runs
+        #     lists that hold the previous and next objects in the flow
+        self.next=[]                                #list with the next objects in the flow
+        self.previous=[]                            #list with the previous objects in the flow
+        self.nextIds=[]                             #list with the ids of the next objects in the flow
+        self.previousIds=[]                         #list with the ids of the previous objects in the flow
+        #     lists to hold statistics of multiple runs
         self.Failure=[]
         self.Working=[]
         self.Blockage=[]
         self.Waiting=[]
 
-            
+    # =======================================================================
+    # initialize the Machine object
+    # =======================================================================        
     def initialize(self):
-        Process.__init__(self)
-        self.Up=True                    #Boolean that shows if the machine is in failure ("Down") or not ("up")
-        self.currentEntity=None      
-          
-        self.totalBlockageTime=0        #holds the total blockage time
-        self.totalFailureTime=0         #holds the total failure time
-        self.totalWaitingTime=0         #holds the total waiting time
-        self.totalWorkingTime=0         #holds the total working time
-        self.completedJobs=0            #holds the number of completed jobs 
-        
-        self.timeLastEntityEnded=0      #holds the last time that an entity ended processing in the object
-        self.nameLastEntityEnded=""     #holds the name of the last entity that ended processing in the object
-        self.timeLastEntityEntered=0    #holds the last time that an entity entered in the object
-        self.nameLastEntityEntered=""   #holds the name of the last entity that entered in the object
-        self.timeLastFailure=0          #holds the time that the last failure of the object started
-        self.timeLastFailureEnded=0          #holds the time that the last failure of the object Ended
-        self.downTimeProcessingCurrentEntity=0  #holds the time that the machine was down while processing the current entity
-        self.downTimeInTryingToReleaseCurrentEntity=0 #holds the time that the object was down while trying 
-                                                      #to release the current entity  
-        self.downTimeInCurrentEntity=0                  #holds the total time that the object was down while holding current entity
-        self.timeLastEntityLeft=0        #holds the last time that an entity left the object
-                                                
-        self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                               
-                                                      
-        self.waitToDispose=False    #shows if the object waits to dispose an entity       
+        # using the Process __init__ and not the CoreObject __init__
+        CoreObject.initialize(self)
         
         #if the failure distribution for the object is fixed, activate the failure       
         if(self.failureDistType=="Fixed" or self.failureDistType=="Availability"):  
             MFailure=Failure(self,  self.failureDistType, self.MTTF, self.MTTR, self.availability, self.id, self.repairman)
             activate(MFailure,MFailure.run())
-
-        self.Res=Resource(self.capacity)      
         
-        self.predecessorIndex=0     #holds the index of the predecessor from which the Machine will take an entity next
-        self.successorIndex=0       #holds the index of the successor where the Machine will dispose an entity next
+        # initialize the Queue (type Resource) of the Machine 
+        self.Res=Resource(self.capacity)      
     
-    #the main process of the machine
+    # =======================================================================
+    # the main process of the machine
+    # =======================================================================
     def run(self):
         #execute all through simulation time
         while 1:
-            yield waituntil, self, self.canAcceptAndIsRequested     #wait until the machine can accept an entity
-                                                                    #and one predecessor requests it      
-                                                                                          
-            self.getEntity()    #get the entity from the predecessor
-
+            # wait until the machine can accept an entity and one predecessor requests it 
+            # canAcceptAndIsRequested is invoked to check when the machine requested to receive an entity  
+            yield waituntil, self, self.canAcceptAndIsRequested          
+            # get the entity from the predecessor                                                                            
+            self.getEntity()    
+            # output to whenever an entity enters the Machine (self.objName)
             self.outputTrace("got into "+self.objName)
-            self.currentEntity=self.getActiveObjectQueue()[0]                 #entity is the current entity processed in Machine  
-            self.timeLastEntityEntered=now()        #this holds the last time that an entity got into Machine  
-            self.nameLastEntityEntered=self.currentEntity.name    #this holds the name of the last entity that got into Machine
-            timeEntered=now()            
-            tinMStart=self.calculateProcessingTime()         #get the processing time  
-            tinM=tinMStart 
-            self.processingTimeOfCurrentEntity=tinMStart                  
+            # set the currentEntity as the Entity just received and initialize the timer timeLastEntityEntered
+            self.currentEntity=self.getActiveObjectQueue()[0]       # entity is the current entity processed in Machine
+            self.nameLastEntityEntered=self.currentEntity.name      # this holds the name of the last entity that got into Machine                   
+            self.timeLastEntityEntered=now()                        #this holds the last time that an entity got into Machine  
+            # variables dedicated to hold the processing times, the time when the Entity entered, 
+            # and the processing time left 
+            timeEntered=now()                                       # timeEntered dummy Timer that holds the time the last Entity Entered
+            tinMStart=self.calculateProcessingTime()                # get the processing time, tinMStarts holds the processing time of the machine 
+            tinM=tinMStart                                          # timer to hold the processing time left
+            self.processingTimeOfCurrentEntity=tinMStart            # processing time of the machine 
+                                                                     
+            # variables used to flag any interruptions and the end of the processing     
             interruption=False    
             processingEndedFlag=True 
-            failureTime=0       
-            self.downTimeInCurrentEntity=0
-  
-            #this loop is repeated until the processing time is expired with no failure              
-            while processingEndedFlag:                         
-                tBefore=now()                           
-                yield hold,self,tinM          #getting processed 
-                if self.interrupted():        #if a failure occurs while processing the machine is interrupted.                                                                   
+            # timers to follow up the failure time of the machine while on current Entity
+            failureTime=0                                           # dummy variable keeping track of the failure time 
+                                                                    # (why not avoid using it?)
+            self.downTimeInCurrentEntity=0                          #holds the total time that the 
+                                                                    #object was down while holding current entity
+            # this loop is repeated until the processing time is expired with no failure
+            # check when the processingEndedFlag switched to false              
+            while processingEndedFlag:
+                # tBefore : dummy variable to keep track of the time that the processing starts after 
+                #           every interruption                        
+                tBefore=now()
+                # wait for the processing time left tinM, if no interruption occurs then change the 
+                # processingEndedFlag and exit loop,
+                # else (if interrupted()) set interruption flag to true (only if tinM==0),
+                # and recalculate the processing time left tinM,
+                # passivate while waiting for repair.             
+                yield hold,self,tinM                                # getting processed for remaining processing time tinM
+                if self.interrupted():                              # if a failure occurs while processing the machine is interrupted.
+                    # output to trace that the Machine (self.objName) got interrupted                                                                  
                     self.outputTrace("Interrupted at "+self.objName)
-                            
-                    tinM=tinM-(now()-tBefore)         #the processing time left
-                    if(tinM==0):           #sometimes the failure may happen exactly at the time that the processing would finish
-                                                    #this may produce ina ccordance to the simul8 because in both SimPy and Simul8
-                                                    #it seems to be random which happens 1st
-                                                    #this should not appear often to stochastic models though where times are random
-                                                    
+                    # recalculate the processing time left tinM
+                    tinM=tinM-(now()-tBefore)
+                    if(tinM==0):            # sometimes the failure may happen exactly at the time that the processing would finish
+                                            # this may produce disagreement with the simul8 because in both SimPy and Simul8
+                                            # it seems to be random which happens 1st
+                                            # this should not appear often to stochastic models though where times are random
                         interruption=True
-                            
-                    breakTime=now()
-                    yield passivate,self    #if there is a failure in the machine it is passivated
-                    self.downTimeProcessingCurrentEntity+=now()-breakTime
-                    self.downTimeInCurrentEntity+=now()-breakTime
-                    self.timeLastFailureEnded=now()
-                    failureTime+=now()-breakTime
+                    # passivate the Machine for as long as there is no repair
+                    # start counting the down time at breatTime dummy variable
+                    breakTime=now()                                 # dummy variable that the interruption happened
+                    yield passivate,self                            # if there is a failure in the machine it is passivated
+                    # use the timers to count the time that Machine is down and related 
+                    self.downTimeProcessingCurrentEntity+=now()-breakTime       # count the time that Machine is down while processing this Entity
+                    self.downTimeInCurrentEntity+=now()-breakTime               # count the time that Machine is down while on currentEntity
+                    self.timeLastFailureEnded=now()                             # set the timeLastFailureEnded
+                    failureTime+=now()-breakTime                                # dummy variable keeping track of the failure time 
+                    # output to trace that the Machine self.objName was passivated for the current failure time
                     self.outputTrace("passivated in "+self.objName+" for "+str(now()-breakTime))              
-                            
+                # if no interruption occurred the processing in M1 is ended 
                 else:
-                    processingEndedFlag=False               #if no interruption occurred the processing in M1 is ended 
-        
-            self.outputTrace("ended processing in "+self.objName)  
+                    processingEndedFlag=False
+            # output to trace that the processing in the Machine self.objName ended 
+            self.outputTrace("ended processing in "+self.objName)
+            # set the variable that flags an Entity is ready to be disposed 
             self.waitToDispose=True
-            self.totalWorkingTime+=tinMStart   #the total processing time for this entity is what the distribution initially gave          
-            self.timeLastEntityEnded=now()      #this holds the last time that an entity ended processing in Machine 
-            self.nameLastEntityEnded=self.currentEntity.name  #this holds the name of the last entity that ended processing in Machine
-            self.completedJobs+=1               #Machine completed one more Job
-            self.downTimeProcessingCurrentEntity=0      
-            reqTime=now()           #entity has ended processing in Machine and requests for the next object 
-        
-        
-            self.downTimeInTryingToReleaseCurrentEntity=0         
-            notBlockageTime=0    
+            # update the total working time 
+            self.totalWorkingTime+=tinMStart                        # the total processing time for this entity 
+                                                                    # is what the distribution initially gave
+                                                                    
+            # update the variables keeping track of Entity related attributes of the machine    
+            self.timeLastEntityEnded=now()                          # this holds the time that the last entity ended processing in Machine 
+            self.nameLastEntityEnded=self.currentEntity.name        # this holds the name of the last entity that ended processing in Machine
+            self.completedJobs+=1                                   # Machine completed one more Job
+            # re-initialize the downTimeProcessingCurrentEntity.
+            # a new machine is about to enter
+            self.downTimeProcessingCurrentEntity=0
+               
+            # dummy variable requests the successor object now
+            reqTime=now()                                           # entity has ended processing in Machine and requests for the next object 
+            # initialize the timer downTimeInTryingToReleaseCurrentEntity, we have to count how much time 
+            # the Entity will wait for the next successor to be able to accept (canAccept)
+            self.downTimeInTryingToReleaseCurrentEntity=0      
                 
             while 1:
-                yield waituntil, self, self.ifCanDisposeOrHaveFailure       #wait until the next Object                                                                                 #is available or machine has failure
-                        
-                if self.Up:  #if Next object available break 
+                # wait until the next Object is available or machine has failure
+                yield waituntil, self, self.ifCanDisposeOrHaveFailure  
+                
+                # if Next object available break      
+                if self.Up:   
                     break
-                else:       #if M1 had failure, we want to wait until it is fixed and also count the failure time. 
-                    failTime=now()   
-                    yield waituntil, self, self.checkIfMachineIsUp
-                    failureTime+=now()-failTime      
+                # if M1 had failure, we want to wait until it is fixed and also count the failure time. 
+                else:
+                    failTime=now()                                  # dummy variable holding the time failure happened
+                    # passivate until machine is up
+                    yield waituntil, self, self.checkIfMachineIsUp  
+                    failureTime+=now()-failTime                     # count the failure while on current entity time with failureTime variable
+                    # calculate the time the Machine was down while trying to dispose the current Entity, 
+                    # and the total down time while on current Entity
                     self.downTimeInTryingToReleaseCurrentEntity+=now()-failTime         
-                    self.downTimeInCurrentEntity+=now()-failTime        
+                    self.downTimeInCurrentEntity+=now()-failTime    # already updated from failures during processing
+                    # update the timeLastFailureEnded   
                     self.timeLastFailureEnded=now()           
                             
-            totalTime=now()-timeEntered    
-            blockageTime=totalTime-(tinMStart+failureTime)
+            totalTime=now()-timeEntered                             # dummy variable holding the total time the Entity spent in the Machine
+            blockageTime=totalTime-(tinMStart+failureTime)          # count the time the Machine was blocked subtracting the failureTime 
+                                                                    #    and the processing time from the totalTime spent in the Machine
+            # ??? is the next equivalent to:
+            #    self.totalBlockageTime+=blockageTime
             self.totalBlockageTime+=totalTime-(tinMStart+failureTime)   #the time of blockage is derived from 
                                                                                          #the whole time in the machine
-                                                                                         #minus the processing time and the failure time                        
-    #checks if the machine is Up  
+                                                                                         #minus the processing time and the failure time
+    # =======================================================================
+    # checks if the machine is Up
+    # =======================================================================
     def checkIfMachineIsUp(self):
         return self.Up
     
-    #calculates the processing time
+    # =======================================================================
+    # calculates the processing time
+    # =======================================================================
     def calculateProcessingTime(self):
-        return self.rng.generateNumber()    #this is if we have a default processing time for all the entities
+        return self.rng.generateNumber()                            # this is if we have a default processing time for all the entities
     
-    #checks if the Machine can accept an entity       
-    #it checks also who called it and returns TRUE only to the predecessor that will give the entity.  
+    # =======================================================================
+    # checks if the Machine can accept an entity       
+    # it checks also who called it and returns TRUE only to the predecessor 
+    # that will give the entity.
+    # =======================================================================  
     def canAccept(self, callerObject=None):
+        # get active and giver objects
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
         
-        #if we have only one predecessor just check if there is a place and the machine is up
+        # if we have only one predecessor just check if there is a place and the machine is up
+        # this is done to achieve better (cpu) processing time 
         if(len(activeObject.previous)==1 or callerObject==None):      
             return activeObject.Up and len(activeObjectQueue)==0
         
-        #if the machine is busy return False immediately
-        if len(activeObjectQueue)==activeObject.capacity:
-            return False
+#         # if the machine is busy return False immediately
+#         if len(activeObjectQueue)==activeObject.capacity:
+#             return False
                       
         thecaller=callerObject
-        
-        return len(activeObjectQueue)<self.capacity and (thecaller is giverObject)  
+        # return True ONLY if the length of the activeOjbectQue is smaller than
+        # the object capacity, and the callerObject is not None but the giverObject
+        return len(activeObjectQueue)<activeObject.capacity and (thecaller is giverObject)
     
-    #checks if the Machine can accept an entity and there is an entity in some predecessor waiting for it
-    #also updates the predecessorIndex to the one that is to be taken
+    # =======================================================================
+    # checks if the Machine can accept an entity and there is an entity in 
+    # some predecessor waiting for it
+    # also updates the predecessorIndex to the one that is to be taken
+    # =======================================================================
     def canAcceptAndIsRequested(self):
+        # get active and giver objects
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
                 
-        #if we have only one predecessor just check if there is a place, the machine is up and the predecessor has an entity to dispose
+        # if we have only one predecessor just check if there is a place, 
+        # the machine is up and the predecessor has an entity to dispose
+        # this is done to achieve better (cpu) processing time
         if(len(activeObject.previous)==1):
-            return activeObject.Up and len(activeObjectQueue)<activeObject.capacity and giverObject.haveToDispose(activeObject) 
+            return activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
+                 and giverObject.haveToDispose(activeObject) 
         
-        isRequested=False
-        maxTimeWaiting=0
+        # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
+        isRequested=False                                           # is requested is dummyVariable checking if it is requested to accept an item
+        maxTimeWaiting=0                                            # dummy variable counting the time a predecessor is blocked
         
-        #loop through the predecessors to see which have to dispose and which is the one blocked for longer
-        i=0
+        # loop through the predecessors to see which have to dispose and which is the one blocked for longer
+        i=0                                                         # index used to set the predecessorIndex to the giver waiting the most
         for object in activeObject.previous:
             if(object.haveToDispose(activeObject)):
-                isRequested=True               
-                if(object.downTimeInTryingToReleaseCurrentEntity>0):
-                    timeWaiting=now()-object.timeLastFailureEnded
+                isRequested=True                                    # if the predecessor objects have entities to dispose of
+                if(object.downTimeInTryingToReleaseCurrentEntity>0):# and the predecessor has been down while trying to give away the Entity
+                    timeWaiting=now()-object.timeLastFailureEnded   # the timeWaiting dummy variable counts the time end of the last failure of the giver object
                 else:
-                    timeWaiting=now()-object.timeLastEntityEnded
+                    timeWaiting=now()-object.timeLastEntityEnded    # in any other case, it holds the time since the end of the Entity processing
                 
                 #if more than one predecessor have to dispose take the part from the one that is blocked longer
                 if(timeWaiting>=maxTimeWaiting): 
-                    activeObject.predecessorIndex=i  
+                    activeObject.predecessorIndex=i                 # the object to deliver the Entity to the activeObject is set to the ith member of the previous list
                     maxTimeWaiting=timeWaiting    
-            i+=1                                 
-        return len(activeObjectQueue)<activeObject.capacity and isRequested and activeObject.Up             
+            i+=1                                                    # in the next loops, check the other predecessors in the previous list
+        return activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested               
     
-    #checks if the machine down or it can dispose the object
+    # =======================================================================
+    # checks if the machine down or it can dispose the object
+    # =======================================================================
     def ifCanDisposeOrHaveFailure(self):
-         return self.Up==False or self.next[0].canAccept(self) or len(self.Res.activeQ)==0  #the last part is added so that it is not removed and stack
-                                                                                        #gotta think of it again    
+        # the last part is added so that it is not removed and stack gotta think of it again ?????????? 
+         return self.Up==False or self.next[0].canAccept(self) or len(self.Res.activeQ)==0     
   
-    #removes an entity from the Machine
+    # =======================================================================
+    # removes an entity from the Machine
+    # =======================================================================
     def removeEntity(self):
+        # get active and its queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()        
         
-        activeObject.timeLastEntityLeft=now()
-        activeObject.outputTrace("releases "+activeObject.objName)
-        activeObject.waitToDispose=False                           
-        activeObjectQueue.pop(0)        #remove the Entity from the activeQ
-        activeObject.downTimeInTryingToReleaseCurrentEntity=0 
+        activeObject.timeLastEntityLeft=now()                       # set the time that the last Entity was removed from this object
+        activeObject.outputTrace("releases "+activeObject.objName)  # output to trace that the Entity was released from the currentObject
+        activeObject.waitToDispose=False                            # update the waitToDispose flag
+        activeObjectQueue.pop(0)                                    # remove the Entity from the activeQ
+        activeObject.downTimeInTryingToReleaseCurrentEntity=0       # re-initialize the timer downTimeInTryingToReleaseCurrentEntity
            
-     
-    #checks if the Machine can dispose an entity to the following object     
-    def haveToDispose(self, callerObject=None): 
+    # ======================================================================= 
+    # checks if the Machine can dispose an entity to the following object
+    # =======================================================================
+    def haveToDispose(self, callerObject=None):
+        # get active and the receiver object
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()    
-        
-        #if we have only one successor just check if machine waits to dispose and also is up        
-        if(len(activeObject.next)==1 or callerObject==None):
+        receiverObject=activeObject.getReceiverObject() 
+        #if we have only one successor just check if machine waits to dispose and also is up
+        # this is done to achieve better (cpu) processing time        
+        if(len(activeObject.next)==1 or callerObject==None): 
             return len(activeObjectQueue)>0 and activeObject.waitToDispose and activeObject.Up
         
-        #if the Machine is empty it returns false right away
-        if(len(activeObjectQueue)==0):
-            return False
+#         # if the Machine is empty it returns false right away
+#         if(len(activeObjectQueue)==0):
+#             return False
    
         thecaller=callerObject
-        
-        #give the entity to the successor that is waiting for the most time. 
-        #(plant simulation does not do this in every occasion!)       
-        maxTimeWaiting=0      
-        i=0
+        # give the entity to the successor that is waiting for the most time. 
+        # (plant simulation does not do this in every occasion!)       
+        maxTimeWaiting=0                                            # dummy variable counting the time a successor is waiting
+        i=0                                                         # index used to set the successorIndex to the giver waiting the most
         for object in activeObject.next:
-            if(object.canAccept(activeObject)):
-                timeWaiting=now()-object.timeLastEntityLeft
-                if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
+            if(object.canAccept(activeObject)):                     # if a successor can accept an object
+                timeWaiting=now()-object.timeLastEntityLeft         # the time it has been waiting is updated and stored in dummy variable timeWaiting
+                if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# if the timeWaiting is the maximum among the ones of the successors 
                     maxTimeWaiting=timeWaiting
-                    activeObject.successorIndex=i     
-            i+=1 
-              
-        receiverObject=activeObject.getReceiverObject()
-        return len(activeObjectQueue)>0 and activeObject.waitToDispose and activeObject.Up and (thecaller is receiverObject)       
+                    activeObject.successorIndex=i                   # set the successorIndex equal to the index of the longest waiting successor
+            i+=1                                                    # in the next loops, check the other successors in the previous list
+        return len(activeObjectQueue)>0 and activeObject.waitToDispose\
+             and activeObject.Up and (thecaller is receiverObject)       
     
-    
-   #actions to be taken after the simulation ends
+   # =======================================================================
+   # actions to be taken after the simulation ends
+   # =======================================================================
     def postProcessing(self, MaxSimtime=None):
         if MaxSimtime==None:
             from Globals import G
@@ -352,7 +399,10 @@ class Machine(CoreObject):
         activeObject.Waiting.append(100*self.totalWaitingTime/MaxSimtime)    
         activeObject.Working.append(100*self.totalWorkingTime/MaxSimtime)  
     
-    #outputs message to the trace.xls. Format is (Simulation Time | Entity Name | message)
+    # =======================================================================
+    # outputs message to the trace.xls. 
+    # Format is (Simulation Time | Entity Name | message)
+    # =======================================================================
     def outputTrace(self, message):
         from Globals import G
         if(G.trace=="Yes"):         #output only if the user has selected to
@@ -368,7 +418,9 @@ class Machine(CoreObject):
                 G.sheetIndex+=1
                 G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)    
                 
-    #outputs the the "output.xls"
+    # =======================================================================
+    # outputs the the "output.xls"
+    # =======================================================================
     def outputResultsXL(self, MaxSimtime=None):
         from Globals import G
         if MaxSimtime==None:
@@ -437,8 +489,10 @@ class Machine(CoreObject):
                 G.outputSheet.write(G.outputIndex,3,self.Waiting[0])                            
             G.outputIndex+=1    
         G.outputIndex+=1    
-        
-    #outputs results to JSON File
+    
+    # =======================================================================    
+    # outputs results to JSON File
+    # =======================================================================
     def outputResultsJSON(self):
         from Globals import G
         if(G.numberOfReplications==1): #if we had just one replication output the results to excel
