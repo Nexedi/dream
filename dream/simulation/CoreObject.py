@@ -27,99 +27,111 @@ Class that acts as an abstract. It should have no instances. All the core-object
 
 from SimPy.Simulation import Process, Resource, now
 
-#the core object
+# =================================== the core object ==============================================
 class CoreObject(Process):
     
-    def initilize(self):
+    def initialize(self):
         Process.__init__(self) 
-        self.predecessorIndex=0     #holds the index of the predecessor from which the Machine will take an entity next
-        self.successorIndex=0       #holds the index of the successor where the Machine will dispose an entity next
-        self.Up=True                    #Boolean that shows if the machine is in failure ("Down") or not ("up")
+        self.predecessorIndex=0                         #holds the index of the predecessor from which the Machine will take an entity next
+        self.successorIndex=0                           #holds the index of the successor where the Machine will dispose an entity next
+        self.Up=True                                    #Boolean that shows if the machine is in failure ("Down") or not ("up")
         self.currentEntity=None      
-          
-        self.totalBlockageTime=0        #holds the total blockage time
-        self.totalFailureTime=0         #holds the total failure time
-        self.totalWaitingTime=0         #holds the total waiting time
-        self.totalWorkingTime=0         #holds the total working time
-        self.completedJobs=0            #holds the number of completed jobs 
+        # ============================== total times ===============================================
+        self.totalBlockageTime=0                        #holds the total blockage time
+        self.totalFailureTime=0                         #holds the total failure time
+        self.totalWaitingTime=0                         #holds the total waiting time
+        self.totalWorkingTime=0                         #holds the total working time
+        self.completedJobs=0                            #holds the number of completed jobs 
+        # ============================== Entity related attributes =================================
+        self.timeLastEntityEnded=0                      #holds the last time that an entity ended processing in the object
+        self.nameLastEntityEnded=""                     #holds the name of the last entity that ended processing in the object
+        self.timeLastEntityEntered=0                    #holds the last time that an entity entered in the object
+        self.nameLastEntityEntered=""                   #holds the name of the last entity that entered in the object
+        self.timeLastFailure=0                          #holds the time that the last failure of the object started
+        self.timeLastFailureEnded=0                     #holds the time that the last failure of the object Ended
+        # ============================== failure related times =====================================
+        self.downTimeProcessingCurrentEntity=0          #holds the time that the machine was down while 
+                                                        #processing the current entity
+        self.downTimeInTryingToReleaseCurrentEntity=0   #holds the time that the object was down while trying 
+                                                        #to release the current entity  
+        self.downTimeInCurrentEntity=0                  #holds the total time that the 
+                                                        #object was down while holding current entity
+        self.timeLastEntityLeft=0                       #holds the last time that an entity left the object
         
-        self.timeLastEntityEnded=0      #holds the last time that an entity ended processing in the object
-        self.nameLastEntityEnded=""     #holds the name of the last entity that ended processing in the object
-        self.timeLastEntityEntered=0    #holds the last time that an entity entered in the object
-        self.nameLastEntityEntered=""   #holds the name of the last entity that entered in the object
-        self.timeLastFailure=0          #holds the time that the last failure of the object started
-        self.timeLastFailureEnded=0          #holds the time that the last failure of the object Ended
-        self.downTimeProcessingCurrentEntity=0  #holds the time that the machine was down while processing the current entity
-        self.downTimeInTryingToReleaseCurrentEntity=0 #holds the time that the object was down while trying 
-                                                      #to release the current entity  
-        self.downTimeInCurrentEntity=0                  #holds the total time that the object was down while holding current entity
-        self.timeLastEntityLeft=0        #holds the last time that an entity left the object
-                                                
-        self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                               
-                                                      
-        self.waitToDispose=False    #shows if the object waits to dispose an entity   
+        self.processingTimeOfCurrentEntity=0            #holds the total processing time that the current entity required                                               
+        # ============================== waiting flag ==============================================                                      
+        self.waitToDispose=False                        #shows if the object waits to dispose an entity   
 
 
-    #the main process of the core object
-    #this is dummy, every object must have its own implementation
+    # ======================== the main process of the core object =================================
+    # ================ this is dummy, every object must have its own implementation ================
     def run(self):
         raise NotImplementedError("Subclass must define 'run' method")
         
-    #sets the routing in and out elements for the Object
+    # ======================== sets the routing in and out elements for the Object ==================
     def defineRouting(self, predecessorList=[], successorList=[]):
         self.next=successorList
         self.previous=predecessorList
 
-    #removes an entity from the Object
+    # ================================== removes an entity from the Object ==========================
     def removeEntity(self): 
         activeObjectQueue=self.getActiveObjectQueue()    
-        activeObjectQueue.pop(0)      #remove the Entity from the queue            
+        activeObjectQueue.pop(0)                        #remove the Entity from the queue            
         
-    #gets an entity from the predecessor that the predecessor index points to     
+    # ================================== gets an entity from the ====================================
+    # ===================== predecessor that the predecessor index points to ========================     
     def getEntity(self):
+        # get giver object, its queue, and sort the entities according to this object priorities
         giverObject=self.getGiverObject()
-        giverObject.sortEntities()      #sort the Entities of the giver according to the scheduling rule if applied
-        activeObject=self.getActiveObject()
+        giverObject.sortEntities()                      #sort the Entities of the giver 
+                                                        #according to the scheduling rule if applied
         giverObjectQueue=self.getGiverObjectQueue()
-        activeEntity=giverObjectQueue[0]
+        # get active object and its queue, as well as the active (to be) entity 
+        #(after the sorting of the entities in the queue of the giver object)
+        activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        
-        activeObjectQueue.append(activeEntity)   #get the entity from the previous object
-                                                                                                      #and put it in front of the activeQ       
-        giverObject.removeEntity()                                           #remove the entity from the previous object  
-        activeEntity.schedule.append([activeObject.id,now()])   #append the time to schedule so that it can be read in the result
+        activeEntity=giverObjectQueue[0]
+        #get the entity from the previous object and put it in front of the activeQ 
+        activeObjectQueue.append(activeEntity)   
+        #remove the entity from the previous object
+        giverObject.removeEntity()
+        #append the time to schedule so that it can be read in the result
+        #remember that every entity has it's schedule which is supposed to be updated every time 
+        # the entity enters a new object
+        activeEntity.schedule.append([activeObject.id,now()])
         activeEntity.currentStation=self
         
-    #actions to be taken after the simulation ends
+    # ========================== actions to be taken after the simulation ends ======================
     def postProcessing(self, MaxSimtime=None):
         pass    
     
-    #outputs message to the trace.xls
+    # =========================== outputs message to the trace.xls ==================================
     def outputTrace(self, message):
         pass
     
-    #outputs data to "output.xls"
+    # =========================== outputs data to "output.xls" ======================================
     def outputResultsXL(self, MaxSimtime=None):
         pass
     
-    #outputs results to JSON File
+    # =========================== outputs results to JSON File ======================================
     def outputResultsJSON(self):
         pass
     
-    #checks if the Object can dispose an entity to the following object     
+    # ================= checks if the Object can dispose an entity to the following object ==========
     def haveToDispose(self, callerObject=None): 
         activeObjectQueue=self.getActiveObjectQueue()    
         return len(activeObjectQueue)>0
+    
     
     #checks if the Object can accept an entity and there is an entity in some predecessor waiting for it
     def canAcceptAndIsRequested(self):
         pass
     
-    #checks if the Object can accept an entity       
+    # ============================ checks if the Object can accept an entity ========================
     def canAccept(self, callerObject=None): 
         pass
-
-    #sorts the Entities in the activeQ of the objects
+    
+    # ===================== sorts the Entities in the activeQ of the objects ========================
     def sortEntities(self):
         pass
     #takes the array and checks if all its values are identical (returns false) or not (returns true) 
@@ -131,28 +143,27 @@ class CoreObject(Process):
                difValuesFlag=True
         return difValuesFlag 
       
-      
-    #get the active object. This always returns self  
+    # ===================== get the active object. This always returns self ========================  
     def getActiveObject(self):
         return self
     
-    #get the activeQ of the active object.
+    # ========================== get the activeQ of the active object. =============================
     def getActiveObjectQueue(self):
         return self.Res.activeQ
-       
-    #get the giver object in a getEntity transaction.       
+    
+    # =================== get the giver object in a getEntity transaction. =========================        
     def getGiverObject(self):
         return self.previous[self.predecessorIndex]
     
-    #get the giver object queue in a getEntity transaction.      
+    # ============== get the giver object queue in a getEntity transaction. ========================    
     def getGiverObjectQueue(self):
         return self.getGiverObject().Res.activeQ
     
-    #get the receiver object in a removeEntity transaction.  
+    # ============== get the receiver object in a removeEntity transaction.  ======================= 
     def getReceiverObject(self):
         return self.next[self.successorIndex]
-   
-    #get the receiver object queue in a removeEntity transaction.    
+    
+    # ========== get the receiver object queue in a removeEntity transaction. ======================    
     def getReceiverObjectQueue(self):
         return self.getReceiverObject().Res.activeQ
     
