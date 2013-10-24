@@ -25,9 +25,9 @@ M2.defineRouting(predecessorList=[Q2])
 M3.defineRouting(predecessorList=[Q3])
 
 #define the Jobs
-J1=Job('J1','Job1',[['Q1',1],['Q3',3],['Q2',2],['E',0]], priority=0, dueDate=100)
-J2=Job('J2','Job2',[['Q1',2],['Q2',4],['Q3',6],['E',0]], priority=0, dueDate=90)
-J3=Job('J3','Job3',[['Q1',10],['Q3',3],['E',0]], priority=5, dueDate=110)
+J1=Job('J1','Job1',[['Q1',1],['Q3',3],['Q2',2],['E',0]], priority=1, dueDate=100)
+J2=Job('J2','Job2',[['Q1',2],['Q2',4],['Q3',6],['E',0]], priority=1, dueDate=90)
+J3=Job('J3','Job3',[['Q1',10],['Q3',3],['E',0]], priority=0, dueDate=110)
 
 G.JobList=[J1,J2,J3]
 
