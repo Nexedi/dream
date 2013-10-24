@@ -29,133 +29,170 @@ from SimPy.Simulation import now, Process, Resource, infinity, waituntil
 import xlwt
 import scipy.stats as stat
 from CoreObject import CoreObject
-
-#The exit object
+# ===========================================================================
+#                            The exit object
+# ===========================================================================
 class Exit(CoreObject):    
           
     def __init__(self, id, name):
         Process.__init__(self)
-        self.predecessorIndex=0   #holds the index of the predecessor from which the Exit will take an entity next
-        self.id=id        
+        self.predecessorIndex=0         # holds the index of the predecessor from which the Exit will take an entity next
+        # general properties of the Exit
+        self.id=id
         self.objName=name
         self.type="Exit"
-        self.previous=[]    #list with the previous objects in the flow
-        self.nextIds=[]     #list with the ids of the next objects in the flow. For the exit it is always empty!
-        self.previousIds=[]     #list with the ids of the previous objects in the flow
+        # list with routing information
+        self.previous=[]                # list with the previous objects in the flow
+        self.nextIds=[]                 # list with the ids of the next objects in the flow. For the exit it is always empty!
+        self.previousIds=[]             # list with the ids of the previous objects in the flow
         
         #lists to hold statistics of multiple runs
         self.Exits=[]
         self.Lifespan=[] 
         
     def initialize(self):
-        Process.__init__(self)
+        # using the Process __init__ and not the CoreObject __init__
+        CoreObject.initialize(self)
+        # no predecessorIndex nor successorIndex
+        
+#         Process.__init__(self)
+#                 
+#         self.Up=True                    #Boolean that shows if the object is in failure ("Down") or not ("up")
+#         self.currentEntity=None      
+#         # ============================== total times ===============================================
+#         self.totalBlockageTime=0        #holds the total blockage time
+#         self.totalFailureTime=0         #holds the total failure time
+#         self.totalWaitingTime=0         #holds the total waiting time
+#         self.totalWorkingTime=0         #holds the total working time
+#         self.completedJobs=0            #holds the number of completed jobs 
+#         # ============================== Entity related attributes =================================
+#         self.timeLastEntityEnded=0      #holds the last time that an entity ended processing in the object
+#         self.nameLastEntityEnded=""     #holds the name of the last entity that ended processing in the object
+#         self.timeLastEntityEntered=0    #holds the last time that an entity entered in the object
+#         self.nameLastEntityEntered=""   #holds the name of the last entity that entered in the object
+#         self.timeLastFailure=0          #holds the time that the last failure of the object started
+#         self.timeLastFailureEnded=0     #holds the time that the last failure of the object Ended
+#         # ============================== failure related times =====================================
+#         self.downTimeProcessingCurrentEntity=0          #holds the time that the object was down while 
+#                                                          # processing the current entity
+#         self.downTimeInTryingToReleaseCurrentEntity=0   #holds the time that the object was down while trying 
+#                                                          # to release the current entity  
+#         self.downTimeInCurrentEntity=0                  #holds the total time that the object was 
+#                                                          # down while holding current entity
+#         self.timeLastEntityLeft=0                       #holds the last time that an entity left the object
+#                                                 
+#         self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required      
+#         # ============================== waiting flag ==============================================  
+#         self.waitToDispose=False    #shows if the object waits to dispose an entity
+        
+        # initialize the internal Queue (type Resource) of the Exit 
         self.Res=Resource(capacity=infinity)         
         # The number of resource that exited through this exit.
         # XXX bug: cannot output as json when nothing has exited.
         self.numOfExits=0
         self.totalLifespan=0
         
-        self.Up=True                    #Boolean that shows if the object is in failure ("Down") or not ("up")
-        self.currentEntity=None      
-          
-        self.totalBlockageTime=0        #holds the total blockage time
-        self.totalFailureTime=0         #holds the total failure time
-        self.totalWaitingTime=0         #holds the total waiting time
-        self.totalWorkingTime=0         #holds the total working time
-        self.completedJobs=0            #holds the number of completed jobs 
-        
-        self.timeLastEntityEnded=0      #holds the last time that an entity ended processing in the object
-        self.nameLastEntityEnded=""     #holds the name of the last entity that ended processing in the object
-        self.timeLastEntityEntered=0    #holds the last time that an entity entered in the object
-        self.nameLastEntityEntered=""   #holds the name of the last entity that entered in the object
-        self.timeLastFailure=0          #holds the time that the last failure of the object started
-        self.timeLastFailureEnded=0          #holds the time that the last failure of the object Ended
-        self.downTimeProcessingCurrentEntity=0  #holds the time that the object was down while processing the current entity
-        self.downTimeInTryingToReleaseCurrentEntity=0 #holds the time that the object was down while trying 
-                                                      #to release the current entity  
-        self.downTimeInCurrentEntity=0                  #holds the total time that the object was down while holding current entity
-        self.timeLastEntityLeft=0        #holds the last time that an entity left the object
-                                                
-        self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required      
-        
-        self.totalTaktTime=0        #the total time between to consecutive exits    
-        self.TaktTime=[]        #list that holds the avg time between to consecutive exits                                       
+        self.totalTaktTime=0            # the total time between to consecutive exits    
+        self.TaktTime=[]                # list that holds the avg time between to consecutive exits                                       
                                                       
-        self.waitToDispose=False    #shows if the object waits to dispose an entity  
-        
+  
     def run(self):
         while 1:
-            yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity
-                                                                    #and one predecessor requests it  
+            yield waituntil, self, self.canAcceptAndIsRequested     # wait until the Queue can accept an entity
+                                                                     # and one predecessor requests it  
             self.getEntity()                                                                                                  
-            self.numOfExits+=1      #increase the exits by one
-            self.totalTaktTime+=now()-self.timeLastEntityLeft   #add the takt time
-            self.timeLastEntityLeft=now()   #update the time that the last entity left from the Exit
-
-    #sets the routing in element for the Exit
+            self.numOfExits+=1                                      # increase the exits by one
+            self.totalTaktTime+=now()-self.timeLastEntityLeft       # add the takt time
+            self.timeLastEntityLeft=now()                           # update the time that the last entity left from the Exit
+    # =======================================================================
+    #                sets the routing in element for the Exit
+    # =======================================================================
     def defineRouting(self, predecessorList=[]):
-        self.previous=predecessorList
-                
-    #checks if the Exit can accept an entity       
+        self.previous=predecessorList                               # no successorList for the Exit
+    # =======================================================================
+    #                checks if the Exit can accept an entity       
+    # =======================================================================    
     def canAccept(self, callerObject=None): 
-        return True   #the exit always can accept an entity
-    
-    #checks if the Exit can accept an entity and there is an entity waiting for it
+        return True                                                 #the exit always can accept an entity
+    # =======================================================================
+    #                checks if the Exit can accept an entity 
+    #                 and there is an entity waiting for it
+    # =======================================================================
     def canAcceptAndIsRequested(self):
+        # get the active object and its internal queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        
-        result = None
+        # check if there is only one predecessor 
+        # and if true is returned then control if the 
+        # predecessor has an Entity to dispose off 
         if(len(activeObject.previous)==1):  
             object=activeObject.previous[0]
             return object.haveToDispose(self)    
     
-        isRequested=False
+        isRequested=False   # dummy variable used to check if any of the  predecessors has something to deliver
         i=0
+        # check if any of the predecessors has something to deliver
+        # if yes, then return true and the predecessorIndex equal to the
+        # index of the predecessor in the previous lists
         for object in self.previous:
-            if(object.haveToDispose(activeObject)):
+            if(object.haveToDispose(activeObject)): 
                 isRequested=True
                 self.predecessorIndex=i
-            i+=1
-            
+            i+=1 
         return isRequested
-    
-    #gets an entity from the predecessor     
+    # =======================================================================
+    #                    gets an entity from the predecessor     
+    # =======================================================================
     def getEntity(self): 
-        giverObject=self.getGiverObject()
-        giverObject.sortEntities()      #sort the Entities of the giver according to the scheduling rule if applied
-        activeObject=self.getActiveObject()
-        giverObjectQueue=self.getGiverObjectQueue()
-        activeEntity=giverObjectQueue[0]
-        activeObjectQueue=self.getActiveObjectQueue()
-        
-        name=activeEntity.name  #get the name of the entity for the trace
-        activeObjectQueue.append(activeEntity)   #get the entity from the previous object
-                                                                            #and put it in front of the activeQ       
-        giverObject.removeEntity()                                           #remove the entity from the previous object  
-        activeEntity.schedule.append([activeObject.id,now()])   #append the time to schedule so that it can be read in the result
-        
-        self.totalLifespan+=now()-activeEntity.startTime  #Add the entity's lifespan to the total one. 
+
+#         # get giver object, its queue, and sort the entities according to this object priorities
+#         giverObject=self.getGiverObject()
+#         # sort the Entities of the giver according to the scheduling rule if applied
+#         giverObject.sortEntities()
+#         giverObjectQueue=self.getGiverObjectQueue()
+#         # get active object and its queue, as well as the active (to be) entity 
+#         #(after the sorting of the entities in the queue of the giver object)
+#         activeObject=self.getActiveObject()
+#         activeObjectQueue=self.getActiveObjectQueue()
+#         activeEntity=giverObjectQueue[0]
+#         #get the entity from the previous object and put it in front of the activeQ
+#         activeObjectQueue.append(activeEntity)
+#         #remove the entity from the previous object       
+#         giverObject.removeEntity()  
+#         #append the time to schedule so that it can be read in the result
+#         #remember that every entity has it's schedule which is supposed to be updated every time 
+#         # the entity enters a new object
+#         activeEntity.schedule.append([activeObject.id,now()])
+#         activeEntity.currentStation=self
+        activeEntity = CoreObject.getEntity(self)
+        # get the name of the entity for the trace
+        # Add the entity's lifespan to the total one. 
+        name=activeEntity.name
+        self.totalLifespan+=now()-activeEntity.startTime
         self.outputTrace(name)          
-        activeEntity.currentStation=self
-    
-    #actions to be taken after the simulation ends
+
+    # =======================================================================
+    #            actions to be taken after the simulation ends
+    # =======================================================================
     def postProcessing(self, MaxSimtime=None):
         from Globals import G
         if MaxSimtime==None:
             MaxSimtime=G.maxSimTime
-        self.Exits.append(self.numOfExits)
-        try:
+        # hold the numberOfExits of each replication
+        self.Exits.append(self.numOfExits) 
+        try:                            # throw exception in case the numOfExits is zero
             self.Lifespan.append(((self.totalLifespan)/self.numOfExits)/G.Base)
-        except ZeroDivisionError:
+        except ZeroDivisionError:       # the lifespan in this case is zero
             self.Lifespan.append(0)
-        try:
+        try:                            # throw exception in case of zero division
             self.TaktTime.append(((self.totalTaktTime)/self.numOfExits)/G.Base)
-        except ZeroDivisionError:
+        except ZeroDivisionError:       # the average time between exits is zero if no Entity exited
             self.TaktTime.append(0)
 
-    
-   #outputs message to the trace.xls. Format is (Simulation Time | Entity Name | "generated")            
+    # =======================================================================
+    #                   outputs message to the trace.xls. 
+    #        Format is (Simulation Time | Entity Name | "generated")
+    # =======================================================================            
     def outputTrace(self, message): 
         from Globals import G      
         if(G.trace=="Yes"):     #output only if the user has selected to
@@ -169,8 +206,9 @@ class Exit(CoreObject):
                 G.traceIndex=0
                 G.sheetIndex+=1
                 G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)     
-                
-    #outputs data to "output.xls"
+    # =======================================================================
+    #                        outputs data to "output.xls"
+    # =======================================================================
     def outputResultsXL(self, MaxSimtime=None):
         from Globals import G   
         if MaxSimtime==None:
@@ -228,8 +266,9 @@ class Exit(CoreObject):
                 G.outputSheet.write(G.outputIndex,3,self.TaktTime[0]) 
             G.outputIndex+=1
         G.outputIndex+=1
-
-    #outputs results to JSON File
+    # =======================================================================
+    #                        outputs results to JSON File
+    # =======================================================================
     def outputResultsJSON(self):
         from Globals import G
         if(G.numberOfReplications==1): #if we had just one replication output the results to excel
