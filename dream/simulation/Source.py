@@ -30,93 +30,118 @@ from SimPy.Simulation import now, Process, Resource, infinity, hold
 from Part import Part
 from RandomNumberGenerator import RandomNumberGenerator
 from CoreObject import CoreObject
-
-#The Source object is a Process
+#============================================================================
+#                 The Source object is a Process
+#============================================================================
 class Source(CoreObject): 
     def __init__(self, id, name, distribution='Fixed', mean=1, item=Part):
         Process.__init__(self)
+        # general properties
         self.id=id   
         self.objName=name   
-        self.distType=distribution      #label that sets the distribution type
-        self.totalInterArrivalTime=0    #the total interarrival time 
-        self.numberOfArrivals=0         #the number of entities that were created 
-        self.next=[]        #list with the next objects in the flow
-        self.nextIds=[]     #list with the ids of the next objects in the flow
-        self.previousIds=[]     #list with the ids of the previous objects in the flow. For the source it is always empty!
-        
-        self.type="Source"   #String that shows the type of object
+        self.distType=distribution                      # label that sets the distribution type
+        # properties used for statistics
+        self.totalInterArrivalTime=0                    # the total interarrival time 
+        self.numberOfArrivals=0                         # the number of entities that were created
+        # list containing objects that follow in the routing 
+        self.next=[]                                    # list with the next objects in the flow
+        self.nextIds=[]                                 # list with the ids of the next objects in the flow
+        self.previousIds=[]                             # list with the ids of the previous objects in the flow. 
+                                                        # For the source it is always empty!
+        self.type="Source"                              #String that shows the type of object
         self.rng=RandomNumberGenerator(self, self.distType)
         self.rng.avg=mean
-        self.item=item      #the type of object that the Source will generate
+        self.item=item                                  #the type of object that the Source will generate
         
     def initialize(self):
-        Process.__init__(self) 
-        self.Res=Resource(capacity=infinity)    
-        self.Res.activeQ=[]  
-        self.Res.waitQ=[]       
+        # using the Process __init__ and not the CoreObject __init__
+        CoreObject.initialize(self)
+#         Process.__init__(self) 
+#         # no predecessor or successor index
         
-        self.Up=True                    #Boolean that shows if the object is in failure ("Down") or not ("up")
-        self.currentEntity=None      
-          
-        self.totalBlockageTime=0        #holds the total blockage time
-        self.totalFailureTime=0         #holds the total failure time
-        self.totalWaitingTime=0         #holds the total waiting time
-        self.totalWorkingTime=0         #holds the total working time
-        self.completedJobs=0            #holds the number of completed jobs 
-        
-        self.timeLastEntityEnded=0      #holds the last time that an entity ended processing in the object
-        self.nameLastEntityEnded=""     #holds the name of the last entity that ended processing in the object
-        self.timeLastEntityEntered=0    #holds the last time that an entity entered in the object
-        self.nameLastEntityEntered=""   #holds the name of the last entity that entered in the object
-        self.timeLastFailure=0          #holds the time that the last failure of the object started
-        self.timeLastFailureEnded=0          #holds the time that the last failure of the object Ended
-        self.downTimeProcessingCurrentEntity=0  #holds the time that the object was down while processing the current entity
-        self.downTimeInTryingToReleaseCurrentEntity=0 #holds the time that the object was down while trying 
-                                                      #to release the current entity  
-        self.downTimeInCurrentEntity=0                  #holds the total time that the object was down while holding current entity
-        self.timeLastEntityLeft=0        #holds the last time that an entity left the object
-                                                
-        self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                               
-                                                      
-        self.waitToDispose=False    #shows if the object waits to dispose an entity   
+#         self.Up=True                    #Boolean that shows if the object is in failure ("Down") or not ("up")
+#         self.currentEntity=None      
+#         # ============================== total times ===============================================
+#         self.totalBlockageTime=0                                #holds the total blockage time
+#         self.totalFailureTime=0                                 #holds the total failure time
+#         self.totalWaitingTime=0                                 #holds the total waiting time
+#         self.totalWorkingTime=0                                 #holds the total working time
+#         self.completedJobs=0                                    #holds the number of completed jobs 
+#         # ============================== Entity related attributes =================================
+#         self.timeLastEntityEnded=0                              #holds the last time that an entity 
+#                                                                  # ended processing in the object
+#         self.nameLastEntityEnded=""                             #holds the name of the last entity 
+#                                                                  #that ended processing in the object
+#         self.timeLastEntityEntered=0                            #holds the last time that an 
+#                                                                  #entity entered in the object
+#         self.nameLastEntityEntered=""                           #holds the name of the last 
+#                                                                  #entity that entered in the object
+#         self.timeLastFailure=0                                  #holds the time that the last 
+#                                                                  #failure of the object started
+#         self.timeLastFailureEnded=0                             #holds the time that the last 
+#                                                                  #failure of the object Ended
+#         # ============================== failure related times =====================================
+#         self.downTimeProcessingCurrentEntity=0                  #holds the time that the object was down 
+#                                                                  #while processing the current entity
+#         self.downTimeInTryingToReleaseCurrentEntity=0           #holds the time that the object was down while trying 
+#                                                                  #to release the current entity  
+#         self.downTimeInCurrentEntity=0                          #holds the total time that the object was down 
+#                                                                  #while holding current entity
+#         self.timeLastEntityLeft=0                               #holds the last time that an entity left the object
+#                                                 
+#         self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                               
+#         # ============================== waiting flag ==============================================
+#         self.waitToDispose=False    #shows if the object waits to dispose an entity  
+         
+        # initialize the internal Queue (type Resource) of the Machine 
+        self.Res=Resource(capacity=infinity)
+        self.Res.activeQ=[]                                 
+        self.Res.waitQ=[]                                   
         
     def run(self):
+        # get active object and its queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         
         while 1:
-            entity=self.createEntity()         #create the Entity object and assign its name 
-            self.numberOfArrivals+=1           #we have one new arrival         
-            entity.creationTime=now()          #assign the current simulation time as the Entity's creation time 
-            entity.startTime=now()             #assign the current simulation time as the Entity's start time 
-            entity.currentStation=self
-            self.outputTrace(self.item.type+str(self.numberOfArrivals))     #output the trace
-            activeObjectQueue.append(entity)    #append the entity to the resource        
-            yield hold,self,self.calculateInterarrivalTime()    #wait until the next arrival
-             
-    #sets the routing out element for the Source
+            entity=self.createEntity()                            # create the Entity object and assign its name 
+            self.numberOfArrivals+=1                              # we have one new arrival         
+            entity.creationTime=now()                             # assign the current simulation time as the Entity's creation time 
+            entity.startTime=now()                                # assign the current simulation time as the Entity's start time 
+            entity.currentStation=self                            # update the current station of the Entity
+            self.outputTrace(self.item.type+\
+                             str(self.numberOfArrivals))          # output the trace
+            activeObjectQueue.append(entity)                      # append the entity to the resource        
+            yield hold,self,self.calculateInterarrivalTime()      # wait until the next arrival
+    #============================================================================
+    #            sets the routing out element for the Source
+    #============================================================================
     def defineRouting(self, successorList=[]):
-        self.next=successorList  
-        
-    #creates an Entity
+        self.next=successorList                                   # only successors allowed for the source
+    #============================================================================        
+    #                          creates an Entity
+    #============================================================================
     def createEntity(self):
-        return self.item(self.item.type+str(self.numberOfArrivals))     #return the newly created Entity
-        
-    #calculates the processing time
+        return self.item(self.item.type+str(self.numberOfArrivals)) #return the newly created Entity
+    #============================================================================
+    #                    calculates the processing time
+    #============================================================================
     def calculateInterarrivalTime(self):
         return self.rng.generateNumber()    #this is if we have a default interarrival  time for all the entities
-            
-    #outputs message to the trace.xls. Format is (Simulation Time | Entity Name | "generated")            
+    #============================================================================
+    #                  outputs message to the trace.xls. 
+    #          Format is (Simulation Time | Entity Name | "generated")
+    #============================================================================            
     def outputTrace(self, message):
         from Globals import G
         
-        if(G.trace=="Yes"):     #output only if the user has selected to
-            #handle the 3 columns
+        if(G.trace=="Yes"):     # output only if the user has selected to
+            # handle the 3 columns
             G.traceSheet.write(G.traceIndex,0,str(now()))
             G.traceSheet.write(G.traceIndex,1,message)
             G.traceSheet.write(G.traceIndex,2,"generated")          
             G.traceIndex+=1      #increment the row
-            #if we reach row 65536 we need to create a new sheet (excel limitation)  
+            # if we reach row 65536 we need to create a new sheet (excel limitation)  
             if(G.traceIndex==65536):
                 G.traceIndex=0
                 G.sheetIndex+=1
