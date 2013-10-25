@@ -205,7 +205,7 @@ class Queue(CoreObject):
     #gets an entity from the predecessor that the predecessor index points to     
     def getEntity(self):
         
-        activeEntity=CoreObject.getEntity(activeObject)  #run the default behavior 
+        activeEntity=CoreObject.getEntity(self)  #run the default behavior 
         self.outputTrace(activeEntity.name, "got into "+self.objName)
     
     #sorts the Entities of the Queue according to the scheduling rule
