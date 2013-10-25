@@ -165,25 +165,20 @@ class Dismantle(CoreObject):
     
     #gets a frame from the predecessor that the predecessor index points to     
     def getEntity(self):
+        activeEntity=CoreObject.getEntity(self)     #run the default method
         activeObjectQueue=self.getActiveObjectQueue()
-        giverObject=self.getGiverObject()
-        giverObject.sortEntities()      #sort the Entities of the giver according to the scheduling rule if applied
-        giverObjectQueue=self.getGiverObjectQueue()
-        activeEntity=giverObjectQueue[0]
-        
-        activeObjectQueue.append(activeEntity)    #get the frame from the predecessor
-        giverObject.removeEntity()
-        activeEntity.currentStation=self
-        #append also the parts in the res so that they can be popped
+        #get also the parts of the frame so that they can be popped
         for part in activeEntity.getFrameQueue():         
             activeObjectQueue.append(part)
             part.currentStation=self
         activeEntity.getFrameQueue=[]           #empty the frame
+        
         #move the frame to the end of the internal queue since we want the frame to be disposed first
         activeObjectQueue.append(activeEntity)
         activeObjectQueue.pop(0)        
         
         self.outputTrace(activeEntity.name, "got into "+ self.objName)   
+        return activeEntity
     
     #removes an entity from the Dismantle
     def removeEntity(self):
@@ -196,6 +191,7 @@ class Dismantle(CoreObject):
         else:
             if(len(activeObjectQueue)==1):   
                self.waitToDisposePart=False
+        return activeEntity
          
     #outputs message to the trace.xls. Format is (Simulation Time | Entity or Frame Name | message)
     def outputTrace(self, name, message):

@@ -204,22 +204,16 @@ class Conveyer(CoreObject):
         return self.canAccept(self) and self.getGiverObject().haveToDispose(self)
 
     #gets an entity from the predecessor     
-    def getEntity(self):
-        activeObjectQueue=self.getActiveObjectQueue()
-        giverObject=self.getGiverObject()
-        giverObjectQueue=self.getGiverObjectQueue()
-        giverObject.sortEntities()      #sort the Entities of the giver according to the scheduling rule if applied
-        activeEntity=giverObjectQueue[0]
-         
-        activeObjectQueue.append(activeEntity)    #get the entity from the predecessor
+    def getEntity(self):       
+        activeEntity=CoreObject.getEntity(self) 
         self.position.append(0)           #the entity is placed in the start of the conveyer
-        giverObject.removeEntity()            #remove the entity from the previous object
-        self.outputTrace(activeEntity.name, "got into "+ self.objName) 
-        activeEntity.currentStation=self
+        self.outputTrace(activeEntity.name, "got into "+ self.objName)  #output trace
         #check if the conveyer became full to start counting blockage 
         if self.isFull():
             self.timeBlockageStarted=now()
             self.wasFull=True
+        return activeEntity
+
 
     #removes an entity from the Conveyer
     def removeEntity(self):
@@ -237,6 +231,7 @@ class Conveyer(CoreObject):
             self.timeToBecomeAvailable=((self.position[-1]+self.currentRequestedLength)/float(self.speed))/60 
             self.conveyerMover.timeToWait=self.timeToBecomeAvailable
             self.call=True
+        return activeEntity
     
     #checks if the Conveyer can dispose an entity to the following object     
     def haveToDispose(self, callerObject=None): 

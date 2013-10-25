@@ -185,7 +185,8 @@ class Assembly(CoreObject):
     def removeEntity(self):
         activeEntity=CoreObject.removeEntity(self)                              #run the default method     
         self.outputTrace(activeEntity.name, "releases "+ self.objName)          #output trace  
-        self.waitToDispose=False                                                #the object does not wait to dispose now
+        self.waitToDispose=False  
+        return activeEntity                                              #the object does not wait to dispose now
     
     #gets an entity from the predecessor   
     #it may handle both Parts and Frames  
@@ -208,6 +209,7 @@ class Assembly(CoreObject):
             self.nameLastEntityEntered=activeEntity.name  
             self.timeLastEntityEntered=now()
         activeEntity.currentStation=self
+        return activeEntity   
       
     #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime=None):

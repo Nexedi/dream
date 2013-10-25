@@ -168,6 +168,7 @@ class Queue(CoreObject):
         activeObject=self.getActiveObject()                                  
         activeEntity=CoreObject.removeEntity(self)                                      #run the default method     
         activeObject.outputTrace(activeEntity.name, "releases "+activeObject.objName)   #output trace
+        return activeEntity
 
     #checks if the Queue can accept an entity and there is an entity in some predecessor waiting for it
     #also updates the predecessorIndex to the one that is to be taken
@@ -205,7 +206,8 @@ class Queue(CoreObject):
         
         activeEntity=CoreObject.getEntity(self)  #run the default behavior 
         self.outputTrace(activeEntity.name, "got into "+self.objName)
-    
+        return activeEntity
+        
     #sorts the Entities of the Queue according to the scheduling rule
     def sortEntities(self):
         #if we have sorting according to multiple criteria we have to call the sorter many times

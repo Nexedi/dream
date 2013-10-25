@@ -295,11 +295,12 @@ class Machine(CoreObject):
     def removeEntity(self):
         activeObject=self.getActiveObject()  
         activeObject.outputTrace("releases "+activeObject.objName)  # output to trace that the Entity was released from the currentObject
-        CoreObject.removeEntity(self)                               #run the default method     
+        activeEntity=CoreObject.removeEntity(self)                               #run the default method     
         activeObject.timeLastEntityLeft=now()                       # set the time that the last Entity was removed from this object
         activeObject.waitToDispose=False                            # update the waitToDispose flag
         activeObject.downTimeInTryingToReleaseCurrentEntity=0       # re-initialize the timer downTimeInTryingToReleaseCurrentEntity
-           
+        return activeEntity
+        
     # ======================================================================= 
     # checks if the Machine can dispose an entity to the following object
     # =======================================================================
