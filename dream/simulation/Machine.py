@@ -235,6 +235,7 @@ class Machine(CoreObject):
         
         # if we have only one predecessor just check if there is a place and the machine is up
         # this is done to achieve better (cpu) processing time 
+        # then we can also use it as a filter for a yield method
         if(len(activeObject.previous)==1 or callerObject==None):      
             return activeObject.Up and len(activeObjectQueue)==0
                       
