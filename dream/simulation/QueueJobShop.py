@@ -54,28 +54,19 @@ class QueueJobShop(Queue):
             return False
                 
     #gets an entity from the predecessor that the predecessor index points to     
-    def getEntity(self):
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()
-        giverObject=self.getGiverObject()
-        giverObjectQueue=self.getGiverObjectQueue()
-        activeEntity=giverObjectQueue[0]    
-                
-        activeObjectQueue.append(giverObjectQueue[0])    #get the entity from the previous object
-                                                                        #and put it in front of the activeQ       
-        giverObject.removeEntity()                             #remove the entity from the previous object
+    def getEntity(self):      
+        activeEntity=Queue.getEntity(self)
         activeEntity.remainingRoute[0][0]=""                    #remove data from the remaining route. 
-                                                                        #This is needed so that the Queue will not request again for the Entity
-        self.outputTrace(activeEntity.name, "got into "+activeObject.objName)
-        activeEntity.schedule.append([activeObject.id,now()])   #append the time to schedule so that it can be read in the result
-                                  
+        return activeEntity
+   
+                       
 
     #get the giver object in a getEntity transaction.       
     def getGiverObject(self):
         from Globals import G
         #loop through the objects to see if there is one that holds an Entity requesting for current object
         for obj in G.ObjList:
-            if len(obj.getActiveObjectQueue())>0 and now()!=0:
+            if len(obj.getActiveObjectQueue())>0 and (obj!=self) and now()!=0:
                 activeEntity=obj.getActiveObjectQueue()[0]
                 if activeEntity.remainingRoute[0][0]==self.id:
                     return obj

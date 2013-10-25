@@ -35,11 +35,11 @@ class MachineJobShop(Machine):
     
     #gets an entity from the predecessor that the predecessor index points to     
     def getEntity(self):
-        Machine.getEntity(self)     #run the default code
-        avtiveEntity=self.getActiveObjectQueue()[0]
+        avtiveEntity=Machine.getEntity(self)     #run the default code
         self.procTime=avtiveEntity.remainingRoute[0][1]     #read the processing time from the entity
         self.nextStationId=avtiveEntity.remainingRoute[1][0]    #read the next station id
-        avtiveEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity  
+        avtiveEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
+        return avtiveEntity  
 
     #checks if the machine down or it can dispose the object
     def ifCanDisposeOrHaveFailure(self):

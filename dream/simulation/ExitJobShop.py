@@ -40,31 +40,12 @@ class ExitJobShop(Exit):
         else:
             return False
 
-    #gets an entity from the previous station     
-    def getEntity(self): 
-
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()
-        giverObject=self.getGiverObject()
-        giverObjectQueue=self.getGiverObjectQueue()
-        activeEntity=giverObjectQueue[0]
-      
-        name=activeEntity.name   #get the name of the entity for the trace
-        self.totalLifespan+=now()-activeEntity.startTime  #Add the entity's lifespan to the total one. 
-        giverObject.removeEntity()            #remove the entity from the previous object
-        self.outputTrace(name)         
-        
-        #activeEntity=Exit.getEntity(self) 
-        #activeEntity.remainingRoute=[]
-        activeEntity.schedule.append([self.id,now()])   #append the time to schedule so that it can be read in the result
-        activeEntity.currentStation=self
-
     #get the giver object in a getEntity transaction.       
     def getGiverObject(self):
         from Globals import G
         #loop through the objects to see if there is one that holds an Entity requesting for current object
         for obj in G.ObjList:
-            if len(obj.getActiveObjectQueue())>0 and now()!=0:
+            if len(obj.getActiveObjectQueue())>0 and (obj!=self) and now()!=0:
                 activeEntity=obj.getActiveObjectQueue()[0]
                 if activeEntity.remainingRoute[0][0]==self.id:
                     return obj
