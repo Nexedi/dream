@@ -144,32 +144,10 @@ class Exit(CoreObject):
     #                    gets an entity from the predecessor     
     # =======================================================================
     def getEntity(self): 
-
-#         # get giver object, its queue, and sort the entities according to this object priorities
-#         giverObject=self.getGiverObject()
-#         # sort the Entities of the giver according to the scheduling rule if applied
-#         giverObject.sortEntities()
-#         giverObjectQueue=self.getGiverObjectQueue()
-#         # get active object and its queue, as well as the active (to be) entity 
-#         #(after the sorting of the entities in the queue of the giver object)
-#         activeObject=self.getActiveObject()
-#         activeObjectQueue=self.getActiveObjectQueue()
-#         activeEntity=giverObjectQueue[0]
-#         #get the entity from the previous object and put it in front of the activeQ
-#         activeObjectQueue.append(activeEntity)
-#         #remove the entity from the previous object       
-#         giverObject.removeEntity()  
-#         #append the time to schedule so that it can be read in the result
-#         #remember that every entity has it's schedule which is supposed to be updated every time 
-#         # the entity enters a new object
-#         activeEntity.schedule.append([activeObject.id,now()])
-#         activeEntity.currentStation=self
-        activeEntity = CoreObject.getEntity(self)
-        # get the name of the entity for the trace
-        # Add the entity's lifespan to the total one. 
-        name=activeEntity.name
-        self.totalLifespan+=now()-activeEntity.startTime
-        self.outputTrace(name)          
+        activeEntity = CoreObject.getEntity(self)           #run the default method
+        self.totalLifespan+=now()-activeEntity.startTime    #Add the entity's lifespan to the total one. 
+        self.outputTrace(activeEntity.name)
+        return activeEntity          
 
     # =======================================================================
     #            actions to be taken after the simulation ends

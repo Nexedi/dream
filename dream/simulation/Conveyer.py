@@ -223,11 +223,9 @@ class Conveyer(CoreObject):
 
     #removes an entity from the Conveyer
     def removeEntity(self):
-        activeObjectQueue=self.getActiveObjectQueue()    
-        activeEntity=activeObjectQueue[0]
-        
+        activeEntity=CoreObject.removeEntity(self)                               #run the default method  
         self.outputTrace(activeEntity.name, "releases "+ self.objName)              
-        activeObjectQueue.pop(0) 
+   
         self.position.pop(0)
         self.waitToDispose=False  
         #if the conveyer was full, it means that it also was blocked

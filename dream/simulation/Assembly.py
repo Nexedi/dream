@@ -183,11 +183,9 @@ class Assembly(CoreObject):
                                                
     #removes an entity from the Assembly
     def removeEntity(self):
-        activeObjectQueue=self.getActiveObjectQueue()
-        
-        self.outputTrace(activeObjectQueue[0].name, "releases "+ self.objName)              
-        activeObjectQueue.pop(0)   
-        self.waitToDispose=False
+        activeEntity=CoreObject.removeEntity(self)                              #run the default method     
+        self.outputTrace(activeEntity.name, "releases "+ self.objName)          #output trace  
+        self.waitToDispose=False                                                #the object does not wait to dispose now
     
     #gets an entity from the predecessor   
     #it may handle both Parts and Frames  

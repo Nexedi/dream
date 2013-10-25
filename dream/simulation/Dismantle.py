@@ -187,18 +187,16 @@ class Dismantle(CoreObject):
     
     #removes an entity from the Dismantle
     def removeEntity(self):
-        #to release the Frame if it is empty
-        if(len(self.Res.activeQ)==1):
-            self.outputTrace(self.Res.activeQ[0].name, " releases "+ self.objName)              
-            self.Res.activeQ.pop(0)   
+        activeObjectQueue=self.getActiveObjectQueue()
+        activeEntity=CoreObject.removeEntity(self)                               #run the default method     
+        self.outputTrace(activeEntity.name, " releases "+ self.objName)         #output the trace
+        #update the flags
+        if(len(activeObjectQueue)==0):  
             self.waitToDisposeFrame=False
-        elif(len(self.Res.activeQ)>1):
-            self.outputTrace(self.Res.activeQ[0].name, " releases "+ self.objName)              
-            self.Res.activeQ.pop(0)
-            if(len(self.Res.activeQ)==1):   
+        else:
+            if(len(activeObjectQueue)==1):   
                self.waitToDisposePart=False
-                
-
+         
     #outputs message to the trace.xls. Format is (Simulation Time | Entity or Frame Name | message)
     def outputTrace(self, name, message):
         from Globals import G

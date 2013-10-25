@@ -164,12 +164,10 @@ class Queue(CoreObject):
         return len(self.Res.activeQ)>0 and (thecaller is receiverObject)    
 
     #removes an entity from the Object
-    def removeEntity(self):
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()        
-
-        activeObject.outputTrace(activeObjectQueue[0].name, "releases "+self.objName)
-        activeObjectQueue.pop(0)   #remove the Entity
+    def removeEntity(self):        
+        activeObject=self.getActiveObject()                                  
+        activeEntity=CoreObject.removeEntity(self)                                      #run the default method     
+        activeObject.outputTrace(activeEntity.name, "releases "+activeObject.objName)   #output trace
 
     #checks if the Queue can accept an entity and there is an entity in some predecessor waiting for it
     #also updates the predecessorIndex to the one that is to be taken

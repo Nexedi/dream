@@ -75,8 +75,10 @@ class CoreObject(Process):
 
     # ================================== removes an entity from the Object ==========================
     def removeEntity(self): 
-        activeObjectQueue=self.getActiveObjectQueue()    
-        activeObjectQueue.pop(0)                        #remove the Entity from the queue            
+        activeObjectQueue=self.getActiveObjectQueue()  
+        activeEntity=activeObjectQueue[0]  
+        activeObjectQueue.pop(0)                        #remove the Entity from the queue  
+        return activeEntity          
         
     # ================================== gets an entity from the ====================================
     # ===================== predecessor that the predecessor index points to ========================     

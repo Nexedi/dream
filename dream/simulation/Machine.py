@@ -237,10 +237,6 @@ class Machine(CoreObject):
         # this is done to achieve better (cpu) processing time 
         if(len(activeObject.previous)==1 or callerObject==None):      
             return activeObject.Up and len(activeObjectQueue)==0
-        
-#         # if the machine is busy return False immediately
-#         if len(activeObjectQueue)==activeObject.capacity:
-#             return False
                       
         thecaller=callerObject
         # return True ONLY if the length of the activeOjbectQue is smaller than
@@ -297,14 +293,11 @@ class Machine(CoreObject):
     # removes an entity from the Machine
     # =======================================================================
     def removeEntity(self):
-        # get active and its queue
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()        
-        
-        activeObject.timeLastEntityLeft=now()                       # set the time that the last Entity was removed from this object
+        activeObject=self.getActiveObject()  
         activeObject.outputTrace("releases "+activeObject.objName)  # output to trace that the Entity was released from the currentObject
+        CoreObject.removeEntity(self)                               #run the default method     
+        activeObject.timeLastEntityLeft=now()                       # set the time that the last Entity was removed from this object
         activeObject.waitToDispose=False                            # update the waitToDispose flag
-        activeObjectQueue.pop(0)                                    # remove the Entity from the activeQ
         activeObject.downTimeInTryingToReleaseCurrentEntity=0       # re-initialize the timer downTimeInTryingToReleaseCurrentEntity
            
     # ======================================================================= 
@@ -409,7 +402,7 @@ class Machine(CoreObject):
         if(G.trace=="Yes"):         #output only if the user has selected to
             #handle the 3 columns
             G.traceSheet.write(G.traceIndex,0,str(now()))
-            G.traceSheet.write(G.traceIndex,1,self.Res.activeQ[0].name)
+            G.traceSheet.write(G.traceIndex,1,self.getActiveObjectQueue()[0].name)
             G.traceSheet.write(G.traceIndex,2,message)          
             G.traceIndex+=1       #increment the row
 

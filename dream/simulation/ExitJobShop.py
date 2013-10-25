@@ -42,6 +42,7 @@ class ExitJobShop(Exit):
 
     #gets an entity from the previous station     
     def getEntity(self): 
+
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
@@ -51,8 +52,11 @@ class ExitJobShop(Exit):
         name=activeEntity.name   #get the name of the entity for the trace
         self.totalLifespan+=now()-activeEntity.startTime  #Add the entity's lifespan to the total one. 
         giverObject.removeEntity()            #remove the entity from the previous object
-        self.outputTrace(name) 
-        activeEntity.schedule.append([activeObject.id,now()])   #append the time to schedule so that it can be read in the result
+        self.outputTrace(name)         
+        
+        #activeEntity=Exit.getEntity(self) 
+        #activeEntity.remainingRoute=[]
+        activeEntity.schedule.append([self.id,now()])   #append the time to schedule so that it can be read in the result
         activeEntity.currentStation=self
 
     #get the giver object in a getEntity transaction.       
