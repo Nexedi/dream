@@ -170,3 +170,8 @@ class CoreObject(Process):
     def getReceiverObjectQueue(self):
         return self.getReceiverObject().Res.activeQ
     
+    # =======================================================================
+    # calculates the processing time
+    # =======================================================================
+    def calculateProcessingTime(self):
+        return self.rng.generateNumber()                            # this is if we have a default processing time for all the entities

@@ -216,11 +216,6 @@ class Machine(CoreObject):
     def checkIfMachineIsUp(self):
         return self.Up
     
-    # =======================================================================
-    # calculates the processing time
-    # =======================================================================
-    def calculateProcessingTime(self):
-        return self.rng.generateNumber()                            # this is if we have a default processing time for all the entities
     
     # =======================================================================
     # checks if the Machine can accept an entity       
