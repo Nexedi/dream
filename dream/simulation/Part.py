@@ -35,7 +35,6 @@ from Entity import Entity
 class Part(Entity):    
     type="Part"
           
-    def __init__(self, name):
-        Entity.__init__(self, name)
+    def __init__(self, id = None, name = None):
+        Entity.__init__(self, id = id, name = name)
    
-        #print self.name, now()

@@ -29,12 +29,12 @@ in the system and also in the processing times at each station
 from Globals import G
 from Entity import Entity
 
-# ============================ The part object ==============================
+# ============================ The job object ==============================
 class Job(Entity):                                  # inherits from the Entity class   
     type="Job"
     
-    def __init__(self, id, name, route=[], priority=0, dueDate=0, orderDate=0):
-        Entity.__init__(self, name, priority=priority, dueDate=dueDate, orderDate=orderDate)
+    def __init__(self, id=None, name=None, route=[], priority=0, dueDate=0, orderDate=0):
+        Entity.__init__(self, id=id,name=name, priority=priority, dueDate=dueDate, orderDate=orderDate)
         # instance specific attributes 
         self.id=id                                  # id
         # information on the routing and the stops of the entity

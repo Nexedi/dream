@@ -30,6 +30,7 @@ from SimPy.Simulation import now, Process, Resource, infinity, hold
 from Part import Part
 from RandomNumberGenerator import RandomNumberGenerator
 from CoreObject import CoreObject
+from Globals import G
 #============================================================================
 #                 The Source object is a Process
 #============================================================================
@@ -105,7 +106,8 @@ class Source(CoreObject):
         
         while 1:
             entity=self.createEntity()                            # create the Entity object and assign its name 
-            self.numberOfArrivals+=1                              # we have one new arrival         
+            self.numberOfArrivals+=1                              # we have one new arrival
+            G.numberOfEntities+=1
             entity.creationTime=now()                             # assign the current simulation time as the Entity's creation time 
             entity.startTime=now()                                # assign the current simulation time as the Entity's start time 
             entity.currentStation=self                            # update the current station of the Entity
@@ -122,7 +124,7 @@ class Source(CoreObject):
     #                          creates an Entity
     #============================================================================
     def createEntity(self):
-        return self.item(self.item.type+str(self.numberOfArrivals)) #return the newly created Entity
+        return self.item(id = self.item.type+str(G.numberOfEntities), name = self.item.type+str(self.numberOfArrivals)) #return the newly created Entity
     #============================================================================
     #                    calculates the processing time
     #============================================================================

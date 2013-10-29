@@ -64,3 +64,4 @@ class G:
     outputJSON={}
     outputJSONFile=None
     
+    numberOfEntities = 0
