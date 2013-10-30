@@ -189,5 +189,4 @@ class BatchDecomposition(CoreObject):
                     activeObject.predecessorIndex=i  
                     maxTimeWaiting=timeWaiting                   
             i+=1                                                    # pick the predecessor waiting the more
-        return self.canAccept(self) and isRequested 
-        # return true when the Queue is not fully occupied and a predecessor is requesting it
+        return self.canAccept(self) and isRequested     # return true when the Queue is not fully occupied and a predecessor is requesting it
