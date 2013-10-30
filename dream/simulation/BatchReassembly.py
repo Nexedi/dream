@@ -179,10 +179,16 @@ class BatchReassembly(CoreObject):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
+        giverObjectQueue=self.getGiverObjectQueue()
         #if we have only one predecessor just check if there is a place available and the predecessor has an entity to dispose
         if(len(activeObject.previous)==1):
-            return giverObject.haveToDispose(activeObject) and len(activeObjectQueue)<self.numberOfSubBatches 
-#             return self.canAccept(giverObject) and giverObject.haveToDispose(activeObject)
+            if len(activeObjectQueue)==0:
+                return activeObject.Up and giverObject.haveToDispose(activeObject)
+            else:
+                return activeObject.Up and giverObject.haveToDispose(activeObject)\
+                     and activeObjectQueue[0].type!='Batch'\
+                     and len(activeObjectQueue)<self.numberOfSubBatches\
+                     and giverObjectQueue[0].batchId==activeObjectQueue[0].batchId 
     
         isRequested=False               # dummy boolean variable to check if any predecessor has something to hand in
         maxTimeWaiting=0                # dummy timer to check which predecessor has been waiting the most
@@ -202,5 +208,5 @@ class BatchReassembly(CoreObject):
                     activeObject.predecessorIndex=i  
                     maxTimeWaiting=timeWaiting                   
             i+=1                                                    # pick the predecessor waiting the more
-        return isRequested 
+        return isRequested and len(activeObjectQueue<self.numberOfSubBatches) 
         # return true when the Queue is not fully occupied and a predecessor is requesting it
