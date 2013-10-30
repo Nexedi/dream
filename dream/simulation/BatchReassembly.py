@@ -22,27 +22,26 @@ Created on 29 Oct 2013
 @author: Ioannis
 '''
 '''
-BatchDecomposition is a Core Object that takes a batch and decomposes to sub-batches
+BatchReassembly is a Core Object that takes a number of subBatches and reassembles them to the parent Batch
 '''
-
 
 from SimPy.Simulation import Process, Resource
 from SimPy.Simulation import activate, waituntil, now, hold
+
 import scipy.stats as stat
 
 from Globals import G
-from CoreObject import CoreObject
 from RandomNumberGenerator import RandomNumberGenerator
-from Entity import Entity
+from CoreObject import CoreObject
+# from Entity import Entity
 
 from SubBatch import SubBatch
 from Batch import Batch
 
-
 # ===========================================================================
-# the Batch-Decomposition Object
+# the Batch-Reassembly Object
 # ===========================================================================
-class BatchDecomposition(CoreObject):
+class BatchReassembly(CoreObject):
     # =======================================================================
     #initialize the id, the capacity of the object and the distribution
     # =======================================================================        
@@ -52,7 +51,7 @@ class BatchDecomposition(CoreObject):
         # hold the id, name, and type of the Machine instance
         self.id=id
         self.objName=name
-        self.type="BatchDecomposition"              #String that shows the type of object
+        self.type="BatchRassembly"              #String that shows the type of object
         # holds the capacity of the object 
         self.numberOfSubBatches=numberOfSubBatches
         # define the distribution types of the processing and failure times respectively
@@ -75,8 +74,6 @@ class BatchDecomposition(CoreObject):
     #     initialize the internal resource of the object
     # =======================================================================
     def initialize(self):
-        from Globals import G
-        G.BatchWaitingList = []                     # batches waiting to be reassembled
         CoreObject.initialize(self)                 # using the default CoreObject Functionality
         self.Res=Resource(self.numberOfSubBatches)  # initialize the Internal resource (Queue) functionality
             
@@ -86,50 +83,65 @@ class BatchDecomposition(CoreObject):
         
         while 1:  
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity
-                                                                    #and one predecessor requests it                                                  
-            self.getEntity()                       
+                                                                    #and one predecessor requests it
+            self.getEntity()
             
             # self.outputTrace("got into "+self.objName)
             
             # set the currentEntity as the Entity just received and initialize the timer timeLastEntityEntered
-            self.currentEntity=self.getActiveObjectQueue()[0]       # entity is the current entity processed in Machine
+            self.currentEntity=self.getActiveObjectQueue()[0]       # entity is the current entity processed in object
             self.nameLastEntityEntered=self.currentEntity.name      # this holds the name of the last entity that got into Machine                   
             self.timeLastEntityEntered=now()                        #this holds the last time that an entity got into Machine  
             
-            yield hold,self,self.calculateProcessingTime()
-            self.decompose()
+            if len(self.getActiveObjectQueue())==self.numberOfSubBatches and self.currentEntity.type!='Batch':
+                yield hold,self,self.calculateProcessingTime()
+                self.reassemble()
         
         
-    def decompose(self):                #, activeEntity=None):
+    def reassemble(self):                #, activeEntity=None):
         # maybe I can use as argument the activeEntity passing the getEntity as argument to this function in the run function
         # for example
         # self.decompose(self.getEntity)
-#         assert activeEntity!=none, 'decompose method cannot decompose None'
+        
         activeObject = self.getActiveObject()
-        activeObjectQueue=activeObject.getActiveObjectQueue()    #get the internal queue of the active core object
-        activeEntity = activeObjectQueue.pop()
+        activeObjectQueue=activeObject.getActiveObjectQueue()    # get the internal queue of the active core object
         
-        G.BatchWaitingList.append(activeEntity)                 # this batch has to be reassembled by the method reassemble
-        numberOfSubBatchUnits = activeEntity.numberOfUnits/self.numberOfSubBatches 
-        for i in range(self.numberOfSubBatches):
-            subBatch=SubBatch(str(activeEntity.id)+'_'+str(i), activeEntity.name+"_SB_"\
-                              +str(i), activeEntity.id, numberOfUnits=numberOfSubBatchUnits)    #create the sub-batch
-            activeObjectQueue.append(subBatch)                          #append the sub-batch to the active object Queue
-            activeEntity.subBatchList.append(subBatch)
-        activeEntity.numberOfSubBatches=self.numberOfSubBatches  
-
+        curSubBatchId = 0
+        nextSubBatchId = 0
+        for i in range(len(activeObjectQueue)-1):
+            curSubBatchId = activeObjectQueue[i].batchId
+            nextSubBatchId = activeObjectQueue[i+1].batchId
+            assert curSubBatchId == nextSubBatchId,\
+             'The subBatches in the re-assembly station are not of the same Batch'
         
+        batchToBeReassembled = None
+        for batch in G.BatchWaitingList:
+            if activeObjectQueue[0].batchId == batch.id:
+                 batchToBeReassembled = batch
+        G.BatchWaitingList.remove(batchToBeReassembled)
+        del activeObjectQueue[:]
+        batchToBeReassembled.numberOfSubBatches = 1
+        activeObjectQueue.append(batchToBeReassembled)
         
     def canAccept(self,callerObject=None):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
-        if(len(activeObject.previous)==1 or callerObject==None):      
-            return activeObject.Up and len(activeObjectQueue)==0
+        giverObjectQueue = giverObject.getGiverObjectQueue()
+
+        if(len(activeObject.previous)==1 or callerObject==None):
+            if len(activeObjectQueue)==0:
+                return activeObject.Up
+            else:
+                return activeObject.Up and activeObjectQueue[0].type!='Batch'\
+                     and len(activeObjectQueue)<self.numberOfSubBatches\
+                     and giverObjectQueue[0].batchId==activeObjectQueue[0].batchId
+        
         thecaller=callerObject
-        # return True ONLY if the length of the activeOjbectQue is smaller than
+        # return True ONLY if the length of the activeOjbectQueue is smaller than
         # the object capacity, and the callerObject is not None but the giverObject
-        return len(activeObjectQueue)==0 and (thecaller is giverObject)
+        return len(activeObjectQueue)<self.numberOfSubBatches and activeObjectQueue[0].type != 'Batch'\
+            and giverObjectQueue[0].batchId==activeObjectQueue[0].batchId and (thecaller is giverObject)
     
     
     def haveToDispose(self,callerObject=None):
@@ -140,9 +152,10 @@ class BatchDecomposition(CoreObject):
         #if we have only one successor just check if object waits to dispose and also is up
         # this is done to achieve better (cpu) processing time        
         if(len(activeObject.next)==1 or callerObject==None): 
-            return len(activeObjectQueue)>0 and activeObjectQueue[0].type!="Batch"
+            return len(activeObjectQueue)==1 and \
+                activeObjectQueue[0].type=="Batch" # the control of the length of the queue is not needed
         
-        thecaller=callerObject
+        thecaller=callerObject 
         #give the entity to the successor that is waiting for the most time. 
         #plant does not do this in every occasion!       
         maxTimeWaiting=0     
@@ -157,8 +170,8 @@ class BatchDecomposition(CoreObject):
               
         #return true only to the predecessor from which the queue will take 
         receiverObject=activeObject.getReceiverObject()
-        return len(self.Res.activeQ)==self.numberOfSubBatches and \
-            (thecaller is receiverObject) and activeObjectQueue[0].type!="Batch"
+        return len(self.Res.activeQ)==1 and \
+            (thecaller is receiverObject) and activeObjectQueue[0].type!="Batch" # the control of the length of the queue is not needed
             
             
     def canAcceptAndIsRequested(self):
@@ -166,10 +179,10 @@ class BatchDecomposition(CoreObject):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
-        
         #if we have only one predecessor just check if there is a place available and the predecessor has an entity to dispose
         if(len(activeObject.previous)==1):
-            return self.canAccept() and giverObject.haveToDispose(activeObject) 
+            return giverObject.haveToDispose(activeObject) and len(activeObjectQueue)<self.numberOfSubBatches 
+#             return self.canAccept(giverObject) and giverObject.haveToDispose(activeObject)
     
         isRequested=False               # dummy boolean variable to check if any predecessor has something to hand in
         maxTimeWaiting=0                # dummy timer to check which predecessor has been waiting the most
@@ -189,4 +202,5 @@ class BatchDecomposition(CoreObject):
                     activeObject.predecessorIndex=i  
                     maxTimeWaiting=timeWaiting                   
             i+=1                                                    # pick the predecessor waiting the more
-        return self.canAccept(self) and isRequested     # return true when the Queue is not fully occupied and a predecessor is requesting it
+        return isRequested 
+        # return true when the Queue is not fully occupied and a predecessor is requesting it
