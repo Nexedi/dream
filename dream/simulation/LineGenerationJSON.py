@@ -69,6 +69,9 @@ from QueueJobShop import QueueJobShop
 from ExitJobShop import ExitJobShop
 from Batch import Batch
 from SubBatch import SubBatch
+from BatchSource import BatchSource
+from BatchDecomposition import BatchDecomposition
+
 import xlwt
 import xlrd
 import time
@@ -120,6 +123,8 @@ def createObjects():
     G.MachineJobShopList=[]
     G.QueueJobShopList=[]
     G.ExitJobShopList=[]
+    G.BatchDecompositionList=[]
+    G.BatchSourceList=[]
 
     #loop through all the model resources 
     #search for repairmen in order to create them
@@ -148,6 +153,20 @@ def createObjects():
             entity=str_to_class(element.get('entity', 'not found'))
             S=Source(id, name, distributionType, mean, entity)
             S.nextIds=getSuccessorList(id)
+            G.SourceList.append(S)
+            G.ObjList.append(S)
+            
+        if objClass=='Dream.BatchSource':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            interarrivalTime=element.get('interarrivalTime', 'not found')
+            distributionType=interarrivalTime.get('distributionType', 'not found')
+            mean=float(interarrivalTime.get('mean', '0'))        
+            entity=str_to_class(element.get('entity', 'not found'))
+            batchNumberOfUnits=int(element.get('batchNumberOfUnits', 'not found'))
+            S=BatchSource(id, name, distributionType, mean, entity, batchNumberOfUnits)
+            S.nextIds=getSuccessorList(id)
+            G.BatchSourceList.append(S)
             G.SourceList.append(S)
             G.ObjList.append(S)
             
@@ -313,7 +332,23 @@ def createObjects():
             J=Job(id, name, route, priority=priority, dueDate=dueDate, orderDate=orderDate)
             G.JobList.append(J)   
             G.WipList.append(J)  
-            G.EntityList.append(J)              
+            G.EntityList.append(J)       
+            
+        elif objClass=='Dream.BatchDecomposition':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            processingTime=element.get('processingTime', 'not found')
+            distributionType=processingTime.get('distributionType', 'not found')
+            mean=float(processingTime.get('mean', '0'))  
+            stdev=float(processingTime.get('stdev', '0'))  
+            min=float(processingTime.get('min', '0')) 
+            max=float(processingTime.get('max', '0'))
+            numberOfSubBatches=int(element.get('numberOfSubBatches', '0'))
+            BD=BatchDecomposition(id, name, distribution=distributionType,  numberOfSubBatches=numberOfSubBatches,
+                                                    mean=mean,stdev=stdev,min=min,max=max)
+            BD.nextIds=getSuccessorList(id)
+            G.BatchDecompositionList.append(BD)
+            G.ObjList.append(BD)       
                         
     #loop through all the core objects    
     #to read predecessors
