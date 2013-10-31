@@ -71,6 +71,7 @@ from Batch import Batch
 from SubBatch import SubBatch
 from BatchSource import BatchSource
 from BatchDecomposition import BatchDecomposition
+from BatchReassembly import BatchReassembly
 
 import xlwt
 import xlrd
@@ -125,6 +126,7 @@ def createObjects():
     G.ExitJobShopList=[]
     G.BatchDecompositionList=[]
     G.BatchSourceList=[]
+    G.BatchReassemblyList=[]
 
     #loop through all the model resources 
     #search for repairmen in order to create them
@@ -349,6 +351,22 @@ def createObjects():
             BD.nextIds=getSuccessorList(id)
             G.BatchDecompositionList.append(BD)
             G.ObjList.append(BD)       
+            
+        elif objClass=='Dream.BatchReassembly':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            processingTime=element.get('processingTime', 'not found')
+            distributionType=processingTime.get('distributionType', 'not found')
+            mean=float(processingTime.get('mean', '0'))  
+            stdev=float(processingTime.get('stdev', '0'))  
+            min=float(processingTime.get('min', '0')) 
+            max=float(processingTime.get('max', '0'))
+            numberOfSubBatches=int(element.get('numberOfSubBatches', '0'))
+            BR=BatchReassembly(id, name, distribution=distributionType,  numberOfSubBatches=numberOfSubBatches,
+                                                    mean=mean,stdev=stdev,min=min,max=max)
+            BR.nextIds=getSuccessorList(id)
+            G.BatchReassemblyList.append(BR)
+            G.ObjList.append(BR)       
                         
     #loop through all the core objects    
     #to read predecessors
