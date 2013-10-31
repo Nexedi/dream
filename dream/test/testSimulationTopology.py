@@ -66,7 +66,7 @@ class SimulationTopology(TestCase):
     self.assertEquals(stable_result, dump_result, "outputs are different")
 
 # Automatically create a test method for every topology
-for x in range(1, 22):
+for x in range(1, 23):
   def getTestTopology():
    filename = "Topology%02i" % x
    def test_topology(self):

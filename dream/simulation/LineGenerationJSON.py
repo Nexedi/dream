@@ -26,6 +26,9 @@ Created on 7 May 2013
 main script. Reads data from JSON, generates and runs the simulation and prints the results to excel
 '''
 
+# ===========================================================================
+#                                    IMPORTS
+# ===========================================================================
 from warnings import warn
 import logging
 logger = logging.getLogger("dream.platform")
@@ -81,15 +84,19 @@ from random import Random
 import sys
 import os.path
 
-#reads general simulation inputs
+# ===========================================================================
+#                       reads general simulation inputs
+# ===========================================================================
 def readGeneralInput():
-    general=G.JSONData['general']
-    G.numberOfReplications=int(general.get('numberOfReplications', '1'))
-    G.maxSimTime=float(general.get('maxSimTime', '100'))
+    general=G.JSONData['general']                                           # read the dict with key 'general'
+    G.numberOfReplications=int(general.get('numberOfReplications', '1'))    # read the number of replications 
+    G.maxSimTime=float(general.get('maxSimTime', '100'))                    # get the maxSimTime
     G.trace=general.get('trace', 'No')
     G.confidenceLevel=float(general.get('confidenceLevel', '0.95'))
 
-#creates the simulation objects
+# ===========================================================================
+#                       creates the simulation objects
+# ===========================================================================
 def createObjects():
 
     json_data = G.JSONData
@@ -463,19 +470,19 @@ def main(argv=[], input_data=None):
     if input_data is None:
       # user passes the topology filename as first argument to the program
       filename = argv[0]
-      try:
-          G.JSONFile=open(filename, "r")
-      except IOError:
+      try:                                          # try to open the file with the inputs
+          G.JSONFile=open(filename, "r")            # global variable holding the file to be opened
+      except IOError:                               
           print "%s could not be open" % filename
           return "ERROR"
-      G.InputData=G.JSONFile.read()
+      G.InputData=G.JSONFile.read()                 # pass the contents of the input file to the global var InputData
     else:
       G.InputData = input_data
 
-    start=time.time()   #start counting execution time 
+    start=time.time()                               # start counting execution time 
 
     #read the input from the JSON file and create the line
-    G.JSONData=json.loads(G.InputData)
+    G.JSONData=json.loads(G.InputData)              # create the dictionary JSONData
     readGeneralInput()
     createObjects()
     setTopology() 
@@ -492,10 +499,12 @@ def main(argv=[], input_data=None):
         setWIP()        
         activateObjects()
         
-        #if the simulation is ran until no more events are scheduled, then we have to find the end time as the time the last entity ended. 
+        # if the simulation is ran until no more events are scheduled, 
+        # then we have to find the end time as the time the last entity ended. 
         if G.maxSimTime==-1:
-            simulate(until=infinity)    #simulate until there are no more events. If someone does it for a model that has always events, then it will run forever!
-            #identify from the exits what is the time that the last entity has ended. 
+            simulate(until=infinity)    # simulate until there are no more events. 
+                                        # If someone does it for a model that has always events, then it will run forever!
+            # identify from the exits what is the time that the last entity has ended. 
             endList=[]
             for exit in G.ExitList:
                 endList.append(exit.timeLastEntityLeft)
