@@ -89,10 +89,10 @@ import os.path
 # ===========================================================================
 def readGeneralInput():
     general=G.JSONData['general']                                           # read the dict with key 'general'
-    G.numberOfReplications=int(general.get('numberOfReplications', '1'))    # read the number of replications 
-    G.maxSimTime=float(general.get('maxSimTime', '100'))                    # get the maxSimTime
-    G.trace=general.get('trace', 'No')
-    G.confidenceLevel=float(general.get('confidenceLevel', '0.95'))
+    G.numberOfReplications=int(general.get('numberOfReplications', '1'))    # read the number of replications / default 1
+    G.maxSimTime=float(general.get('maxSimTime', '100'))                    # get the maxSimTime / default 100
+    G.trace=general.get('trace', 'No')                                      # get trace in order to check if trace is requested
+    G.confidenceLevel=float(general.get('confidenceLevel', '0.95'))         # get the confidence level
 
 # ===========================================================================
 #                       creates the simulation objects
@@ -101,22 +101,28 @@ def createObjects():
 
     json_data = G.JSONData
     #Read the json data
-    nodes = json_data['nodes']
-    edges = json_data['edges']
+    nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
+    edges = json_data['edges']                      # read from the dictionary the dicts with key 'edges'
 
-    # XXX slow implementation
+
+    # -----------------------------------------------------------------------
+    #                getSuccesorList method to get the successor 
+    #                       list of object with ID = id
+    #                         XXX slow implementation
+    # -----------------------------------------------------------------------
     def getSuccessorList(node_id, predicate=lambda source, destination, edge_data: True):
-      successor_list = []
-      for source, destination, edge_data in edges.values():
-        if source == node_id:
-          if predicate(source, destination, edge_data):
-            successor_list.append(destination)
+      successor_list = []                           # dummy variable that holds the list to be returned
+      for source, destination, edge_data in edges.values(): # for all the values in the dictionary edges
+        if source == node_id:                               # for the node_id argument
+          if predicate(source, destination, edge_data):     # find its 'destinations' and 
+            successor_list.append(destination)              # append it to the successor list
       # XXX We should probably not need to sort, but there is a bug that
-      # prevents Topology10 to work is this sort is not used.
+      # prevents Topology10 to work if this sort is not used.
       successor_list.sort()
       return successor_list
-
-    #define the lists
+    # -----------------------------------------------------------------------
+    #                define the lists of each object type
+    # -----------------------------------------------------------------------
     G.SourceList=[]
     G.MachineList=[]
     G.ExitList=[]
@@ -134,22 +140,30 @@ def createObjects():
     G.BatchDecompositionList=[]
     G.BatchSourceList=[]
     G.BatchReassemblyList=[]
-
-    #loop through all the model resources 
-    #search for repairmen in order to create them
-    #read the data and create them
-    for (element_id, element) in nodes.iteritems():
-        element['id'] = element_id
-        resourceClass = element.get('_class', 'not found')
-        if resourceClass=='Dream.Repairman':
-            id = element.get('id', 'not found')
-            name = element.get('name', 'not found')
-            capacity = int(element.get('capacity', '1'))
-            R = Repairman(element_id, name, capacity)
-            R.coreObjectIds=getSuccessorList(id)
-            G.RepairmanList.append(R)                           
-    #loop through all the elements    
-    #read the data and create them
+    
+    # -----------------------------------------------------------------------
+    #                loop through all the model resources 
+    #            search for repairmen in order to create them
+    #                   read the data and create them
+    # -----------------------------------------------------------------------
+    for (element_id, element) in nodes.iteritems():                 # use an iterator to go through all the nodes
+                                                                    # the key is the element_id and the second is the 
+                                                                    # element itself 
+        element['id'] = element_id                                  # create a new entry for the element (dictionary)
+                                                                    # with key 'id' and value the the element_id
+        resourceClass = element.get('_class', 'not found')          # get the class type of the element
+        if resourceClass=='Dream.Repairman':                    # check the object type
+            id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
+            name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
+            capacity = int(element.get('capacity', '1'))            # get the capacity of the el. / defautl '1'
+            R = Repairman(element_id, name, capacity)               # create a repairman object
+            R.coreObjectIds=getSuccessorList(id)                    # update the list of objects that the repairman repairs
+                                                                    # calling the getSuccessorList() method on the repairman
+            G.RepairmanList.append(R)                               # add the repairman to the RepairmanList
+    # -----------------------------------------------------------------------
+    #                    loop through all the elements    
+    #                    read the data and create them
+    # -----------------------------------------------------------------------
     for (element_id, element) in nodes.iteritems():
         element['id'] = element_id
         objClass=element.get('_class', 'not found')   
@@ -159,8 +173,8 @@ def createObjects():
             interarrivalTime=element.get('interarrivalTime', 'not found')
             distributionType=interarrivalTime.get('distributionType', 'not found')
             mean=float(interarrivalTime.get('mean', '0'))        
-            entity=str_to_class(element.get('entity', 'not found'))
-            S=Source(id, name, distributionType, mean, entity)
+            entity=str_to_class(element.get('entity', 'not found'))     # initialize entity
+            S=Source(id, name, distributionType, mean, entity)          # initialize Source
             S.nextIds=getSuccessorList(id)
             G.SourceList.append(S)
             G.ObjList.append(S)
@@ -171,7 +185,7 @@ def createObjects():
             interarrivalTime=element.get('interarrivalTime', 'not found')
             distributionType=interarrivalTime.get('distributionType', 'not found')
             mean=float(interarrivalTime.get('mean', '0'))        
-            entity=str_to_class(element.get('entity', 'not found'))
+            entity=str_to_class(element.get('entity', 'not found'))          
             batchNumberOfUnits=int(element.get('batchNumberOfUnits', 'not found'))
             S=BatchSource(id, name, distributionType, mean, entity, batchNumberOfUnits)
             S.nextIds=getSuccessorList(id)
@@ -194,16 +208,16 @@ def createObjects():
             MTTR=float(failures.get('MTTR', '0')) 
             availability=float(failures.get('availability', '0'))  
             r='None'
-            for repairman in G.RepairmanList:
-                if(id in repairman.coreObjectIds):
-                    r=repairman
+            for repairman in G.RepairmanList:                   # check which repairman in the G.RepairmanList
+                if(id in repairman.coreObjectIds):              # (if any) is assigned to repair 
+                    r=repairman                                 # the machine with ID equal to id
                     
             M=Machine(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, repairman=r,
                                                     mean=mean,stdev=stdev,min=min,max=max)
-            M.nextIds=getSuccessorList(id)
-            G.MachineList.append(M)
-            G.ObjList.append(M)
+            M.nextIds=getSuccessorList(id)                      # update the nextIDs list of the machine
+            G.MachineList.append(M)                             # add machine to global MachineList
+            G.ObjList.append(M)                                 # add machine to ObjList
             
         elif objClass=='Dream.MachineJobShop':
             id=element.get('id', 'not found')
@@ -305,7 +319,9 @@ def createObjects():
             min=float(processingTime.get('min', '0')) 
             max=float(processingTime.get('max', '0'))
             D=Dismantle(id, name, distribution=distributionType, mean=mean,stdev=stdev,min=min,max=max)
+            # get the successorList for the 'Parts'
             D.nextPartIds=getSuccessorList(id, lambda source, destination, edge_data: edge_data.get('entity') == 'Part')
+            # get the successorList for the 'Frames'
             D.nextFrameIds=getSuccessorList(id, lambda source, destination, edge_data: edge_data.get('entity') == 'Frame')
             D.nextIds=getSuccessorList(id)
             G.DismantleList.append(D)
@@ -327,17 +343,22 @@ def createObjects():
             priority=int(element.get('priority', '0'))
             dueDate=float(element.get('dueDate', '0'))
             orderDate=float(element.get('orderDate', '0'))
-            JSONRoute=element.get('route', [])
-            route=[]
-            for i in range(len(JSONRoute)):
-                route.append(None)
-            for routeElement in JSONRoute:
-                stepNumber=int(routeElement.get('stepNumber', '0'))
-                nextId=routeElement.get('stationId', 'not found')
-                processingTime=routeElement.get('processingTime', 'not found')
-                distributionType=processingTime.get('distributionType', 'not found')
+            JSONRoute=element.get('route', [])                  # dummy variable that holds the routes of the jobs
+                                                                #    the route from the JSON file 
+                                                                #    is a sequence of dictionaries
+            route = [None for i in range(len(JSONRoute))]       # variable that holds the argument used in the Job initiation
+                                                                #    hold None for each entry in the 'route' list
+            
+            for routeElement in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
+                stepNumber=int(routeElement.get('stepNumber', '0'))                 #    get the stepNumber
+                nextId=routeElement.get('stationId', 'not found')                   #    the stationId
+                processingTime=routeElement.get('processingTime', 'not found')      # and the 'processingTime' dictionary
+                distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
+                                                                                    #    get the 'mean' 
                 mean=float(processingTime.get('mean', 'not found'))
-                route[stepNumber]=[nextId, mean]
+                route[stepNumber]=[nextId, mean]                                    # finally add the 'nextId' and 'mean'
+                                                                                    #     to the job route
+            # initiate the job
             J=Job(id, name, route, priority=priority, dueDate=dueDate, orderDate=orderDate)
             G.JobList.append(J)   
             G.WipList.append(J)  
@@ -374,9 +395,11 @@ def createObjects():
             BR.nextIds=getSuccessorList(id)
             G.BatchReassemblyList.append(BR)
             G.ObjList.append(BR)       
-                        
-    #loop through all the core objects    
-    #to read predecessors
+    
+    # -----------------------------------------------------------------------
+    #                    loop through all the core objects    
+    #                         to read predecessors
+    # -----------------------------------------------------------------------
     for element in G.ObjList:
         #loop through all the nextIds of the object
         for nextId in element.nextIds:
@@ -386,7 +409,9 @@ def createObjects():
                     possible_successor.previousIds.append(element.id)            
 
 
-#defines the topology (predecessors and successors for all the objects)
+# ===========================================================================
+#    defines the topology (predecessors and successors for all the objects)
+# ===========================================================================
 def setTopology():
     #loop through all the objects  
     for element in G.ObjList:
@@ -423,12 +448,16 @@ def setTopology():
             element.definePartFrameRouting(nextPart, nextFrame)
         else:
             element.defineRouting(previous, next)
-
-#used to convert a string read from the input to object type
+            
+# ===========================================================================
+#        used to convert a string read from the input to object type
+# ===========================================================================
 def str_to_class(str):
     return getattr(sys.modules[__name__], str)
 
-#initializes all the objects that are in the topology
+# ===========================================================================
+#            initializes all the objects that are in the topology
+# ===========================================================================
 def initializeObjects():
     for element in G.ObjList:
         element.initialize()
@@ -437,7 +466,9 @@ def initializeObjects():
     for entity in G.EntityList:
         entity.initialize()
 
-#activates all the objects    
+# ===========================================================================
+#                        activates all the objects
+# ===========================================================================
 def activateObjects():
     for element in G.ObjList:
         try:
@@ -445,22 +476,25 @@ def activateObjects():
         except AttributeError:
             pass
 
-#sets the WIP in the corresponding stations                
+# ===========================================================================
+#                sets the WIP in the corresponding stations
+# ===========================================================================
 def setWIP():
     #read the start station of the Entities and assign them to it
     for entity in G.WipList:
-        objectId=entity.currentStation
+        objectId=entity.currentStation                      # get the id of the object where the entity currently seats 
         object=None
         for obj in G.ObjList:
             if obj.id==objectId:  
-                object=obj
-        object.getActiveObjectQueue().append(entity)  
-        entity.remainingRoute[0][0]=""                     #remove data from the remaining route.    
+                object=obj                                  # find the object in the 'G.ObjList
+        object.getActiveObjectQueue().append(entity)        # append the entity to its Queue
+        entity.remainingRoute[0][0]=""                      # remove data from the remaining route.    
         entity.schedule.append([object.id,now()])   #append the time to schedule so that it can be read in the result
-        entity.currentStation=object
+        entity.currentStation=object                        # update the current station of the entity           
 
-
-#the main script that is ran
+# ===========================================================================
+#                        the main script that is ran
+# ===========================================================================
 def main(argv=[], input_data=None):
     argv = argv or sys.argv[1:]
     
