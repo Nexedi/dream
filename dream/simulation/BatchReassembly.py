@@ -98,11 +98,7 @@ class BatchReassembly(CoreObject):
                 self.reassemble()
         
         
-    def reassemble(self):                #, activeEntity=None):
-        # maybe I can use as argument the activeEntity passing the getEntity as argument to this function in the run function
-        # for example
-        # self.decompose(self.getEntity)
-        
+    def reassemble(self):
         activeObject = self.getActiveObject()
         activeObjectQueue=activeObject.getActiveObjectQueue()    # get the internal queue of the active core object
         
@@ -208,5 +204,9 @@ class BatchReassembly(CoreObject):
                     activeObject.predecessorIndex=i  
                     maxTimeWaiting=timeWaiting                   
             i+=1                                                    # pick the predecessor waiting the more
-        return isRequested and len(activeObjectQueue<self.numberOfSubBatches) 
+        return isRequested\
+                and activeObject.Up\
+                and len(activeObjectQueue<self.numberOfSubBatches)\
+                and (len(activeObjectQueue)==0 or activeObjectQueue[0].type!='Batch')\
+                and activeObject.getGiverObjectQueue()[0].batchId==activeObjectQueue[0].batchId
         # return true when the Queue is not fully occupied and a predecessor is requesting it
