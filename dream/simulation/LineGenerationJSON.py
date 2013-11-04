@@ -75,6 +75,7 @@ from SubBatch import SubBatch
 from BatchSource import BatchSource
 from BatchDecomposition import BatchDecomposition
 from BatchReassembly import BatchReassembly
+from LineClearance import LineClearance
 
 import ExcelHandler
 import time
@@ -139,6 +140,7 @@ def createObjects():
     G.BatchDecompositionList=[]
     G.BatchSourceList=[]
     G.BatchReassemblyList=[]
+    G.LineClearanceList=[]
     
     # -----------------------------------------------------------------------
     #                loop through all the model resources 
@@ -394,6 +396,17 @@ def createObjects():
             BR.nextIds=getSuccessorList(id)
             G.BatchReassemblyList.append(BR)
             G.ObjList.append(BR)       
+            
+        elif objClass=='Dream.LineClearance':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            capacity=int(element.get('capacity', '1'))
+            isDummy=bool(int(element.get('isDummy', '0')))
+            schedulingRule=element.get('schedulingRule', 'FIFO')
+            LC=LineClearance(id, name, capacity, isDummy, schedulingRule=schedulingRule)
+            LC.nextIds=getSuccessorList(id)
+            G.LineClearanceList.append(LC)
+            G.ObjList.append(LC)
     
     # -----------------------------------------------------------------------
     #                    loop through all the core objects    
