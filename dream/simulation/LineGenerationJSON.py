@@ -76,8 +76,7 @@ from BatchSource import BatchSource
 from BatchDecomposition import BatchDecomposition
 from BatchReassembly import BatchReassembly
 
-import xlwt
-import xlrd
+import ExcelHandler
 import time
 import json
 from random import Random
@@ -557,11 +556,7 @@ def main(argv=[], input_data=None):
             
         #output trace to excel      
         if(G.trace=="Yes"):
-            G.traceFile.save('trace'+str(i+1)+'.xls')
-            G.traceIndex=0    #index that shows in what row we are
-            G.sheetIndex=1    #index that shows in what sheet we are
-            G.traceFile = xlwt.Workbook()     #create excel file
-            G.traceSheet = G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)  #create excel sheet   
+            ExcelHandler.outputTrace(i)  
     
     G.outputJSONFile=open('outputJSON.json', mode='w')
     G.outputJSON['_class'] = 'Dream.Simulation';
