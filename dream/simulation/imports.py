@@ -17,7 +17,7 @@
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 '''
-Created on 8 Nov 2012
+Created on 23 Oct 2013
 
 @author: George and Dipo
 '''
@@ -63,7 +63,7 @@ from simulation.Failure import Failure
 #Auxiliary
 from simulation.Globals import G
 from simulation.RandomNumberGenerator import RandomNumberGenerator
-
+import ExcelHandler
 
 
 

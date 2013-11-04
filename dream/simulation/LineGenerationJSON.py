@@ -556,7 +556,7 @@ def main(argv=[], input_data=None):
             
         #output trace to excel      
         if(G.trace=="Yes"):
-            ExcelHandler.outputTrace(i)  
+            ExcelHandler.outputTrace('trace'+str(i))  
     
     G.outputJSONFile=open('outputJSON.json', mode='w')
     G.outputJSON['_class'] = 'Dream.Simulation';
