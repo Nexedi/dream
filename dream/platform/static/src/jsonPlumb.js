@@ -1,5 +1,5 @@
 /* ===========================================================================
- * Copyright 2013 Nexedi SARL and Contributors
+ * Copyright 2013 Nexedi SA and Contributors
  *
  * This file is part of DREAM.
  *
