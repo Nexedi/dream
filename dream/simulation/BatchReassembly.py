@@ -123,21 +123,25 @@ class BatchReassembly(CoreObject):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
-        giverObjectQueue = giverObject.getGiverObjectQueue()
+        giverObjectQueue = self.getGiverObjectQueue()
 
         if(len(activeObject.previous)==1 or callerObject==None):
             if len(activeObjectQueue)==0:
                 return activeObject.Up
             else:
-                return activeObject.Up and activeObjectQueue[0].type!='Batch'\
+                return activeObject.Up\
+                     and activeObjectQueue[0].type!='Batch'\
                      and len(activeObjectQueue)<self.numberOfSubBatches\
                      and giverObjectQueue[0].batchId==activeObjectQueue[0].batchId
         
         thecaller=callerObject
         # return True ONLY if the length of the activeOjbectQueue is smaller than
         # the object capacity, and the callerObject is not None but the giverObject
-        return len(activeObjectQueue)<self.numberOfSubBatches and activeObjectQueue[0].type != 'Batch'\
-            and giverObjectQueue[0].batchId==activeObjectQueue[0].batchId and (thecaller is giverObject)
+        return len(activeObjectQueue)<self.numberOfSubBatches\
+                and (thecaller is giverObject)\
+                and activeObjectQueue[0].type != 'Batch'\
+                and giverObjectQueue[0].batchId==activeObjectQueue[0].batchId
+
     
     
     def haveToDispose(self,callerObject=None):
@@ -148,8 +152,8 @@ class BatchReassembly(CoreObject):
         #if we have only one successor just check if object waits to dispose and also is up
         # this is done to achieve better (cpu) processing time        
         if(len(activeObject.next)==1 or callerObject==None): 
-            return len(activeObjectQueue)==1 and \
-                activeObjectQueue[0].type=="Batch" # the control of the length of the queue is not needed
+            return len(activeObjectQueue)==1\
+                    and activeObjectQueue[0].type=="Batch" # the control of the length of the queue is not needed
         
         thecaller=callerObject 
         #give the entity to the successor that is waiting for the most time. 
@@ -166,8 +170,9 @@ class BatchReassembly(CoreObject):
               
         #return true only to the predecessor from which the queue will take 
         receiverObject=activeObject.getReceiverObject()
-        return len(self.Res.activeQ)==1 and \
-            (thecaller is receiverObject) and activeObjectQueue[0].type!="Batch" # the control of the length of the queue is not needed
+        return len(self.Res.activeQ)==1\
+                and (thecaller is receiverObject)\
+                and activeObjectQueue[0].type!="Batch" # the control of the length of the queue is not needed
             
             
     def canAcceptAndIsRequested(self):
