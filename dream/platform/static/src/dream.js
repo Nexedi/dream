@@ -192,7 +192,7 @@
         $.each(property_list, function(key, element) {
           if (element) {
             if(element._class === "Dream.Property") {
-              data[element.id] = element.default;
+              data[element.id] = element._default;
             } else if (element._class === "Dream.PropertyList") {
               data[element.id] = {};
               var next_data = data[element.id];
@@ -214,7 +214,7 @@
       // save general configuration default values
       var general_properties = {};
       $.each(configuration["Dream-Configuration"].property_list, function(idx, element) {
-        general_properties[element.id] = element.default;
+        general_properties[element.id] = element._default;
       });
       that.setGeneralProperties(general_properties);
       that.initGeneralProperties();
