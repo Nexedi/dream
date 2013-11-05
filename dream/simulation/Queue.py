@@ -27,7 +27,7 @@ Models a FIFO queue where entities can wait in order to get into a server
 
 
 from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import waituntil, now
+from SimPy.Simulation import waituntil, now, infinity
 from CoreObject import CoreObject
 # ===========================================================================
 #                            the Queue object
@@ -44,7 +44,10 @@ class Queue(CoreObject):
         self.objName=name
         self.type="Queue"           # String that shows the type of object
         #     holds the capacity of the Queue
-        self.capacity=capacity
+        if capacity>0:
+            self.capacity=capacity
+        else:
+            self.capacity=infinity
         # consider removing the following, the are restated in the initialize() method
 #         self.nameLastEntityEntered=""   #keeps the name of the last entity that entered in the object
 #         self.timeLastEntityEntered=0    #keeps the time of the last entity that entered in the object

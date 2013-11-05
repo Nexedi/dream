@@ -32,7 +32,7 @@
     "nodes": {
         "Q1": {
             "_class": "Dream.Queue",
-            "capacity": "100000",
+            "capacity": "-1",
             "left": 0.6968085106382979,
             "name": "StartQueue",
             "top": 0.7727272727272727
