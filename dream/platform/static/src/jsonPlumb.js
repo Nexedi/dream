@@ -28,54 +28,75 @@
       var gradient_color = "#09098e";
       jsPlumb.importDefaults({
         // default drag options
-        DragOptions : { cursor: 'pointer', zIndex:2000 },
-        EndpointStyles : [{ fillStyle:'#225588' }, { fillStyle:'#558822' }],
+        DragOptions: {
+          cursor: 'pointer',
+          zIndex: 2000
+        },
+        EndpointStyles: [{
+          fillStyle: '#225588'
+        }, {
+          fillStyle: '#558822'
+        }],
         //PaintStyle : {strokeStyle:"#736AFF", lineWidth:2 },
-        HoverPaintStyle : {strokeStyle:"#42a62c", lineWidth: 4},
-        Endpoint : [ "Dot", {radius:2} ],
-        ConnectionOverlays : [
-          [ "Arrow", { 
-            location:1,
-            id:"arrow",
-                      length:14,
-                      foldback:0.8
-          } ],
+        HoverPaintStyle: {
+          strokeStyle: "#42a62c",
+          lineWidth: 4
+        },
+        Endpoint: ["Dot", {
+          radius: 2
+        }],
+        ConnectionOverlays: [
+          ["Arrow", {
+            location: 1,
+            id: "arrow",
+            length: 14,
+            foldback: 0.8
+          }]
         ],
-        PaintStyle : {
-            gradient:{stops:[[0, color], [0.5, gradient_color], [1, color]]},
-            lineWidth:5,
-            strokeStyle:color,
+        PaintStyle: {
+          gradient: {
+            stops: [
+              [0, color],
+              [0.5, gradient_color],
+              [1, color]
+            ]
           },
+          lineWidth: 5,
+          strokeStyle: color
+        },
         Anchor: "Continuous",
-        Connector: ["StateMachine", { curviness:20 }],
-      });     
+        Connector: ["StateMachine", {
+          curviness: 20
+        }]
+      });
 
       // listen for clicks on connections, and offer to change values on click.
-      jsPlumb.bind("click", function(conn) {
+      jsPlumb.bind("click", function (conn) {
         jsPlumb.detach(conn);
       });
 
-      jsPlumb.bind("beforeDetach", function(conn) {
+      jsPlumb.bind("beforeDetach", function (conn) {
         return confirm("Delete connection?");
       });
-    
-      jsPlumb.bind("connectionDrag", function(connection) {
-      });   
-      
-      jsPlumb.bind("connectionDragStop", function(connection) {
-      });
-      
+
+      jsPlumb.bind("connectionDrag", function (connection) {});
+
+      jsPlumb.bind("connectionDragStop", function (connection) {});
+
       jsPlumb.makeTarget(jsPlumb.getSelector(".w"), {
-        dropOptions:{ hoverClass:"dragHover" },
-        anchor:"Continuous"
+        dropOptions: {
+          hoverClass: "dragHover"
+        },
+        anchor: "Continuous"
       });
 
-      var updateConnectionData = function(connection, remove) {
+      var updateConnectionData = function (connection, remove) {
         var source_element;
         source_element = priv.element_container[connection.sourceId];
         source_element.successorList = source_element.successorList || [];
         if (remove) {
-          source_element.successorList.splice(source_element.successorList.indexOf(connection.targetId));
+          source_element.successorList.splice(source_element.successorList.indexOf(
+            connection.targetId));
         } else {
           source_element.successorList.push(connection.targetId);
         }
@@ -83,17 +104,17 @@
       };
 
       // bind to connection/connectionDetached events, and update the list of connections on screen.
-      jsPlumb.bind("connection", function(info, originalEvent) {
+      jsPlumb.bind("connection", function (info, originalEvent) {
         updateConnectionData(info.connection);
       });
-      jsPlumb.bind("connectionDetached", function(info, originalEvent) {
+      jsPlumb.bind("connectionDetached", function (info, originalEvent) {
         updateConnectionData(info.connection, true);
       });
       priv.onDataChange();
       priv.draggable();
     };
 
-    priv.updateElementCoordinate = function(element_id, coordinate) {
+    priv.updateElementCoordinate = function (element_id, coordinate) {
       var preference = priv.preference_container[element_id] || {}, element;
       if (coordinate === undefined) {
         coordinate = {};
@@ -107,55 +128,61 @@
       return coordinate;
     };
 
-    priv.draggable = function() {
+    priv.draggable = function () {
       // make all the window divs draggable
-      var stop = function(el) {
+      var stop = function (el) {
         var element_id = el.target.id;
         priv.updateElementCoordinate(element_id);
-      }
-      jsPlumb.draggable(jsPlumb.getSelector(".window"), { grid: [20, 20] ,
-                                                          stop: stop,
+      };
+      jsPlumb.draggable(jsPlumb.getSelector(".window"), {
+        grid: [20, 20],
+        stop: stop
       });
     };
-    priv.addElementToContainer = function(element) {
+    priv.addElementToContainer = function (element) {
       // Now update the container of elements
-      var element_data = {_class: element._class,
-          id: element.id,
-          name: element.id,
+      var element_data = {
+        _class: element._class,
+        id: element.id,
+        name: element.id
       };
       priv.element_container[element.id] = element_data;
       priv.onDataChange();
     };
 
-    priv.onDataChange = function() {
+    priv.onDataChange = function () {
       $.publish("Dream.Gui.onDataChange", priv.getData());
     };
 
 
-    that.positionGraph = function() {
+    that.positionGraph = function () {
       $.ajax(
         '/positionGraph', {
-        data: JSON.stringify(priv.getData()),
-        contentType: 'application/json',
-        type: 'POST',
-        success: function(data, textStatus, jqXHR){
-          $.each(data, function(node, pos) {
-            priv.updateElementCoordinate(node,
-              {top: (Math.floor(pos.top*$("#main").height()) - 45) + "px",
-               left: Math.floor(pos.left*$("#main").width()) + "px"});
-          });
-        }
-      });
+          data: JSON.stringify(priv.getData()),
+          contentType: 'application/json',
+          type: 'POST',
+          success: function (data, textStatus, jqXHR) {
+            $.each(data, function (node, pos) {
+              priv.updateElementCoordinate(node, {
+                top: (Math.floor(pos.top * $("#main").height()) - 45) +
+                  "px",
+                left: Math.floor(pos.left * $("#main").width()) + "px"
+              });
+            });
+          }
+        });
 
-    }
-
-    priv.getData = function() {
-      return { "element": priv.element_container,
-               "preference": priv.preference_container,
-               "general": priv.general_container };
     };
 
-    priv.removeElement = function(element_id) {
+    priv.getData = function () {
+      return {
+        "element": priv.element_container,
+        "preference": priv.preference_container,
+        "general": priv.general_container
+      };
+    };
+
+    priv.removeElement = function (element_id) {
       jsPlumb.removeAllEndpoints($("#" + element_id));
       $("#" + element_id).remove();
       delete(priv.element_container[element_id]);
@@ -187,14 +214,17 @@
     };
 
     that.clearAll = function () {
-      $("[id=render]").children().remove()
-      $.each(priv.element_container, function(element_id) {
+      $("[id=render]").children().remove();
+      $.each(priv.element_container, function (element_id) {
         priv.removeElement(element_id);
       });
     };
 
     that.connect = function (source_id, target_id) {
-      jsPlumb.connect({source: source_id, target: target_id});
+      jsPlumb.connect({
+        source: source_id,
+        target: target_id
+      });
     };
 
     that.setGeneralProperties = function (properties) {
@@ -203,14 +233,15 @@
     };
 
     that.newElement = function (element, option) {
-      var render_element, style_string="", coordinate=element.coordinate,
-          box;
+      var render_element, style_string = "",
+        coordinate = element.coordinate,
+        box;
       render_element = $("[id=render]");
       if (coordinate !== undefined) {
-        coordinate = priv.updateElementCoordinate(element.id, coordinate)
+        coordinate = priv.updateElementCoordinate(element.id, coordinate);
       }
       render_element.append('<div class="window" id="' +
-                        element.id + '">' + element.id + '</div>');
+        element.id + '">' + element.id + '</div>');
       box = $("#" + element.id);
       box.css("top", coordinate.top);
       box.css("left", coordinate.left);
@@ -225,18 +256,24 @@
       if (element._class === "Dream.Repairman") {
         color = "rgb(189,11,11)";
         gradient_color = "rgb(255,0,0)";
-      };
+      }
       var endpoint = {
         endpoint: "Rectangle",
-        paintStyle:{ width:25, height:21, fillStyle:color },
-        isSource:true,
-        scope:"blue rectangle",
-        maxConnections:3,
-        isTarget:true,
+        paintStyle: {
+          width: 25,
+          height: 21,
+          fillStyle: color
+        },
+        isSource: true,
+        scope: "blue rectangle",
+        maxConnections: 3,
+        isTarget: true
       };
       for (var key in option.anchor) {
-        jsPlumb.addEndpoint(element.id, { anchor: key }, endpoint);
-      };
+        jsPlumb.addEndpoint(element.id, {
+          anchor: key
+        }, endpoint);
+      }
       priv.addElementToContainer(element);
     };
 
