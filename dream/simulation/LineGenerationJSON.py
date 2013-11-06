@@ -75,6 +75,7 @@ from SubBatch import SubBatch
 from BatchSource import BatchSource
 from BatchDecomposition import BatchDecomposition
 from BatchReassembly import BatchReassembly
+from BatchScrapMachine import BatchScrapMachine
 from LineClearance import LineClearance
 
 import ExcelHandler
@@ -141,6 +142,7 @@ def createObjects():
     G.BatchSourceList=[]
     G.BatchReassemblyList=[]
     G.LineClearanceList=[]
+    G.BatchScrapMachine=[]
     
     # -----------------------------------------------------------------------
     #                loop through all the model resources 
@@ -220,6 +222,41 @@ def createObjects():
             G.MachineList.append(M)                             # add machine to global MachineList
             G.ObjList.append(M)                                 # add machine to ObjList
             
+        elif objClass=='Dream.BatchScrapMachine':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            processingTime=element.get('processingTime', 'not found')
+            distributionType=processingTime.get('distributionType', 'not found')
+            mean=float(processingTime.get('mean', '0'))  
+            stdev=float(processingTime.get('stdev', '0'))  
+            min=float(processingTime.get('min', '0')) 
+            max=float(processingTime.get('max', '0'))            
+            scrapQuantity=element.get('scrapQuantity', 'not found')
+            scrapDistributionType=scrapQuantity.get('distributionType', 'not found')
+            scrMean=int(scrapQuantity.get('mean', '0'))  
+            scrStdev=float(scrapQuantity.get('stdev', '0'))  
+            scrMin=int(scrapQuantity.get('min', '0')) 
+            scrMax=int(scrapQuantity.get('max', '0'))            
+            failures=element.get('failures', 'not found')  
+            failureDistribution=failures.get('failureDistribution', 'not found')
+            MTTF=float(failures.get('MTTF', '0'))   
+            MTTR=float(failures.get('MTTR', '0')) 
+            availability=float(failures.get('availability', '0'))  
+            r='None'
+            for repairman in G.RepairmanList:                   # check which repairman in the G.RepairmanList
+                if(id in repairman.coreObjectIds):              # (if any) is assigned to repair 
+                    r=repairman                                 # the machine with ID equal to id
+                    
+            M=BatchScrapMachine(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
+                                                    MTTF=MTTF, MTTR=MTTR, availability=availability, repairman=r,
+                                                    mean=mean,stdev=stdev,min=min,max=max, scrMean=scrMean, 
+                                                    scrStdev=scrStdev,scrMin=scrMin,scrMax=scrMax)
+            M.nextIds=getSuccessorList(id)                      # update the nextIDs list of the machine
+            G.MachineList.append(M)                             # add machine to global MachineList
+            G.BatchScrapMachine.append(M)
+            G.ObjList.append(M)                                 # add machine to ObjList
+            
+        
         elif objClass=='Dream.MachineJobShop':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
