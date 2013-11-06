@@ -53,10 +53,10 @@ class BatchScrapMachine(Machine):
         self.scrapDistType=scrapDistribution    #the distribution that the failure follows   
         # Sets the attributes of the scrap quantity distribution
         self.scrapRng=RandomNumberGenerator(self, self.scrapDistType)
-        self.scrapRng.avg=mean
-        self.scrapRng.stdev=stdev
-        self.scrapRng.min=min
-        self.scrapRng.max=max
+        self.scrapRng.avg=scrMean
+        self.scrapRng.stdev=scrStdev
+        self.scrapRng.min=scrMin
+        self.scrapRng.max=scrMax
         
     
     def removeEntity(self):
