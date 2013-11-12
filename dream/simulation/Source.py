@@ -106,14 +106,14 @@ class Source(CoreObject):
         
         while 1:
             entity=self.createEntity()                            # create the Entity object and assign its name 
-            self.numberOfArrivals+=1                              # we have one new arrival
-            G.numberOfEntities+=1
             entity.creationTime=now()                             # assign the current simulation time as the Entity's creation time 
             entity.startTime=now()                                # assign the current simulation time as the Entity's start time 
             entity.currentStation=self                            # update the current station of the Entity
             self.outputTrace(self.item.type+\
                              str(self.numberOfArrivals))          # output the trace
-            activeObjectQueue.append(entity)                      # append the entity to the resource        
+            activeObjectQueue.append(entity)                      # append the entity to the resource 
+            self.numberOfArrivals+=1                              # we have one new arrival
+            G.numberOfEntities+=1       
             yield hold,self,self.calculateInterarrivalTime()      # wait until the next arrival
     #============================================================================
     #            sets the routing out element for the Source
