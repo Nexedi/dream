@@ -78,7 +78,7 @@ class CoreObject(Process):
         activeObjectQueue=self.getActiveObjectQueue()  
         activeEntity=activeObjectQueue[0]  
         activeObjectQueue.pop(0)                        #remove the Entity from the queue
-
+        self.timeLastEntityLeft=now()
         try:
             self.outputTrace(activeEntity.name, "released "+self.objName) 
         except TypeError:
@@ -107,6 +107,7 @@ class CoreObject(Process):
         # the entity enters a new object
         activeEntity.schedule.append([activeObject.id,now()])
         activeEntity.currentStation=self
+        self.timeLastEntityEntered=now()
         try:
             self.outputTrace(activeEntity.name, "got into "+self.objName)
         except TypeError:
