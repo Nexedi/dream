@@ -176,15 +176,12 @@ class Dismantle(CoreObject):
         #move the frame to the end of the internal queue since we want the frame to be disposed first
         activeObjectQueue.append(activeEntity)
         activeObjectQueue.pop(0)        
-        
-        self.outputTrace(activeEntity.name, "got into "+ self.objName)   
         return activeEntity
     
     #removes an entity from the Dismantle
     def removeEntity(self):
         activeObjectQueue=self.getActiveObjectQueue()
         activeEntity=CoreObject.removeEntity(self)                               #run the default method     
-        self.outputTrace(activeEntity.name, " releases "+ self.objName)         #output the trace
         #update the flags
         if(len(activeObjectQueue)==0):  
             self.waitToDisposeFrame=False
@@ -192,23 +189,7 @@ class Dismantle(CoreObject):
             if(len(activeObjectQueue)==1):   
                self.waitToDisposePart=False
         return activeEntity
-         
-    #outputs message to the trace.xls. Format is (Simulation Time | Entity or Frame Name | message)
-    def outputTrace(self, name, message):
-        from Globals import G
-        if(G.trace=="Yes"):         #output only if the user has selected to
-            #handle the 3 columns
-            G.traceSheet.write(G.traceIndex,0,str(now()))
-            G.traceSheet.write(G.traceIndex,1,name)  
-            G.traceSheet.write(G.traceIndex,2,message)          
-            G.traceIndex+=1       #increment the row
-            #if we reach row 65536 we need to create a new sheet (excel limitation)  
-            if(G.traceIndex==65536):
-                G.traceIndex=0
-                G.sheetIndex+=1
-                G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)    
-
-
+    
     #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime=None):
         if MaxSimtime==None:

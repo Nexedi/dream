@@ -109,8 +109,7 @@ class Source(CoreObject):
             entity.creationTime=now()                             # assign the current simulation time as the Entity's creation time 
             entity.startTime=now()                                # assign the current simulation time as the Entity's start time 
             entity.currentStation=self                            # update the current station of the Entity
-            self.outputTrace(self.item.type+\
-                             str(self.numberOfArrivals))          # output the trace
+            self.outputTrace(entity.name, "generated")          # output the trace
             activeObjectQueue.append(entity)                      # append the entity to the resource 
             self.numberOfArrivals+=1                              # we have one new arrival
             G.numberOfEntities+=1       
@@ -133,18 +132,4 @@ class Source(CoreObject):
     #============================================================================
     #                  outputs message to the trace.xls. 
     #          Format is (Simulation Time | Entity Name | "generated")
-    #============================================================================            
-    def outputTrace(self, message):
-        from Globals import G
-        
-        if(G.trace=="Yes"):     # output only if the user has selected to
-            # handle the 3 columns
-            G.traceSheet.write(G.traceIndex,0,str(now()))
-            G.traceSheet.write(G.traceIndex,1,message)
-            G.traceSheet.write(G.traceIndex,2,"generated")          
-            G.traceIndex+=1      #increment the row
-            # if we reach row 65536 we need to create a new sheet (excel limitation)  
-            if(G.traceIndex==65536):
-                G.traceIndex=0
-                G.sheetIndex+=1
-                G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)     
+    #============================================================================   

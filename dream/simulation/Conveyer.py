@@ -207,7 +207,6 @@ class Conveyer(CoreObject):
     def getEntity(self):       
         activeEntity=CoreObject.getEntity(self) 
         self.position.append(0)           #the entity is placed in the start of the conveyer
-        self.outputTrace(activeEntity.name, "got into "+ self.objName)  #output trace
         #check if the conveyer became full to start counting blockage 
         if self.isFull():
             self.timeBlockageStarted=now()
@@ -218,7 +217,6 @@ class Conveyer(CoreObject):
     #removes an entity from the Conveyer
     def removeEntity(self):
         activeEntity=CoreObject.removeEntity(self)                               #run the default method  
-        self.outputTrace(activeEntity.name, "releases "+ self.objName)              
    
         self.position.pop(0)
         self.waitToDispose=False  
@@ -282,22 +280,6 @@ class Conveyer(CoreObject):
         self.Waiting.append(100*self.totalWaitingTime/MaxSimtime)
         self.Working.append(100*self.totalWorkingTime/MaxSimtime)
         self.Blockage.append(100*self.totalBlockageTime/MaxSimtime)
-        
-    #outputs message to the trace.xls. Format is (Simulation Time | Entity or Frame Name | message)
-    def outputTrace(self, name, message):
-        from Globals import G
-        if(G.trace=="Yes"):         #output only if the user has selected to
-            #handle the 3 columns
-            G.traceSheet.write(G.traceIndex,0,str(now()))
-            G.traceSheet.write(G.traceIndex,1,name)  
-            G.traceSheet.write(G.traceIndex,2,message)          
-            G.traceIndex+=1       #increment the row
-            #if we reach row 65536 we need to create a new sheet (excel limitation)  
-            if(G.traceIndex==65536):
-                G.traceIndex=0
-                G.sheetIndex+=1
-                G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)    
-
 
     #outputs data to "output.xls"
     def outputResultsXL(self, MaxSimtime=None):

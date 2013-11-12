@@ -103,8 +103,6 @@ class Machine(CoreObject):
             yield waituntil, self, self.canAcceptAndIsRequested          
             # get the entity from the predecessor                                                                            
             self.getEntity()    
-            # output to whenever an entity enters the Machine (self.objName)
-            self.outputTrace("got into "+self.objName)
             # set the currentEntity as the Entity just received and initialize the timer timeLastEntityEntered
             self.currentEntity=self.getActiveObjectQueue()[0]       # entity is the current entity processed in Machine
             self.nameLastEntityEntered=self.currentEntity.name      # this holds the name of the last entity that got into Machine                   
@@ -138,7 +136,7 @@ class Machine(CoreObject):
                 yield hold,self,tinM                                # getting processed for remaining processing time tinM
                 if self.interrupted():                              # if a failure occurs while processing the machine is interrupted.
                     # output to trace that the Machine (self.objName) got interrupted                                                                  
-                    self.outputTrace("Interrupted at "+self.objName)
+                    self.outputTrace(self.getActiveObjectQueue()[0].name, "Interrupted at "+self.objName)
                     # recalculate the processing time left tinM
                     tinM=tinM-(now()-tBefore)
                     if(tinM==0):            # sometimes the failure may happen exactly at the time that the processing would finish
@@ -156,12 +154,12 @@ class Machine(CoreObject):
                     self.timeLastFailureEnded=now()                             # set the timeLastFailureEnded
                     failureTime+=now()-breakTime                                # dummy variable keeping track of the failure time 
                     # output to trace that the Machine self.objName was passivated for the current failure time
-                    self.outputTrace("passivated in "+self.objName+" for "+str(now()-breakTime))              
+                    self.outputTrace(self.getActiveObjectQueue()[0].name, "passivated in "+self.objName+" for "+str(now()-breakTime))              
                 # if no interruption occurred the processing in M1 is ended 
                 else:
                     processingEndedFlag=False
             # output to trace that the processing in the Machine self.objName ended 
-            self.outputTrace("ended processing in "+self.objName)
+            self.outputTrace(self.getActiveObjectQueue()[0].name,"ended processing in "+self.objName)
             # set the variable that flags an Entity is ready to be disposed 
             self.waitToDispose=True
             # update the total working time 
@@ -290,7 +288,7 @@ class Machine(CoreObject):
     # =======================================================================
     def removeEntity(self):
         activeObject=self.getActiveObject()  
-        activeObject.outputTrace("releases "+activeObject.objName)  # output to trace that the Entity was released from the currentObject
+        #activeObject.outputTrace("releases "+activeObject.objName)  # output to trace that the Entity was released from the currentObject
         activeEntity=CoreObject.removeEntity(self)                               #run the default method     
         activeObject.timeLastEntityLeft=now()                       # set the time that the last Entity was removed from this object
         activeObject.waitToDispose=False                            # update the waitToDispose flag
@@ -390,11 +388,12 @@ class Machine(CoreObject):
         activeObject.Waiting.append(100*self.totalWaitingTime/MaxSimtime)    
         activeObject.Working.append(100*self.totalWorkingTime/MaxSimtime)  
     
+    '''
     # =======================================================================
     # outputs message to the trace.xls. 
     # Format is (Simulation Time | Entity Name | message)
     # =======================================================================
-    def outputTrace(self, message):
+    def outputTrace(self, name, message):
         from Globals import G
         if(G.trace=="Yes"):         #output only if the user has selected to
             #handle the 3 columns
@@ -408,7 +407,7 @@ class Machine(CoreObject):
                 G.traceIndex=0
                 G.sheetIndex+=1
                 G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)    
-                
+        '''        
     # =======================================================================
     # outputs the the "output.xls"
     # =======================================================================
