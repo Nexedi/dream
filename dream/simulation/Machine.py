@@ -387,27 +387,7 @@ class Machine(CoreObject):
         activeObject.Blockage.append(100*self.totalBlockageTime/MaxSimtime)  
         activeObject.Waiting.append(100*self.totalWaitingTime/MaxSimtime)    
         activeObject.Working.append(100*self.totalWorkingTime/MaxSimtime)  
-    
-    '''
-    # =======================================================================
-    # outputs message to the trace.xls. 
-    # Format is (Simulation Time | Entity Name | message)
-    # =======================================================================
-    def outputTrace(self, name, message):
-        from Globals import G
-        if(G.trace=="Yes"):         #output only if the user has selected to
-            #handle the 3 columns
-            G.traceSheet.write(G.traceIndex,0,str(now()))
-            G.traceSheet.write(G.traceIndex,1,self.getActiveObjectQueue()[0].name)
-            G.traceSheet.write(G.traceIndex,2,message)          
-            G.traceIndex+=1       #increment the row
-
-            #if we reach row 65536 we need to create a new sheet (excel limitation)  
-            if(G.traceIndex==65536):
-                G.traceIndex=0
-                G.sheetIndex+=1
-                G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)    
-        '''        
+     
     # =======================================================================
     # outputs the the "output.xls"
     # =======================================================================
