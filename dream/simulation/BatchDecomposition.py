@@ -130,6 +130,7 @@ class BatchDecomposition(CoreObject):
             activeObjectQueue.append(subBatch)                          #append the sub-batch to the active object Queue
             activeEntity.subBatchList.append(subBatch)
         activeEntity.numberOfSubBatches=self.numberOfSubBatches  
+        self.timeLastEntityEnded=now()
 
         
         
