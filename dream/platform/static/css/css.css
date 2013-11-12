@@ -1,0 +1,274 @@
+.bold {
+  font-weight: bold;
+}
+.note {
+  font-weight: bold;
+  display: block;
+}
+.center {
+  display: block;
+  text-align: center;
+}
+.left {
+  display: block;
+  text-align: left;
+}
+.right {
+  display: block;
+  text-align: right;
+}
+.starred {
+  color: #0FBABD;
+}
+.large {
+  font-size: 125%;
+}
+.ui-popup .file {
+  max-width: 70%;
+}
+
+.inline {
+  max-width: 50%;
+  margin: 0 auto;
+}
+.inline a.ui-btn:after {
+  font-size: .9em;
+}
+@media (max-width: 40em) {
+  .inline {
+    max-width: 70%;
+    margin: 0 auto;
+  }
+}
+.alert {
+  color: red;
+  font-weight: bold;
+}
+.alert textarea {
+  color: red !important;
+  font-weight: normal;
+}
+.alert label {
+  display: block;
+  width: 100%;
+  float: none;
+}
+tbody .alert,
+tbody .proceed,
+tbody .large {
+  display: block;
+  text-align: center
+}
+@media (max-width: 40em) {
+  tbody .alert,
+  tbody .proceed {
+    font-size: 1.5em;
+  }
+}
+.proceed {
+  color: #0FBABD;
+  font-weight: bold;
+}
+.static {
+  cursor: default;
+}
+.input_board {
+  margin: 0;
+}
+.input_board .ui-controlgroup-controls {
+  width: 100%;
+}
+.input_board .ui-controlgroup-controls .ui-input-text input {
+  box-shadow: 0 0 2px #999999 inset;
+  -webkit-box-shadow: 0 0 2px #999999 inset;
+}
+.button_board {
+  text-align: center;
+}
+
+a.confirm, a.action {
+  font-weight: bold !important;
+}
+.profile {
+  display: inline-block;
+  border: 1px solid;
+}
+@media (max-width: 40em) {
+  .profile {
+    margin-top: 1em;
+  }
+}
+.profile img {
+  padding-right: 1em;
+  float: left;
+  vertical-align: middle;
+  max-width: 120px;
+}
+.tag {
+  margin: 0;
+  font-size: 200%;
+}
+  /* Modified on BASE */
+.mini {
+  font-size: 80%;
+}
+@media (max-width: 40em) {
+  .tag {
+    margin: 0;
+    font-size: 150%;
+  }
+}
+.downloads:before {
+  content: "·";
+}
+.inline-icon {
+  padding: 0 .5em;
+}
+.logo_wrap {
+  margin-top: 0em;
+  margin-bottom: 2em;
+  padding: 0.5em;
+  text-align: center;
+}
+.logo_wrap img {
+  max-height: 8em;
+}
+@media (max-width: 40em) {
+  .logo_wrap {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+  .logo_wrap img {
+    max-height: 7em;
+  }
+}
+@media (max-width: 30em) {
+  .logo_wrap {
+    margin-top: .5em;
+    margin-bottom: .5em;
+  }
+}
+@media (max-width: 20em) {
+  .logo_wrap {
+    margin-top: .25em;
+    margin-bottom: .25em;
+  }
+}
+/* custom signin buttons: thx Zocial http://zocial.smcllns.com/ */
+.signin_google,
+.signin_google:visited {
+  background: #DD4B39 !important;
+  color: #fff !important;
+  text-shadow: none !important;
+  cursor: pointer !important;
+}
+.signin_fb,
+.signin_fb:visited {
+  background: #4863ae !important;
+  color: #fff !important;
+  text-shadow: none !important;
+  cursor: pointer !important;
+}
+.signin_fb:hover,
+.signin_fb:active,
+.signin_fb.ui-btn-active,
+.signin_google:hover,
+.signin_google:active,
+.signin_google.ui-btn-active {
+  background-image: -webkit-gradient(linear, center bottom, center top, from(rgba(255, 255, 255, 0.1)), color-stop(0.30, rgba(255, 255, 255, 0)), to(rgba(0, 0, 0, 0.1))) !important;
+  background-image: -webkit-linear-gradient(center bottom , rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0) 30%, transparent 50%, rgba(0, 0, 0, 0.1)) !important;
+  background-image: -ms-linear-gradient(center bottom , rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0) 30%, transparent 50%, rgba(0, 0, 0, 0.1)) !important;
+  background-image: -moz-linear-gradient(center bottom , rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0) 30%, transparent 50%, rgba(0, 0, 0, 0.1)) !important;
+  background-image: -o-linear-gradient(center bottom , rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0) 30%, transparent 50%, rgba(0, 0, 0, 0.1)) !important;
+  background-image: linear-gradient(center bottom , rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0) 30%, transparent 50%, rgba(0, 0, 0, 0.1)) !important;
+}
+.signin_google:focus,
+.signin_google.ui-focus
+.signin_fb:focus,
+.signin_fb.ui-focus {
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+.popup_element {
+  padding-top: .75em;
+  padding-left: .75em;
+  padding-right: .75em;
+}
+.popup_element p {
+  margin-bottom: 0.15em;
+}
+.content_element {
+  display: inline-block;
+  vertical-align: top;
+  width: 45%;
+  padding-left: 2%;
+  padding-right: 2%;
+  /* ~ 98% for 2 col layout */
+  padding-top: 2%;
+}
+.content_element_fullscreen {
+  width: 96% /* 2% padding-left/right */
+}
+/* is this padding really necessary? */
+.content_element .ui-controlgroup-vertical,
+.content_element .ui-controlgroup-horizontal,
+.content_element form {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  vertical-align: middle;
+}
+@media (max-width: 40em) {
+  .content_element {
+    width: 100%;
+    padding: 0;
+  }
+}
+.content_element .ui-input-search {
+  width: 50%;
+}
+@media (max-width: 45em) {
+  .content_element .ui-input-search {
+    width: 60%;
+  }
+}
+@media (max-width: 30em) {
+  .content_element .ui-input-search {
+    width: 65%;
+  }
+}
+@media (max-width: 20em) {
+  .content_element .ui-input-search{
+    width: 70%;
+  }
+}
+.panel .ui-panel-inner .panel_element {
+  margin-left: -1em;
+  margin-right: -1em;
+}
+.panel .ui-panel-inner .panel_element.panel_element_first {
+  margin-top: -1em;
+}
+.panel .ui-panel-inner .panel_element.panel_element_last {
+  margin-bottom: -1em;
+}
+.panel .panel_element.panel_header {
+  border-width: 0;
+  padding-top: 1px;
+  top: -1px;
+}
+
+/* navbar */
+.navbar ul li a.ui-btn-active.clone_item span.navbar_clone {
+  font-weight: bold;
+}
+
+div.ui-content > iframe {
+    height: 500px;
+    min-width: 1300px;
+}
+
+div.ui-content2 > iframe {
+    height: 500px;
+    min-width: 1300px;
+}

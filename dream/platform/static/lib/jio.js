@@ -4,9 +4,21 @@
 * http://www.gnu.org/licenses/lgpl.html
 */
 
-(function (scope, hex_md5) {
+// define([module_name], [dependencies], module);
+(function (dependencies, module) {
   "use strict";
-  var localstorage;
+  if (typeof define === 'function' && define.amd) {
+    return define(dependencies, module);
+  }
+  if (typeof exports === 'object') {
+    return module(exports, require('md5'));
+  }
+  window.jIO = {};
+  module(window.jIO, {hex_md5: hex_md5});
+}(['exports', 'md5'], function (exports, md5) {
+  "use strict";
+
+  var localstorage, hex_md5 = md5.hex_md5;
   if (typeof localStorage !== "undefined") {
     localstorage = {
       getItem: function (item) {
@@ -17,7 +29,7 @@
         return localStorage.setItem(item, JSON.stringify(value));
       },
       removeItem: function (item) {
-        delete localStorage[item];
+        return localStorage.removeItem(item);
       },
       clone: function () {
         return JSON.parse(JSON.stringify(localStorage));
@@ -29,8 +41,7 @@
       localstorage = {
         getItem: function (item) {
           var value = pseudo_localStorage[item];
-          return value === undefined ?
-              null : JSON.parse(pseudo_localStorage[item]);
+          return value === undefined ? null : JSON.parse(value);
         },
         setItem: function (item, value) {
           pseudo_localStorage[item] = JSON.stringify(value);
@@ -531,13 +542,13 @@ var command = function (spec, my) {
    * @param  {object} storage The storage.
    */
   that.validate = function (storage) {
-    if (typeof priv.doc._id === "string" && priv.doc._id.match(" ")) {
+    if (typeof priv.doc._id === "string" && priv.doc._id === "") {
       that.error({
         "status": 21,
         "statusText": "Invalid Document Id",
         "error": "invalid_document_id",
         "message": "The document id is invalid",
-        "reason": "The document id contains spaces"
+        "reason": "empty"
       });
       return false;
     }
@@ -2774,78 +2785,65 @@ Object.defineProperty(that, "repair", {
   return that;
 };                              // End Class jio
 /*jslint indent: 2, maxlen: 80, sloppy: true */
-/*global jio: true, invalidStorageType: true */
+/*global exports, jio, invalidStorageType */
+
 var storage_type_object = { // -> 'key':constructorFunction
-  'base': function () {} // overriden by jio
+  'base': function () { // overriden by jio
+    return undefined;
+  }
 };
-var jioNamespace = (function (spec) {
-  var that = {};
-  spec = spec || {};
-  // Attributes //
 
-  // Methods //
-
-  /**
-   * Creates a new jio instance.
-   * @method newJio
-   * @param  {object} spec The storage description
-   * @return {object} The new Jio instance.
-   */
-  Object.defineProperty(that, "newJio", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (spec) {
-      var storage = spec,
-        instance = null;
-      if (typeof storage === 'string') {
-        storage = JSON.parse(storage);
-      } else {
-        storage = JSON.stringify(storage);
-        if (storage !== undefined) {
-          storage = JSON.parse(storage);
-        }
-      }
-      storage = storage || {
-        type: 'base'
-      };
-      instance = jio(storage);
-      instance.start();
-      return instance;
-    }
-  });
-
-  /**
-   * Add a storage type to jio.
-   * @method addStorageType
-   * @param  {string} type The storage type
-   * @param  {function} constructor The associated constructor
-   */
-  Object.defineProperty(that, "addStorageType", {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: function (type, constructor) {
-      constructor = constructor || function () {
-        return null;
-      };
-      if (storage_type_object[type]) {
-        throw invalidStorageType({
-          type: type,
-          message: 'Already known.'
-        });
-      }
-      storage_type_object[type] = constructor;
-    }
-  });
-
-  return that;
-}());
-
-Object.defineProperty(scope, "jIO", {
+/**
+ * Creates a new jio instance.
+ * @method newJio
+ * @param  {object} spec The storage description
+ * @return {object} The new Jio instance.
+ */
+Object.defineProperty(exports, "newJio", {
   configurable: false,
-  enumerable: false,
+  enumerable: true,
   writable: false,
-  value: jioNamespace
+  value: function (spec) {
+    var storage = spec, instance = null;
+    if (typeof storage === 'string') {
+      storage = JSON.parse(storage);
+    } else {
+      storage = JSON.stringify(storage);
+      if (storage !== undefined) {
+        storage = JSON.parse(storage);
+      }
+    }
+    storage = storage || {
+      type: 'base'
+    };
+    instance = jio(storage);
+    instance.start();
+    return instance;
+  }
 });
-}(window, hex_md5));
+
+/**
+ * Add a storage type to jio.
+ * @method addStorageType
+ * @param  {string} type The storage type
+ * @param  {function} constructor The associated constructor
+ */
+Object.defineProperty(exports, "addStorageType", {
+  configurable: false,
+  enumerable: true,
+  writable: false,
+  value: function (type, constructor) {
+    constructor = constructor || function () {
+      return null;
+    };
+    if (storage_type_object[type]) {
+      throw invalidStorageType({
+        type: type,
+        message: 'Already known.'
+      });
+    }
+    storage_type_object[type] = constructor;
+  }
+});
+
+}));
