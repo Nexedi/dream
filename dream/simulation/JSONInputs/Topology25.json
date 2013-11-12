@@ -50,9 +50,9 @@
     "general": {
         "_class": "Dream.Configuration",
         "confidenceLevel": "0.95",
-        "maxSimTime": "150.0",
+        "maxSimTime": "300",
         "numberOfReplications": "1",
-        "trace": "Yes"
+        "trace": "No"
     },
     "nodes": {
 		"S1": {
