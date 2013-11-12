@@ -110,10 +110,23 @@ class BatchDecomposition(CoreObject):
         activeEntity = activeObjectQueue.pop()
         
         G.BatchWaitingList.append(activeEntity)                 # this batch has to be reassembled by the method reassemble
-        numberOfSubBatchUnits = activeEntity.numberOfUnits/self.numberOfSubBatches 
+        batchNumberOfUnits = activeEntity.numberOfUnits
+        alreadyAllocatedUnits=0
+
+        #the number of units of its sub-batch is calculated
+        #for example: 
+        #if the total is 99 and we have 4 sub-batches it should be [25,25,25,24]
+        #if the total is 94 and we have 4 sub-batches it should be [24,24,24,22]
         for i in range(self.numberOfSubBatches):
+            if i==self.numberOfSubBatches-1:
+                numberOfSubBatchUnits=batchNumberOfUnits-alreadyAllocatedUnits
+            elif activeEntity.numberOfUnits%self.numberOfSubBatches==0:
+                numberOfSubBatchUnits = batchNumberOfUnits//self.numberOfSubBatches
+            else:
+                numberOfSubBatchUnits = batchNumberOfUnits//self.numberOfSubBatches+1
+            alreadyAllocatedUnits+=numberOfSubBatchUnits
             subBatch=SubBatch(str(activeEntity.id)+'_'+str(i), activeEntity.name+"_SB_"\
-                              +str(i), activeEntity.id, numberOfUnits=numberOfSubBatchUnits)    #create the sub-batch
+                            +str(i), activeEntity.id, numberOfUnits=numberOfSubBatchUnits)    #create the sub-batch
             activeObjectQueue.append(subBatch)                          #append the sub-batch to the active object Queue
             activeEntity.subBatchList.append(subBatch)
         activeEntity.numberOfSubBatches=self.numberOfSubBatches  
