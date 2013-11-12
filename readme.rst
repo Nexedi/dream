@@ -89,3 +89,5 @@ Jerome Perrin
 Sebastien Robin
 
 Ioannis Papagiannopoulos
+
+Kazuhiko Shiozaki
