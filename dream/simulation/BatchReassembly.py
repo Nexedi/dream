@@ -110,13 +110,20 @@ class BatchReassembly(CoreObject):
             assert curSubBatchId == nextSubBatchId,\
              'The subBatches in the re-assembly station are not of the same Batch'
         
+        #calculate the number of units of the Batch
+        numberOfUnits=0
+        for subBatch in activeObjectQueue:
+            numberOfUnits+=subBatch.numberOfUnits
+        
         batchToBeReassembled = None
         for batch in G.BatchWaitingList:
             if activeObjectQueue[0].batchId == batch.id:
                  batchToBeReassembled = batch
+        
         G.BatchWaitingList.remove(batchToBeReassembled)
         del activeObjectQueue[:]
         batchToBeReassembled.numberOfSubBatches = 1
+        batchToBeReassembled.numberOfUnits=numberOfUnits
         activeObjectQueue.append(batchToBeReassembled)
         
     def canAccept(self,callerObject=None):
