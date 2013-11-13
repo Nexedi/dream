@@ -220,6 +220,7 @@
       Anchor: "Continuous"
     });
 
+    if ($("#main").length > 0) {
     $.getJSON("../JSONInputs/Topology01.json", function (data) {
       $("#main").grapheditor({
         graph: data,
@@ -251,7 +252,101 @@
       });
 
     });
+    };
 
+    if ($("#simulation").length > 0) {
+      $("#run_simulation").button().click(function () {
+	var graph_dict = $('#main').grapheditor('graph');
+	$("#json_output").val(JSON.stringify(graph_dict, undefined, ' '));
+	$.ajax(
+          '/runSimulation', {
+            data: JSON.stringify({
+              json: graph_dict
+            }),
+            contentType: 'application/json',
+            type: 'POST',
+            success: function (data, textStatus, jqXHR) {
+            if (data['success']) {
+              $("#json_result").text(JSON.stringify(data['success'],
+                undefined, " "));
+
+              // display demo graph.
+              $("#graph_zone").show();
+              var blockage_data = [],
+                waiting_data = [],
+                failure_data = [],
+                working_data = [],
+                ticks = [],
+                counter = 1;
+              $.each(data['success'].elementList, function (idx, obj) {
+                if (obj.results.working_ratio !== undefined) {
+                  /* when there is only one replication, the ratio is given as a float,
+                      otherwise we have a mapping avg, min max */
+		  if (obj.results.blockage_ratio !== undefined) {
+                    blockage_data.push([counter, obj.results.blockage_ratio
+					.avg || obj.results.blockage_ratio
+				       ]);
+		  } else {
+                    blockage_data.push([counter, 0.0]);
+		  }
+                  waiting_data.push([counter, obj.results.waiting_ratio.avg ||
+                    obj.results.waiting_ratio
+                  ]);
+		  if (obj.results.failure_ratio !== undefined) {
+                    failure_data.push([counter, obj.results.failure_ratio
+					.avg || obj.results.failure_ratio
+				       ]);
+		  } else {
+                    failure_data.push([counter, 0.0]);
+		  }
+                  working_data.push([counter, obj.results.working_ratio.avg ||
+                    obj.results.working_ratio
+                  ]);
+                  ticks.push([counter, obj.id]);
+                  counter++;
+                }
+              });
+
+              var series = [{
+                label: "Working",
+                data: working_data
+              }, {
+                label: "Waiting",
+                data: waiting_data
+              }, {
+                label: "Failures",
+                data: failure_data
+              }, {
+                label: "Blockage",
+                data: blockage_data
+              }];
+
+              var options = {
+                xaxis: {
+                  minTickSize: 1,
+                  ticks: ticks
+                },
+                yaxis: {
+                  max: 100
+                },
+                series: {
+                  bars: {
+                    show: true,
+                    barWidth: 0.9,
+                    align: "center"
+                  },
+                  stack: true
+                }
+              };
+              $.plot("#simulation_result", series, options);
+
+            } else {
+              $("#json_result").effect('shake', 50).text(data['error']);
+            }
+            }
+          });
+      });
+    };
   });
 
   function init() {
@@ -274,5 +369,3 @@
     });
 
 }(window, jQuery, rJS));
-
-
