@@ -149,17 +149,19 @@ class Conveyer(CoreObject):
                 else:
                     moveTime1=(self.length-self.position[0])/self.speed
                     self.position[0]=self.length
-                    self.entityLastReachedEnd=self.Res.activeQ[0]
+                    self.entityLastReachedEnd=self.getActiveObjectQueue()[0]
                     self.timeLastEntityReachedEnd=now()
+                    self.timeLastEntityEnded=now()
+                    
         #for the other entities        
-        for i in range(1,len(self.Res.activeQ)):
+        for i in range(1,len(self.getActiveObjectQueue())):
             #if it does not reach the preceding entity move it according to speed
             if self.position[i]+interval*self.speed<self.position[i-1]-self.getActiveObjectQueue()[i].length:
                 moveTime2=interval
                 self.position[i]=self.position[i]+interval*self.speed
             #else move it right before the preceding entity
             else:
-                mTime=(self.position[i-1]-self.Res.activeQ[i].length-self.position[i])/self.speed
+                mTime=(self.position[i-1]-self.getActiveObjectQueue()[i].length-self.position[i])/self.speed
                 if mTime>moveTime2:
                     moveTime2=mTime
                 self.position[i]=self.position[i-1]-self.getActiveObjectQueue()[i-1].length
