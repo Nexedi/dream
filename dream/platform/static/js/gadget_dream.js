@@ -33,6 +33,7 @@
     },
 
     _create: function () {
+      this.general = {};
       this.nodes = {};
       this.edges = {};
 
@@ -47,6 +48,7 @@
     },
 
     clear: function () {
+      this.general = {};
       this.edges = {};
       $.each(this.nodes, $.proxy(function (node_id, node) {
         jsPlumb.remove(node);
@@ -169,9 +171,13 @@
       if (value === undefined) {
         // get
         var graph = {
+          "general": {},
           "nodes": {},
           "edges": {}
         };
+        $.each(this.general, $.proxy(function (key, value) {
+          graph["general"][key] = value;
+        }, this));
         $.each(this.nodes, $.proxy(function (node_id, node) {
           graph["nodes"][node_id] = node.data(this.options.node_data_key);
         }, this));
@@ -182,6 +188,9 @@
       }
 
       this.clear();
+      $.each(value.general, $.proxy(function (key, value) {
+        this.general[key] = value;
+      }, this));
       $.each(value.nodes, $.proxy(function (node_id, node) {
         this.add_node(node_id, node);
       }, this));
