@@ -39,7 +39,8 @@ class G:
     Rnd = Random(seed)  #random number generator
     
 
-    ObjList=[]          #a list that holds all the simulation objects 
+    ObjList=[]          #a list that holds all the CoreObjects 
+    EntityList=[]          #a list that holds all the Entities 
     
     numberOfReplications=1  #the number of replications default=1
     confidenceLevel=0.9       #the confidence level default=90%

@@ -109,6 +109,7 @@ class Source(CoreObject):
             entity.creationTime=now()                             # assign the current simulation time as the Entity's creation time 
             entity.startTime=now()                                # assign the current simulation time as the Entity's start time 
             entity.currentStation=self                            # update the current station of the Entity
+            G.EntityList.append(entity)
             self.outputTrace(entity.name, "generated")          # output the trace
             activeObjectQueue.append(entity)                      # append the entity to the resource 
             self.numberOfArrivals+=1                              # we have one new arrival
