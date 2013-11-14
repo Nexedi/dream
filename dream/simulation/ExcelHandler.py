@@ -36,7 +36,7 @@ def outputTrace(fileName='Trace'):
     G.traceFile.save(str(fileName)+'.xls')
 
 #outputs the log of the Entities given
-#the format is (Entity Name | Station ID | time)
+#the format is (Entity Name | Station ID | Station Name| time)
 def outputLog(fileName='Log', entityList=G.EntityList):
     sheetIndex=1  #index that shows in which sheet we are
     logIndex=0    #index that shows in what row we are
@@ -47,8 +47,9 @@ def outputLog(fileName='Log', entityList=G.EntityList):
     for entity in entityList:
         for stop in entity.schedule:
             logSheet.write(logIndex,0,entity.name)
-            logSheet.write(logIndex,1,stop[0])
-            logSheet.write(logIndex,2,stop[1])          
+            logSheet.write(logIndex,1,stop[0].id)
+            logSheet.write(logIndex,2,stop[0].objName)   
+            logSheet.write(logIndex,3,stop[1])        
             logIndex+=1       #increment the row
             #if we reach row 65536 we need to create a new sheet (excel limitation)  
             if(logIndex==65536):
