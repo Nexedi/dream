@@ -120,6 +120,7 @@ class BatchReassembly(CoreObject):
         batchToBeReassembled.numberOfSubBatches = 1
         batchToBeReassembled.numberOfUnits=numberOfUnits
         activeObjectQueue.append(batchToBeReassembled)
+        batchToBeReassembled.currentStation=self
         self.timeLastEntityEnded=now()
         
     def canAccept(self,callerObject=None):
