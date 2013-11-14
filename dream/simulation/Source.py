@@ -57,42 +57,6 @@ class Source(CoreObject):
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__
         CoreObject.initialize(self)
-#         Process.__init__(self) 
-#         # no predecessor or successor index
-        
-#         self.Up=True                    #Boolean that shows if the object is in failure ("Down") or not ("up")
-#         self.currentEntity=None      
-#         # ============================== total times ===============================================
-#         self.totalBlockageTime=0                                #holds the total blockage time
-#         self.totalFailureTime=0                                 #holds the total failure time
-#         self.totalWaitingTime=0                                 #holds the total waiting time
-#         self.totalWorkingTime=0                                 #holds the total working time
-#         self.completedJobs=0                                    #holds the number of completed jobs 
-#         # ============================== Entity related attributes =================================
-#         self.timeLastEntityEnded=0                              #holds the last time that an entity 
-#                                                                  # ended processing in the object
-#         self.nameLastEntityEnded=""                             #holds the name of the last entity 
-#                                                                  #that ended processing in the object
-#         self.timeLastEntityEntered=0                            #holds the last time that an 
-#                                                                  #entity entered in the object
-#         self.nameLastEntityEntered=""                           #holds the name of the last 
-#                                                                  #entity that entered in the object
-#         self.timeLastFailure=0                                  #holds the time that the last 
-#                                                                  #failure of the object started
-#         self.timeLastFailureEnded=0                             #holds the time that the last 
-#                                                                  #failure of the object Ended
-#         # ============================== failure related times =====================================
-#         self.downTimeProcessingCurrentEntity=0                  #holds the time that the object was down 
-#                                                                  #while processing the current entity
-#         self.downTimeInTryingToReleaseCurrentEntity=0           #holds the time that the object was down while trying 
-#                                                                  #to release the current entity  
-#         self.downTimeInCurrentEntity=0                          #holds the total time that the object was down 
-#                                                                  #while holding current entity
-#         self.timeLastEntityLeft=0                               #holds the last time that an entity left the object
-#                                                 
-#         self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                               
-#         # ============================== waiting flag ==============================================
-#         self.waitToDispose=False    #shows if the object waits to dispose an entity  
          
         # initialize the internal Queue (type Resource) of the Source 
         self.Res=Resource(capacity=infinity)

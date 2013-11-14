@@ -109,7 +109,6 @@ class BatchDecomposition(CoreObject):
         activeObjectQueue=activeObject.getActiveObjectQueue()    #get the internal queue of the active core object
         activeEntity = activeObjectQueue.pop()
         
-        G.BatchWaitingList.append(activeEntity)                 # this batch has to be reassembled by the method reassemble
         batchNumberOfUnits = activeEntity.numberOfUnits
         alreadyAllocatedUnits=0
 
