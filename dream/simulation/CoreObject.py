@@ -105,7 +105,7 @@ class CoreObject(Process):
         #append the time to schedule so that it can be read in the result
         #remember that every entity has it's schedule which is supposed to be updated every time 
         # the entity enters a new object
-        activeEntity.schedule.append([activeObject.id,now()])
+        activeEntity.schedule.append([activeObject,now()])
         activeEntity.currentStation=self
         self.timeLastEntityEntered=now()
         try:

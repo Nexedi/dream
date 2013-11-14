@@ -538,7 +538,7 @@ def setWIP():
                 object=obj                                  # find the object in the 'G.ObjList
         object.getActiveObjectQueue().append(entity)        # append the entity to its Queue
         entity.remainingRoute[0][0]=""                      # remove data from the remaining route.    
-        entity.schedule.append([object.id,now()])   #append the time to schedule so that it can be read in the result
+        entity.schedule.append([object,now()])   #append the time to schedule so that it can be read in the result
         entity.currentStation=object                        # update the current station of the entity           
 
 # ===========================================================================
