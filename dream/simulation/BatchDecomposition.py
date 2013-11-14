@@ -127,8 +127,10 @@ class BatchDecomposition(CoreObject):
             subBatch=SubBatch(str(activeEntity.id)+'_'+str(i), activeEntity.name+"_SB_"\
                             +str(i), numberOfUnits=numberOfSubBatchUnits,
                             parentBatch=activeEntity)    #create the sub-batch
+            G.EntityList.append(subBatch)
             activeObjectQueue.append(subBatch)                          #append the sub-batch to the active object Queue
             activeEntity.subBatchList.append(subBatch)
+            subBatch.currentStation=self
         activeEntity.numberOfSubBatches=self.numberOfSubBatches  
         self.timeLastEntityEnded=now()
 
