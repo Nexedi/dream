@@ -31,9 +31,29 @@ from Globals import G
 import xlwt
 import xlrd
 
+#outputs the trace of the simulation run
 def outputTrace(fileName='Trace'):
     G.traceFile.save(str(fileName)+'.xls')
-    G.traceIndex=0    #index that shows in what row we are
-    G.sheetIndex=1    #index that shows in what sheet we are
-    G.traceFile = xlwt.Workbook()     #create excel file
-    G.traceSheet = G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)  #create excel sheet 
+
+#outputs the log of the Entities given
+#the format is (Entity Name | Station ID | time)
+def outputLog(fileName='Log', entityList=G.EntityList):
+    sheetIndex=1  #index that shows in which sheet we are
+    logIndex=0    #index that shows in what row we are
+    logFile = xlwt.Workbook()     #create excel file
+    logSheet = logFile.add_sheet('sheet '+str(sheetIndex), cell_overwrite_ok=True)  #create excel sheet    
+
+    #post processing for outputting the Log
+    for entity in entityList:
+        for stop in entity.schedule:
+            logSheet.write(logIndex,0,entity.name)
+            logSheet.write(logIndex,1,stop[0])
+            logSheet.write(logIndex,2,stop[1])          
+            logIndex+=1       #increment the row
+            #if we reach row 65536 we need to create a new sheet (excel limitation)  
+            if(logIndex==65536):
+                    logIndex=0
+                    sheetIndex+=1
+                    logSheet=logFile.add_sheet('sheet '+str(sheetIndex), cell_overwrite_ok=True)
+                    
+    logFile.save(str(fileName)+'.xls')  
