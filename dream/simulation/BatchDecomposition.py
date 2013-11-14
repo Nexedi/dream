@@ -126,7 +126,8 @@ class BatchDecomposition(CoreObject):
                 numberOfSubBatchUnits = batchNumberOfUnits//self.numberOfSubBatches+1
             alreadyAllocatedUnits+=numberOfSubBatchUnits
             subBatch=SubBatch(str(activeEntity.id)+'_'+str(i), activeEntity.name+"_SB_"\
-                            +str(i), activeEntity.id, numberOfUnits=numberOfSubBatchUnits)    #create the sub-batch
+                            +str(i), numberOfUnits=numberOfSubBatchUnits,
+                            parentBatch=activeEntity)    #create the sub-batch
             activeObjectQueue.append(subBatch)                          #append the sub-batch to the active object Queue
             activeEntity.subBatchList.append(subBatch)
         activeEntity.numberOfSubBatches=self.numberOfSubBatches  

@@ -31,10 +31,11 @@ from Entity import Entity
 class SubBatch(Entity):
     type="SubBatch"
 
-    def __init__(self, id, name, batchId, numberOfUnits=1):
+    def __init__(self, id, name, numberOfUnits=1, parentBatch=None):
         Entity.__init__(self, name=name)
         self.id=id  
         self.numberOfUnits=numberOfUnits
-        self.batchId=batchId
+        self.parentBatch=parentBatch
+        self.batchId=parentBatch.id
 
         

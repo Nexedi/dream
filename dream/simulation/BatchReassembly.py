@@ -115,12 +115,7 @@ class BatchReassembly(CoreObject):
         for subBatch in activeObjectQueue:
             numberOfUnits+=subBatch.numberOfUnits
         
-        batchToBeReassembled = None
-        for batch in G.BatchWaitingList:
-            if activeObjectQueue[0].batchId == batch.id:
-                 batchToBeReassembled = batch
-        
-        G.BatchWaitingList.remove(batchToBeReassembled)
+        batchToBeReassembled = activeObjectQueue[0].parentBatch
         del activeObjectQueue[:]
         batchToBeReassembled.numberOfSubBatches = 1
         batchToBeReassembled.numberOfUnits=numberOfUnits
