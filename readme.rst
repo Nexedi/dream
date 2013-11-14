@@ -24,7 +24,7 @@ What's included
 In the DREAM folder you can find three sub-folders:
  + simulation: contains all the simulation objects that are built in SimPy and also 2 python scripts to read inputs and run the simulation. Support documents and example inputs are provided in subfolders
  + platform: contains code related to the platform and the GUI that is also built and cooperates with the ManPy simulation engine
- + test: contains code fore unit-testing
+ + tests: contains code for unit-testing
 
 Current Status
 =================
@@ -60,7 +60,7 @@ ManPy uses the following Python libraries:
 Documentation
 =================
 
-Documentation for ManPy. can be found in this repo in the root directory.   
+Documentation for ManPy can be found in this repo in the root directory.
 
 =================
 Acknowledgements
