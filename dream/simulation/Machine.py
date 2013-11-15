@@ -279,9 +279,9 @@ class Machine(CoreObject):
     # =======================================================================
     # checks if the machine down or it can dispose the object
     # =======================================================================
+    #checks if the machine down or it can dispose the object
     def ifCanDisposeOrHaveFailure(self):
-        # the last part is added so that it is not removed and stack gotta think of it again 
-         return self.Up==False or self.next[0].canAccept(self) or len(self.Res.activeQ)==0     
+         return self.Up==False or self.getReceiverObject().canAccept(self) or len(self.getActiveObjectQueue())==0  
   
     # =======================================================================
     # removes an entity from the Machine

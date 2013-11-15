@@ -40,11 +40,7 @@ class MachineJobShop(Machine):
         self.nextStationId=avtiveEntity.remainingRoute[1][0]    #read the next station id
         avtiveEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
         return avtiveEntity  
-
-    #checks if the machine down or it can dispose the object
-    def ifCanDisposeOrHaveFailure(self):
-         return self.Up==False or self.getReceiverObject().canAccept(self) or len(self.getActiveObjectQueue())==0  
-                                                                                
+                                                                               
     #calculates the processing time
     def calculateProcessingTime(self):
         return self.procTime    #this is the processing time for this unique entity 
