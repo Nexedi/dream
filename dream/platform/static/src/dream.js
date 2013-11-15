@@ -279,7 +279,7 @@
         });
       that.setGeneralProperties(properties);
 
-      var model = priv.formatForManpy(that.getData());
+      var model = that.getDataForManpy();
       $.ajax(
         '/runSimulation', {
           data: JSON.stringify({
