@@ -44,10 +44,10 @@ def positionGraph():
   """
   graph = pydot.Dot()
 
-  for node in request.json['element'].itervalues():
+  for node in request.json['nodes'].itervalues():
     graph.add_node(pydot.Node(node['id']))
-    for successor in node.get('successorList', []):
-      graph.add_edge(pydot.Edge(node['id'], successor))
+  for edge in request.json['edges'].itervalues():
+    graph.add_edge(pydot.Edge(edge[0], edge[1]))
 
   new_graph = pydot.graph_from_dot_data(graph.create_dot())
 
