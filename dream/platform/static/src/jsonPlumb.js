@@ -92,7 +92,7 @@
 
       var updateConnectionData = function (connection, remove) {
         var source_element;
-        source_element = priv.element_container[connection.sourceId];
+        source_element = priv.node_container[connection.sourceId];
         source_element.successorList = source_element.successorList || [];
         if (remove) {
           source_element.successorList.splice(source_element.successorList.indexOf(
@@ -146,7 +146,7 @@
         id: element.id,
         name: element.id
       };
-      priv.element_container[element.id] = element_data;
+      priv.node_container[element.id] = element_data;
       priv.onDataChange();
     };
 
@@ -176,7 +176,7 @@
 
     priv.getData = function () {
       return {
-        "element": priv.element_container,
+        "element": priv.node_container,
         "preference": priv.preference_container,
         "general": priv.general_container
       };
@@ -185,13 +185,13 @@
     priv.removeElement = function (element_id) {
       jsPlumb.removeAllEndpoints($("#" + element_id));
       $("#" + element_id).remove();
-      delete(priv.element_container[element_id]);
+      delete(priv.node_container[element_id]);
       delete(priv.preference_container[element_id]);
       priv.onDataChange();
     };
 
     that.updateElementData = function (element_id, data) {
-      $.extend(priv.element_container[element_id], data);
+      $.extend(priv.node_container[element_id], data);
       if (data['name']) {
         $("#" + element_id).text(data["name"]);
       }
@@ -199,7 +199,7 @@
     };
 
     that.start = function () {
-      priv.element_container = {};
+      priv.node_container = {};
       priv.preference_container = {};
       priv.general_container = {};
       priv.initJsPlumb();
@@ -215,7 +215,7 @@
 
     that.clearAll = function () {
       $("[id=render]").children().remove();
-      $.each(priv.element_container, function (element_id) {
+      $.each(priv.node_container, function (element_id) {
         priv.removeElement(element_id);
       });
     };
