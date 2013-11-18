@@ -7,6 +7,7 @@ body {
     text-align:center;	
 }
 #headerWrapper {
+  display:none;
 	width:100%;
 	background-color:black;
 	position:fixed;
@@ -19,7 +20,7 @@ body {
    -o-box-shadow: 0px 2px 19px #aaa;
    -webkit-box-shadow: 0px 2px 19px #aaa;
    -moz-box-shadow: 0px 2px 19px #aaa;
-   
+
    opacity:0.8;
 }
 
@@ -31,26 +32,21 @@ body {
  #main {
     /* these two margins settings are here just to ensure that jsPlumb handles
     margins properly.*/  
-    margin-top:44px;
-    margin-left: auto;
     position: relative;
+    margin:20px auto;
     font-size: 80%;
-    margin-right: auto;
-    width: 850px;
-    border-left: 2px solid #456;
-    border-right: 2px solid #456;
-    border-bottom: 2px solid #456;
+    border: 1px solid #999;
+    width: 100%;
     height: 600px;
     overflow: hidden;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border-radius: 10px;
     background-color:#eaedef;
 }
 
 /* Setting for dialog */
 
 label, input { display:block; }
-input.text { margin-bottom:12px; width:95%; padding: .4em; }
+input.text { margin:4px; padding:0; }
 fieldset { padding:0; border:0; margin-top:25px; }
 h1 { font-size: 1.2em; margin: .6em 0; }
 div#users-contain { width: 350px; margin: 20px 0; }
@@ -70,9 +66,6 @@ li { margin: 3px;
      width: 120px; }
 
 #sidebar {            
-    margin-left:auto;
-	margin-right:auto;
-    width:800px;        
     font-size:13px;    
 }
 
@@ -93,11 +86,7 @@ li { margin: 3px;
 }
 
 #render {
-	padding-top:2px;
-    margin-left:auto;
-	margin-right:auto;
     z-index:5000;
-	margin-top:0px;  
     text-align: center;
     background-color:white;
 }
@@ -191,23 +180,25 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
 
 
 #tools {
-  position: absolute;
+/*  position: absolute;
   width: 200px;
-  height: 400px;
-  border: 2px solid;
-  margin-top: 20px;
-  margin-left: 35px;
+  height: 400px; */
+  width: 100%;
+  border: 1px solid #999;
+  margin: 20px 0;
   border-radius: 10px;
+  padding-bottom: 20px;
 }
 
 #simulation_controls {            
-  position: absolute;
+/*  position: absolute;
   width: 200px;
+  height: 300px;
   margin-top: 550px;
   margin-left: 35px;
-  font-size:13px;    
-  height: 300px;
-  border: 2px solid;
+  font-size:13px; */
+  width: 100%;
+  border: 1px solid #999;
   border-radius: 10px;
 }
 
@@ -226,11 +217,12 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
   font-size:0.9em;
   margin-top: 1em;
   margin-left: 1em; 
+  display: inline-block;
 }
 
 
 #graph {
-  width: 600px;
+  width: 100%;
   height: 400px;
   text-align: center;
   margin-left:auto;
@@ -239,3 +231,7 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
   margin-top:0px;
 }
 
+.ui-button {
+  width:80%;
+  margin-bottom:4px;
+}

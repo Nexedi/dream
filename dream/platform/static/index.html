@@ -3,23 +3,37 @@
 
 <head>
   <title>Dream Simulation</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/demo-new.css">
   <link rel="stylesheet" href="css/flowchartDemo.css">
   <link rel="stylesheet" href="css/jquery-ui.css">
-  <link rel="stylesheet" href="css/jsoneditor.css">
 </head>
 
 <body data-demo-id="flowchartConnectorsDemo" data-library="jquery">
-
+<div class="container">
   <div id="headerWrapper">
     <div id="header"></div>
   </div>
 
+  <div class="four columns">
   <div id="tools">
-    Tools
+    <h4>Tools</h4>
   </div>
+  </div>
+  <div class="twelve columns">
+  <div id="main">
+    <div id="render"></div>
+  </div>
+  </div>
+
+</div>
+<div class="container">
+
+  <div class="four columns">
   <div id="simulation_controls">
-    Simulation Parameters
+    <h4>Simulation Parameters</h4>
     <div title="Configure">
       <form>
         <fieldset id="general-fieldset">
@@ -29,33 +43,29 @@
       </form>
     </div>
   </div>
-
-  <div id="main">
-    <div id="render"></div>
   </div>
-
+  <div class="twelve columns">
   <div id="graph_zone">
     <div>Stations Utilization</div>
     <div id="graph"></div>
   </div>
 
-  <div id="sidebar">
-    <table>
-      <tr>
-        <td>Input</td>
-        <td>Result</td>
-      </tr>
-      <tr>
-        <td>
-          <textarea rows="20" cols="47" id="json_output" style="align:left">
-          </textarea>
-        </td>
-        <td>
-          <textarea rows="20" cols="47" id="json_result" style="align:right">
-          </textarea>
-        </td>
-    </table>
+  <div id="debug">
+    <div class="five columns">
+      <div>Input</div>
+        <textarea rows="20" cols="47" id="json_output" style="align:left; width:100%">
+        </textarea>
+      </div>
+    </div>
+    <div class="five columns">
+      <div>Result</div>
+        <textarea rows="20" cols="47" id="json_result" style="align:left; width:100%">
+        </textarea>
+        <td></td>
+      </div>
+    </div>
 
+  </div>
   </div>
 
   <!-- DEP -->
@@ -85,6 +95,7 @@
   <script type="text/javascript" src="src/dream.js"></script>
   <script type="text/javascript" src="src/jsonPlumb.js"></script>
   <script type="text/javascript" src="src/dream_launcher.js"></script>
+</div>
 </body>
 
 </html>
