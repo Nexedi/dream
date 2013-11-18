@@ -162,11 +162,15 @@
           contentType: 'application/json',
           type: 'POST',
           success: function (data, textStatus, jqXHR) {
+            var canvas_size_x = $('#main').width();
+            var canvas_size_y = $('#main').height();
+            var size_x = $('.window').width();
+            var size_y = $('.window').height();
             $.each(data, function (node, pos) {
               priv.updateElementCoordinate(node, {
-                top: (Math.floor(pos.top * $("#main").height()) - 45) +
+                top: Math.floor(pos.top * (canvas_size_y - size_y/2) - size_y/2) +
                   "px",
-                left: Math.floor(pos.left * $("#main").width()) + "px"
+                left: Math.floor(pos.left * (canvas_size_x - size_x/2) - size_x/2) + "px"
               });
             });
           }
