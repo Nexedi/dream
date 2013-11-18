@@ -240,7 +240,7 @@
     };
 
     priv.formatForManpy = function (data) {
-      var manpy_dict = {}, coreObject = [];
+      var manpy_dict = {}, nodes = {}, edges = {}, edge_id = 0;
       $.each(data['element'], function (idx, element) {
         var clone_element = {};
         /* clone the element and put content of 'data' at the top level. */
@@ -249,15 +249,20 @@
             $.each(v, function (kk, vv) {
               clone_element[kk] = vv;
             });
+          } else if (k == 'successorList') {
+            $.each(v, function (i, successor) {
+              edges[edge_id] = [clone_element['id'], successor, {}];
+              edge_id += 1;
+            });
           } else {
             clone_element[k] = v;
           }
         });
-        coreObject.push(clone_element);
+        nodes[clone_element['id']] = clone_element;
       });
 
-      manpy_dict['elementList'] = coreObject;
-      manpy_dict['modelResource'] = [];
+      manpy_dict['nodes'] = nodes;
+      manpy_dict['edges'] = edges;
       manpy_dict['general'] = data['general'];
       return manpy_dict;
     };
@@ -279,7 +284,7 @@
         });
       that.setGeneralProperties(properties);
 
-      var model = that.getDataForManpy();
+      var model = priv.formatForManpy(that.getData());
       $.ajax(
         '/runSimulation', {
           data: JSON.stringify({

@@ -182,34 +182,6 @@
       };
     };
 
-    priv.getDataForManpy = function () {
-      var manpy_dict = {}, nodes = {}, edges = {}, edge_id = 0;
-      $.each(priv.element_container, function (idx, element) {
-        var clone_element = {};
-        /* clone the element and put content of 'data' at the top level. */
-        $.each(element, function (k, v) {
-          if (k == 'data') {
-            $.each(v, function (kk, vv) {
-              clone_element[kk] = vv;
-            });
-          } else if (k == 'successorList') {
-            $.each(v, function (i, successor) {
-              edges[edge_id] = [clone_element['id'], successor, {}];
-              edge_id += 1;
-            });
-          } else {
-            clone_element[k] = v;
-          }
-        });
-        nodes[clone_element['id']] = clone_element;
-      });
-
-      manpy_dict['nodes'] = nodes;
-      manpy_dict['edges'] = edges;
-      manpy_dict['general'] = priv.general_container;
-      return manpy_dict;
-    };
-
     priv.removeElement = function (element_id) {
       jsPlumb.removeAllEndpoints($("#" + element_id));
       $("#" + element_id).remove();
@@ -239,10 +211,6 @@
 
     that.getData = function () {
       return priv.getData();
-    };
-
-    that.getDataForManpy = function () {
-      return priv.getDataForManpy();
     };
 
     that.clearAll = function () {
