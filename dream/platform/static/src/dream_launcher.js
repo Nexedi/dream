@@ -239,32 +239,31 @@
     }, function (err, response) {
       if (response !== undefined && response.data !== undefined) {
         // Add all elements
-        $.each(response.data.element, function (key, value) {
+        $.each(response.data.nodes, function (key, value) {
           var preference_data = response.data.preference !== undefined ?
-            response.data.preference[value.id] : {};
+            response.data.preference[key] : {};
           $.each(preference_data, function (preference_key,
             preference_value) {
             value[preference_key] = preference_value;
           });
           dream_instance.newElement(value);
-          dream_instance.updateElementData(value.id, {
+          dream_instance.updateElementData(key, {
             data: value.data || {}
           });
         });
+        $.each(response.data.edges, function (key, value) {
+          dream_instance.connect(value[0], value[1]);
+        });
 
-        // Now link elements between them and update id_container
-        $.each(response.data.element, function (key, value) {
+        // Now update id_container
+        $.each(response.data.nodes, function (key, value) {
           var element_id = value.id,
-            prefix, suffix, splitted_element_id,
-            successor_list = value.successorList || [];
+            prefix, suffix, splitted_element_id;
           splitted_element_id = element_id.split("_");
           prefix = splitted_element_id[0];
           suffix = splitted_element_id[1];
           id_container[prefix] = Math.max((id_container[prefix] || 0),
             parseInt(suffix, 10));
-          $.each(successor_list, function (idx, successor_value) {
-            dream_instance.connect(value.id, successor_value);
-          });
         });
         dream_instance.setGeneralProperties(response.data.general);
         dream_instance.initGeneralProperties(); // XXX
@@ -305,19 +304,27 @@
                 if (obj.results.working_ratio !== undefined) {
                   /* when there is only one replication, the ratio is given as a float,
                       otherwise we have a mapping avg, min max */
-                  blockage_data.push([counter, obj.results.blockage_ratio
-                    .avg || obj.results.blockage_ratio
-                  ]);
+                  if (obj.results.blockage_ratio !== undefined) {
+                    blockage_data.push([counter, obj.results.blockage_ratio
+                                        .avg || obj.results.blockage_ratio
+                                       ]);
+                  } else {
+                    blockage_data.push([counter, 0.0]);
+                  }
                   waiting_data.push([counter, obj.results.waiting_ratio.avg ||
                     obj.results.waiting_ratio
                   ]);
-                  failure_data.push([counter, obj.results.failure_ratio.avg ||
-                    obj.results.failure_ratio
-                  ]);
+                  if (obj.results.failure_ratio !== undefined) {
+                    failure_data.push([counter, obj.results.failure_ratio
+                                        .avg || obj.results.failure_ratio
+                                       ]);
+                  } else {
+                    failure_data.push([counter, 0.0]);
+                  }
                   working_data.push([counter, obj.results.working_ratio.avg ||
                     obj.results.working_ratio
                   ]);
-                  ticks.push([counter, dream_instance.getData().element[
+                  ticks.push([counter, dream_instance.getData().nodes[
                     obj.id].name || obj.id]);
                   counter++;
                 }

@@ -102,7 +102,7 @@
       $("#dialog-fieldset").children().remove();
       var element_id_prefix = element_id.split("_")[0];
       var property_list = configuration[element_id_prefix].property_list || [];
-      var previous_data = that.getData()["element"];
+      var previous_data = that.getData()["nodes"];
 
       var element_name = previous_data[element_id]['name'] || element_id;
       fieldset.append(
@@ -241,28 +241,25 @@
 
     priv.formatForManpy = function (data) {
       var manpy_dict = {}, nodes = {}, edges = {}, edge_id = 0;
-      $.each(data['element'], function (idx, element) {
-        var clone_element = {};
-        /* clone the element and put content of 'data' at the top level. */
-        $.each(element, function (k, v) {
+      $.each(data['nodes'], function (idx, node) {
+        var clone_node = {};
+        /* clone the node and put content of 'data' at the top level. */
+        $.each(node, function (k, v) {
           if (k == 'data') {
             $.each(v, function (kk, vv) {
-              clone_element[kk] = vv;
+              clone_node[kk] = vv;
             });
-          } else if (k == 'successorList') {
-            $.each(v, function (i, successor) {
-              edges[edge_id] = [clone_element['id'], successor, {}];
-              edge_id += 1;
-            });
+          } else if (k == 'id') {
+            true; // no need to output
           } else {
-            clone_element[k] = v;
+            clone_node[k] = v;
           }
         });
-        nodes[clone_element['id']] = clone_element;
+        nodes[node['id']] = clone_node;
       });
 
       manpy_dict['nodes'] = nodes;
-      manpy_dict['edges'] = edges;
+      manpy_dict['edges'] = data['edges'];
       manpy_dict['general'] = data['general'];
       return manpy_dict;
     };

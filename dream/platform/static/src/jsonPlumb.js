@@ -91,14 +91,14 @@
       });
 
       var updateConnectionData = function (connection, remove) {
-        var source_element;
-        source_element = priv.node_container[connection.sourceId];
-        source_element.successorList = source_element.successorList || [];
         if (remove) {
-          source_element.successorList.splice(source_element.successorList.indexOf(
-            connection.targetId));
+          delete(priv.edge_container[connection.id]);
         } else {
-          source_element.successorList.push(connection.targetId);
+          priv.edge_container[connection.id] = [
+            connection.sourceId,
+            connection.targetId,
+            {}
+          ];
         }
         priv.onDataChange();
       };
@@ -176,7 +176,8 @@
 
     priv.getData = function () {
       return {
-        "element": priv.node_container,
+        "nodes": priv.node_container,
+        "edges": priv.edge_container,
         "preference": priv.preference_container,
         "general": priv.general_container
       };
@@ -200,6 +201,7 @@
 
     that.start = function () {
       priv.node_container = {};
+      priv.edge_container = {};
       priv.preference_container = {};
       priv.general_container = {};
       priv.initJsPlumb();
