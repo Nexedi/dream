@@ -46,7 +46,7 @@ body {
 /* Setting for dialog */
 
 label, input { display:block; }
-input.text { margin:4px; padding:0; }
+input.text { margin:4px; padding:0; width:95%; }
 fieldset { padding:0; border:0; margin-top:25px; }
 h1 { font-size: 1.2em; margin: .6em 0; }
 div#users-contain { width: 350px; margin: 20px 0; }
@@ -203,20 +203,18 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
 }
 
 .tool {
-  border: 1px dotted gray;
+  border: 1px solid lightgray;
   /*margin-top: 20px;
   margin-left: 35px;*/
-  width:5em;
+  width:7em;
   height:2em;
   z-index: 10001;
-  border-radius: 10px;
   color: gray;
   font-family:serif;
   font-style:italic;
   padding-top:0.9em;
   font-size:0.9em;
-  margin-top: 1em;
-  margin-left: 1em; 
+  margin:0.5em;
   display: inline-block;
 }
 
@@ -234,4 +232,36 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
 .ui-button {
   width:80%;
   margin-bottom:4px;
+}
+
+.Dream-Source {
+  background-color:#ffe;
+}
+
+.Dream-Machine {
+  background-color:#fef;
+}
+
+.Dream-Queue {
+  background-color:#eff;
+}
+
+.Dream-Exit {
+  background-color:#fee;
+}
+
+.Dream-Repairman {
+  background-color:#eef;
+}
+
+.window {
+  border:1px solid lightgray;
+  width:100px;
+  height:64px;
+  position:absolute;
+  color:black;
+  font-family:serif;
+  font-style:italic;
+  padding-top:0.9em;
+  font-size:0.9em;
 }

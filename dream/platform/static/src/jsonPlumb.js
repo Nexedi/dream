@@ -245,7 +245,7 @@
       if (coordinate !== undefined) {
         coordinate = priv.updateElementCoordinate(element.id, coordinate);
       }
-      render_element.append('<div class="window" id="' +
+      render_element.append('<div class="window ' + element._class.replace('.', '-') + '" id="' +
         element.id + '">' + element.id + '</div>');
       box = $("#" + element.id);
       box.css("top", coordinate.top);

@@ -50,7 +50,7 @@
       var render_element = $("[id=tools]");
       for (var key in configuration) {
         if (key !== 'Dream-Configuration') {
-          render_element.append('<div id="' + key + '" class="tool">' +
+          render_element.append('<div id="' + key + '" class="tool ' + key + '">' +
             key.split('-')[1] + "<ul/></div>");
         }
       }
