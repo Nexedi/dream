@@ -128,6 +128,21 @@
       return coordinate;
     };
 
+    priv.updateNodeStyle = function (element_id) {
+      var node_style = priv.preference_container['node_style'] || {};
+      var element = $("#" + element_id);
+      element.css(node_style);
+    };
+
+    priv.saveNodeStyle = function (style_dict) {
+      var node_style = priv.preference_container['node_style'] || {};
+      $.each(style_dict, function (k, v) {
+	node_style[k] = v;
+      });
+      priv.preference_container['node_style'] = node_style;
+      priv.onDataChange();
+    };
+
     priv.draggable = function () {
       // make all the window divs draggable
       var stop = function (el) {
@@ -171,7 +186,7 @@
               var left = Math.floor(pos.left * (canvas_size_x - size_x)) + "px";
               priv.updateElementCoordinate(node, {
                 top: top,
-                left: left,
+                left: left
               });
               $('#'+node).css('top', top);
               $('#'+node).css('left', left);
@@ -184,21 +199,27 @@
 
     that.zoom_in = function () {
       var attr_list = ['width', 'height', 'font-size', 'padding-top',
-                       'line-height']
+                       'line-height'];
+      var style_dict = {};
       $.each(attr_list, function (i, j) {
-        $('.window').css(j,
-			 $('.window').css(j).replace('px', '') * 1.1111 + 'px');
+	var new_value = $('.window').css(j).replace('px', '') * 1.1111 + 'px';
+        $('.window').css(j, new_value);
+	style_dict[j] = new_value;
       });
+      priv.saveNodeStyle(style_dict);
       jsPlumb.repaintEverything();
     };
 
     that.zoom_out = function () {
       var attr_list = ['width', 'height', 'font-size', 'padding-top',
-                       'line-height']
+                       'line-height'];
+      var style_dict = {};
       $.each(attr_list, function (i, j) {
-        $('.window').css(j,
-			 $('.window').css(j).replace('px', '') * 0.9 + 'px');
+	var new_value = $('.window').css(j).replace('px', '') * 0.9 + 'px';
+        $('.window').css(j, new_value);
+	style_dict[j] = new_value;
       });
+      priv.saveNodeStyle(style_dict);
       jsPlumb.repaintEverything();
     };
 
@@ -257,6 +278,10 @@
       });
     };
 
+    that.setPreferences = function (preferences) {
+      priv.preference_container = preferences;
+    };
+
     that.setGeneralProperties = function (properties) {
       priv.general_container = properties;
       priv.onDataChange();
@@ -275,6 +300,7 @@
       box = $("#" + element.id);
       box.css("top", coordinate.top);
       box.css("left", coordinate.left);
+      priv.updateNodeStyle(element.id);
 
       // Initial DEMO code : make all the window divs draggable
       priv.draggable();

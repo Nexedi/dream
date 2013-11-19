@@ -238,10 +238,12 @@
       _id: "dream_demo"
     }, function (err, response) {
       if (response !== undefined && response.data !== undefined) {
+        var preference = response.data.preference !== undefined ?
+          response.data.preference : {};
+        dream_instance.setPreferences(preference);
+
         // Add all elements
         $.each(response.data.nodes, function (key, value) {
-          var preference = response.data.preference !== undefined ?
-            response.data.preference : {};
 	  var coordinates = preference['coordinates'] || {};
 	  var coordinate = coordinates[key] || {};
 	  value['coordinate'] = {};
