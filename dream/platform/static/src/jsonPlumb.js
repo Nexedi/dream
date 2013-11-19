@@ -230,6 +230,11 @@
       $("#" + element_id).remove();
       delete(priv.node_container[element_id]);
       delete(priv.preference_container['coordinates'][element_id]);
+      $.each(priv.edge_container, function (k, v) {
+	if (element_id == v[0] || element_id == v[1]) {
+	  delete(priv.edge_container[k]);
+	}
+      });
       priv.onDataChange();
     };
 
