@@ -143,7 +143,7 @@
         priv.updateElementCoordinate(element_id);
       };
       jsPlumb.draggable(jsPlumb.getSelector(".window"), {
-        grid: [20, 20],
+        grid: [10, 10],
         stop: stop
       });
     };
