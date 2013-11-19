@@ -170,13 +170,13 @@
               var top = Math.floor(pos.top * (canvas_size_y - size_y)) + "px";
               var left = Math.floor(pos.left * (canvas_size_x - size_x)) + "px";
               priv.updateElementCoordinate(node, {
-		top: top,
-		left: left,
+                top: top,
+                left: left,
               });
-	      $('#'+node).css('top', top);
-	      $('#'+node).css('left', left);
-	      jsPlumb.repaintEverything();
+              $('#'+node).css('top', top);
+              $('#'+node).css('left', left);
             });
+            jsPlumb.repaintEverything();
           }
         });
 
