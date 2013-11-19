@@ -240,11 +240,13 @@
       if (response !== undefined && response.data !== undefined) {
         // Add all elements
         $.each(response.data.nodes, function (key, value) {
-          var preference_data = response.data.preference !== undefined ?
-            response.data.preference[key] : {};
-          $.each(preference_data, function (preference_key,
-            preference_value) {
-            value[preference_key] = preference_value;
+          var preference = response.data.preference !== undefined ?
+            response.data.preference : {};
+	  var coordinates = preference['coordinates'] || {};
+	  var coordinate = coordinates[key] || {};
+	  value['coordinate'] = {};
+          $.each(coordinate || {}, function (k, v) {
+            value['coordinate'][k] = v;
           });
           dream_instance.newElement(value);
           dream_instance.updateElementData(key, {

@@ -115,15 +115,15 @@
     };
 
     priv.updateElementCoordinate = function (element_id, coordinate) {
-      var preference = priv.preference_container[element_id] || {}, element;
+      var coordinates = priv.preference_container['coordinates'] || {}, element;
       if (coordinate === undefined) {
         coordinate = {};
         element = $("#" + element_id);
         coordinate.top = element.css("top");
         coordinate.left = element.css("left");
       }
-      preference["coordinate"] = coordinate;
-      priv.preference_container[element_id] = preference;
+      coordinates[element_id] = coordinate;
+      priv.preference_container['coordinates'] = coordinates;
       priv.onDataChange();
       return coordinate;
     };
@@ -215,7 +215,7 @@
       jsPlumb.removeAllEndpoints($("#" + element_id));
       $("#" + element_id).remove();
       delete(priv.node_container[element_id]);
-      delete(priv.preference_container[element_id]);
+      delete(priv.preference_container['coordinates'][element_id]);
       priv.onDataChange();
     };
 
