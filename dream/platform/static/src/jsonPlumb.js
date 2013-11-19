@@ -25,7 +25,6 @@
     priv.initJsPlumb = function () {
       jsPlumb.setRenderMode(jsPlumb.SVG);
       var color = "#00f";
-      var gradient_color = "#09098e";
       jsPlumb.importDefaults({
         // default drag options
         DragOptions: {
@@ -50,18 +49,12 @@
             location: 1,
             id: "arrow",
             length: 14,
+            width: 12,
             foldback: 0.8
           }]
         ],
         PaintStyle: {
-          gradient: {
-            stops: [
-              [0, color],
-              [0.5, gradient_color],
-              [1, color]
-            ]
-          },
-          lineWidth: 5,
+          lineWidth: 2,
           strokeStyle: color
         },
         Anchor: "Continuous",
@@ -307,11 +300,9 @@
 
       // Add endPoint to allow drawing connections
       var color = "#00f";
-      var gradient_color = "#09098e";
       // Different endpoint color for Repairman
       if (element._class === "Dream.Repairman") {
         color = "rgb(189,11,11)";
-        gradient_color = "rgb(255,0,0)";
       }
       var endpoint = {
         endpoint: "Rectangle",

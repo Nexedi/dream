@@ -251,11 +251,11 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
 }
 
 .Dream-Exit {
-  background-color:#fee;
+  background-color:#eef;
 }
 
 .Dream-Repairman {
-  background-color:#eef;
+  background-color:#fdd;
 }
 
 .window {
@@ -268,4 +268,8 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
   font-style:italic;
   padding-top:0.9em;
   font-size:0.9em;
+}
+
+#debug textarea {
+  width:100%;
 }
