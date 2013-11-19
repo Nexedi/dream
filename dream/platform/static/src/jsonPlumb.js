@@ -112,8 +112,10 @@
       if (coordinate === undefined) {
         coordinate = {};
         element = $("#" + element_id);
-        coordinate.top = element.css("top");
-        coordinate.left = element.css("left");
+        var relative_position = priv.convertToRelativePosition(
+          element.css('left'), element.css('top'));
+        coordinate.top = relative_position[1];
+        coordinate.left = relative_position[0];
       }
       coordinates[element_id] = coordinate;
       priv.preference_container['coordinates'] = coordinates;
@@ -127,10 +129,30 @@
       element.css(node_style);
     };
 
+    priv.convertToAbsolutePosition = function(x, y) {
+      var canvas_size_x = $('#main').width();
+      var canvas_size_y = $('#main').height();
+      var size_x = $('.window').width();
+      var size_y = $('.window').height();
+      var top = Math.floor(y * (canvas_size_y - size_y)) + "px";
+      var left = Math.floor(x * (canvas_size_x - size_x)) + "px";
+      return [left, top];
+    };
+
+    priv.convertToRelativePosition = function(x, y) {
+      var canvas_size_x = $('#main').width();
+      var canvas_size_y = $('#main').height();
+      var size_x = $('.window').width();
+      var size_y = $('.window').height();
+      var top = y.replace('px', '') / (pos.top * (canvas_size_y - size_y));
+      var left = x / (pos.left * (canvas_size_x - size_x));
+      return [left, top];
+    };
+
     priv.saveNodeStyle = function (style_dict) {
       var node_style = priv.preference_container['node_style'] || {};
       $.each(style_dict, function (k, v) {
-	node_style[k] = v;
+        node_style[k] = v;
       });
       priv.preference_container['node_style'] = node_style;
       priv.onDataChange();
@@ -170,19 +192,15 @@
           contentType: 'application/json',
           type: 'POST',
           success: function (data, textStatus, jqXHR) {
-            var canvas_size_x = $('#main').width();
-            var canvas_size_y = $('#main').height();
-            var size_x = $('.window').width();
-            var size_y = $('.window').height();
             $.each(data, function (node, pos) {
-              var top = Math.floor(pos.top * (canvas_size_y - size_y)) + "px";
-              var left = Math.floor(pos.left * (canvas_size_x - size_x)) + "px";
+              var absolute_position = priv.convertToAbsolutePosition(
+                pos.left, pos.top);
               priv.updateElementCoordinate(node, {
-                top: top,
-                left: left
+                top: pos.top,
+                left: pos.left
               });
-              $('#'+node).css('top', top);
-              $('#'+node).css('left', left);
+              $('#'+node).css('top', absolute_position[1]);
+              $('#'+node).css('left', absolute_position[0]);
             });
             jsPlumb.repaintEverything();
           }
@@ -195,9 +213,9 @@
                        'line-height'];
       var style_dict = {};
       $.each(attr_list, function (i, j) {
-	var new_value = $('.window').css(j).replace('px', '') * 1.1111 + 'px';
+        var new_value = $('.window').css(j).replace('px', '') * 1.1111 + 'px';
         $('.window').css(j, new_value);
-	style_dict[j] = new_value;
+        style_dict[j] = new_value;
       });
       priv.saveNodeStyle(style_dict);
       jsPlumb.repaintEverything();
@@ -208,9 +226,9 @@
                        'line-height'];
       var style_dict = {};
       $.each(attr_list, function (i, j) {
-	var new_value = $('.window').css(j).replace('px', '') * 0.9 + 'px';
+        var new_value = $('.window').css(j).replace('px', '') * 0.9 + 'px';
         $('.window').css(j, new_value);
-	style_dict[j] = new_value;
+        style_dict[j] = new_value;
       });
       priv.saveNodeStyle(style_dict);
       jsPlumb.repaintEverything();
@@ -231,9 +249,9 @@
       delete(priv.node_container[element_id]);
       delete(priv.preference_container['coordinates'][element_id]);
       $.each(priv.edge_container, function (k, v) {
-	if (element_id == v[0] || element_id == v[1]) {
-	  delete(priv.edge_container[k]);
-	}
+        if (element_id == v[0] || element_id == v[1]) {
+          delete(priv.edge_container[k]);
+        }
       });
       priv.onDataChange();
     };
@@ -296,8 +314,10 @@
       render_element.append('<div class="window ' + element._class.replace('.', '-') + '" id="' +
         element.id + '">' + element.id + '</div>');
       box = $("#" + element.id);
-      box.css("top", coordinate.top);
-      box.css("left", coordinate.left);
+      var absolute_position = priv.convertToAbsolutePosition(
+        coordinate.left, coordinate.top);
+      box.css("top", absolute_position[1]);
+      box.css("left", absolute_position[0]);
       priv.updateNodeStyle(element.id);
 
       // Initial DEMO code : make all the window divs draggable
