@@ -168,9 +168,8 @@
             var size_y = $('.window').height();
             $.each(data, function (node, pos) {
               priv.updateElementCoordinate(node, {
-                top: Math.floor(pos.top * (canvas_size_y - size_y/2) - size_y/2) +
-                  "px",
-                left: Math.floor(pos.left * (canvas_size_x - size_x/2) - size_x/2) + "px"
+                top: Math.floor(pos.top * (canvas_size_y - size_y)) + "px",
+                left: Math.floor(pos.left * (canvas_size_x - size_x)) + "px"
               });
             });
           }
