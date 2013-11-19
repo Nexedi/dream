@@ -167,10 +167,15 @@
             var size_x = $('.window').width();
             var size_y = $('.window').height();
             $.each(data, function (node, pos) {
+              var top = Math.floor(pos.top * (canvas_size_y - size_y)) + "px";
+              var left = Math.floor(pos.left * (canvas_size_x - size_x)) + "px";
               priv.updateElementCoordinate(node, {
-                top: Math.floor(pos.top * (canvas_size_y - size_y)) + "px",
-                left: Math.floor(pos.left * (canvas_size_x - size_x)) + "px"
+		top: top,
+		left: left,
               });
+	      $('#'+node).css('top', top);
+	      $('#'+node).css('left', left);
+	      jsPlumb.repaintEverything();
             });
           }
         });
