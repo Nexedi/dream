@@ -190,6 +190,10 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
   padding-bottom: 20px;
 }
 
+#tools-container {
+  margin-bottom: 4px;
+}
+
 #simulation_controls {            
 /*  position: absolute;
   width: 200px;
@@ -231,7 +235,7 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
 
 .ui-button {
   width:80%;
-  margin-bottom:4px;
+  margin:4px 0;
 }
 
 .Dream-Source {

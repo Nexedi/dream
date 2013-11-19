@@ -47,14 +47,13 @@
     };
 
     priv.displayTool = function () {
-      var render_element = $("[id=tools]");
+      var render_element = $("[id=tools-container]");
       for (var key in configuration) {
         if (key !== 'Dream-Configuration') {
           render_element.append('<div id="' + key + '" class="tool ' + key + '">' +
             key.split('-')[1] + "<ul/></div>");
         }
       }
-      render_element.append('<p/><a id="clear_all">Clear All</a>');
     };
 
     priv.initDialog = function () {
