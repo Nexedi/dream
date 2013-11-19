@@ -260,6 +260,7 @@
       manpy_dict['nodes'] = nodes;
       manpy_dict['edges'] = data['edges'];
       manpy_dict['general'] = data['general'];
+      manpy_dict['wip'] = $.sheet.instance[0].exportSheet.json();
       return manpy_dict;
     };
 

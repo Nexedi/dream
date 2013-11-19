@@ -278,6 +278,12 @@
           _id: "dream_demo",
           data: data
         }, function (err, response) {});
+
+        jio.put({
+          _id: "dream_demo.wip",
+          data: JSON.stringify($.sheet.instance[0].exportSheet.json(), undefined, " ")
+        }, function (err, response) {});
+
       });
     });
 
@@ -397,7 +403,49 @@
       function (e) {
         dream_instance.zoom_out();
       });
-  });
 
   $("#graph_zone").hide();
+  
+// WIP sheet
+  var default_config = {
+    id: "jquerysheet-div",
+    style: '',
+    jquerySheet: true,
+    jquerySheetCss: true,
+    parser: true,
+    jqueryUiCss: true,
+    scrollTo: false,
+    jQueryUI: false,
+    raphaelJs: false,
+    gRaphaelJs: false,
+    colorPicker: false,
+    colorPickerCss: false,
+    elastic: false,
+    advancedMath: false,
+    finance: false,
+    editable: true,
+    autoFiller: true,
+    urlGet: 'lib/jquery.sheet-2.0.0/new_spreadsheet.html'
+  };
+
+
+  var sheet = $('.jQuerySheet').sheet(default_config);
+
+  // reread wip from jio
+  jio.get({
+    _id: "dream_demo.wip"
+  }, function (err, response) {
+      if (response !== undefined && response.data !== undefined) {
+      var config = $.extend({
+            buildSheet: $.sheet.makeTable.json(JSON.parse(response.data))
+        })
+        sheet.sheet(config);
+      }
+  })
+
+  sheet.bind('sheetCellEdited', function() {
+    // TODO
+  })
+
+  });
 })(jQuery);
