@@ -244,9 +244,9 @@
 
         // Add all elements
         $.each(response.data.nodes, function (key, value) {
-	  var coordinates = preference['coordinates'] || {};
-	  var coordinate = coordinates[key] || {};
-	  value['coordinate'] = {};
+          var coordinates = preference['coordinates'] || {};
+          var coordinate = coordinates[key] || {};
+          value['coordinate'] = {};
           $.each(coordinate || {}, function (k, v) {
             value['coordinate'][k] = v;
           });
@@ -401,6 +401,14 @@
       function (e) {
         dream_instance.zoom_out();
       });
+
+    // Redraw if the graph area or the window is resized
+    $('#main').resizable().resize(function () {
+      dream_instance.redraw();
+    });
+    $(window).resize(function () {
+      dream_instance.redraw();
+    });
   });
 
   $("#graph_zone").hide();

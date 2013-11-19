@@ -124,16 +124,25 @@
     };
 
     priv.updateNodeStyle = function (element_id) {
-      var node_style = priv.preference_container['node_style'] || {};
+      var node_style = priv.preference_container['node_style'];
       var element = $("#" + element_id);
-      element.css(node_style);
+      if (node_style !== undefined) {
+        element.css(node_style);
+      } else {
+        var style_dict = {};
+        $.each(priv.style_attr_list, function (i, j) {
+          style_dict[j] = $('.window').css(j);
+        });
+        priv.saveNodeStyle(style_dict);
+      }
     };
 
     priv.convertToAbsolutePosition = function(x, y) {
       var canvas_size_x = $('#main').width();
       var canvas_size_y = $('#main').height();
-      var size_x = $('.window').width();
-      var size_y = $('.window').height();
+      var node_style = priv.preference_container['node_style'];
+      var size_x = node_style['width'].replace('px', '');
+      var size_y = node_style['height'].replace('px', '');
       var top = Math.floor(y * (canvas_size_y - size_y)) + "px";
       var left = Math.floor(x * (canvas_size_x - size_x)) + "px";
       return [left, top];
@@ -144,8 +153,8 @@
       var canvas_size_y = $('#main').height();
       var size_x = $('.window').width();
       var size_y = $('.window').height();
-      var top = y.replace('px', '') / (pos.top * (canvas_size_y - size_y));
-      var left = x / (pos.left * (canvas_size_x - size_x));
+      var top = y.replace('px', '') / (canvas_size_y - size_y);
+      var left = x.replace('px', '') / (canvas_size_y - size_y);
       return [left, top];
     };
 
@@ -184,6 +193,8 @@
       $.publish("Dream.Gui.onDataChange", priv.getData());
     };
 
+    priv.style_attr_list = ['width', 'height', 'font-size', 'padding-top',
+                            'line-height'];
 
     that.positionGraph = function () {
       $.ajax(
@@ -199,38 +210,44 @@
                 top: pos.top,
                 left: pos.left
               });
-              $('#'+node).css('top', absolute_position[1]);
-              $('#'+node).css('left', absolute_position[0]);
             });
-            jsPlumb.repaintEverything();
+            that.redraw();
           }
         });
 
     };
 
     that.zoom_in = function () {
-      var attr_list = ['width', 'height', 'font-size', 'padding-top',
-                       'line-height'];
       var style_dict = {};
-      $.each(attr_list, function (i, j) {
+      $.each(priv.style_attr_list, function (i, j) {
         var new_value = $('.window').css(j).replace('px', '') * 1.1111 + 'px';
         $('.window').css(j, new_value);
         style_dict[j] = new_value;
       });
       priv.saveNodeStyle(style_dict);
-      jsPlumb.repaintEverything();
+      that.redraw();
     };
 
     that.zoom_out = function () {
-      var attr_list = ['width', 'height', 'font-size', 'padding-top',
-                       'line-height'];
       var style_dict = {};
-      $.each(attr_list, function (i, j) {
+      $.each(priv.style_attr_list, function (i, j) {
         var new_value = $('.window').css(j).replace('px', '') * 0.9 + 'px';
         $('.window').css(j, new_value);
         style_dict[j] = new_value;
       });
       priv.saveNodeStyle(style_dict);
+      that.redraw();
+    };
+
+    that.redraw = function () {
+      var coordinates = priv.preference_container['coordinates'] || {};
+      $.each(coordinates, function (node_id, v) {
+        var absolute_position = priv.convertToAbsolutePosition(
+          v['left'], v['top']);
+        var element = $('#' + node_id);
+        element.css('top', absolute_position[1]);
+        element.css('left', absolute_position[0]);
+      });
       jsPlumb.repaintEverything();
     };
 
