@@ -385,6 +385,18 @@
         e.preventDefault();
         return false;
       });
+
+    // Enable "Zoom +" button
+    $("#zoom_in").button().click(
+      function (e) {
+        dream_instance.zoom_in();
+      });
+
+    // Enable "Zoom -" button
+    $("#zoom_out").button().click(
+      function (e) {
+        dream_instance.zoom_out();
+      });
   });
 
   $("#graph_zone").hide();

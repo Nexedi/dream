@@ -182,6 +182,26 @@
 
     };
 
+    that.zoom_in = function () {
+      var attr_list = ['width', 'height', 'font-size', 'padding-top',
+                       'line-height']
+      $.each(attr_list, function (i, j) {
+        $('.window').css(j,
+			 $('.window').css(j).replace('px', '') * 1.1111 + 'px');
+      });
+      jsPlumb.repaintEverything();
+    };
+
+    that.zoom_out = function () {
+      var attr_list = ['width', 'height', 'font-size', 'padding-top',
+                       'line-height']
+      $.each(attr_list, function (i, j) {
+        $('.window').css(j,
+			 $('.window').css(j).replace('px', '') * 0.9 + 'px');
+      });
+      jsPlumb.repaintEverything();
+    };
+
     priv.getData = function () {
       return {
         "nodes": priv.node_container,
