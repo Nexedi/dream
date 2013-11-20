@@ -25,27 +25,6 @@
     var that = jsonPlumb(),
       priv = {};
 
-    // Utility function to update the style of a box
-    priv.updateBoxStyle = function (box_id, style) {
-      var box;
-      box = $("#" + box_id);
-      $.each(style, function (key, value) {
-        box.css(key, value);
-      });
-    };
-
-    // Utility function to update the content of the box
-    priv.updateBoxContent = function (box_id, title, throughput, worker) {
-      var box, html_string;
-      box = $("#" + box_id);
-      html_string = "<strong>" + title + "</strong>";
-      if (worker !== undefined && worker !== null) {
-        html_string += "<br> (" + worker + ")";
-      }
-      html_string += "<br><strong>througput: " + throughput + "</strong>";
-      box.html(html_string);
-    };
-
     priv.displayTool = function () {
       var render_element = $("[id=tools-container]");
       for (var key in configuration) {
