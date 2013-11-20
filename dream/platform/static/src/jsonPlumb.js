@@ -19,7 +19,7 @@
 
 (function (scope, $, jsPlumb, console) {
   "use strict";
-  scope.jsonPlumb = function (model) {
+  scope.jsonPlumb = function () {
     var that = {}, priv = {};
 
     priv.initJsPlumb = function () {
