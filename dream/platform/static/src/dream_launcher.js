@@ -27,7 +27,6 @@
       applicationname: "dream"
     });
 
-    var window_id = 1;
     var id_container = {}; // to allow generating next ids, like Machine_1, Machine_2, etc
     var property_container = {
       entity: {
@@ -231,52 +230,55 @@
           },
           _class: _class
         });
-        window_id += 1;
       }
     });
+
+    var loadData = function(data) {
+      var preference = data.preference !== undefined ?
+        data.preference : {};
+      dream_instance.setPreferences(preference);
+
+      // Add all elements
+      $.each(data.nodes, function (key, value) {
+        var coordinates = preference['coordinates'] || {};
+        var coordinate = coordinates[key] || {};
+        value['coordinate'] = {};
+        $.each(coordinate || {}, function (k, v) {
+          value['coordinate'][k] = v;
+        });
+        dream_instance.newElement(value);
+        dream_instance.updateElementData(key, {
+          data: value.data || {}
+        });
+      });
+      $.each(data.edges, function (key, value) {
+        dream_instance.connect(value[0], value[1]);
+      });
+
+        // Now update id_container
+      $.each(data.nodes, function (key, value) {
+        var element_id = value.id,
+          prefix, suffix, splitted_element_id;
+        splitted_element_id = element_id.split("_");
+        prefix = splitted_element_id[0];
+        suffix = splitted_element_id[1];
+        id_container[prefix] = Math.max((id_container[prefix] || 0),
+          parseInt(suffix, 10));
+      });
+      dream_instance.setGeneralProperties(data.general);
+      dream_instance.initGeneralProperties(); // XXX
+      dream_instance.redraw()
+      $("#json_output").text(JSON.stringify(dream_instance.getData(),
+        undefined, " "));
+    };
 
     // Check if there is already data when we first load the page, if yes, then build graph from it
     jio.get({
       _id: "dream_demo"
     }, function (err, response) {
       if (response !== undefined && response.data !== undefined) {
-        var preference = response.data.preference !== undefined ?
-          response.data.preference : {};
-        dream_instance.setPreferences(preference);
-
-        // Add all elements
-        $.each(response.data.nodes, function (key, value) {
-          var coordinates = preference['coordinates'] || {};
-          var coordinate = coordinates[key] || {};
-          value['coordinate'] = {};
-          $.each(coordinate || {}, function (k, v) {
-            value['coordinate'][k] = v;
-          });
-          dream_instance.newElement(value);
-          dream_instance.updateElementData(key, {
-            data: value.data || {}
-          });
-        });
-        $.each(response.data.edges, function (key, value) {
-          dream_instance.connect(value[0], value[1]);
-        });
-
-        // Now update id_container
-        $.each(response.data.nodes, function (key, value) {
-          var element_id = value.id,
-            prefix, suffix, splitted_element_id;
-          splitted_element_id = element_id.split("_");
-          prefix = splitted_element_id[0];
-          suffix = splitted_element_id[1];
-          id_container[prefix] = Math.max((id_container[prefix] || 0),
-            parseInt(suffix, 10));
-        });
-        dream_instance.setGeneralProperties(response.data.general);
-        dream_instance.initGeneralProperties(); // XXX
-        $("#json_output").text(JSON.stringify(dream_instance.getData(),
-          undefined, " "));
+	loadData(response.data);
       }
-
       // once the data is read, we can subscribe to every changes
       $.subscribe("Dream.Gui.onDataChange", function (event, data) {
         $("#json_output").text(JSON.stringify(data, undefined, " "));
