@@ -26,7 +26,7 @@
       priv = {};
 
     priv.displayTool = function () {
-      var render_element = $("[id=tools-container]");
+      var render_element = $("#tools-container");
       for (var key in configuration) {
         if (key !== 'Dream-Configuration') {
           render_element.append('<div id="' + key + '" class="tool ' + key + '">' +

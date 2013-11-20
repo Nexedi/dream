@@ -215,7 +215,7 @@
       helper: "clone",
       stop: function (tool) {
         var box_top, box_left, _class;
-        var offset = $("[id=render]").offset();
+        var offset = $("#render").offset();
         box_top = (tool.clientY - offset.top)  / $('#main').height();
         box_left = (tool.clientX - offset.left)  / $('#main').width();
         id_container[tool.target.id] = (id_container[tool.target.id] || 0) +

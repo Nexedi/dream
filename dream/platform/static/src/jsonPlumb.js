@@ -298,7 +298,7 @@
     };
 
     that.clearAll = function () {
-      $("[id=render]").children().remove();
+      $("#render").children().remove();
       $.each(priv.node_container, function (element_id) {
         priv.removeElement(element_id);
       });
@@ -324,7 +324,7 @@
       var render_element, style_string = "",
         coordinate = element.coordinate,
         box;
-      render_element = $("[id=render]");
+      render_element = $("#render");
       if (coordinate !== undefined) {
         coordinate = priv.updateElementCoordinate(element.id, coordinate);
       }
