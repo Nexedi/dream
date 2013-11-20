@@ -216,16 +216,18 @@
       stop: function (tool) {
         var box_top, box_left, _class;
         var offset = $("#render").offset();
-        box_top = (tool.clientY - offset.top)  / $('#main').height();
-        box_left = (tool.clientX - offset.left)  / $('#main').width();
+        box_top = tool.clientY - offset.top + "px";
+        box_left = tool.clientX - offset.left + "px";
+        var relative_position = dream_instance.convertToRelativePosition(
+          box_left, box_top);
         id_container[tool.target.id] = (id_container[tool.target.id] || 0) +
           1;
         _class = tool.target.id.replace('-', '.'); // XXX - vs .
         dream_instance.newElement({
           id: tool.target.id + "_" + id_container[tool.target.id],
           coordinate: {
-            top: box_top,
-            left: box_left
+            top: relative_position[1],
+            left: relative_position[0]
           },
           _class: _class
         });

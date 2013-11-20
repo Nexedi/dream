@@ -112,7 +112,7 @@
       if (coordinate === undefined) {
         coordinate = {};
         element = $("#" + element_id);
-        var relative_position = priv.convertToRelativePosition(
+        var relative_position = that.convertToRelativePosition(
           element.css('left'), element.css('top'));
         coordinate.top = relative_position[1];
         coordinate.left = relative_position[0];
@@ -148,7 +148,7 @@
       return [left, top];
     };
 
-    priv.convertToRelativePosition = function(x, y) {
+    that.convertToRelativePosition = function(x, y) {
       var canvas_size_x = $('#main').width();
       var canvas_size_y = $('#main').height();
       var size_x = $('.window').width();
@@ -169,9 +169,8 @@
 
     priv.draggable = function () {
       // make all the window divs draggable
-      var stop = function (el) {
-        var element_id = el.target.id;
-        priv.updateElementCoordinate(element_id);
+      var stop = function (element) {
+        priv.updateElementCoordinate(element.target.id);
       };
       jsPlumb.draggable(jsPlumb.getSelector(".window"), {
         grid: [10, 10],
