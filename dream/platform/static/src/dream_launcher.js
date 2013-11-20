@@ -268,7 +268,7 @@
       dream_instance.setGeneralProperties(data.general);
       dream_instance.initGeneralProperties(); // XXX
       dream_instance.redraw()
-      $("#json_output").text(JSON.stringify(dream_instance.getData(),
+      $("#json_output").val(JSON.stringify(dream_instance.getData(),
         undefined, " "));
     };
 
@@ -281,7 +281,7 @@
       }
       // once the data is read, we can subscribe to every changes
       $.subscribe("Dream.Gui.onDataChange", function (event, data) {
-        $("#json_output").text(JSON.stringify(data, undefined, " "));
+        $("#json_output").val(JSON.stringify(data, undefined, " "));
         jio.put({
           _id: "dream_demo",
           data: data
@@ -297,7 +297,7 @@
         dream_instance.runSimulation(
           function (data) {
             if (data['success']) {
-              $("#json_result").text(JSON.stringify(data['success'],
+              $("#json_result").val(JSON.stringify(data['success'],
                 undefined, " "));
 
               // display demo graph.
@@ -372,7 +372,7 @@
               $.plot("#graph", series, options);
 
             } else {
-              $("#json_result").effect('shake', 50).text(data['error']);
+              $("#json_result").effect('shake', 50).val(data['error']);
             }
           });
         e.preventDefault();
