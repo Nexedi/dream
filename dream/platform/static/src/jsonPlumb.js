@@ -355,7 +355,6 @@
         },
         isSource: true,
         scope: "blue rectangle",
-        maxConnections: 3,
         isTarget: true
       };
       for (var key in option.anchor) {
