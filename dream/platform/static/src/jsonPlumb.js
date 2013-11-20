@@ -141,8 +141,14 @@
       var canvas_size_x = $('#main').width();
       var canvas_size_y = $('#main').height();
       var node_style = priv.preference_container['node_style'];
-      var size_x = node_style['width'].replace('px', '');
-      var size_y = node_style['height'].replace('px', '');
+      var size_x, size_y;
+      if (node_style === undefined) {
+        size_x = $('.window').css('width').replace('px', '');
+        size_y = $('.window').css('height').replace('px', '');
+      } else {
+        size_x = node_style['width'].replace('px', '');
+        size_y = node_style['height'].replace('px', '');
+      }
       var top = Math.floor(y * (canvas_size_y - size_y)) + "px";
       var left = Math.floor(x * (canvas_size_x - size_x)) + "px";
       return [left, top];
