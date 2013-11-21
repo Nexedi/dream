@@ -38,6 +38,12 @@ def front_page():
   return redirect(url_for('static', filename='index.html'))
 
 
+@app.route("/postJSONFile", methods=["POST", "OPTIONS"])
+def postJSONFile():
+  data = json.load(request.files['file'])
+  app.logger.debug("postJSONFile:%r" % data)
+  return jsonify(data)
+
 @app.route("/positionGraph", methods=["POST", "OPTIONS"])
 def positionGraph():
   """Uses graphviz to position nodes of the graph.

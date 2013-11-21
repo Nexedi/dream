@@ -439,6 +439,40 @@
         dream_instance.zoom_out();
       });
 
+    // Enable "Export" button
+    $("#export").button().click(
+      function (e) {
+        alert('not yet implemented');
+      });
+
+    // Enable "Import" button
+    $("#import").button().click(
+      function (e) {
+        $('#import_file').click();
+      });
+    $("#import_file").change(function() {
+      var form = $(this).parent('form')[0];
+      var form_data = new FormData(form);
+      $.ajax('/postJSONFile', {
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        data: form_data,
+        dataType: 'json',
+        error: function() {
+            console.log('error');
+        },
+        success: function(data, textStatus, jqXHR) {
+          form.reset();
+          id_container = {};
+          dream_instance.clearAll();
+          $("#json_output").val(JSON.stringify(data));
+          loadData(data);
+        }
+      });
+      return false;
+    });
+
     // Redraw if the graph area or the window is resized
     $('#main').resizable().resize(function () {
       dream_instance.redraw();
