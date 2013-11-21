@@ -117,7 +117,6 @@
 
       $("#dialog-form").dialog({
         autoOpen: false,
-        height: 300,
         width: 350,
         modal: true,
         title: title || "",
