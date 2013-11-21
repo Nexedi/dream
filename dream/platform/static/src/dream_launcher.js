@@ -294,7 +294,7 @@
       });
       dream_instance.setGeneralProperties(data.general);
       dream_instance.initGeneralProperties(); // XXX
-      dream_instance.redraw()
+      dream_instance.redraw();
       $("#json_output").val(JSON.stringify(dream_instance.getData(),
         undefined, " "));
     };
@@ -304,7 +304,7 @@
       _id: "dream_demo"
     }, function (err, response) {
       if (response !== undefined && response.data !== undefined) {
-	loadData(response.data);
+        loadData(response.data);
       }
       // once the data is read, we can subscribe to every changes
       $.subscribe("Dream.Gui.onDataChange", function (event, data) {
@@ -487,14 +487,14 @@
       if (response !== undefined && response.data !== undefined) {
       var config = $.extend({
             buildSheet: $.sheet.makeTable.json(JSON.parse(response.data))
-        })
+        });
         sheet.sheet(config);
       }
-  })
+  });
 
   sheet.bind('sheetCellEdited', function() {
     // TODO
-  })
+  });
 
   });
 })(jQuery);

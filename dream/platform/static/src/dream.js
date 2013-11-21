@@ -135,11 +135,11 @@
             $(this).dialog("close");
           },
           Validate: function () {
-	    var new_id = $("#id").val();
-	    if (new_id !== element_id && $('#' + new_id).length > 0) {
-	      alert('This ID is already used.');
-	      return;
-	    };
+            var new_id = $("#id").val();
+            if (new_id !== element_id && $('#' + new_id).length > 0) {
+              alert('This ID is already used.');
+              return;
+            }
             var data = {}, prefixed_property_id, property_element;
             var updateDataPropertyList = function (property_list, data,
               prefix) {
