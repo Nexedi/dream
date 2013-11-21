@@ -242,20 +242,20 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
   background-color:#ffe;
 }
 
-.Dream-Machine {
+.Dream-Machine, .Dream-MachineJobShop {
   background-color:#fef;
 }
 
-.Dream-Queue {
+.Dream-Queue, .Dream-QueueJobShop {
   background-color:#eff;
 }
 
-.Dream-Exit {
-  background-color:#fee;
+.Dream-Exit, .Dream-ExitJobShop {
+  background-color:#eef;
 }
 
 .Dream-Repairman {
-  background-color:#eef;
+  background-color:#fdd;
 }
 
 .window {
@@ -268,4 +268,8 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
   font-style:italic;
   padding-top:0.9em;
   font-size:0.9em;
+}
+
+#debug textarea {
+  width:100%;
 }

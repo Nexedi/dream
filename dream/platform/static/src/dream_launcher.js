@@ -27,7 +27,6 @@
       applicationname: "dream"
     });
 
-    var window_id = 1;
     var id_container = {}; // to allow generating next ids, like Machine_1, Machine_2, etc
     var property_container = {
       entity: {
@@ -190,6 +189,33 @@
         },
         _class: 'Dream.Exit'
       },
+      "Dream-MachineJobShop": {
+        anchor: {
+          RightMiddle: {},
+          LeftMiddle: {},
+          TopCenter: {},
+          BottomCenter: {}
+        },
+        property_list: [property_container["processingTime"],
+          property_container["failures"]
+        ],
+        _class: 'Dream.MachineJobShop'
+      },
+      "Dream-QueueJobShop": {
+        anchor: {
+          RightMiddle: {},
+          LeftMiddle: {}
+        },
+        property_list: [property_container["capacity"], property_container[
+          "isDummy"]],
+        _class: 'Dream.QueueJobShop'
+      },
+      "Dream-ExitJobShop": {
+        anchor: {
+          LeftMiddle: {}
+        },
+        _class: 'Dream.ExitJobShop'
+      },
       "Dream-Repairman": {
         anchor: {
           TopCenter: {},
@@ -215,65 +241,74 @@
       helper: "clone",
       stop: function (tool) {
         var box_top, box_left, _class;
-        var offset = $("[id=render]").offset();
+        var offset = $("#render").offset();
         box_top = tool.clientY - offset.top + "px";
         box_left = tool.clientX - offset.left + "px";
+        var relative_position = dream_instance.convertToRelativePosition(
+          box_left, box_top);
         id_container[tool.target.id] = (id_container[tool.target.id] || 0) +
           1;
         _class = tool.target.id.replace('-', '.'); // XXX - vs .
         dream_instance.newElement({
           id: tool.target.id + "_" + id_container[tool.target.id],
           coordinate: {
-            top: box_top,
-            left: box_left
+            top: relative_position[1],
+            left: relative_position[0]
           },
           _class: _class
         });
-        window_id += 1;
       }
     });
+
+    var loadData = function(data) {
+      var preference = data.preference !== undefined ?
+        data.preference : {};
+      dream_instance.setPreferences(preference);
+
+      // Add all elements
+      $.each(data.nodes, function (key, value) {
+        var coordinates = preference['coordinates'] || {};
+        var coordinate = coordinates[key] || {};
+        value['coordinate'] = {};
+        $.each(coordinate || {}, function (k, v) {
+          value['coordinate'][k] = v;
+        });
+        dream_instance.newElement(value);
+        dream_instance.updateElementData(key, {
+          data: value.data || {}
+        });
+      });
+      $.each(data.edges, function (key, value) {
+        dream_instance.connect(value[0], value[1]);
+      });
+
+        // Now update id_container
+      $.each(data.nodes, function (key, value) {
+        var element_id = value.id,
+          prefix, suffix, splitted_element_id;
+        splitted_element_id = element_id.split("_");
+        prefix = splitted_element_id[0];
+        suffix = splitted_element_id[1];
+        id_container[prefix] = Math.max((id_container[prefix] || 0),
+          parseInt(suffix, 10));
+      });
+      dream_instance.setGeneralProperties(data.general);
+      dream_instance.initGeneralProperties(); // XXX
+      dream_instance.redraw()
+      $("#json_output").val(JSON.stringify(dream_instance.getData(),
+        undefined, " "));
+    };
 
     // Check if there is already data when we first load the page, if yes, then build graph from it
     jio.get({
       _id: "dream_demo"
     }, function (err, response) {
       if (response !== undefined && response.data !== undefined) {
-        // Add all elements
-        $.each(response.data.nodes, function (key, value) {
-          var preference_data = response.data.preference !== undefined ?
-            response.data.preference[key] : {};
-          $.each(preference_data, function (preference_key,
-            preference_value) {
-            value[preference_key] = preference_value;
-          });
-          dream_instance.newElement(value);
-          dream_instance.updateElementData(key, {
-            data: value.data || {}
-          });
-        });
-        $.each(response.data.edges, function (key, value) {
-          dream_instance.connect(value[0], value[1]);
-        });
-
-        // Now update id_container
-        $.each(response.data.nodes, function (key, value) {
-          var element_id = value.id,
-            prefix, suffix, splitted_element_id;
-          splitted_element_id = element_id.split("_");
-          prefix = splitted_element_id[0];
-          suffix = splitted_element_id[1];
-          id_container[prefix] = Math.max((id_container[prefix] || 0),
-            parseInt(suffix, 10));
-        });
-        dream_instance.setGeneralProperties(response.data.general);
-        dream_instance.initGeneralProperties(); // XXX
-        $("#json_output").text(JSON.stringify(dream_instance.getData(),
-          undefined, " "));
+	loadData(response.data);
       }
-
       // once the data is read, we can subscribe to every changes
       $.subscribe("Dream.Gui.onDataChange", function (event, data) {
-        $("#json_output").text(JSON.stringify(data, undefined, " "));
+        $("#json_output").val(JSON.stringify(data, undefined, " "));
         jio.put({
           _id: "dream_demo",
           data: data
@@ -295,7 +330,7 @@
         dream_instance.runSimulation(
           function (data) {
             if (data['success']) {
-              $("#json_result").text(JSON.stringify(data['success'],
+              $("#json_result").val(JSON.stringify(data['success'],
                 undefined, " "));
 
               // display demo graph.
@@ -370,7 +405,7 @@
               $.plot("#graph", series, options);
 
             } else {
-              $("#json_result").effect('shake', 50).text(data['error']);
+              $("#json_result").effect('shake', 50).val(data['error']);
             }
           });
         e.preventDefault();
@@ -404,8 +439,22 @@
         dream_instance.zoom_out();
       });
 
+    // Redraw if the graph area or the window is resized
+    $('#main').resizable().resize(function () {
+      dream_instance.redraw();
+    });
+    $(window).resize(function () {
+      dream_instance.redraw();
+    });
+
+    // Load JSON button for debugging
+    $("#load_json").button().click(function () {
+      dream_instance.clearAll();
+      loadData(JSON.parse($("#json_output").val()));
+    });
+
   $("#graph_zone").hide();
-  
+
 // spreadsheet
   var default_config = {
     id: "jquerysheet-div",

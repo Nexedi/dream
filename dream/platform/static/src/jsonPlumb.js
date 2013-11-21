@@ -19,13 +19,12 @@
 
 (function (scope, $, jsPlumb, console) {
   "use strict";
-  scope.jsonPlumb = function (model) {
+  scope.jsonPlumb = function () {
     var that = {}, priv = {};
 
     priv.initJsPlumb = function () {
       jsPlumb.setRenderMode(jsPlumb.SVG);
       var color = "#00f";
-      var gradient_color = "#09098e";
       jsPlumb.importDefaults({
         // default drag options
         DragOptions: {
@@ -50,18 +49,12 @@
             location: 1,
             id: "arrow",
             length: 14,
+            width: 12,
             foldback: 0.8
           }]
         ],
         PaintStyle: {
-          gradient: {
-            stops: [
-              [0, color],
-              [0.5, gradient_color],
-              [1, color]
-            ]
-          },
-          lineWidth: 5,
+          lineWidth: 2,
           strokeStyle: color
         },
         Anchor: "Continuous",
@@ -115,27 +108,78 @@
     };
 
     priv.updateElementCoordinate = function (element_id, coordinate) {
-      var preference = priv.preference_container[element_id] || {}, element;
+      var coordinates = priv.preference_container['coordinates'] || {}, element;
       if (coordinate === undefined) {
         coordinate = {};
         element = $("#" + element_id);
-        coordinate.top = element.css("top");
-        coordinate.left = element.css("left");
+        var relative_position = that.convertToRelativePosition(
+          element.css('left'), element.css('top'));
+        coordinate.top = relative_position[1];
+        coordinate.left = relative_position[0];
       }
-      preference["coordinate"] = coordinate;
-      priv.preference_container[element_id] = preference;
+      coordinates[element_id] = coordinate;
+      priv.preference_container['coordinates'] = coordinates;
       priv.onDataChange();
       return coordinate;
     };
 
+    priv.updateNodeStyle = function (element_id) {
+      var node_style = priv.preference_container['node_style'];
+      var element = $("#" + element_id);
+      if (node_style !== undefined) {
+        element.css(node_style);
+      } else {
+        var style_dict = {};
+        $.each(priv.style_attr_list, function (i, j) {
+          style_dict[j] = $('.window').css(j);
+        });
+        priv.saveNodeStyle(style_dict);
+      }
+    };
+
+    priv.convertToAbsolutePosition = function(x, y) {
+      var canvas_size_x = $('#main').width();
+      var canvas_size_y = $('#main').height();
+      var node_style = priv.preference_container['node_style'];
+      var size_x, size_y;
+      if (node_style === undefined) {
+        size_x = $('.window').css('width').replace('px', '');
+        size_y = $('.window').css('height').replace('px', '');
+      } else {
+        size_x = node_style['width'].replace('px', '');
+        size_y = node_style['height'].replace('px', '');
+      }
+      var top = Math.floor(y * (canvas_size_y - size_y)) + "px";
+      var left = Math.floor(x * (canvas_size_x - size_x)) + "px";
+      return [left, top];
+    };
+
+    that.convertToRelativePosition = function(x, y) {
+      var canvas_size_x = $('#main').width();
+      var canvas_size_y = $('#main').height();
+      var size_x = $('.window').width();
+      var size_y = $('.window').height();
+      var top = y.replace('px', '') / (canvas_size_y - size_y);
+      var left = x.replace('px', '') / (canvas_size_y - size_y);
+      return [left, top];
+    };
+
+    priv.saveNodeStyle = function (style_dict) {
+      var node_style = priv.preference_container['node_style'] || {};
+      $.each(style_dict, function (k, v) {
+        node_style[k] = v;
+      });
+      priv.preference_container['node_style'] = node_style;
+      priv.onDataChange();
+    };
+
     priv.draggable = function () {
       // make all the window divs draggable
-      var stop = function (el) {
-        var element_id = el.target.id;
-        priv.updateElementCoordinate(element_id);
+      var stop = function (element) {
+        priv.updateElementCoordinate(element.target.id);
       };
       jsPlumb.draggable(jsPlumb.getSelector(".window"), {
-        grid: [20, 20],
+        grid: [10, 10],
         stop: stop
       });
     };
@@ -144,7 +188,7 @@
       var element_data = {
         _class: element._class,
         id: element.id,
-        name: element.id
+        name: element.name
       };
       priv.node_container[element.id] = element_data;
       priv.onDataChange();
@@ -154,6 +198,8 @@
       $.publish("Dream.Gui.onDataChange", priv.getData());
     };
 
+    priv.style_attr_list = ['width', 'height', 'font-size', 'padding-top',
+                            'line-height'];
 
     that.positionGraph = function () {
       $.ajax(
@@ -162,42 +208,50 @@
           contentType: 'application/json',
           type: 'POST',
           success: function (data, textStatus, jqXHR) {
-            var canvas_size_x = $('#main').width();
-            var canvas_size_y = $('#main').height();
-            var size_x = $('.window').width();
-            var size_y = $('.window').height();
             $.each(data, function (node, pos) {
-              var top = Math.floor(pos.top * (canvas_size_y - size_y)) + "px";
-              var left = Math.floor(pos.left * (canvas_size_x - size_x)) + "px";
+              var absolute_position = priv.convertToAbsolutePosition(
+                pos.left, pos.top);
               priv.updateElementCoordinate(node, {
-                top: top,
-                left: left,
+                top: pos.top,
+                left: pos.left
               });
-              $('#'+node).css('top', top);
-              $('#'+node).css('left', left);
             });
-            jsPlumb.repaintEverything();
+            that.redraw();
           }
         });
 
     };
 
     that.zoom_in = function () {
-      var attr_list = ['width', 'height', 'font-size', 'padding-top',
-                       'line-height']
-      $.each(attr_list, function (i, j) {
-        $('.window').css(j,
-			 $('.window').css(j).replace('px', '') * 1.1111 + 'px');
+      var style_dict = {};
+      $.each(priv.style_attr_list, function (i, j) {
+        var new_value = $('.window').css(j).replace('px', '') * 1.1111 + 'px';
+        $('.window').css(j, new_value);
+        style_dict[j] = new_value;
       });
-      jsPlumb.repaintEverything();
+      priv.saveNodeStyle(style_dict);
+      that.redraw();
     };
 
     that.zoom_out = function () {
-      var attr_list = ['width', 'height', 'font-size', 'padding-top',
-                       'line-height']
-      $.each(attr_list, function (i, j) {
-        $('.window').css(j,
-			 $('.window').css(j).replace('px', '') * 0.9 + 'px');
+      var style_dict = {};
+      $.each(priv.style_attr_list, function (i, j) {
+        var new_value = $('.window').css(j).replace('px', '') * 0.9 + 'px';
+        $('.window').css(j, new_value);
+        style_dict[j] = new_value;
+      });
+      priv.saveNodeStyle(style_dict);
+      that.redraw();
+    };
+
+    that.redraw = function () {
+      var coordinates = priv.preference_container['coordinates'] || {};
+      $.each(coordinates, function (node_id, v) {
+        var absolute_position = priv.convertToAbsolutePosition(
+          v['left'], v['top']);
+        var element = $('#' + node_id);
+        element.css('top', absolute_position[1]);
+        element.css('left', absolute_position[0]);
       });
       jsPlumb.repaintEverything();
     };
@@ -215,7 +269,12 @@
       jsPlumb.removeAllEndpoints($("#" + element_id));
       $("#" + element_id).remove();
       delete(priv.node_container[element_id]);
-      delete(priv.preference_container[element_id]);
+      delete(priv.preference_container['coordinates'][element_id]);
+      $.each(priv.edge_container, function (k, v) {
+        if (element_id == v[0] || element_id == v[1]) {
+          delete(priv.edge_container[k]);
+        }
+      });
       priv.onDataChange();
     };
 
@@ -223,6 +282,22 @@
       $.extend(priv.node_container[element_id], data);
       if (data['name']) {
         $("#" + element_id).text(data["name"]);
+      }
+      var new_id = data['id'];
+      if (new_id && new_id !== element_id) {
+	priv.node_container[new_id] = priv.node_container[element_id];
+	priv.node_container[new_id]['id'] = new_id;
+	delete(priv.node_container[element_id]);
+	$.each(priv.edge_container, function (k, v) {
+	  if (v[0] === element_id) {
+	    v[0] = new_id;
+	  }
+	  if (v[1] === element_id) {
+	    v[1] = new_id;
+	  }
+	});
+	priv.preference_container['coordinates'][new_id] = priv.preference_container['coordinates'][element_id];
+	delete(priv.preference_container['coordinates'][element_id]);
       }
       priv.onDataChange();
     };
@@ -244,7 +319,7 @@
     };
 
     that.clearAll = function () {
-      $("[id=render]").children().remove();
+      $("#render").children().remove();
       $.each(priv.node_container, function (element_id) {
         priv.removeElement(element_id);
       });
@@ -257,6 +332,10 @@
       });
     };
 
+    that.setPreferences = function (preferences) {
+      priv.preference_container = preferences;
+    };
+
     that.setGeneralProperties = function (properties) {
       priv.general_container = properties;
       priv.onDataChange();
@@ -266,26 +345,27 @@
       var render_element, style_string = "",
         coordinate = element.coordinate,
         box;
-      render_element = $("[id=render]");
+      render_element = $("#render");
       if (coordinate !== undefined) {
         coordinate = priv.updateElementCoordinate(element.id, coordinate);
       }
       render_element.append('<div class="window ' + element._class.replace('.', '-') + '" id="' +
-        element.id + '">' + element.id + '</div>');
+        element.id + '">' + (element.name || element.id) + '</div>');
       box = $("#" + element.id);
-      box.css("top", coordinate.top);
-      box.css("left", coordinate.left);
+      var absolute_position = priv.convertToAbsolutePosition(
+        coordinate.left, coordinate.top);
+      box.css("top", absolute_position[1]);
+      box.css("left", absolute_position[0]);
+      priv.updateNodeStyle(element.id);
 
       // Initial DEMO code : make all the window divs draggable
       priv.draggable();
 
       // Add endPoint to allow drawing connections
       var color = "#00f";
-      var gradient_color = "#09098e";
       // Different endpoint color for Repairman
       if (element._class === "Dream.Repairman") {
         color = "rgb(189,11,11)";
-        gradient_color = "rgb(255,0,0)";
       }
       var endpoint = {
         endpoint: "Rectangle",
@@ -296,7 +376,6 @@
         },
         isSource: true,
         scope: "blue rectangle",
-        maxConnections: 3,
         isTarget: true
       };
       for (var key in option.anchor) {
