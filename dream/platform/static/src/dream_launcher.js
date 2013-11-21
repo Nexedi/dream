@@ -280,7 +280,7 @@
         }, function (err, response) {});
 
         jio.put({
-          _id: "dream_demo.wip",
+          _id: "dream_demo.spreadsheet",
           data: JSON.stringify($.sheet.instance[0].exportSheet.json(), undefined, " ")
         }, function (err, response) {});
 
@@ -406,7 +406,7 @@
 
   $("#graph_zone").hide();
   
-// WIP sheet
+// spreadsheet
   var default_config = {
     id: "jquerysheet-div",
     style: '',
@@ -431,9 +431,9 @@
 
   var sheet = $('.jQuerySheet').sheet(default_config);
 
-  // reread wip from jio
+  // reread spreadsheet from jio
   jio.get({
-    _id: "dream_demo.wip"
+    _id: "dream_demo.spreadsheet"
   }, function (err, response) {
       if (response !== undefined && response.data !== undefined) {
       var config = $.extend({
