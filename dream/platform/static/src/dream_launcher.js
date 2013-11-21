@@ -189,6 +189,33 @@
         },
         _class: 'Dream.Exit'
       },
+      "Dream-MachineJobShop": {
+        anchor: {
+          RightMiddle: {},
+          LeftMiddle: {},
+          TopCenter: {},
+          BottomCenter: {}
+        },
+        property_list: [property_container["processingTime"],
+          property_container["failures"]
+        ],
+        _class: 'Dream.MachineJobShop'
+      },
+      "Dream-QueueJobShop": {
+        anchor: {
+          RightMiddle: {},
+          LeftMiddle: {}
+        },
+        property_list: [property_container["capacity"], property_container[
+          "isDummy"]],
+        _class: 'Dream.QueueJobShop'
+      },
+      "Dream-ExitJobShop": {
+        anchor: {
+          LeftMiddle: {}
+        },
+        _class: 'Dream.ExitJobShop'
+      },
       "Dream-Repairman": {
         anchor: {
           TopCenter: {},

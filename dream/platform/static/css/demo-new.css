@@ -242,15 +242,15 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
   background-color:#ffe;
 }
 
-.Dream-Machine {
+.Dream-Machine, .Dream-MachineJobShop {
   background-color:#fef;
 }
 
-.Dream-Queue {
+.Dream-Queue, .Dream-QueueJobShop {
   background-color:#eff;
 }
 
-.Dream-Exit {
+.Dream-Exit, .Dream-ExitJobShop {
   background-color:#eef;
 }
 
