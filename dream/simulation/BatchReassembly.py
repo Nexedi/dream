@@ -132,6 +132,8 @@ class BatchReassembly(CoreObject):
         if(len(activeObject.previous)==1 or callerObject==None):
             if len(activeObjectQueue)==0:
                 return activeObject.Up
+            elif len(giverObjectQueue)==0:
+                return False
             else:
                 return activeObject.Up\
                      and activeObjectQueue[0].type!='Batch'\
