@@ -31,6 +31,7 @@ from SimPy.Simulation import Process, Resource
 class ObjectInterruption(Process):
     
     def __init__(self, victim):
+        Process.__init__(self)
         self.victim=victim
     
     #the main process of the core object

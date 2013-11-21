@@ -26,37 +26,52 @@ Class that acts as an abstract. It should have no instances. All the Resources s
 '''
 from SimPy.Simulation import Resource
 
-#the resource that repairs the machines
+# ===========================================================================
+#                    the resource that repairs the machines
+# ===========================================================================
 class ObjectResource(object):
     
     def initialize(self):
-        self.totalWorkingTime=0     #holds the total working time
-        self.totalWaitingTime=0     #holds the total waiting time
+        self.totalWorkingTime=0         #holds the total working time
+        self.totalWaitingTime=0         #holds the total waiting time
         self.timeLastRepairStarted=0    #holds the time that the last repair was started        
         self.Res=Resource(self.capacity) 
-
-    #checks if the worker is available       
+    
+    # =======================================================================
+    #                    checks if the worker is available
+    # =======================================================================       
     def checkIfResourceIsAvailable(self): 
         return len(self.Res.activeQ)<self.capacity   
     
-    #actions to be taken after the simulation ends
+    # =======================================================================
+    #              actions to be taken after the simulation ends
+    # =======================================================================
     def postProcessing(self, MaxSimtime=None):
         pass    
     
-    #outputs message to the trace.xls
+    # =======================================================================
+    #                     outputs message to the trace.xls
+    # =======================================================================
     def outputTrace(self, message):
         pass
     
-    #outputs data to "output.xls"
+    # =======================================================================
+    #                        outputs data to "output.xls"
+    # =======================================================================
     def outputResultsXL(self, MaxSimtime=None):
         pass
     
-    #outputs results to JSON File
+    # =======================================================================
+    #                       outputs results to JSON File
+    # =======================================================================
     def outputResultsJSON(self):
         pass
     
-    #takes the array and checks if all its values are identical (returns false) or not (returns true) 
-    #needed because if somebody runs multiple runs in deterministic case it would crash!          
+    # =======================================================================
+    #      takes the array and checks if all its values are identical 
+    #   (returns false) or not (returns true) needed because if somebody 
+    #       runs multiple runs in deterministic case it would crash!
+    # =======================================================================          
     def checkIfArrayHasDifValues(self, array):
         difValuesFlag=False 
         for i in range(1, len(array)):
@@ -64,10 +79,14 @@ class ObjectResource(object):
                difValuesFlag=True
         return difValuesFlag 
     
-    #returns the resource
+    # =======================================================================
+    #                           returns the resource
+    # =======================================================================
     def getResource(self):
         return self.Res
     
-    #returns the active queue of the resource
+    # =======================================================================
+    #               returns the active queue of the resource
+    # =======================================================================
     def getResourceQueue(self):
         return self.Res.activeQ

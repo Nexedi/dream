@@ -31,55 +31,61 @@ import xlwt
 import scipy.stats as stat
 from ObjectResource import ObjectResource
 
-#the resource that repairs the machines
+# ===========================================================================
+#                 the resource that repairs the machines
+# ===========================================================================
 class Repairman(ObjectResource):
     
     def __init__(self, id, name, capacity=1):    
         self.id=id      
         self.objName=name
-        self.capacity=capacity  #repairman is an instance of resource
+        self.capacity=capacity      # repairman is an instance of resource
         self.type="Repairman"
-        self.Res=Resource(self.capacity) 
-        
-        #lists to hold statistics of multiple runs
-        self.Waiting=[]
-        self.Working=[]
-        
-        self.coreObjectIds=[]   #list with the coreObjects that the repairman repairs
+        #self.Res=Resource(self.capacity)
+        # lists to hold statistics of multiple runs
+        self.Waiting=[]             # holds the percentage of waiting time 
+        self.Working=[]             # holds the percentage of working time 
+        # list with the coreObjects that the repairman repairs
+        self.coreObjectIds=[]
                 
-    
-    #actions to be taken after the simulation ends
+    # =======================================================================    
+    #            actions to be taken after the simulation ends
+    # =======================================================================
     def postProcessing(self, MaxSimtime=None):
         if MaxSimtime==None:
             from Globals import G
             MaxSimtime=G.maxSimTime
-        #if the repairman is currently working we have to count the time of this work    
+        # if the repairman is currently working we have to count the time of this work    
         if len(self.getResourceQueue())>0:
             self.totalWorkingTime+=now()-self.timeLastRepairStarted
                 
-        #Repairman was idle when he was not in any other state
+        # Repairman was idle when he was not in any other state
         self.totalWaitingTime=MaxSimtime-self.totalWorkingTime   
-        
+        # update the waiting/working time percentages lists
         self.Waiting.append(100*self.totalWaitingTime/MaxSimtime)
         self.Working.append(100*self.totalWorkingTime/MaxSimtime)
-
-    #outputs data to "output.xls"
+    
+    # =======================================================================
+    #                    outputs data to "output.xls"
+    # =======================================================================
     def outputResultsXL(self, MaxSimtime=None):
         from Globals import G
         if MaxSimtime==None:
             MaxSimtime=G.maxSimTime
-        if(G.numberOfReplications==1): #if we had just one replication output the results to excel
+        # if we had just one replication output the results to excel
+        if(G.numberOfReplications==1): 
             G.outputSheet.write(G.outputIndex,0, "The percentage of working of "+self.objName +" is:")
             G.outputSheet.write(G.outputIndex,1,100*self.totalWorkingTime/MaxSimtime)
             G.outputIndex+=1
             G.outputSheet.write(G.outputIndex,0, "The percentage of waiting of "+self.objName +" is:")
             G.outputSheet.write(G.outputIndex,1,100*self.totalWaitingTime/MaxSimtime)
             G.outputIndex+=1
-        else:        #if we had multiple replications we output confidence intervals to excel
-                #for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
-                #so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
-                #so for each output value we check if there was difference in the runs' results
-                #if yes we output the Confidence Intervals. if not we output just the fix value                 
+        #if we had multiple replications we output confidence intervals to excel
+            # for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
+            # so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
+            # so for each output value we check if there was difference in the runs' results
+            # if yes we output the Confidence Intervals. if not we output just the fix value    
+        else:
             G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Working of "+self.objName +" is:")
             if self.checkIfArrayHasDifValues(self.Working): 
                 G.outputSheet.write(G.outputIndex,1,stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][0])
@@ -102,21 +108,25 @@ class Repairman(ObjectResource):
             G.outputIndex+=1
         G.outputIndex+=1
 
-    #outputs results to JSON File
+    # =======================================================================
+    #                    outputs results to JSON File
+    # =======================================================================
     def outputResultsJSON(self):
         from Globals import G
-        if(G.numberOfReplications==1): #if we had just one replication output the results to excel
+        # if we had just one replication output the results to JSON
+        if(G.numberOfReplications==1): 
             json={}
             json['_class'] = 'Dream.Repairman';
             json['id'] = str(self.id)
             json['results'] = {}
             json['results']['working_ratio']=100*self.totalWorkingTime/G.maxSimTime
             json['results']['waiting_ratio']=100*self.totalWaitingTime/G.maxSimTime
-        else: #if we had multiple replications we output confidence intervals to excel
-                #for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
-                #so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
-                #so for each output value we check if there was difference in the runs' results
-                #if yes we output the Confidence Intervals. if not we output just the fix value           
+        #if we had multiple replications we output confidence intervals to excel
+            # for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
+            # so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
+            # so for each output value we check if there was difference in the runs' results
+            # if yes we output the Confidence Intervals. if not we output just the fix value  
+        else:          
             json={}
             json['_class'] = 'Dream.Repairman';
             json['id'] = str(self.id)
