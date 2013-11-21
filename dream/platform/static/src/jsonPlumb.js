@@ -188,7 +188,7 @@
       var element_data = {
         _class: element._class,
         id: element.id,
-        name: element.id
+        name: element.name
       };
       priv.node_container[element.id] = element_data;
       priv.onDataChange();
@@ -283,6 +283,22 @@
       if (data['name']) {
         $("#" + element_id).text(data["name"]);
       }
+      var new_id = data['id'];
+      if (new_id && new_id !== element_id) {
+	priv.node_container[new_id] = priv.node_container[element_id];
+	priv.node_container[new_id]['id'] = new_id;
+	delete(priv.node_container[element_id]);
+	$.each(priv.edge_container, function (k, v) {
+	  if (v[0] === element_id) {
+	    v[0] = new_id;
+	  }
+	  if (v[1] === element_id) {
+	    v[1] = new_id;
+	  }
+	});
+	priv.preference_container['coordinates'][new_id] = priv.preference_container['coordinates'][element_id];
+	delete(priv.preference_container['coordinates'][element_id]);
+      }
       priv.onDataChange();
     };
 
@@ -334,7 +350,7 @@
         coordinate = priv.updateElementCoordinate(element.id, coordinate);
       }
       render_element.append('<div class="window ' + element._class.replace('.', '-') + '" id="' +
-        element.id + '">' + element.id + '</div>');
+        element.id + '">' + (element.name || element.id) + '</div>');
       box = $("#" + element.id);
       var absolute_position = priv.convertToAbsolutePosition(
         coordinate.left, coordinate.top);

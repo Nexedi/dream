@@ -77,11 +77,14 @@
 
       // Render fields for that particular element
       var fieldset = $("#dialog-fieldset");
-      $("#dialog-fieldset").children().remove();
-      var element_id_prefix = element_id.split("_")[0];
-      var property_list = configuration[element_id_prefix].property_list || [];
       var previous_data = that.getData()["nodes"];
+      $("#dialog-fieldset").children().remove();
+      var element_type = previous_data[element_id]._class.replace('.', '-');
+      var property_list = configuration[element_type].property_list || [];
 
+      fieldset.append(
+        '<label>ID</label><input type="text" name="id" id="id" value="' +
+        element_id + '" class="text ui-widget-content ui-corner-all"/>');
       var element_name = previous_data[element_id]['name'] || element_id;
       fieldset.append(
         '<label>Name</label><input type="text" name="name" id="name" value="' +
@@ -156,7 +159,8 @@
             updateDataPropertyList(property_list, data);
             that.updateElementData(element_id, {
               data: data,
-              name: $("#name").val() || element_id
+              name: $("#name").val() || element_id,
+              id: $("#id").val() || element_id
             });
 
             $(this).dialog("close");
@@ -170,15 +174,15 @@
 
     priv.super_newElement = that.newElement;
     that.newElement = function (element) {
-      var element_prefix = element.id.split('_')[0];
-      priv.super_newElement(element, configuration[element_prefix]);
+      var element_type = element._class.replace('.', '-');
+      priv.super_newElement(element, configuration[element_type]);
       $("#" + element.id).bind('click', function () {
         $("#dialog-form").dialog("destroy");
         priv.prepareDialogForElement(element.id, element.id);
         $("#dialog-form").dialog("open");
       });
       // Store default values
-      var data = {}, property_list = configuration[element_prefix][
+      var data = {}, property_list = configuration[element_type][
           "property_list"
         ] || [];
       var updateDefaultData = function (data, property_list) {
