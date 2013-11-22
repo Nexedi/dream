@@ -270,11 +270,12 @@
       // Add all elements
       $.each(data.nodes, function (key, value) {
         var coordinates = preference['coordinates'] || {};
-        var coordinate = coordinates[key] || {};
-        value['coordinate'] = {};
-        $.each(coordinate || {}, function (k, v) {
-          value['coordinate'][k] = v;
-        });
+        var coordinate = coordinates[key];
+        if (coordinate === undefined) {
+          coordinate = {'top':0.0, 'left':0.0};
+        }
+        value['coordinate'] = coordinate;
+        value['id'] = key;
         dream_instance.newElement(value);
         dream_instance.updateElementData(key, {
           data: value.data || {}
