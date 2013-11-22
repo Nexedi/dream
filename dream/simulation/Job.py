@@ -54,6 +54,14 @@ class Job(Entity):                                  # inherits from the Entity c
             json['_class'] = 'Dream.Job';
             json['id'] = str(self.id)
             json['results'] = {}
+            
+            #if the Job has reached an exit, input completion time in the results
+            if self.schedule[-1][0].type=='Exit':
+                json['results']['completionTime']=self.schedule[-1][1]    
+            #else input "still in progress"
+            else:
+                json['results']['completionTime']="still in progress"    
+                
             json['results']['schedule']={}
             i=0
             for record in self.schedule:

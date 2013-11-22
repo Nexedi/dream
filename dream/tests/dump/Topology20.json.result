@@ -13,6 +13,7 @@
    "_class": "Dream.Job", 
    "id": "J1", 
    "results": {
+    "completionTime": 23.0, 
     "schedule": {
      "1": {
       "entranceTime": 0, 
@@ -49,6 +50,7 @@
    "_class": "Dream.Job", 
    "id": "J2", 
    "results": {
+    "completionTime": 19.0, 
     "schedule": {
      "1": {
       "entranceTime": 2.0, 
@@ -85,6 +87,7 @@
    "_class": "Dream.Job", 
    "id": "J3", 
    "results": {
+    "completionTime": 5.0, 
     "schedule": {
      "1": {
       "entranceTime": 0, 
@@ -113,6 +116,7 @@
    "_class": "Dream.Job", 
    "id": "J4", 
    "results": {
+    "completionTime": 12.0, 
     "schedule": {
      "1": {
       "entranceTime": 5.0, 
