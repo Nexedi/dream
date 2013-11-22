@@ -69,21 +69,21 @@
             "name": "Queue1",
 			"schedulingRule": "FIFO",
             "isDummy": "0",
-            "capacity": "1000"
+            "capacity": "-1"
         },
         "Q2": {
             "_class": "Dream.QueueJobShop",
             "name": "Queue2",
 			"schedulingRule": "MC-Priority-EDD",
             "isDummy": "0",
-            "capacity": "1000"
+            "capacity": "-1"
         },
         "Q3": {
             "_class": "Dream.QueueJobShop",
             "name": "Queue3",
 			"schedulingRule": "FIFO",
             "isDummy": "0",
-            "capacity": "1000"
+            "capacity": "-1"
         },
         "E1": {
             "_class": "Dream.ExitJobShop",
@@ -93,7 +93,7 @@
             "_class": "Dream.Job",
             "name": "Job1",
 			"priority": "1",
-			"dueDate": "900",
+			"dueDate": "15",
 			"orderDate": "0",
             "route": [
                 {
@@ -134,7 +134,7 @@
             "_class": "Dream.Job",
             "name": "Job2",
 			"priority": "-7",
-			"dueDate": "100",
+			"dueDate": "10",
 			"orderDate": "-1",
             "route": [
                 {
@@ -175,7 +175,7 @@
             "_class": "Dream.Job",
             "name": "Job3",
 			"priority": "-12",
-			"dueDate": "60",
+			"dueDate": "6",
 			"orderDate": "2",
             "route": [
                 {
@@ -208,7 +208,7 @@
             "_class": "Dream.Job",
             "name": "Job4",
 			"priority": "0",
-			"dueDate": "99",
+			"dueDate": "9",
 			"orderDate": "1.5",
             "route": [
                 {

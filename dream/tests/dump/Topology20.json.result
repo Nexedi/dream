@@ -13,6 +13,7 @@
    "_class": "Dream.Job", 
    "id": "J1", 
    "results": {
+    "delay": 8.0, 
     "completionTime": 23.0, 
     "schedule": {
      "1": {
@@ -50,6 +51,7 @@
    "_class": "Dream.Job", 
    "id": "J2", 
    "results": {
+    "delay": 9.0, 
     "completionTime": 19.0, 
     "schedule": {
      "1": {
@@ -87,6 +89,7 @@
    "_class": "Dream.Job", 
    "id": "J3", 
    "results": {
+    "delay": -1.0, 
     "completionTime": 5.0, 
     "schedule": {
      "1": {
@@ -116,6 +119,7 @@
    "_class": "Dream.Job", 
    "id": "J4", 
    "results": {
+    "delay": 3.0, 
     "completionTime": 12.0, 
     "schedule": {
      "1": {

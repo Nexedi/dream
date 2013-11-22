@@ -29,7 +29,7 @@ Class that acts as an abstract. It should have no instances. All the Entities sh
 class Entity(object):
     type="Entity"
 
-    def __init__(self, id=None, name=None, priority=0, dueDate=0, orderDate=0):
+    def __init__(self, id=None, name=None, priority=0, dueDate=None, orderDate=None):
         self.name=name
         #         information on the object holding the entity
         #         initialized as None and updated every time an entity enters a new object
