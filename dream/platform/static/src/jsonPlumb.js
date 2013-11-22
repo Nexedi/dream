@@ -252,8 +252,8 @@
         var element = $('#' + node_id);
         element.css('top', absolute_position[1]);
         element.css('left', absolute_position[0]);
+        jsPlumb.repaint(element);
       });
-      jsPlumb.repaintEverything();
     };
 
     priv.getData = function () {
