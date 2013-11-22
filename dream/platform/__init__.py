@@ -37,11 +37,18 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 def front_page():
   return redirect(url_for('static', filename='index.html'))
 
+@app.route("/postJSONData", methods=["POST", "OPTIONS"])
+def postJSONData():
+  """Returns posted JSON data as it is for Export button"""
+  data = json.loads(request.form.get('data'))
+  response = jsonify(data)
+  response.headers['Content-Disposition'] = 'attachment; filename=dream.json'
+  return response
 
 @app.route("/postJSONFile", methods=["POST", "OPTIONS"])
 def postJSONFile():
+  """Returns posted JSON file as it is for Import button"""
   data = json.load(request.files['file'])
-  app.logger.debug("postJSONFile:%r" % data)
   return jsonify(data)
 
 @app.route("/positionGraph", methods=["POST", "OPTIONS"])

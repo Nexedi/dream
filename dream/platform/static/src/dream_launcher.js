@@ -442,7 +442,9 @@
     // Enable "Export" button
     $("#export").button().click(
       function (e) {
-        alert('not yet implemented');
+        $('#export_json').val(JSON.stringify(dream_instance.getData()));
+        $('#export_form').submit();
+        return false;
       });
 
     // Enable "Import" button
