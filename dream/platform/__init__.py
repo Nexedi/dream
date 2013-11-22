@@ -67,7 +67,7 @@ def positionGraph():
   # calulate the ratio from the size of the bounding box
   ratio = new_graph.get_bb()
   origin_left, origin_top, max_left, max_top = [float(p) for p in
-    new_graph.get_bb()[1:-1].split(',')]
+    new_graph.get_bb().strip('"').split(',')]
   ratio_top = max_top - origin_top
   ratio_left = max_left - origin_left
 
@@ -77,7 +77,7 @@ def positionGraph():
     if node.get_name() in ('graph', 'node', 'edge'):
       continue
     left, top = [float(p) for p in node.get_pos()[1:-1].split(",")]
-    preference_dict[node.get_name()[1:-1]] = dict(
+    preference_dict[node.get_name().strip('"')] = dict(
       top=1-(top/ratio_top),
       left=1-(left/ratio_left),)
 
