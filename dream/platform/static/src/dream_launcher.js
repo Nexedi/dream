@@ -268,13 +268,13 @@
       dream_instance.setPreferences(preference);
 
       // Add all elements
+      var coordinates = preference['coordinates'];
       $.each(data.nodes, function (key, value) {
-        var coordinates = preference['coordinates'] || {};
-        var coordinate = coordinates[key];
-        if (coordinate === undefined) {
-          coordinate = {'top':0.0, 'left':0.0};
+        if (coordinates === undefined || coordinates[key] === undefined) {
+          value['coordinate'] = {'top':0.0, 'left':0.0};
+        } else {
+          value['coordinate'] = coordinates[key];
         }
-        value['coordinate'] = coordinate;
         value['id'] = key;
         dream_instance.newElement(value);
         dream_instance.updateElementData(key, {
@@ -287,9 +287,13 @@
 
       dream_instance.setGeneralProperties(data.general);
       dream_instance.initGeneralProperties(); // XXX
-      dream_instance.redraw();
       $("#json_output").val(JSON.stringify(dream_instance.getData(),
         undefined, " "));
+      if ($.isEmptyObject(coordinates)) {
+        dream_instance.positionGraph();
+      } else {
+        dream_instance.redraw();
+      }
     };
 
     // Check if there is already data when we first load the page, if yes, then build graph from it
