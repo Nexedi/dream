@@ -319,10 +319,11 @@
     };
 
     that.clearAll = function () {
-      $("#render").children().remove();
       $.each(priv.node_container, function (element_id) {
         priv.removeElement(element_id);
       });
+      // delete anything if still remains
+      $("#render").children().remove();
     };
 
     that.connect = function (source_id, target_id) {
