@@ -59,10 +59,16 @@ class Job(Entity):                                  # inherits from the Entity c
             
             #if the Job has reached an exit, input completion time in the results
             if self.schedule[-1][0].type=='Exit':
-                json['results']['completionTime']=self.schedule[-1][1]    
+                json['results']['completionTime']=self.schedule[-1][1]  
+                completionTime=self.schedule[-1][1]  
             #else input "still in progress"
             else:
-                json['results']['completionTime']="still in progress"    
+                json['results']['completionTime']="still in progress"  
+                completionTime=None
+            
+            if completionTime and self.dueDate:
+                delay=completionTime-self.dueDate
+                json['results']['delay']=delay
                 
             json['results']['schedule']={}
             i=0
