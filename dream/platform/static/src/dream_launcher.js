@@ -27,7 +27,6 @@
       applicationname: "dream"
     });
 
-    var id_container = {}; // to allow generating next ids, like Machine_1, Machine_2, etc
     var property_container = {
       entity: {
         id: "entity",
@@ -246,11 +245,14 @@
         box_left = tool.clientX - offset.left + "px";
         var relative_position = dream_instance.convertToRelativePosition(
           box_left, box_top);
-        id_container[tool.target.id] = (id_container[tool.target.id] || 0) +
-          1;
+        // find an unused ID
+        var n = 1;
+        while ($('#'+tool.target.id+'_'+n).length > 0) {
+          n += 1;
+        }
         _class = tool.target.id.replace('-', '.'); // XXX - vs .
         dream_instance.newElement({
-          id: tool.target.id + "_" + id_container[tool.target.id],
+          id: tool.target.id + "_" + n,
           coordinate: {
             top: relative_position[1],
             left: relative_position[0]
@@ -282,16 +284,6 @@
         dream_instance.connect(value[0], value[1]);
       });
 
-        // Now update id_container
-      $.each(data.nodes, function (key, value) {
-        var element_id = value.id,
-          prefix, suffix, splitted_element_id;
-        splitted_element_id = element_id.split("_");
-        prefix = splitted_element_id[0];
-        suffix = splitted_element_id[1];
-        id_container[prefix] = Math.max((id_container[prefix] || 0),
-          parseInt(suffix, 10));
-      });
       dream_instance.setGeneralProperties(data.general);
       dream_instance.initGeneralProperties(); // XXX
       dream_instance.redraw();
@@ -421,7 +413,6 @@
     // Enable "Clear All" button
     $("#clear_all").button().click(
       function (e) {
-        id_container = {};
         dream_instance.clearAll();
         e.preventDefault();
         return false;
@@ -466,7 +457,6 @@
         },
         success: function(data, textStatus, jqXHR) {
           form.reset();
-          id_container = {};
           dream_instance.clearAll();
           $("#json_output").val(JSON.stringify(data));
           loadData(data);
