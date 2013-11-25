@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <script type="text/javascript" src="../jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../plugins/globalize.js"></script>
+    <script type="text/javascript" src="../jquery.sheet.js"></script>
+
+    <!--optional-->
+    <script type="text/javascript" src="../plugins/jquery.sheet.advancedfn.js"></script>
+    <!--/optional-->
+    <!--optional-->
+    <script type="text/javascript" src="../plugins/jquery.sheet.financefn.js"></script>
+    <!--/optional-->
+
+    <script type="text/javascript" src="../jquery.pseudosheet.js"></script>
+    <script type="text/javascript" src="../parser/formula/formula.js"></script>
+
+    <script>
+        $(function() {
+            $('.objVal').pseudoSheet();
+
+            $('.check').change(function() {
+                $('.check').pseudoSheet();
+            }).change();
+
+            $('.radio').change(function() {
+                $('.radio').pseudoSheet();
+            }).change();
+
+            $('.idValues').pseudoSheet();
+
+            $('.nameValues').pseudoSheet();
+
+            $('.vis').pseudoSheet();
+
+            $('.enabled').pseudoSheet();
+
+            $('.loop').pseudoSheet();
+
+            $('.outside').pseudoSheet();
+
+            $('.outsideInclusion').pseudoSheet();
+
+            $('.time').pseudoSheet();
+
+            $('.result').each(function() {
+                if($(this).is(':contains("FAILURE")')) {
+                    $(this)
+                        .css('background-color', 'red')
+                        .css('color', 'white');
+
+                } else {
+                    $(this)
+                        .css('background-color', 'green')
+                        .css('color', 'white');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>Test</td>
+            <td>Output</td>
+            <td>Result</td>
+        </tr>
+        <tr>
+            <td>Function: OBJVAL</td>
+            <td>
+                <span class="objVal" data-formula="=SUM(OBJVAL('.objVal:eq(1)'),100)"></span>
+                <span class="objVal" data-visible="=FALSE">100</span>
+            </td>
+            <td class="result">
+                <span class="objVal" data-formula="=IF(OBJVAL('.objVal:eq(0)') = 200, 'SUCCESS', 'FAILURE')"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Checkbox Functionality</td>
+            <td>
+                <input type="checkbox" name="testCheckbox" class="check" value="FAILURE"/>
+                <input type="checkbox" name="testCheckbox" class="check" value="SUCCESS" checked="true"/>
+                <input type="input" class="check" data-formula="=testCheckbox"/>
+            </td>
+            <td class="result">
+                <span class="check" data-formula="=IF(OBJVAL('.check:eq(2)') = 'SUCCESS', 'SUCCESS', 'FAILURE')"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Radio Functionality</td>
+            <td>
+                <input type="radio" name="testRadio" class="radio" value="FAILURE"/>
+                <input type="radio" name="testRadio" class="radio" value="SUCCESS" checked="true"/>
+                <input type="input" class="radio" data-formula="=testRadio"/>
+            </td>
+            <td class="result">
+                <span class="radio" data-formula="=IF(OBJVAL('.radio:eq(2)') = 'SUCCESS', 'SUCCESS', 'FAILURE')"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>IDs</td>
+            <td>
+                <input class="idValues" type="input" data-formula="=idVal"/>
+                <span class="idValues" id="idVal" data-visible="=FALSE">100</span>
+            </td>
+            <td class="result">
+                <span class="idValues" data-formula="=IF(OBJVAL('.idValues:eq(0)') = 100, 'SUCCESS', 'FAILURE')" />
+            </td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>
+                <input class="nameValues" type="input" data-formula="=nameValue"/>
+                <input class="nameValues" name="nameValue" data-visible="=FALSE" value="100"/>
+            </td>
+            <td class="result">
+                <span class="nameValues" data-formula="IF(OBJVAL('.nameValues:eq(0)') = 100, 'SUCCESS', 'FAILURE')"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Visible (false)</td>
+            <td>
+                <span id="not_vis" class="vis" data-visible="=FALSE"></span>
+            </td>
+            <td class="result">
+                <span class="vis" data-formula="=IF(not_vis.visible, 'FAILURE', 'SUCCESS')">Hide Me</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Visible (true)</td>
+            <td>
+                <span id="is_vis" class="vis" data-visible="=TRUE" style="display: none;">Show Me</span>
+            </td>
+            <td class="result">
+                <span class="vis" data-formula="=IF(is_vis.visible, 'SUCCESS', 'FAILURE')"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Enabled (false)</td>
+            <td>
+                <input type="input" id="not_enabled" class="enabled" data-enabled="=FALSE" />
+            </td>
+            <td class="result">
+                <span class="enabled" data-formula="=IF(not_enabled.enabled, 'FAILURE', 'SUCCESS')"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Enabled (true)</td>
+            <td>
+                <input type="input" id="is_enabled" class="enabled" data-enabled="=TRUE" disabled="true"/>
+            </td>
+            <td class="result">
+                <span class="enabled" data-formula="=IF(is_enabled.enabled, 'SUCCESS', 'FAILURE')"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Loop detection</td>
+            <td>
+                <input type="input" class="loop" data-formula="=OBJVAL('.loop:eq(0)')"/>
+            </td>
+            <td class="result">
+                <span class="loop" data-formula="=IF(OBJVAL('.loop:eq(0)') = 'Loop Detected', 'SUCCESS', 'FAILURE')"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Outside Inclusion</td>
+            <td>
+                <input type="input" class="outside" data-formula="=outside_hidden.value"/>
+                <input type="hidden" id="outside_hidden" value="SUCCESS"/>
+            </td>
+            <td class="result">
+                <span class="loop" data-formula="=IF(OBJVAL('.loop:eq(0)') = 'Loop Detected', 'SUCCESS', 'FAILURE')"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Outside Inclusion From Existing Set</td>
+            <td>
+                <input type="input" class="outsideInclusion" data-formula="=idVal.value"/>
+            </td>
+            <td class="result">
+                <span class="outsideInclusion" data-formula="=IF(OBJVAL('.outsideInclusion:eq(0)') = 100, 'SUCCESS', 'FAILURE')"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Timevalue</td>
+            <td>
+               <span class="time" data-formula="=TIMEVALUE('10:30am')"></span>
+               <span class="time" data-formula="=TIMEVALUE(10:30am)"></span>
+               <span class="time" data-formula="=TIME(10,30,0)"></span>
+            </td>
+            <td class="result">
+                <span class="time" data-formula="=IF(OBJVAL('.time:eq(0)') = 0.4375, 'SUCCESS', 'FAILURE')"></span>
+                <span class="time" data-formula="=IF(OBJVAL('.time:eq(1)') = 0.4375, 'SUCCESS', 'FAILURE')"></span>
+                <span class="time" data-formula="=IF(OBJVAL('.time:eq(2)') = 0.4375, 'SUCCESS', 'FAILURE')"></span>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

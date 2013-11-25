@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <script type="text/javascript" src="../jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="../plugins/globalize.js"></script>
+    <script type="text/javascript" src="../jquery.sheet.js"></script>
+
+    <!--optional-->
+    <script type="text/javascript" src="../plugins/jquery.sheet.advancedfn.js"></script>
+    <!--/optional-->
+    <!--optional-->
+    <script type="text/javascript" src="../plugins/jquery.sheet.financefn.js"></script>
+    <!--/optional-->
+
+    <script type="text/javascript" src="../jquery.pseudosheet.js"></script>
+    <script type="text/javascript" src="../parser/formula/formula.js"></script>
+
+    <script>
+    $(function() {
+	
+       $('.cells').change(function() {
+            $('.cells').pseudoSheet();
+        }).change();
+
+    });
+    </script>
+</head>
+<body>
+	<form>
+	First name: <input type="text" name="firstname" id="fname" class="cells"><br>
+	Last name: <input type="text" name="lastname" id="lname" class="cells"><br>
+	
+	<input type="radio" class="cells" name="sex" value="male">Male<br>
+	<input type="radio" class="cells" name="sex" value="female">Female<br>
+	
+	<input type="checkbox" class="cells" name="showcar" value="showcar" id="showcar">Show car<br>
+	<input type="checkbox" class="cells" name="car" value="Car" id="car" data-enabled="=IF(n3>20,TRUE(),FALSE())"><span class="cells" data-visible="=showcar">text shows if chkbox Show Car is selected</span><span> -- This checkbox is only to be enabled if Z below is greater then 20</span><br>
+	<input type="text" name ="t2" id="t2" class="cells" data-formula="=fname+' '+lname"><br>
+	<span class="cells" data-formula="=IF(sex='female','female','unknown')"></span><br> <!--Need to make radio buttons set value by selected one-->
+
+	Today: <input type="text" name="tdate" id="tdate" class="cells" data-formula="=TODAY()"><br>
+	DOB: <input type="text" name="dob" id="dob" class="cells"><br>
+	<span class="cells" name="age" data-formula="=DAYSFROM(2012,1,1)" id="age"></span><br>	
+
+	X: <input type="text" class="cells n" name="n1" id="n1"><br>
+	Y: <input type="text" class="cells n" name="n2" id="n2"><br>
+	Z: <input type="text" class="cells" name="n3" id="n3" data-formula="=SUM(n1,n2)"><br>
+	State: <select class="cells" name="state" id="state">
+			<option value="PA">PA</option>
+			<option value="NY">NY</option>
+	</select><br>
+	<span class="cells" id="team" data-formula="=IF(state='PA','Steelers',IF(state='NY','Jets','looser'))"></span><br>
+	<span class="cells" id="state2" data-formula="=state"></span><br>
+	</form>
+</body>
+</html>
