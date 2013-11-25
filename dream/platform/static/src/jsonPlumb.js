@@ -263,8 +263,9 @@
         "preference": priv.preference_container,
         "general": priv.general_container
       };
-      if ($.sheet.instance !== undefined) {
-        data['spreadsheet'] = $.sheet.instance[0].exportSheet.json();
+      var spreadsheet = $('.jQuerySheet').getSheet()
+      if (spreadsheet !== undefined) {
+        data['spreadsheet'] = $.sheet.dts.fromTables.json(spreadsheet);
       }
       return data;
     };
