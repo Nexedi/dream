@@ -34,7 +34,7 @@ class ObjectResource(object):
     def initialize(self):
         self.totalWorkingTime=0         #holds the total working time
         self.totalWaitingTime=0         #holds the total waiting time
-        self.timeLastRepairStarted=0    #holds the time that the last repair was started        
+        self.timeLastOperationStarted=0    #holds the time that the last repair was started        
         self.Res=Resource(self.capacity) 
     
     # =======================================================================
@@ -90,3 +90,10 @@ class ObjectResource(object):
     # =======================================================================
     def getResourceQueue(self):
         return self.Res.activeQ
+    
+    # =======================================================================
+    #                  check availability of the resource
+    # =======================================================================
+    def isResourceFree(self):
+        if len(self.getResourceQueue())==0:
+            return True

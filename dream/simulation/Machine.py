@@ -279,7 +279,6 @@ class Machine(CoreObject):
     # =======================================================================
     # checks if the machine down or it can dispose the object
     # =======================================================================
-    #checks if the machine down or it can dispose the object
     def ifCanDisposeOrHaveFailure(self):
          return self.Up==False or self.getReceiverObject().canAccept(self) or len(self.getActiveObjectQueue())==0  
   

@@ -98,8 +98,8 @@ class Failure(ObjectInterruption):
                                             #resource is available
                 yield request,self,self.repairman.getResource()
                 # update the time that the repair started
-                timeRepairStarted=now()
-                self.repairman.timeLastRepairStarted=now()
+                timeOperationStarted=now()
+                self.repairman.timeLastOperationStarted=now()
                                 
             yield hold,self,self.rngTTR.generateNumber()    # wait until the repairing process is over
             self.victim.totalFailureTime+=now()-failTime    
@@ -111,7 +111,7 @@ class Failure(ObjectInterruption):
                 self.outputTrace("is up")              
                 if(self.repairman!="None"): #if a resource was used, it is now released
                     yield release,self,self.repairman.getResource() 
-                    self.repairman.totalWorkingTime+=now()-timeRepairStarted                                
+                    self.repairman.totalWorkingTime+=now()-timeOperationStarted                                
             except AttributeError:
                 print "AttributeError2"    
            
