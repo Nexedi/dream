@@ -300,7 +300,9 @@
 
       var spreadsheet = data.spreadsheet;
       if (spreadsheet !== undefined) {
-        $.sheet.makeTable.json(JSON.parse(response.data));
+        $('.jQuerySheet').sheet({
+          buildSheet: $.sheet.makeTable.json(spreadsheet)
+        });
       }
     };
 
