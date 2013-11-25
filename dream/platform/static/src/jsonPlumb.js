@@ -257,12 +257,16 @@
     };
 
     priv.getData = function () {
-      return {
+      var data = {
         "nodes": priv.node_container,
         "edges": priv.edge_container,
         "preference": priv.preference_container,
         "general": priv.general_container
       };
+      if ($.sheet.instance !== undefined) {
+	data['spreadsheet'] = $.sheet.instance[0].exportSheet.json();
+      }
+      return data;
     };
 
     priv.removeElement = function (element_id) {

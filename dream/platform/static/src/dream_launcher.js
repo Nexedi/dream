@@ -294,7 +294,36 @@
       } else {
         dream_instance.redraw();
       }
+
+      var spreadsheet = data.spreadsheet;
+      if (spreadsheet !== undefined) {
+        $.sheet.makeTable.json(JSON.parse(response.data));
+      }
     };
+
+    // spreadsheet
+    var default_config = {
+      id: "jquerysheet-div",
+      style: '',
+      jquerySheet: true,
+      jquerySheetCss: true,
+      parser: true,
+      jqueryUiCss: true,
+      scrollTo: false,
+      jQueryUI: false,
+      raphaelJs: false,
+      gRaphaelJs: false,
+      colorPicker: false,
+      colorPickerCss: false,
+      elastic: false,
+      advancedMath: false,
+      finance: false,
+      editable: true,
+      autoFiller: true,
+      urlGet: 'lib/jquery.sheet-2.0.0/new_spreadsheet.html'
+    };
+
+    var sheet = $('.jQuerySheet').sheet(default_config);
 
     // Check if there is already data when we first load the page, if yes, then build graph from it
     jio.get({
@@ -310,12 +339,6 @@
           _id: "dream_demo",
           data: data
         }, function (err, response) {});
-
-        jio.put({
-          _id: "dream_demo.spreadsheet",
-          data: JSON.stringify($.sheet.instance[0].exportSheet.json(), undefined, " ")
-        }, function (err, response) {});
-
       });
     });
 
@@ -485,47 +508,6 @@
     });
 
   $("#graph_zone").hide();
-
-// spreadsheet
-  var default_config = {
-    id: "jquerysheet-div",
-    style: '',
-    jquerySheet: true,
-    jquerySheetCss: true,
-    parser: true,
-    jqueryUiCss: true,
-    scrollTo: false,
-    jQueryUI: false,
-    raphaelJs: false,
-    gRaphaelJs: false,
-    colorPicker: false,
-    colorPickerCss: false,
-    elastic: false,
-    advancedMath: false,
-    finance: false,
-    editable: true,
-    autoFiller: true,
-    urlGet: 'lib/jquery.sheet-2.0.0/new_spreadsheet.html'
-  };
-
-
-  var sheet = $('.jQuerySheet').sheet(default_config);
-
-  // reread spreadsheet from jio
-  jio.get({
-    _id: "dream_demo.spreadsheet"
-  }, function (err, response) {
-      if (response !== undefined && response.data !== undefined) {
-      var config = $.extend({
-            buildSheet: $.sheet.makeTable.json(JSON.parse(response.data))
-        });
-        sheet.sheet(config);
-      }
-  });
-
-  sheet.bind('sheetCellEdited', function() {
-    // TODO
-  });
 
   });
 })(jQuery);

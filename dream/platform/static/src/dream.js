@@ -271,8 +271,7 @@
       $.ajax(
         '/runSimulation', {
           data: JSON.stringify({
-            json: model,
-            spreadsheet: $.sheet.instance[0].exportSheet.json()
+            json: model
           }),
           contentType: 'application/json',
           type: 'POST',
