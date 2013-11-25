@@ -267,7 +267,10 @@
       var spreadsheet = data.spreadsheet;
       if (spreadsheet !== undefined) {
         var sheet = $('.jQuerySheet');
-        sheet.html($.sheet.dts.toTables.json(spreadsheet)).sheet();
+        sheet.html($.sheet.dts.toTables.json(spreadsheet)).sheet({
+          autoAddCells: false
+        });
+        sheet.getSheet().setNav(false);
       }
 
       var preference = data.preference !== undefined ?

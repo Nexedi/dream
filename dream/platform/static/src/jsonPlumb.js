@@ -109,11 +109,19 @@
     priv.initSpreadSheet = function () {
       var sheet = $('.jQuerySheet');
       $.get('spreadsheet_template.html', function (data) {
-        sheet.html(data).sheet();
+        sheet.html(data).sheet({
+          autoAddCells: false
+        });
+        sheet.getSheet().setNav(false);
         // Here we bind on the parent object because bind will be
         // reset when we replace the contents by using html().
         $('#spreadsheet').bind('sheetCellEdited', function () {
           priv.onDataChange();
+        });
+        // When we click outside of the
+        // spreadsheet, keyevent should not be taken by spreadsheet.
+        $(document).mousedown(function () {
+          $('.jQuerySheet').getSheet().setNav(false);
         });
       });
     };
