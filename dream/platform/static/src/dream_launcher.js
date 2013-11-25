@@ -247,7 +247,7 @@
           box_left, box_top);
         // find an unused ID
         var n = 1;
-        while ($('#'+tool.target.id+'_'+n).length > 0) {
+        while ($('#' + tool.target.id + '_' + n).length > 0) {
           n += 1;
         }
         _class = tool.target.id.replace('-', '.'); // XXX - vs .
@@ -262,7 +262,7 @@
       }
     });
 
-    var loadData = function(data) {
+    var loadData = function (data) {
       var preference = data.preference !== undefined ?
         data.preference : {};
       dream_instance.setPreferences(preference);
@@ -271,7 +271,10 @@
       var coordinates = preference['coordinates'];
       $.each(data.nodes, function (key, value) {
         if (coordinates === undefined || coordinates[key] === undefined) {
-          value['coordinate'] = {'top':0.0, 'left':0.0};
+          value['coordinate'] = {
+            'top': 0.0,
+            'left': 0.0
+          };
         } else {
           value['coordinate'] = coordinates[key];
         }
@@ -367,8 +370,8 @@
                       otherwise we have a mapping avg, min max */
                   if (obj.results.blockage_ratio !== undefined) {
                     blockage_data.push([counter, obj.results.blockage_ratio
-                                        .avg || obj.results.blockage_ratio
-                                       ]);
+                      .avg || obj.results.blockage_ratio
+                    ]);
                   } else {
                     blockage_data.push([counter, 0.0]);
                   }
@@ -377,8 +380,8 @@
                   ]);
                   if (obj.results.failure_ratio !== undefined) {
                     failure_data.push([counter, obj.results.failure_ratio
-                                        .avg || obj.results.failure_ratio
-                                       ]);
+                      .avg || obj.results.failure_ratio
+                    ]);
                   } else {
                     failure_data.push([counter, 0.0]);
                   }
@@ -471,7 +474,7 @@
       function (e) {
         $('#import_file').click();
       });
-    $("#import_file").change(function() {
+    $("#import_file").change(function () {
       var form = $(this).parent('form')[0];
       var form_data = new FormData(form);
       $.ajax('/postJSONFile', {
@@ -480,10 +483,10 @@
         processData: false,
         data: form_data,
         dataType: 'json',
-        error: function() {
-            console.log('error');
+        error: function () {
+          console.log('error');
         },
-        success: function(data, textStatus, jqXHR) {
+        success: function (data, textStatus, jqXHR) {
           form.reset();
           dream_instance.clearAll();
           $("#json_output").val(JSON.stringify(data));
@@ -507,7 +510,7 @@
       loadData(JSON.parse($("#json_output").val()));
     });
 
-  $("#graph_zone").hide();
+    $("#graph_zone").hide();
 
   });
 })(jQuery);

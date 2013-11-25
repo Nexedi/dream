@@ -89,8 +89,7 @@
         } else {
           priv.edge_container[connection.id] = [
             connection.sourceId,
-            connection.targetId,
-            {}
+            connection.targetId, {}
           ];
         }
         priv.onDataChange();
@@ -137,7 +136,7 @@
       }
     };
 
-    priv.convertToAbsolutePosition = function(x, y) {
+    priv.convertToAbsolutePosition = function (x, y) {
       var canvas_size_x = $('#main').width();
       var canvas_size_y = $('#main').height();
       var node_style = priv.preference_container['node_style'];
@@ -154,7 +153,7 @@
       return [left, top];
     };
 
-    that.convertToRelativePosition = function(x, y) {
+    that.convertToRelativePosition = function (x, y) {
       var canvas_size_x = $('#main').width();
       var canvas_size_y = $('#main').height();
       var size_x = $('.window').width();
@@ -199,7 +198,8 @@
     };
 
     priv.style_attr_list = ['width', 'height', 'font-size', 'padding-top',
-                            'line-height'];
+      'line-height'
+    ];
 
     that.positionGraph = function () {
       $.ajax(
@@ -264,7 +264,7 @@
         "general": priv.general_container
       };
       if ($.sheet.instance !== undefined) {
-	data['spreadsheet'] = $.sheet.instance[0].exportSheet.json();
+        data['spreadsheet'] = $.sheet.instance[0].exportSheet.json();
       }
       return data;
     };
