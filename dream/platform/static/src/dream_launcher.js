@@ -101,6 +101,12 @@
         _class: "Dream.Property",
         _default: "1"
       },
+      simulationClass: {
+        id: "simulationClass",
+        type: "string",
+        _class: "Dream.Property",
+        _default: "Default"
+      },
       numberOfReplications: {
         id: "numberOfReplications",
         type: "string",
@@ -224,7 +230,9 @@
         _class: 'Dream.Repairman'
       },
       "Dream-Configuration": {
-        property_list: [property_container["numberOfReplications"],
+        property_list: [
+          property_container["simulationClass"],
+          property_container["numberOfReplications"],
           property_container["maxSimTime"],
           property_container["confidenceLevel"],
           property_container["processTimeout"]

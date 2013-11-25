@@ -27,8 +27,6 @@ import logging
 from flask import Flask, jsonify, redirect, url_for
 from flask import request
 
-from dream.simulation.LineGenerationJSON import main as simulate_line_json
-
 app = Flask(__name__)
 # Serve static file with no cache
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
@@ -111,7 +109,10 @@ def runSimulation():
 
 def _runSimulation(parameter_dict, queue):
   try:
-    result = simulate_line_json(input_data=json.dumps(parameter_dict))
+    klass_name = 'dream.simulation.%s' % \
+      parameter_dict['general']['simulationClass']
+    klass = __import__(klass_name, globals(), {}, klass_name)
+    result = klass.Simulation().run(parameter_dict)
     queue.put(dict(success=json.loads(result)))
   except Exception, e:
     tb = traceback.format_exc()
