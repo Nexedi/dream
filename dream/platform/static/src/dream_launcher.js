@@ -504,12 +504,6 @@
       dream_instance.redraw();
     });
 
-    // Load JSON button for debugging
-    $("#load_json").button().click(function () {
-      dream_instance.clearAll();
-      loadData(JSON.parse($("#json_output").val()));
-    });
-
     $("#graph_zone").hide();
 
   });
