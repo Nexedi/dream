@@ -106,6 +106,18 @@
       priv.draggable();
     };
 
+    priv.initSpreadSheet = function () {
+      var sheet = $('.jQuerySheet');
+      $.get('spreadsheet_template.html', function (data) {
+        sheet.html(data).sheet();
+        // Here we bind on the parent object because bind will be
+        // reset when we replace the contents by using html().
+        $('#spreadsheet').bind('sheetCellEdited', function () {
+          priv.onDataChange();
+        });
+      });
+    };
+
     priv.updateElementCoordinate = function (element_id, coordinate) {
       var coordinates = priv.preference_container['coordinates'] || {}, element;
       if (coordinate === undefined) {
@@ -313,6 +325,7 @@
       priv.preference_container = {};
       priv.general_container = {};
       priv.initJsPlumb();
+      priv.initSpreadSheet();
     };
 
     that.removeElement = function (element_id) {
@@ -329,6 +342,7 @@
       });
       // delete anything if still remains
       $("#render").children().remove();
+      priv.initSpreadSheet();
     };
 
     that.connect = function (source_id, target_id) {

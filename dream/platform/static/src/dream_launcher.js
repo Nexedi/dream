@@ -263,6 +263,13 @@
     });
 
     var loadData = function (data) {
+      // spreadsheet
+      var spreadsheet = data.spreadsheet;
+      if (spreadsheet !== undefined) {
+        var sheet = $('.jQuerySheet');
+        sheet.html($.sheet.dts.toTables.json(spreadsheet)).sheet();
+      }
+
       var preference = data.preference !== undefined ?
         data.preference : {};
       dream_instance.setPreferences(preference);
@@ -297,34 +304,6 @@
       } else {
         dream_instance.redraw();
       }
-
-      // spreadsheet
-      var default_config = {
-        id: "jquerysheet-div",
-        style: '',
-        jquerySheet: true,
-        jquerySheetCss: true,
-        parser: true,
-        jqueryUiCss: true,
-        scrollTo: false,
-        jQueryUI: false,
-        raphaelJs: false,
-        gRaphaelJs: false,
-        colorPicker: false,
-        colorPickerCss: false,
-        elastic: false,
-        advancedMath: false,
-        finance: false,
-        editable: true,
-        autoFiller: true
-      };
-
-      var sheet = $('.jQuerySheet');
-      var spreadsheet = data.spreadsheet;
-      if (spreadsheet !== undefined) {
-        sheet.html($.sheet.dts.toTables.json(spreadsheet));
-      }
-      sheet.sheet();
     };
     // Check if there is already data when we first load the page, if yes, then build graph from it
     jio.get({

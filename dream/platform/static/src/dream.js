@@ -247,6 +247,7 @@
       manpy_dict['nodes'] = nodes;
       manpy_dict['edges'] = data['edges'];
       manpy_dict['general'] = data['general'];
+      manpy_dict['spreadsheet'] = data['spreadsheet'];
       return manpy_dict;
     };
 
