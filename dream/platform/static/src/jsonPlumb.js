@@ -283,7 +283,7 @@
         "preference": priv.preference_container,
         "general": priv.general_container
       };
-      var spreadsheet = $('.jQuerySheet').getSheet()
+      var spreadsheet = $('.jQuerySheet').getSheet();
       if (spreadsheet !== undefined) {
         data['spreadsheet'] = $.sheet.dts.fromTables.json(spreadsheet);
       }
