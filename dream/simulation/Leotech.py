@@ -15,6 +15,10 @@ class Simulation(DefaultSimulation):
             "_class": "Dream.Job",
             "id": value_list[1],
             "name": value_list[0],
+            "order_date": value_list[2],
+            "due_date": value_list[3],
+            "priority": value_list[4],
+            "material": value_list[5],
             "route": [
               {
                 "processingTime": {
