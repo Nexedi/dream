@@ -246,6 +246,7 @@
     $(".tool").draggable({
       opacity: 0.7,
       helper: "clone",
+      cursorAt: {top: 0, left: 0},
       stop: function (tool) {
         var box_top, box_left, _class;
         var offset = $("#render").offset();
