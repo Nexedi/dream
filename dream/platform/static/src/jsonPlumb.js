@@ -176,10 +176,17 @@
     that.convertToRelativePosition = function (x, y) {
       var canvas_size_x = $('#main').width();
       var canvas_size_y = $('#main').height();
-      var size_x = $('.window').width();
-      var size_y = $('.window').height();
+      var node_style = priv.preference_container['node_style'];
+      var size_x, size_y;
+      if (node_style === undefined) {
+        size_x = $('.window').width();
+        size_y = $('.window').height();
+      } else {
+        size_x = node_style['width'].replace('px', '');
+        size_y = node_style['height'].replace('px', '');
+      }
       var top = y.replace('px', '') / (canvas_size_y - size_y);
-      var left = x.replace('px', '') / (canvas_size_y - size_y);
+      var left = x.replace('px', '') / (canvas_size_x - size_x);
       return [left, top];
     };
 
