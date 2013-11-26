@@ -39,7 +39,7 @@ import scipy.stats as stat
 # the Machine object
 # ===========================================================================
 # class Machine(CoreObject):
-class TestOperatedMachine(Machine):
+class OperatedMachine(Machine):
     # =======================================================================
     #  initialize the id the capacity, of the resource and the distribution
     # =======================================================================  
@@ -69,6 +69,7 @@ class TestOperatedMachine(Machine):
             self.multOperationTypeList = OTlist
         else:
             self.multOperationTypeList.append(self.operationType)
+            
    
     
     # =======================================================================
@@ -79,6 +80,7 @@ class TestOperatedMachine(Machine):
         self.broker = Broker(self)
         self.call=False
         self.set=False
+        self.totalTimeWaitingForOperator=0
         
     # =======================================================================
     #                the main process of the machine
@@ -91,7 +93,7 @@ class TestOperatedMachine(Machine):
             # canAcceptAndIsRequested is invoked to check when the machine requested to receive an entity  
             yield waituntil, self, self.canAcceptAndIsRequested
             
-            # request a resource
+    # ======= request a resource
             if(self.operator!="None"):
                 # when it's ready to accept then inform the broker
                 self.invokeBroker()
@@ -101,7 +103,7 @@ class TestOperatedMachine(Machine):
             # get the entity
             self.getEntity()
             
-            # release a resource
+    # ======= release a resource
             if (self.operator!="None")\
                 and any(type=="Setup" for type in self.multOperationTypeList)\
                 and not any(type=="Processing" for type in self.multOperationTypeList):
@@ -156,9 +158,7 @@ class TestOperatedMachine(Machine):
                     # start counting the down time at breatTime dummy variable
                     breakTime=now()                                 # dummy variable that the interruption happened
                     
-                    # +|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+
-                    #     release the operator if there is failure
-                    # +|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+
+    # =============== release the operator if there is failure
                     if (self.operator!="None")\
                         and any(type=="Processing" for type in self.multOperationTypeList):
                         self.invokeBroker()
@@ -174,9 +174,7 @@ class TestOperatedMachine(Machine):
                     # output to trace that the Machine self.objName was passivated for the current failure time
                     self.outputTrace(self.getActiveObjectQueue()[0].name, "passivated in "+self.objName+" for "+str(now()-breakTime))
                     
-                    # +|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+
-                    #        request a resource after the repair
-                    # +|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+
+    # =============== request a resource after the repair
                     if (self.operator!="None")\
                         and any(type=="Processing" for type in self.multOperationTypeList)\
                         and not interruption:
@@ -189,9 +187,7 @@ class TestOperatedMachine(Machine):
             # output to trace that the processing in the Machine self.objName ended 
             self.outputTrace(self.getActiveObjectQueue()[0].name,"ended processing in "+self.objName)
             
-            # +|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+
-            #          release resource after the end of processing
-            # +|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+|+
+    # =============== release resource after the end of processing
             if any(type=="Processing" for type in self.multOperationTypeList)\
                 and not iterruption: 
                 self.invokeBroker()
@@ -264,13 +260,13 @@ class TestOperatedMachine(Machine):
         # this is done to achieve better (cpu) processing time 
         # then we can also use it as a filter for a yield method
         if(len(activeObject.previous)==1 or callerObject==None):      
-            return (activeObject.operator=='None' or activeObject.operator.isResourceFree())\
+            return (activeObject.operator=='None' or activeObject.operator.checkIfResourceIsAvailable())\
                 and activeObject.Up and len(activeObjectQueue)==0
                       
         thecaller=callerObject
         # return True ONLY if the length of the activeOjbectQue is smaller than
         # the object capacity, and the callerObject is not None but the giverObject
-        return (activeObject.operator=='None' or activeObject.operator.isResourceFree())\
+        return (activeObject.operator=='None' or activeObject.operator.checkIfResourceIsAvailable())\
             and len(activeObjectQueue)<activeObject.capacity and (thecaller is giverObject)
     
     # =======================================================================
@@ -288,7 +284,7 @@ class TestOperatedMachine(Machine):
         # the machine is up and the predecessor has an entity to dispose
         # this is done to achieve better (cpu) processing time
         if(len(activeObject.previous)==1):
-            return (activeObject.operator=='None' or activeObject.operator.isResourceFree())\
+            return (activeObject.operator=='None' or activeObject.operator.checkIfResourceIsAvailable())\
                  and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
                  and giverObject.haveToDispose(activeObject) 
         
@@ -311,7 +307,7 @@ class TestOperatedMachine(Machine):
                     activeObject.predecessorIndex=i                 # the object to deliver the Entity to the activeObject is set to the ith member of the previous list
                     maxTimeWaiting=timeWaiting    
             i+=1                                                    # in the next loops, check the other predecessors in the previous list
-        return (activeObject.operator=='None' or activeObject.operator.isResourceFree())\
+        return (activeObject.operator=='None' or activeObject.operator.checkIfResourceIsAvailable())\
             and activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested
             
     # =======================================================================
@@ -348,6 +344,7 @@ class Broker(Process):
         self.operatedMachine=operatedMachine      # the machine that is handled by the broker
         self.setupTime = 0
         self.timeOperationStarted = 0;
+        self.timeWaitForOperatorStarted=0
         
     # =======================================================================
     #                       exit the broker
@@ -359,24 +356,26 @@ class Broker(Process):
     def run(self):
         while 1:
             yield waituntil,self,self.operatedMachine.brokerIsCalled # wait until the broker is called
-            # request a resource
-            if self.operatedMachine.operator.isResourceFree()\
+    # ======= request a resource
+            if self.operatedMachine.operator.checkIfResourceIsAvailable()\
                 and any(type=="Setup" or type=="Processing" for type in self.operatedMachine.multOperationTypeList):
+                
+                # update the time that the station is waiting for the operator
+                self.timeWaitForOperatorStarted=now() 
                 yield request,self,self.operatedMachine.operator.getResource()
-                print self.operatedMachine.objName, 'requested', self.operatedMachine.operator.objName
-                print now()
+                self.operatedMachine.totalTimeWaitingForOperator+=now()-self.timeWaitForOperatorStarted
+                
                 # update the time that the operation started
                 self.timeOperationStarted=now()
                 self.operatedMachine.operator.timeLastOperationStarted=now()
                 if any(type=="Setup" for type in self.operatedMachine.multOperationTypeList):
                     self.setupTime = self.operatedMachine.calculateSetupTime()
                     yield hold,self,self.setupTime
-            # release a resource        
-            elif not self.operatedMachine.operator.isResourceFree():
+    # ======= release a resource        
+            elif not self.operatedMachine.operator.checkIfResourceIsAvailable():
                 self.operatedMachine.operator.totalWorkingTime+=now()-self.timeOperationStarted
                 yield release,self,self.operatedMachine.operator.getResource()
-                print self.operatedMachine.objName, 'released', self.operatedMachine.operator.objName
-                print now()
+
             else:
                 pass
             

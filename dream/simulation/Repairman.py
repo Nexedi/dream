@@ -41,7 +41,7 @@ class Repairman(ObjectResource):
         self.objName=name
         self.capacity=capacity      # repairman is an instance of resource
         self.type="Repairman"
-        self.Res=Resource(self.capacity)
+#         self.Res=Resource(self.capacity)
         # lists to hold statistics of multiple runs
         self.Waiting=[]             # holds the percentage of waiting time 
         self.Working=[]             # holds the percentage of working time 
@@ -57,7 +57,7 @@ class Repairman(ObjectResource):
             MaxSimtime=G.maxSimTime
         # if the repairman is currently working we have to count the time of this work    
 #         if len(self.getResourceQueue())>0:
-        if not self.isResourceFree():
+        if not self.checkIfResourceIsAvailable():
             self.totalWorkingTime+=now()-self.timeLastOperationStarted
                 
         # Repairman was idle when he was not in any other state

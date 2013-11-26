@@ -91,9 +91,3 @@ class ObjectResource(object):
     def getResourceQueue(self):
         return self.Res.activeQ
     
-    # =======================================================================
-    #                  check availability of the resource
-    # =======================================================================
-    def isResourceFree(self):
-        if len(self.getResourceQueue())==0:
-            return True
