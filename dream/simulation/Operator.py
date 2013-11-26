@@ -39,4 +39,3 @@ class Operator(Repairman):
         self.type="Operator"
 
 
-#         

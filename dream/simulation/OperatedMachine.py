@@ -53,6 +53,8 @@ class OperatedMachine(Machine):
         self.operator=operator
         # define if setup/removal/processing are performed by the operator 
         self.operationType=operationType
+        # boolean to check weather the machine is being operated
+        self.toBeOperated = False
         # define the setup times
         self.setupDistType=setupDistribution 
         self.stpRng=RandomNumberGenerator(self, self.setupDistType)
@@ -70,8 +72,6 @@ class OperatedMachine(Machine):
         else:
             self.multOperationTypeList.append(self.operationType)
             
-   
-    
     # =======================================================================
     #                     initialize the machine
     # =======================================================================
@@ -97,6 +97,8 @@ class OperatedMachine(Machine):
             if(self.operator!="None"):
                 # when it's ready to accept then inform the broker
                 self.invokeBroker()
+                # machines waits to be operated (waits for the operator)
+                self.toBeOperated = True
                 # wait until the Broker waited times equal to setupTime
                 yield waituntil, self, self.brokerIsSet
                 
@@ -107,7 +109,10 @@ class OperatedMachine(Machine):
             if (self.operator!="None")\
                 and any(type=="Setup" for type in self.multOperationTypeList)\
                 and not any(type=="Processing" for type in self.multOperationTypeList):
+                # after getting the entity release the operator
                 self.invokeBroker()
+                # machine has to release the operator
+                self.toBeOperated = False
                 # wait until the Broker has finished processing
                 yield waituntil, self, self.brokerIsSet
             
@@ -162,6 +167,7 @@ class OperatedMachine(Machine):
                     if (self.operator!="None")\
                         and any(type=="Processing" for type in self.multOperationTypeList):
                         self.invokeBroker()
+                        self.toBeOperated = False
                         yield waituntil,self,self.brokerIsSet 
                     
                     # if there is a failure in the machine it is passivated                    
@@ -179,6 +185,7 @@ class OperatedMachine(Machine):
                         and any(type=="Processing" for type in self.multOperationTypeList)\
                         and not interruption:
                         self.invokeBroker()
+                        self.toBeOperated = True
                         yield waituntil,self,self.brokerIsSet 
                                   
                 # if no interruption occurred the processing in M1 is ended 
@@ -191,6 +198,7 @@ class OperatedMachine(Machine):
             if any(type=="Processing" for type in self.multOperationTypeList)\
                 and not iterruption: 
                 self.invokeBroker()
+                self.toBeOperated = False
                 yield waituntil,self,self.brokerIsSet 
 
             
@@ -357,7 +365,9 @@ class Broker(Process):
         while 1:
             yield waituntil,self,self.operatedMachine.brokerIsCalled # wait until the broker is called
     # ======= request a resource
-            if self.operatedMachine.operator.checkIfResourceIsAvailable()\
+                # have to see if the availability of resources is enough to check weather the machine is operated
+                # or not
+            if self.operatedMachine.toBeOperated==True\
                 and any(type=="Setup" or type=="Processing" for type in self.operatedMachine.multOperationTypeList):
                 
                 # update the time that the station is waiting for the operator
@@ -371,8 +381,9 @@ class Broker(Process):
                 if any(type=="Setup" for type in self.operatedMachine.multOperationTypeList):
                     self.setupTime = self.operatedMachine.calculateSetupTime()
                     yield hold,self,self.setupTime
-    # ======= release a resource        
-            elif not self.operatedMachine.operator.checkIfResourceIsAvailable():
+    # ======= release a resource
+                # have to see if the availability of resources is enough to check weather the machine is operated        
+            elif self.operatedMachine.toBeOperated!=True:
                 self.operatedMachine.operator.totalWorkingTime+=now()-self.timeOperationStarted
                 yield release,self,self.operatedMachine.operator.getResource()
 
