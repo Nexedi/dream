@@ -1,4 +1,4 @@
-from dream.simulation.Default import DefaultSimulation
+from dream.simulation.Default import Simulation as DefaultSimulation
 
 class Simulation(DefaultSimulation):
   pass
