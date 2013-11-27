@@ -67,167 +67,175 @@
         "Q1": {
             "_class": "Dream.QueueJobShop",
             "name": "Queue1",
-			"schedulingRule": "FIFO",
+            "schedulingRule": "FIFO",
             "isDummy": "0",
-            "capacity": "-1"
+            "capacity": "-1",
+            "wip": [
+                {
+                    "id": "J1",
+                    "_class": "Dream.Job",
+                    "name": "Job1",
+                    "priority": "1",
+                    "dueDate": "15",
+                    "orderDate": "0",
+                    "route": [
+                        {
+                            "stepNumber": "0",
+                            "stationId": "Q1",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "1"
+                            }
+                        },
+                        {
+                            "stepNumber": "1",
+                            "stationId": "Q3",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "3"
+                            }
+                        },
+                        {
+                            "stepNumber": "2",
+                            "stationId": "Q2",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "4"
+                            }
+                        },
+                        {
+                            "stepNumber": "3",
+                            "stationId": "E1",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "0"
+                            }
+                        }
+                    ]
+                }
+            ]
         },
         "Q2": {
             "_class": "Dream.QueueJobShop",
             "name": "Queue2",
-			"schedulingRule": "MC-Priority-EDD",
+            "schedulingRule": "MC-Priority-EDD",
             "isDummy": "0",
-            "capacity": "-1"
+            "capacity": "-1",
+            "wip": [
+                {
+                    "id": "J2",
+                    "_class": "Dream.Job",
+                    "name": "Job2",
+                    "priority": "-7",
+                    "dueDate": "10",
+                    "orderDate": "-1",
+                    "route": [
+                        {
+                            "stepNumber": "0",
+                            "stationId": "Q2",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "3"
+                            }
+                        },
+                        {
+                            "stepNumber": "1",
+                            "stationId": "Q3",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "1"
+                            }
+                        },
+                        {
+                            "stepNumber": "2",
+                            "stationId": "Q2",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "7"
+                            }
+                        },
+                        {
+                            "stepNumber": "3",
+                            "stationId": "E1",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "0"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "J3",
+                    "_class": "Dream.Job",
+                    "name": "Job3",
+                    "priority": "-12",
+                    "dueDate": "6",
+                    "orderDate": "2",
+                    "route": [
+                        {
+                            "stepNumber": "0",
+                            "stationId": "Q2",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "2"
+                            }
+                        },
+                        {
+                            "stepNumber": "1",
+                            "stationId": "Q3",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "1"
+                            }
+                        },
+                        {
+                            "stepNumber": "2",
+                            "stationId": "E1",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "0"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "J4",
+                    "_class": "Dream.Job",
+                    "name": "Job4",
+                    "priority": "0",
+                    "dueDate": "9",
+                    "orderDate": "1.5",
+                    "route": [
+                        {
+                            "stepNumber": "0",
+                            "stationId": "Q2",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "7"
+                            }
+                        },
+                        {
+                            "stepNumber": "1",
+                            "stationId": "E1",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "0"
+                            }
+                        }
+                    ]
+                }
+            ]
         },
         "Q3": {
             "_class": "Dream.QueueJobShop",
             "name": "Queue3",
-			"schedulingRule": "FIFO",
+            "schedulingRule": "FIFO",
             "isDummy": "0",
             "capacity": "-1"
         },
         "E1": {
             "_class": "Dream.ExitJobShop",
             "name": "Exit"
-        },
-        "J1": {
-            "_class": "Dream.Job",
-            "name": "Job1",
-			"priority": "1",
-			"dueDate": "15",
-			"orderDate": "0",
-            "route": [
-                {
-                    "stepNumber": "0",
-					"stationId": "Q1",
-                    "processingTime": {
-                        "distributionType": "Fixed",
-                        "mean": "1"
-                    }
-                },
-                {
-                    "stepNumber": "1",
-					"stationId": "Q3",
-                    "processingTime": {
-                        "distributionType": "Fixed",
-                        "mean": "3"
-                    }
-                },
-                {
-                    "stepNumber": "2",
-					"stationId": "Q2",
-                    "processingTime": {
-                        "distributionType": "Fixed",
-                        "mean": "4"
-                    }
-                },
-                {
-                    "stepNumber": "3",
-					"stationId": "E1",
-                    "processingTime": {
-                        "distributionType": "Fixed",
-                        "mean": "0"
-                    }
-                }
-            ]
-        },
-        "J2": {
-            "_class": "Dream.Job",
-            "name": "Job2",
-			"priority": "-7",
-			"dueDate": "10",
-			"orderDate": "-1",
-            "route": [
-                {
-                    "stepNumber": "0",
-					"stationId": "Q2",
-                    "processingTime": {
-                        "distributionType": "Fixed",
-                        "mean": "3"
-                    }
-                },
-                {
-                    "stepNumber": "1",
-					"stationId": "Q3",
-                    "processingTime": {
-                        "distributionType": "Fixed",
-                        "mean": "1"
-                    }
-                },
-                {
-                    "stepNumber": "2",
-					"stationId": "Q2",
-                    "processingTime": {
-                        "distributionType": "Fixed",
-                        "mean": "7"
-                    }
-                },
-                {
-                    "stepNumber": "3",
-					"stationId": "E1",
-                    "processingTime": {
-                        "distributionType": "Fixed",
-                        "mean": "0"
-                    }
-                }
-            ]
-        },
-        "J3": {
-            "_class": "Dream.Job",
-            "name": "Job3",
-			"priority": "-12",
-			"dueDate": "6",
-			"orderDate": "2",
-            "route": [
-                {
-                    "stepNumber": "0",
-					"stationId": "Q2",
-                    "processingTime": {
-                        "distributionType": "Fixed",
-                        "mean": "2"
-                    }
-                },
-                {
-                    "stepNumber": "1",
-					"stationId": "Q3",
-                    "processingTime": {
-                        "distributionType": "Fixed",
-                        "mean": "1"
-                    }
-                },
-                {
-                    "stepNumber": "2",
-					"stationId": "E1",
-                    "processingTime": {
-                        "distributionType": "Fixed",
-                        "mean": "0"
-                    }
-                }
-            ]
-        },
-        "J4": {
-            "_class": "Dream.Job",
-            "name": "Job4",
-			"priority": "0",
-			"dueDate": "9",
-			"orderDate": "1.5",
-            "route": [
-                {
-                    "stepNumber": "0",
-					"stationId": "Q2",
-                    "processingTime": {
-                        "distributionType": "Fixed",
-                        "mean": "7"
-                    }
-                },
-                {
-                    "stepNumber": "1",
-					"stationId": "E1",
-                    "processingTime": {
-                        "distributionType": "Fixed",
-                        "mean": "0"
-                    }
-                }
-            ]
         }
     }
 }

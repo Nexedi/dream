@@ -132,9 +132,6 @@ def createObjects():
     G.AssemblyList=[]
     G.DismantleList=[]
     G.ConveyerList=[]
-    G.JobList=[]
-    G.WipList=[]
-    G.EntityList=[]  
     G.MachineJobShopList=[]
     G.QueueJobShopList=[]
     G.ExitJobShopList=[]
@@ -374,34 +371,7 @@ def createObjects():
             C.nextIds=getSuccessorList(id)
             G.ObjList.append(C)
             G.ConveyerList.append(C)
-            
-        elif objClass=='Dream.Job':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            priority=int(element.get('priority', '0'))
-            dueDate=float(element.get('dueDate', '0'))
-            orderDate=float(element.get('orderDate', '0'))
-            JSONRoute=element.get('route', [])                  # dummy variable that holds the routes of the jobs
-                                                                #    the route from the JSON file 
-                                                                #    is a sequence of dictionaries
-            route = [None for i in range(len(JSONRoute))]       # variable that holds the argument used in the Job initiation
-                                                                #    hold None for each entry in the 'route' list
-            
-            for routeElement in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
-                stepNumber=int(routeElement.get('stepNumber', '0'))                 #    get the stepNumber
-                nextId=routeElement.get('stationId', 'not found')                   #    the stationId
-                processingTime=routeElement.get('processingTime', 'not found')      # and the 'processingTime' dictionary
-                distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
-                                                                                    #    get the 'mean' 
-                mean=float(processingTime.get('mean', 'not found'))
-                route[stepNumber]=[nextId, mean]                                    # finally add the 'nextId' and 'mean'
-                                                                                    #     to the job route
-            # initiate the job
-            J=Job(id, name, route, priority=priority, dueDate=dueDate, orderDate=orderDate)
-            G.JobList.append(J)   
-            G.WipList.append(J)  
-            G.EntityList.append(J)       
-            
+              
         elif objClass=='Dream.BatchDecomposition':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
@@ -526,6 +496,56 @@ def activateObjects():
             pass
 
 # ===========================================================================
+#                reads the WIP of the stations
+# ===========================================================================
+def createWIP():
+    G.JobList=[]
+    G.WipList=[]
+    G.EntityList=[]  
+    
+    json_data = G.JSONData
+    #Read the json data
+    nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
+    for (element_id, element) in nodes.iteritems():
+        element['id'] = element_id
+        wip=element.get('wip', [])
+        for entity in wip:
+            entityClass=None
+            try:
+                entityClass=entity.get('_class', None)
+            except IndexError:
+                continue
+   
+            if entityClass=='Dream.Job':
+                id=entity.get('id', 'not found')
+                name=entity.get('name', 'not found')
+                priority=int(entity.get('priority', '0'))
+                dueDate=float(entity.get('dueDate', '0'))
+                orderDate=float(entity.get('orderDate', '0'))
+                JSONRoute=entity.get('route', [])                  # dummy variable that holds the routes of the jobs
+                                                                    #    the route from the JSON file 
+                                                                    #    is a sequence of dictionaries
+                route = [None for i in range(len(JSONRoute))]       #    variable that holds the argument used in the Job initiation
+                                                                    #    hold None for each entry in the 'route' list
+                
+                for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
+                    stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
+                    nextId=routeentity.get('stationId', 'not found')                   #    the stationId
+                    processingTime=routeentity.get('processingTime', 'not found')      # and the 'processingTime' dictionary
+                    distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
+                                                                                        #    get the 'mean' 
+                    mean=float(processingTime.get('mean', 'not found'))
+                    route[stepNumber]=[nextId, mean]                                    # finally add the 'nextId' and 'mean'
+                                                                                        #     to the job route
+                # initiate the job
+                J=Job(id, name, route, priority=priority, dueDate=dueDate, orderDate=orderDate)
+                G.JobList.append(J)   
+                G.WipList.append(J)  
+                G.EntityList.append(J)       
+       
+        
+    
+# ===========================================================================
 #                sets the WIP in the corresponding stations
 # ===========================================================================
 def setWIP():
@@ -538,7 +558,7 @@ def setWIP():
                 object=obj                                  # find the object in the 'G.ObjList
         object.getActiveObjectQueue().append(entity)        # append the entity to its Queue
         entity.remainingRoute[0][0]=""                      # remove data from the remaining route.    
-        entity.schedule.append([object,now()])   #append the time to schedule so that it can be read in the result
+        entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
         entity.currentStation=object                        # update the current station of the entity           
 
 # ===========================================================================
@@ -568,15 +588,15 @@ def main(argv=[], input_data=None):
     G.JSONData=json.loads(G.InputData)              # create the dictionary JSONData
     readGeneralInput()
     createObjects()
+    createWIP()
     setTopology() 
-
+    
     
     #run the experiment (replications)          
     for i in xrange(G.numberOfReplications):
         logger.info("start run number "+str(i+1)) 
         G.seed+=1
-        G.Rnd=Random(G.seed) 
-              
+        G.Rnd=Random(G.seed)     
         initialize()                        #initialize the simulation 
         initializeObjects()
         setWIP()        
