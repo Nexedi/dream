@@ -49,6 +49,8 @@ class OperatedMachine(Machine):
                   setupDistribution="No",setupMean=0, setupStdev=0, setupMin=0, setupMax=10):
         Machine.__init__(self, id, name, capacity, distribution, mean, stdev, min, max,\
                           failureDistribution, MTTF, MTTR, availability, repairman)
+        # type of the machine
+        self.type = "OperatedMachine"
         # sets the operator resource of the Machine
         self.operator=operator
         # define if setup/removal/processing are performed by the operator 
@@ -78,6 +80,7 @@ class OperatedMachine(Machine):
     def initialize(self):
         Machine.initialize(self)
         self.broker = Broker(self)
+        activate(self.broker,self.broker.run())
         self.call=False
         self.set=False
         self.totalTimeWaitingForOperator=0
@@ -88,7 +91,6 @@ class OperatedMachine(Machine):
     def run(self):
         # execute all through simulation time
         while 1:
-            activate(self.broker,self.broker.run())
             # wait until the machine can accept an entity and one predecessor requests it 
             # canAcceptAndIsRequested is invoked to check when the machine requested to receive an entity  
             yield waituntil, self, self.canAcceptAndIsRequested
@@ -314,7 +316,7 @@ class OperatedMachine(Machine):
             and activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested
             
     # =======================================================================
-    #                 calculates the processing time
+    #                 calculates the setup time
     # =======================================================================
     def calculateSetupTime(self):
         return self.stpRng.generateNumber()
@@ -331,14 +333,14 @@ class OperatedMachine(Machine):
     #                     filter for yield request/release  
     # =======================================================================
     def brokerIsSet(self):
-        return self.set
+        return not self.call
     
     # =======================================================================
     #                       invoke the broker
     # =======================================================================
     def invokeBroker(self):
-        self.set=False
         self.call=True
+#         self.set=not self.call
     
     # =======================================================================
     #               prepare the machine to be operated
@@ -375,8 +377,8 @@ class Broker(Process):
     #                       exit the broker
     # =======================================================================
     def exitBroker(self):
-        self.operatedMachine.set=True
         self.operatedMachine.call=False
+#         self.operatedMachine.set=not self.operatedMachine.call
     
     def run(self):
         while 1:
