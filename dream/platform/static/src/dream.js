@@ -181,7 +181,7 @@
     that.newElement = function (element) {
       var element_type = element._class.replace('.', '-');
       priv.super_newElement(element, configuration[element_type]);
-      $("#" + element.id).bind('click', function () {
+      $("#" + element.id).on('click', function () {
         $("#dialog-form").dialog("destroy");
         priv.prepareDialogForElement(element.id, element.id);
         $("#dialog-form").dialog("open");

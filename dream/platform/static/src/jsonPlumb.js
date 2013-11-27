@@ -115,7 +115,7 @@
         sheet.getSheet().setNav(false);
         // Here we bind on the parent object because bind will be
         // reset when we replace the contents by using html().
-        $('#spreadsheet').bind('sheetCellEdited', function () {
+        $('#spreadsheet').on('sheetCellEdited', function () {
           priv.onDataChange();
         });
         // When we click outside of the
