@@ -62,6 +62,9 @@ class CoreObject(Process):
         # ============================== waiting flag ==============================================                                      
         self.waitToDispose=False                        #shows if the object waits to dispose an entity   
 
+        # ============================== the below are currently used in Jobshop =======================   
+        self.giver=None     #the CoreObject that the activeObject will take an Entity from
+        self.receiver=None  #the CoreObject that the activeObject will give an Entity to
 
     # ======================== the main process of the core object =================================
     # ================ this is dummy, every object must have its own implementation ================
