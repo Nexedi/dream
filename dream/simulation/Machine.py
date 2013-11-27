@@ -213,8 +213,7 @@ class Machine(CoreObject):
     # =======================================================================
     def checkIfMachineIsUp(self):
         return self.Up
-    
-    
+
     # =======================================================================
     # checks if the Machine can accept an entity       
     # it checks also who called it and returns TRUE only to the predecessor 
@@ -235,7 +234,7 @@ class Machine(CoreObject):
         thecaller=callerObject
         # return True ONLY if the length of the activeOjbectQue is smaller than
         # the object capacity, and the callerObject is not None but the giverObject
-        return len(activeObjectQueue)<activeObject.capacity and (thecaller is giverObject)
+        return len(activeObjectQueue)<activeObject.capacity and (thecaller is giverObject) and self.Up
     
     # =======================================================================
     # checks if the Machine can accept an entity and there is an entity in 
