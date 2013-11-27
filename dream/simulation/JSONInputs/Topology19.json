@@ -1,22 +1,6 @@
 {
     "_class": "Dream.Simulation",
-    "edges": {
-        "0": [
-            "Q1",
-            "M1",
-            {}
-        ],
-        "1": [
-            "Q2",
-            "M2",
-            {}
-        ],
-        "2": [
-            "Q3",
-            "M3",
-            {}
-        ]
-    },
+    "edges": {},
     "general": {
         "_class": "Dream.Configuration",
         "numberOfReplications": "1",
@@ -80,27 +64,51 @@
                             "stationId": "Q1",
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "1"
+                                "mean": "0"
                             }
                         },
                         {
                             "stepNumber": "1",
+                            "stationId": "M1",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "1"
+                            }
+                        },
+                        {
+                            "stepNumber": "2",
                             "stationId": "Q3",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "0"
+                            }
+                        },
+                        {
+                            "stepNumber": "3",
+                            "stationId": "M3",
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "3"
                             }
                         },
                         {
-                            "stepNumber": "2",
+                            "stepNumber": "4",
                             "stationId": "Q2",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "0"
+                            }
+                        },
+                        {
+                            "stepNumber": "5",
+                            "stationId": "M2",
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "2"
                             }
                         },
                         {
-                            "stepNumber": "3",
+                            "stepNumber": "6",
                             "stationId": "E1",
                             "processingTime": {
                                 "distributionType": "Fixed",
@@ -128,27 +136,51 @@
                             "stationId": "Q2",
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "3"
+                                "mean": "0"
                             }
                         },
                         {
                             "stepNumber": "1",
+                            "stationId": "M2",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "3"
+                            }
+                        },
+                        {
+                            "stepNumber": "2",
                             "stationId": "Q3",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "0"
+                            }
+                        },
+                        {
+                            "stepNumber": "3",
+                            "stationId": "M3",
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "1"
                             }
                         },
                         {
-                            "stepNumber": "2",
+                            "stepNumber": "4",
                             "stationId": "Q2",
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "0"
+                            }
+                        },
+                        {
+                            "stepNumber": "5",
+                            "stationId": "M2",
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "7"
                             }
                         },
                         {
-                            "stepNumber": "3",
+                            "stepNumber": "6",
                             "stationId": "E1",
                             "processingTime": {
                                 "distributionType": "Fixed",

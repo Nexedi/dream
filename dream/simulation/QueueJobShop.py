@@ -53,16 +53,26 @@ class QueueJobShop(Queue):
         else:
             return False
                 
+    #checks if the Machine can dispose an entity. Returns True only to the potential receiver     
+    def haveToDispose(self, callerObject=None):
+        if callerObject!=None:
+            #check it the object that called the method holds an Entity that requests for current object        
+            if self.getReceiverObject()==callerObject:
+                return len(self.getActiveObjectQueue())>0    #return according to the state of the machine
+        return False
+
     #gets an entity from the predecessor that the predecessor index points to     
     def getEntity(self):      
         activeEntity=Queue.getEntity(self)
-        activeEntity.remainingRoute[0][0]=""                    #remove data from the remaining route. 
-        return activeEntity
-   
-                       
+        self.nextStationId=activeEntity.remainingRoute[1][0]    #read the next station id
+        activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
+        return activeEntity  
 
     #get the giver object in a getEntity transaction.       
     def getGiverObject(self):
+        #if there are predecessors use default method
+        if len(self.previous)>0:
+            return Queue.getGiverObject(self)
         from Globals import G
         #loop through the objects to see if there is one that holds an Entity requesting for current object
         for obj in G.ObjList:
@@ -71,5 +81,20 @@ class QueueJobShop(Queue):
                 if activeEntity.remainingRoute[0][0]==self.id:
                     return obj
         return None
+    
+    #get the receiver object in a removeEntity transaction.  
+    def getReceiverObject(self):
+        #if there are successors use default method
+        if len(self.next)>0:
+            return Queue.getReceiverObject(self)
+        if len(self.getActiveObjectQueue())>0:
+            from Globals import G
+            receiverObjectId=self.getActiveObjectQueue()[0].remainingRoute[0][0]
+            #loop through the objects to to assign the next station to the one that has the id
+            for obj in G.ObjList:
+                if obj.id==receiverObjectId:
+                    return obj    
+        else: 
+            return None 
         
         

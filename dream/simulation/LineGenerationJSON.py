@@ -536,7 +536,25 @@ def createWIP():
                                                                                         #    get the 'mean' 
                     mean=float(processingTime.get('mean', 'not found'))
                     route[stepNumber]=[nextId, mean]                                    # finally add the 'nextId' and 'mean'
-                                                                                        #     to the job route
+                                                                                        # to the job route
+                
+                #Below it is to assign an exit if it was not assigned in JSON
+                #have to talk about it with NEX
+                exitAssigned=False
+                for element in route:
+                    elementId=element[0]
+                    for obj in G.ObjList:
+                        if obj.id==elementId and obj.type=='Exit':
+                            exitAssigned=True 
+                if not exitAssigned:
+                    exitId=None
+                    for obj in G.ObjList:
+                        if obj.type=='Exit':
+                            exitId=obj.id
+                            break
+                    if exitId:
+                        route.append([exitId, 0])
+                                                                                                                                                  
                 # initiate the job
                 J=Job(id, name, route, priority=priority, dueDate=dueDate, orderDate=orderDate)
                 G.JobList.append(J)   
@@ -557,7 +575,7 @@ def setWIP():
             if obj.id==objectId:  
                 object=obj                                  # find the object in the 'G.ObjList
         object.getActiveObjectQueue().append(entity)        # append the entity to its Queue
-        entity.remainingRoute[0][0]=""                      # remove data from the remaining route.    
+        entity.remainingRoute.pop(0)                      # remove data from the remaining route.    
         entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
         entity.currentStation=object                        # update the current station of the entity           
 
@@ -589,8 +607,7 @@ def main(argv=[], input_data=None):
     readGeneralInput()
     createObjects()
     createWIP()
-    setTopology() 
-    
+    setTopology()    
     
     #run the experiment (replications)          
     for i in xrange(G.numberOfReplications):
@@ -598,6 +615,7 @@ def main(argv=[], input_data=None):
         G.seed+=1
         G.Rnd=Random(G.seed)     
         initialize()                        #initialize the simulation 
+        createWIP()
         initializeObjects()
         setWIP()        
         activateObjects()
