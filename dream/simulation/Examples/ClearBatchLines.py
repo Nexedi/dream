@@ -1,22 +1,22 @@
 from SimPy.Simulation import simulate, activate, initialize
 
-from Globals import G
-from Machine import Machine
-from Exit import Exit
-from Queue import Queue
+from simulation.Globals import G
+from simulation.Machine import Machine
+from simulation.Exit import Exit
+from simulation.Queue import Queue
 
-from Batch import Batch
-from BatchDecomposition import BatchDecomposition
-from BatchReassembly import BatchReassembly
-from BatchSource import BatchSource
-from LineClearance import LineClearance
-import ExcelHandler
+from simulation.Batch import Batch
+from simulation.BatchDecomposition import BatchDecomposition
+from simulation.BatchReassembly import BatchReassembly
+from simulation.BatchSource import BatchSource
+from simulation.LineClearance import LineClearance
+import simulation.ExcelHandler
 
 # choose to output trace or not
 G.trace='Yes'
 # define the objects of the model
 S=BatchSource('S','Source',mean=1.5, item=Batch,batchNumberOfUnits=100)
-Q=Queue('Q','StartQueue',capacity=100000)
+Q=Queue('Q','StartQueue',capacity=-1)
 BD=BatchDecomposition('BC', 'BatchDecomposition', numberOfSubBatches=4, mean=1)
 M1=Machine('M1','Machine1',mean=0.5)
 Q1=LineClearance('Q1','Queue1',capacity=2)
@@ -52,7 +52,7 @@ simulate(until=G.maxSimTime)
 for object in G.ObjList:
     object.postProcessing()
 # print trace
-ExcelHandler.outputTrace('Topology23')  
+simulation.ExcelHandler.outputTrace('Trace')  
 # print the results 
 print "the system produced", E.numOfExits, "parts"
 print "the working ratio of", M1.objName, "is", (M1.totalWorkingTime/G.maxSimTime)*100
