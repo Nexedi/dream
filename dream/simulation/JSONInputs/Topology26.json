@@ -1,0 +1,221 @@
+{
+  "edges": {}, 
+  "general": {
+    "confidenceLevel": "0.5", 
+    "maxSimTime": "-1", 
+    "numberOfReplications": "1", 
+    "processTimeout": "0.5", 
+    "simulationClass": "Leotech",
+	"trace":"No"
+  }, 
+  "nodes": {
+    "E1": {
+      "_class": "Dream.ExitJobShop", 
+      "name": "E1"
+    }, 
+    "M1": {
+      "_class": "Dream.MachineJobShop", 
+      "failures": {
+        "MTTF": "40", 
+        "MTTR": "10", 
+        "failureDistribution": "No", 
+        "repairman": "None"
+      }, 
+      "name": "M1", 
+      "processingTime": {
+        "distributionType": "Fixed", 
+        "max": "1", 
+        "mean": "0.9", 
+        "min": "0.1", 
+        "stdev": "0.1"
+      }
+    }, 
+    "M2": {
+      "_class": "Dream.MachineJobShop", 
+      "failures": {
+        "MTTF": "40", 
+        "MTTR": "10", 
+        "failureDistribution": "No", 
+        "repairman": "None"
+      }, 
+      "name": "M2", 
+      "processingTime": {
+        "distributionType": "Fixed", 
+        "max": "1", 
+        "mean": "0.9", 
+        "min": "0.1", 
+        "stdev": "0.1"
+      }
+    }, 
+    "M3": {
+      "_class": "Dream.MachineJobShop", 
+      "failures": {
+        "MTTF": "40", 
+        "MTTR": "10", 
+        "failureDistribution": "No", 
+        "repairman": "None"
+      }, 
+      "name": "M3", 
+      "processingTime": {
+        "distributionType": "Fixed", 
+        "max": "1", 
+        "mean": "0.9", 
+        "min": "0.1", 
+        "stdev": "0.1"
+      }
+    }, 
+    "Q1": {
+      "_class": "Dream.QueueJobShop", 
+      "capacity": "-1", 
+      "isDummy": "0", 
+      "name": "Q1", 
+      "wip": [
+        {
+          "_class": "Dream.Job", 
+          "due_date": "2013-12-15", 
+          "id": "J1", 
+          "material": "Plastic", 
+          "name": "Order 1 from X", 
+          "order_date": "2013-11-20", 
+          "priority": "2", 
+          "route": [
+            {
+              "processingTime": {
+                "distributionType": "Fixed", 
+                "mean": "0"
+              }, 
+              "stationId": "Q1", 
+              "stepNumber": 0
+            }, 
+            {
+              "processingTime": {
+                "distributionType": "Fixed", 
+                "mean": "10"
+              }, 
+              "stationId": "M1", 
+              "stepNumber": 1
+            }, 
+            {
+              "processingTime": {
+                "distributionType": "Fixed", 
+                "mean": "0"
+              }, 
+              "stationId": "Q3", 
+              "stepNumber": 2
+            }, 
+            {
+              "processingTime": {
+                "distributionType": "Fixed", 
+                "mean": "20"
+              }, 
+              "stationId": "M3", 
+              "stepNumber": 3
+            }
+          ]
+        }
+      ]
+    }, 
+    "Q2": {
+      "_class": "Dream.QueueJobShop", 
+      "capacity": "-1", 
+      "isDummy": "0", 
+      "name": "Q2", 
+      "wip": [
+        {
+          "_class": "Dream.Job", 
+          "due_date": "2013-11-30", 
+          "id": "J2", 
+          "material": "Aluminium", 
+          "name": "Order 2 from Y", 
+          "order_date": "2013-11-14", 
+          "priority": "1", 
+          "route": [
+            {
+              "processingTime": {
+                "distributionType": "Fixed", 
+                "mean": "0"
+              }, 
+              "stationId": "Q2", 
+              "stepNumber": 0
+            }, 
+            {
+              "processingTime": {
+                "distributionType": "Fixed", 
+                "mean": "20"
+              }, 
+              "stationId": "M2", 
+              "stepNumber": 1
+            }, 
+            {
+              "processingTime": {
+                "distributionType": "Fixed", 
+                "mean": "0"
+              }, 
+              "stationId": "Q1", 
+              "stepNumber": 2
+            }, 
+            {
+              "processingTime": {
+                "distributionType": "Fixed", 
+                "mean": "34"
+              }, 
+              "stationId": "M1", 
+              "stepNumber": 3
+            }
+          ]
+        }
+      ]
+    }, 
+    "Q3": {
+      "_class": "Dream.QueueJobShop", 
+      "capacity": "-1", 
+      "isDummy": "0", 
+      "name": "Q3", 
+      "wip": [
+        {
+          "_class": "Dream.Job", 
+          "due_date": "2014-02-01", 
+          "id": "J3", 
+          "material": "Plastic", 
+          "name": "Order 3 from Z", 
+          "order_date": "2013-11-03", 
+          "priority": "3", 
+          "route": [
+            {
+              "processingTime": {
+                "distributionType": "Fixed", 
+                "mean": "0"
+              }, 
+              "stationId": "Q3", 
+              "stepNumber": 0
+            }, 
+            {
+              "processingTime": {
+                "distributionType": "Fixed", 
+                "mean": "30"
+              }, 
+              "stationId": "M3", 
+              "stepNumber": 1
+            }, 
+            {
+              "processingTime": {
+                "distributionType": "Fixed", 
+                "mean": "0"
+              }, 
+              "stationId": "Q1", 
+              "stepNumber": 2
+            }, 
+            {
+              "processingTime": {
+                "distributionType": "Fixed", 
+                "mean": "20"
+              }, 
+              "stationId": "M1", 
+              "stepNumber": 3
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
