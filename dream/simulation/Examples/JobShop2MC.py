@@ -4,6 +4,7 @@ from simulation.QueueJobShop import QueueJobShop
 from simulation.ExitJobShop import ExitJobShop
 from simulation.Job import Job
 from simulation.Globals import G
+import simulation.Globals as Globals
 
 #define the objects of the model
 Q1=QueueJobShop('Q1','Queue1', capacity=infinity, schedulingRule="MC-Priority-EDD")
@@ -25,11 +26,10 @@ M2.defineRouting(predecessorList=[Q2])
 M3.defineRouting(predecessorList=[Q3])
 
 #define the Jobs
-J1=Job('J1','Job1',[['Q1',1],['Q3',3],['Q2',2],['E',0]], priority=1, dueDate=100)
-J2=Job('J2','Job2',[['Q1',2],['Q2',4],['Q3',6],['E',0]], priority=1, dueDate=90)
-J3=Job('J3','Job3',[['Q1',10],['Q3',3],['E',0]], priority=0, dueDate=110)
-
-G.JobList=[J1,J2,J3]
+J1=Job('J1','Job1',[['Q1',0],['M1',1],['Q3',0],['M3',3],['Q2',0],['M2',2],['E',0]], priority=1, dueDate=100)
+J2=Job('J2','Job2',[['Q1',0],['M1',2],['Q2',0],['M2',4],['Q3',0],['M3',6],['E',0]], priority=1, dueDate=90)
+J3=Job('J3','Job3',[['Q1',0],['M1',10],['Q3',0],['M3',3],['E',0]], priority=0, dueDate=110)
+G.JobList=[J1,J2,J3]        #a list to hold all the jobs
 
 G.maxSimTime=1440.0     #set G.maxSimTime 1440.0 minutes (1 day)
     
@@ -44,10 +44,7 @@ for job in G.JobList:
     job.initialize()
 
 #set the WIP for all the jobs
-for job in G.JobList:
-    Q1.getActiveObjectQueue().append(job)
-    job.remainingRoute[0][0]=''   #remove data from the remaining route.  
-    job.schedule.append(['Q1',now()])   #add the data in the schedule that the Job entered Q1 at time=0
+Globals.setWIP(G.JobList)
     
 #activate all the objects 
 for object in G.ObjList:
@@ -62,9 +59,7 @@ for job in G.JobList:
         #schedule holds ids of objects. The following loop will identify the name of the CoreObject with the given id
         name=None
         for obj in G.ObjList:
-            if obj.id==record[0]:
+            if obj is record[0]:
                 name=obj.objName
         print job.name, "got into", name, "at", record[1]
     print "-"*30
-
-

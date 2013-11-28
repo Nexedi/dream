@@ -20,7 +20,7 @@ G.ObjList=[M1,M2,M3,Q1,Q2,Q3,E]   #add all the objects in G.ObjList so that they
 
 #define the Jobs
 J=Job('J1','Job1',route=[['Q1',0],['M1',1],['Q3',0],['M3',3],['Q2',0],['M2',2],['E',0]])
-G.EntityList=[J]
+G.EntityList=[J]        #a list to hold all the jobs
    
 initialize()                        #initialize the simulation (SimPy method)
         
