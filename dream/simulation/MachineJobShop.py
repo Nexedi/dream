@@ -42,7 +42,8 @@ class MachineJobShop(Machine):
     def getEntity(self):
         activeEntity=Machine.getEntity(self)     #run the default code
         self.procTime=activeEntity.remainingRoute[0][1]     #read the processing time from the entity
-        self.receiver=self.findObjectById(activeEntity.remainingRoute[1][0])    #read the next station 
+        import Globals
+        self.receiver=Globals.findObjectById(activeEntity.remainingRoute[1][0])    #read the next station 
         activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
         return activeEntity  
                                                                                
@@ -117,13 +118,6 @@ class MachineJobShop(Machine):
         #else if there is a giver return it
         elif self.giver:
             return self.giver 
-        return None 
-   
-    def findObjectById(self, id):
-        from Globals import G
-        for obj in G.ObjList:
-            if obj.id==id:
-                return obj
-            
+        return None            
             
         

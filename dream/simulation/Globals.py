@@ -69,3 +69,9 @@ class G:
     outputJSONFile=None
     
     numberOfEntities = 0
+    
+def findObjectById(id):
+    for obj in G.ObjList:
+        if obj.id==id:
+            return obj
+    return None

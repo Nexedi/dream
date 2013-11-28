@@ -574,16 +574,11 @@ def setWIP():
             if obj.id==objectId:  
                 object=obj                                  # find the object in the 'G.ObjList
         object.getActiveObjectQueue().append(entity)        # append the entity to its Queue
-        object.receiver=findObjectById(entity.remainingRoute[1][0])
+        import Globals
+        object.receiver=Globals.findObjectById(entity.remainingRoute[1][0])
         entity.remainingRoute.pop(0)                        # remove data from the remaining route.    
         entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
         entity.currentStation=object                        # update the current station of the entity           
-
-def findObjectById(id):
-    from Globals import G
-    for obj in G.ObjList:
-        if obj.id==id:
-            return obj
 
 # ===========================================================================
 #                        the main script that is ran

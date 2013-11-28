@@ -90,7 +90,8 @@ class QueueJobShop(Queue):
     #gets an entity from the predecessor that the predecessor index points to     
     def getEntity(self):      
         activeEntity=Queue.getEntity(self)
-        self.receiver=self.findObjectById(activeEntity.remainingRoute[1][0])    #read the next station 
+        import Globals
+        self.receiver=Globals.findObjectById(activeEntity.remainingRoute[1][0])    #read the next station 
         activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
         return activeEntity  
 
@@ -115,9 +116,5 @@ class QueueJobShop(Queue):
             return self.giver 
         return None 
 
-    def findObjectById(self, id):
-        from Globals import G
-        for obj in G.ObjList:
-            if obj.id==id:
-                return obj
+
         
