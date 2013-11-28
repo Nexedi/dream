@@ -231,7 +231,7 @@
 
     priv.formatForManpy = function (data) {
       var manpy_dict = {}, nodes = {}, edges = {}, edge_id = 0;
-      $.each(data['nodes'], function (idx, node) {
+      $.each(data['nodes'], function (node_id, node) {
         var clone_node = {};
         /* clone the node and put content of 'data' at the top level. */
         $.each(node, function (k, v) {
@@ -239,13 +239,13 @@
             $.each(v, function (kk, vv) {
               clone_node[kk] = vv;
             });
-          } else if (k == 'id' || k == 'element_id') {
+          } else if (k == 'element_id') {
             true; // no need to output
           } else {
             clone_node[k] = v;
           }
         });
-        nodes[node['id']] = clone_node;
+        nodes[node_id] = clone_node;
       });
 
       manpy_dict['nodes'] = nodes;

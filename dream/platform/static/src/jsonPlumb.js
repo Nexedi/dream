@@ -245,7 +245,6 @@
       // Now update the container of elements
       var element_data = {
         _class: element._class,
-        id: element.id,
         element_id: element.element_id,
         name: element.name
       };
@@ -345,14 +344,14 @@
 
     that.updateElementData = function (node_id, data) {
       var element_id = priv.node_container[node_id].element_id;
-      $.extend(priv.node_container[node_id], data);
       if (data['name']) {
         $("#" + element_id).text(data["name"]);
       }
       var new_id = data['id'];
+      delete(data['id']);
+      $.extend(priv.node_container[node_id], data);
       if (new_id && new_id !== node_id) {
         priv.node_container[new_id] = priv.node_container[node_id];
-        priv.node_container[new_id]['id'] = new_id;
         delete(priv.node_container[node_id]);
         $.each(priv.edge_container, function (k, v) {
           if (v[0] === node_id) {
