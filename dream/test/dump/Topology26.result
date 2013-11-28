@@ -14,28 +14,33 @@
    "id": "J1", 
    "results": {
     "completionTime": 50.0, 
-    "schedule": {
-     "1": {
+    "schedule": [
+     {
       "entranceTime": 0, 
-      "stationId": "M1"
+      "stationId": "Q1", 
+      "stepNumber": 0
      }, 
-     "0": {
+     {
       "entranceTime": 0, 
-      "stationId": "Q1"
+      "stationId": "M1", 
+      "stepNumber": 1
      }, 
-     "3": {
-      "entranceTime": 30.0, 
-      "stationId": "M3"
-     }, 
-     "2": {
+     {
       "entranceTime": 10.0, 
-      "stationId": "Q3"
+      "stationId": "Q3", 
+      "stepNumber": 2
      }, 
-     "4": {
+     {
+      "entranceTime": 30.0, 
+      "stationId": "M3", 
+      "stepNumber": 3
+     }, 
+     {
       "entranceTime": 50.0, 
-      "stationId": "E1"
+      "stationId": "E1", 
+      "stepNumber": 4
      }
-    }
+    ]
    }
   }, 
   {
@@ -43,28 +48,33 @@
    "id": "J2", 
    "results": {
     "completionTime": 54.0, 
-    "schedule": {
-     "1": {
+    "schedule": [
+     {
       "entranceTime": 0, 
-      "stationId": "M2"
+      "stationId": "Q2", 
+      "stepNumber": 0
      }, 
-     "0": {
+     {
       "entranceTime": 0, 
-      "stationId": "Q2"
+      "stationId": "M2", 
+      "stepNumber": 1
      }, 
-     "3": {
+     {
       "entranceTime": 20.0, 
-      "stationId": "M1"
+      "stationId": "Q1", 
+      "stepNumber": 2
      }, 
-     "2": {
+     {
       "entranceTime": 20.0, 
-      "stationId": "Q1"
+      "stationId": "M1", 
+      "stepNumber": 3
      }, 
-     "4": {
+     {
       "entranceTime": 54.0, 
-      "stationId": "E1"
+      "stationId": "E1", 
+      "stepNumber": 4
      }
-    }
+    ]
    }
   }, 
   {
@@ -72,28 +82,33 @@
    "id": "J3", 
    "results": {
     "completionTime": 74.0, 
-    "schedule": {
-     "1": {
+    "schedule": [
+     {
       "entranceTime": 0, 
-      "stationId": "M3"
+      "stationId": "Q3", 
+      "stepNumber": 0
      }, 
-     "0": {
+     {
       "entranceTime": 0, 
-      "stationId": "Q3"
+      "stationId": "M3", 
+      "stepNumber": 1
      }, 
-     "3": {
-      "entranceTime": 54.0, 
-      "stationId": "M1"
-     }, 
-     "2": {
+     {
       "entranceTime": 30.0, 
-      "stationId": "Q1"
+      "stationId": "Q1", 
+      "stepNumber": 2
      }, 
-     "4": {
+     {
+      "entranceTime": 54.0, 
+      "stationId": "M1", 
+      "stepNumber": 3
+     }, 
+     {
       "entranceTime": 74.0, 
-      "stationId": "E1"
+      "stationId": "E1", 
+      "stepNumber": 4
      }
-    }
+    ]
    }
   }, 
   {

@@ -70,7 +70,7 @@ class Job(Entity):                                  # inherits from the Entity c
                 delay=completionTime-self.dueDate
                 json['results']['delay']=delay
                 
-            json['results']['schedule']={}
+            json['results']['schedule']=[]
             i=0
             for record in self.schedule:               
                 json['results']['schedule'].append({})                                  # dictionary holding time and 
