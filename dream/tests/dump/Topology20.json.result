@@ -15,36 +15,43 @@
    "results": {
     "delay": 8.0, 
     "completionTime": 23.0, 
-    "schedule": {
-     "1": {
+    "schedule": [
+     {
       "entranceTime": 0, 
-      "stationId": "M1"
+      "stationId": "Q1", 
+      "stepNumber": 0
      }, 
-     "0": {
+     {
       "entranceTime": 0, 
-      "stationId": "Q1"
+      "stationId": "M1", 
+      "stepNumber": 1
      }, 
-     "3": {
+     {
       "entranceTime": 1.0, 
-      "stationId": "M3"
+      "stationId": "Q3", 
+      "stepNumber": 2
      }, 
-     "2": {
+     {
       "entranceTime": 1.0, 
-      "stationId": "Q3"
+      "stationId": "M3", 
+      "stepNumber": 3
      }, 
-     "5": {
-      "entranceTime": 19.0, 
-      "stationId": "M2"
-     }, 
-     "4": {
+     {
       "entranceTime": 4.0, 
-      "stationId": "Q2"
+      "stationId": "Q2", 
+      "stepNumber": 4
      }, 
-     "6": {
+     {
+      "entranceTime": 19.0, 
+      "stationId": "M2", 
+      "stepNumber": 5
+     }, 
+     {
       "entranceTime": 23.0, 
-      "stationId": "E1"
+      "stationId": "E1", 
+      "stepNumber": 6
      }
-    }
+    ]
    }
   }, 
   {
@@ -53,36 +60,43 @@
    "results": {
     "delay": 9.0, 
     "completionTime": 19.0, 
-    "schedule": {
-     "1": {
-      "entranceTime": 2.0, 
-      "stationId": "M2"
-     }, 
-     "0": {
+    "schedule": [
+     {
       "entranceTime": 0, 
-      "stationId": "Q2"
+      "stationId": "Q2", 
+      "stepNumber": 0
      }, 
-     "3": {
+     {
+      "entranceTime": 2.0, 
+      "stationId": "M2", 
+      "stepNumber": 1
+     }, 
+     {
       "entranceTime": 5.0, 
-      "stationId": "M3"
+      "stationId": "Q3", 
+      "stepNumber": 2
      }, 
-     "2": {
+     {
       "entranceTime": 5.0, 
-      "stationId": "Q3"
+      "stationId": "M3", 
+      "stepNumber": 3
      }, 
-     "5": {
-      "entranceTime": 12.0, 
-      "stationId": "M2"
-     }, 
-     "4": {
+     {
       "entranceTime": 6.0, 
-      "stationId": "Q2"
+      "stationId": "Q2", 
+      "stepNumber": 4
      }, 
-     "6": {
+     {
+      "entranceTime": 12.0, 
+      "stationId": "M2", 
+      "stepNumber": 5
+     }, 
+     {
       "entranceTime": 19.0, 
-      "stationId": "E1"
+      "stationId": "E1", 
+      "stepNumber": 6
      }
-    }
+    ]
    }
   }, 
   {
@@ -91,28 +105,33 @@
    "results": {
     "delay": -1.0, 
     "completionTime": 5.0, 
-    "schedule": {
-     "1": {
+    "schedule": [
+     {
       "entranceTime": 0, 
-      "stationId": "M2"
+      "stationId": "Q2", 
+      "stepNumber": 0
      }, 
-     "0": {
+     {
       "entranceTime": 0, 
-      "stationId": "Q2"
+      "stationId": "M2", 
+      "stepNumber": 1
      }, 
-     "3": {
-      "entranceTime": 4.0, 
-      "stationId": "M3"
-     }, 
-     "2": {
+     {
       "entranceTime": 2.0, 
-      "stationId": "Q3"
+      "stationId": "Q3", 
+      "stepNumber": 2
      }, 
-     "4": {
+     {
+      "entranceTime": 4.0, 
+      "stationId": "M3", 
+      "stepNumber": 3
+     }, 
+     {
       "entranceTime": 5.0, 
-      "stationId": "E1"
+      "stationId": "E1", 
+      "stepNumber": 4
      }
-    }
+    ]
    }
   }, 
   {
@@ -121,20 +140,23 @@
    "results": {
     "delay": 3.0, 
     "completionTime": 12.0, 
-    "schedule": {
-     "1": {
-      "entranceTime": 5.0, 
-      "stationId": "M2"
-     }, 
-     "0": {
+    "schedule": [
+     {
       "entranceTime": 0, 
-      "stationId": "Q2"
+      "stationId": "Q2", 
+      "stepNumber": 0
      }, 
-     "2": {
+     {
+      "entranceTime": 5.0, 
+      "stationId": "M2", 
+      "stepNumber": 1
+     }, 
+     {
       "entranceTime": 12.0, 
-      "stationId": "E1"
+      "stationId": "E1", 
+      "stepNumber": 2
      }
-    }
+    ]
    }
   }, 
   {

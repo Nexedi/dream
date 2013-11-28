@@ -68,12 +68,13 @@ class Job(Entity):                                  # inherits from the Entity c
                 delay=completionTime-self.dueDate
                 json['results']['delay']=delay
                 
-            json['results']['schedule']={}
+            json['results']['schedule']=[]
             i=0
-            for record in self.schedule:
-                json['results']['schedule'][str(i)]={}                                  # dictionary holding time and 
-                json['results']['schedule'][str(i)]['stationId']=record[0].id              # id of the Object
-                json['results']['schedule'][str(i)]['entranceTime']=record[1]           # time entering the Object
+            for record in self.schedule:               
+                json['results']['schedule'].append({})                                  # dictionary holding time and 
+                json['results']['schedule'][i]['stepNumber']=i                      #the step number
+                json['results']['schedule'][i]['stationId']=record[0].id              # id of the Object
+                json['results']['schedule'][i]['entranceTime']=record[1]           # time entering the Object
                 i+=1             
             G.outputJSON['elementList'].append(json)
         
