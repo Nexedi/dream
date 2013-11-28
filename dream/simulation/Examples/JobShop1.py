@@ -4,6 +4,8 @@ from simulation.QueueJobShop import QueueJobShop
 from simulation.ExitJobShop import ExitJobShop
 from simulation.Job import Job
 from simulation.Globals import G
+import simulation.Globals as Globals
+
 
 #define the objects of the model
 Q1=QueueJobShop('Q1','Queue1', capacity=infinity)
@@ -16,16 +18,9 @@ E=ExitJobShop('E','Exit')
 
 G.ObjList=[M1,M2,M3,Q1,Q2,Q3,E]   #add all the objects in G.ObjList so that they can be easier accessed later
 
-#define predecessors and successors for the objects    
-Q1.defineRouting(successorList=[M1])
-Q2.defineRouting(successorList=[M2])
-Q3.defineRouting(successorList=[M3])
-M1.defineRouting(predecessorList=[Q1])
-M2.defineRouting(predecessorList=[Q2])
-M3.defineRouting(predecessorList=[Q3])
-
 #define the Jobs
-J=Job('J1','Job1',route=[['Q1',1],['Q3',3],['Q2',2],['E',0]])
+J=Job('J1','Job1',route=[['Q1',0],['M1',1],['Q3',0],['M3',3],['Q2',0],['M2',2],['E',0]])
+G.EntityList=[J]
    
 initialize()                        #initialize the simulation (SimPy method)
         
@@ -35,10 +30,7 @@ for object in G.ObjList:
 J.initialize()
 
 #set the WIP
-Q1.getActiveObjectQueue().append(J)     #place the Job at 'Q1'
-J.remainingRoute[0][0]=''         #remove data from the remaining route since it is already added in Q1.
-                                  #this is to make sure that the Job will not get again into Queue1 while it waits in Queue1                     
-J.schedule.append(['Q1',now()])   #add the data in the schedule that the Job entered Q1 at time=0
+Globals.setWIP(G.EntityList)
     
 #activate all the objects 
 for object in G.ObjList:
@@ -53,9 +45,7 @@ for record in J.schedule:
     #schedule holds ids of objects. The following loop will identify the name of the CoreObject with the given id
     name=None
     for obj in G.ObjList:
-        if obj.id==record[0]:
+        if obj is record[0]:
             name=obj.objName
     print J.name, "got into", name, "at", record[1]
                
-
-
