@@ -77,21 +77,21 @@
 
       // Render fields for that particular element
       var fieldset = $("#dialog-fieldset");
-      var previous_data = that.getData()["nodes"];
+      var node_dict = that.getData()["nodes"];
+      var node_id = that.getNodeId(element_id);
       $("#dialog-fieldset").children().remove();
-      var element_type = previous_data[element_id]._class.replace('.', '-');
+      var element_type = node_dict[node_id]._class.replace('.', '-');
       var property_list = configuration[element_type].property_list || [];
 
       fieldset.append(
         '<label>ID</label><input type="text" name="id" id="id" value="' +
-        element_id + '" class="text ui-widget-content ui-corner-all"/>');
-      var element_name = previous_data[element_id]['name'] || element_id;
+        node_id + '" class="text ui-widget-content ui-corner-all"/>');
+      var element_name = node_dict[node_id]['name'] || node_id;
       fieldset.append(
         '<label>Name</label><input type="text" name="name" id="name" value="' +
         element_name + '" class="text ui-widget-content ui-corner-all"/>');
 
-      previous_data = previous_data[element_id] || {};
-      previous_data = previous_data.data || {};
+      var previous_data = (node_dict[node_id] || {}).data || {};
       var previous_value;
       var renderField = function (property_list, previous_data, prefix) {
         if (prefix === undefined) {
@@ -128,15 +128,15 @@
             $(this).dialog("close");
           },
           Delete: function () {
-            if (confirm("Are you sure you want to delete " + element_id +
+            if (confirm("Are you sure you want to delete " + node_id +
               " ?")) {
-              that.removeElement(element_id);
+              that.removeElement(node_id);
             }
             $(this).dialog("close");
           },
           Validate: function () {
             var new_id = $("#id").val();
-            if (new_id !== element_id && $('#' + new_id).length > 0) {
+            if (new_id !== node_id && new_id in node_dict) {
               alert('This ID is already used.');
               return;
             }
@@ -162,10 +162,10 @@
             };
 
             updateDataPropertyList(property_list, data);
-            that.updateElementData(element_id, {
+            that.updateElementData(node_id, {
               data: data,
-              name: $("#name").val() || element_id,
-              id: $("#id").val() || element_id
+              name: $("#name").val() || node_id,
+              id: $("#id").val() || node_id
             });
 
             $(this).dialog("close");
@@ -180,10 +180,14 @@
     priv.super_newElement = that.newElement;
     that.newElement = function (element) {
       var element_type = element._class.replace('.', '-');
+      element.element_id = that.generateElementId();
+      if (! element.id) {
+        element.id = that.generateNodeId(element_type);
+      }
       priv.super_newElement(element, configuration[element_type]);
-      $("#" + element.id).on('click', function () {
+      $("#" + element.element_id).on('click', function () {
         $("#dialog-form").dialog("destroy");
-        priv.prepareDialogForElement(element.id, element.id);
+        priv.prepareDialogForElement(element.id, element.element_id);
         $("#dialog-form").dialog("open");
       });
       // Store default values
@@ -235,7 +239,7 @@
             $.each(v, function (kk, vv) {
               clone_node[kk] = vv;
             });
-          } else if (k == 'id') {
+          } else if (k == 'id' || k == 'element_id') {
             true; // no need to output
           } else {
             clone_node[k] = v;

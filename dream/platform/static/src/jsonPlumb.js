@@ -22,6 +22,37 @@
   scope.jsonPlumb = function () {
     var that = {}, priv = {};
 
+    that.getNodeId = function (element_id) {
+      var node_id;
+      $.each(priv.node_container, function (k, v) {
+        if (v['element_id'] === element_id) {
+          node_id = k;
+          return false;
+        }
+      });
+      return node_id;
+    };
+
+    that.getElementId = function (node_id) {
+      return priv.node_container[node_id].element_id;
+    };
+
+    that.generateNodeId = function (element_type) {
+      var n = 1;
+      while ((element_type + '_' + n) in priv.node_container) {
+        n += 1;
+      }
+      return element_type + '_' + n;
+    }
+
+    that.generateElementId = function () {
+      var n = 1;
+      while ($('#DreamNode_' + n).length > 0) {
+        n += 1;
+      }
+      return 'DreamNode_' + n;
+    }
+
     priv.initJsPlumb = function () {
       jsPlumb.setRenderMode(jsPlumb.SVG);
       var color = "#00f";
@@ -88,8 +119,8 @@
           delete(priv.edge_container[connection.id]);
         } else {
           priv.edge_container[connection.id] = [
-            connection.sourceId,
-            connection.targetId, {}
+            that.getNodeId(connection.sourceId),
+            that.getNodeId(connection.targetId), {}
           ];
         }
         priv.onDataChange();
@@ -126,7 +157,8 @@
       });
     };
 
-    priv.updateElementCoordinate = function (element_id, coordinate) {
+    priv.updateElementCoordinate = function (node_id, coordinate) {
+      var element_id = priv.node_container[node_id].element_id;
       var coordinates = priv.preference_container['coordinates'] || {}, element;
       if (coordinate === undefined) {
         coordinate = {};
@@ -136,7 +168,7 @@
         coordinate.top = relative_position[1];
         coordinate.left = relative_position[0];
       }
-      coordinates[element_id] = coordinate;
+      coordinates[node_id] = coordinate;
       priv.preference_container['coordinates'] = coordinates;
       priv.onDataChange();
       return coordinate;
@@ -202,7 +234,7 @@
     priv.draggable = function () {
       // make all the window divs draggable
       var stop = function (element) {
-        priv.updateElementCoordinate(element.target.id);
+        priv.updateElementCoordinate(that.getNodeId(element.target.id));
       };
       jsPlumb.draggable(jsPlumb.getSelector(".window"), {
         grid: [10, 10],
@@ -214,10 +246,10 @@
       var element_data = {
         _class: element._class,
         id: element.id,
+        element_id: element.element_id,
         name: element.name
       };
       priv.node_container[element.id] = element_data;
-      priv.onDataChange();
     };
 
     priv.onDataChange = function () {
@@ -276,7 +308,7 @@
       $.each(coordinates, function (node_id, v) {
         var absolute_position = priv.convertToAbsolutePosition(
           v['left'], v['top']);
-        var element = $('#' + node_id);
+        var element = $('#' + that.getElementId(node_id));
         element.css('top', absolute_position[1]);
         element.css('left', absolute_position[0]);
         jsPlumb.repaint(element);
@@ -297,39 +329,41 @@
       return data;
     };
 
-    priv.removeElement = function (element_id) {
+    priv.removeElement = function (node_id) {
+      var element_id = priv.node_container[node_id].element_id;
       jsPlumb.removeAllEndpoints($("#" + element_id));
       $("#" + element_id).remove();
-      delete(priv.node_container[element_id]);
-      delete(priv.preference_container['coordinates'][element_id]);
+      delete(priv.node_container[node_id]);
+      delete(priv.preference_container['coordinates'][node_id]);
       $.each(priv.edge_container, function (k, v) {
-        if (element_id == v[0] || element_id == v[1]) {
+        if (node_id == v[0] || node_id == v[1]) {
           delete(priv.edge_container[k]);
         }
       });
       priv.onDataChange();
     };
 
-    that.updateElementData = function (element_id, data) {
-      $.extend(priv.node_container[element_id], data);
+    that.updateElementData = function (node_id, data) {
+      var element_id = priv.node_container[node_id].element_id;
+      $.extend(priv.node_container[node_id], data);
       if (data['name']) {
         $("#" + element_id).text(data["name"]);
       }
       var new_id = data['id'];
-      if (new_id && new_id !== element_id) {
-        priv.node_container[new_id] = priv.node_container[element_id];
+      if (new_id && new_id !== node_id) {
+        priv.node_container[new_id] = priv.node_container[node_id];
         priv.node_container[new_id]['id'] = new_id;
-        delete(priv.node_container[element_id]);
+        delete(priv.node_container[node_id]);
         $.each(priv.edge_container, function (k, v) {
-          if (v[0] === element_id) {
+          if (v[0] === node_id) {
             v[0] = new_id;
           }
-          if (v[1] === element_id) {
+          if (v[1] === node_id) {
             v[1] = new_id;
           }
         });
-        priv.preference_container['coordinates'][new_id] = priv.preference_container['coordinates'][element_id];
-        delete(priv.preference_container['coordinates'][element_id]);
+        priv.preference_container['coordinates'][new_id] = priv.preference_container['coordinates'][node_id];
+        delete(priv.preference_container['coordinates'][node_id]);
       }
       priv.onDataChange();
     };
@@ -343,8 +377,8 @@
       priv.initSpreadSheet();
     };
 
-    that.removeElement = function (element_id) {
-      priv.removeElement(element_id);
+    that.removeElement = function (node_id) {
+      priv.removeElement(node_id);
     };
 
     that.getData = function () {
@@ -352,8 +386,8 @@
     };
 
     that.clearAll = function () {
-      $.each(priv.node_container, function (element_id) {
-        priv.removeElement(element_id);
+      $.each(priv.node_container, function (node_id) {
+        priv.removeElement(node_id);
       });
       // delete anything if still remains
       $("#render").children().remove();
@@ -362,8 +396,8 @@
 
     that.connect = function (source_id, target_id) {
       jsPlumb.connect({
-        source: source_id,
-        target: target_id
+        source: that.getElementId(source_id),
+        target: that.getElementId(target_id)
       });
     };
 
@@ -377,6 +411,7 @@
     };
 
     that.newElement = function (element, option) {
+      priv.addElementToContainer(element);
       var render_element, style_string = "",
         coordinate = element.coordinate,
         box;
@@ -385,8 +420,8 @@
         coordinate = priv.updateElementCoordinate(element.id, coordinate);
       }
       render_element.append('<div class="window ' + element._class.replace('.', '-') + '" id="' +
-        element.id + '">' + (element.name || element.id) + '</div>');
-      box = $("#" + element.id);
+        element.element_id + '">' + (element.name || element.id) + '</div>');
+      box = $("#" + element.element_id);
       var absolute_position = priv.convertToAbsolutePosition(
         coordinate.left, coordinate.top);
       box.css("top", absolute_position[1]);
@@ -414,11 +449,11 @@
         isTarget: true
       };
       for (var key in option.anchor) {
-        jsPlumb.addEndpoint(element.id, {
+        jsPlumb.addEndpoint(element.element_id, {
           anchor: key
         }, endpoint);
       }
-      priv.addElementToContainer(element);
+      priv.onDataChange();
     };
 
     return that;

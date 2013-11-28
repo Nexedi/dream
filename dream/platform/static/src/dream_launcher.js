@@ -254,14 +254,8 @@
         box_left = tool.clientX - offset.left + "px";
         var relative_position = dream_instance.convertToRelativePosition(
           box_left, box_top);
-        // find an unused ID
-        var n = 1;
-        while ($('#' + tool.target.id + '_' + n).length > 0) {
-          n += 1;
-        }
         _class = tool.target.id.replace('-', '.'); // XXX - vs .
         dream_instance.newElement({
-          id: tool.target.id + "_" + n,
           coordinate: {
             top: relative_position[1],
             left: relative_position[0]
