@@ -5,8 +5,7 @@ class Simulation(DefaultSimulation):
   def run(self, data):
     if 'spreadsheet' in data:
       wip_dict = {}
-      for row in data['spreadsheet'][0]['rows']:
-        value_list = [x.get('value') for x in row['columns']]
+      for value_list in data['spreadsheet']:
         if value_list[1] == 'ID' or not value_list[1]:
           continue
         sequence_list = value_list[6].split('-')

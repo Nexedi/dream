@@ -247,11 +247,21 @@
         });
         nodes[node_id] = clone_node;
       });
-
+      // convert jQuery.sheet's complex data to simple 2D array
+      var rows = [];
+      if (data['spreadsheet']) {
+        $.each(data['spreadsheet'][0]['rows'], function (i, row) {
+          var columns = [];
+          $.each(row['columns'], function (j, column) {
+            columns.push(column['value'] || null);
+          });
+          rows.push(columns);
+        });
+      };
       manpy_dict['nodes'] = nodes;
       manpy_dict['edges'] = data['edges'];
       manpy_dict['general'] = data['general'];
-      manpy_dict['spreadsheet'] = data['spreadsheet'];
+      manpy_dict['spreadsheet'] = rows;
       return manpy_dict;
     };
 
