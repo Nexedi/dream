@@ -84,6 +84,7 @@ import json
 from random import Random
 import sys
 import os.path
+import Globals
 
 # ===========================================================================
 #                       reads general simulation inputs
@@ -563,24 +564,6 @@ def createWIP():
 
     
 # ===========================================================================
-#                sets the WIP in the corresponding stations
-# ===========================================================================
-def setWIP():
-    #read the start station of the Entities and assign them to it
-    for entity in G.WipList:
-        objectId=entity.currentStation                      # get the id of the object where the entity currently seats 
-        object=None
-        for obj in G.ObjList:
-            if obj.id==objectId:  
-                object=obj                                  # find the object in the 'G.ObjList
-        object.getActiveObjectQueue().append(entity)        # append the entity to its Queue
-        import Globals
-        object.receiver=Globals.findObjectById(entity.remainingRoute[1][0])
-        entity.remainingRoute.pop(0)                        # remove data from the remaining route.    
-        entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
-        entity.currentStation=object                        # update the current station of the entity           
-
-# ===========================================================================
 #                        the main script that is ran
 # ===========================================================================
 def main(argv=[], input_data=None):
@@ -618,7 +601,7 @@ def main(argv=[], input_data=None):
         initialize()                        #initialize the simulation 
         createWIP()
         initializeObjects()
-        setWIP()        
+        Globals.setWIP(G.EntityList)        
         activateObjects()
         
         # if the simulation is ran until no more events are scheduled, 
