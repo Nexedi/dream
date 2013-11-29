@@ -87,6 +87,7 @@ li { margin: 3px;
 #render {
     text-align: center;
     background-color:white;
+    position: relative;
 }
 
 #render ul {

@@ -191,8 +191,8 @@
         size_x = node_style['width'].replace('px', '');
         size_y = node_style['height'].replace('px', '');
       }
-      var top = y.replace('px', '') / (canvas_size_y - size_y);
-      var left = x.replace('px', '') / (canvas_size_x - size_x);
+      var top = Math.max(Math.min(y.replace('px', '') / (canvas_size_y - size_y), 1), 0);
+      var left = Math.max(Math.min(x.replace('px', '') / (canvas_size_x - size_x), 1), 0);
       return [left, top];
     };
 
@@ -212,6 +212,7 @@
       };
 
       jsPlumb.draggable(jsPlumb.getSelector(".window"), {
+        containment: 'parent',
         grid: [10, 10],
         stop: stop
       });
