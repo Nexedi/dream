@@ -76,17 +76,17 @@ Below are initial lists of scheduling rules to be considered for each of the que
 
 I believe the ability to attribute each of these lists to a queue object is the only requirements at GUI level. Everything henceforth is a ManPy and Optimization business.
 '''
-#M1Options = ['EDD','WINQ','LPT','SPT','SRR','ERD','PCO','MS'] #initial list of scheduling rules that are to be randomly used for each of the machines
-#M2Options = ['EDD','WINQ','LPT','SPT','SRR','ERD','PCO','MS']
-#M3Options = ['EDD','WINQ','LPT','SPT','SRR','ERD','PCO','MS']
-#M4Options = ['EDD','WINQ','LPT','SPT','SRR','ERD','PCO','MS']
-#M5Options = ['EDD','WINQ','LPT','SPT','SRR','ERD','PCO','MS']
+M1Options = ['EDD','WINQ','LPT','SPT','ERD','PCO','MS'] #initial list of scheduling rules that are to be randomly used for each of the machines
+M2Options = ['EDD','WINQ','LPT','SPT','ERD','PCO','MS']
+M3Options = ['EDD','WINQ','LPT','SPT','ERD','PCO','MS']
+M4Options = ['EDD','WINQ','LPT','SPT','ERD','PCO','MS']
+M5Options = ['EDD','WINQ','LPT','SPT','ERD','PCO','MS']
 
-M1Options = ['EDD','NextStage','EOD','Priority','RPC','MinSlack','NumStages'] #initial list of scheduling rules that are to be randomly used for each of the machines
-M2Options = ['EDD','NextStage','EOD','Priority','RPC','MinSlack','NumStages'] 
-M3Options = ['EDD','NextStage','EOD','Priority','RPC','MinSlack','NumStages'] 
-M4Options = ['EDD','NextStage','EOD','Priority','RPC','MinSlack','NumStages'] 
-M5Options = ['EDD','NextStage','EOD','Priority','RPC','MinSlack','NumStages'] 
+#M1Options = ['EDD','NextStage','EOD','Priority','RPC','MinSlack','NumStages'] #initial list of scheduling rules that are to be randomly used for each of the machines
+#M2Options = ['EDD','NextStage','EOD','Priority','RPC','MinSlack','NumStages'] 
+#M3Options = ['EDD','NextStage','EOD','Priority','RPC','MinSlack','NumStages'] 
+#M4Options = ['EDD','NextStage','EOD','Priority','RPC','MinSlack','NumStages'] 
+#M5Options = ['EDD','NextStage','EOD','Priority','RPC','MinSlack','NumStages'] 
 
 #Optimization takes over from here and it calls ManPy simulation at intervals using the sim function 
 def main():

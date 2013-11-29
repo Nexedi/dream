@@ -236,9 +236,21 @@ class Queue(CoreObject):
                 for step in entity.remainingRoute:
                     RPT+=step[1]                
                 entity.remainingProcessingTime=RPT
-            activeObjectQ.sort(key=lambda x: x.remainingProcessingTime, reverse=True)      
+            activeObjectQ.sort(key=lambda x: x.remainingProcessingTime, reverse=True)   
+        #if the schedulingRule is to sort Entities according to longest processing time first in the next station
+        elif criterion=="LPT":
+            for entity in activeObjectQ:
+                LPT=0
+                entity.processingTimeInNextStation=entity.remainingRoute[0][1]
+            activeObjectQ.sort(key=lambda x: x.processingTimeInNextStation, reverse=True)             
+        #if the schedulingRule is to sort Entities according to shortest processing time first in the next station
+        elif criterion=="SPT":
+            for entity in activeObjectQ:
+                LPT=0
+                entity.processingTimeInNextStation=entity.remainingRoute[0][1]
+            activeObjectQ.sort(key=lambda x: x.processingTimeInNextStation) 
         #if the schedulingRule is to sort Entities based on the minimum slackness
-        elif criterion=="MinSlack":
+        elif criterion=="MS":
             for entity in activeObjectQ:
                 RPT=0
                 for step in entity.remainingRoute:
@@ -246,13 +258,13 @@ class Queue(CoreObject):
                 entity.remainingProcessingTime=RPT
             activeObjectQ.sort(key=lambda x: (x.dueDate-x.remainingProcessingTime))  
         #if the schedulingRule is to sort Entities based on the length of the following Queue
-        elif criterion=="NextStage":
+        elif criterion=="WINQ":
             from Globals import G
             for entity in activeObjectQ:
                 nextObjId=entity.remainingRoute[1][0]
                 for obj in G.ObjList:
                     if obj.id==nextObjId:
                         nextObject=obj        
-                entity.nextQueueLength=len(nextObject.Res.activeQ)           
+                entity.nextQueueLength=len(nextObject.getActiveObjectQueue())           
             activeObjectQ.sort(key=lambda x: x.nextQueueLength)  
     
