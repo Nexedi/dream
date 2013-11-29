@@ -12,7 +12,6 @@ body {
 	background-color:black;
 	position:fixed;
 	top:0;left:0;
-    z-index:10000;
 	height:44px;
 	padding:0;
 	border-bottom:1px solid #999;
@@ -86,7 +85,6 @@ li { margin: 3px;
 }
 
 #render {
-    z-index:5000;
     text-align: center;
     background-color:white;
 }
@@ -268,7 +266,6 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
   font-style:italic;
   padding-top:0.9em;
   font-size:0.9em;
-  z-index:4;
   cursor:move;
   background-color:white;
   font-size:11px;
