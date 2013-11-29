@@ -55,8 +55,8 @@ def positionGraph():
   """
   graph = pydot.Dot()
 
-  for node in request.json['nodes'].itervalues():
-    graph.add_node(pydot.Node(node['id']))
+  for node_id, node in request.json['nodes'].iteritems():
+    graph.add_node(pydot.Node(node_id))
   for edge in request.json['edges'].itervalues():
     graph.add_edge(pydot.Edge(edge[0], edge[1]))
 
