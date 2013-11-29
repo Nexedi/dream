@@ -181,7 +181,7 @@
     that.newElement = function (element) {
       var element_type = element._class.replace('.', '-');
       element.element_id = that.generateElementId();
-      if (! element.id) {
+      if (!element.id) {
         element.id = that.generateNodeId(element_type);
       }
       priv.super_newElement(element, configuration[element_type]);

@@ -268,8 +268,43 @@ path, ._jsPlumb_endpoint { cursor:pointer; }
   font-style:italic;
   padding-top:0.9em;
   font-size:0.9em;
+  z-index:4;
+  cursor:move;
+  background-color:white;
+  font-size:11px;
+  -webkit-transition:background-color 0.1s ease-in;
+  -moz-transition:background-color 0.1s ease-in;
+  transition:background-color 0.1s ease-in;
+}
+
+.window:hover {
+  background-color: #5c96bc;
+  color:white;
 }
 
 #debug textarea {
   width:100%;
+}
+
+.ep {
+  position:absolute;
+  bottom:37%;
+  right:5px;
+  width:1em;
+  height:1em;
+  background-color:orange;
+  cursor:pointer;
+  box-shadow: 0px 0px 2px black;
+  -webkit-transition:-webkit-box-shadow 0.25s ease-in;
+  -moz-transition:-moz-box-shadow 0.25s ease-in;
+  transition:box-shadow 0.25s ease-in;
+}
+
+._jsPlumb_source_hover, ._jsPlumb_target_hover, .dragHover {
+  background-color:#1e8151;
+  color:white;
+}
+
+path {
+  cursor:pointer;
 }

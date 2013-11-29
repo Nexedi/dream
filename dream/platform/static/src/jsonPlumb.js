@@ -57,20 +57,9 @@
       jsPlumb.setRenderMode(jsPlumb.SVG);
       var color = "#00f";
       jsPlumb.importDefaults({
-        // default drag options
-        DragOptions: {
-          cursor: 'pointer',
-          zIndex: 2000
-        },
-        EndpointStyles: [{
-          fillStyle: '#225588'
-        }, {
-          fillStyle: '#558822'
-        }],
-        //PaintStyle : {strokeStyle:"#736AFF", lineWidth:2 },
         HoverPaintStyle: {
-          strokeStyle: "#42a62c",
-          lineWidth: 4
+          strokeStyle: "#1e8151",
+          lineWidth: 2
         },
         Endpoint: ["Dot", {
           radius: 2
@@ -80,18 +69,10 @@
             location: 1,
             id: "arrow",
             length: 14,
-            width: 12,
             foldback: 0.8
           }]
         ],
-        PaintStyle: {
-          lineWidth: 2,
-          strokeStyle: color
-        },
-        Anchor: "Continuous",
-        Connector: ["StateMachine", {
-          curviness: 20
-        }]
+        Container: "render"
       });
 
       // listen for clicks on connections, and offer to change values on click.
@@ -106,13 +87,6 @@
       jsPlumb.bind("connectionDrag", function (connection) {});
 
       jsPlumb.bind("connectionDragStop", function (connection) {});
-
-      jsPlumb.makeTarget(jsPlumb.getSelector(".w"), {
-        dropOptions: {
-          hoverClass: "dragHover"
-        },
-        anchor: "Continuous"
-      });
 
       var updateConnectionData = function (connection, remove) {
         if (remove) {
@@ -236,10 +210,33 @@
       var stop = function (element) {
         priv.updateElementCoordinate(that.getNodeId(element.target.id));
       };
+
       jsPlumb.draggable(jsPlumb.getSelector(".window"), {
         grid: [10, 10],
         stop: stop
       });
+
+      jsPlumb.makeSource(jsPlumb.getSelector(".window"), {
+        filter: ".ep",
+        anchor: "Continuous",
+        connector: ["StateMachine", {
+          curviness: 20
+        }],
+        connectorStyle: {
+          strokeStyle: "#5c96bc",
+          lineWidth: 2,
+          outlineColor: "transparent",
+          outlineWidth: 4
+        },
+      });
+
+      jsPlumb.makeTarget(jsPlumb.getSelector(".window"), {
+        dropOptions: {
+          hoverClass: "dragHover"
+        },
+        anchor: "Continuous"
+      });
+
     };
     priv.addElementToContainer = function (element) {
       // Now update the container of elements
@@ -419,7 +416,7 @@
         coordinate = priv.updateElementCoordinate(element.id, coordinate);
       }
       render_element.append('<div class="window ' + element._class.replace('.', '-') + '" id="' +
-        element.element_id + '">' + (element.name || element.id) + '</div>');
+        element.element_id + '">' + (element.name || element.id) + '<div class="ep"></div></div>');
       box = $("#" + element.element_id);
       var absolute_position = priv.convertToAbsolutePosition(
         coordinate.left, coordinate.top);
@@ -447,11 +444,6 @@
         scope: "blue rectangle",
         isTarget: true
       };
-      for (var key in option.anchor) {
-        jsPlumb.addEndpoint(element.element_id, {
-          anchor: key
-        }, endpoint);
-      }
       priv.onDataChange();
     };
 

@@ -158,74 +158,40 @@
 
     var configuration = {
       "Dream-Source": {
-        anchor: {
-          RightMiddle: {}
-        },
-        /* TODO: make anchor not a configuration option and allow to connect from everywhere */
         property_list: [property_container["interarrivalTime"],
           property_container["entity"]
         ],
         _class: 'Dream.Source'
       },
       "Dream-Machine": {
-        anchor: {
-          RightMiddle: {},
-          LeftMiddle: {},
-          TopCenter: {},
-          BottomCenter: {}
-        },
         property_list: [property_container["processingTime"],
           property_container["failures"]
         ],
         _class: 'Dream.Machine'
       },
       "Dream-Queue": {
-        anchor: {
-          RightMiddle: {},
-          LeftMiddle: {}
-        },
         property_list: [property_container["capacity"], property_container[
           "isDummy"]],
         _class: 'Dream.Queue'
       },
       "Dream-Exit": {
-        anchor: {
-          LeftMiddle: {}
-        },
         _class: 'Dream.Exit'
       },
       "Dream-MachineJobShop": {
-        anchor: {
-          RightMiddle: {},
-          LeftMiddle: {},
-          TopCenter: {},
-          BottomCenter: {}
-        },
         property_list: [property_container["processingTime"],
           property_container["failures"]
         ],
         _class: 'Dream.MachineJobShop'
       },
       "Dream-QueueJobShop": {
-        anchor: {
-          RightMiddle: {},
-          LeftMiddle: {}
-        },
         property_list: [property_container["capacity"], property_container[
           "isDummy"]],
         _class: 'Dream.QueueJobShop'
       },
       "Dream-ExitJobShop": {
-        anchor: {
-          LeftMiddle: {}
-        },
         _class: 'Dream.ExitJobShop'
       },
       "Dream-Repairman": {
-        anchor: {
-          TopCenter: {},
-          BottomCenter: {}
-        },
         property_list: [property_container["capacity"]],
         _class: 'Dream.Repairman'
       },
@@ -246,7 +212,10 @@
     $(".tool").draggable({
       opacity: 0.7,
       helper: "clone",
-      cursorAt: {top: 0, left: 0},
+      cursorAt: {
+        top: 0,
+        left: 0
+      },
       stop: function (tool) {
         var box_top, box_left, _class;
         var offset = $("#render").offset();
