@@ -257,7 +257,7 @@
           });
           rows.push(columns);
         });
-      };
+      }
       manpy_dict['nodes'] = nodes;
       manpy_dict['edges'] = data['edges'];
       manpy_dict['general'] = data['general'];

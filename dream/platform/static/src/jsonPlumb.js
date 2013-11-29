@@ -43,7 +43,7 @@
         n += 1;
       }
       return element_type + '_' + n;
-    }
+    };
 
     that.generateElementId = function () {
       var n = 1;
@@ -51,7 +51,7 @@
         n += 1;
       }
       return 'DreamNode_' + n;
-    }
+    };
 
     priv.initJsPlumb = function () {
       jsPlumb.setRenderMode(jsPlumb.SVG);
@@ -228,7 +228,7 @@
           lineWidth: 2,
           outlineColor: "transparent",
           outlineWidth: 4
-        },
+        }
       });
 
       jsPlumb.makeTarget(jsPlumb.getSelector(".window"), {
