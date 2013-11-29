@@ -84,6 +84,7 @@ import json
 from random import Random
 import sys
 import os.path
+import Globals
 
 # ===========================================================================
 #                       reads general simulation inputs
@@ -373,34 +374,7 @@ def createObjects():
             C=Conveyer(id, name, length, speed)
             C.nextIds=getSuccessorList(id)
             G.ObjList.append(C)
-            G.ConveyerList.append(C)
-            
-        elif objClass=='Dream.Job':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            priority=int(element.get('priority', '0'))
-            dueDate=float(element.get('dueDate', '0'))
-            orderDate=float(element.get('orderDate', '0'))
-            JSONRoute=element.get('route', [])                  # dummy variable that holds the routes of the jobs
-                                                                #    the route from the JSON file 
-                                                                #    is a sequence of dictionaries
-            route = [None for i in range(len(JSONRoute))]       # variable that holds the argument used in the Job initiation
-                                                                #    hold None for each entry in the 'route' list
-            
-            for routeElement in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
-                stepNumber=int(routeElement.get('stepNumber', '0'))                 #    get the stepNumber
-                nextId=routeElement.get('stationId', 'not found')                   #    the stationId
-                processingTime=routeElement.get('processingTime', 'not found')      # and the 'processingTime' dictionary
-                distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
-                                                                                    #    get the 'mean' 
-                mean=float(processingTime.get('mean', 'not found'))
-                route[stepNumber]=[nextId, mean]                                    # finally add the 'nextId' and 'mean'
-                                                                                    #     to the job route
-            # initiate the job
-            J=Job(id, name, route, priority=priority, dueDate=dueDate, orderDate=orderDate)
-            G.JobList.append(J)   
-            G.WipList.append(J)  
-            G.EntityList.append(J)       
+            G.ConveyerList.append(C)    
             
         elif objClass=='Dream.BatchDecomposition':
             id=element.get('id', 'not found')
@@ -457,6 +431,72 @@ def createObjects():
                 if possible_successor.id==nextId:
                     possible_successor.previousIds.append(element.id)            
 
+
+# ===========================================================================
+#                reads the WIP of the stations
+# ===========================================================================
+def createWIP():
+    G.JobList=[]
+    G.WipList=[]
+    G.EntityList=[]  
+    
+    json_data = G.JSONData
+    #Read the json data
+    nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
+    for (element_id, element) in nodes.iteritems():
+        element['id'] = element_id
+        wip=element.get('wip', [])
+        for entity in wip:
+            entityClass=None
+            try:
+                entityClass=entity.get('_class', None)
+            except IndexError:
+                continue
+   
+            if entityClass=='Dream.Job':
+                id=entity.get('id', 'not found')
+                name=entity.get('name', 'not found')
+                priority=int(entity.get('priority', '0'))
+                dueDate=float(entity.get('dueDate', '0'))
+                orderDate=float(entity.get('orderDate', '0'))
+                JSONRoute=entity.get('route', [])                  # dummy variable that holds the routes of the jobs
+                                                                    #    the route from the JSON file 
+                                                                    #    is a sequence of dictionaries
+                route = [None for i in range(len(JSONRoute))]       #    variable that holds the argument used in the Job initiation
+                                                                    #    hold None for each entry in the 'route' list
+                
+                for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
+                    stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
+                    nextId=routeentity.get('stationId', 'not found')                   #    the stationId
+                    processingTime=routeentity.get('processingTime', 'not found')      # and the 'processingTime' dictionary
+                    distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
+                                                                                        #    get the 'mean' 
+                    mean=float(processingTime.get('mean', 'not found'))
+                    route[stepNumber]=[nextId, mean]                                    # finally add the 'nextId' and 'mean'
+                                                                                        # to the job route
+                
+                #Below it is to assign an exit if it was not assigned in JSON
+                #have to talk about it with NEX
+                exitAssigned=False
+                for element in route:
+                    elementId=element[0]
+                    for obj in G.ObjList:
+                        if obj.id==elementId and obj.type=='Exit':
+                            exitAssigned=True 
+                if not exitAssigned:
+                    exitId=None
+                    for obj in G.ObjList:
+                        if obj.type=='Exit':
+                            exitId=obj.id
+                            break
+                    if exitId:
+                        route.append([exitId, 0])
+                                                                                                                                                  
+                # initiate the job
+                J=Job(id, name, route, priority=priority, dueDate=dueDate, orderDate=orderDate)
+                G.JobList.append(J)   
+                G.WipList.append(J)  
+                G.EntityList.append(J)   
 
 # ===========================================================================
 #    defines the topology (predecessors and successors for all the objects)
@@ -560,7 +600,6 @@ def setWIP():
 #                        the main script that is ran
 # ===========================================================================
 def main(modelJSON, antJSON):
-    #argv = argv or sys.argv[1:]
     
     #create an empty list to store all the objects in   
     G.ObjList=[]
@@ -574,6 +613,7 @@ def main(modelJSON, antJSON):
     G.JSONData=json.loads(G.InputData)              # create the dictionary JSONData
     readGeneralInput()
     createObjects()
+    createWIP()
     setQueuesSchedulingRules()
     setTopology() 
 
@@ -585,8 +625,9 @@ def main(modelJSON, antJSON):
         G.Rnd=Random(G.seed) 
               
         initialize()                        #initialize the simulation 
+        createWIP()
         initializeObjects()
-        setWIP()        
+        Globals.setWIP(G.EntityList)        
         activateObjects()
         
         # if the simulation is ran until no more events are scheduled, 
