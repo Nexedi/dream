@@ -63,6 +63,12 @@ class Dismantle(CoreObject):
         self.Blockage=[]
         self.predecessorIndex=0     #holds the index of the predecessor from which the Dismantle will take an entity next
         self.successorIndex=0       #holds the index of the successor where the Dismantle will dispose an entity next
+        
+        # ============================== variable that is used for the loading of machines =============
+        self.exitAssignedToReceiver = False             # by default the objects are not blocked 
+                                                        # when the entities have to be loaded to operatedMachines
+                                                        # then the giverObjects have to be blocked for the time
+                                                        # that the machine is being loaded 
 
         
     def initialize(self):

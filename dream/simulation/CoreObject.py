@@ -63,8 +63,13 @@ class CoreObject(Process):
         self.waitToDispose=False                        #shows if the object waits to dispose an entity   
 
         # ============================== the below are currently used in Jobshop =======================   
-        self.giver=None     #the CoreObject that the activeObject will take an Entity from
-        self.receiver=None  #the CoreObject that the activeObject will give an Entity to
+        self.giver=None                                 #the CoreObject that the activeObject will take an Entity from
+        self.receiver=None                              #the CoreObject that the activeObject will give an Entity to
+        # ============================== variable that is used for the loading of machines =============
+        self.exitAssignedToReceiver = False             # by default the objects are not blocked 
+                                                        # when the entities have to be loaded to operatedMachines
+                                                        # then the giverObjects have to be blocked for the time
+                                                        # that the machine is being loaded 
 
     # ======================== the main process of the core object =================================
     # ================ this is dummy, every object must have its own implementation ================
@@ -105,6 +110,9 @@ class CoreObject(Process):
         activeObjectQueue.append(activeEntity)   
         #remove the entity from the previous object
         giverObject.removeEntity()
+        # if the giverObject is blocked then unBlock it
+        if giverObject.exitIsAssigned():
+            giverObject.unAssignExit()                
         #append the time to schedule so that it can be read in the result
         #remember that every entity has it's schedule which is supposed to be updated every time 
         # the entity enters a new object
@@ -199,4 +207,22 @@ class CoreObject(Process):
     # calculates the processing time
     # =======================================================================
     def calculateProcessingTime(self):
-        return self.rng.generateNumber()                            # this is if we have a default processing time for all the entities
+        return self.rng.generateNumber()           # this is if we have a default processing time for all the entities
+    
+    # =======================================================================
+    # checks if the machine is blocked
+    # =======================================================================
+    def exitIsAssigned(self):
+        return self.exitAssignedToReceiver
+    
+    # =======================================================================
+    # assign Exit of the object
+    # =======================================================================
+    def assignExit(self):
+        self.exitAssignedToReceiver = True
+        
+    # =======================================================================
+    # unblock the object
+    # =======================================================================
+    def unAssignExit(self):
+        self.exitAssignedToReceiver = False
