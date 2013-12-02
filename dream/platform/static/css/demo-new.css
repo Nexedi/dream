@@ -304,7 +304,7 @@ path, ._jsPlumb_endpoint {
   background-color:#fdd;
 }
 
-.window {
+.window, .dummy_window {
   border:1px solid lightgray;
   width:100px;
   height:64px;
@@ -325,6 +325,13 @@ path, ._jsPlumb_endpoint {
 .window:hover {
   background-color: #5c96bc;
   color:white;
+}
+
+.dummy_window {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
 }
 
 #debug textarea {

@@ -149,60 +149,34 @@
     };
 
     priv.updateNodeStyle = function (element_id) {
-      var node_style = priv.preference_container['node_style'];
+      var zoom_level = (priv.preference_container['zoom_level'] || 1.0) * 1.1111;
       var element = $("#" + element_id);
-      if (node_style !== undefined) {
-        element.css(node_style);
-      } else {
-        var style_dict = {};
-        $.each(priv.style_attr_list, function (i, j) {
-          style_dict[j] = $('.window').css(j);
-        });
-        priv.saveNodeStyle(style_dict);
-      }
+      $.each(priv.style_attr_list, function (i, j) {
+        var new_value = $('.dummy_window').css(j).replace('px', '') * zoom_level + 'px';
+        element.css(j, new_value);
+      });
     };
 
     priv.convertToAbsolutePosition = function (x, y) {
+      var zoom_level = (priv.preference_container['zoom_level'] || 1.0) * 1.1111;
       var canvas_size_x = $('#main').width();
       var canvas_size_y = $('#main').height();
-      var node_style = priv.preference_container['node_style'];
-      var size_x, size_y;
-      if (node_style === undefined) {
-        size_x = $('.window').css('width').replace('px', '');
-        size_y = $('.window').css('height').replace('px', '');
-      } else {
-        size_x = node_style['width'].replace('px', '');
-        size_y = node_style['height'].replace('px', '');
-      }
+      var size_x = $('.dummy_window').width() * zoom_level;
+      var size_y = $('.dummy_window').height() * zoom_level;
       var top = Math.floor(y * (canvas_size_y - size_y)) + "px";
       var left = Math.floor(x * (canvas_size_x - size_x)) + "px";
       return [left, top];
     };
 
     that.convertToRelativePosition = function (x, y) {
+      var zoom_level = (priv.preference_container['zoom_level'] || 1.0) * 1.1111;
       var canvas_size_x = $('#main').width();
       var canvas_size_y = $('#main').height();
-      var node_style = priv.preference_container['node_style'];
-      var size_x, size_y;
-      if (node_style === undefined) {
-        size_x = $('.window').width();
-        size_y = $('.window').height();
-      } else {
-        size_x = node_style['width'].replace('px', '');
-        size_y = node_style['height'].replace('px', '');
-      }
+      var size_x = $('.dummy_window').width() * zoom_level;
+      var size_y = $('.dummy_window').height() * zoom_level;
       var top = Math.max(Math.min(y.replace('px', '') / (canvas_size_y - size_y), 1), 0);
       var left = Math.max(Math.min(x.replace('px', '') / (canvas_size_x - size_x), 1), 0);
       return [left, top];
-    };
-
-    priv.saveNodeStyle = function (style_dict) {
-      var node_style = priv.preference_container['node_style'] || {};
-      $.each(style_dict, function (k, v) {
-        node_style[k] = v;
-      });
-      priv.preference_container['node_style'] = node_style;
-      priv.onDataChange();
     };
 
     priv.draggable = function () {
@@ -278,25 +252,26 @@
 
     };
 
-    that.zoom_in = function () {
-      var style_dict = {};
+    that.setZoom = function (zoom_level) {
       $.each(priv.style_attr_list, function (i, j) {
-        var new_value = $('.window').css(j).replace('px', '') * 1.1111 + 'px';
+        var new_value = $('.dummy_window').css(j).replace('px', '') * zoom_level + 'px';
         $('.window').css(j, new_value);
-        style_dict[j] = new_value;
       });
-      priv.saveNodeStyle(style_dict);
+    };
+
+    that.zoom_in = function () {
+      var zoom_level = (priv.preference_container['zoom_level'] || 1.0) * 1.1111;
+      that.setZoom(zoom_level);
+      priv.preference_container['zoom_level'] = zoom_level;
+      priv.onDataChange();
       that.redraw();
     };
 
     that.zoom_out = function () {
-      var style_dict = {};
-      $.each(priv.style_attr_list, function (i, j) {
-        var new_value = $('.window').css(j).replace('px', '') * 0.9 + 'px';
-        $('.window').css(j, new_value);
-        style_dict[j] = new_value;
-      });
-      priv.saveNodeStyle(style_dict);
+      var zoom_level = (priv.preference_container['zoom_level'] || 1.0) * 0.9;
+      that.setZoom(zoom_level);
+      priv.preference_container['zoom_level'] = zoom_level;
+      priv.onDataChange();
       that.redraw();
     };
 
@@ -400,6 +375,8 @@
 
     that.setPreferences = function (preferences) {
       priv.preference_container = preferences;
+      var zoom_level = priv.preference_container['zoom_level'] || 1.0;
+      that.setZoom(zoom_level);
     };
 
     that.setGeneralProperties = function (properties) {
@@ -423,7 +400,7 @@
         coordinate.left, coordinate.top);
       box.css("top", absolute_position[1]);
       box.css("left", absolute_position[0]);
-      priv.updateNodeStyle(element.id);
+      priv.updateNodeStyle(element.element_id);
 
       // Initial DEMO code : make all the window divs draggable
       priv.draggable();
