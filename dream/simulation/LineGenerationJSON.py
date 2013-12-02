@@ -171,7 +171,7 @@ def createObjects():
         if objClass=='Dream.Source':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            interarrivalTime=element.get('interarrivalTime', 'not found')
+            interarrivalTime=element['interarrivalTime']
             distributionType=interarrivalTime.get('distributionType', 'not found')
             mean=float(interarrivalTime.get('mean', '0'))        
             entity=str_to_class(element.get('entity', 'not found'))     # initialize entity
@@ -183,7 +183,7 @@ def createObjects():
         if objClass=='Dream.BatchSource':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            interarrivalTime=element.get('interarrivalTime', 'not found')
+            interarrivalTime=element['interarrivalTime']
             distributionType=interarrivalTime.get('distributionType', 'not found')
             mean=float(interarrivalTime.get('mean', '0'))        
             entity=str_to_class(element.get('entity', 'not found'))          
@@ -197,7 +197,7 @@ def createObjects():
         elif objClass=='Dream.Machine':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', 'not found')
+            processingTime=element['processingTime']
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
@@ -223,7 +223,7 @@ def createObjects():
         elif objClass=='Dream.BatchScrapMachine':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', 'not found')
+            processingTime=element['processingTime']
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
@@ -258,7 +258,7 @@ def createObjects():
         elif objClass=='Dream.MachineJobShop':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', 'not found')
+            processingTime=element['processingTime']
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
@@ -334,7 +334,7 @@ def createObjects():
         elif objClass=='Dream.Assembly':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', 'not found')
+            processingTime=element['processingTime']
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
@@ -348,7 +348,7 @@ def createObjects():
         elif objClass=='Dream.Dismantle':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', 'not found')
+            processingTime=element['processingTime']
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
@@ -376,7 +376,7 @@ def createObjects():
         elif objClass=='Dream.BatchDecomposition':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', 'not found')
+            processingTime=element['processingTime']
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
@@ -392,7 +392,7 @@ def createObjects():
         elif objClass=='Dream.BatchReassembly':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', 'not found')
+            processingTime=element['processingTime']
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
@@ -532,7 +532,7 @@ def createWIP():
                 for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
                     stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
                     nextId=routeentity.get('stationId', 'not found')                   #    the stationId
-                    processingTime=routeentity.get('processingTime', 'not found')      # and the 'processingTime' dictionary
+                    processingTime=routeentity['processingTime']                       # and the 'processingTime' dictionary
                     distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
                                                                                         #    get the 'mean' 
                     mean=float(processingTime.get('mean', 'not found'))
