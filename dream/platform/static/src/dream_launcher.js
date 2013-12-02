@@ -236,46 +236,54 @@
     });
 
     var loadData = function (data) {
-      // spreadsheet
-      var spreadsheet_data = data.spreadsheet;
-      if (spreadsheet_data !== undefined) {
-        var spreadsheet = $('#spreadsheet_input');
-        spreadsheet.handsontable('populateFromArray', 0, 0, spreadsheet_data);
-      }
+      dream_instance.clearAll();
+      $('#graph_zone').hide();
+      $('#spreadsheet_output').hide();
 
-      var preference = data.preference !== undefined ?
-        data.preference : {};
-      dream_instance.setPreferences(preference);
-
-      // Add all elements
-      var coordinates = preference['coordinates'];
-      $.each(data.nodes, function (key, value) {
-        if (coordinates === undefined || coordinates[key] === undefined) {
-          value['coordinate'] = {
-            'top': 0.0,
-            'left': 0.0
-          };
-        } else {
-          value['coordinate'] = coordinates[key];
+      try {
+        // spreadsheet
+        var spreadsheet_data = data.spreadsheet;
+        if (spreadsheet_data !== undefined) {
+          var spreadsheet = $('#spreadsheet_input');
+          spreadsheet.handsontable('populateFromArray', 0, 0, spreadsheet_data);
         }
-        value['id'] = key;
-        dream_instance.newElement(value);
-        dream_instance.updateElementData(key, {
-          data: value.data || {}
-        });
-      });
-      $.each(data.edges, function (key, value) {
-        dream_instance.connect(value[0], value[1]);
-      });
 
-      dream_instance.setGeneralProperties(data.general);
-      dream_instance.initGeneralProperties(); // XXX
-      $("#json_output").val(JSON.stringify(dream_instance.getData(),
-        undefined, " "));
-      if ($.isEmptyObject(coordinates)) {
-        dream_instance.positionGraph();
-      } else {
-        dream_instance.redraw();
+        var preference = data.preference !== undefined ?
+          data.preference : {};
+        dream_instance.setPreferences(preference);
+
+        // Add all elements
+        var coordinates = preference['coordinates'];
+        $.each(data.nodes, function (key, value) {
+          if (coordinates === undefined || coordinates[key] === undefined) {
+            value['coordinate'] = {
+              'top': 0.0,
+              'left': 0.0
+            };
+          } else {
+            value['coordinate'] = coordinates[key];
+          }
+          value['id'] = key;
+          dream_instance.newElement(value);
+          dream_instance.updateElementData(key, {
+            data: value.data || {}
+          });
+        });
+        $.each(data.edges, function (key, value) {
+          dream_instance.connect(value[0], value[1]);
+        });
+
+        dream_instance.setGeneralProperties(data.general);
+        dream_instance.initGeneralProperties(); // XXX
+        $("#json_output").val(JSON.stringify(dream_instance.getData(),
+          undefined, " "));
+        if ($.isEmptyObject(coordinates)) {
+          dream_instance.positionGraph();
+        } else {
+          dream_instance.redraw();
+        }
+      } catch (e) {
+	alert('Loading data failed.');
       }
     };
     // Check if there is already data when we first load the page, if yes, then build graph from it
@@ -461,7 +469,6 @@
     $("#import_file").change(function () {
       var form = $(this).parent('form')[0];
       var form_data = new FormData(form);
-      dream_instance.clearAll();
       $.ajax('/postJSONFile', {
         type: 'POST',
         contentType: false,
