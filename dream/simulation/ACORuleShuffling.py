@@ -30,6 +30,7 @@ import random
 import json
 import LineGenerationJSONACO
 import time
+from Globals import G
 
 def ranking(candidates,elg): #this function is used for ranking and selection of the best ant
     pop = [] #this list is used separately to extract ant scores for ranking them
@@ -71,6 +72,21 @@ def calculateAntTotalDelay(ant):
             totalDelay+=delay
     return totalDelay
 
+#creates a light coded form of the ant and tests it
+def checkIfAntTested(ant):
+    #code the ant in a lighter string form
+    codedAnt=''
+    for key in ant:
+        codedAnt+=ant[key]
+    #if it already exists return true so that it will not be tested
+    if codedAnt in G.CodedAnstsList:
+        return True
+    #else add it to the list and return false
+    else:
+        G.CodedAnstsList.append(codedAnt)
+        return False 
+
+
 '''
 Below are initial lists of scheduling rules to be considered for each of the queues/machine, these could be entered at GUI level
 
@@ -82,45 +98,51 @@ M3Options = ['EDD','WINQ','LPT','SPT','ERD','PCO','MS']
 M4Options = ['EDD','WINQ','LPT','SPT','ERD','PCO','MS']
 M5Options = ['EDD','WINQ','LPT','SPT','ERD','PCO','MS']
 
-#M1Options = ['EDD','NextStage','EOD','Priority','RPC','MinSlack','NumStages'] #initial list of scheduling rules that are to be randomly used for each of the machines
-#M2Options = ['EDD','NextStage','EOD','Priority','RPC','MinSlack','NumStages'] 
-#M3Options = ['EDD','NextStage','EOD','Priority','RPC','MinSlack','NumStages'] 
-#M4Options = ['EDD','NextStage','EOD','Priority','RPC','MinSlack','NumStages'] 
-#M5Options = ['EDD','NextStage','EOD','Priority','RPC','MinSlack','NumStages'] 
+
 
 #Optimization takes over from here and it calls ManPy simulation at intervals using the sim function 
 def main():
+    G.CodedAnstsList=[]       #a list to keep all the solutions in a coded form
     start=time.time()                               # start counting execution time 
     modelJSONFile=open("C:\Users\George\dream\dream\simulation\JSONInputs\Topology20.JSON", "r")     #the JSON of the model. To be sent from GUI
     modelJSONData=modelJSONFile.read()   
     modelJSON=json.loads(modelJSONData)
     modelJSON=json.dumps(modelJSON, indent=True)
-    collated = {'Q1':M2Options,'Q2':M3Options,'Q3':M4Options,'Q4':M4Options,'Q5':M5Options} #the list of options collated into a dictionary for ease of referencing in ManPy
+    #collated = {'Q1':M1Options,'Q2':M2Options,'Q3':M3Options,'Q4':M4Options,'Q5':M5Options} #the list of options collated into a dictionary for ease of referencing in ManPy
+    collated = {'Q1':M1Options,'Q2':M2Options,'Q3':M3Options}  #the list of options collated into a dictionary for ease of referencing in ManPy
     ants = [] #list of ants for keeping track of their performance
     
-    for i in range(6): #Number of times new ants are to be created, i.e. number of generations (a generation can have more than 1 ant)
-        for j in range(8): #number of ants created per generation
+    for i in range(10): #Number of times new ants are to be created, i.e. number of generations (a generation can have more than 1 ant)
+        for j in range(20): #number of ants created per generation
             ant = {} #an ant dictionary to contain rule to queue assignment information 
             for k in collated.keys(): #for each of the machines, rules are randomly picked from the options list 
                     ant[str(k)] = random.choice(collated[str(k)])
-            ants.append(ant) #the current ant to be simulated (evaluated) is added to the ants list
-            antJSON=createAntJSON(ant)
-            ant['resultJSON'] = LineGenerationJSONACO.main(modelJSON,antJSON)         
-            ant['score'] = calculateAntTotalDelay(ant) 
+            #if the ant was not already tested, only then test it
+            if not checkIfAntTested(ant):    
+                ants.append(ant) #the current ant to be simulated (evaluated) is added to the ants list            
+                antJSON=createAntJSON(ant)
+                ant['resultJSON'] = LineGenerationJSONACO.main(modelJSON,antJSON)         
+                ant['score'] = calculateAntTotalDelay(ant) 
+        
         ants = ranking(ants,4) #the ants in this generation are ranked based on their scores and the best 4 are selected
 
         for l in ants: #update the options list to ensure that good performing queue-rule combinations have increased representation and good chance of being selected in the next generation
             for m in collated.keys():#e.g. if using EDD gave good performance for  Queue 1, then another 'EDD' is added to M1Options so there is a higher chance that it is selected by the next ants.
                 collated[m].append(l[m])
-        #print collated#to verify that the list of options was updated accordingly
-    print 'Best 3 results'
-    print '================='
-    print ants[0]['score']
-    print '================='
-    print ants[1]['score']
-    print '================='
-    print ants[2]['score']
-    print "execution time=", str(time.time()-start)
+
+    print 'Best results'
+    try:
+        print '================='
+        print ants[0]['score']
+        print '================='
+        print ants[1]['score']
+        print '================='
+        print ants[2]['score']
+        print '================='
+        print ants[3]['score']
+        print "execution time=", str(time.time()-start)
+    except IndexError:
+        pass
 
 if __name__ == '__main__':
     main()
