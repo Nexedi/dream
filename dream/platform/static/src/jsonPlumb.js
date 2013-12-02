@@ -113,14 +113,22 @@
 
     priv.initSpreadSheet = function () {
       var spreadsheet = $('#spreadsheet_input');
-      $.get('spreadsheet_template.json', function (data) {
-        spreadsheet.handsontable({
-          data: data,
-          minSpareRows: 1,
-          afterChange: function () {
-            priv.onDataChange();
-          }
-        });
+      var data = [[
+	"Jobs",
+	"ID",
+	"Order Date",
+	"Due Date",
+	"Priority",
+	"Material",
+	"Sequence",
+	"Processing Times"
+      ]];
+      spreadsheet.handsontable({
+        data: data,
+        minSpareRows: 1,
+        afterChange: function () {
+          priv.onDataChange();
+        }
       });
     };
 
