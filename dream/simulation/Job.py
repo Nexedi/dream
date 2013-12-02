@@ -33,7 +33,7 @@ from Entity import Entity
 class Job(Entity):                                  # inherits from the Entity class   
     type="Job"
     
-    def __init__(self, id=None, name=None, route=[], priority=0, dueDate=None, orderDate=None):
+    def __init__(self, id=None, name=None, route=[], priority=0, dueDate=None, orderDate=None, extraPropertyDict=None):
         Entity.__init__(self, id=id,name=name, priority=priority, dueDate=dueDate, orderDate=orderDate)
         # instance specific attributes 
         self.id=id                                  # id
@@ -45,6 +45,7 @@ class Job(Entity):                                  # inherits from the Entity c
         # the scheduling of the entity as resolved by the simulation
         self.schedule=[]                            # keeps the result of the simulation. 
                                                     # A list with the stations and time of entrance
+        self.extraPropertyDict = extraPropertyDict
         
     #==================== outputs results to JSON File ======================
     def outputResultsJSON(self):
@@ -54,6 +55,7 @@ class Job(Entity):                                  # inherits from the Entity c
             json['_class'] = 'Dream.Job'
             json['id'] = str(self.id)
             json['results'] = {}
+            json['extraPropertyDict'] = self.extraPropertyDict
             
             #if the Job has reached an exit, input completion time in the results
             if self.schedule[-1][0].type=='Exit':
@@ -83,5 +85,4 @@ class Job(Entity):                                  # inherits from the Entity c
         # has to be re-initialized each time a new Job is added
         self.remainingRoute=self.route   
         self.currentStation=self.route[0][0]    
-    
-    
+

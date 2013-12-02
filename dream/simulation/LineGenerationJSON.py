@@ -539,6 +539,12 @@ def createWIP():
                     route[stepNumber]=[nextId, mean]                                    # finally add the 'nextId' and 'mean'
                                                                                         # to the job route
                 
+                # keep a reference of all extra properties passed to the job
+                extraPropertyDict = {}
+                for key, value in entity.items():
+                  if key not in ('_class', 'id'):
+                    extraPropertyDict[key] = value
+
                 #Below it is to assign an exit if it was not assigned in JSON
                 #have to talk about it with NEX
                 exitAssigned=False
@@ -555,9 +561,9 @@ def createWIP():
                             break
                     if exitId:
                         route.append([exitId, 0])
-                                                                                                                                                  
                 # initiate the job
-                J=Job(id, name, route, priority=priority, dueDate=dueDate, orderDate=orderDate)
+                J=Job(id, name, route, priority=priority, dueDate=dueDate,
+                    orderDate=orderDate, extraPropertyDict=extraPropertyDict)
                 G.JobList.append(J)   
                 G.WipList.append(J)  
                 G.EntityList.append(J)       
