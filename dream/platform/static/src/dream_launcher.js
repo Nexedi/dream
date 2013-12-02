@@ -414,6 +414,7 @@
               $.plot("#graph", series, options);
 
 	      if (spreadsheet_data.length > 1) {
+		$('#spreadsheet_output').show();
 		$('#spreadsheet_output').handsontable({
 		  data: spreadsheet_data,
 		  readOnly: true
