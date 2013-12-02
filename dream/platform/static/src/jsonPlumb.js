@@ -112,21 +112,14 @@
     };
 
     priv.initSpreadSheet = function () {
-      var sheet = $('.jQuerySheet');
-      $.get('spreadsheet_template.html', function (data) {
-        sheet.html(data).sheet({
-          autoAddCells: false
-        });
-        sheet.getSheet().setNav(false);
-        // Here we bind on the parent object because bind will be
-        // reset when we replace the contents by using html().
-        $('#spreadsheet').on('sheetCellEdited', function () {
-          priv.onDataChange();
-        });
-        // When we click outside of the
-        // spreadsheet, keyevent should not be taken by spreadsheet.
-        $(document).mousedown(function () {
-          $('.jQuerySheet').getSheet().setNav(false);
+      var spreadsheet = $('#spreadsheet_input');
+      $.get('spreadsheet_template.json', function (data) {
+        spreadsheet.handsontable({
+          data: data,
+          minSpareRows: 1,
+          afterChange: function () {
+            priv.onDataChange();
+          }
         });
       });
     };
@@ -294,9 +287,9 @@
         "preference": priv.preference_container,
         "general": priv.general_container
       };
-      var spreadsheet = $('.jQuerySheet').getSheet();
+      var spreadsheet = $('#spreadsheet_input');
       if (spreadsheet !== undefined) {
-        data['spreadsheet'] = $.sheet.dts.fromTables.json(spreadsheet);
+        data['spreadsheet'] = spreadsheet.handsontable('getData');
       }
       return data;
     };

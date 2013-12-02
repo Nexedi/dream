@@ -237,13 +237,10 @@
 
     var loadData = function (data) {
       // spreadsheet
-      var spreadsheet = data.spreadsheet;
-      if (spreadsheet !== undefined) {
-        var sheet = $('.jQuerySheet');
-        sheet.html($.sheet.dts.toTables.json(spreadsheet)).sheet({
-          autoAddCells: false
-        });
-        sheet.getSheet().setNav(false);
+      var spreadsheet_data = data.spreadsheet;
+      if (spreadsheet_data !== undefined) {
+        var spreadsheet = $('#spreadsheet_input');
+        spreadsheet.handsontable('populateFromArray', 0, 0, spreadsheet_data);
       }
 
       var preference = data.preference !== undefined ?
@@ -430,6 +427,7 @@
     $("#import_file").change(function () {
       var form = $(this).parent('form')[0];
       var form_data = new FormData(form);
+      dream_instance.clearAll();
       $.ajax('/postJSONFile', {
         type: 'POST',
         contentType: false,
@@ -441,7 +439,6 @@
         },
         success: function (data, textStatus, jqXHR) {
           form.reset();
-          dream_instance.clearAll();
           $("#json_output").val(JSON.stringify(data));
           loadData(data);
         }
