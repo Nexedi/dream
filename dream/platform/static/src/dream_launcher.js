@@ -313,7 +313,18 @@
                 failure_data = [],
                 working_data = [],
                 ticks = [],
-                counter = 1;
+                counter = 1,
+	        spreadsheet_data = [[
+		  "Jobs",
+		  "ID",
+		  "Order Date",
+		  "Due Date",
+		  "Priority",
+		  "Material",
+		  "Entrance Time",
+		  "Station ID",
+		  "Step No."
+		]];
               $.each(data['success'].elementList, function (idx, obj) {
                 if (obj.results.working_ratio !== undefined) {
                   /* when there is only one replication, the ratio is given as a float,
@@ -342,6 +353,23 @@
                     obj.id].name || obj.id]);
                   counter++;
                 }
+
+		if (obj._class === 'Dream.Job') {
+		  var property_dict = obj.extraPropertyDict;
+		  $.each(obj['results']['schedule'], function (i, schedule) {
+		    spreadsheet_data.push([
+		      property_dict['name'],
+		      obj['id'],
+		      property_dict['order_date'],
+		      property_dict['due_date'],
+		      property_dict['priority'],
+		      property_dict['material'],
+		      schedule['entranceTime'],
+		      schedule['stationId'],
+		      schedule['stepNumber']
+		    ]);
+		  });
+		}
               });
 
               var series = [{
@@ -377,6 +405,11 @@
               };
               $.plot("#graph", series, options);
 
+	      if (spreadsheet_data.length > 1) {
+		$('#spreadsheet_output').handsontable({
+		  data: spreadsheet_data
+		});
+	      }
             } else {
               $("#json_result").effect('shake', 50).val(data['error']);
             }
