@@ -362,7 +362,7 @@
         priv.removeElement(node_id);
       });
       // delete anything if still remains
-      $("#render").children().remove();
+      $("#main").children().remove();
       priv.initSpreadSheet();
     };
 
@@ -389,7 +389,7 @@
       var render_element, style_string = "",
         coordinate = element.coordinate,
         box;
-      render_element = $("#render");
+      render_element = $("#main");
       if (coordinate !== undefined) {
         coordinate = priv.updateElementCoordinate(element.id, coordinate);
       }
@@ -405,23 +405,6 @@
       // Initial DEMO code : make all the window divs draggable
       priv.draggable();
 
-      // Add endPoint to allow drawing connections
-      var color = "#00f";
-      // Different endpoint color for Repairman
-      if (element._class === "Dream.Repairman") {
-        color = "rgb(189,11,11)";
-      }
-      var endpoint = {
-        endpoint: "Rectangle",
-        paintStyle: {
-          width: 25,
-          height: 21,
-          fillStyle: color
-        },
-        isSource: true,
-        scope: "blue rectangle",
-        isTarget: true
-      };
       priv.onDataChange();
     };
 

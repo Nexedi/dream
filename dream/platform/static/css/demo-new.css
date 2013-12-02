@@ -39,6 +39,7 @@ body {
   overflow: hidden;
   border-radius: 10px;
   background-color:#eaedef;
+  text-align: center;
 }
 
 /* Setting for dialog */
@@ -108,7 +109,7 @@ li {
 
 /* demo elements */
 
-.menu, #render, #explanation {
+.menu, #explanation {
   background-color:#fff;
 }
 
@@ -119,24 +120,6 @@ li {
   padding-bottom:0.4em;
   background-color: transparent;
   margin-right:30px;
-}
-
-#render {
-  text-align: center;
-  background-color:white;
-  position: relative;
-}
-
-#render ul {
-  padding-left:1em;
-}
-
-#render ul li {
-  list-style-type:none;
-}
-
-#render h5 {
-  display:inline;
 }
 
 .otherLibraries {

@@ -219,7 +219,7 @@
       },
       stop: function (tool) {
         var box_top, box_left, _class;
-        var offset = $("#render").offset();
+        var offset = $("#main").offset();
         box_top = tool.clientY - offset.top + "px";
         box_left = tool.clientX - offset.left + "px";
         var relative_position = dream_instance.convertToRelativePosition(
