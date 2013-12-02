@@ -342,3 +342,12 @@ path, ._jsPlumb_endpoint {
 path {
   cursor:pointer;
 }
+
+#spreadsheet_output {
+  margin: 20px 0;
+}
+
+#gantt_output {
+  height: 400px;
+  margin: 20px 0;
+}

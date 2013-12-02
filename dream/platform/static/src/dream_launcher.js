@@ -239,6 +239,7 @@
       dream_instance.clearAll();
       $('#graph_zone').hide();
       $('#spreadsheet_output').hide();
+      $("#gantt_output").hide();
 
       try {
         // spreadsheet
@@ -332,7 +333,18 @@
 		  "Entrance Time",
 		  "Station ID",
 		  "Step No."
-		]];
+		]],
+	        gantt_data = {
+		  data: [],
+		  link: []
+		};
+
+	      // temporary hack
+	      var now = new Date();
+	      now.setHours(0);
+	      now.setMinutes(0);
+	      now.setSeconds(0);
+
               $.each(data['success'].elementList, function (idx, obj) {
                 if (obj.results.working_ratio !== undefined) {
                   /* when there is only one replication, the ratio is given as a float,
@@ -364,6 +376,16 @@
 
 		if (obj._class === 'Dream.Job') {
 		  var property_dict = obj.extraPropertyDict;
+		  var duration = 0;
+		  var start_date = new Date(now.getTime());
+		  gantt_data.data.push({
+		    id: obj['id'],
+		    text: property_dict['name'],
+		    start_date: start_date,
+		    duration: obj['results'].completionTime,
+		    project: 1,
+		    open: true
+		  });
 		  $.each(obj['results']['schedule'], function (i, schedule) {
 		    spreadsheet_data.push([
 		      property_dict['name'],
@@ -376,6 +398,22 @@
 		      schedule['stationId'],
 		      schedule['stepNumber']
 		    ]);
+		    if (obj['results']['schedule'][i+1]) {
+		      duration = obj['results']['schedule'][i+1]['entranceTime'] - schedule['entranceTime'];
+		    } else {
+		      duration = obj['results'].completionTime - schedule['entranceTime'];
+		    }
+		    if (duration > 0.0) {
+		      var task_start_date = new Date(start_date.getTime());
+		      task_start_date.setDate(task_start_date.getDate() + schedule['entranceTime']);
+		      gantt_data.data.push({
+			id:obj['id'] + '.' + schedule['stepNumber'],
+			text: schedule['stationId'],
+			start_date: task_start_date,
+			duration: duration,
+			parent: obj['id']
+		      });
+		    }
 		  });
 		}
               });
@@ -418,6 +456,11 @@
 		$('#spreadsheet_output').handsontable({
 		  data: spreadsheet_data,
 		  readOnly: true
+		});
+		$('#gantt_output').show().dhx_gantt({
+		  data: gantt_data,
+		  scale_unit: 'day',
+		  step: 7
 		});
 	      }
             } else {
@@ -497,6 +540,8 @@
     });
 
     $("#graph_zone").hide();
+    $("#spreadsheet_output").hide();
+    $("#gantt_output").hide();
 
   });
 })(jQuery);
