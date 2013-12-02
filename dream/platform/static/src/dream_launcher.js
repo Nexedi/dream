@@ -210,7 +210,7 @@
     dream_instance = Dream(configuration);
     dream_instance.start();
     $(".tool").draggable({
-      containment: '#render',
+      containment: '#main',
       opacity: 0.7,
       helper: "clone",
       cursorAt: {
