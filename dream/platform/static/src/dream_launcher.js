@@ -95,6 +95,12 @@
         _class: "Dream.Property",
         _default: "0"
       },
+      schedulingRule: {
+        id: "schedulingRule",
+        type: "string",
+        _class: "Dream.Property",
+        _default: "FIFO"
+      },
       capacity: {
         id: "capacity",
         type: "string",
@@ -170,8 +176,10 @@
         _class: 'Dream.Machine'
       },
       "Dream-Queue": {
-        property_list: [property_container["capacity"], property_container[
-          "isDummy"]],
+        property_list: [property_container["capacity"],
+          property_container["isDummy"],
+          property_container["schedulingRule"],
+          ],
         _class: 'Dream.Queue'
       },
       "Dream-Exit": {
@@ -184,8 +192,10 @@
         _class: 'Dream.MachineJobShop'
       },
       "Dream-QueueJobShop": {
-        property_list: [property_container["capacity"], property_container[
-          "isDummy"]],
+        property_list: [property_container["capacity"],
+          property_container["isDummy"],
+          property_container["schedulingRule"],
+          ],
         _class: 'Dream.QueueJobShop'
       },
       "Dream-ExitJobShop": {
