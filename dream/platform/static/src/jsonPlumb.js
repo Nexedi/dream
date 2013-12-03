@@ -113,16 +113,18 @@
 
     priv.initSpreadSheet = function () {
       var spreadsheet = $('#spreadsheet_input');
-      var data = [[
-        "Jobs",
-        "ID",
-        "Order Date",
-        "Due Date",
-        "Priority",
-        "Material",
-        "Sequence",
-        "Processing Times"
-      ]];
+      var data = [
+        [
+          "Jobs",
+          "ID",
+          "Order Date",
+          "Due Date",
+          "Priority",
+          "Material",
+          "Sequence",
+          "Processing Times"
+        ]
+      ];
       spreadsheet.handsontable({
         data: data,
         minSpareRows: 1,

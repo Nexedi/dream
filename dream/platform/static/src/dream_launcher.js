@@ -179,7 +179,7 @@
         property_list: [property_container["capacity"],
           property_container["isDummy"],
           property_container["schedulingRule"]
-          ],
+        ],
         _class: 'Dream.Queue'
       },
       "Dream-Exit": {
@@ -195,7 +195,7 @@
         property_list: [property_container["capacity"],
           property_container["isDummy"],
           property_container["schedulingRule"]
-          ],
+        ],
         _class: 'Dream.QueueJobShop'
       },
       "Dream-ExitJobShop": {
@@ -336,17 +336,19 @@
                 working_data = [],
                 ticks = [],
                 counter = 1,
-                spreadsheet_data = [[
-                  "Jobs",
-                  "ID",
-                  "Order Date",
-                  "Due Date",
-                  "Priority",
-                  "Material",
-                  "Entrance Time",
-                  "Station ID",
-                  "Step No."
-                ]],
+                spreadsheet_data = [
+                  [
+                    "Jobs",
+                    "ID",
+                    "Order Date",
+                    "Due Date",
+                    "Priority",
+                    "Material",
+                    "Entrance Time",
+                    "Station ID",
+                    "Step No."
+                  ]
+                ],
                 gantt_data = {
                   data: [],
                   link: []
@@ -411,8 +413,8 @@
                       schedule['stationId'],
                       schedule['stepNumber']
                     ]);
-                    if (obj['results']['schedule'][i+1]) {
-                      duration = obj['results']['schedule'][i+1]['entranceTime'] - schedule['entranceTime'];
+                    if (obj['results']['schedule'][i + 1]) {
+                      duration = obj['results']['schedule'][i + 1]['entranceTime'] - schedule['entranceTime'];
                     } else {
                       duration = obj['results'].completionTime - schedule['entranceTime'];
                     }
@@ -420,7 +422,7 @@
                       var task_start_date = new Date(start_date.getTime());
                       task_start_date.setDate(task_start_date.getDate() + schedule['entranceTime']);
                       gantt_data.data.push({
-                        id:obj['id'] + '.' + schedule['stepNumber'],
+                        id: obj['id'] + '.' + schedule['stepNumber'],
                         text: schedule['stationId'],
                         start_date: task_start_date,
                         duration: duration,
@@ -472,13 +474,12 @@
                   readOnly: true
                 });
                 spreadsheet.find('.htCore').width(spreadsheet.width());
-                gantt.templates.task_class = function(start, end, obj){
+                gantt.templates.task_class = function (start, end, obj) {
                   return obj.parent ? "sub_task" : "";
                 };
                 try {
                   gantt.clearAll();
-                } catch (e) {
-                }
+                } catch (e) {}
                 $('#gantt_output').show().dhx_gantt({
                   data: gantt_data,
                   scale_unit: 'day',
