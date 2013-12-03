@@ -130,6 +130,7 @@
           priv.onDataChange();
         }
       });
+      spreadsheet.find('.htCore').width(spreadsheet.width());
     };
 
     priv.updateElementCoordinate = function (node_id, coordinate) {

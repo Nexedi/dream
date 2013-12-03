@@ -247,6 +247,7 @@
         if (spreadsheet_data !== undefined) {
           var spreadsheet = $('#spreadsheet_input');
           spreadsheet.handsontable('populateFromArray', 0, 0, spreadsheet_data);
+	  spreadsheet.find('.htCore').width(spreadsheet.width());
         }
 
         var preference = data.preference !== undefined ?
@@ -452,11 +453,13 @@
               $.plot("#graph", series, options);
 
 	      if (spreadsheet_data.length > 1) {
-		$('#spreadsheet_output').show();
-		$('#spreadsheet_output').handsontable({
+		var spreadsheet = $('#spreadsheet_output');
+		spreadsheet.show();
+		spreadsheet.handsontable({
 		  data: spreadsheet_data,
 		  readOnly: true
 		});
+		spreadsheet.find('.htCore').width(spreadsheet.width());
 		$('#gantt_output').show().dhx_gantt({
 		  data: gantt_data,
 		  scale_unit: 'day',
