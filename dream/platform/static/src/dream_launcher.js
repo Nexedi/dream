@@ -463,6 +463,7 @@
                 $('#gantt_output').show().dhx_gantt({
                   data: gantt_data,
                   scale_unit: 'day',
+                  readonly: true,
                   step: 7
                 });
               }
