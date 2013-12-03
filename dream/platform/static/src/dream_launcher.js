@@ -475,6 +475,10 @@
                 gantt.templates.task_class = function(start, end, obj){
                   return obj.parent ? "sub_task" : "";
                 };
+                try {
+                  gantt.clearAll();
+                } catch (e) {
+                }
                 $('#gantt_output').show().dhx_gantt({
                   data: gantt_data,
                   scale_unit: 'day',
