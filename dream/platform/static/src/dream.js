@@ -195,14 +195,16 @@
           "property_list"
         ] || [];
       var updateDefaultData = function (data, property_list) {
-        $.each(property_list, function (key, element) {
-          if (element) {
-            if (element._class === "Dream.Property") {
-              data[element.id] = element._default;
-            } else if (element._class === "Dream.PropertyList") {
-              data[element.id] = {};
-              var next_data = data[element.id];
-              var next_property_list = element.property_list || [];
+        $.each(property_list, function (idx, value) {
+          if (value) {
+            if (element[value.id]) {
+              data[value.id] = element[value.id];
+            } else if (value._class === "Dream.Property") {
+              data[value.id] = value._default;
+            } else if (value._class === "Dream.PropertyList") {
+              data[value.id] = {};
+              var next_data = data[value.id];
+              var next_property_list = value.property_list || [];
               updateDefaultData(next_data, next_property_list);
             }
           }
@@ -229,31 +231,6 @@
       that.initGeneralProperties();
     };
 
-    priv.formatForManpy = function (data) {
-      var manpy_dict = {}, nodes = {}, edges = {}, edge_id = 0;
-      $.each(data['nodes'], function (node_id, node) {
-        var clone_node = {};
-        /* clone the node and put content of 'data' at the top level. */
-        $.each(node, function (k, v) {
-          if (k == 'data') {
-            $.each(v, function (kk, vv) {
-              clone_node[kk] = vv;
-            });
-          } else if (k == 'element_id') {
-            true; // no need to output
-          } else {
-            clone_node[k] = v;
-          }
-        });
-        nodes[node_id] = clone_node;
-      });
-      manpy_dict['nodes'] = nodes;
-      manpy_dict['edges'] = data['edges'];
-      manpy_dict['general'] = data['general'];
-      manpy_dict['spreadsheet'] = data['spreadsheet'];
-      return manpy_dict;
-    };
-
     /** Runs the simulation, and call the callback with results once the
      * simulation is finished.
      */
@@ -271,11 +248,10 @@
         });
       that.setGeneralProperties(properties);
 
-      var model = priv.formatForManpy(that.getData());
       $.ajax(
         '/runSimulation', {
           data: JSON.stringify({
-            json: model
+            json: that.getData()
           }),
           contentType: 'application/json',
           type: 'POST',

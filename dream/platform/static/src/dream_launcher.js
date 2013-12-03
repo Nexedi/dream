@@ -277,9 +277,11 @@
           }
           value['id'] = key;
           dream_instance.newElement(value);
-          dream_instance.updateElementData(key, {
-            data: value.data || {}
-          });
+          if (value.data) { // backward compatibility
+            dream_instance.updateElementData(key, {
+              data: value.data
+            });
+          }
         });
         $.each(data.edges, function (key, value) {
           dream_instance.connect(value[0], value[1]);

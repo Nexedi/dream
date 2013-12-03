@@ -324,7 +324,7 @@
       }
       var new_id = data['id'];
       delete(data['id']);
-      $.extend(priv.node_container[node_id], data);
+      $.extend(priv.node_container[node_id], data.data);
       if (new_id && new_id !== node_id) {
         priv.node_container[new_id] = priv.node_container[node_id];
         delete(priv.node_container[node_id]);
