@@ -72,7 +72,7 @@
             foldback: 0.8
           }]
         ],
-        Container: "render"
+        Container: "main"
       });
 
       // listen for clicks on connections, and offer to change values on click.
