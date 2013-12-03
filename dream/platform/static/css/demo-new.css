@@ -351,3 +351,8 @@ path {
   height: 400px;
   margin: 20px 0;
 }
+
+.sub_task {
+  background-color: #3DD388;
+  border-color: #28B06C;
+}

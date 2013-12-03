@@ -460,6 +460,9 @@
                   readOnly: true
                 });
                 spreadsheet.find('.htCore').width(spreadsheet.width());
+                gantt.templates.task_class = function(start, end, obj){
+                  return obj.parent ? "sub_task" : "";
+                };
                 $('#gantt_output').show().dhx_gantt({
                   data: gantt_data,
                   scale_unit: 'day',
