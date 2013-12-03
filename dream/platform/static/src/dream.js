@@ -100,7 +100,7 @@
         '<label>Name</label><input type="text" name="name" id="name" value="' +
         element_name + '" class="text ui-widget-content ui-corner-all"/>');
 
-      var previous_data = (node_dict[node_id] || {}).data || {};
+      var previous_data = node_dict[node_id] || {};
       var previous_value;
       var renderField = function (property_list, previous_data, prefix) {
         if (prefix === undefined) {
