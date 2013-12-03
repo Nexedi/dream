@@ -41,7 +41,7 @@
       });
     };
 
-    that.initGeneralProperties = function () {
+    that.prepareDialogForGeneralProperties = function () {
       var fieldset = $("#general-fieldset"),
         previous_data = that.getData()['general'],
         previous_value = "",
@@ -228,7 +228,7 @@
         general_properties[element.id] = element._default;
       });
       that.setGeneralProperties(general_properties);
-      that.initGeneralProperties();
+      that.prepareDialogForGeneralProperties();
     };
 
     /** Runs the simulation, and call the callback with results once the

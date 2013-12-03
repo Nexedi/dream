@@ -288,7 +288,7 @@
         });
 
         dream_instance.updateGeneralProperties(data.general);
-        dream_instance.initGeneralProperties(); // XXX
+        dream_instance.prepareDialogForGeneralProperties();
         $("#json_output").val(JSON.stringify(dream_instance.getData(),
           undefined, " "));
         if ($.isEmptyObject(coordinates)) {
