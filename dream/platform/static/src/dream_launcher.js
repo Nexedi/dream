@@ -178,7 +178,7 @@
       "Dream-Queue": {
         property_list: [property_container["capacity"],
           property_container["isDummy"],
-          property_container["schedulingRule"],
+          property_container["schedulingRule"]
           ],
         _class: 'Dream.Queue'
       },
@@ -194,7 +194,7 @@
       "Dream-QueueJobShop": {
         property_list: [property_container["capacity"],
           property_container["isDummy"],
-          property_container["schedulingRule"],
+          property_container["schedulingRule"]
           ],
         _class: 'Dream.QueueJobShop'
       },
