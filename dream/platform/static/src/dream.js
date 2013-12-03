@@ -25,6 +25,15 @@
     var that = jsonPlumb(),
       priv = {};
 
+    that.initGeneralProperties = function () {
+      var general_properties = {};
+      $.each(configuration["Dream-Configuration"].property_list, function (
+        idx, element) {
+        general_properties[element.id] = element._default;
+      });
+      that.setGeneralProperties(general_properties);
+    };
+
     priv.displayTool = function () {
       var render_element = $("#tools-container");
       for (var key in configuration) {
@@ -221,13 +230,7 @@
       priv.super_start();
       priv.displayTool();
       priv.initDialog();
-      // save general configuration default values
-      var general_properties = {};
-      $.each(configuration["Dream-Configuration"].property_list, function (
-        idx, element) {
-        general_properties[element.id] = element._default;
-      });
-      that.setGeneralProperties(general_properties);
+      that.initGeneralProperties();
       that.prepareDialogForGeneralProperties();
     };
 

@@ -365,7 +365,13 @@
       });
       // delete anything if still remains
       $("#main").children().remove();
+      priv.node_container = {};
+      priv.edge_container = {};
+      priv.preference_container = {};
+      priv.general_container = {};
       priv.initSpreadSheet();
+      that.initGeneralProperties();
+      that.prepareDialogForGeneralProperties();
     };
 
     that.connect = function (source_id, target_id) {
