@@ -287,7 +287,7 @@
           dream_instance.connect(value[0], value[1]);
         });
 
-        dream_instance.setGeneralProperties(data.general);
+        dream_instance.updateGeneralProperties(data.general);
         dream_instance.initGeneralProperties(); // XXX
         $("#json_output").val(JSON.stringify(dream_instance.getData(),
           undefined, " "));

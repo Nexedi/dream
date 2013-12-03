@@ -386,6 +386,11 @@
       priv.onDataChange();
     };
 
+    that.updateGeneralProperties = function (properties) {
+      $.extend(priv.general_container, properties);
+      priv.onDataChange();
+    };
+
     that.newElement = function (element, option) {
       priv.addElementToContainer(element);
       var render_element, style_string = "",
