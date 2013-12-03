@@ -247,7 +247,7 @@
         if (spreadsheet_data !== undefined) {
           var spreadsheet = $('#spreadsheet_input');
           spreadsheet.handsontable('populateFromArray', 0, 0, spreadsheet_data);
-	  spreadsheet.find('.htCore').width(spreadsheet.width());
+          spreadsheet.find('.htCore').width(spreadsheet.width());
         }
 
         var preference = data.preference !== undefined ?
@@ -285,7 +285,7 @@
           dream_instance.redraw();
         }
       } catch (e) {
-	alert('Loading data failed.');
+        alert('Loading data failed.');
       }
     };
     // Check if there is already data when we first load the page, if yes, then build graph from it
@@ -324,27 +324,27 @@
                 working_data = [],
                 ticks = [],
                 counter = 1,
-	        spreadsheet_data = [[
-		  "Jobs",
-		  "ID",
-		  "Order Date",
-		  "Due Date",
-		  "Priority",
-		  "Material",
-		  "Entrance Time",
-		  "Station ID",
-		  "Step No."
-		]],
-	        gantt_data = {
-		  data: [],
-		  link: []
-		};
+                spreadsheet_data = [[
+                  "Jobs",
+                  "ID",
+                  "Order Date",
+                  "Due Date",
+                  "Priority",
+                  "Material",
+                  "Entrance Time",
+                  "Station ID",
+                  "Step No."
+                ]],
+                gantt_data = {
+                  data: [],
+                  link: []
+                };
 
-	      // temporary hack
-	      var now = new Date();
-	      now.setHours(0);
-	      now.setMinutes(0);
-	      now.setSeconds(0);
+              // temporary hack
+              var now = new Date();
+              now.setHours(0);
+              now.setMinutes(0);
+              now.setSeconds(0);
 
               $.each(data['success'].elementList, function (idx, obj) {
                 if (obj.results.working_ratio !== undefined) {
@@ -375,48 +375,48 @@
                   counter++;
                 }
 
-		if (obj._class === 'Dream.Job') {
-		  var property_dict = obj.extraPropertyDict;
-		  var duration = 0;
-		  var start_date = new Date(now.getTime());
-		  gantt_data.data.push({
-		    id: obj['id'],
-		    text: property_dict['name'],
-		    start_date: start_date,
-		    duration: obj['results'].completionTime,
-		    project: 1,
-		    open: true
-		  });
-		  $.each(obj['results']['schedule'], function (i, schedule) {
-		    spreadsheet_data.push([
-		      property_dict['name'],
-		      obj['id'],
-		      property_dict['order_date'],
-		      property_dict['due_date'],
-		      property_dict['priority'],
-		      property_dict['material'],
-		      schedule['entranceTime'],
-		      schedule['stationId'],
-		      schedule['stepNumber']
-		    ]);
-		    if (obj['results']['schedule'][i+1]) {
-		      duration = obj['results']['schedule'][i+1]['entranceTime'] - schedule['entranceTime'];
-		    } else {
-		      duration = obj['results'].completionTime - schedule['entranceTime'];
-		    }
-		    if (duration > 0.0) {
-		      var task_start_date = new Date(start_date.getTime());
-		      task_start_date.setDate(task_start_date.getDate() + schedule['entranceTime']);
-		      gantt_data.data.push({
-			id:obj['id'] + '.' + schedule['stepNumber'],
-			text: schedule['stationId'],
-			start_date: task_start_date,
-			duration: duration,
-			parent: obj['id']
-		      });
-		    }
-		  });
-		}
+                if (obj._class === 'Dream.Job') {
+                  var property_dict = obj.extraPropertyDict;
+                  var duration = 0;
+                  var start_date = new Date(now.getTime());
+                  gantt_data.data.push({
+                    id: obj['id'],
+                    text: property_dict['name'],
+                    start_date: start_date,
+                    duration: obj['results'].completionTime,
+                    project: 1,
+                    open: true
+                  });
+                  $.each(obj['results']['schedule'], function (i, schedule) {
+                    spreadsheet_data.push([
+                      property_dict['name'],
+                      obj['id'],
+                      property_dict['order_date'],
+                      property_dict['due_date'],
+                      property_dict['priority'],
+                      property_dict['material'],
+                      schedule['entranceTime'],
+                      schedule['stationId'],
+                      schedule['stepNumber']
+                    ]);
+                    if (obj['results']['schedule'][i+1]) {
+                      duration = obj['results']['schedule'][i+1]['entranceTime'] - schedule['entranceTime'];
+                    } else {
+                      duration = obj['results'].completionTime - schedule['entranceTime'];
+                    }
+                    if (duration > 0.0) {
+                      var task_start_date = new Date(start_date.getTime());
+                      task_start_date.setDate(task_start_date.getDate() + schedule['entranceTime']);
+                      gantt_data.data.push({
+                        id:obj['id'] + '.' + schedule['stepNumber'],
+                        text: schedule['stationId'],
+                        start_date: task_start_date,
+                        duration: duration,
+                        parent: obj['id']
+                      });
+                    }
+                  });
+                }
               });
 
               var series = [{
@@ -452,20 +452,20 @@
               };
               $.plot("#graph", series, options);
 
-	      if (spreadsheet_data.length > 1) {
-		var spreadsheet = $('#spreadsheet_output');
-		spreadsheet.show();
-		spreadsheet.handsontable({
-		  data: spreadsheet_data,
-		  readOnly: true
-		});
-		spreadsheet.find('.htCore').width(spreadsheet.width());
-		$('#gantt_output').show().dhx_gantt({
-		  data: gantt_data,
-		  scale_unit: 'day',
-		  step: 7
-		});
-	      }
+              if (spreadsheet_data.length > 1) {
+                var spreadsheet = $('#spreadsheet_output');
+                spreadsheet.show();
+                spreadsheet.handsontable({
+                  data: spreadsheet_data,
+                  readOnly: true
+                });
+                spreadsheet.find('.htCore').width(spreadsheet.width());
+                $('#gantt_output').show().dhx_gantt({
+                  data: gantt_data,
+                  scale_unit: 'day',
+                  step: 7
+                });
+              }
             } else {
               $("#json_result").effect('shake', 50).val(data['error']);
             }

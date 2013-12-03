@@ -114,14 +114,14 @@
     priv.initSpreadSheet = function () {
       var spreadsheet = $('#spreadsheet_input');
       var data = [[
-	"Jobs",
-	"ID",
-	"Order Date",
-	"Due Date",
-	"Priority",
-	"Material",
-	"Sequence",
-	"Processing Times"
+        "Jobs",
+        "ID",
+        "Order Date",
+        "Due Date",
+        "Priority",
+        "Material",
+        "Sequence",
+        "Processing Times"
       ]];
       spreadsheet.handsontable({
         data: data,
