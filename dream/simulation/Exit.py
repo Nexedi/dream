@@ -71,9 +71,7 @@ class Exit(CoreObject):
             yield waituntil, self, self.canAcceptAndIsRequested     # wait until the Queue can accept an entity
                                                                      # and one predecessor requests it  
             self.getEntity()                                                                                                  
-            self.numOfExits+=1                                      # increase the exits by one
-            self.totalTaktTime+=now()-self.timeLastEntityLeft       # add the takt time
-            self.timeLastEntityLeft=now()                           # update the time that the last entity left from the Exit
+
     # =======================================================================
     #                sets the routing in element for the Exit
     # =======================================================================
@@ -116,6 +114,9 @@ class Exit(CoreObject):
     def getEntity(self): 
         activeEntity = CoreObject.getEntity(self)           #run the default method
         self.totalLifespan+=now()-activeEntity.startTime    #Add the entity's lifespan to the total one. 
+        self.numOfExits+=1                                      # increase the exits by one
+        self.totalTaktTime+=now()-self.timeLastEntityLeft       # add the takt time
+        self.timeLastEntityLeft=now()                           # update the time that the last entity left from the Exit
         return activeEntity          
 
     # =======================================================================
