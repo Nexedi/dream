@@ -5,17 +5,9 @@ from simulation.ExitJobShop import ExitJobShop
 from simulation.Job import Job
 from simulation.Globals import G
 import simulation.ExcelHandler
-
-G.trace="Yes"
-
-from SimPy.Simulation import simulate, activate, initialize, infinity, now
-from simulation.MachineJobShop import MachineJobShop
-from simulation.QueueJobShop import QueueJobShop
-from simulation.ExitJobShop import ExitJobShop
-from simulation.Job import Job
-from simulation.Globals import G
 import simulation.Globals as Globals
 
+G.trace="Yes"
 
 #define the objects of the model
 Q1=QueueJobShop('Q1','Queue1', capacity=infinity)
