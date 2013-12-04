@@ -34,6 +34,9 @@ class ObjectInterruption(Process):
         Process.__init__(self)
         self.victim=victim
     
+    def initialize(self):
+        pass
+    
     #the main process of the core object
     #this is dummy, every object must have its own implementation
     def run(self):
@@ -46,6 +49,9 @@ class ObjectInterruption(Process):
     #returns the internal queue of the victim
     def getVictimQueue(self):
         return self.victim.getActiveObjectQueue()
+    
+    def postProcessing(self):
+        pass
         
         
         
