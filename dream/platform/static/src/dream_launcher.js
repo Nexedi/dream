@@ -480,7 +480,8 @@
                 try {
                   gantt.clearAll();
                 } catch (e) {}
-                $('#gantt_output').show().dhx_gantt({
+                var gantt_output_height = 35 * (gantt_data.data.length + 1) + 1;
+                $('#gantt_output').height(gantt_output_height).show().dhx_gantt({
                   data: gantt_data,
                   scale_unit: 'day',
                   readonly: true,
