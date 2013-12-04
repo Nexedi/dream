@@ -30,7 +30,7 @@ from SimPy.Simulation import Process, Resource
 
 class ObjectInterruption(Process):
     
-    def __init__(self, victim):
+    def __init__(self, victim=None):
         Process.__init__(self)
         self.victim=victim
     
