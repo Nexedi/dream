@@ -25,19 +25,68 @@ Created on 4 Dec 2013
 test script to test the generator
 '''
 
-from SimPy.Simulation import now, activate,simulate
+from SimPy.Simulation import now, activate,simulate, infinity,initialize
 from EventGenerator import EventGenerator
+from Machine import Machine
+from Source import Source
+from Exit import Exit
+from Part import Part
+from Queue import Queue
+from Globals import G
+import ExcelHandler
+
 
 def myMethod():
     print "I was invoked at", now()
+    
+def move():
+    if len(Q2.getActiveObjectQueue())>70:
+        Q2.next=[E]
+        E.previous=[Q2]
+        for i in range(20):
+            E.getEntity()         
+        Q2.next=[]
+        E.previous=[]
 
-EG=EventGenerator(start=60, interval=60, method=myMethod)
-activate(EG, EG.run())
-simulate(until=480)    #run the simulation
+G.trace="Yes"           
+            
+S=Source('S1','Source', mean=1, item=Part)
+M1=Machine('M1','Machine1', mean=0.75)
+Q1=Queue('Q1','Queue1',capacity=infinity)
+M2=Machine('M2','Machine2', mean=1.5)
+Q2=Queue('Q2','Queue2',capacity=infinity)
+E=Exit('E1','Exit')  
 
+#define predecessors and successors for the objects    
+S.defineRouting([M1])
+M1.defineRouting([S],[Q1])
+Q1.defineRouting([M1],[M2])
+M2.defineRouting([Q1],[Q2])
+Q2.defineRouting([M2])
 
+EG=EventGenerator(start=60, interval=60, method=move)
+G.ObjList=[S,M1,M2,E,Q1,Q2,EG]
 
+initialize()                        #initialize the simulation (SimPy method)
+    
+for object in G.ObjList:
+    object.initialize()
 
+for object in G.ObjList:
+    activate(object, object.run())
+    
+G.maxSimTime=480
+simulate(until=G.maxSimTime)    #run the simulation
+
+#carry on the post processing operations for every object in the topology       
+for object in G.ObjList:
+    object.postProcessing()
+
+ExcelHandler.outputTrace('TRACE')
+
+print "the system produced", E.numOfExits, "parts"
+print "the waiting ratio of", M1.objName,  "is", (M1.totalWaitingTime/G.maxSimTime)*100, "%"
+print "the waiting ratio of", M2.objName,  "is", (M2.totalWaitingTime/G.maxSimTime)*100, "%"
 
 
 
