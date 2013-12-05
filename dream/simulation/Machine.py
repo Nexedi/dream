@@ -102,9 +102,9 @@ class Machine(CoreObject):
             # canAcceptAndIsRequested is invoked to check when the machine requested to receive an entity  
             yield waituntil, self, self.canAcceptAndIsRequested          
             # get the entity from the predecessor                                                                            
-            self.getEntity()    
+            self.currentEntity=self.getEntity()    
             # set the currentEntity as the Entity just received and initialize the timer timeLastEntityEntered
-            self.currentEntity=self.getActiveObjectQueue()[0]       # entity is the current entity processed in Machine
+#             self.currentEntity=self.getActiveObjectQueue()[0]       # entity is the current entity processed in Machine
             self.nameLastEntityEntered=self.currentEntity.name      # this holds the name of the last entity that got into Machine                   
             self.timeLastEntityEntered=now()                        #this holds the last time that an entity got into Machine  
             # variables dedicated to hold the processing times, the time when the Entity entered, 
@@ -229,7 +229,7 @@ class Machine(CoreObject):
         # this is done to achieve better (cpu) processing time 
         # then we can also use it as a filter for a yield method
         if(len(activeObject.previous)==1 or callerObject==None):      
-            return activeObject.Up and len(activeObjectQueue)==0
+            return activeObject.Up and len(activeObjectQueue)<activeObject.capacity
                       
         thecaller=callerObject
         # return True ONLY if the length of the activeOjbectQue is smaller than
@@ -352,7 +352,9 @@ class Machine(CoreObject):
         # we have to add this blockage to the percentage of blockage in Machine
         # we should exclude the failure time in current entity though!
         # if (len(self.Res.activeQ)>0) and (len(self.next[0].Res.activeQ)>0) and ((self.nameLastEntityEntered == self.nameLastEntityEnded)):       
-        if (len(activeObjectQueue)>0) and (mightBeBlocked) and ((activeObject.nameLastEntityEntered == activeObject.nameLastEntityEnded)):
+        if (len(activeObjectQueue)>0) and (mightBeBlocked)\
+             and ((activeObject.nameLastEntityEntered == activeObject.nameLastEntityEnded)):
+            # be carefull here, might have to reconsider
             activeObject.totalBlockageTime+=now()-(activeObject.timeLastEntityEnded+activeObject.downTimeInTryingToReleaseCurrentEntity)
             if activeObject.Up==False:
                 activeObject.totalBlockageTime-=now()-activeObject.timeLastFailure
@@ -365,7 +367,7 @@ class Machine(CoreObject):
 #             if(len(activeObjectQueue)>0) and (self.Up==False):                         
                 activeObject.downTimeProcessingCurrentEntity+=now()-activeObject.timeLastFailure             
             activeObject.totalWorkingTime+=now()-activeObject.timeLastEntityEntered-activeObject.downTimeProcessingCurrentEntity 
-
+        
         # if Machine is down we have to add this failure time to its total failure time
         # we also need to add the last blocking time to total blockage time     
         if(activeObject.Up==False):
@@ -374,16 +376,16 @@ class Machine(CoreObject):
             #if((len(self.next[0].Res.activeQ)>0) and (self.nameLastEntityEnded==self.nameLastEntityEntered) and (not alreadyAdded)):
             if((mightBeBlocked) and (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered) and (not alreadyAdded)):        
                 activeObject.totalBlockageTime+=(now()-activeObject.timeLastEntityEnded)-(now()-activeObject.timeLastFailure)-activeObject.downTimeInTryingToReleaseCurrentEntity 
-
+        
         #Machine was idle when it was not in any other state    
         activeObject.totalWaitingTime=MaxSimtime-activeObject.totalWorkingTime-activeObject.totalBlockageTime-activeObject.totalFailureTime   
         
         if activeObject.totalBlockageTime<0 and activeObject.totalBlockageTime>-0.00001:  #to avoid some effects of getting negative cause of rounding precision
             self.totalBlockageTime=0  
-         
+        
         if activeObject.totalWaitingTime<0 and activeObject.totalWaitingTime>-0.00001:  #to avoid some effects of getting negative cause of rounding precision
             self.totalWaitingTime=0  
-            
+        
         activeObject.Failure.append(100*self.totalFailureTime/MaxSimtime)    
         activeObject.Blockage.append(100*self.totalBlockageTime/MaxSimtime)  
         activeObject.Waiting.append(100*self.totalWaitingTime/MaxSimtime)    

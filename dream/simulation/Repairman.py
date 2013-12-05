@@ -45,8 +45,10 @@ class Repairman(ObjectResource):
         # lists to hold statistics of multiple runs
         self.Waiting=[]             # holds the percentage of waiting time 
         self.Working=[]             # holds the percentage of working time 
-        # list with the coreObjects that the repairman repairs
+        # list with the coreObjects IDs that the repairman repairs
         self.coreObjectIds=[]
+        # list with the coreObjects that the repairman repairs
+        self.coreObjects=[]
                 
     # =======================================================================    
     #            actions to be taken after the simulation ends
