@@ -39,21 +39,28 @@ import ExcelHandler
 def myMethod():
     print "I was invoked at", now()
     
-def move():
-    if len(Q2.getActiveObjectQueue())>70:
-        Q2.next=[E]
-        E.previous=[Q2]
-        for i in range(20):
-            E.getEntity()         
-        Q2.next=[]
-        E.previous=[]
+def move(argumentDict={}):
+    giver=argumentDict.get('from', None)
+    receiver=argumentDict.get('to', None)
+    safetyStock=int(argumentDict.get('safetyStock', 10))
+    consumption=int(argumentDict.get('consumption', 1))
+    if giver and receiver:
+        if len(giver.getActiveObjectQueue())>safetyStock:
+            giver.next=[receiver]
+            receiver.previous=[giver]
+            for i in range(consumption):
+                receiver.getEntity()         
+            giver.next=[]
+            receiver.previous=[]
+    else:
+        print "Giver and/or Receiver not defined"
 
 G.trace="Yes"           
             
 S=Source('S1','Source', mean=1, item=Part)
 M1=Machine('M1','Machine1', mean=0.75)
 Q1=Queue('Q1','Queue1',capacity=infinity)
-M2=Machine('M2','Machine2', mean=1.5)
+M2=Machine('M2','Machine2', mean=0.75)
 Q2=Queue('Q2','Queue2',capacity=infinity)
 E=Exit('E1','Exit')  
 
@@ -64,7 +71,8 @@ Q1.defineRouting([M1],[M2])
 M2.defineRouting([Q1],[Q2])
 Q2.defineRouting([M2])
 
-EG=EventGenerator(start=60, interval=60, method=move)
+argumentDict={'from':Q2,'to':E, 'safetyStock':70, 'consumption':20}
+EG=EventGenerator(start=60, interval=60, method=move, argumentDict=argumentDict)
 G.ObjList=[S,M1,M2,E,Q1,Q2,EG]
 
 initialize()                        #initialize the simulation (SimPy method)
@@ -75,7 +83,7 @@ for object in G.ObjList:
 for object in G.ObjList:
     activate(object, object.run())
     
-G.maxSimTime=480
+G.maxSimTime=400
 simulate(until=G.maxSimTime)    #run the simulation
 
 #carry on the post processing operations for every object in the topology       

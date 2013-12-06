@@ -30,13 +30,14 @@ from SimPy.Simulation import now, hold, Process
 from ObjectInterruption import ObjectInterruption
 
 class EventGenerator(ObjectInterruption):
-    def __init__(self, start=None, stop=None, interval=None, duration=None, method=None):
+    def __init__(self, start=None, stop=None, interval=None, duration=None, method=None, argumentDict=None):
         ObjectInterruption.__init__(self)
         self.start=start
         self.stop=stop
         self.interval=interval
         self.duration=duration
         self.method=method
+        self.argumentDict=argumentDict
         
     def run(self):
         yield hold,self,self.start
@@ -44,7 +45,7 @@ class EventGenerator(ObjectInterruption):
             if self.stop:
                 if now()>self.stop:
                     break
-            self.method()
+            self.method(self.argumentDict)
             yield hold,self,self.interval
         
     
