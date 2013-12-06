@@ -77,6 +77,7 @@ from BatchDecomposition import BatchDecomposition
 from BatchReassembly import BatchReassembly
 from BatchScrapMachine import BatchScrapMachine
 from LineClearance import LineClearance
+from EventGenerator import EventGenerator
 
 import ExcelHandler
 import time
@@ -85,6 +86,8 @@ from random import Random
 import sys
 import os.path
 import Globals
+import ast
+
 
 # ===========================================================================
 #                       reads general simulation inputs
@@ -141,6 +144,7 @@ def createObjects():
     G.BatchReassemblyList=[]
     G.LineClearanceList=[]
     G.BatchScrapMachine=[]
+    G.EventGeneratorList=[]
     
     # -----------------------------------------------------------------------
     #                loop through all the model resources 
@@ -415,7 +419,40 @@ def createObjects():
             LC.nextIds=getSuccessorList(id)
             G.LineClearanceList.append(LC)
             G.ObjList.append(LC)
-    
+            
+    # -----------------------------------------------------------------------
+    #                loop through all the nodes to  
+    #            search for Event Generator and create them
+    #                   this is put last, since the EventGenerator 
+    #                may take other objects as argument
+    # -----------------------------------------------------------------------
+    for (element_id, element) in nodes.iteritems():                 # use an iterator to go through all the nodes
+                                                                    # the key is the element_id and the second is the 
+                                                                    # element itself 
+        element['id'] = element_id                                  # create a new entry for the element (dictionary)
+                                                                    # with key 'id' and value the the element_id
+        elementClass = element.get('_class', 'not found')           # get the class type of the element
+        if elementClass=='Dream.EventGenerator':                    # check the object type
+            id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
+            name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
+            start = float(element.get('start', '0'))                # get the start of the generator / default 0
+            stop = float(element.get('stop', -1))                   # get the stop of the generator / default -1 that leads yo
+                                                                    # infinity (had to be done to make it as float)
+            if stop<0:
+                stop=infinity            
+            interval = float(element.get('start', '1'))             # get the interval of the generator / default 1
+            duration = float(element.get('duration', 0))         # get the duration of the generator / default 0
+            method = (element.get('method', None))                    # get the method to be run / default None
+            method = method.split('.')
+            method=getattr(str_to_class(method[0]),method[1])
+            #argumentDict=ast.literal_eval(element.get('argumentDict', {}))      
+            argumentDict=(element.get('argumentDict', {}))      # get the arguments of the method as a dict / default {}
+               
+            EV = EventGenerator(id, name, start=start, stop=stop, interval=interval, 
+                                duration=duration, method=method, argumentDict=argumentDict)       # create the EventGenerator object
+                                                                    # calling the getSuccessorList() method on the repairman
+            G.EventGeneratorList.append(EV)                               # add the Event Generator to the RepairmanList
+            
     # -----------------------------------------------------------------------
     #                    loop through all the core objects    
     #                         to read predecessors
@@ -470,12 +507,6 @@ def setTopology():
             element.defineRouting(previous, next)
             
 # ===========================================================================
-#        used to convert a string read from the input to object type
-# ===========================================================================
-def str_to_class(str):
-    return getattr(sys.modules[__name__], str)
-
-# ===========================================================================
 #            initializes all the objects that are in the topology
 # ===========================================================================
 def initializeObjects():
@@ -485,6 +516,8 @@ def initializeObjects():
         repairman.initialize()
     for entity in G.EntityList:
         entity.initialize()
+    for ev in G.EventGeneratorList:
+        ev.initialize()
 
 # ===========================================================================
 #                        activates all the objects
@@ -495,6 +528,11 @@ def activateObjects():
             activate(element, element.run())
         except AttributeError:
             pass
+    for ev in G.EventGeneratorList:
+        try:
+            activate(ev, ev.run())
+        except AttributeError:
+            pass        
 
 # ===========================================================================
 #                reads the WIP of the stations
@@ -568,7 +606,13 @@ def createWIP():
                 G.WipList.append(J)  
                 G.EntityList.append(J)       
 
-    
+# ===========================================================================
+#        used to convert a string read from the input to object type
+# ===========================================================================
+def str_to_class(str):
+    return getattr(sys.modules[__name__], str)
+
+
 # ===========================================================================
 #                        the main script that is ran
 # ===========================================================================

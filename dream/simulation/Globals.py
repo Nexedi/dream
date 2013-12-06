@@ -71,6 +71,22 @@ class G:
     
     numberOfEntities = 0
     
+def moveExcess(argumentDict={}):
+    giver=findObjectById(argumentDict.get('from', None))
+    receiver=findObjectById(argumentDict.get('to', None))
+    safetyStock=int(argumentDict.get('safetyStock', 10))
+    consumption=int(argumentDict.get('consumption', 1))
+    if giver and receiver:
+        if len(giver.getActiveObjectQueue())>safetyStock:
+            giver.next=[receiver]
+            receiver.previous=[giver]
+            for i in range(consumption):
+                receiver.getEntity()         
+            giver.next=[]
+            receiver.previous=[]
+    else:
+        print "Giver and/or Receiver not defined"
+    
 def findObjectById(id):
     for obj in G.ObjList:
         if obj.id==id:
@@ -88,18 +104,4 @@ def setWIP(entityList):
             entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
             entity.currentStation=object                        # update the current station of the entity  
             
-def moveExcess(argumentDict={}):
-    giver=argumentDict.get('from', None)
-    receiver=argumentDict.get('to', None)
-    safetyStock=int(argumentDict.get('safetyStock', 10))
-    consumption=int(argumentDict.get('consumption', 1))
-    if giver and receiver:
-        if len(giver.getActiveObjectQueue())>safetyStock:
-            giver.next=[receiver]
-            receiver.previous=[giver]
-            for i in range(consumption):
-                receiver.getEntity()         
-            giver.next=[]
-            receiver.previous=[]
-    else:
-        print "Giver and/or Receiver not defined"
+

@@ -53,8 +53,8 @@ Q1.defineRouting([M1],[M2])
 M2.defineRouting([Q1],[Q2])
 Q2.defineRouting([M2])
 
-argumentDict={'from':Q2,'to':E, 'safetyStock':70, 'consumption':20}
-EG=EventGenerator(start=60, interval=60, method=Globals.moveExcess, argumentDict=argumentDict)
+argumentDict={'from':'Q2','to':'E1','safetyStock':70,'consumption':20}
+EG=EventGenerator(id="EV", name="ExcessEntitiesMover" ,start=60, interval=60, method=Globals.moveExcess, argumentDict=argumentDict)
 G.ObjList=[S,M1,M2,E,Q1,Q2,EG]
 
 initialize()                        #initialize the simulation (SimPy method)
