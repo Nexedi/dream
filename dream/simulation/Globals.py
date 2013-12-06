@@ -87,3 +87,19 @@ def setWIP(entityList):
             entity.remainingRoute.pop(0)                        # remove data from the remaining route.    
             entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
             entity.currentStation=object                        # update the current station of the entity  
+            
+def moveExcess(argumentDict={}):
+    giver=argumentDict.get('from', None)
+    receiver=argumentDict.get('to', None)
+    safetyStock=int(argumentDict.get('safetyStock', 10))
+    consumption=int(argumentDict.get('consumption', 1))
+    if giver and receiver:
+        if len(giver.getActiveObjectQueue())>safetyStock:
+            giver.next=[receiver]
+            receiver.previous=[giver]
+            for i in range(consumption):
+                receiver.getEntity()         
+            giver.next=[]
+            receiver.previous=[]
+    else:
+        print "Giver and/or Receiver not defined"

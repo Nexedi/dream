@@ -34,26 +34,8 @@ from Part import Part
 from Queue import Queue
 from Globals import G
 import ExcelHandler
+import Globals
 
-
-def myMethod():
-    print "I was invoked at", now()
-    
-def move(argumentDict={}):
-    giver=argumentDict.get('from', None)
-    receiver=argumentDict.get('to', None)
-    safetyStock=int(argumentDict.get('safetyStock', 10))
-    consumption=int(argumentDict.get('consumption', 1))
-    if giver and receiver:
-        if len(giver.getActiveObjectQueue())>safetyStock:
-            giver.next=[receiver]
-            receiver.previous=[giver]
-            for i in range(consumption):
-                receiver.getEntity()         
-            giver.next=[]
-            receiver.previous=[]
-    else:
-        print "Giver and/or Receiver not defined"
 
 G.trace="Yes"           
             
@@ -72,7 +54,7 @@ M2.defineRouting([Q1],[Q2])
 Q2.defineRouting([M2])
 
 argumentDict={'from':Q2,'to':E, 'safetyStock':70, 'consumption':20}
-EG=EventGenerator(start=60, interval=60, method=move, argumentDict=argumentDict)
+EG=EventGenerator(start=60, interval=60, method=Globals.moveExcess, argumentDict=argumentDict)
 G.ObjList=[S,M1,M2,E,Q1,Q2,EG]
 
 initialize()                        #initialize the simulation (SimPy method)
