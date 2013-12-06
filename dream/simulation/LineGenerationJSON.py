@@ -78,6 +78,10 @@ from BatchReassembly import BatchReassembly
 from BatchScrapMachine import BatchScrapMachine
 from LineClearance import LineClearance
 from EventGenerator import EventGenerator
+from Operator import Operator
+from OperatorPool import OperatorPool
+from OperatedPoolBroker import Broker
+from OperatedMachine import OperatedMachine
 
 import ExcelHandler
 import time
@@ -145,6 +149,10 @@ def createObjects():
     G.LineClearanceList=[]
     G.BatchScrapMachine=[]
     G.EventGeneratorList=[]
+    G.OperatorsList = []
+    G.OperatorPoolsList = []
+    G.BrokersList = []
+    G.OperatedMachineList = []
     
     # -----------------------------------------------------------------------
     #                loop through all the model resources 
@@ -165,6 +173,36 @@ def createObjects():
             R.coreObjectIds=getSuccessorList(id)                    # update the list of objects that the repairman repairs
                                                                     # calling the getSuccessorList() method on the repairman
             G.RepairmanList.append(R)                               # add the repairman to the RepairmanList
+        elif resourceClass=='Dream.Operator':
+            id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
+            name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
+            capacity = int(element.get('capacity', '1'))            # get the capacity of the el. / defautl '1'
+            O = Operator(element_id, name, capacity)                # create an operator object
+            try:
+                O.coreObjectIds=getSuccessorList(id)                # update the list of objects that the operator operates
+            except:                                                 # calling the getSuccessorList() method on the operator
+                pass
+            G.OperatorsList.append(O)                               # add the repairman to the RepairmanList
+        elif resourceClass=='Dream.OperatorPool':
+            id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
+            name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
+            capacity = int(element.get('capacity', '1'))            # get the capacity of the el. / defautl '1'
+            operatorsList=[]
+            for operator in G.OperatorsList:                        # find the operators assigned to the operatorPool
+                if id in operator.coreObjectIds:
+                    operatorsList.append(operator)
+#             operatorsList = element.get('operatorsList', 'not found')
+            if len(operatorsList)==0:                               # if the operatorsList is empty then assign no operators
+                OP = OperatorPool(element_id, name, capacity)       # create a operatorPool object
+            else:
+                OP = OperatorPool(element_id, name, capacity,operatorsList)     # create a operatorPool object
+            OP.coreObjectIds=getSuccessorList(id)                   # update the list of objects that the operators of the operatorPool operate
+            try:
+                for operator in operatorsList.values():
+                    operator.coreObjectIds=OP.coreObjectIds        # update the list of objects that the operators operate
+            except:
+                pass
+            G.OperatorPoolsList.append(OP)                          # add the repairman to the RepairmanList
     # -----------------------------------------------------------------------
     #                    loop through all the elements    
     #                    read the data and create them
@@ -419,6 +457,64 @@ def createObjects():
             LC.nextIds=getSuccessorList(id)
             G.LineClearanceList.append(LC)
             G.ObjList.append(LC)
+            
+        elif objClass=='Dream.OperatedMachine':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            
+            processingTime=element.get('processingTime', 'not found')
+            distributionType=processingTime.get('distributionType', 'not found')
+            mean=float(processingTime.get('mean', '0'))  
+            stdev=float(processingTime.get('stdev', '0'))  
+            min=float(processingTime.get('min', '0')) 
+            max=float(processingTime.get('max', '0'))
+            
+            failures=element.get('failures', 'not found')  
+            failureDistribution=failures.get('failureDistribution', 'not found')
+            MTTF=float(failures.get('MTTF', '0'))   
+            MTTR=float(failures.get('MTTR', '0')) 
+            availability=float(failures.get('availability', '0'))
+            
+            operationType=element.get('operationType','not found')
+            setupTime = element.get('setupTime','not found')
+            setupDistribution = setupTime.get('setupDistribution','not found')
+            setupMean = float(setupTime.get('setupMean','0'))
+            setupStdev=float(setupTime.get('setupStdev', '0'))  
+            setupMin=float(setupTime.get('setupMin', '0')) 
+            setupMax=float(setupTime.get('setupMax', '0'))
+            loadTime = element.get('loadTime','not found')
+            loadDistribution = loadTime.get('loadDistribution','not found')
+            loadMean = float(loadTime.get('loadMean','0'))
+            loadStdev = float(loadTime.get('loadStdev', '0'))  
+            loadMin=float(loadTime.get('loadMin', '0')) 
+            loadMax=float(loadTime.get('loadMax', '0'))
+            
+#             machineOpertorPoolList=[]
+            try:
+                for operatorPool in G.operatorPoolsList:                    # find the operatorPool assigned to the machine
+                    if(id in operatorPool.coreObjectIds):                   # and add it to the machine's operatorPool
+                        machineOperatorPoolList=operatorPool                 # there must only one operator pool assigned to the machine,
+                                                                            # otherwise only one of them will be taken into account
+            except:
+#                 pass
+#             if len(machineOperatorPoolList)==None:                      # if there is no operatorPool assigned to the machine
+                machineOperatorPoolList=[]                          # find the operators assigned to it and add them to a list
+                for operator in G.OperatorsList:                    # check which operator in the G.OperatorsList
+                    if(id in operator.coreObjectIds):               # (if any) is assigned to operate
+                        machineOperatorPoolList.append(operator)    # the machine with ID equal to id
+                                                                    # if there is no operator assigned then the list will be empty
+            
+            OM=OperatedMachine(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
+                                                    MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
+                                                    mean=mean,stdev=stdev,min=min,max=max,
+                                                    operatorPool=machineOperatorPoolList, operationType=operationType,
+                                                    loadDistribution=loadDistribution, setupDistribution=setupDistribution,
+                                                    setupMean=setupMean,setupStdev=setupStdev,setupMin=setupMin,setupMax=setupMax,
+                                                    loadMean=loadMean,loadStdev=loadStdev,loadMin=loadMin,loadMax=loadMax)
+            OM.nextIds=getSuccessorList(id)                             # update the nextIDs list of the machine
+            G.OperatedMachineList.append(OM)                            # add the machine to the operatedMachines List
+            G.MachineList.append(OM)                                    # add machine to global MachineList
+            G.ObjList.append(OM)                                        # add machine to ObjList
             
     # -----------------------------------------------------------------------
     #                loop through all the nodes to  

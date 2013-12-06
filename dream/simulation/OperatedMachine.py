@@ -64,7 +64,7 @@ class OperatedMachine(Machine):
             name=self.objName+'_operatorPool'
             self.operatorPool=OperatorPool(id, name, operatorsList=operatorPool)
         else:
-            self.operatorPool=opeartorPool
+            self.operatorPool=operatorPool
         # update the operatorPool coreObjects list
         self.operatorPool.coreObjectIds.append(self.id)
         self.operatorPool.coreObjects.append(self)
@@ -105,10 +105,7 @@ class OperatedMachine(Machine):
         self.WaitingForLoadOperator=[]
         self.Loading = []
         self.SettingUp =[]
-
-
         
-    
     # =======================================================================
     #                        initialize the machine
     # =======================================================================
