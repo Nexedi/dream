@@ -443,9 +443,8 @@ def createObjects():
             interval = float(element.get('start', '1'))             # get the interval of the generator / default 1
             duration = float(element.get('duration', 0))         # get the duration of the generator / default 0
             method = (element.get('method', None))                    # get the method to be run / default None
-            method = method.split('.')
-            method=getattr(str_to_class(method[0]),method[1])
-            #argumentDict=ast.literal_eval(element.get('argumentDict', {}))      
+            method = method.split('.')                                  #the method is given as 'Path.MethodName'
+            method=getattr(str_to_class(method[0]),method[1])           #and then parsed with getattr
             argumentDict=(element.get('argumentDict', {}))      # get the arguments of the method as a dict / default {}
                
             EV = EventGenerator(id, name, start=start, stop=stop, interval=interval, 
