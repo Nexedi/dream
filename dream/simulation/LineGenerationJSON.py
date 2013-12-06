@@ -489,20 +489,35 @@ def createObjects():
             loadMin=float(loadTime.get('loadMin', '0')) 
             loadMax=float(loadTime.get('loadMax', '0'))
             
-#             machineOpertorPoolList=[]
-            try:
-                for operatorPool in G.operatorPoolsList:                    # find the operatorPool assigned to the machine
+            if len(G.OperatorPoolsList)>0:
+                for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
                     if(id in operatorPool.coreObjectIds):                   # and add it to the machine's operatorPool
-                        machineOperatorPoolList=operatorPool                 # there must only one operator pool assigned to the machine,
+                        machineOperatorPoolList=operatorPool                # there must only one operator pool assigned to the machine,
                                                                             # otherwise only one of them will be taken into account
-            except:
-#                 pass
-#             if len(machineOperatorPoolList)==None:                      # if there is no operatorPool assigned to the machine
-                machineOperatorPoolList=[]                          # find the operators assigned to it and add them to a list
-                for operator in G.OperatorsList:                    # check which operator in the G.OperatorsList
-                    if(id in operator.coreObjectIds):               # (if any) is assigned to operate
-                        machineOperatorPoolList.append(operator)    # the machine with ID equal to id
-                                                                    # if there is no operator assigned then the list will be empty
+                    else:
+                        machineOperatorPoolList=[]                          # if there is no operatorPool assigned to the machine
+            else:                                                           # then machineOperatorPoolList/operatorPool is a list
+                machineOperatorPoolList=[]                                  # if there are no operatorsPool created then the 
+                                                                            # then machineOperatorPoolList/operatorPool is a list
+            if (type(machineOperatorPoolList) is list):                 # if the machineOperatorPoolList is a list
+                                                                        # find the operators assigned to it and add them to the list
+                for operator in G.OperatorsList:                        # check which operator in the G.OperatorsList
+                    if(id in operator.coreObjectIds):                   # (if any) is assigned to operate
+                        machineOperatorPoolList.append(operator)        # the machine with ID equal to id
+                                                                        # if there is no operator assigned then the list will be empty
+#             try:
+#                 for operatorPool in G.operatorPoolsList:                    # find the operatorPool assigned to the machine
+#                     if(id in operatorPool.coreObjectIds):                   # and add it to the machine's operatorPool
+#                         machineOperatorPoolList=operatorPool                # there must only one operator pool assigned to the machine,
+#                                                                             # otherwise only one of them will be taken into account
+#             except:
+# #                 pass
+# #             if len(machineOperatorPoolList)==None:                      # if there is no operatorPool assigned to the machine
+#                 machineOperatorPoolList=[]                          # find the operators assigned to it and add them to a list
+#                 for operator in G.OperatorsList:                    # check which operator in the G.OperatorsList
+#                     if(id in operator.coreObjectIds):               # (if any) is assigned to operate
+#                         machineOperatorPoolList.append(operator)    # the machine with ID equal to id
+#                                                                     # if there is no operator assigned then the list will be empty
             
             OM=OperatedMachine(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
