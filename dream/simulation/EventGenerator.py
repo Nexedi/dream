@@ -34,21 +34,23 @@ class EventGenerator(ObjectInterruption):
         ObjectInterruption.__init__(self)
         self.id=id
         self.name=name
-        self.start=start
-        self.stop=stop
-        self.interval=interval
-        self.duration=duration
-        self.method=method
-        self.argumentDict=argumentDict
+        self.start=start                #the time that the generator will be activated for the first time
+        self.stop=stop                  #the time that the generator will stop to trigger events
+        self.interval=interval          #the interval that the generator sleeps
+        self.duration=duration          #the duration that the generation is awake (this is not active for now)
+        self.method=method              #the method to be invoked
+        self.argumentDict=argumentDict  #the arguments of the method given in a dict
         
     def run(self):
-        yield hold,self,self.start
+        yield hold,self,self.start      #wait until the start time
+        #loop until the end of the simulation
         while 1:
+            #if the stop time is exceeded then break the loop
             if self.stop:
                 if now()>self.stop:
                     break
-            self.method(self.argumentDict)
-            yield hold,self,self.interval
+            self.method(self.argumentDict)      #call the method
+            yield hold,self,self.interval       #wait for the predetermined interval
         
     
     
