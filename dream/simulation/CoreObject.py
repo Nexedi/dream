@@ -30,8 +30,17 @@ from SimPy.Simulation import Process, Resource, now
 # =================================== the core object ==============================================
 class CoreObject(Process):
     
-    def initialize(self):
+    def __init__(self):
         Process.__init__(self) 
+        #     lists that hold the previous and next objects in the flow
+        self.next=[]                                #list with the next objects in the flow
+        self.previous=[]                            #list with the previous objects in the flow
+        self.nextIds=[]                             #list with the ids of the next objects in the flow
+        self.previousIds=[]                         #list with the ids of the previous objects in the flow
+
+    
+    def initialize(self):
+#         Process.__init__(self) 
         self.predecessorIndex=0                         #holds the index of the predecessor from which the Machine will take an entity next
         self.successorIndex=0                           #holds the index of the successor where the Machine will dispose an entity next
         self.Up=True                                    #Boolean that shows if the machine is in failure ("Down") or not ("up")
@@ -70,6 +79,11 @@ class CoreObject(Process):
                                                         # when the entities have to be loaded to operatedMachines
                                                         # then the giverObjects have to be blocked for the time
                                                         # that the machine is being loaded 
+        # ============================== lists to hold statistics of multiple runs =====================
+        self.Failure=[]
+        self.Working=[]
+        self.Blockage=[]
+        self.Waiting=[]
 
     # ======================== the main process of the core object =================================
     # ================ this is dummy, every object must have its own implementation ================

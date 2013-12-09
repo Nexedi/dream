@@ -42,7 +42,8 @@ class Machine(CoreObject):
     #initialize the id the capacity, of the resource and the distribution        
     def __init__(self, id, name, capacity=1, distribution='Fixed', mean=1, stdev=0, min=0, max=10,\
                   failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None'):
-        Process.__init__(self)
+#         Process.__init__(self)
+        CoreObject.__init__(self)
         # used for the routing of the entities
         self.predecessorIndex=0                     #holds the index of the predecessor from which the Machine will take an entity next
         self.successorIndex=0                       #holds the index of the successor where the Machine will dispose an entity next
@@ -66,16 +67,16 @@ class Machine(CoreObject):
         self.MTTF=MTTF
         self.MTTR=MTTR
         self.availability=availability        
-        #     lists that hold the previous and next objects in the flow
-        self.next=[]                                #list with the next objects in the flow
-        self.previous=[]                            #list with the previous objects in the flow
-        self.nextIds=[]                             #list with the ids of the next objects in the flow
-        self.previousIds=[]                         #list with the ids of the previous objects in the flow
-        #     lists to hold statistics of multiple runs
-        self.Failure=[]
-        self.Working=[]
-        self.Blockage=[]
-        self.Waiting=[]
+#         #     lists that hold the previous and next objects in the flow
+#         self.next=[]                                #list with the next objects in the flow
+#         self.previous=[]                            #list with the previous objects in the flow
+#         self.nextIds=[]                             #list with the ids of the next objects in the flow
+#         self.previousIds=[]                         #list with the ids of the previous objects in the flow
+#         #     lists to hold statistics of multiple runs
+#         self.Failure=[]
+#         self.Working=[]
+#         self.Blockage=[]
+#         self.Waiting=[]
 
     # =======================================================================
     # initialize the Machine object

@@ -35,7 +35,8 @@ from CoreObject import CoreObject
 class Queue(CoreObject):
     
     def __init__(self, id, name, capacity=1, dummy=False, schedulingRule="FIFO"):
-        Process.__init__(self)
+        CoreObject.__init__(self)
+#         Process.__init__(self)
         # used for the routing of the entities
         self.predecessorIndex=0     # holds the index of the predecessor from which the Queue will take an entity next
         self.successorIndex=0       # holds the index of the successor where the Queue will dispose an entity next
@@ -54,11 +55,11 @@ class Queue(CoreObject):
 
         #     No failures are considered for the Queue
         
-        #     lists that hold the previous and next objects in the flow
-        self.next=[]                    #list with the next objects in the flow
-        self.previous=[]                #list with the previous objects in the flow
-        self.nextIds=[]                 #list with the ids of the next objects in the flow
-        self.previousIds=[]             #list with the ids of the previous objects in the flow
+#         #     lists that hold the previous and next objects in the flow
+#         self.next=[]                    #list with the next objects in the flow
+#         self.previous=[]                #list with the previous objects in the flow
+#         self.nextIds=[]                 #list with the ids of the next objects in the flow
+#         self.previousIds=[]             #list with the ids of the previous objects in the flow
 
         self.isDummy=dummy                      #Boolean that shows if it is the dummy first Queue
         self.schedulingRule=schedulingRule      #the scheduling rule that the Queue follows

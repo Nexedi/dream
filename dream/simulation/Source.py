@@ -36,7 +36,8 @@ from Globals import G
 #============================================================================
 class Source(CoreObject): 
     def __init__(self, id, name, distribution='Fixed', mean=1, item=Part):
-        Process.__init__(self)
+        CoreObject.__init__(self)
+#         Process.__init__(self)
         # general properties
         self.id=id   
         self.objName=name   
@@ -44,11 +45,11 @@ class Source(CoreObject):
         # properties used for statistics
         self.totalInterArrivalTime=0                    # the total interarrival time 
         self.numberOfArrivals=0                         # the number of entities that were created
-        # list containing objects that follow in the routing 
-        self.next=[]                                    # list with the next objects in the flow
-        self.nextIds=[]                                 # list with the ids of the next objects in the flow
-        self.previousIds=[]                             # list with the ids of the previous objects in the flow. 
-                                                        # For the source it is always empty!
+#         # list containing objects that follow in the routing 
+#         self.next=[]                                    # list with the next objects in the flow
+#         self.nextIds=[]                                 # list with the ids of the next objects in the flow
+#         self.previousIds=[]                             # list with the ids of the previous objects in the flow. 
+#                                                         # For the source it is always empty!
         self.type="Source"                              #String that shows the type of object
         self.rng=RandomNumberGenerator(self, self.distType)
         self.rng.avg=mean
