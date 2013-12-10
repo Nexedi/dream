@@ -46,6 +46,13 @@ from simulation.ExitJobShop import ExitJobShop
 from simulation.QueueJobShop import QueueJobShop
 from simulation.MachineJobShop import MachineJobShop
 from simulation.QueueLIFO import QueueLIFO
+from simulation.BatchSource import BatchSource
+from simulation.BatchDecomposition import BatchDecomposition
+from simulation.BatchReassembly import BatchReassembly
+from simulation.BatchScrapMachine import BatchScrapMachine
+
+
+
 
 #Entities
 from simulation.Job import Job
@@ -59,11 +66,13 @@ from simulation.Repairman import Repairman
 
 #ObjectInterruption
 from simulation.Failure import Failure
+from simulation.EventGenerator import EventGenerator
 
 #Auxiliary
 from simulation.Globals import G
 from simulation.RandomNumberGenerator import RandomNumberGenerator
 import ExcelHandler
+import Globals
 
 
 
