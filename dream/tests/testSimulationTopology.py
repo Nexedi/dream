@@ -72,8 +72,8 @@ class SimulationTopology(TestCase):
 for filepath in glob.glob(os.path.join(project_path, "dream", "simulation",
                              "JSONInputs", "*.json")):
   filename = os.path.basename(filepath)
-  def getTestTopology():
+  def getTestTopology(filename = None):
     def test_topology(self):
       self.checkTopology(filename=filename)
     return test_topology
-  setattr(SimulationTopology, "test_%s" % filename, getTestTopology())
+  setattr(SimulationTopology, "test_%s" % filename, getTestTopology(filename = filename))
