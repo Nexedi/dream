@@ -176,7 +176,7 @@ class Queue(CoreObject):
         
         #loop through the predecessors to see which have to dispose and which is the one blocked for longer                                                      # loop through all the predecessors
         for object in activeObject.previous:
-            if(object.haveToDispose(activeObject)):                 # if they have something to dispose off
+            if(object.haveToDispose(activeObject) and object.receiver==self):                 # if they have something to dispose off
                 isRequested=True                                    # then the Queue is requested to handle the entity
                 if(object.downTimeInTryingToReleaseCurrentEntity>0):# if the predecessor has failed wile waiting 
                     timeWaiting=now()-object.timeLastFailureEnded   # then update according the timeWaiting to be compared with the ones

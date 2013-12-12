@@ -249,7 +249,7 @@ class Machine(CoreObject):
         
         # loop through the possible givers to see which have to dispose and which is the one blocked for longer
         for object in activeObject.previous:
-            if(object.haveToDispose(activeObject)):
+            if(object.haveToDispose(activeObject) and object.receiver==self):
                 isRequested=True                                    # if the predecessor objects have entities to dispose of
                 if(object.downTimeInTryingToReleaseCurrentEntity>0):# and the predecessor has been down while trying to give away the Entity
                     timeWaiting=now()-object.timeLastFailureEnded   # the timeWaiting dummy variable counts the time end of the last failure of the giver object
