@@ -36,6 +36,7 @@ from CoreObject import CoreObject
 class Conveyer(CoreObject):    
           
     def __init__(self, id, name,length,speed):
+        CoreObject.__init__(self)
         self.id=id        
         self.objName=name
         self.type="Conveyer"
@@ -61,6 +62,7 @@ class Conveyer(CoreObject):
         
     def initialize(self):
         Process.__init__(self)
+        CoreObject.initialize(self)
         self.Res=Resource(capacity=infinity)         
         
         self.Up=True                    #Boolean that shows if the object is in failure ("Down") or not ("up")

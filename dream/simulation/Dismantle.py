@@ -39,6 +39,7 @@ class Dismantle(CoreObject):
 
     #initialize the object      
     def __init__(self, id, name, distribution='Fixed', mean=1, stdev=0.1, min=0, max=5):
+        CoreObject.__init__(self)
         self.id=id
         self.objName=name
         self.type="Dismantle"   #String that shows the type of object
@@ -61,8 +62,6 @@ class Dismantle(CoreObject):
         self.Waiting=[]
         self.Working=[]
         self.Blockage=[]
-        self.predecessorIndex=0     #holds the index of the predecessor from which the Dismantle will take an entity next
-        self.successorIndex=0       #holds the index of the successor where the Dismantle will dispose an entity next
         
         # ============================== variable that is used for the loading of machines =============
         self.exitAssignedToReceiver = False             # by default the objects are not blocked 
@@ -73,6 +72,7 @@ class Dismantle(CoreObject):
         
     def initialize(self):
         Process.__init__(self)
+        CoreObject.initialize(self)
         self.waitToDispose=False    #flag that shows if the object waits to dispose an entity    
         self.waitToDisposePart=False    #flag that shows if the object waits to dispose a part   
         self.waitToDisposeFrame=False    #flag that shows if the object waits to dispose a frame   
@@ -108,14 +108,11 @@ class Dismantle(CoreObject):
         self.Res.activeQ=[]  
         self.Res.waitQ=[]  
         
-        self.predecessorIndex=0     #holds the index of the predecessor from which the Dismantle will take an entity next
-        self.successorIndex=0       #holds the index of the successor where the Dismantle will dispose an entity next   
-        
         
     def run(self):
         while 1:
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Assembly can accept a frame
-                                                                    #and one "frame" predecessor requests it   
+                                                                    #and one "frame" giver requests it   
             self.getEntity()                                 #get the Frame with the parts 
             self.timeLastEntityEntered=now()
                         
@@ -169,7 +166,7 @@ class Dismantle(CoreObject):
     def isEmpty(self):
         return len(self.getActiveObjectQueue())==0
     
-    #gets a frame from the predecessor that the predecessor index points to     
+    #gets a frame from the giver 
     def getEntity(self):
         activeEntity=CoreObject.getEntity(self)     #run the default method
         activeObjectQueue=self.getActiveObjectQueue()

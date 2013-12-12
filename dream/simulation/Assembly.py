@@ -62,8 +62,6 @@ class Assembly(CoreObject):
         self.Working=[]
         self.Blockage=[]
         
-        self.predecessorIndex=0     #holds the index of the predecessor from which the Assembly will take an entity next
-        self.successorIndex=0       #holds the index of the successor where the Assembly will dispose an entity next
          # ============================== variable that is used for the loading of machines =============
         self.exitAssignedToReceiver = False             # by default the objects are not blocked 
                                                         # when the entities have to be loaded to operatedMachines
@@ -104,15 +102,12 @@ class Assembly(CoreObject):
         self.Res=Resource(1)    
         self.Res.activeQ=[]  
         self.Res.waitQ=[]  
-        
-        self.predecessorIndex=0     #holds the index of the predecessor from which the Assembly will take an entity next
-        self.successorIndex=0       #holds the index of the successor where the Assembly will dispose an entity next
-    
+            
     
     def run(self):
         while 1:
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Assembly can accept a frame
-                                                                    #and one "frame" predecessor requests it 
+                                                                    #and one "frame" giver requests it 
             self.getEntity("Frame")                                 #get the Frame
                                                                     
             for i in range(self.getActiveObjectQueue()[0].capacity):         #this loop will be carried until the Frame is full with the parts
@@ -150,35 +145,31 @@ class Assembly(CoreObject):
     #checks if the Assembly can accept an entity and there is a Frame waiting for it
     def canAcceptAndIsRequested(self):
         activeObjectQueue=self.getActiveObjectQueue()
-        
-        i=0
-        #loop through the predecessors
-        for giver in self.previous:
-            #activate only if the predecessor is not empty
-            if(len(giver.getActiveObjectQueue())>0):
+
+        #loop through the possible givers
+        for object in self.previous:
+            #activate only if the possible giver is not empty
+            if(len(object.getActiveObjectQueue())>0):
                 #activate only if the caller carries Frame
-                if(giver.getActiveObjectQueue()[0].type=='Frame'):
-                    #update the predecessorIndex
-                    self.predecessorIndex=i
-                    return len(activeObjectQueue)==0 and giver.haveToDispose(self)
-            i=i+1 
+                if(object.getActiveObjectQueue()[0].type=='Frame'):
+                    #update the giver
+                    self.giver=object
+                    return len(activeObjectQueue)==0 and object.haveToDispose(self)
         return False    
     
     #checks if the Assembly can accept an entity and there is a Frame waiting for it
     def isRequestedFromPart(self):
         activeObjectQueue=self.getActiveObjectQueue()
-        
-        i=0
-        #loop through the predecessors
-        for giver in self.previous:
-            #activate only if the predecessor is not empty
-            if(len(giver.getActiveObjectQueue())>0):
+
+        #loop through the possible givers
+        for object in self.previous:
+            #activate only if the possible giver is not empty
+            if(len(object.getActiveObjectQueue())>0):
                 #activate only if the caller carries Part
-                if(giver.getActiveObjectQueue()[0].type=='Part'):
-                    #update the predecessorIndex
-                    self.predecessorIndex=i
-                    return len(activeObjectQueue)==1 and giver.haveToDispose(self)
-            i=i+1 
+                if(object.getActiveObjectQueue()[0].type=='Part'):
+                    #update giver
+                    self.giver=object
+                    return len(activeObjectQueue)==1 and object.haveToDispose(self)
         return False 
 
     #checks if the Assembly can dispose an entity to the following object     
@@ -191,7 +182,7 @@ class Assembly(CoreObject):
         self.waitToDispose=False  
         return activeEntity                                              #the object does not wait to dispose now
     
-    #gets an entity from the predecessor   
+    #gets an entity from the giver   
     #it may handle both Parts and Frames  
     def getEntity(self, type):
         activeObject=self.getActiveObject()
@@ -202,11 +193,11 @@ class Assembly(CoreObject):
         activeEntity=giverObjectQueue[0]
         
         if(type=="Part"):
-            activeObjectQueue[0].getFrameQueue().append(activeEntity)    #get the part from the predecessor and append it to the frame!
+            activeObjectQueue[0].getFrameQueue().append(activeEntity)    #get the part from the giver and append it to the frame!
             giverObject.removeEntity()     #remove the part from the previews object
             self.outputTrace(activeEntity.name, "got into "+ self.objName)                       
         elif(type=="Frame"):
-            activeObjectQueue.append(giverObjectQueue[0])    #get the frame from the predecessor
+            activeObjectQueue.append(giverObjectQueue[0])    #get the frame from the giver
             giverObject.removeEntity()   #remove the frame from the previews object
             self.outputTrace(activeEntity.name, "got into "+ self.objName)
             self.nameLastEntityEntered=activeEntity.name  

@@ -44,10 +44,7 @@ class Machine(CoreObject):
                   failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None'):
 #         Process.__init__(self)
         CoreObject.__init__(self)
-        # used for the routing of the entities
-        self.predecessorIndex=0                     #holds the index of the predecessor from which the Machine will take an entity next
-        self.successorIndex=0                       #holds the index of the successor where the Machine will dispose an entity next
-        #     hold the id, name, and type of the Machine instance
+        # hold the id, name, and type of the Machine instance
         self.id=id
         self.objName=name
         self.type="Machine"                         #String that shows the type of object
@@ -67,16 +64,7 @@ class Machine(CoreObject):
         self.MTTF=MTTF
         self.MTTR=MTTR
         self.availability=availability        
-#         #     lists that hold the previous and next objects in the flow
-#         self.next=[]                                #list with the next objects in the flow
-#         self.previous=[]                            #list with the previous objects in the flow
-#         self.nextIds=[]                             #list with the ids of the next objects in the flow
-#         self.previousIds=[]                         #list with the ids of the previous objects in the flow
-#         #     lists to hold statistics of multiple runs
-#         self.Failure=[]
-#         self.Working=[]
-#         self.Blockage=[]
-#         self.Waiting=[]
+
 
     # =======================================================================
     # initialize the Machine object
@@ -240,7 +228,7 @@ class Machine(CoreObject):
     # =======================================================================
     # checks if the Machine can accept an entity and there is an entity in 
     # some predecessor waiting for it
-    # also updates the predecessorIndex to the one that is to be taken
+    # also updates the giver to the one that is to be taken
     # =======================================================================
     def canAcceptAndIsRequested(self):
         # get active and giver objects
@@ -248,7 +236,7 @@ class Machine(CoreObject):
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
                 
-        # if we have only one predecessor just check if there is a place, 
+        # if we have only one possible giver just check if there is a place, 
         # the machine is up and the predecessor has an entity to dispose
         # this is done to achieve better (cpu) processing time
         if(len(activeObject.previous)==1):
@@ -259,8 +247,7 @@ class Machine(CoreObject):
         isRequested=False                                           # is requested is dummyVariable checking if it is requested to accept an item
         maxTimeWaiting=0                                            # dummy variable counting the time a predecessor is blocked
         
-        # loop through the predecessors to see which have to dispose and which is the one blocked for longer
-        i=0                                                         # index used to set the predecessorIndex to the giver waiting the most
+        # loop through the possible givers to see which have to dispose and which is the one blocked for longer
         for object in activeObject.previous:
             if(object.haveToDispose(activeObject)):
                 isRequested=True                                    # if the predecessor objects have entities to dispose of
@@ -271,9 +258,9 @@ class Machine(CoreObject):
                 
                 #if more than one predecessor have to dispose take the part from the one that is blocked longer
                 if(timeWaiting>=maxTimeWaiting): 
-                    activeObject.predecessorIndex=i                 # the object to deliver the Entity to the activeObject is set to the ith member of the previous list
+                    activeObject.giver=object                 # the object to deliver the Entity to the activeObject is set to the ith member of the previous list
                     maxTimeWaiting=timeWaiting    
-            i+=1                                                    # in the next loops, check the other predecessors in the previous list
+                                                 # in the next loops, check the other predecessors in the previous list
         return activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested               
     
     # =======================================================================
@@ -324,8 +311,8 @@ class Machine(CoreObject):
                 timeWaiting=now()-object.timeLastEntityLeft         # the time it has been waiting is updated and stored in dummy variable timeWaiting
                 if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# if the timeWaiting is the maximum among the ones of the successors 
                     maxTimeWaiting=timeWaiting
-                    activeObject.successorIndex=i                   # set the successorIndex equal to the index of the longest waiting successor
-            i+=1                                                    # in the next loops, check the other successors in the previous list
+                    activeObject.receiver=object                    # set the receiver as the longest waiting possible receiver
+                                                                    # in the next loops, check the other successors in the previous list
         return len(activeObjectQueue)>0 and activeObject.waitToDispose\
              and activeObject.Up and (thecaller is receiverObject)       
     

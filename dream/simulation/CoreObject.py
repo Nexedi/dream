@@ -41,8 +41,6 @@ class CoreObject(Process):
     
     def initialize(self):
 #         Process.__init__(self) 
-        self.predecessorIndex=0                         #holds the index of the predecessor from which the Machine will take an entity next
-        self.successorIndex=0                           #holds the index of the successor where the Machine will dispose an entity next
         self.Up=True                                    #Boolean that shows if the machine is in failure ("Down") or not ("up")
         self.currentEntity=None      
         # ============================== total times ===============================================
@@ -111,8 +109,7 @@ class CoreObject(Process):
             pass
         return activeEntity          
         
-    # ================================== gets an entity from the ====================================
-    # ===================== predecessor that the predecessor index points to ========================     
+    # ================================== gets an entity from the giver ====================================   
     def getEntity(self):
         # get giver object, its queue, and sort the entities according to this object priorities
         giverObject=self.getGiverObject()
@@ -177,7 +174,7 @@ class CoreObject(Process):
         return len(activeObjectQueue)>0
     
     
-    #checks if the Object can accept an entity and there is an entity in some predecessor waiting for it
+    #checks if the Object can accept an entity and there is an entity in some possible giver waiting for it
     def canAcceptAndIsRequested(self):
         pass
     
@@ -207,9 +204,8 @@ class CoreObject(Process):
     
     # =================== get the giver object in a getEntity transaction. =========================        
     def getGiverObject(self):
-        if self.type=='Queue':#
-            return self.giver
-        return self.previous[self.predecessorIndex]
+        return self.giver
+
     
     # ============== get the giver object queue in a getEntity transaction. ========================    
     def getGiverObjectQueue(self):
@@ -217,9 +213,7 @@ class CoreObject(Process):
     
     # ============== get the receiver object in a removeEntity transaction.  ======================= 
     def getReceiverObject(self):
-        if self.type=='Queue':
-            return self.receiver
-        return self.next[self.successorIndex]
+        return self.receiver
     
     # ========== get the receiver object queue in a removeEntity transaction. ======================    
     def getReceiverObjectQueue(self):

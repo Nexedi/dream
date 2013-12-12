@@ -78,8 +78,8 @@ def moveExcess(argumentDict={}):
     consumption=int(argumentDict.get('consumption', 1))
     if giver and receiver:
         if len(giver.getActiveObjectQueue())>safetyStock:
-            giver.next=[receiver]
-            receiver.previous=[giver]
+            giver.receiver=receiver
+            receiver.giver=giver
             for i in range(consumption):
                 receiver.getEntity()         
             giver.next=[]

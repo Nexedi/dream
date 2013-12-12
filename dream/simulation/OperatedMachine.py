@@ -438,8 +438,8 @@ class OperatedMachine(Machine):
     
     # =======================================================================
     # checks if the Machine can accept an entity and there is an entity in 
-    # some predecessor waiting for it
-    # also updates the predecessorIndex to the one that is to be taken
+    # some possible giver waiting for it
+    # also updates the giver to the one that is to be taken
     # =======================================================================
     def canAcceptAndIsRequested(self):
         # get active and giver objects
@@ -480,21 +480,19 @@ class OperatedMachine(Machine):
         isRequested=False                                           # is requested is dummyVariable checking if it is requested to accept an item
         maxTimeWaiting=0                                            # dummy variable counting the time a predecessor is blocked
         
-        # loop through the predecessors to see which have to dispose and which is the one blocked for longer
-        i=0                                                         # index used to set the predecessorIndex to the giver waiting the most
+        # loop through the possible givers to see which have to dispose and which is the one blocked for longer                                                       # index used to set the predecessorIndex to the giver waiting the most
         for object in activeObject.previous:
             if(object.haveToDispose(activeObject)):# and not object.exitIsAssigned()):
-                isRequested=True                                    # if the predecessor objects have entities to dispose of
-                if(object.downTimeInTryingToReleaseCurrentEntity>0):# and the predecessor has been down while trying to give away the Entity
+                isRequested=True                                    # if the possible giver have entities to dispose of
+                if(object.downTimeInTryingToReleaseCurrentEntity>0):# and the possible giver has been down while trying to give away the Entity
                     timeWaiting=now()-object.timeLastFailureEnded   # the timeWaiting dummy variable counts the time end of the last failure of the giver object
                 else:
                     timeWaiting=now()-object.timeLastEntityEnded    # in any other case, it holds the time since the end of the Entity processing
                 
-                #if more than one predecessor have to dispose take the part from the one that is blocked longer
+                #if more than one possible givers have to dispose take the part from the one that is blocked longer
                 if(timeWaiting>=maxTimeWaiting): 
-                    activeObject.predecessorIndex=i                 # the object to deliver the Entity to the activeObject is set to the ith member of the previous list
+                    activeObject.giver=object                 # set the giver
                     maxTimeWaiting=timeWaiting    
-            i+=1                                                    # in the next loops, check the other predecessors in the previous list
             
         if (activeObject.operatorPool!='None' and any(type=='Load' for type in activeObject.multOperationTypeList)):
             if activeObject.operatorPool.checkIfResourceIsAvailable()\

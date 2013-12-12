@@ -98,16 +98,13 @@ class Exit(CoreObject):
             object=activeObject.previous[0]
             return object.haveToDispose(self)    
     
-        isRequested=False   # dummy variable used to check if any of the  predecessors has something to deliver
-        i=0
-        # check if any of the predecessors has something to deliver
-        # if yes, then return true and the predecessorIndex equal to the
-        # index of the predecessor in the previous lists
+        isRequested=False   # dummy variable used to check if any of the  possible givers has something to deliver
+        # check if any of the possible givers has something to deliver
+        # if yes, then return true and update the giver
         for object in self.previous:
             if(object.haveToDispose(activeObject)): 
                 isRequested=True
-                self.predecessorIndex=i
-            i+=1 
+                self.giver=object
         return isRequested
     # =======================================================================
     #                    gets an entity from the predecessor     
