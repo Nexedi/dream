@@ -73,7 +73,11 @@ class CoreObject(Process):
 
         # ============================== the below are currently used in Jobshop =======================   
         self.giver=None                                 #the CoreObject that the activeObject will take an Entity from
+        if len(self.previous)>0:
+            self.giver=self.previous[0]
         self.receiver=None                              #the CoreObject that the activeObject will give an Entity to
+        if len(self.next)>0:
+            self.receiver=self.next[0]
         # ============================== variable that is used for the loading of machines =============
         self.exitAssignedToReceiver = False             # by default the objects are not blocked 
                                                         # when the entities have to be loaded to operatedMachines
@@ -203,6 +207,8 @@ class CoreObject(Process):
     
     # =================== get the giver object in a getEntity transaction. =========================        
     def getGiverObject(self):
+        if self.type=='Queue':#
+            return self.giver
         return self.previous[self.predecessorIndex]
     
     # ============== get the giver object queue in a getEntity transaction. ========================    
@@ -211,6 +217,8 @@ class CoreObject(Process):
     
     # ============== get the receiver object in a removeEntity transaction.  ======================= 
     def getReceiverObject(self):
+        if self.type=='Queue':
+            return self.receiver
         return self.next[self.successorIndex]
     
     # ========== get the receiver object queue in a removeEntity transaction. ======================    

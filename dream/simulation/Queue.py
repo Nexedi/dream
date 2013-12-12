@@ -116,7 +116,7 @@ class Queue(CoreObject):
     # =======================================================================
     #    checks if the Queue can dispose an entity to the following object
     #            it checks also who called it and returns TRUE 
-    #           only to the successor that will give the entity. 
+    #           only to the receiver that will give the entity. 
     #              this is kind of slow I think got to check   
     # =======================================================================
     def haveToDispose(self, callerObject=None): 
@@ -124,7 +124,7 @@ class Queue(CoreObject):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()     
         
-        #if we have only one successor just check if the Queue holds one or more entities
+        #if we have only one possible receiver just check if the Queue holds one or more entities
         if(len(activeObject.next)==1 or callerObject==None):
             return len(self.Res.activeQ)>0 
         
@@ -134,17 +134,16 @@ class Queue(CoreObject):
          
         thecaller=callerObject
                
-        #give the entity to the successor that is waiting for the most time. 
+        #give the entity to the possible receiver that is waiting for the most time. 
         #plant does not do this in every occasion!       
         maxTimeWaiting=0     
-        i=0                                                         # loop through the object in the successor list
+                                                        # loop through the object in the successor list
         for object in activeObject.next:
             if(object.canAccept()):                                 # if the object can accept
                 timeWaiting=now()-object.timeLastEntityLeft         # compare the time that it has been waiting 
                 if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# with the others'
                     maxTimeWaiting=timeWaiting
-                    self.successorIndex=i                           # and update the successorIndex to the index of this object
-            i+=1
+                    self.receiver=object                           # and update the receiver to the index of this object
               
         #return true only to the predecessor from which the queue will take 
         receiverObject=activeObject.getReceiverObject()
@@ -166,16 +165,16 @@ class Queue(CoreObject):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
-        
+               
         #if we have only one predecessor just check if there is a place available and the predecessor has an entity to dispose
         if(len(activeObject.previous)==1):
+            
             return len(activeObjectQueue)<self.capacity and giverObject.haveToDispose(activeObject) 
     
         isRequested=False               # dummy boolean variable to check if any predecessor has something to hand in
         maxTimeWaiting=0                # dummy timer to check which predecessor has been waiting the most
         
-        #loop through the predecessors to see which have to dispose and which is the one blocked for longer
-        i=0                                                         # loop through all the predecessors
+        #loop through the predecessors to see which have to dispose and which is the one blocked for longer                                                      # loop through all the predecessors
         for object in activeObject.previous:
             if(object.haveToDispose(activeObject)):                 # if they have something to dispose off
                 isRequested=True                                    # then the Queue is requested to handle the entity
@@ -186,9 +185,8 @@ class Queue(CoreObject):
                 
                 #if more than one predecessor have to dispose take the part from the one that is blocked longer
                 if(timeWaiting>=maxTimeWaiting):                    
-                    activeObject.predecessorIndex=i  
-                    maxTimeWaiting=timeWaiting                   
-            i+=1                                                    # pick the predecessor waiting the more
+                    activeObject.giver=object  
+                    maxTimeWaiting=timeWaiting                                                                       # pick the predecessor waiting the more
         return len(activeObjectQueue)<self.capacity and isRequested # return true when the Queue is not fully occupied and a predecessor is requesting it
     # =======================================================================
     #            gets an entity from the predecessor that 
