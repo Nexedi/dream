@@ -10,6 +10,47 @@
    }
   }, 
   {
+   "extraPropertyDict": {
+    "due_date": "2013-12-15", 
+    "name": "Order 1 from X", 
+    "route": [
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "Q1", 
+      "stepNumber": 0
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "10"
+      }, 
+      "stationId": "M1", 
+      "stepNumber": 1
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "Q3", 
+      "stepNumber": 2
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "20"
+      }, 
+      "stationId": "M3", 
+      "stepNumber": 3
+     }
+    ], 
+    "material": "Plastic", 
+    "priority": "2", 
+    "order_date": "2013-11-20"
+   }, 
    "_class": "Dream.Job", 
    "id": "J1", 
    "results": {
@@ -44,6 +85,47 @@
    }
   }, 
   {
+   "extraPropertyDict": {
+    "due_date": "2013-11-30", 
+    "name": "Order 2 from Y", 
+    "route": [
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "Q2", 
+      "stepNumber": 0
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "20"
+      }, 
+      "stationId": "M2", 
+      "stepNumber": 1
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "Q1", 
+      "stepNumber": 2
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "34"
+      }, 
+      "stationId": "M1", 
+      "stepNumber": 3
+     }
+    ], 
+    "material": "Aluminium", 
+    "priority": "1", 
+    "order_date": "2013-11-14"
+   }, 
    "_class": "Dream.Job", 
    "id": "J2", 
    "results": {
@@ -78,6 +160,47 @@
    }
   }, 
   {
+   "extraPropertyDict": {
+    "due_date": "2014-02-01", 
+    "name": "Order 3 from Z", 
+    "route": [
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "Q3", 
+      "stepNumber": 0
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "30"
+      }, 
+      "stationId": "M3", 
+      "stepNumber": 1
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "Q1", 
+      "stepNumber": 2
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "20"
+      }, 
+      "stationId": "M1", 
+      "stepNumber": 3
+     }
+    ], 
+    "material": "Plastic", 
+    "priority": "3", 
+    "order_date": "2013-11-03"
+   }, 
    "_class": "Dream.Job", 
    "id": "J3", 
    "results": {

@@ -10,6 +10,70 @@
    }
   }, 
   {
+   "extraPropertyDict": {
+    "priority": "1", 
+    "route": [
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "Q1", 
+      "stepNumber": "0"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "1"
+      }, 
+      "stationId": "M1", 
+      "stepNumber": "1"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "Q3", 
+      "stepNumber": "2"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "3"
+      }, 
+      "stationId": "M3", 
+      "stepNumber": "3"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "Q2", 
+      "stepNumber": "4"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "4"
+      }, 
+      "stationId": "M2", 
+      "stepNumber": "5"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "E1", 
+      "stepNumber": "6"
+     }
+    ], 
+    "dueDate": "15", 
+    "orderDate": "0", 
+    "name": "Job1"
+   }, 
    "_class": "Dream.Job", 
    "id": "J1", 
    "results": {
@@ -55,6 +119,70 @@
    }
   }, 
   {
+   "extraPropertyDict": {
+    "priority": "-7", 
+    "route": [
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "Q2", 
+      "stepNumber": "0"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "3"
+      }, 
+      "stationId": "M2", 
+      "stepNumber": "1"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "Q3", 
+      "stepNumber": "2"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "1"
+      }, 
+      "stationId": "M3", 
+      "stepNumber": "3"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "7"
+      }, 
+      "stationId": "Q2", 
+      "stepNumber": "4"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "7"
+      }, 
+      "stationId": "M2", 
+      "stepNumber": "5"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "E1", 
+      "stepNumber": "6"
+     }
+    ], 
+    "dueDate": "10", 
+    "orderDate": "-1", 
+    "name": "Job2"
+   }, 
    "_class": "Dream.Job", 
    "id": "J2", 
    "results": {
@@ -100,6 +228,54 @@
    }
   }, 
   {
+   "extraPropertyDict": {
+    "priority": "-12", 
+    "route": [
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "Q2", 
+      "stepNumber": "0"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "2"
+      }, 
+      "stationId": "M2", 
+      "stepNumber": "1"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "Q3", 
+      "stepNumber": "2"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "1"
+      }, 
+      "stationId": "M3", 
+      "stepNumber": "3"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "E1", 
+      "stepNumber": "4"
+     }
+    ], 
+    "dueDate": "6", 
+    "orderDate": "2", 
+    "name": "Job3"
+   }, 
    "_class": "Dream.Job", 
    "id": "J3", 
    "results": {
@@ -135,6 +311,38 @@
    }
   }, 
   {
+   "extraPropertyDict": {
+    "priority": "0", 
+    "route": [
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "Q2", 
+      "stepNumber": "0"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "7"
+      }, 
+      "stationId": "M2", 
+      "stepNumber": "1"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "E1", 
+      "stepNumber": "2"
+     }
+    ], 
+    "dueDate": "9", 
+    "orderDate": "1.5", 
+    "name": "Job4"
+   }, 
    "_class": "Dream.Job", 
    "id": "J4", 
    "results": {
