@@ -209,7 +209,7 @@ class CoreObject(Process):
     
     # ============== get the giver object queue in a getEntity transaction. ========================    
     def getGiverObjectQueue(self):
-        return self.getGiverObject().Res.activeQ
+        return self.getGiverObject().getActiveObjectQueue()
     
     # ============== get the receiver object in a removeEntity transaction.  ======================= 
     def getReceiverObject(self):
@@ -217,7 +217,7 @@ class CoreObject(Process):
     
     # ========== get the receiver object queue in a removeEntity transaction. ======================    
     def getReceiverObjectQueue(self):
-        return self.getReceiverObject().Res.activeQ
+        return self.getReceiverObject().getActiveObjectQueue()
     
     # =======================================================================
     # calculates the processing time
