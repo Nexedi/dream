@@ -80,8 +80,11 @@ class OperatorPool(ObjectResource):
 #         self.timeLastOperationStarted=0    #holds the time that the last operation was started        
 
         # initialize the operators
+        # an operator that may have been initialized by an other operator pool, is initiated again
+        # reconsider
         for operator in self.operators:
-            operator.initialize()
+            if not operator.isInitialized():
+                operator.initialize()
             
     # =======================================================================
     #                  checks if there are operators available

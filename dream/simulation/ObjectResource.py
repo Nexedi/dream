@@ -31,11 +31,16 @@ from SimPy.Simulation import Resource
 # ===========================================================================
 class ObjectResource(object):
     
+    def __init__(self):
+        self.initialized = False
+        
     def initialize(self):
         self.totalWorkingTime=0         #holds the total working time
         self.totalWaitingTime=0         #holds the total waiting time
         self.timeLastOperationStarted=0    #holds the time that the last repair was started        
-        self.Res=Resource(self.capacity) 
+        self.Res=Resource(self.capacity)
+        # variable that checks weather the resource is already initialized
+        self.initialized = True
     
     # =======================================================================
     #                    checks if the worker is available
@@ -90,4 +95,10 @@ class ObjectResource(object):
     # =======================================================================
     def getResourceQueue(self):
         return self.Res.activeQ
+    
+    # =======================================================================
+    # check if the resource is already initialized
+    # =======================================================================
+    def isInitialized(self):
+        return self.initialized
     
