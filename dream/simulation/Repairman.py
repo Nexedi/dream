@@ -36,7 +36,8 @@ from ObjectResource import ObjectResource
 # ===========================================================================
 class Repairman(ObjectResource):
     
-    def __init__(self, id, name, capacity=1):    
+    def __init__(self, id, name, capacity=1):  
+        ObjectResource.__init__(self)  
         self.id=id      
         self.objName=name
         self.capacity=capacity      # repairman is an instance of resource
@@ -49,7 +50,7 @@ class Repairman(ObjectResource):
         self.coreObjectIds=[]
         # list with the coreObjects that the repairman repairs
         self.coreObjects=[]
-                
+        
     # =======================================================================    
     #            actions to be taken after the simulation ends
     # =======================================================================
