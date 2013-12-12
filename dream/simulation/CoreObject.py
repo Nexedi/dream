@@ -204,7 +204,7 @@ class CoreObject(Process):
     
     # =================== get the giver object in a getEntity transaction. =========================        
     def getGiverObject(self):
-        return self.giver
+        return self.giver.getActiveObject()
 
     
     # ============== get the giver object queue in a getEntity transaction. ========================    
@@ -213,7 +213,7 @@ class CoreObject(Process):
     
     # ============== get the receiver object in a removeEntity transaction.  ======================= 
     def getReceiverObject(self):
-        return self.receiver
+        return self.receiver.getActiveObject()
     
     # ========== get the receiver object queue in a removeEntity transaction. ======================    
     def getReceiverObjectQueue(self):
