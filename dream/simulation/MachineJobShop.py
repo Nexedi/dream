@@ -33,11 +33,12 @@ from Machine import Machine
 #the MachineJobShop object
 class MachineJobShop(Machine):
     
+    #set all the objects in previous and next
     def initialize(self):
         from Globals import G
         self.previous=G.ObjList
         self.next=G.ObjList
-        Machine.initialize(self)
+        Machine.initialize(self)    #run default behaviour
 
     
     #gets an entity from the predecessor that the predecessor index points to     

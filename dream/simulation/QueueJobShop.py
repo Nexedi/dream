@@ -34,11 +34,12 @@ from Queue import Queue
 #the MachineJobShop object
 class QueueJobShop(Queue):
     
+    #set all the objects in previous and next
     def initialize(self):
         from Globals import G
         self.previous=G.ObjList
         self.next=G.ObjList
-        Queue.initialize(self)
+        Queue.initialize(self)  #run default behaviour
         
     #checks if the Queue can accept an entity       
     #it checks also the next station of the Entity and returns true only if the active object is the next station 

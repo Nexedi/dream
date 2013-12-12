@@ -102,7 +102,7 @@ class Exit(CoreObject):
         # check if any of the possible givers has something to deliver
         # if yes, then return true and update the giver
         for object in self.previous:
-            if(object.haveToDispose(activeObject)): 
+            if(object.haveToDispose(activeObject) and object.receiver==self): 
                 isRequested=True
                 self.giver=object
         return isRequested
