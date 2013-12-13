@@ -82,6 +82,8 @@ from Operator import Operator
 from OperatorPool import OperatorPool
 from OperatedPoolBroker import Broker
 from OperatedMachine import OperatedMachine
+from BatchDecompositionStartTime import BatchDecompositionStartTime
+from M3 import M3
 
 import ExcelHandler
 import time
@@ -147,12 +149,12 @@ def createObjects():
     G.BatchSourceList=[]
     G.BatchReassemblyList=[]
     G.LineClearanceList=[]
-    G.BatchScrapMachine=[]
     G.EventGeneratorList=[]
     G.OperatorsList = []
     G.OperatorPoolsList = []
     G.BrokersList = []
     G.OperatedMachineList = []
+    G.BatchScrapMachineList=[]
     
     # -----------------------------------------------------------------------
     #                loop through all the model resources 
@@ -293,7 +295,42 @@ def createObjects():
                                                     scrStdev=scrStdev,scrMin=scrMin,scrMax=scrMax)
             M.nextIds=getSuccessorList(id)                      # update the nextIDs list of the machine
             G.MachineList.append(M)                             # add machine to global MachineList
-            G.BatchScrapMachine.append(M)
+            G.BatchScrapMachineList.append(M)
+            G.ObjList.append(M)                                 # add machine to ObjList
+
+
+        elif objClass=='Dream.M3':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            processingTime=element.get('processingTime', 'not found')
+            distributionType=processingTime.get('distributionType', 'not found')
+            mean=float(processingTime.get('mean', '0'))  
+            stdev=float(processingTime.get('stdev', '0'))  
+            min=float(processingTime.get('min', '0')) 
+            max=float(processingTime.get('max', '0'))            
+            scrapQuantity=element.get('scrapQuantity', 'not found')
+            scrapDistributionType=scrapQuantity.get('distributionType', 'not found')
+            scrMean=int(scrapQuantity.get('mean', '0'))  
+            scrStdev=float(scrapQuantity.get('stdev', '0'))  
+            scrMin=int(scrapQuantity.get('min', '0')) 
+            scrMax=int(scrapQuantity.get('max', '0'))            
+            failures=element.get('failures', 'not found')  
+            failureDistribution=failures.get('failureDistribution', 'not found')
+            MTTF=float(failures.get('MTTF', '0'))   
+            MTTR=float(failures.get('MTTR', '0')) 
+            availability=float(failures.get('availability', '0'))  
+            r='None'
+            for repairman in G.RepairmanList:                   # check which repairman in the G.RepairmanList
+                if(id in repairman.coreObjectIds):              # (if any) is assigned to repair 
+                    r=repairman                                 # the machine with ID equal to id
+                    
+            M=M3(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
+                                                    MTTF=MTTF, MTTR=MTTR, availability=availability, repairman=r,
+                                                    mean=mean,stdev=stdev,min=min,max=max, scrMean=scrMean, 
+                                                    scrStdev=scrStdev,scrMin=scrMin,scrMax=scrMax)
+            M.nextIds=getSuccessorList(id)                      # update the nextIDs list of the machine
+            G.MachineList.append(M)                             # add machine to global MachineList
+            G.BatchScrapMachineList.append(M)
             G.ObjList.append(M)                                 # add machine to ObjList
             
         
@@ -430,6 +467,23 @@ def createObjects():
             BD.nextIds=getSuccessorList(id)
             G.BatchDecompositionList.append(BD)
             G.ObjList.append(BD)       
+
+        elif objClass=='Dream.BatchDecompositionStartTime':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            processingTime=element.get('processingTime', 'not found')
+            distributionType=processingTime.get('distributionType', 'not found')
+            mean=float(processingTime.get('mean', '0'))  
+            stdev=float(processingTime.get('stdev', '0'))  
+            min=float(processingTime.get('min', '0')) 
+            max=float(processingTime.get('max', '0'))
+            numberOfSubBatches=int(element.get('numberOfSubBatches', '0'))
+            BD=BatchDecompositionStartTime(id, name, distribution=distributionType,  numberOfSubBatches=numberOfSubBatches,
+                                                    mean=mean,stdev=stdev,min=min,max=max)
+            BD.nextIds=getSuccessorList(id)
+            G.BatchDecompositionList.append(BD)
+            G.ObjList.append(BD) 
+
             
         elif objClass=='Dream.BatchReassembly':
             id=element.get('id', 'not found')
