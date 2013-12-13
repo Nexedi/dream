@@ -26,7 +26,7 @@ Created on 9 Nov 2012
 models the failures that servers can have
 '''
 
-from SimPy.Simulation import now, Process, hold, request, reactivate, release
+from SimPy.Simulation import now, Process, hold, request, release
 import math
 from RandomNumberGenerator import RandomNumberGenerator
 from ObjectInterruption import ObjectInterruption
@@ -86,7 +86,7 @@ class Failure(ObjectInterruption):
             yield hold,self,self.rngTTF.generateNumber()    # wait until a failure happens                  
             try:
                 if(len(self.getVictimQueue())>0):           # when a Machine gets failure
-                    self.interrupt(self.victim)             #     while in process it is interrupted
+                    self.interruptVictim()             #     while in process it is interrupted
                 self.victim.Up=False
                 self.victim.timeLastFailure=now()           
                 self.outputTrace("is down")
@@ -106,7 +106,7 @@ class Failure(ObjectInterruption):
             
             try:
                 if(len(self.getVictimQueue())>0):                
-                    reactivate(self.victim)                 # since repairing is over, the Machine is reactivated
+                    self.reactivateVictim()                 # since repairing is over, the Machine is reactivated
                 self.victim.Up=True              
                 self.outputTrace("is up")              
                 if(self.repairman!="None"): #if a resource was used, it is now released

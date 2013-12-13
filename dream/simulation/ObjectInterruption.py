@@ -26,7 +26,7 @@ Created on 18 Aug 2013
 Class that acts as an abstract. It should have no instances. All object interruptions (eg failures, breaks) should inherit from it
 '''
 
-from SimPy.Simulation import Process, Resource
+from SimPy.Simulation import Process, Resource, reactivate
 
 class ObjectInterruption(Process):
     
@@ -52,6 +52,13 @@ class ObjectInterruption(Process):
     
     def postProcessing(self):
         pass
-        
+    
+    #interrupts the victim
+    def interruptVictim(self):
+        self.interrupt(self.victim) 
+    
+    #reactivate the victim
+    def reactivateVictim(self):
+        reactivate(self.victim)  
         
         
