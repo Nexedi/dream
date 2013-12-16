@@ -38,7 +38,7 @@ class Assembly(CoreObject):
 
     #initialize the object      
     def __init__(self, id, name, distribution='Fixed', mean=1, stdev=0.1, min=0, max=5):
-        Process.__init__(self)
+        CoreObject.__init__(self)
         self.id=id
         self.objName=name
         self.type="Assembly"   #String that shows the type of object
@@ -70,6 +70,7 @@ class Assembly(CoreObject):
 
     def initialize(self):
         Process.__init__(self)
+        CoreObject.initialize(self)
         self.waitToDispose=False    #flag that shows if the object waits to dispose an entity    
         
         self.Up=True                    #Boolean that shows if the object is in failure ("Down") or not ("up")
