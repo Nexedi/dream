@@ -154,9 +154,14 @@ class Dismantle(CoreObject):
         
         #according to the caller return true or false
         if thecaller in self.nextPart:
-            return len(self.getActiveObjectQueue())>1 and self.waitToDisposePart
+            if len(self.getActiveObjectQueue())>1 and self.waitToDisposePart:
+                self.receiver=thecaller
+                return True
         elif thecaller in self.nextFrame:
-            return len(self.getActiveObjectQueue())==1 and self.waitToDisposeFrame
+            if len(self.getActiveObjectQueue())==1 and self.waitToDisposeFrame:
+                self.receiver=thecaller
+                return True
+        return False
                  
     #checks if the frame is emptied
     def frameIsEmpty(self):
