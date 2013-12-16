@@ -162,14 +162,12 @@ class BatchDecomposition(CoreObject):
         #give the entity to the successor that is waiting for the most time. 
         #plant does not do this in every occasion!       
         maxTimeWaiting=0     
-        i=0                                                         # loop through the object in the successor list
         for object in activeObject.next:
             if(object.canAccept()):                                 # if the object can accept
                 timeWaiting=now()-object.timeLastEntityLeft         # compare the time that it has been waiting 
                 if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# with the others'
                     maxTimeWaiting=timeWaiting
-                    self.successorIndex=i                           # and update the successorIndex to the index of this object
-            i+=1
+                    self.receiver=object                           # and update the successorIndex to the index of this object
               
         #return true only to the predecessor from which the queue will take 
         receiverObject=activeObject.getReceiverObject()
@@ -191,7 +189,6 @@ class BatchDecomposition(CoreObject):
         maxTimeWaiting=0                # dummy timer to check which predecessor has been waiting the most
         
         #loop through the predecessors to see which have to dispose and which is the one blocked for longer
-        i=0                                                         # loop through all the predecessors
         for object in activeObject.previous:
             if(object.haveToDispose(activeObject)):                 # if they have something to dispose off
                 isRequested=True                                    # then the Queue is requested to handle the entity
@@ -202,7 +199,6 @@ class BatchDecomposition(CoreObject):
                 
                 #if more than one predecessor have to dispose take the part from the one that is blocked longer
                 if(timeWaiting>=maxTimeWaiting):                    
-                    activeObject.predecessorIndex=i  
+                    activeObject.giver=object  
                     maxTimeWaiting=timeWaiting                   
-            i+=1                                                    # pick the predecessor waiting the more
         return self.canAccept(self) and isRequested     # return true when the Queue is not fully occupied and a predecessor is requesting it
