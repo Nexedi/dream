@@ -36,7 +36,7 @@ class LineClearance(Queue):
     # =======================================================================
     #               checks if the Queue can accept an entity       
     #             it checks also who called it and returns TRUE 
-    #            only to the predecessor that will give the entity.
+    #            only to the potential giver that will give the entity.
     # =======================================================================  
     def canAccept(self, callerObject=None): 
         # get active and giver objects
@@ -45,7 +45,7 @@ class LineClearance(Queue):
         giverObject=self.getGiverObject()
         giverObjectQueue=self.getGiverObjectQueue()
         
-        #if we have only one predecessor just check if there is a place available
+        #if we have only one potential giver just check if there is a place available
         # this is done to achieve better (cpu) processing time 
         # then we can also use it as a filter for a yield method
         if(len(activeObject.previous)==1 or callerObject==None):
@@ -64,7 +64,7 @@ class LineClearance(Queue):
         
         thecaller=callerObject
         
-        #return true only to the predecessor from which the queue will take 
+        #return true only to the potential giver from which the queue will take 
         #flag=False
         #if thecaller is self.previous[self.predecessorIndex]:
         #    flag=True
@@ -87,7 +87,7 @@ class LineClearance(Queue):
         giverObject=self.getGiverObject()
         giverObjectQueue = self.getGiverObjectQueue()
         
-        #if we have only one predecessor just check if there is a place available and the predecessor has an entity to dispose
+        #if we have only one potential giver just check if there is a place available and the potential giver has an entity to dispose
         if(len(activeObject.previous)==1):
             if len(activeObjectQueue)==0:
                 return giverObject.haveToDispose(activeObject) and\
@@ -98,11 +98,10 @@ class LineClearance(Queue):
                        giverObjectQueue[0].type == 'SubBatch' and \
                        giverObjectQueue[0].batchId==activeObjectQueue[0].batchId
             
-        isRequested=False               # dummy boolean variable to check if any predecessor has something to hand in
-        maxTimeWaiting=0                # dummy timer to check which predecessor has been waiting the most
+        isRequested=False               # dummy boolean variable to check if any potential giver has something to hand in
+        maxTimeWaiting=0                # dummy timer to check which potential giver has been waiting the most
         
-        #loop through the predecessors to see which have to dispose and which is the one blocked for longer
-        i=0                                                         # loop through all the predecessors
+        #loop through the potential givers to see which have to dispose and which is the one blocked for longer
         for object in activeObject.previous:
             if(object.haveToDispose(activeObject)):                 # if they have something to dispose off
                 isRequested=True                                    # then the Queue is requested to handle the entity
@@ -111,11 +110,10 @@ class LineClearance(Queue):
                 else:                                               # of the other machines
                     timeWaiting=now()-object.timeLastEntityEnded
                 
-                #if more than one predecessor have to dispose take the part from the one that is blocked longer
+                #if more than one potential giver have to dispose take the part from the one that is blocked longer
                 if(timeWaiting>=maxTimeWaiting):                    
-                    activeObject.predecessorIndex=i  
+                    activeObject.giver=object
                     maxTimeWaiting=timeWaiting                   
-            i+=1                                                    # pick the predecessor waiting the more return 
                                                                     # true when the Queue is not fully occupied and 
                                                                     # a predecessor is requesting it
         if len(activeObjectQueue)==0:
