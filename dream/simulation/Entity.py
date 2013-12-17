@@ -33,7 +33,6 @@ class Entity(object):
         self.name=name
         #         information on the object holding the entity
         #         initialized as None and updated every time an entity enters a new object
-        self.currentStop=None       #contains the current object that the material is in
         #         information on the lifespan of the entity  
         self.creationTime=0
         self.startTime=0            #holds the startTime for the lifespan
