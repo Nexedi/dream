@@ -705,6 +705,7 @@ def createWIP():
     G.JobList=[]
     G.WipList=[]
     G.EntityList=[]  
+    G.PartList=[]
     
     json_data = G.JSONData
     #Read the json data
@@ -718,7 +719,7 @@ def createWIP():
                 entityClass=entity.get('_class', None)
             except IndexError:
                 continue
-   
+            
             if entityClass=='Dream.Job':
                 id=entity.get('id', 'not found')
                 name=entity.get('name', 'not found')
@@ -768,7 +769,17 @@ def createWIP():
                     orderDate=orderDate, extraPropertyDict=extraPropertyDict)
                 G.JobList.append(J)   
                 G.WipList.append(J)  
-                G.EntityList.append(J)       
+                G.EntityList.append(J)    
+            elif entityClass=='Dream.Part':
+                id=entity.get('id', 'not found')
+                name=entity.get('name', 'not found')
+                P=Part(id,name)
+                G.PartList.append(P)   
+                G.WipList.append(P)  
+                G.EntityList.append(P)  
+                object=Globals.findObjectById(element['id'])
+                P.currentStation=object
+                             
 
 # ===========================================================================
 #        used to convert a string read from the input to object type
@@ -804,7 +815,7 @@ def main(argv=[], input_data=None):
     G.JSONData=json.loads(G.InputData)              # create the dictionary JSONData
     readGeneralInput()
     createObjects()
-    createWIP()
+    #createWIP()
     setTopology()    
     
     #run the experiment (replications)          

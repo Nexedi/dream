@@ -95,13 +95,18 @@ def findObjectById(id):
 
 def setWIP(entityList):
     for entity in entityList:
-        if entity.type=='Job':
-            objectId=entity.currentStation                      # get the id of the object where the entity currently seats 
+        if entity.type=='Part':
+            object=entity.currentStation                        #identify the object
+            object.getActiveObjectQueue().append(entity)        #append the entity to its Queue
+            entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
+        elif entity.type=='Job':
             object=findObjectById(entity.remainingRoute[0][0])   # find the object in the 'G.ObjList
             object.getActiveObjectQueue().append(entity)        # append the entity to its Queue
             object.receiver=findObjectById(entity.remainingRoute[1][0])
             entity.remainingRoute.pop(0)                        # remove data from the remaining route.    
             entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
             entity.currentStation=object                        # update the current station of the entity  
+            
+            
             
 

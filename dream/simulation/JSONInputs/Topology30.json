@@ -1,0 +1,92 @@
+{
+    "_class": "Dream.Simulation",
+    "edges": {
+        "0": [
+            "M1",
+            "Q2",
+            {}
+        ],
+        "1": [
+            "M2",
+            "E1",
+            {}
+        ],
+        "2": [
+            "Q1",
+            "M1",
+            {}
+        ],
+        "3": [
+            "Q2",
+            "M2",
+            {}
+        ]
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "numberOfReplications": "1",
+        "maxSimTime": "-1",
+        "trace": "Yes",
+        "confidenceLevel": "0.95"
+    },
+    "nodes": {
+        "M1": {
+            "_class": "Dream.Machine",
+            "id": "M1",
+            "name": "Machine1",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "0.25"
+            },
+            "failures": {}
+        },
+        "M2": {
+            "_class": "Dream.Machine",
+            "id": "M2",
+            "name": "Machine2",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "1.5"
+            },
+            "failures": {}
+        },
+        "Q1": {
+            "_class": "Dream.Queue",
+            "id": "Q1",
+            "name": "Queue1",
+            "isDummy": "0",
+            "capacity": "1",
+            "wip": [
+                {
+                    "_class": "Dream.Part",
+                    "id": "P1",
+                    "name": "Part1"
+                },
+                {
+                    "_class": "Dream.Part",
+                    "id": "P2",
+                    "name": "Part2"
+                }
+            ]
+        },
+        "Q2": {
+            "_class": "Dream.Queue",
+            "id": "Q2",
+            "name": "Queue2",
+            "isDummy": "0",
+            "capacity": "1",
+            "wip": [
+                {
+                    "_class": "Dream.Part",
+                    "id": "P3",
+                    "name": "Part3"
+                }
+            ]
+        },
+        "E1": {
+            "_class": "Dream.Exit",
+            "id": "E1",
+            "name": "Stock"
+        }
+    }
+}
