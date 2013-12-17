@@ -24,20 +24,23 @@ Created on 16 Dec 2013
 '''
 from rpy2 import robjects
 
+#The Graphs object
 class Graphs:
+    #Graphs that can visualize the data samples 
     
     def Plots(self,data, fileName="plotChart.jpg"):
-        data=robjects.FloatVector(data)
-        rplot=robjects.r['plot']
-        rdev=robjects.r['dev.off']
-        rjpeg=robjects.r['jpeg']
+        data=robjects.FloatVector(data)   #The given list changes into float vector in order to be handled by RPy2
+        rplot=robjects.r['plot']      #Call plot function - R function
+        rdev=robjects.r['dev.off']    #Call dev.off - R function
+        rjpeg=robjects.r['jpeg']      #Call jpeg - R function
     
-        output=rjpeg(fileName)
-        rplot(data, type="o", col="blue")
+        output=rjpeg(fileName)        #output the plot (jpeg file format) in the given directory
+        rplot(data, type="o", col="blue")     #Graph data sample and define color and type for the data points visualization
         rdev
         return output
     
     def ScatterPlot(self,data1,data2, fileName="scatterplot.jpg"):
+        #The given lists change into float vector in order to be handled by RPy2
         data1=robjects.FloatVector(data1)
         data2=robjects.FloatVector(data2)
         
@@ -45,34 +48,34 @@ class Graphs:
         rdev=robjects.r['dev.off']
         rjpeg=robjects.r['jpeg']
     
-        output=rjpeg(fileName)
+        output=rjpeg(fileName)            #Graph data samples and define color and type for the data points visualization
         rplot(data1,data2, type="o", col="red")
         rdev
         return output
 
     def Pie(self, data1, fileName="pieChart.jpg"):
-        data1=robjects.FloatVector(data1)
-        rpaste=robjects.r['paste']
-        rround=robjects.r['round']
-        rsum=robjects.r['sum']
-        rpie=robjects.r['pie']
+        data1=robjects.FloatVector(data1)      #The given list changes into float vector in order to be handled by RPy2
+        rpaste=robjects.r['paste']          #Call paste - R function 
+        rround=robjects.r['round']          #Call round - R function 
+        rsum=robjects.r['sum']              #Call sum - R function
+        rpie=robjects.r['pie']              #Call pie - R function
    
         rdev=robjects.r['dev.off']
 
-        colors=robjects.StrVector(["white","grey70","grey90","grey50","grey60","black"])
+        colors=robjects.StrVector(["white","grey70","grey90","grey50","grey60","black"])  #Define colors to be used for black&white print
         s=rsum(data1)
         d_labels=[0]*(len(data1))
    
         i=0
         while i<len(data1):
-            d_labels[i]=((rround((data1[i]/s[0])*100,1)))
+            d_labels[i]=((rround((data1[i]/s[0])*100,1)))      #Calculate the percentage for each data point, rounded to one decimal place
             i+=1
     
-        d_labels=rpaste(d_labels,"%",sep="")
+        d_labels=rpaste(d_labels,"%",sep="")    #Concatenate a "%" car after each value           
         rjpeg=robjects.r['jpeg']
     
         export=rjpeg(fileName)
-        rpie(data1,main="Data",col=colors,labels=d_labels,cex=0.8)
+        rpie(data1,main="Data",col=colors,labels=d_labels,cex=0.8)   #Create a pie chart with defined heading and custom colors 
         rdev
         return export
 
