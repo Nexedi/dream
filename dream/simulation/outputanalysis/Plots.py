@@ -49,7 +49,7 @@ class Graphs:
         rjpeg=robjects.r['jpeg']
     
         output=rjpeg(fileName)            #Graph data samples and define color and type for the data points visualization
-        rplot(data1,data2, type="o", col="red")
+        rplot(data1,data2, pch=19)
         rdev
         return output
 
