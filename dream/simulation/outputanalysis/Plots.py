@@ -53,6 +53,18 @@ class Graphs:
         rdev
         return output
 
+    def Histogram(data,fileName="histogram.jpg"):
+        data=robjects.FloatVector(data)   #The given lists change into float vector in order to be handled by RPy2
+        
+        rhist=robjects.r['hist']
+        rdev=robjects.r['dev.off']
+        rjpeg=robjects.r['jpeg']
+        output=rjpeg(fileName)
+        
+        rhist(data, main='Histogram',col="lightblue")      #Create a histogram for the given data sample
+        rdev
+        return output
+    
     def Pie(self, data1, fileName="pieChart.jpg"):
         data1=robjects.FloatVector(data1)      #The given list changes into float vector in order to be handled by RPy2
         rpaste=robjects.r['paste']          #Call paste - R function 
