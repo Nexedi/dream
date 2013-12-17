@@ -120,11 +120,10 @@ class CoreObject(Process):
         #(after the sorting of the entities in the queue of the giver object)
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        activeEntity=giverObjectQueue[0]
+        # remove entity from the giver
+        activeEntity = giverObject.removeEntity()
         #get the entity from the previous object and put it in front of the activeQ 
         activeObjectQueue.append(activeEntity)   
-        #remove the entity from the previous object
-        giverObject.removeEntity()
         # if the giverObject is blocked then unBlock it
         if giverObject.exitIsAssigned():
             giverObject.unAssignExit()                
@@ -204,7 +203,7 @@ class CoreObject(Process):
     
     # =================== get the giver object in a getEntity transaction. =========================        
     def getGiverObject(self):
-        return self.giver
+        return self.giver.getActiveObject()
 
     
     # ============== get the giver object queue in a getEntity transaction. ========================    
@@ -213,13 +212,13 @@ class CoreObject(Process):
     
     # ============== get the receiver object in a removeEntity transaction.  ======================= 
     def getReceiverObject(self):
-        return self.receiver
+        return self.receiver.getActiveObject()
     
     # ========== get the receiver object queue in a removeEntity transaction. ======================    
     def getReceiverObjectQueue(self):
         return self.getReceiverObject().getActiveObjectQueue()
     
-    # ============== get the giver object queue in a getEntity transaction. ========================    
+	# ============== get the giver object queue in a getEntity transaction. ========================    
     def updateGiverObject(self):
         activeObject=self
         # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
@@ -254,6 +253,7 @@ class CoreObject(Process):
                     maxTimeWaiting=timeWaiting
                     receiver=object                    # set the receiver as the longest waiting possible receiver
         return receiver
+	
     # =======================================================================
     # calculates the processing time
     # =======================================================================

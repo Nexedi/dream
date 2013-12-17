@@ -48,7 +48,9 @@ class Entity(object):
         #         a list that holds information about the schedule 
         #         of the entity (when it enters and exits every station)
         self.schedule=[]
-        self.currentStation=None             
+        self.currentStation=None
+        #         values to be used in the internal processing of compoundObjects
+        self.internal = False       # informs if the entity is being processed internally
         
     # =============== outputs results to JSON File ==========================
     def outputResultsJSON(self):
