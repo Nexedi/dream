@@ -22,36 +22,34 @@ Created on 16 Nov 2013
 
 @author: Panos
 '''
-from rpy2.robjects.packages import importr
 from rpy2 import robjects
 
-MASS= importr('MASS')
-
-
+#The ConfidenceIntervals object
 class Intervals:
-    
-    
+    #Calculate the p (decimal number) confidence intervals for a sample of data
     def ConfidIntervals(self,data,p): 
   
-        data=robjects.FloatVector(data)  
+        data=robjects.FloatVector(data)  #The given list changes into float vector in order to be handled by RPy2
         alpha=1-p
-        rsqrt=robjects.r['sqrt']
-        rsd=robjects.r['sd']
-        rmean=robjects.r['mean']
+        rsqrt=robjects.r['sqrt']     #Call square root function - R function 
+        rsd=robjects.r['sd']       #Call standard deviation function - R function
+        rmean=robjects.r['mean']   #Call mean function - R function
         t=len(data)
         n=rsqrt(t)
         b=rsd(data)
 
-        rqt=robjects.r['qt']
+        rqt=robjects.r['qt']       #Call the cumulative probability distribution function for t distribution
         q=rqt((1-(alpha/2)),t-1)
-        m=rmean(data)
+        m=rmean(data)               #Calculate the sample average value
 
-        me=q[0]*(b[0]/n[0])
+        me=q[0]*(b[0]/n[0])        #Calculate the margin of error
 
+        #Calculate the lower and the upper bound 
         lo=m[0]-me
         up=m[0]+me
         l=[lo,up]
         return l
+
 
 
 
