@@ -27,54 +27,55 @@ from rpy2.robjects.packages import importr
 
 MASS= importr('MASS')
 
+#The BasicStatisticalMeasures object
 class BasicStatisticalMeasures:
-
-    def length(self, data):
-        data=robjects.FloatVector(data)
-        rlength = robjects.r['length']
-        return rlength(data)
+     # A variety of statistical measures are calculated in this object
+    def length(self, data):                      #Calculate the length of data sample
+        data=robjects.FloatVector(data)          ##The given list changes into float vector in order to be handled by RPy2
+        rlength = robjects.r['length']           #Call length function-R function
+        return rlength(data)[0]
      
-    def summary(self, data):
+    def summary(self, data):                    #Calculate the summary of data sample (output the results in a specific format used in R)
         data=robjects.FloatVector(data)
-        rsummary = robjects.r['summary']
+        rsummary = robjects.r['summary']        #Call summary - R function
         return rsummary(data)
         
-    def quantile(self,data):
+    def quantile(self,data):                   #Calculate the quantiles (0%,25%,50%,75%,100%) of the data sample
         data=robjects.FloatVector(data)
-        rquantile = robjects.r['quantile']
+        rquantile = robjects.r['quantile']     #Call quantile - R function
         return rquantile(data)
     
-    def frequency(self,data):
+    def frequency(self,data):                  #Calculate the frequency of a data point in the sample
         data=robjects.FloatVector(data)
-        rtable= robjects.r['table']
+        rtable= robjects.r['table']            #Call table - R function
         return rtable(data)
         
-    def mean (self, data):
+    def mean (self, data):                     #Calculate the mean value of a data sample 
         data=robjects.FloatVector(data)
-        rmean = robjects.r['mean']
-        return rmean(data)
+        rmean = robjects.r['mean']             #Call mean - R function
+        return rmean(data)[0]
     
-    def var (self, data):
+    def var (self, data):                      #Calculate the variance of a data sample
         data=robjects.FloatVector(data)
-        rvar = robjects.r['var']
-        return rvar(data)
+        rvar = robjects.r['var']               #Call variance function - R function
+        return rvar(data)[0]
     
-    def sd (self, data):
+    def sd (self, data):                       #Calculate the standard deviation of a data sample
         data=robjects.FloatVector(data)
-        rsd = robjects.r['sd']
-        return rsd(data)
+        rsd = robjects.r['sd']                 #Call standard deviation function - R function
+        return rsd(data)[0]
 
-    def range (self, data):
+    def range (self, data):                    #Calculate the range of a data sample
         data=robjects.FloatVector(data)
-        rrange = robjects.r['range']
-        return rrange(data)
+        rrange = robjects.r['range']           #Call range function - R function
+        return rrange(data)[0]
         
-    def IQR (self, data):
+    def IQR (self, data):                      #Calculate the Interquartile range (IQR) of a data sample
         data=robjects.FloatVector(data)
-        rIQR = robjects.r['IQR']
-        return rIQR(data)
+        rIQR = robjects.r['IQR']               #Call IQR function - R function
+        return rIQR(data)[0]
     
-    def all(self, data):
+    def all(self, data):                       #Print the results of the above measures
         data=robjects.FloatVector(data)
         print 'The length of the data set is:', self.length(data)[0]
         print 'The summary is:', self.summary(data)
