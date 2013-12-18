@@ -460,7 +460,7 @@ class OperatedMachine(Machine):
             if (activeObject.operatorPool!='None' and any(type=='Load' for type in activeObject.multOperationTypeList)):
                 if activeObject.operatorPool.checkIfResourceIsAvailable()\
                     and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
-                    and giverObject.haveToDispose() and not giverObject.exitIsAssigned():
+                    and giverObject.haveToDispose(activeObject) and not giverObject.exitIsAssigned():
                     giverObject.assignExit()
                     return True
                 else:
@@ -470,7 +470,7 @@ class OperatedMachine(Machine):
                 # no need for operators presence. The operator needs to be present only where the load Type 
                 # operation is assigned
                 return activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
-                        and giverObject.haveToDispose()
+                        and giverObject.haveToDispose(activeObject)
                 # if the set-up performance needs be first performed before the transfer of the entity to 
                 # the machine then the presence of an operator to setup the machine before the getEntity()
                 # is requested
