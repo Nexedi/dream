@@ -63,7 +63,7 @@ class OperatorPool(ObjectResource):
             for index in range(self.capacity):
                 id='O_'+str(index)
                 name=self.objName+str(index)
-                operators.append(Operator(id,name))
+                self.operators.append(Operator(id,name))
         # if a list of operators is given then update accordingly the self.operators variable 
         else:
             assert type(operatorsList) is list, "operatorsList is not a List" 

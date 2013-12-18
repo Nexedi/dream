@@ -80,7 +80,7 @@ class Broker(ObjectInterruption):
                 self.victim.currentOperator.totalWorkingTime+=now()-self.victim.currentOperator.timeLastOperationStarted
                 yield release,self,self.victim.operatorPool.getResource(self.victim.currentOperator)
                 # the victim current operator must be cleared after the operator is released
-                self.victim.currentOperator = 'None'
+                self.victim.currentOperator = None
                 self.timeLastOperationEnded = now()
             else:
                 pass

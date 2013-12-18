@@ -59,7 +59,10 @@ class OperatedMachine(Machine):
         #     check if the operatorPool is a List or a OperatorPool type Object
         #     if it is a list then initiate a OperatorPool type object containing
         #     the list of operators provided
-        if (type(operatorPool) is list) and len(operatorPool)>0:
+        '''
+            change! if the  list is empty create operator pool with empty list
+        '''
+        if (type(operatorPool) is list): #and len(operatorPool)>0:
             id = id+'_OP'
             name=self.objName+'_operatorPool'
             self.operatorPool=OperatorPool(id, name, operatorsList=operatorPool)
@@ -69,7 +72,7 @@ class OperatedMachine(Machine):
         self.operatorPool.coreObjectIds.append(self.id)
         self.operatorPool.coreObjects.append(self)
         # holds the Operator currently processing the Machine
-        self.currentOperator='None'
+        self.currentOperator=None
         # define if load/setup/removal/processing are performed by the operator 
         self.operationType=operationType
         # boolean to check weather the machine is being operated
@@ -596,7 +599,9 @@ class OperatedMachine(Machine):
     # =======================================================================
     def requestSetup(self):
         self.setUp=False
-        
+   
+   
+   
    # =======================================================================
    # actions to be taken after the simulation ends
    # =======================================================================
@@ -638,14 +643,14 @@ class OperatedMachine(Machine):
                 alreadyAdded=True
 #         print activeObject.objName,'total Block time:',activeObject.totalBlockageTime#/G.maxSimTime
 
-        #if Machine is currently processing an entity we should count this working time    
-        if(len(activeObject.Res.activeQ)>0)\
+        #if Machine is currently processing an entity we should count this working time  
+        if(len(activeObject.getActiveObjectQueue())>0)\
             and (not (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered))\
-            and (activeObject.currentOperator!='None'):
+            and (not (activeObject.operationType=='Processing' and (activeObject.currentOperator==None))):
 #             print 'pre-total working time:',activeObject.totalWorkingTime#/G.maxSimTime           
             #if Machine is down we should add this last failure time to the time that it has been down in current entity 
             if self.Up==False:
-#             if(len(activeObjectQueue)>0) and (self.Up==False):                         
+#             if(len(activeObjectQueue)>0) and (self.Up==False):
                 activeObject.downTimeProcessingCurrentEntity+=now()-activeObject.timeLastFailure             
             activeObject.totalWorkingTime+=now()-activeObject.timeLastEntityEntered\
                                                 -activeObject.downTimeProcessingCurrentEntity\
@@ -655,9 +660,9 @@ class OperatedMachine(Machine):
 #             print "downTimeProcessingCurrentEntity", activeObject.downTimeProcessingCurrentEntity
 #             print "operatorWaitTimeCurrentEntity", activeObject.operatorWaitTimeCurrentEntity
 #             print "setupTimeCurrentEntity",activeObject.setupTimeCurrentEntity
-        elif(len(activeObject.Res.activeQ)>0)\
+        elif(len(activeObject.getActiveObjectQueue())>0)\
             and (not (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered))\
-            and (activeObject.currentOperator=='None'):
+            and (activeObject.currentOperator==None):
             # needs further research as the time of failure while waiting for operator is not counted yet
             if self.Up==False:
                 activeObject.downTimeProcessingCurrentEntity+=now()-activeObject.timeLastFailure
