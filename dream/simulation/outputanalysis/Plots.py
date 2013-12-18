@@ -48,20 +48,32 @@ class Graphs:
         rdev=robjects.r['dev.off']
         rjpeg=robjects.r['jpeg']
     
-        output=rjpeg(fileName)            #Graph data samples and define color and type for the data points visualization
-        rplot(data1,data2,main='Scatterplot',xlab="data1", ylab='data2',pch=19)
+        output=rjpeg(fileName)            
+        rplot(data1,data2,main='Scatterplot',xlab="data1", ylab='data2',pch=19)    #Graph data samples and define type for the data points visualization
         rdev
         return output
 
-    def Histogram(data,fileName="histogram.jpg"):
-        data=robjects.FloatVector(data)   #The given lists change into float vector in order to be handled by RPy2
+    def Histogram(self,data,fileName="histogram.jpg"):
+        data=robjects.FloatVector(data)   #The given list change into float vector in order to be handled by RPy2
         
-        rhist=robjects.r['hist']
+        rhist=robjects.r['hist']          #Call hist function - R function
         rdev=robjects.r['dev.off']
         rjpeg=robjects.r['jpeg']
         output=rjpeg(fileName)
         
         rhist(data, main='Histogram',col="lightblue")      #Create a histogram for the given data sample
+        rdev
+        return output
+    
+    def Barplot(data,fileName="barplot.jpg"):
+        data=robjects.FloatVector(data)     #The given list changes into float vector in order to be handled by RPy2
+        
+        rbarplot=robjects.r['barplot']      #Call barplot - R function
+        rdev=robjects.r['dev.off']
+        rjpeg=robjects.r['jpeg']
+        
+        output=rjpeg(fileName)
+        rbarplot(data, main='Barplot',border='blue')      #Create a bar plot for the given data sample
         rdev
         return output
     
