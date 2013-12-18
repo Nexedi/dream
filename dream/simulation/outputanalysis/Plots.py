@@ -65,7 +65,7 @@ class Graphs:
         rdev
         return output
     
-    def Barplot(data,fileName="barplot.jpg"):
+    def Barplot(self,data,fileName="barplot.jpg"):
         data=robjects.FloatVector(data)     #The given list changes into float vector in order to be handled by RPy2
         
         rbarplot=robjects.r['barplot']      #Call barplot - R function
@@ -74,6 +74,35 @@ class Graphs:
         
         output=rjpeg(fileName)
         rbarplot(data, main='Barplot',border='blue')      #Create a bar plot for the given data sample
+        rdev
+        return output
+    
+    def TwoSetPlot(self, data1,data2, fileName="twosetplot.jpg"):
+        #The given lists change into float vector in order to be handled by RPy2
+        data1=robjects.FloatVector(data1)
+        data2=robjects.FloatVector(data2)
+        
+        rplot=robjects.r['plot']                          #Call plot - R function
+        rdev=robjects.r['dev.off']
+        rjpeg=robjects.r['jpeg']
+        rlines=robjects.r['lines']                        #Call lines function - R function
+        rbox=robjects.r['box']                            #Call box function - R function
+        rrange=robjects.r['range']                        #Call range - R function
+        
+        plot_colors= robjects.StrVector(["red", "forestgreen"])         #Define colors to be used in the plot
+        output=rjpeg(fileName)            
+    
+        rplot(data1, xlab="x", ylab="Total",ylim=rrange(data1,data2))   #Graph the first data sample and set axes' names 
+        rlines(data2)                                           #Graph the second data sample
+    
+        # Create box around plot
+        rbox()
+
+        # Graph data1 with thicker red dashed line
+        rlines(data1, type="l", lty=2, lwd=2, col=plot_colors[0])
+
+        # Graph data2 with thicker green dotted line
+        rlines(data2, type="l", lty=3, lwd=2, col=plot_colors[1])
         rdev
         return output
     
