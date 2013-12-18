@@ -570,6 +570,11 @@ def createObjects():
 #                     if(id in operator.coreObjectIds):               # (if any) is assigned to operate
 #                         machineOperatorPoolList.append(operator)    # the machine with ID equal to id
 #                                                                     # if there is no operator assigned then the list will be empty
+
+            r='None'
+            for repairman in G.RepairmanList:                   # check which repairman in the G.RepairmanList
+                if(id in repairman.coreObjectIds):              # (if any) is assigned to repair 
+                    r=repairman                                 # the machine with ID equal to id
             
             OM=OperatedMachine(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
@@ -577,7 +582,8 @@ def createObjects():
                                                     operatorPool=machineOperatorPoolList, operationType=operationType,
                                                     loadDistribution=loadDistribution, setupDistribution=setupDistribution,
                                                     setupMean=setupMean,setupStdev=setupStdev,setupMin=setupMin,setupMax=setupMax,
-                                                    loadMean=loadMean,loadStdev=loadStdev,loadMin=loadMin,loadMax=loadMax)
+                                                    loadMean=loadMean,loadStdev=loadStdev,loadMin=loadMin,loadMax=loadMax,
+                                                    repairman=r)
             OM.nextIds=getSuccessorList(id)                             # update the nextIDs list of the machine
             G.OperatedMachineList.append(OM)                            # add the machine to the operatedMachines List
             G.MachineList.append(OM)                                    # add machine to global MachineList
