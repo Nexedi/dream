@@ -5,8 +5,8 @@
    "id": "C1", 
    "results": {
     "working_ratio": 1.055555555555577, 
-    "blockage_ratio": 92.05671296296349, 
-    "waiting_ratio": 6.887731481480949
+    "blockage_ratio": 92.05671296296346, 
+    "waiting_ratio": 6.887731481480965
    }
   }, 
   {
@@ -35,7 +35,7 @@
     "working_ratio": 80.18171296296298, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 19.791666666666668, 
-    "waiting_ratio": 0.026620370370369843
+    "waiting_ratio": 0.02662037037036195
    }
   }, 
   {

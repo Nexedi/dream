@@ -24,9 +24,9 @@
    "id": "M2", 
    "results": {
     "working_ratio": 91.63333333333344, 
-    "blockage_ratio": 7.199999999999983, 
+    "blockage_ratio": 7.199999999999894, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 1.1666666666665777
+    "waiting_ratio": 1.1666666666666667
    }
   }, 
   {
@@ -36,7 +36,7 @@
     "working_ratio": 92.43333333333334, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 7.566666666666668
+    "waiting_ratio": 7.566666666666664
    }
   }
  ], 

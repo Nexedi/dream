@@ -61,9 +61,9 @@
    "id": "M3", 
    "results": {
     "working_ratio": 36.88541666666553, 
-    "blockage_ratio": 4.859743009245755e-12, 
+    "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 63.114583333329605
+    "waiting_ratio": 63.11458333333447
    }
   }
  ], 
