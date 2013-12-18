@@ -10,7 +10,7 @@ class Simulation(DefaultSimulation):
           continue
         sequence_list = value_list[6].split('-')
         processing_time_list = value_list[7].split('-')
-        wip_dict[sequence_list[0]] = [
+        wip_dict.setdefault(sequence_list[0], []).append(
           {
             "_class": "Dream.Job",
             "id": value_list[1],
@@ -29,7 +29,7 @@ class Simulation(DefaultSimulation):
                 "stepNumber": i
               } for i in xrange(len(sequence_list))]
           }
-        ]
+        )
       for node_id in data['nodes'].keys():
         if node_id in wip_dict:
           data['nodes'][node_id]['wip'] = wip_dict[node_id]
