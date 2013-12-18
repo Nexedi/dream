@@ -92,8 +92,6 @@
             "_class": "Dream.Machine",
             "left": 0.4414893617021277,
             "name": "Station2",
-            "failures": {
-            },
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "1"
@@ -104,8 +102,6 @@
             "_class": "Dream.Machine",
             "left": 0.4414893617021277,
             "name": "Station3",
-            "failures": {
-            },
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "1"

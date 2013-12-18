@@ -54,12 +54,6 @@
         "M1": {
             "_class": "Dream.OperatedMachine",
             "name": "Machine1",
-            "failures": {
-            },
-            "setupTime": {
-            },
-            "loadTime": {
-            },
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "17"

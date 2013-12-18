@@ -215,7 +215,7 @@ def createObjects():
         if objClass=='Dream.Source':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            interarrivalTime=element['interarrivalTime']
+            interarrivalTime=element.get('interarrivalTime',{})
             distributionType=interarrivalTime.get('distributionType', 'not found')
             mean=float(interarrivalTime.get('mean', '0'))        
             entity=str_to_class(element.get('entity', 'not found'))     # initialize entity
@@ -227,7 +227,7 @@ def createObjects():
         if objClass=='Dream.BatchSource':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            interarrivalTime=element['interarrivalTime']
+            interarrivalTime=element.get('interarrivalTime',{})
             distributionType=interarrivalTime.get('distributionType', 'not found')
             mean=float(interarrivalTime.get('mean', '0'))        
             entity=str_to_class(element.get('entity', 'not found'))          
@@ -241,13 +241,13 @@ def createObjects():
         elif objClass=='Dream.Machine':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element['processingTime']
+            processingTime=element.get('processingTime',{})
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
             min=float(processingTime.get('min', '0')) 
             max=float(processingTime.get('max', '0'))
-            failures=element.get('failures', 'not found')  
+            failures=element.get('failures', {})  
             failureDistribution=failures.get('failureDistribution', 'not found')
             MTTF=float(failures.get('MTTF', '0'))   
             MTTR=float(failures.get('MTTR', '0')) 
@@ -267,19 +267,19 @@ def createObjects():
         elif objClass=='Dream.BatchScrapMachine':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element['processingTime']
+            processingTime=element.get('processingTime',{})
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
             min=float(processingTime.get('min', '0')) 
             max=float(processingTime.get('max', '0'))            
-            scrapQuantity=element.get('scrapQuantity', 'not found')
+            scrapQuantity=element.get('scrapQuantity', {})
             scrapDistributionType=scrapQuantity.get('distributionType', 'not found')
             scrMean=int(scrapQuantity.get('mean', '0'))  
             scrStdev=float(scrapQuantity.get('stdev', '0'))  
             scrMin=int(scrapQuantity.get('min', '0')) 
             scrMax=int(scrapQuantity.get('max', '0'))            
-            failures=element.get('failures', 'not found')  
+            failures=element.get('failures', {})  
             failureDistribution=failures.get('failureDistribution', 'not found')
             MTTF=float(failures.get('MTTF', '0'))   
             MTTR=float(failures.get('MTTR', '0')) 
@@ -302,19 +302,19 @@ def createObjects():
         elif objClass=='Dream.M3':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', 'not found')
+            processingTime=element.get('processingTime', {})
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
             min=float(processingTime.get('min', '0')) 
             max=float(processingTime.get('max', '0'))            
-            scrapQuantity=element.get('scrapQuantity', 'not found')
+            scrapQuantity=element.get('scrapQuantity', {})
             scrapDistributionType=scrapQuantity.get('distributionType', 'not found')
             scrMean=int(scrapQuantity.get('mean', '0'))  
             scrStdev=float(scrapQuantity.get('stdev', '0'))  
             scrMin=int(scrapQuantity.get('min', '0')) 
             scrMax=int(scrapQuantity.get('max', '0'))            
-            failures=element.get('failures', 'not found')  
+            failures=element.get('failures', {})  
             failureDistribution=failures.get('failureDistribution', 'not found')
             MTTF=float(failures.get('MTTF', '0'))   
             MTTR=float(failures.get('MTTR', '0')) 
@@ -337,13 +337,13 @@ def createObjects():
         elif objClass=='Dream.MachineJobShop':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element['processingTime']
+            processingTime=element.get('processingTime', {})
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
             min=float(processingTime.get('min', '0')) 
             max=float(processingTime.get('max', '0'))
-            failures=element.get('failures', 'not found')  
+            failures=element.get('failures', {})  
             failureDistribution=failures.get('failureDistribution', 'not found')
             MTTF=float(failures.get('MTTF', '0'))   
             MTTR=float(failures.get('MTTR', '0')) 
@@ -413,7 +413,7 @@ def createObjects():
         elif objClass=='Dream.Assembly':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element['processingTime']
+            processingTime=element.get('processingTime', {})
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
@@ -427,7 +427,7 @@ def createObjects():
         elif objClass=='Dream.Dismantle':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element['processingTime']
+            processingTime=element.get('processingTime', {})
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
@@ -455,7 +455,7 @@ def createObjects():
         elif objClass=='Dream.BatchDecomposition':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element['processingTime']
+            processingTime=element.get('processingTime', {})
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
@@ -471,7 +471,7 @@ def createObjects():
         elif objClass=='Dream.BatchDecompositionStartTime':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', 'not found')
+            processingTime=element.get('processingTime', {})
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
@@ -488,7 +488,7 @@ def createObjects():
         elif objClass=='Dream.BatchReassembly':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element['processingTime']
+            processingTime=element.get('processingTime', {})
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
@@ -515,28 +515,26 @@ def createObjects():
         elif objClass=='Dream.OperatedMachine':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            
-            processingTime=element.get('processingTime', 'not found')
+            processingTime=element.get('processingTime', {})
             distributionType=processingTime.get('distributionType', 'not found')
             mean=float(processingTime.get('mean', '0'))  
             stdev=float(processingTime.get('stdev', '0'))  
             min=float(processingTime.get('min', '0')) 
-            max=float(processingTime.get('max', '0'))
-            
-            failures=element.get('failures', 'not found')  
+            max=float(processingTime.get('max', '0'))  
+            failures=element.get('failures', {})  
             failureDistribution=failures.get('failureDistribution', 'not found')
             MTTF=float(failures.get('MTTF', '0'))   
             MTTR=float(failures.get('MTTR', '0')) 
             availability=float(failures.get('availability', '0'))
             
             operationType=element.get('operationType','not found')
-            setupTime = element.get('setupTime','not found')
+            setupTime = element.get('setupTime',{})
             setupDistribution = setupTime.get('setupDistribution','not found')
             setupMean = float(setupTime.get('setupMean','0'))
             setupStdev=float(setupTime.get('setupStdev', '0'))  
             setupMin=float(setupTime.get('setupMin', '0')) 
             setupMax=float(setupTime.get('setupMax', '0'))
-            loadTime = element.get('loadTime','not found')
+            loadTime = element.get('loadTime',{})
             loadDistribution = loadTime.get('loadDistribution','not found')
             loadMean = float(loadTime.get('loadMean','0'))
             loadStdev = float(loadTime.get('loadStdev', '0'))  

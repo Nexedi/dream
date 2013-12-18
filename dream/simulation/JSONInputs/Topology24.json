@@ -52,8 +52,6 @@
         "distributionType": "Fixed",
         "mean": "0.25"
         },
-      "failures":{
-        },
       "scrapQuantity":{
         "distributionType": "Fixed",
         "mean": "2"
@@ -65,8 +63,6 @@
       "processingTime": {
         "distributionType": "Fixed",
         "mean": "1"
-        },
-      "failures":{
         },
       "scrapQuantity":{
         "distributionType": "Fixed",

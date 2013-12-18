@@ -71,11 +71,6 @@
         },
         "M1": {
             "_class": "Dream.Machine",
-            "failures": {
-                "MTTF": "60",
-                "MTTR": "5",
-                "failureDistribution": "No"
-            },
             "left": 0.6335403726708074,
             "name": "Machine1",
             "processingTime": {
@@ -87,9 +82,6 @@
         "M2": {
             "_class": "Dream.Machine",
             "failures": {
-                "MTTF": "40",
-                "MTTR": "10",
-                "failureDistribution": "No"
             },
             "left": 0.1863354037267081,
             "name": "Machine2",
