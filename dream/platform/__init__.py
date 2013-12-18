@@ -17,6 +17,7 @@
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
+import sys
 import json
 import traceback
 import multiprocessing
@@ -121,10 +122,21 @@ def _runSimulation(parameter_dict, queue):
 
 
 def main(*args):
+  # start the server
   file_handler = logging.FileHandler(os.path.join(os.path.dirname(__file__), '..', '..', 'log', 'dream.log'))
   file_handler.setLevel(logging.DEBUG)
   app.logger.addHandler(file_handler)
   app.run(debug=True)
+
+def run(*args):
+  # run with one topology input
+  args = args or sys.argv[1:]
+  input_data = json.load(open(args[0]))
+  queue = multiprocessing.Queue()
+  _runSimulation(input_data, queue)
+  output_data = queue.get()
+  print json.dumps(output_data, indent=True)
+
 
 if __name__ == "__main__":
   main()
