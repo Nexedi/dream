@@ -226,9 +226,9 @@ class OperatedMachine(Machine):
 #             print self.objName, 'operator assigned', now()
             
            
-            tinMStart=self.calculateProcessingTime()                # get the processing time, tinMStarts holds the processing time of the machine 
-            tinM=tinMStart                                          # timer to hold the processing time left
-            self.processingTimeOfCurrentEntity=tinMStart            # processing time of the machine 
+            self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()                # get the processing time, tinMStarts holds the processing time of the machine 
+            tinM=self.totalProcessingTimeInCurrentEntity                                          # timer to hold the processing time left
+            #self.processingTimeOfCurrentEntity=tinMStart            # processing time of the machine 
             
     # ======= setup the machine if the Setup is defined as one of the Operators' operation types
             # in plantSim the setup is performed when the machine has to process a new type of Entity and only once
@@ -336,7 +336,7 @@ class OperatedMachine(Machine):
             # set the variable that flags an Entity is ready to be disposed 
             self.waitToDispose=True
             # update the total working time 
-            self.totalWorkingTime+=tinMStart                        # the total processing time for this entity 
+            self.totalWorkingTime+=self.totalProcessingTimeInCurrentEntity                        # the total processing time for this entity 
                                                                     # is what the distribution initially gave
                                                                     
             # update the variables keeping track of Entity related attributes of the machine    
@@ -377,16 +377,16 @@ class OperatedMachine(Machine):
             # dummy variable holding the total time the Entity spent in the Machine
             # count the time the Machine was blocked subtracting the failureTime 
             #    and the processing time from the totalTime spent in the Machine
-            totalTime=now()-timeEntered
+            self.totalTimeInCurrentEntity=now()-timeEntered
             # update the total time waiting for the operator of the machine
-            self.totalTimeWaitingForOperator += self.operatorWaitTimeCurrentEntity 
-            blockageTime=totalTime-(tinMStart\
-                                    +failureTime\
-                                    +self.operatorWaitTimeCurrentEntity\
-                                    +self.setupTimeCurrentEntity)   
+#             self.totalTimeWaitingForOperator += self.operatorWaitTimeCurrentEntity 
+#             blockageTime=totalTime-(tinMStart\
+#                                     +failureTime\
+#                                     +self.operatorWaitTimeCurrentEntity\
+#                                     +self.setupTimeCurrentEntity)   
             
+           
             # might be possible to avoid using blockageTime
-            self.totalBlockageTime+=blockageTime
             # the time of blockage is derived from 
             # the whole time in the machine minus the processing time and the failure time
 #             self.totalBlockageTime+=totalTime-(tinMStart\
@@ -426,6 +426,7 @@ class OperatedMachine(Machine):
         thecaller=callerObject
         # return True ONLY if the length of the activeOjbectQue is smaller than
         # the object capacity, and the callerObject is not None but the giverObject
+        
         if (activeObject.operatorPool!='None' and any(type=='Load' for type in activeObject.multOperationTypeList)):
             return activeObject.operatorPool.checkIfResourceIsAvailable()\
                 and activeObject.Up\
@@ -496,7 +497,7 @@ class OperatedMachine(Machine):
                 if(timeWaiting>=maxTimeWaiting): 
                     activeObject.giver=object                 # set the giver
                     maxTimeWaiting=timeWaiting    
-            
+        
         if (activeObject.operatorPool!='None' and any(type=='Load' for type in activeObject.multOperationTypeList)):
             if activeObject.operatorPool.checkIfResourceIsAvailable()\
                 and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
@@ -600,8 +601,6 @@ class OperatedMachine(Machine):
     def requestSetup(self):
         self.setUp=False
    
-   
-   
    # =======================================================================
    # actions to be taken after the simulation ends
    # =======================================================================
@@ -681,8 +680,8 @@ class OperatedMachine(Machine):
                 activeObject.totalBlockageTime+=(now()-activeObject.timeLastEntityEnded)-(now()-activeObject.timeLastFailure)-activeObject.downTimeInTryingToReleaseCurrentEntity 
 #         print activeObject.objName,'total Block time:',activeObject.totalBlockageTime#/G.maxSimTime
         #Machine was idle when it was not in any other state    
+        
         activeObject.totalWaitingTime=MaxSimtime-activeObject.totalWorkingTime-activeObject.totalBlockageTime-activeObject.totalFailureTime   
-#         print activeObject.objName,'total waiting time:',activeObject.totalWaitingTime#/G.maxSimTime
         if activeObject.totalBlockageTime<0 and activeObject.totalBlockageTime>-0.00001:  #to avoid some effects of getting negative cause of rounding precision
             self.totalBlockageTime=0  
         

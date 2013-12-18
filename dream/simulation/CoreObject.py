@@ -82,6 +82,15 @@ class CoreObject(Process):
                                                         # then the giverObjects have to be blocked for the time
                                                         # that the machine is being loaded 
         # ============================== lists to hold statistics of multiple runs =====================
+        self.totalTimeWaitingForOperator=0 
+        self.operatorWaitTimeCurrentEntity=0 
+        self.totalTimeInCurrentEntity=0
+        self.operatorWaitTimeCurrentEntity=0
+        self.totalProcessingTimeInCurrentEntity=0
+        self.failureTimeInCurrentEntity=0
+        self.setupTimeCurrentEntity=0
+        
+              
         self.Failure=[]
         self.Working=[]
         self.Blockage=[]
@@ -99,9 +108,21 @@ class CoreObject(Process):
 
     # ================================== removes an entity from the Object ==========================
     def removeEntity(self): 
+        self.totalTimeInCurrentEntity=now()-self.timeLastEntityEntered
+        self.totalTimeWaitingForOperator += self.operatorWaitTimeCurrentEntity
+        #blockage=self.totalTimeInCurrentEntity-(self.totalProcessingTimeInCurrentEntity\
+        #                            +self.failureTimeInCurrentEntity\
+        #                            +self.operatorWaitTimeCurrentEntity\
+        #                            +self.setupTimeCurrentEntity)     
+        blockage=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)       
+        self.totalBlockageTime+=blockage
+        
         activeObjectQueue=self.getActiveObjectQueue()  
         activeEntity=activeObjectQueue[0]  
         activeObjectQueue.pop(0)                        #remove the Entity from the queue
+        self.failureTimeInCurrentEntity=0 
+        self.downTimeInTryingToReleaseCurrentEntity=0
+        
         self.timeLastEntityLeft=now()
         try:
             self.outputTrace(activeEntity.name, "released "+self.objName) 

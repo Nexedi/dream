@@ -117,7 +117,10 @@ class Dismantle(CoreObject):
             self.timeLastEntityEntered=now()
                         
             startWorkingTime=now()   
-            yield hold,self,self.rng.generateNumber()   #hold for the time the dismantle operation is carried 
+            
+            self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()   
+            yield hold,self,self.totalProcessingTimeInCurrentEntity   #hold for the time the assembly operation is carried    
+
             self.totalWorkingTime+=now()-startWorkingTime
             
             self.timeLastEntityEnded=now()
@@ -131,7 +134,7 @@ class Dismantle(CoreObject):
                         
             self.completedJobs+=1                       #Dismantle completed a job            
             self.waitToDisposeFrame=False                     #the Dismantle has no Frame to dispose now
-            self.totalBlockageTime+=now()-startBlockageTime     #add the blockage time
+            #self.totalBlockageTime+=now()-startBlockageTime     #add the blockage time
             
             
     #checks if the Dismantle can accept an entity and there is a Frame waiting for it
@@ -189,7 +192,14 @@ class Dismantle(CoreObject):
     #removes an entity from the Dismantle
     def removeEntity(self):
         activeObjectQueue=self.getActiveObjectQueue()
-        activeEntity=CoreObject.removeEntity(self)                               #run the default method     
+        activeEntity=CoreObject.removeEntity(self)                               #run the default method 
+        
+        #we want the blockagetobeadded  only if we disposed a frame!
+        #if a part was disposed rever
+        if activeEntity.type=='Part':
+            blockage=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)
+            self.totalBlockageTime-=blockage 
+
         #update the flags
         if(len(activeObjectQueue)==0):  
             self.waitToDisposeFrame=False

@@ -99,15 +99,15 @@ class Machine(CoreObject):
             # variables dedicated to hold the processing times, the time when the Entity entered, 
             # and the processing time left 
             timeEntered=now()                                       # timeEntered dummy Timer that holds the time the last Entity Entered
-            tinMStart=self.calculateProcessingTime()                # get the processing time, tinMStarts holds the processing time of the machine 
-            tinM=tinMStart                                          # timer to hold the processing time left
-            self.processingTimeOfCurrentEntity=tinMStart            # processing time of the machine 
+            self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()                # get the processing time, tinMStarts holds the processing time of the machine 
+            tinM=self.totalProcessingTimeInCurrentEntity                                          # timer to hold the processing time left
+            #self.processingTimeOfCurrentEntity=self.totalProcessingTimeInCurrentEntity            # processing time of the machine 
                                                                      
             # variables used to flag any interruptions and the end of the processing     
             interruption=False    
             processingEndedFlag=True 
             # timers to follow up the failure time of the machine while on current Entity
-            failureTime=0                                           # dummy variable keeping track of the failure time 
+            #self.failureTimeInCurrentEntity=0                                           # dummy variable keeping track of the failure time 
                                                                     # might be feasible to avoid it
             self.downTimeInCurrentEntity=0                          #holds the total time that the 
                                                                     #object was down while holding current entity
@@ -141,7 +141,7 @@ class Machine(CoreObject):
                     self.downTimeProcessingCurrentEntity+=now()-breakTime       # count the time that Machine is down while processing this Entity
                     self.downTimeInCurrentEntity+=now()-breakTime               # count the time that Machine is down while on currentEntity
                     self.timeLastFailureEnded=now()                             # set the timeLastFailureEnded
-                    failureTime+=now()-breakTime                                # dummy variable keeping track of the failure time 
+                    self.failureTimeInCurrentEntity+=now()-breakTime                                # dummy variable keeping track of the failure time 
                     # output to trace that the Machine self.objName was passivated for the current failure time
                     self.outputTrace(self.getActiveObjectQueue()[0].name, "passivated in "+self.objName+" for "+str(now()-breakTime))              
                 # if no interruption occurred the processing in M1 is ended 
@@ -152,7 +152,7 @@ class Machine(CoreObject):
             # set the variable that flags an Entity is ready to be disposed 
             self.waitToDispose=True
             # update the total working time 
-            self.totalWorkingTime+=tinMStart                        # the total processing time for this entity 
+            self.totalWorkingTime+=self.totalProcessingTimeInCurrentEntity                        # the total processing time for this entity 
                                                                     # is what the distribution initially gave
                                                                     
             # update the variables keeping track of Entity related attributes of the machine    
@@ -167,7 +167,7 @@ class Machine(CoreObject):
             reqTime=now()                                           # entity has ended processing in Machine and requests for the next object 
             # initialize the timer downTimeInTryingToReleaseCurrentEntity, we have to count how much time 
             # the Entity will wait for the next successor to be able to accept (canAccept)
-            self.downTimeInTryingToReleaseCurrentEntity=0      
+            #self.downTimeInTryingToReleaseCurrentEntity=0      
                 
             while 1:
                 # wait until the next Object is available or machine has failure
@@ -181,7 +181,7 @@ class Machine(CoreObject):
                     failTime=now()                                  # dummy variable holding the time failure happened
                     # passivate until machine is up
                     yield waituntil, self, self.checkIfMachineIsUp  
-                    failureTime+=now()-failTime                     # count the failure while on current entity time with failureTime variable
+                    self.failureTimeInCurrentEntity+=now()-failTime                     # count the failure while on current entity time with failureTime variable
                     # calculate the time the Machine was down while trying to dispose the current Entity, 
                     # and the total down time while on current Entity
                     self.downTimeInTryingToReleaseCurrentEntity+=now()-failTime         
@@ -189,12 +189,12 @@ class Machine(CoreObject):
                     # update the timeLastFailureEnded   
                     self.timeLastFailureEnded=now()           
                             
-            totalTime=now()-timeEntered                             # dummy variable holding the total time the Entity spent in the Machine
-            blockageTime=totalTime-(tinMStart+failureTime)          # count the time the Machine was blocked subtracting the failureTime 
+            #self.totalTimeInCurrentEntity=now()-timeEntered                             # dummy variable holding the total time the Entity spent in the Machine
+            #blockageTime=totalTime-(tinMStart+failureTime)          # count the time the Machine was blocked subtracting the failureTime 
                                                                     #    and the processing time from the totalTime spent in the Machine
             # might be possible to avoid using blockageTime
             #    self.totalBlockageTime+=blockageTime
-            self.totalBlockageTime+=totalTime-(tinMStart+failureTime)   #the time of blockage is derived from 
+            #self.totalBlockageTime+=totalTime-(tinMStart+self.failureTimeInCurrentEntity)   #the time of blockage is derived from 
                                                                                          #the whole time in the machine
                                                                                          #minus the processing time and the failure time
     # =======================================================================
@@ -305,7 +305,6 @@ class Machine(CoreObject):
         # give the entity to the successor that is waiting for the most time. 
         # (plant simulation does not do this in every occasion!)       
         maxTimeWaiting=0                                            # dummy variable counting the time a successor is waiting
-        i=0                                                         # index used to set the successorIndex to the giver waiting the most
         for object in activeObject.next:
             if(object.canAccept(activeObject)):                     # if a successor can accept an object
                 timeWaiting=now()-object.timeLastEntityLeft         # the time it has been waiting is updated and stored in dummy variable timeWaiting
@@ -314,7 +313,7 @@ class Machine(CoreObject):
                     activeObject.receiver=object                    # set the receiver as the longest waiting possible receiver
                                                                     # in the next loops, check the other successors in the previous list
         return len(activeObjectQueue)>0 and activeObject.waitToDispose\
-             and activeObject.Up and (thecaller is receiverObject)       
+             and activeObject.Up and (thecaller is self.receiver)       
     
    # =======================================================================
    # actions to be taken after the simulation ends

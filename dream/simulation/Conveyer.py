@@ -228,6 +228,12 @@ class Conveyer(CoreObject):
         activeEntity=CoreObject.removeEntity(self)                               #run the default method  
    
         self.position.pop(0)
+        
+        #revert the blockage calculation
+        #conveyer needs its customcalculation
+        blockage=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)       
+        self.totalBlockageTime-=blockage
+        
         self.waitToDispose=False  
         #if the conveyer was full, it means that it also was blocked
         #we count this blockage time 

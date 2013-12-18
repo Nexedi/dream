@@ -96,7 +96,8 @@ class BatchDecomposition(CoreObject):
             self.nameLastEntityEntered=self.currentEntity.name      # this holds the name of the last entity that got into Machine                   
             self.timeLastEntityEntered=now()                        #this holds the last time that an entity got into Machine  
             
-            yield hold,self,self.calculateProcessingTime()
+            self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()
+            yield hold,self,self.totalProcessingTimeInCurrentEntity
             self.decompose()
         
         

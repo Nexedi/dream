@@ -120,8 +120,9 @@ class Assembly(CoreObject):
             self.timeLastFrameWasFull=now()
             self.nameLastFrameWasFull=self.getActiveObjectQueue()[0].name    
                 
-            startWorkingTime=now()    
-            yield hold,self,self.rng.generateNumber()   #hold for the time the assembly operation is carried    
+            startWorkingTime=now()
+            self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()   
+            yield hold,self,self.totalProcessingTimeInCurrentEntity   #hold for the time the assembly operation is carried    
             self.totalWorkingTime+=now()-startWorkingTime
             
             self.outputTrace(self.getActiveObjectQueue()[0].name, "ended processing in " + self.objName)
@@ -136,7 +137,7 @@ class Assembly(CoreObject):
                 if self.next[0].getGiverObject()==self:                         #if the free object can accept from this Assembly
                                                                                 #break. Else continue
                     break
-            self.totalBlockageTime+=now()-startBlockageTime     #add the blockage time
+            #self.totalBlockageTime+=now()-startBlockageTime     #add the blockage time
             
   
     #checks if the Assembly can accept an entity 
@@ -208,6 +209,7 @@ class Assembly(CoreObject):
       
     #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime=None):
+        
         if MaxSimtime==None:
             from Globals import G
             MaxSimtime=G.maxSimTime
