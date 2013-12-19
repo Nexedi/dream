@@ -120,6 +120,7 @@ class CoreObject(Process):
         activeObjectQueue=self.getActiveObjectQueue()  
         activeEntity=activeObjectQueue[0]  
         activeObjectQueue.pop(0)                        #remove the Entity from the queue
+        
         self.failureTimeInCurrentEntity=0 
         self.downTimeInTryingToReleaseCurrentEntity=0
         
@@ -143,6 +144,7 @@ class CoreObject(Process):
         activeObjectQueue=self.getActiveObjectQueue()
         # remove entity from the giver
         activeEntity = giverObject.removeEntity()
+
         #get the entity from the previous object and put it in front of the activeQ 
         activeObjectQueue.append(activeEntity)   
         # if the giverObject is blocked then unBlock it
@@ -150,10 +152,15 @@ class CoreObject(Process):
             giverObject.unAssignExit()                
         #append the time to schedule so that it can be read in the result
         #remember that every entity has it's schedule which is supposed to be updated every time 
-        # the entity enters a new object
+        # he entity enters a new object
         activeEntity.schedule.append([activeObject,now()])
+        
+        #update variables
         activeEntity.currentStation=self
         self.timeLastEntityEntered=now()
+        self.nameLastEntityEntered=activeEntity.name      # this holds the name of the last entity that got into Machine      
+        self.downTimeProcessingCurrentEntity=0
+      
         try:
             self.outputTrace(activeEntity.name, "got into "+self.objName)
         except TypeError:

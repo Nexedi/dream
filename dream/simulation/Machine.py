@@ -91,32 +91,26 @@ class Machine(CoreObject):
             # canAcceptAndIsRequested is invoked to check when the machine requested to receive an entity  
             yield waituntil, self, self.canAcceptAndIsRequested          
             # get the entity from the predecessor                                                                            
-            self.currentEntity=self.getEntity()    
-            # set the currentEntity as the Entity just received and initialize the timer timeLastEntityEntered
-#             self.currentEntity=self.getActiveObjectQueue()[0]       # entity is the current entity processed in Machine
-            self.nameLastEntityEntered=self.currentEntity.name      # this holds the name of the last entity that got into Machine                   
-            self.timeLastEntityEntered=now()                        #this holds the last time that an entity got into Machine  
+            self.currentEntity=self.getEntity()   
+            
             # variables dedicated to hold the processing times, the time when the Entity entered, 
             # and the processing time left 
-            timeEntered=now()                                       # timeEntered dummy Timer that holds the time the last Entity Entered
             self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()                # get the processing time, tinMStarts holds the processing time of the machine 
             tinM=self.totalProcessingTimeInCurrentEntity                                          # timer to hold the processing time left
-            #self.processingTimeOfCurrentEntity=self.totalProcessingTimeInCurrentEntity            # processing time of the machine 
                                                                      
             # variables used to flag any interruptions and the end of the processing     
             interruption=False    
-            processingEndedFlag=True 
+            processingNotFinished=True 
             # timers to follow up the failure time of the machine while on current Entity
-            #self.failureTimeInCurrentEntity=0                                           # dummy variable keeping track of the failure time 
-                                                                    # might be feasible to avoid it
+
             self.downTimeInCurrentEntity=0                          #holds the total time that the 
                                                                     #object was down while holding current entity
             # this loop is repeated until the processing time is expired with no failure
             # check when the processingEndedFlag switched to false              
-            while processingEndedFlag:
-                # tBefore : dummy variable to keep track of the time that the processing starts after 
+            while processingNotFinished:
+                # timeRestartingProcessing : dummy variable to keep track of the time that the processing starts after 
                 #           every interruption                        
-                tBefore=now()
+                timeRestartingProcessing=now()
                 # wait for the processing time left tinM, if no interruption occurs then change the 
                 # processingEndedFlag and exit loop,
                 # else (if interrupted()) set interruption flag to true (only if tinM==0),
@@ -127,7 +121,7 @@ class Machine(CoreObject):
                     # output to trace that the Machine (self.objName) got interrupted                                                                  
                     self.outputTrace(self.getActiveObjectQueue()[0].name, "Interrupted at "+self.objName)
                     # recalculate the processing time left tinM
-                    tinM=tinM-(now()-tBefore)
+                    tinM=tinM-(now()-timeRestartingProcessing)
                     if(tinM==0):            # sometimes the failure may happen exactly at the time that the processing would finish
                                             # this may produce disagreement with the simul8 because in both SimPy and Simul8
                                             # it seems to be random which happens 1st
@@ -146,7 +140,7 @@ class Machine(CoreObject):
                     self.outputTrace(self.getActiveObjectQueue()[0].name, "passivated in "+self.objName+" for "+str(now()-breakTime))              
                 # if no interruption occurred the processing in M1 is ended 
                 else:
-                    processingEndedFlag=False
+                    processingNotFinished=False
             # output to trace that the processing in the Machine self.objName ended 
             self.outputTrace(self.getActiveObjectQueue()[0].name,"ended processing in "+self.objName)
             # set the variable that flags an Entity is ready to be disposed 
@@ -159,16 +153,7 @@ class Machine(CoreObject):
             self.timeLastEntityEnded=now()                          # this holds the time that the last entity ended processing in Machine 
             self.nameLastEntityEnded=self.currentEntity.name        # this holds the name of the last entity that ended processing in Machine
             self.completedJobs+=1                                   # Machine completed one more Job
-            # re-initialize the downTimeProcessingCurrentEntity.
-            # a new machine is about to enter
-            self.downTimeProcessingCurrentEntity=0
-               
-            # dummy variable requests the successor object now
-            reqTime=now()                                           # entity has ended processing in Machine and requests for the next object 
-            # initialize the timer downTimeInTryingToReleaseCurrentEntity, we have to count how much time 
-            # the Entity will wait for the next successor to be able to accept (canAccept)
-            #self.downTimeInTryingToReleaseCurrentEntity=0      
-                
+                              
             while 1:
                 # wait until the next Object is available or machine has failure
                 yield waituntil, self, self.ifCanDisposeOrHaveFailure  
@@ -188,15 +173,6 @@ class Machine(CoreObject):
                     self.downTimeInCurrentEntity+=now()-failTime    # already updated from failures during processing
                     # update the timeLastFailureEnded   
                     self.timeLastFailureEnded=now()           
-                            
-            #self.totalTimeInCurrentEntity=now()-timeEntered                             # dummy variable holding the total time the Entity spent in the Machine
-            #blockageTime=totalTime-(tinMStart+failureTime)          # count the time the Machine was blocked subtracting the failureTime 
-                                                                    #    and the processing time from the totalTime spent in the Machine
-            # might be possible to avoid using blockageTime
-            #    self.totalBlockageTime+=blockageTime
-            #self.totalBlockageTime+=totalTime-(tinMStart+self.failureTimeInCurrentEntity)   #the time of blockage is derived from 
-                                                                                         #the whole time in the machine
-                                                                                         #minus the processing time and the failure time
     # =======================================================================
     # checks if the machine is Up
     # =======================================================================
@@ -279,9 +255,7 @@ class Machine(CoreObject):
         activeObject=self.getActiveObject()  
         #activeObject.outputTrace("releases "+activeObject.objName)  # output to trace that the Entity was released from the currentObject
         activeEntity=CoreObject.removeEntity(self)                               #run the default method     
-        activeObject.timeLastEntityLeft=now()                       # set the time that the last Entity was removed from this object
         activeObject.waitToDispose=False                            # update the waitToDispose flag
-        activeObject.downTimeInTryingToReleaseCurrentEntity=0       # re-initialize the timer downTimeInTryingToReleaseCurrentEntity
         return activeEntity
         
     # ======================================================================= 
