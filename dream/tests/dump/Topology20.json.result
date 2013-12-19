@@ -396,6 +396,21 @@
     "failure_ratio": 0.0, 
     "waiting_ratio": 78.26086956521739
    }
+  }, 
+  {
+   "_class": "Dream.QueueJobShop", 
+   "id": "Q1", 
+   "schedulingRule": "FIFO"
+  }, 
+  {
+   "_class": "Dream.QueueJobShop", 
+   "id": "Q2", 
+   "schedulingRule": "MC"
+  }, 
+  {
+   "_class": "Dream.QueueJobShop", 
+   "id": "Q3", 
+   "schedulingRule": "FIFO"
   }
  ], 
  "_class": "Dream.Simulation", 
