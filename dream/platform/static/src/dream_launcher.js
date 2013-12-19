@@ -381,7 +381,7 @@
 
 
               $.each(data['success'].elementList, function (idx, obj) {
-                if (obj.results.working_ratio !== undefined) {
+                if (obj.results !== undefined && obj.results.working_ratio !== undefined) {
                   /* when there is only one replication, the ratio is given as a float,
                       otherwise we have a mapping avg, min max */
                   if (obj.results.blockage_ratio !== undefined) {

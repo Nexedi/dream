@@ -1,6 +1,11 @@
 {
  "elementList": [
   {
+   "_class": "Dream.Queue", 
+   "id": "DummyQ", 
+   "schedulingRule": "FIFO"
+  }, 
+  {
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
@@ -38,6 +43,11 @@
     "failure_ratio": 0.0, 
     "waiting_ratio": 0.10416666666666667
    }
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "id": "Q1", 
+   "schedulingRule": "FIFO"
   }, 
   {
    "_class": "Dream.Repairman", 

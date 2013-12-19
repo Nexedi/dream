@@ -1,6 +1,11 @@
 {
  "elementList": [
   {
+   "_class": "Dream.Queue", 
+   "id": "DummyQ", 
+   "schedulingRule": "FIFO"
+  }, 
+  {
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {

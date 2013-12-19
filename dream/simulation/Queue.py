@@ -301,3 +301,9 @@ class Queue(CoreObject):
         else:
             assert False, "Unknown scheduling criterion %r" % (criterion, )
 
+    def outputResultsJSON(self):
+        from Globals import G
+        json = {'_class': 'Dream.%s' % self.__class__.__name__,
+                'id': str(self.id),
+                'schedulingRule': self.schedulingRule}
+        G.outputJSON['elementList'].append(json)

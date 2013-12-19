@@ -18,6 +18,11 @@
     "failure_ratio": 25.0, 
     "waiting_ratio": 25.0
    }
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "id": "Q1", 
+   "schedulingRule": "FIFO"
   }
  ], 
  "_class": "Dream.Simulation", 
