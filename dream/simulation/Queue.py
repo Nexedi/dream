@@ -64,11 +64,18 @@ class Queue(CoreObject):
         self.isDummy=dummy                      #Boolean that shows if it is the dummy first Queue
         self.schedulingRule=schedulingRule      #the scheduling rule that the Queue follows
         self.multipleCriterionList=[]           #list with the criteria used to sort the Entities in the Queue
+        SRlist = [schedulingRule]
         if schedulingRule.startswith("MC"):     # if the first criterion is MC aka multiple criteria
             SRlist = schedulingRule.split("-")  # split the string of the criteria (delimiter -)
             self.schedulingRule=SRlist.pop(0)   # take the first criterion of the list
             self.multipleCriterionList=SRlist   # hold the criteria list in the property multipleCriterionList
  
+        for scheduling_rule in SRlist:
+          if scheduling_rule not in ("FIFO", "Priority", "EDD", "EOD",
+            "NumStages", "RPC", "LPT", "SPT", "MS", "WINQ"):
+            raise ValueError("Unknown scheduling rule %s for %s" %
+              (scheduling_rule, id))
+
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__
         CoreObject.initialize(self)
@@ -268,4 +275,6 @@ class Queue(CoreObject):
                         nextObject=obj        
                 entity.nextQueueLength=len(nextObject.getActiveObjectQueue())           
             activeObjectQ.sort(key=lambda x: x.nextQueueLength)  
-    
+        else:
+          assert False, "Unknown scheduling criterion %r" % (criterion, )
+
