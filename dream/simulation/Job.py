@@ -40,7 +40,7 @@ class Job(Entity):                                  # inherits from the Entity c
         # information on the routing and the stops of the entity
         self.route=route                            # the route that the job follows, 
                                                     # also contains the processing times in each station
-        self.remainingRoute=route                   # the remaining route. in the beginning 
+        self.remainingRoute=list(route)                   # the remaining route. in the beginning 
                                                     # this should be the same as the full route
         # the scheduling of the entity as resolved by the simulation
         self.schedule=[]                            # keeps the result of the simulation. 
@@ -83,6 +83,6 @@ class Job(Entity):                                  # inherits from the Entity c
     # ==== initializes all the Entity for a new simulation replication ======
     def initialize(self):
         # has to be re-initialized each time a new Job is added
-        self.remainingRoute=self.route   
+        self.remainingRoute=list(self.route)   
         self.currentStation=self.route[0][0]    
 
