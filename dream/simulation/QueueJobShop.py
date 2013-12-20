@@ -31,7 +31,7 @@ from SimPy.Simulation import activate, passivate, waituntil, now, hold
 from Queue import Queue
 
 
-#the MachineJobShop object
+#the QueueJobShop object
 class QueueJobShop(Queue):
     
     #set all the objects in previous and next
