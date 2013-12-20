@@ -138,10 +138,20 @@ class Machine(CoreObject):
                     self.timeLastFailureEnded=now()                             # set the timeLastFailureEnded
                     self.failureTimeInCurrentEntity+=now()-breakTime                                # dummy variable keeping track of the failure time 
                     # output to trace that the Machine self.objName was passivated for the current failure time
-                    self.outputTrace(self.getActiveObjectQueue()[0].name, "passivated in "+self.objName+" for "+str(now()-breakTime))              
+                    self.outputTrace(self.getActiveObjectQueue()[0].name, "passivated in "+self.objName+" for "+str(now()-breakTime))
+
+                    #if during the interruption the object became empty break        
+                    if (len(self.getActiveObjectQueue())==0 and self.shouldPreempt):
+                        break                       
                 # if no interruption occurred the processing in M1 is ended 
                 else:
                     processingNotFinished=False
+                    
+            #if during the interruption the object became empty continue        
+            if (len(self.getActiveObjectQueue())==0 and self.shouldPreempt):
+                self.shouldPreempt=False
+                continue   
+            
             # output to trace that the processing in the Machine self.objName ended 
             self.outputTrace(self.getActiveObjectQueue()[0].name,"ended processing in "+self.objName)
             # set the variable that flags an Entity is ready to be disposed 
@@ -174,7 +184,14 @@ class Machine(CoreObject):
                     self.downTimeInTryingToReleaseCurrentEntity+=now()-failTime         
                     self.downTimeInCurrentEntity+=now()-failTime    # already updated from failures during processing
                     # update the timeLastFailureEnded   
-                    self.timeLastFailureEnded=now()           
+                    self.timeLastFailureEnded=now()   
+                    
+                    #if during the interruption the object became empty break        
+                    if (len(self.getActiveObjectQueue())==0 and self.shouldPreempt):
+                        self.shouldPreempt==False
+                        break     
+                    
+                            
     # =======================================================================
     # checks if the machine is Up
     # =======================================================================

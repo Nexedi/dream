@@ -89,7 +89,8 @@ class CoreObject(Process):
         self.totalProcessingTimeInCurrentEntity=0
         self.failureTimeInCurrentEntity=0
         self.setupTimeCurrentEntity=0
-        
+ 
+        self.shouldPreempt=False    #flag that shows that the machine should preempt or not       
               
         self.Failure=[]
         self.Working=[]
