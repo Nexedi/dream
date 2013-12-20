@@ -85,6 +85,7 @@ from OperatedMachine import OperatedMachine
 from BatchDecompositionStartTime import BatchDecompositionStartTime
 from M3 import M3
 
+
 import ExcelHandler
 import time
 import json
@@ -155,6 +156,8 @@ def createObjects():
     G.BrokersList = []
     G.OperatedMachineList = []
     G.BatchScrapMachineList=[]
+    G.MachinePreemptiveList=[]
+    G.QueuePreemptiveList=[]
     
     # -----------------------------------------------------------------------
     #                loop through all the model resources 
@@ -360,6 +363,36 @@ def createObjects():
             G.MachineJobShopList.append(M)
             G.MachineList.append(M)
             G.ObjList.append(M)
+
+        elif objClass=='Dream.MachinePreemptive':
+            from MachinePreemptive import MachinePreemptive
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            processingTime=element.get('processingTime',{})
+            distributionType=processingTime.get('distributionType', 'not found')
+            mean=float(processingTime.get('mean', '0'))  
+            stdev=float(processingTime.get('stdev', '0'))  
+            min=float(processingTime.get('min', '0')) 
+            max=float(processingTime.get('max', '0'))
+            failures=element.get('failures', {})  
+            failureDistribution=failures.get('failureDistribution', 'not found')
+            MTTF=float(failures.get('MTTF', '0'))   
+            MTTR=float(failures.get('MTTR', '0')) 
+            availability=float(failures.get('availability', '0'))  
+            resetOnPreemption=bool(int(element.get('resetOnPreemption', '0')))            
+            
+            r='None'
+            for repairman in G.RepairmanList:                   # check which repairman in the G.RepairmanList
+                if(id in repairman.coreObjectIds):              # (if any) is assigned to repair 
+                    r=repairman                                 # the machine with ID equal to id
+                    
+            M=MachinePreemptive(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
+                                                    MTTF=MTTF, MTTR=MTTR, availability=availability, repairman=r,
+                                                    mean=mean,stdev=stdev,min=min,max=max, resetOnPreemption=resetOnPreemption)
+            M.nextIds=getSuccessorList(id)                      # update the nextIDs list of the machine
+            G.MachinePreemptiveList.append(M)                   # add machine to global MachinePreemptiveList
+            G.MachineList.append(M)                             # add machine to global MachineList
+            G.ObjList.append(M)                                 # add machine to ObjList
             
         elif objClass=='Dream.Exit':
             id=element.get('id', 'not found')
@@ -397,6 +430,19 @@ def createObjects():
             Q.nextIds=getSuccessorList(id)
             G.QueueList.append(Q)
             G.QueueJobShopList.append(Q)
+            G.ObjList.append(Q)
+            
+        elif objClass=='Dream.QueuePreemptive':
+            from QueuePreemptive import QueuePreemptive
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            capacity=int(element.get('capacity', '1'))
+            isDummy=bool(int(element.get('isDummy', '0')))
+            schedulingRule=element.get('schedulingRule', 'FIFO')
+            Q=QueuePreemptive(id, name, capacity, isDummy, schedulingRule=schedulingRule)
+            Q.nextIds=getSuccessorList(id)
+            G.QueueList.append(Q)
+            G.QueuePreemptiveList.append(Q)
             G.ObjList.append(Q)
             
         elif objClass=='Dream.QueueLIFO':
