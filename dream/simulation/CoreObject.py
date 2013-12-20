@@ -305,3 +305,9 @@ class CoreObject(Process):
     # =======================================================================
     def unAssignExit(self):
         self.exitAssignedToReceiver = False
+        
+    # =======================================================================
+    # actions to be carried whenever the object is interrupted (failure, break, preemption, etc)
+    # =======================================================================
+    def interruptionActions(self):
+        pass

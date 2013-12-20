@@ -118,6 +118,7 @@ class Machine(CoreObject):
                 # passivate while waiting for repair.             
                 yield hold,self,tinM                                # getting processed for remaining processing time tinM
                 if self.interrupted():                              # if a failure occurs while processing the machine is interrupted.
+                    self.interruptionActions()                      # execute interruption actions
                     # output to trace that the Machine (self.objName) got interrupted                                                                  
                     self.outputTrace(self.getActiveObjectQueue()[0].name, "Interrupted at "+self.objName)
                     # recalculate the processing time left tinM
@@ -164,6 +165,7 @@ class Machine(CoreObject):
                 # if M1 had failure, we want to wait until it is fixed and also count the failure time. 
                 else:
                     failTime=now()                                  # dummy variable holding the time failure happened
+                    self.interruptionActions()                      # execute interruption actions
                     # passivate until machine is up
                     yield waituntil, self, self.checkIfMachineIsUp  
                     self.failureTimeInCurrentEntity+=now()-failTime                     # count the failure while on current entity time with failureTime variable
