@@ -178,10 +178,8 @@ def createObjects():
             name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
             capacity = int(element.get('capacity', '1'))            # get the capacity of the el. / defautl '1'
             O = Operator(element_id, name, capacity)                # create an operator object
-            try:
-                O.coreObjectIds=getSuccessorList(id)                # update the list of objects that the operator operates
-            except:                                                 # calling the getSuccessorList() method on the operator
-                pass
+            O.coreObjectIds=getSuccessorList(id)                    # update the list of objects that the operator operates
+                                                                    # calling the getSuccessorList() method on the operator
             G.OperatorsList.append(O)                               # add the repairman to the RepairmanList
         elif resourceClass=='Dream.OperatorPool':
             id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
@@ -197,11 +195,8 @@ def createObjects():
             else:
                 OP = OperatorPool(element_id, name, capacity,operatorsList)     # create a operatorPool object
             OP.coreObjectIds=getSuccessorList(id)                   # update the list of objects that the operators of the operatorPool operate
-            try:
-                for operator in operatorsList.values():
-                    operator.coreObjectIds=OP.coreObjectIds        # update the list of objects that the operators operate
-            except:
-                pass
+            for operator in operatorsList.values():
+                operator.coreObjectIds=OP.coreObjectIds             # update the list of objects that the operators operate
             G.OperatorPoolsList.append(OP)                          # add the repairman to the RepairmanList
     # -----------------------------------------------------------------------
     #                    loop through all the elements    
@@ -634,15 +629,9 @@ def initializeObjects():
 # ===========================================================================
 def activateObjects():
     for element in G.ObjList:
-        try:
-            activate(element, element.run())
-        except AttributeError:
-            pass
+        activate(element, element.run())
     for ev in G.EventGeneratorList:
-        try:
-            activate(ev, ev.run())
-        except AttributeError:
-            pass        
+        activate(ev, ev.run())
 
 # ===========================================================================
 #                reads the WIP of the stations
@@ -659,11 +648,7 @@ def createWIP():
         element['id'] = element_id
         wip=element.get('wip', [])
         for entity in wip:
-            entityClass=None
-            try:
-                entityClass=entity.get('_class', None)
-            except IndexError:
-                continue
+            entityClass=entity.get('_class', None)
    
             if entityClass=='Dream.Job':
                 id=entity.get('id', 'not found')
@@ -799,17 +784,11 @@ def main(argv=[], input_data=None):
     
     #output data to JSON for every object in the topology         
     for element in G.ObjList:
-        try:
-            element.outputResultsJSON()
-        except AttributeError:
-            pass
+        element.outputResultsJSON()
         
     #output data to JSON for every resource in the topology         
     for model_resource in G.RepairmanList:
-        try:
-            model_resource.outputResultsJSON()
-        except AttributeError:
-            pass
+        model_resource.outputResultsJSON()
         
     for job in G.JobList:
         job.outputResultsJSON()

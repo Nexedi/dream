@@ -101,10 +101,7 @@ class CoreObject(Process):
         activeEntity=activeObjectQueue[0]  
         activeObjectQueue.pop(0)                        #remove the Entity from the queue
         self.timeLastEntityLeft=now()
-        try:
-            self.outputTrace(activeEntity.name, "released "+self.objName) 
-        except TypeError:
-            pass
+        self.outputTrace(activeEntity.name, "released "+self.objName)
         return activeEntity          
         
     # ================================== gets an entity from the ====================================
@@ -133,10 +130,7 @@ class CoreObject(Process):
         activeEntity.schedule.append([activeObject,now()])
         activeEntity.currentStation=self
         self.timeLastEntityEntered=now()
-        try:
-            self.outputTrace(activeEntity.name, "got into "+self.objName)
-        except TypeError:
-            pass
+        self.outputTrace(activeEntity.name, "got into "+self.objName)
         return activeEntity
         
     # ========================== actions to be taken after the simulation ends ======================
