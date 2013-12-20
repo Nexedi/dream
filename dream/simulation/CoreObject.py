@@ -127,10 +127,7 @@ class CoreObject(Process):
         self.downTimeInTryingToReleaseCurrentEntity=0
         
         self.timeLastEntityLeft=now()
-        try:
-            self.outputTrace(activeEntity.name, "released "+self.objName) 
-        except TypeError:
-            pass
+        self.outputTrace(activeEntity.name, "released "+self.objName) 
         return activeEntity     
     
     # =======================================================================
@@ -175,10 +172,7 @@ class CoreObject(Process):
         self.nameLastEntityEntered=activeEntity.name      # this holds the name of the last entity that got into Machine      
         self.downTimeProcessingCurrentEntity=0
       
-        try:
-            self.outputTrace(activeEntity.name, "got into "+self.objName)
-        except TypeError:
-            pass
+        self.outputTrace(activeEntity.name, "got into "+self.objName)
         return activeEntity
       
     # =======================================================================

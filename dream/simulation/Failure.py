@@ -83,14 +83,11 @@ class Failure(ObjectInterruption):
     def run(self):           
         while 1:
             yield hold,self,self.rngTTF.generateNumber()    # wait until a failure happens                  
-            try:
-                if(len(self.getVictimQueue())>0):           # when a Machine gets failure
-                    self.interruptVictim()                  # while in process it is interrupted
-                self.victim.Up=False
-                self.victim.timeLastFailure=now()           
-                self.outputTrace("is down")
-            except AttributeError:
-                print "AttributeError1"
+            if(len(self.getVictimQueue())>0):           # when a Machine gets failure
+                self.interruptVictim()                  # while in process it is interrupted
+            self.victim.Up=False
+            self.victim.timeLastFailure=now()           
+            self.outputTrace("is down")
             # update the failure time
             failTime=now()            
             if(self.repairman!="None"):     #if the failure needs a resource to be fixed, the machine waits until the 
@@ -103,13 +100,10 @@ class Failure(ObjectInterruption):
             yield hold,self,self.rngTTR.generateNumber()    # wait until the repairing process is over
             self.victim.totalFailureTime+=now()-failTime    
             
-            try:
-                if(len(self.getVictimQueue())>0):                
-                    self.reactivateVictim()                 # since repairing is over, the Machine is reactivated
-                self.victim.Up=True              
-                self.outputTrace("is up")              
-                if(self.repairman!="None"): #if a resource was used, it is now released
-                    yield release,self,self.repairman.getResource() 
-                    self.repairman.totalWorkingTime+=now()-timeOperationStarted                                
-            except AttributeError:
-                print "AttributeError2"    
+            if(len(self.getVictimQueue())>0):                
+                self.reactivateVictim()                 # since repairing is over, the Machine is reactivated
+            self.victim.Up=True              
+            self.outputTrace("is up")              
+            if(self.repairman!="None"): #if a resource was used, it is now released
+                yield release,self,self.repairman.getResource() 
+                self.repairman.totalWorkingTime+=now()-timeOperationStarted                                
