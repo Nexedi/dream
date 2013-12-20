@@ -115,12 +115,15 @@ class Machine(CoreObject):
                 # processingEndedFlag and exit loop,
                 # else (if interrupted()) set interruption flag to true (only if tinM==0),
                 # and recalculate the processing time left tinM,
-                # passivate while waiting for repair.             
+                # passivate while waiting for repair.          
                 yield hold,self,tinM                                # getting processed for remaining processing time tinM
                 if self.interrupted():                              # if a failure occurs while processing the machine is interrupted.
-                    self.interruptionActions()                      # execute interruption actions
-                    # output to trace that the Machine (self.objName) got interrupted                                                                  
-                    self.outputTrace(self.getActiveObjectQueue()[0].name, "Interrupted at "+self.objName)
+                    #self.interruptionActions()                      # execute interruption actions
+                    # output to trace that the Machine (self.objName) got interrupted           
+                    try:                                                       
+                        self.outputTrace(self.getActiveObjectQueue()[0].name, "Interrupted at "+self.objName)
+                    except IndexError:
+                        pass
                     # recalculate the processing time left tinM
                     tinM=tinM-(now()-timeRestartingProcessing)
                     if(tinM==0):            # sometimes the failure may happen exactly at the time that the processing would finish
@@ -150,15 +153,21 @@ class Machine(CoreObject):
             #if during the interruption the object became empty continue        
             if (len(self.getActiveObjectQueue())==0 and self.shouldPreempt):
                 self.shouldPreempt=False
-                continue   
+                self.totalWorkingTime+=now()-(self.timeLastEntityEntered)
+                continue  
             
             # output to trace that the processing in the Machine self.objName ended 
-            self.outputTrace(self.getActiveObjectQueue()[0].name,"ended processing in "+self.objName)
+            try:
+                self.outputTrace(self.getActiveObjectQueue()[0].name,"ended processing in "+self.objName)
+            except IndexError:
+                pass
             # set the variable that flags an Entity is ready to be disposed 
             self.waitToDispose=True
             # update the total working time 
             self.totalWorkingTime+=self.totalProcessingTimeInCurrentEntity                        # the total processing time for this entity 
                                                                     # is what the distribution initially gave
+                                                                    
+ 
                                                                     
             # update the variables keeping track of Entity related attributes of the machine    
             self.timeLastEntityEnded=now()                          # this holds the time that the last entity ended processing in Machine 
@@ -175,7 +184,7 @@ class Machine(CoreObject):
                 # if M1 had failure, we want to wait until it is fixed and also count the failure time. 
                 else:
                     failTime=now()                                  # dummy variable holding the time failure happened
-                    self.interruptionActions()                      # execute interruption actions
+                    #self.interruptionActions()                      # execute interruption actions
                     # passivate until machine is up
                     yield waituntil, self, self.checkIfMachineIsUp  
                     self.failureTimeInCurrentEntity+=now()-failTime                     # count the failure while on current entity time with failureTime variable

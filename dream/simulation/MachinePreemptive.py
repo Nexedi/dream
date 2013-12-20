@@ -24,7 +24,8 @@ Created on 20 Dec 2012
 '''
 inherits from MachineJobShop it can preempt the currently processed Entity if need be
 '''
-from MachinePreemptive import MachinePreemptive
+from MachineJobShop import MachineJobShop
+from SimPy.Simulation import reactivate, now
 
 #the MachineJobShop object
 class MachinePreemptive(MachineJobShop):
@@ -39,13 +40,31 @@ class MachinePreemptive(MachineJobShop):
     def initilize(self):
         MachineJobShop.initialize(self)
         self.shouldPreempt=False 
-    
-    #when interrupted call the preempt method    
-    def interruptionAction(self):
-        self.preempt()
-    
+        self.lastGiver=self.previous[0]
+          
+    def getEntity(self):
+        activeEntity=MachineJobShop.getEntity(self)
+        self.lastGiver=self.giver
+        return activeEntity
+        
     #method to execute the preemption    
     def preempt(self):
-        print  'in'
+        activeEntity=self.getActiveObjectQueue()[0] #get the active Entity
+        #calculate the remaining processing time
+        #if it is reset then set it as the original processing time
+        if self.resetOnPreemption:
+            remainingProcessingTime=self.procTime
+        #else subtract the time that passed since the entity entered
+        #(may need also failure time if there was. TO BE MELIORATED)
+        else:
+            remainingProcessingTime=self.procTime-(now()-self.timeLastEntityEntered)
+        #update the remaining route of activeEntity
+        activeEntity.remainingRoute.insert(0, [self.id, remainingProcessingTime])
+        activeEntity.remainingRoute.insert(0, [self.lastGiver.id, 0])        
+        #set the receiver  as the object where the active entity was  preempted from 
+        self.receiver=self.lastGiver
+        self.waitToDispose=True     #set  that I have to dispose
+        reactivate(self)
+
         
 

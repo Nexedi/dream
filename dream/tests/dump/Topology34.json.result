@@ -1,0 +1,165 @@
+{
+ "elementList": [
+  {
+   "extraPropertyDict": {
+    "isCritical": "1", 
+    "route": [
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "Q1", 
+      "stepNumber": "0"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0.25"
+      }, 
+      "stationId": "M1", 
+      "stepNumber": "1"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "Q2", 
+      "stepNumber": "2"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "1"
+      }, 
+      "stationId": "M2", 
+      "stepNumber": "3"
+     }
+    ], 
+    "name": "Component1"
+   }, 
+   "_class": "Dream.Job", 
+   "id": "C1", 
+   "results": {
+    "completionTime": 1.25, 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "stationId": "Q1", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 0, 
+      "stationId": "M1", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 0.25, 
+      "stationId": "Q2", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 0.25, 
+      "stationId": "M2", 
+      "stepNumber": 3
+     }, 
+     {
+      "entranceTime": 1.25, 
+      "stationId": "E1", 
+      "stepNumber": 4
+     }
+    ]
+   }
+  }, 
+  {
+   "extraPropertyDict": {
+    "isCritical": "0", 
+    "route": [
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stationId": "Q2", 
+      "stepNumber": "0"
+     }, 
+     {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "1"
+      }, 
+      "stationId": "M2", 
+      "stepNumber": "1"
+     }
+    ], 
+    "name": "Component2"
+   }, 
+   "_class": "Dream.Job", 
+   "id": "C2", 
+   "results": {
+    "completionTime": 2.0, 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "stationId": "Q2", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 0, 
+      "stationId": "M2", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 0.25, 
+      "stationId": "Q2", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 1.25, 
+      "stationId": "M2", 
+      "stepNumber": 3
+     }, 
+     {
+      "entranceTime": 2.0, 
+      "stationId": "E1", 
+      "stepNumber": 4
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Exit", 
+   "id": "E1", 
+   "results": {
+    "throughput": 2, 
+    "takt_time": 1.0, 
+    "lifespan": 1.625
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "M1", 
+   "results": {
+    "working_ratio": 12.5, 
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 87.5
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "M2", 
+   "results": {
+    "working_ratio": 100.0, 
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 0.0
+   }
+  }
+ ], 
+ "_class": "Dream.Simulation", 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}

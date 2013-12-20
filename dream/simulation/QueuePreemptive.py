@@ -26,6 +26,7 @@ Inherits from QueueJobShop. If it gets an isCritical Entity it can interrupt the
 '''
 
 from QueueJobShop import QueueJobShop
+from SimPy.Simulation import now
 
 #the QueuePreemptive object
 class QueuePreemptive(QueueJobShop):
@@ -36,11 +37,12 @@ class QueuePreemptive(QueueJobShop):
         #if the obtained Entity is critical
         if activeEntity.isCritical:
             #if the receiver is not empty
-            if len(receiver.getActiveObjectQueue())>0:
+            if len(self.receiver.getActiveObjectQueue())>0:
                 #if the receiver does not hold an Entity that is also critical
-                if not receiver.getActiveObjectQueue()[0].isCritical:
-                    receiver.shouldPreempt=True
-                    receiver.interrupt()    #interrupt the receiver
+                if not self.receiver.getActiveObjectQueue()[0].isCritical:
+                    self.receiver.shouldPreempt=True
+                    self.receiver.preempt()
+                    self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
                     
     #for future use
     def sortEntities(self):

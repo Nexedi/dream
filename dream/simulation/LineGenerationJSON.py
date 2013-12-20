@@ -84,7 +84,7 @@ from OperatedPoolBroker import Broker
 from OperatedMachine import OperatedMachine
 from BatchDecompositionStartTime import BatchDecompositionStartTime
 from M3 import M3
-
+from OrderComponent import OrderComponent
 
 import ExcelHandler
 import time
@@ -756,6 +756,7 @@ def createWIP():
     G.WipList=[]
     G.EntityList=[]  
     G.PartList=[]
+    G.OrderComponentList=[]
     
     json_data = G.JSONData
     #Read the json data
@@ -770,7 +771,60 @@ def createWIP():
             except IndexError:
                 continue
             
-            if entityClass=='Dream.Job':
+            if entityClass=='Dream.OrderComponent':
+                id=entity.get('id', 'not found')
+                name=entity.get('name', 'not found')
+                priority=int(entity.get('priority', '0'))
+                dueDate=float(entity.get('dueDate', '0'))
+                orderDate=float(entity.get('orderDate', '0'))
+                isCritical=bool(int(entity.get('isCritical', '0')))  
+                JSONRoute=entity.get('route', [])                  # dummy variable that holds the routes of the jobs
+                                                                    #    the route from the JSON file 
+                                                                    #    is a sequence of dictionaries
+                route = [None for i in range(len(JSONRoute))]       #    variable that holds the argument used in the Job initiation
+                                                                    #    hold None for each entry in the 'route' list
+                
+                for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
+                    stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
+                    nextId=routeentity.get('stationId', 'not found')                   #    the stationId
+                    processingTime=routeentity['processingTime']                       # and the 'processingTime' dictionary
+                    distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
+                                                                                        #    get the 'mean' 
+                    mean=float(processingTime.get('mean', 'not found'))
+                    route[stepNumber]=[nextId, mean]                                    # finally add the 'nextId' and 'mean'
+                                                                                        # to the job route
+                
+                # keep a reference of all extra properties passed to the job
+                extraPropertyDict = {}
+                for key, value in entity.items():
+                  if key not in ('_class', 'id'):
+                    extraPropertyDict[key] = value
+
+                #Below it is to assign an exit if it was not assigned in JSON
+                #have to talk about it with NEX
+                exitAssigned=False
+                for element in route:
+                    elementId=element[0]
+                    for obj in G.ObjList:
+                        if obj.id==elementId and obj.type=='Exit':
+                            exitAssigned=True 
+                if not exitAssigned:
+                    exitId=None
+                    for obj in G.ObjList:
+                        if obj.type=='Exit':
+                            exitId=obj.id
+                            break
+                    if exitId:
+                        route.append([exitId, 0])
+                # initiate the job
+                OC=OrderComponent(id, name, route, priority=priority, dueDate=dueDate,
+                    orderDate=orderDate, extraPropertyDict=extraPropertyDict, isCritical=isCritical)
+                G.OrderComponentList.append(OC)
+                G.JobList.append(OC)   
+                G.WipList.append(OC)  
+                G.EntityList.append(OC)    
+            
+            elif entityClass=='Dream.Job':
                 id=entity.get('id', 'not found')
                 name=entity.get('name', 'not found')
                 priority=int(entity.get('priority', '0'))
@@ -819,7 +873,9 @@ def createWIP():
                     orderDate=orderDate, extraPropertyDict=extraPropertyDict)
                 G.JobList.append(J)   
                 G.WipList.append(J)  
-                G.EntityList.append(J)    
+                G.EntityList.append(J) 
+            
+            
             elif entityClass=='Dream.Part':
                 id=entity.get('id', 'not found')
                 name=entity.get('name', 'not found')
