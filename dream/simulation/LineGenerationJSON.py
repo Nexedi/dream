@@ -85,6 +85,7 @@ from OperatedMachine import OperatedMachine
 from BatchDecompositionStartTime import BatchDecompositionStartTime
 from M3 import M3
 from OrderComponent import OrderComponent
+from ScheduledMaintenance import ScheduledMaintenance
 
 import ExcelHandler
 import time
@@ -732,6 +733,8 @@ def initializeObjects():
         entity.initialize()
     for ev in G.EventGeneratorList:
         ev.initialize()
+    for oi in G.ObjectInterruptionList:
+        oi.initialize()
 
 # ===========================================================================
 #                        activates all the objects
@@ -746,7 +749,12 @@ def activateObjects():
         try:
             activate(ev, ev.run())
         except AttributeError:
-            pass        
+            pass   
+    for oi in G.ObjectInterruptionList:
+        try:
+            activate(oi, oi.run())
+        except AttributeError:
+            pass       
 
 # ===========================================================================
 #                reads the WIP of the stations
@@ -886,6 +894,26 @@ def createWIP():
                 object=Globals.findObjectById(element['id'])
                 P.currentStation=object
                              
+# ===========================================================================
+#                reads the interruptions of the stations
+# ===========================================================================
+def createObjectInterruptions():
+    G.ObjectInterruptionList=[]
+    G.ScheduledMaintenanceList=[]
+    
+    json_data = G.JSONData
+    #Read the json data
+    nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
+    for (element_id, element) in nodes.iteritems():
+        element['id'] = element_id
+        scheduledMaintenance=element.get('scheduledMaintenance', {})
+        if len(scheduledMaintenance):
+            start=float(scheduledMaintenance.get('start', 0))
+            duration=float(scheduledMaintenance.get('duration', 1))
+            victim=Globals.findObjectById(element['id'])
+            SM=ScheduledMaintenance(victim=victim, start=start, duration=duration)
+            G.ObjectInterruptionList.append(SM)
+            G.ScheduledMaintenanceList.append(SM)
 
 # ===========================================================================
 #        used to convert a string read from the input to object type
@@ -921,7 +949,7 @@ def main(argv=[], input_data=None):
     G.JSONData=json.loads(G.InputData)              # create the dictionary JSONData
     readGeneralInput()
     createObjects()
-    #createWIP()
+    createObjectInterruptions()
     setTopology()    
     
     #run the experiment (replications)          
