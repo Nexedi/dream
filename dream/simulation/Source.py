@@ -95,7 +95,4 @@ class Source(CoreObject):
     #============================================================================
     def calculateInterarrivalTime(self):
         return self.rng.generateNumber()    #this is if we have a default interarrival  time for all the entities
-    #============================================================================
-    #                  outputs message to the trace.xls. 
-    #          Format is (Simulation Time | Entity Name | "generated")
-    #============================================================================   
+
