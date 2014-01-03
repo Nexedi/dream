@@ -109,14 +109,7 @@ class CoreObject(Process):
 
     # ================================== removes an entity from the Object ==========================
     def removeEntity(self): 
-        self.totalTimeInCurrentEntity=now()-self.timeLastEntityEntered
-        self.totalTimeWaitingForOperator += self.operatorWaitTimeCurrentEntity
-        #blockage=self.totalTimeInCurrentEntity-(self.totalProcessingTimeInCurrentEntity\
-        #                            +self.failureTimeInCurrentEntity\
-        #                            +self.operatorWaitTimeCurrentEntity\
-        #                            +self.setupTimeCurrentEntity)     
-        blockage=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)       
-        self.totalBlockageTime+=blockage
+        self.addBlockage()
         
         activeObjectQueue=self.getActiveObjectQueue()  
         activeEntity=activeObjectQueue[0]  
@@ -130,7 +123,14 @@ class CoreObject(Process):
             self.outputTrace(activeEntity.name, "released "+self.objName) 
         except TypeError:
             pass
-        return activeEntity          
+        return activeEntity     
+    
+    # ================================== adds the blockage to totalBlockageTime each time an Entity is removed===============
+    def addBlockage(self): 
+        self.totalTimeInCurrentEntity=now()-self.timeLastEntityEntered
+        self.totalTimeWaitingForOperator += self.operatorWaitTimeCurrentEntity 
+        blockage=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)       
+        self.totalBlockageTime+=blockage     
         
     # ================================== gets an entity from the giver ====================================   
     def getEntity(self):
