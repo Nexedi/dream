@@ -229,22 +229,21 @@ class Conveyer(CoreObject):
    
         self.position.pop(0)
         
-        #revert the blockage calculation
-        #conveyer needs its customcalculation
-        blockage=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)       
-        self.totalBlockageTime-=blockage
-        
         self.waitToDispose=False  
         #if the conveyer was full, it means that it also was blocked
         #we count this blockage time 
         if self.wasFull:
-            self.totalBlockageTime+=now()-self.timeBlockageStarted
+            #self.totalBlockageTime+=now()-self.timeBlockageStarted
             self.wasFull=False
             #calculate the time that the conveyer will become available again and trigger the conveyerMover
             self.timeToBecomeAvailable=((self.position[-1]+self.currentRequestedLength)/float(self.speed))/60 
             self.conveyerMover.timeToWait=self.timeToBecomeAvailable
             self.call=True
         return activeEntity
+    
+    def addBlockage(self):
+        if self.wasFull:
+            self.totalBlockageTime+=now()-self.timeBlockageStarted
     
     #checks if the Conveyer can dispose an entity to the following object     
     def haveToDispose(self, callerObject=None): 
