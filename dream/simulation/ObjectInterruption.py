@@ -35,7 +35,7 @@ class ObjectInterruption(Process):
         self.victim=victim
     
     def initialize(self):
-        pass
+        Process.__init__(self)
     
     #the main process of the core object
     #this is dummy, every object must have its own implementation

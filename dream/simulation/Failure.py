@@ -33,10 +33,10 @@ from ObjectInterruption import ObjectInterruption
 
 class Failure(ObjectInterruption):
     
-    def __init__(self, victim=None, dist='Fixed', MTTF=60, MTTR=5, availability=100, index=0, repairman=None):
+    def __init__(self, victim=None, distributionType='Fixed', MTTF=60, MTTR=5, availability=100, index=0, repairman=None):
         #Process.__init__(self)
         ObjectInterruption.__init__(self,victim)
-        self.distType=dist              # the distribution that the failure duration follows
+        self.distType=distributionType              # the distribution that the failure duration follows
         self.MTTF=MTTF                  # the MTTF
         self.MTTR=MTTR                  # the MTTR
         self.availability=availability  # the availability  

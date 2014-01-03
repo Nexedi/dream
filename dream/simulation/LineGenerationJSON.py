@@ -981,7 +981,7 @@ def main(argv=[], input_data=None):
         activateObjects()
         
         # if the simulation is ran until no more events are scheduled, 
-        # then we have to find the end time as the time the last entity ended. 
+        # then we have to find the end time as the time the last entity ended.
         if G.maxSimTime==-1:
             simulate(until=infinity)    # simulate until there are no more events. 
                                         # If someone does it for a model that has always events, then it will run forever!

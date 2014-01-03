@@ -37,10 +37,15 @@ class CoreObject(Process):
         self.previous=[]                            #list with the previous objects in the flow
         self.nextIds=[]                             #list with the ids of the next objects in the flow
         self.previousIds=[]                         #list with the ids of the previous objects in the flow
+        
+        self.Failure=[]
+        self.Working=[]
+        self.Blockage=[]
+        self.Waiting=[]
 
     
     def initialize(self):
-#         Process.__init__(self) 
+        Process.__init__(self) 
         self.Up=True                                    #Boolean that shows if the machine is in failure ("Down") or not ("up")
         self.currentEntity=None      
         # ============================== total times ===============================================
@@ -91,11 +96,6 @@ class CoreObject(Process):
         self.setupTimeCurrentEntity=0
  
         self.shouldPreempt=False    #flag that shows that the machine should preempt or not       
-              
-        self.Failure=[]
-        self.Working=[]
-        self.Blockage=[]
-        self.Waiting=[]
 
     # ======================== the main process of the core object =================================
     # ================ this is dummy, every object must have its own implementation ================
