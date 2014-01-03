@@ -86,6 +86,7 @@ from BatchDecompositionStartTime import BatchDecompositionStartTime
 from M3 import M3
 from OrderComponent import OrderComponent
 from ScheduledMaintenance import ScheduledMaintenance
+from Failure import Failure
 
 import ExcelHandler
 import time
@@ -900,6 +901,7 @@ def createWIP():
 def createObjectInterruptions():
     G.ObjectInterruptionList=[]
     G.ScheduledMaintenanceList=[]
+    G.FailureList=[]
     
     json_data = G.JSONData
     #Read the json data
@@ -914,6 +916,21 @@ def createObjectInterruptions():
             SM=ScheduledMaintenance(victim=victim, start=start, duration=duration)
             G.ObjectInterruptionList.append(SM)
             G.ScheduledMaintenanceList.append(SM)
+        failure=element.get('failures', {})  
+        if len(failure):
+            distributionType=failure.get('failureDistribution', 'No')
+            if distributionType=='No':
+                pass
+            else:
+                MTTF=float(failure.get('MTTF', '0'))   
+                MTTR=float(failure.get('MTTR', '0')) 
+                availability=float(failure.get('availability', '0'))  
+                victim=Globals.findObjectById(element['id'])
+                F=Failure(victim, distributionType, MTTF, MTTR, availability, victim.id, victim.repairman)
+                G.ObjectInterruptionList.append(F)
+                G.FailureList.append(F)
+                
+                    
 
 # ===========================================================================
 #        used to convert a string read from the input to object type

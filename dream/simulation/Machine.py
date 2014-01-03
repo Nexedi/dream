@@ -71,13 +71,7 @@ class Machine(CoreObject):
     # =======================================================================        
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__
-        CoreObject.initialize(self)
-        
-        #if the failure distribution for the object is fixed, activate the failure       
-        if(self.failureDistType=="Fixed" or self.failureDistType=="Availability"):  
-            MFailure=Failure(self,  self.failureDistType, self.MTTF, self.MTTR, self.availability, self.id, self.repairman)
-            activate(MFailure,MFailure.run())
-        
+        CoreObject.initialize(self)        
         # initialize the internal Queue (type Resource) of the Machine 
         self.Res=Resource(self.capacity)      
     
