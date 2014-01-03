@@ -6,6 +6,7 @@ from simulation.Part import Part
 from simulation.Repairman import Repairman
 from simulation.Queue import Queue
 from simulation.Globals import G
+from simulation.Failure import Failure
 
 #import Graphs
 from outputanalysis.Plots import Graphs
@@ -18,7 +19,13 @@ Q=Queue('Q1','Queue')
 M2=Machine('M2','Machine2', mean=1.5, failureDistribution='Fixed', MTTF=40, MTTR=10,repairman=R)
 E=Exit('E1','Exit')  
 
+#create failures
+F1=Failure(victim=M1, distributionType='Fixed', MTTF=60, MTTR=5, repairman=R) 
+F2=Failure(victim=M2, distributionType='Fixed', MTTF=40, MTTR=10, repairman=R)
+
 G.ObjList=[S,M1,M2,E,Q]   #add all the objects in G.ObjList so that they can be easier accessed later
+
+G.FailureList=[F1,F2]     #add all the objects in G.ObjList so that they can be easier accessed later
 
 #define predecessors and successors for the objects    
 S.defineRouting([M1])
@@ -34,10 +41,16 @@ R.initialize()
 
 for object in G.ObjList:
     object.initialize()
+    
+for failure in G.FailureList:
+    failure.initialize()
 
 #activate all the objects 
 for object in G.ObjList:
     activate(object, object.run())
+
+for failure in G.FailureList:
+    activate(failure, failure.run())
 
 G.maxSimTime=1440.0     #set G.maxSimTime 1440.0 minutes (1 day)
     
