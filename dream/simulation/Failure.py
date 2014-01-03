@@ -33,14 +33,13 @@ from ObjectInterruption import ObjectInterruption
 
 class Failure(ObjectInterruption):
     
-    def __init__(self, victim, dist, MTTF, MTTR, availability, index, repairman):
+    def __init__(self, victim=None, dist='Fixed', MTTF=60, MTTR=5, availability=100, index=0, repairman=None):
         #Process.__init__(self)
         ObjectInterruption.__init__(self,victim)
         self.distType=dist              # the distribution that the failure duration follows
         self.MTTF=MTTF                  # the MTTF
         self.MTTR=MTTR                  # the MTTR
         self.availability=availability  # the availability  
-        #self.victim=victim              # the victim of the failure (work center)
         self.name="F"+str(index)
         self.repairman=repairman        # the resource that may be needed to fix the failure
                                         # if now resource is needed this will be "None" 
@@ -86,7 +85,7 @@ class Failure(ObjectInterruption):
             yield hold,self,self.rngTTF.generateNumber()    # wait until a failure happens                  
             try:
                 if(len(self.getVictimQueue())>0):           # when a Machine gets failure
-                    self.interruptVictim()             #     while in process it is interrupted
+                    self.interruptVictim()                  # while in process it is interrupted
                 self.victim.Up=False
                 self.victim.timeLastFailure=now()           
                 self.outputTrace("is down")
@@ -114,20 +113,3 @@ class Failure(ObjectInterruption):
                     self.repairman.totalWorkingTime+=now()-timeOperationStarted                                
             except AttributeError:
                 print "AttributeError2"    
-           
-    #outputs message to the trace.xls. Format is (Simulation Time | Machine Name | message)            
-    def outputTrace(self, message):
-        from Globals import G
-        
-        if(G.trace=="Yes"):     #output only if the user has selected to
-            #handle the 3 columns
-            G.traceSheet.write(G.traceIndex,0,str(now()))
-            G.traceSheet.write(G.traceIndex,1, self.victim.objName)
-            G.traceSheet.write(G.traceIndex,2,message)          
-            G.traceIndex+=1      #increment the row
-            #if we reach row 65536 we need to create a new sheet (excel limitation)  
-            if(G.traceIndex==65536):
-                G.traceIndex=0
-                G.sheetIndex+=1
-                G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)
-
