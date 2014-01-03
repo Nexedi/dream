@@ -92,12 +92,8 @@
         "Q1": {
             "_class": "Dream.Queue",
             "capacity": "1",
-            "isDummy": "0",
             "left": 0.4414893617021277,
             "name": "Q1",
-            "predecessorList": [
-                "M1"
-            ],
             "top": 0.40909090909090906
         },
         "S1": {
