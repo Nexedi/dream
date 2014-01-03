@@ -60,7 +60,7 @@ repairmanWaitingRatio=R.totalWaitingTime/G.maxSimTime*100
 #create a graph object
 graph=Graphs()
 #create the pie
-graph.Pie([repairmanWorkingRatio,repairmanWaitingRatio], "repairman.jpg")
+graph.Pie([repairmanWorkingRatio,repairmanWaitingRatio], "repairmanPie.jpg")
 
 
 
