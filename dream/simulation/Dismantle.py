@@ -194,12 +194,6 @@ class Dismantle(CoreObject):
         activeObjectQueue=self.getActiveObjectQueue()
         activeEntity=CoreObject.removeEntity(self)                               #run the default method 
         
-        #we want the blockagetobeadded  only if we disposed a frame!
-        #if a part was disposed rever
-        if activeEntity.type=='Part':
-            blockage=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)
-            self.totalBlockageTime-=blockage 
-
         #update the flags
         if(len(activeObjectQueue)==0):  
             self.waitToDisposeFrame=False
@@ -207,6 +201,15 @@ class Dismantle(CoreObject):
             if(len(activeObjectQueue)==1):   
                self.waitToDisposePart=False
         return activeEntity
+    
+    #add the blockage only if the very last Entity (Frame) is to depart
+    def addBlockage(self):
+        if len(self.getActiveObjectQueue())==1:
+            self.totalTimeInCurrentEntity=now()-self.timeLastEntityEntered
+            self.totalTimeWaitingForOperator += self.operatorWaitTimeCurrentEntity 
+            blockage=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)       
+            self.totalBlockageTime+=blockage
+        
     
     #actions to be taken after the simulation ends
     def postProcessing(self, MaxSimtime=None):
