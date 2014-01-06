@@ -943,6 +943,23 @@ def createWIP():
                   if key not in ('_class', 'id'):
                     extraPropertyDict[key] = value
 
+                #Below it is to assign an order decomposition if it was not assigned in JSON
+                #have to talk about it with NEX
+                odAssigned=False
+                for element in route:
+                    elementId=element[0]
+                    for obj in G.ObjList:
+                        if obj.id==elementId and obj.type=='OrderDecomposition':
+                            odAssigned=True 
+                if not odAssigned:
+                    odId=None
+                    for obj in G.ObjList:
+                        if obj.type=='OrderDecomposition':
+                            odId=obj.id
+                            break
+                    if odId:
+                        route.append([odId, 0])
+
                 # initiate the Order
                 O=Order(id, name, route, priority=priority, dueDate=dueDate,
                         isCritical=isCritical, basicsEnded=basicsEnded, manager=manager, componentsList=componentsList,
