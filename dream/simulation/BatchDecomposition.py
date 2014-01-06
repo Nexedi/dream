@@ -27,8 +27,7 @@ BatchDecomposition is a Core Object that takes a batch and decomposes to sub-bat
 
 
 from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import activate, waituntil, now, hold
-import scipy.stats as stat
+from SimPy.Simulation import waituntil, now, hold
 
 from Globals import G
 from CoreObject import CoreObject
