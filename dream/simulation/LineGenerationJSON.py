@@ -87,6 +87,8 @@ from M3 import M3
 from OrderComponent import OrderComponent
 from ScheduledMaintenance import ScheduledMaintenance
 from Failure import Failure
+from Order import Order
+from OrderDecomposition import OrderDecomposition
 
 import ExcelHandler
 import time
@@ -160,6 +162,7 @@ def createObjects():
     G.BatchScrapMachineList=[]
     G.MachinePreemptiveList=[]
     G.QueuePreemptiveList=[]
+    G.OrderDecompositionList=[]
     
     # -----------------------------------------------------------------------
     #                loop through all the model resources 
@@ -637,6 +640,13 @@ def createObjects():
             G.MachineList.append(OM)                                    # add machine to global MachineList
             G.ObjList.append(OM)                                        # add machine to ObjList
             
+        elif objClass=='Dream.OrderDecomposition':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            OD=OrderDecomposition(id, name)
+            G.OrderDecompositionList.append(OD)
+            G.ObjList.append(OD)
+            
     # -----------------------------------------------------------------------
     #                loop through all the nodes to  
     #            search for Event Generator and create them
@@ -766,6 +776,7 @@ def createWIP():
     G.EntityList=[]  
     G.PartList=[]
     G.OrderComponentList=[]
+    G.OrderList=[]
     
     json_data = G.JSONData
     #Read the json data
@@ -894,6 +905,52 @@ def createWIP():
                 G.EntityList.append(P)  
                 object=Globals.findObjectById(element['id'])
                 P.currentStation=object
+
+            if entityClass=='Dream.Order':
+                id=entity.get('id', 'not found')
+                name=entity.get('name', 'not found')
+                priority=int(entity.get('priority', '0'))
+                dueDate=float(entity.get('dueDate', '0'))
+                orderDate=float(entity.get('orderDate', '0'))
+                isCritical=bool(int(entity.get('isCritical', '0')))  
+                basicsEnded=bool(int(entity.get('basicsEnded', '0'))) 
+                manager=entity.get('manager', None)
+                if manager:
+                    for operator in G.OperatorsList:
+                        if manager==operator.id:
+                            manager=operator
+                            break
+                componentsList=entity.get('componentsList', {})
+                JSONRoute=entity.get('route', [])                  # dummy variable that holds the routes of the jobs
+                                                                    #    the route from the JSON file 
+                                                                    #    is a sequence of dictionaries
+                route = [None for i in range(len(JSONRoute))]       #    variable that holds the argument used in the Job initiation
+                                                                    #    hold None for each entry in the 'route' list
+                                                                    
+                for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
+                    stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
+                    nextId=routeentity.get('stationId', 'not found')                   #    the stationId
+                    processingTime=routeentity['processingTime']                       # and the 'processingTime' dictionary
+                    distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
+                                                                                        #    get the 'mean' 
+                    mean=float(processingTime.get('mean', 'not found'))
+                    route[stepNumber]=[nextId, mean]                                    # finally add the 'nextId' and 'mean'
+                                                                                        # to the job route
+                
+                # keep a reference of all extra properties passed to the job
+                extraPropertyDict = {}
+                for key, value in entity.items():
+                  if key not in ('_class', 'id'):
+                    extraPropertyDict[key] = value
+
+                # initiate the Order
+                O=Order(id, name, route, priority=priority, dueDate=dueDate,
+                        isCritical=isCritical, basicsEnded=basicsEnded, manager=manager, componentsList=componentsList,
+                        orderDate=orderDate, extraPropertyDict=extraPropertyDict)
+                G.OrderList.append(O)   
+                G.WipList.append(O)  
+                G.EntityList.append(O)                     
+                
                              
 # ===========================================================================
 #                reads the interruptions of the stations

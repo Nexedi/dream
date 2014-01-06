@@ -43,12 +43,17 @@ from OrderComponent import OrderComponent
 class OrderDecomposition(CoreObject):
     def __init__(self, id, name):
         CoreObject.__init__(self)
+        self.id=id
+        self.objName=name
         self.type='OrderDecomposition'
         
     def initialize(self):
+        self.previous=G.ObjList
+        self.next=G.ObjList
         CoreObject.initialize(self)                 # using the default CoreObject Functionality
         self.Res=Resource(infinity)                 # initialize the Internal resource (Queue) functionality. This is a dummy object so 
                                                     # infinite capacity is assumed
+        self.newlyCreatedComponents=[]
     
     #run just waits until there is something to get and gets it
     def run(self):
@@ -66,7 +71,6 @@ class OrderDecomposition(CoreObject):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
-                
         # if we have only one possible giver just check if there is a place, 
         # the machine is up and the predecessor has an entity to dispose
         # this is done to achieve better (cpu) processing time
@@ -104,9 +108,9 @@ class OrderDecomposition(CoreObject):
 
         activeEntity=activeObjectQueue[0]
         import Globals
-        self.receiver=Globals.findObjectById(activeEntity.remainingRoute[1][0])    #read the next station 
+        self.receiver=Globals.findObjectById(activeEntity.remainingRoute[0][0])    #read the next station 
         #return True if the OrderDecomposition in the state of disposing and the caller is the receiver
-        return activeObject.Up and (callerObject is self.receiver) 
+        return self.Up and (callerObject is self.receiver) 
 
     #decomposes the order to its components
     def decompose(self):
@@ -117,5 +121,65 @@ class OrderDecomposition(CoreObject):
                 activeObjectQueue.remove(entity)    #remove the order from the internal Queue
                 #append the components in the internal queue
                 for component in entity.componentsList:
-                    activeObjectQueue.append(component)
+                    self.createOrderComponent(component)
+        import Globals
+        Globals.setWIP(self.newlyCreatedComponents)
+        self.newlyCreatedComponents=[]
+        
+
+    def createOrderComponent(self, component):
+        id=component.get('id', 'not found')
+        name=component.get('name', 'not found')
+        priority=int(component.get('priority', '0'))
+        dueDate=float(component.get('dueDate', '0'))
+        orderDate=float(component.get('orderDate', '0'))
+        isCritical=bool(int(component.get('isCritical', '0')))  
+        JSONRoute=component.get('route', [])                  # dummy variable that holds the routes of the jobs
+                                                                    #    the route from the JSON file 
+                                                                    #    is a sequence of dictionaries
+        route = [None for i in range(len(JSONRoute))]       #    variable that holds the argument used in the Job initiation
+                                                                    #    hold None for each entry in the 'route' list
+                
+        for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
+            stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
+            nextId=routeentity.get('stationId', 'not found')                   #    the stationId
+            processingTime=routeentity['processingTime']                       # and the 'processingTime' dictionary
+            distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
+                                                                                        #    get the 'mean' 
+            mean=float(processingTime.get('mean', 'not found'))
+            route[stepNumber]=[nextId, mean]                                    # finally add the 'nextId' and 'mean'
+                                                                                        # to the job route
+                
+        # keep a reference of all extra properties passed to the job
+        extraPropertyDict = {}
+        for key, value in component.items():
+            if key not in ('_class', 'id'):
+                extraPropertyDict[key] = value
+
+        #Below it is to assign an exit if it was not assigned in JSON
+        #have to talk about it with NEX
+        exitAssigned=False
+        for element in route:
+            elementId=element[0]
+            for obj in G.ObjList:
+                if obj.id==elementId and obj.type=='Exit':
+                    exitAssigned=True 
+        if not exitAssigned:
+            exitId=None
+            for obj in G.ObjList:
+                if obj.type=='Exit':
+                    exitId=obj.id
+                    break
+            if exitId:
+                route.append([exitId, 0])
+        
+        # initiate the OrderComponent
+        OC=OrderComponent(id, name, route, priority=priority, dueDate=dueDate,
+            orderDate=orderDate, extraPropertyDict=extraPropertyDict, isCritical=isCritical)
+        G.OrderComponentList.append(OC)
+        G.JobList.append(OC)   
+        G.WipList.append(OC)  
+        G.EntityList.append(OC)
+        self.newlyCreatedComponents.append(OC)
+        OC.initialize()
         

@@ -26,18 +26,18 @@ Order is an Entity that can have its design, get broken to sub-components
 '''
 
 from Globals import G
-from Entity import Entity
+from Job import Job
 
 # ============================ The Order object ==============================
-class Order(Entity):
+class Order(Job):
     type="Order"
     
-    def __init__(self, id=None, name=None, priority=0, dueDate=None, orderDate=None, isCritical=False,
-                 componentsList=[], designTime=0, manager=None, basicsEnded=False):
-        Entity. __init__(self, id=id, name=name, priority=priority, dueDate=dueDate, orderDate=orderDate)
+    def __init__(self, id=None, name=None, route=[], priority=0, dueDate=None, orderDate=None, isCritical=False,
+                 componentsList=[], manager=None, basicsEnded=False, extraPropertyDict=None):
+        Job. __init__(self, id=id, name=name, route=route, priority=priority, dueDate=dueDate, orderDate=orderDate, 
+                      extraPropertyDict=extraPropertyDict)
         self.isCritical=isCritical
         self.componentsList=componentsList
-        self.designTime=designTime
         self.manager=manager
         self.basicsEnded=basicsEnded
 
