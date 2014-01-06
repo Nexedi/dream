@@ -11,42 +11,15 @@
     "nodes": {
         "M1": {
             "_class": "Dream.MachineJobShop",
-            "name": "Machine1",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": "0.25"
-            },
-            "failures": {
-                "failureDistribution": "No",
-                "MTTF": "60",
-                "MTTR": "5"
-            }
+            "name": "Machine1"
         },
         "M2": {
             "_class": "Dream.MachineJobShop",
-            "name": "Machine2",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": "1.5"
-            },
-            "failures": {
-                "failureDistribution": "No",
-                "MTTF": "40",
-                "MTTR": "10"
-            }
+            "name": "Machine2"
         },
         "M3": {
             "_class": "Dream.MachineJobShop",
-            "name": "Machine3",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": "1.5"
-            },
-            "failures": {
-                "failureDistribution": "No",
-                "MTTF": "40",
-                "MTTR": "10"
-            }
+            "name": "Machine3"
         },
         "Q1": {
             "_class": "Dream.QueueJobShop",
