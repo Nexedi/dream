@@ -32,7 +32,6 @@ from SimPy.Simulation import waituntil, now, hold
 from Globals import G
 from CoreObject import CoreObject
 from RandomNumberGenerator import RandomNumberGenerator
-from Entity import Entity
 
 from SubBatch import SubBatch
 from Batch import Batch
@@ -47,7 +46,7 @@ class BatchDecomposition(CoreObject):
     # =======================================================================        
     def __init__(self, id, name, numberOfSubBatches=1, distribution='Fixed', \
                  mean=1, stdev=0, min=0, max=10,operator='None'):
-        Process.__init__(self)
+        CoreObject.__init__(self)
         # hold the id, name, and type of the Machine instance
         self.id=id
         self.objName=name
