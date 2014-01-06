@@ -54,6 +54,7 @@ class OrderDecomposition(CoreObject):
         self.Res=Resource(infinity)                 # initialize the Internal resource (Queue) functionality. This is a dummy object so 
                                                     # infinite capacity is assumed
         self.newlyCreatedComponents=[]
+        self.orderToBeDecomposed=None
     
     #run just waits until there is something to get and gets it
     def run(self):
@@ -118,22 +119,21 @@ class OrderDecomposition(CoreObject):
         #loop in the internal Queue. Decompose only if an Entity is of type order
         for entity in activeObjectQueue:
             if entity.type=='Order':
+                self.orderToBeDecomposed=entity
                 activeObjectQueue.remove(entity)    #remove the order from the internal Queue
                 #append the components in the internal queue
                 for component in entity.componentsList:
                     self.createOrderComponent(component)
-        import Globals
-        Globals.setWIP(self.newlyCreatedComponents)
-        self.newlyCreatedComponents=[]
-        
+        if self.orderToBeDecomposed:
+            import Globals
+            Globals.setWIP(self.newlyCreatedComponents)
+            self.orderToBeDecomposed=None
+            self.newlyCreatedComponents=[]
+            
 
     def createOrderComponent(self, component):
         id=component.get('id', 'not found')
         name=component.get('name', 'not found')
-        priority=int(component.get('priority', '0'))
-        dueDate=float(component.get('dueDate', '0'))
-        orderDate=float(component.get('orderDate', '0'))
-        isCritical=bool(int(component.get('isCritical', '0')))  
         JSONRoute=component.get('route', [])                  # dummy variable that holds the routes of the jobs
                                                                     #    the route from the JSON file 
                                                                     #    is a sequence of dictionaries
@@ -174,8 +174,10 @@ class OrderDecomposition(CoreObject):
                 route.append([exitId, 0])
         
         # initiate the OrderComponent
-        OC=OrderComponent(id, name, route, priority=priority, dueDate=dueDate,
-            orderDate=orderDate, extraPropertyDict=extraPropertyDict, isCritical=isCritical)
+        OC=OrderComponent(id, name, route, priority=self.orderToBeDecomposed.priority, dueDate=self.orderToBeDecomposed.dueDate, 
+                          order=self.orderToBeDecomposed,
+                          orderDate=self.orderToBeDecomposed.orderDate, extraPropertyDict=extraPropertyDict, 
+                          isCritical=self.orderToBeDecomposed.isCritical)
         G.OrderComponentList.append(OC)
         G.JobList.append(OC)   
         G.WipList.append(OC)  
