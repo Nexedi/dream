@@ -63,11 +63,6 @@ class BatchDecomposition(CoreObject):
         self.rng.stdev=stdev
         self.rng.min=min
         self.rng.max=max
-        # for routing purposes 
-        self.next=[]                                #list with the next objects in the flow
-        self.previous=[]                            #list with the previous objects in the flow
-        self.nextIds=[]                             #list with the ids of the next objects in the flow
-        self.previousIds=[]                         #list with the ids of the previous objects in the flow
 
     # =======================================================================
     #     initialize the internal resource of the object
@@ -80,8 +75,6 @@ class BatchDecomposition(CoreObject):
             
     
     def run(self):
-        activeObjectQueue=self.getActiveObjectQueue()
-        
         while 1:  
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity
                                                                     #and one predecessor requests it                                                  
