@@ -53,7 +53,7 @@ class OrderDecomposition(CoreObject):
         CoreObject.initialize(self)                 # using the default CoreObject Functionality
         self.Res=Resource(infinity)                 # initialize the Internal resource (Queue) functionality. This is a dummy object so 
                                                     # infinite capacity is assumed
-        self.newlyCreatedComponents=[]
+        self.newlyCreatedComponents=[]              # a list to hold components just after decomposition
         self.orderToBeDecomposed=None
     
     #run just waits until there is something to get and gets it
@@ -67,6 +67,11 @@ class OrderDecomposition(CoreObject):
     def canAccept(self, callerObject=None):
         return True
     
+    # =======================================================================
+    # checks if the OrderDecomposition can accept an entity and there is an entity in 
+    # some possible giver waiting for it
+    # also updates the giver to the one that is to be taken
+    # =======================================================================
     def canAcceptAndIsRequested(self):
         # get active and giver objects
         activeObject=self.getActiveObject()
@@ -124,14 +129,17 @@ class OrderDecomposition(CoreObject):
                 #append the components in the internal queue
                 for component in entity.componentsList:
                     self.createOrderComponent(component)
+        #if there is an order for decomposition
         if self.orderToBeDecomposed:
             import Globals
-            Globals.setWIP(self.newlyCreatedComponents)
+            Globals.setWIP(self.newlyCreatedComponents)     #set the new components as wip
+            #reset attributes
             self.orderToBeDecomposed=None
             self.newlyCreatedComponents=[]
             
-
+    #creates the components
     def createOrderComponent(self, component):
+        #read attributes fromthe json or from the orderToBeDecomposed
         id=component.get('id', 'not found')
         name=component.get('name', 'not found')
         JSONRoute=component.get('route', [])                  # dummy variable that holds the routes of the jobs
@@ -182,6 +190,6 @@ class OrderDecomposition(CoreObject):
         G.JobList.append(OC)   
         G.WipList.append(OC)  
         G.EntityList.append(OC)
-        self.newlyCreatedComponents.append(OC)
-        OC.initialize()
+        self.newlyCreatedComponents.append(OC)  #keep these to pass them to setWIP
+        OC.initialize()     #initialize the component
         
