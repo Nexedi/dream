@@ -34,14 +34,8 @@ class MachinePreemptive(MachineJobShop):
                   failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None', resetOnPreemption=True):
         MachineJobShop.__init__(self, id, name, capacity, distribution, mean, stdev, min, max,\
                   failureDistribution, MTTF, MTTR, availability, repairman)
-        self.shouldPreempt=False     #flag that shows that the machine should preempt or not
         self.resetOnPreemption=resetOnPreemption    #flag that shows if the processing  time should be reset or not
-        
-    def initilize(self):
-        MachineJobShop.initialize(self)
-        self.shouldPreempt=False 
-        self.lastGiver=self.previous[0]
-          
+                 
     def getEntity(self):
         activeEntity=MachineJobShop.getEntity(self)
         self.lastGiver=self.giver
