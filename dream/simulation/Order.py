@@ -40,6 +40,9 @@ class Order(Job):
                       extraPropertyDict=extraPropertyDict)
         self.isCritical=isCritical          # flag to inform weather the order is critical -> preemption
         self.componentsList=componentsList  # list of components that the order will be broken into
+        self.basicComponentsList = []      # list that holds the Basic Components of the order
+        self.secondaryComponentsList = []   # list that holds the Secondary Components of the order
+        self.auxiliaryComponentsList = []   # list of the auxiliary components of the order 
         self.manager=manager                # the manager responsible to handle the order 
         self.basicsEnded=basicsEnded        # flag that informs that the basic components of the order are finished
 

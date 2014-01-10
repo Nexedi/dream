@@ -28,13 +28,20 @@ OrderComponent is an Entity that is a component of a broader order
 from Globals import G
 from Job import Job
 
-# ============================ The OrderComponent object ==============================
+# ===========================================================================
+# The OrderComponent object
+# ===========================================================================
 class OrderComponent(Job):                                  # inherits from the Job class   
     type="OrderComponent"
     
     def __init__(self, id=None, name=None, route=[], priority=0, dueDate=None, orderDate=None, extraPropertyDict=None,
-                    componentType='Basic', order=None, isCritical=False):
+                    componentType='Basic', order=None, requestingComponent = None, isCritical=False):
         Job.__init__(self, id, name, route, priority, dueDate, orderDate, extraPropertyDict)
         self.auxiliaryList=[]       # Holds the auxiliary components that the component needs for a certain processing
         self.order=order            # parent order of the order component
         self.isCritical=isCritical  # this should be self.order.isCritical. Added now for testing
+        self.componentType = componentType  # the type of the component which can be Basic/Secondary/Auxiliary
+        # if the componentType of the component is Auxiliary then there need a requesting Component be defined
+        # the requestingComponent is the component that needs the auxiliary component during its processing
+        # the auxiliary component should then be added to the requestingComponent's auxiliaryList
+        self.requestingComponent = requestingComponent  # the id of the requesting component

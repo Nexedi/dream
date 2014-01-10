@@ -140,6 +140,17 @@ class OrderDecomposition(CoreObject):
                 #append the components in the internal queue
                 for component in entity.componentsList:
                     self.createOrderComponent(component)
+                # after the creation of the order's components update each components auxiliary list
+                # if there are auxiliary components
+                if len(entity.auxiliaryComponentsList):
+                    # for every auxiliary component
+                    for auxComponent in entity.auxiliaryComponentsList:
+                        # run through the componentsList of the order
+                        for reqComponent in entity.componentsList:
+                            # to find the requestingComponent of the auxiliary component
+                            if auxComponent.requestingComponent==reqComponent.id:
+                                # and add the auxiliary to the requestingComponent auxiliaryList
+                                reqComponent.auxiliaryList.append(auxComponent)
         #if there is an order for decomposition
         if self.orderToBeDecomposed:
             import Globals
@@ -155,21 +166,23 @@ class OrderDecomposition(CoreObject):
         #read attributes fromthe json or from the orderToBeDecomposed
         id=component.get('id', 'not found')
         name=component.get('name', 'not found')
-        JSONRoute=component.get('route', [])                  # dummy variable that holds the routes of the jobs
-                                                                    #    the route from the JSON file 
-                                                                    #    is a sequence of dictionaries
-        route = [None for i in range(len(JSONRoute))]         # variable that holds the argument used in the Job initiation
-                                                                    #    hold None for each entry in the 'route' list
+        # variable that holds the componentType which can be Basic/Secondary/Auxiliary
+        componentType=component.get('componentType', 'Basic') 
+        # the component that needs the auxiliary (if the componentType is "Auxiliary") during its processing
+        requestingComponent = component.get('requestingComponent', 'not found') 
+        # dummy variable that holds the routes of the jobs the route from the JSON file is a sequence of dictionaries
+        JSONRoute=component.get('route', [])
+        # variable that holds the argument used in the Job initiation hold None for each entry in the 'route' list
+        route = [None for i in range(len(JSONRoute))]         
                 
         for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
             stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
             nextId=routeentity.get('stationId', 'not found')                   #    the stationId
             processingTime=routeentity['processingTime']                       # and the 'processingTime' dictionary
             distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
-                                                                                        #    get the 'mean' 
-            mean=float(processingTime.get('mean', 'not found'))
+            mean=float(processingTime.get('mean', 'not found'))                 #    get the 'mean'
             route[stepNumber]=[nextId, mean]                                    # finally add the 'nextId' and 'mean'
-                                                                                        # to the job route
+                                                                                #    to the job route
                 
         # keep a reference of all extra properties passed to the job
         extraPropertyDict = {}
@@ -195,10 +208,23 @@ class OrderDecomposition(CoreObject):
                 route.append([exitId, 0])
         
         # initiate the OrderComponent
-        OC=OrderComponent(id, name, route, priority=self.orderToBeDecomposed.priority, dueDate=self.orderToBeDecomposed.dueDate, 
-                          order=self.orderToBeDecomposed,
-                          orderDate=self.orderToBeDecomposed.orderDate, extraPropertyDict=extraPropertyDict, 
+        OC=OrderComponent(id, name, route, \
+                          priority=self.orderToBeDecomposed.priority, \
+                          dueDate=self.orderToBeDecomposed.dueDate, \
+                          componentType=componentType,\
+                          requestingComponent = requestingComponent, \
+                          order=self.orderToBeDecomposed,\
+                          orderDate=self.orderToBeDecomposed.orderDate, \
+                          extraPropertyDict=extraPropertyDict,\
                           isCritical=self.orderToBeDecomposed.isCritical)
+        # check the componentType of the component and accordingly add to the corresponding list of the parent order
+        if OC.componentType == 'Basic':
+            self.orderToBeDecomposed.basicComponentsList.append(OC)
+        elif OC.componentType == 'Secondary':
+            self.orderToBeDecomposed.secondaryComponentsList.append(OC)
+        else:
+            self.orderToBeDecomposed.auxiliaryComponentsList.append(OC)
+                
         G.OrderComponentList.append(OC)
         G.JobList.append(OC)   
         G.WipList.append(OC)  
