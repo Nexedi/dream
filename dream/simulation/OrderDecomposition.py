@@ -47,6 +47,9 @@ class OrderDecomposition(CoreObject):
         self.objName=name
         self.type='OrderDecomposition'
         
+    # =======================================================================
+    # the initialize method
+    # =======================================================================
     def initialize(self):
         self.previous=G.ObjList
         self.next=G.ObjList
@@ -56,20 +59,25 @@ class OrderDecomposition(CoreObject):
         self.newlyCreatedComponents=[]              # a list to hold components just after decomposition
         self.orderToBeDecomposed=None
     
-    #run just waits until there is something to get and gets it
+    # =======================================================================
+    # run just waits until there is something to get and gets it
+    # =======================================================================
     def run(self):
         while 1:  
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity
                                                                     #and one predecessor requests it                                                  
             self.getEntity()  
             self.decompose()                     
-            
+        
+    # =======================================================================
+    # as a dummy object can always accept 
+    # =======================================================================
     def canAccept(self, callerObject=None):
         return True
     
     # =======================================================================
-    # checks if the OrderDecomposition can accept an entity and there is an entity in 
-    # some possible giver waiting for it
+    # checks if the OrderDecomposition can accept an entity 
+    # and there is an entity in some possible giver waiting for it
     # also updates the giver to the one that is to be taken
     # =======================================================================
     def canAcceptAndIsRequested(self):
@@ -104,7 +112,8 @@ class OrderDecomposition(CoreObject):
         return activeObject.Up and isRequested    
 
     # ======================================================================= 
-    # checks if the OrderDecomposition can dispose an entity to the following object
+    # checks if the OrderDecomposition can dispose 
+    # an entity to the following object
     # =======================================================================
     def haveToDispose(self, callerObject=None):
         activeObjectQueue=self.getActiveObjectQueue()
@@ -117,15 +126,17 @@ class OrderDecomposition(CoreObject):
         self.receiver=Globals.findObjectById(activeEntity.remainingRoute[0][0])    #read the next station 
         #return True if the OrderDecomposition in the state of disposing and the caller is the receiver
         return self.Up and (callerObject is self.receiver) 
-
-    #decomposes the order to its components
+    
+    # =======================================================================
+    # decomposes the order to its components
+    # =======================================================================
     def decompose(self):
         activeObjectQueue=self.getActiveObjectQueue()
         #loop in the internal Queue. Decompose only if an Entity is of type order
         for entity in activeObjectQueue:
             if entity.type=='Order':
                 self.orderToBeDecomposed=entity
-                activeObjectQueue.remove(entity)    #remove the order from the internal Queue
+                activeObjectQueue.remove(entity)            #remove the order from the internal Queue
                 #append the components in the internal queue
                 for component in entity.componentsList:
                     self.createOrderComponent(component)
@@ -136,8 +147,10 @@ class OrderDecomposition(CoreObject):
             #reset attributes
             self.orderToBeDecomposed=None
             self.newlyCreatedComponents=[]
-            
-    #creates the components
+    
+    # =======================================================================
+    # creates the components
+    # =======================================================================
     def createOrderComponent(self, component):
         #read attributes fromthe json or from the orderToBeDecomposed
         id=component.get('id', 'not found')
@@ -145,7 +158,7 @@ class OrderDecomposition(CoreObject):
         JSONRoute=component.get('route', [])                  # dummy variable that holds the routes of the jobs
                                                                     #    the route from the JSON file 
                                                                     #    is a sequence of dictionaries
-        route = [None for i in range(len(JSONRoute))]       #    variable that holds the argument used in the Job initiation
+        route = [None for i in range(len(JSONRoute))]         # variable that holds the argument used in the Job initiation
                                                                     #    hold None for each entry in the 'route' list
                 
         for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
@@ -190,6 +203,6 @@ class OrderDecomposition(CoreObject):
         G.JobList.append(OC)   
         G.WipList.append(OC)  
         G.EntityList.append(OC)
-        self.newlyCreatedComponents.append(OC)  #keep these to pass them to setWIP
-        OC.initialize()     #initialize the component
+        self.newlyCreatedComponents.append(OC)              #keep these to pass them to setWIP
+        OC.initialize()                                     #initialize the component
         

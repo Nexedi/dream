@@ -691,7 +691,6 @@ def createObjects():
                 if possible_successor.id==nextId:
                     possible_successor.previousIds.append(element.id)            
 
-
 # ===========================================================================
 #    defines the topology (predecessors and successors for all the objects)
 # ===========================================================================
@@ -914,7 +913,10 @@ def createWIP():
                 orderDate=float(entity.get('orderDate', '0'))
                 isCritical=bool(int(entity.get('isCritical', '0')))  
                 basicsEnded=bool(int(entity.get('basicsEnded', '0'))) 
+                # read the manager ID
                 manager=entity.get('manager', None)
+                # if a manager ID is assigned then search for the operator with the corresponding ID
+                # and assign it as the manager of the order 
                 if manager:
                     for operator in G.OperatorsList:
                         if manager==operator.id:
@@ -968,7 +970,6 @@ def createWIP():
                 G.WipList.append(O)  
                 G.EntityList.append(O)                     
                 
-                             
 # ===========================================================================
 #                reads the interruptions of the stations
 # ===========================================================================
@@ -980,9 +981,12 @@ def createObjectInterruptions():
     json_data = G.JSONData
     #Read the json data
     nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
+    # for the elements in the nodes dict
     for (element_id, element) in nodes.iteritems():
         element['id'] = element_id
         scheduledMaintenance=element.get('scheduledMaintenance', {})
+        # if there is a scheduled maintenance initiate it and append it
+        # to the interruptions- and scheduled maintenances- list
         if len(scheduledMaintenance):
             start=float(scheduledMaintenance.get('start', 0))
             duration=float(scheduledMaintenance.get('duration', 1))
@@ -990,7 +994,9 @@ def createObjectInterruptions():
             SM=ScheduledMaintenance(victim=victim, start=start, duration=duration)
             G.ObjectInterruptionList.append(SM)
             G.ScheduledMaintenanceList.append(SM)
-        failure=element.get('failures', {})  
+        failure=element.get('failures', {})
+        # if there are failures assigned 
+        # initiate them   
         if len(failure):
             distributionType=failure.get('failureDistribution', 'No')
             if distributionType=='No':
@@ -1004,14 +1010,11 @@ def createObjectInterruptions():
                 G.ObjectInterruptionList.append(F)
                 G.FailureList.append(F)
                 
-                    
-
 # ===========================================================================
 #        used to convert a string read from the input to object type
 # ===========================================================================
 def str_to_class(str):
     return getattr(sys.modules[__name__], str)
-
 
 # ===========================================================================
 #                        the main script that is ran

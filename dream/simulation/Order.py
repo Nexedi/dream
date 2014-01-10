@@ -28,7 +28,9 @@ Order is an Entity that can have its design, get broken to sub-components
 from Globals import G
 from Job import Job
 
-# ============================ The Order object ==============================
+# =======================================================================
+# The Order object 
+# =======================================================================
 class Order(Job):
     type="Order"
     
@@ -36,10 +38,10 @@ class Order(Job):
                  componentsList=[], manager=None, basicsEnded=False, extraPropertyDict=None):
         Job. __init__(self, id=id, name=name, route=route, priority=priority, dueDate=dueDate, orderDate=orderDate, 
                       extraPropertyDict=extraPropertyDict)
-        self.isCritical=isCritical
-        self.componentsList=componentsList
-        self.manager=manager
-        self.basicsEnded=basicsEnded
+        self.isCritical=isCritical          # flag to inform weather the order is critical -> preemption
+        self.componentsList=componentsList  # list of components that the order will be broken into
+        self.manager=manager                # the manager responsible to handle the order 
+        self.basicsEnded=basicsEnded        # flag that informs that the basic components of the order are finished
 
 
 

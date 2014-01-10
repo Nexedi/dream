@@ -34,10 +34,13 @@ from RandomNumberGenerator import RandomNumberGenerator
 import scipy.stats as stat
 from CoreObject import CoreObject
 
-#the Dismantle object
+# ===========================================================================
+# the Dismantle object
+# ===========================================================================
 class Dismantle(CoreObject):
-
-    #initialize the object      
+    # =======================================================================
+    # initialize the object
+    # =======================================================================
     def __init__(self, id, name, distribution='Fixed', mean=1, stdev=0.1, min=0, max=5):
         CoreObject.__init__(self)
         self.id=id
@@ -63,13 +66,15 @@ class Dismantle(CoreObject):
         self.Working=[]
         self.Blockage=[]
         
-        # ============================== variable that is used for the loading of machines =============
+        # variable that is used for the loading of machines 
         self.exitAssignedToReceiver = False             # by default the objects are not blocked 
                                                         # when the entities have to be loaded to operatedMachines
                                                         # then the giverObjects have to be blocked for the time
                                                         # that the machine is being loaded 
 
-        
+    # =======================================================================
+    # the initialize method
+    # =======================================================================  
     def initialize(self):
         Process.__init__(self)
         CoreObject.initialize(self)
@@ -91,8 +96,6 @@ class Dismantle(CoreObject):
                                                 
         self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                               
                                                       
-
-        
         self.totalBlockageTime=0        #holds the total blockage time
         self.totalWaitingTime=0         #holds the total waiting time
         self.totalWorkingTime=0         #holds the total working time
@@ -108,7 +111,9 @@ class Dismantle(CoreObject):
         self.Res.activeQ=[]  
         self.Res.waitQ=[]  
         
-        
+    # =======================================================================
+    # the run method
+    # =======================================================================
     def run(self):
         while 1:
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Assembly can accept a frame
@@ -136,21 +141,30 @@ class Dismantle(CoreObject):
             self.waitToDisposeFrame=False                     #the Dismantle has no Frame to dispose now
             #self.totalBlockageTime+=now()-startBlockageTime     #add the blockage time
             
-            
-    #checks if the Dismantle can accept an entity and there is a Frame waiting for it
+    # =======================================================================
+    #    checks if the Dismantle can accept an entity and there is a Frame 
+    #                             waiting for it
+    # =======================================================================
     def canAcceptAndIsRequested(self):
         return len(self.getActiveObjectQueue())==0 and self.getGiverObject().haveToDispose(self)  
     
-    #checks if the Dismantle can accept an entity 
+    # =======================================================================
+    # checks if the Dismantle can accept an entity 
+    # =======================================================================
     def canAccept(self, callerObject=None):
         return len(self.getActiveObjectQueue())==0  
-            
-    #defines where parts and frames go after they leave the object                          
+    
+    # =======================================================================
+    # defines where parts and frames go after they leave the object
+    # =======================================================================               
     def definePartFrameRouting(self, successorPartList=[], successorFrameList=[]):
         self.nextPart=successorPartList
         self.nextFrame=successorFrameList              
-
-    #checks if the caller waits for a part or a frame and if the Dismantle is in the state of disposing one it returnse true     
+    
+    # =======================================================================
+    # checks if the caller waits for a part or a frame and if the Dismantle 
+    # is in the state of disposing one it returnse true
+    # =======================================================================     
     def haveToDispose(self, callerObject=None): 
 
         thecaller=callerObject
@@ -165,16 +179,22 @@ class Dismantle(CoreObject):
                 self.receiver=thecaller
                 return True
         return False
-                 
-    #checks if the frame is emptied
+    
+    # =======================================================================
+    # checks if the frame is emptied
+    # =======================================================================
     def frameIsEmpty(self):
         return len(self.getActiveObjectQueue())==1
     
-    #checks if Dismantle is emptied
+    # =======================================================================
+    # checks if Dismantle is emptied
+    # =======================================================================
     def isEmpty(self):
         return len(self.getActiveObjectQueue())==0
     
-    #gets a frame from the giver 
+    # =======================================================================
+    # gets a frame from the giver 
+    # =======================================================================
     def getEntity(self):
         activeEntity=CoreObject.getEntity(self)     #run the default method
         activeObjectQueue=self.getActiveObjectQueue()
@@ -189,10 +209,12 @@ class Dismantle(CoreObject):
         activeObjectQueue.pop(0)        
         return activeEntity
     
-    #removes an entity from the Dismantle
+    # =======================================================================
+    # removes an entity from the Dismantle
+    # =======================================================================
     def removeEntity(self):
         activeObjectQueue=self.getActiveObjectQueue()
-        activeEntity=CoreObject.removeEntity(self)                               #run the default method 
+        activeEntity=CoreObject.removeEntity(self)  #run the default method 
         
         #update the flags
         if(len(activeObjectQueue)==0):  
@@ -202,7 +224,9 @@ class Dismantle(CoreObject):
                self.waitToDisposePart=False
         return activeEntity
     
-    #add the blockage only if the very last Entity (Frame) is to depart
+    # =======================================================================
+    # add the blockage only if the very last Entity (Frame) is to depart
+    # =======================================================================
     def addBlockage(self):
         if len(self.getActiveObjectQueue())==1:
             self.totalTimeInCurrentEntity=now()-self.timeLastEntityEntered
@@ -210,8 +234,9 @@ class Dismantle(CoreObject):
             blockage=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)       
             self.totalBlockageTime+=blockage
         
-    
-    #actions to be taken after the simulation ends
+    # =======================================================================
+    # actions to be taken after the simulation ends
+    # =======================================================================
     def postProcessing(self, MaxSimtime=None):
         if MaxSimtime==None:
             from Globals import G
@@ -234,8 +259,10 @@ class Dismantle(CoreObject):
         self.Working.append(100*self.totalWorkingTime/MaxSimtime)
         self.Blockage.append(100*self.totalBlockageTime/MaxSimtime)
 
-
-    #outputs message to the trace.xls. Format is (Simulation Time | Entity or Frame Name | message)
+    # =======================================================================
+    #                  outputs message to the trace.xls. 
+    #       Format is (Simulation Time | Entity or Frame Name | message)
+    # =======================================================================
     def outputTrace(self, name, message):
         from Globals import G
         if(G.trace=="Yes"):         #output only if the user has selected to
@@ -250,8 +277,9 @@ class Dismantle(CoreObject):
                 G.sheetIndex+=1
                 G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)  
 
-
-    #outputs data to "output.xls"
+    # =======================================================================
+    # outputs data to "output.xls"
+    # =======================================================================
     def outputResultsXL(self, MaxSimtime=None):
         from Globals import G
         if MaxSimtime==None:
@@ -302,8 +330,10 @@ class Dismantle(CoreObject):
                 G.outputSheet.write(G.outputIndex,3,self.Waiting[0]) 
             G.outputIndex+=1
         G.outputIndex+=1 
-
-    #outputs results to JSON File
+    
+    # =======================================================================
+    # outputs results to JSON File
+    # =======================================================================
     def outputResultsJSON(self):
         from Globals import G
         if(G.numberOfReplications==1): #if we had just one replication output the results to excel

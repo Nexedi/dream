@@ -35,6 +35,6 @@ class OrderComponent(Job):                                  # inherits from the 
     def __init__(self, id=None, name=None, route=[], priority=0, dueDate=None, orderDate=None, extraPropertyDict=None,
                     componentType='Basic', order=None, isCritical=False):
         Job.__init__(self, id, name, route, priority, dueDate, orderDate, extraPropertyDict)
-        self.auxiliaryList=[]
-        self.order=order
-        self.isCritical=isCritical  #this should be self.order.isCritical. Added now for testing
+        self.auxiliaryList=[]       # Holds the auxiliary components that the component needs for a certain processing
+        self.order=order            # parent order of the order component
+        self.isCritical=isCritical  # this should be self.order.isCritical. Added now for testing

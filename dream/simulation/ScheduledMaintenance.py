@@ -30,15 +30,25 @@ from SimPy.Simulation import now, Process, hold, request, release, infinity
 from RandomNumberGenerator import RandomNumberGenerator
 from ObjectInterruption import ObjectInterruption
 
+# ===========================================================================
+# the scheduled maintenance class
+# ===========================================================================
 class ScheduledMaintenance(ObjectInterruption):
+    # =======================================================================
+    # the __init__() method of the class
+    # =======================================================================
     def __init__(self, victim=None, start=0, duration=1):
         ObjectInterruption.__init__(self,victim)
         self.start=start
         self.duration=duration
         
-            
+    # =======================================================================
+    # the run method
+    # holds till the defined start time, interrupts the victim,
+    # holds for the maintenance duration, and finally reactivates the victim
+    # =======================================================================
     def run(self):
-        yield hold,self,self.start      #wait until the start time
+        yield hold,self,self.start                      #wait until the start time
         try:
             if(len(self.getVictimQueue())>0):           # when a Machine gets failure
                 self.interruptVictim()                  # while in process it is interrupted
@@ -48,7 +58,7 @@ class ScheduledMaintenance(ObjectInterruption):
         except AttributeError:
             print "AttributeError1"
             
-        yield hold,self,self.duration      #wait until the start time
+        yield hold,self,self.duration                   # wait for the defined duration of the interruption 
         self.victim.totalFailureTime+=self.duration
         
         try:

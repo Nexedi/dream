@@ -27,7 +27,9 @@ inherits from MachineJobShop it can preempt the currently processed Entity if ne
 from MachineJobShop import MachineJobShop
 from SimPy.Simulation import reactivate, now
 
-#the MachineJobShop object
+# ===========================================================================
+# the MachineJobShop object
+# ===========================================================================
 class MachinePreemptive(MachineJobShop):
     
     def __init__(self, id, name, capacity=1, distribution='Fixed', mean=1, stdev=0, min=0, max=10,\
@@ -41,7 +43,9 @@ class MachinePreemptive(MachineJobShop):
         self.lastGiver=self.giver
         return activeEntity
         
-    #method to execute the preemption    
+    # =======================================================================
+    # method to execute the preemption
+    # =======================================================================    
     def preempt(self):
         activeEntity=self.getActiveObjectQueue()[0] #get the active Entity
         #calculate the remaining processing time
@@ -55,9 +59,9 @@ class MachinePreemptive(MachineJobShop):
         #update the remaining route of activeEntity
         activeEntity.remainingRoute.insert(0, [self.id, remainingProcessingTime])
         activeEntity.remainingRoute.insert(0, [self.lastGiver.id, 0])        
-        #set the receiver  as the object where the active entity was  preempted from 
+        #set the receiver  as the object where the active entity was preempted from 
         self.receiver=self.lastGiver
-        self.waitToDispose=True     #set  that I have to dispose
+        self.waitToDispose=True     #set that I have to dispose
         reactivate(self)
 
         

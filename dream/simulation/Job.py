@@ -29,7 +29,9 @@ in the system and also in the processing times at each station
 from Globals import G
 from Entity import Entity
 
-# ============================ The job object ==============================
+# =======================================================================
+# The job object 
+# =======================================================================
 class Job(Entity):                                  # inherits from the Entity class   
     type="Job"
     
@@ -43,11 +45,13 @@ class Job(Entity):                                  # inherits from the Entity c
         self.remainingRoute=list(route)                   # the remaining route. in the beginning 
                                                     # this should be the same as the full route
         # the scheduling of the entity as resolved by the simulation
-        self.schedule=[]                            # keeps the result of the simulation. 
-                                                    # A list with the stations and time of entrance
+#         self.schedule=[]                            # keeps the result of the simulation. 
+#                                                     # A list with the stations and time of entrance
         self.extraPropertyDict = extraPropertyDict
-        
-    #==================== outputs results to JSON File ======================
+    
+    # =======================================================================
+    # outputs results to JSON File 
+    # =======================================================================
     def outputResultsJSON(self):
         from Globals import G
         if(G.numberOfReplications==1):              #if we had just one replication output the results to excel
@@ -73,14 +77,16 @@ class Job(Entity):                                  # inherits from the Entity c
             json['results']['schedule']=[]
             i=0
             for record in self.schedule:               
-                json['results']['schedule'].append({})                                  # dictionary holding time and 
-                json['results']['schedule'][i]['stepNumber']=i                      #the step number
-                json['results']['schedule'][i]['stationId']=record[0].id              # id of the Object
-                json['results']['schedule'][i]['entranceTime']=record[1]           # time entering the Object
+                json['results']['schedule'].append({})                              # dictionary holding time and 
+                json['results']['schedule'][i]['stepNumber']=i                      # the step number
+                json['results']['schedule'][i]['stationId']=record[0].id            # id of the Object
+                json['results']['schedule'][i]['entranceTime']=record[1]            # time entering the Object
                 i+=1             
             G.outputJSON['elementList'].append(json)
-        
-    # ==== initializes all the Entity for a new simulation replication ======
+    
+    # =======================================================================
+    # initializes all the Entity for a new simulation replication 
+    # =======================================================================
     def initialize(self):
         # has to be re-initialized each time a new Job is added
         self.remainingRoute=list(self.route)   

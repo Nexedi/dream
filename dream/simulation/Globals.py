@@ -34,7 +34,9 @@ import xlrd
 from random import Random, expovariate, gammavariate, normalvariate
 from SimPy.Simulation import now
 
+# ===========================================================================
 # globals
+# ===========================================================================
 class G:   
     seed=1450                       #the seed of the random number generator
     Rnd = Random(seed)              #random number generator
@@ -49,7 +51,7 @@ class G:
     maxSimTime=0                    #the total simulation time
     
     # data for the trace output in excel
-    # =======================================================================
+    # -----------------------------------------------------------------------
     trace=""                        #this is written from input. If it is "Yes" then you write to trace, else we do not
     traceIndex=0                    #index that shows in what row we are
     sheetIndex=1                    #index that shows in what sheet we are
@@ -58,19 +60,22 @@ class G:
     
     
     # variables for excel output
-    # =======================================================================
+    # -----------------------------------------------------------------------
     outputIndex=0                   #index that shows in what row we are
     sheetIndex=1                    #index that shows in what sheet we are
     outputFile = xlwt.Workbook()    #create excel file
     outputSheet = outputFile.add_sheet('sheet '+str(sheetIndex), cell_overwrite_ok=True)  #create excel sheet
     
     #variables for json output
-    # =======================================================================
+    # -----------------------------------------------------------------------
     outputJSON={}
     outputJSONFile=None
     
     numberOfEntities = 0
     
+# =======================================================================
+# method to move entities exceeding a certain safety stock
+# =======================================================================
 def moveExcess(argumentDict={}):
     giver=findObjectById(argumentDict.get('from', None))
     receiver=findObjectById(argumentDict.get('to', None))
@@ -87,20 +92,29 @@ def moveExcess(argumentDict={}):
     else:
         print "Giver and/or Receiver not defined"
     
+# =======================================================================
+# method finding objects by ID
+# =======================================================================
 def findObjectById(id):
     for obj in G.ObjList:
         if obj.id==id:
             return obj
     return None
 
+# =======================================================================
+# method to set-up the entities in the current stations 
+# as Work In Progress
+# =======================================================================
 def setWIP(entityList):
     for entity in entityList:
+        # if the entity is of type Part
         if entity.type=='Part':
             object=entity.currentStation                        #identify the object
             object.getActiveObjectQueue().append(entity)        #append the entity to its Queue
             entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
+        # if the entity is of type Job/OrderComponent/Order
         elif entity.type=='Job' or 'OrderComponent' or 'Order':
-            object=findObjectById(entity.remainingRoute[0][0])   # find the object in the 'G.ObjList
+            object=findObjectById(entity.remainingRoute[0][0])  # find the object in the 'G.ObjList'
             object.getActiveObjectQueue().append(entity)        # append the entity to its Queue
             object.receiver=findObjectById(entity.remainingRoute[1][0])
             entity.remainingRoute.pop(0)                        # remove data from the remaining route.   

@@ -27,7 +27,9 @@ Class that acts as an abstract. It should have no instances. All the core-object
 
 from SimPy.Simulation import Process, Resource, now
 
-# =================================== the core object ==============================================
+# ===========================================================================
+# the core object
+# ===========================================================================
 class CoreObject(Process):
     
     def __init__(self):
@@ -97,17 +99,23 @@ class CoreObject(Process):
  
         self.shouldPreempt=False    #flag that shows that the machine should preempt or not       
 
-    # ======================== the main process of the core object =================================
-    # ================ this is dummy, every object must have its own implementation ================
+    # =======================================================================
+    #                the main process of the core object 
+    #     this is dummy, every object must have its own implementation
+    # =======================================================================
     def run(self):
         raise NotImplementedError("Subclass must define 'run' method")
-        
-    # ======================== sets the routing in and out elements for the Object ==================
+    
+    # =======================================================================
+    # sets the routing in and out elements for the Object
+    # =======================================================================
     def defineRouting(self, predecessorList=[], successorList=[]):
         self.next=successorList
         self.previous=predecessorList
-
-    # ================================== removes an entity from the Object ==========================
+    
+    # =======================================================================
+    # removes an entity from the Object 
+    # =======================================================================
     def removeEntity(self): 
         self.addBlockage()
         
@@ -125,14 +133,19 @@ class CoreObject(Process):
             pass
         return activeEntity     
     
-    # ================================== adds the blockage to totalBlockageTime each time an Entity is removed===============
+    # =======================================================================
+    #              adds the blockage time to totalBlockageTime 
+    #                    each time an Entity is removed
+    # =======================================================================
     def addBlockage(self): 
         self.totalTimeInCurrentEntity=now()-self.timeLastEntityEntered
         self.totalTimeWaitingForOperator += self.operatorWaitTimeCurrentEntity 
         blockage=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)       
         self.totalBlockageTime+=blockage     
-        
-    # ================================== gets an entity from the giver ====================================   
+    
+    # =======================================================================
+    # gets an entity from the giver 
+    # =======================================================================   
     def getEntity(self):
         # get giver object, its queue, and sort the entities according to this object priorities
         giverObject=self.getGiverObject()
@@ -167,12 +180,16 @@ class CoreObject(Process):
         except TypeError:
             pass
         return activeEntity
-        
-    # ========================== actions to be taken after the simulation ends ======================
+      
+    # =======================================================================
+    # actions to be taken after the simulation ends 
+    # =======================================================================
     def postProcessing(self, MaxSimtime=None):
         pass    
     
-    # =========================== outputs message to the trace.xls ==================================
+    # =======================================================================
+    # outputs message to the trace.xls 
+    # =======================================================================
     #outputs message to the trace.xls. Format is (Simulation Time | Entity or Frame Name | message)
     def outputTrace(self, entityName, message):
         from Globals import G
@@ -188,33 +205,49 @@ class CoreObject(Process):
                 G.sheetIndex+=1
                 G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)    
     
-    # =========================== outputs data to "output.xls" ======================================
+    # =======================================================================
+    # outputs data to "output.xls" 
+    # =======================================================================
     def outputResultsXL(self, MaxSimtime=None):
         pass
     
-    # =========================== outputs results to JSON File ======================================
+    # =======================================================================
+    # outputs results to JSON File 
+    # =======================================================================
     def outputResultsJSON(self):
         pass
     
-    # ================= checks if the Object can dispose an entity to the following object ==========
+    # =======================================================================
+    # checks if the Object can dispose an entity to the following object 
+    # =======================================================================
     def haveToDispose(self, callerObject=None): 
         activeObjectQueue=self.getActiveObjectQueue()    
         return len(activeObjectQueue)>0
     
-    
-    #checks if the Object can accept an entity and there is an entity in some possible giver waiting for it
+    # =======================================================================
+    #    checks if the Object can accept an entity and there is an entity 
+    #                in some possible giver waiting for it
+    # =======================================================================
     def canAcceptAndIsRequested(self):
         pass
     
-    # ============================ checks if the Object can accept an entity ========================
+    # =======================================================================
+    # checks if the Object can accept an entity 
+    # =======================================================================
     def canAccept(self, callerObject=None): 
         pass
     
-    # ===================== sorts the Entities in the activeQ of the objects ========================
+    # =======================================================================
+    # sorts the Entities in the activeQ of the objects 
+    # =======================================================================
     def sortEntities(self):
         pass
-    #takes the array and checks if all its values are identical (returns false) or not (returns true) 
-    #needed because if somebody runs multiple runs in deterministic case it would crash!          
+    
+    # =======================================================================
+    #       takes the array and checks if all its values are identical 
+    #  (returns false) or not (returns true)needed because if somebody runs 
+    #          multiple runs in deterministic case it would crash!
+    # =======================================================================          
     def checkIfArrayHasDifValues(self, array):
         difValuesFlag=False 
         for i in range(1, len(array)):
@@ -222,32 +255,45 @@ class CoreObject(Process):
                difValuesFlag=True
         return difValuesFlag 
       
-    # ===================== get the active object. This always returns self ========================  
+    # =======================================================================
+    # get the active object. This always returns self 
+    # =======================================================================  
     def getActiveObject(self):
         return self
     
-    # ========================== get the activeQ of the active object. =============================
+    # =======================================================================
+    # get the activeQ of the active object. 
+    # =======================================================================
     def getActiveObjectQueue(self):
         return self.Res.activeQ
     
-    # =================== get the giver object in a getEntity transaction. =========================        
+    # =======================================================================
+    # get the giver object in a getEntity transaction.
+    # =======================================================================         
     def getGiverObject(self):
         return self.giver
 
-    
-    # ============== get the giver object queue in a getEntity transaction. ========================    
+    # =======================================================================
+    # get the giver object queue in a getEntity transaction. 
+    # =======================================================================    
     def getGiverObjectQueue(self):
         return self.getGiverObject().getActiveObjectQueue()
     
-    # ============== get the receiver object in a removeEntity transaction.  ======================= 
+    # =======================================================================
+    # get the receiver object in a removeEntity transaction.
+    # ======================================================================= 
     def getReceiverObject(self):
         return self.receiver
     
-    # ========== get the receiver object queue in a removeEntity transaction. ======================    
+    # =======================================================================
+    # get the receiver object queue in a removeEntity transaction. 
+    # =======================================================================    
     def getReceiverObjectQueue(self):
         return self.getReceiverObject().getActiveObjectQueue()
     
-	# ============== get the giver object queue in a getEntity transaction. ========================    
+    # =======================================================================
+	# get the giver object queue in a getEntity transaction. 
+    # =======================================================================    
     def updateGiverObject(self):
         activeObject=self
         # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
@@ -268,12 +314,14 @@ class CoreObject(Process):
                     maxTimeWaiting=timeWaiting    
         return giver
     
+    # =======================================================================
+    # get the receiver object 
+    # =======================================================================
     def updateReceiverObject(self):
         activeObject=self
         # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
-        maxTimeWaiting=0                                            # dummy variable counting the time a predecessor is blocked
-        receiver=None
         maxTimeWaiting=0                                            # dummy variable counting the time a successor is waiting
+        receiver=None
         
         for object in activeObject.next:
             if(object.canAccept(activeObject)):                     # if a successor can accept an object
@@ -308,7 +356,8 @@ class CoreObject(Process):
         self.exitAssignedToReceiver = False
         
     # =======================================================================
-    # actions to be carried whenever the object is interrupted (failure, break, preemption, etc)
+    #        actions to be carried whenever the object is interrupted 
+    #                  (failure, break, preemption, etc)
     # =======================================================================
     def interruptionActions(self):
         pass

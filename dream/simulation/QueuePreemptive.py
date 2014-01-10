@@ -28,10 +28,13 @@ Inherits from QueueJobShop. If it gets an isCritical Entity it can interrupt the
 from QueueJobShop import QueueJobShop
 from SimPy.Simulation import now
 
-#the QueuePreemptive object
+# ===========================================================================
+# the QueuePreemptive object
+# ===========================================================================
 class QueuePreemptive(QueueJobShop):
-    
-    #extend he default so that it  can interrupt the receiver if need be
+    # =======================================================================
+    # extend he default so that it can interrupt the receiver if need be
+    # =======================================================================
     def getEntity(self):
         activeEntity=QueueJobShop.getEntity(self)   #execute default behaviour
         #if the obtained Entity is critical
@@ -43,8 +46,10 @@ class QueuePreemptive(QueueJobShop):
                     self.receiver.shouldPreempt=True
                     self.receiver.preempt()
                     self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
-                    
-    #for future use
+    
+    # =======================================================================                
+    # for future use
+    # =======================================================================
     def sortEntities(self):
         QueueJobShop.sortEntities(self)
     
