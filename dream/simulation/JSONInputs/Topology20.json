@@ -38,7 +38,9 @@
                     "route": [
                         {
                             "stepNumber": "0",
-                            "stationId": "Q1",
+                            "stationIdsList": [
+                            "Q1"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
@@ -46,7 +48,9 @@
                         },
                         {
                             "stepNumber": "1",
-                            "stationId": "M1",
+                            "stationIdsList": [
+                            "M1"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "1"
@@ -54,7 +58,9 @@
                         },
                         {
                             "stepNumber": "2",
-                            "stationId": "Q3",
+                            "stationIdsList": [
+                            "Q3"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
@@ -62,7 +68,9 @@
                         },
                         {
                             "stepNumber": "3",
-                            "stationId": "M3",
+                            "stationIdsList": [
+                            "M3"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "3"
@@ -70,7 +78,9 @@
                         },
                         {
                             "stepNumber": "4",
-                            "stationId": "Q2",
+                            "stationIdsList": [
+                            "Q2"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
@@ -78,7 +88,9 @@
                         },
                         {
                             "stepNumber": "5",
-                            "stationId": "M2",
+                            "stationIdsList": [
+                            "M2"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "4"
@@ -86,7 +98,9 @@
                         },
                         {
                             "stepNumber": "6",
-                            "stationId": "E1",
+                            "stationIdsList": [
+                            "E1"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
@@ -113,7 +127,9 @@
                     "route": [
                         {
                             "stepNumber": "0",
-                            "stationId": "Q2",
+                            "stationIdsList": [
+                            "Q2"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
@@ -121,7 +137,9 @@
                         },
                         {
                             "stepNumber": "1",
-                            "stationId": "M2",
+                            "stationIdsList": [
+                            "M2"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "3"
@@ -129,7 +147,9 @@
                         },
                         {
                             "stepNumber": "2",
-                            "stationId": "Q3",
+                            "stationIdsList": [
+                            "Q3"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
@@ -137,7 +157,9 @@
                         },
                         {
                             "stepNumber": "3",
-                            "stationId": "M3",
+                            "stationIdsList": [
+                            "M3"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "1"
@@ -145,7 +167,9 @@
                         },
                         {
                             "stepNumber": "4",
-                            "stationId": "Q2",
+                            "stationIdsList": [
+                            "Q2"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "7"
@@ -153,7 +177,9 @@
                         },
                         {
                             "stepNumber": "5",
-                            "stationId": "M2",
+                            "stationIdsList": [
+                            "M2"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "7"
@@ -161,7 +187,9 @@
                         },
                         {
                             "stepNumber": "6",
-                            "stationId": "E1",
+                            "stationIdsList": [
+                            "E1"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
@@ -179,7 +207,9 @@
                     "route": [
                         {
                             "stepNumber": "0",
-                            "stationId": "Q2",
+                            "stationIdsList": [
+                            "Q2"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
@@ -187,7 +217,9 @@
                         },
                         {
                             "stepNumber": "1",
-                            "stationId": "M2",
+                            "stationIdsList": [
+                            "M2"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "2"
@@ -195,7 +227,9 @@
                         },
                         {
                             "stepNumber": "2",
-                            "stationId": "Q3",
+                            "stationIdsList": [
+                            "Q3"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
@@ -203,7 +237,9 @@
                         },
                         {
                             "stepNumber": "3",
-                            "stationId": "M3",
+                            "stationIdsList": [
+                            "M3"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "1"
@@ -211,7 +247,9 @@
                         },
                         {
                             "stepNumber": "4",
-                            "stationId": "E1",
+                            "stationIdsList": [
+                            "E1"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
@@ -229,7 +267,9 @@
                     "route": [
                         {
                             "stepNumber": "0",
-                            "stationId": "Q2",
+                            "stationIdsList": [
+                            "Q2"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
@@ -237,7 +277,9 @@
                         },
                         {
                             "stepNumber": "1",
-                            "stationId": "M2",
+                            "stationIdsList": [
+                            "M2"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "7"
@@ -245,7 +287,9 @@
                         },
                         {
                             "stepNumber": "2",
-                            "stationId": "E1",
+                            "stationIdsList": [
+                            "E1"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
