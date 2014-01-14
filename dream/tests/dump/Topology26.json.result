@@ -19,7 +19,9 @@
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
-      "stationId": "Q1", 
+      "stationIdsList": [
+       "Q1"
+      ], 
       "stepNumber": 0
      }, 
      {
@@ -27,7 +29,9 @@
        "distributionType": "Fixed", 
        "mean": "10"
       }, 
-      "stationId": "M1", 
+      "stationIdsList": [
+       "M1"
+      ], 
       "stepNumber": 1
      }, 
      {
@@ -35,7 +39,9 @@
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
-      "stationId": "Q3", 
+      "stationIdsList": [
+       "Q3"
+      ], 
       "stepNumber": 2
      }, 
      {
@@ -43,7 +49,9 @@
        "distributionType": "Fixed", 
        "mean": "20"
       }, 
-      "stationId": "M3", 
+      "stationIdsList": [
+       "M3"
+      ], 
       "stepNumber": 3
      }
     ], 
@@ -94,7 +102,9 @@
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
-      "stationId": "Q2", 
+      "stationIdsList": [
+       "Q2"
+      ], 
       "stepNumber": 0
      }, 
      {
@@ -102,7 +112,9 @@
        "distributionType": "Fixed", 
        "mean": "20"
       }, 
-      "stationId": "M2", 
+      "stationIdsList": [
+       "M2"
+      ], 
       "stepNumber": 1
      }, 
      {
@@ -110,7 +122,9 @@
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
-      "stationId": "Q1", 
+      "stationIdsList": [
+       "Q1"
+      ], 
       "stepNumber": 2
      }, 
      {
@@ -118,7 +132,9 @@
        "distributionType": "Fixed", 
        "mean": "34"
       }, 
-      "stationId": "M1", 
+      "stationIdsList": [
+       "M1"
+      ], 
       "stepNumber": 3
      }
     ], 
@@ -169,7 +185,9 @@
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
-      "stationId": "Q3", 
+      "stationIdsList": [
+       "Q3"
+      ], 
       "stepNumber": 0
      }, 
      {
@@ -177,7 +195,9 @@
        "distributionType": "Fixed", 
        "mean": "30"
       }, 
-      "stationId": "M3", 
+      "stationIdsList": [
+       "M3"
+      ], 
       "stepNumber": 1
      }, 
      {
@@ -185,7 +205,9 @@
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
-      "stationId": "Q1", 
+      "stationIdsList": [
+       "Q1"
+      ], 
       "stepNumber": 2
      }, 
      {
@@ -193,7 +215,9 @@
        "distributionType": "Fixed", 
        "mean": "20"
       }, 
-      "stationId": "M1", 
+      "stationId": [
+       "M1"
+      ], 
       "stepNumber": 3
      }
     ], 
