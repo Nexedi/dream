@@ -48,7 +48,9 @@ class QueueJobShop(Queue):
             #check it the caller object holds an Entity that requests for current object
             if len(callerObject.getActiveObjectQueue())>0:
                 activeEntity=callerObject.getActiveObjectQueue()[0]
-                if activeEntity.remainingRoute[0][0]==self.id:
+                # check if the object in the active entity's route next step
+                if self.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
+#                 if activeEntity.remainingRoute[0][0]==self.id:
                     return len(self.getActiveObjectQueue())<self.capacity  #return according to the state of the Queue
         return False   
     
@@ -57,6 +59,8 @@ class QueueJobShop(Queue):
         # get active object and its queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
+        # update the receiver object
+        activeObject.receiver=activeObject.updateReceiverObject()
         #return True if the Queue has Entities and the caller is the receiver
         return len(activeObjectQueue)>0 and (callerObject is self.receiver) 
 
@@ -64,7 +68,15 @@ class QueueJobShop(Queue):
     def getEntity(self):      
         activeEntity=Queue.getEntity(self)
         import Globals
-        self.receiver=Globals.findObjectById(activeEntity.remainingRoute[1][0])    #read the next station 
+        # read the possible receivers - update the next list
+        nextObjectIds=activeEntity.remainingRoute[1].get('stationIdsList',[])
+        nextObjects = []
+        for nextObjectId in nextObjectIds:
+            nextObject = Globals.findObjectById(nextObjectId)
+            nextObjects.append(nextObject)
+        activeObject.next = nextObjects
+#         self.next=Globals.findObjectById(activeEntity.remainingRoute[1].get('stationIdsList',[]))
+#         self.receiver=Globals.findObjectById(activeEntity.remainingRoute[1][0])    #read the next station 
         activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
         return activeEntity  
 

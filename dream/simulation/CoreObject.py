@@ -322,7 +322,6 @@ class CoreObject(Process):
         # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
         maxTimeWaiting=0                                            # dummy variable counting the time a successor is waiting
         receiver=None
-        
         for object in activeObject.next:
             if(object.canAccept(activeObject)):                     # if a successor can accept an object
                 timeWaiting=now()-object.timeLastEntityLeft         # the time it has been waiting is updated and stored in dummy variable timeWaiting

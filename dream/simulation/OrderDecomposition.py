@@ -94,9 +94,17 @@ class OrderDecomposition(CoreObject):
         # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
         isRequested=False                                           # is requested is dummyVariable checking if it is requested to accept an item
         maxTimeWaiting=0                                            # dummy variable counting the time a predecessor is blocked
-        
+#         print 'time', now()
+#         for obj in activeObject.previous:
+#             print 'orderDecompose previous', obj.id, obj.objName
         # loop through the possible givers to see which have to dispose and which is the one blocked for longer
         for object in activeObject.previous:
+#             print 'object in previous', object.objName
+#             print 'has to dispose', object.haveToDispose(activeObject)
+#             if object.receiver!=None:
+#                 print 'has receiver', object.receiver.objName
+#             else:
+#                 print 'has no receiver'
             if(object.haveToDispose(activeObject) and object.receiver==self):
                 isRequested=True                                    # if the predecessor objects have entities to dispose of
                 if(object.downTimeInTryingToReleaseCurrentEntity>0):# and the predecessor has been down while trying to give away the Entity
@@ -109,6 +117,9 @@ class OrderDecomposition(CoreObject):
                     activeObject.giver=object                 # the object to deliver the Entity to the activeObject is set to the ith member of the previous list
                     maxTimeWaiting=timeWaiting    
                                                  # in the next loops, check the other predecessors in the previous list
+#         print 'orderDecompose giver:', activeObject.giver.objName , activeObject.giver.id
+#         print 'canAcceptAndIsRequested returns', activeObject.Up and isRequested
+#         print ''
         return activeObject.Up and isRequested    
 
     # ======================================================================= 
@@ -123,7 +134,14 @@ class OrderDecomposition(CoreObject):
 
         activeEntity=activeObjectQueue[0]
         import Globals
-        self.receiver=Globals.findObjectById(activeEntity.remainingRoute[0][0])    #read the next station 
+        # update the next list of the object
+        nextObjectIds=activeEntity.remainingRoute[0].get('stationIdsList',[])
+        for nextObjectId in nextObjectIds:
+            self.next.append(Globals.findObjectById(nextObjectId))
+#         self.next = Globals.findObjectById(activeEntity.remainingRoute[0].get('stationIdsList',[]))
+        # find the suitable receiver
+        self.receiver = self.updateReceiverObject()
+#         self.receiver=Globals.findObjectById(activeEntity.remainingRoute[0][0])    #read the next station 
         #return True if the OrderDecomposition in the state of disposing and the caller is the receiver
         return self.Up and (callerObject is self.receiver) 
     
@@ -177,12 +195,14 @@ class OrderDecomposition(CoreObject):
                 
         for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
             stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
-            nextId=routeentity.get('stationId', 'not found')                   #    the stationId
-            processingTime=routeentity['processingTime']                       # and the 'processingTime' dictionary
-            distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
-            mean=float(processingTime.get('mean', 'not found'))                 #    get the 'mean'
-            route[stepNumber]=[nextId, mean]                                    # finally add the 'nextId' and 'mean'
-                                                                                #    to the job route
+            routeentity.pop(str(stepNumber),None)                              #    remove the stepNumber key
+#             nextId=routeentity.get('stationId', 'not found')                   #    the stationId
+#             processingTime=routeentity['processingTime']                       # and the 'processingTime' dictionary
+#             distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
+#             mean=float(processingTime.get('mean', 'not found'))                 #    get the 'mean'
+#             route[stepNumber]=[nextId, mean]                                    # finally add the 'nextId' and 'mean'
+#                                                                                 #    to the job route
+            route[stepNumber]=routeEntity
                 
         # keep a reference of all extra properties passed to the job
         extraPropertyDict = {}
@@ -194,10 +214,12 @@ class OrderDecomposition(CoreObject):
         #have to talk about it with NEX
         exitAssigned=False
         for element in route:
-            elementId=element[0]
+#             elementId=element[0]
+            elementIds = element.get('stationIdsList',[])
             for obj in G.ObjList:
-                if obj.id==elementId and obj.type=='Exit':
-                    exitAssigned=True 
+                for elementId in elementIds:
+                    if obj.id==elementId and obj.type=='Exit':
+                        exitAssigned=True 
         if not exitAssigned:
             exitId=None
             for obj in G.ObjList:
@@ -205,7 +227,9 @@ class OrderDecomposition(CoreObject):
                     exitId=obj.id
                     break
             if exitId:
-                route.append([exitId, 0])
+#                 route.append([exitId, 0])
+                route.append({'stationIdsList':str([exitId]),\
+                              'processingTime':{}})
         
         # initiate the OrderComponent
         OC=OrderComponent(id, name, route, \

@@ -30,10 +30,13 @@ from SimPy.Simulation import activate, passivate, waituntil, now, hold
 
 from Exit import Exit
 
-#the ExitJobShop object
+# ===========================================================================
+# the ExitJobShop object
+# ===========================================================================
 class ExitJobShop(Exit):
-    
-    #set all the objects in previous
+    # =======================================================================
+    # set all the objects in previous
+    # ===========================================================================
     def initialize(self):
         from Globals import G
         self.previous=G.ObjList

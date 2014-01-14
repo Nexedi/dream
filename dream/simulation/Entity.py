@@ -25,7 +25,9 @@ Created on 18 Aug 2013
 Class that acts as an abstract. It should have no instances. All the Entities should inherit from it
 '''
 
-# ======================== The entity object ================================
+# ===========================================================================
+# The entity object 
+# ===========================================================================
 class Entity(object):
     type="Entity"
 
@@ -50,11 +52,14 @@ class Entity(object):
         self.currentStation=None
         #         values to be used in the internal processing of compoundObjects
         self.internal = False       # informs if the entity is being processed internally
-        
-    # =============== outputs results to JSON File ==========================
+    # =======================================================================
+    # outputs results to JSON File 
+    # =======================================================================
     def outputResultsJSON(self):
         pass
     
-    # =====initializes all the Entity for a new simulation replication ======
+    # =======================================================================
+    # initializes all the Entity for a new simulation replication 
+    # =======================================================================
     def initialize(self):
         pass

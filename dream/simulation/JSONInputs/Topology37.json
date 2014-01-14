@@ -22,7 +22,9 @@
                     "route": [
                         {
                             "stepNumber": "0",
-                            "stationId": "Q0",
+                            "stationIdsList": [
+                                "Q0"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
@@ -30,7 +32,9 @@
                         },
                         {
                             "stepNumber": "1",
-                            "stationId": "M0",
+                            "stationIdsList": [
+                            	"M0"
+                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "1"
@@ -45,7 +49,9 @@
                             "route": [
                                 {
                                     "stepNumber": "0",
-                                    "stationId": "OD0",
+                                    "stationIdsList": [
+                                    	"OD0"
+                                    ],
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "0"
@@ -53,7 +59,9 @@
                                 },
                                 {
                                     "stepNumber": "1",
-                                    "stationId": "Q1",
+                                    "stationIdsList": [
+                                    	"Q1"
+                                    ],
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "0"
@@ -61,7 +69,9 @@
                                 },
                                 {
                                     "stepNumber": "2",
-                                    "stationId": "M1",
+                                    "stationIdsList": [
+                                    	"M1"
+                                    ],
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "1"
@@ -69,7 +79,9 @@
                                 },
                                 {
                                     "stepNumber": "3",
-                                    "stationId": "E1",
+                                    "stationIdsList": [
+                                    	"E1"
+                                    ],
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "0"
@@ -84,7 +96,9 @@
                             "route": [
                                 {
                                     "stepNumber": "0",
-                                    "stationId": "OD0",
+                                    "stationIdsList": [
+                                    	"OD0"
+                                    ],
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "0"
@@ -92,7 +106,9 @@
                                 },
                                 {
                                     "stepNumber": "1",
-                                    "stationId": "Q2",
+                                    "stationIdsList": [
+                                    	"Q2"
+                                    ],
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "0"
@@ -100,7 +116,9 @@
                                 },
                                 {
                                     "stepNumber": "2",
-                                    "stationId": "M2",
+                                    "stationIdsList": [
+                                    	"M2"
+                                    ],
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "1"
@@ -108,7 +126,9 @@
                                 },
                                 {
                                     "stepNumber": "3",
-                                    "stationId": "E1",
+                                    "stationIdsList": [
+                                    	"E1"
+                                    ],
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "0"

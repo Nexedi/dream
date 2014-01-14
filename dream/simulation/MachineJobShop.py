@@ -44,9 +44,21 @@ class MachineJobShop(Machine):
     #gets an entity from the predecessor that the predecessor index points to     
     def getEntity(self):
         activeEntity=Machine.getEntity(self)     #run the default code
-        self.procTime=activeEntity.remainingRoute[0][1]     #read the processing time from the entity
+        # read the processing time from the corresponding remainingRoute entry
+        processingTime=activeEntity.remainingRoute[0]['processingTime']
+        self.distType=processingTime.get('distributionType','not found')
+        self.procTime=processingTime.get('mean', 0)
+#         self.procTime=activeEntity.remainingRoute[0][1]     #read the processing time from the entity
         import Globals
-        self.receiver=Globals.findObjectById(activeEntity.remainingRoute[1][0])    #read the next station 
+        # read the list of next stations
+        nextObjectIds=activeEntity.remainingRoute[1].get('stationIdsList',[])
+        nextObjects = []
+        for nextObjectId in nextObjectIds:
+            nextObject=Globals.findObjectById(nextObjectId)
+            nextObjects.append(nextObject)
+        self.next=nextObjects
+#         self.next=Globals.findObjectById(activeEntity.remainingRoute[1].get('stationIdsList',[]))  
+#         self.receiver=Globals.findObjectById(activeEntity.remainingRoute[1][0])    #read the next station 
         activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
         return activeEntity  
                                                                                
@@ -61,7 +73,9 @@ class MachineJobShop(Machine):
             #check it the caller object holds an Entity that requests for current object
             if len(callerObject.getActiveObjectQueue())>0:
                 activeEntity=callerObject.getActiveObjectQueue()[0]
-                if activeEntity.remainingRoute[0][0]==self.id:
+                # if the machine's Id is in the list of the entity's next stations 
+                if self.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
+#                 if activeEntity.remainingRoute[0][0]==self.id:
                     return len(self.getActiveObjectQueue())<self.capacity  #return according to the state of the Queue
         return False
        
@@ -70,7 +84,10 @@ class MachineJobShop(Machine):
         # get active object and its queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        #return True if the Machine in the state of disposing and the caller is the receiver
+        # find the receiver waiting the most
+        activeObject.receiver=activeObject.updateReceiverObject()
+        
+        #return True if the Machine in the state of disposing and the caller is the receiver  
         return len(activeObjectQueue)>0 and activeObject.waitToDispose\
              and activeObject.Up and (callerObject is self.receiver)       
                       

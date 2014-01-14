@@ -805,13 +805,15 @@ def createWIP():
                 
                 for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
                     stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
-                    nextId=routeentity.get('stationId', 'not found')                   #    the stationId
-                    processingTime=routeentity['processingTime']                       # and the 'processingTime' dictionary
-                    distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
-                                                                                        #    get the 'mean' 
-                    mean=float(processingTime.get('mean', 'not found'))
-                    route[stepNumber]=[nextId, mean]                                    # finally add the 'nextId' and 'mean'
-                                                                                        # to the job route
+                    routeentity.pop('stepNumber',None)                                 # remove the stepNumber key from the dict
+#                     nextIds=routeentity.get('stationIdsList', [])                      #    the stationId
+#                     processingTime=routeentity['processingTime']                       # and the 'processingTime' dictionary
+#                     distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
+#                                                                                         #    get the 'mean' 
+#                     mean=float(processingTime.get('mean', 'not found'))
+#                     route[stepNumber]=[nextIds, mean]                                   # finally add the 'nextId' and 'mean'
+#                                                                                         # to the job route
+                    route[stepNumber]=routeentity
                 
                 # keep a reference of all extra properties passed to the job
                 extraPropertyDict = {}
@@ -823,10 +825,12 @@ def createWIP():
                 #have to talk about it with NEX
                 exitAssigned=False
                 for element in route:
-                    elementId=element[0]
+#                     elementId=element[0]
+                    elementIds = element.get('stationIdsList',[])
                     for obj in G.ObjList:
-                        if obj.id==elementId and obj.type=='Exit':
-                            exitAssigned=True 
+                        for elementId in elementIds:
+                            if obj.id==elementId and obj.type=='Exit':
+                                exitAssigned=True 
                 if not exitAssigned:
                     exitId=None
                     for obj in G.ObjList:
@@ -834,7 +838,9 @@ def createWIP():
                             exitId=obj.id
                             break
                     if exitId:
-                        route.append([exitId, 0])
+#                         route.append([exitId, 0])
+                        route.append({'stationIdsList':[exitId],\
+                                      'processingTime':{}})
                 # initiate the job
                 OC=OrderComponent(id, name, route, priority=priority, dueDate=dueDate,
                     orderDate=orderDate, extraPropertyDict=extraPropertyDict, isCritical=isCritical)
@@ -857,13 +863,15 @@ def createWIP():
                 
                 for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
                     stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
-                    nextId=routeentity.get('stationId', 'not found')                   #    the stationId
-                    processingTime=routeentity['processingTime']                       # and the 'processingTime' dictionary
-                    distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
-                                                                                        #    get the 'mean' 
-                    mean=float(processingTime.get('mean', 'not found'))
-                    route[stepNumber]=[nextId, mean]                                    # finally add the 'nextId' and 'mean'
-                                                                                        # to the job route
+                    routeentity.pop('stepNumber',None)                                 # remove the stepNumber key
+#                     nextIds=routeentity.get('stationIdsList', [])                      #    the stationId
+#                     processingTime=routeentity['processingTime']                       # and the 'processingTime' dictionary
+#                     distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
+#                                                                                         #    get the 'mean' 
+#                     mean=float(processingTime.get('mean', 'not found'))
+#                     route[stepNumber]=[nextIds, mean]                                   # finally add the 'nextId' and 'mean'
+#                                                                                         # to the job route
+                    route[stepNumber]=routeentity
                 
                 # keep a reference of all extra properties passed to the job
                 extraPropertyDict = {}
@@ -875,10 +883,12 @@ def createWIP():
                 #have to talk about it with NEX
                 exitAssigned=False
                 for element in route:
-                    elementId=element[0]
+#                     elementId=element[0]
+                    elementIds = element.get('stationIdsList',[])
                     for obj in G.ObjList:
-                        if obj.id==elementId and obj.type=='Exit':
-                            exitAssigned=True 
+                        for elementId in elementIds:
+                            if obj.id==elementId and obj.type=='Exit':
+                                exitAssigned=True 
                 if not exitAssigned:
                     exitId=None
                     for obj in G.ObjList:
@@ -886,7 +896,9 @@ def createWIP():
                             exitId=obj.id
                             break
                     if exitId:
-                        route.append([exitId, 0])
+#                         route.append([exitId, 0])
+                        route.append({'stationIdsList':[exitId],\
+                                      'processingTime':{}})
                 # initiate the job
                 J=Job(id, name, route, priority=priority, dueDate=dueDate,
                     orderDate=orderDate, extraPropertyDict=extraPropertyDict)
@@ -931,13 +943,15 @@ def createWIP():
                                                                     
                 for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
                     stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
-                    nextId=routeentity.get('stationId', 'not found')                   #    the stationId
-                    processingTime=routeentity['processingTime']                       # and the 'processingTime' dictionary
-                    distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
-                                                                                        #    get the 'mean' 
-                    mean=float(processingTime.get('mean', 'not found'))
-                    route[stepNumber]=[nextId, mean]                                    # finally add the 'nextId' and 'mean'
-                                                                                        # to the job route
+                    routeentity.pop('stepNumber',None)                                 # remove the stepNumber key
+#                     nextIds=routeentity.get('stationIdsList', [])                      #    the stationId
+#                     processingTime=routeentity['processingTime']                       # and the 'processingTime' dictionary
+#                     distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
+#                                                                                         #    get the 'mean' 
+#                     mean=float(processingTime.get('mean', 'not found'))
+#                     route[stepNumber]=[nextIds, mean]                                   # finally add the 'nextId' and 'mean'
+#                                                                                         # to the job route
+                    route[stepNumber]=routeentity
                 
                 # keep a reference of all extra properties passed to the job
                 extraPropertyDict = {}
@@ -949,10 +963,12 @@ def createWIP():
                 #have to talk about it with NEX
                 odAssigned=False
                 for element in route:
-                    elementId=element[0]
+#                     elementId=element[0]
+                    elementIds = element.get('stationIdsList',[])
                     for obj in G.ObjList:
-                        if obj.id==elementId and obj.type=='OrderDecomposition':
-                            odAssigned=True 
+                        for elementId in elementIds:
+                            if obj.id==elementId and obj.type=='OrderDecomposition':
+                                odAssigned=True 
                 if not odAssigned:
                     odId=None
                     for obj in G.ObjList:
@@ -960,8 +976,11 @@ def createWIP():
                             odId=obj.id
                             break
                     if odId:
-                        route.append([odId, 0])
-
+#                         route.append([odId, 0])
+                        route.append({'stationIdsList':[odId],\
+                                      'processingTime':\
+                                            {'distributionType':'Fixed',\
+                                             'mean':'0'}})
                 # initiate the Order
                 O=Order(id, name, route, priority=priority, dueDate=dueDate,
                         isCritical=isCritical, basicsEnded=basicsEnded, manager=manager, componentsList=componentsList,

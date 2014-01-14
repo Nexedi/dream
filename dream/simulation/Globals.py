@@ -102,8 +102,18 @@ def findObjectById(id):
     return None
 
 # =======================================================================
+# Error in the setting up of the WIP
+# =======================================================================
+class SetWipTypeError(Exception):
+    def __init__(self, setWipError):
+        Exception.__init__(self, setWipError) 
+# =======================================================================
 # method to set-up the entities in the current stations 
 # as Work In Progress
+# -----------------------------------------
+# in this case the current station must be defined! 
+# otherwise there is no current station but a list of possible stations
+# although the entity cannot be in more than one stations
 # =======================================================================
 def setWIP(entityList):
     for entity in entityList:
@@ -114,9 +124,32 @@ def setWIP(entityList):
             entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
         # if the entity is of type Job/OrderComponent/Order
         elif entity.type=='Job' or 'OrderComponent' or 'Order':
-            object=findObjectById(entity.remainingRoute[0][0])  # find the object in the 'G.ObjList'
+            # find the list of starting station of the entity
+            objects=entity.remainingRoute[0].get('stationIdsList',[])
+# # # # # #             object=findObjectById(entity.remainingRoute[0][0])  # find the object in the 'G.ObjList'
+            # if the list of starting stations has length greater than one then there is a starting WIP definition error 
+            try:
+                if len(objects)==1:
+                    objectId=objects[0]
+                else:
+                    raise SetWipTypeError('The starting station of the the entity is not defined uniquely')
+            except SetWipTypeError as setWipError:
+                print 'WIP definition error: {0}'.format(setWipError)
+            # get the starting station of the entity and load it with it
+            object = findObjectById(objectId)
             object.getActiveObjectQueue().append(entity)        # append the entity to its Queue
-            object.receiver=findObjectById(entity.remainingRoute[1][0])
+            
+            # read the IDs of the possible successors of the object
+            nextObjectIds=entity.remainingRoute[1].get('stationIdsList',[])
+            # for each objectId in the nextObjects find the corresponding object and populate the object's next list
+            nextObjects=[]
+            for nextObjectId in nextObjectIds:
+                nextObject=findObjectById(nextObjectId)
+                nextObjects.append(nextObject)  
+            # update the receiver of the object
+            object.next=nextObjects
+            object.receiver = object.updateReceiverObject()
+# # # # # #             object.receiver=findObjectById(entity.remainingRoute[1][0])
             entity.remainingRoute.pop(0)                        # remove data from the remaining route.   
             entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
             entity.currentStation=object                        # update the current station of the entity 
