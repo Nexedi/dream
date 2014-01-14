@@ -57,18 +57,19 @@ class MachinePreemptive(MachineJobShop):
         else:
             remainingProcessingTime=self.procTime-(now()-self.timeLastEntityEntered)
         #update the remaining route of activeEntity
-        activeEntity.remainingRoute.insert(0, {'stationIdsList':str([self.id]),\
+        activeEntity.remainingRoute.insert(0, {'stationIdsList':[str(self.id)],\
                                                'processingTime':\
                                                     {'distributionType':'Fixed',\
                                                      'mean':str(remainingProcessingTime)}})
 #         activeEntity.remainingRoute.insert(0, [self.id, remainingProcessingTime])
-        activeEntity.remainingRoute.insert(0, {'stationIdsList':str([self.lastGiver.id]),\
+        activeEntity.remainingRoute.insert(0, {'stationIdsList':[str(self.lastGiver.id)],\
                                                'processingTime':\
                                                     {'distributionType':'Fixed',\
                                                      'mean':'0'}})
 #         activeEntity.remainingRoute.insert(0, [self.lastGiver.id, 0])        
         #set the receiver  as the object where the active entity was preempted from 
         self.receiver=self.lastGiver
+        self.next=[self.receiver]
         self.waitToDispose=True     #set that I have to dispose
         reactivate(self)
 

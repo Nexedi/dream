@@ -36,7 +36,7 @@ from Exit import Exit
 class ExitJobShop(Exit):
     # =======================================================================
     # set all the objects in previous
-    # ===========================================================================
+    # =======================================================================
     def initialize(self):
         from Globals import G
         self.previous=G.ObjList

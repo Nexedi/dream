@@ -74,7 +74,7 @@ class QueueJobShop(Queue):
             activeObject.receiver=activeObject.next[0]
             return len(activeObjectQueue)>0\
                     and thecaller==activeObject.receiver
-               
+        
         #give the entity to the possible receiver that is waiting for the most time. 
         #plant does not do this in every occasion!       
         maxTimeWaiting=0     
@@ -106,9 +106,4 @@ class QueueJobShop(Queue):
          
         activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
         return activeEntity  
-
-      
-
-
-
         
