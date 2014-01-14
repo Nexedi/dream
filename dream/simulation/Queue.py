@@ -234,7 +234,7 @@ class Queue(CoreObject):
                 RPT=0
                 for step in entity.remainingRoute:
                     processingTime=step['processingTime']
-                    RPT+=processingTime.get('mean',0)
+                    RPT+=float(processingTime.get('mean',0))
 #                     RPT+=step[1]                
                 entity.remainingProcessingTime=RPT
             activeObjectQ.sort(key=lambda x: x.remainingProcessingTime, reverse=True)   
@@ -243,7 +243,7 @@ class Queue(CoreObject):
             for entity in activeObjectQ:
                 LPT=0
                 processingTime = entity.remainingRoute[0]['processingTime']
-                entity.processingTimeInNextStation=processingTime.get('mean',0)
+                entity.processingTimeInNextStation=float(processingTime.get('mean',0))
                 # entity.processingTimeInNextStation=entity.remainingRoute[0][1]
             activeObjectQ.sort(key=lambda x: x.processingTimeInNextStation, reverse=True)             
         #if the schedulingRule is to sort Entities according to shortest processing time first in the next station
@@ -251,7 +251,7 @@ class Queue(CoreObject):
             for entity in activeObjectQ:
                 LPT=0
                 processingTime = entity.remainingRoute[0]['processingTime']
-                entity.processingTimeInNextStation=processingTime.get('mean',0)
+                entity.processingTimeInNextStation=float(processingTime.get('mean',0))
 #                 entity.processingTimeInNextStation=entity.remainingRoute[0][1]
             activeObjectQ.sort(key=lambda x: x.processingTimeInNextStation) 
         #if the schedulingRule is to sort Entities based on the minimum slackness
@@ -260,7 +260,7 @@ class Queue(CoreObject):
                 RPT=0
                 for step in entity.remainingRoute:
                     processingTime=step['processingTime']
-                    RPT+=processingTime.get('mean',0)
+                    RPT+=float(processingTime.get('mean',0))
 #                     RPT+=step[1]                
                 entity.remainingProcessingTime=RPT
             activeObjectQ.sort(key=lambda x: (x.dueDate-x.remainingProcessingTime))  

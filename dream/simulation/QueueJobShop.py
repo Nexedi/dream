@@ -30,53 +30,80 @@ from SimPy.Simulation import activate, passivate, waituntil, now, hold
 
 from Queue import Queue
 
-
-#the QueueJobShop object
+# ===========================================================================
+# the QueueJobShop object
+# ===========================================================================
 class QueueJobShop(Queue):
-    
-    #set all the objects in previous and next
+    # =======================================================================
+    # set all the objects in previous and next
+    # =======================================================================
     def initialize(self):
         from Globals import G
         self.previous=G.ObjList
         self.next=G.ObjList
         Queue.initialize(self)  #run default behaviour
-        
-    #checks if the Queue can accept an entity       
-    #it checks also the next station of the Entity and returns true only if the active object is the next station 
+    
+    # =======================================================================    
+    # checks if the Queue can accept an entity       
+    # it checks also the next station of the Entity 
+    # and returns true only if the active object is the next station
+    # ======================================================================= 
     def canAccept(self, callerObject=None): 
         if callerObject!=None:
             #check it the caller object holds an Entity that requests for current object
             if len(callerObject.getActiveObjectQueue())>0:
                 activeEntity=callerObject.getActiveObjectQueue()[0]
                 # check if the object in the active entity's route next step
-                if self.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
+                if self.id in activeEntity.remainingRoute[1].get('stationIdsList',[]):
 #                 if activeEntity.remainingRoute[0][0]==self.id:
                     return len(self.getActiveObjectQueue())<self.capacity  #return according to the state of the Queue
         return False   
     
-    #checks if the Machine can dispose an entity. Returns True only to the potential receiver     
+    # =======================================================================
+    # checks if the Machine can dispose an entity. 
+    # Returns True only to the potential receiver
+    # =======================================================================     
     def haveToDispose(self, callerObject=None):
         # get active object and its queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        # update the receiver object
-        activeObject.receiver=activeObject.updateReceiverObject()
+        thecaller = callerObject
+        
+        #if we have only one possible receiver just check if the Queue holds one or more entities
+        if(len(activeObject.next)==1 or callerObject==None):
+            activeObject.receiver=activeObject.next[0]
+            return len(activeObjectQueue)>0\
+                    and thecaller==activeObject.receiver
+               
+        #give the entity to the possible receiver that is waiting for the most time. 
+        #plant does not do this in every occasion!       
+        maxTimeWaiting=0     
+                                                        # loop through the object in the successor list
+        for object in activeObject.next:
+            if(object.canAccept()):                                 # if the object can accept
+                timeWaiting=now()-object.timeLastEntityLeft         # compare the time that it has been waiting 
+                if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# with the others'
+                    maxTimeWaiting=timeWaiting
+                    self.receiver=object                           # and update the receiver to the index of this object
+        
         #return True if the Queue has Entities and the caller is the receiver
-        return len(activeObjectQueue)>0 and (callerObject is self.receiver) 
+        return len(activeObjectQueue)>0 and (thecaller is self.receiver) 
 
-    #gets an entity from the predecessor that the predecessor index points to     
+    # =======================================================================
+    # gets an entity from the predecessor that the predecessor index points to
+    # =======================================================================     
     def getEntity(self):      
+        activeObject = self.getActiveObject()
         activeEntity=Queue.getEntity(self)
-        import Globals
         # read the possible receivers - update the next list
+        import Globals
         nextObjectIds=activeEntity.remainingRoute[1].get('stationIdsList',[])
         nextObjects = []
         for nextObjectId in nextObjectIds:
             nextObject = Globals.findObjectById(nextObjectId)
             nextObjects.append(nextObject)
         activeObject.next = nextObjects
-#         self.next=Globals.findObjectById(activeEntity.remainingRoute[1].get('stationIdsList',[]))
-#         self.receiver=Globals.findObjectById(activeEntity.remainingRoute[1][0])    #read the next station 
+         
         activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
         return activeEntity  
 

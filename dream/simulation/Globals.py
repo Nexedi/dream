@@ -125,12 +125,11 @@ def setWIP(entityList):
         # if the entity is of type Job/OrderComponent/Order
         elif entity.type=='Job' or 'OrderComponent' or 'Order':
             # find the list of starting station of the entity
-            objects=entity.remainingRoute[0].get('stationIdsList',[])
-# # # # # #             object=findObjectById(entity.remainingRoute[0][0])  # find the object in the 'G.ObjList'
+            currentObjectIds=entity.remainingRoute[0].get('stationIdsList',[])
             # if the list of starting stations has length greater than one then there is a starting WIP definition error 
             try:
-                if len(objects)==1:
-                    objectId=objects[0]
+                if len(currentObjectIds)==1:
+                    objectId=currentObjectIds[0]
                 else:
                     raise SetWipTypeError('The starting station of the the entity is not defined uniquely')
             except SetWipTypeError as setWipError:
@@ -146,10 +145,17 @@ def setWIP(entityList):
             for nextObjectId in nextObjectIds:
                 nextObject=findObjectById(nextObjectId)
                 nextObjects.append(nextObject)  
-            # update the receiver of the object
+            # update the receiver and the next list of the object
             object.next=nextObjects
-            object.receiver = object.updateReceiverObject()
-# # # # # #             object.receiver=findObjectById(entity.remainingRoute[1][0])
+            
+            maxTimeWaiting=0                                            # dummy variable counting the time a successor is waiting
+            for nextObject in object.next:
+                if(nextObject.canAccept(object)):                     # if a successor can accept an object
+                    timeWaiting=now()-nextObject.timeLastEntityLeft         # the time it has been waiting is updated and stored in dummy variable timeWaiting
+                    if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# if the timeWaiting is the maximum among the ones of the successors 
+                        maxTimeWaiting=timeWaiting
+                        object.receiver=nextObject                    # set the receiver as the longest waiting possible receiver
+                                                                        # in the next loops, check the other successors in the previous list
             entity.remainingRoute.pop(0)                        # remove data from the remaining route.   
             entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
             entity.currentStation=object                        # update the current station of the entity 

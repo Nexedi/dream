@@ -100,11 +100,6 @@ class Machine(CoreObject):
             self.downTimeInCurrentEntity=0                          #holds the total time that the 
                                                                     #object was down while holding current entity
             
-            print '++++++++++++++++++++++++++++++++++++'
-            print 'time', now()
-            print 'object', self.objName, 'got entity', self.currentEntity.name
-            print '++++++++++++++++++++++++++++++++++++'
-            
             # this loop is repeated until the processing time is expired with no failure
             # check when the processingEndedFlag switched to false              
             while processingNotFinished:
@@ -131,7 +126,6 @@ class Machine(CoreObject):
                                             # it seems to be random which happens 1st
                                             # this should not appear often to stochastic models though where times are random
                         interruption=True
-                        print 'interruption'
                     # passivate the Machine for as long as there is no repair
                     # start counting the down time at breatTime dummy variable
                     breakTime=now()                                 # dummy variable that the interruption happened
@@ -146,25 +140,16 @@ class Machine(CoreObject):
 
                     #if during the interruption the object became empty break        
                     if (len(self.getActiveObjectQueue())==0 and self.shouldPreempt):
-                        print 'preemption'
                         break                       
                 # if no interruption occurred the processing in M1 is ended 
                 else:
                     processingNotFinished=False
-                    print 'processing finished'
                     
             #if during the interruption the object became empty continue        
             if (len(self.getActiveObjectQueue())==0 and self.shouldPreempt):
                 self.shouldPreempt=False
                 self.totalWorkingTime+=now()-(self.timeLastEntityEntered)
-                continue  
-            
-            
-            print '////////////////////////////////////'
-            print 'time', now()
-            print 'object', self.objName, 'processed', self.currentEntity.name
-            print '////////////////////////////////////'
-
+                continue
             
             # output to trace that the processing in the Machine self.objName ended 
             try:
@@ -176,9 +161,7 @@ class Machine(CoreObject):
             # update the total working time 
             self.totalWorkingTime+=self.totalProcessingTimeInCurrentEntity                        # the total processing time for this entity 
                                                                     # is what the distribution initially gave
-                                                                    
- 
-                                                                    
+                                                                                                                                        
             # update the variables keeping track of Entity related attributes of the machine    
             self.timeLastEntityEnded=now()                          # this holds the time that the last entity ended processing in Machine 
             self.nameLastEntityEnded=self.currentEntity.name        # this holds the name of the last entity that ended processing in Machine

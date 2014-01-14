@@ -805,14 +805,6 @@ def createWIP():
                 
                 for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
                     stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
-                    routeentity.pop('stepNumber',None)                                 # remove the stepNumber key from the dict
-#                     nextIds=routeentity.get('stationIdsList', [])                      #    the stationId
-#                     processingTime=routeentity['processingTime']                       # and the 'processingTime' dictionary
-#                     distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
-#                                                                                         #    get the 'mean' 
-#                     mean=float(processingTime.get('mean', 'not found'))
-#                     route[stepNumber]=[nextIds, mean]                                   # finally add the 'nextId' and 'mean'
-#                                                                                         # to the job route
                     route[stepNumber]=routeentity
                 
                 # keep a reference of all extra properties passed to the job
@@ -863,14 +855,6 @@ def createWIP():
                 
                 for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
                     stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
-                    routeentity.pop('stepNumber',None)                                 # remove the stepNumber key
-#                     nextIds=routeentity.get('stationIdsList', [])                      #    the stationId
-#                     processingTime=routeentity['processingTime']                       # and the 'processingTime' dictionary
-#                     distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
-#                                                                                         #    get the 'mean' 
-#                     mean=float(processingTime.get('mean', 'not found'))
-#                     route[stepNumber]=[nextIds, mean]                                   # finally add the 'nextId' and 'mean'
-#                                                                                         # to the job route
                     route[stepNumber]=routeentity
                 
                 # keep a reference of all extra properties passed to the job
@@ -943,14 +927,6 @@ def createWIP():
                                                                     
                 for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
                     stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
-                    routeentity.pop('stepNumber',None)                                 # remove the stepNumber key
-#                     nextIds=routeentity.get('stationIdsList', [])                      #    the stationId
-#                     processingTime=routeentity['processingTime']                       # and the 'processingTime' dictionary
-#                     distributionType=processingTime.get('distributionType', 'not found')# and from that dictionary 
-#                                                                                         #    get the 'mean' 
-#                     mean=float(processingTime.get('mean', 'not found'))
-#                     route[stepNumber]=[nextIds, mean]                                   # finally add the 'nextId' and 'mean'
-#                                                                                         # to the job route
                     route[stepNumber]=routeentity
                 
                 # keep a reference of all extra properties passed to the job
