@@ -20,8 +20,16 @@ E=ExitJobShop('E','Exit')
 
 G.ObjList=[M1,M2,M3,Q1,Q2,Q3,E]   #add all the objects in G.ObjList so that they can be easier accessed later
 
+#define the route of the Job in the system
+J1Route=[{"stationIdsList": ["Q1"]},
+         {"stationIdsList": ["M1"],"processingTime":{"distributionType": "Fixed","mean": "1"}},
+         {"stationIdsList": ["Q3"]},
+         {"stationIdsList": ["M3"],"processingTime":{"distributionType": "Fixed","mean": "3"}},
+         {"stationIdsList": ["Q2"]},
+         {"stationIdsList": ["M2"],"processingTime":{"distributionType": "Fixed","mean": "2"}},
+         {"stationIdsList": ["E"],}]
 #define the Jobs
-J=Job('J1','Job1',route=[['Q1',0],['M1',1],['Q3',0],['M3',3],['Q2',0],['M2',2],['E',0]])
+J=Job('J1','Job1',route=J1Route)
 G.EntityList=[J]        #a list to hold all the jobs
    
 initialize()                        #initialize the simulation (SimPy method)
