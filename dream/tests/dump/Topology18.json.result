@@ -16,10 +16,6 @@
       "stationIdsList": [
        "Q1"
       ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
       "stepNumber": "0"
      }, 
      {
@@ -36,10 +32,6 @@
       "stationIdsList": [
        "Q3"
       ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
       "stepNumber": "2"
      }, 
      {
@@ -56,10 +48,6 @@
       "stationIdsList": [
        "Q2"
       ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
       "stepNumber": "4"
      }, 
      {
@@ -76,10 +64,6 @@
       "stationIdsList": [
        "E1"
       ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
       "stepNumber": "6"
      }
     ], 
