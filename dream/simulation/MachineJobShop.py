@@ -62,7 +62,7 @@ class MachineJobShop(Machine):
         self.next=nextObjects
 #         self.next=Globals.findObjectById(activeEntity.remainingRoute[1].get('stationIdsList',[]))  
 #         self.receiver=Globals.findObjectById(activeEntity.remainingRoute[1][0])    #read the next station 
-        activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
+        removedStep = activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
         return activeEntity  
                                                                              
     # =======================================================================  
@@ -82,7 +82,7 @@ class MachineJobShop(Machine):
             if len(callerObject.getActiveObjectQueue())>0:
                 activeEntity=callerObject.getActiveObjectQueue()[0]
                 # if the machine's Id is in the list of the entity's next stations 
-                if self.id in activeEntity.remainingRoute[1].get('stationIdsList',[]):
+                if self.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
 #                 if activeEntity.remainingRoute[0][0]==self.id:
                     return len(self.getActiveObjectQueue())<self.capacity  #return according to the state of the Queue
         return False
@@ -117,6 +117,7 @@ class MachineJobShop(Machine):
                     maxTimeWaiting=timeWaiting
                     activeObject.receiver=object                    # set the receiver as the longest waiting possible receiver
                                                                     # in the next loops, check the other successors in the previous list
+
         
         #return True if the Machine in the state of disposing and the caller is the receiver  
         return len(activeObjectQueue)>0\

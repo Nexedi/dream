@@ -54,7 +54,7 @@ class QueueJobShop(Queue):
             if len(callerObject.getActiveObjectQueue())>0:
                 activeEntity=callerObject.getActiveObjectQueue()[0]
                 # check if the object in the active entity's route next step
-                if self.id in activeEntity.remainingRoute[1].get('stationIdsList',[]):
+                if self.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
 #                 if activeEntity.remainingRoute[0][0]==self.id:
                     return len(self.getActiveObjectQueue())<self.capacity  #return according to the state of the Queue
         return False   
@@ -69,6 +69,7 @@ class QueueJobShop(Queue):
         activeObjectQueue=self.getActiveObjectQueue()
         thecaller = callerObject
         
+        
         #if we have only one possible receiver just check if the Queue holds one or more entities
         if(len(activeObject.next)==1 or callerObject==None):
             activeObject.receiver=activeObject.next[0]
@@ -80,7 +81,7 @@ class QueueJobShop(Queue):
         maxTimeWaiting=0     
                                                         # loop through the object in the successor list
         for object in activeObject.next:
-            if(object.canAccept()):                                 # if the object can accept
+            if(object.canAccept(activeObject)):                                 # if the object can accept
                 timeWaiting=now()-object.timeLastEntityLeft         # compare the time that it has been waiting 
                 if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# with the others'
                     maxTimeWaiting=timeWaiting

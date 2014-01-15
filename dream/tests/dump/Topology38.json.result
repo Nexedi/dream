@@ -1,0 +1,307 @@
+{
+ "elementList": [
+  {
+   "_class": "Dream.Exit", 
+   "id": "E1", 
+   "results": {
+    "throughput": 2, 
+    "takt_time": 5.5, 
+    "lifespan": 8.5
+   }
+  }, 
+  {
+   "extraPropertyDict": {
+    "route": [
+     {
+      "stationIdsList": [
+       "Q1"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stepNumber": "0"
+     }, 
+     {
+      "stationIdsList": [
+       "M1"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "1"
+      }, 
+      "stepNumber": "1"
+     }, 
+     {
+      "stationIdsList": [
+       "Q3"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stepNumber": "2"
+     }, 
+     {
+      "stationIdsList": [
+       "M3"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "3"
+      }, 
+      "stepNumber": "3"
+     }, 
+     {
+      "stationIdsList": [
+       "Q2"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stepNumber": "4"
+     }, 
+     {
+      "stationIdsList": [
+       "M2"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "2"
+      }, 
+      "stepNumber": "5"
+     }, 
+     {
+      "stationIdsList": [
+       "E1"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stepNumber": "6"
+     }
+    ], 
+    "name": "Job1"
+   }, 
+   "_class": "Dream.Job", 
+   "id": "J1", 
+   "results": {
+    "completionTime": 6.0, 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "stationId": "Q1", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 0, 
+      "stationId": "M1", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "stationId": "Q3", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "stationId": "M3", 
+      "stepNumber": 3
+     }, 
+     {
+      "entranceTime": 4.0, 
+      "stationId": "Q2", 
+      "stepNumber": 4
+     }, 
+     {
+      "entranceTime": 4.0, 
+      "stationId": "M2", 
+      "stepNumber": 5
+     }, 
+     {
+      "entranceTime": 6.0, 
+      "stationId": "E1", 
+      "stepNumber": 6
+     }
+    ]
+   }
+  }, 
+  {
+   "extraPropertyDict": {
+    "route": [
+     {
+      "stationIdsList": [
+       "Q2"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stepNumber": "0"
+     }, 
+     {
+      "stationIdsList": [
+       "M2"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "3"
+      }, 
+      "stepNumber": "1"
+     }, 
+     {
+      "stationIdsList": [
+       "Q3"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stepNumber": "2"
+     }, 
+     {
+      "stationIdsList": [
+       "M3", 
+       "M4"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "1"
+      }, 
+      "stepNumber": "3"
+     }, 
+     {
+      "stationIdsList": [
+       "Q2"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stepNumber": "4"
+     }, 
+     {
+      "stationIdsList": [
+       "M2", 
+       "M5"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "7"
+      }, 
+      "stepNumber": "5"
+     }, 
+     {
+      "stationIdsList": [
+       "E1"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stepNumber": "6"
+     }
+    ], 
+    "name": "Job2"
+   }, 
+   "_class": "Dream.Job", 
+   "id": "J2", 
+   "results": {
+    "completionTime": 11.0, 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "stationId": "Q2", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 0, 
+      "stationId": "M2", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 3.0, 
+      "stationId": "Q3", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 3.0, 
+      "stationId": "M4", 
+      "stepNumber": 3
+     }, 
+     {
+      "entranceTime": 4.0, 
+      "stationId": "Q2", 
+      "stepNumber": 4
+     }, 
+     {
+      "entranceTime": 4.0, 
+      "stationId": "M5", 
+      "stepNumber": 5
+     }, 
+     {
+      "entranceTime": 11.0, 
+      "stationId": "E1", 
+      "stepNumber": 6
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "M1", 
+   "results": {
+    "working_ratio": 9.090909090909092, 
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 90.9090909090909
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "M2", 
+   "results": {
+    "working_ratio": 45.45454545454545, 
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 54.54545454545455
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "M3", 
+   "results": {
+    "working_ratio": 27.272727272727273, 
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 72.72727272727273
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "M4", 
+   "results": {
+    "working_ratio": 9.090909090909092, 
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 90.9090909090909
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "M5", 
+   "results": {
+    "working_ratio": 63.63636363636363, 
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 36.36363636363637
+   }
+  }
+ ], 
+ "_class": "Dream.Simulation", 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}
