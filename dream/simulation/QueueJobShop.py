@@ -60,7 +60,7 @@ class QueueJobShop(Queue):
         return False   
     
     # =======================================================================
-    # checks if the Machine can dispose an entity. 
+    # checks if the Queue can dispose an entity. 
     # Returns True only to the potential receiver
     # =======================================================================     
     def haveToDispose(self, callerObject=None):
