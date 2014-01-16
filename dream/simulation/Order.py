@@ -46,7 +46,7 @@ class Order(Job):
         self.manager=manager                # the manager responsible to handle the order 
         self.basicsEnded=basicsEnded        # flag that informs that the basic components of the order are finished
         # flag that informs weather the components needed for the assembly are present in the Assembly Buffer
-        self.componentsReadForAssembly = componentsReadyForAssembly
+        self.componentsReadyForAssembly = componentsReadyForAssembly
 
 
 

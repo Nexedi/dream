@@ -290,4 +290,4 @@ class Queue(CoreObject):
         #are moved to the beginning of the queue 
         elif criterion=='MAB':
             # if all the components of the same mould are present then move them to the front of the activeQ
-            activeObjectQ.sort(key=lambda x: x.order.componentsReadForAssembly)
+            activeObjectQ.sort(key=lambda x: x.order.componentsReadyForAssembly)
