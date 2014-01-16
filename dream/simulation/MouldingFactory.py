@@ -20,8 +20,8 @@ def calculateAntScore(ant):
         elementClass=element['_class']  #get the class
         #id the class is Job
         if elementClass=='Dream.Job':
-            results=element['results']  
-            delay = float(results.get('delay', "0")) 
+            results=element['results']
+            delay = float(results.get('delay', "0"))
             totalDelay+=delay
     return totalDelay
 
@@ -72,9 +72,10 @@ class Simulation(DefaultSimulation):
     data = self._setWIP(data)
 
     tested_ants = set()
-    start=time.time()         # start counting execution time 
+    start=time.time()         # start counting execution time
 
-    # the list of options collated into a dictionary for ease of referencing in ManPy
+    # the list of options collated into a dictionary for ease of referencing in
+    # ManPy
     collated = {'Q1': ['EDD', 'LPT', ], 'Q2': ['EDD', 'LPT', 'FIFO']}
     # TODO: this list have to be defined in the GUI
     # TODO: options should not be limited to scheduling rules. For example we
@@ -82,23 +83,31 @@ class Simulation(DefaultSimulation):
 
     ants = [] #list of ants for keeping track of their performance
 
-    for i in range(10): # Number of times new ants are to be created, i.e. number of generations (a generation can have more than 1 ant)
-        for j in range(20): #number of ants created per generation
-            ant = {} # an ant dictionary to contain rule to queue assignment information 
-            for k in collated.keys(): #for each of the machines, rules are randomly picked from the options list 
-                ant[str(k)] = random.choice(collated[str(k)])
+    # Number of times new ants are to be created, i.e. number of generations (a
+    # generation can have more than 1 ant)
+    for i in range(10):
+        for j in range(20): # number of ants created per generation
+            # an ant dictionary to contain rule to queue assignment information
+            ant = {}
+            # for each of the machines, rules are randomly picked from the
+            # options list
+            for k in collated.keys():
+                ant[k] = random.choice(collated[k])
+
             ant_key = repr(ant)
             # if the ant was not already tested, only then test it
             if ant_key not in tested_ants:
                 tested_ants.add(ant_key)
 
-                ants.append(ant) #the current ant to be simulated (evaluated) is added to the ants list            
+                # the current ant to be simulated (evaluated) is added to the
+                # ants list
+                ants.append(ant)
 
                 # set scheduling rule on queues based on ant data
                 ant_data = copy(data)
                 for k, v in ant.items():
                     # XXX we could change ant dict to contain the name of the
-                    # property to change ( instead of hardcoding schedulingRule )
+                    # property to change (instead of hardcoding schedulingRule)
                     ant_data["nodes"][k]['schedulingRule'] = v
 
                 ant['resultJSON'] = DefaultSimulation.run(self, ant_data)
@@ -108,8 +117,14 @@ class Simulation(DefaultSimulation):
         # best 4 are selected
         ants = sorted(ants, key=operator.itemgetter('score'), reverse=True)[:4]
 
-        for l in ants: #update the options list to ensure that good performing queue-rule combinations have increased representation and good chance of being selected in the next generation
-            for m in collated.keys():#e.g. if using EDD gave good performance for  Queue 1, then another 'EDD' is added to M1Options so there is a higher chance that it is selected by the next ants.
+        for l in ants:
+            # update the options list to ensure that good performing queue-rule
+            # combinations have increased representation and good chance of
+            # being selected in the next generation
+            for m in collated.keys():
+                # e.g. if using EDD gave good performance for Q1, then another
+                # 'EDD' is added to Q1 so there is a higher chance that it is
+                # selected by the next ants.
                 collated[m].append(l[m])
 
     result_count = min(4, len(ants))
