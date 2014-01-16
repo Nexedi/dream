@@ -322,7 +322,8 @@
     that.updateElementData = function (node_id, data) {
       var element_id = priv.node_container[node_id].element_id;
       if (data['name']) {
-        $("#" + element_id).text(data["name"]);
+        $("#" + element_id).text(data["name"]).append('<div class="ep"></div></div>');
+        priv.node_container[node_id].name = data['name'];
       }
       var new_id = data['id'];
       delete(data['id']);
