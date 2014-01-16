@@ -2,22 +2,11 @@ from copy import copy
 import json
 import time
 import random
+import operator
 from Globals import G
 
 from dream.simulation.Default import Simulation as DefaultSimulation
 
-def ranking(candidates,elg): #this function is used for ranking and selection of the best ant
-    pop = [] #this list is used separately to extract ant scores for ranking them
-    for ch in candidates: #it loops through the list of ants and append their scores to a list
-        pop.append(ch['score']) #it append the scores to the list pop
-    pop.sort() #pop = list(set(pop)) #the scores are sorted in ascending order
-    del pop[elg:] #from the sorted list, a certain number specified as elg are only retained - others are deleted
-    fittest = [] #Now, another list is created for the best ranked ants
-    for chrom in candidates: #the retained scored are matched with Ants
-        if chrom['score'] in pop:#if an ants score was retained, it becomes retained too
-            fittest.append(chrom)
-            pop.remove(chrom['score'])#as the associated ants are appended the scores are immediately deleted to avoid confusion
-    return fittest #returns the fittest Ants of the generation
 
 def calculateAntTotalDelay(ant):
     """Calculate the score of this ant.
@@ -129,7 +118,9 @@ class Simulation(DefaultSimulation):
                 ant['resultJSON'] = DefaultSimulation.run(self, ant_data)
                 ant['score'] = calculateAntTotalDelay(ant)
 
-        ants = ranking(ants, 4) #the ants in this generation are ranked based on their scores and the best 4 are selected
+        # The ants in this generation are ranked based on their scores and the
+        # best 4 are selected
+        ants = sorted(ants, key=operator.itemgetter('score'), reverse=True)[:4]
 
         for l in ants: #update the options list to ensure that good performing queue-rule combinations have increased representation and good chance of being selected in the next generation
             for m in collated.keys():#e.g. if using EDD gave good performance for  Queue 1, then another 'EDD' is added to M1Options so there is a higher chance that it is selected by the next ants.
