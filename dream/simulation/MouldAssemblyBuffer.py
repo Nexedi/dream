@@ -57,15 +57,15 @@ class MouldAssemblyBuffer(QueuePreemptive):
         # to check weather they are present in activeObjectQueue
         if activeEntity.componentType=='Basic':
             # local variable to notify when all the basics are received
-            allpresent = True
+            allBasicsPresent = True
             # run through all the basicComponentsList
             for entity in activeEntity.order.basicComponentsList:
                 # if a basic is not present then set the local variable False and break
                 if not (entity in activeObjectQueue):
-                    allPresent = False
+                    allBasicsPresent = False
                     break
             # if all are present then basicsEnded
-            if allPresent:
+            if allBasicsPresent:
                 activeEntity.order.basicsEnded = 1
     
     # =======================================================================
@@ -79,44 +79,69 @@ class MouldAssemblyBuffer(QueuePreemptive):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         thecaller = callerObject
+        # assert that the callerObject is not None
+        assert thecaller!=None, 'the caller object of the MouldAssemblyBuffer should not be None'
+        
         thecallerQueue = callerObject.getActiveObjectQueue()
+        # -------------------------------------------------------------------
         # check the length of the activeObjectQueue 
         # if the length is zero then no componentType or entity.type can be read
         if len(activeObjectQueue)==0:
             return False
-        activeEntity = activeObjectQueue[0]                                 # read the entity to be disposed
+        # read the entity to be disposed
+        activeEntity = activeObjectQueue[0]
         # assert that the entity.type is OrderComponent
         assert activeEntity.type=='OrderComponent',\
                  "the entity to be disposed is not of type OrderComponent"
         # assert that the entity.componentType is Basic or Secondary
         assert activeEntity.componetType=='Secondary' or 'Basic',\
                  "the entity to be disposed is not Basic or Secondary component"
-        
+        # -------------------------------------------------------------------
         # check if the basics of the same parent order are already processed before disposing them to the next object
-        
         # for all the components that have the same parent Order as the activeEntity
         for entity in activeEntity.order.basicComponentsList+\
                         activeEntity.order.secondaryComponentsList:
             # if one of them is not present in the activeObjectQueue or the caller's activeObjectQueue, return false 
             if not (entity in activeObjectQueue+thecallerQueue):
                 return False
-        
+        # if the previous check is passed and all the needed components are present and ready for the MouldAssembly
+        # then set the flag componentsReadyForAssembly to True (1)
+        activeEntity.order.componentsReadyForAssembly = 1
+        # -------------------------------------------------------------------
         #if we have only one possible receiver just check if the caller is the receiver
         if(len(activeObject.next)==1 or callerObject==None):
             activeObject.receiver=activeObject.next[0]
-            return len(activeObjectQueue)>0\
-                    and thecaller==activeObject.receiver
-        
+            # get the internal queue of the receiver
+            receiverQueue = activeObject.receiver.getActiveObjectQueue()
+            # if the successors (MouldAssembly) internal queue is empty then proceed with checking weather
+            # the caller is the receiver
+            if len(receiverQueue)==0:
+                return thecaller==activeObject.receiver
+            # otherwise, check additionally if the receiver holds orderComponents of the same order
+            else:
+                return thecaller==activeObject.receiver\
+                        and receiverQueue[0].order==activeObjectQueue[0].order
+        # -------------------------------------------------------------------
         #give the entity to the possible receiver that is waiting for the most time. 
         #plant does not do this in every occasion!       
         maxTimeWaiting=0     
-                                                        # loop through the object in the successor list
+        # loop through the object in the successor list
         for object in activeObject.next:
-            if(object.canAccept(activeObject)):                                 # if the object can accept
-                timeWaiting=now()-object.timeLastEntityLeft         # compare the time that it has been waiting 
-                if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# with the others'
+            # if the object can accept 
+            if(object.canAccept(activeObject)):
+                timeWaiting=now()-object.timeLastEntityLeft
+                # compare the time that it has been waiting with the others'
+                if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
                     maxTimeWaiting=timeWaiting
-                    self.receiver=object                           # and update the receiver to the index of this object
-        
-        #return True if the Queue caller is the receiver
-        return (thecaller is self.receiver)
+                    # and update the receiver to the index of this object
+                    activeObject.receiver=object
+        # get the internal queue of the receiver
+        receiverQueue = activeObject.receiver.getActiveObjectQueue()
+        # if the successors (MouldAssembly) internal queue is empty then proceed with checking weather
+        # the caller is the receiver
+        if len(receiverQueue)==0:
+            return thecaller==activeObject.receiver
+        # otherwise, check additionally if the receiver holds orderComponents of the same order
+        else:
+            return thecaller==activeObject.receiver\
+                    and receiverQueue[0].order==activeObjectQueue[0].order

@@ -35,7 +35,7 @@ class Order(Job):
     type="Order"
     
     def __init__(self, id=None, name=None, route=[], priority=0, dueDate=None, orderDate=None, isCritical=False,
-                 componentsList=[], manager=None, basicsEnded=0, extraPropertyDict=None):
+                 componentsList=[], manager=None, basicsEnded=0, componentsReadyForAssembly=0, extraPropertyDict=None):
         Job. __init__(self, id=id, name=name, route=route, priority=priority, dueDate=dueDate, orderDate=orderDate, 
                       extraPropertyDict=extraPropertyDict)
         self.isCritical=isCritical          # flag to inform weather the order is critical -> preemption
@@ -45,6 +45,8 @@ class Order(Job):
         self.auxiliaryComponentsList = []   # list of the auxiliary components of the order 
         self.manager=manager                # the manager responsible to handle the order 
         self.basicsEnded=basicsEnded        # flag that informs that the basic components of the order are finished
+        # flag that informs weather the components needed for the assembly are present in the Assembly Buffer
+        self.componentsReadForAssembly = componentsReadyForAssembly
 
 
 

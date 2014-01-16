@@ -285,3 +285,9 @@ class Queue(CoreObject):
             activeObjectQ.sort(key=lambda x: not ((x.componentType=='Basic')\
                                                   or ((x.order.basicsEnded)\
                                                       and (x.componentType=='Secondary'))))
+        #if the schedulingRule is set to MouldAssemblyBuffer scheduling rule "MAB" where orderComponents of the same order,
+        #whose components are all present in the activeQ of the activeObject or its successor,
+        #are moved to the beginning of the queue 
+        elif criterion=='MAB':
+            # if all the components of the same mould are present then move them to the front of the activeQ
+            activeObjectQ.sort(key=lambda x: x.order.componentsReadForAssembly)
