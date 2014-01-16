@@ -77,7 +77,9 @@ class BatchReassembly(CoreObject):
         CoreObject.initialize(self)                 # using the default CoreObject Functionality
         self.Res=Resource(self.numberOfSubBatches)  # initialize the Internal resource (Queue) functionality
             
-    
+    # =======================================================================
+    #     the main method of the object
+    # =======================================================================
     def run(self):
         activeObjectQueue=self.getActiveObjectQueue()
         
@@ -97,7 +99,9 @@ class BatchReassembly(CoreObject):
                 yield hold,self,self.calculateProcessingTime()
                 self.reassemble()
         
-        
+    # =======================================================================
+    #     reassemble method that assembles the subBatches back together to a Batch
+    # =======================================================================
     def reassemble(self):
         activeObject = self.getActiveObject()
         activeObjectQueue=activeObject.getActiveObjectQueue()    # get the internal queue of the active core object
@@ -123,6 +127,11 @@ class BatchReassembly(CoreObject):
         batchToBeReassembled.currentStation=self
         self.timeLastEntityEnded=now()
         
+    # =======================================================================
+    #     returns True if the object doensn't hold entities of type Batch
+    # and if the subBatches in the its internal queue and the one of the giver
+    # hold subBatches of the same batchId
+    # =======================================================================
     def canAccept(self,callerObject=None):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
@@ -148,8 +157,9 @@ class BatchReassembly(CoreObject):
                 and activeObjectQueue[0].type != 'Batch'\
                 and giverObjectQueue[0].batchId==activeObjectQueue[0].batchId
 
-    
-    
+    # =======================================================================
+    #     returns True if it holds an entity of type Batch
+    # =======================================================================
     def haveToDispose(self,callerObject=None):
         # get active and the receiver object
         activeObject=self.getActiveObject()
@@ -178,7 +188,11 @@ class BatchReassembly(CoreObject):
                 and (thecaller is receiverObject)\
                 and activeObjectQueue[0].type!="Batch" # the control of the length of the queue is not needed
             
-            
+    # =======================================================================
+    #     returns true if the giver has an entity to dispose 
+    # which is of the same batchId as the ones that the assembler currently holds 
+    # (if it holds any), and if doesn't hold any entities of type Batch 
+    # =======================================================================
     def canAcceptAndIsRequested(self):
         # get the active and the giver objects
         activeObject=self.getActiveObject()
