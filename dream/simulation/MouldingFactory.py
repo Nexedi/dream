@@ -6,6 +6,8 @@ import operator
 
 from dream.simulation.Default import Simulation as DefaultSimulation
 
+# TODO:
+#  * this class is not specific to moulding anymore. Reorganize.
 
 def calculateAntScore(ant):
     """Calculate the score of this ant.
@@ -110,6 +112,7 @@ class Simulation(DefaultSimulation):
                     # property to change (instead of hardcoding schedulingRule)
                     ant_data["nodes"][k]['schedulingRule'] = v
 
+                # TODO: those two steps have to be parallelized
                 ant['resultJSON'] = DefaultSimulation.run(self, ant_data)
                 ant['score'] = calculateAntScore(ant)
 
