@@ -3,7 +3,6 @@ import json
 import time
 import random
 import operator
-from Globals import G
 
 from dream.simulation.Default import Simulation as DefaultSimulation
 
@@ -25,22 +24,6 @@ def calculateAntScore(ant):
             delay = float(results.get('delay', "0")) 
             totalDelay+=delay
     return totalDelay
-
-# XXX jerome: isn't repr() enough ? or json.dumps ?
-# XXX use a set
-#creates a light coded form of the ant and tests it
-def checkIfAntTested(ant):
-    #code the ant in a lighter string form
-    codedAnt=''
-    for key in ant:
-        codedAnt+=ant[key]
-    #if it already exists return true so that it will not be tested
-    if codedAnt in G.CodedAnstsList:
-        return True
-    #else add it to the list and return false
-    else:
-        G.CodedAnstsList.append(codedAnt)
-        return False 
 
 
 class Simulation(DefaultSimulation):
@@ -88,7 +71,7 @@ class Simulation(DefaultSimulation):
   def run(self, data):
     data = self._setWIP(data)
 
-    G.CodedAnstsList=[]       # a list to keep all the solutions in a coded form
+    tested_ants = set()
     start=time.time()         # start counting execution time 
 
     # the list of options collated into a dictionary for ease of referencing in ManPy
@@ -99,13 +82,16 @@ class Simulation(DefaultSimulation):
 
     ants = [] #list of ants for keeping track of their performance
 
-    for i in range(10): #Number of times new ants are to be created, i.e. number of generations (a generation can have more than 1 ant)
+    for i in range(10): # Number of times new ants are to be created, i.e. number of generations (a generation can have more than 1 ant)
         for j in range(20): #number of ants created per generation
             ant = {} # an ant dictionary to contain rule to queue assignment information 
             for k in collated.keys(): #for each of the machines, rules are randomly picked from the options list 
                 ant[str(k)] = random.choice(collated[str(k)])
-            #if the ant was not already tested, only then test it
-            if not checkIfAntTested(ant):
+            ant_key = repr(ant)
+            # if the ant was not already tested, only then test it
+            if ant_key not in tested_ants:
+                tested_ants.add(ant_key)
+
                 ants.append(ant) #the current ant to be simulated (evaluated) is added to the ants list            
 
                 # set scheduling rule on queues based on ant data
