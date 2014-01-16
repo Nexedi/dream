@@ -59,13 +59,12 @@ class MouldAssemble(MachinePreemptive):
         # we need the new entity's route, priority, isCritical flag, etc. 
         mouldToBeAssembled = activeObjectQueue[0].order
         del activeObjectQueue[:]
+        # after assembling reset the capacity
+        activeObject.updateCapacity(1)
+        # append the mould entity to the internal Queue
         activeObjectQueue.append(mouldToBeAssembled)
         mouldToBeAssembled.currentStation=self
         self.timeLastEntityEnded=now()
-        
-        # after assembling reset the capacity
-        activeObject.updateCapacity(1)
-
     # =======================================================================
     # getEntity method that gets the entity from the giver
     # it should run in a loop till it get's all the entities from the same order
@@ -136,7 +135,6 @@ class MouldAssemble(MachinePreemptive):
             return giverObject.haveToDispose(activeObject)\
                 and len(activeObjectQueue)==0\
                         
-        
         # dummy variables that help prioritise the objects requesting to give objects to the Machine (activeObject)
         isRequested=False   # isRequested is dummyVariable checking if it is requested to accept an item
         maxTimeWaiting=0    # dummy variable counting the time a predecessor is blocked
