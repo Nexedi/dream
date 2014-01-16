@@ -8,7 +8,7 @@ from Globals import G
 from dream.simulation.Default import Simulation as DefaultSimulation
 
 
-def calculateAntTotalDelay(ant):
+def calculateAntScore(ant):
     """Calculate the score of this ant.
 
     XXX Maybe this can be based on other criterions, such as completion time ?
@@ -116,7 +116,7 @@ class Simulation(DefaultSimulation):
                     ant_data["nodes"][k]['schedulingRule'] = v
 
                 ant['resultJSON'] = DefaultSimulation.run(self, ant_data)
-                ant['score'] = calculateAntTotalDelay(ant)
+                ant['score'] = calculateAntScore(ant)
 
         # The ants in this generation are ranked based on their scores and the
         # best 4 are selected
