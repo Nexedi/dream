@@ -29,6 +29,13 @@ from QueuePreemptive import QueuePreemptive
 from SimPy.Simulation import now
 
 # ===========================================================================
+# Error in the setting up of the WIP
+# ===========================================================================
+class NoCallerError(Exception):
+    def __init__(self, callerError):
+        Exception.__init__(self, callerError) 
+
+# ===========================================================================
 # the QueuePreemptive object
 # ===========================================================================
 class ConditionalBuffer(QueuePreemptive):
@@ -52,33 +59,22 @@ class ConditionalBuffer(QueuePreemptive):
         activeObjectQueue=self.getActiveObjectQueue()
         thecaller = callerObject
         # assert that the callerObject is not None
-        assert thecaller!=None, 'the caller object of the ConditionalBuffer should not be None'
-        # -------------------------------------------------------------------
+        try:
+            if callerObject:
+                thecaller = callerObject
+            else:
+                raise NoCallerError('The caller of the MouldAssemblyBuffer must be defined')
+        except NoCallerError as noCaller:
+            print 'No caller error: {0}'.format(noCaller)
         # check the length of the activeObjectQueue 
         # if the length is zero then no componentType or entity.type can be read
-        # in this case return zero
         if len(activeObjectQueue)==0:
             return False
-        # check the condition
-        if not activeObject.checkCondition():
-            return False
-#         # read the entity to be disposed
-#         activeEntity = activeObjectQueue[0]
-#         # assert that the entity.type is OrderComponent
-#         assert activeEntity.type=='OrderComponent',\
-#                  "the entity to be disposed is not of type OrderComponent"
-#         # -------------------------------------------------------------------
-#         # if the type of the component is Secondary then verify that the basics of the same Order
-#         # are already processed before disposing them to the next object
-#         if activeEntity.componentType=='Secondary'\
-#                 and (not activeEntity.order.basicsEnded):
-#             return False
-        # -------------------------------------------------------------------
         #if we have only one possible receiver just check if the receiver is the caller
-        if(len(activeObject.next)==1 or callerObject==None):
+        if(len(activeObject.next)==1):
             activeObject.receiver=activeObject.next[0]
-            return thecaller==activeObject.receiver
-        # -------------------------------------------------------------------
+            return thecaller is activeObject.receiver\
+                and activeObject.checkCondition()
         #give the entity to the possible receiver that is waiting for the most time. 
         #plant does not do this in every occasion!       
         maxTimeWaiting=0     
@@ -91,9 +87,10 @@ class ConditionalBuffer(QueuePreemptive):
                 if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
                     maxTimeWaiting=timeWaiting
                     # and update the receiver to the index of this object
-                    self.receiver=object
+                    activeObject.receiver=object
         #return True if the Queue caller is the receiver
-        return thecaller is self.receiver 
+        return thecaller is activeObject.receiver\
+            and activeObject.checkCondition()
         
     # =======================================================================
     # check weather the condition is True
@@ -106,7 +103,6 @@ class ConditionalBuffer(QueuePreemptive):
         # assert that the entity.type is OrderComponent
         assert activeEntity.type=='OrderComponent',\
                  "the entity to be disposed is not of type OrderComponent"
-        # -------------------------------------------------------------------
         # if the type of the component is Secondary then verify that the basics of the same Order
         # are already processed before disposing them to the next object
         return activeEntity.componentType=='Secondary'\
