@@ -35,7 +35,7 @@ class ConditionalBuffer(QueuePreemptive):
     # ===========================================================================
     # the __init__ function
     # ===========================================================================
-    def __init__(self, id, name, capacity=1, dummy=False, schedulingRule="CB"):
+    def __init__(self, id, name, capacity=-1, dummy=False, schedulingRule="CB"):
         # run the default method, change the schedulingRule to CB 
         # for description, check activeQSorter function of Queue coreObject 
         QueuePreemptive.__init__(self, id, name, capacity, dummy, schedulingRule)
@@ -59,17 +59,20 @@ class ConditionalBuffer(QueuePreemptive):
         # in this case return zero
         if len(activeObjectQueue)==0:
             return False
-        # read the entity to be disposed
-        activeEntity = activeObjectQueue[0]
-        # assert that the entity.type is OrderComponent
-        assert activeEntity.type=='OrderComponent',\
-                 "the entity to be disposed is not of type OrderComponent"
-        # -------------------------------------------------------------------
-        # if the type of the component is Secondary then verify that the basics of the same Order
-        # are already processed before disposing them to the next object
-        if activeEntity.componentType=='Secondary'\
-                and (not activeEntity.order.basicsEnded):
+        # check the condition
+        if not activeObject.checkCondition():
             return False
+#         # read the entity to be disposed
+#         activeEntity = activeObjectQueue[0]
+#         # assert that the entity.type is OrderComponent
+#         assert activeEntity.type=='OrderComponent',\
+#                  "the entity to be disposed is not of type OrderComponent"
+#         # -------------------------------------------------------------------
+#         # if the type of the component is Secondary then verify that the basics of the same Order
+#         # are already processed before disposing them to the next object
+#         if activeEntity.componentType=='Secondary'\
+#                 and (not activeEntity.order.basicsEnded):
+#             return False
         # -------------------------------------------------------------------
         #if we have only one possible receiver just check if the receiver is the caller
         if(len(activeObject.next)==1 or callerObject==None):
@@ -92,6 +95,21 @@ class ConditionalBuffer(QueuePreemptive):
         #return True if the Queue caller is the receiver
         return thecaller is self.receiver 
         
-    
+    # =======================================================================
+    # check weather the condition is True
+    # ======================================================================= 
+    def checkCondition(self):
+        activeObject = self.getActiveObject()
+        activeObjectQueue = activeObject.getActiveObjectQueue()
+        # read the entity to be disposed
+        activeEntity = activeObjectQueue[0]
+        # assert that the entity.type is OrderComponent
+        assert activeEntity.type=='OrderComponent',\
+                 "the entity to be disposed is not of type OrderComponent"
+        # -------------------------------------------------------------------
+        # if the type of the component is Secondary then verify that the basics of the same Order
+        # are already processed before disposing them to the next object
+        return activeEntity.componentType=='Secondary'\
+                and (activeEntity.order.basicsEnded)
     
     

@@ -89,6 +89,8 @@ from ScheduledMaintenance import ScheduledMaintenance
 from Failure import Failure
 from Order import Order
 from OrderDecomposition import OrderDecomposition
+from ConditionalBuffer import ConditionalBuffer
+from MouldAssemblyBuffer import MouldAssemblyBuffer
 
 import ExcelHandler
 import time
@@ -163,6 +165,9 @@ def createObjects():
     G.MachinePreemptiveList=[]
     G.QueuePreemptiveList=[]
     G.OrderDecompositionList=[]
+    G.ConditionalBufferList=[]
+    G.MouldAssemblyBufferList=[]
+    G.MouldAssemblyList=[]
     
     # -----------------------------------------------------------------------
     #                loop through all the model resources 
@@ -646,6 +651,57 @@ def createObjects():
             OD=OrderDecomposition(id, name)
             G.OrderDecompositionList.append(OD)
             G.ObjList.append(OD)
+            
+        elif objClass=='Dream.ConditionalBuffer':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            CB=ConditionalBuffer(id, name)
+            CB.nextIds=getSuccessorList(id)
+            G.QueueList.append(CB)
+            G.QueuePreemptiveList.append(CB)
+            G.ConditionalBufferList.append(CB)
+            G.ObjList.append(CB)
+            
+        elif objClass=='Dream.MouldAssemblyBuffer':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            MAB=MouldAssemblyBuffer(id, name)
+            MAB.nextIds=getSuccessorList(id)
+            G.QueueList.append(MAB)
+            G.QueuePreemptiveList.append(MAB)
+            G.MouldAssemblyBufferList.append(MAB)
+            G.ObjList.append(MAB)
+            
+        elif objClass=='Dream.MouldAssembly':
+            from MouldAssembly import MouldAssembly
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            processingTime=element.get('processingTime',{})
+            distributionType=processingTime.get('distributionType', 'not found')
+            mean=float(processingTime.get('mean', '0'))  
+            stdev=float(processingTime.get('stdev', '0'))  
+            min=float(processingTime.get('min', '0')) 
+            max=float(processingTime.get('max', '0'))
+            failures=element.get('failures', {})  
+            failureDistribution=failures.get('failureDistribution', 'not found')
+            MTTF=float(failures.get('MTTF', '0'))   
+            MTTR=float(failures.get('MTTR', '0')) 
+            availability=float(failures.get('availability', '0'))  
+            resetOnPreemption=bool(int(element.get('resetOnPreemption', '0')))            
+            
+            r='None'
+            for repairman in G.RepairmanList:                   # check which repairman in the G.RepairmanList
+                if(id in repairman.coreObjectIds):              # (if any) is assigned to repair 
+                    r=repairman                                 # the machine with ID equal to id
+                    
+            MA=MouldAssembly(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
+                                                    MTTF=MTTF, MTTR=MTTR, availability=availability, repairman=r,
+                                                    mean=mean,stdev=stdev,min=min,max=max, resetOnPreemption=resetOnPreemption)
+            MA.nextIds=getSuccessorList(id)                      # update the nextIDs list of the machine
+            G.MachinePreemptiveList.append(MA)                   # add machine to global MachinePreemptiveList
+            G.MachineList.append(MA)                             # add machine to global MachineList
+            G.MouldAssemblyList.append(MA)
+            G.ObjList.append(MA)                                 # add machine to ObjList
             
     # -----------------------------------------------------------------------
     #                loop through all the nodes to  

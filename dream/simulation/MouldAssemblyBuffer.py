@@ -36,7 +36,7 @@ class MouldAssemblyBuffer(QueuePreemptive):
     # ===========================================================================
     # the __init__ function
     # ===========================================================================
-    def __init__(self, id, name, capacity=1, dummy=False, schedulingRule="MAB"):
+    def __init__(self, id, name, capacity=-1, dummy=False, schedulingRule="MAB"):
         # run the default method, change the schedulingRule to 'MAB'
         # for description, check activeQSorter function of Queue coreObject 
         QueuePreemptive.__init__(self, id, name, capacity, dummy, schedulingRule)
