@@ -26,11 +26,25 @@ inherits from MachinePreemptive. It takes the components of an order and reassem
 '''
 from MachinePreemptive import MachinePreemptive
 from SimPy.Simulation import reactivate, now
+from Globals import G
+
+# =======================================================================
+# Error in the assembling of the mould
+# =======================================================================
+class AssembleMouldError(Exception):
+    def __init__(self, mouldAssembleError):
+        Exception.__init__(self, mouldAssembleError) 
 
 # ===========================================================================
 # the MachineJobShop object
 # ===========================================================================
 class MouldAssemble(MachinePreemptive):
+    # =======================================================================
+    # the initialize method
+    # =======================================================================
+    def initialize(self):
+        self.mouldToBeAssembled = None        # the mould to be assembled
+        MachinePreemptive.initialize(self)    #run default behaviour
     
     # =======================================================================
     # method that updates the capacity according to the componentsList of the 
@@ -57,14 +71,30 @@ class MouldAssemble(MachinePreemptive):
                 are not of the same parent order!'
         # if we have to create a new Entity (mould) this should be modified
         # we need the new entity's route, priority, isCritical flag, etc. 
-        mouldToBeAssembled = activeObjectQueue[0].order
+        self.mouldToBeAssembled = activeObjectQueue[0].order
+        # assert that there is a parent order
+        assert self.mouldToBeAssembled.type=='Order', 'the type of the assembled mould is not correct'
+        # delete the contents of the internal queue
         del activeObjectQueue[:]
         # after assembling reset the capacity
         activeObject.updateCapacity(1)
-        # append the mould entity to the internal Queue
-        activeObjectQueue.append(mouldToBeAssembled)
-        mouldToBeAssembled.currentStation=self
-        self.timeLastEntityEnded=now()
+        #if there is a mould to be assembled
+        try:
+            if self.mouldToBeAssembled:
+                import Globals
+                Globals.setWIP(mouldToBeAssembled)     #set the new mould as WIP
+                # append the mould entity to the internal Queue
+                activeObjectQueue.append(self.mouldToBeAssembled)
+                activeObjectQueue[0].currentStation=self
+                #reset attributes
+                self.mouldToBeAssembled = None
+                # return the assembled mould
+                return activeObjectQueue[0]
+            else:
+                raise AssembleMouldError('There is no mould to be assembled')
+        except AssembleMouldError as mouldError:
+            print 'Mould Assembly Error: {0}'.format(mouldError)
+            
     # =======================================================================
     # getEntity method that gets the entity from the giver
     # it should run in a loop till it get's all the entities from the same order
