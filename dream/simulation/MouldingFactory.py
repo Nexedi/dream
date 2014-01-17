@@ -95,7 +95,7 @@ class Simulation(DefaultSimulation):
             # options list
             for k in collated.keys():
                 ant[k] = random.choice(collated[k])
-
+            # TODO: function to calculate ant id. Store ant id in ant dict
             ant_key = repr(ant)
             # if the ant was not already tested, only then test it
             if ant_key not in tested_ants:
@@ -142,5 +142,7 @@ class Simulation(DefaultSimulation):
     print "execution time=", str(time.time()-start)
 
     # TODO: return multiple results in the GUI
-    # return [ant['resultJSON'] for ant in ants]
+    # { ant_key: {'score': 108, 'resultJSON': ..},
+    #   ant2_key: {'score': 108, 'resultJSON': ..},
+    # }
     return DefaultSimulation.run(self, data)
