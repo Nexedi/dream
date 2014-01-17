@@ -1,0 +1,144 @@
+{
+  "edges": {
+    "con_10": [
+      "Q2", 
+      "M2", 
+      {}
+    ], 
+    "con_15": [
+      "Q1", 
+      "M1", 
+      {}
+    ]
+  }, 
+  "general": {
+    "confidenceLevel": "0.95", 
+    "maxSimTime": "2000", 
+    "numberOfReplications": "1", 
+    "processTimeout": "2000", 
+    "simulationClass": "MouldingFactory",
+    "comment": "Compare by changing scheduling rule of Q1 LPT or EDD"
+  }, 
+  "nodes": {
+    "E1": {
+      "_class": "Dream.ExitJobShop", 
+      "element_id": "DreamNode_1"
+    }, 
+    "M1": {
+      "_class": "Dream.MachineJobShop", 
+      "element_id": "DreamNode_2", 
+      "failures": {
+        "MTTF": "40", 
+        "MTTR": "10", 
+        "failureDistribution": "No", 
+        "repairman": "None"
+      }, 
+      "processingTime": {
+        "distributionType": "Fixed", 
+        "max": "1", 
+        "mean": "0.9", 
+        "min": "0.1", 
+        "stdev": "0.1"
+      }
+    }, 
+    "M2": {
+      "_class": "Dream.MachineJobShop", 
+      "element_id": "DreamNode_3", 
+      "failures": {
+        "MTTF": "40", 
+        "MTTR": "10", 
+        "failureDistribution": "No", 
+        "repairman": "None"
+      }, 
+      "processingTime": {
+        "distributionType": "Fixed", 
+        "max": "1", 
+        "mean": "0.9", 
+        "min": "0.1", 
+        "stdev": "0.1"
+      }
+    }, 
+    "Q1": {
+      "_class": "Dream.QueueJobShop", 
+      "capacity": "1", 
+      "element_id": "DreamNode_4", 
+      "isDummy": "0", 
+      "name": "Q1", 
+      "schedulingRule": "EDD"
+    }, 
+    "Q2": {
+      "_class": "Dream.QueueJobShop", 
+      "capacity": "1", 
+      "element_id": "DreamNode_5", 
+      "isDummy": "0", 
+      "schedulingRule": "FIFO"
+    }
+  }, 
+  "preference": {
+    "coordinates": {
+      "E1": {
+        "left": 0.5, 
+        "top": 0.16666666666666663
+      }, 
+      "M1": {
+        "left": 0.8636363636363636, 
+        "top": 0.8333333333333334
+      }, 
+      "M2": {
+        "left": 0.13636363636363635, 
+        "top": 0.8333333333333334
+      }, 
+      "Q1": {
+        "left": 0.8635117182798322, 
+        "top": 0.16642106881541613
+      }, 
+      "Q2": {
+        "left": 0.13565460363009282, 
+        "top": 0.16642106881541613
+      }
+    }, 
+    "zoom_level": 0.99999
+  }, 
+  "spreadsheet": [
+    [
+      "Jobs", 
+      "ID", 
+      "Order Date", 
+      "Due Date", 
+      "Priority", 
+      "Material", 
+      "Sequence", 
+      "Processing Times"
+    ], 
+    [
+      "J1", 
+      "J1", 
+      "2013/02/02", 
+      "2013/02/02", 
+      "2", 
+      "bla", 
+      "Q1-M1-Q2-M2", 
+      "0-10-0-30"
+    ], 
+    [
+      "J2", 
+      "J2", 
+      "2013/02/02", 
+      "2013/02/01", 
+      "2", 
+      "bla", 
+      "Q1-M1-Q2-M2", 
+      "0-40-0-20"
+    ], 
+    [
+      null, 
+      null, 
+      null, 
+      null, 
+      null, 
+      null, 
+      "", 
+      null
+    ]
+  ]
+}
