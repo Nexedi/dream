@@ -118,7 +118,7 @@ class Simulation(DefaultSimulation):
 
         # The ants in this generation are ranked based on their scores and the
         # best 4 are selected
-        ants = sorted(ants, key=operator.itemgetter('score'), reverse=True)[:4]
+        ants = sorted(ants, key=operator.itemgetter('score'))[:4]
 
         for l in ants:
             # update the options list to ensure that good performing queue-rule
