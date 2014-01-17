@@ -46,6 +46,7 @@ class QueuePreemptive(QueueJobShop):
                     self.receiver.shouldPreempt=True
                     self.receiver.preempt()
                     self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
+        return activeEntity
     
     # =======================================================================                
     # for future use

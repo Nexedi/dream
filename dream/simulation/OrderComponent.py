@@ -35,7 +35,8 @@ class OrderComponent(Job):                                  # inherits from the 
     type="OrderComponent"
     
     def __init__(self, id=None, name=None, route=[], priority=0, dueDate=None, orderDate=None, extraPropertyDict=None,
-                    componentType='Basic', order=None, requestingComponent = None, isCritical=False):
+                    componentType='Basic', order=None, requestingComponent = None, 
+                    readyForAssembly = 0, isCritical=False):
         Job.__init__(self, id, name, route, priority, dueDate, orderDate, extraPropertyDict)
         self.auxiliaryList=[]       # Holds the auxiliary components that the component needs for a certain processing
         self.order=order            # parent order of the order component
@@ -45,3 +46,5 @@ class OrderComponent(Job):                                  # inherits from the 
         # the requestingComponent is the component that needs the auxiliary component during its processing
         # the auxiliary component should then be added to the requestingComponent's auxiliaryList
         self.requestingComponent = requestingComponent  # the id of the requesting component
+        self.readyForAssembly = readyForAssembly        # flag informing weather the component was received
+                                                        #     by the MouldAssembleBuffer
