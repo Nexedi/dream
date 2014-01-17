@@ -30,12 +30,19 @@ from QueuePreemptive import QueuePreemptive
 from SimPy.Simulation import now
 
 # ===========================================================================
+# Error in the setting up of the WIP
+# ===========================================================================
+class NoCallerError(Exception):
+    def __init__(self, callerError):
+        Exception.__init__(self, callerError) 
+
+# ===========================================================================
 # the MouldAssemblyBuffer object
 # ===========================================================================
 class MouldAssemblyBuffer(QueuePreemptive):
-    # ===========================================================================
+    # =======================================================================
     # the __init__ function
-    # ===========================================================================
+    # =======================================================================
     def __init__(self, id, name, capacity=-1, dummy=False, schedulingRule="MAB"):
         # run the default method, change the schedulingRule to 'MAB'
         # for description, check activeQSorter function of Queue coreObject 
@@ -50,23 +57,39 @@ class MouldAssemblyBuffer(QueuePreemptive):
         activeObject = self.getActiveObject()
         activeObjectQueue = activeObject.getActiveObjectQueue()
         activeEntity=QueuePreemptive.getEntity(self)   #execute default behaviour
-        
-        # check if all the basics have finished being processed
-        # if the componentType of the activeEntity just received
-        # is 'Basic' then go through the components of its parent order
-        # to check weather they are present in activeObjectQueue
-        if activeEntity.componentType=='Basic':
-            # local variable to notify when all the basics are received
-            allBasicsPresent = True
-            # run through all the basicComponentsList
-            for entity in activeEntity.order.basicComponentsList:
-                # if a basic is not present then set the local variable False and break
-                if not (entity in activeObjectQueue):
-                    allBasicsPresent = False
+        # if the activeEntity is of type orderComponent
+        try:
+            if activeEntity.componentType=='Basic' or 'Secondary':
+                activeEntity.readyForAssembly==1
+            # check if all the basics have finished being processed in the previous machines
+            # if the componentType of the activeEntity just received is 'Basic', 
+            # go through the components of its parent order
+            # and check if they are present in the activeObjectQueue
+            if activeEntity.componentType=='Basic':
+                # local variable to notify when all the basics are received
+                allBasicsPresent = True
+                # run through all the basicComponentsList
+                for entity in activeEntity.order.basicComponentsList:
+                    # if a basic is not present then set the local variable False and break
+                    if not (entity in activeObjectQueue):
+                        allBasicsPresent = False
+                        break
+                # if all are present then basicsEnded
+                if allBasicsPresent:
+                    activeEntity.order.basicsEnded = 1
+            # for all the components that have the same parent Order as the activeEntity
+            activeEntity.order.componentsReadyForAssembly = 1
+            for entity in activeEntity.order.basicComponentsList+\
+                            activeEntity.order.secondaryComponentsList:
+            # if one of them has not reach the Buffer yet,
+                if not entity.readyForAssembly:
+            # the mould is not ready for assembly
+                    activeEntity.order.componentsReadyForAssembly = 0
                     break
-            # if all are present then basicsEnded
-            if allBasicsPresent:
-                activeEntity.order.basicsEnded = 1
+        # if the activeEntity is of type Order
+        except:
+            pass
+        return activeEntity
     
     # =======================================================================
     # checks if the Buffer can dispose an entity. 
@@ -78,70 +101,43 @@ class MouldAssemblyBuffer(QueuePreemptive):
         # get active object and its queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        thecaller = callerObject
-        # assert that the callerObject is not None
-        assert thecaller!=None, 'the caller object of the MouldAssemblyBuffer should not be None'
-        
-        thecallerQueue = callerObject.getActiveObjectQueue()
-        # -------------------------------------------------------------------
+        try:
+            if callerObject:
+                thecaller = callerObject
+            else:
+                raise NoCallerError('The caller of the MouldAssemblyBuffer must be defined')
+        except NoCallerError as noCaller:
+            print 'No caller error: {0}'.format(noCaller)
         # check the length of the activeObjectQueue 
         # if the length is zero then no componentType or entity.type can be read
         if len(activeObjectQueue)==0:
             return False
-        # read the entity to be disposed
-        activeEntity = activeObjectQueue[0]
-        # assert that the entity.type is OrderComponent
-        assert activeEntity.type=='OrderComponent',\
-                 "the entity to be disposed is not of type OrderComponent"
-        # assert that the entity.componentType is Basic or Secondary
-        assert activeEntity.componetType=='Secondary' or 'Basic',\
-                 "the entity to be disposed is not Basic or Secondary component"
-        # -------------------------------------------------------------------
-        # check if the basics of the same parent order are already processed before disposing them to the next object
-        # for all the components that have the same parent Order as the activeEntity
-        for entity in activeEntity.order.basicComponentsList+\
-                        activeEntity.order.secondaryComponentsList:
-            # if one of them is not present in the activeObjectQueue or the caller's activeObjectQueue, return false 
-            if not (entity in activeObjectQueue+thecallerQueue):
-                return False
-        # if the previous check is passed and all the needed components are present and ready for the MouldAssembly
-        # then set the flag componentsReadyForAssembly to True (1)
-        activeEntity.order.componentsReadyForAssembly = 1
-        # -------------------------------------------------------------------
-        #if we have only one possible receiver just check if the caller is the receiver
-        if(len(activeObject.next)==1 or callerObject==None):
+        activeEntity = activeObjectQueue[0]                             # read the entity to be disposed
+        if(len(activeObject.next)==1):  #if we have only one possible receiver 
             activeObject.receiver=activeObject.next[0]
-            # get the internal queue of the receiver
+        else:                           # otherwise,
+            maxTimeWaiting=0            #give the entity to the possible receiver that is waiting for the most time.
+            for object in activeObject.next:                            # loop through the object in the successor list
+                if(object.canAccept(activeObject)):                     # if the object can accept
+                    timeWaiting=now()-object.timeLastEntityLeft
+                    if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# check the time that it has been waiting
+                        maxTimeWaiting=timeWaiting
+                        activeObject.receiver=object                    # and update the receiver
+        # if the receiverQueue cannot be read, return False
+        try:
             receiverQueue = activeObject.receiver.getActiveObjectQueue()
-            # if the successors (MouldAssembly) internal queue is empty then proceed with checking weather
-            # the caller is the receiver
-            if len(receiverQueue)==0:
-                return thecaller==activeObject.receiver
-            # otherwise, check additionally if the receiver holds orderComponents of the same order
-            else:
-                return thecaller==activeObject.receiver\
-                        and receiverQueue[0].order==activeObjectQueue[0].order
-        # -------------------------------------------------------------------
-        #give the entity to the possible receiver that is waiting for the most time. 
-        #plant does not do this in every occasion!       
-        maxTimeWaiting=0     
-        # loop through the object in the successor list
-        for object in activeObject.next:
-            # if the object can accept 
-            if(object.canAccept(activeObject)):
-                timeWaiting=now()-object.timeLastEntityLeft
-                # compare the time that it has been waiting with the others'
-                if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
-                    maxTimeWaiting=timeWaiting
-                    # and update the receiver to the index of this object
-                    activeObject.receiver=object
-        # get the internal queue of the receiver
-        receiverQueue = activeObject.receiver.getActiveObjectQueue()
+        except:
+            return False
         # if the successors (MouldAssembly) internal queue is empty then proceed with checking weather
         # the caller is the receiver
         if len(receiverQueue)==0:
-            return thecaller==activeObject.receiver
+            if activeEntity.type=='Order':
+                return thecaller is activeObject.receiver
+            else:
+                return thecaller is activeObject.receiver\
+                        and activeEntity.order.componentsReadyForAssembly
         # otherwise, check additionally if the receiver holds orderComponents of the same order
         else:
-            return thecaller==activeObject.receiver\
-                    and receiverQueue[0].order==activeObjectQueue[0].order
+            return thecaller is activeObject.receiver\
+                    and receiverQueue[0].order is activeObjectQueue[0].order\
+                    and activeEntity.order.componentsReadyForAssembly
