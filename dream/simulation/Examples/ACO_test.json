@@ -13,7 +13,7 @@
   }, 
   "general": {
     "confidenceLevel": "0.95", 
-    "maxSimTime": "2000", 
+    "maxSimTime": "-1",
     "numberOfReplications": "1", 
     "processTimeout": "2000", 
     "simulationClass": "MouldingFactory",
