@@ -330,13 +330,6 @@
 
               // display demo graph.
               $("#graph_zone").show();
-
-              // temporary hack
-              var now = new Date();
-              now.setHours(0);
-              now.setMinutes(0);
-              now.setSeconds(0);
-
               var blockage_data = [],
                 waiting_data = [],
                 failure_data = [],
@@ -356,32 +349,19 @@
                     "Step No."
                   ]
                 ],
-                start_date = new Date(now.getTime()),
                 gantt_data = {
-                  data: [
-                  {
-                    id: "by_job",
-                    text: "By Job",
-                    start_date: start_date,
-                    duration: 0,
-                    project: 1,
-                    open: true
-                  },
-                  {
-                    id: "by_station",
-                    text: "By Station",
-                    start_date: start_date,
-                    duration: 0,
-                    project: 1,
-                    open: true
-                  }
-                  ],
+                  data: [],
                   link: []
                 };
 
+              // temporary hack
+              var now = new Date();
+              now.setHours(0);
+              now.setMinutes(0);
+              now.setSeconds(0);
 
               $.each(data['success'].elementList, function (idx, obj) {
-                if (obj.results !== undefined && obj.results.working_ratio !== undefined) {
+                if (obj.results.working_ratio !== undefined) {
                   /* when there is only one replication, the ratio is given as a float,
                       otherwise we have a mapping avg, min max */
                   if (obj.results.blockage_ratio !== undefined) {
@@ -412,14 +392,14 @@
                 if (obj._class === 'Dream.Job') {
                   var property_dict = obj.extraPropertyDict;
                   var duration = 0;
+                  var start_date = new Date(now.getTime());
                   gantt_data.data.push({
                     id: obj['id'],
                     text: property_dict['name'],
                     start_date: start_date,
                     duration: obj['results'].completionTime,
                     project: 1,
-                    open: false,
-                    parent: "by_job"
+                    open: true
                   });
                   $.each(obj['results']['schedule'], function (i, schedule) {
                     spreadsheet_data.push([
@@ -448,25 +428,7 @@
                         duration: duration,
                         parent: obj['id']
                       });
-                      gantt_data.data.push({
-                        id: 'job.' + obj['id'] + '.' + schedule['stepNumber'],
-                        text: obj['id'],
-                        start_date: task_start_date,
-                        duration: duration,
-                        parent: schedule['stationId'],
-                        by_station:1,
-                      });
-                    };
-                  });
-                } else {
-                  gantt_data.data.push({
-                    id: obj['id'],
-                    text: obj['id'],
-                    start_date: now,
-                    duration: 0,
-                    project: 1,
-                    open: false,
-                    parent: "by_station"
+                    }
                   });
                 }
               });
@@ -518,7 +480,6 @@
                 try {
                   gantt.clearAll();
                 } catch (e) {}
-
                 var gantt_output_height = 35 * (gantt_data.data.length + 1) + 1;
                 $('#gantt_output').height(gantt_output_height).show().dhx_gantt({
                   data: gantt_data,

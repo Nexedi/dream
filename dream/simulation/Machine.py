@@ -280,7 +280,10 @@ class Machine(CoreObject):
     # checks if the machine down or it can dispose the object
     # =======================================================================
     def ifCanDisposeOrHaveFailure(self):
-        return self.Up==False or self.getReceiverObject().canAccept(self) or len(self.getActiveObjectQueue())==0  
+        try:
+            return self.Up==False or self.getReceiverObject().canAccept(self) or len(self.getActiveObjectQueue())==0  
+        except AttributeError:
+            return False
   
     # =======================================================================
     # removes an entity from the Machine
