@@ -106,7 +106,10 @@ def runSimulation():
     process.join()
     return jsonify(dict(error='Timeout after %s seconds' % timeout))
 
-  return jsonify(queue.get())
+  result = queue.get()
+  app.logger.debug("resulth:\n%s" % (json.dumps(result,
+                                                sort_keys=True, indent=2)))
+  return jsonify(result)
 
 def _runSimulation(parameter_dict, queue):
   try:
