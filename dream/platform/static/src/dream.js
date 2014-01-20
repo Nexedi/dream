@@ -264,6 +264,206 @@
         });
     };
 
+    that.displayResult = function (result) {
+      $("#graph_zone").show();
+      $("#spreadsheet_output").show();
+      $("#gantt_output").show();
+
+      // temporary hack
+      var now = new Date();
+      now.setHours(0);
+      now.setMinutes(0);
+      now.setSeconds(0);
+
+      var blockage_data = [],
+        waiting_data = [],
+        failure_data = [],
+        working_data = [],
+        ticks = [],
+        counter = 1,
+        spreadsheet_data = [
+          [
+            "Jobs",
+            "ID",
+            "Order Date",
+            "Due Date",
+            "Priority",
+            "Material",
+            "Entrance Time",
+            "Station ID",
+            "Step No."
+          ]
+        ],
+        start_date = new Date(now.getTime()),
+        gantt_data = {
+          data: [
+          {
+            id: "by_job",
+            text: "By Job",
+            start_date: start_date,
+            duration: 0,
+            project: 1,
+            open: true
+          },
+          {
+            id: "by_station",
+            text: "By Station",
+            start_date: start_date,
+            duration: 0,
+            project: 1,
+            open: true
+          }
+          ],
+          link: []
+        };
+      $.each(result.elementList, function (idx, obj) {
+        if (obj.results !== undefined && obj.results.working_ratio !== undefined) {
+          /* when there is only one replication, the ratio is given as a float,
+              otherwise we have a mapping avg, min max */
+          if (obj.results.blockage_ratio !== undefined) {
+            blockage_data.push([counter, obj.results.blockage_ratio
+              .avg || obj.results.blockage_ratio
+            ]);
+          } else {
+            blockage_data.push([counter, 0.0]);
+          }
+          waiting_data.push([counter, obj.results.waiting_ratio.avg ||
+            obj.results.waiting_ratio
+          ]);
+          if (obj.results.failure_ratio !== undefined) {
+            failure_data.push([counter, obj.results.failure_ratio
+              .avg || obj.results.failure_ratio
+            ]);
+          } else {
+            failure_data.push([counter, 0.0]);
+          }
+          working_data.push([counter, obj.results.working_ratio.avg ||
+            obj.results.working_ratio
+          ]);
+          ticks.push([counter, that.getData().nodes[
+            obj.id].name || obj.id]);
+          counter++;
+        }
+
+        if (obj._class === 'Dream.Job') {
+          var property_dict = obj.extraPropertyDict;
+          var duration = 0;
+          gantt_data.data.push({
+            id: obj['id'],
+            text: property_dict['name'],
+            start_date: start_date,
+            duration: obj['results'].completionTime,
+            project: 1,
+            open: false,
+            parent: "by_job"
+          });
+          $.each(obj['results']['schedule'], function (i, schedule) {
+            spreadsheet_data.push([
+              property_dict['name'],
+              obj['id'],
+              property_dict['order_date'],
+              property_dict['due_date'],
+              property_dict['priority'],
+              property_dict['material'],
+              schedule['entranceTime'],
+              schedule['stationId'],
+              schedule['stepNumber']
+            ]);
+            if (obj['results']['schedule'][i + 1]) {
+              duration = obj['results']['schedule'][i + 1]['entranceTime'] - schedule['entranceTime'];
+            } else {
+              duration = obj['results'].completionTime - schedule['entranceTime'];
+            }
+            if (duration > 0.0) {
+              var task_start_date = new Date(start_date.getTime());
+              task_start_date.setDate(task_start_date.getDate() + schedule['entranceTime']);
+              gantt_data.data.push({
+                id: obj['id'] + '.' + schedule['stepNumber'],
+                text: schedule['stationId'],
+                start_date: task_start_date,
+                duration: duration,
+                parent: obj['id']
+              });
+              gantt_data.data.push({
+                id: 'job.' + obj['id'] + '.' + schedule['stepNumber'],
+                text: obj['id'],
+                start_date: task_start_date,
+                duration: duration,
+                parent: schedule['stationId'],
+                by_station:1
+              });
+            }
+          });
+        } else {
+          gantt_data.data.push({
+            id: obj['id'],
+            text: obj['id'],
+            start_date: now,
+            duration: 0,
+            project: 1,
+            open: false,
+            parent: "by_station"
+          });
+        }
+      });
+
+      var series = [{
+        label: "Working",
+        data: working_data
+      }, {
+        label: "Waiting",
+        data: waiting_data
+      }, {
+        label: "Failures",
+        data: failure_data
+      }, {
+        label: "Blockage",
+        data: blockage_data
+      }];
+
+      var options = {
+        xaxis: {
+          minTickSize: 1,
+          ticks: ticks
+        },
+        yaxis: {
+          max: 100
+        },
+        series: {
+          bars: {
+            show: true,
+            barWidth: 0.9,
+            align: "center"
+          },
+          stack: true
+        }
+      };
+      $.plot("#graph", series, options);
+
+      if (spreadsheet_data.length > 1) {
+        var spreadsheet = $('#spreadsheet_output');
+        spreadsheet.show();
+        spreadsheet.handsontable({
+          data: spreadsheet_data,
+          readOnly: true
+        });
+        spreadsheet.find('.htCore').width(spreadsheet.width());
+        gantt.templates.task_class = function (start, end, obj) {
+          return obj.parent ? "sub_task" : "";
+        };
+        try {
+          gantt.clearAll();
+        } catch (e) {}
+
+        var gantt_output_height = 35 * (gantt_data.data.length + 1) + 1;
+        $('#gantt_output').height(gantt_output_height).show().dhx_gantt({
+          data: gantt_data,
+          scale_unit: 'day',
+          readonly: true,
+          step: 7
+        });
+      }
+    };
     return that;
   };
 
