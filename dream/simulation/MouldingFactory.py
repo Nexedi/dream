@@ -15,7 +15,7 @@ def calculateAntScore(ant):
     XXX Maybe this can be based on other criterions, such as completion time ?
     """
     totalDelay=0    #set the total delay to 0
-    jsonData=json.loads(ant['resultJSON'])  #read the result as JSON
+    jsonData=ant['result']  #read the result as JSON
     elementList = jsonData['elementList']   #find the route of JSON
     #loop through the elements
     for element in elementList:
@@ -113,7 +113,7 @@ class Simulation(DefaultSimulation):
                     ant_data["nodes"][k]['schedulingRule'] = v
 
                 # TODO: those two steps have to be parallelized
-                ant['resultJSON'] = DefaultSimulation.run(self, ant_data)
+                ant['result'] = DefaultSimulation.run(self, ant_data)
                 ant['score'] = calculateAntScore(ant)
 
         # The ants in this generation are ranked based on their scores and the
@@ -131,11 +131,12 @@ class Simulation(DefaultSimulation):
                 collated[m].append(l[m])
 
     result_count = min(4, len(ants))
+    print repr(ants)
     print '%s best results :' % result_count
     for i in range(result_count):
         ant = ants[i]
         displayed_ant = copy(ant)
-        displayed_ant.pop('resultJSON')
+        displayed_ant.pop('result')
         print '================='
         print displayed_ant
 

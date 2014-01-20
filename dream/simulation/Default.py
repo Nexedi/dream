@@ -6,4 +6,4 @@ class Simulation:
     self.logger = logger
 
   def run(self, data):
-    return simulate_line_json(input_data=json.dumps(data))
+    return json.loads(simulate_line_json(input_data=json.dumps(data)))

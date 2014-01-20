@@ -114,7 +114,7 @@ def _runSimulation(parameter_dict, queue):
       parameter_dict['general']['simulationClass']
     klass = __import__(klass_name, globals(), {}, klass_name)
     result = klass.Simulation(logger=app.logger).run(parameter_dict)
-    queue.put(dict(success=json.loads(result)))
+    queue.put(dict(success=result))
   except Exception, e:
     tb = traceback.format_exc()
     app.logger.error(tb)
