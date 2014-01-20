@@ -356,3 +356,13 @@ path {
   background-color: #3DD388;
   border-color: #28B06C;
 }
+
+li.result {
+  width: 100%;
+  text-align: left;
+  cursor:pointer;
+}
+
+li.result.active {
+  background:#fcc;
+}

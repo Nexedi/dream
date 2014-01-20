@@ -324,12 +324,21 @@
       function (e) {
         dream_instance.runSimulation(
           function (data) {
+            $('#result_list').empty();
             if (data['success']) {
               $("#json_result").val(JSON.stringify(data['success'],
                 undefined, " "));
-
-              dream_instance.displayResult(data['success'][0]['result']);
+              $.each(data['success'], function (idx, obj) {
+                $('#result_list').append('<li class="result">' + idx + ' : ' + obj['key'] + '</li>');
+                $('#result_list').children().last().click(
+                  function (e) {
+                    dream_instance.displayResult(idx);
+                  }
+                );
+              });
+              dream_instance.displayResult(0);
             } else {
+              $("#result_zone").hide();
               $("#graph_zone").hide();
               $("#spreadsheet_output").hide();
               $("#gantt_output").hide();
@@ -408,6 +417,7 @@
       dream_instance.redraw();
     });
 
+    $("#result_zone").hide();
     $("#graph_zone").hide();
     $("#spreadsheet_output").hide();
     $("#gantt_output").hide();
