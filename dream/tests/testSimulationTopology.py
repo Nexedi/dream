@@ -57,14 +57,14 @@ class SimulationTopology(TestCase):
     # Slightly change the output to make it stable
     del result_data["general"]["totalExecutionTime"]
     result_data["elementList"].sort(key=lambda x: x["id"])
-    stable_result = json.dumps(result_data, indent=True)
+    stable_result = json.dumps(result_data, indent=True, sort_keys=True)
     dump_path = os.path.join(self.dump_folder_path, "%s.result" % filename)
     if bool(os.environ.get("dump", False)):
       dump_file = open(dump_path, 'w')
       dump_file.write(stable_result)
       dump_file.close()
     dump_file = open(dump_path, "r")
-    dump_result = dump_file.read()
+    dump_result = json.dumps(json.loads(dump_file.read()), indent=True, sort_keys=True)
     dump_file.close()
     self.assertEquals(stable_result, dump_result, "outputs are different")
 
