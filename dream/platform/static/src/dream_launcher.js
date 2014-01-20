@@ -329,8 +329,8 @@
               $("#json_result").val(JSON.stringify(data['success'],
                 undefined, " "));
               $.each(data['success'], function (idx, obj) {
-                $('#result_list').append('<li class="result">' + idx + ' : ' + obj['key'] + '</li>');
-                $('#result_list').children().last().click(
+                $('#result_list').append('<li class="result"></li>');
+                $('#result_list').children().last().text(idx + ' : ' + obj['score'] + ' ' + obj['key']).click(
                   function (e) {
                     dream_instance.displayResult(idx);
                   }
