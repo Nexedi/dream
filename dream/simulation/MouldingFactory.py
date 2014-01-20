@@ -30,6 +30,8 @@ def calculateAntScore(ant):
 
 class Simulation(DefaultSimulation):
 
+  max_results = 4
+
   def _setWIP(self, in_data):
     """ Set the WIP in queue from spreadsheet data.
     """
@@ -112,13 +114,14 @@ class Simulation(DefaultSimulation):
                     # property to change (instead of hardcoding schedulingRule)
                     ant_data["nodes"][k]['schedulingRule'] = v
 
+                ant['key'] = ant_key
                 # TODO: those two steps have to be parallelized
                 ant['result'] = DefaultSimulation.run(self, ant_data)
                 ant['score'] = calculateAntScore(ant)
 
         # The ants in this generation are ranked based on their scores and the
-        # best 4 are selected
-        ants = sorted(ants, key=operator.itemgetter('score'))[:4]
+        # best (max_results) are selected
+        ants = sorted(ants, key=operator.itemgetter('score'))[:self.max_results]
 
         for l in ants:
             # update the options list to ensure that good performing queue-rule
@@ -130,20 +133,12 @@ class Simulation(DefaultSimulation):
                 # selected by the next ants.
                 collated[m].append(l[m])
 
-    result_count = min(4, len(ants))
-    print repr(ants)
-    print '%s best results :' % result_count
-    for i in range(result_count):
-        ant = ants[i]
-        displayed_ant = copy(ant)
-        displayed_ant.pop('result')
+    # print repr(ants)
+    print '%s best results :' % len(ants)
+    for ant in ants:
         print '================='
-        print displayed_ant
+        print repr({'key':ant['key'], 'score':ant['score']})
 
     print "execution time=", str(time.time()-start)
 
-    # TODO: return multiple results in the GUI
-    # { ant_key: {'score': 108, 'resultJSON': ..},
-    #   ant2_key: {'score': 108, 'resultJSON': ..},
-    # }
-    return DefaultSimulation.run(self, data)
+    return ants
