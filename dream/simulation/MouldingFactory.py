@@ -60,7 +60,7 @@ class Simulation(DefaultSimulation):
                   "distributionType": "Fixed",
                   "mean": processing_time_list[i],
                   },
-                "stationId": sequence_list[i],
+                "stationIdsList": sequence_list[i].split(','),
                 "stepNumber": i
               } for i in xrange(len(sequence_list))]
           }
