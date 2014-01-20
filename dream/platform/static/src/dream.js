@@ -265,8 +265,8 @@
     };
 
     that.displayResult = function (idx) {
-      $('li.result').removeClass('active')
-      $($('li.result')[idx]).addClass('active')
+      $('li.result').removeClass('active');
+      $($('li.result')[idx]).addClass('active');
       var result = JSON.parse($("#json_result").val())[idx]['result'];
       $("#result_zone").show();
       $("#graph_zone").show();
