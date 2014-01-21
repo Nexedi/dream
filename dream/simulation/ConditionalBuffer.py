@@ -57,7 +57,7 @@ class ConditionalBuffer(QueuePreemptive):
         # get active object and its queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        thecaller = callerObject
+
         # assert that the callerObject is not None
         try:
             if callerObject:

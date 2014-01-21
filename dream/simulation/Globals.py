@@ -133,7 +133,7 @@ def setWIP(entityList):
             object.getActiveObjectQueue().append(entity)        #append the entity to its Queue
             entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
         # if the entity is of type Job/OrderComponent/Order
-        elif entity.type=='Job' or 'OrderComponent' or 'Order':
+        elif entity.type=='Job' or 'OrderComponent' or 'Order' or 'Mould':
             # find the list of starting station of the entity
             currentObjectIds=entity.remainingRoute[0].get('stationIdsList',[])
             # if the list of starting stations has length greater than one then there is a starting WIP definition error 

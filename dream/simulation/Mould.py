@@ -34,8 +34,15 @@ from Job import Job
 class Mould(Job):                                  # inherits from the Job class   
     type="Mould"
     
-    def __init__(self, id=None, name=None, route=[], priority=0, dueDate=None, orderDate=None, extraPropertyDict=None,
-                    order=None, isCritical=False):
+    def __init__(self, id=None, 
+                 name=None, 
+                 route=[], 
+                 priority=0, 
+                 dueDate=None, 
+                 orderDate=None, 
+                 extraPropertyDict=None,
+                 order=None, 
+                 isCritical=False):
         Job.__init__(self, id, name, route, priority, dueDate, orderDate, extraPropertyDict)
         self.order=order            # parent order of the order component
         self.isCritical=isCritical  # this should be self.order.isCritical. Added now for testing

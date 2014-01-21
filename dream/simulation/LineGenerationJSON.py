@@ -88,6 +88,7 @@ from OrderComponent import OrderComponent
 from ScheduledMaintenance import ScheduledMaintenance
 from Failure import Failure
 from Order import Order
+from Mould import Mould
 from OrderDecomposition import OrderDecomposition
 from ConditionalBuffer import ConditionalBuffer
 from MouldAssemblyBuffer import MouldAssemblyBuffer
@@ -193,9 +194,9 @@ def createObjects():
             name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
             capacity = int(element.get('capacity', '1'))            # get the capacity of the el. / defautl '1'
             O = Operator(element_id, name, capacity)                # create an operator object
-            O.coreObjectIds=getSuccessorList(id)                    # update the list of objects that the operator operates
-                                                                    # calling the getSuccessorList() method on the operator
-            G.OperatorsList.append(O)                               # add the repairman to the RepairmanList
+            O.coreObjectIds=getSuccessorList(id)                	# update the list of objects that the operator operates
+																	# calling the getSuccesorList() method on the operator
+            G.OperatorsList.append(O)                               # add the operator to the RepairmanList
         elif resourceClass=='Dream.OperatorPool':
             id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
             name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
@@ -209,10 +210,10 @@ def createObjects():
                 OP = OperatorPool(element_id, name, capacity)       # create a operatorPool object
             else:
                 OP = OperatorPool(element_id, name, capacity,operatorsList)     # create a operatorPool object
-            OP.coreObjectIds=getSuccessorList(id)                   # update the list of objects that the operators of the operatorPool operate
+            OP.coreObjectIds=getSuccessorList(id)                   # update the list of objects that the operators of the operatorPool operate            
             for operator in operatorsList.values():
-                operator.coreObjectIds=OP.coreObjectIds             # update the list of objects that the operators operate
-            G.OperatorPoolsList.append(OP)                          # add the repairman to the RepairmanList
+                operator.coreObjectIds=OP.coreObjectIds        		# update the list of objects that the operators operate
+            G.OperatorPoolsList.append(OP)                          # add the operatorPool to the RepairmanList
     # -----------------------------------------------------------------------
     #                    loop through all the elements    
     #                    read the data and create them
@@ -818,6 +819,7 @@ def createWIP():
     G.PartList=[]
     G.OrderComponentList=[]
     G.OrderList=[]
+    G.MouldList=[]
     
     json_data = G.JSONData
     #Read the json data
@@ -834,7 +836,9 @@ def createWIP():
                 priority=int(entity.get('priority', '0'))
                 dueDate=float(entity.get('dueDate', '0'))
                 orderDate=float(entity.get('orderDate', '0'))
-                isCritical=bool(int(entity.get('isCritical', '0')))  
+                componentType=entity.get('componentType', 'not found')
+                isCritical=bool(int(entity.get('isCritical', '0'))) 
+                readyForAssembly=bool(int(entity.get('readyForAssembly', '0'))) 
                 JSONRoute=entity.get('route', [])                  # dummy variable that holds the routes of the jobs
                                                                     #    the route from the JSON file 
                                                                     #    is a sequence of dictionaries
@@ -872,13 +876,65 @@ def createWIP():
                         route.append({'stationIdsList':[exitId],\
                                       'processingTime':{}})
                 # initiate the job
-                OC=OrderComponent(id, name, route, priority=priority, dueDate=dueDate,
-                    orderDate=orderDate, extraPropertyDict=extraPropertyDict, isCritical=isCritical)
+                OC=OrderComponent(id, name, route, priority=priority, dueDate=dueDate,orderDate=orderDate,
+                                  componentType=componentType, readyForAssembly=readyForAssembly,
+                                  isCritical=isCritical, extraPropertyDict=extraPropertyDict)
                 G.OrderComponentList.append(OC)
                 G.JobList.append(OC)   
                 G.WipList.append(OC)  
                 G.EntityList.append(OC)    
+            
+            elif entityClass=='Dream.Mould':
+                id=entity.get('id', 'not found')
+                name=entity.get('name', 'not found')
+                priority=int(entity.get('priority', '0'))
+                dueDate=float(entity.get('dueDate', '0'))
+                orderDate=float(entity.get('orderDate', '0'))
+                isCritical=bool(int(entity.get('isCritical', '0'))) 
+                JSONRoute=entity.get('route', [])                  # dummy variable that holds the routes of the jobs
+                                                                    #    the route from the JSON file 
+                                                                    #    is a sequence of dictionaries
+                route = [None for i in range(len(JSONRoute))]       #    variable that holds the argument used in the Job initiation
+                                                                    #    hold None for each entry in the 'route' list
+                
+                for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
+                    stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
+                    route[stepNumber]=routeentity
+                
+                # keep a reference of all extra properties passed to the job
+                extraPropertyDict = {}
+                for key, value in entity.items():
+                  if key not in ('_class', 'id'):
+                    extraPropertyDict[key] = value
 
+                #Below it is to assign an exit if it was not assigned in JSON
+                #have to talk about it with NEX
+                exitAssigned=False
+                for element in route:
+#                     elementId=element[0]
+                    elementIds = element.get('stationIdsList',[])
+                    for obj in G.ObjList:
+                        for elementId in elementIds:
+                            if obj.id==elementId and obj.type=='Exit':
+                                exitAssigned=True 
+                if not exitAssigned:
+                    exitId=None
+                    for obj in G.ObjList:
+                        if obj.type=='Exit':
+                            exitId=obj.id
+                            break
+                    if exitId:
+#                         route.append([exitId, 0])
+                        route.append({'stationIdsList':[exitId],\
+                                      'processingTime':{}})
+                # initiate the job
+                M=Mould(id, name, route, priority=priority, dueDate=dueDate,orderDate=orderDate,
+                                  isCritical=isCritical, extraPropertyDict=extraPropertyDict)
+                G.MouldList.append(M)
+                G.JobList.append(M)   
+                G.WipList.append(M)  
+                G.EntityList.append(M)
+            
             elif entityClass=='Dream.Job':
                 id=entity.get('id', 'not found')
                 name=entity.get('name', 'not found')
@@ -947,6 +1003,7 @@ def createWIP():
                 orderDate=float(entity.get('orderDate', '0'))
                 isCritical=bool(int(entity.get('isCritical', '0')))  
                 basicsEnded=bool(int(entity.get('basicsEnded', '0'))) 
+                componentsReadyForAssembly = bool((entity.get('componentsReadyForAssembly', '0')))
                 # read the manager ID
                 manager=entity.get('manager', None)
                 # if a manager ID is assigned then search for the operator with the corresponding ID
@@ -996,9 +1053,10 @@ def createWIP():
                                             {'distributionType':'Fixed',\
                                              'mean':'0'}})
                 # initiate the Order
-                O=Order(id, name, route, priority=priority, dueDate=dueDate,
+                O=Order(id, name, route, priority=priority, dueDate=dueDate,orderDate=orderDate,
                         isCritical=isCritical, basicsEnded=basicsEnded, manager=manager, componentsList=componentsList,
-                        orderDate=orderDate, extraPropertyDict=extraPropertyDict)
+                        componentsReadyForAssembly=componentsReadyForAssembly, extraPropertyDict=extraPropertyDict)
+#                 G.JobList.append(O)
                 G.OrderList.append(O)   
                 G.WipList.append(O)  
                 G.EntityList.append(O)                     
