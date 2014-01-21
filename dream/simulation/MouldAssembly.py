@@ -24,6 +24,22 @@ Created on 16 Jan 2014
 '''
 inherits from MachinePreemptive. It takes the components of an order and reassembles them as mould
 '''
+
+'''
+the mould should be described in the componentList of the parent order 
+as a dictionary with the following layout if the mould is not already in WIP
+{
+    "_class": "Dream.OrderComponent",
+    "id": "C1",
+    "name": "Component1",
+    "isCritical": "1",
+    "processingTime": {
+        "distributionType": "Fixed",
+        "mean": "0"
+    }
+}
+TODOs: check the case when a mould is already in the WIP by the beginning of the simulation
+'''
 from MachinePreemptive import MachinePreemptive
 from SimPy.Simulation import reactivate, now
 from Globals import G
@@ -43,8 +59,64 @@ class MouldAssemble(MachinePreemptive):
     # the initialize method
     # =======================================================================
     def initialize(self):
-        self.mouldToBeAssembled = None        # the mould to be assembled
-        MachinePreemptive.initialize(self)    #run default behaviour
+        self.mouldParent = None                 # the mould's to be assembled parent order
+        self.mouldToBeCreated = None            # the mould to be assembled
+        MachinePreemptive.initialize(self)      # run default behaviour
+        
+    # =======================================================================
+    # getEntity method that gets the entity from the giver
+    # it should run in a loop till it get's all the entities from the same order
+    # (with the flag componentsReadyForAssembly set)
+    # it is run only once, and receives all the entities to be assembled inside a while loop
+    # =======================================================================
+    def getEntity(self):
+        activeObject = self.getActiveObject()
+        giverObejct = activeObject.getGiverObject()
+        # get the first entity from the predecessor
+        activeEntity=MachinePreemptive.getEntity(self)
+        # check weather the activeEntity is of type Mould
+        if activeEntity.type=='Mould':
+            # and return the mould received
+            return activeEntity
+        # otherwise, collect all the entities to be assembled
+        
+        # read the number of basic and secondary components of the moulds
+        capacity = len(activeEntity.order.basicComponentsList\
+                       +activeEntity.order.secondaryComponentsList)
+        # clear the active object queue
+        del activeObjectQueue[:]
+        # and set the capacity of the internal queue of the assembler
+        activeObject.updateCapacity(capacity)
+        # append the activeEntity to the activeObjectQueue
+        activeObjectQueue = activeObject.getActiveObjectQueue()
+        activeObjectQueue.append(activeEntity)
+        # dummy variable to inform when the sum of needed components is received 
+        # before the assembly-processing
+        orderGroupReceived = False
+        # all the components are received at the same time
+        while not orderGroupReceived:
+            # get the next component
+            activeEntity=MachinePreemptive.getEntity(self)
+            # check weather the activeEntity is of type Mould
+            try:
+                if activeEntity.type=='Mould':
+            # and return the mould received
+                    raise AssembleMouldError('Having already received an orderComponent the assembler\
+                                                is not supposed to receive an object of type Mould')
+            # check if the last component received has the same parent order as the previous one
+                elif not (activeEntity.order is activeObjectQueue[1].order):
+                    raise AssembleMouldError('The orderComponents received by the assembler must have the\
+                                                same parent order')
+            except AssembleMouldError as mouldError:
+                print 'Mould Assembly Error: {0}'.format(mouldError)
+                return False
+            # if the length of the internal queue is equal to the updated capacity
+            if len(activeObject.getActiveObjectQueue())==self.capacity:
+            # then exit the while loop
+                orderGroupReceived=True
+        # perform the assembly-action and return the assembled mould
+        activeEntity = activeObject.assemble()
+        return activeEntity
     
     # =======================================================================
     # method that updates the capacity according to the componentsList of the 
@@ -71,23 +143,30 @@ class MouldAssemble(MachinePreemptive):
                 are not of the same parent order!'
         # if we have to create a new Entity (mould) this should be modified
         # we need the new entity's route, priority, isCritical flag, etc. 
-        self.mouldToBeAssembled = activeObjectQueue[0].order
+        self.mouldParent = activeObjectQueue[0].order
         # assert that there is a parent order
-        assert self.mouldToBeAssembled.type=='Order', 'the type of the assembled mould is not correct'
+        assert self.mouldParent.type=='Order', 'the type of the assembled to be mould\' s parent is not correct'
         # delete the contents of the internal queue
         del activeObjectQueue[:]
         # after assembling reset the capacity
         activeObject.updateCapacity(1)
         #if there is a mould to be assembled
         try:
-            if self.mouldToBeAssembled:
+            if self.mouldParent:
+                # find the component which is of type Mould
+                for entity in mouldParent.componentsList:
+                    entityClass=entity.get('_class', None)
+                    if entityClass=='Dream.Mould':
+                        self.mouldToBeCreated=entity
+                        break
+                # create the mould
+                self.createMould(self.mouldToBeCreated)
+                # set the created mould as WIP
                 import Globals
-                Globals.setWIP(mouldToBeAssembled)     #set the new mould as WIP
-                # append the mould entity to the internal Queue
-                activeObjectQueue.append(self.mouldToBeAssembled)
-                activeObjectQueue[0].currentStation=self
-                #reset attributes
-                self.mouldToBeAssembled = None
+                Globals.setWIP([self.mouldToBeCreated])
+                # reset attributes
+                self.mouldParent = None
+                self.mouldToBeCreated = None
                 # return the assembled mould
                 return activeObjectQueue[0]
             else:
@@ -96,40 +175,60 @@ class MouldAssemble(MachinePreemptive):
             print 'Mould Assembly Error: {0}'.format(mouldError)
             
     # =======================================================================
-    # getEntity method that gets the entity from the giver
-    # it should run in a loop till it get's all the entities from the same order
-    # (with the flag componentsReadyForAssembly set)
+    # creates the mould
     # =======================================================================
-    def getEntity(self):
-        activeObject = self.getActiveObject()
-        giverObejct = activeObject.getGiverObject()
-        giverObjectQueue = giverObject.getActiveObjectQueue()
-        # read the number of basic and secondary components of the moulds
-        capacity = len(giverObjectQueue[0].order.basicComponentsList\
-                       +giverObjectQueue[0].order.secondaryComponentsList)
-        # and set the capacity of the internal queue of the assembler
-        activeObject.updateCapacity(capacity)
-        # dummy variable to inform when the sum of needed components is received 
-        # before the assembly-processing
-        orderGroupReceived = False
-        # the current activeEntity of the assembler
-        activeEntity = None
-        # loop till all the requested components are gathered
-        # all the components are received at the same time
-        while not orderGroupReceived:
-            if not (activeEntity is None):
-                assert activeEntity.order==giverObjectQueue[0].order,\
-                    'the next Entity to be received by the MouldAssembly\
-                     must have the same parent order as the activeEntity of the assembler' 
-            # get the following component
-            activeEntity=MachinePreemptive.getEntity(self)
-            # if the length of the internal queue is equal to the updated capacity
-            if len(activeObject.getActiveObjectQueue())==self.capacity:
-            # then exit the while loop
-                orderGroupReceived=True
-        # perform the assembly-action and return the assembled mould
-        activeEntity = activeObject.assemble()
-        return activeEntity
+    def createMould(self, component):
+        #read attributes from the json or from the orderToBeDecomposed
+        id=component.get('id', 'not found')
+        name=component.get('name', 'not found')
+        try:
+            # read the processing time of the mould in the mouldInjection station
+            processingTime=component.get('processingTime','not found')
+            distType=processingTime.get('distributionType','not found')
+            procTime=float(processingTime.get('mean', 0))
+            # TODOs: update when there is an object list with the moulding stations
+            nextIds=[] # 
+            # variable that holds the argument used in the Job initiation hold None for each entry in the 'route' list
+            route = []
+            # create a route for the mouldToBeCreated
+            route.insert(0, {'stationIdsList':[str(self.id)],'processingTime':{}})
+            # insert the moulding stations' List to the route of the mould with the corresponding processing times
+            if nextIds!=[]:
+                route.append({'stationIdsList':[str(nextIds)],'processingTime':{'distributionType':str(distType),\
+                                                                                'mean':str(procType)}})
+            # assign an exit to the route of the mould 
+            exitId=None
+            for obj in G.ObjList:
+                if obj.type=='Exit':
+                    exitId=obj.id
+                    break
+            if exitId:
+                route.append({'stationIdsList':[str(exitId)],'processingTime':{}})
+            # keep a reference of all extra properties passed to the job
+            extraPropertyDict = {}
+            for key, value in component.items():
+                if key not in ('_class', 'id'):
+                    extraPropertyDict[key] = value
+            # create and initiate the OrderComponent
+            from Mould import Mould
+            M=Mould(id, name, route, \
+                              priority=self.mouldParent.priority, \
+                              order=self.mouldParent,\
+                              dueDate=self.mouldParent.dueDate, \
+                              orderDate=self.mouldParent.orderDate, \
+                              extraPropertyDict=extraPropertyDict,\
+                              isCritical=self.mouldParent.isCritical)
+            # update the mouldToBeCreated
+            self.mouldToBeCreated=M
+            G.JobList.append(M)
+            G.WipList.append(M)
+            G.EntityList.append(M)
+            G.MouldList.append(M)
+            #initialize the component
+            M.initialize()
+        except:
+            # added for testing
+            print 'the mould to be created', component.get('name', 'not found'), 'cannot be created', 'time', now()
         
     # =======================================================================
     # check if the assemble can accept an entity
