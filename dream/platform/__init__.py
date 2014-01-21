@@ -107,26 +107,44 @@ def runSimulation():
     return jsonify(dict(error='Timeout after %s seconds' % timeout))
 
   result = queue.get()
-  app.logger.debug("resulth:\n%s" % (json.dumps(result,
-                                                sort_keys=True, indent=2)))
+  app.logger.debug("result\n%s" % (json.dumps(result,
+                                            sort_keys=True, indent=2)))
   return jsonify(result)
 
 def _runSimulation(parameter_dict, queue):
   try:
-    klass_name = 'dream.simulation.%s' % \
-      parameter_dict['general']['simulationClass']
-    klass = __import__(klass_name, globals(), {}, klass_name)
-    result = klass.Simulation(logger=app.logger).run(parameter_dict)
+    result = getGUIInstance().run(parameter_dict)
     queue.put(dict(success=result))
   except Exception, e:
     tb = traceback.format_exc()
     app.logger.error(tb)
     queue.put(dict(error=tb))
 
+def getGUIInstance():
+    # XXX do not instanciate each time!
+    klass_name = 'dream.simulation.GUI.Default'
+    if len(sys.argv) > 1:
+      klass_name = 'dream.simulation.GUI.%s' % sys.argv[1]
+    klass = __import__(klass_name, globals(), {}, klass_name)
+    instance = klass.Simulation(logger=app.logger)
+    return instance
+
+@app.route("/getConfigurationDict")
+def getConfigurationDict():
+  return jsonify(getGUIInstance().getConfigurationDict())
+
+@app.route("/getOutputIdList", methods=["POST", "OPTIONS"])
+def getOutputIdList():
+  return jsonify(getGUIInstance().getOutputIdList())
+
+@app.route("/getInputIdList", methods=["POST", "OPTIONS"])
+def getInputIdList():
+  return jsonify(getGUIInstance().getInputIdList())
 
 def main(*args):
   # start the server
-  file_handler = logging.FileHandler(os.path.join(os.path.dirname(__file__), '..', '..', 'log', 'dream.log'))
+  file_handler = logging.FileHandler(
+    os.path.join(os.path.dirname(__file__), '..', '..', 'log', 'dream.log'))
   file_handler.setLevel(logging.DEBUG)
   app.logger.addHandler(file_handler)
   app.run(debug=True)
@@ -139,7 +157,6 @@ def run(*args):
   _runSimulation(input_data, queue)
   output_data = queue.get()
   print json.dumps(output_data, indent=True)
-
 
 if __name__ == "__main__":
   main()

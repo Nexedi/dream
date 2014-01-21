@@ -27,198 +27,17 @@
       applicationname: "dream"
     });
 
-    var property_container = {
-      entity: {
-        id: "entity",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "Part"
-      },
-      // XXX is it possible not to repeat id ?
-      mean: {
-        id: "mean",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "0.9"
-      },
-      distributionType: {
-        id: "distributionType",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "Fixed"
-      },
-      stdev: {
-        id: "stdev",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "0.1"
-      },
-      min: {
-        id: "min",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "0.1"
-      },
-      max: {
-        id: "max",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "1"
-      },
-      failureDistribution: {
-        id: "failureDistribution",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "No"
-      },
-      MTTF: {
-        id: "MTTF",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "40"
-      },
-      MTTR: {
-        id: "MTTR",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "10"
-      },
-      repairman: {
-        id: "repairman",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "None"
-      },
-      isDummy: {
-        id: "isDummy",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "0"
-      },
-      schedulingRule: {
-        id: "schedulingRule",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "FIFO"
-      },
-      capacity: {
-        id: "capacity",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "1"
-      },
-      simulationClass: {
-        id: "simulationClass",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "Default"
-      },
-      numberOfReplications: {
-        id: "numberOfReplications",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "10"
-      },
-      maxSimTime: {
-        id: "maxSimTime",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "100"
-      },
-      confidenceLevel: {
-        id: "confidenceLevel",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "0.5"
-      },
-      processTimeout: {
-        id: "processTimeout",
-        type: "string",
-        _class: "Dream.Property",
-        _default: "0.5"
-      }
-    };
-    property_container["interarrivalTime"] = {
-      id: "interarrivalTime",
-      property_list: [property_container["mean"], property_container[
-        "distributionType"]],
-      _class: "Dream.PropertyList"
-    };
-    property_container["processingTime"] = {
-      id: "processingTime",
-      property_list: [property_container["mean"], property_container[
-          "distributionType"],
-        property_container["stdev"], property_container["min"],
-        property_container["max"]
-      ],
-      _class: "Dream.PropertyList"
-    };
-    property_container["failures"] = {
-      id: "failures",
-      property_list: [property_container["failureDistribution"],
-        property_container["MTTF"],
-        property_container["MTTR"], property_container["repairman"]
-      ],
-      _class: "Dream.PropertyList"
-    };
+    var configuration = { };
 
-    var configuration = {
-      "Dream-Source": {
-        property_list: [property_container["interarrivalTime"],
-          property_container["entity"]
-        ],
-        _class: 'Dream.Source'
-      },
-      "Dream-Machine": {
-        property_list: [property_container["processingTime"],
-          property_container["failures"]
-        ],
-        _class: 'Dream.Machine'
-      },
-      "Dream-Queue": {
-        property_list: [property_container["capacity"],
-          property_container["isDummy"],
-          property_container["schedulingRule"]
-        ],
-        _class: 'Dream.Queue'
-      },
-      "Dream-Exit": {
-        _class: 'Dream.Exit'
-      },
-      "Dream-MachineJobShop": {
-        property_list: [property_container["processingTime"],
-          property_container["failures"]
-        ],
-        _class: 'Dream.MachineJobShop'
-      },
-      "Dream-QueueJobShop": {
-        property_list: [property_container["capacity"],
-          property_container["isDummy"],
-          property_container["schedulingRule"]
-        ],
-        _class: 'Dream.QueueJobShop'
-      },
-      "Dream-ExitJobShop": {
-        _class: 'Dream.ExitJobShop'
-      },
-      "Dream-Repairman": {
-        property_list: [property_container["capacity"]],
-        _class: 'Dream.Repairman'
-      },
-      "Dream-Configuration": {
-        property_list: [
-          property_container["simulationClass"],
-          property_container["numberOfReplications"],
-          property_container["maxSimTime"],
-          property_container["confidenceLevel"],
-          property_container["processTimeout"]
-        ],
-        _class: 'Dream.Repairman'
-      }
-    };
+    $.ajax(
+      '/getConfigurationDict', {
+       success: function (data) {
+         configuration = $.extend(configuration, data);
+         console.log(configuration);
 
     dream_instance = Dream(configuration);
     dream_instance.start();
+
     $(".tool").draggable({
       containment: '#main',
       opacity: 0.7,
@@ -416,11 +235,11 @@
     $(window).resize(function () {
       dream_instance.redraw();
     });
-
     $("#result_zone").hide();
     $("#graph_zone").hide();
     $("#spreadsheet_output").hide();
     $("#gantt_output").hide();
-
+       }
+    });
   });
 })(jQuery);

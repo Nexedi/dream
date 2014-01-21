@@ -4,7 +4,7 @@ import time
 import random
 import operator
 
-from dream.simulation.Default import Simulation as DefaultSimulation
+from dream.simulation.GUI.Default import Simulation as DefaultSimulation
 
 # TODO:
 #  * this class is not specific to moulding anymore. Reorganize.
