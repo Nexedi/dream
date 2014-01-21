@@ -86,7 +86,7 @@ class MouldAssemblyBuffer(QueuePreemptive):
             # the mould is not ready for assembly
                     activeEntity.order.componentsReadyForAssembly = 0
                     break
-        # if the activeEntity is of type Order
+        # if the activeEntity is of type Mould
         except:
             pass
         return activeEntity
@@ -131,12 +131,14 @@ class MouldAssemblyBuffer(QueuePreemptive):
         # if the successors (MouldAssembly) internal queue is empty then proceed with checking weather
         # the caller is the receiver
         if len(receiverQueue)==0:
-            if activeEntity.type=='Order':
+            if activeEntity.type=='Mould':
                 return thecaller is activeObject.receiver
             else:
                 return thecaller is activeObject.receiver\
                         and activeEntity.order.componentsReadyForAssembly
         # otherwise, check additionally if the receiver holds orderComponents of the same order
+        # TODO: should revise, this check may be redundant, as the receiver (assembler must be empty in order to start receiving
+        # It is therefore needed that the control is performed by the assembler's getEntity() 
         else:
             return thecaller is activeObject.receiver\
                     and receiverQueue[0].order is activeObjectQueue[0].order\
