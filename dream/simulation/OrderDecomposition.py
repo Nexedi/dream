@@ -192,73 +192,81 @@ class OrderDecomposition(CoreObject):
     # creates the components
     # =======================================================================
     def createOrderComponent(self, component):
-        #read attributes fromthe json or from the orderToBeDecomposed
+        #read attributes from the json or from the orderToBeDecomposed
         id=component.get('id', 'not found')
         name=component.get('name', 'not found')
-        # variable that holds the componentType which can be Basic/Secondary/Auxiliary
-        componentType=component.get('componentType', 'Basic') 
-        # the component that needs the auxiliary (if the componentType is "Auxiliary") during its processing
-        requestingComponent = component.get('requestingComponent', 'not found') 
-        # dummy variable that holds the routes of the jobs the route from the JSON file is a sequence of dictionaries
-        JSONRoute=component.get('route', [])
-        # variable that holds the argument used in the Job initiation hold None for each entry in the 'route' list
-        route = [None for i in range(len(JSONRoute))]         
-                
-        for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
-            stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
-#             routeentity.pop(str(stepNumber),None)                              #    remove the stepNumber key
-            route[stepNumber]=routeentity
-                
-        # keep a reference of all extra properties passed to the job
-        extraPropertyDict = {}
-        for key, value in component.items():
-            if key not in ('_class', 'id'):
-                extraPropertyDict[key] = value
-
-        #Below it is to assign an exit if it was not assigned in JSON
-        #have to talk about it with NEX
-        exitAssigned=False
-        for element in route:
-#             elementId=element[0]
-            elementIds = element.get('stationIdsList',[])
-            for obj in G.ObjList:
-                for elementId in elementIds:
-                    if obj.id==elementId and obj.type=='Exit':
-                        exitAssigned=True 
-        if not exitAssigned:
-            exitId=None
-            for obj in G.ObjList:
-                if obj.type=='Exit':
-                    exitId=obj.id
-                    break
-            if exitId:
-#                 route.append([exitId, 0])
-                route.append({'stationIdsList':[str(exitId)],\
-                              'processingTime':{}})
-        
-        # initiate the OrderComponent
-        OC=OrderComponent(id, name, route, \
-                          priority=self.orderToBeDecomposed.priority, \
-                          dueDate=self.orderToBeDecomposed.dueDate, \
-                          componentType=componentType,\
-                          requestingComponent = requestingComponent, \
-                          order=self.orderToBeDecomposed,\
-                          orderDate=self.orderToBeDecomposed.orderDate, \
-                          extraPropertyDict=extraPropertyDict,\
-                          isCritical=self.orderToBeDecomposed.isCritical)
-        
-        # check the componentType of the component and accordingly add to the corresponding list of the parent order
-        if OC.componentType == 'Basic':
-            self.orderToBeDecomposed.basicComponentsList.append(OC)
-        elif OC.componentType == 'Secondary':
-            self.orderToBeDecomposed.secondaryComponentsList.append(OC)
-        else:
-            self.orderToBeDecomposed.auxiliaryComponentsList.append(OC)
-                
-        G.OrderComponentList.append(OC)
-        G.JobList.append(OC)   
-        G.WipList.append(OC)  
-        G.EntityList.append(OC)
-        self.newlyCreatedComponents.append(OC)              #keep these to pass them to setWIP
-        OC.initialize()                                     #initialize the component
-        
+        # there is the case were the component of the componentsList of the parent Order
+        # is of type Mould and therefore has no argument componentType
+        # in this case no Mould object should be initiated
+        try:
+            # variable that holds the componentType which can be Basic/Secondary/Auxiliary
+            componentType=component.get('componentType', 'Basic') 
+            # the component that needs the auxiliary (if the componentType is "Auxiliary") during its processing
+            requestingComponent = component.get('requestingComponent', 'not found') 
+            # dummy variable that holds the routes of the jobs the route from the JSON file is a sequence of dictionaries
+            JSONRoute=component.get('route', [])
+            # variable that holds the argument used in the Job initiation hold None for each entry in the 'route' list
+            route = [None for i in range(len(JSONRoute))]         
+                    
+            for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
+                stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
+    #             routeentity.pop(str(stepNumber),None)                              #    remove the stepNumber key
+                route[stepNumber]=routeentity
+                    
+            # keep a reference of all extra properties passed to the job
+            extraPropertyDict = {}
+            for key, value in component.items():
+                if key not in ('_class', 'id'):
+                    extraPropertyDict[key] = value
+    
+            #Below it is to assign an exit if it was not assigned in JSON
+            #have to talk about it with NEX
+            exitAssigned=False
+            for element in route:
+    #             elementId=element[0]
+                elementIds = element.get('stationIdsList',[])
+                for obj in G.ObjList:
+                    for elementId in elementIds:
+                        if obj.id==elementId and obj.type=='Exit':
+                            exitAssigned=True 
+            if not exitAssigned:
+                exitId=None
+                for obj in G.ObjList:
+                    if obj.type=='Exit':
+                        exitId=obj.id
+                        break
+                if exitId:
+    #                 route.append([exitId, 0])
+                    route.append({'stationIdsList':[str(exitId)],\
+                                  'processingTime':{}})
+            
+            # initiate the OrderComponent
+            OC=OrderComponent(id, name, route, \
+                              priority=self.orderToBeDecomposed.priority, \
+                              dueDate=self.orderToBeDecomposed.dueDate, \
+                              componentType=componentType,\
+                              requestingComponent = requestingComponent, \
+                              order=self.orderToBeDecomposed,\
+                              orderDate=self.orderToBeDecomposed.orderDate, \
+                              extraPropertyDict=extraPropertyDict,\
+                              isCritical=self.orderToBeDecomposed.isCritical)
+            
+            # check the componentType of the component and accordingly add to the corresponding list of the parent order
+            if OC.componentType == 'Basic':
+                self.orderToBeDecomposed.basicComponentsList.append(OC)
+            elif OC.componentType == 'Secondary':
+                self.orderToBeDecomposed.secondaryComponentsList.append(OC)
+            else:
+                self.orderToBeDecomposed.auxiliaryComponentsList.append(OC)
+                    
+            G.OrderComponentList.append(OC)
+            G.JobList.append(OC)   
+            G.WipList.append(OC)  
+            G.EntityList.append(OC)
+            self.newlyCreatedComponents.append(OC)              #keep these to pass them to setWIP
+            OC.initialize()                                     #initialize the component
+        except:
+            # added for testing
+            print 'the component of the order', sefl.orderToBeDecomposed.name, 'is of type Mould\
+                    and thus nothing is created', 'time', now()
+            

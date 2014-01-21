@@ -34,8 +34,18 @@ from Job import Job
 class Order(Job):
     type="Order"
     
-    def __init__(self, id=None, name=None, route=[], priority=0, dueDate=None, orderDate=None, isCritical=False,
-                 componentsList=[], manager=None, basicsEnded=0, componentsReadyForAssembly=0, extraPropertyDict=None):
+    def __init__(self, id=None, 
+                        name=None, 
+                        route=[], 
+                        priority=0, 
+                        dueDate=None, 
+                        orderDate=None, 
+                        isCritical=False,
+                        componentsList=[], 
+                        manager=None, 
+                        basicsEnded=0, 
+                        componentsReadyForAssembly=0, 
+                        extraPropertyDict=None):
         Job. __init__(self, id=id, name=name, route=route, priority=priority, dueDate=dueDate, orderDate=orderDate, 
                       extraPropertyDict=extraPropertyDict)
         self.isCritical=isCritical          # flag to inform weather the order is critical -> preemption

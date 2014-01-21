@@ -34,9 +34,17 @@ from Job import Job
 class OrderComponent(Job):                                  # inherits from the Job class   
     type="OrderComponent"
     
-    def __init__(self, id=None, name=None, route=[], priority=0, dueDate=None, orderDate=None, extraPropertyDict=None,
-                    componentType='Basic', order=None, requestingComponent = None, 
-                    readyForAssembly = 0, isCritical=False):
+    def __init__(self, id=None, name=None, 
+                    route=[], 
+                    priority=0, 
+                    dueDate=None, 
+                    orderDate=None, 
+                    extraPropertyDict=None,
+                    componentType='Basic', 
+                    order=None, 
+                    requestingComponent = None, 
+                    readyForAssembly = 0, 
+                    isCritical=False):
         Job.__init__(self, id, name, route, priority, dueDate, orderDate, extraPropertyDict)
         self.auxiliaryList=[]       # Holds the auxiliary components that the component needs for a certain processing
         self.order=order            # parent order of the order component
