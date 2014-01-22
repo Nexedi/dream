@@ -1,6 +1,7 @@
 import json
 from dream.simulation.LineGenerationJSON import main as simulate_line_json
 
+# describe type for properties
 schema = {
   "entity": {
     "id": "entity",
@@ -106,6 +107,7 @@ schema = {
   }
 }
 
+# complex schemas (Dream.PropertyList)
 schema["interarrivalTime"] = {
   "id": "interarrivalTime",
   "property_list": [
@@ -143,7 +145,8 @@ class Simulation(object):
     self.logger = logger
 
   def getConfigurationDict(self):
-    """Returns the possible nodes to use in the graph editor
+    """Returns the possible nodes to use in the graph editor, and the global
+    configuration.
     """
     return {
       "Dream-Source": {
@@ -193,6 +196,8 @@ class Simulation(object):
         "property_list": [schema["capacity"]],
         "_class": 'Dream.Repairman'
       },
+
+      # global configuration
       "Dream-Configuration": {
         "property_list": [
            schema["numberOfReplications"],
