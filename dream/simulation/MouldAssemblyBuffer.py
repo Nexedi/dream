@@ -40,14 +40,23 @@ class NoCallerError(Exception):
 # the MouldAssemblyBuffer object
 # ===========================================================================
 class MouldAssemblyBuffer(QueuePreemptive):
+    
+    # =======================================================================                
+    # Sort the entities of the activeQ
+    # bring the entities that are ready for assembly to the front
     # =======================================================================
-    # the __init__ function
-    # =======================================================================
-    def __init__(self, id, name, capacity=-1, dummy=False, schedulingRule="MAB"):
-        # run the default method, change the schedulingRule to 'MAB'
-        # for description, check activeQSorter function of Queue coreObject 
-        QueuePreemptive.__init__(self, id, name, capacity, dummy, schedulingRule)
-        
+    def sortEntities(self):
+        activeObject = self.getActiveObject()
+        # run the default sorting of the Queue first
+        QueuePreemptive.sortEntities(self)
+        # and in the end sort according to the ConditionalBuffer sorting rule
+        activeObjectQueue = activeObject.getActiveObjectQueue()
+        # if all the components of the same mould are present then move them to the front of the activeQ
+        activeObjectQueue.sort(key=lambda x: x.order.componentsReadyForAssembly, reverse=True)
+        # keep the first entity of the activeQ
+        activeEntity = activeObjectQueue[0]
+        # bring the entities that have the same parentOrder as the first entity to the front
+        activeObjectQueue.sort(key=lambda x: not x.order.name == activeEntity.order.name)
         
     # =======================================================================
     # extend he default so that it sets order.basicsEnded to 1

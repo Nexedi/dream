@@ -22,7 +22,7 @@ Created on 15 Jan 2014
 @author: Ioannis
 '''
 '''
-Inherits from QueuePreemptive. Checks the condition of (a) component(s) before in can dispose of them/it
+Inherits from QueuePreemptive. Checks the condition of (a) component(s) before it can dispose them/it
 '''
 
 from QueuePreemptive import QueuePreemptive
@@ -39,13 +39,6 @@ class NoCallerError(Exception):
 # the QueuePreemptive object
 # ===========================================================================
 class ConditionalBuffer(QueuePreemptive):
-    # ===========================================================================
-    # the __init__ function
-    # ===========================================================================
-    def __init__(self, id, name, capacity=-1, dummy=False, schedulingRule="CB"):
-        # run the default method, change the schedulingRule to CB 
-        # for description, check activeQSorter function of Queue coreObject 
-        QueuePreemptive.__init__(self, id, name, capacity, dummy, schedulingRule)
                     
     # =======================================================================
     # checks if the Buffer can dispose an entity. 
@@ -108,4 +101,21 @@ class ConditionalBuffer(QueuePreemptive):
         return activeEntity.componentType=='Secondary'\
                 and (activeEntity.order.basicsEnded)
     
+    # =======================================================================                
+    # sort the entities of the activeQ
+    # bring to the front the entities of componentType Basic
+    # and the entities of componentType Secondary that 
+    # have the flag basicsEnded set
+    # =======================================================================
+    def sortEntities(self):
+        activeObject = self.getActiveObject()
+        # run the default sorting of the Queue first
+        QueuePreemptive.sortEntities(self)
+        # and in the end sort according to the ConditionalBuffer sorting rule
+        activeObjectQueue = activeObject.getActiveObjectQueue()
+        # if the componentType of the entities in the activeQueue is Basic then don't move it to the end of the activeQ
+        # else if the componentType is Secondary and it's basics are not ended then move it to the back
+        activeObjectQueue.sort(key=lambda x: not ((x.componentType=='Basic')\
+                                              or ((x.order.basicsEnded)\
+                                                  and (x.componentType=='Secondary'))))
     

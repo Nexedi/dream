@@ -288,20 +288,6 @@ class Queue(CoreObject):
                         nextObject=obj
                 entity.nextQueueLength=len(nextObject.getActiveObjectQueue())           
             activeObjectQ.sort(key=lambda x: x.nextQueueLength)
-        #if the schedulingRule is set to ConditionalBuffer scheduling rule "CB" where orderComponents of type "Secondary"
-        #are moved to the end of the queue if their parent order.basicsEnded property is set to False
-        elif criterion=='CB':
-            # if the componentType is Basic then don't move it to the end of the activeQ
-            # else if the componentType is Secondary and it's basics are not ended then move it to the back
-            activeObjectQ.sort(key=lambda x: not ((x.componentType=='Basic')\
-                                                  or ((x.order.basicsEnded)\
-                                                      and (x.componentType=='Secondary'))))
-        #if the schedulingRule is set to MouldAssemblyBuffer scheduling rule "MAB" where orderComponents of the same order,
-        #whose components are all present in the activeQ of the activeObject or its successor,
-        #are moved to the beginning of the queue 
-        elif criterion=='MAB':
-            # if all the components of the same mould are present then move them to the front of the activeQ
-            activeObjectQ.sort(key=lambda x: x.order.componentsReadyForAssembly)
         else:
             assert False, "Unknown scheduling criterion %r" % (criterion, )
 
