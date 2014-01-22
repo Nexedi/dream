@@ -29,15 +29,38 @@ inherits from MachinePreemptive. It takes the components of an order and reassem
 the mould should be described in the componentList of the parent order 
 as a dictionary with the following layout if the mould is not already in WIP
 {
-    "_class": "Dream.OrderComponent",
-    "id": "C1",
-    "name": "Component1",
+    "_class": "Dream.Mould",
+    "id": "M1",
+    "name": "Mould1",
     "isCritical": "1",
     "processingTime": {
         "distributionType": "Fixed",
         "mean": "0"
-    }
+    },
+    "route": [
+        {
+            "stepNumber": "0",
+            "stationIdsList": [
+                "MA1"
+            ],                                                                # the mould assembly stations
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "3"
+            }
+        },
+        {
+            "stepNumber": "1",
+            "stationIdsList": [
+                "IM1"
+            ],                                                                # the injection moulding station
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "4.25"
+            }
+        }
+    ]
 }
+There is no need to assign an exit, exit is assigned automatically by the createMould method
 TODOs: check the case when a mould is already in the WIP by the beginning of the simulation
 '''
 from MachinePreemptive import MachinePreemptive
@@ -73,6 +96,9 @@ class MouldAssemble(MachinePreemptive):
         activeObject = self.getActiveObject()
         giverObejct = activeObject.getGiverObject()
         # get the first entity from the predecessor
+        # TODO: each machinePreemtive.getEntity is invoked, 
+        #     the self.procTime is updated. Have to decide where to assign 
+        #     the processing time of the assembler 
         activeEntity=MachinePreemptive.getEntity(self)
         # check weather the activeEntity is of type Mould
         if activeEntity.type=='Mould':
@@ -154,6 +180,7 @@ class MouldAssemble(MachinePreemptive):
         try:
             if self.mouldParent:
                 # find the component which is of type Mould
+                # there must be only one mould component
                 for entity in mouldParent.componentsList:
                     entityClass=entity.get('_class', None)
                     if entityClass=='Dream.Mould':
@@ -182,28 +209,44 @@ class MouldAssemble(MachinePreemptive):
         id=component.get('id', 'not found')
         name=component.get('name', 'not found')
         try:
-            # read the processing time of the mould in the mouldInjection station
-            processingTime=component.get('processingTime','not found')
-            distType=processingTime.get('distributionType','not found')
-            procTime=float(processingTime.get('mean', 0))
-            # TODOs: update when there is an object list with the moulding stations
-            nextIds=[] # 
+            
+            # dummy variable that holds the routes of the jobs the route from the JSON file is a sequence of dictionaries
+            JSONRoute=component.get('route', [])
             # variable that holds the argument used in the Job initiation hold None for each entry in the 'route' list
-            route = []
-            # create a route for the mouldToBeCreated
-            route.insert(0, {'stationIdsList':[str(self.id)],'processingTime':{}})
-            # insert the moulding stations' List to the route of the mould with the corresponding processing times
-            if nextIds!=[]:
-                route.append({'stationIdsList':[str(nextIds)],'processingTime':{'distributionType':str(distType),\
-                                                                                'mean':str(procType)}})
+            route = [None for i in range(len(JSONRoute))]         
+                    
+            for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
+                stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumbe
+                route[stepNumber]=routeentity
+            # assert that the assembler is in the moulds route and update the initial step of the mould's route
+            firstStep = route.pop(0)
+            assert self.id in route[0].get('stationIdsList',[]),\
+                         'the assembler must be in the mould-to-be-created route\' initial step' 
+            processingTime=firstStep.get('processingTime','not found')
+            # update the activeObject's processing time according to the readings in the mould's route
+            self.distType=processingTime.get('distributionType','not found')
+            self.procTime=float(processingTime.get('mean', 0))
+            # update the first step of the route with the activeObjects id as sole element of the stationIdsList
+            route.insert(0, {'stationIdsList':[str(self.id)],'processingTime':{'distributionType':str(self.distType),\
+                                                                               'mean':str(self.procTime)}})
+            #Below it is to assign an exit if it was not assigned in JSON
+            #have to talk about it with NEX
+            exitAssigned=False
+            for element in route:
+                elementIds = element.get('stationIdsList',[])
+                for obj in G.ObjList:
+                    for elementId in elementIds:
+                        if obj.id==elementId and obj.type=='Exit':
+                            exitAssigned=True 
             # assign an exit to the route of the mould 
-            exitId=None
-            for obj in G.ObjList:
-                if obj.type=='Exit':
-                    exitId=obj.id
-                    break
-            if exitId:
-                route.append({'stationIdsList':[str(exitId)],'processingTime':{}})
+            if not exitAssigned:
+                exitId=None
+                for obj in G.ObjList:
+                    if obj.type=='Exit':
+                        exitId=obj.id
+                        break
+                if exitId:
+                    route.append({'stationIdsList':[str(exitId)],'processingTime':{}})
             # keep a reference of all extra properties passed to the job
             extraPropertyDict = {}
             for key, value in component.items():

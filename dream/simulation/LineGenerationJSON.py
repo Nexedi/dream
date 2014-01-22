@@ -854,17 +854,31 @@ def createWIP():
                 for key, value in entity.items():
                   if key not in ('_class', 'id'):
                     extraPropertyDict[key] = value
-
-                #Below it is to assign an exit if it was not assigned in JSON
-                #have to talk about it with NEX
+                    
+                # if there is an exit assigned to the component
+                #    update the corresponding local flag
+                # TODO: have to talk about it with NEX
                 exitAssigned=False
                 for element in route:
-#                     elementId=element[0]
                     elementIds = element.get('stationIdsList',[])
                     for obj in G.ObjList:
                         for elementId in elementIds:
                             if obj.id==elementId and obj.type=='Exit':
-                                exitAssigned=True 
+                                exitAssigned=True
+                # Below it is to assign assemblers if there are any in the corresponding Global list
+                if not exitAssigned:                    
+                    if len(G.MouldAssemblyList)!=0:
+                        bufferIDlist = []
+                        assemblerIDlist = []
+                        for assemblyBuffer in G.MouldAssemblyBufferList:
+                            bufferIDlist.append(str(assemblyBuffer.id))
+                        for assembler in G.MouldAssemblyList:
+                            assemblerIDlist.append(str(assembler.id))
+                        route.append({'stationIdsList':bufferIDlist})       # assign MouldAssemblyBuffers
+                        route.append({'stationIdsList':assemblerIDlist})    # assign MouldAssemblies
+                        # if assemblers are assigned then an 'exit' is assigned
+                        exitAssigned=True
+                #Below it is to assign an exit if it was not assigned in JSON and no assemblers are already assigned
                 if not exitAssigned:
                     exitId=None
                     for obj in G.ObjList:
@@ -872,7 +886,6 @@ def createWIP():
                             exitId=obj.id
                             break
                     if exitId:
-#                         route.append([exitId, 0])
                         route.append({'stationIdsList':[exitId],\
                                       'processingTime':{}})
                 # initiate the job
