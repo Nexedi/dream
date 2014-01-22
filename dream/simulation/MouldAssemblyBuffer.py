@@ -59,8 +59,14 @@ class MouldAssemblyBuffer(QueuePreemptive):
         activeObjectQueue.sort(key=lambda x: not x.order.name == activeEntity.order.name)
         
     # =======================================================================
-    # extend he default so that it sets order.basicsEnded to 1
-    # if all the mould components are present in the activeQ
+    # extend the default so that it sets order.basicsEnded to 1
+    #     if all the mould components are present in the activeQ.
+    # In addition, check if the activeQ has received all the entities
+    #     of the same parentOrder needed to assemble the mould and set 
+    #     the corresponding componentsReadyForAssembly flag of the parentOrder.
+    # We suppose that only one MouldAssembly buffer is present in the topology
+    #     and thus there is no need to check if entities of the same parentOrder
+    #     are present in other MouldAssemblyBuffers
     # =======================================================================
     def getEntity(self):
         activeObject = self.getActiveObject()
