@@ -1,0 +1,288 @@
+{
+    "_class": "Dream.Simulation",
+    "edges": {},
+    "general": {
+        "_class": "Dream.Configuration",
+        "numberOfReplications": "1",
+        "maxSimTime": "-1",
+        "trace": "Yes",
+        "confidenceLevel": "0.95"
+    },
+    "nodes": {
+        "Q0": {
+            "_class": "Dream.QueueJobShop",
+            "name": "StartQueue",
+            "isDummy": "0",
+            "capacity": "-1",
+            "wip": [
+                {
+                    "_class": "Dream.Order",
+                    "name": "Order1",
+                    "id": "O1",
+                    "route": [
+                        {
+                            "stepNumber": "0",
+                            "stationIdsList": [
+                                "Q0"
+                            ],
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "0"
+                            }
+                        },
+                        {
+                            "stepNumber": "1",
+                            "stationIdsList": [
+                            	"M0"
+                            ],
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "1"
+                            }
+                        }
+                    ],
+                    "componentsList": [
+                        {
+                            "_class": "Dream.OrderComponent",
+                            "id": "C1",
+                            "name": "Component1",
+							"componentType": "Secondary",
+                            "route": [
+                                {
+                                    "stepNumber": "0",
+                                    "stationIdsList": [
+                                    	"OD0"
+                                    ],
+                                    "processingTime": {
+                                        "distributionType": "Fixed",
+                                        "mean": "0"
+                                    }
+                                },
+                                {
+                                    "stepNumber": "1",
+                                    "stationIdsList": [
+                                    	"CB1"
+                                    ],
+                                    "processingTime": {
+                                        "distributionType": "Fixed",
+                                        "mean": "0"
+                                    }
+                                },
+                                {
+                                    "stepNumber": "2",
+                                    "stationIdsList": [
+                                    	"M1","M2"
+                                    ],
+                                    "processingTime": {
+                                        "distributionType": "Fixed",
+                                        "mean": "2"
+                                    }
+                                },
+                                {
+                                    "stepNumber": "3",
+                                    "stationIdsList": [
+                                    	"AB1"
+                                    ],
+                                    "processingTime": {
+                                        "distributionType": "Fixed",
+                                        "mean": "0"
+                                    }
+                                },
+                                {
+                                    "stepNumber": "4",
+                                    "stationIdsList": [
+                                    	"MA1"
+                                    ],
+                                    "processingTime": {
+                                        "distributionType": "Fixed",
+                                        "mean": "0"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "_class": "Dream.OrderComponent",
+                            "id": "C2",
+                            "name": "Component2",
+							"componentType": "Basic",
+                            "route": [
+                                {
+                                    "stepNumber": "0",
+                                    "stationIdsList": [
+                                    	"OD0"
+                                    ],
+                                    "processingTime": {
+                                        "distributionType": "Fixed",
+                                        "mean": "0"
+                                    }
+                                },
+                                {
+                                    "stepNumber": "1",
+                                    "stationIdsList": [
+                                    	"CB1"
+                                    ],
+                                    "processingTime": {
+                                        "distributionType": "Fixed",
+                                        "mean": "0"
+                                    }
+                                },
+                                {
+                                    "stepNumber": "2",
+                                    "stationIdsList": [
+                                    	"M1","M2"
+                                    ],
+                                    "processingTime": {
+                                        "distributionType": "Fixed",
+                                        "mean": "1"
+                                    }
+                                },
+                                {
+                                    "stepNumber": "3",
+                                    "stationIdsList": [
+                                    	"AB1"
+                                    ],
+                                    "processingTime": {
+                                        "distributionType": "Fixed",
+                                        "mean": "0"
+                                    }
+                                },
+                                {
+                                    "stepNumber": "4",
+                                    "stationIdsList": [
+                                    	"MA1"
+                                    ],
+                                    "processingTime": {
+                                        "distributionType": "Fixed",
+                                        "mean": "0"
+                                    }
+                                }
+                            ]
+                        },
+						{
+                            "_class": "Dream.OrderComponent",
+                            "id": "C3",
+                            "name": "Component3",
+							"componentType": "Basic",
+                            "route": [
+                                {
+                                    "stepNumber": "0",
+                                    "stationIdsList": [
+                                    	"OD0"
+                                    ],
+                                    "processingTime": {
+                                        "distributionType": "Fixed",
+                                        "mean": "0"
+                                    }
+                                },
+                                {
+                                    "stepNumber": "1",
+                                    "stationIdsList": [
+                                    	"CB1"
+                                    ],
+                                    "processingTime": {
+                                        "distributionType": "Fixed",
+                                        "mean": "0"
+                                    }
+                                },
+                                {
+                                    "stepNumber": "2",
+                                    "stationIdsList": [
+                                    	"M1","M2"
+                                    ],
+                                    "processingTime": {
+                                        "distributionType": "Fixed",
+                                        "mean": "3"
+                                    }
+                                },
+                                {
+                                    "stepNumber": "3",
+                                    "stationIdsList": [
+                                    	"AB1"
+                                    ],
+                                    "processingTime": {
+                                        "distributionType": "Fixed",
+                                        "mean": "0"
+                                    }
+                                },
+                                {
+                                    "stepNumber": "4",
+                                    "stationIdsList": [
+                                    	"MA1"
+                                    ],
+                                    "processingTime": {
+                                        "distributionType": "Fixed",
+                                        "mean": "0"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "_class": "Dream.Mould",
+                            "id": "M1",
+                            "name": "Mould1",
+                            "route": [
+                                {
+                                    "stepNumber": "0",
+                                    "stationIdsList": [
+                                    	"MA1"
+                                    ],
+                                    "processingTime": {
+                                        "distributionType": "Fixed",
+                                        "mean": "1"
+                                    }
+                                },
+                                {
+                                    "stepNumber": "1",
+                                    "stationIdsList": [
+                                    	"E1"
+                                    ],
+                                    "processingTime": {
+                                        "distributionType": "Fixed",
+                                        "mean": "0"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "M0": {
+            "_class": "Dream.MachineJobShop",
+            "name": "Design"
+        },
+        "OD0": {
+            "_class": "Dream.OrderDecomposition",
+            "name": "Order Decomposition"
+        },
+        "M1": {
+            "_class": "Dream.MachineJobShop",
+            "name": "Machine1"
+        },
+		"M2": {
+            "_class": "Dream.MachineJobShop",
+            "name": "Machine2"
+        },
+        "MA1": {
+            "_class": "Dream.MouldAssembly",
+            "id": "MA1",
+            "name": "Assembly"
+        },
+        "CB1": {
+            "_class": "Dream.ConditionalBuffer",
+            "name": "Conditional Buffer",
+            "isDummy": "0"
+        },
+        "AB1": {
+            "_class": "Dream.MouldAssemblyBuffer",
+            "id": "AB1",
+            "name": "Assembly Buffer",
+            "isDummy": "0",
+            "capacity": "-1"
+        },
+        "E1": {
+            "_class": "Dream.ExitJobShop",
+            "name": "Exit"
+        }
+    }
+}
