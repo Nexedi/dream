@@ -65,6 +65,17 @@ class Job(Entity):                                  # inherits from the Entity c
             if self.schedule[-1][0].type=='Exit':
                 json['results']['completionTime']=self.schedule[-1][1]  
                 completionTime=self.schedule[-1][1]  
+            # TODO
+            # if the entity is of type Mould and the last object holding it is orderDecomposition
+            elif self.type=='Order' and self.schedule[-1][0].type=='OrderDecomposition': #
+                json['results']['completionTime']=self.schedule[-1][1]  
+                completionTime=self.schedule[-1][1]  
+            # TODO : check if there is a need for setting a different 'type' for the MouldAssembly than 'Machine'
+            #    ask Georgios if the method __class__.__name__ of finding the class type of the last step is correct
+            # if the entity is of type orderComponent and the last step in it's schedule is Assembly
+            elif self.type=='OrderComponent' and self.schedule[-1][0].__class__.__name__=='MouldAssembly':
+                json['results']['completionTime']=self.schedule[-1][1]  
+                completionTime=self.schedule[-1][1]  
             #else input "still in progress"
             else:
                 json['results']['completionTime']="still in progress"  

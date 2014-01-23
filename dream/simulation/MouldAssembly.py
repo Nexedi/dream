@@ -64,7 +64,7 @@ There is no need to assign an exit, exit is assigned automatically by the create
 TODOs: check the case when a mould is already in the WIP by the beginning of the simulation
 '''
 from MachinePreemptive import MachinePreemptive
-from SimPy.Simulation import reactivate, now
+from SimPy.Simulation import Resource, reactivate, now
 from Globals import G
 
 # =======================================================================
@@ -77,7 +77,7 @@ class AssembleMouldError(Exception):
 # ===========================================================================
 # the MachineJobShop object
 # ===========================================================================
-class MouldAssemble(MachinePreemptive):
+class MouldAssembly(MachinePreemptive):
     # =======================================================================
     # the initialize method
     # =======================================================================
@@ -110,7 +110,7 @@ class MouldAssemble(MachinePreemptive):
         capacity = len(activeEntity.order.basicComponentsList\
                        +activeEntity.order.secondaryComponentsList)
         # clear the active object queue
-        del activeObjectQueue[:]
+        del activeObject.getActiveObjectQueue()[:]
         # and set the capacity of the internal queue of the assembler
         activeObject.updateCapacity(capacity)
         # append the activeEntity to the activeObjectQueue
@@ -173,7 +173,9 @@ class MouldAssemble(MachinePreemptive):
         # assert that there is a parent order
         assert self.mouldParent.type=='Order', 'the type of the assembled to be mould\' s parent is not correct'
         # delete the contents of the internal queue
-        del activeObjectQueue[:]
+        for element in activeObjectQueue:
+            activeObjectQueue.remove(element)
+#         del activeObjectQueue[:]
         # after assembling reset the capacity
         activeObject.updateCapacity(1)
         #if there is a mould to be assembled
@@ -181,7 +183,7 @@ class MouldAssemble(MachinePreemptive):
             if self.mouldParent:
                 # find the component which is of type Mould
                 # there must be only one mould component
-                for entity in mouldParent.componentsList:
+                for entity in self.mouldParent.componentsList:
                     entityClass=entity.get('_class', None)
                     if entityClass=='Dream.Mould':
                         self.mouldToBeCreated=entity
@@ -191,6 +193,8 @@ class MouldAssemble(MachinePreemptive):
                 # set the created mould as WIP
                 import Globals
                 Globals.setWIP([self.mouldToBeCreated])
+                # read the activeObjectQueue again as it has been updated by the setWIP()
+                activeObjectQueue=activeObject.getActiveObjectQueue()
                 # reset attributes
                 self.mouldParent = None
                 self.mouldToBeCreated = None
@@ -220,9 +224,9 @@ class MouldAssemble(MachinePreemptive):
                 route[stepNumber]=routeentity
             # assert that the assembler is in the moulds route and update the initial step of the mould's route
             firstStep = route.pop(0)
-            assert self.id in route[0].get('stationIdsList',[]),\
-                         'the assembler must be in the mould-to-be-created route\' initial step' 
-            processingTime=firstStep.get('processingTime','not found')
+            assert (self.id in firstStep.get('stationIdsList',[])),\
+                         'the assembler must be in the mould-to-be-created route\' initial step'
+            processingTime=firstStep['processingTime']  
             # update the activeObject's processing time according to the readings in the mould's route
             self.distType=processingTime.get('distributionType','not found')
             self.procTime=float(processingTime.get('mean', 0))

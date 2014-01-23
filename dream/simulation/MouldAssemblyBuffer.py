@@ -40,7 +40,13 @@ class NoCallerError(Exception):
 # the MouldAssemblyBuffer object
 # ===========================================================================
 class MouldAssemblyBuffer(QueuePreemptive):
-    
+    # =======================================================================                
+    # the default __init__ method of the QueuePreemptive class
+    # whereas the default capacity is set to infinity
+    # =======================================================================
+    def __init__(self,  id, name, capacity=-1, dummy=False, schedulingRule="FIFO"):
+        QueuePreemptive.__init__(self, id=id, name=name, capacity=capacity, dummy=dummy, schedulingRule=schedulingRule)
+        
     # =======================================================================                
     # Sort the entities of the activeQ
     # bring the entities that are ready for assembly to the front
@@ -75,7 +81,7 @@ class MouldAssemblyBuffer(QueuePreemptive):
         # if the activeEntity is of type orderComponent
         try:
             if activeEntity.componentType=='Basic' or 'Secondary':
-                activeEntity.readyForAssembly==1
+                activeEntity.readyForAssembly=1
             # check if all the basics have finished being processed in the previous machines
             # if the componentType of the activeEntity just received is 'Basic', 
             # go through the components of its parent order

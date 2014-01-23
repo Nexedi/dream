@@ -38,6 +38,13 @@ from Order import Order
 from OrderComponent import OrderComponent
 
 # ===========================================================================
+# Error in the setting up of the WIP
+# ===========================================================================
+class MouldComponentException(Exception):
+    def __init__(self, mouldException):
+        Exception.__init__(self, mouldException) 
+
+# ===========================================================================
 # the Order-Decomposition Object
 # ===========================================================================
 class OrderDecomposition(CoreObject):
@@ -195,10 +202,12 @@ class OrderDecomposition(CoreObject):
         #read attributes from the json or from the orderToBeDecomposed
         id=component.get('id', 'not found')
         name=component.get('name', 'not found')
-        # there is the case were the component of the componentsList of the parent Order
-        # is of type Mould and therefore has no argument componentType
-        # in this case no Mould object should be initiated
         try:
+            # there is the case were the component of the componentsList of the parent Order
+            # is of type Mould and therefore has no argument componentType
+            # in this case no Mould object should be initiated
+            if component.get('_class', 'not found')=='Dream.Mould':
+                raise MouldComponentException('there is a mould in the componentList')
             # variable that holds the componentType which can be Basic/Secondary/Auxiliary
             componentType=component.get('componentType', 'Basic') 
             # the component that needs the auxiliary (if the componentType is "Auxiliary") during its processing
@@ -210,7 +219,6 @@ class OrderDecomposition(CoreObject):
                     
             for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
                 stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
-    #             routeentity.pop(str(stepNumber),None)                              #    remove the stepNumber key
                 route[stepNumber]=routeentity
                     
             # keep a reference of all extra properties passed to the job
@@ -265,8 +273,10 @@ class OrderDecomposition(CoreObject):
             G.EntityList.append(OC)
             self.newlyCreatedComponents.append(OC)              #keep these to pass them to setWIP
             OC.initialize()                                     #initialize the component
-        except:
-            # added for testing
-            print 'the component of the order', sefl.orderToBeDecomposed.name, 'is of type Mould\
-                    and thus nothing is created', 'time', now()
+        except MouldComponentException as mouldException:
+            pass
+#             # added for testing
+#             print 'Mould component exception: {0}'.format(mouldException)
+#             print 'the component of the order', self.orderToBeDecomposed.name, 'is of type Mould \
+#             and thus nothing is created', 'time', now()
             
