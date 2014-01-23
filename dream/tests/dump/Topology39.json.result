@@ -1,0 +1,284 @@
+{
+ "elementList": [
+  {
+   "_class": "Dream.MouldAssemblyBuffer", 
+   "id": "AB1", 
+   "schedulingRule": "FIFO"
+  }, 
+  {
+   "extraPropertyDict": {
+    "route": [
+     {
+      "stationIdsList": [
+       "OD0"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stepNumber": "0"
+     }, 
+     {
+      "stationIdsList": [
+       "Q1"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stepNumber": "1"
+     }, 
+     {
+      "stationIdsList": [
+       "M1"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "2"
+      }, 
+      "stepNumber": "2"
+     }, 
+     {
+      "stationIdsList": [
+       "AB1"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stepNumber": "3"
+     }, 
+     {
+      "stationIdsList": [
+       "MA1"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stepNumber": "4"
+     }
+    ], 
+    "name": "Component1"
+   }, 
+   "_class": "Dream.Job", 
+   "id": "C1", 
+   "results": {
+    "completionTime": 4.0, 
+    "schedule": [
+     {
+      "entranceTime": 1.0, 
+      "stationId": "OD0", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "stationId": "Q1", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "stationId": "M1", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 3.0, 
+      "stationId": "AB1", 
+      "stepNumber": 3
+     }, 
+     {
+      "entranceTime": 4.0, 
+      "stationId": "MA1", 
+      "stepNumber": 4
+     }
+    ]
+   }
+  }, 
+  {
+   "extraPropertyDict": {
+    "route": [
+     {
+      "stationIdsList": [
+       "OD0"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stepNumber": "0"
+     }, 
+     {
+      "stationIdsList": [
+       "Q1"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stepNumber": "1"
+     }, 
+     {
+      "stationIdsList": [
+       "M1"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "1"
+      }, 
+      "stepNumber": "2"
+     }, 
+     {
+      "stationIdsList": [
+       "AB1"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stepNumber": "3"
+     }, 
+     {
+      "stationIdsList": [
+       "MA1"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stepNumber": "4"
+     }
+    ], 
+    "name": "Component2"
+   }, 
+   "_class": "Dream.Job", 
+   "id": "C2", 
+   "results": {
+    "completionTime": 4.0, 
+    "schedule": [
+     {
+      "entranceTime": 1.0, 
+      "stationId": "OD0", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "stationId": "Q1", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 3.0, 
+      "stationId": "M1", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 4.0, 
+      "stationId": "AB1", 
+      "stepNumber": 3
+     }, 
+     {
+      "entranceTime": 4.0, 
+      "stationId": "MA1", 
+      "stepNumber": 4
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Exit", 
+   "id": "E1", 
+   "results": {
+    "throughput": 1, 
+    "takt_time": 5.0, 
+    "lifespan": 5.0
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "M0", 
+   "results": {
+    "working_ratio": 20.0, 
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 80.0
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "M1", 
+   "results": {
+    "working_ratio": 60.0, 
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 40.0
+   }
+  }, 
+  {
+   "extraPropertyDict": {
+    "route": [
+     {
+      "stationIdsList": [
+       "MA1"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "1"
+      }, 
+      "stepNumber": "0"
+     }, 
+     {
+      "stationIdsList": [
+       "E1"
+      ], 
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "0"
+      }, 
+      "stepNumber": "1"
+     }
+    ], 
+    "name": "Mould1"
+   }, 
+   "_class": "Dream.Job", 
+   "id": "M1", 
+   "results": {
+    "completionTime": 5.0, 
+    "schedule": [
+     {
+      "entranceTime": 4.0, 
+      "stationId": "MA1", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 5.0, 
+      "stationId": "E1", 
+      "stepNumber": 1
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "MA1", 
+   "results": {
+    "working_ratio": 20.0, 
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 80.0
+   }
+  }, 
+  {
+   "_class": "Dream.QueueJobShop", 
+   "id": "Q0", 
+   "schedulingRule": "FIFO"
+  }, 
+  {
+   "_class": "Dream.QueueJobShop", 
+   "id": "Q1", 
+   "schedulingRule": "FIFO"
+  }
+ ], 
+ "_class": "Dream.Simulation", 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}
