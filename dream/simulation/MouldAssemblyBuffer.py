@@ -133,7 +133,19 @@ class MouldAssemblyBuffer(QueuePreemptive):
         # if the length is zero then no componentType or entity.type can be read
         if len(activeObjectQueue)==0:
             return False
-        activeEntity = activeObjectQueue[0]                             # read the entity to be disposed
+        # read the entity to be disposed
+        index = 0
+        activeEntity=None
+        for index in range(len(activeObjectQueue)):
+            if activeObjectQueue[index].order.componentsReadyForAssembly:
+                activeEntity=activeObjectQueue[index]
+                break
+            index +=1
+        # if there is no entity in the activeQ that its parentOrder has the flag componentsReadyForAssembly set  
+        if not activeEntity:
+        # return false
+            return False
+#         activeEntity = activeObjectQueue[0]
         if(len(activeObject.next)==1):  #if we have only one possible receiver 
             activeObject.receiver=activeObject.next[0]
         else:                           # otherwise,
@@ -151,6 +163,7 @@ class MouldAssemblyBuffer(QueuePreemptive):
             return False
         # if the successors (MouldAssembly) internal queue is empty then proceed with checking weather
         # the caller is the receiver
+        # TODO the activeEntity is already checked for the flag componentsReadyForAssembly
         if len(receiverQueue)==0:
             if activeEntity.type=='Mould':
                 return thecaller is activeObject.receiver

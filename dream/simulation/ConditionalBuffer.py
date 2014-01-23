@@ -39,7 +39,13 @@ class NoCallerError(Exception):
 # the QueuePreemptive object
 # ===========================================================================
 class ConditionalBuffer(QueuePreemptive):
-                    
+    # =======================================================================                
+    # the default __init__ method of the QueuePreemptive class
+    # whereas the default capacity is set to infinity
+    # =======================================================================
+    def __init__(self,  id, name, capacity=-1, dummy=False, schedulingRule="FIFO"):
+        QueuePreemptive.__init__(self, id=id, name=name, capacity=capacity, dummy=dummy, schedulingRule=schedulingRule)
+        
     # =======================================================================
     # checks if the Buffer can dispose an entity. 
     # Returns True only to the potential receiver
@@ -92,14 +98,30 @@ class ConditionalBuffer(QueuePreemptive):
         activeObject = self.getActiveObject()
         activeObjectQueue = activeObject.getActiveObjectQueue()
         # read the entity to be disposed
-        activeEntity = activeObjectQueue[0]
-        # assert that the entity.type is OrderComponent
-        assert activeEntity.type=='OrderComponent',\
-                 "the entity to be disposed is not of type OrderComponent"
-        # if the type of the component is Secondary then verify that the basics of the same Order
-        # are already processed before disposing them to the next object
-        return activeEntity.componentType=='Secondary'\
-                and (activeEntity.order.basicsEnded)
+        index = 0
+        activeEntity=None
+        for index in range(len(activeObjectQueue)):
+            if activeObjectQueue[index].componentType=='Basic':
+                activeEntity=activeObjectQueue[index]
+                return True
+            elif activeObjectQueue[index].order.basicsEnded:
+                activeEntity=activeObjectQueue[index]
+                return True
+            index +=1
+        # if there is no entity in the activeQ that its parentOrder has the flag componentsReadyForAssembly set  
+        if not activeEntity:
+        # return false
+            return False
+        
+# #         activeEntity = activeObjectQueue[0]
+#         # assert that the entity.type is OrderComponent
+#         assert activeEntity.type=='OrderComponent',\
+#                  "the entity to be disposed is not of type OrderComponent"
+#         # if the type of the component is Secondary then verify that the basics of the same Order
+#         # are already processed before disposing them to the next object
+#         # TODO: the activeEntity is already checked if it has the basicsEnded flag set
+#         return activeEntity.componentType=='Secondary'\
+#                 and (activeEntity.order.basicsEnded)
     
     # =======================================================================                
     # sort the entities of the activeQ
