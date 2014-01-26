@@ -5,7 +5,8 @@ import random
 import operator
 
 from dream.simulation.GUI.Default import Simulation as DefaultSimulation
-
+from dream.simulation.Queue import Queue
+from dream.simulation.Globals import getClassFromName
 
 class Simulation(DefaultSimulation):
 
@@ -32,8 +33,6 @@ class Simulation(DefaultSimulation):
 
   def _calculateAntScore(self, ant):
     """Calculate the score of this ant.
-
-    XXX Maybe this can be based on other criterions, such as completion time ?
     """
     totalDelay=0    #set the total delay to 0
     jsonData=ant['result']  #read the result as JSON
@@ -57,10 +56,11 @@ class Simulation(DefaultSimulation):
 
     # the list of options collated into a dictionary for ease of referencing in
     # ManPy
-    collated = {'Q1': ['EDD', 'LPT', ], 'Q2': ['EDD', 'LPT', 'FIFO']}
-    # TODO: this list have to be defined in the GUI
-    # TODO: options should not be limited to scheduling rules. For example we
-    # want to try various machines of same technology
+    collated = dict()
+    for node_id, node in data['nodes'].items():
+      node_class = getClassFromName(node['_class'])
+      if issubclass(node_class, Queue):
+        collated[node_id] = list(node_class.getSupportedSchedulingRules())
 
     ants = [] #list of ants for keeping track of their performance
 

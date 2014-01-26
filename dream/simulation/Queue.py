@@ -71,10 +71,14 @@ class Queue(CoreObject):
             self.multipleCriterionList=SRlist   # hold the criteria list in the property multipleCriterionList
  
         for scheduling_rule in SRlist:
-          if scheduling_rule not in ("FIFO", "Priority", "EDD", "EOD",
-            "NumStages", "RPC", "LPT", "SPT", "MS", "WINQ"):
+          if scheduling_rule not in self.getSupportedSchedulingRules():
             raise ValueError("Unknown scheduling rule %s for %s" %
               (scheduling_rule, id))
+
+    @staticmethod
+    def getSupportedSchedulingRules():
+        return ("FIFO", "Priority", "EDD", "EOD",
+            "NumStages", "RPC", "LPT", "SPT", "MS", "WINQ")
 
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__

@@ -91,7 +91,17 @@ def moveExcess(argumentDict={}):
             receiver.previous=[]
     else:
         print "Giver and/or Receiver not defined"
-    
+
+# =======================================================================
+# Import a class from a dotted name used in json.
+# =======================================================================
+def getClassFromName(dotted_name):
+  # XXX dotted name is always Dream.Something, but the real class lives in
+  # dream.simulation.Something.Something
+  dream, class_name = dotted_name.split('.')
+  import dream.simulation as ds
+  return getattr(getattr(ds, class_name), class_name)
+
 # =======================================================================
 # method finding objects by ID
 # =======================================================================
