@@ -270,8 +270,9 @@
       var result = JSON.parse($("#json_result").val())[idx]['result'];
       $("#result_zone").show();
       $("#graph_zone").show();
-      $("#spreadsheet_output").show();
-      $("#gantt_output").show();
+      // if 
+      $("#job_schedule_spreadsheet").show();
+      $("#job_gantt").show();
 
       // temporary hack
       var now = new Date();
@@ -445,7 +446,7 @@
       $.plot("#graph", series, options);
 
       if (spreadsheet_data.length > 1) {
-        var spreadsheet = $('#spreadsheet_output');
+        var spreadsheet = $('#job_schedule_spreadsheet');
         spreadsheet.show();
         spreadsheet.handsontable({
           data: spreadsheet_data,
@@ -460,7 +461,7 @@
         } catch (e) {}
 
         var gantt_output_height = 35 * (gantt_data.data.length + 1) + 1;
-        $('#gantt_output').height(gantt_output_height).show().dhx_gantt({
+        $('#job_gantt').height(gantt_output_height).show().dhx_gantt({
           data: gantt_data,
           scale_unit: 'day',
           readonly: true,

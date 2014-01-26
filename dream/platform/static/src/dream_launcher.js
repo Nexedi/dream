@@ -67,14 +67,15 @@
     var loadData = function (data) {
       dream_instance.clearAll();
       $('#graph_zone').hide();
-      $('#spreadsheet_output').hide();
-      $("#gantt_output").hide();
+      $('#job_schedule_spreadsheet').hide();
+      $('#shift_spreadsheet').hide();
+      $("#job_gantt").hide();
 
       try {
-        // spreadsheet
+        // spreadsheets
         var spreadsheet_data = data.spreadsheet;
         if (spreadsheet_data !== undefined) {
-          var spreadsheet = $('#spreadsheet_input');
+          var spreadsheet = $('#wip_spreadsheet');
           spreadsheet.handsontable('populateFromArray', 0, 0, spreadsheet_data);
           spreadsheet.find('.htCore').width(spreadsheet.width());
         }
@@ -159,8 +160,9 @@
             } else {
               $("#result_zone").hide();
               $("#graph_zone").hide();
-              $("#spreadsheet_output").hide();
-              $("#gantt_output").hide();
+              $("#shift_spreadsheet").hide();
+              $("#job_schedule_spreadsheet").hide();
+              $("#job_gantt").hide();
               $("#json_result").effect('shake', 50).val(data['error']);
             }
           });
@@ -237,8 +239,9 @@
     });
     $("#result_zone").hide();
     $("#graph_zone").hide();
-    $("#spreadsheet_output").hide();
-    $("#gantt_output").hide();
+    $("#job_schedule_spreadsheet").hide();
+    $("#shift_spreadsheet").hide();
+    $("#job_gantt").hide();
        }
     });
   });

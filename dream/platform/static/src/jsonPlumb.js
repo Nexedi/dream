@@ -112,7 +112,7 @@
     };
 
     priv.initSpreadSheet = function () {
-      var spreadsheet = $('#spreadsheet_input');
+      var wip_spreadsheet = $('#wip_spreadsheet');
       var data = [
         [
           "Jobs",
@@ -125,14 +125,32 @@
           "Processing Times"
         ]
       ];
-      spreadsheet.handsontable({
+      wip_spreadsheet.handsontable({
         data: data,
         minSpareRows: 1,
         afterChange: function () {
           priv.onDataChange();
         }
       });
-      spreadsheet.find('.htCore').width(spreadsheet.width());
+      wip_spreadsheet.find('.htCore').width(wip_spreadsheet.width());
+      if (0) {
+        var shift_spreadsheet = $('#shift_spreadsheet');
+        var data = [
+          [
+            "Monday",
+            "Tuesday",
+            "...",
+          ]
+        ];
+        shift_spreadsheet.handsontable({
+          data: data,
+          minSpareRows: 1,
+          afterChange: function () {
+            priv.onDataChange();
+          }
+        });
+        shift_spreadsheet.find('.htCore').width(shift_spreadsheet.width());
+      }
     };
 
     priv.updateElementCoordinate = function (node_id, coordinate) {
@@ -298,8 +316,9 @@
         "preference": priv.preference_container,
         "general": priv.general_container
       };
-      var spreadsheet = $('#spreadsheet_input');
+      var spreadsheet = $('#wip_spreadsheet');
       if (spreadsheet !== undefined) {
+        // XXX wip_spreadsheet ?
         data['spreadsheet'] = spreadsheet.handsontable('getData');
       }
       return data;
@@ -418,7 +437,6 @@
       box.css("left", absolute_position[0]);
       priv.updateNodeStyle(element.element_id);
 
-      // Initial DEMO code : make all the window divs draggable
       priv.draggable();
 
       priv.onDataChange();
