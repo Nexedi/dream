@@ -205,18 +205,17 @@ class Simulation(object):
            schema["confidenceLevel"],
            schema["processTimeout"]
         ],
+        "gui": {
+          'wip_spreadsheet': 0,
+          'shift_spreadsheet': 0,
+
+          'station_utilisation_graph': 1,
+          'job_schedule_spreadsheet': 0,
+          'job_gantt': 0,
+        },
         "_class": 'Dream.Configuration'
       },
     }
-
-  def getOutputIdList(self):
-    """Returns the enabled outputs
-    (the divs ?)
-    """
-
-  def getInputIdList(self):
-    """Returns the enabled inputs
-    """
 
   def run(self, data):
     return json.loads(simulate_line_json(input_data=json.dumps(data)))

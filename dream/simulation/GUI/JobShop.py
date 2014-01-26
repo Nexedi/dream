@@ -7,6 +7,12 @@ import operator
 from dream.simulation.GUI import ACO
 
 class Simulation(ACO.Simulation):
+  def getConfigurationDict(self):
+    conf = ACO.Simulation.getConfigurationDict(self)
+    conf["Dream-Configuration"]["gui"]["wip_spreasheet"] = 1
+    conf["Dream-Configuration"]["gui"]["job_schedule_spreadsheet"] = 1
+    conf["Dream-Configuration"]["gui"]["job_gantt"] = 1
+    return conf
 
   def _preprocess(self, in_data):
     """ Set the WIP in queue from spreadsheet data.
