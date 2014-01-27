@@ -450,7 +450,6 @@ class OperatedMachine(Machine):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
-                       
         # if we have only one predecessor just check if there is a place, 
         # the machine is up and the predecessor has an entity to dispose
         # if the machine has to compete for an Operator that loads the entities onto it
@@ -462,7 +461,7 @@ class OperatedMachine(Machine):
                 if activeObject.operatorPool.checkIfResourceIsAvailable()\
                     and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
                     and giverObject.haveToDispose(activeObject) and not giverObject.exitIsAssigned():
-                    giverObject.assignExit()
+                    activeObject.giver.assignExit()
                     return True
                 else:
                     return False
@@ -480,11 +479,11 @@ class OperatedMachine(Machine):
 #                         and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
 #                         and giverObject.haveToDispose()
         
-        # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
+        # dummy variables that help prioritise the objects requesting to give objects to the Machine (activeObject)
         isRequested=False                                           # is requested is dummyVariable checking if it is requested to accept an item
         maxTimeWaiting=0                                            # dummy variable counting the time a predecessor is blocked
         
-        # loop through the possible givers to see which have to dispose and which is the one blocked for longer                                                       # index used to set the predecessorIndex to the giver waiting the most
+        # loop through the possible givers to see which have to dispose and which is the one blocked for longer
         for object in activeObject.previous:
             if(object.haveToDispose(activeObject)):# and not object.exitIsAssigned()):
                 isRequested=True                                    # if the possible giver have entities to dispose of
@@ -501,8 +500,8 @@ class OperatedMachine(Machine):
         if (activeObject.operatorPool!='None' and any(type=='Load' for type in activeObject.multOperationTypeList)):
             if activeObject.operatorPool.checkIfResourceIsAvailable()\
                 and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
-                and isRequested and not giverObject.exitIsAssigned():
-                giverObject.assignExit()
+                and isRequested and not activeObject.giver.exitIsAssigned():
+                activeObject.giver.assignExit()
                 return True
             else:
                 return False

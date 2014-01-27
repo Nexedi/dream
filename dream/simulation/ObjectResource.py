@@ -45,7 +45,7 @@ class ObjectResource(object):
     # =======================================================================
     #                    checks if the worker is available
     # =======================================================================       
-    def checkIfResourceIsAvailable(self): 
+    def checkIfResourceIsAvailable(self,callerObject=None): 
         return len(self.Res.activeQ)<self.capacity   
     
     # =======================================================================

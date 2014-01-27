@@ -89,14 +89,15 @@ class OperatorPool(ObjectResource):
     # =======================================================================
     #                  checks if there are operators available
     # =======================================================================       
-    def checkIfResourceIsAvailable(self):
+    def checkIfResourceIsAvailable(self, callerObject=None):
 #         maxTimeWaiting = 0
 #         for operator in self.operators:
 #             for machine in operator.coreObjects:
 #                 timeWaiting = now()-machine.broker.timeWaitForOperatorStarted
 #                 if (timeWaiting>=maxTimeWaiting):
 #                     maxTimeWaiting=timeWaiting
-        return any(operator.checkIfResourceIsAvailable()==True for operator in self.operators)
+        thecaller=callerObject
+        return any(operator.checkIfResourceIsAvailable(callerObject=thecaller)==True for operator in self.operators)
     
     # =======================================================================
     #              find the first available operator and return it
