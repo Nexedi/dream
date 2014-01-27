@@ -46,29 +46,32 @@ class OperatorPreemptive(Operator):
     def checkIfResourceIsAvailable(self,callerObject=None): 
         activeResource= self.getResource()
         activeResourceQueue = activeResource.getResourceQueue()
-        try:
-            # read the station operated by the operator
-            victim=activeResourceQueue[0]
-            # read its activeQ
-            victimQueue=victim.getActiveObjectQueue()
-            # find out which station is requesting the operator?
-            thecaller=callerObject
-            thecallerQueue=thecaller.getActiveObjectQueue()
-            
-            #if the receiver is not empty
-            if len(victimQueue)>0:
-                # and the caller is not empty
-                if len(thecallerQueue)>0:
-                    #if the  Entity to be forwarded to the station currently processed by the operator is critical
-                    if thecallerQueue[0].isCritical:
-                        #if the receiver does not hold an Entity that is also critical
-                        if not victimQueue[0].isCritical:
-                            # then the receiver must be preemptied before it can receive any entities from the calerObject
-                            victim.shouldPreempt=True
-                            victim.preempt()
-                            victim.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
-                            return True
-        # if the operator is not occupied, or if the caller is None then perform the default behaviour
-        except:
-            pass
+        # find out which station is requesting the operator?
+        thecaller=callerObject
+        # if the operator is occupied return True
+        if len(activeResourceQueue)==0:
+            return True
+        # read the station currently operated by the operator
+        victim=activeResourceQueue[0]
+        # read its activeQ
+        victimQueue=victim.getActiveObjectQueue()
+        # if the callerObject is None then return False as the operator is occupied
+        if thecaller==None:
+            return False
+        thecallerQueue=thecaller.getActiveObjectQueue()
+        #if the receiver is not empty and the caller is not empty
+        if len(victimQueue)>0 and len(theCallerQueue):
+            try:
+                #if the  Entity to be forwarded to the station currently processed by the operator is critical
+                if thecallerQueue[0].isCritical:
+                    #if the receiver does not hold an Entity that is also critical
+                    if not victimQueue[0].isCritical:
+                        # then the receiver must be preemptied before it can receive any entities from the calerObject
+                        victim.shouldPreempt=True
+                        victim.preempt()
+                        victim.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
+                        return True
+            # if the entity has no isCritical property then ran the default behaviour
+            except:
+                pass
         return len(self.Res.activeQ)<self.capacity
