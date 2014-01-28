@@ -181,7 +181,6 @@ class Machine(CoreObject):
             self.loadTimeCurrentEntity = 0
             self.setupTimeCurrentEntity = 0
             
-    # ++++++++++++++++++++++++++++++ New ++++++++++++++++++++++++++++++++++++
     # ======= request a resource
             if(self.operatorPool!="None") and any(type=='Load' for type in self.multOperationTypeList):
                 # when it's ready to accept (canAcceptAndIsRequested) then inform the broker
@@ -213,7 +212,6 @@ class Machine(CoreObject):
                 self.releaseOperator()
                 # wait until the Broker has finished processing
                 yield waituntil, self, self.broker.brokerIsSet
-    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             
             # get the entity
                     # TODO: if there was loading time then we must solve the problem of getting an entity
@@ -221,7 +219,6 @@ class Machine(CoreObject):
                     # may fall in failure mode (assignExit()?)
             self.currentEntity=self.getEntity()
             
-    # ++++++++++++++++++++++++++++++ New ++++++++++++++++++++++++++++++++++++
     # ======= request a resource if it is not already assigned an Operator
             if(self.operatorPool!="None")\
                  and any(type=="Processing" or type=="Setup" for type in self.multOperationTypeList)\
@@ -234,14 +231,12 @@ class Machine(CoreObject):
                 yield waituntil, self, self.broker.brokerIsSet
                 self.timeWaitForOperatorEnded = now()
                 self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
-    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             
             # variables dedicated to hold the processing times, the time when the Entity entered, 
             # and the processing time left 
             self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()                # get the processing time, tinMStarts holds the processing time of the machine 
             tinM=self.totalProcessingTimeInCurrentEntity                                          # timer to hold the processing time left
             
-    # ++++++++++++++++++++++++++++++ New ++++++++++++++++++++++++++++++++++++
     # ======= setup the machine if the Setup is defined as one of the Operators' operation types
             # in plantSim the setup is performed when the machine has to process a new type of Entity and only once
             if any(type=="Setup" for type in self.multOperationTypeList) and self.isOperated():
@@ -263,7 +258,6 @@ class Machine(CoreObject):
 #                 print self.objName, 'operator released', now()
                 # wait until the Broker has finished processing
                 yield waituntil, self, self.broker.brokerIsSet
-    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                                                                  
             # variables used to flag any interruptions and the end of the processing     
             interruption=False    
@@ -302,7 +296,7 @@ class Machine(CoreObject):
                     # passivate the Machine for as long as there is no repair
                     # start counting the down time at breatTime dummy variable
                     breakTime=now()                                 # dummy variable that the interruption happened
-    # ++++++++++++++++++++++++++++++ New ++++++++++++++++++++++++++++++++++++
+    
     # =============== release the operator if there is interruption 
                     if (self.operatorPool!="None")\
                         and self.isOperated()\
@@ -310,7 +304,7 @@ class Machine(CoreObject):
                         self.releaseOperator()
 #                         print self.objName, 'operator released due to failure', now()
                         yield waituntil,self,self.broker.brokerIsSet 
-    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    
                     # if there is a failure in the machine it is passivated
                     yield passivate,self
                     # use the timers to count the time that Machine is down and related 
@@ -325,7 +319,6 @@ class Machine(CoreObject):
                     if (len(self.getActiveObjectQueue())==0 and self.shouldPreempt):
                         break
                 
-    # ++++++++++++++++++++++++++++++ New ++++++++++++++++++++++++++++++++++++                
     # =============== request a resource after the repair
                     if (self.operatorPool!="None")\
                         and any(type=="Processing" for type in self.multOperationTypeList)\
@@ -335,7 +328,6 @@ class Machine(CoreObject):
                         yield waituntil,self,self.broker.brokerIsSet
                         self.timeWaitForOperatorEnded = now() 
                         self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
-    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                 
                 # if no interruption occurred the processing in M1 is ended 
                 else:
@@ -353,15 +345,12 @@ class Machine(CoreObject):
             except IndexError:
                 pass
             
-    # ++++++++++++++++++++++++++++++ New ++++++++++++++++++++++++++++++++++++
     # =============== release resource after the end of processing
             if (self.operatorPool!='None')\
                 and any(type=="Processing" for type in self.multOperationTypeList)\
                 and not interruption: 
                 self.releaseOperator()
                 yield waituntil,self,self.broker.brokerIsSet
-    # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-            
             
             # set the variable that flags an Entity is ready to be disposed 
             self.waitToDispose=True

@@ -282,14 +282,25 @@ class MouldAssembly(MachinePreemptive):
     # returns true if it is empty 
     # =======================================================================   
     def canAccept(self, callerObject=None): 
-        if callerObject!=None:
+        activeObject=self.getActiveObject()
+        activeObjectQueue=activeObject.getActiveObjectQueue()
+        thecaller=callerObject
+        if thecaller!=None:
             #check it the caller object holds an Entity that requests for current object
-            if len(callerObject.getActiveObjectQueue())>0:
-                activeEntity=callerObject.getActiveObjectQueue()[0]
+            if len(thecaller.getActiveObjectQueue())>0:
+                # TODO: make sure that the first entity of the callerObject is to be disposed
+                activeEntity=thecaller.getActiveObjectQueue()[0]
                 # if the machine's Id is in the list of the entity's next stations 
-                if self.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
+                if activeObject.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
                     #return according to the state of the Queue
-                    return len(self.getActiveObjectQueue())==0
+                    # check if (if the machine is to be operated) there are available operators
+                    if (activeObject.operatorPool!='None' and any(type=='Load' for type in activeObject.multOperationTypeList)):
+                        return activeObject.operatorPool.checkIfResourceIsAvailable()\
+                                 and len(activeObject.getActiveObjectQueue())==0\
+                                 and activeObject.Up
+                    else:
+                        return len(activeObject.getActiveObjectQueue())==0\
+                                 and activeObject.Up
         return False
     
     # =======================================================================
@@ -304,13 +315,27 @@ class MouldAssembly(MachinePreemptive):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
-                
-        # if we have only one possible giver just check if the internal queue is empty
-        # and if the giver has to dispose something
+        # if we have only one predecessor just check if the machine is empty, 
+        # the machine is up and the predecessor has an entity to dispose
         if(len(activeObject.previous)==1):
-            return giverObject.haveToDispose(activeObject)\
-                and len(activeObjectQueue)==0\
-                        
+            # if the machine has to compete for an Operator that loads the entities onto it
+            #     check if the predecessor if blocked by an other Machine 
+            # if not then the machine has to block the predecessor giverObject to avoid conflicts
+            #     with other competing machines
+            if (activeObject.operatorPool!='None' and any(type=='Load' for type in activeObject.multOperationTypeList)):
+                if activeObject.operatorPool.checkIfResourceIsAvailable()\
+                    and activeObject.Up\
+                    and len(activeObjectQueue)==0\
+                    and giverObject.haveToDispose(activeObject)\
+                    and not giverObject.exitIsAssigned():
+                    activeObject.giver.assignExit()
+                    return True
+                else:
+                    return False
+            # otherwise, use the default behaviour
+            else:
+                return activeObject.Up and len(activeObjectQueue)==0\
+                        and giverObject.haveToDispose(activeObject)                
         # dummy variables that help prioritise the objects requesting to give objects to the Machine (activeObject)
         isRequested=False   # isRequested is dummyVariable checking if it is requested to accept an item
         maxTimeWaiting=0    # dummy variable counting the time a predecessor is blocked
@@ -327,10 +352,19 @@ class MouldAssembly(MachinePreemptive):
                 # in any other case, it holds the time since the end of the Entity processing
                 else:
                     timeWaiting=now()-object.timeLastEntityEnded
-                
                 #if more than one predecessor have to dispose, take the part from the one that is blocked longer
                 if(timeWaiting>=maxTimeWaiting):
                     activeObject.giver=object
-                    maxTimeWaiting=timeWaiting    
-        
-        return len(activeObjectQueue)==0 and isRequested  
+                    maxTimeWaiting=timeWaiting
+        if (activeObject.operatorPool!='None' and any(type=='Load' for type in activeObject.multOperationTypeList)):
+            if activeObject.operatorPool.checkIfResourceIsAvailable()\
+                and activeObject.Up\
+                and len(activeObjectQueue)==0\
+                and isRequested\
+                and not activeObject.giver.exitIsAssigned():
+                activeObject.giver.assignExit()
+                return True
+            else:
+                return False
+        else:
+            return activeObject.Up and len(activeObjectQueue)==0 and isRequested
