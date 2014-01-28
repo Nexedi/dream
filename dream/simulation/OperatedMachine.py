@@ -39,13 +39,12 @@ from RandomNumberGenerator import RandomNumberGenerator
 import scipy.stats as stat
 
 # ===========================================================================
-#                             the Machine object
+# the Machine object
 # ===========================================================================
-# class Machine(CoreObject):
 class OperatedMachine(Machine):
     # =======================================================================
-    #  initialize the id the capacity, of the resource and the distribution
-    # =======================================================================  
+    # initialise the id the capacity, of the resource and the distribution
+    # =======================================================================
     def __init__(self, id, name, capacity=1, distribution='Fixed', mean=1, stdev=0, min=0, max=10,\
                   failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None',\
                   operatorPool='None',operationType='None',\
@@ -69,8 +68,9 @@ class OperatedMachine(Machine):
         else:
             self.operatorPool=operatorPool
         # update the operatorPool coreObjects list
-        self.operatorPool.coreObjectIds.append(self.id)
-        self.operatorPool.coreObjects.append(self)
+        if self.operatorPool!='None':
+            self.operatorPool.coreObjectIds.append(self.id)
+            self.operatorPool.coreObjects.append(self)
         # holds the Operator currently processing the Machine
         self.currentOperator=None
         # define if load/setup/removal/processing are performed by the operator 
@@ -108,9 +108,9 @@ class OperatedMachine(Machine):
         self.WaitingForLoadOperator=[]
         self.Loading = []
         self.SettingUp =[]
-        
+    
     # =======================================================================
-    #                        initialize the machine
+    # initialize the machine
     # =======================================================================
     def initialize(self):
         Machine.initialize(self)
@@ -144,9 +144,9 @@ class OperatedMachine(Machine):
         self.loadOperatorWaitTimeCurrentEntity = 0  # holds the time that the machine waits for operator to load the it
         self.loadTimeCurrentEntity = 0              # holds the time to load the current entity
         self.setupTimeCurrentEntity = 0             # holds the time to setup the machine before processing the current entity
-        
+    
     # =======================================================================
-    #                    the main process of the machine
+    # the main process of the machine
     # =======================================================================
     def run(self):
         # execute all through simulation time
@@ -200,10 +200,8 @@ class OperatedMachine(Machine):
                     # from an unidentified giver or not getting an entity at all as the giver 
                     # may fall in failure mode 
             self.currentEntity=self.getEntity()
-#             print self.objName, 'part received', now()
-           
+            
             # set the currentEntity as the Entity just received and initialize the timer timeLastEntityEntered
-#             self.currentEntity=self.getActiveObjectQueue()[0]       # entity is the current entity processed in Machine
             self.nameLastEntityEntered=self.currentEntity.name      # this holds the name of the last entity that got into Machine                   
             self.timeLastEntityEntered=now()                        #this holds the last time that an entity got into Machine  
             # variables dedicated to hold the processing times, the time when the Entity entered, 
@@ -222,13 +220,10 @@ class OperatedMachine(Machine):
                 yield waituntil, self, self.broker.brokerIsSet
                 self.timeWaitForOperatorEnded = now()
                 self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
-#                 self.totalTimeWaitingForOperator += self.operatorWaitTimeCurrentEntity 
-#             print self.objName, 'operator assigned', now()
             
-           
+            
             self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()                # get the processing time, tinMStarts holds the processing time of the machine 
             tinM=self.totalProcessingTimeInCurrentEntity                                          # timer to hold the processing time left
-            #self.processingTimeOfCurrentEntity=tinMStart            # processing time of the machine 
             
     # ======= setup the machine if the Setup is defined as one of the Operators' operation types
             # in plantSim the setup is performed when the machine has to process a new type of Entity and only once
@@ -252,7 +247,6 @@ class OperatedMachine(Machine):
                 # wait until the Broker has finished processing
                 yield waituntil, self, self.broker.brokerIsSet
             
-                                                            
             # variables used to flag any interruptions and the end of the processing     
             interruption=False    
             processingEndedFlag=True 
@@ -272,7 +266,6 @@ class OperatedMachine(Machine):
                 # else (if interrupted()) set interruption flag to true (only if tinM==0),
                 # and recalculate the processing time left tinM,
                 # passivate while waiting for repair.
-#                 print self.objName, 'processing started', now()         
                 yield hold,self,tinM                                # getting processed for remaining processing time tinM
                 if self.interrupted():                              # if a failure occurs while processing the machine is interrupted.
                     # output to trace that the Machine (self.objName) got interrupted                                                                  
@@ -296,8 +289,8 @@ class OperatedMachine(Machine):
 #                         print self.objName, 'operator released due to failure', now()
                         yield waituntil,self,self.broker.brokerIsSet 
                     
-                    # if there is a failure in the machine it is passivated                    
-                    yield passivate,self                            
+                    # if there is a failure in the machine it is passivated
+                    yield passivate,self
                     # use the timers to count the time that Machine is down and related 
                     self.downTimeProcessingCurrentEntity+=now()-breakTime       # count the time that Machine is down while processing this Entity
                     self.downTimeInCurrentEntity+=now()-breakTime               # count the time that Machine is down while on currentEntity
@@ -315,13 +308,11 @@ class OperatedMachine(Machine):
                         yield waituntil,self,self.broker.brokerIsSet
                         self.timeWaitForOperatorEnded = now() 
                         self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
-#                         self.totalTimeWaitingForOperator += self.operatorWaitTimeCurrentEntity
-                                  
+                
                 # if no interruption occurred the processing in M1 is ended 
                 else:
                     processingEndedFlag=False
             # output to trace that the processing in the Machine self.objName ended
-#             print self.objName, 'processing ended', now() 
             self.outputTrace(self.getActiveObjectQueue()[0].name,"ended processing in "+self.objName)
             
     # =============== release resource after the end of processing
@@ -330,15 +321,14 @@ class OperatedMachine(Machine):
                 and not interruption: 
                 self.releaseOperator()
                 yield waituntil,self,self.broker.brokerIsSet
-#                 print self.objName, 'operator released after processing', now() 
-                
+            
             
             # set the variable that flags an Entity is ready to be disposed 
             self.waitToDispose=True
             # update the total working time 
             self.totalWorkingTime+=self.totalProcessingTimeInCurrentEntity                        # the total processing time for this entity 
                                                                     # is what the distribution initially gave
-                                                                    
+            
             # update the variables keeping track of Entity related attributes of the machine    
             self.timeLastEntityEnded=now()                          # this holds the time that the last entity ended processing in Machine 
             self.nameLastEntityEnded=self.currentEntity.name        # this holds the name of the last entity that ended processing in Machine
@@ -352,11 +342,10 @@ class OperatedMachine(Machine):
             # initialize the timer downTimeInTryingToReleaseCurrentEntity, we have to count how much time 
             # the Entity will wait for the next successor to be able to accept (canAccept)
             self.downTimeInTryingToReleaseCurrentEntity=0
-                
+            
             while 1:
                 # wait until the next Object is available or machine has failure
-                yield waituntil, self, self.ifCanDisposeOrHaveFailure 
-                 
+                yield waituntil, self, self.ifCanDisposeOrHaveFailure
                 
                 # if Next object available break      
                 if self.Up:   
@@ -372,39 +361,17 @@ class OperatedMachine(Machine):
                     self.downTimeInTryingToReleaseCurrentEntity+=now()-failTime         
                     self.downTimeInCurrentEntity+=now()-failTime    # already updated from failures during processing
                     # update the timeLastFailureEnded   
-                    self.timeLastFailureEnded=now()           
+                    self.timeLastFailureEnded=now()
             
             # dummy variable holding the total time the Entity spent in the Machine
             # count the time the Machine was blocked subtracting the failureTime 
             #    and the processing time from the totalTime spent in the Machine
             self.totalTimeInCurrentEntity=now()-timeEntered
-            # update the total time waiting for the operator of the machine
-#             self.totalTimeWaitingForOperator += self.operatorWaitTimeCurrentEntity 
-#             blockageTime=totalTime-(tinMStart\
-#                                     +failureTime\
-#                                     +self.operatorWaitTimeCurrentEntity\
-#                                     +self.setupTimeCurrentEntity)   
-            
-           
-            # might be possible to avoid using blockageTime
-            # the time of blockage is derived from 
-            # the whole time in the machine minus the processing time and the failure time
-#             self.totalBlockageTime+=totalTime-(tinMStart\
-#                                                +failureTime\
-#                                                +self.operatorWaitTimeCurrentEntity\
-#                                                +self.setupTimeCurrentEntity) 
-#             print 'totalTime:',totalTime
-#             print 'tinMstart:',tinMStart
-#             print 'failureTime',failureTime
-#             print 'blockageTime',blockageTime
-#             print "machineId:", self.id,"|"\
-#                 "the total blockage time up to now is:", self.totalBlockageTime,"|"\
-#                 "SimulationTime:",now() 
-   
+    
     # =======================================================================
-    #              checks if the Machine can accept an entity       
+    # checks if the Machine can accept an entity
     # it checks also who called it and returns TRUE only to the predecessor 
-    #                     that will give the entity.
+    # that will give the entity.
     # =======================================================================  
     def canAccept(self, callerObject=None):
         # get active and giver objects
@@ -426,7 +393,6 @@ class OperatedMachine(Machine):
         thecaller=callerObject
         # return True ONLY if the length of the activeOjbectQue is smaller than
         # the object capacity, and the callerObject is not None but the giverObject
-        
         if (activeObject.operatorPool!='None' and any(type=='Load' for type in activeObject.multOperationTypeList)):
             return activeObject.operatorPool.checkIfResourceIsAvailable()\
                 and activeObject.Up\
@@ -486,7 +452,7 @@ class OperatedMachine(Machine):
         # loop through the possible givers to see which have to dispose and which is the one blocked for longer
         for object in activeObject.previous:
             if(object.haveToDispose(activeObject)):# and not object.exitIsAssigned()):
-                isRequested=True                                    # if the possible giver have entities to dispose of
+                isRequested=True                                    # if the possible giver has entities to dispose of
                 if(object.downTimeInTryingToReleaseCurrentEntity>0):# and the possible giver has been down while trying to give away the Entity
                     timeWaiting=now()-object.timeLastFailureEnded   # the timeWaiting dummy variable counts the time end of the last failure of the giver object
                 else:
@@ -512,50 +478,8 @@ class OperatedMachine(Machine):
             # while if the set up is performed before the (automatic) loading of the machine then the availability of the
             # operator is requested
 #             return (activeObject.operatorPool=='None' or activeObject.operatorPool.checkIfResourceIsAvailable())\
-#                 and activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested
-            
-            
-            
-#     # ======================================================================= 
-#     # checks if the Machine can dispose an entity to the following object
-#     # =======================================================================
-#     def haveToDispose(self, callerObject=None):
-#         # get active and the receiver object
-#         activeObject=self.getActiveObject()
-#         activeObjectQueue=self.getActiveObjectQueue()    
-#         receiverObject=activeObject.getReceiverObject() 
-#         #if we have only one successor just check if machine waits to dispose and also is up
-#         # this is done to achieve better (cpu) processing time        
-#         if(len(activeObject.next)==1 or callerObject==None): 
-#             return len(activeObjectQueue)>0\
-#                 and activeObject.waitToDispose\
-#                 and activeObject.Up#\
-#                 #and not receiverObject.exitIsAssigned()                 # this change has to be implemented on every object
-#           
-# #         # if the Machine is empty it returns false right away
-# #         if(len(activeObjectQueue)==0):
-# #             return False
-#      
-#         thecaller=callerObject
-#         # give the entity to the successor that is waiting for the most time. 
-#         # (plant simulation does not do this in every occasion!)       
-#         maxTimeWaiting=0                                            # dummy variable counting the time a successor is waiting
-#         i=0                                                         # index used to set the successorIndex to the giver waiting the most
-#         for object in activeObject.next:
-#             if(object.canAccept(activeObject)):                     # if a successor can accept an object
-#                 timeWaiting=now()-object.timeLastEntityLeft         # the time it has been waiting is updated and stored in dummy variable timeWaiting
-#                 if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# if the timeWaiting is the maximum among the ones of the successors 
-#                     maxTimeWaiting=timeWaiting
-#                     activeObject.successorIndex=i                   # set the successorIndex equal to the index of the longest waiting successor
-#             i+=1                                                    # in the next loops, check the other successors in the previous list
-#         return len(activeObjectQueue)>0\
-#              and activeObject.waitToDispose\
-#              and activeObject.Up\
-#              and (thecaller is receiverObject)#\
-#              #and not receiverObject.exitIsAssigned
-             
-
-            
+#                 and activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested             
+    
     # =======================================================================
     #                       calculates the setup time
     # =======================================================================
@@ -599,21 +523,17 @@ class OperatedMachine(Machine):
     # =======================================================================
     def requestSetup(self):
         self.setUp=False
-   
-   # =======================================================================
-   # actions to be taken after the simulation ends
-   # =======================================================================
+    
+    # =======================================================================
+    # actions to be taken after the simulation ends
+    # =======================================================================
     def postProcessing(self, MaxSimtime=None):
         if MaxSimtime==None:
             from Globals import G
             MaxSimtime=G.maxSimTime
-#         print 'maxSimTime:',G.maxSimTime
         
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-#         print activeObject.objName
-#         print 'the last entity that entered the machine is', activeObject.nameLastEntityEntered, 'at', activeObject.timeLastEntityEntered
-#         print 'the current entity in the machine is',activeObject.currentEntity.name
         
         alreadyAdded=False                      # a flag that shows if the blockage time has already been added
         
@@ -630,22 +550,16 @@ class OperatedMachine(Machine):
         # if (len(self.Res.activeQ)>0) and (len(self.next[0].Res.activeQ)>0) and ((self.nameLastEntityEntered == self.nameLastEntityEnded)):
         if (len(activeObjectQueue)>0) and (mightBeBlocked)\
              and ((activeObject.nameLastEntityEntered == activeObject.nameLastEntityEnded)):
-            # be carefull here, might have to reconsider
-#             print 'the machine', activeObject.objName, 'was blocked at', now()
+            # be careful here, might have to reconsider
             activeObject.totalBlockageTime+=now()-(activeObject.timeLastEntityEnded+activeObject.downTimeInTryingToReleaseCurrentEntity)
-#             print 'the machine', activeObject.objName,'was trying to release last entity for', activeObject.downTimeInTryingToReleaseCurrentEntity
-#             print 'the last entity', activeObject.nameLastEntityEnded ,'ended processing at', activeObject.timeLastEntityEnded
-#             print 'the current Entity in the machine is', activeObject.currentEntity.name
             if activeObject.Up==False:
                 activeObject.totalBlockageTime-=now()-activeObject.timeLastFailure
                 alreadyAdded=True
-#         print activeObject.objName,'total Block time:',activeObject.totalBlockageTime#/G.maxSimTime
 
         #if Machine is currently processing an entity we should count this working time  
         if(len(activeObject.getActiveObjectQueue())>0)\
             and (not (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered))\
             and (not (activeObject.operationType=='Processing' and (activeObject.currentOperator==None))):
-#             print 'pre-total working time:',activeObject.totalWorkingTime#/G.maxSimTime           
             #if Machine is down we should add this last failure time to the time that it has been down in current entity 
             if self.Up==False:
 #             if(len(activeObjectQueue)>0) and (self.Up==False):
@@ -655,9 +569,6 @@ class OperatedMachine(Machine):
                                                 -activeObject.operatorWaitTimeCurrentEntity\
                                                 -activeObject.setupTimeCurrentEntity
             activeObject.totalTimeWaitingForOperator+=activeObject.operatorWaitTimeCurrentEntity
-#             print "downTimeProcessingCurrentEntity", activeObject.downTimeProcessingCurrentEntity
-#             print "operatorWaitTimeCurrentEntity", activeObject.operatorWaitTimeCurrentEntity
-#             print "setupTimeCurrentEntity",activeObject.setupTimeCurrentEntity
         elif(len(activeObject.getActiveObjectQueue())>0)\
             and (not (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered))\
             and (activeObject.currentOperator==None):
@@ -667,8 +578,6 @@ class OperatedMachine(Machine):
             activeObject.totalTimeWaitingForOperator+=now()-activeObject.timeWaitForOperatorStarted\
                                                            -activeObject.downTimeProcessingCurrentEntity
 
-            
-#         print activeObject.objName,'total working time:',activeObject.totalWorkingTime#/G.maxSimTime
         # if Machine is down we have to add this failure time to its total failure time
         # we also need to add the last blocking time to total blockage time     
         if(activeObject.Up==False):
@@ -677,10 +586,10 @@ class OperatedMachine(Machine):
             #if((len(self.next[0].Res.activeQ)>0) and (self.nameLastEntityEnded==self.nameLastEntityEntered) and (not alreadyAdded)):
             if((mightBeBlocked) and (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered) and (not alreadyAdded)):        
                 activeObject.totalBlockageTime+=(now()-activeObject.timeLastEntityEnded)-(now()-activeObject.timeLastFailure)-activeObject.downTimeInTryingToReleaseCurrentEntity 
-#         print activeObject.objName,'total Block time:',activeObject.totalBlockageTime#/G.maxSimTime
-        #Machine was idle when it was not in any other state    
         
-        activeObject.totalWaitingTime=MaxSimtime-activeObject.totalWorkingTime-activeObject.totalBlockageTime-activeObject.totalFailureTime   
+        #Machine was idle when it was not in any other state    
+        activeObject.totalWaitingTime=MaxSimtime-activeObject.totalWorkingTime-activeObject.totalBlockageTime-activeObject.totalFailureTime
+        
         if activeObject.totalBlockageTime<0 and activeObject.totalBlockageTime>-0.00001:  #to avoid some effects of getting negative cause of rounding precision
             self.totalBlockageTime=0  
         

@@ -96,7 +96,14 @@ class OperatorPool(ObjectResource):
 #                 timeWaiting = now()-machine.broker.timeWaitForOperatorStarted
 #                 if (timeWaiting>=maxTimeWaiting):
 #                     maxTimeWaiting=timeWaiting
+        # TODO: to discuss with George if using a callerObject is the proper way to inform the OperatorPreemptive
+        #     about the object that is requesting to know about its availability
         thecaller=callerObject
+        
+#         requestingEntity=thecaller.getActiveObjectQueue()[0]
+#         requestedOperator=requestingEntity.manager
+#         isAvailable=requestedOperator.checkIfResourceIsAvailable(callerObject)
+        
         return any(operator.checkIfResourceIsAvailable(callerObject=thecaller)==True for operator in self.operators)
     
     # =======================================================================

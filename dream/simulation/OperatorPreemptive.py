@@ -44,6 +44,7 @@ class OperatorPreemptive(Operator):
     #                    checks if the worker is available
     # =======================================================================       
     def checkIfResourceIsAvailable(self,callerObject=None): 
+        # TODO: to discuss with George about the use of callerObject
         activeResource= self.getResource()
         activeResourceQueue = activeResource.getResourceQueue()
         # find out which station is requesting the operator?
