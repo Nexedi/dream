@@ -79,6 +79,18 @@ Copyright and license
 ManPy is licensed under the GNU Lesser General Public License (LGPL).
 
 ==================================
+Windows installation
+==================================
+
+. install python
+. install git
+. git clone this repository
+. cd to directory where you cloned the repository
+. *C:\Python2.7\python.exe bootstrap.py*
+. *bin\buildout install*
+
+
+==================================
 Authors
 ==================================
 
