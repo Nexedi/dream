@@ -85,7 +85,7 @@
             "top": 0.04656862745098034
         },
         "M1": {
-            "_class": "Dream.OperatedMachine",
+            "_class": "Dream.Machine",
             "failures": {
                 "MTTF": "60",
                 "MTTR": "5",
@@ -100,7 +100,7 @@
             "top": 0.40931372549019607
         },
         "M2": {
-            "_class": "Dream.OperatedMachine",
+            "_class": "Dream.Machine",
             "failures": {
                 "MTTF": "40",
                 "MTTR": "10",
@@ -115,7 +115,7 @@
             "top": 0.40931372549019607
         },
         "M3": {
-            "_class": "Dream.OperatedMachine",
+            "_class": "Dream.Machine",
             "failures": {
                 "failureDistribution": "No"
             },
@@ -128,7 +128,7 @@
             "top": 0.2279411764705882
         },
         "M4": {
-            "_class": "Dream.OperatedMachine",
+            "_class": "Dream.Machine",
             "failures": {
                 "failureDistribution": "No"
             },

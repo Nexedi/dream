@@ -52,7 +52,7 @@
             "top": 0.9431137724550899
         },
         "M1": {
-            "_class": "Dream.OperatedMachine",
+            "_class": "Dream.Machine",
             "name": "Machine1",
             "processingTime": {
                 "distributionType": "Fixed",
@@ -63,7 +63,7 @@
             "top": 0.5
         },
         "M2": {
-            "_class": "Dream.OperatedMachine",
+            "_class": "Dream.Machine",
             "name": "Machine2",
             "failures": {
             },
