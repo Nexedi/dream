@@ -89,6 +89,10 @@ Windows installation
 . *C:\Python2.7\python.exe bootstrap.py*
 . *bin\buildout install*
 
+To run the server::
+  * bin\dream_platform
+or for hte job shop version::
+  * bin\dream_platform
 
 ==================================
 Authors
