@@ -82,17 +82,18 @@ ManPy is licensed under the GNU Lesser General Public License (LGPL).
 Windows installation
 ==================================
 
-. install python
-. install git
-. git clone this repository
-. cd to directory where you cloned the repository
-. *C:\Python2.7\python.exe bootstrap.py*
-. *bin\buildout install*
+Steps required:
+  * install python
+  * install git
+  * git clone this repository
+  * cd to directory where you cloned the repository
+  * `C:\\Python2.7\\python.exe bootstrap.py`
+  * `bin\\buildout install`
 
-To run the server::
-  * bin\dream_platform
-or for hte job shop version::
-  * bin\dream_platform
+To run the server:
+  * `bin\\dream_platform`
+or for the job shop version:
+  * `bin\\dream_platform JobShop`
 
 ==================================
 Authors
