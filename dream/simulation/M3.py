@@ -34,7 +34,7 @@ class M3(BatchScrapMachine):
     
     # =======================================================================
     # This is only for a BatchScrapMachine that is followed by a BatchDecomposition
-    # We consider that since this is in essence one station, the BatchScrapMachine should be blocked if the 
+    # We consider that since this is in essence one station, the BatchScrapMachine
     # should be blocked if the BatchDecomposition is blocked
     # =======================================================================
     def canAcceptAndIsRequested(self):

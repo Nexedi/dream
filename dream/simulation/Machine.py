@@ -219,6 +219,9 @@ class Machine(CoreObject):
                     # may fall in failure mode (assignExit()?)
             self.currentEntity=self.getEntity()
             
+            # TODO: the Machine receive the entity  after the operator is available
+            #     the canAcceptAndIsRequested method checks only in case of Load type of operation 
+            
     # ======= request a resource if it is not already assigned an Operator
             if(self.operatorPool!="None")\
                  and any(type=="Processing" or type=="Setup" for type in self.multOperationTypeList)\
@@ -465,7 +468,7 @@ class Machine(CoreObject):
                 # operation is assigned
                 return activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
                         and giverObject.haveToDispose(activeObject)
-                # if the set-up performance needs be first performed before the transfer of the entity to 
+                # TODO: if the set-up performance needs be first performed before the transfer of the entity to 
                 # the machine then the presence of an operator to setup the machine before the getEntity()
                 # is requested
 #                 return (activeObject.operatorPool=='None'\
