@@ -414,7 +414,7 @@ class Machine(CoreObject):
         # this is done to achieve better (cpu) processing time 
         # then we can also use it as a filter for a yield method
         if(len(activeObject.previous)==1 or callerObject==None):
-            if (activeObject.operatorPool!='None' and any(type=='Load' for type in activeObject.multOperationTypeList)):
+            if (activeObject.operatorPool!='None' and any(type=='Load' or 'Setup' for type in activeObject.multOperationTypeList)):
                 return activeObject.operatorPool.checkIfResourceIsAvailable()\
                         and activeObject.Up\
                         and len(activeObjectQueue)<activeObject.capacity
@@ -424,7 +424,7 @@ class Machine(CoreObject):
         thecaller=callerObject
         # return True ONLY if the length of the activeOjbectQue is smaller than
         # the object capacity, and the callerObject is not None but the giverObject
-        if (activeObject.operatorPool!='None' and any(type=='Load' for type in activeObject.multOperationTypeList)):
+        if (activeObject.operatorPool!='None' and any(type=='Load' or 'Setup' for type in activeObject.multOperationTypeList)):
             return activeObject.operatorPool.checkIfResourceIsAvailable()\
                 and activeObject.Up\
                 and len(activeObjectQueue)<activeObject.capacity
@@ -454,7 +454,7 @@ class Machine(CoreObject):
         # if not then the machine has to block the predecessor giverObject to avoid conflicts
         # with other competing machines
         if(len(activeObject.previous)==1):
-            if (activeObject.operatorPool!='None' and any(type=='Load' for type in activeObject.multOperationTypeList)):
+            if (activeObject.operatorPool!='None' and any(type=='Load' or 'Setup' for type in activeObject.multOperationTypeList)):
                 if activeObject.operatorPool.checkIfResourceIsAvailable()\
                     and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
                     and giverObject.haveToDispose(activeObject) and not giverObject.exitIsAssigned():
@@ -494,7 +494,7 @@ class Machine(CoreObject):
                     activeObject.giver=object                 # set the giver
                     maxTimeWaiting=timeWaiting    
         
-        if (activeObject.operatorPool!='None' and any(type=='Load' for type in activeObject.multOperationTypeList)):
+        if (activeObject.operatorPool!='None' and any(type=='Load' or 'Setup' for type in activeObject.multOperationTypeList)):
             if activeObject.operatorPool.checkIfResourceIsAvailable()\
                 and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
                 and isRequested and not activeObject.giver.exitIsAssigned():
