@@ -1,26 +1,36 @@
 {"_class": "Dream.Simulation",
  "edges": {
    "0": [
+   		"W1",
+   		"M1",
+   		{}
+   		],
+   "1": [
+   		"W1",
+   		"M2",
+   		{}
+   		],
+   "2": [
         "S1",
         "DummyQ",
         {}
         ],
-   "1": [
+   "3": [
         "M1",
         "Q1",
         {}
         ],
-   "2": [
+   "4": [
         "M2",
         "E1",
         {}
         ],
-   "3": [
+   "5": [
         "DummyQ",
         "M1",
         {}
         ],
-   "4": [
+   "6": [
         "Q1",
         "M2",
         {}
@@ -44,7 +54,7 @@
          },
       "entity": "Part"
       },
-     "M1": {"_class": "Dream.OperatedMachine",
+     "M1": {"_class": "Dream.Machine",
       "id": "M1",
       "name": "Machine1",
       "processingTime": {
@@ -57,7 +67,7 @@
 		   "MTTR": "5"
         }
       },
-     "M2": {"_class": "Dream.OperatedMachine",
+     "M2": {"_class": "Dream.Machine",
       "id": "M2",
       "name": "Machine2",
       "processingTime": {
@@ -85,6 +95,12 @@
      "E1": {"_class": "Dream.Exit",
       "id": "E1",
       "name": "Stock"
-     }
+      },
+     "W1": {"_class": "Dream.Repairman",
+     "capacity": "1",
+     "left": 0.14893617021276595,
+     "name": "W1",
+     "top": 0.7727272727272727
+      }
   }
 }
