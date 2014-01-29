@@ -327,26 +327,46 @@
         if (obj.results !== undefined && obj.results.working_ratio !== undefined) {
           /* when there is only one replication, the ratio is given as a float,
               otherwise we have a mapping avg, min max */
+          var blockage_ratio = 0.0;
           if (obj.results.blockage_ratio !== undefined) {
-            blockage_data.push([counter, obj.results.blockage_ratio
-              .avg || obj.results.blockage_ratio
-            ]);
-          } else {
-            blockage_data.push([counter, 0.0]);
+            if (obj.results.blockage_ratio.avg !== undefined) {
+              blockage_ratio = obj.results.blockage_ratio.avg;
+            } else {
+              blockage_ratio = obj.results.blockage_ratio;
+            }
           }
-          waiting_data.push([counter, obj.results.waiting_ratio.avg ||
-            obj.results.waiting_ratio
-          ]);
+          blockage_data.push([counter, blockage_ratio]);
+
+          var working_ratio = 0.0;
+          if (obj.results.working_ratio !== undefined) {
+            if (obj.results.working_ratio.avg !== undefined) {
+              working_ratio = obj.results.working_ratio.avg;
+            } else {
+              working_ratio = obj.results.working_ratio;
+            }
+          }
+          working_data.push([counter, working_ratio]);
+
+          var waiting_ratio = 0.0;
+          if (obj.results.waiting_ratio !== undefined) {
+            if (obj.results.waiting_ratio.avg !== undefined) {
+              waiting_ratio = obj.results.waiting_ratio.avg;
+            } else {
+              waiting_ratio = obj.results.waiting_ratio;
+            }
+          }
+          waiting_data.push([counter, waiting_ratio]);
+
+          var failure_ratio = 0.0;
           if (obj.results.failure_ratio !== undefined) {
-            failure_data.push([counter, obj.results.failure_ratio
-              .avg || obj.results.failure_ratio
-            ]);
-          } else {
-            failure_data.push([counter, 0.0]);
+            if (obj.results.failure_ratio.avg !== undefined) {
+              failure_ratio = obj.results.failure_ratio.avg;
+            } else {
+              failure_ratio = obj.results.failure_ratio;
+            }
           }
-          working_data.push([counter, obj.results.working_ratio.avg ||
-            obj.results.working_ratio
-          ]);
+          failure_data.push([counter, failure_ratio]);
+
           ticks.push([counter, that.getData().nodes[
             obj.id].name || obj.id]);
           counter++;
