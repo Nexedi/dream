@@ -459,7 +459,7 @@
         series: {
           bars: {
             show: true,
-            barWidth: 0.9,
+            barWidth: 0.8,
             align: "center"
           },
           stack: true

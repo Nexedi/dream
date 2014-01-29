@@ -253,8 +253,8 @@ path, ._jsPlumb_endpoint {
 }
 
 #graph {
-  width: 100%;
-  height: 400px;
+  width: 70%;
+  height: 250px;
   text-align: center;
   margin-left:auto;
   margin-right:auto;
