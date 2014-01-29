@@ -321,7 +321,9 @@
           ],
           link: []
         };
-      $.each(result.elementList, function (idx, obj) {
+
+      $.each(result.elementList.sort(function(a,b) {return a.name > b.name ? -1 : 1}),
+        function (idx, obj) {
         if (obj.results !== undefined && obj.results.working_ratio !== undefined) {
           /* when there is only one replication, the ratio is given as a float,
               otherwise we have a mapping avg, min max */
