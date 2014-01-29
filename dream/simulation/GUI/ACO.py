@@ -11,6 +11,20 @@ class Simulation(DefaultSimulation):
 
   max_results = 4
 
+  def getConfigurationDict(self):
+    conf = DefaultSimulation.getConfigurationDict(self)
+    conf["Dream-Configuration"]["property_list"].append(
+        { "id": "numberOfGenerations",
+          "type": "integer",
+          "_class": "Dream.Property",
+          "_default": "10"} )
+    conf["Dream-Configuration"]["property_list"].append(
+        { "id": "numberOfAntsPerGenerations",
+          "type": "integer",
+          "_class": "Dream.Property",
+          "_default": "20"} )
+    return conf
+
   def _preprocess(self, data):
     """Override in subclass to preprocess data.
     """
@@ -52,8 +66,9 @@ class Simulation(DefaultSimulation):
 
     # Number of times new ants are to be created, i.e. number of generations (a
     # generation can have more than 1 ant)
-    for i in range(10):
-        for j in range(20): # number of ants created per generation
+    for i in range(int(data["general"]["numberOfGenerations"])):
+        # number of ants created per generation
+        for j in range(int(data["general"]["numberOfAntsPerGenerations"])):
             # an ant dictionary to contain rule to queue assignment information
             ant = {}
             # for each of the machines, rules are randomly picked from the
