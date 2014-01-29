@@ -47,6 +47,7 @@
    }
   }
  ], 
+ "_class": "Dream.Simulation", 
  "general": {
   "_class": "Dream.Configuration"
  }
