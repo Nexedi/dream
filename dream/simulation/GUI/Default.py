@@ -217,5 +217,15 @@ class Simulation(object):
       },
     }
 
-  def run(self, data):
+  def runOneScenario(self, data):
+    """Run one scenario.
+    To be reused by subclasses.
+    """
     return json.loads(simulate_line_json(input_data=json.dumps(data)))
+
+  def run(self, data):
+    """Run simulation and return result to the GUI.
+    """
+    return [{"key": "default",
+             "score": 0,
+             "result": self.runOneScenario(data)}]

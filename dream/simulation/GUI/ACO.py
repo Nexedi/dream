@@ -80,7 +80,7 @@ class Simulation(DefaultSimulation):
                 ant['key'] = ant_key
 
                 # TODO: those two steps have to be parallelized
-                ant['result'] = DefaultSimulation.run(self, ant_data)
+                ant['result'] = DefaultSimulation.runOneScenario(self, ant_data)
                 ant['score'] = self._calculateAntScore(ant)
 
         # The ants in this generation are ranked based on their scores and the
