@@ -21,7 +21,7 @@ import sys
 import json
 import traceback
 import multiprocessing
-import pydot
+#import pydot
 import os.path
 import logging
 

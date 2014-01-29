@@ -12,8 +12,8 @@ setup(
         'SimPy>=2,<3',
         'xlrd',
         'xlwt',
-        'pyparsing==1.5.7',
-        'pydot',
+#        'pyparsing==1.5.7',
+#        'pydot',
     ],
     entry_points=("""
     [console_scripts]
