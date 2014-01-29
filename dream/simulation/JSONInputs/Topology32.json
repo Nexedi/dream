@@ -2,36 +2,26 @@
     "_class": "Dream.Simulation",
     "edges": {
         "0": [
-            "W1",
-            "M1",
-            {}
-        ],
-        "1": [
-            "W1",
-            "M2",
-            {}
-        ],
-        "2": [
             "S1",
             "DummyQ",
             {}
         ],
-        "3": [
+        "1": [
             "M1",
             "Q1",
             {}
         ],
-        "4": [
+        "2": [
             "M2",
             "E1",
             {}
         ],
-        "5": [
+        "3": [
             "DummyQ",
             "M1",
             {}
         ],
-        "6": [
+        "4": [
             "Q1",
             "M2",
             {}
@@ -60,7 +50,7 @@
             "top": 0.045454545454545414
         },
         "M1": {
-            "_class": "Dream.OperatedMachine",
+            "_class": "Dream.Machine",
             "failures": {
                 "MTTF": "60",
                 "MTTR": "5",
@@ -75,7 +65,7 @@
             "top": 0.5909090909090908
         },
         "M2": {
-            "_class": "Dream.OperatedMachine",
+            "_class": "Dream.Machine",
             "failures": {
                 "MTTF": "40",
                 "MTTR": "10",
@@ -110,13 +100,6 @@
             "left": 0.6968085106382979,
             "name": "Raw Material",
             "top": 0.9545454545454546
-        },
-        "W1": {
-            "_class": "Dream.Repairman",
-            "capacity": "1",
-            "left": 0.14893617021276595,
-            "name": "W1",
-            "top": 0.7727272727272727
         }
     }
 }
