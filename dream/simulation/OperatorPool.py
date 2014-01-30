@@ -115,6 +115,7 @@ class OperatorPool(ObjectResource):
     # =======================================================================
     #                           returns the resource
     # =======================================================================
+    # TODO: check if it is valid to use it as filter in operatorPoolBroker run()
     def getResource(self,operator):
         # have to return the resource of the first operator available
         return operator.getResource()

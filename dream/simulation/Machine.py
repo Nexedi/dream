@@ -219,7 +219,6 @@ class Machine(CoreObject):
                     # from an unidentified giver or not getting an entity at all as the giver 
                     # may fall in failure mode (assignExit()?)
             self.currentEntity=self.getEntity()
-            
             # TODO: the Machine receive the entity  after the operator is available
             #     the canAcceptAndIsRequested method checks only in case of Load type of operation 
             
