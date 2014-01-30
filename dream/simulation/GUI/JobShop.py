@@ -5,10 +5,30 @@ import random
 import operator
 
 from dream.simulation.GUI import ACO
+from dream.simulation.GUI.Default import schema
 
 class Simulation(ACO.Simulation):
   def getConfigurationDict(self):
     conf = ACO.Simulation.getConfigurationDict(self)
+    conf["Dream-MachineJobShop"] = {
+        "property_list": [
+          schema["processingTime"],
+          schema["failures"]
+        ],
+        "_class": 'Dream.MachineJobShop'
+    }
+    conf["Dream-QueueJobShop"] = {
+        "property_list": [
+          schema["capacity"],
+          schema["isDummy"],
+          schema["schedulingRule"]
+        ],
+        "_class": 'Dream.QueueJobShop'
+    }
+    conf["Dream-ExitJobShop"] = {
+        "_class": 'Dream.ExitJobShop'
+    }
+    # XXX remove default machines etc ?
     conf["Dream-Configuration"]["gui"]["wip_spreasheet"] = 1
     conf["Dream-Configuration"]["gui"]["job_schedule_spreadsheet"] = 1
     conf["Dream-Configuration"]["gui"]["job_gantt"] = 1

@@ -174,24 +174,6 @@ class Simulation(object):
       "Dream-Exit": {
         "_class": 'Dream.Exit'
       },
-      "Dream-MachineJobShop": {
-        "property_list": [
-          schema["processingTime"],
-          schema["failures"]
-        ],
-        "_class": 'Dream.MachineJobShop'
-      },
-      "Dream-QueueJobShop": {
-        "property_list": [
-          schema["capacity"],
-          schema["isDummy"],
-          schema["schedulingRule"]
-        ],
-        "_class": 'Dream.QueueJobShop'
-      },
-      "Dream-ExitJobShop": {
-        "_class": 'Dream.ExitJobShop'
-      },
       "Dream-Repairman": {
         "property_list": [schema["capacity"]],
         "_class": 'Dream.Repairman'
