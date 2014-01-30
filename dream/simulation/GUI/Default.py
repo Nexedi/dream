@@ -217,6 +217,11 @@ class Simulation(object):
     """
     return json.loads(simulate_line_json(input_data=json.dumps(data)))
 
+  def _preprocess(self, data):
+    """Preprocess the data, for instance reading spreadsheet.
+    """
+    return data
+
   def run(self, data):
     """Run simulation and return result to the GUI.
     """

@@ -33,5 +33,3 @@ class Simulation(DefaultSimulation):
       }
     return conf
 
-  def run(self, data):
-    return DefaultSimulation.run(self._preprocess(data))

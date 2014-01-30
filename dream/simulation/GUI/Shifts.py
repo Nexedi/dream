@@ -18,5 +18,3 @@ class Simulation(DefaultSimulation):
     # TODO
     return data
 
-  def run(self, data):
-    return DefaultSimulation.run(self._preprocess(data))
