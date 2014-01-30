@@ -1,0 +1,89 @@
+{
+    "_class": "Dream.Simulation",
+    "edges": {
+        "0": [
+            "O1",
+            "M1",
+            {}
+        ],
+        "1": [
+            "O1",
+            "M2",
+            {}
+        ],
+        "2": [
+            "S1",
+            "M1",
+            {}
+        ],
+        "3": [
+            "M1",
+            "M2",
+            {}
+        ],
+        "4": [
+            "M2",
+            "E1",
+            {}
+        ]
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "confidenceLevel": "0.95",
+        "maxSimTime": "155",
+        "numberOfReplications": "1",
+        "trace": "Yes"
+    },
+    "nodes": {
+        "E1": {
+            "_class": "Dream.Exit",
+            "name": "Exit"
+        },
+        "S1": {
+            "_class": "Dream.Source",
+            "entity": "Part",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": "6"
+            },
+            "name": "Source"
+        },
+        "M1": {
+            "_class": "Dream.Machine",
+            "name": "Machine1",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "17"
+            },
+            "loadTime": {
+            	"loadDistribution": "Fixed",
+            	"loadMean": "0"
+            },
+            "operationType": "MT-Load-Processing"
+        },
+        "M2": {
+            "_class": "Dream.Machine",
+            "name": "Machine2",
+            "failures": {
+            },
+            "setupTime": {
+            	"setupDistribution": "Fixed",
+            	"setupMean": "0.25"
+            },
+            "loadTime": {
+            	"loadDistribution": "Fixed",
+            	"loadMean": "0"
+            },
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "2"
+            },
+            "operationType": "MT-Load-Setup-Processing"
+        },
+        "O1": {
+            "_class": "Dream.Operator",
+            "capacity": "1",
+            "name": "Operator1"
+        }
+    }
+}
