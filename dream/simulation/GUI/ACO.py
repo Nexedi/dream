@@ -101,9 +101,18 @@ class Simulation(DefaultSimulation):
                 ant['result'] = DefaultSimulation.runOneScenario(self, ant_data)
                 ant['score'] = self._calculateAntScore(ant)
 
+        # remove ants that outputs the same schedules
+        ants_without_duplicates = dict()
+        for ant in ants:
+          ant_result = copy(ant['result'])
+          ant_result['general'].pop('totalExecutionTime', None)
+          ant_result = json.dumps(ant_result, sort_keys=True)
+          ants_without_duplicates[ant_result] = ant
+
         # The ants in this generation are ranked based on their scores and the
         # best (max_results) are selected
-        ants = sorted(ants, key=operator.itemgetter('score'))[:max_results]
+        ants = sorted(ants_without_duplicates.values(),
+          key=operator.itemgetter('score'))[:max_results]
 
         for l in ants:
             # update the options list to ensure that good performing queue-rule
