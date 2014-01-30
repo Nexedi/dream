@@ -205,7 +205,8 @@ class Machine(CoreObject):
     # ======= release a resource if the only operation type is Load
             if (self.operatorPool!="None")\
                  and any(type=="Load" for type in self.multOperationTypeList)\
-                 and not any(type=="Processing" or type=="Setup" for type in self.multOperationTypeList)\
+                 and not (any(type=="Processing" for type in self.multOperationTypeList)\
+                          or any(type=="Setup" for type in self.multOperationTypeList))\
                  and self.isOperated():
                 # after getting the entity release the operator
                 # machine has to release the operator
@@ -224,7 +225,8 @@ class Machine(CoreObject):
             
     # ======= request a resource if it is not already assigned an Operator
             if(self.operatorPool!="None")\
-                 and any(type=="Processing" or type=="Setup" for type in self.multOperationTypeList)\
+                 and (any(type=="Processing" for type in self.multOperationTypeList)\
+                      or any(type=="Setup" for type in self.multOperationTypeList))\
                  and not self.isOperated():
                 # when it's ready to accept (canAcceptAndIsRequested) then inform the broker
                 # machines waits to be operated (waits for the operator)
@@ -253,7 +255,8 @@ class Machine(CoreObject):
     # ======= release a resource if the only operation type is Setup
             if (self.operatorPool!="None")\
                 and self.isOperated()\
-                and any(type=="Setup" or type=="Load" for type in self.multOperationTypeList)\
+                and (any(type=="Setup" for type in self.multOperationTypeList)\
+                     or any(type=="Load" for type in self.multOperationTypeList))\
                 and not any(type=="Processing" for type in self.multOperationTypeList):
                 # after getting the entity release the operator
                 # machine has to release the operator
@@ -414,7 +417,8 @@ class Machine(CoreObject):
         # this is done to achieve better (cpu) processing time 
         # then we can also use it as a filter for a yield method
         if(len(activeObject.previous)==1 or callerObject==None):
-            if (activeObject.operatorPool!='None' and any(type=='Load' or 'Setup' for type in activeObject.multOperationTypeList)):
+            if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
+                                                    or any(type=='Setup' for type in activeObject.multOperationTypeList))):
                 return activeObject.operatorPool.checkIfResourceIsAvailable()\
                         and activeObject.Up\
                         and len(activeObjectQueue)<activeObject.capacity
@@ -424,7 +428,8 @@ class Machine(CoreObject):
         thecaller=callerObject
         # return True ONLY if the length of the activeOjbectQue is smaller than
         # the object capacity, and the callerObject is not None but the giverObject
-        if (activeObject.operatorPool!='None' and any(type=='Load' or 'Setup' for type in activeObject.multOperationTypeList)):
+        if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
+                                                or any(type=='Setup' for type in activeObject.multOperationTypeList))):
             return activeObject.operatorPool.checkIfResourceIsAvailable()\
                 and activeObject.Up\
                 and len(activeObjectQueue)<activeObject.capacity
@@ -454,7 +459,8 @@ class Machine(CoreObject):
         # if not then the machine has to block the predecessor giverObject to avoid conflicts
         # with other competing machines
         if(len(activeObject.previous)==1):
-            if (activeObject.operatorPool!='None' and any(type=='Load' or 'Setup' for type in activeObject.multOperationTypeList)):
+            if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
+                                                    or any(type=='Setup' for type in activeObject.multOperationTypeList))):
                 if activeObject.operatorPool.checkIfResourceIsAvailable()\
                     and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
                     and giverObject.haveToDispose(activeObject) and not giverObject.exitIsAssigned():
@@ -494,7 +500,8 @@ class Machine(CoreObject):
                     activeObject.giver=object                 # set the giver
                     maxTimeWaiting=timeWaiting    
         
-        if (activeObject.operatorPool!='None' and any(type=='Load' or 'Setup' for type in activeObject.multOperationTypeList)):
+        if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
+                                                or any(type=='Setup' for type in activeObject.multOperationTypeList))):
             if activeObject.operatorPool.checkIfResourceIsAvailable()\
                 and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
                 and isRequested and not activeObject.giver.exitIsAssigned():
@@ -666,7 +673,7 @@ class Machine(CoreObject):
                 activeObject.totalBlockageTime+=(now()-activeObject.timeLastEntityEnded)-(now()-activeObject.timeLastFailure)-activeObject.downTimeInTryingToReleaseCurrentEntity 
         
         #Machine was idle when it was not in any other state    
-        activeObject.totalWaitingTime=MaxSimtime-activeObject.totalWorkingTime-activeObject.totalBlockageTime-activeObject.totalFailureTime
+        activeObject.totalWaitingTime=MaxSimtime-activeObject.totalWorkingTime-activeObject.totalBlockageTime-activeObject.totalFailureTime-activeObject.totalLoadTime-activeObject.totalSetupTime
         
         if activeObject.totalBlockageTime<0 and activeObject.totalBlockageTime>-0.00001:  #to avoid some effects of getting negative cause of rounding precision
             self.totalBlockageTime=0  
@@ -769,11 +776,16 @@ class Machine(CoreObject):
             json['results']['working_ratio']=100*self.totalWorkingTime/G.maxSimTime
             json['results']['blockage_ratio']=100*self.totalBlockageTime/G.maxSimTime
             json['results']['waiting_ratio']=100*self.totalWaitingTime/G.maxSimTime
+            if any(type=='Setup' for type in self.multOperationTypeList):
+                json['results']['setup_ratio']=100*self.totalSetupTime/G.maxSimTime
+            if any(type=='Load' for type in self.multOperationTypeList):
+                json['results']['load_ratio']=100*self.totalLoadTime/G.maxSimTime
         else: #if we had multiple replications we output confidence intervals to excel
                 #for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
                 #so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
                 #so for each output value we check if there was difference in the runs' results
-                #if yes we output the Confidence Intervals. if not we output just the fix value           
+                #if yes we output the Confidence Intervals. if not we output just the fix value    
+            # TODO: update the following with the setup- and load- times       
             json={}
             json['_class'] = 'Dream.Machine';
             json['id'] = str(self.id)

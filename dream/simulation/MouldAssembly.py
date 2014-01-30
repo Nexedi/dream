@@ -294,7 +294,8 @@ class MouldAssembly(MachinePreemptive):
                 if activeObject.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
                     #return according to the state of the Queue
                     # check if (if the machine is to be operated) there are available operators
-                    if (activeObject.operatorPool!='None' and any(type=='Load' or 'Setup' for type in activeObject.multOperationTypeList)):
+                    if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
+                                                            or any(type=='Setup' for type in activeObject.multOperationTypeList))):
                         return activeObject.operatorPool.checkIfResourceIsAvailable()\
                                  and len(activeObject.getActiveObjectQueue())==0\
                                  and activeObject.Up
