@@ -1,73 +1,73 @@
 {
+ "_class": "Dream.Simulation", 
  "elementList": [
   {
    "_class": "Dream.Assembly", 
    "id": "A1", 
    "results": {
-    "working_ratio": 92.36111111111111, 
     "blockage_ratio": 7.534722222222222, 
-    "waiting_ratio": 0.10416666666666667
+    "waiting_ratio": 0.10416666666666667, 
+    "working_ratio": 92.36111111111111
    }
   }, 
   {
    "_class": "Dream.Dismantle", 
    "id": "D1", 
    "results": {
-    "working_ratio": 46.111111111111114, 
     "blockage_ratio": 27.666666666670316, 
-    "waiting_ratio": 26.222222222218573
+    "waiting_ratio": 26.222222222218573, 
+    "working_ratio": 46.111111111111114
    }
   }, 
   {
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
-    "throughput": 663, 
+    "lifespan": 57.8417043740569, 
     "takt_time": 2.1702111613876323, 
-    "lifespan": 57.8417043740569
+    "throughput": 663
    }
   }, 
   {
    "_class": "Dream.Exit", 
    "id": "E2", 
    "results": {
-    "throughput": 2655, 
+    "lifespan": 56.056290018832385, 
     "takt_time": 0.542316384180791, 
-    "lifespan": 56.056290018832385
+    "throughput": 2655
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M1", 
    "results": {
-    "working_ratio": 11.527777777777779, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 7.638888888888889, 
-    "waiting_ratio": 80.83333333333333
+    "waiting_ratio": 80.83333333333333, 
+    "working_ratio": 11.527777777777779
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M2", 
    "results": {
-    "working_ratio": 46.05208333333332, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 53.94791666666668
+    "waiting_ratio": 53.94791666666668, 
+    "working_ratio": 46.05208333333332
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M3", 
    "results": {
-    "working_ratio": 36.88541666666553, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 63.11458333333447
+    "waiting_ratio": 63.11458333333447, 
+    "working_ratio": 36.88541666666553
    }
   }
  ], 
- "_class": "Dream.Simulation", 
  "general": {
   "_class": "Dream.Configuration"
  }

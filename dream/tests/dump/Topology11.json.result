@@ -1,4 +1,5 @@
 {
+ "_class": "Dream.Simulation", 
  "elementList": [
   {
    "_class": "Dream.Queue", 
@@ -9,39 +10,39 @@
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
-    "throughput": 719, 
+    "lifespan": 9.975660639777468, 
     "takt_time": 2.002086230876217, 
-    "lifespan": 9.975660639777468
+    "throughput": 719
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M1", 
    "results": {
-    "working_ratio": 37.53472222222222, 
     "blockage_ratio": 62.43055555555556, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 0.034722222222222224
+    "waiting_ratio": 0.034722222222222224, 
+    "working_ratio": 37.53472222222222
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M2", 
    "results": {
-    "working_ratio": 37.604166666666664, 
     "blockage_ratio": 62.395833333333336, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 0.0
+    "waiting_ratio": 0.0, 
+    "working_ratio": 37.604166666666664
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M3", 
    "results": {
-    "working_ratio": 99.89583333333333, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 0.10416666666666667
+    "waiting_ratio": 0.10416666666666667, 
+    "working_ratio": 99.89583333333333
    }
   }, 
   {
@@ -53,12 +54,11 @@
    "_class": "Dream.Repairman", 
    "id": "W1", 
    "results": {
-    "working_ratio": 0.0, 
-    "waiting_ratio": 100.0
+    "waiting_ratio": 100.0, 
+    "working_ratio": 0.0
    }
   }
  ], 
- "_class": "Dream.Simulation", 
  "general": {
   "_class": "Dream.Configuration"
  }

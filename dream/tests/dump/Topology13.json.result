@@ -1,53 +1,53 @@
 {
+ "_class": "Dream.Simulation", 
  "elementList": [
   {
    "_class": "Dream.Assembly", 
    "id": "A1", 
    "results": {
-    "working_ratio": 92.36111111111111, 
     "blockage_ratio": 7.534722222222222, 
-    "waiting_ratio": 0.10416666666666667
+    "waiting_ratio": 0.10416666666666667, 
+    "working_ratio": 92.36111111111111
    }
   }, 
   {
    "_class": "Dream.Dismantle", 
    "id": "D1", 
    "results": {
-    "working_ratio": 46.111111111111114, 
     "blockage_ratio": 0.0, 
-    "waiting_ratio": 53.888888888888886
+    "waiting_ratio": 53.888888888888886, 
+    "working_ratio": 46.111111111111114
    }
   }, 
   {
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
-    "throughput": 664, 
+    "lifespan": 56.327560240963855, 
     "takt_time": 2.1675451807228914, 
-    "lifespan": 56.327560240963855
+    "throughput": 664
    }
   }, 
   {
    "_class": "Dream.Exit", 
    "id": "E2", 
    "results": {
-    "throughput": 2656, 
+    "lifespan": 55.577560240963855, 
     "takt_time": 0.5418862951807228, 
-    "lifespan": 55.577560240963855
+    "throughput": 2656
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M1", 
    "results": {
-    "working_ratio": 11.527777777777779, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 7.638888888888889, 
-    "waiting_ratio": 80.83333333333333
+    "waiting_ratio": 80.83333333333333, 
+    "working_ratio": 11.527777777777779
    }
   }
  ], 
- "_class": "Dream.Simulation", 
  "general": {
   "_class": "Dream.Configuration"
  }

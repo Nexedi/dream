@@ -1,98 +1,99 @@
 {
+ "_class": "Dream.Simulation", 
  "elementList": [
   {
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
-    "throughput": 4, 
+    "lifespan": 14.75, 
     "takt_time": 5.75, 
-    "lifespan": 14.75
+    "throughput": 4
    }
   }, 
   {
+   "_class": "Dream.Job", 
    "extraPropertyDict": {
+    "dueDate": "15", 
+    "name": "Job1", 
+    "orderDate": "0", 
     "priority": "1", 
     "route": [
      {
-      "stationIdsList": [
-       "Q1"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
+      "stationIdsList": [
+       "Q1"
+      ], 
       "stepNumber": "0"
      }, 
      {
-      "stationIdsList": [
-       "M1"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "1"
       }, 
+      "stationIdsList": [
+       "M1"
+      ], 
       "stepNumber": "1"
      }, 
      {
-      "stationIdsList": [
-       "Q3"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
+      "stationIdsList": [
+       "Q3"
+      ], 
       "stepNumber": "2"
      }, 
      {
-      "stationIdsList": [
-       "M3"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "3"
       }, 
+      "stationIdsList": [
+       "M3"
+      ], 
       "stepNumber": "3"
      }, 
      {
-      "stationIdsList": [
-       "Q2"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
+      "stationIdsList": [
+       "Q2"
+      ], 
       "stepNumber": "4"
      }, 
      {
-      "stationIdsList": [
-       "M2"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "4"
       }, 
+      "stationIdsList": [
+       "M2"
+      ], 
       "stepNumber": "5"
      }, 
      {
-      "stationIdsList": [
-       "E1"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
+      "stationIdsList": [
+       "E1"
+      ], 
       "stepNumber": "6"
      }
-    ], 
-    "dueDate": "15", 
-    "orderDate": "0", 
-    "name": "Job1"
+    ]
    }, 
-   "_class": "Dream.Job", 
    "id": "J1", 
    "results": {
-    "delay": 8.0, 
     "completionTime": 23.0, 
+    "delay": 8.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -133,89 +134,89 @@
    }
   }, 
   {
+   "_class": "Dream.Job", 
    "extraPropertyDict": {
+    "dueDate": "10", 
+    "name": "Job2", 
+    "orderDate": "-1", 
     "priority": "-7", 
     "route": [
      {
-      "stationIdsList": [
-       "Q2"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
+      "stationIdsList": [
+       "Q2"
+      ], 
       "stepNumber": "0"
      }, 
      {
-      "stationIdsList": [
-       "M2"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "3"
       }, 
+      "stationIdsList": [
+       "M2"
+      ], 
       "stepNumber": "1"
      }, 
      {
-      "stationIdsList": [
-       "Q3"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
+      "stationIdsList": [
+       "Q3"
+      ], 
       "stepNumber": "2"
      }, 
      {
-      "stationIdsList": [
-       "M3"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "1"
       }, 
+      "stationIdsList": [
+       "M3"
+      ], 
       "stepNumber": "3"
      }, 
      {
+      "processingTime": {
+       "distributionType": "Fixed", 
+       "mean": "7"
+      }, 
       "stationIdsList": [
        "Q2"
       ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "7"
-      }, 
       "stepNumber": "4"
      }, 
      {
-      "stationIdsList": [
-       "M2"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "7"
       }, 
+      "stationIdsList": [
+       "M2"
+      ], 
       "stepNumber": "5"
      }, 
      {
-      "stationIdsList": [
-       "E1"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
+      "stationIdsList": [
+       "E1"
+      ], 
       "stepNumber": "6"
      }
-    ], 
-    "dueDate": "10", 
-    "orderDate": "-1", 
-    "name": "Job2"
+    ]
    }, 
-   "_class": "Dream.Job", 
    "id": "J2", 
    "results": {
-    "delay": 9.0, 
     "completionTime": 19.0, 
+    "delay": 9.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -256,69 +257,69 @@
    }
   }, 
   {
+   "_class": "Dream.Job", 
    "extraPropertyDict": {
+    "dueDate": "6", 
+    "name": "Job3", 
+    "orderDate": "2", 
     "priority": "-12", 
     "route": [
      {
-      "stationIdsList": [
-       "Q2"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
+      "stationIdsList": [
+       "Q2"
+      ], 
       "stepNumber": "0"
      }, 
      {
-      "stationIdsList": [
-       "M2"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "2"
       }, 
+      "stationIdsList": [
+       "M2"
+      ], 
       "stepNumber": "1"
      }, 
      {
-      "stationIdsList": [
-       "Q3"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
+      "stationIdsList": [
+       "Q3"
+      ], 
       "stepNumber": "2"
      }, 
      {
-      "stationIdsList": [
-       "M3"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "1"
       }, 
+      "stationIdsList": [
+       "M3"
+      ], 
       "stepNumber": "3"
      }, 
      {
-      "stationIdsList": [
-       "E1"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
+      "stationIdsList": [
+       "E1"
+      ], 
       "stepNumber": "4"
      }
-    ], 
-    "dueDate": "6", 
-    "orderDate": "2", 
-    "name": "Job3"
+    ]
    }, 
-   "_class": "Dream.Job", 
    "id": "J3", 
    "results": {
-    "delay": -1.0, 
     "completionTime": 5.0, 
+    "delay": -1.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -349,49 +350,49 @@
    }
   }, 
   {
+   "_class": "Dream.Job", 
    "extraPropertyDict": {
+    "dueDate": "9", 
+    "name": "Job4", 
+    "orderDate": "1.5", 
     "priority": "0", 
     "route": [
      {
-      "stationIdsList": [
-       "Q2"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
+      "stationIdsList": [
+       "Q2"
+      ], 
       "stepNumber": "0"
      }, 
      {
-      "stationIdsList": [
-       "M2"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "7"
       }, 
+      "stationIdsList": [
+       "M2"
+      ], 
       "stepNumber": "1"
      }, 
      {
-      "stationIdsList": [
-       "E1"
-      ], 
       "processingTime": {
        "distributionType": "Fixed", 
        "mean": "0"
       }, 
+      "stationIdsList": [
+       "E1"
+      ], 
       "stepNumber": "2"
      }
-    ], 
-    "dueDate": "9", 
-    "orderDate": "1.5", 
-    "name": "Job4"
+    ]
    }, 
-   "_class": "Dream.Job", 
    "id": "J4", 
    "results": {
-    "delay": 3.0, 
     "completionTime": 12.0, 
+    "delay": 3.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -415,30 +416,30 @@
    "_class": "Dream.Machine", 
    "id": "M1", 
    "results": {
-    "working_ratio": 4.3478260869565215, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 95.65217391304348
+    "waiting_ratio": 95.65217391304348, 
+    "working_ratio": 4.3478260869565215
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M2", 
    "results": {
-    "working_ratio": 100.0, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 0.0
+    "waiting_ratio": 0.0, 
+    "working_ratio": 100.0
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M3", 
    "results": {
-    "working_ratio": 21.73913043478261, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 78.26086956521739
+    "waiting_ratio": 78.26086956521739, 
+    "working_ratio": 21.73913043478261
    }
   }, 
   {
@@ -457,7 +458,6 @@
    "schedulingRule": "FIFO"
   }
  ], 
- "_class": "Dream.Simulation", 
  "general": {
   "_class": "Dream.Configuration"
  }
