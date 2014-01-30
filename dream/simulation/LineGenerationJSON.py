@@ -180,9 +180,9 @@ def createObjects():
         element['id'] = element_id                                  # create a new entry for the element (dictionary)
                                                                     # with key 'id' and value the the element_id
         resourceClass = element.get('_class', 'not found')          # get the class type of the element
-        if resourceClass=='Dream.Repairman':                    # check the object type
-            id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
-            name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
+        if resourceClass=='Dream.Repairman':                        # check the object type
+            id = element.get('id', 'not found')                     # get the id of the element
+            name = element.get('name', id)                          # get the name of the element / default 'not_found'
             capacity = int(element.get('capacity', '1'))            # get the capacity of the el. / defautl '1'
             R = Repairman(element_id, name, capacity)               # create a repairman object
             R.coreObjectIds=getSuccessorList(id)                    # update the list of objects that the repairman repairs
@@ -226,7 +226,7 @@ def createObjects():
             interarrivalTime=element.get('interarrivalTime',{})
             distributionType=interarrivalTime.get('distributionType', 'not found')
             mean=float(interarrivalTime.get('mean', '0'))        
-            entity=str_to_class(element.get('entity', 'not found'))     # initialize entity
+            entity=str_to_class(element['entity'])     # initialize entity
             S=Source(id, name, distributionType, mean, entity)          # initialize Source
             S.nextIds=getSuccessorList(id)
             G.SourceList.append(S)
@@ -238,7 +238,7 @@ def createObjects():
             interarrivalTime=element.get('interarrivalTime',{})
             distributionType=interarrivalTime.get('distributionType', 'not found')
             mean=float(interarrivalTime.get('mean', '0'))        
-            entity=str_to_class(element.get('entity', 'not found'))          
+            entity=str_to_class(element['entity'])          
             batchNumberOfUnits=int(element.get('batchNumberOfUnits', 'not found'))
             S=BatchSource(id, name, distributionType, mean, entity, batchNumberOfUnits)
             S.nextIds=getSuccessorList(id)
@@ -506,11 +506,11 @@ def createObjects():
         elif objClass=='Dream.BatchDecomposition':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', {})
-            distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean', '0'))  
-            stdev=float(processingTime.get('stdev', '0'))  
-            min=float(processingTime.get('min', '0')) 
+            processingTime=element['processingTime']
+            distributionType=processingTime['distributionType']
+            mean=float(processingTime.get('mean', '0'))
+            stdev=float(processingTime.get('stdev', '0'))
+            min=float(processingTime.get('min', '0'))
             max=float(processingTime.get('max', '0'))
             numberOfSubBatches=int(element.get('numberOfSubBatches', '0'))
             BD=BatchDecomposition(id, name, distribution=distributionType,  numberOfSubBatches=numberOfSubBatches,

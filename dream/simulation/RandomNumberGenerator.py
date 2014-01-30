@@ -36,7 +36,7 @@ class RandomNumberGenerator(object):
         self.alpha=0
         self.beta=0
         self.object=obj
-                
+
     def generateNumber(self):
         from Globals import G
         number=0
@@ -54,7 +54,8 @@ class RandomNumberGenerator(object):
         elif self.distType=="Erlang":    #if the distribution is erlang          
             number=G.Rnd.gammavariate(self.alpha,self.beta)                      
         else:
-            print "unknown distribution error in "+str(self.object.type)+str(self.object.id)                   
+            raise ValueError("Unknown distribution %r used in %s %s" %
+                            (self.distType, self.object.type, self.object.id))
+
         return number
-    
-        
+
