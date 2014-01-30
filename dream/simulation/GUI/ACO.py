@@ -10,8 +10,6 @@ from dream.simulation.Globals import getClassFromName
 
 class Simulation(DefaultSimulation):
 
-  max_results = 4
-
   def getConfigurationDict(self):
     conf = DefaultSimulation.getConfigurationDict(self)
     conf["Dream-Configuration"]["property_list"].append(
@@ -24,6 +22,11 @@ class Simulation(DefaultSimulation):
           "type": "integer",
           "_class": "Dream.Property",
           "_default": "20"} )
+    conf["Dream-Configuration"]["property_list"].append(
+        { "id": "numberOfSolutions",
+          "type": "integer",
+          "_class": "Dream.Property",
+          "_default": "4"} )
     return conf
 
   def _preprocess(self, data):
@@ -61,6 +64,8 @@ class Simulation(DefaultSimulation):
       node_class = getClassFromName(node['_class'])
       if issubclass(node_class, Queue):
         collated[node_id] = list(node_class.getSupportedSchedulingRules())
+
+    max_results = int(data['general']['numberOfSolutions'])
 
     ants = [] #list of ants for keeping track of their performance
 
@@ -100,7 +105,7 @@ class Simulation(DefaultSimulation):
 
         # The ants in this generation are ranked based on their scores and the
         # best (max_results) are selected
-        ants = sorted(ants, key=operator.itemgetter('score'))[:self.max_results]
+        ants = sorted(ants, key=operator.itemgetter('score'))[:max_results]
 
         for l in ants:
             # update the options list to ensure that good performing queue-rule
