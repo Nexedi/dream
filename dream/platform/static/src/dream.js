@@ -483,6 +483,12 @@
         } catch (e) {}
 
         var gantt_output_height = 35 * (gantt_data.data.length + 1) + 1;
+        // TODO: gantt data have to be sorted in a clever way:
+        //   jobs by alphabetic order
+        //     for each job, stations in chronological order.
+        //
+        // gantt_data.data = gantt_data.data.sort(function(a,b)
+        //  {return a.name > b.name ? -1 : 1});
         $('#job_gantt').height(gantt_output_height).show().dhx_gantt({
           data: gantt_data,
           scale_unit: 'day',
