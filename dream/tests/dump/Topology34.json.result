@@ -172,13 +172,11 @@
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q1", 
-   "schedulingRule": "FIFO"
+   "id": "Q1"
   }, 
   {
    "_class": "Dream.QueuePreemptive", 
-   "id": "Q2", 
-   "schedulingRule": "FIFO"
+   "id": "Q2"
   }
  ], 
  "general": {

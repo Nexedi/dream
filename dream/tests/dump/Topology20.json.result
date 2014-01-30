@@ -444,18 +444,15 @@
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q1", 
-   "schedulingRule": "FIFO"
+   "id": "Q1"
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q2", 
-   "schedulingRule": "MC"
+   "id": "Q2"
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q3", 
-   "schedulingRule": "FIFO"
+   "id": "Q3"
   }
  ], 
  "general": {

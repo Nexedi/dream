@@ -190,18 +190,15 @@
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q0", 
-   "schedulingRule": "FIFO"
+   "id": "Q0"
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q1", 
-   "schedulingRule": "FIFO"
+   "id": "Q1"
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q2", 
-   "schedulingRule": "FIFO"
+   "id": "Q2"
   }
  ], 
  "general": {

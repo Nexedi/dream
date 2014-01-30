@@ -3,8 +3,7 @@
  "elementList": [
   {
    "_class": "Dream.Queue", 
-   "id": "DummyQ", 
-   "schedulingRule": "FIFO"
+   "id": "DummyQ"
   }, 
   {
    "_class": "Dream.Exit", 
@@ -37,8 +36,7 @@
   }, 
   {
    "_class": "Dream.Queue", 
-   "id": "Q1", 
-   "schedulingRule": "FIFO"
+   "id": "Q1"
   }
  ], 
  "general": {

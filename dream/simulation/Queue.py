@@ -308,6 +308,5 @@ class Queue(CoreObject):
     def outputResultsJSON(self):
         from Globals import G
         json = {'_class': 'Dream.%s' % self.__class__.__name__,
-                'id': str(self.id),
-                'schedulingRule': self.schedulingRule}
+                'id': str(self.id), }
         G.outputJSON['elementList'].append(json)

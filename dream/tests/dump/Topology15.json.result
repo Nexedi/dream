@@ -12,8 +12,7 @@
   }, 
   {
    "_class": "Dream.Queue", 
-   "id": "DummyQ", 
-   "schedulingRule": "FIFO"
+   "id": "DummyQ"
   }, 
   {
    "_class": "Dream.Exit", 

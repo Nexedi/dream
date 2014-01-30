@@ -22,8 +22,7 @@
   }, 
   {
    "_class": "Dream.Queue", 
-   "id": "Q1", 
-   "schedulingRule": "FIFO"
+   "id": "Q1"
   }
  ], 
  "general": {

@@ -42,18 +42,15 @@
   }, 
   {
    "_class": "Dream.Queue", 
-   "id": "Q1", 
-   "schedulingRule": "FIFO"
+   "id": "Q1"
   }, 
   {
    "_class": "Dream.LineClearance", 
-   "id": "Q2", 
-   "schedulingRule": "FIFO"
+   "id": "Q2"
   }, 
   {
    "_class": "Dream.Queue", 
-   "id": "Q3", 
-   "schedulingRule": "FIFO"
+   "id": "Q3"
   }
  ], 
  "general": {
