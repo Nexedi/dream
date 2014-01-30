@@ -29,7 +29,7 @@ class Simulation(ACO.Simulation):
         "_class": 'Dream.ExitJobShop'
     }
     # XXX remove default machines etc ?
-    conf["Dream-Configuration"]["gui"]["wip_spreasheet"] = 1
+    conf["Dream-Configuration"]["gui"]["wip_spreadsheet"] = 1
     conf["Dream-Configuration"]["gui"]["job_schedule_spreadsheet"] = 1
     conf["Dream-Configuration"]["gui"]["job_gantt"] = 1
     return conf

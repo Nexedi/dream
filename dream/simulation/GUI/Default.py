@@ -200,6 +200,7 @@ class Simulation(object):
            schema["processTimeout"]
         ],
         "gui": {
+          'debug_json': 0,
           'wip_spreadsheet': 0,
           'shift_spreadsheet': 0,
 

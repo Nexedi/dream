@@ -70,10 +70,15 @@
       $('#job_schedule_spreadsheet').hide();
       $('#shift_spreadsheet').hide();
       $("#job_gantt").hide();
+      $("#wip_spreadsheet").hide();
+
+      if (configuration['Dream-Configuration'].gui.wip_spreadsheet){
+        $("#wip_spreadsheet").show();
+      }
 
       try {
         // spreadsheets
-        var spreadsheet_data = data.spreadsheet;
+        var spreadsheet_data = data.spreadsheet; // XXX rename as wip_spreadsheet in json ?
         if (spreadsheet_data !== undefined) {
           var spreadsheet = $('#wip_spreadsheet');
           spreadsheet.handsontable('populateFromArray', 0, 0, spreadsheet_data);

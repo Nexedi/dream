@@ -268,11 +268,19 @@
       $('li.result').removeClass('active');
       $($('li.result')[idx]).addClass('active');
       var result = JSON.parse($("#json_result").val())[idx]['result'];
-      $("#result_zone").show();
-      $("#graph_zone").show();
-      // if 
-      $("#job_schedule_spreadsheet").show();
-      $("#job_gantt").show();
+      if (configuration['Dream-Configuration'].gui.debug_json){
+        // TODO: does not work
+        $("#result_zone").show();
+      }
+      if (configuration['Dream-Configuration'].gui.station_utilisation_graph){
+        $("#graph_zone").show();
+      }
+      if (configuration['Dream-Configuration'].gui.job_schedule_spreadsheet){
+        $("#job_schedule_spreadsheet").show();
+      }
+      if (configuration['Dream-Configuration'].gui.job_gantt){
+        $("#job_gantt").show();
+      }
 
       // temporary hack
       var now = new Date();
@@ -465,16 +473,21 @@
           stack: true
         }
       };
-      $.plot("#graph", series, options);
+      if (configuration['Dream-Configuration'].gui.station_utilisation_graph){
+        // XXX no need to prepare data
+        $.plot("#graph", series, options);
+      }
 
       if (spreadsheet_data.length > 1) {
         var spreadsheet = $('#job_schedule_spreadsheet');
-        spreadsheet.show();
-        spreadsheet.handsontable({
-          data: spreadsheet_data,
-          readOnly: true
-        });
-        spreadsheet.find('.htCore').width(spreadsheet.width());
+        if (configuration['Dream-Configuration'].gui.job_schedule_spreadsheet){
+          spreadsheet.show();
+          spreadsheet.handsontable({
+            data: spreadsheet_data,
+            readOnly: true
+          });
+          spreadsheet.find('.htCore').width(spreadsheet.width());
+        }
         gantt.templates.task_class = function (start, end, obj) {
           return obj.parent ? "sub_task" : "";
         };
@@ -489,12 +502,14 @@
         //
         // gantt_data.data = gantt_data.data.sort(function(a,b)
         //  {return a.name > b.name ? -1 : 1});
-        $('#job_gantt').height(gantt_output_height).show().dhx_gantt({
-          data: gantt_data,
-          scale_unit: 'day',
-          readonly: true,
-          step: 7
-        });
+        if (configuration['Dream-Configuration'].gui.job_gantt){
+          $('#job_gantt').height(gantt_output_height).show().dhx_gantt({
+            data: gantt_data,
+            scale_unit: 'day',
+            readonly: true,
+            step: 7
+          });
+        }
       }
     };
     return that;
