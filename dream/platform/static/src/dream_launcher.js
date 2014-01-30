@@ -138,12 +138,15 @@
     });
 
 
-
     // Enable "Run Simulation" button
     $("#run_simulation").button().click(
       function (e) {
+        $("#loading_spinner").show();
+        $("#run_simulation").button('disable');
         dream_instance.runSimulation(
           function (data) {
+            $("#loading_spinner").hide();
+            $("#run_simulation").button('enable');
             $('#result_list').empty();
             if (data['success']) {
               $("#json_result").val(JSON.stringify(data['success'],
