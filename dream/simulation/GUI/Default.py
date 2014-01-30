@@ -104,7 +104,19 @@ schema = {
     "type": "string",
     "_class": "Dream.Property",
     "_default": "0.5"
-  }
+  },
+  "batchNumberOfUnits": {
+    "id": "batchNumberOfUnits",
+    "type": "integer",
+    "_class": "Dream.Property",
+    "_default": "10"
+  },
+  "numberOfSubBatches": {
+    "id": "numberOfSubBatches",
+    "type": "integer",
+    "_class": "Dream.Property",
+    "_default": "10"
+  },
 }
 
 # complex schemas (Dream.PropertyList)
