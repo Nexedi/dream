@@ -211,7 +211,7 @@ def createObjects():
             else:
                 OP = OperatorPool(element_id, name, capacity,operatorsList)     # create a operatorPool object
             OP.coreObjectIds=getSuccessorList(id)                   # update the list of objects that the operators of the operatorPool operate            
-            for operator in operatorsList.values():
+            for operator in operatorsList:
                 operator.coreObjectIds=OP.coreObjectIds        		# update the list of objects that the operators operate
             G.OperatorPoolsList.append(OP)                          # add the operatorPool to the RepairmanList
     # -----------------------------------------------------------------------
