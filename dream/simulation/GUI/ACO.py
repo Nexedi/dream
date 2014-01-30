@@ -93,8 +93,6 @@ class Simulation(DefaultSimulation):
                 # set scheduling rule on queues based on ant data
                 ant_data = copy(data)
                 for k, v in ant.items():
-                    # XXX we could change ant dict to contain the name of the
-                    # property to change (instead of hardcoding schedulingRule)
                     ant_data["nodes"][k]['schedulingRule'] = v
 
                 ant['key'] = ant_key
