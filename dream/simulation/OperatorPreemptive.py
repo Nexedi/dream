@@ -53,6 +53,7 @@ class OperatorPreemptive(Operator):
         if len(activeResourceQueue)==0:
             return True
         # read the station currently operated by the operator
+        # TODO: the victim of the operator is the Broker of the Machine. Modify to preempt the machine and not the broker
         victim=activeResourceQueue[0]
         # read its activeQ
         victimQueue=victim.getActiveObjectQueue()

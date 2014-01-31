@@ -342,6 +342,13 @@ class Machine(CoreObject):
             if (len(self.getActiveObjectQueue())==0 and self.shouldPreempt):
                 self.shouldPreempt=False
                 self.totalWorkingTime+=now()-(self.timeLastEntityEntered)
+                # TODO: Should release operator here
+    # =============== release resource in case of preemption
+                if (self.operatorPool!='None')\
+                    and any(type=="Processing" for type in self.multOperationTypeList)\
+                    and not interruption: 
+                    self.releaseOperator()
+                    yield waituntil,self,self.broker.brokerIsSet
                 continue
             
             # output to trace that the processing in the Machine self.objName ended 

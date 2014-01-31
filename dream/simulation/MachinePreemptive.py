@@ -33,9 +33,16 @@ from SimPy.Simulation import reactivate, now
 class MachinePreemptive(MachineJobShop):
     
     def __init__(self, id, name, capacity=1, distribution='Fixed', mean=1, stdev=0, min=0, max=10,\
-                  failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None', resetOnPreemption=True):
+                  failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None',\
+                  operatorPool='None',operationType='None',\
+                  loadDistribution="No",loadMean=0, loadStdev=0, loadMin=0, loadMax=10,\
+                  setupDistribution="No",setupMean=0, setupStdev=0, setupMin=0, setupMax=10,\
+                  resetOnPreemption=True):
         MachineJobShop.__init__(self, id, name, capacity, distribution, mean, stdev, min, max,\
-                  failureDistribution, MTTF, MTTR, availability, repairman)
+                  failureDistribution, MTTF, MTTR, availability, repairman,\
+                  operatorPool,operationType,\
+                  loadDistribution,loadMean, loadStdev, loadMin, loadMax,\
+                  setupDistribution,setupMean, setupStdev, setupMin, setupMax)
         self.resetOnPreemption=resetOnPreemption    #flag that shows if the processing  time should be reset or not
                  
     def getEntity(self):
