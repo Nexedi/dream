@@ -88,7 +88,7 @@
             ]
         },
         "Q2": {
-            "_class": "Dream.QueuePreemptive",
+            "_class": "Dream.QueueJobShop",
             "id": "Q2",
             "name": "Queue2",
             "isDummy": "0",
