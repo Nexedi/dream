@@ -171,7 +171,20 @@ class CoreObject(Process):
         self.timeLastEntityEntered=now()
         self.nameLastEntityEntered=activeEntity.name      # this holds the name of the last entity that got into Machine      
         self.downTimeProcessingCurrentEntity=0
-      
+        
+        # perform preemption when required
+        # if the object is not Exit
+        if activeObject.receiver:
+            # if the obtained Entity is critical
+            if activeEntity.isCritical:
+                #if the receiver is not empty
+                if len(self.receiver.getActiveObjectQueue())>0:
+                    #if the receiver does not hold an Entity that is also critical
+                    if not self.receiver.getActiveObjectQueue()[0].isCritical:
+                        self.receiver.shouldPreempt=True
+                        self.receiver.preempt()
+                        self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
+        
         self.outputTrace(activeEntity.name, "got into "+self.objName)
         return activeEntity
       
@@ -347,6 +360,12 @@ class CoreObject(Process):
     # =======================================================================
     def unAssignExit(self):
         self.exitAssignedToReceiver = False
+        
+    # =======================================================================
+    #        actions to be carried whenever the object is preemptied 
+    # =======================================================================
+    def preempt(self):
+        pass
         
     # =======================================================================
     #        actions to be carried whenever the object is interrupted 

@@ -54,6 +54,7 @@ class MachinePreemptive(MachineJobShop):
     # method to execute the preemption
     # =======================================================================    
     def preempt(self):
+        activeObject=self.getActiveObject()
         activeEntity=self.getActiveObjectQueue()[0] #get the active Entity
         #calculate the remaining processing time
         #if it is reset then set it as the original processing time
@@ -77,7 +78,8 @@ class MachinePreemptive(MachineJobShop):
         #set the receiver  as the object where the active entity was preempted from 
         self.receiver=self.lastGiver
         self.next=[self.receiver]
-        self.waitToDispose=True     #set that I have to dispose
+        self.waitToDispose=True                     #set that I have to dispose
+        self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
         reactivate(self)
 
         

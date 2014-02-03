@@ -32,21 +32,21 @@ from SimPy.Simulation import now
 # the QueuePreemptive object
 # ===========================================================================
 class QueuePreemptive(QueueJobShop):
-    # =======================================================================
-    # extend he default so that it can interrupt the receiver if need be
-    # =======================================================================
-    def getEntity(self):
-        activeEntity=QueueJobShop.getEntity(self)   #execute default behaviour
-        #if the obtained Entity is critical
-        if activeEntity.isCritical:
-            #if the receiver is not empty
-            if len(self.receiver.getActiveObjectQueue())>0:
-                #if the receiver does not hold an Entity that is also critical
-                if not self.receiver.getActiveObjectQueue()[0].isCritical:
-                    self.receiver.shouldPreempt=True
-                    self.receiver.preempt()
-                    self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
-        return activeEntity
+#     # =======================================================================
+#     # extend he default so that it can interrupt the receiver if need be
+#     # =======================================================================
+#     def getEntity(self):
+#         activeEntity=QueueJobShop.getEntity(self)   #execute default behaviour
+#         #if the obtained Entity is critical
+#         if activeEntity.isCritical:
+#             #if the receiver is not empty
+#             if len(self.receiver.getActiveObjectQueue())>0:
+#                 #if the receiver does not hold an Entity that is also critical
+#                 if not self.receiver.getActiveObjectQueue()[0].isCritical:
+#                     self.receiver.shouldPreempt=True
+#                     self.receiver.preempt()
+#                     self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
+#         return activeEntity
     
     # =======================================================================                
     # for future use
