@@ -45,10 +45,10 @@ class OrderComponent(Job):                                  # inherits from the 
                     requestingComponent = None, 
                     readyForAssembly = 0, 
                     isCritical=False):
-        Job.__init__(self, id, name, route, priority, dueDate, orderDate, extraPropertyDict)
+        Job.__init__(self, id, name, route, priority, dueDate, orderDate, extraPropertyDict, isCritical)
         self.auxiliaryList=[]       # Holds the auxiliary components that the component needs for a certain processing
         self.order=order            # parent order of the order component
-        self.isCritical=isCritical  # this should be self.order.isCritical. Added now for testing
+#         self.isCritical=isCritical  # this should be self.order.isCritical. Added now for testing
         self.componentType = componentType  # the type of the component which can be Basic/Secondary/Auxiliary
         # if the componentType of the component is Auxiliary then there need a requesting Component be defined
         # the requestingComponent is the component that needs the auxiliary component during its processing

@@ -31,7 +31,7 @@ Class that acts as an abstract. It should have no instances. All the Entities sh
 class Entity(object):
     type="Entity"
 
-    def __init__(self, id=None, name=None, priority=0, dueDate=None, orderDate=None):
+    def __init__(self, id=None, name=None, priority=0, dueDate=None, orderDate=None, isCritical=False):
         self.name=name
         #         information on the object holding the entity
         #         initialized as None and updated every time an entity enters a new object
@@ -52,6 +52,7 @@ class Entity(object):
         self.currentStation=None
         #         values to be used in the internal processing of compoundObjects
         self.internal = False       # informs if the entity is being processed internally
+        self.isCritical=isCritical          # flag to inform weather the entity is critical -> preemption
     # =======================================================================
     # outputs results to JSON File 
     # =======================================================================

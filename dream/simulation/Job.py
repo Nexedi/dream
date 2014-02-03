@@ -35,8 +35,8 @@ from Entity import Entity
 class Job(Entity):                                  # inherits from the Entity class   
     type="Job"
     
-    def __init__(self, id=None, name=None, route=[], priority=0, dueDate=None, orderDate=None, extraPropertyDict=None):
-        Entity.__init__(self, id=id,name=name, priority=priority, dueDate=dueDate, orderDate=orderDate)
+    def __init__(self, id=None, name=None, route=[], priority=0, dueDate=None, orderDate=None, extraPropertyDict=None,isCritical=False):
+        Entity.__init__(self, id=id,name=name, priority=priority, dueDate=dueDate, orderDate=orderDate, isCritical=isCritical)
         # instance specific attributes 
         self.id=id                                  # id
         # information on the routing and the stops of the entity

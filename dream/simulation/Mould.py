@@ -43,6 +43,6 @@ class Mould(Job):                                  # inherits from the Job class
                  extraPropertyDict=None,
                  order=None, 
                  isCritical=False):
-        Job.__init__(self, id, name, route, priority, dueDate, orderDate, extraPropertyDict)
+        Job.__init__(self, id, name, route, priority, dueDate, orderDate, extraPropertyDict, isCritical)
         self.order=order            # parent order of the order component
-        self.isCritical=isCritical  # this should be self.order.isCritical. Added now for testing
+#         self.isCritical=isCritical  # this should be self.order.isCritical. Added now for testing

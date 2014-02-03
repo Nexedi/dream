@@ -48,7 +48,7 @@ class Order(Job):
                         extraPropertyDict=None):
         Job. __init__(self, id=id, name=name, route=route, priority=priority, dueDate=dueDate, orderDate=orderDate, 
                       extraPropertyDict=extraPropertyDict)
-        self.isCritical=isCritical          # flag to inform weather the order is critical -> preemption
+#         self.isCritical=isCritical          # flag to inform weather the order is critical -> preemption
         self.componentsList=componentsList  # list of components that the order will be broken into
         self.basicComponentsList = []      # list that holds the Basic Components of the order
         self.secondaryComponentsList = []   # list that holds the Secondary Components of the order
