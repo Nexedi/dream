@@ -45,10 +45,10 @@ class MachinePreemptive(MachineJobShop):
                   setupDistribution,setupMean, setupStdev, setupMin, setupMax)
         self.resetOnPreemption=resetOnPreemption    #flag that shows if the processing  time should be reset or not
                  
-    def getEntity(self):
-        activeEntity=MachineJobShop.getEntity(self)
-        self.lastGiver=self.giver
-        return activeEntity
+#     def getEntity(self):
+#         activeEntity=MachineJobShop.getEntity(self)
+#         self.lastGiver=self.giver
+#         return activeEntity
         
     # =======================================================================
     # method to execute the preemption

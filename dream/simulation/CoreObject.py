@@ -97,7 +97,9 @@ class CoreObject(Process):
         self.failureTimeInCurrentEntity=0
         self.setupTimeCurrentEntity=0
  
-        self.shouldPreempt=False    #flag that shows that the machine should preempt or not       
+        self.shouldPreempt=False    #flag that shows that the machine should preempt or not
+        
+        self.lastGiver=None         # variable that holds the last giver of the object, used by machine in case of preemption    
 
     # =======================================================================
     #                the main process of the core object 
@@ -155,7 +157,8 @@ class CoreObject(Process):
         activeObjectQueue=self.getActiveObjectQueue()
         # remove entity from the giver
         activeEntity = giverObject.removeEntity()
-
+        # variable that holds the last giver; used in case of preemption
+        self.lastGiver=self.giver
         #get the entity from the previous object and put it in front of the activeQ 
         activeObjectQueue.append(activeEntity)   
         # if the giverObject is blocked then unBlock it
