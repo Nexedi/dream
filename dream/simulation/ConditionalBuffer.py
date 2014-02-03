@@ -92,7 +92,7 @@ class ConditionalBuffer(QueuePreemptive):
             and activeObject.checkCondition()
         
     # =======================================================================
-    # check weather the condition is True
+    # check whether the condition is True
     # ======================================================================= 
     def checkCondition(self):
         activeObject = self.getActiveObject()

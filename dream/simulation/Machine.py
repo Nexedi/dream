@@ -90,7 +90,7 @@ class Machine(CoreObject):
         self.currentOperator=None
         # define if load/setup/removal/processing are performed by the operator 
         self.operationType=operationType
-        # boolean to check weather the machine is being operated
+        # boolean to check whether the machine is being operated
         self.toBeOperated = False
         # define the load times
         self.loadDistType=loadDistribution 
@@ -162,6 +162,8 @@ class Machine(CoreObject):
         self.loadOperatorWaitTimeCurrentEntity = 0  # holds the time that the machine waits for operator to load the it
         self.loadTimeCurrentEntity = 0              # holds the time to load the current entity
         self.setupTimeCurrentEntity = 0             # holds the time to setup the machine before processing the current entity
+        # TODO: check whether the requestingEntity variable can be used in OperatorPreemptive
+        self.requestingEntity=None
     
     # =======================================================================
     # the main process of the machine
@@ -214,6 +216,8 @@ class Machine(CoreObject):
                 # wait until the Broker has finished processing
                 yield waituntil, self, self.broker.brokerIsSet
             
+            # TODO: reset the requestinEntity before receiving the currentEntity
+            self.requestingEntity=None
             # get the entity
                     # TODO: if there was loading time then we must solve the problem of getting an entity
                     # from an unidentified giver or not getting an entity at all as the giver 
@@ -467,11 +471,23 @@ class Machine(CoreObject):
         if(len(activeObject.previous)==1):
             if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
                                                     or any(type=='Setup' for type in activeObject.multOperationTypeList))):
-                if activeObject.operatorPool.checkIfResourceIsAvailable()\
-                    and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
-                    and giverObject.haveToDispose(activeObject) and not giverObject.exitIsAssigned():
-                    activeObject.giver.assignExit()
-                    return True
+                if giverObject.haveToDispose(activeObject):
+                    # TODO: 
+                    # check whether this entity is the one to be hand in
+                    #     to be used in operatorPreemptive
+                    activeObject.requestingEntity=giverObject.getActiveObjectQueue()[0]
+                    # TODO: 
+                    # update the objects requesting the operator
+                    activeObject.operatorPool.requestingObject=activeObject.giver
+                    # TODOD: 
+                    # update the last object calling the operatorPool
+                    activeObject.operatorPool.receivingObject=activeObject
+                    
+                    if activeObject.operatorPool.checkIfResourceIsAvailable()\
+                        and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
+                        and not giverObject.exitIsAssigned():
+                        activeObject.giver.assignExit()
+                        return True
                 else:
                     return False
             else:
@@ -508,11 +524,23 @@ class Machine(CoreObject):
         
         if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
                                                 or any(type=='Setup' for type in activeObject.multOperationTypeList))):
-            if activeObject.operatorPool.checkIfResourceIsAvailable()\
-                and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
-                and isRequested and not activeObject.giver.exitIsAssigned():
-                activeObject.giver.assignExit()
-                return True
+            if isRequested:
+                # TODO: 
+                # check whether this entity is the one to be hand in
+                #     to be used in operatorPreemptive
+                activeObject.requestingEntity=activeObject.giver.getActiveObjectQueue()[0]
+                # TODO: 
+                # update the object requesting the operator
+                activeObject.operatorPool.requestingObject=activeObject.giver
+                # TODOD: 
+                # update the last object calling the operatorPool
+                activeObject.operatorPool.receivingObject=activeObject
+                
+                if activeObject.operatorPool.checkIfResourceIsAvailable()\
+                    and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
+                    and isRequested and not activeObject.giver.exitIsAssigned():
+                    activeObject.giver.assignExit()
+                    return True
             else:
                 return False
         else:

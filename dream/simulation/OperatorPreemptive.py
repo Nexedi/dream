@@ -49,25 +49,37 @@ class OperatorPreemptive(Operator):
         activeResourceQueue = activeResource.getResourceQueue()
         # find out which station is requesting the operator?
         thecaller=callerObject
-        # if the operator is occupied return True
+        # TODO: if the callerObject is None then 
+        #     perform then default behaviour. Used to find free operators 
+        if thecaller==None:
+            # added for testing
+            len(self.Res.activeQ)<self.capacity
+        # Otherwise check the operator has a reason to preempt the machine he is currently working on
+        # TODO: update the objects requesting the operator
+        requestingObject=thecaller.requestingObject
+        # TODO: update the last object calling the operatorPool
+        receivingObject=thecaller.receivingObject
+        # TODO: the entity that is requesting the operator
+        requestingEntity=receivingObject.requestingEntity
+        
+        # if the operator is not occupied return True
         if len(activeResourceQueue)==0:
             return True
         # read the station currently operated by the operator
         # TODO: the victim of the operator is the Broker of the Machine. Modify to preempt the machine and not the broker
-        victim=activeResourceQueue[0]
+        victim=activeResourceQueue[0].victim
         # read its activeQ
         victimQueue=victim.getActiveObjectQueue()
-        # if the callerObject is None then return False as the operator is occupied
-        if thecaller==None:
-            return False
-        thecallerQueue=thecaller.getActiveObjectQueue()
+
+        requestingObjectQueue=requestingObject.getActiveObjectQueue()
+        receivingObjectQueue=receivingObject.getActiveObjectQueue()
         #if the receiver is not empty and the caller is not empty
-        if len(victimQueue)>0 and len(theCallerQueue):
+        if len(victimQueue) and len(requestingObjectQueue):
             try:
                 #if the  Entity to be forwarded to the station currently processed by the operator is critical
-                if thecallerQueue[0].isCritical:
+                if requestingObjectQueue[0].isCritical:
                     #if the receiver does not hold an Entity that is also critical
-                    if not victimQueue[0].isCritical:
+                    if not victimQueue[0].isCritical and not receivingObjectQueue[0].isCritical:
                         # then the receiver must be preemptied before it can receive any entities from the calerObject
                         victim.shouldPreempt=True
                         victim.preempt()

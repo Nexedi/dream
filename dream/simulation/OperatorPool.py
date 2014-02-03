@@ -52,6 +52,11 @@ class OperatorPool(ObjectResource):
         self.coreObjects=[]
         # holds the object/Machine that currently handles the operator pool
         self.currentObject='None'
+        # TODO: variables to be used by OperatorPreemptive
+        # TODO: the object requesting the OperatorPreemptive
+        self.requestingObject=None
+        # TODO: the last object calling the OperatorPool
+        self.receivingObject=None
         
         # check if an operatorsList is 'None'
         if operatorsList=='None' or (operatorsList!='None' and len(operatorsList)==0):
@@ -89,28 +94,28 @@ class OperatorPool(ObjectResource):
     # =======================================================================
     #                  checks if there are operators available
     # =======================================================================       
-    def checkIfResourceIsAvailable(self, callerObject=None):
-#         maxTimeWaiting = 0
-#         for operator in self.operators:
-#             for machine in operator.coreObjects:
-#                 timeWaiting = now()-machine.broker.timeWaitForOperatorStarted
-#                 if (timeWaiting>=maxTimeWaiting):
-#                     maxTimeWaiting=timeWaiting
+    def checkIfResourceIsAvailable(self):
         # TODO: to discuss with George if using a callerObject is the proper way to inform the OperatorPreemptive
         #     about the object that is requesting to know about its availability
-        thecaller=callerObject
-        
-#         requestingEntity=thecaller.getActiveObjectQueue()[0]
-#         requestedOperator=requestingEntity.manager
-#         isAvailable=requestedOperator.checkIfResourceIsAvailable(callerObject)
-        
-        return any(operator.checkIfResourceIsAvailable(callerObject=thecaller)==True for operator in self.operators)
+        # TODO: first check if there is any free operator, then check if the requesting entity is critical and preempt
+        # if callerOjbect is None then the checkIfResourceIsAvailable performs the default behaviour
+        #     so initially it checks whether there is a free operator 
+        isAvailable = any(operator.checkIfResourceIsAvailable()==True for operator in self.operators)
+        if isAvailable:
+            return True
+        # if there is no free operator, then check if any of the operators can preempt
+        return any(operator.checkIfResourceIsAvailable(callerObject=self)==True for operator in self.operators)
     
     # =======================================================================
     #              find the first available operator and return it
     # =======================================================================
     def findAvailableOperator(self):            # may need to implement different sorting of the operators
-        return next(x for x in self.operators if x.checkIfResourceIsAvailable())
+        # find the free operator if any
+        freeOperator = next(x for x in self.operators if x.checkIfResourceIsAvailable())
+        if freeOperator:
+            return freeOperator
+        # if there is no free operator, return the operator that can preempt
+        return next(x for x in self.operators if x.checkIfResourceIsAvailable(callerObject=self))
         
     # =======================================================================
     #                           returns the resource

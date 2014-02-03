@@ -39,7 +39,7 @@ class ObjectResource(object):
         self.totalWaitingTime=0         #holds the total waiting time
         self.timeLastOperationStarted=0    #holds the time that the last repair was started        
         self.Res=Resource(self.capacity)
-        # variable that checks weather the resource is already initialized
+        # variable that checks whether the resource is already initialized
         self.initialized = True
     
     # =======================================================================
