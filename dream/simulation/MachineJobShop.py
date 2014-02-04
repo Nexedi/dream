@@ -56,10 +56,6 @@ class MachineJobShop(Machine):
         setupTime=activeEntity.remainingRoute[0].get('setupTime',{})
         self.distType=setupTime.get('setupDistribution','Fixed')
         self.setupTime=float(setupTime.get('setupMean', 0))
-
-        loadTime=activeEntity.remainingRoute[0].get('loadTime',{})
-        self.distType=loadTime.get('loadDistribution','Fixed')
-        self.loadTime=float(loadTime.get('loadMean', 0))
         
         import Globals
         # read the list of next stations
@@ -190,4 +186,19 @@ class MachineJobShop(Machine):
         self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
         reactivate(self)
             
+    #just extend the default behaviour in order to read the load time from the Entity to be obtained        
+    def canAcceptAndIsRequested(self):
+        if Machine.canAcceptAndIsRequested(self):
+            self.readLoadTime()
+            return True
+        return False
+
+    #to be called by canAcceptAndIsRequested if it is to return True.
+    #the load timeof the Entity must be read
+    def readLoadTime(self):
+        self.giver.sortEntities()
+        activeEntity=self.giver.getActiveObjectQueue()[0]
+        loadTime=activeEntity.remainingRoute[0].get('loadTime',{})
+        self.distType=loadTime.get('loadDistribution','Fixed')
+        self.loadTime=float(loadTime.get('loadMean', 0))
         

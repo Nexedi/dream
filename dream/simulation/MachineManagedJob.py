@@ -101,6 +101,7 @@ class MachineManagedJob(MachineJobShop):
                     #make the operatorsList so that it holds only the manager of the current order
                     activeObject.operatorPool.operatorsList=[activeObject.giver.getActiveObjectQueue()[0].manager]
                     activeObject.operatorPool.operators=[activeObject.giver.getActiveObjectQueue()[0].manager]
+                    self.readLoadTime()
                     return True
             else:
                 return False
