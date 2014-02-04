@@ -6,62 +6,6 @@
    "schedulingRule": "FIFO"
   }, 
   {
-   "extraPropertyDict": {
-    "componentType": "Secondary", 
-    "route": [
-     {
-      "stationIdsList": [
-       "OD0"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stepNumber": "0"
-     }, 
-     {
-      "stationIdsList": [
-       "CB1"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stepNumber": "1"
-     }, 
-     {
-      "stationIdsList": [
-       "M1"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "2"
-      }, 
-      "stepNumber": "2"
-     }, 
-     {
-      "stationIdsList": [
-       "AB1"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stepNumber": "3"
-     }, 
-     {
-      "stationIdsList": [
-       "MA1"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stepNumber": "4"
-     }
-    ], 
-    "name": "Component1"
-   }, 
    "_class": "Dream.Job", 
    "id": "C1", 
    "results": {
@@ -96,62 +40,6 @@
    }
   }, 
   {
-   "extraPropertyDict": {
-    "componentType": "Basic", 
-    "route": [
-     {
-      "stationIdsList": [
-       "OD0"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stepNumber": "0"
-     }, 
-     {
-      "stationIdsList": [
-       "CB1"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stepNumber": "1"
-     }, 
-     {
-      "stationIdsList": [
-       "M1"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "1"
-      }, 
-      "stepNumber": "2"
-     }, 
-     {
-      "stationIdsList": [
-       "AB1"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stepNumber": "3"
-     }, 
-     {
-      "stationIdsList": [
-       "MA1"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stepNumber": "4"
-     }
-    ], 
-    "name": "Component2"
-   }, 
    "_class": "Dream.Job", 
    "id": "C2", 
    "results": {
@@ -220,31 +108,6 @@
    }
   }, 
   {
-   "extraPropertyDict": {
-    "route": [
-     {
-      "stationIdsList": [
-       "MA1"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "1"
-      }, 
-      "stepNumber": "0"
-     }, 
-     {
-      "stationIdsList": [
-       "E1"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stepNumber": "1"
-     }
-    ], 
-    "name": "Mould1"
-   }, 
    "_class": "Dream.Job", 
    "id": "M1", 
    "results": {

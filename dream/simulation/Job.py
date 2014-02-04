@@ -59,7 +59,7 @@ class Job(Entity):                                  # inherits from the Entity c
             json['_class'] = 'Dream.Job'
             json['id'] = str(self.id)
             json['results'] = {}
-            json['extraPropertyDict'] = self.extraPropertyDict
+            #json['extraPropertyDict'] = self.extraPropertyDict
             
             #if the Job has reached an exit, input completion time in the results
             if self.schedule[-1][0].type=='Exit':

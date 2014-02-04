@@ -1,53 +1,7 @@
 {
- "_class": "Dream.Simulation", 
  "elementList": [
   {
    "_class": "Dream.Job", 
-   "extraPropertyDict": {
-    "name": "Component1", 
-    "route": [
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stationIdsList": [
-       "OD0"
-      ], 
-      "stepNumber": "0"
-     }, 
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stationIdsList": [
-       "Q1"
-      ], 
-      "stepNumber": "1"
-     }, 
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "1"
-      }, 
-      "stationIdsList": [
-       "M1"
-      ], 
-      "stepNumber": "2"
-     }, 
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stationIdsList": [
-       "E1"
-      ], 
-      "stepNumber": "3"
-     }
-    ]
-   }, 
    "id": "C1", 
    "results": {
     "completionTime": 2.0, 
@@ -77,51 +31,6 @@
   }, 
   {
    "_class": "Dream.Job", 
-   "extraPropertyDict": {
-    "name": "Component2", 
-    "route": [
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stationIdsList": [
-       "OD0"
-      ], 
-      "stepNumber": "0"
-     }, 
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stationIdsList": [
-       "Q2"
-      ], 
-      "stepNumber": "1"
-     }, 
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "1"
-      }, 
-      "stationIdsList": [
-       "M2"
-      ], 
-      "stepNumber": "2"
-     }, 
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stationIdsList": [
-       "E1"
-      ], 
-      "stepNumber": "3"
-     }
-    ]
-   }, 
    "id": "C2", 
    "results": {
     "completionTime": 2.0, 
@@ -153,54 +62,58 @@
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 2.0, 
+    "throughput": 2, 
     "takt_time": 1.0, 
-    "throughput": 2
+    "lifespan": 2.0
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M0", 
    "results": {
+    "working_ratio": 50.0, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 50.0, 
-    "working_ratio": 50.0
+    "waiting_ratio": 50.0
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M1", 
    "results": {
+    "working_ratio": 50.0, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 50.0, 
-    "working_ratio": 50.0
+    "waiting_ratio": 50.0
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M2", 
    "results": {
+    "working_ratio": 50.0, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 50.0, 
-    "working_ratio": 50.0
+    "waiting_ratio": 50.0
    }
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q0"
+   "id": "Q0", 
+   "schedulingRule": "FIFO"
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q1"
+   "id": "Q1", 
+   "schedulingRule": "FIFO"
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q2"
+   "id": "Q2", 
+   "schedulingRule": "FIFO"
   }
  ], 
+ "_class": "Dream.Simulation", 
  "general": {
   "_class": "Dream.Configuration"
  }

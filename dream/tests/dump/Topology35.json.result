@@ -1,52 +1,6 @@
 {
  "elementList": [
   {
-   "extraPropertyDict": {
-    "isCritical": "1", 
-    "route": [
-     {
-      "stationIdsList": [
-       "Q1"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stepNumber": "0"
-     }, 
-     {
-      "stationIdsList": [
-       "M1"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0.25"
-      }, 
-      "stepNumber": "1"
-     }, 
-     {
-      "stationIdsList": [
-       "Q2"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stepNumber": "2"
-     }, 
-     {
-      "stationIdsList": [
-       "M2"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "1"
-      }, 
-      "stepNumber": "3"
-     }
-    ], 
-    "name": "Component1"
-   }, 
    "_class": "Dream.Job", 
    "id": "C1", 
    "results": {
@@ -81,32 +35,6 @@
    }
   }, 
   {
-   "extraPropertyDict": {
-    "isCritical": "0", 
-    "route": [
-     {
-      "stationIdsList": [
-       "Q2"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stepNumber": "0"
-     }, 
-     {
-      "stationIdsList": [
-       "M2"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "1"
-      }, 
-      "stepNumber": "1"
-     }
-    ], 
-    "name": "Component2"
-   }, 
    "_class": "Dream.Job", 
    "id": "C2", 
    "results": {

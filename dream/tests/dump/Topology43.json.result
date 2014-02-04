@@ -10,65 +10,6 @@
    }
   }, 
   {
-   "extraPropertyDict": {
-    "route": [
-     {
-      "stationIdsList": [
-       "Q1"
-      ], 
-      "stepNumber": "0"
-     }, 
-     {
-      "stationIdsList": [
-       "M1"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "1"
-      }, 
-      "stepNumber": "1"
-     }, 
-     {
-      "stationIdsList": [
-       "Q3"
-      ], 
-      "stepNumber": "2"
-     }, 
-     {
-      "stationIdsList": [
-       "M3"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "3"
-      }, 
-      "stepNumber": "3"
-     }, 
-     {
-      "stationIdsList": [
-       "Q2"
-      ], 
-      "stepNumber": "4"
-     }, 
-     {
-      "stationIdsList": [
-       "M2"
-      ], 
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "2"
-      }, 
-      "stepNumber": "5"
-     }, 
-     {
-      "stationIdsList": [
-       "E1"
-      ], 
-      "stepNumber": "6"
-     }
-    ], 
-    "name": "Job1"
-   }, 
    "_class": "Dream.Job", 
    "id": "J1", 
    "results": {

@@ -1,66 +1,16 @@
 {
- "_class": "Dream.Simulation", 
  "elementList": [
   {
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 59.333333333333336, 
+    "throughput": 3, 
     "takt_time": 24.666666666666668, 
-    "throughput": 3
+    "lifespan": 59.333333333333336
    }
   }, 
   {
    "_class": "Dream.Job", 
-   "extraPropertyDict": {
-    "due_date": "2013-12-15", 
-    "material": "Plastic", 
-    "name": "Order 1 from X", 
-    "order_date": "2013-11-20", 
-    "priority": "2", 
-    "route": [
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stationIdsList": [
-       "Q1"
-      ], 
-      "stepNumber": 0
-     }, 
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "10"
-      }, 
-      "stationIdsList": [
-       "M1"
-      ], 
-      "stepNumber": 1
-     }, 
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stationIdsList": [
-       "Q3"
-      ], 
-      "stepNumber": 2
-     }, 
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "20"
-      }, 
-      "stationIdsList": [
-       "M3"
-      ], 
-      "stepNumber": 3
-     }
-    ]
-   }, 
    "id": "J1", 
    "results": {
     "completionTime": 50.0, 
@@ -95,55 +45,6 @@
   }, 
   {
    "_class": "Dream.Job", 
-   "extraPropertyDict": {
-    "due_date": "2013-11-30", 
-    "material": "Aluminium", 
-    "name": "Order 2 from Y", 
-    "order_date": "2013-11-14", 
-    "priority": "1", 
-    "route": [
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stationIdsList": [
-       "Q2"
-      ], 
-      "stepNumber": 0
-     }, 
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "20"
-      }, 
-      "stationIdsList": [
-       "M2"
-      ], 
-      "stepNumber": 1
-     }, 
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stationIdsList": [
-       "Q1"
-      ], 
-      "stepNumber": 2
-     }, 
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "34"
-      }, 
-      "stationIdsList": [
-       "M1"
-      ], 
-      "stepNumber": 3
-     }
-    ]
-   }, 
    "id": "J2", 
    "results": {
     "completionTime": 54.0, 
@@ -178,55 +79,6 @@
   }, 
   {
    "_class": "Dream.Job", 
-   "extraPropertyDict": {
-    "due_date": "2014-02-01", 
-    "material": "Plastic", 
-    "name": "Order 3 from Z", 
-    "order_date": "2013-11-03", 
-    "priority": "3", 
-    "route": [
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stationIdsList": [
-       "Q3"
-      ], 
-      "stepNumber": 0
-     }, 
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "30"
-      }, 
-      "stationIdsList": [
-       "M3"
-      ], 
-      "stepNumber": 1
-     }, 
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "0"
-      }, 
-      "stationIdsList": [
-       "Q1"
-      ], 
-      "stepNumber": 2
-     }, 
-     {
-      "processingTime": {
-       "distributionType": "Fixed", 
-       "mean": "20"
-      }, 
-      "stationId": [
-       "M1"
-      ], 
-      "stepNumber": 3
-     }
-    ]
-   }, 
    "id": "J3", 
    "results": {
     "completionTime": 74.0, 
@@ -263,45 +115,49 @@
    "_class": "Dream.Machine", 
    "id": "M1", 
    "results": {
+    "working_ratio": 86.48648648648648, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 13.513513513513514, 
-    "working_ratio": 86.48648648648648
+    "waiting_ratio": 13.513513513513514
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M2", 
    "results": {
+    "working_ratio": 27.027027027027028, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 72.97297297297297, 
-    "working_ratio": 27.027027027027028
+    "waiting_ratio": 72.97297297297297
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M3", 
    "results": {
+    "working_ratio": 67.56756756756756, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 32.432432432432435, 
-    "working_ratio": 67.56756756756756
+    "waiting_ratio": 32.432432432432435
    }
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q1"
+   "id": "Q1", 
+   "schedulingRule": "FIFO"
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q2"
+   "id": "Q2", 
+   "schedulingRule": "FIFO"
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q3"
+   "id": "Q3", 
+   "schedulingRule": "FIFO"
   }
  ], 
+ "_class": "Dream.Simulation", 
  "general": {
   "_class": "Dream.Configuration"
  }
