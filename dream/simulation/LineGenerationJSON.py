@@ -92,6 +92,8 @@ from Mould import Mould
 from OrderDecomposition import OrderDecomposition
 from ConditionalBuffer import ConditionalBuffer
 from MouldAssemblyBuffer import MouldAssemblyBuffer
+from MachineManagedJob import MachineManagedJob
+from QueueManagedJob import QueueManagedJob
 
 import ExcelHandler
 import time
@@ -167,6 +169,9 @@ def createObjects():
     G.ConditionalBufferList=[]
     G.MouldAssemblyBufferList=[]
     G.MouldAssemblyList=[]
+    G.MachineManagedJobList=[]
+    G.QueueManagedJobList=[]
+    G.ModelResourceList=[]
     
     # -----------------------------------------------------------------------
     #                loop through all the model resources 
@@ -187,6 +192,7 @@ def createObjects():
             R.coreObjectIds=getSuccessorList(id)                    # update the list of objects that the repairman repairs
                                                                     # calling the getSuccessorList() method on the repairman
             G.RepairmanList.append(R)                               # add the repairman to the RepairmanList
+            G.ModelResourceList.append(R) 
         elif resourceClass=='Dream.Operator':
             id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
             name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
@@ -195,6 +201,7 @@ def createObjects():
             O.coreObjectIds=getSuccessorList(id)                	# update the list of objects that the operator operates
 																	# calling the getSuccesorList() method on the operator
             G.OperatorsList.append(O)                               # add the operator to the RepairmanList
+            #G.ModelResourceList.append(O) 
     # -----------------------------------------------------------------------
     #                loop through all the model resources 
     #          search for operatorPools in order to create them
@@ -463,6 +470,76 @@ def createObjects():
                 G.OperatedMachineList.append(M)                     # add the machine to the operatedMachines List
             G.ObjList.append(M)
 
+        elif objClass=='Dream.MachineManagedJob':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            processingTime=element.get('processingTime', {})
+            distributionType=processingTime.get('distributionType', 'not found')
+            mean=float(processingTime.get('mean', '0'))  
+            stdev=float(processingTime.get('stdev', '0'))  
+            min=float(processingTime.get('min', '0')) 
+            max=float(processingTime.get('max', '0'))
+            failures=element.get('failures', {})  
+            failureDistribution=failures.get('failureDistribution', 'not found')
+            MTTF=float(failures.get('MTTF', '0'))   
+            MTTR=float(failures.get('MTTR', '0')) 
+            availability=float(failures.get('availability', '0'))  
+            # type of operation and related times 
+            operationType=element.get('operationType','not found')
+            setupTime = element.get('setupTime',{})
+            setupDistribution = setupTime.get('setupDistribution','not found')
+            setupMean = float(setupTime.get('setupMean','0'))
+            setupStdev=float(setupTime.get('setupStdev', '0'))  
+            setupMin=float(setupTime.get('setupMin', '0')) 
+            setupMax=float(setupTime.get('setupMax', '0'))
+            loadTime = element.get('loadTime',{})
+            loadDistribution = loadTime.get('loadDistribution','not found')
+            loadMean = float(loadTime.get('loadMean','0'))
+            loadStdev = float(loadTime.get('loadStdev', '0'))  
+            loadMin=float(loadTime.get('loadMin', '0')) 
+            loadMax=float(loadTime.get('loadMax', '0'))
+            preemption=element.get('preemption',{})
+            isPreemptive=resetOnPreemption=False
+            if len(preemption)>0:
+                isPreemptive=bool(int(preemption.get('isPreemptive', 0)))
+                resetOnPreemption=bool(int(preemption.get('resetOnPreemption', 0)))
+            
+            if len(G.OperatorPoolsList)>0:
+                for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
+                    if(id in operatorPool.coreObjectIds):                   # and add it to the machine's operatorPool
+                        machineOperatorPoolList=operatorPool                # there must only one operator pool assigned to the machine,
+                                                                            # otherwise only one of them will be taken into account
+                    else:
+                        machineOperatorPoolList=[]                          # if there is no operatorPool assigned to the machine
+            else:                                                           # then machineOperatorPoolList/operatorPool is a list
+                machineOperatorPoolList=[]                                  # if there are no operatorsPool created then the 
+                                                                            # then machineOperatorPoolList/operatorPool is a list
+            if (type(machineOperatorPoolList) is list):                 # if the machineOperatorPoolList is a list
+                                                                        # find the operators assigned to it and add them to the list
+                for operator in G.OperatorsList:                        # check which operator in the G.OperatorsList
+                    if(id in operator.coreObjectIds):                   # (if any) is assigned to operate
+                        machineOperatorPoolList.append(operator)        # the machine with ID equal to id
+                                                                        # if there is no operator assigned then the list will be empty
+            r='None'
+            for repairman in G.RepairmanList:
+                if(id in repairman.coreObjectIds):
+                    r=repairman
+                    
+            M=MachineManagedJob(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
+                                                    MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
+                                                    mean=mean,stdev=stdev,min=min,max=max,
+                                                    operatorPool=machineOperatorPoolList, operationType=operationType,
+                                                    loadDistribution=loadDistribution, setupDistribution=setupDistribution,
+                                                    setupMean=setupMean,setupStdev=setupStdev,setupMin=setupMin,setupMax=setupMax,
+                                                    loadMean=loadMean,loadStdev=loadStdev,loadMin=loadMin,loadMax=loadMax,
+                                                    repairman=r, isPreemptive=isPreemptive, resetOnPreemption=resetOnPreemption)
+            M.nextIds=getSuccessorList(id)
+            G.MachineManagedJobList.append(M)
+            G.MachineJobShopList.append(M)
+            G.MachineList.append(M)
+            if M.operatorPool!="None":
+                G.OperatedMachineList.append(M)                     # add the machine to the operatedMachines List
+            G.ObjList.append(M)
              
         elif objClass=='Dream.Exit':
             id=element.get('id', 'not found')
@@ -499,6 +576,19 @@ def createObjects():
             Q=QueueJobShop(id, name, capacity, isDummy, schedulingRule=schedulingRule)
             Q.nextIds=getSuccessorList(id)
             G.QueueList.append(Q)
+            G.QueueJobShopList.append(Q)
+            G.ObjList.append(Q)
+            
+        elif objClass=='Dream.QueueManagedJob':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            capacity=int(element.get('capacity', '1'))
+            isDummy=bool(int(element.get('isDummy', '0')))
+            schedulingRule=element.get('schedulingRule', 'FIFO')
+            Q=QueueManagedJob(id, name, capacity, isDummy, schedulingRule=schedulingRule)
+            Q.nextIds=getSuccessorList(id)
+            G.QueueList.append(Q)
+            G.QueueManagedJobList.append(Q)
             G.QueueJobShopList.append(Q)
             G.ObjList.append(Q)
                        
@@ -878,7 +968,7 @@ def setTopology():
 def initializeObjects():
     for element in G.ObjList:
         element.initialize()
-    for repairman in G.RepairmanList:
+    for repairman in G.ModelResourceList:
         repairman.initialize()
     for entity in G.EntityList:
         entity.initialize()
@@ -1269,7 +1359,7 @@ def main(argv=[], input_data=None):
             element.postProcessing()
             
         #carry on the post processing operations for every model resource in the topology       
-        for model_resource in G.RepairmanList:
+        for model_resource in G.ModelResourceList:
             model_resource.postProcessing()       
             
         #output trace to excel      
@@ -1288,7 +1378,7 @@ def main(argv=[], input_data=None):
         element.outputResultsJSON()
         
     #output data to JSON for every resource in the topology         
-    for model_resource in G.RepairmanList:
+    for model_resource in G.ModelResourceList:
         model_resource.outputResultsJSON()
         
     for job in G.JobList:

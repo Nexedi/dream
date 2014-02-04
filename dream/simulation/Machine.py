@@ -77,16 +77,20 @@ class Machine(CoreObject):
              the list of operators provided
             if the  list is empty create operator pool with empty list
         '''
-        if (type(operatorPool) is list): #and len(operatorPool)>0:
+        if (type(operatorPool) is list) and len(operatorPool)>0:
             id = id+'_OP'
             name=self.objName+'_operatorPool'
             self.operatorPool=OperatorPool(id, name, operatorsList=operatorPool)
+        elif(type(operatorPool) is OperatorPool):
+            self.operatorPool=operatorPool         
         else:
-            self.operatorPool=operatorPool
+            self.operatorPool='None'
+            #self.operatorPool=operatorPool
+            #print operatorPool
         # update the operatorPool coreObjects list
         if self.operatorPool!='None':
-            self.operatorPool.coreObjectIds.append(self.id)
-            self.operatorPool.coreObjects.append(self)
+             self.operatorPool.coreObjectIds.append(self.id)
+             self.operatorPool.coreObjects.append(self)
         # holds the Operator currently processing the Machine
         self.currentOperator=None
         # define if load/setup/removal/processing are performed by the operator 
