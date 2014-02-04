@@ -22,10 +22,10 @@ Created on 15 Jan 2014
 @author: Ioannis
 '''
 '''
-Inherits from QueuePreemptive. Checks the condition of (a) component(s) before it can dispose them/it
+Inherits from QueueJobShop. Checks the condition of (a) component(s) before it can dispose them/it
 '''
 
-from QueuePreemptive import QueuePreemptive
+from QueueJobShop import QueueJobShop
 from SimPy.Simulation import now
 
 # ===========================================================================
@@ -36,15 +36,15 @@ class NoCallerError(Exception):
         Exception.__init__(self, callerError) 
 
 # ===========================================================================
-# the QueuePreemptive object
+# the ConditionalBuffer object
 # ===========================================================================
-class ConditionalBuffer(QueuePreemptive):
+class ConditionalBuffer(QueueJobShop):
     # =======================================================================                
-    # the default __init__ method of the QueuePreemptive class
+    # the default __init__ method of the QueueJobShop class
     # whereas the default capacity is set to infinity
     # =======================================================================
     def __init__(self,  id, name, capacity=-1, dummy=False, schedulingRule="FIFO"):
-        QueuePreemptive.__init__(self, id=id, name=name, capacity=capacity, dummy=dummy, schedulingRule=schedulingRule)
+        QueueJobShop.__init__(self, id=id, name=name, capacity=capacity, dummy=dummy, schedulingRule=schedulingRule)
         
     # =======================================================================
     # checks if the Buffer can dispose an entity. 
@@ -132,7 +132,7 @@ class ConditionalBuffer(QueuePreemptive):
     def sortEntities(self):
         activeObject = self.getActiveObject()
         # run the default sorting of the Queue first
-        QueuePreemptive.sortEntities(self)
+        QueueJobShop.sortEntities(self)
         # and in the end sort according to the ConditionalBuffer sorting rule
         activeObjectQueue = activeObject.getActiveObjectQueue()
         # if the componentType of the entities in the activeQueue is Basic then don't move it to the end of the activeQ
