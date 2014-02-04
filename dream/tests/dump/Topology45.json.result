@@ -120,6 +120,30 @@
    }
   }, 
   {
+   "_class": "Dream.Repairman", 
+   "id": "O1", 
+   "results": {
+    "working_ratio": 66.66666666666667, 
+    "waiting_ratio": 33.333333333333336
+   }
+  }, 
+  {
+   "_class": "Dream.Repairman", 
+   "id": "O2", 
+   "results": {
+    "working_ratio": 66.66666666666667, 
+    "waiting_ratio": 33.333333333333336
+   }
+  }, 
+  {
+   "_class": "Dream.Repairman", 
+   "id": "O3", 
+   "results": {
+    "working_ratio": 133.33333333333334, 
+    "waiting_ratio": -33.333333333333336
+   }
+  }, 
+  {
    "_class": "Dream.QueueJobShop", 
    "id": "Q1", 
    "schedulingRule": "FIFO"

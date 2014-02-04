@@ -84,6 +84,22 @@
    }
   }, 
   {
+   "_class": "Dream.Repairman", 
+   "id": "O1", 
+   "results": {
+    "working_ratio": 0.0, 
+    "waiting_ratio": 100.0
+   }
+  }, 
+  {
+   "_class": "Dream.Repairman", 
+   "id": "O2", 
+   "results": {
+    "working_ratio": 200.0, 
+    "waiting_ratio": -100.0
+   }
+  }, 
+  {
    "_class": "Dream.QueueJobShop", 
    "id": "Q1", 
    "schedulingRule": "FIFO"
