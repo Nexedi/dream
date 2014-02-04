@@ -47,10 +47,20 @@ class MachineJobShop(Machine):
     # =======================================================================     
     def getEntity(self):
         activeEntity=Machine.getEntity(self)     #run the default code
-        # read the processing time from the corresponding remainingRoute entry
+        
+        # read the processing/setup/load times from the corresponding remainingRoute entry
         processingTime=activeEntity.remainingRoute[0].get('processingTime',{})
         self.distType=processingTime.get('distributionType','Fixed')
         self.procTime=float(processingTime.get('mean', 0))
+        
+        setupTime=activeEntity.remainingRoute[0].get('setupTime',{})
+        self.distType=setupTime.get('setupDistribution','Fixed')
+        self.setupTime=float(setupTime.get('setupMean', 0))
+
+        loadTime=activeEntity.remainingRoute[0].get('loadTime',{})
+        self.distType=loadTime.get('loadDistribution','Fixed')
+        self.loadTime=float(loadTime.get('loadMean', 0))
+        
         import Globals
         # read the list of next stations
         nextObjectIds=activeEntity.remainingRoute[1].get('stationIdsList',[])
@@ -69,6 +79,18 @@ class MachineJobShop(Machine):
     # =======================================================================
     def calculateProcessingTime(self):
         return self.procTime    #this is the processing time for this unique entity 
+    
+    # =======================================================================
+    #                       calculates the setup time
+    # =======================================================================
+    def calculateSetupTime(self):
+        return self.setupTime    #this is the setup time for this unique entity
+    
+    # =======================================================================
+    #                        calculates the Load time
+    # =======================================================================
+    def calculateLoadTime(self):
+        return self.loadTime    #this is the load time for this unique entity
     
     # =======================================================================
     # checks if the Queue can accept an entity       
