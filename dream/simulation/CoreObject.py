@@ -44,6 +44,11 @@ class CoreObject(Process):
         self.Working=[]
         self.Blockage=[]
         self.Waiting=[]
+        
+        #default attributes set so that the CoreObject has them
+        self.isPreemptive=False
+        self.resetOnPreemption=False
+        
 
     
     def initialize(self):
@@ -178,8 +183,8 @@ class CoreObject(Process):
         # perform preemption when required
         # if the object is not Exit
         if activeObject.receiver:
-            # if the obtained Entity is critical
-            if activeEntity.isCritical:
+            # if the obtained Entity is critical and the receiver is preemptive
+            if activeEntity.isCritical and activeObject.receiver.isPreemptive:
                 #if the receiver is not empty
                 if len(self.receiver.getActiveObjectQueue())>0:
                     #if the receiver does not hold an Entity that is also critical
@@ -376,3 +381,11 @@ class CoreObject(Process):
     # =======================================================================
     def interruptionActions(self):
         pass
+
+    # =======================================================================
+    # method to execute preemption
+    # =======================================================================    
+    def preempt(self):
+        #ToDO make a generic method
+        pass
+    

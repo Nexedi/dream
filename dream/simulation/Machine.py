@@ -48,7 +48,8 @@ class Machine(CoreObject):
                   failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None',\
                   operatorPool='None',operationType='None',\
                   loadDistribution="No",loadMean=0, loadStdev=0, loadMin=0, loadMax=10,
-                  setupDistribution="No",setupMean=0, setupStdev=0, setupMin=0, setupMax=10):
+                  setupDistribution="No",setupMean=0, setupStdev=0, setupMin=0, setupMax=10,
+                  isPreemptive=False, resetOnPreemption=False):
         CoreObject.__init__(self)
         # hold the id, name, and type of the Machine instance
         self.id=id
@@ -123,6 +124,9 @@ class Machine(CoreObject):
         self.WaitingForLoadOperator=[]
         self.Loading = []
         self.SettingUp =[]
+        
+        self.isPreemptive=isPreemptive
+        self.resetOnPreemption=resetOnPreemption
     
     # =======================================================================
     # initialize the machine

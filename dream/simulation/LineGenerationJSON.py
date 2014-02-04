@@ -286,6 +286,11 @@ def createObjects():
             loadStdev = float(loadTime.get('loadStdev', '0'))  
             loadMin=float(loadTime.get('loadMin', '0')) 
             loadMax=float(loadTime.get('loadMax', '0'))
+            preemption=element.get('preemption',{})
+            isPreemptive=resetOnPreemption=False
+            if len(preemption)>0:
+                isPreemptive=bool(int(preemption.get('isPreemptive', 0)))
+                resetOnPreemption=bool(int(preemption.get('isPreemptive', 0)))
             
             if len(G.OperatorPoolsList)>0:
                 for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
@@ -314,7 +319,7 @@ def createObjects():
                                                     loadDistribution=loadDistribution, setupDistribution=setupDistribution,
                                                     setupMean=setupMean,setupStdev=setupStdev,setupMin=setupMin,setupMax=setupMax,
                                                     loadMean=loadMean,loadStdev=loadStdev,loadMin=loadMin,loadMax=loadMax,
-                                                    repairman=r)
+                                                    repairman=r, isPreemptive=isPreemptive, resetOnPreemption=resetOnPreemption)
             M.nextIds=getSuccessorList(id)                      # update the nextIDs list of the machine
             G.MachineList.append(M)                             # add machine to global MachineList
             if M.operatorPool!="None":
@@ -418,6 +423,11 @@ def createObjects():
             loadStdev = float(loadTime.get('loadStdev', '0'))  
             loadMin=float(loadTime.get('loadMin', '0')) 
             loadMax=float(loadTime.get('loadMax', '0'))
+            preemption=element.get('preemption',{})
+            isPreemptive=resetOnPreemption=False
+            if len(preemption)>0:
+                isPreemptive=bool(int(preemption.get('isPreemptive', 0)))
+                resetOnPreemption=bool(int(preemption.get('resetOnPreemption', 0)))
             
             if len(G.OperatorPoolsList)>0:
                 for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
@@ -447,7 +457,7 @@ def createObjects():
                                                     loadDistribution=loadDistribution, setupDistribution=setupDistribution,
                                                     setupMean=setupMean,setupStdev=setupStdev,setupMin=setupMin,setupMax=setupMax,
                                                     loadMean=loadMean,loadStdev=loadStdev,loadMin=loadMin,loadMax=loadMax,
-                                                    repairman=r)
+                                                    repairman=r, isPreemptive=isPreemptive, resetOnPreemption=resetOnPreemption)
             M.nextIds=getSuccessorList(id)
             G.MachineJobShopList.append(M)
             G.MachineList.append(M)

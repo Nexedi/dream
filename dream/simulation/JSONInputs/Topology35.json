@@ -20,15 +20,17 @@
             "failures": {}
         },
         "M2": {
-            "_class": "Dream.MachinePreemptive",
+            "_class": "Dream.MachineJobShop",
             "id": "M2",
             "name": "Machine2",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "1.5"
             },
-            "failures": {},
-			"resetOnPreemption":"1"
+            "preemption": {
+                "isPreemptive": "1",
+                "resetOnPreemption": "1"
+            }
         },
         "Q1": {
             "_class": "Dream.QueueJobShop",

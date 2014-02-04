@@ -26,7 +26,7 @@ extends the machine object so that it can act as a jobshop station. It reads the
 '''
 
 from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import activate, passivate, waituntil, now, hold
+from SimPy.Simulation import activate, passivate, waituntil, now, hold, reactivate
 
 from Machine import Machine
 # ===========================================================================
@@ -136,6 +136,37 @@ class MachineJobShop(Machine):
              and activeObject.waitToDispose\
              and activeObject.Up\
              and (thecaller is self.receiver)       
-                      
+
+    # =======================================================================
+    # method to execute preemption
+    # =======================================================================    
+    def preempt(self):
+        activeObject=self.getActiveObject()
+        activeEntity=self.getActiveObjectQueue()[0] #get the active Entity
+        #calculate the remaining processing time
+        #if it is reset then set it as the original processing time
+        if self.resetOnPreemption:
+            remainingProcessingTime=self.procTime
+        #else subtract the time that passed since the entity entered
+        #(may need also failure time if there was. TO BE MELIORATED)
+        else:
+            remainingProcessingTime=self.procTime-(now()-self.timeLastEntityEntered)
+        #update the remaining route of activeEntity
+        activeEntity.remainingRoute.insert(0, {'stationIdsList':[str(self.id)],\
+                                               'processingTime':\
+                                                    {'distributionType':'Fixed',\
+                                                     'mean':str(remainingProcessingTime)}})
+#         activeEntity.remainingRoute.insert(0, [self.id, remainingProcessingTime])
+        activeEntity.remainingRoute.insert(0, {'stationIdsList':[str(self.lastGiver.id)],\
+                                               'processingTime':\
+                                                    {'distributionType':'Fixed',\
+                                                     'mean':'0'}})
+#         activeEntity.remainingRoute.insert(0, [self.lastGiver.id, 0])        
+        #set the receiver  as the object where the active entity was preempted from 
+        self.receiver=self.lastGiver
+        self.next=[self.receiver]
+        self.waitToDispose=True                     #set that I have to dispose
+        self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
+        reactivate(self)
             
         
