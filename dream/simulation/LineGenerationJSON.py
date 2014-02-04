@@ -201,7 +201,7 @@ def createObjects():
             O.coreObjectIds=getSuccessorList(id)                	# update the list of objects that the operator operates
 																	# calling the getSuccesorList() method on the operator
             G.OperatorsList.append(O)                               # add the operator to the RepairmanList
-            #G.ModelResourceList.append(O) 
+            G.ModelResourceList.append(O) 
     # -----------------------------------------------------------------------
     #                loop through all the model resources 
     #          search for operatorPools in order to create them

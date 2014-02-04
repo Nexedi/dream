@@ -86,7 +86,6 @@ class Machine(CoreObject):
         else:
             self.operatorPool='None'
             #self.operatorPool=operatorPool
-            #print operatorPool
         # update the operatorPool coreObjects list
         if self.operatorPool!='None':
              self.operatorPool.coreObjectIds.append(self.id)
@@ -181,8 +180,7 @@ class Machine(CoreObject):
         while 1:
             # wait until the machine can accept an entity and one predecessor requests it 
             # canAcceptAndIsRequested is invoked to check when the machine requested to receive an entity  
-            yield waituntil, self, self.canAcceptAndIsRequested
-            
+            yield waituntil, self, self.canAcceptAndIsRequested           
             # here or in the get entity (apart from the loatTimeCurrentEntity)
             # in case they are placed inside the getEntity then the initialize of
             # the corresponding variables should be moved to the initialize() of the CoreObject
@@ -272,7 +270,6 @@ class Machine(CoreObject):
                 # after getting the entity release the operator
                 # machine has to release the operator
                 self.releaseOperator()
-#                 print self.objName, 'operator released', now()
                 # wait until the Broker has finished processing
                 yield waituntil, self, self.broker.brokerIsSet
                                                                                  
@@ -319,7 +316,6 @@ class Machine(CoreObject):
                         and self.isOperated()\
                         and any(type=="Processing" for type in self.multOperationTypeList):
                         self.releaseOperator()
-#                         print self.objName, 'operator released due to failure', now()
                         yield waituntil,self,self.broker.brokerIsSet 
     
                     # if there is a failure in the machine it is passivated

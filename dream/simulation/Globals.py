@@ -169,5 +169,4 @@ def setWIP(entityList):
             entity.remainingRoute.pop(0)                        # remove data from the remaining route.   
             entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
             entity.currentStation=object                        # update the current station of the entity 
-
        
