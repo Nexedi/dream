@@ -1,0 +1,65 @@
+{
+ "elementList": [
+  {
+   "_class": "Dream.Exit", 
+   "id": "E1", 
+   "results": {
+    "throughput": 2, 
+    "takt_time": 2.25, 
+    "lifespan": 3.0
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "M1", 
+   "results": {
+    "working_ratio": 5.555555555555555, 
+    "waiting_ratio": 94.44444444444444, 
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "setup_ratio": 0.0
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "M2", 
+   "results": {
+    "working_ratio": 44.44444444444444, 
+    "waiting_ratio": 0.0, 
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "setup_ratio": 55.55555555555556
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "id": "O1", 
+   "results": {
+    "working_ratio": 44.44444444444444, 
+    "waiting_ratio": 55.55555555555556
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "id": "O2", 
+   "results": {
+    "working_ratio": 11.11111111111111, 
+    "waiting_ratio": 88.88888888888889
+   }
+  }, 
+  {
+   "_class": "Dream.QueueManagedJob", 
+   "id": "Q1", 
+   "schedulingRule": "FIFO"
+  }, 
+  {
+   "_class": "Dream.QueueManagedJob", 
+   "id": "Q2", 
+   "schedulingRule": "FIFO"
+  }
+ ], 
+ "_class": "Dream.Simulation", 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}
