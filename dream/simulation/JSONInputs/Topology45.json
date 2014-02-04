@@ -135,7 +135,7 @@
             "wip": []
         },
         "Q3": {
-            "_class": "Dream.QueuePreemptive",
+            "_class": "Dream.QueueJobShop",
             "id": "Q3",
             "name": "Queue4",
             "isDummy": "0",
