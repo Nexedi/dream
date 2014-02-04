@@ -120,7 +120,7 @@ class Repairman(ObjectResource):
         # if we had just one replication output the results to JSON
         if(G.numberOfReplications==1): 
             json={}
-            json['_class'] = 'Dream.Repairman';
+            json['_class'] = 'Dream.'+self.type;
             json['id'] = str(self.id)
             json['results'] = {}
             json['results']['working_ratio']=100*self.totalWorkingTime/G.maxSimTime
