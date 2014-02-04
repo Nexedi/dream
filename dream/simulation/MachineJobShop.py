@@ -48,10 +48,9 @@ class MachineJobShop(Machine):
     def getEntity(self):
         activeEntity=Machine.getEntity(self)     #run the default code
         # read the processing time from the corresponding remainingRoute entry
-        processingTime=activeEntity.remainingRoute[0]['processingTime']
-        self.distType=processingTime.get('distributionType','not found')
+        processingTime=activeEntity.remainingRoute[0].get('processingTime',{})
+        self.distType=processingTime.get('distributionType','Fixed')
         self.procTime=float(processingTime.get('mean', 0))
-#         self.procTime=activeEntity.remainingRoute[0][1]     #read the processing time from the entity
         import Globals
         # read the list of next stations
         nextObjectIds=activeEntity.remainingRoute[1].get('stationIdsList',[])
