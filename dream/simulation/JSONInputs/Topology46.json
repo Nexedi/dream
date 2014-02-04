@@ -13,13 +13,13 @@
             "_class": "Dream.MachineManagedJob",
             "id": "M1",
             "name": "Machine1",
-			"operationType": "Setup"
+			"operationType": "MT-Load-Setup"
         },
         "M2": {
             "_class": "Dream.MachineManagedJob",
             "id": "M2",
             "name": "Machine2",
-			"operationType": "Setup"
+			"operationType": "MT-Load-Setup"
         },
         "Q1": {
             "_class": "Dream.QueueManagedJob",
