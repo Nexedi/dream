@@ -47,6 +47,7 @@ class MachineManagedJob(MachineJobShop):
         name=self.objName+'_operatorPool'
         self.operatorPool=OperatorPool(id, name, operatorsList=[])
         self.operatorPool.initialize()
+        self.operatorPool.operators=[]
         #create a Broker
         self.broker = Broker(self)
         activate(self.broker,self.broker.run())
@@ -61,22 +62,6 @@ class MachineManagedJob(MachineJobShop):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
-        # if we have only one predecessor just check if there is a place, 
-        # the machine is up and the predecessor has an entity to dispose
-        # if the machine has to compete for an Operator that loads the entities onto it
-        # check if the predecessor if blocked by an other Machine 
-        # if not then the machine has to block the predecessor giverObject to avoid conflicts
-        # with other competing machines
-        if(len(activeObject.previous)==1):
-            if (any(type=='Load' for type in activeObject.multOperationTypeList)):
-                if activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
-                    and giverObject.haveToDispose(activeObject) and not giverObject.exitIsAssigned():
-                    activeObject.giver.assignExit()
-                    #make the operatorsList so that it holds only the manager of the current order
-                    activeObject.operatorPool.operatorsList=[activeObject.giver.getActiveObjectQueue()[0].manager]
-                    return True
-                else:
-                    return False
     
         # dummy variables that help prioritise the objects requesting to give objects to the Machine (activeObject)
         isRequested=False                                           # is requested is dummyVariable checking if it is requested to accept an item
@@ -109,13 +94,13 @@ class MachineManagedJob(MachineJobShop):
                 # TODOD: 
                 # update the last object calling the operatorPool
                 activeObject.operatorPool.receivingObject=activeObject
-                
-                if activeObject.operatorPool.checkIfResourceIsAvailable()\
-                    and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
+                              
+                if activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
                     and isRequested and not activeObject.giver.exitIsAssigned():
                     activeObject.giver.assignExit()
                     #make the operatorsList so that it holds only the manager of the current order
                     activeObject.operatorPool.operatorsList=[activeObject.giver.getActiveObjectQueue()[0].manager]
+                    activeObject.operatorPool.operators=[activeObject.giver.getActiveObjectQueue()[0].manager]
                     return True
             else:
                 return False

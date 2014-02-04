@@ -74,10 +74,12 @@ class Broker(ObjectInterruption):
                 self.timeWaitForOperatorStarted = 0
                 # update the time that the operation started
                 self.timeOperationStarted = now()
+                #self.victim.outputTrace(self.victim.currentOperator.objName, "started work "+self.victim.objName)
                 self.victim.currentOperator.timeLastOperationStarted=now()
     # ======= release a resource        
             elif not self.victim.isOperated():
                 self.victim.currentOperator.totalWorkingTime+=now()-self.victim.currentOperator.timeLastOperationStarted
+                #self.victim.outputTrace(self.victim.currentOperator.objName, "finished work "+self.victim.objName)
                 yield release,self,self.victim.operatorPool.getResource(self.victim.currentOperator)
                 # the victim current operator must be cleared after the operator is released
                 self.timeLastOperationEnded = now()
