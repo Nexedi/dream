@@ -33,11 +33,11 @@
    }
   }, 
   {
-   "_class": "Dream.Repairman", 
+   "_class": "Dream.Operator", 
    "id": "O1", 
    "results": {
-    "working_ratio": 199.3548387096774, 
-    "waiting_ratio": -99.35483870967742
+    "working_ratio": 100.0, 
+    "waiting_ratio": 0.0
    }
   }
  ], 

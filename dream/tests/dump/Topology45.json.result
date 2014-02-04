@@ -120,27 +120,27 @@
    }
   }, 
   {
-   "_class": "Dream.Repairman", 
+   "_class": "Dream.Operator", 
    "id": "O1", 
    "results": {
-    "working_ratio": 66.66666666666667, 
-    "waiting_ratio": 33.333333333333336
+    "working_ratio": 33.333333333333336, 
+    "waiting_ratio": 66.66666666666667
    }
   }, 
   {
-   "_class": "Dream.Repairman", 
+   "_class": "Dream.Operator", 
    "id": "O2", 
    "results": {
-    "working_ratio": 66.66666666666667, 
-    "waiting_ratio": 33.333333333333336
+    "working_ratio": 33.333333333333336, 
+    "waiting_ratio": 66.66666666666667
    }
   }, 
   {
-   "_class": "Dream.Repairman", 
+   "_class": "Dream.Operator", 
    "id": "O3", 
    "results": {
-    "working_ratio": 133.33333333333334, 
-    "waiting_ratio": -33.333333333333336
+    "working_ratio": 66.66666666666667, 
+    "waiting_ratio": 33.333333333333336
    }
   }, 
   {
