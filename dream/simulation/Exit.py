@@ -66,7 +66,8 @@ class Exit(CoreObject):
         self.totalLifespan=0
         
         self.totalTaktTime=0            # the total time between to consecutive exits    
-        self.TaktTime=[]                # list that holds the avg time between to consecutive exits                                       
+        self.TaktTime=[]                # list that holds the avg time between to consecutive exits     
+        self.dailyThroughPutList=[]                                  
                                                       
   
     def run(self):
@@ -212,6 +213,8 @@ class Exit(CoreObject):
             json['results']['throughput']=self.numOfExits
             if self.totalNumberOfUnitsExited!=self.numOfExits:   #output this only if there was variability in units
                 json['results']['unitsThroughput']=self.totalNumberOfUnitsExited
+            if len(self.dailyThroughPutList):
+                json['results']['dailyThroughputList']=self.dailyThroughPutList
             json['results']['lifespan']=self.Lifespan[0]
             json['results']['takt_time']=self.TaktTime[0]            
                 
