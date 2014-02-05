@@ -172,5 +172,4 @@ def countIntervalThroughput(argumentDict={}):
             obj.intervalThroughPutList.append(currentExited)
             
             
-            
     
