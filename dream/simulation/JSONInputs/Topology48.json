@@ -1,0 +1,153 @@
+{
+    "_class": "Dream.Simulation",
+    "edges": {
+        "0": [
+            "S1",
+            "Q1",
+            {}
+        ],
+		"1": [
+            "Q1",
+            "BD1",
+            {}
+        ],
+		"2": [
+            "BD1",
+            "M1",
+            {}
+        ],
+		"3": [
+            "M1",
+            "Q2",
+            {}
+        ],
+        "4": [
+            "Q2",
+            "M2",
+            {}
+        ],
+        "5": [
+            "M2",
+            "BR1",
+            {}
+        ],
+        "6": [
+            "BR1",
+            "M3",
+            {}
+        ],
+		"7": [
+            "M3",
+            "E1",
+            {}
+        ]
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "confidenceLevel": "0.95",
+        "maxSimTime": "1440",
+        "numberOfReplications": "1",
+        "trace": "No"
+    },
+    "nodes": {
+		"S1": {
+            "_class": "Dream.BatchSource",
+            "entity": "Batch",
+            "batchNumberOfUnits": 80,
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": "1.5"
+            },
+            "left": 0.6968085106382979,
+            "name": "Source",
+            "top": 0.9545454545454546
+        },
+        "Q1": {
+            "_class": "Dream.Queue",
+            "capacity": "-1",
+            "left": 0.6968085106382979,
+            "name": "StartQueue",
+            "top": 0.7727272727272727
+        },
+		"Q2": {
+            "_class": "Dream.Queue",
+            "capacity": "2",
+            "left": 0.6968085106382979,
+            "name": "Queue1",
+            "top": 0.7727272727272727
+        },
+        "M1": {
+            "_class": "Dream.Machine",
+            "left": 0.4414893617021277,
+            "name": "Station1",
+            "failures": {
+            },
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "0.5"
+            },
+            "top": 0.5909090909090908
+        },
+		"M2": {
+            "_class": "Dream.Machine",
+            "left": 0.4414893617021277,
+            "name": "Station2",
+            "failures": {
+            },
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "1"
+            },
+            "top": 0.5909090909090908
+        },
+		"M3": {
+            "_class": "Dream.Machine",
+            "left": 0.4414893617021277,
+            "name": "Station3",
+            "failures": {
+            },
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "1"
+            },
+            "top": 0.5909090909090908
+        },
+        "BD1": {
+            "_class": "Dream.BatchDecomposition",
+            "left": 0.4414893617021277,
+            "name": "Batch_Decomposition",
+            "numberOfSubBatches": 4,
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "1"
+            },
+            "top": 0.5909090909090908
+        },
+		"BR1": {
+            "_class": "Dream.BatchReassembly",
+            "left": 0.4414893617021277,
+            "name": "Batch_Reassembly",
+            "numberOfSubBatches": 4,
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "0"
+            },
+            "top": 0.5909090909090908
+        },
+		"E1": {
+            "_class": "Dream.Exit",
+            "left": 0.2978723404255319,
+            "name": "Stock",
+            "top": 0.045454545454545414
+        },
+        "EV": {
+            "_class": "Dream.EventGenerator",
+            "name": "calculateDailyAttainment",
+            "start": "480",
+            "interval": "480",
+            "method": "Globals.countDailyThroughput",
+            "argumentDict": {
+            }
+        }
+    }
+}
