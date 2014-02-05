@@ -49,6 +49,7 @@ class Exit(CoreObject):
         
         #lists to hold statistics of multiple runs
         self.Exits=[]
+        self.UnitExits=[]
         self.Lifespan=[] 
         
     def initialize(self):
@@ -127,7 +128,8 @@ class Exit(CoreObject):
         if MaxSimtime==None:
             MaxSimtime=G.maxSimTime
         # hold the numberOfExits of each replication
-        self.Exits.append(self.numOfExits) 
+        self.Exits.append(self.numOfExits)
+        self.UnitExits.append(self.totalNumberOfUnitsExited) 
         try:                            # throw exception in case the numOfExits is zero
             self.Lifespan.append(((self.totalLifespan)/self.numOfExits)/G.Base)
         except ZeroDivisionError:       # the lifespan in this case is zero
@@ -207,7 +209,9 @@ class Exit(CoreObject):
             json['_class'] = 'Dream.Exit';
             json['id'] = str(self.id)
             json['results'] = {}
-            json['results']['throughput']=self.numOfExits        
+            json['results']['throughput']=self.numOfExits
+            if self.totalNumberOfUnitsExited!=self.numOfExits:   #output this only if there was variability in units
+                json['results']['unitsThroughput']=self.totalNumberOfUnitsExited
             json['results']['lifespan']=self.Lifespan[0]
             json['results']['takt_time']=self.TaktTime[0]            
                 
@@ -228,7 +232,17 @@ class Exit(CoreObject):
             else:
                 json['results']['throughput']['min']=self.Exits[0]
                 json['results']['throughput']['avg']=self.Exits[0]
-                json['results']['throughput']['max']=self.Exits[0]            
+                json['results']['throughput']['max']=self.Exits[0]   
+            if self.Exits!=self.UnitExits:      #output this only if there was variability in units
+                json['results']['unitThroughput']={}
+                if self.checkIfArrayHasDifValues(self.Exits):
+                    json['results']['throughput']['min']=stat.bayes_mvs(self.UnitExits, G.confidenceLevel)[0][1][0]
+                    json['results']['throughput']['avg']=stat.bayes_mvs(self.UnitExits, G.confidenceLevel)[0][0]
+                    json['results']['throughput']['max']=stat.bayes_mvs(self.UnitExits, G.confidenceLevel)[0][1][1]
+                else:
+                    json['results']['throughput']['min']=self.UnitExits[0]
+                    json['results']['throughput']['avg']=self.UnitExits[0]
+                    json['results']['throughput']['max']=self.UnitExits[0]                           
             json['results']['lifespan']={}
             if self.checkIfArrayHasDifValues(self.Lifespan):
                 json['results']['lifespan']['min']=stat.bayes_mvs(self.Lifespan, G.confidenceLevel)[0][1][0]
