@@ -181,6 +181,30 @@
    }
   }, 
   {
+   "_class": "Dream.Job", 
+   "id": "O1", 
+   "results": {
+    "completionTime": 1.0, 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "stationId": "Q0", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 0, 
+      "stationId": "M0", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "stationId": "OD0", 
+      "stepNumber": 2
+     }
+    ]
+   }
+  }, 
+  {
    "_class": "Dream.QueueJobShop", 
    "id": "Q0", 
    "schedulingRule": "FIFO"

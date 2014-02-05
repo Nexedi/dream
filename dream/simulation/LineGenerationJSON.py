@@ -1248,10 +1248,10 @@ def createWIP():
                 O=Order(id, name, route, priority=priority, dueDate=dueDate,orderDate=orderDate,
                         isCritical=isCritical, basicsEnded=basicsEnded, manager=manager, componentsList=componentsList,
                         componentsReadyForAssembly=componentsReadyForAssembly, extraPropertyDict=extraPropertyDict)
-#                 G.JobList.append(O)
                 G.OrderList.append(O)   
                 G.WipList.append(O)  
-                G.EntityList.append(O)                     
+                G.EntityList.append(O)
+                G.JobList.append(O)                     
                 
 # ===========================================================================
 #                reads the interruptions of the stations

@@ -42,6 +42,64 @@
    }
   }, 
   {
+   "_class": "Dream.Job", 
+   "id": "Or1", 
+   "results": {
+    "completionTime": 3.0, 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "stationId": "Q1", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "stationId": "M1", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 0.75, 
+      "stationId": "Q2", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 2.0, 
+      "stationId": "M2", 
+      "stepNumber": 3
+     }, 
+     {
+      "entranceTime": 3.0, 
+      "stationId": "E1", 
+      "stepNumber": 4
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "Or2", 
+   "results": {
+    "completionTime": 2.0, 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "stationId": "Q2", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 0.5, 
+      "stationId": "M2", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 2.0, 
+      "stationId": "E1", 
+      "stepNumber": 2
+     }
+    ]
+   }
+  }, 
+  {
    "_class": "Dream.QueueManagedJob", 
    "id": "Q1", 
    "schedulingRule": "FIFO"
