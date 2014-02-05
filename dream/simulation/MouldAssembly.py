@@ -22,7 +22,7 @@ Created on 16 Jan 2014
 @author: Ioannis
 '''
 '''
-inherits from MachineJobShop. It takes the components of an order and reassembles them as mould
+inherits from MachineManagedJob. It takes the components of an order and reassembles them as mould
 '''
 
 '''
@@ -63,7 +63,7 @@ as a dictionary with the following layout if the mould is not already in WIP
 There is no need to assign an exit, exit is assigned automatically by the createMould method
 TODOs: check the case when a mould is already in the WIP by the beginning of the simulation
 '''
-from MachineJobShop import MachineJobShop
+from MachineManagedJob import MachineManagedJob
 from SimPy.Simulation import Resource, reactivate, now
 from Globals import G
 
@@ -75,16 +75,16 @@ class AssembleMouldError(Exception):
         Exception.__init__(self, mouldAssembleError) 
 
 # ===========================================================================
-# the MachineJobShop object
+# the MachineManagedJob object
 # ===========================================================================
-class MouldAssembly(MachineJobShop):
+class MouldAssembly(MachineManagedJob):
     # =======================================================================
     # the initialize method
     # =======================================================================
     def initialize(self):
         self.mouldParent = None                 # the mould's to be assembled parent order
         self.mouldToBeCreated = None            # the mould to be assembled
-        MachineJobShop.initialize(self)      # run default behaviour
+        MachineManagedJob.initialize(self)      # run default behaviour
         
     # =======================================================================
     # getEntity method that gets the entity from the giver
@@ -96,10 +96,10 @@ class MouldAssembly(MachineJobShop):
         activeObject = self.getActiveObject()
         giverObejct = activeObject.getGiverObject()
         # get the first entity from the predecessor
-        # TODO: each MachineJobShop.getEntity is invoked, 
+        # TODO: each MachineManagedJob.getEntity is invoked, 
         #     the self.procTime is updated. Have to decide where to assign 
         #     the processing time of the assembler 
-        activeEntity=MachineJobShop.getEntity(self)
+        activeEntity=MachineManagedJob.getEntity(self)
         # check weather the activeEntity is of type Mould
         if activeEntity.type=='Mould':
             # and return the mould received
@@ -122,7 +122,7 @@ class MouldAssembly(MachineJobShop):
         # all the components are received at the same time
         while not orderGroupReceived:
             # get the next component
-            activeEntity=MachineJobShop.getEntity(self)
+            activeEntity=MachineManagedJob.getEntity(self)
             # check weather the activeEntity is of type Mould
             try:
                 if activeEntity.type=='Mould':

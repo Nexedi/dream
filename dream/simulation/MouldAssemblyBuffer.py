@@ -22,11 +22,11 @@ Created on 15 Jan 2014
 @author: Ioannis
 '''
 '''
-Inherits from QueueJobShop. It is the buffer before the MouldAssembly. 
+Inherits from QueueManagedJob. It is the buffer before the MouldAssembly. 
 Only if all the mould (order) components are present, will it be able to dispose them
 '''
 
-from QueueJobShop import QueueJobShop
+from QueueManagedJob import QueueManagedJob
 from SimPy.Simulation import now
 
 # ===========================================================================
@@ -39,13 +39,13 @@ class NoCallerError(Exception):
 # ===========================================================================
 # the MouldAssemblyBuffer object
 # ===========================================================================
-class MouldAssemblyBuffer(QueueJobShop):
+class MouldAssemblyBuffer(QueueManagedJob):
     # =======================================================================                
-    # the default __init__ method of the QueueJobShop class
+    # the default __init__ method of the QueueManagedJob class
     # whereas the default capacity is set to infinity
     # =======================================================================
     def __init__(self,  id, name, capacity=-1, dummy=False, schedulingRule="FIFO"):
-        QueueJobShop.__init__(self, id=id, name=name, capacity=capacity, dummy=dummy, schedulingRule=schedulingRule)
+        QueueManagedJob.__init__(self, id=id, name=name, capacity=capacity, dummy=dummy, schedulingRule=schedulingRule)
         
     # =======================================================================                
     # Sort the entities of the activeQ
@@ -54,7 +54,7 @@ class MouldAssemblyBuffer(QueueJobShop):
     def sortEntities(self):
         activeObject = self.getActiveObject()
         # run the default sorting of the Queue first
-        QueueJobShop.sortEntities(self)
+        QueueManagedJob.sortEntities(self)
         # and in the end sort according to the ConditionalBuffer sorting rule
         activeObjectQueue = activeObject.getActiveObjectQueue()
         # if all the components of the same mould are present then move them to the front of the activeQ
@@ -77,7 +77,7 @@ class MouldAssemblyBuffer(QueueJobShop):
     def getEntity(self):
         activeObject = self.getActiveObject()
         activeObjectQueue = activeObject.getActiveObjectQueue()
-        activeEntity=QueueJobShop.getEntity(self)   #execute default behaviour
+        activeEntity=QueueManagedJob.getEntity(self)   #execute default behaviour
         # if the activeEntity is of type orderComponent
         try:
             if activeEntity.componentType=='Basic' or 'Secondary':
