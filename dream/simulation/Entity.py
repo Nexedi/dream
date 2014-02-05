@@ -53,7 +53,8 @@ class Entity(object):
         #         values to be used in the internal processing of compoundObjects
         self.internal = False       # informs if the entity is being processed internally
         self.isCritical=isCritical          # flag to inform weather the entity is critical -> preemption
-        self.manager=None
+        self.manager=None                   # default value
+        self.numberOfUnits=1                # default value
         
     # =======================================================================
     # outputs results to JSON File 

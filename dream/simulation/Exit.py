@@ -61,6 +61,7 @@ class Exit(CoreObject):
         # The number of resource that exited through this exit.
         # XXX bug: cannot output as json when nothing has exited.
         self.numOfExits=0
+        self.totalNumberOfUnitsExited=0
         self.totalLifespan=0
         
         self.totalTaktTime=0            # the total time between to consecutive exits    
@@ -112,9 +113,10 @@ class Exit(CoreObject):
     def getEntity(self): 
         activeEntity = CoreObject.getEntity(self)           #run the default method
         self.totalLifespan+=now()-activeEntity.startTime    #Add the entity's lifespan to the total one. 
-        self.numOfExits+=1                                      # increase the exits by one
-        self.totalTaktTime+=now()-self.timeLastEntityLeft       # add the takt time
-        self.timeLastEntityLeft=now()                           # update the time that the last entity left from the Exit
+        self.numOfExits+=1                                          # increase the exits by one
+        self.totalNumberOfUnitsExited+=activeEntity.numberOfUnits   # add the number of units that xited
+        self.totalTaktTime+=now()-self.timeLastEntityLeft           # add the takt time
+        self.timeLastEntityLeft=now()                               # update the time that the last entity left from the Exit
         return activeEntity          
 
     # =======================================================================
