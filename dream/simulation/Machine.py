@@ -364,7 +364,7 @@ class Machine(CoreObject):
                 self.outputTrace(self.getActiveObjectQueue()[0].name,"ended processing in "+self.objName)
             except IndexError:
                 pass
-            
+                       
     # =============== release resource after the end of processing
             if (self.operatorPool!='None')\
                 and any(type=="Processing" for type in self.multOperationTypeList)\
@@ -626,6 +626,7 @@ class Machine(CoreObject):
     #                   prepare the machine to be released
     # =======================================================================
     def releaseOperator(self):
+        self.outputTrace(self.currentOperator.objName, "released from "+ self.objName)
         self.broker.invokeBroker()
         self.toBeOperated = False
         
