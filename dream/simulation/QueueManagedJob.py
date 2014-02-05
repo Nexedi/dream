@@ -61,6 +61,7 @@ class QueueManagedJob(QueueJobShop):
         if(len(activeObject.next)==1 or callerObject==None):
             
             activeObject.receiver=activeObject.next[0]
+                   
             return len(activeObjectQueue)>0\
                     and thecaller==activeObject.receiver
         
@@ -77,5 +78,15 @@ class QueueManagedJob(QueueJobShop):
         #return True if the Queue has Entities and the caller is the receiver
         return len(activeObjectQueue)>0 and (thecaller is self.receiver) 
 
-    
-    
+    #override the default method so that Entities that have the manager available go in front
+    def sortEntities(self):
+        QueueJobShop.sortEntities(self)     #do the default sorting first
+        activeObjectQueue=self.getActiveObjectQueue()
+        for entity in activeObjectQueue:
+            entity.managerAvailable=False
+            if entity.manager:        
+                if entity.manager.checkIfResourceIsAvailable:
+                    entity.managerAvailable=True
+        activeObjectQueue.sort(key=lambda x: x.managerAvailable, reverse=True)
+        
+        
