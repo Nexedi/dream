@@ -5,14 +5,14 @@
    "id": "E1", 
    "results": {
     "unitsThroughput": 28720, 
-    "dailyThroughputList": [
+    "throughput": 359, 
+    "takt_time": 4.006963788300836, 
+    "lifespan": 454.0, 
+    "intervalThroughputList": [
      9520, 
      9600, 
      9600
-    ], 
-    "throughput": 359, 
-    "takt_time": 4.006963788300836, 
-    "lifespan": 454.0
+    ]
    }
   }, 
   {

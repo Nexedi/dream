@@ -215,7 +215,7 @@ class Exit(CoreObject):
                 json['results']['unitsThroughput']=self.totalNumberOfUnitsExited
             if len(self.intervalThroughPutList):    #output this only if there is an interval throughput
                                                     #TODO - check how to output in stochastic cases
-                json['results']['dailyThroughputList']=self.intervalThroughPutList
+                json['results']['intervalThroughputList']=self.intervalThroughPutList
             json['results']['lifespan']=self.Lifespan[0]
             json['results']['takt_time']=self.TaktTime[0]            
                 
