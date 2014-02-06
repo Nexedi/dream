@@ -170,14 +170,14 @@ def setWIP(entityList):
             entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
             entity.currentStation=object                        # update the current station of the entity 
        
-def countDailyThroughput(argumentDict={}):
+def countIntervalThroughput(argumentDict={}):
     currentExited=0  
     for obj in G.ObjList:
         if obj.type is 'Exit':
             totalExited=obj.totalNumberOfUnitsExited
-            previouslyExited=sum(obj.dailyThroughPutList)
+            previouslyExited=sum(obj.intervalThroughPutList)
             currentExited+=totalExited-previouslyExited
-    obj.dailyThroughPutList.append(currentExited)
+    obj.intervalThroughPutList.append(currentExited)
             
             
             

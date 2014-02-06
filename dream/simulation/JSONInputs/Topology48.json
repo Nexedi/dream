@@ -145,7 +145,7 @@
             "name": "calculateDailyAttainment",
             "start": "480",
             "interval": "480",
-            "method": "Globals.countDailyThroughput",
+            "method": "Globals.countIntervalThroughput",
             "argumentDict": {
             }
         }
