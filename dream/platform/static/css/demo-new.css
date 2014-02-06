@@ -316,7 +316,7 @@ path, ._jsPlumb_endpoint {
   visibility: hidden;
 }
 
-#debug textarea {
+#debug_json textarea {
   width:100%;
 }
 

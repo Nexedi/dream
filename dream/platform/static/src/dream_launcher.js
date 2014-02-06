@@ -75,6 +75,9 @@
       if (configuration['Dream-Configuration'].gui.wip_spreadsheet){
         $("#wip_spreadsheet").show();
       }
+      if (configuration['Dream-Configuration'].gui.debug_json){
+        $("#debug_json").show();
+      }
 
       try {
         // spreadsheets
@@ -152,6 +155,7 @@
           function (data) {
             $("#loading_spinner").hide();
             $("#run_simulation").button('enable');
+            $("#result_zone").show();
             $('#result_list').empty();
             if (data['success']) {
               $("#json_result").val(JSON.stringify(data['success'],

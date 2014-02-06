@@ -269,8 +269,7 @@
       $($('li.result')[idx]).addClass('active');
       var result = JSON.parse($("#json_result").val())[idx]['result'];
       if (configuration['Dream-Configuration'].gui.debug_json){
-        // TODO: does not work
-        $("#result_zone").show();
+        $("#debug_json").show();
       }
       if (configuration['Dream-Configuration'].gui.station_utilisation_graph){
         $("#graph_zone").show();
