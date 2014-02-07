@@ -187,7 +187,7 @@ def createObjects():
         if resourceClass=='Dream.Repairman':                        # check the object type
             id = element.get('id', 'not found')                     # get the id of the element
             name = element.get('name', id)                          # get the name of the element / default 'not_found'
-            capacity = int(element.get('capacity', '1'))            # get the capacity of the el. / defautl '1'
+            capacity = int(element.get('capacity') or 1)
             R = Repairman(element_id, name, capacity)               # create a repairman object
             R.coreObjectIds=getSuccessorList(id)                    # update the list of objects that the repairman repairs
                                                                     # calling the getSuccessorList() method on the repairman
@@ -196,7 +196,7 @@ def createObjects():
         elif resourceClass=='Dream.Operator':
             id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
             name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
-            capacity = int(element.get('capacity', '1'))            # get the capacity of the el. / defautl '1'
+            capacity = int(element.get('capacity') or 1)
             O = Operator(element_id, name, capacity)                # create an operator object
             O.coreObjectIds=getSuccessorList(id)                	# update the list of objects that the operator operates
 																	# calling the getSuccesorList() method on the operator
@@ -216,7 +216,7 @@ def createObjects():
         if resourceClass=='Dream.OperatorPool':
             id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
             name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
-            capacity = int(element.get('capacity', '1'))            # get the capacity of the el. / defautl '1'
+            capacity = int(element.get('capacity') or 1)
             operatorsList=[]
             for operator in G.OperatorsList:                        # find the operators assigned to the operatorPool
                 if id in operator.coreObjectIds:
@@ -242,7 +242,7 @@ def createObjects():
             name=element.get('name', 'not found')
             interarrivalTime=element.get('interarrivalTime',{})
             distributionType=interarrivalTime.get('distributionType', 'not found')
-            mean=float(interarrivalTime.get('mean', '0'))        
+            mean=float(interarrivalTime.get('mean') or 0)
             entity=str_to_class(element['entity'])     # initialize entity
             S=Source(id, name, distributionType, mean, entity)          # initialize Source
             S.nextIds=getSuccessorList(id)
@@ -254,7 +254,7 @@ def createObjects():
             name=element.get('name', 'not found')
             interarrivalTime=element.get('interarrivalTime',{})
             distributionType=interarrivalTime.get('distributionType', 'not found')
-            mean=float(interarrivalTime.get('mean', '0'))        
+            mean=float(interarrivalTime.get('mean') or 0)
             entity=str_to_class(element['entity'])          
             batchNumberOfUnits=int(element.get('batchNumberOfUnits', 'not found'))
             S=BatchSource(id, name, distributionType, mean, entity, batchNumberOfUnits)
@@ -268,34 +268,34 @@ def createObjects():
             name=element.get('name', 'not found')
             processingTime=element.get('processingTime',{})
             distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean', '0'))  
-            stdev=float(processingTime.get('stdev', '0'))  
-            min=float(processingTime.get('min', '0')) 
-            max=float(processingTime.get('max', '0'))
+            mean=float(processingTime.get('mean') or 0)
+            stdev=float(processingTime.get('stdev') or 0)
+            min=float(processingTime.get('min') or 0)
+            max=float(processingTime.get('max') or 0)
             failures=element.get('failures', {})  
             failureDistribution=failures.get('failureDistribution', 'not found')
-            MTTF=float(failures.get('MTTF', '0'))   
-            MTTR=float(failures.get('MTTR', '0')) 
-            availability=float(failures.get('availability', '0'))
+            MTTF=float(failures.get('MTTF') or 0)
+            MTTR=float(failures.get('MTTR') or 0)
+            availability=float(failures.get('availability') or 0)
             # type of operation and related times 
             operationType=element.get('operationType','not found')
             setupTime = element.get('setupTime',{})
             setupDistribution = setupTime.get('setupDistribution','not found')
-            setupMean = float(setupTime.get('setupMean','0'))
-            setupStdev=float(setupTime.get('setupStdev', '0'))  
-            setupMin=float(setupTime.get('setupMin', '0')) 
-            setupMax=float(setupTime.get('setupMax', '0'))
+            setupMean = float(setupTime.get('setupMean') or 0)
+            setupStdev=float(setupTime.get('setupStdev') or 0)
+            setupMin=float(setupTime.get('setupMin') or 0)
+            setupMax=float(setupTime.get('setupMax') or 0)
             loadTime = element.get('loadTime',{})
             loadDistribution = loadTime.get('loadDistribution','not found')
-            loadMean = float(loadTime.get('loadMean','0'))
-            loadStdev = float(loadTime.get('loadStdev', '0'))  
-            loadMin=float(loadTime.get('loadMin', '0')) 
-            loadMax=float(loadTime.get('loadMax', '0'))
+            loadMean = float(loadTime.get('loadMean') or 0)
+            loadStdev = float(loadTime.get('loadStdev') or 0)
+            loadMin=float(loadTime.get('loadMin') or 0)
+            loadMax=float(loadTime.get('loadMax') or 0)
             preemption=element.get('preemption',{})
             isPreemptive=resetOnPreemption=False
             if len(preemption)>0:
-                isPreemptive=bool(int(preemption.get('isPreemptive', 0)))
-                resetOnPreemption=bool(int(preemption.get('isPreemptive', 0)))
+                isPreemptive=bool(int(preemption.get('isPreemptive') or 0))
+                resetOnPreemption=bool(int(preemption.get('isPreemptive') or 0))
             
             if len(G.OperatorPoolsList)>0:
                 for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
@@ -336,21 +336,21 @@ def createObjects():
             name=element.get('name', 'not found')
             processingTime=element.get('processingTime',{})
             distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean', '0'))  
-            stdev=float(processingTime.get('stdev', '0'))  
-            min=float(processingTime.get('min', '0')) 
-            max=float(processingTime.get('max', '0'))            
+            mean=float(processingTime.get('mean') or 0)
+            stdev=float(processingTime.get('stdev') or 0)
+            min=float(processingTime.get('min') or 0)
+            max=float(processingTime.get('max') or 0)
             scrapQuantity=element.get('scrapQuantity', {})
             scrapDistributionType=scrapQuantity.get('distributionType', 'not found')
-            scrMean=int(scrapQuantity.get('mean', '0'))  
-            scrStdev=float(scrapQuantity.get('stdev', '0'))  
-            scrMin=int(scrapQuantity.get('min', '0')) 
-            scrMax=int(scrapQuantity.get('max', '0'))            
+            scrMean=int(scrapQuantity.get('mean') or 0)
+            scrStdev=float(scrapQuantity.get('stdev') or 0)
+            scrMin=int(scrapQuantity.get('min') or 0)
+            scrMax=int(scrapQuantity.get('max') or 0)
             failures=element.get('failures', {})  
             failureDistribution=failures.get('failureDistribution', 'not found')
-            MTTF=float(failures.get('MTTF', '0'))   
-            MTTR=float(failures.get('MTTR', '0')) 
-            availability=float(failures.get('availability', '0'))  
+            MTTF=float(failures.get('MTTF') or 0)
+            MTTR=float(failures.get('MTTR') or 0)
+            availability=float(failures.get('availability') or 0)
             r='None'
             for repairman in G.RepairmanList:                   # check which repairman in the G.RepairmanList
                 if(id in repairman.coreObjectIds):              # (if any) is assigned to repair 
@@ -371,21 +371,21 @@ def createObjects():
             name=element.get('name', 'not found')
             processingTime=element.get('processingTime', {})
             distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean', '0'))  
-            stdev=float(processingTime.get('stdev', '0'))  
-            min=float(processingTime.get('min', '0')) 
-            max=float(processingTime.get('max', '0'))            
+            mean=float(processingTime.get('mean') or 0)
+            stdev=float(processingTime.get('stdev') or 0)
+            min=float(processingTime.get('min') or 0)
+            max=float(processingTime.get('max') or 0)
             scrapQuantity=element.get('scrapQuantity', {})
             scrapDistributionType=scrapQuantity.get('distributionType', 'not found')
-            scrMean=int(scrapQuantity.get('mean', '0'))  
-            scrStdev=float(scrapQuantity.get('stdev', '0'))  
-            scrMin=int(scrapQuantity.get('min', '0')) 
-            scrMax=int(scrapQuantity.get('max', '0'))            
+            scrMean=int(scrapQuantity.get('mean') or 0)
+            scrStdev=float(scrapQuantity.get('stdev') or 0)
+            scrMin=int(scrapQuantity.get('min') or 0)
+            scrMax=int(scrapQuantity.get('max') or 0)
             failures=element.get('failures', {})  
             failureDistribution=failures.get('failureDistribution', 'not found')
-            MTTF=float(failures.get('MTTF', '0'))   
-            MTTR=float(failures.get('MTTR', '0')) 
-            availability=float(failures.get('availability', '0'))  
+            MTTF=float(failures.get('MTTF') or 0)
+            MTTR=float(failures.get('MTTR') or 0)
+            availability=float(failures.get('availability') or 0)
             r='None'
             for repairman in G.RepairmanList:                   # check which repairman in the G.RepairmanList
                 if(id in repairman.coreObjectIds):              # (if any) is assigned to repair 
@@ -405,34 +405,34 @@ def createObjects():
             name=element.get('name', 'not found')
             processingTime=element.get('processingTime', {})
             distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean', '0'))  
-            stdev=float(processingTime.get('stdev', '0'))  
-            min=float(processingTime.get('min', '0')) 
-            max=float(processingTime.get('max', '0'))
+            mean=float(processingTime.get('mean') or 0)
+            stdev=float(processingTime.get('stdev') or 0)
+            min=float(processingTime.get('min') or 0)
+            max=float(processingTime.get('max') or 0)
             failures=element.get('failures', {})  
             failureDistribution=failures.get('failureDistribution', 'not found')
-            MTTF=float(failures.get('MTTF', '0'))   
-            MTTR=float(failures.get('MTTR', '0')) 
-            availability=float(failures.get('availability', '0'))  
+            MTTF=float(failures.get('MTTF') or 0)
+            MTTR=float(failures.get('MTTR') or 0)
+            availability=float(failures.get('availability') or 0)
             # type of operation and related times 
             operationType=element.get('operationType','not found')
             setupTime = element.get('setupTime',{})
             setupDistribution = setupTime.get('setupDistribution','not found')
-            setupMean = float(setupTime.get('setupMean','0'))
-            setupStdev=float(setupTime.get('setupStdev', '0'))  
-            setupMin=float(setupTime.get('setupMin', '0')) 
+            setupMean = float(setupTime.get('setupMean') or 0)
+            setupStdev=float(setupTime.get('setupStdev') or 0)
+            setupMin=float(setupTime.get('setupMin') or 0)
             setupMax=float(setupTime.get('setupMax', '0'))
             loadTime = element.get('loadTime',{})
             loadDistribution = loadTime.get('loadDistribution','not found')
-            loadMean = float(loadTime.get('loadMean','0'))
-            loadStdev = float(loadTime.get('loadStdev', '0'))  
-            loadMin=float(loadTime.get('loadMin', '0')) 
-            loadMax=float(loadTime.get('loadMax', '0'))
+            loadMean = float(loadTime.get('loadMean') or 0)
+            loadStdev = float(loadTime.get('loadStdev') or 0)
+            loadMin=float(loadTime.get('loadMin') or 0)
+            loadMax=float(loadTime.get('loadMax') or 0)
             preemption=element.get('preemption',{})
             isPreemptive=resetOnPreemption=False
             if len(preemption)>0:
-                isPreemptive=bool(int(preemption.get('isPreemptive', 0)))
-                resetOnPreemption=bool(int(preemption.get('resetOnPreemption', 0)))
+                isPreemptive=bool(int(preemption.get('isPreemptive') or 0))
+                resetOnPreemption=bool(int(preemption.get('resetOnPreemption') or 0))
             
             if len(G.OperatorPoolsList)>0:
                 for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
@@ -475,34 +475,34 @@ def createObjects():
             name=element.get('name', 'not found')
             processingTime=element.get('processingTime', {})
             distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean', '0'))  
-            stdev=float(processingTime.get('stdev', '0'))  
-            min=float(processingTime.get('min', '0')) 
-            max=float(processingTime.get('max', '0'))
+            mean=float(processingTime.get('mean') or 0)
+            stdev=float(processingTime.get('stdev') or 0)
+            min=float(processingTime.get('min') or 0)
+            max=float(processingTime.get('max') or 0)
             failures=element.get('failures', {})  
             failureDistribution=failures.get('failureDistribution', 'not found')
-            MTTF=float(failures.get('MTTF', '0'))   
-            MTTR=float(failures.get('MTTR', '0')) 
-            availability=float(failures.get('availability', '0'))  
+            MTTF=float(failures.get('MTTF') or 0)
+            MTTR=float(failures.get('MTTR') or 0)
+            availability=float(failures.get('availability') or 0)
             # type of operation and related times 
             operationType=element.get('operationType','not found')
             setupTime = element.get('setupTime',{})
             setupDistribution = setupTime.get('setupDistribution','not found')
-            setupMean = float(setupTime.get('setupMean','0'))
-            setupStdev=float(setupTime.get('setupStdev', '0'))  
-            setupMin=float(setupTime.get('setupMin', '0')) 
-            setupMax=float(setupTime.get('setupMax', '0'))
+            setupMean = float(setupTime.get('setupMean') or 0)
+            setupStdev=float(setupTime.get('setupStdev') or 0)
+            setupMin=float(setupTime.get('setupMin') or 0)
+            setupMax=float(setupTime.get('setupMax') or 0)
             loadTime = element.get('loadTime',{})
             loadDistribution = loadTime.get('loadDistribution','not found')
-            loadMean = float(loadTime.get('loadMean','0'))
-            loadStdev = float(loadTime.get('loadStdev', '0'))  
-            loadMin=float(loadTime.get('loadMin', '0')) 
-            loadMax=float(loadTime.get('loadMax', '0'))
+            loadMean = float(loadTime.get('loadMean') or 0)
+            loadStdev = float(loadTime.get('loadStdev') or 0)
+            loadMin=float(loadTime.get('loadMin') or 0)
+            loadMax=float(loadTime.get('loadMax') or 0)
             preemption=element.get('preemption',{})
             isPreemptive=resetOnPreemption=False
             if len(preemption)>0:
-                isPreemptive=bool(int(preemption.get('isPreemptive', 0)))
-                resetOnPreemption=bool(int(preemption.get('resetOnPreemption', 0)))
+                isPreemptive=bool(int(preemption.get('isPreemptive') or 0))
+                resetOnPreemption=bool(int(preemption.get('resetOnPreemption') or 0))
             
             if len(G.OperatorPoolsList)>0:
                 for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
@@ -559,8 +559,8 @@ def createObjects():
         elif objClass=='Dream.Queue':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            capacity=int(element.get('capacity', '1'))
-            isDummy=bool(int(element.get('isDummy', '0')))
+            capacity=int(element.get('capacity') or 1)
+            isDummy=bool(int(element.get('isDummy') or 0))
             schedulingRule=element.get('schedulingRule', 'FIFO')
             Q=Queue(id, name, capacity, isDummy, schedulingRule=schedulingRule)
             Q.nextIds=getSuccessorList(id)
@@ -570,8 +570,8 @@ def createObjects():
         elif objClass=='Dream.QueueJobShop':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            capacity=int(element.get('capacity', '1'))
-            isDummy=bool(int(element.get('isDummy', '0')))
+            capacity=int(element.get('capacity') or 1)
+            isDummy=bool(int(element.get('isDummy') or 0))
             schedulingRule=element.get('schedulingRule', 'FIFO')
             Q=QueueJobShop(id, name, capacity, isDummy, schedulingRule=schedulingRule)
             Q.nextIds=getSuccessorList(id)
@@ -582,8 +582,8 @@ def createObjects():
         elif objClass=='Dream.QueueManagedJob':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            capacity=int(element.get('capacity', '1'))
-            isDummy=bool(int(element.get('isDummy', '0')))
+            capacity=int(element.get('capacity') or 1)
+            isDummy=bool(int(element.get('isDummy') or 0))
             schedulingRule=element.get('schedulingRule', 'FIFO')
             Q=QueueManagedJob(id, name, capacity, isDummy, schedulingRule=schedulingRule)
             Q.nextIds=getSuccessorList(id)
@@ -596,8 +596,8 @@ def createObjects():
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
             successorList=element.get('successorList', 'not found')
-            capacity=int(element.get('capacity', '1'))
-            isDummy=bool(int(element.get('isDummy', '0')))
+            capacity=int(element.get('capacity') or 1)
+            isDummy=bool(int(element.get('isDummy') or 0))
             Q=QueueLIFO(id, name, capacity, isDummy)
             Q.nextIds=successorList
             G.QueueList.append(Q)
@@ -608,10 +608,10 @@ def createObjects():
             name=element.get('name', 'not found')
             processingTime=element.get('processingTime', {})
             distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean', '0'))  
-            stdev=float(processingTime.get('stdev', '0'))  
-            min=float(processingTime.get('min', '0')) 
-            max=float(processingTime.get('max', '0'))
+            mean=float(processingTime.get('mean') or 0)
+            stdev=float(processingTime.get('stdev') or 0)
+            min=float(processingTime.get('min') or 0)
+            max=float(processingTime.get('max') or 0)
             A=Assembly(id, name, distribution=distributionType, mean=mean,stdev=stdev,min=min,max=max)
             A.nextIds=getSuccessorList(id)
             G.AssemblyList.append(A)
@@ -622,10 +622,10 @@ def createObjects():
             name=element.get('name', 'not found')
             processingTime=element.get('processingTime', {})
             distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean', '0'))  
-            stdev=float(processingTime.get('stdev', '0'))  
-            min=float(processingTime.get('min', '0')) 
-            max=float(processingTime.get('max', '0'))
+            mean=float(processingTime.get('mean') or 0)
+            stdev=float(processingTime.get('stdev') or 0)
+            min=float(processingTime.get('min') or 0)
+            max=float(processingTime.get('max') or 0)
             D=Dismantle(id, name, distribution=distributionType, mean=mean,stdev=stdev,min=min,max=max)
             # get the successorList for the 'Parts'
             D.nextPartIds=getSuccessorList(id, lambda source, destination, edge_data: edge_data.get('entity') == 'Part')
@@ -638,8 +638,8 @@ def createObjects():
         elif objClass=='Dream.Conveyer':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            length=float(element.get('length', '10'))
-            speed=float(element.get('speed', '1'))
+            length=float(element.get('length') or 10)
+            speed=float(element.get('speed') or 1)
             C=Conveyer(id, name, length, speed)
             C.nextIds=getSuccessorList(id)
             G.ObjList.append(C)
@@ -650,11 +650,11 @@ def createObjects():
             name=element.get('name', 'not found')
             processingTime=element['processingTime']
             distributionType=processingTime['distributionType']
-            mean=float(processingTime.get('mean', '0'))
-            stdev=float(processingTime.get('stdev', '0'))
-            min=float(processingTime.get('min', '0'))
-            max=float(processingTime.get('max', '0'))
-            numberOfSubBatches=int(element.get('numberOfSubBatches', '0'))
+            mean=float(processingTime.get('mean') or 0)
+            stdev=float(processingTime.get('stdev') or 0)
+            min=float(processingTime.get('min') or 0)
+            max=float(processingTime.get('max') or 0)
+            numberOfSubBatches=int(element.get('numberOfSubBatches') or 0)
             BD=BatchDecomposition(id, name, distribution=distributionType,  numberOfSubBatches=numberOfSubBatches,
                                                     mean=mean,stdev=stdev,min=min,max=max)
             BD.nextIds=getSuccessorList(id)
@@ -666,11 +666,11 @@ def createObjects():
             name=element.get('name', 'not found')
             processingTime=element.get('processingTime', {})
             distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean', '0'))  
-            stdev=float(processingTime.get('stdev', '0'))  
-            min=float(processingTime.get('min', '0')) 
-            max=float(processingTime.get('max', '0'))
-            numberOfSubBatches=int(element.get('numberOfSubBatches', '0'))
+            mean=float(processingTime.get('mean') or 0)
+            stdev=float(processingTime.get('stdev') or 0)
+            min=float(processingTime.get('min') or 0)
+            max=float(processingTime.get('max') or 0)
+            numberOfSubBatches=int(element.get('numberOfSubBatches') or 0)
             BD=BatchDecompositionStartTime(id, name, distribution=distributionType,  numberOfSubBatches=numberOfSubBatches,
                                                     mean=mean,stdev=stdev,min=min,max=max)
             BD.nextIds=getSuccessorList(id)
@@ -683,11 +683,11 @@ def createObjects():
             name=element.get('name', 'not found')
             processingTime=element.get('processingTime', {})
             distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean', '0'))  
-            stdev=float(processingTime.get('stdev', '0'))  
-            min=float(processingTime.get('min', '0')) 
-            max=float(processingTime.get('max', '0'))
-            numberOfSubBatches=int(element.get('numberOfSubBatches', '0'))
+            mean=float(processingTime.get('mean') or 0)
+            stdev=float(processingTime.get('stdev') or 0)
+            min=float(processingTime.get('min') or 0)
+            max=float(processingTime.get('max') or 0)
+            numberOfSubBatches=int(element.get('numberOfSubBatches') or 0)
             BR=BatchReassembly(id, name, distribution=distributionType,  numberOfSubBatches=numberOfSubBatches,
                                                     mean=mean,stdev=stdev,min=min,max=max)
             BR.nextIds=getSuccessorList(id)
@@ -697,8 +697,8 @@ def createObjects():
         elif objClass=='Dream.LineClearance':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            capacity=int(element.get('capacity', '1'))
-            isDummy=bool(int(element.get('isDummy', '0')))
+            capacity=int(element.get('capacity') or 1)
+            isDummy=bool(int(element.get('isDummy') or 0))
             schedulingRule=element.get('schedulingRule', 'FIFO')
             LC=LineClearance(id, name, capacity, isDummy, schedulingRule=schedulingRule)
             LC.nextIds=getSuccessorList(id)
@@ -710,29 +710,29 @@ def createObjects():
             name=element.get('name', 'not found')
             processingTime=element.get('processingTime', {})
             distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean', '0'))  
-            stdev=float(processingTime.get('stdev', '0'))  
-            min=float(processingTime.get('min', '0')) 
-            max=float(processingTime.get('max', '0'))  
+            mean=float(processingTime.get('mean') or 0)
+            stdev=float(processingTime.get('stdev') or 0)
+            min=float(processingTime.get('min') or 0)
+            max=float(processingTime.get('max') or 0)
             failures=element.get('failures', {})  
             failureDistribution=failures.get('failureDistribution', 'not found')
-            MTTF=float(failures.get('MTTF', '0'))   
-            MTTR=float(failures.get('MTTR', '0')) 
-            availability=float(failures.get('availability', '0'))
+            MTTF=float(failures.get('MTTF') or 0)
+            MTTR=float(failures.get('MTTR') or 0)
+            availability=float(failures.get('availability') or 0)
             
             operationType=element.get('operationType','not found')
             setupTime = element.get('setupTime',{})
             setupDistribution = setupTime.get('setupDistribution','not found')
-            setupMean = float(setupTime.get('setupMean','0'))
-            setupStdev=float(setupTime.get('setupStdev', '0'))  
-            setupMin=float(setupTime.get('setupMin', '0')) 
-            setupMax=float(setupTime.get('setupMax', '0'))
+            setupMean = float(setupTime.get('setupMean') or 0)
+            setupStdev=float(setupTime.get('setupStdev') or 0)
+            setupMin=float(setupTime.get('setupMin') or 0)
+            setupMax=float(setupTime.get('setupMax') or 0)
             loadTime = element.get('loadTime',{})
             loadDistribution = loadTime.get('loadDistribution','not found')
-            loadMean = float(loadTime.get('loadMean','0'))
-            loadStdev = float(loadTime.get('loadStdev', '0'))  
-            loadMin=float(loadTime.get('loadMin', '0')) 
-            loadMax=float(loadTime.get('loadMax', '0'))
+            loadMean = float(loadTime.get('loadMean') or 0)
+            loadStdev = float(loadTime.get('loadStdev') or 0)
+            loadMin=float(loadTime.get('loadMin') or 0)
+            loadMax=float(loadTime.get('loadMax') or 0)
             
             if len(G.OperatorPoolsList)>0:
                 for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
@@ -815,31 +815,31 @@ def createObjects():
             name=element.get('name', 'not found')
             processingTime=element.get('processingTime',{})
             distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean', '0'))  
-            stdev=float(processingTime.get('stdev', '0'))  
-            min=float(processingTime.get('min', '0')) 
-            max=float(processingTime.get('max', '0'))
+            mean=float(processingTime.get('mean') or 0)
+            stdev=float(processingTime.get('stdev') or 0)
+            min=float(processingTime.get('min') or 0)
+            max=float(processingTime.get('max') or 0)
             failures=element.get('failures', {})  
             failureDistribution=failures.get('failureDistribution', 'not found')
-            MTTF=float(failures.get('MTTF', '0'))   
-            MTTR=float(failures.get('MTTR', '0')) 
-            availability=float(failures.get('availability', '0'))  
-            resetOnPreemption=bool(int(element.get('resetOnPreemption', '0')))
+            MTTF=float(failures.get('MTTF') or 0)
+            MTTR=float(failures.get('MTTR') or 0)
+            availability=float(failures.get('availability') or 0)
+            resetOnPreemption=bool(int(element.get('resetOnPreemption') or 0))
             # type of operation and related times 
             operationType=element.get('operationType','not found')
             setupTime = element.get('setupTime',{})
             setupDistribution = setupTime.get('setupDistribution','not found')
-            setupMean = float(setupTime.get('setupMean','0'))
-            setupStdev=float(setupTime.get('setupStdev', '0'))  
-            setupMin=float(setupTime.get('setupMin', '0')) 
-            setupMax=float(setupTime.get('setupMax', '0'))
+            setupMean = float(setupTime.get('setupMean') or 0)
+            setupStdev=float(setupTime.get('setupStdev') or 0)
+            setupMin=float(setupTime.get('setupMin') or 0)
+            setupMax=float(setupTime.get('setupMax') or 0)
             loadTime = element.get('loadTime',{})
             loadDistribution = loadTime.get('loadDistribution','not found')
-            loadMean = float(loadTime.get('loadMean','0'))
-            loadStdev = float(loadTime.get('loadStdev', '0'))  
-            loadMin=float(loadTime.get('loadMin', '0')) 
-            loadMax=float(loadTime.get('loadMax', '0'))
-            resetOnPreemption=bool(int(element.get('resetOnPreemption', '0')))
+            loadMean = float(loadTime.get('loadMean') or 0)
+            loadStdev = float(loadTime.get('loadStdev') or 0)
+            loadMin=float(loadTime.get('loadMin') or 0)
+            loadMax=float(loadTime.get('loadMax') or 0)
+            resetOnPreemption=bool(int(element.get('resetOnPreemption') or 0))
             
             if len(G.OperatorPoolsList)>0:
                 for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
@@ -893,13 +893,13 @@ def createObjects():
         if elementClass=='Dream.EventGenerator':                    # check the object type
             id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
             name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
-            start = float(element.get('start', '0'))                # get the start of the generator / default 0
-            stop = float(element.get('stop', -1))                   # get the stop of the generator / default -1 that leads yo
+            start = float(element.get('start') or 0)
+            stop = float(element.get('stop') or -1)
                                                                     # infinity (had to be done to make it as float)
             if stop<0:
                 stop=infinity            
-            interval = float(element.get('interval', '1'))             # get the interval of the generator / default 1
-            duration = float(element.get('duration', 0))         # get the duration of the generator / default 0
+            interval = float(element.get('interval') or 1)
+            duration = float(element.get('duration') or 0)
             method = (element.get('method', None))                    # get the method to be run / default None
             method = method.split('.')                                  #the method is given as 'Path.MethodName'
             method=getattr(str_to_class(method[0]),method[1])           #and then parsed with getattr
@@ -1285,9 +1285,9 @@ def createObjectInterruptions():
             if distributionType=='No':
                 pass
             else:
-                MTTF=float(failure.get('MTTF', '0'))   
-                MTTR=float(failure.get('MTTR', '0')) 
-                availability=float(failure.get('availability', '0'))  
+                MTTF=float(failure.get('MTTF') or 0)
+                MTTR=float(failure.get('MTTR') or 0)
+                availability=float(failure.get('availability') or 0)
                 victim=Globals.findObjectById(element['id'])
                 F=Failure(victim, distributionType, MTTF, MTTR, availability, victim.id, victim.repairman)
                 G.ObjectInterruptionList.append(F)
