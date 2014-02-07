@@ -190,8 +190,10 @@
     // Enable "Clear All" button
     $("#clear_all").button().click(
       function (e) {
-        dream_instance.clearAll();
-        e.preventDefault();
+        if (confirm("Are you sure you want to clear all ?")) {
+          dream_instance.clearAll();
+          e.preventDefault();
+        }
         return false;
       });
 
