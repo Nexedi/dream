@@ -36,12 +36,13 @@
 
     priv.displayTool = function () {
       var render_element = $("#tools-container");
-      for (var key in configuration) {
+      $.each(configuration, function(key, val) {
+        var name = val["name"] || key.split('-')[1];
         if (key !== 'Dream-Configuration') {
           render_element.append('<div id="' + key + '" class="tool ' + key + '">' +
-            key.split('-')[1] + "<ul/></div>");
+            name + "<ul/></div>");
         }
-      }
+      });
     };
 
     priv.initDialog = function () {
