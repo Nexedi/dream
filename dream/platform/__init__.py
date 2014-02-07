@@ -21,7 +21,10 @@ import sys
 import json
 import traceback
 import multiprocessing
-import pydot
+try:
+	import pydot
+except ImportError:
+	print "Warning, pydot could not be found"	
 import os.path
 import logging
 
