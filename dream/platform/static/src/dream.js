@@ -90,8 +90,7 @@
       var node_id = that.getNodeId(element_id);
       $("#dialog-fieldset").children().remove();
       var element_type = node_dict[node_id]._class.replace('.', '-');
-      var property_list = (configuration[element_type] || {}).property_list || [];
-      property_list.push({"_class": "Dream.Property", "id": "_class"});
+      var property_list = configuration[element_type].property_list || [];
 
       fieldset.append(
         '<label>ID</label><input type="text" name="id" id="id" value="' +
@@ -201,8 +200,9 @@
         $("#dialog-form").dialog("open");
       });
       // Store default values
-      var data = {},
-        property_list = (configuration[element_type] || {} ) ["property_list"] || [];
+      var data = {}, property_list = configuration[element_type][
+          "property_list"
+        ] || [];
       var updateDefaultData = function (data, property_list) {
         $.each(property_list, function (idx, value) {
           if (value) {
