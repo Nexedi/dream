@@ -117,6 +117,36 @@ schema = {
     "_class": "Dream.Property",
     "_default": "10"
   },
+  "method": {
+    "id": "method",
+    "type": "string",
+    "_class": "Dream.Property",
+    "_default": ""
+  },
+  "start": {
+    "id": "start",
+    "type": "string",
+    "_class": "Dream.Property",
+    "_default": "1"
+  },
+  "stop": {
+    "id": "stop",
+    "type": "string",
+    "_class": "Dream.Property",
+    "_default": "-1"
+  },
+  "duration": {
+    "id": "duration",
+    "type": "string",
+    "_class": "Dream.Property",
+    "_default": "10"
+  },
+  "argumentDict": {
+    "id": "argumentDict",
+    "type": "string", # XXX json encoded ?
+    "_class": "Dream.Property",
+    "_default": "{}"
+  },
 }
 
 # complex schemas (Dream.PropertyList)
