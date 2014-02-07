@@ -237,6 +237,7 @@ class Simulation(object):
           'station_utilisation_graph': 1,
           'job_schedule_spreadsheet': 0,
           'job_gantt': 0,
+          'exit_stat': 0,
         },
         "_class": 'Dream.Configuration'
       },

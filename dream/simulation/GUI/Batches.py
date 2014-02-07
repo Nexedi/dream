@@ -36,6 +36,7 @@ class Simulation(DefaultSimulation):
       "property_list": [schema['start'], schema['stop'], schema['duration'],
                         schema['method'], schema['argumentDict']]
       }
+    conf["Dream-Configuration"]["gui"]["exit_stat"] = 1
     conf["Dream-Configuration"]["gui"]["debug_json"] = 1
     conf["Dream-Configuration"]["gui"]["shift_spreadsheet"] = 1
     return conf

@@ -477,6 +477,19 @@
         $.plot("#graph", series, options);
       }
 
+      if (configuration['Dream-Configuration'].gui.exit_stat){
+        var exit_stat = $("#exit_stat").show().text("Exit Metrics");
+        $.each(result.elementList, function(idx, el){
+          if (el._class == 'Dream.Exit'){
+            var text = exit_stat.html() + "<br/><b>" + (el.name || el.id) + "</b><br/>";
+            $.each(el.results, function(metric, value){
+              text = text + "<em>" + metric + "</em>: " + value + "<br/>";
+            })
+            exit_stat.html(text);
+          }
+        })
+      }
+
       if (spreadsheet_data.length > 1) {
         var spreadsheet = $('#job_schedule_spreadsheet');
         if (configuration['Dream-Configuration'].gui.job_schedule_spreadsheet){
