@@ -109,7 +109,7 @@
         $.each(property_list, function (key, property) {
           if (property._class === "Dream.Property") {
             previous_value = previous_data[property.id] || "";
-            if (previous_value.length > 0) {
+            if (previous_value.length > 0 || typeof previous_value == "number") {
               previous_value = ' value="' + previous_value + '"';
             }
             fieldset.append("<label>" + prefix + property.id + "</label>" +
