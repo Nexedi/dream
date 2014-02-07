@@ -33,7 +33,6 @@
       '/getConfigurationDict', {
        success: function (data) {
          configuration = $.extend(configuration, data);
-         console.log(configuration);
 
     dream_instance = Dream(configuration);
     dream_instance.start();
@@ -231,7 +230,7 @@
         data: form_data,
         dataType: 'json',
         error: function () {
-          console.log('error');
+          console.error('error');
         },
         success: function (data, textStatus, jqXHR) {
           form.reset();
