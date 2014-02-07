@@ -103,7 +103,7 @@ schema = {
     "id": "processTimeout",
     "type": "string",
     "_class": "Dream.Property",
-    "_default": "0.5"
+    "_default": "10"
   },
   "batchNumberOfUnits": {
     "id": "batchNumberOfUnits",
