@@ -44,5 +44,9 @@ class Simulation(DefaultSimulation):
     conf["Dream-Configuration"]["gui"]["exit_stat"] = 1
     conf["Dream-Configuration"]["gui"]["debug_json"] = 1
     conf["Dream-Configuration"]["gui"]["shift_spreadsheet"] = 1
+    # remove tools that does not make sense here
+    conf.pop('Dream-Machine')
+    conf.pop('Dream-Repairman')
+    conf.pop('Dream-Source')
     return conf
 
