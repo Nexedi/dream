@@ -1,9 +1,9 @@
 {
+ "_class": "Dream.Simulation", 
  "elementList": [
   {
    "_class": "Dream.MouldAssemblyBuffer", 
-   "id": "AB1", 
-   "schedulingRule": "FIFO"
+   "id": "AB1"
   }, 
   {
    "_class": "Dream.Job", 
@@ -109,36 +109,35 @@
   }, 
   {
    "_class": "Dream.ConditionalBuffer", 
-   "id": "CB1", 
-   "schedulingRule": "FIFO"
+   "id": "CB1"
   }, 
   {
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
-    "throughput": 1, 
+    "lifespan": 7.0, 
     "takt_time": 7.0, 
-    "lifespan": 7.0
+    "throughput": 1
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M0", 
    "results": {
-    "working_ratio": 14.285714285714286, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 85.71428571428571
+    "waiting_ratio": 85.71428571428571, 
+    "working_ratio": 14.285714285714286
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M1", 
    "results": {
-    "working_ratio": 42.857142857142854, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 57.142857142857146
+    "waiting_ratio": 57.142857142857146, 
+    "working_ratio": 42.857142857142854
    }
   }, 
   {
@@ -164,20 +163,20 @@
    "_class": "Dream.Machine", 
    "id": "M2", 
    "results": {
-    "working_ratio": 42.857142857142854, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 57.142857142857146
+    "waiting_ratio": 57.142857142857146, 
+    "working_ratio": 42.857142857142854
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "MA1", 
    "results": {
-    "working_ratio": 14.285714285714286, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 85.71428571428571
+    "waiting_ratio": 85.71428571428571, 
+    "working_ratio": 14.285714285714286
    }
   }, 
   {
@@ -206,11 +205,9 @@
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q0", 
-   "schedulingRule": "FIFO"
+   "id": "Q0"
   }
  ], 
- "_class": "Dream.Simulation", 
  "general": {
   "_class": "Dream.Configuration"
  }

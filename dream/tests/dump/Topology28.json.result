@@ -34,8 +34,8 @@
    "_class": "Dream.Operator", 
    "id": "O1", 
    "results": {
-    "working_ratio": 100.0, 
-    "waiting_ratio": 0.0
+    "waiting_ratio": 0.0, 
+    "working_ratio": 100.0
    }
   }
  ], 

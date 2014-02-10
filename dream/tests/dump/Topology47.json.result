@@ -1,44 +1,45 @@
 {
+ "_class": "Dream.Simulation", 
  "elementList": [
   {
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
-    "throughput": 2, 
+    "lifespan": 2.5, 
     "takt_time": 1.5, 
-    "lifespan": 2.5
+    "throughput": 2
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M1", 
    "results": {
-    "working_ratio": 8.333333333333334, 
     "blockage_ratio": 0.0, 
-    "waiting_ratio": 75.0, 
-    "setup_ratio": 16.666666666666668, 
+    "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "failure_ratio": 0.0
+    "setup_ratio": 16.666666666666668, 
+    "waiting_ratio": 75.0, 
+    "working_ratio": 8.333333333333334
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M2", 
    "results": {
-    "working_ratio": 66.66666666666667, 
     "blockage_ratio": 0.0, 
-    "waiting_ratio": 16.666666666666668, 
-    "setup_ratio": 16.666666666666668, 
+    "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "failure_ratio": 0.0
+    "setup_ratio": 16.666666666666668, 
+    "waiting_ratio": 16.666666666666668, 
+    "working_ratio": 66.66666666666667
    }
   }, 
   {
    "_class": "Dream.Operator", 
    "id": "O1", 
    "results": {
-    "working_ratio": 33.333333333333336, 
-    "waiting_ratio": 66.66666666666667
+    "waiting_ratio": 66.66666666666667, 
+    "working_ratio": 33.333333333333336
    }
   }, 
   {
@@ -101,16 +102,13 @@
   }, 
   {
    "_class": "Dream.QueueManagedJob", 
-   "id": "Q1", 
-   "schedulingRule": "FIFO"
+   "id": "Q1"
   }, 
   {
    "_class": "Dream.QueueManagedJob", 
-   "id": "Q2", 
-   "schedulingRule": "FIFO"
+   "id": "Q2"
   }
  ], 
- "_class": "Dream.Simulation", 
  "general": {
   "_class": "Dream.Configuration"
  }

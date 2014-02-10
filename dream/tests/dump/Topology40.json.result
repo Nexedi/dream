@@ -1,9 +1,9 @@
 {
+ "_class": "Dream.Simulation", 
  "elementList": [
   {
    "_class": "Dream.MouldAssemblyBuffer", 
-   "id": "AB1", 
-   "schedulingRule": "FIFO"
+   "id": "AB1"
   }, 
   {
    "_class": "Dream.Job", 
@@ -75,36 +75,35 @@
   }, 
   {
    "_class": "Dream.ConditionalBuffer", 
-   "id": "CB1", 
-   "schedulingRule": "FIFO"
+   "id": "CB1"
   }, 
   {
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
-    "throughput": 1, 
+    "lifespan": 5.0, 
     "takt_time": 5.0, 
-    "lifespan": 5.0
+    "throughput": 1
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M0", 
    "results": {
-    "working_ratio": 20.0, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 80.0
+    "waiting_ratio": 80.0, 
+    "working_ratio": 20.0
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M1", 
    "results": {
-    "working_ratio": 60.0, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 40.0
+    "waiting_ratio": 40.0, 
+    "working_ratio": 60.0
    }
   }, 
   {
@@ -130,10 +129,10 @@
    "_class": "Dream.Machine", 
    "id": "MA1", 
    "results": {
-    "working_ratio": 20.0, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 80.0
+    "waiting_ratio": 80.0, 
+    "working_ratio": 20.0
    }
   }, 
   {
@@ -162,11 +161,9 @@
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q0", 
-   "schedulingRule": "FIFO"
+   "id": "Q0"
   }
  ], 
- "_class": "Dream.Simulation", 
  "general": {
   "_class": "Dream.Configuration"
  }

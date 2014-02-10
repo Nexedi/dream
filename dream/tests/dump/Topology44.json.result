@@ -1,20 +1,21 @@
 {
+ "_class": "Dream.Simulation", 
  "elementList": [
   {
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
-    "throughput": 4, 
+    "lifespan": 19.5, 
     "takt_time": 7.25, 
-    "lifespan": 19.5
+    "throughput": 4
    }
   }, 
   {
    "_class": "Dream.Job", 
    "id": "J1", 
    "results": {
-    "delay": 7.0, 
     "completionTime": 22.0, 
+    "delay": 7.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -58,8 +59,8 @@
    "_class": "Dream.Job", 
    "id": "J2", 
    "results": {
-    "delay": 19.0, 
     "completionTime": 29.0, 
+    "delay": 19.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -103,8 +104,8 @@
    "_class": "Dream.Job", 
    "id": "J3", 
    "results": {
-    "delay": 4.0, 
     "completionTime": 10.0, 
+    "delay": 4.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -138,8 +139,8 @@
    "_class": "Dream.Job", 
    "id": "J4", 
    "results": {
-    "delay": 8.0, 
     "completionTime": 17.0, 
+    "delay": 8.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -163,57 +164,53 @@
    "_class": "Dream.Machine", 
    "id": "M1", 
    "results": {
-    "working_ratio": 3.4482758620689653, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 96.55172413793103
+    "waiting_ratio": 96.55172413793103, 
+    "working_ratio": 3.4482758620689653
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M2", 
    "results": {
-    "working_ratio": 79.3103448275862, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 20.689655172413794
+    "waiting_ratio": 20.689655172413794, 
+    "working_ratio": 79.3103448275862
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M3", 
    "results": {
-    "working_ratio": 17.24137931034483, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 82.75862068965517
+    "waiting_ratio": 82.75862068965517, 
+    "working_ratio": 17.24137931034483
    }
   }, 
   {
    "_class": "Dream.Operator", 
    "id": "O1", 
    "results": {
-    "working_ratio": 100.0, 
-    "waiting_ratio": 0.0
+    "waiting_ratio": 0.0, 
+    "working_ratio": 100.0
    }
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q1", 
-   "schedulingRule": "FIFO"
+   "id": "Q1"
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q2", 
-   "schedulingRule": "MC"
+   "id": "Q2"
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q3", 
-   "schedulingRule": "FIFO"
+   "id": "Q3"
   }
  ], 
- "_class": "Dream.Simulation", 
  "general": {
   "_class": "Dream.Configuration"
  }

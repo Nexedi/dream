@@ -1,20 +1,21 @@
 {
+ "_class": "Dream.Simulation", 
  "elementList": [
   {
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
-    "throughput": 4, 
+    "lifespan": 14.75, 
     "takt_time": 5.75, 
-    "lifespan": 14.75
+    "throughput": 4
    }
   }, 
   {
    "_class": "Dream.Job", 
    "id": "J1", 
    "results": {
-    "delay": 8.0, 
     "completionTime": 23.0, 
+    "delay": 8.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -58,8 +59,8 @@
    "_class": "Dream.Job", 
    "id": "J2", 
    "results": {
-    "delay": 9.0, 
     "completionTime": 19.0, 
+    "delay": 9.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -103,8 +104,8 @@
    "_class": "Dream.Job", 
    "id": "J3", 
    "results": {
-    "delay": -1.0, 
     "completionTime": 5.0, 
+    "delay": -1.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -138,8 +139,8 @@
    "_class": "Dream.Job", 
    "id": "J4", 
    "results": {
-    "delay": 3.0, 
     "completionTime": 12.0, 
+    "delay": 3.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -163,49 +164,45 @@
    "_class": "Dream.Machine", 
    "id": "M1", 
    "results": {
-    "working_ratio": 4.3478260869565215, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 95.65217391304348
+    "waiting_ratio": 95.65217391304348, 
+    "working_ratio": 4.3478260869565215
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M2", 
    "results": {
-    "working_ratio": 100.0, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 0.0
+    "waiting_ratio": 0.0, 
+    "working_ratio": 100.0
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M3", 
    "results": {
-    "working_ratio": 21.73913043478261, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 78.26086956521739
+    "waiting_ratio": 78.26086956521739, 
+    "working_ratio": 21.73913043478261
    }
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q1", 
-   "schedulingRule": "FIFO"
+   "id": "Q1"
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q2", 
-   "schedulingRule": "MC"
+   "id": "Q2"
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q3", 
-   "schedulingRule": "FIFO"
+   "id": "Q3"
   }
  ], 
- "_class": "Dream.Simulation", 
  "general": {
   "_class": "Dream.Configuration"
  }
