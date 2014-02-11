@@ -885,7 +885,16 @@ class Machine(CoreObject):
             else:
                 json['results']['waiting_ratio']['min']=self.Waiting[0]
                 json['results']['waiting_ratio']['avg']=self.Waiting[0]
-                json['results']['waiting_ratio']['max']=self.Waiting[0] 
+                json['results']['waiting_ratio']['max']=self.Waiting[0]
+            json['results']['off_shifts_ratio']={}
+            if self.checkIfArrayHasDifValues(self.OffShift):
+                json['results']['off_shifts_ratio']['min']=stat.bayes_mvs(self.OffShift, G.confidenceLevel)[0][1][0]
+                json['results']['off_shifts_ratio']['avg']=stat.bayes_mvs(self.OffShift, G.confidenceLevel)[0][0]
+                json['results']['off_shifts_ratio']['max']=stat.bayes_mvs(self.OffShift, G.confidenceLevel)[0][1][1]
+            else:
+                json['results']['off_shifts_ratio']['min']=self.OffShift[0]
+                json['results']['off_shifts_ratio']['avg']=self.OffShift[0]
+                json['results']['off_shifts_ratio']['max']=self.OffShift[0]  
                 
         G.outputJSON['elementList'].append(json)
     

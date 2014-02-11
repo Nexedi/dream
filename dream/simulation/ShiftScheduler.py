@@ -50,7 +50,7 @@ class ShiftScheduler(ObjectInterruption):
     # =======================================================================
     def initialize(self):
         ObjectInterruption.initialize(self)
-        self.remainingShiftPattern=self.shiftPattern 
+        self.remainingShiftPattern=list(self.shiftPattern) 
         
     # =======================================================================
     #    The run method for the failure which has to served by a repairman
