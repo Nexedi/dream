@@ -94,6 +94,7 @@ from ConditionalBuffer import ConditionalBuffer
 from MouldAssemblyBuffer import MouldAssemblyBuffer
 from MachineManagedJob import MachineManagedJob
 from QueueManagedJob import QueueManagedJob
+from ShiftScheduler import ShiftScheduler
 
 import ExcelHandler
 import time
@@ -1260,6 +1261,7 @@ def createObjectInterruptions():
     G.ObjectInterruptionList=[]
     G.ScheduledMaintenanceList=[]
     G.FailureList=[]
+    G.ShiftSchedulerList=[]
     
     json_data = G.JSONData
     #Read the json data
@@ -1292,6 +1294,16 @@ def createObjectInterruptions():
                 F=Failure(victim, distributionType, MTTF, MTTR, availability, victim.id, victim.repairman)
                 G.ObjectInterruptionList.append(F)
                 G.FailureList.append(F)
+        # if there is a shift pattern defined 
+        # initiate them             
+        shift=element.get('shift', {})
+        if len(shift):
+            victim=Globals.findObjectById(element['id'])
+            shiftPattern=list(shift.get('shiftPattern', []))
+            endUnfinished=bool(int(shift.get('endUnfinished', 0)))
+            SS=ShiftScheduler(victim, shiftPattern, endUnfinished)
+            G.ObjectInterruptionList.append(SS)
+            G.ShiftSchedulerList.append(SS)
                 
 # ===========================================================================
 #        used to convert a string read from the input to object type
