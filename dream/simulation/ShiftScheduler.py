@@ -64,7 +64,7 @@ class ShiftScheduler(ObjectInterruption):
             if(len(self.getVictimQueue())>0 and self.victim.interruptCause and not(self.endUnfinished)):
                 self.reactivateVictim()                 # re-activate the victim in case it was interrupted
             
-            #self.victim.totalFailureTime+=now()-offShiftTime 
+            self.victim.totalOffShiftTime+=now()-offShiftTime 
             self.victim.onShift=True
             self.victim.timeLastShiftStarted=now()           
             self.outputTrace("is on shift")
@@ -75,7 +75,8 @@ class ShiftScheduler(ObjectInterruption):
             if(len(self.getVictimQueue())>0 and not(self.endUnfinished)):            
                 self.interruptVictim()                  # interrupt processing operations if any
             self.victim.onShift=False                        # get the victim off-shift
-            offShiftTime=now()              
+            offShiftTime=now()
+            self.victim.timeLastShiftEnded=now()              
             self.outputTrace("is off shift")              
             
             self.remainingShiftPattern.pop(0)

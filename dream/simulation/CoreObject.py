@@ -44,6 +44,7 @@ class CoreObject(Process):
         self.Working=[]
         self.Blockage=[]
         self.Waiting=[]
+        self.OffShift=[]
         
         #default attributes set so that the CoreObject has them
         self.isPreemptive=False
@@ -61,6 +62,7 @@ class CoreObject(Process):
         self.totalFailureTime=0                         #holds the total failure time
         self.totalWaitingTime=0                         #holds the total waiting time
         self.totalWorkingTime=0                         #holds the total working time
+        self.totalOffShiftTime=0                        #holds the total off-shift time
         self.completedJobs=0                            #holds the number of completed jobs 
         # ============================== Entity related attributes =================================
         self.timeLastEntityEnded=0                      #holds the last time that an entity ended processing in the object
@@ -68,7 +70,9 @@ class CoreObject(Process):
         self.timeLastEntityEntered=0                    #holds the last time that an entity entered in the object
         self.nameLastEntityEntered=""                   #holds the name of the last entity that entered in the object
         self.timeLastFailure=0                          #holds the time that the last failure of the object started
-        self.timeLastFailureEnded=0                     #holds the time that the last failure of the object Ended
+        self.timeLastFailureEnded=0                     #holds the time that the last failure of the object ended
+        self.timeLastShiftStarted=0                     #holds the time that the last shift of the object started
+        self.timeLastShiftEnded=0                       #holds the time that the last shift of the object ended
         # ============================== failure related times =====================================
         self.downTimeProcessingCurrentEntity=0          #holds the time that the machine was down while 
                                                         #processing the current entity
