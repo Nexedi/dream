@@ -136,11 +136,16 @@ class MouldAssemblyBuffer(QueueManagedJob):
         # read the entity to be disposed
         index = 0
         activeEntity=None
-        for index in range(len(activeObjectQueue)):
-            if activeObjectQueue[index].order.componentsReadyForAssembly:
-                activeEntity=activeObjectQueue[index]
-                break
-            index +=1
+        for entity in activeObjectQueue:
+            if entity.order.componentsReadyForAssembly:
+                # if the entity has no manager
+                if entity.manager==None:
+                    activeEntity=entity
+                    break
+                # otherwise, if the manager of the entity is available
+                elif entity.manager.checkIfResourceIsAvailable:
+                    activeEntity=entity
+                    break
         # if there is no entity in the activeQ that its parentOrder has the flag componentsReadyForAssembly set  
         if not activeEntity:
         # return false
