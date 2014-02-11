@@ -49,6 +49,7 @@ class CoreObject(Process):
         #default attributes set so that the CoreObject has them
         self.isPreemptive=False
         self.resetOnPreemption=False
+        self.interruptCause=None
         
 
     
