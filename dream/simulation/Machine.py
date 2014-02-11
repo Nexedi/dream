@@ -683,7 +683,7 @@ class Machine(CoreObject):
         # we have to add this blockage to the percentage of blockage in Machine
         # we should exclude the failure time in current entity though!
         if (len(activeObjectQueue)>0) and (mightBeBlocked)\
-             and ((activeObject.nameLastEntityEntered == activeObject.nameLastEntityEnded)):
+             and ((activeObject.nameLastEntityEntered == activeObject.nameLastEntityEnded)) and self.onShift:
             # be careful here, might have to reconsider
             activeObject.totalBlockageTime+=now()-(activeObject.timeLastEntityEnded+activeObject.downTimeInTryingToReleaseCurrentEntity)
             if activeObject.Up==False:
@@ -734,8 +734,7 @@ class Machine(CoreObject):
             # we add the value only if it hasn't already been added
             if((mightBeBlocked) and (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered) and (not alreadyAdded)):        
                 activeObject.totalBlockageTime+=(now()-activeObject.timeLastEntityEnded)-(now()-activeObject.timeLastShiftEnded)-offShiftTimeInCurrentEntity 
-    
-    
+                
         #Machine was idle when it was not in any other state    
         activeObject.totalWaitingTime=MaxSimtime-activeObject.totalWorkingTime-activeObject.totalBlockageTime-activeObject.totalFailureTime-activeObject.totalLoadTime-activeObject.totalSetupTime-self.totalOffShiftTime
         
