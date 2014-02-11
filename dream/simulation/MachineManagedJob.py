@@ -51,6 +51,27 @@ class MachineManagedJob(MachineJobShop):
         #create a Broker
         self.broker = Broker(self)
         activate(self.broker,self.broker.run())
+        
+    # =======================================================================
+    # checks if the Queue can accept an entity       
+    # it checks also the next station of the Entity 
+    # and returns true only if the active object is the next station
+    # ======================================================================= 
+    def canAccept(self, callerObject=None):
+        activeObject=self.getActiveObject()
+        activeObjectQueue=activeObject.getActiveObjectQueue()
+        thecaller=callerObject
+        if (thecaller!=None):
+            #check it the caller object holds an Entity that requests for current object
+            if len(thecaller.getActiveObjectQueue())>0:
+                # TODO: make sure that the first entity of the callerObject is to be disposed
+                activeEntity=thecaller.getActiveObjectQueue()[0]
+                # if the machine's Id is in the list of the entity's next stations
+                if activeObject.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
+                    #return according to the state of the Queue
+                    return len(activeObject.getActiveObjectQueue())<activeObject.capacity\
+                        and activeObject.Up
+        return False
 
     # =======================================================================
     # checks if the Machine can accept an entity and there is an entity in 
@@ -96,7 +117,7 @@ class MachineManagedJob(MachineJobShop):
                 activeObject.operatorPool.receivingObject=activeObject
                               
                 if activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
-                    and isRequested and not activeObject.giver.exitIsAssigned():
+                    and not activeObject.giver.exitIsAssigned():
                     activeObject.giver.assignExit()
                     #make the operatorsList so that it holds only the manager of the current order
                     activeObject.operatorPool.operatorsList=[activeObject.giver.getActiveObjectQueue()[0].manager]
