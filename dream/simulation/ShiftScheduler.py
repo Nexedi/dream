@@ -40,9 +40,10 @@ class ShiftScheduler(ObjectInterruption):
     # =======================================================================
     def __init__(self, victim=None, shiftPattern=[], endUnfinished=False):
         ObjectInterruption.__init__(self,victim)
+        self.type='ShiftScheduler'
         self.shiftPattern=shiftPattern
         self.endUnfinished=endUnfinished    #flag that shows if half processed Jobs should end after the shift ends
-
+        
     
     
     # =======================================================================
@@ -57,14 +58,14 @@ class ShiftScheduler(ObjectInterruption):
     # =======================================================================
     def run(self):    
         self.victim.totalOffShiftTime=0
-        offShiftTime=now()
+        self.victim.timeLastShiftEnded=now()
         self.victim.onShift=False
         while 1:
             yield hold,self,float(self.remainingShiftPattern[0][0]-now())    # wait for the onShift                  
             if(len(self.getVictimQueue())>0 and self.victim.interruptCause and not(self.endUnfinished)):
                 self.reactivateVictim()                 # re-activate the victim in case it was interrupted
             
-            self.victim.totalOffShiftTime+=now()-offShiftTime 
+            self.victim.totalOffShiftTime+=now()-self.victim.timeLastShiftEnded
             self.victim.onShift=True
             self.victim.timeLastShiftStarted=now()           
             self.outputTrace("is on shift")
@@ -75,7 +76,6 @@ class ShiftScheduler(ObjectInterruption):
             if(len(self.getVictimQueue())>0 and not(self.endUnfinished)):            
                 self.interruptVictim()                  # interrupt processing operations if any
             self.victim.onShift=False                        # get the victim off-shift
-            offShiftTime=now()
             self.victim.timeLastShiftEnded=now()              
             self.outputTrace("is off shift")              
             

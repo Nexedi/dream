@@ -374,6 +374,11 @@ class Machine(CoreObject):
             
             # set the variable that flags an Entity is ready to be disposed 
             self.waitToDispose=True
+            
+            #do this so that if it is overtime working it is not counted as off-shift time
+            if not self.onShift:
+                self.timeLastShiftEnded=now()
+            
             # update the total working time 
             self.totalWorkingTime+=self.totalProcessingTimeInCurrentEntity                        # the total processing time for this entity 
                                                                     # is what the distribution initially gave
@@ -651,7 +656,7 @@ class Machine(CoreObject):
     # =======================================================================
     # actions to be taken after the simulation ends
     # =======================================================================
-    def postProcessing(self, MaxSimtime=None):
+    def postProcessing(self, MaxSimtime=None): 
         if MaxSimtime==None:
             from Globals import G
             MaxSimtime=G.maxSimTime
@@ -668,16 +673,15 @@ class Machine(CoreObject):
                 mightBeBlocked=False
         
         #calculate the offShift time for current entity
-        if self.onShift==False:
-            offShiftTimeInCurrentEntity=now()-activeObject.timeLastShiftEnded
-        else:  
-            offShiftTimeInCurrentEntity=0
-            
+        offShiftTimeInCurrentEntity=0
+        if self.interruptCause:
+            if self.onShift==False and self.interruptCause.type=='ShiftScheduler':
+                offShiftTimeInCurrentEntity=now()-activeObject.timeLastShiftEnded
+
         # if there is an entity that finished processing in a Machine but did not get to reach 
         # the following Object till the end of simulation, 
         # we have to add this blockage to the percentage of blockage in Machine
         # we should exclude the failure time in current entity though!
-        # if (len(self.Res.activeQ)>0) and (len(self.next[0].Res.activeQ)>0) and ((self.nameLastEntityEntered == self.nameLastEntityEnded)):
         if (len(activeObjectQueue)>0) and (mightBeBlocked)\
              and ((activeObject.nameLastEntityEntered == activeObject.nameLastEntityEnded)):
             # be careful here, might have to reconsider
@@ -721,7 +725,12 @@ class Machine(CoreObject):
         #if the machine is off shift,add this to the off-shift time
         # we also need to add the last blocking time to total blockage time  
         if activeObject.onShift==False:
-            self.totalOffShiftTime+=now()-self.timeLastShiftEnded 
+            #add the time only if the object is interrupted because of off-shift
+            if self.interruptCause:
+                if self.interruptCause.type=='ShiftScheduler':
+                    self.totalOffShiftTime+=now()-self.timeLastShiftEnded 
+            elif len(self.getActiveObjectQueue())==0 or self.waitToDispose:
+                self.totalOffShiftTime+=now()-self.timeLastShiftEnded 
             # we add the value only if it hasn't already been added
             if((mightBeBlocked) and (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered) and (not alreadyAdded)):        
                 activeObject.totalBlockageTime+=(now()-activeObject.timeLastEntityEnded)-(now()-activeObject.timeLastShiftEnded)-offShiftTimeInCurrentEntity 
