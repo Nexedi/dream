@@ -48,6 +48,13 @@ class OrderComponent(Job):                                  # inherits from the 
         Job.__init__(self, id, name, route, priority, dueDate, orderDate, extraPropertyDict, isCritical)
         self.auxiliaryList=[]       # Holds the auxiliary components that the component needs for a certain processing
         self.order=order            # parent order of the order component
+        # TODO: in case the order is not given as argument (when the component is given as WIP) have to give a manager as argument
+        #     or create the initiate the parent order not as WIP 
+        if self.order:
+            # if the order is not None, and the order.manager is given
+            if self.order.manager:
+                self.manager=self.order.manager  
+        # TODO: isCritical argument is deprecated
 #         self.isCritical=isCritical  # this should be self.order.isCritical. Added now for testing
         self.componentType = componentType  # the type of the component which can be Basic/Secondary/Auxiliary
         # if the componentType of the component is Auxiliary then there need a requesting Component be defined
