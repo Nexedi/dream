@@ -54,6 +54,7 @@ class CoreObject(Process):
     def initialize(self):
         Process.__init__(self) 
         self.Up=True                                    #Boolean that shows if the machine is in failure ("Down") or not ("up")
+        self.onShift=True
         self.currentEntity=None      
         # ============================== total times ===============================================
         self.totalBlockageTime=0                        #holds the total blockage time
@@ -388,4 +389,10 @@ class CoreObject(Process):
     def preempt(self):
         #ToDO make a generic method
         pass
+    
+    # =======================================================================
+    # checks if the object is in an active position
+    # =======================================================================    
+    def checkIfActive(self):
+        return self.Up and self.onShift
     

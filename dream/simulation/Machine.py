@@ -488,7 +488,7 @@ class Machine(CoreObject):
                     activeObject.operatorPool.receivingObject=activeObject
                     
                     if activeObject.operatorPool.checkIfResourceIsAvailable()\
-                        and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
+                        and activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity\
                         and not giverObject.exitIsAssigned():
                         activeObject.giver.assignExit()
                         return True
@@ -498,14 +498,14 @@ class Machine(CoreObject):
                 # the operator performs no load and the entity is received by the machine while there is 
                 # no need for operators presence. The operator needs to be present only where the load Type 
                 # operation is assigned
-                return activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
+                return activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity\
                         and giverObject.haveToDispose(activeObject)
                 # TODO: if the set-up performance needs be first performed before the transfer of the entity to 
                 # the machine then the presence of an operator to setup the machine before the getEntity()
                 # is requested
 #                 return (activeObject.operatorPool=='None'\
 #                         or activeObject.operatorPool.checkIfResourceIsAvailable())\
-#                         and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
+#                         and activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity\
 #                         and giverObject.haveToDispose()
         
         # dummy variables that help prioritise the objects requesting to give objects to the Machine (activeObject)
@@ -541,7 +541,7 @@ class Machine(CoreObject):
                 activeObject.operatorPool.receivingObject=activeObject
                 
                 if activeObject.operatorPool.checkIfResourceIsAvailable()\
-                    and activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
+                    and activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity\
                     and isRequested and not activeObject.giver.exitIsAssigned():
                     activeObject.giver.assignExit()
                     return True
@@ -550,11 +550,11 @@ class Machine(CoreObject):
         else:
             # the operator doesn't have to be present for the loading of the machine as the load operation
             # is not assigned to operators
-            return activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested
+            return activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity and isRequested
             # while if the set up is performed before the (automatic) loading of the machine then the availability of the
             # operator is requested
 #             return (activeObject.operatorPool=='None' or activeObject.operatorPool.checkIfResourceIsAvailable())\
-#                 and activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested
+#                 and activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity and isRequested
     
     # =======================================================================
     # checks if the machine down or it can dispose the object
@@ -583,7 +583,7 @@ class Machine(CoreObject):
         #if we have only one successor just check if machine waits to dispose and also is up
         # this is done to achieve better (cpu) processing time        
         if(len(activeObject.next)==1 or callerObject==None): 
-            return len(activeObjectQueue)>0 and activeObject.waitToDispose and activeObject.Up
+            return len(activeObjectQueue)>0 and activeObject.waitToDispose and activeObject.checkIfActive()
         
 #         # if the Machine is empty it returns false right away
 #         if(len(activeObjectQueue)==0):
@@ -601,7 +601,7 @@ class Machine(CoreObject):
                     activeObject.receiver=object                    # set the receiver as the longest waiting possible receiver
                                                                     # in the next loops, check the other successors in the previous list
         return len(activeObjectQueue)>0 and activeObject.waitToDispose\
-             and activeObject.Up and (thecaller is self.receiver)       
+             and activeObject.checkIfActive() and (thecaller is self.receiver)       
 
     # =======================================================================
     #                       calculates the setup time
