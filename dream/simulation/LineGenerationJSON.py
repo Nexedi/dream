@@ -296,7 +296,7 @@ def createObjects():
             isPreemptive=resetOnPreemption=False
             if len(preemption)>0:
                 isPreemptive=bool(int(preemption.get('isPreemptive') or 0))
-                resetOnPreemption=bool(int(preemption.get('isPreemptive') or 0))
+                resetOnPreemption=bool(int(preemption.get('resetOnPreemption', 0)))
             
             if len(G.OperatorPoolsList)>0:
                 for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
