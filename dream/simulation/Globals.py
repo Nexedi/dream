@@ -158,14 +158,6 @@ def setWIP(entityList):
             # update the receiver and the next list of the object
             object.next=nextObjects
             
-            maxTimeWaiting=0                                            # dummy variable counting the time a successor is waiting
-            for nextObject in object.next:
-                if(nextObject.canAccept(object)):                     # if a successor can accept an object
-                    timeWaiting=now()-nextObject.timeLastEntityLeft         # the time it has been waiting is updated and stored in dummy variable timeWaiting
-                    if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# if the timeWaiting is the maximum among the ones of the successors 
-                        maxTimeWaiting=timeWaiting
-                        object.receiver=nextObject                    # set the receiver as the longest waiting possible receiver
-                                                                        # in the next loops, check the other successors in the previous list
             entity.remainingRoute.pop(0)                        # remove data from the remaining route.   
             entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
             entity.currentStation=object                        # update the current station of the entity 
