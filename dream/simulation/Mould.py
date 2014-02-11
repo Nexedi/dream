@@ -45,4 +45,11 @@ class Mould(Job):                                  # inherits from the Job class
                  isCritical=False):
         Job.__init__(self, id, name, route, priority, dueDate, orderDate, extraPropertyDict, isCritical)
         self.order=order            # parent order of the order component
+        # TODO: in case the order is not given as argument (when the component is given as WIP) have to give a manager as argument
+        #     or create the initiate the parent order not as WIP 
+        if self.order:
+            # if the order is not None, and the order.manager is given
+            if self.order.manager:
+                self.manager=self.order.manager  
+        # TODO: isCritical argument is deprecated
 #         self.isCritical=isCritical  # this should be self.order.isCritical. Added now for testing
