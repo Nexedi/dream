@@ -46,11 +46,10 @@ class QueueManagedJob(QueueJobShop):
         #search if for one or more of the Entities the operator is available
         haveEntityWithAvailableManager=False
         for entity in activeObjectQueue:
-            if entity.manager:        
+            if entity.manager:
                 if entity.manager.checkIfResourceIsAvailable:
                     haveEntityWithAvailableManager=True
         #if none of the Entities has an available manager return False
-
         if not haveEntityWithAvailableManager:
             return False
         
@@ -67,14 +66,12 @@ class QueueManagedJob(QueueJobShop):
         
         #give the entity to the possible receiver that is waiting for the most time.     
         maxTimeWaiting=0     
-                                                        # loop through the object in the successor list
-        for object in activeObject.next:
-            if(object.canAccept(activeObject)):                                 # if the object can accept
+        for object in activeObject.next:                            # loop through the object in the successor list
+            if(object.canAccept(activeObject)):                     # if the object can accept
                 timeWaiting=now()-object.timeLastEntityLeft         # compare the time that it has been waiting 
                 if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# with the others'
                     maxTimeWaiting=timeWaiting
-                    self.receiver=object                           # and update the receiver to the index of this object
-        
+                    self.receiver=object                            # and update the receiver
         #return True if the Queue has Entities and the caller is the receiver
         return len(activeObjectQueue)>0 and (thecaller is self.receiver) 
 
