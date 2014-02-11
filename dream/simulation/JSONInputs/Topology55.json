@@ -1,0 +1,90 @@
+{
+    "_class": "Dream.Simulation",
+    "edges": {
+        "0": [
+            "S1",
+            "DummyQ",
+            {}
+        ],
+        "1": [
+            "M1",
+            "Q1",
+            {}
+        ],
+        "2": [
+            "M2",
+            "E1",
+            {}
+        ],
+        "3": [
+            "DummyQ",
+            "M1",
+            {}
+        ],
+        "4": [
+            "Q1",
+            "M2",
+            {}
+        ]
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "numberOfReplications": "1",
+        "maxSimTime": "7",
+        "trace": "Yes",
+        "confidenceLevel": "0.95"
+    },
+    "nodes": {
+        "S1": {
+            "_class": "Dream.Source",
+            "id": "S1",
+            "name": "Raw Material",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": "0.75"
+            },
+            "entity": "Part"
+        },
+        "M1": {
+            "_class": "Dream.Machine",
+            "id": "M1",
+            "name": "Machine1",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "0.5"
+            },
+            "shift": {
+                "shiftPattern": [[0,4.75], [9,11], [17,19]],
+                "endUnfinished": 1
+            }
+        },
+        "M2": {
+            "_class": "Dream.Machine",
+            "id": "M2",
+            "name": "Machine2",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "1"
+            }
+        },
+        "DummyQ": {
+            "_class": "Dream.Queue",
+            "id": "DummyQ",
+            "name": "DummyQ",
+            "isDummy": "1",
+            "capacity": "1"
+        },
+        "Q1": {
+            "_class": "Dream.Queue",
+            "id": "Q1",
+            "name": "Q1",
+            "isDummy": "0",
+            "capacity": "1"
+        },
+        "E1": {
+            "_class": "Dream.Exit",
+            "id": "E1",
+            "name": "Stock"
+        }
+    }
+}
