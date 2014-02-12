@@ -120,7 +120,10 @@ class MachineManagedJob(MachineJobShop):
                     and not activeObject.giver.exitIsAssigned():
                     activeObject.giver.assignExit()
                     #make the operatorsList so that it holds only the manager of the current order
-                    activeObject.operatorPool.operatorsList=[activeObject.giver.getActiveObjectQueue()[0].manager]
+#                     activeObject.operatorPool.operatorsList=[activeObject.giver.getActiveObjectQueue()[0].manager]
+                    # TODO: think over the next line, this way sort entity is run multiple times throughout the life-span of 
+                    #    an entity in the object. Maybe would be a good idea to pick the entity to be disposed from the giver
+                    activeObject.giver.sortEntities()
                     activeObject.operatorPool.operators=[activeObject.giver.getActiveObjectQueue()[0].manager]
                     self.readLoadTime()
                     return True
