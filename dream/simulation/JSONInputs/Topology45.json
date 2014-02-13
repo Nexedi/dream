@@ -211,7 +211,7 @@
         "O2": {
             "_class": "Dream.Operator",
             "capacity": "2",
-            "name": "Operator1"
+            "name": "Operator2"
         },
         "O3": {
             "_class": "Dream.Operator",
