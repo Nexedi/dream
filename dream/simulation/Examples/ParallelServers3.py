@@ -1,11 +1,5 @@
-from SimPy.Simulation import simulate, activate, initialize, infinity, now
-from dream.simulation.Machine import Machine
-from dream.simulation.Queue import Queue
-from dream.simulation.Source import Source
-from dream.simulation.Exit import Exit
-from dream.simulation.Part import Part
-from dream.simulation.Globals import G
-import dream.simulation.Globals as Globals
+from dream.simulation.imports import Machine, Source, Exit, Part, Queue, G, Globals 
+from dream.simulation.imports import simulate, activate, initialize, infinity
 
 #the custom queue
 class SelectiveQueue(Queue):

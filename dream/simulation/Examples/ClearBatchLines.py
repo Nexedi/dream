@@ -1,16 +1,6 @@
-from SimPy.Simulation import simulate, activate, initialize
-
-from dream.simulation.Globals import G
-from dream.simulation.Machine import Machine
-from dream.simulation.Exit import Exit
-from dream.simulation.Queue import Queue
-
-from dream.simulation.Batch import Batch
-from dream.simulation.BatchDecomposition import BatchDecomposition
-from dream.simulation.BatchReassembly import BatchReassembly
-from dream.simulation.BatchSource import BatchSource
-from dream.simulation.LineClearance import LineClearance
-import dream.simulation.ExcelHandler
+from dream.simulation.imports import Machine, Source, Exit, Batch, BatchDecomposition,\
+                            BatchSource, BatchReassembly, Queue, LineClearance, ExcelHandler, G, ExcelHandler 
+from dream.simulation.imports import simulate, activate, initialize
 
 # choose to output trace or not
 G.trace='Yes'
@@ -52,7 +42,7 @@ simulate(until=G.maxSimTime)
 for object in G.ObjList:
     object.postProcessing()
 # print trace
-dream.simulation.ExcelHandler.outputTrace('Trace')  
+ExcelHandler.outputTrace('Trace')  
 # print the results 
 print "the system produced", E.numOfExits, "parts"
 print "the working ratio of", M1.objName, "is", (M1.totalWorkingTime/G.maxSimTime)*100

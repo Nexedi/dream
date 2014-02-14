@@ -1,10 +1,5 @@
-from SimPy.Simulation import simulate, activate, initialize, infinity
-from dream.simulation.Machine import Machine
-from dream.simulation.Queue import Queue
-from dream.simulation.Source import Source
-from dream.simulation.Exit import Exit
-from dream.simulation.Part import Part
-from dream.simulation.Globals import G
+from dream.simulation.imports import Machine, Source, Exit, Part, Queue, G 
+from dream.simulation.imports import simulate, activate, initialize, infinity
 
 #define the objects of the model
 S=Source('S','Source', mean=0.5, item=Part)

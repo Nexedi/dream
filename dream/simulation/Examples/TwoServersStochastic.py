@@ -1,12 +1,5 @@
-from SimPy.Simulation import simulate, activate, initialize
-from dream.simulation.Machine import Machine
-from dream.simulation.Source import Source
-from dream.simulation.Exit import Exit
-from dream.simulation.Part import Part
-from dream.simulation.Repairman import Repairman
-from dream.simulation.Queue import Queue
-from dream.simulation.Globals import G
-from dream.simulation.Failure import Failure
+from dream.simulation.imports import Machine, Source, Exit, Part, G, Repairman, Queue, Failure 
+from dream.simulation.imports import simulate, activate, initialize
 
 #define the objects of the model
 R=Repairman('R1', 'Bob') 

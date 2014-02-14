@@ -1,10 +1,5 @@
-from SimPy.Simulation import simulate, activate, initialize, infinity, now
-from dream.simulation.MachineJobShop import MachineJobShop
-from dream.simulation.QueueJobShop import QueueJobShop
-from dream.simulation.ExitJobShop import ExitJobShop
-from dream.simulation.Job import Job
-from dream.simulation.Globals import G
-import dream.simulation.Globals as Globals
+from dream.simulation.imports import MachineJobShop, QueueJobShop, ExitJobShop, Globals, Job, G 
+from dream.simulation.imports import simulate, activate, initialize, infinity
 
 #define the objects of the model
 Q1=QueueJobShop('Q1','Queue1', capacity=infinity, schedulingRule="LPT")

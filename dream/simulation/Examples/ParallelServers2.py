@@ -1,28 +1,18 @@
-from SimPy.Simulation import simulate, activate, initialize, infinity
-from dream.simulation.Machine import Machine
-from dream.simulation.Queue import Queue
-from dream.simulation.Source import Source
-from dream.simulation.Exit import Exit
-from dream.simulation.Part import Part
-from dream.simulation.Globals import G
+from dream.simulation.imports import Machine, Source, Exit, Part, Queue, G, Globals 
+from dream.simulation.imports import simulate, activate, initialize, infinity
 
 #the custom queue
 class SelectiveQueue(Queue):
     def haveToDispose(self,callerObject=None):
         caller=callerObject
-        #if the caller is Milling1 then we return true if there are parts queued
+        # if the caller is M1 then return true if there is an Entity to give
         if caller.id=='M1':
             return len(self.getActiveObjectQueue())>0
-        #if the caller is Milling2 then we have to check Milling1's condition. 
-        #we return true if there are parts queued AND Milling1 cannot accept them
-        self.M1=None
+        # else return true only if M1 cannot accept the Entity
         if caller.id=='M2':
-            #loop through the objects to identify Milling1
-            for object in G.ObjList:
-                if object.id=='M1':
-                    self.M1=object
-            #check Queue's status and also if Milling1 can accept
-            return len(self.getActiveObjectQueue())>0 and (not (self.M1.canAccept()))
+            # find M1
+            M1=Globals.findObjectById('M1') # global method to obtain an object from the id
+            return len(self.getActiveObjectQueue())>0 and (not (M1.canAccept()))
         
 #define the objects of the model
 S=Source('S','Source', mean=0.5, item=Part)
