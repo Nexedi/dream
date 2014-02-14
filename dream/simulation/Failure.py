@@ -90,7 +90,7 @@ class Failure(ObjectInterruption):
             self.outputTrace("is down")
             # update the failure time
             failTime=now()            
-            if(self.repairman!="None"):     #if the failure needs a resource to be fixed, the machine waits until the 
+            if(self.repairman and self.repairman!='None'):     #if the failure needs a resource to be fixed, the machine waits until the 
                                             #resource is available
                 yield request,self,self.repairman.getResource()
                 # update the time that the repair started
@@ -104,6 +104,6 @@ class Failure(ObjectInterruption):
                 self.reactivateVictim()                 # since repairing is over, the Machine is reactivated
             self.victim.Up=True              
             self.outputTrace("is up")              
-            if(self.repairman!="None"): #if a resource was used, it is now released
+            if(self.repairman and self.repairman!='None'): #if a resource was used, it is now released
                 yield release,self,self.repairman.getResource() 
                 self.repairman.totalWorkingTime+=now()-timeOperationStarted                                
