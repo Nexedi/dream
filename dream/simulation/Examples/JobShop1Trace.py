@@ -1,11 +1,11 @@
 from SimPy.Simulation import simulate, activate, initialize, infinity, now
-from simulation.MachineJobShop import MachineJobShop
-from simulation.QueueJobShop import QueueJobShop
-from simulation.ExitJobShop import ExitJobShop
-from simulation.Job import Job
-from simulation.Globals import G
-import simulation.ExcelHandler
-import simulation.Globals as Globals
+from dream.simulation.MachineJobShop import MachineJobShop
+from dream.simulation.QueueJobShop import QueueJobShop
+from dream.simulation.ExitJobShop import ExitJobShop
+from dream.simulation.Job import Job
+from dream.simulation.Globals import G
+import dream.simulation.ExcelHandler
+import dream.simulation.Globals as Globals
 
 G.trace="Yes"
 
@@ -60,5 +60,5 @@ for record in J.schedule:
     print J.name, "got into", name, "at", record[1]
                
                
-simulation.ExcelHandler.outputTrace('TRACE')
+dream.simulation.ExcelHandler.outputTrace('TRACE')
 

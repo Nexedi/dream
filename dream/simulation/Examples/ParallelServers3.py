@@ -1,41 +1,43 @@
 from SimPy.Simulation import simulate, activate, initialize, infinity, now
-from simulation.Machine import Machine
-from simulation.Queue import Queue
-from simulation.Source import Source
-from simulation.Exit import Exit
-from simulation.Part import Part
-from simulation.Globals import G
+from dream.simulation.Machine import Machine
+from dream.simulation.Queue import Queue
+from dream.simulation.Source import Source
+from dream.simulation.Exit import Exit
+from dream.simulation.Part import Part
+from dream.simulation.Globals import G
+import dream.simulation.Globals as Globals
 
 #the custom queue
 class SelectiveQueue(Queue):
     def haveToDispose(self,callerObject=None):
         caller=callerObject
+        # if the caller is M1 then return true if there is an Entity to give
         if caller.id=='M1':
             return len(self.getActiveObjectQueue())>0
-        self.M1=None
+        # else return true only if M1 cannot accept the Entity
         if caller.id=='M2':
-            for object in G.ObjList:
-                if object.id=='M1':
-                    self.M1=object
-            return len(self.getActiveObjectQueue())>0 and (not (self.M1.canAccept()))
+            # find M1
+            M1=Globals.findObjectById('M1') # global method to obtain an object from the id
+            return len(self.getActiveObjectQueue())>0 and (not (M1.canAccept()))
 
 #the custom machine
 class Milling(Machine):
     def getEntity(self):
-        Machine.getEntity(self)         #call the parent method to get the entity
-        part=self.getActiveObjectQueue()[0] #retrieve the obtained part
-        part.machineId=self.id              #create an attribute to the obtained part and give it the value of the object's id
+        activeEntity=Machine.getEntity(self)        #call the parent method to get the entity
+        part=self.getActiveObjectQueue()[0]         #retrieve the obtained part
+        part.machineId=self.id                      #create an attribute to the obtained part and give it the value of the object's id
+        return activeEntity                         #return the entity obtained
 
 #the custom exit
 class CountingExit(Exit):
     def getEntity(self):
-        part=self.getGiverObjectQueue()[0]   #find the part to be obtained
-        Exit.getEntity(self)                        #call the parent method to get the entity
+        activeEntity=Exit.getEntity(self)                        #call the parent method to get the entity
         #check the attribute and update the counters accordingly
-        if part.machineId=='M1':         
+        if activeEntity.machineId=='M1':         
             G.NumM1+=1
-        elif part.machineId=='M2':
+        elif activeEntity.machineId=='M2':
             G.NumM2+=1
+        return activeEntity             #return the entity obtained
         
 #define the objects of the model
 S=Source('S','Source', mean=0.5, item=Part)

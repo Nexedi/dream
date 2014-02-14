@@ -1,10 +1,10 @@
 from SimPy.Simulation import simulate, activate, initialize, infinity, now
-from simulation.MachineJobShop import MachineJobShop
-from simulation.QueueJobShop import QueueJobShop
-from simulation.ExitJobShop import ExitJobShop
-from simulation.Job import Job
-from simulation.Globals import G
-import simulation.Globals as Globals
+from dream.simulation.MachineJobShop import MachineJobShop
+from dream.simulation.QueueJobShop import QueueJobShop
+from dream.simulation.ExitJobShop import ExitJobShop
+from dream.simulation.Job import Job
+from dream.simulation.Globals import G
+import dream.simulation.Globals as Globals
 
 #define the objects of the model
 Q1=QueueJobShop('Q1','Queue1', capacity=infinity, schedulingRule="MC-Priority-EDD")

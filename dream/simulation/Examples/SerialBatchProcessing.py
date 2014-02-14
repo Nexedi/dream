@@ -1,14 +1,14 @@
 from SimPy.Simulation import simulate, activate, initialize
 
-from simulation.Globals import G
-from simulation.Machine import Machine
-from simulation.Exit import Exit
-from simulation.Queue import Queue
+from dream.simulation.Globals import G
+from dream.simulation.Machine import Machine
+from dream.simulation.Exit import Exit
+from dream.simulation.Queue import Queue
 
-from simulation.Batch import Batch
-from simulation.BatchDecomposition import BatchDecomposition
-from simulation.BatchReassembly import BatchReassembly
-from simulation.BatchSource import BatchSource
+from dream.simulation.Batch import Batch
+from dream.simulation.BatchDecomposition import BatchDecomposition
+from dream.simulation.BatchReassembly import BatchReassembly
+from dream.simulation.BatchSource import BatchSource
 
 # define the objects of the model
 S=BatchSource('S','Source',mean=1.5, item=Batch,batchNumberOfUnits=100)

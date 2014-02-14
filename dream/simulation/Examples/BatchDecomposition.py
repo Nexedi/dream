@@ -1,11 +1,11 @@
 from SimPy.Simulation import simulate, activate, initialize
-from simulation.Batch import Batch
-from simulation.BatchDecomposition import BatchDecomposition
-from simulation.BatchSource import BatchSource
-from simulation.Machine import Machine
-from simulation.Exit import Exit
-from simulation.Queue import Queue
-from simulation.Globals import G
+from dream.simulation.Batch import Batch
+from dream.simulation.BatchDecomposition import BatchDecomposition
+from dream.simulation.BatchSource import BatchSource
+from dream.simulation.Machine import Machine
+from dream.simulation.Exit import Exit
+from dream.simulation.Queue import Queue
+from dream.simulation.Globals import G
 
 
 # define the objects of the model

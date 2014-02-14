@@ -1,11 +1,11 @@
 from SimPy.Simulation import simulate, activate, initialize
-from simulation.Machine import Machine
-from simulation.Source import Source
-from simulation.Exit import Exit
-from simulation.Part import Part
-from simulation.Frame import Frame
-from simulation.Assembly import Assembly
-from simulation.Globals import G
+from dream.simulation.Machine import Machine
+from dream.simulation.Source import Source
+from dream.simulation.Exit import Exit
+from dream.simulation.Part import Part
+from dream.simulation.Frame import Frame
+from dream.simulation.Assembly import Assembly
+from dream.simulation.Globals import G
 
 #define the objects of the model
 Frame.capacity=4 

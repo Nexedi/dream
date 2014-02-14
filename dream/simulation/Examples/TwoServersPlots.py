@@ -1,12 +1,12 @@
 from SimPy.Simulation import simulate, activate, initialize
-from simulation.Machine import Machine
-from simulation.Source import Source
-from simulation.Exit import Exit
-from simulation.Part import Part
-from simulation.Repairman import Repairman
-from simulation.Queue import Queue
-from simulation.Globals import G
-from simulation.Failure import Failure
+from dream.simulation.Machine import Machine
+from dream.simulation.Source import Source
+from dream.simulation.Exit import Exit
+from dream.simulation.Part import Part
+from dream.simulation.Repairman import Repairman
+from dream.simulation.Queue import Queue
+from dream.simulation.Globals import G
+from dream.simulation.Failure import Failure
 
 #import Graphs
 from outputanalysis.Plots import Graphs
