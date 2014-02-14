@@ -29,51 +29,60 @@ auxiliary script to help the import of ManPy modules
 from SimPy.Simulation import *
 
 #generic
-from simulation.CoreObject import CoreObject
-from simulation.Entity import Entity
-from simulation.ObjectInterruption import ObjectInterruption
-from simulation.ObjectResource import ObjectResource
+from dream.simulation.CoreObject import CoreObject
+from dream.simulation.Entity import Entity
+from dream.simulation.ObjectInterruption import ObjectInterruption
+from dream.simulation.ObjectResource import ObjectResource
 
 #CoreObjects
-from simulation.Machine import Machine
-from simulation.Queue import Queue
-from simulation.Source import Source
-from simulation.Exit import Exit
-from simulation.Assembly import Assembly
-from simulation.Dismantle import Dismantle
-from simulation.Conveyer import Conveyer
-from simulation.ExitJobShop import ExitJobShop
-from simulation.QueueJobShop import QueueJobShop
-from simulation.MachineJobShop import MachineJobShop
-from simulation.QueueLIFO import QueueLIFO
-from simulation.BatchSource import BatchSource
-from simulation.BatchDecomposition import BatchDecomposition
-from simulation.BatchReassembly import BatchReassembly
-from simulation.BatchScrapMachine import BatchScrapMachine
-
-
+from dream.simulation.Machine import Machine
+from dream.simulation.Queue import Queue
+from dream.simulation.Source import Source
+from dream.simulation.Exit import Exit
+from dream.simulation.Assembly import Assembly
+from dream.simulation.Dismantle import Dismantle
+from dream.simulation.Conveyer import Conveyer
+from dream.simulation.ExitJobShop import ExitJobShop
+from dream.simulation.QueueJobShop import QueueJobShop
+from dream.simulation.MachineJobShop import MachineJobShop
+from dream.simulation.QueueLIFO import QueueLIFO
+from dream.simulation.BatchSource import BatchSource
+from dream.simulation.BatchDecomposition import BatchDecomposition
+from dream.simulation.BatchReassembly import BatchReassembly
+from dream.simulation.BatchScrapMachine import BatchScrapMachine
+from dream.simulation.ConditionalBuffer import ConditionalBuffer
+from dream.simulation.LineClearance import LineClearance
+from dream.simulation.MachineManagedJob import MachineManagedJob
+from dream.simulation.QueueManagedJob import QueueManagedJob
+from dream.simulation.MouldAssembly import MouldAssembly
+from dream.simulation.MouldAssemblyBuffer import MouldAssemblyBuffer
+from dream.simulation.OrderDecomposition import OrderDecomposition
 
 
 #Entities
-from simulation.Job import Job
-from simulation.Part import Part
-from simulation.Frame import Frame
-from simulation.Batch import Batch
-from simulation.SubBatch import SubBatch
+from dream.simulation.Job import Job
+from dream.simulation.Part import Part
+from dream.simulation.Frame import Frame
+from dream.simulation.Batch import Batch
+from dream.simulation.SubBatch import SubBatch
+from dream.simulation.Mould import Mould
+from dream.simulation.Order import Order
+from dream.simulation.OrderComponent import OrderComponent
 
 #ObjectResources
-from simulation.Repairman import Repairman
+from dream.simulation.Repairman import Repairman
+from dream.simulation.OperatorPool import OperatorPool
+from dream.simulation.Operator import Operator
+from dream.simulation.OperatorPreemptive import OperatorPreemptive
 
 #ObjectInterruption
-from simulation.Failure import Failure
-from simulation.EventGenerator import EventGenerator
+from dream.simulation.Failure import Failure
+from dream.simulation.EventGenerator import EventGenerator
+from dream.simulation.ScheduledMaintenance import ScheduledMaintenance
+from dream.simulation.ShiftScheduler import ShiftScheduler
 
 #Auxiliary
-from simulation.Globals import G
-from simulation.RandomNumberGenerator import RandomNumberGenerator
+from dream.simulation.Globals import G
+from dream.simulation.RandomNumberGenerator import RandomNumberGenerator
 import ExcelHandler
 import Globals
-
-
-
-
