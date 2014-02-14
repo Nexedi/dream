@@ -15,7 +15,7 @@ F2=Failure(victim=M2, distributionType='Fixed', MTTF=40, MTTR=10, repairman=R)
 
 G.ObjList=[S,M1,M2,E,Q]   #add all the objects in G.ObjList so that they can be easier accessed later
 
-G.FailureList=[F1,F2]     #add all the objects in G.ObjList so that they can be easier accessed later
+G.ObjectInterruptionList=[F1,F2]     #add all the objects in G.ObjList so that they can be easier accessed later
 
 #define predecessors and successors for the objects    
 S.defineRouting([M1])
@@ -38,16 +38,16 @@ for i in range(G.numberOfReplications):
     R.initialize()
     for object in G.ObjList:
         object.initialize()
-
-    for failure in G.FailureList:
-        failure.initialize()
+        
+    for objectInterruption in G.ObjectInterruptionList:
+        objectInterruption.initialize()
     
     #activate all the objects 
     for object in G.ObjList:
         activate(object, object.run())
-        
-    for failure in G.FailureList:
-        activate(failure, failure.run())
+    
+    for objectInterruption in G.ObjectInterruptionList:
+        activate(objectInterruption, objectInterruption.run())
     
     simulate(until=G.maxSimTime)    #run the simulation
 

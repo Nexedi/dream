@@ -1,4 +1,4 @@
-from dream.simulation.imports import Machine, Source, Exit, Part, Queue, G, Globals 
+from dream.simulation.imports import Machine, Source, Exit, Part, Queue, G, Globals, Failure 
 from dream.simulation.imports import simulate, activate, initialize, infinity
 
 #the custom queue
@@ -16,12 +16,17 @@ class SelectiveQueue(Queue):
         
 #define the objects of the model
 S=Source('S','Source', mean=0.5, item=Part)
-Q=SelectiveQueue('Q','Queue', capacity=infinity)    #Q is now of type SelectiveQueue
-M1=Machine('M1','Milling1', mean=0.25, failureDistribution='Fixed', MTTF=60, MTTR=5)
+Q=SelectiveQueue('Q','Queue', capacity=infinity)
+M1=Machine('M1','Milling1', mean=0.25)
 M2=Machine('M2','Milling2', mean=0.25)
 E=Exit('E1','Exit')  
 
+F=Failure(victim=M1, distributionType='Fixed', MTTF=60, MTTR=5)
+
 G.ObjList=[S,Q,M1,M2,E]   #add all the objects in G.ObjList so that they can be easier accessed later
+
+G.ObjectInterruptionList=[F]     #add all the objects in G.ObjList so that they can be easier accessed later
+
 
 #define predecessors and successors for the objects    
 S.defineRouting([Q])
@@ -32,13 +37,18 @@ E.defineRouting([M1,M2])
 
 initialize()                        #initialize the simulation (SimPy method)
     
-#initialize all the objects    
 for object in G.ObjList:
     object.initialize()
+    
+for objectInterruption in G.ObjectInterruptionList:
+    objectInterruption.initialize()
 
 #activate all the objects 
 for object in G.ObjList:
     activate(object, object.run())
+
+for objectInterruption in G.ObjectInterruptionList:
+    activate(objectInterruption, objectInterruption.run())
 
 G.maxSimTime=1440.0     #set G.maxSimTime 1440.0 minutes (1 day)
     
@@ -52,5 +62,3 @@ for object in G.ObjList:
 print "the system produced", E.numOfExits, "parts"
 print "the working ratio of", M1.objName,  "is", (M1.totalWorkingTime/G.maxSimTime)*100, "%"
 print "the working ratio of", M2.objName,  "is", (M2.totalWorkingTime/G.maxSimTime)*100, "%"
-
-

@@ -1,4 +1,4 @@
-from dream.simulation.imports import Machine, Source, Exit, Part, Queue, G, Globals 
+from dream.simulation.imports import Machine, Source, Exit, Part, Queue, G, Globals, Failure 
 from dream.simulation.imports import simulate, activate, initialize, infinity
 
 #the custom queue
@@ -36,13 +36,17 @@ class CountingExit(Exit):
 #define the objects of the model
 S=Source('S','Source', mean=0.5, item=Part)
 Q=SelectiveQueue('Q','Queue', capacity=infinity)
-M1=Milling('M1','Milling1', mean=0.25, failureDistribution='Fixed', MTTF=60, MTTR=5)
+M1=Milling('M1','Milling1', mean=0.25)
 M2=Milling('M2','Milling2', mean=0.25)
 E=CountingExit('E1','Exit')  
 
+F=Failure(victim=M1, distributionType='Fixed', MTTF=60, MTTR=5)
+
 G.ObjList=[S,Q,M1,M2,E]   #add all the objects in G.ObjList so that they can be easier accessed later
 
-#create the global variables
+G.ObjectInterruptionList=[F]     #add all the objects in G.ObjList so that they can be easier accessed later
+
+#create the global counter variables
 G.NumM1=0
 G.NumM2=0
 
@@ -55,13 +59,18 @@ E.defineRouting([M1,M2])
 
 initialize()                        #initialize the simulation (SimPy method)
     
-#initialize all the objects    
 for object in G.ObjList:
     object.initialize()
+    
+for objectInterruption in G.ObjectInterruptionList:
+    objectInterruption.initialize()
 
 #activate all the objects 
 for object in G.ObjList:
     activate(object, object.run())
+
+for objectInterruption in G.ObjectInterruptionList:
+    activate(objectInterruption, objectInterruption.run())
 
 G.maxSimTime=1440.0     #set G.maxSimTime 1440.0 minutes (1 day)
     
