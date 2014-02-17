@@ -125,6 +125,7 @@
         }
       } catch (e) {
         alert('Loading data failed.');
+        console.error(e);
       }
     };
     // Check if there is already data when we first load the page, if yes, then build graph from it
