@@ -303,6 +303,7 @@
             "Priority",
             "Material",
             "Entrance Time",
+            "Processing Time",
             "Station ID",
             "Step No."
           ]
@@ -381,26 +382,36 @@
         }
 
         if (obj._class === 'Dream.Job') {
-          var property_dict = obj.extraPropertyDict;
+          // find the corresponding input
+          var data = that.getData(),
+              input_job;
+          $.each(data.spreadsheet, function(i, line){
+            if (line[1] == obj['id']) {
+              input_job = line;
+            }
+          });
+
           var duration = 0;
           gantt_data.data.push({
             id: obj['id'],
-            text: property_dict['name'],
+            text: input_job[1],
             start_date: start_date,
             duration: obj['results'].completionTime,
             project: 1,
             open: false,
             parent: "by_job"
           });
+
           $.each(obj['results']['schedule'], function (i, schedule) {
             spreadsheet_data.push([
-              property_dict['name'],
+              input_job[0],
               obj['id'],
-              property_dict['order_date'],
-              property_dict['due_date'],
-              property_dict['priority'],
-              property_dict['material'],
+              input_job[2], // orderDate
+              input_job[3], // dueDate
+              input_job[4], // priority
+              input_job[5], // material
               schedule['entranceTime'],
+              input_job[7].split('-')[schedule['stepNumber']] || 0, // processing time
               schedule['stationId'],
               schedule['stepNumber']
             ]);
