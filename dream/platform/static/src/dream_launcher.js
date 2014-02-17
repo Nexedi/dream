@@ -80,10 +80,10 @@
 
       try {
         // spreadsheets
-        var spreadsheet_data = data.spreadsheet; // XXX rename as wip_spreadsheet in json ?
-        if (spreadsheet_data !== undefined) {
+        var wip_spreadsheet_data = data.wip_spreadsheet;
+        if (wip_spreadsheet_data !== undefined) {
           var spreadsheet = $('#wip_spreadsheet');
-          spreadsheet.handsontable('populateFromArray', 0, 0, spreadsheet_data);
+          spreadsheet.handsontable('populateFromArray', 0, 0, wip_spreadsheet_data);
           spreadsheet.find('.htCore').width(spreadsheet.width());
         }
 

@@ -316,10 +316,9 @@
         "preference": priv.preference_container,
         "general": priv.general_container
       };
-      var spreadsheet = $('#wip_spreadsheet');
-      if (spreadsheet !== undefined) {
-        // XXX wip_spreadsheet ?
-        data['spreadsheet'] = spreadsheet.handsontable('getData');
+      var wip_spreadsheet = $('#wip_spreadsheet');
+      if (wip_spreadsheet.length > 0) {
+        data['wip_spreadsheet'] = wip_spreadsheet.handsontable('getData');
       }
       return data;
     };

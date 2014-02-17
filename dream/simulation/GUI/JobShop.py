@@ -38,9 +38,9 @@ class Simulation(ACO.Simulation):
     """ Set the WIP in queue from spreadsheet data.
     """
     data = copy(in_data)
-    if 'spreadsheet' in data:
+    if 'wip_spreadsheet' in data:
       wip_dict = {}
-      for value_list in data['spreadsheet']:
+      for value_list in data['wip_spreadsheet']:
         if value_list[1] == 'ID' or not value_list[1]:
           continue
         sequence_list = value_list[6].split('-')
@@ -70,6 +70,6 @@ class Simulation(ACO.Simulation):
       for node_id in data['nodes'].keys():
         if node_id in wip_dict:
           data['nodes'][node_id]['wip'] = wip_dict[node_id]
-      del(data['spreadsheet'])
+      del(data['wip_spreadsheet'])
       return data
 

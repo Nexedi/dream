@@ -385,7 +385,7 @@
           // find the corresponding input
           var data = that.getData(),
               input_job;
-          $.each(data.spreadsheet, function(i, line){
+          $.each(data.wip_spreadsheet, function(i, line){
             if (line[1] == obj['id']) {
               input_job = line;
             }
@@ -503,14 +503,14 @@
       }
 
       if (spreadsheet_data.length > 1) {
-        var spreadsheet = $('#job_schedule_spreadsheet');
+        var job_schedule_spreadsheet = $('#job_schedule_spreadsheet');
         if (configuration['Dream-Configuration'].gui.job_schedule_spreadsheet){
-          spreadsheet.show();
-          spreadsheet.handsontable({
+          job_schedule_spreadsheet.show();
+          job_schedule_spreadsheet.handsontable({
             data: spreadsheet_data,
             readOnly: true
           });
-          spreadsheet.find('.htCore').width(spreadsheet.width());
+          job_schedule_spreadsheet.find('.htCore').width(job_schedule_spreadsheet.width());
         }
         gantt.templates.task_class = function (start, end, obj) {
           return obj.parent ? "sub_task" : "";
