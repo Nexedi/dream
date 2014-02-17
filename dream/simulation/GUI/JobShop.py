@@ -3,6 +3,7 @@ import json
 import time
 import random
 import operator
+from datetime import datetime
 
 from dream.simulation.GUI import ACO
 from dream.simulation.GUI.Default import schema
@@ -38,11 +39,16 @@ class Simulation(ACO.Simulation):
     """ Set the WIP in queue from spreadsheet data.
     """
     data = copy(in_data)
+    # XXX have now a global option ?
+    now = datetime.now()
+
     if 'wip_spreadsheet' in data:
       wip_dict = {}
       for value_list in data['wip_spreadsheet']:
         if value_list[1] == 'ID' or not value_list[1]:
           continue
+        dueDate = (datetime.strptime(value_list[3], '%Y/%m/%d') - now).days
+
         sequence_list = value_list[6].split('-')
         processing_time_list = value_list[7].split('-')
         wip_dict.setdefault(sequence_list[0], []).append(
@@ -50,12 +56,7 @@ class Simulation(ACO.Simulation):
             "_class": "Dream.Job",
             "id": value_list[1],
             "name": value_list[0],
-            "order_date": value_list[2],
-            "due_date": value_list[3],
-            # TODO: calculate due date properly (based on simulation date ?)
-            "dueDate": 1,
-            "priority": value_list[4],
-            "material": value_list[5],
+            "dueDate": dueDate,
             "route": [
               {
                 "processingTime": {

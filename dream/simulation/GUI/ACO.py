@@ -47,7 +47,7 @@ class Simulation(DefaultSimulation):
         if elementClass=='Dream.Job':
             results=element['results']
             delay = float(results.get('delay', "0"))
-            totalDelay+=delay
+            totalDelay += delay
     return totalDelay
 
 
