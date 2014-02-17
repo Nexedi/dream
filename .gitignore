@@ -1,3 +1,9 @@
 *.pyc
 *.project
 *.pydevproject
+.installed.cfg
+bin/**
+develop-eggs/**
+dream.egg-info/**
+eggs/**
+parts/**
