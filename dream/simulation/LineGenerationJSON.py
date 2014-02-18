@@ -79,6 +79,7 @@ from BatchScrapMachine import BatchScrapMachine
 from LineClearance import LineClearance
 from EventGenerator import EventGenerator
 from Operator import Operator
+from OperatorManagedJob import OperatorManagedJob
 from OperatorPool import OperatorPool
 from OperatedPoolBroker import Broker
 from OperatedMachine import OperatedMachine
@@ -162,6 +163,7 @@ def createObjects():
     G.LineClearanceList=[]
     G.EventGeneratorList=[]
     G.OperatorsList = []
+    G.OperatorManagedJobsList = []
     G.OperatorPoolsList = []
     G.BrokersList = []
     G.OperatedMachineList = []
@@ -202,6 +204,16 @@ def createObjects():
             O.coreObjectIds=getSuccessorList(id)                	# update the list of objects that the operator operates
 																	# calling the getSuccesorList() method on the operator
             G.OperatorsList.append(O)                               # add the operator to the RepairmanList
+            G.ModelResourceList.append(O) 
+        elif resourceClass=='Dream.OperatorManagedJob':
+            id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
+            name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
+            capacity = int(element.get('capacity', '1'))            # get the capacity of the el. / defautl '1'
+            O = OperatorManagedJob(element_id, name, capacity)                # create an operator object
+            O.coreObjectIds=getSuccessorList(id)                    # update the list of objects that the operator operates
+                                                                    # calling the getSuccesorList() method on the operator
+            G.OperatorsList.append(O)                               # add the operator to the RepairmanList
+            G.OperatorManagedJobsList.append(O)
             G.ModelResourceList.append(O) 
     # -----------------------------------------------------------------------
     #                loop through all the model resources 
