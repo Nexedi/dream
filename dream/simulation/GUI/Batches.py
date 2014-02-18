@@ -39,7 +39,7 @@ class Simulation(DefaultSimulation):
       "_class": "Dream.EventGenerator",
       "name": "Attainment",
       "property_list": [schema['start'], schema['stop'], schema['duration'],
-                        schema['method'], schema['argumentDict']]
+          schema['interval'], schema['method'], schema['argumentDict']]
       }
     conf["Dream-Configuration"]["gui"]["exit_stat"] = 1
     conf["Dream-Configuration"]["gui"]["debug_json"] = 1

@@ -135,6 +135,12 @@ schema = {
     "_class": "Dream.Property",
     "_default": "-1"
   },
+  "interval": {
+    "id": "interval",
+    "type": "string",
+    "_class": "Dream.Property",
+    "_default": "10"
+  },
   "duration": {
     "id": "duration",
     "type": "string",
