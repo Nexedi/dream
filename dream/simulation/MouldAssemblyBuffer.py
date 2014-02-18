@@ -133,8 +133,8 @@ class MouldAssemblyBuffer(QueueManagedJob):
         # if the length is zero then no componentType or entity.type can be read
         if len(activeObjectQueue)==0:
             return False
-        # read the entity to be disposed
-        index = 0
+        
+        # find out if there are entities with available managers that are ready for assembly
         activeEntity=None
         for entity in activeObjectQueue:
             if entity.order.componentsReadyForAssembly:
@@ -143,14 +143,13 @@ class MouldAssemblyBuffer(QueueManagedJob):
                     activeEntity=entity
                     break
                 # otherwise, if the manager of the entity is available
-                elif entity.manager.checkIfResourceIsAvailable:
+                elif entity.manager.checkIfResourceIsAvailable(thecaller):
                     activeEntity=entity
                     break
         # if there is no entity in the activeQ that its parentOrder has the flag componentsReadyForAssembly set  
         if not activeEntity:
         # return false
             return False
-#         activeEntity = activeObjectQueue[0]
         if(len(activeObject.next)==1):  #if we have only one possible receiver 
             activeObject.receiver=activeObject.next[0]
         else:                           # otherwise,
@@ -166,9 +165,13 @@ class MouldAssemblyBuffer(QueueManagedJob):
             receiverQueue = activeObject.receiver.getActiveObjectQueue()
         except:
             return False
+        # sort the entities now that the receiver is updated
+        self.sortEntities()
+        # update the activeEntity
+        activeEntity=activeObjectQueue[0]
         # if the successors (MouldAssembly) internal queue is empty then proceed with checking weather
         # the caller is the receiver
-        # TODO the activeEntity is already checked for the flag componentsReadyForAssembly
+        # TODO: the activeEntity is already checked for the flag componentsReadyForAssembly
         if len(receiverQueue)==0:
             if activeEntity.type=='Mould':
                 return thecaller is activeObject.receiver

@@ -29,6 +29,13 @@ from SimPy.Simulation import now
 from QueueJobShop import QueueJobShop
 
 # ===========================================================================
+# Error in the setting up of the WIP
+# ===========================================================================
+class NoCallerError(Exception):
+    def __init__(self, callerError):
+        Exception.__init__(self, callerError) 
+
+# ===========================================================================
 # the QueueManagedJob object
 # ===========================================================================
 class QueueManagedJob(QueueJobShop):
@@ -41,26 +48,30 @@ class QueueManagedJob(QueueJobShop):
         # get active object and its queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        thecaller = callerObject
+        # assert that the callerObject is not None
+        try:
+            if callerObject:
+                thecaller = callerObject
+            else:
+                raise NoCallerError('The caller of the MouldAssemblyBuffer must be defined')
+        except NoCallerError as noCaller:
+            print 'No caller error: {0}'.format(noCaller)
         
         #search if for one or more of the Entities the operator is available
         haveEntityWithAvailableManager=False
         for entity in activeObjectQueue:
             if entity.manager:
-                if entity.manager.checkIfResourceIsAvailable:
+                if entity.manager.checkIfResourceIsAvailable(thecaller):
                     haveEntityWithAvailableManager=True
+                    break
         #if none of the Entities has an available manager return False
         if not haveEntityWithAvailableManager:
             return False
-        
-        #sort the internal queue so that the Entities that have an available manager go in the front
-        self.sortEntities()
-        
         #if we have only one possible receiver just check if the Queue holds one or more entities
-        if(len(activeObject.next)==1 or callerObject==None):
-            
+        if(len(activeObject.next)==1):
             activeObject.receiver=activeObject.next[0]
-                   
+            #sort the internal queue so that the Entities that have an available manager go in the front
+            activeObject.sortEntities()
             return len(activeObjectQueue)>0\
                     and thecaller==activeObject.receiver
         
@@ -72,18 +83,27 @@ class QueueManagedJob(QueueJobShop):
                 if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# with the others'
                     maxTimeWaiting=timeWaiting
                     self.receiver=object                            # and update the receiver
+        #sort the internal queue so that the Entities that have an available manager go in the front
+        activeObject.sortEntities()
         #return True if the Queue has Entities and the caller is the receiver
         return len(activeObjectQueue)>0 and (thecaller is self.receiver) 
 
-    #override the default method so that Entities that have the manager available go in front
+    # =======================================================================
+    # override the default method so that Entities 
+    # that have the manager available go in front
+    # =======================================================================
     def sortEntities(self):
         QueueJobShop.sortEntities(self)     #do the default sorting first
         activeObjectQueue=self.getActiveObjectQueue()
+        # search for the entities in the activeObjectQueue that have available manager
         for entity in activeObjectQueue:
             entity.managerAvailable=False
-            if entity.manager:        
-                if entity.manager.checkIfResourceIsAvailable:
+            # if the entity has manager assigned
+            if entity.manager:
+                # check his availability    
+                if entity.manager.checkIfResourceIsAvailable(self.receiver):
                     entity.managerAvailable=True
+        # sort the active queue according to the availability of the managers
         activeObjectQueue.sort(key=lambda x: x.managerAvailable, reverse=True)
         
         
