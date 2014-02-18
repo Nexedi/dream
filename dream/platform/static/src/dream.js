@@ -496,20 +496,23 @@
             var text = exit_stat.html() + "<br/><b>" + (el.name || el.id) + "</b><br/>";
             $.each(el.results, function(metric, value){
               if (metric == 'intervalThroughputList') {
-                var general = that.getData().general,
-                  throughputTarget = parseFloat(general.throughputTarget),
-                  desiredPercentageOfSuccess = parseFloat(general.desiredPercentageOfSuccess);
-                  text += "<em>Daily Attainment</em>: "
+                var attainment_list = [],
+                    general = that.getData().general,
+                    throughputTarget = parseFloat(general.throughputTarget),
+                    desiredPercentageOfSuccess = parseFloat(general.desiredPercentageOfSuccess);
+                  text += "<em>Daily Attainment:</em> "
                   $.each(value, function(i, intervalValue) {
                     var icon = "fa-frown-o";
+                    attainment_list.push((intervalValue/throughputTarget));
                     if ((intervalValue/throughputTarget) > desiredPercentageOfSuccess) {
                       icon = "fa-smile-o"
                     }
                     text += intervalValue + '<i class="fa ' + icon + '"/> ';
                   })
-                  text += "<br/>";
+                  text += "<br/><em>Average Daily Line Attainment</em>: " + (
+                    (attainment_list.reduce(function(a, b){return a+b}) / attainment_list.length ) * 100).toFixed(2) + "%<br/>";
               } else {
-                text += "<em>" + metric + "</em>: " + value + "<br/>";
+                text += "<em>" + metric + ":</em> " + value + "<br/>";
               }
             })
             exit_stat.html(text);
