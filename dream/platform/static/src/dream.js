@@ -495,7 +495,22 @@
           if (el._class == 'Dream.Exit'){
             var text = exit_stat.html() + "<br/><b>" + (el.name || el.id) + "</b><br/>";
             $.each(el.results, function(metric, value){
-              text = text + "<em>" + metric + "</em>: " + value + "<br/>";
+              if (metric == 'intervalThroughputList') {
+                var general = that.getData().general,
+                  throughputTarget = parseFloat(general.throughputTarget),
+                  desiredPercentageOfSuccess = parseFloat(general.desiredPercentageOfSuccess);
+                  text += "<em>Daily Attainment</em>: "
+                  $.each(value, function(i, intervalValue) {
+                    var icon = "fa-frown-o";
+                    if ((intervalValue/throughputTarget) > desiredPercentageOfSuccess) {
+                      icon = "fa-smile-o"
+                    }
+                    text += intervalValue + '<i class="fa ' + icon + '"/> ';
+                  })
+                  text += "<br/>";
+              } else {
+                text += "<em>" + metric + "</em>: " + value + "<br/>";
+              }
             })
             exit_stat.html(text);
           }

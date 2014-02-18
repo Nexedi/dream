@@ -44,6 +44,18 @@ class Simulation(DefaultSimulation):
     conf["Dream-Configuration"]["gui"]["exit_stat"] = 1
     conf["Dream-Configuration"]["gui"]["debug_json"] = 1
     conf["Dream-Configuration"]["gui"]["shift_spreadsheet"] = 1
+    # some more global properties
+    conf["Dream-Configuration"]["property_list"].append( {
+      "id": "throughputTarget",
+      "type": "string",
+      "_class": "Dream.Property",
+      "_default": "10" })
+    conf["Dream-Configuration"]["property_list"].append( {
+      "id": "desiredPercentageOfSuccess",
+      "type": "string",
+      "_class": "Dream.Property",
+      "_default": "0.85" })
+
     # remove tools that does not make sense here
     conf.pop('Dream-Machine')
     conf.pop('Dream-Repairman')
