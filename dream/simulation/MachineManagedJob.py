@@ -38,11 +38,11 @@ from MachineJobShop import MachineJobShop
 class MachineManagedJob(MachineJobShop):
 
     # =======================================================================
-    # initialize the MachineManagedJob
+    # initialise the MachineManagedJob
     # =======================================================================
     def initialize(self):
         MachineJobShop.initialize(self)
-        #creat an empty Operator Pool. This will be updated by canAcceptAndIsRequested
+        #create an empty Operator Pool. This will be updated by canAcceptAndIsRequested
         id = self.id+'_OP'
         name=self.objName+'_operatorPool'
         self.operatorPool=OperatorPool(id, name, operatorsList=[])
@@ -121,10 +121,13 @@ class MachineManagedJob(MachineJobShop):
                     activeObject.giver.assignExit()
                     #make the operatorsList so that it holds only the manager of the current order
 #                     activeObject.operatorPool.operatorsList=[activeObject.giver.getActiveObjectQueue()[0].manager]
-                    # TODO: think over the next line, this way sort entity is run multiple times throughout the life-span of 
-                    #    an entity in the object. Maybe would be a good idea to pick the entity to be disposed from the giver
-                    activeObject.giver.sortEntities()
+#                     # TODO: think over the next line, this way sort entity is run multiple times throughout the life-span of 
+#                     #    an entity in the object. Maybe would be a good idea to pick the entity to be disposed from the giver
+#                     activeObject.giver.sortEntities()
                     activeObject.operatorPool.operators=[activeObject.giver.getActiveObjectQueue()[0].manager]
+                    # set the variable operatorAssignedTo to activeObject, the operator is then blocked
+                    activeObject.operatorPool.operators[0].operatorAssignedTo=activeObject
+                    # read the load time of the machine
                     self.readLoadTime()
                     return True
             else:
@@ -136,5 +139,17 @@ class MachineManagedJob(MachineJobShop):
             # while if the set up is performed before the (automatic) loading of the machine then the availability of the
             # operator is requested
 #             return (activeObject.operatorPool=='None' or activeObject.operatorPool.checkIfResourceIsAvailable())\
-#                 and activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested    
-    
+#                 and activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested 
+
+    # =======================================================================
+    #                   prepare the machine to be released
+    # =======================================================================
+    def releaseOperator(self):
+        self.outputTrace(self.currentOperator.objName, "released from "+ self.objName)
+#         # TESTING
+#         print now(), self.id, 'will release operator', self.operatorPool.operators[0].objName
+        # set the flag operatorAssignedTo to None
+        self.operatorPool.operators[0].operatorAssignedTo=None
+        self.broker.invokeBroker()
+        self.toBeOperated = False
+
