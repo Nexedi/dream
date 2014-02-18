@@ -89,7 +89,8 @@ def positionGraph():
 @app.route("/runSimulation", methods=["POST", "OPTIONS"])
 def runSimulation():
   parameter_dict = request.json['json']
-  app.logger.debug("running with:\n%s" % (json.dumps(parameter_dict,
+  if 0:
+    app.logger.debug("running with:\n%s" % (json.dumps(parameter_dict,
                                           sort_keys=True, indent=2)))
 
   try:
@@ -110,7 +111,8 @@ def runSimulation():
     return jsonify(dict(error='Timeout after %s seconds' % timeout))
 
   result = queue.get()
-  app.logger.debug("result\n%s" % (json.dumps(result,
+  if 0:
+    app.logger.debug("result\n%s" % (json.dumps(result,
                                             sort_keys=True, indent=2)))
   return jsonify(result)
 

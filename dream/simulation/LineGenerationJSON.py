@@ -1343,7 +1343,7 @@ def main(argv=[], input_data=None):
     
     #run the experiment (replications)          
     for i in xrange(G.numberOfReplications):
-        logger.info("start run number "+str(i+1)) 
+        #logger.info("start run number "+str(i+1)) 
         G.seed+=1
         G.Rnd=Random(G.seed)     
         initialize()                        #initialize the simulation 
@@ -1399,7 +1399,7 @@ def main(argv=[], input_data=None):
     outputJSONString=json.dumps(G.outputJSON, indent=True)
     G.outputJSONFile.write(outputJSONString)
           
-    logger.info("execution time="+str(time.time()-start))
+    #logger.info("execution time="+str(time.time()-start))
     if input_data:
       return outputJSONString
     
