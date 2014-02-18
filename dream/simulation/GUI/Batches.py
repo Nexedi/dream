@@ -20,8 +20,8 @@ class Simulation(DefaultSimulation):
         "property_list": conf['Dream-Source']['property_list']\
           + [schema['batchNumberOfUnits']]
     }
-    conf['Dream-BatchDecomposition'] = {
-      "_class": "Dream.BatchDecomposition",
+    conf['Dream-BatchDecompositionStartTime'] = {
+      "_class": "Dream.BatchDecompositionStartTime",
       "name": "Decomposition",
       "property_list": [schema['processingTime'], schema['numberOfSubBatches'] ]
       }
