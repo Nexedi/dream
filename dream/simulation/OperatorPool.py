@@ -101,10 +101,11 @@ class OperatorPool(ObjectResource):
         # if callerOjbect is None then the checkIfResourceIsAvailable performs the default behaviour
         #     so initially it checks whether there is a free operator 
         isAvailable = any(operator.checkIfResourceIsAvailable()==True for operator in self.operators)
-        if isAvailable:
-            return True
-        # if there is no free operator, then check if any of the operators can preempt
-        return any(operator.checkIfResourceIsAvailable(callerObject=self)==True for operator in self.operators)
+#         if isAvailable:
+#             return True
+        return isAvailable
+#         # if there is no free operator, then check if any of the operators can preempt
+#         return any(operator.checkIfResourceIsAvailable(callerObject=self)==True for operator in self.operators)
     
     # =======================================================================
     #              find the first available operator and return it
@@ -112,10 +113,11 @@ class OperatorPool(ObjectResource):
     def findAvailableOperator(self):            # may need to implement different sorting of the operators
         # find the free operator if any
         freeOperator = next(x for x in self.operators if x.checkIfResourceIsAvailable())
-        if freeOperator:
-            return freeOperator
-        # if there is no free operator, return the operator that can preempt
-        return next(x for x in self.operators if x.checkIfResourceIsAvailable(callerObject=self))
+#         if freeOperator:
+#             return freeOperator
+        return freeOperator
+#         # if there is no free operator, return the operator that can preempt
+#         return next(x for x in self.operators if x.checkIfResourceIsAvailable(callerObject=self))
         
     # =======================================================================
     #                           returns the resource
