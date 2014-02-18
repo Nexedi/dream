@@ -260,7 +260,8 @@ class Simulation(object):
     """Run one scenario.
     To be reused by subclasses.
     """
-    return json.loads(simulate_line_json(input_data=json.dumps(data)))
+    return json.loads(simulate_line_json(
+      input_data=json.dumps(self._preprocess(data))))
 
   def _preprocess(self, data):
     """Preprocess the data, for instance reading spreadsheet.

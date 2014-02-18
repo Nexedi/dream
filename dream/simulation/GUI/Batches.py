@@ -4,12 +4,12 @@ import time
 import random
 import operator
 
-from dream.simulation.GUI.Default import Simulation as DefaultSimulation
+from dream.simulation.GUI.Shifts import Simulation as ShiftsSimulation
 from dream.simulation.GUI.Default import schema
 
-class Simulation(DefaultSimulation):
+class Simulation(ShiftsSimulation):
   def getConfigurationDict(self):
-    conf = DefaultSimulation.getConfigurationDict(self)
+    conf = ShiftsSimulation.getConfigurationDict(self)
     conf['Dream-LineClearance'] = {
       "_class": "Dream.LineClearance",
       "name": "Clearance",

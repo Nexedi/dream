@@ -133,24 +133,25 @@
         }
       });
       wip_spreadsheet.find('.htCore').width(wip_spreadsheet.width());
-      if (0) {
-        var shift_spreadsheet = $('#shift_spreadsheet');
-        var data = [
-          [
-            "Monday",
-            "Tuesday",
-            "...",
-          ]
-        ];
-        shift_spreadsheet.handsontable({
-          data: data,
-          minSpareRows: 1,
-          afterChange: function () {
-            priv.onDataChange();
-          }
-        });
-        shift_spreadsheet.find('.htCore').width(shift_spreadsheet.width());
-      }
+
+      var shift_spreadsheet = $('#shift_spreadsheet');
+      var data = [
+        [
+          "Day",
+          "Machines", // XXX more generic name ?
+          "Start",
+          "End"
+        ]
+      ];
+      shift_spreadsheet.handsontable({
+        data: data,
+        minSpareRows: 1,
+        afterChange: function () {
+          priv.onDataChange();
+        }
+      });
+      shift_spreadsheet.find('.htCore').width(shift_spreadsheet.width());
+
     };
 
     priv.updateElementCoordinate = function (node_id, coordinate) {
@@ -319,6 +320,10 @@
       var wip_spreadsheet = $('#wip_spreadsheet');
       if (wip_spreadsheet.length > 0) {
         data['wip_spreadsheet'] = wip_spreadsheet.handsontable('getData');
+      }
+      var shift_spreadsheet = $('#shift_spreadsheet');
+      if (shift_spreadsheet.length > 0) {
+        data['shift_spreadsheet'] = shift_spreadsheet.handsontable('getData');
       }
       return data;
     };

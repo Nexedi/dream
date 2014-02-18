@@ -74,6 +74,9 @@
       if (configuration['Dream-Configuration'].gui.wip_spreadsheet){
         $("#wip_spreadsheet").show();
       }
+      if (configuration['Dream-Configuration'].gui.shift_spreadsheet){
+        $("#shift_spreadsheet").show();
+      }
       if (configuration['Dream-Configuration'].gui.debug_json){
         $("#debug_json").show();
       }
@@ -84,6 +87,12 @@
         if (wip_spreadsheet_data !== undefined) {
           var spreadsheet = $('#wip_spreadsheet');
           spreadsheet.handsontable('populateFromArray', 0, 0, wip_spreadsheet_data);
+          spreadsheet.find('.htCore').width(spreadsheet.width());
+        }
+        var shift_spreadsheet_data = data.shift_spreadsheet;
+        if (shift_spreadsheet_data !== undefined) {
+          var spreadsheet = $('#shift_spreadsheet');
+          spreadsheet.handsontable('populateFromArray', 0, 0, shift_spreadsheet_data);
           spreadsheet.find('.htCore').width(spreadsheet.width());
         }
 
@@ -172,7 +181,6 @@
             } else {
               $("#result_zone").hide();
               $("#graph_zone").hide();
-              $("#shift_spreadsheet").hide();
               $("#job_schedule_spreadsheet").hide();
               $("#job_gantt").hide();
               $("#json_result").effect('shake', 50).val(data['error']);
