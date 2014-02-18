@@ -56,7 +56,6 @@ class ConditionalBuffer(QueueManagedJob):
         # get active object and its queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-
         # assert that the callerObject is not None
         try:
             if callerObject:
@@ -69,9 +68,28 @@ class ConditionalBuffer(QueueManagedJob):
         # if the length is zero then no componentType or entity.type can be read
         if len(activeObjectQueue)==0:
             return False
+        
+        #search if for one or more of the Entities the operator is available
+        operatedJobs=[]
+        haveEntityWithAvailableManager=False
+        for entity in activeObjectQueue:
+            if entity.manager:
+                operatedJobs.append(entity)
+                if entity.manager.checkIfResourceIsAvailable(thecaller):
+                    haveEntityWithAvailableManager=True
+                    break
+        # if there are operated entities then check if there are available managers
+        if len(operatedJobs)>0:
+            #if none of the Entities has an available manager return False
+            if not haveEntityWithAvailableManager:
+                return False
+        
         #if we have only one possible receiver just check if the receiver is the caller
         if(len(activeObject.next)==1):
             activeObject.receiver=activeObject.next[0]
+            #sort the internal queue so that the Entities that have an available manager go in the front
+            #    now that the receiver is updated
+            activeObject.sortEntities()
             return thecaller is activeObject.receiver\
                 and activeObject.checkCondition()
         #give the entity to the possible receiver that is waiting for the most time. 
@@ -87,6 +105,8 @@ class ConditionalBuffer(QueueManagedJob):
                     maxTimeWaiting=timeWaiting
                     # and update the receiver to the index of this object
                     activeObject.receiver=object
+        #sort the internal queue so that the Entities that have an available manager go in the front
+        activeObject.sortEntities()
         #return True if the Queue caller is the receiver
         return thecaller is activeObject.receiver\
             and activeObject.checkCondition()
@@ -98,30 +118,21 @@ class ConditionalBuffer(QueueManagedJob):
         activeObject = self.getActiveObject()
         activeObjectQueue = activeObject.getActiveObjectQueue()
         # read the entity to be disposed
-        index = 0
-        activeEntity=None
-        for index in range(len(activeObjectQueue)):
-            if activeObjectQueue[index].componentType=='Basic':
-                activeEntity=activeObjectQueue[index]
+        activeEntity=activeObjectQueue[0]
+        # assert that the entity.type is OrderComponent
+        assert activeEntity.type=='OrderComponent',\
+                 "the entity to be disposed is not of type OrderComponent"
+        # check weather the entity to be moved is Basic
+        if activeEntity.componentType=='Basic':
+            return True
+        # or whether it is of type Secondary
+        elif activeEntity.componentType=='Secondary':
+            # in that case check if the basics are already ended
+            if activeEntity.order.basicsEnded:
                 return True
-            elif activeObjectQueue[index].order.basicsEnded:
-                activeEntity=activeObjectQueue[index]
-                return True
-            index +=1
-        # if there is no entity in the activeQ that its parentOrder has the flag componentsReadyForAssembly set  
-        if not activeEntity:
-        # return false
+        # in any other case return False
+        else:
             return False
-        
-# #         activeEntity = activeObjectQueue[0]
-#         # assert that the entity.type is OrderComponent
-#         assert activeEntity.type=='OrderComponent',\
-#                  "the entity to be disposed is not of type OrderComponent"
-#         # if the type of the component is Secondary then verify that the basics of the same Order
-#         # are already processed before disposing them to the next object
-#         # TODO: the activeEntity is already checked if it has the basicsEnded flag set
-#         return activeEntity.componentType=='Secondary'\
-#                 and (activeEntity.order.basicsEnded)
     
     # =======================================================================                
     # sort the entities of the activeQ
@@ -131,13 +142,42 @@ class ConditionalBuffer(QueueManagedJob):
     # =======================================================================
     def sortEntities(self):
         activeObject = self.getActiveObject()
-        # run the default sorting of the Queue first
-        QueueManagedJob.sortEntities(self)
+        # (run the default behaviour - loan from Queue)
+        # if we have sorting according to multiple criteria we have to call the sorter many times
+        if self.schedulingRule=="MC":
+            for criterion in reversed(self.multipleCriterionList):
+               self.activeQSorter(criterion=criterion) 
+        #else we just use the default scheduling rule
+        else:
+            self.activeQSorter()
+        
         # and in the end sort according to the ConditionalBuffer sorting rule
         activeObjectQueue = activeObject.getActiveObjectQueue()
-        # if the componentType of the entities in the activeQueue is Basic then don't move it to the end of the activeQ
-        # else if the componentType is Secondary and it's basics are not ended then move it to the back
-        activeObjectQueue.sort(key=lambda x: not ((x.componentType=='Basic')\
-                                              or ((x.order.basicsEnded)\
-                                                  and (x.componentType=='Secondary'))))
-    
+        # search for the entities in the activeObjectQueue that have available manager
+        # if no entity is managed then the list managedEntities has zero length
+        managedEntities=[]
+        for entity in activeObjectQueue:
+            entity.managerAvailable=False
+            if entity.manager:
+                managedEntities.append(entity)
+                if entity.manager.checkIfResourceIsAvailable(self.receiver):
+                    entity.managerAvailable=True
+        # if the entities are operated
+        if len(managedEntities):
+            # if the componentType of the entities in the activeQueue is Basic then don't move it to the end of the activeQ
+            # else if the componentType is Secondary and it's basics are not ended then move it to the back
+            activeObjectQueue.sort(key=lambda x: x.managerAvailable\
+                                            and \
+                                                (x.componentType=='Basic' \
+                                                or\
+                                                (x.componentType=='Secondary'\
+                                                 and\
+                                                 x.order.basicsEnded)), reverse=True)
+        # otherwise do not check for managers availability
+        else:
+            activeObjectQueue.sort(key=lambda x: x.componentType=='Basic'\
+                                                or\
+                                                (x.componentType=='Secondary'\
+                                                 and\
+                                                 x.order.basicsEnded),reverse=True)
+#         activeObjectQueue.sort(key=lambda x: x.managerAvailable, reverse=True)
