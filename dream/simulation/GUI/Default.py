@@ -147,6 +147,12 @@ schema = {
     "_class": "Dream.Property",
     "_default": "{}"
   },
+  "currentDate": {
+    "id": "currentDate",
+    "type": "string", # XXX format ?
+    "_class": "Dream.Property",
+    "_default": ""
+  },
 }
 
 # complex schemas (Dream.PropertyList)
@@ -227,7 +233,8 @@ class Simulation(object):
            schema["numberOfReplications"],
            schema["maxSimTime"],
            schema["confidenceLevel"],
-           schema["processTimeout"]
+           schema["processTimeout"],
+           schema["currentDate"],
         ],
         "gui": {
           'debug_json': 0,
