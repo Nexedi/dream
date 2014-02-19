@@ -364,13 +364,6 @@ class Machine(CoreObject):
                 self.outputTrace(self.getActiveObjectQueue()[0].name,"ended processing in "+self.objName)
             except IndexError:
                 pass
-                       
-    # =============== release resource after the end of processing
-            if (self.operatorPool!='None')\
-                and any(type=="Processing" for type in self.multOperationTypeList)\
-                and not interruption: 
-                self.releaseOperator()
-                yield waituntil,self,self.broker.brokerIsSet
             
             # set the variable that flags an Entity is ready to be disposed 
             self.waitToDispose=True
@@ -387,6 +380,15 @@ class Machine(CoreObject):
             self.timeLastEntityEnded=now()                          # this holds the time that the last entity ended processing in Machine 
             self.nameLastEntityEnded=self.currentEntity.name        # this holds the name of the last entity that ended processing in Machine
             self.completedJobs+=1                                   # Machine completed one more Job
+            
+             
+    # =============== release resource after the end of processing
+            if (self.operatorPool!='None')\
+                and any(type=="Processing" for type in self.multOperationTypeList)\
+                and not interruption: 
+                self.releaseOperator()
+                yield waituntil,self,self.broker.brokerIsSet
+            
             
             while 1:
                 # wait until the next Object is available or machine has failure
