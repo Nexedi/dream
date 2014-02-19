@@ -37,14 +37,6 @@
     "waiting_ratio": 0.0, 
     "working_ratio": 100.0
    }
-  }, 
-  {
-   "_class": "Dream.Repairman", 
-   "id": "O1", 
-   "results": {
-    "working_ratio": 198.95833333333334, 
-    "waiting_ratio": -98.95833333333333
-   }
   }
  ], 
  "general": {
