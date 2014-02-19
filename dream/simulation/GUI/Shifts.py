@@ -24,9 +24,9 @@ class Simulation(DefaultSimulation):
         # Get the dates, and convert them to simulation clock time units.
         # In this class, time unit is a minute (XXX it can be an option)
         start_date = strptime("%s %s" % (line[0], line[2]), '%Y/%m/%d %H:%M')
-        start_time = (start_date - now).seconds // 60
+        start_time = (start_date - now).total_seconds() // 60
         stop_date = strptime("%s %s" % (line[0], line[3]), '%Y/%m/%d %H:%M')
-        stop_time = (stop_date - now).seconds // 60
+        stop_time = (stop_date - now).total_seconds() // 60
         for station in line[1].split(','):
           shift_by_station.setdefault(station, []).append(
             (start_time, stop_time) )
@@ -41,5 +41,7 @@ class Simulation(DefaultSimulation):
         "Some stations only exist in shift but not in graph: %r"\
         % shift_by_station.keys()
 
+#    from pprint import pformat
+#    logger.info(pformat(data))
     return data
 
