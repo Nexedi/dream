@@ -287,6 +287,14 @@ path, ._jsPlumb_endpoint {
   background-color:#fdd;
 }
 
+#exit_stat {
+  display: inline-block;
+}
+
+#exit_stat table, #exit_stat td {
+border: 1px solid black;
+}
+
 .window, .dummy_window {
   border:1px solid lightgray;
   width:100px;

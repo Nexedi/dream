@@ -493,29 +493,32 @@
         var exit_stat = $("#exit_stat").show().text("Exit Metrics");
         $.each(result.elementList, function(idx, el){
           if (el._class == 'Dream.Exit'){
-            var text = exit_stat.html() + "<br/><b>" + (el.name || el.id) + "</b><br/>";
+            var text = exit_stat.html() + "<table><tr><th colspan='2'>" + (
+                    el.name || el.id) + "</th></tr>";
             $.each(el.results, function(metric, value){
               if (metric == 'intervalThroughputList') {
                 var attainment_list = [],
                     general = that.getData().general,
                     throughputTarget = parseFloat(general.throughputTarget),
                     desiredPercentageOfSuccess = parseFloat(general.desiredPercentageOfSuccess);
-                  text += "<em>Daily Attainment:</em> "
+                  text += "<tr><td>Daily Attainment</td><td>"
                   $.each(value, function(i, intervalValue) {
                     var icon = "fa-frown-o";
                     attainment_list.push((intervalValue/throughputTarget));
                     if ((intervalValue/throughputTarget) > desiredPercentageOfSuccess) {
                       icon = "fa-smile-o"
                     }
-                    text += intervalValue + '<i class="fa ' + icon + '"/> ';
+                    text += intervalValue + '<i class="fa ' + icon + '"/><br/>';
                   })
-                  text += "<br/><em>Average Daily Line Attainment</em>: " + (
-                    (attainment_list.reduce(function(a, b){return a+b}) / attainment_list.length ) * 100).toFixed(2) + "%<br/>";
+                  text += "</td></tr>";
+
+                  text += "<tr><td>Average Daily Line Attainment</td><td>" + (
+                    (attainment_list.reduce(function(a, b){return a+b}) / attainment_list.length ) * 100).toFixed(2) + "%</td></tr>";
               } else {
-                text += "<em>" + metric + ":</em> " + value + "<br/>";
+                text += "<tr><td>" + metric + "</td><td>" + value + "</td></tr>";
               }
             })
-            exit_stat.html(text);
+            exit_stat.html(text + "</table>");
           }
         })
       }
