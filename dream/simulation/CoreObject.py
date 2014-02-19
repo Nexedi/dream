@@ -207,6 +207,8 @@ class CoreObject(Process):
                         self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
         
         self.outputTrace(activeEntity.name, "got into "+self.objName)
+#         # TESTING
+#         print now(), self.id, 'just received', activeEntity.id
         return activeEntity
       
     # =======================================================================
@@ -408,3 +410,11 @@ class CoreObject(Process):
     def checkIfActive(self):
         return self.Up and self.onShift
     
+    #===========================================================================
+    # filter that returns True if the activeObject Queue is empty and 
+    #     false if object holds entities in its queue
+    #===========================================================================
+    def activeQueueIsEmpty(self):
+#         # TESTING
+#         print now(), self.id, 'has its queue empty?', len(self.Res.activeQ)
+        return len(self.Res.activeQ)==0
