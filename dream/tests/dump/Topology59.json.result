@@ -96,12 +96,12 @@
       "stepNumber": 5
      }, 
      {
-      "entranceTime": 17.3, 
+      "entranceTime": 21.7, 
       "stationId": "EDM", 
       "stepNumber": 6
      }, 
      {
-      "entranceTime": 18.5, 
+      "entranceTime": 22.9, 
       "stationId": "AB1", 
       "stepNumber": 7
      }, 
@@ -140,22 +140,22 @@
       "stepNumber": 3
      }, 
      {
-      "entranceTime": 18.5, 
+      "entranceTime": 17.3, 
       "stationId": "MILL1", 
       "stepNumber": 4
      }, 
      {
-      "entranceTime": 22.9, 
+      "entranceTime": 21.7, 
       "stationId": "QEDM", 
       "stepNumber": 5
      }, 
      {
-      "entranceTime": 23.9, 
+      "entranceTime": 24.4, 
       "stationId": "EDM", 
       "stepNumber": 6
      }, 
      {
-      "entranceTime": 25.5, 
+      "entranceTime": 26.0, 
       "stationId": "AB1", 
       "stepNumber": 7
      }, 
@@ -194,22 +194,22 @@
       "stepNumber": 3
      }, 
      {
-      "entranceTime": 25.5, 
+      "entranceTime": 23.9, 
       "stationId": "MILL2", 
       "stepNumber": 4
      }, 
      {
-      "entranceTime": 26.0, 
+      "entranceTime": 24.4, 
       "stationId": "QEDM", 
       "stepNumber": 5
      }, 
      {
-      "entranceTime": 27.0, 
+      "entranceTime": 29.5, 
       "stationId": "EDM", 
       "stepNumber": 6
      }, 
      {
-      "entranceTime": 28.7, 
+      "entranceTime": 31.2, 
       "stationId": "AB1", 
       "stepNumber": 7
      }, 
@@ -273,9 +273,9 @@
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 32.6, 
+    "throughput": 2, 
     "takt_time": 17.000000000000004, 
-    "throughput": 2
+    "lifespan": 31.750000000000004
    }
   }, 
   {
@@ -306,7 +306,7 @@
    "_class": "Dream.Job", 
    "id": "M1O1", 
    "results": {
-    "completionTime": 31.2, 
+    "completionTime": 29.5, 
     "schedule": [
      {
       "entranceTime": 26.0, 
@@ -319,12 +319,12 @@
       "stepNumber": 1
      }, 
      {
-      "entranceTime": 28.7, 
+      "entranceTime": 27.0, 
       "stationId": "IM", 
       "stepNumber": 2
      }, 
      {
-      "entranceTime": 31.2, 
+      "entranceTime": 29.5, 
       "stationId": "E1", 
       "stepNumber": 3
      }
