@@ -69,6 +69,8 @@ class Broker(ObjectInterruption):
                 # set the available resource as the currentOperator
                 self.victim.currentOperator=self.victim.operatorPool.findAvailableOperator()
                 yield request,self,self.victim.operatorPool.getResource(self.victim.currentOperator)
+#                 # TESTING
+#                 print now(), self.victim.currentOperator.objName, 'started work in ', self.victim.id
 #                 self.victim.totalTimeWaitingForOperator+=now()-self.timeWaitForOperatorStarted
                 # clear the timeWaitForOperatorStarted variable
                 self.timeWaitForOperatorStarted = 0
@@ -79,6 +81,12 @@ class Broker(ObjectInterruption):
     # ======= release a resource        
             elif not self.victim.isOperated():
                 self.victim.currentOperator.totalWorkingTime+=now()-self.victim.currentOperator.timeLastOperationStarted
+                # if the following object is not of type Machine
+                if self.victim.receiver.type!='Machine':
+                    # if the processingType is 'Processing' and not only 'Load' or 'Setup'
+                    if any(type=='Processing' for type in self.victim.multOperationTypeList):
+                        # wait until the victim has released the entity it was processing
+                        yield waituntil, self, self.victim.activeQueueIsEmpty
                 #self.victim.outputTrace(self.victim.currentOperator.objName, "left "+ self.victim.objName)
                 yield release,self,self.victim.operatorPool.getResource(self.victim.currentOperator)
                 # the victim current operator must be cleared after the operator is released
