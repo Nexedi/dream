@@ -299,7 +299,7 @@ path, ._jsPlumb_endpoint {
   background-image: linear-gradient(to bottom, #fdc 0%, #ecb 100%);
 }
 
-.Dream-BatchDecomposition, .Dream.BatchDecompositionStartTime, .Dream-BatchReassembly{
+.Dream-BatchDecomposition, .Dream-BatchDecompositionStartTime, .Dream-BatchReassembly {
   border: 1px solid #bcb;
   background-color:#dfd;
   background-image: linear-gradient(to bottom, #dfd 0%, #cec 100%);
