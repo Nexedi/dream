@@ -39,8 +39,10 @@ class Simulation(ACO.Simulation):
     """ Set the WIP in queue from spreadsheet data.
     """
     data = copy(in_data)
-    # XXX have now a global option ?
+
     now = datetime.now()
+    if data['general']['currentDate']:
+      now = strptime(data['general']['currentDate'], '%Y/%m/%d')
 
     if 'wip_spreadsheet' in data:
       wip_dict = {}
