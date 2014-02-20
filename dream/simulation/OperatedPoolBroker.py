@@ -69,8 +69,8 @@ class Broker(ObjectInterruption):
                 # set the available resource as the currentOperator
                 self.victim.currentOperator=self.victim.operatorPool.findAvailableOperator()
                 yield request,self,self.victim.operatorPool.getResource(self.victim.currentOperator)
-                # TESTING
-                print now(), self.victim.currentOperator.objName, 'started work in ', self.victim.id
+#                 # TESTING
+#                 print now(), self.victim.currentOperator.objName, 'started work in ', self.victim.id
 #                 self.victim.totalTimeWaitingForOperator+=now()-self.timeWaitForOperatorStarted
                 # clear the timeWaitForOperatorStarted variable
                 self.timeWaitForOperatorStarted = 0

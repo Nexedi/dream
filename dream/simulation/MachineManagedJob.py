@@ -93,6 +93,8 @@ class MachineManagedJob(MachineJobShop):
     # also updates the giver to the one that is to be taken
     # =======================================================================
     def canAcceptAndIsRequested(self):
+#         # TESTING
+#         print now(), self.id, 'canA$iR'
         # get active and giver objects
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
@@ -155,10 +157,6 @@ class MachineManagedJob(MachineJobShop):
                 # update entityToGet
                 self.entityToGet=self.giver.getActiveObjectQueue()[0]
             return activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested 
-            # while if the set up is performed before the (automatic) loading of the machine then the availability of the
-            # operator is requested
-#             return (activeObject.operatorPool=='None' or activeObject.operatorPool.checkIfResourceIsAvailable())\
-#                 and activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested 
 
     # =======================================================================
     # to be called by canAcceptAndIsRequested and check for the operator

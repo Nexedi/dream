@@ -173,15 +173,15 @@ class CoreObject(Process):
     # gets an entity from the giver 
     # =======================================================================   
     def getEntity(self):
+        # get active object and its queue, as well as the active (to be) entity 
+        #(after the sorting of the entities in the queue of the giver object)
+        activeObject=self.getActiveObject()
+        activeObjectQueue=self.getActiveObjectQueue()
         # get giver object, its queue, and sort the entities according to this object priorities
         giverObject=self.getGiverObject()
         giverObject.sortEntities()                      #sort the Entities of the giver 
                                                         #according to the scheduling rule if applied
         giverObjectQueue=self.getGiverObjectQueue()
-        # get active object and its queue, as well as the active (to be) entity 
-        #(after the sorting of the entities in the queue of the giver object)
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()
         # remove entity from the giver
         activeEntity = giverObject.removeEntity(entity=self.identifyEntityToGet())
         # variable that holds the last giver; used in case of preemption
@@ -222,7 +222,7 @@ class CoreObject(Process):
                 activeEntity.manager.activeCallersList=[]
         self.outputTrace(activeEntity.name, "got into "+self.objName)
 #         # TESTING
-#         print now(), self.id, 'just received', activeEntity.id
+#         print now(), activeEntity.id, "got into "+self.id
         return activeEntity
       
     # =======================================================================
@@ -444,3 +444,10 @@ class CoreObject(Process):
     # =======================================================================    
     def endProcessingActions(self):
         pass
+    
+    #===========================================================================
+    # check if an entity is in the internal Queue of the object
+    #===========================================================================
+    def isInActiveQueue(self, entity=None):
+        activeObjectQueue = self.getActiveObjectQueue()
+        return any(x==entity for x in activeObjectQueue)
