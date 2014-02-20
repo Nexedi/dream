@@ -310,37 +310,43 @@ class DistFittest:
         #Set of if...elif syntax in order to get a Python dictionary with the best fitting statistical distribution and its parameters
         if list1[b]=='Normal':          #Check if in list's b position is the Normal distribution
             self.Normal_distrfit(data)
-            myDict = {'type':list1[b],'parameters':[self.Normal[0][0], self.Normal[0][1]]} #Create a dictionary with distribution's name and distribution's parameters
+            myDict = {'type':list1[b],'aParameter':'mean','bParameter':'standarddeviation','aParameterValue':self.Normal[0][0],'bParameterValue': self.Normal[0][1]} #Create a dictionary with distribution's and distribution parameters' names and distribution parameters' values
             return myDict     
         elif list1[b]=='Lognormal':
             self.Lognormal_distrfit(data)
-            myDict = {'type':list1[b],'parameters':[self.Lognormal[0][0], self.Lognormal[0][1]]}
+            myDict = {'type':list1[b],'aParameter':'logmean','bParameter':'logsd','aParameterValue':self.Lognormal[0][0],'bParameterValue': self.Lognormal[0][1]}
             return myDict
         elif list1[b]=='Exponential':
             self.Exponential_distrfit(data)
-            myDict = {'type':list1[b],'parameters':[self.Exp[0][0]]}
+            myDict = {'type':list1[b],'aParameter':'rate', 'aParameterValue':self.Exp[0][0]}
             return myDict
         elif list1[b]=='Poisson':
             self.Poisson_distrfit(data)
-            myDict = {'type':list1[b],'parameters':[self.Poisson[0][0]]}
+            myDict = {'type':list1[b],'aParameter':'lambda','aParameterValue':self.Poisson[0][0]}
             return myDict
         elif list1[b]=='Geometric':
             self.Geometric_distrfit(data)
-            myDict = {'type':list1[b],'parameters':[self.Geom[0][0]]}
+            myDict = {'type':list1[b],'aParameter':'probability','aParameterValue':self.Geom[0][0]}
             return myDict
         elif list1[b]=='Logistic':
             self.Logistic_distrfit(data)
-            myDict = {'type':list1[b],'parameters':[self.Logist[0][0],self.Logist[0][1]]}
+            myDict = {'type':list1[b],'aParameter':'location','bParameter':'scale','aParameterValue':self.Logist[0][0],'bParameterValue':self.Logist[0][1]}
             return myDict
         elif list1[b]=='Gamma':
             self.Gamma_distrfit(data)
-            myDict = {'type':list1[b],'parameters':[self.Gam[0][0],self.Gam[0][1]]}
+            myDict = {'type':list1[b],'aParameter':'shape','bParameter':'rate','aParameterValue':self.Gam[0][0],'bParameterValue':self.Gam[0][1]}
             return myDict
         elif list1[b]=='Weibull':
             self.Weibull_distrfit(data)
-            myDict = {'type':list1[b],'parameters':[self.Weib[0][0],self.Weib[0][1]]}
+            myDict = {'type':list1[b],'aParameter':'shape','bParameter':'scale','aParameterValue':self.Weib[0][0],'bParameterValue':self.Weib[0][1]}
             return myDict
         else:
             self.Cauchy_distrfit(data)
-            myDict = {'type':list1[b],'parameters':[self.Cauchy[0][0],self.Cauchy[0][1]]}
+            myDict = {'type':list1[b],'aParameter':'location','bParameter':'scale','aParameterValue':self.Cauchy[0][0],'bParameterValue':self.Cauchy[0][1]}
             return myDict
+         
+ 
+ 
+ 
+         
+         
