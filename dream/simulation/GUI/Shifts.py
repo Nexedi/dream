@@ -28,6 +28,7 @@ class Simulation(DefaultSimulation):
         stop_date = strptime("%s %s" % (line[0], line[3]), '%Y/%m/%d %H:%M')
         stop_time = (stop_date - now).total_seconds() // 60
         for station in line[1].split(','):
+          station = station.strip()
           shift_by_station.setdefault(station, []).append(
             (start_time, stop_time) )
 
