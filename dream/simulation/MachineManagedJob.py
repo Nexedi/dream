@@ -151,13 +151,10 @@ class MachineManagedJob(MachineJobShop):
         else:
             # the operator doesn't have to be present for the loading of the machine as the load operation
             # is not assigned to operators
-            if activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested\
-                 and self.checkOperator():
-                    # update entityToGet
-                    self.entityToGet=self.giver.getActiveObjectQueue()[0]
-            return activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested\
-                 and self.checkOperator()
-#             return activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested
+            if activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested:
+                # update entityToGet
+                self.entityToGet=self.giver.getActiveObjectQueue()[0]
+            return activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested 
             # while if the set up is performed before the (automatic) loading of the machine then the availability of the
             # operator is requested
 #             return (activeObject.operatorPool=='None' or activeObject.operatorPool.checkIfResourceIsAvailable())\
