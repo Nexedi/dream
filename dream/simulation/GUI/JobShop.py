@@ -74,5 +74,5 @@ class Simulation(ACO.Simulation):
         if node_id in wip_dict:
           data['nodes'][node_id]['wip'] = wip_dict[node_id]
       del(data['wip_spreadsheet'])
-      return data
+    return data
 
