@@ -508,7 +508,7 @@
                     if ((intervalValue/throughputTarget) > desiredPercentageOfSuccess) {
                       icon = "fa-smile-o"
                     }
-                    text += intervalValue + '<i class="fa ' + icon + '"/><br/>';
+                    text += intervalValue + ' <i class="fa ' + icon + '"/><br/>';
                   })
                   text += "</td></tr>";
 
