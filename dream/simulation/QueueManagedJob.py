@@ -72,6 +72,10 @@ class QueueManagedJob(QueueJobShop):
             activeObject.receiver=activeObject.next[0]
             #sort the internal queue so that the Entities that have an available manager go in the front
             activeObject.sortEntities()
+#             # TESTING
+#             if self.id=='QEDM':
+#                 if len(activeObjectQueue)>0 and thecaller==activeObject.receiver:
+#                     print '        ',self.id, 'has to dispose'
             return len(activeObjectQueue)>0\
                     and thecaller==activeObject.receiver
         
@@ -85,6 +89,10 @@ class QueueManagedJob(QueueJobShop):
                     self.receiver=object                            # and update the receiver
         #sort the internal queue so that the Entities that have an available manager go in the front
         activeObject.sortEntities()
+#         # TESTING
+#         if self.id=='QEDM':
+#             if len(activeObjectQueue)>0 and thecaller==activeObject.receiver:
+#                 print '        ',self.id, 'has to dispose'
         #return True if the Queue has Entities and the caller is the receiver
         return len(activeObjectQueue)>0 and (thecaller is self.receiver) 
 

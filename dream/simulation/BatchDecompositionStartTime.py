@@ -40,11 +40,11 @@ class BatchDecompositionStartTime(BatchDecomposition):
     '''
     
     #removes an entity from the object    
-    def removeEntity(self):
+    def removeEntity(self, entity=None):
         # if it is the first sub-batch of the parent batch that leaves
         # assign it as the batch start time
         if len(self.getActiveObjectQueue())==self.numberOfSubBatches:
             batch=self.getActiveObjectQueue()[0].parentBatch
             batch.startTime=now()
-        activeEntity=BatchDecomposition.removeEntity(self)
+        activeEntity=BatchDecomposition.removeEntity(self, entity)
         return activeEntity

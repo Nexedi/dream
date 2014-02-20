@@ -224,8 +224,8 @@ class Conveyer(CoreObject):
 
 
     #removes an entity from the Conveyer
-    def removeEntity(self):
-        activeEntity=CoreObject.removeEntity(self)                               #run the default method  
+    def removeEntity(self, entity=None):
+        activeEntity=CoreObject.removeEntity(self, entity)      #run the default method  
    
         self.position.pop(0)
         

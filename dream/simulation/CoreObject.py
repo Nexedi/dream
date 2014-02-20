@@ -131,22 +131,31 @@ class CoreObject(Process):
         self.previous=predecessorList
     
     # =======================================================================
-    # removes an entity from the Object 
+    # removes an Entity from the Object the Entity to be removed is passed
+    # as argument by getEntity of the receiver
     # =======================================================================
-    def removeEntity(self): 
+    def removeEntity(self, entity=None): 
         self.addBlockage()
         
         activeObjectQueue=self.getActiveObjectQueue()  
-        activeEntity=activeObjectQueue[0]  
-        activeObjectQueue.pop(0)                        #remove the Entity from the queue
+        activeObjectQueue.remove(entity)       #remove the Entity from the queue
         
         self.failureTimeInCurrentEntity=0 
         self.downTimeInTryingToReleaseCurrentEntity=0
         self.offShiftTimeTryingToReleaseCurrentEntity=0
         
         self.timeLastEntityLeft=now()
-        self.outputTrace(activeEntity.name, "released "+self.objName) 
-        return activeEntity     
+        self.outputTrace(entity.name, "released "+self.objName) 
+        return entity     
+    
+    # =======================================================================
+    #             called be getEntity it identifies the Entity 
+    #                        to be obtained so that 
+    #            getEntity gives it to removeEntity as argument
+    # =======================================================================    
+    def identifyEntityToGet(self):
+        giverObjectQueue=self.giver.getActiveObjectQueue() 
+        return giverObjectQueue[0]
     
     # =======================================================================
     #              adds the blockage time to totalBlockageTime 
@@ -174,7 +183,7 @@ class CoreObject(Process):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         # remove entity from the giver
-        activeEntity = giverObject.removeEntity()
+        activeEntity = giverObject.removeEntity(entity=self.identifyEntityToGet())
         # variable that holds the last giver; used in case of preemption
         self.lastGiver=self.giver
         #get the entity from the previous object and put it in front of the activeQ 
@@ -206,6 +215,11 @@ class CoreObject(Process):
                         self.receiver.preempt()
                         self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
         
+        # activeCallersList of an operator holds the CoreObjects that have called him
+        # when an Entity is obtained that has the operator as manager we need to reset this list 
+        if activeEntity.manager and (self.type=='MachineManagedJob' or self.type=='MFStation'):
+            if activeEntity.manager.activeCallersList:
+                activeEntity.manager.activeCallersList=[]
         self.outputTrace(activeEntity.name, "got into "+self.objName)
 #         # TESTING
 #         print now(), self.id, 'just received', activeEntity.id
@@ -415,6 +429,18 @@ class CoreObject(Process):
     #     false if object holds entities in its queue
     #===========================================================================
     def activeQueueIsEmpty(self):
-#         # TESTING
-#         print now(), self.id, 'has its queue empty?', len(self.Res.activeQ)
         return len(self.Res.activeQ)==0
+    
+    # =======================================================================
+    # checks if the object is ready to receive an Entity
+    # =======================================================================    
+    def isReadyToGet(self):
+        return True     # set to true since this control was not needed until now. 
+                        # to return canAcceptAndIsRequested() would be more logical, but also computationally expensive
+        #return self.canAcceptAndIsRequested()
+        
+    # =======================================================================
+    # actions to be carried out when the processing of an Entity ends
+    # =======================================================================    
+    def endProcessingActions(self):
+        pass

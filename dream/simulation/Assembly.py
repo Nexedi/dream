@@ -179,8 +179,8 @@ class Assembly(CoreObject):
         return len(self.getActiveObjectQueue())>0 and self.waitToDispose                                  
                                                
     #removes an entity from the Assembly
-    def removeEntity(self):
-        activeEntity=CoreObject.removeEntity(self)                              #run the default method     
+    def removeEntity(self, entity=None):
+        activeEntity=CoreObject.removeEntity(self, entity)               #run the default method     
         self.waitToDispose=False  
         return activeEntity                                              #the object does not wait to dispose now
     
@@ -196,11 +196,11 @@ class Assembly(CoreObject):
         
         if(type=="Part"):
             activeObjectQueue[0].getFrameQueue().append(activeEntity)    #get the part from the giver and append it to the frame!
-            giverObject.removeEntity()     #remove the part from the previews object
+            giverObject.removeEntity(activeEntity)     #remove the part from the previews object
             self.outputTrace(activeEntity.name, "got into "+ self.objName)                       
         elif(type=="Frame"):
             activeObjectQueue.append(giverObjectQueue[0])    #get the frame from the giver
-            giverObject.removeEntity()   #remove the frame from the previews object
+            giverObject.removeEntity(activeEntity)   #remove the frame from the previews object
             self.outputTrace(activeEntity.name, "got into "+ self.objName)
             self.nameLastEntityEntered=activeEntity.name  
             self.timeLastEntityEntered=now()

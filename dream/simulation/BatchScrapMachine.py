@@ -59,8 +59,8 @@ class BatchScrapMachine(Machine):
         self.scrapRng.max=scrMax
         
     
-    def removeEntity(self):
-        activeEntity = Machine.removeEntity(self)
+    def removeEntity(self, entity=None):
+        activeEntity = Machine.removeEntity(self, entity)
         scrapQuantity=self.scrapRng.generateNumber()        
         activeEntity.numberOfUnits-=scrapQuantity
         if activeEntity.numberOfUnits<0:

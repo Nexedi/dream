@@ -30,6 +30,7 @@ from SimPy.Simulation import Process, Resource, activate, now
 
 from OperatedPoolBroker import Broker
 from OperatorPool import OperatorPool
+from OperatorRouter import Router
 from MachineJobShop import MachineJobShop
 
 # ===========================================================================
@@ -42,6 +43,7 @@ class MachineManagedJob(MachineJobShop):
     # =======================================================================
     def initialize(self):
         MachineJobShop.initialize(self)
+        self.type="MachineManagedJob"
         #create an empty Operator Pool. This will be updated by canAcceptAndIsRequested
         id = self.id+'_OP'
         name=self.objName+'_operatorPool'
@@ -51,6 +53,18 @@ class MachineManagedJob(MachineJobShop):
         #create a Broker
         self.broker = Broker(self)
         activate(self.broker,self.broker.run())
+        #create a Router
+        from Globals import G
+        if len(G.RoutersList)==0:
+            self.router=Router()
+            activate(self.router,self.router.run())
+            G.RoutersList.append(self.router)
+        # otherwise set the already existing router as the machines Router
+        else:
+            self.router=G.RoutersList[0]
+        # holds the Entity that is to be obtained and will be updated by canAcceptAndIsRequested
+        self.entityToGet=None
+
         
     # =======================================================================
     # checks if the Queue can accept an entity       
@@ -105,28 +119,30 @@ class MachineManagedJob(MachineJobShop):
         if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
                                                 or any(type=='Setup' for type in activeObject.multOperationTypeList))):
             if isRequested:
-                # TODO: 
-                # check whether this entity is the one to be hand in
+                # TODO:  check whether this entity is the one to be hand in
                 #     to be used in operatorPreemptive
                 activeObject.requestingEntity=activeObject.giver.getActiveObjectQueue()[0]
-                # TODO: 
-                # update the object requesting the operator
+                # TODO:  update the object requesting the operator
                 activeObject.operatorPool.requestingObject=activeObject.giver
-                # TODOD: 
-                # update the last object calling the operatorPool
+                # TODO:  update the last object calling the operatorPool
                 activeObject.operatorPool.receivingObject=activeObject
                               
                 if activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
+                    and self.checkOperator()\
                     and not activeObject.giver.exitIsAssigned():
                     activeObject.giver.assignExit()
-                    #make the operatorsList so that it holds only the manager of the current order
-#                     activeObject.operatorPool.operatorsList=[activeObject.giver.getActiveObjectQueue()[0].manager]
-#                     # TODO: think over the next line, this way sort entity is run multiple times throughout the life-span of 
-#                     #    an entity in the object. Maybe would be a good idea to pick the entity to be disposed from the giver
-#                     activeObject.giver.sortEntities()
+                    # if the activeObject is not in manager's activeCallersList of the entityToGet
+                    if self not in activeObject.giver.getActiveObjectQueue()[0].manager.activeCallersList:
+                        # append it to the activeCallerList of the manager of the entity to be received
+                        activeObject.giver.getActiveObjectQueue()[0].manager.activeCallersList.append(self)
+                        # update entityToGet
+                        self.entityToGet=activeObject.giver.getActiveObjectQueue()[0]
+                    #make the operators List so that it holds only the manager of the current order
                     activeObject.operatorPool.operators=[activeObject.giver.getActiveObjectQueue()[0].manager]
                     # set the variable operatorAssignedTo to activeObject, the operator is then blocked
                     activeObject.operatorPool.operators[0].operatorAssignedTo=activeObject
+#                     # TESTING
+#                     print now(), activeObject.operatorPool.operators[0].objName, 'got assigned to', activeObject.id
                     # read the load time of the machine
                     self.readLoadTime()
                     return True
@@ -135,11 +151,54 @@ class MachineManagedJob(MachineJobShop):
         else:
             # the operator doesn't have to be present for the loading of the machine as the load operation
             # is not assigned to operators
-            return activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested
+            if activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested\
+                 and self.checkOperator():
+                    # update entityToGet
+                    self.entityToGet=self.giver.getActiveObjectQueue()[0]
+            return activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested\
+                 and self.checkOperator()
+#             return activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested
             # while if the set up is performed before the (automatic) loading of the machine then the availability of the
             # operator is requested
 #             return (activeObject.operatorPool=='None' or activeObject.operatorPool.checkIfResourceIsAvailable())\
 #                 and activeObject.Up and len(activeObjectQueue)<activeObject.capacity and isRequested 
+
+    # =======================================================================
+    # to be called by canAcceptAndIsRequested and check for the operator
+    # =======================================================================    
+    def checkOperator(self):
+        if self.giver.getActiveObjectQueue()[0].manager:
+            manager=self.giver.getActiveObjectQueue()[0].manager
+#             print ''
+#             print 'Entity',self.giver.getActiveObjectQueue()[0].id
+#             print 'manager',manager.id
+            return manager.checkIfResourceIsAvailable()
+        else:
+            return True    
+        
+    # =======================================================================
+    #             identifies the Entity to be obtained so that 
+    #            getEntity gives it to removeEntity as argument
+    # =======================================================================    
+    def identifyEntityToGet(self):
+        # ToDecide
+        # maybe we should work this way in all CoreObjects???
+        return self.entityToGet
+    
+    # =======================================================================
+    # checks if the object is ready to receive an Entity
+    # =======================================================================    
+    def isReadyToGet(self):
+        # check if the entity that is about to be obtained has a manager (this should be true for this object)
+        if self.entityToGet.manager:
+            manager=self.entityToGet.manager
+            if len(manager.activeCallersList)>0:
+                manager.sortEntities()      # sort the callers of the manager to be used for scheduling rules
+                # return true if the manager is available
+                return manager.checkIfResourceIsAvailable()
+        else:
+            return True
+        
 
     # =======================================================================
     #                   prepare the machine to be released

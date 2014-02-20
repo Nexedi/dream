@@ -59,6 +59,10 @@ class MouldAssemblyBuffer(QueueManagedJob):
         activeObjectQueue = activeObject.getActiveObjectQueue()
         # if all the components of the same mould are present then move them to the front of the activeQ
         activeObjectQueue.sort(key=lambda x: x.order.componentsReadyForAssembly, reverse=True)
+        '''
+        maybe the below lines should go after
+        if len(activeObjectQueue)>0:
+        '''
         # keep the first entity of the activeQ
         activeEntity = activeObjectQueue[0]
         # bring the entities that have the same parentOrder as the first entity to the front

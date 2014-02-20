@@ -91,7 +91,7 @@ class Queue(CoreObject):
         
         while 1:  
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity
-                                                                    #and one predecessor requests it                                                  
+                                                                    #and one predecessor requests it
             self.getEntity()                                                               
             
             #if entity just got to the dummyQ set its startTime as the current time         
@@ -162,9 +162,9 @@ class Queue(CoreObject):
     # =======================================================================
     #                    removes an entity from the Object
     # =======================================================================
-    def removeEntity(self):        
+    def removeEntity(self, entity=None):        
         activeObject=self.getActiveObject()                                  
-        activeEntity=CoreObject.removeEntity(self)                                      #run the default method     
+        activeEntity=CoreObject.removeEntity(self, entity)                  #run the default method     
         return activeEntity
     # =======================================================================
     #            checks if the Queue can accept an entity and 

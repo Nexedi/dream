@@ -212,9 +212,9 @@ class Dismantle(CoreObject):
     # =======================================================================
     # removes an entity from the Dismantle
     # =======================================================================
-    def removeEntity(self):
+    def removeEntity(self, entity=None):
         activeObjectQueue=self.getActiveObjectQueue()
-        activeEntity=CoreObject.removeEntity(self)  #run the default method 
+        activeEntity=CoreObject.removeEntity(self, entity)  #run the default method 
         
         #update the flags
         if(len(activeObjectQueue)==0):  

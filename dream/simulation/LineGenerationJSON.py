@@ -166,6 +166,7 @@ def createObjects():
     G.OperatorManagedJobsList = []
     G.OperatorPoolsList = []
     G.BrokersList = []
+    G.RoutersList = []
     G.OperatedMachineList = []
     G.BatchScrapMachineList=[]
     G.OrderDecompositionList=[]
@@ -200,6 +201,9 @@ def createObjects():
             id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
             name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
             capacity = int(element.get('capacity') or 1)
+            schedulingRule=element.get('schedulingRule', 'FIFO')    # get the scheduling rule of the el. (how to choose which 
+                                                                    # station to serve first) / default 'FIFO' i.e. the one that 
+                                                                    # called first
             O = Operator(element_id, name, capacity)                # create an operator object
             O.coreObjectIds=getSuccessorList(id)                	# update the list of objects that the operator operates
 																	# calling the getSuccesorList() method on the operator
@@ -1369,11 +1373,17 @@ def main(argv=[], input_data=None):
         if G.maxSimTime==-1:
             simulate(until=infinity)    # simulate until there are no more events. 
                                         # If someone does it for a model that has always events, then it will run forever!
-            # identify from the exits what is the time that the last entity has ended. 
-            endList=[]
-            for exit in G.ExitList:
-                endList.append(exit.timeLastEntityLeft)
-            G.maxSimTime=float(max(endList))    
+#             # identify from the exits what is the time that the last entity has ended. 
+#             endList=[]
+#             for exit in G.ExitList:
+#                 endList.append(exit.timeLastEntityLeft)
+#             G.maxSimTime=float(max(endList))    
+            # identify the time of the last event
+            if now()!=0:    #do not let G.maxSimTime=0 so that there will be no crash
+                G.maxSimTime=now()
+            else:
+                print "simulation ran for 0 time, something may have gone wrong"
+                logger.info("simulation ran for 0 time, something may have gone wrong")
         #else we simulate until the given maxSimTime
         else:            
             simulate(until=G.maxSimTime)      #simulate until the given maxSimTime

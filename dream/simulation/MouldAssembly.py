@@ -94,12 +94,14 @@ class MouldAssembly(MachineManagedJob):
     # =======================================================================
     def getEntity(self):
         activeObject = self.getActiveObject()
-        giverObejct = activeObject.getGiverObject()
+        giverObject = activeObject.getGiverObject()
         # get the first entity from the predecessor
         # TODO: each MachineManagedJob.getEntity is invoked, 
         #     the self.procTime is updated. Have to decide where to assign 
-        #     the processing time of the assembler 
+        #     the processing time of the assembler
         activeEntity=MachineManagedJob.getEntity(self)
+        # this is kept so that in the next loop it will not try to re-get this Entity
+        firstObtained=activeEntity  
         # check weather the activeEntity is of type Mould
         if activeEntity.type=='Mould':
             # and return the mould received
@@ -116,14 +118,18 @@ class MouldAssembly(MachineManagedJob):
         # append the activeEntity to the activeObjectQueue
         activeObjectQueue = activeObject.getActiveObjectQueue()
         activeObjectQueue.append(activeEntity)
-        # dummy variable to inform when the sum of needed components is received 
-        # before the assembly-processing
-        orderGroupReceived = False
+        # loop through the basic/secondary components of the order that is currently obtained
         # all the components are received at the same time
-        while not orderGroupReceived:
+        for entity in activeEntity.order.basicComponentsList\
+                       +activeEntity.order.secondaryComponentsList:
+            # continue for the one that is already  obtained before
+            if entity is firstObtained:
+                continue
+
+            self.entityToGet=entity
             # get the next component
             activeEntity=MachineManagedJob.getEntity(self)
-            # check weather the activeEntity is of type Mould
+            # check whether the activeEntity is of type Mould
             try:
                 if activeEntity.type=='Mould':
             # and return the mould received
@@ -136,10 +142,6 @@ class MouldAssembly(MachineManagedJob):
             except AssembleMouldError as mouldError:
                 print 'Mould Assembly Error: {0}'.format(mouldError)
                 return False
-            # if the length of the internal queue is equal to the updated capacity
-            if len(activeObject.getActiveObjectQueue())==self.capacity:
-            # then exit the while loop
-                orderGroupReceived=True
         # perform the assembly-action and return the assembled mould
         activeEntity = activeObject.assemble()
         return activeEntity

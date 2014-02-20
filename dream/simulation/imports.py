@@ -58,7 +58,6 @@ from dream.simulation.MouldAssembly import MouldAssembly
 from dream.simulation.MouldAssemblyBuffer import MouldAssemblyBuffer
 from dream.simulation.OrderDecomposition import OrderDecomposition
 
-
 #Entities
 from dream.simulation.Job import Job
 from dream.simulation.Part import Part

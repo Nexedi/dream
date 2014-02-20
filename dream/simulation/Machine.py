@@ -31,6 +31,8 @@ from SimPy.Simulation import activate, passivate, waituntil, now, hold, request,
 from Failure import Failure
 from CoreObject import CoreObject
 
+from OperatorRouter import Router
+
 from OperatedPoolBroker import Broker
 from OperatorPool import OperatorPool
 
@@ -145,6 +147,15 @@ class Machine(CoreObject):
             self.operatorPool.initialize()
             self.broker = Broker(self)
             activate(self.broker,self.broker.run())
+            # if there is no router in G.RouterList
+            # initialise a new router
+            if len(G.RouterList)==0:
+                self.router=Router()
+                activate(self.router,self.router.run())
+                G.RouterList.append(self.router)
+            # otherwise set the already existing router as the machines Router
+            else:
+                self.router=G.RouterList[0]
             for operator in self.operatorPool.operators:
                 operator.coreObjectIds.append(self.id)
                 operator.coreObjects.append(self)
@@ -171,6 +182,10 @@ class Machine(CoreObject):
         self.setupTimeCurrentEntity = 0             # holds the time to setup the machine before processing the current entity
         # TODO: check whether the requestingEntity variable can be used in OperatorPreemptive
         self.requestingEntity=None
+        # flag that shows if the station is ready to proceed with the getEntity
+        #    the router must set the flag to false if the station must not proceed with getEntity
+        #    he must also assign the operator to the station that will proceed (operatorAssignedTo)
+        self.canProceedWithGetEntity=True
     
     # =======================================================================
     # the main process of the machine
@@ -178,10 +193,30 @@ class Machine(CoreObject):
     def run(self):
         # execute all through simulation time
         while 1:
-            # wait until the machine can accept an entity and one predecessor requests it 
-            # canAcceptAndIsRequested is invoked to check when the machine requested to receive an entity  
-            yield waituntil, self, self.canAcceptAndIsRequested           
-            # here or in the get entity (apart from the loatTimeCurrentEntity)
+            # wait until the Router has picked the station to proceed with getEntity
+            while self.canProceedWithGetEntity:
+                # wait until the machine can accept an entity and one predecessor requests it 
+                # canAcceptAndIsRequested is invoked to check when the machine requested to receive an entity  
+                yield waituntil, self, self.canAcceptAndIsRequested 
+                # TESTING 
+                print self.id, 'will receive?'          
+#                 # wait until the Router has checked how many stations are requesting (if)
+#                 #     for operators at the same simulation time
+#                 if (self.operatorPool!="None")\
+#                     and any(type=="Load" for type in self.multOperationTypeList):
+#                     self.requestRouter()
+#                     yield waituntil, self, self.router.routerIsSet
+                    
+#             while 1:
+#                 yield waituntil, self, self.canAcceptAndIsRequested 
+#                 if self.isReadyToGet():
+#                     break
+#              # TODO check if the commented below is needed with operators shceduling rules
+#                 else:
+#                     yield hold,self,0 
+
+                
+            # here or in the getEntity (apart from the loadTimeCurrentEntity)
             # in case they are placed inside the getEntity then the initialize of
             # the corresponding variables should be moved to the initialize() of the CoreObject
             self.operatorWaitTimeCurrentEntity = 0
@@ -578,10 +613,8 @@ class Machine(CoreObject):
     # =======================================================================
     # removes an entity from the Machine
     # =======================================================================
-    def removeEntity(self):
-        activeObject=self.getActiveObject()  
-        #activeObject.outputTrace("releases "+activeObject.objName)  # output to trace that the Entity was released from the currentObject
-        activeEntity=CoreObject.removeEntity(self)                               #run the default method     
+    def removeEntity(self, entity=None):
+        activeEntity=CoreObject.removeEntity(self, entity)          # run the default method     
         activeObject.waitToDispose=False                            # update the waitToDispose flag
         return activeEntity
         
@@ -627,6 +660,12 @@ class Machine(CoreObject):
     # =======================================================================
     def calculateLoadTime(self):
         return self.loadRng.generateNumber()
+    
+    # =======================================================================
+    #                   prepare the machine to be operated
+    # =======================================================================
+    def requestRouter(self):
+        self.router.invokeRouter()
     
     # =======================================================================
     #                   prepare the machine to be operated
