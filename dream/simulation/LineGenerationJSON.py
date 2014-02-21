@@ -246,29 +246,14 @@ def createObjects():
         element['id'] = element_id
         objClass=element.get('_class', 'not found')   
         if objClass=='Dream.Source':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            interarrivalTime=element.get('interarrivalTime',{})
-            distributionType=interarrivalTime.get('distributionType', 'not found')
-            mean=float(interarrivalTime.get('mean') or 0)
-            #entity=str_to_class(element['entity'])     # initialize entity
-            entity=element['entity']
-            S=Source(id, name, distributionType, mean, entity)          # initialize Source
-            S.nextIds=getSuccessorList(id)
+            S=Source(**element)
+            S.nextIds=getSuccessorList(element['id'])
             G.SourceList.append(S)
             G.ObjList.append(S)
-            
+
         if objClass=='Dream.BatchSource':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            interarrivalTime=element.get('interarrivalTime',{})
-            distributionType=interarrivalTime.get('distributionType', 'not found')
-            mean=float(interarrivalTime.get('mean') or 0)
-            #entity=str_to_class(element['entity'])          
-            entity=(element['entity'])          
-            batchNumberOfUnits=int(element.get('batchNumberOfUnits', 'not found'))
-            S=BatchSource(id, name, distributionType, mean, entity, batchNumberOfUnits)
-            S.nextIds=getSuccessorList(id)
+            S = BatchSource(**element)
+            S.nextIds=getSuccessorList(element['id'])
             G.BatchSourceList.append(S)
             G.SourceList.append(S)
             G.ObjList.append(S)
