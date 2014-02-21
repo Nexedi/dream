@@ -1,0 +1,111 @@
+{
+ "modelResource": [
+  {
+   "_class": "Dream.Repairman", 
+   "capacity": "1", 
+   "id": "W1", 
+   "name": "W1"
+  }
+ ], 
+ "_class": "Dream.Simulation", 
+ "coreObject": [
+  {
+   "name": "Raw Material", 
+   "entity": "Part", 
+   "interarrivalTime": {
+    "distributionType": "Fixed", 
+    "mean": "0.5"
+   }, 
+   "successorList": [
+    "DummyQ"
+   ], 
+   "_class": "Dream.Source", 
+   "id": "S1"
+  }, 
+  {
+   "processingTime": {
+    "standarddeviation": "2.13383045031", 
+    "distributionType": "Normal", 
+    "mean": "4.95573039885"
+   }, 
+   "name": "Machine1", 
+   "predecessorList": [
+    "DummyQ"
+   ], 
+   "successorList": [
+    "Q1"
+   ], 
+   "failures": {
+    "MTTR": "5", 
+    "failureDistribution": "Fixed", 
+    "repairman": "W1", 
+    "MTTF": "60"
+   }, 
+   "_class": "Dream.Machine", 
+   "id": "M1"
+  }, 
+  {
+   "processingTime": {
+    "standarddeviation": "0.976553538405", 
+    "distributionType": "Normal", 
+    "mean": "7.90482941621"
+   }, 
+   "name": "Machine2", 
+   "predecessorList": [
+    "Q1"
+   ], 
+   "successorList": [
+    "E1"
+   ], 
+   "failures": {
+    "MTTR": "10", 
+    "failureDistribution": "Fixed", 
+    "repairman": "W1", 
+    "MTTF": "40"
+   }, 
+   "_class": "Dream.Machine", 
+   "id": "M2"
+  }, 
+  {
+   "capacity": "1", 
+   "name": "DummyQ", 
+   "isDummy": "True", 
+   "predecessorList": [
+    "S1"
+   ], 
+   "successorList": [
+    "M1"
+   ], 
+   "_class": "Dream.Queue", 
+   "id": "DummyQ"
+  }, 
+  {
+   "capacity": "1", 
+   "name": "Q1", 
+   "isDummy": "False", 
+   "predecessorList": [
+    "M1"
+   ], 
+   "successorList": [
+    "M2"
+   ], 
+   "_class": "Dream.Queue", 
+   "id": "Q1"
+  }, 
+  {
+   "predecessorList": [
+    "M2"
+   ], 
+   "_class": "Dream.Exit", 
+   "id": "E1", 
+   "name": "Stock"
+  }
+ ], 
+ "general": {
+  "maxSimTime": "1440", 
+  "_class": "Dream.Configuration", 
+  "numberOfReplications": "1", 
+  "trace": "Yes", 
+  "confidenceLevel": "0.95"
+ }
+}
