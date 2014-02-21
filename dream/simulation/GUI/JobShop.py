@@ -42,7 +42,7 @@ class Simulation(ACO.Simulation):
 
     now = datetime.now()
     if data['general']['currentDate']:
-      now = strptime(data['general']['currentDate'], '%Y/%m/%d')
+      now = datetime.strptime(data['general']['currentDate'], '%Y/%m/%d')
 
     if 'wip_spreadsheet' in data:
       wip_dict = {}
