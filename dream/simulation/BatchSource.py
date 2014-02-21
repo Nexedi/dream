@@ -30,10 +30,10 @@ from SimPy.Simulation import Process
 from RandomNumberGenerator import RandomNumberGenerator
 
 class BatchSource(Source):
-    def __init__(self, id, name, distribution='Fixed', mean=1,
+    def __init__(self, id, name, interarrivalTime=None,
                  item='Dream.Batch', batchNumberOfUnits=1, **kw):
-        Source.__init__(self, id=id, name=name, distribution=distribution,
-                        mean=mean, item=item, **kw)
+        Source.__init__(self, id=id, name=name,
+                        interarrivalTime=interarrivalTime, item=item, **kw)
         self.numberOfUnits = batchNumberOfUnits
         
         

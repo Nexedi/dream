@@ -35,21 +35,28 @@ import Globals
 #                 The Source object is a Process
 #============================================================================
 class Source(CoreObject): 
-    def __init__(self, id, name, distribution='Fixed', mean=1, item='Dream.Part', **kw):
-        CoreObject.__init__(self, id, name)
+    def __init__(self, id, name, interarrivalTime=None, item='Dream.Part', **kw):
+        # Default values
+        if not interarrivalTime:
+          interarrivalTime = {'distributionType': 'Fixed', 'mean': 1}
 
-        self.distType=distribution                      # label that sets the distribution type
+        CoreObject.__init__(self, id, name)
+        self.distType = interarrivalTime['distributionType'] # label that sets the distribution type
         # properties used for statistics
-        self.totalInterArrivalTime=0                    # the total interarrival time 
-        self.numberOfArrivals=0                         # the number of entities that were created
+        self.totalInterArrivalTime = 0                    # the total interarrival time 
+        self.numberOfArrivals = 0                         # the number of entities that were created
 #         # list containing objects that follow in the routing 
 #         self.next=[]                                    # list with the next objects in the flow
 #         self.nextIds=[]                                 # list with the ids of the next objects in the flow
 #         self.previousIds=[]                             # list with the ids of the previous objects in the flow. 
 #                                                         # For the source it is always empty!
         self.type="Source"                              #String that shows the type of object
-        self.rng=RandomNumberGenerator(self, self.distType)
-        self.rng.avg=mean
+        
+        # XXX we could just initialize RandomNumberGenerator by passing
+        # interarrivalTime dict
+        self.rng = RandomNumberGenerator(self, self.distType)
+        self.rng.avg = interarrivalTime['mean']
+
         self.item=Globals.getClassFromName(item)          #the type of object that the Source will generate
         
     def initialize(self):
