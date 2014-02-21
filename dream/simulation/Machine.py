@@ -460,8 +460,11 @@ class Machine(CoreObject):
         activeEntity=activeObjectQueue[0]
         # the entity that just got processed is cold again it will get 
         # hot again by the time it reaches the giver of the next machine
-        # TODO: check first if the next station is not of type Machine before 
-        #     you cool the entity down
+        # TODO: Not only Machines require time to process entities
+        #     entities such as batchReassembly/Decomposition require time to process entities
+        # TODO: We must consider also the case that entities can be blocked before they can reach 
+        #     the heating point. In such a case they must be removed from the G.pendingEntities list
+        #     and added again after they are unblocked
         if activeEntity.family=='Entity':
             successorsAreMachines=True
             from Globals import G
