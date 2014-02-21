@@ -52,17 +52,20 @@ class Router(ObjectInterruption):
     # =======================================================================    
     def run(self):
         while 1:
-            yield waituntil,self,self.routerIsCalled # wait until the router is called
-#             # TESTING
-#             print 'Router got called'
+            # wait until the router is called
+            yield waituntil,self,self.routerIsCalled
+            # when the router is called for the first time wait till all the entities 
+            #     finished all their moves in stations of non-Machine-type 
+            #     before they can enter again a type-Machine object
+            yield waituntil, self,self.entitiesFinishedMoving
+            
             from Globals import G
             for object in G.MachineList:
                 if object.inPositionToGet:
                     object.canProceedWithGetEntity=True
                     self.inPositionToGet=False
-                    
             
-            
+            # have to check also the activeCallersList of each machine about to receive something
             
 #                 # TESTING
 #                 import Globals
@@ -84,7 +87,33 @@ class Router(ObjectInterruption):
     #     got first called finished their moves through queues?
     #===========================================================================
     def entitiesFinishedMoving(self):
-        pass
+        # check if the entities waiting to be disposed from different Machines
+        #     the first time the Router is called, have reached the last queue (if any)
+        #     before the next Machine in their route
+        
+#         from Globals import G
+#         # pending entities are entities about to enter an other machine, updated by endProcessingActions()
+#         # if there are any pending entities
+#         if len(G.pendingEntities):
+#             # for each one of them
+#             for entity in G.pendingEntities:
+#                 # if they are residing in a machine which waits to dispose and is functional
+#                 if entity.currentStation in G.MachineList:
+#                     if entity.currentStation.checkIfMachineIsUp()\
+#                          and entity.currentStation.waitToDispose:
+#                         # if the next step in the entity's route is machine with Load operationType then continue 
+#                         if (not (entity.currentStation.receiver.type in G.MachineList)\
+#                              and entity.currentStation.receiver.canAccept()\
+#                              or\
+#                            ((entity.currentStation.receiver.type in G.MachineList)\
+#                              and not any(type=='Load' for type in entity.currentStation.receiver.multOperationTypeList))):
+#                             return False
+#                 elif entity.currentStation in G.QueueList:
+#                     pass
+#                 elif entity.currentStation in G.LineClearanceList:
+#                     pass
+#                 # this list can check all the available object in G.objList
+        return True
     
     # =======================================================================
     #                        call the Scheduler 
