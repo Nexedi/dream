@@ -221,14 +221,24 @@ class CoreObject(Process):
             if activeEntity.manager.activeCallersList:
                 activeEntity.manager.activeCallersList=[]
         self.outputTrace(activeEntity.name, "got into "+self.objName)
-#         # TESTING
-#         print now(), activeEntity.id, "got into "+self.id
-        
         # if the successor of the object is a machine that is operated with operationType 'Load'
         #     then the flag hot of the activeEntity must be set to True 
         #     to signalize that the entity has reached its final destination before the next Machine
-         
-        
+        # if the entity is not of type Job
+        if activeEntity.family=='Entity':
+            from Globals import G
+            successorsAreMachines=True
+            # for all the objects in the next list
+            for object in activeObject.next:
+            # if the object is not in the MachineList
+                if not object in G.MachineList:
+                    successorsAreMachines=False
+                    break
+            # the hot flag should not be raised
+            if successorsAreMachines:
+                activeEntity.hot = True
+#         # TESTING
+#         print now(), activeEntity.id, "got into "+self.id
         return activeEntity
       
     # =======================================================================
