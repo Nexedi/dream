@@ -77,9 +77,9 @@ class QueueJobShop(Queue):
         
         #give the entity to the possible receiver that is waiting for the most time. 
         #plant does not do this in every occasion!       
-        maxTimeWaiting=0     
-                                                        # loop through the object in the successor list
+        maxTimeWaiting=0
         hasFreeReceiver=False
+        # loop through the object in the successor list
         for object in activeObject.next:
             if(object.canAccept(activeObject)):                                 # if the object can accept
                 hasFreeReceiver=True
@@ -94,7 +94,7 @@ class QueueJobShop(Queue):
     # =======================================================================
     # gets an entity from the predecessor that the predecessor index points to
     # =======================================================================     
-    def getEntity(self):    
+    def getEntity(self):
         activeObject = self.getActiveObject()
         activeEntity=Queue.getEntity(self)
         # read the possible receivers - update the next list
