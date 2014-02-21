@@ -16,7 +16,8 @@ class Simulation(ACO.Simulation):
           schema["processingTime"],
           schema["failures"]
         ],
-        "_class": 'Dream.MachineJobShop'
+        "_class": 'Dream.MachineJobShop',
+        "name": 'Machine'
     }
     conf["Dream-QueueJobShop"] = {
         "property_list": [
@@ -24,15 +25,22 @@ class Simulation(ACO.Simulation):
           schema["isDummy"],
           schema["schedulingRule"]
         ],
-        "_class": 'Dream.QueueJobShop'
+        "_class": 'Dream.QueueJobShop',
+        "name": 'Job'
     }
     conf["Dream-ExitJobShop"] = {
-        "_class": 'Dream.ExitJobShop'
+        "_class": 'Dream.ExitJobShop',
+        "name": 'Exit'
     }
     # XXX remove default machines etc ?
     conf["Dream-Configuration"]["gui"]["wip_spreadsheet"] = 1
     conf["Dream-Configuration"]["gui"]["job_schedule_spreadsheet"] = 1
     conf["Dream-Configuration"]["gui"]["job_gantt"] = 1
+
+    # remove tools that does not make sense here
+    conf.pop('Dream-Machine')
+    conf.pop('Dream-Queue')
+    conf.pop('Dream-Exit')
     return conf
 
   def _preprocess(self, in_data):
