@@ -55,6 +55,9 @@ class Entity(object):
         self.isCritical=isCritical          # flag to inform weather the entity is critical -> preemption
         self.manager=None                   # default value
         self.numberOfUnits=1                # default value
+        #        flag that signalizes that an entity is ready to enter a machine
+        #        gets cold by the time it has finished its processing
+        self.hot=False
         
     # =======================================================================
     # outputs results to JSON File 
