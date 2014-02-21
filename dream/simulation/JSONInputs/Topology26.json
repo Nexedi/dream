@@ -6,7 +6,7 @@
     "numberOfReplications": "1", 
     "processTimeout": "0.5", 
     "simulationClass": "Leotech",
-	"trace":"No"
+	"trace":"Yes"
   }, 
   "nodes": {
     "E1": {
@@ -232,7 +232,7 @@
                 "distributionType": "Fixed", 
                 "mean": "20"
               }, 
-              "stationId": [
+              "stationIdsList": [
               "M1"
               ], 
               "stepNumber": 3
