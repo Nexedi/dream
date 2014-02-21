@@ -36,11 +36,8 @@ import Globals
 #============================================================================
 class Source(CoreObject): 
     def __init__(self, id, name, distribution='Fixed', mean=1, item='Dream.Part', **kw):
-        CoreObject.__init__(self)
-#         Process.__init__(self)
-        # general properties
-        self.id=id   
-        self.objName=name   
+        CoreObject.__init__(self, id, name)
+
         self.distType=distribution                      # label that sets the distribution type
         # properties used for statistics
         self.totalInterArrivalTime=0                    # the total interarrival time 

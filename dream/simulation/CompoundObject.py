@@ -71,11 +71,10 @@ class NoneCallerObjectError(Exception):
 class CompoundObject(CoreObject,Queue):
     # object arguments may provide information on the type of the object, and the arguments needed to initiate it
     def __init__(self, id, name, capacity, routing='Series', *objects):  
-        CoreObject.__init__(self)
+        CoreObject.__init__(self, id, name)
                                             # it would be a good idea to have the arguments provided as dictionary
-        self.id = id                        # may avoid to use that here
-        self.objName = name                 #           -||-
         self.type = 'CompoundObject'
+
         # variable that can hold according to this implementation two different values 
         #    'Parallel'
         #    'Series'
