@@ -53,7 +53,11 @@ class OrderComponent(Job):                                  # inherits from the 
         if self.order:
             # if the order is not None, and the order.manager is given
             if self.order.manager:
-                self.manager=self.order.manager  
+                self.manager=self.order.manager
+            # variables to be used by OperatorRouter
+            self.hot=self.order.hot
+            if self.order in G.pendingEntities:
+                G.pendingEntites.append(self)
         # TODO: isCritical argument is deprecated
 #         self.isCritical=isCritical  # this should be self.order.isCritical. Added now for testing
         self.componentType = componentType  # the type of the component which can be Basic/Secondary/Auxiliary
@@ -63,3 +67,5 @@ class OrderComponent(Job):                                  # inherits from the 
         self.requestingComponent = requestingComponent  # the id of the requesting component
         self.readyForAssembly = readyForAssembly        # flag informing weather the component was received
                                                         #     by the MouldAssembleBuffer
+        # variables that are used by OperatorRouter
+        
