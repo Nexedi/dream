@@ -58,6 +58,8 @@ class Entity(object):
         #        flag that signalizes that an entity is ready to enter a machine
         #        gets cold by the time it has finished its processing
         self.hot=False
+        # variable used to differentiate entities with and entities without routes
+        self.family='Entity'
         
     # =======================================================================
     # outputs results to JSON File 

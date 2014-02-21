@@ -48,6 +48,8 @@ class Job(Entity):                                  # inherits from the Entity c
 #         self.schedule=[]                            # keeps the result of the simulation. 
 #                                                     # A list with the stations and time of entrance
         self.extraPropertyDict = extraPropertyDict
+        # variable used to differentiate entities with and entities without routes
+        self.family='Job'
     
     # =======================================================================
     # outputs results to JSON File 
