@@ -51,9 +51,7 @@ class Mould(Job):                                  # inherits from the Job class
             # if the order is not None, and the order.manager is given
             if self.order.manager:
                 self.manager=self.order.manager
-            # variables to be used by OperatorRouter
-            self.hot=self.order.hot
-            if self.order in G.pendingEntities:
-                G.pendingEntites.append(self)
+        # variable to be used by OperatorRouter
+        self.hot=False
         # TODO: isCritical argument is deprecated
 #         self.isCritical=isCritical  # this should be self.order.isCritical. Added now for testing
