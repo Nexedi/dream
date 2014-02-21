@@ -503,8 +503,10 @@ class Machine(CoreObject):
                 # the operator performs no load and the entity is received by the machine while there is 
                 # no need for operators presence. The operator needs to be present only where the load Type 
                 # operation is assigned
-                return activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity\
-                        and giverObject.haveToDispose(activeObject)
+                if activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity\
+                        and giverObject.haveToDispose(activeObject) and not giverObject.exitIsAssigned():
+                    activeObject.giver.assignExit()
+                    return True
                 # TODO: if the set-up performance needs be first performed before the transfer of the entity to 
                 # the machine then the presence of an operator to setup the machine before the getEntity()
                 # is requested
@@ -555,7 +557,11 @@ class Machine(CoreObject):
         else:
             # the operator doesn't have to be present for the loading of the machine as the load operation
             # is not assigned to operators
-            return activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity and isRequested
+            #print now(),self.id, isRequested, giverObject.exitIsAssigned()
+            if activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity and isRequested\
+                and not giverObject.exitIsAssigned():
+                activeObject.giver.assignExit()
+                return True
             # while if the set up is performed before the (automatic) loading of the machine then the availability of the
             # operator is requested
 #             return (activeObject.operatorPool=='None' or activeObject.operatorPool.checkIfResourceIsAvailable())\
