@@ -952,51 +952,25 @@ class Machine(CoreObject):
             json['_class'] = 'Dream.Machine';
             json['id'] = str(self.id)
             json['results'] = {}
-            json['results']['failure_ratio']={}
-            if self.checkIfArrayHasDifValues(self.Failure):
-                json['results']['failure_ratio']['min']=stat.bayes_mvs(self.Failure, G.confidenceLevel)[0][1][0]
-                json['results']['failure_ratio']['avg']=stat.bayes_mvs(self.Failure, G.confidenceLevel)[0][0]
-                json['results']['failure_ratio']['max']=stat.bayes_mvs(self.Failure, G.confidenceLevel)[0][1][1]
-            else:
-                json['results']['failure_ratio']['min']=self.Failure[0]
-                json['results']['failure_ratio']['avg']=self.Failure[0]
-                json['results']['failure_ratio']['max']=self.Failure[0] 
-            json['results']['working_ratio']={}
-            if self.checkIfArrayHasDifValues(self.Working):
-                json['results']['working_ratio']['min']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][0]
-                json['results']['working_ratio']['avg']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][0]
-                json['results']['working_ratio']['max']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][1]
-            else:
-                json['results']['working_ratio']['min']=self.Working[0]
-                json['results']['working_ratio']['avg']=self.Working[0]
-                json['results']['working_ratio']['max']=self.Working[0]   
-            json['results']['blockage_ratio']={}
-            if self.checkIfArrayHasDifValues(self.Blockage):
-                json['results']['blockage_ratio']['min']=stat.bayes_mvs(self.Blockage, G.confidenceLevel)[0][1][0]
-                json['results']['blockage_ratio']['avg']=stat.bayes_mvs(self.Blockage, G.confidenceLevel)[0][0]
-                json['results']['blockage_ratio']['max']=stat.bayes_mvs(self.Blockage, G.confidenceLevel)[0][1][1]
-            else:
-                json['results']['blockage_ratio']['min']=self.Blockage[0]
-                json['results']['blockage_ratio']['avg']=self.Blockage[0]
-                json['results']['blockage_ratio']['max']=self.Blockage[0]                 
-            json['results']['waiting_ratio']={}
-            if self.checkIfArrayHasDifValues(self.Waiting):
-                json['results']['waiting_ratio']['min']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][0]
-                json['results']['waiting_ratio']['avg']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][0]
-                json['results']['waiting_ratio']['max']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][1]
-            else:
-                json['results']['waiting_ratio']['min']=self.Waiting[0]
-                json['results']['waiting_ratio']['avg']=self.Waiting[0]
-                json['results']['waiting_ratio']['max']=self.Waiting[0]
-            json['results']['off_shifts_ratio']={}
-            if self.checkIfArrayHasDifValues(self.OffShift):
-                json['results']['off_shifts_ratio']['min']=stat.bayes_mvs(self.OffShift, G.confidenceLevel)[0][1][0]
-                json['results']['off_shifts_ratio']['avg']=stat.bayes_mvs(self.OffShift, G.confidenceLevel)[0][0]
-                json['results']['off_shifts_ratio']['max']=stat.bayes_mvs(self.OffShift, G.confidenceLevel)[0][1][1]
-            else:
-                json['results']['off_shifts_ratio']['min']=self.OffShift[0]
-                json['results']['off_shifts_ratio']['avg']=self.OffShift[0]
-                json['results']['off_shifts_ratio']['max']=self.OffShift[0]  
-                
+
+            for ratio, measureList in (
+                ('failure_ratio', self.Failure),
+                ('working_ratio', self.Working),
+                ('blockage_ratio', self.Blockage),
+                ('waiting_ratio', self.Waiting),
+                ('off_shift_ratio', self.OffShift), ):
+              json['results'][ratio] = {}
+              if self.checkIfArrayHasDifValues(measureList):
+                  json['results'][ratio]['min'] = stat.bayes_mvs(
+                    measureList, G.confidenceLevel)[0][1][0]
+                  json['results'][ratio]['avg'] = stat.bayes_mvs(
+                    measureList, G.confidenceLevel)[0][0]
+                  json['results'][ratio]['max'] = stat.bayes_mvs(
+                    measureList, G.confidenceLevel)[0][1][1]
+              else:
+                  json['results'][ratio]['min'] = \
+                  json['results'][ratio]['avg'] = \
+                  json['results'][ratio]['max'] = measureList[0]
+
         G.outputJSON['elementList'].append(json)
-    
+
