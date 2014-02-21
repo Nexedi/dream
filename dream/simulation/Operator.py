@@ -23,7 +23,7 @@ Created on 22 Nov 2012
 '''
 
 '''
-models a repairman that can fix a machine when it gets failures
+models an operator that operates a machine
 '''
 
 from SimPy.Simulation import Resource, now
@@ -32,10 +32,10 @@ from Repairman import Repairman
 # ===========================================================================
 #                 the resource that operates the machines
 # ===========================================================================
-class Operator(Repairman):
+class Operator(Repairman): # XXX isn't it the other way around ?
     
-    def __init__(self, id, name, capacity=1):
-        Repairman.__init__(self,id=id,name=name,capacity=capacity)
+    def __init__(self, id, name, capacity=1, **kw):
+        Repairman.__init__(self,id=id,name=name,capacity=capacity, **kw)
         self.type="Operator"
 
 

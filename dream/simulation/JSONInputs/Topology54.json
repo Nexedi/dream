@@ -91,7 +91,7 @@
         },
         "S1": {
             "_class": "Dream.Source",
-            "entity": "Part",
+            "entity": "Dream.Part",
             "id": "S1",
             "interarrivalTime": {
                 "distributionType": "Fixed",

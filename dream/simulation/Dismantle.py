@@ -41,7 +41,8 @@ class Dismantle(CoreObject):
     # =======================================================================
     # initialize the object
     # =======================================================================
-    def __init__(self, id, name, distribution='Fixed', mean=1, stdev=0.1, min=0, max=5):
+    def __init__(self, id, name, distribution='Fixed', mean=1, stdev=0.1,
+    min=0, max=5, **kw):
         CoreObject.__init__(self)
         self.id=id
         self.objName=name

@@ -49,7 +49,7 @@ class Machine(CoreObject):
                   operatorPool='None',operationType='None',\
                   loadDistribution="No",loadMean=0, loadStdev=0, loadMin=0, loadMax=10,
                   setupDistribution="No",setupMean=0, setupStdev=0, setupMin=0, setupMax=10,
-                  isPreemptive=False, resetOnPreemption=False):
+                  isPreemptive=False, resetOnPreemption=False, **kw):
         CoreObject.__init__(self)
         # hold the id, name, and type of the Machine instance
         self.id=id
@@ -77,6 +77,7 @@ class Machine(CoreObject):
              the list of operators provided
             if the  list is empty create operator pool with empty list
         '''
+        # XXX operatorPool is not None ?
         if (type(operatorPool) is list) and len(operatorPool)>0:
             id = id+'_OP'
             name=self.objName+'_operatorPool'

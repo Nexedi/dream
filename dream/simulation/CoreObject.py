@@ -54,6 +54,7 @@ class CoreObject(Process):
 
     
     def initialize(self):
+        # XXX why call super.__init__ outside of __init__ ?
         Process.__init__(self) 
         self.Up=True                                    #Boolean that shows if the machine is in failure ("Down") or not ("up")
         self.onShift=True

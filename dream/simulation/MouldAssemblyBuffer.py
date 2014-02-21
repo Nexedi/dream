@@ -44,8 +44,10 @@ class MouldAssemblyBuffer(QueueManagedJob):
     # the default __init__ method of the QueueManagedJob class
     # whereas the default capacity is set to infinity
     # =======================================================================
-    def __init__(self,  id, name, capacity=-1, dummy=False, schedulingRule="FIFO"):
-        QueueManagedJob.__init__(self, id=id, name=name, capacity=capacity, dummy=dummy, schedulingRule=schedulingRule)
+    def __init__(self,  id, name, capacity=-1, isDummy=False,
+                 schedulingRule="FIFO", **kw):
+        QueueManagedJob.__init__(self, id=id, name=name, capacity=capacity,
+                                 isDummy=isDummy, schedulingRule=schedulingRule, **kw)
         
     # =======================================================================                
     # Sort the entities of the activeQ

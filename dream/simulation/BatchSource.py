@@ -25,14 +25,15 @@ Created on 29 Oct 2013
 models the source object that generates the Batches Entities
 '''
 from Source import Source
-from Batch import Batch
 from Globals import G
 from SimPy.Simulation import Process
 from RandomNumberGenerator import RandomNumberGenerator
 
 class BatchSource(Source):
-    def __init__(self, id, name, distribution='Fixed', mean=1, item=Batch, batchNumberOfUnits = 1):
-        Source.__init__(self, id=id, name=name, distribution=distribution, mean=mean, item=item)
+    def __init__(self, id, name, distribution='Fixed', mean=1,
+                 item='Dream.Batch', batchNumberOfUnits=1, **kw):
+        Source.__init__(self, id=id, name=name, distribution=distribution,
+                        mean=mean, item=item, **kw)
         self.numberOfUnits = batchNumberOfUnits
         
         
