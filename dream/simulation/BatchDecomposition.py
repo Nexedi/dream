@@ -129,6 +129,7 @@ class BatchDecomposition(CoreObject):
             # if the activeEntity is in the pendingEntities list then place the subBatches there
             if activeEntity in G.pendingEntities:
                 G.pendingEntities.append(subBatch)
+                G.pendingEntities.remove(activeEntity)
         activeEntity.numberOfSubBatches=self.numberOfSubBatches  
         self.timeLastEntityEnded=now()
 
