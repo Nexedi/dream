@@ -81,8 +81,7 @@
         },
         "M2": {
             "_class": "Dream.Machine",
-            "failures": {
-            },
+            "failures": {},
             "left": 0.1863354037267081,
             "name": "Machine2",
             "processingTime": {

@@ -31,13 +31,6 @@
             "name": "Stock",
             "top": 0.10215053763440862
         },
-        "Q1": {
-            "_class": "Dream.Queue",
-            "id": "Q1",
-            "name": "Queue1",
-            "isDummy": "0",
-            "capacity": "-1"
-        },
         "M1": {
             "_class": "Dream.Machine",
             "failures": {
@@ -50,10 +43,17 @@
                 "mean": "0.25"
             },
             "scheduledMaintenance": {
-                "start": "120",
-                "duration": "60"
+                "duration": "60",
+                "start": "120"
             },
             "top": 0.5
+        },
+        "Q1": {
+            "_class": "Dream.Queue",
+            "capacity": "-1",
+            "id": "Q1",
+            "isDummy": "0",
+            "name": "Queue1"
         },
         "S1": {
             "_class": "Dream.Source",

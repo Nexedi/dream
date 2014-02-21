@@ -18,7 +18,7 @@
 # ===========================================================================
 
 import json
-import pydot
+import sys
 
 
 def get_name(node):
@@ -28,6 +28,7 @@ def get_name(node):
   return name
 
 def positionGraph(g):
+  import pydot
   graph = pydot.Dot()
   for node in g['nodes']:
     graph.add_node(pydot.Node(node))
@@ -55,17 +56,21 @@ def positionGraph(g):
   return preference_dict
 
 def format(m):
-  edges = m.pop('edges')
-  m['edges'] = {}
-  for i, (s, d, data) in enumerate(edges):
-    m['edges'][i] = d, s, data
+  for node in m['nodes'].values():
+    if node['_class'] in ('Dream.Source', 'Dream.BatchSource'):
+      print node
+      entity = node['entity']
+      if not entity.startswith('Dream.'):
+        node['entity'] = 'Dream.%s' % entity
+
   return m
 
 with open(sys.argv[1]) as infile:
   m = json.load(infile)
-m.update(format(m))
-m.update(preferences=positionGraph(m))
-print m
+
+#m.update(format(m))
+#m.update(preferences=positionGraph(m))
+
 with open(sys.argv[1], "w") as outfile:
   json.dump(m, outfile, sort_keys=True,
             indent=4, separators=(',', ': '))

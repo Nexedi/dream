@@ -3,132 +3,28 @@
     "edges": {},
     "general": {
         "_class": "Dream.Configuration",
-        "numberOfReplications": "1",
+        "confidenceLevel": "0.95",
         "maxSimTime": "-1",
-        "trace": "Yes",
-        "confidenceLevel": "0.95"
+        "numberOfReplications": "1",
+        "trace": "Yes"
     },
     "nodes": {
+        "E1": {
+            "_class": "Dream.ExitJobShop",
+            "id": "E1",
+            "name": "Stock"
+        },
         "M1": {
             "_class": "Dream.MachineManagedJob",
             "id": "M1",
             "name": "Machine1",
-			"operationType": "MT-Load-Setup"
+            "operationType": "MT-Load-Setup"
         },
         "M2": {
             "_class": "Dream.MachineManagedJob",
             "id": "M2",
             "name": "Machine2",
-			"operationType": "MT-Load-Setup"
-        },
-        "Q1": {
-            "_class": "Dream.QueueManagedJob",
-            "id": "Q1",
-            "name": "Queue1",
-            "isDummy": "0",
-            "capacity": "-1",
-            "wip": [
-                {
-                    "_class": "Dream.Order",
-                    "id": "Or1",
-                    "name": "Order1",
-                    "isCritical": "1",
-                    "manager": "O1",
-                    "route": [
-                        {
-                            "stepNumber": "0",
-                            "stationIdsList": [
-                                "Q1"
-                            ]
-                        },
-                        {
-                            "stepNumber": "1",
-                            "stationIdsList": [
-                                "M1"
-                            ],
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": "0.25"
-                            }
-                        },
-                        {
-                            "stepNumber": "2",
-                            "stationIdsList": [
-                                "Q2"
-                            ]
-                        },
-                        {
-                            "stepNumber": "3",
-                            "stationIdsList": [
-                                "M2"
-                            ],
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": "1"
-                            },
-							"setupTime": {
-								"setupDistribution": "Fixed",
-								"setupMean": "2"
-							}
-                        },
-                        {
-                            "stepNumber": "4",
-                            "stationIdsList": [
-                                "E1"
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        "Q2": {
-            "_class": "Dream.QueueManagedJob",
-            "id": "Q2",
-            "name": "Queue2",
-            "isDummy": "0",
-            "capacity": "-1",
-            "wip": [
-                {
-                    "_class": "Dream.Order",
-                    "id": "Or2",
-                    "name": "Order2",
-                    "isCritical": "0",
-                    "manager": "O2",
-                    "route": [
-                        {
-                            "stepNumber": "0",
-                            "stationIdsList": [
-                                "Q2"
-                            ]
-                        },
-                        {
-                            "stepNumber": "1",
-                            "stationIdsList": [
-                                "M2"
-                            ],
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": "1"
-                            },
-							"setupTime": {
-								"setupDistribution": "Fixed",
-								"setupMean": "0.5"
-							}
-                        },
-                        {
-                            "stepNumber": "2",
-                            "stationIdsList": [
-                                "E1"
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        "E1": {
-            "_class": "Dream.ExitJobShop",
-            "id": "E1",
-            "name": "Stock"
+            "operationType": "MT-Load-Setup"
         },
         "O1": {
             "_class": "Dream.Operator",
@@ -139,6 +35,110 @@
             "_class": "Dream.Operator",
             "capacity": "1",
             "name": "Operator2"
+        },
+        "Q1": {
+            "_class": "Dream.QueueManagedJob",
+            "capacity": "-1",
+            "id": "Q1",
+            "isDummy": "0",
+            "name": "Queue1",
+            "wip": [
+                {
+                    "_class": "Dream.Order",
+                    "id": "Or1",
+                    "isCritical": "1",
+                    "manager": "O1",
+                    "name": "Order1",
+                    "route": [
+                        {
+                            "stationIdsList": [
+                                "Q1"
+                            ],
+                            "stepNumber": "0"
+                        },
+                        {
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "0.25"
+                            },
+                            "stationIdsList": [
+                                "M1"
+                            ],
+                            "stepNumber": "1"
+                        },
+                        {
+                            "stationIdsList": [
+                                "Q2"
+                            ],
+                            "stepNumber": "2"
+                        },
+                        {
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "1"
+                            },
+                            "setupTime": {
+                                "setupDistribution": "Fixed",
+                                "setupMean": "2"
+                            },
+                            "stationIdsList": [
+                                "M2"
+                            ],
+                            "stepNumber": "3"
+                        },
+                        {
+                            "stationIdsList": [
+                                "E1"
+                            ],
+                            "stepNumber": "4"
+                        }
+                    ]
+                }
+            ]
+        },
+        "Q2": {
+            "_class": "Dream.QueueManagedJob",
+            "capacity": "-1",
+            "id": "Q2",
+            "isDummy": "0",
+            "name": "Queue2",
+            "wip": [
+                {
+                    "_class": "Dream.Order",
+                    "id": "Or2",
+                    "isCritical": "0",
+                    "manager": "O2",
+                    "name": "Order2",
+                    "route": [
+                        {
+                            "stationIdsList": [
+                                "Q2"
+                            ],
+                            "stepNumber": "0"
+                        },
+                        {
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "1"
+                            },
+                            "setupTime": {
+                                "setupDistribution": "Fixed",
+                                "setupMean": "0.5"
+                            },
+                            "stationIdsList": [
+                                "M2"
+                            ],
+                            "stepNumber": "1"
+                        },
+                        {
+                            "stationIdsList": [
+                                "E1"
+                            ],
+                            "stepNumber": "2"
+                        }
+                    ]
+                }
+            ]
         }
     }
 }

@@ -29,21 +29,23 @@
     },
     "general": {
         "_class": "Dream.Configuration",
-        "numberOfReplications": "1",
+        "confidenceLevel": "0.95",
         "maxSimTime": "7",
-        "trace": "Yes",
-        "confidenceLevel": "0.95"
+        "numberOfReplications": "1",
+        "trace": "Yes"
     },
     "nodes": {
-        "S1": {
-            "_class": "Dream.Source",
-            "id": "S1",
-            "name": "Raw Material",
-            "interarrivalTime": {
-                "distributionType": "Fixed",
-                "mean": "0.75"
-            },
-            "entity": "Part"
+        "DummyQ": {
+            "_class": "Dream.Queue",
+            "capacity": "1",
+            "id": "DummyQ",
+            "isDummy": "1",
+            "name": "DummyQ"
+        },
+        "E1": {
+            "_class": "Dream.Exit",
+            "id": "E1",
+            "name": "Stock"
         },
         "M1": {
             "_class": "Dream.Machine",
@@ -54,8 +56,21 @@
                 "mean": "0.5"
             },
             "shift": {
-                "shiftPattern": [[0,4.75], [9,11], [17,19]],
-                "endUnfinished": 1
+                "endUnfinished": 1,
+                "shiftPattern": [
+                    [
+                        0,
+                        4.75
+                    ],
+                    [
+                        9,
+                        11
+                    ],
+                    [
+                        17,
+                        19
+                    ]
+                ]
             }
         },
         "M2": {
@@ -67,24 +82,22 @@
                 "mean": "1"
             }
         },
-        "DummyQ": {
-            "_class": "Dream.Queue",
-            "id": "DummyQ",
-            "name": "DummyQ",
-            "isDummy": "1",
-            "capacity": "1"
-        },
         "Q1": {
             "_class": "Dream.Queue",
+            "capacity": "1",
             "id": "Q1",
-            "name": "Q1",
             "isDummy": "0",
-            "capacity": "1"
+            "name": "Q1"
         },
-        "E1": {
-            "_class": "Dream.Exit",
-            "id": "E1",
-            "name": "Stock"
+        "S1": {
+            "_class": "Dream.Source",
+            "entity": "Part",
+            "id": "S1",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": "0.75"
+            },
+            "name": "Raw Material"
         }
     }
 }

@@ -36,6 +36,19 @@
             "name": "Stock",
             "top": 0.045454545454545414
         },
+        "EV": {
+            "_class": "Dream.EventGenerator",
+            "argumentDict": {
+                "consumption": 20,
+                "from": "Q2",
+                "safetyStock": 70,
+                "to": "E1"
+            },
+            "interval": "60",
+            "method": "Globals.moveExcess",
+            "name": "ExcessEntitiesMover",
+            "start": "60"
+        },
         "M1": {
             "_class": "Dream.Machine",
             "failures": {},
@@ -84,19 +97,6 @@
             "left": 0.6968085106382979,
             "name": "Raw Material",
             "top": 0.9545454545454546
-        },
-        "EV": {
-            "_class": "Dream.EventGenerator",
-            "name": "ExcessEntitiesMover",
-            "start": "60",
-            "interval": "60",
-            "method": "Globals.moveExcess",
-            "argumentDict": {
-                "from": "Q2",
-                "to": "E1",
-                "safetyStock": 70,
-                "consumption": 20
-            }
         }
     }
 }

@@ -40,6 +40,38 @@
             "left": 0.7083333333333333,
             "top": 0.05688622754491013
         },
+        "M1": {
+            "_class": "Dream.Machine",
+            "left": 0.5625,
+            "name": "Machine1",
+            "operationType": "Processing",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "17"
+            },
+            "top": 0.5
+        },
+        "M2": {
+            "_class": "Dream.Machine",
+            "failures": {},
+            "left": 0.7083333333333333,
+            "loadTime": {},
+            "name": "Machine2",
+            "operationType": "Processing",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "2"
+            },
+            "setupTime": {},
+            "top": 0.2784431137724551
+        },
+        "O1": {
+            "_class": "Dream.Operator",
+            "capacity": "1",
+            "left": 0.8489583333333334,
+            "name": "Operator1",
+            "top": 0.721556886227545
+        },
         "S1": {
             "_class": "Dream.Source",
             "entity": "Part",
@@ -50,41 +82,6 @@
             "left": 0.30208333333333337,
             "name": "Source",
             "top": 0.9431137724550899
-        },
-        "M1": {
-            "_class": "Dream.Machine",
-            "name": "Machine1",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": "17"
-            },
-            "operationType": "Processing",
-            "left": 0.5625,
-            "top": 0.5
-        },
-        "M2": {
-            "_class": "Dream.Machine",
-            "name": "Machine2",
-            "failures": {
-            },
-            "setupTime": {
-            },
-            "loadTime": {
-            },
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": "2"
-            },
-            "operationType": "Processing",
-            "top": 0.2784431137724551,
-            "left": 0.7083333333333333
-        },
-        "O1": {
-            "_class": "Dream.Operator",
-            "capacity": "1",
-            "left": 0.8489583333333334,
-            "name": "Operator1",
-            "top": 0.721556886227545
         }
     }
 }

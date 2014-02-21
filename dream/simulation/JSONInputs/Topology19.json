@@ -3,12 +3,16 @@
     "edges": {},
     "general": {
         "_class": "Dream.Configuration",
-        "numberOfReplications": "1",
+        "confidenceLevel": "0.95",
         "maxSimTime": "-1",
-        "trace": "Yes",
-        "confidenceLevel": "0.95"
+        "numberOfReplications": "1",
+        "trace": "Yes"
     },
     "nodes": {
+        "E1": {
+            "_class": "Dream.ExitJobShop",
+            "name": "Exit"
+        },
         "M1": {
             "_class": "Dream.MachineJobShop",
             "name": "Machine1"
@@ -23,84 +27,84 @@
         },
         "Q1": {
             "_class": "Dream.QueueJobShop",
-            "name": "Queue1",
-            "isDummy": "0",
             "capacity": "1000",
+            "isDummy": "0",
+            "name": "Queue1",
             "wip": [
                 {
-                    "id": "J1",
                     "_class": "Dream.Job",
+                    "id": "J1",
                     "name": "Job1",
                     "route": [
                         {
-                            "stepNumber": "0",
-                            "stationIdsList": [
-                            "Q1"
-                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
-                            }
+                            },
+                            "stationIdsList": [
+                                "Q1"
+                            ],
+                            "stepNumber": "0"
                         },
                         {
-                            "stepNumber": "1",
-                            "stationIdsList": [
-                            "M1"
-                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "1"
-                            }
+                            },
+                            "stationIdsList": [
+                                "M1"
+                            ],
+                            "stepNumber": "1"
                         },
                         {
-                            "stepNumber": "2",
-                            "stationIdsList": [
-                            "Q3"
-                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
-                            }
+                            },
+                            "stationIdsList": [
+                                "Q3"
+                            ],
+                            "stepNumber": "2"
                         },
                         {
-                            "stepNumber": "3",
-                            "stationIdsList": [
-                            "M3"
-                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "3"
-                            }
+                            },
+                            "stationIdsList": [
+                                "M3"
+                            ],
+                            "stepNumber": "3"
                         },
                         {
-                            "stepNumber": "4",
-                            "stationIdsList": [
-                            "Q2"
-                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
-                            }
+                            },
+                            "stationIdsList": [
+                                "Q2"
+                            ],
+                            "stepNumber": "4"
                         },
                         {
-                            "stepNumber": "5",
-                            "stationIdsList": [
-                            "M2"
-                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "2"
-                            }
+                            },
+                            "stationIdsList": [
+                                "M2"
+                            ],
+                            "stepNumber": "5"
                         },
                         {
-                            "stepNumber": "6",
-                            "stationIdsList": [
-                            "E1"
-                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
-                            }
+                            },
+                            "stationIdsList": [
+                                "E1"
+                            ],
+                            "stepNumber": "6"
                         }
                     ]
                 }
@@ -108,85 +112,85 @@
         },
         "Q2": {
             "_class": "Dream.QueueJobShop",
-            "id": "Q2",
-            "name": "Queue2",
-            "isDummy": "0",
             "capacity": "1000",
+            "id": "Q2",
+            "isDummy": "0",
+            "name": "Queue2",
             "wip": [
                 {
-                    "id": "J2",
                     "_class": "Dream.Job",
+                    "id": "J2",
                     "name": "Job2",
                     "route": [
                         {
-                            "stepNumber": "0",
-                            "stationIdsList": [
-                            "Q2"
-                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
-                            }
+                            },
+                            "stationIdsList": [
+                                "Q2"
+                            ],
+                            "stepNumber": "0"
                         },
                         {
-                            "stepNumber": "1",
-                            "stationIdsList": [
-                            "M2"
-                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "3"
-                            }
+                            },
+                            "stationIdsList": [
+                                "M2"
+                            ],
+                            "stepNumber": "1"
                         },
                         {
-                            "stepNumber": "2",
-                            "stationIdsList": [
-                            "Q3"
-                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
-                            }
+                            },
+                            "stationIdsList": [
+                                "Q3"
+                            ],
+                            "stepNumber": "2"
                         },
                         {
-                            "stepNumber": "3",
-                            "stationIdsList": [
-                            "M3"
-                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "1"
-                            }
+                            },
+                            "stationIdsList": [
+                                "M3"
+                            ],
+                            "stepNumber": "3"
                         },
                         {
-                            "stepNumber": "4",
-                            "stationIdsList": [
-                            "Q2"
-                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
-                            }
+                            },
+                            "stationIdsList": [
+                                "Q2"
+                            ],
+                            "stepNumber": "4"
                         },
                         {
-                            "stepNumber": "5",
-                            "stationIdsList": [
-                            "M2"
-                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "7"
-                            }
+                            },
+                            "stationIdsList": [
+                                "M2"
+                            ],
+                            "stepNumber": "5"
                         },
                         {
-                            "stepNumber": "6",
-                            "stationIdsList": [
-                            "E1"
-                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
                                 "mean": "0"
-                            }
+                            },
+                            "stationIdsList": [
+                                "E1"
+                            ],
+                            "stepNumber": "6"
                         }
                     ]
                 }
@@ -194,13 +198,9 @@
         },
         "Q3": {
             "_class": "Dream.QueueJobShop",
-            "name": "Queue3",
+            "capacity": "1000",
             "isDummy": "0",
-            "capacity": "1000"
-        },
-        "E1": {
-            "_class": "Dream.ExitJobShop",
-            "name": "Exit"
+            "name": "Queue3"
         }
     }
 }

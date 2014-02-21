@@ -4,14 +4,15 @@
         "0": [
             "S1",
             "A1",
-            {"entity": "Part"
+            {
+                "entity": "Part"
             }
         ],
         "1": [
             "S2",
             "A1",
             {
-            "entity": "Frame"
+                "entity": "Frame"
             }
         ],
         "2": [
@@ -28,28 +29,28 @@
             "D1",
             "M2",
             {
-             "entity": "Frame"
+                "entity": "Frame"
             }
         ],
         "5": [
             "D1",
             "M3",
             {
-             "entity": "Part"
+                "entity": "Part"
             }
         ],
         "6": [
             "M2",
             "E1",
             {
-             "entity": "Part"
+                "entity": "Part"
             }
         ],
         "7": [
             "M3",
             "E2",
             {
-             "entity": "Frame"
+                "entity": "Frame"
             }
         ]
     },

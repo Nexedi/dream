@@ -24,38 +24,43 @@
     },
     "general": {
         "_class": "Dream.Configuration",
-        "numberOfReplications": "1",
+        "confidenceLevel": "0.95",
         "maxSimTime": "-1",
-        "trace": "Yes",
-        "confidenceLevel": "0.95"
+        "numberOfReplications": "1",
+        "trace": "Yes"
     },
     "nodes": {
+        "E1": {
+            "_class": "Dream.Exit",
+            "id": "E1",
+            "name": "Stock"
+        },
         "M1": {
             "_class": "Dream.Machine",
+            "failures": {},
             "id": "M1",
             "name": "Machine1",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "0.25"
-            },
-            "failures": {}
+            }
         },
         "M2": {
             "_class": "Dream.Machine",
+            "failures": {},
             "id": "M2",
             "name": "Machine2",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": "1.5"
-            },
-            "failures": {}
+            }
         },
         "Q1": {
             "_class": "Dream.Queue",
-            "id": "Q1",
-            "name": "Queue1",
-            "isDummy": "0",
             "capacity": "1",
+            "id": "Q1",
+            "isDummy": "0",
+            "name": "Queue1",
             "wip": [
                 {
                     "_class": "Dream.Part",
@@ -66,15 +71,10 @@
         },
         "Q2": {
             "_class": "Dream.Queue",
+            "capacity": "1",
             "id": "Q2",
-            "name": "Queue2",
             "isDummy": "0",
-            "capacity": "1"
-        },
-        "E1": {
-            "_class": "Dream.Exit",
-            "id": "E1",
-            "name": "Stock"
+            "name": "Queue2"
         }
     }
 }

@@ -1,106 +1,113 @@
-{"_class": "Dream.Simulation",
- "edges": {
-   "0": [
-   		"W1",
-   		"M1",
-   		{}
-   		],
-   "1": [
-   		"W1",
-   		"M2",
-   		{}
-   		],
-   "2": [
-        "S1",
-        "DummyQ",
-        {}
+{
+    "_class": "Dream.Simulation",
+    "edges": {
+        "0": [
+            "W1",
+            "M1",
+            {}
         ],
-   "3": [
-        "M1",
-        "Q1",
-        {}
+        "1": [
+            "W1",
+            "M2",
+            {}
         ],
-   "4": [
-        "M2",
-        "E1",
-        {}
+        "2": [
+            "S1",
+            "DummyQ",
+            {}
         ],
-   "5": [
-        "DummyQ",
-        "M1",
-        {}
+        "3": [
+            "M1",
+            "Q1",
+            {}
         ],
-   "6": [
-        "Q1",
-        "M2",
-        {}
+        "4": [
+            "M2",
+            "E1",
+            {}
+        ],
+        "5": [
+            "DummyQ",
+            "M1",
+            {}
+        ],
+        "6": [
+            "Q1",
+            "M2",
+            {}
         ]
- },
-  "general": {
-    "_class": "Dream.Configuration",
-    "numberOfReplications": "1",
-    "maxSimTime": "1440",
-    "trace": "No",
-    "confidenceLevel": "0.95"
-  },
-  "nodes": {
-     "S1": {"_class": "Dream.Source",
-      "id": "S1",
-      "name": "Raw Material",
-      "interarrivalTime":
-         {
-           "distributionType": "Fixed",
-           "mean": "0.5"
-         },
-      "entity": "Part"
-      },
-     "M1": {"_class": "Dream.Machine",
-      "id": "M1",
-      "name": "Machine1",
-      "processingTime": {
-        "distributionType": "Fixed",
-        "mean": "0.25"
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "confidenceLevel": "0.95",
+        "maxSimTime": "1440",
+        "numberOfReplications": "1",
+        "trace": "No"
+    },
+    "nodes": {
+        "DummyQ": {
+            "_class": "Dream.Queue",
+            "capacity": "1",
+            "id": "DummyQ",
+            "isDummy": "1",
+            "name": "DummyQ"
         },
-      "failures":{
-           "failureDistribution": "Fixed",
-		   "MTTF": "60",
-		   "MTTR": "5"
-        }
-      },
-     "M2": {"_class": "Dream.Machine",
-      "id": "M2",
-      "name": "Machine2",
-      "processingTime": {
-        "distributionType": "Fixed",
-        "mean": "1.5"
+        "E1": {
+            "_class": "Dream.Exit",
+            "id": "E1",
+            "name": "Stock"
         },
-      "failures":{
-           "failureDistribution": "Fixed",
-		   "MTTF": "40",
-		   "MTTR": "10"
+        "M1": {
+            "_class": "Dream.Machine",
+            "failures": {
+                "MTTF": "60",
+                "MTTR": "5",
+                "failureDistribution": "Fixed"
+            },
+            "id": "M1",
+            "name": "Machine1",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "0.25"
+            }
+        },
+        "M2": {
+            "_class": "Dream.Machine",
+            "failures": {
+                "MTTF": "40",
+                "MTTR": "10",
+                "failureDistribution": "Fixed"
+            },
+            "id": "M2",
+            "name": "Machine2",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": "1.5"
+            }
+        },
+        "Q1": {
+            "_class": "Dream.Queue",
+            "capacity": "1",
+            "id": "Q1",
+            "isDummy": "0",
+            "name": "Q1"
+        },
+        "S1": {
+            "_class": "Dream.Source",
+            "entity": "Part",
+            "id": "S1",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": "0.5"
+            },
+            "name": "Raw Material"
+        },
+        "W1": {
+            "_class": "Dream.Repairman",
+            "capacity": "1",
+            "left": 0.14893617021276595,
+            "name": "W1",
+            "top": 0.7727272727272727
         }
-      },
-     "DummyQ": {"_class": "Dream.Queue",
-      "id": "DummyQ",
-      "name": "DummyQ",
-	  "isDummy": "1",
-	  "capacity": "1"
-      },	
-     "Q1": {"_class": "Dream.Queue",
-      "id": "Q1",
-      "name": "Q1",
-	  "isDummy": "0",
-	  "capacity": "1"
-      },	  
-     "E1": {"_class": "Dream.Exit",
-      "id": "E1",
-      "name": "Stock"
-      },
-     "W1": {"_class": "Dream.Repairman",
-     "capacity": "1",
-     "left": 0.14893617021276595,
-     "name": "W1",
-     "top": 0.7727272727272727
-      }
-  }
+    }
 }

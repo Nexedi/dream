@@ -3,215 +3,276 @@
     "edges": {},
     "general": {
         "_class": "Dream.Configuration",
-        "numberOfReplications": "1",
+        "confidenceLevel": "0.95",
         "maxSimTime": "-1",
-        "trace": "Yes",
-        "confidenceLevel": "0.95"
+        "numberOfReplications": "1",
+        "trace": "Yes"
     },
     "nodes": {
+        "AB1": {
+            "_class": "Dream.MouldAssemblyBuffer",
+            "capacity": "-1",
+            "id": "AB1",
+            "isDummy": "0",
+            "name": "Assembly Buffer"
+        },
+        "CAD1": {
+            "_class": "Dream.MachineManagedJob",
+            "name": "CAD Design 1",
+            "operationType": "MT-Load-Setup-Processing"
+        },
+        "CAD2": {
+            "_class": "Dream.MachineManagedJob",
+            "name": "CAD Design 2",
+            "operationType": "MT-Load-Setup-Processing"
+        },
+        "CAM1": {
+            "_class": "Dream.MachineManagedJob",
+            "name": "CAM Design 1",
+            "operationType": "MT-Load-Setup-Processing"
+        },
+        "CAM2": {
+            "_class": "Dream.MachineManagedJob",
+            "name": "CAM Design 2",
+            "operationType": "MT-Load-Setup-Processing"
+        },
+        "E1": {
+            "_class": "Dream.ExitJobShop",
+            "name": "Exit"
+        },
+        "EDM": {
+            "_class": "Dream.MachineManagedJob",
+            "name": "EDM",
+            "operationType": "MT-Load-Setup-Processing"
+        },
+        "IM": {
+            "_class": "Dream.MachineManagedJob",
+            "name": "Mould Injection",
+            "operationType": "MT-Load-Setup-Processing"
+        },
+        "MA1": {
+            "_class": "Dream.MouldAssembly",
+            "id": "MA1",
+            "name": "Assembly 1",
+            "operationType": "MT-Load-Setup-Processing"
+        },
+        "MA2": {
+            "_class": "Dream.MouldAssembly",
+            "id": "MA2",
+            "name": "Assembly 2",
+            "operationType": "MT-Load-Setup-Processing"
+        },
+        "MA3": {
+            "_class": "Dream.MouldAssembly",
+            "id": "MA3",
+            "name": "Assembly 3",
+            "operationType": "MT-Load-Setup-Processing"
+        },
+        "MILL1": {
+            "_class": "Dream.MachineManagedJob",
+            "name": "Milling 1",
+            "operationType": "MT-Load-Setup-Processing"
+        },
+        "MILL2": {
+            "_class": "Dream.MachineManagedJob",
+            "name": "Milling 2",
+            "operationType": "MT-Load-Setup-Processing"
+        },
+        "OD0": {
+            "_class": "Dream.OrderDecomposition",
+            "name": "Order Decomposition"
+        },
+        "OP1": {
+            "_class": "Dream.Operator",
+            "capacity": "1",
+            "name": "Operator1"
+        },
         "Q0": {
             "_class": "Dream.QueueManagedJob",
-            "name": "StartQueue",
-            "isDummy": "0",
             "capacity": "-1",
+            "isDummy": "0",
+            "name": "StartQueue",
             "wip": [
                 {
                     "_class": "Dream.Order",
-                    "name": "Order1",
-                    "id": "O1",
-                    "manager": "OP1",
-                    "route": [
-                        {
-                            "stepNumber": "0",
-                            "stationIdsList": [
-                                "Q0"
-                            ]
-                        },
-                        {
-                            "stepNumber": "1",
-                            "stationIdsList": [
-                            	"CAD1","CAD2"
-                            ],
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": "1"
-                            },
-                            "setupTime": {
-                                "setupDistribution": "Fixed",
-                                "setupMean": "0.5"
-                            }
-                        }
-                    ],
                     "componentsList": [
                         {
                             "_class": "Dream.OrderComponent",
+                            "componentType": "Basic",
                             "id": "C1O1",
                             "name": "Component1 from Order1",
-							"componentType": "Basic",
                             "route": [
                                 {
-                                    "stepNumber": "0",
                                     "stationIdsList": [
-                                    	"OD0"
-                                    ]
-                                },
-                                {
-                                    "stepNumber": "1",
-                                    "stationIdsList": [
-                                    	"QCAM"
-                                    ]
-                                },
-                                {
-                                    "stepNumber": "2",
-                                    "stationIdsList": [
-                                    	"CAM1","CAM2"
+                                        "OD0"
                                     ],
+                                    "stepNumber": "0"
+                                },
+                                {
+                                    "stationIdsList": [
+                                        "QCAM"
+                                    ],
+                                    "stepNumber": "1"
+                                },
+                                {
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "2"
                                     },
-									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.5"
-									}
-                                },
-                                {
-                                    "stepNumber": "3",
+                                    "setupTime": {
+                                        "setupDistribution": "Fixed",
+                                        "setupMean": "0.5"
+                                    },
                                     "stationIdsList": [
-                                    	"QMILL"
-                                    ]
-                                },
-                                {
-                                    "stepNumber": "4",
-                                    "stationIdsList": [
-                                    	"MILL1","MILL2"
+                                        "CAM1",
+                                        "CAM2"
                                     ],
+                                    "stepNumber": "2"
+                                },
+                                {
+                                    "stationIdsList": [
+                                        "QMILL"
+                                    ],
+                                    "stepNumber": "3"
+                                },
+                                {
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "2"
                                     },
-									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.5"
-									}
-                                },
-                                {
-                                    "stepNumber": "5",
+                                    "setupTime": {
+                                        "setupDistribution": "Fixed",
+                                        "setupMean": "0.5"
+                                    },
                                     "stationIdsList": [
-                                    	"QEDM"
-                                    ]
-                                },
-                                {
-                                    "stepNumber": "6",
-                                    "stationIdsList": [
-                                    	"EDM"
+                                        "MILL1",
+                                        "MILL2"
                                     ],
+                                    "stepNumber": "4"
+                                },
+                                {
+                                    "stationIdsList": [
+                                        "QEDM"
+                                    ],
+                                    "stepNumber": "5"
+                                },
+                                {
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "2"
                                     },
-									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.5"
-									}
+                                    "setupTime": {
+                                        "setupDistribution": "Fixed",
+                                        "setupMean": "0.5"
+                                    },
+                                    "stationIdsList": [
+                                        "EDM"
+                                    ],
+                                    "stepNumber": "6"
                                 },
                                 {
-                                    "stepNumber": "7",
                                     "stationIdsList": [
-                                    	"AB1"
-                                    ]
+                                        "AB1"
+                                    ],
+                                    "stepNumber": "7"
                                 },
                                 {
-                                    "stepNumber": "8",
                                     "stationIdsList": [
-                                    	"MA1","MA2","MA3"
-                                    ]
+                                        "MA1",
+                                        "MA2",
+                                        "MA3"
+                                    ],
+                                    "stepNumber": "8"
                                 }
                             ]
                         },
                         {
                             "_class": "Dream.OrderComponent",
+                            "componentType": "Secondary",
                             "id": "C201",
                             "name": "Component2 from Order1",
-							"componentType": "Secondary",
                             "route": [
                                 {
-                                    "stepNumber": "0",
                                     "stationIdsList": [
-                                    	"OD0"
-                                    ]
-                                },
-                                {
-                                    "stepNumber": "1",
-                                    "stationIdsList": [
-                                    	"QCAM"
-                                    ]
-                                },
-                                {
-                                    "stepNumber": "2",
-                                    "stationIdsList": [
-                                    	"CAM1","CAM2"
+                                        "OD0"
                                     ],
+                                    "stepNumber": "0"
+                                },
+                                {
+                                    "stationIdsList": [
+                                        "QCAM"
+                                    ],
+                                    "stepNumber": "1"
+                                },
+                                {
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "1"
                                     },
-									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.6"
-									}
-                                },
-                                {
-                                    "stepNumber": "3",
+                                    "setupTime": {
+                                        "setupDistribution": "Fixed",
+                                        "setupMean": "0.6"
+                                    },
                                     "stationIdsList": [
-                                    	"QMILL"
-                                    ]
-                                },
-                                {
-                                    "stepNumber": "4",
-                                    "stationIdsList": [
-                                    	"MILL1","MILL2"
+                                        "CAM1",
+                                        "CAM2"
                                     ],
+                                    "stepNumber": "2"
+                                },
+                                {
+                                    "stationIdsList": [
+                                        "QMILL"
+                                    ],
+                                    "stepNumber": "3"
+                                },
+                                {
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "4"
                                     },
-									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.4"
-									}
-                                },
-                                {
-                                    "stepNumber": "5",
+                                    "setupTime": {
+                                        "setupDistribution": "Fixed",
+                                        "setupMean": "0.4"
+                                    },
                                     "stationIdsList": [
-                                    	"QEDM"
-                                    ]
-                                },
-                                {
-                                    "stepNumber": "6",
-                                    "stationIdsList": [
-                                    	"EDM"
+                                        "MILL1",
+                                        "MILL2"
                                     ],
+                                    "stepNumber": "4"
+                                },
+                                {
+                                    "stationIdsList": [
+                                        "QEDM"
+                                    ],
+                                    "stepNumber": "5"
+                                },
+                                {
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "1"
                                     },
-									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.6"
-									}
+                                    "setupTime": {
+                                        "setupDistribution": "Fixed",
+                                        "setupMean": "0.6"
+                                    },
+                                    "stationIdsList": [
+                                        "EDM"
+                                    ],
+                                    "stepNumber": "6"
                                 },
                                 {
-                                    "stepNumber": "7",
                                     "stationIdsList": [
-                                    	"AB1"
-                                    ]
+                                        "AB1"
+                                    ],
+                                    "stepNumber": "7"
                                 },
                                 {
-                                    "stepNumber": "8",
                                     "stationIdsList": [
-                                    	"MA1","MA2","MA3"
-                                    ]
+                                        "MA1",
+                                        "MA2",
+                                        "MA3"
+                                    ],
+                                    "stepNumber": "8"
                                 }
                             ]
                         },
@@ -221,242 +282,253 @@
                             "name": "Mould1 from Order1",
                             "route": [
                                 {
-                                    "stepNumber": "0",
-                                    "stationIdsList": [
-                                    	"MA1","MA2","MA3"
-                                    ],
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "1"
-                                    }
-                                },
-								{
-                                    "stepNumber": "1",
+                                    },
                                     "stationIdsList": [
-                                    	"QIM"
-                                    ]
-                                },
-								{
-                                    "stepNumber": "2",
-                                    "stationIdsList": [
-                                    	"IM"
+                                        "MA1",
+                                        "MA2",
+                                        "MA3"
                                     ],
+                                    "stepNumber": "0"
+                                },
+                                {
+                                    "stationIdsList": [
+                                        "QIM"
+                                    ],
+                                    "stepNumber": "1"
+                                },
+                                {
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "2"
                                     },
-									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.5"
-									}
+                                    "setupTime": {
+                                        "setupDistribution": "Fixed",
+                                        "setupMean": "0.5"
+                                    },
+                                    "stationIdsList": [
+                                        "IM"
+                                    ],
+                                    "stepNumber": "2"
                                 },
                                 {
-                                    "stepNumber": "3",
                                     "stationIdsList": [
-                                    	"E1"
-                                    ]
+                                        "E1"
+                                    ],
+                                    "stepNumber": "3"
                                 }
                             ]
                         }
-                    ]
-                },
-				{
-                    "_class": "Dream.Order",
-                    "name": "Order2",
-                    "id": "O2",
+                    ],
+                    "id": "O1",
                     "manager": "OP1",
+                    "name": "Order1",
                     "route": [
                         {
-                            "stepNumber": "0",
                             "stationIdsList": [
                                 "Q0"
-                            ]
+                            ],
+                            "stepNumber": "0"
                         },
                         {
-                            "stepNumber": "1",
-                            "stationIdsList": [
-                            	"CAD1","CAD2"
-                            ],
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "1.4"
+                                "mean": "1"
                             },
                             "setupTime": {
                                 "setupDistribution": "Fixed",
-                                "setupMean": "0.7"
-                            }
+                                "setupMean": "0.5"
+                            },
+                            "stationIdsList": [
+                                "CAD1",
+                                "CAD2"
+                            ],
+                            "stepNumber": "1"
                         }
-                    ],
+                    ]
+                },
+                {
+                    "_class": "Dream.Order",
                     "componentsList": [
                         {
                             "_class": "Dream.OrderComponent",
+                            "componentType": "Basic",
                             "id": "C1O2",
                             "name": "Component1 from Order2",
-							"componentType": "Basic",
                             "route": [
                                 {
-                                    "stepNumber": "0",
                                     "stationIdsList": [
-                                    	"OD0"
-                                    ]
-                                },
-                                {
-                                    "stepNumber": "1",
-                                    "stationIdsList": [
-                                    	"QCAM"
-                                    ]
-                                },
-                                {
-                                    "stepNumber": "2",
-                                    "stationIdsList": [
-                                    	"CAM1","CAM2"
+                                        "OD0"
                                     ],
+                                    "stepNumber": "0"
+                                },
+                                {
+                                    "stationIdsList": [
+                                        "QCAM"
+                                    ],
+                                    "stepNumber": "1"
+                                },
+                                {
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "0.3"
                                     },
-									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.1"
-									}
-                                },
-                                {
-                                    "stepNumber": "3",
+                                    "setupTime": {
+                                        "setupDistribution": "Fixed",
+                                        "setupMean": "0.1"
+                                    },
                                     "stationIdsList": [
-                                    	"QMILL"
-                                    ]
-                                },
-                                {
-                                    "stepNumber": "4",
-                                    "stationIdsList": [
-                                    	"MILL1","MILL2"
+                                        "CAM1",
+                                        "CAM2"
                                     ],
+                                    "stepNumber": "2"
+                                },
+                                {
+                                    "stationIdsList": [
+                                        "QMILL"
+                                    ],
+                                    "stepNumber": "3"
+                                },
+                                {
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "3"
                                     },
-									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "1.2"
-									}
-                                },
-                                {
-                                    "stepNumber": "5",
+                                    "setupTime": {
+                                        "setupDistribution": "Fixed",
+                                        "setupMean": "1.2"
+                                    },
                                     "stationIdsList": [
-                                    	"QEDM"
-                                    ]
-                                },
-                                {
-                                    "stepNumber": "6",
-                                    "stationIdsList": [
-                                    	"EDM"
+                                        "MILL1",
+                                        "MILL2"
                                     ],
+                                    "stepNumber": "4"
+                                },
+                                {
+                                    "stationIdsList": [
+                                        "QEDM"
+                                    ],
+                                    "stepNumber": "5"
+                                },
+                                {
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "0.9"
                                     },
-									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.3"
-									}
+                                    "setupTime": {
+                                        "setupDistribution": "Fixed",
+                                        "setupMean": "0.3"
+                                    },
+                                    "stationIdsList": [
+                                        "EDM"
+                                    ],
+                                    "stepNumber": "6"
                                 },
                                 {
-                                    "stepNumber": "7",
                                     "stationIdsList": [
-                                    	"AB1"
-                                    ]
+                                        "AB1"
+                                    ],
+                                    "stepNumber": "7"
                                 },
                                 {
-                                    "stepNumber": "8",
                                     "stationIdsList": [
-                                    	"MA1","MA2","MA3"
-                                    ]
+                                        "MA1",
+                                        "MA2",
+                                        "MA3"
+                                    ],
+                                    "stepNumber": "8"
                                 }
                             ]
                         },
                         {
                             "_class": "Dream.OrderComponent",
+                            "componentType": "Secondary",
                             "id": "C2O2",
                             "name": "Component2 from Order2",
-							"componentType": "Secondary",
                             "route": [
                                 {
-                                    "stepNumber": "0",
                                     "stationIdsList": [
-                                    	"OD0"
-                                    ]
-                                },
-                                {
-                                    "stepNumber": "1",
-                                    "stationIdsList": [
-                                    	"QCAM"
-                                    ]
-                                },
-                                {
-                                    "stepNumber": "2",
-                                    "stationIdsList": [
-                                    	"CAM1","CAM2"
+                                        "OD0"
                                     ],
+                                    "stepNumber": "0"
+                                },
+                                {
+                                    "stationIdsList": [
+                                        "QCAM"
+                                    ],
+                                    "stepNumber": "1"
+                                },
+                                {
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "0.8"
                                     },
-									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.2"
-									}
-                                },
-                                {
-                                    "stepNumber": "3",
+                                    "setupTime": {
+                                        "setupDistribution": "Fixed",
+                                        "setupMean": "0.2"
+                                    },
                                     "stationIdsList": [
-                                    	"QMILL"
-                                    ]
-                                },
-                                {
-                                    "stepNumber": "4",
-                                    "stationIdsList": [
-                                    	"MILL1","MILL2"
+                                        "CAM1",
+                                        "CAM2"
                                     ],
+                                    "stepNumber": "2"
+                                },
+                                {
+                                    "stationIdsList": [
+                                        "QMILL"
+                                    ],
+                                    "stepNumber": "3"
+                                },
+                                {
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "0.4"
                                     },
-									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.1"
-									}
-                                },
-                                {
-                                    "stepNumber": "5",
+                                    "setupTime": {
+                                        "setupDistribution": "Fixed",
+                                        "setupMean": "0.1"
+                                    },
                                     "stationIdsList": [
-                                    	"QEDM"
-                                    ]
-                                },
-                                {
-                                    "stepNumber": "6",
-                                    "stationIdsList": [
-                                    	"EDM"
+                                        "MILL1",
+                                        "MILL2"
                                     ],
+                                    "stepNumber": "4"
+                                },
+                                {
+                                    "stationIdsList": [
+                                        "QEDM"
+                                    ],
+                                    "stepNumber": "5"
+                                },
+                                {
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "1.4"
                                     },
-									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.3"
-									}
+                                    "setupTime": {
+                                        "setupDistribution": "Fixed",
+                                        "setupMean": "0.3"
+                                    },
+                                    "stationIdsList": [
+                                        "EDM"
+                                    ],
+                                    "stepNumber": "6"
                                 },
                                 {
-                                    "stepNumber": "7",
                                     "stationIdsList": [
-                                    	"AB1"
-                                    ]
+                                        "AB1"
+                                    ],
+                                    "stepNumber": "7"
                                 },
                                 {
-                                    "stepNumber": "8",
                                     "stationIdsList": [
-                                    	"MA1","MA2","MA3"
-                                    ]
+                                        "MA1",
+                                        "MA2",
+                                        "MA3"
+                                    ],
+                                    "stepNumber": "8"
                                 }
                             ]
                         },
@@ -466,148 +538,98 @@
                             "name": "Mould1 from Order2",
                             "route": [
                                 {
-                                    "stepNumber": "0",
-                                    "stationIdsList": [
-                                    	"MA1","MA2","MA3"
-                                    ],
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "2"
-                                    }
-                                },
-								{
-                                    "stepNumber": "1",
+                                    },
                                     "stationIdsList": [
-                                    	"QIM"
-                                    ]
-                                },
-								{
-                                    "stepNumber": "2",
-                                    "stationIdsList": [
-                                    	"IM"
+                                        "MA1",
+                                        "MA2",
+                                        "MA3"
                                     ],
+                                    "stepNumber": "0"
+                                },
+                                {
+                                    "stationIdsList": [
+                                        "QIM"
+                                    ],
+                                    "stepNumber": "1"
+                                },
+                                {
                                     "processingTime": {
                                         "distributionType": "Fixed",
                                         "mean": "0.7"
                                     },
-									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.1"
-									}
+                                    "setupTime": {
+                                        "setupDistribution": "Fixed",
+                                        "setupMean": "0.1"
+                                    },
+                                    "stationIdsList": [
+                                        "IM"
+                                    ],
+                                    "stepNumber": "2"
                                 },
                                 {
-                                    "stepNumber": "3",
                                     "stationIdsList": [
-                                    	"E1"
-                                    ]
+                                        "E1"
+                                    ],
+                                    "stepNumber": "3"
                                 }
                             ]
+                        }
+                    ],
+                    "id": "O2",
+                    "manager": "OP1",
+                    "name": "Order2",
+                    "route": [
+                        {
+                            "stationIdsList": [
+                                "Q0"
+                            ],
+                            "stepNumber": "0"
+                        },
+                        {
+                            "processingTime": {
+                                "distributionType": "Fixed",
+                                "mean": "1.4"
+                            },
+                            "setupTime": {
+                                "setupDistribution": "Fixed",
+                                "setupMean": "0.7"
+                            },
+                            "stationIdsList": [
+                                "CAD1",
+                                "CAD2"
+                            ],
+                            "stepNumber": "1"
                         }
                     ]
                 }
             ]
         },
-        "CAD1": {
-            "_class": "Dream.MachineManagedJob",
-            "name": "CAD Design 1",
-			"operationType": "MT-Load-Setup-Processing"
-        },
-        "CAD2": {
-            "_class": "Dream.MachineManagedJob",
-            "name": "CAD Design 2",
-			"operationType": "MT-Load-Setup-Processing"
-        },
-        "OD0": {
-            "_class": "Dream.OrderDecomposition",
-            "name": "Order Decomposition"
-        },
         "QCAM": {
             "_class": "Dream.ConditionalBuffer",
-            "name": "Queue CAM",
+            "capacity": "-1",
             "isDummy": "0",
-            "capacity": "-1"
-        },
-        "CAM1": {
-            "_class": "Dream.MachineManagedJob",
-            "name": "CAM Design 1",
-			"operationType": "MT-Load-Setup-Processing"
-        },
-        "CAM2": {
-            "_class": "Dream.MachineManagedJob",
-            "name": "CAM Design 2",
-			"operationType": "MT-Load-Setup-Processing"
-        },
-        "QMILL": {
-            "_class": "Dream.QueueManagedJob",
-            "name": "Queue Milling",
-            "isDummy": "0",
-            "capacity": "-1"
-        },
-        "MILL1": {
-            "_class": "Dream.MachineManagedJob",
-            "name": "Milling 1",
-			"operationType": "MT-Load-Setup-Processing"
-        },
-        "MILL2": {
-            "_class": "Dream.MachineManagedJob",
-            "name": "Milling 2",
-			"operationType": "MT-Load-Setup-Processing"
+            "name": "Queue CAM"
         },
         "QEDM": {
             "_class": "Dream.QueueManagedJob",
-            "name": "Queue EDM",
+            "capacity": "-1",
             "isDummy": "0",
-            "capacity": "-1"
-        },
-        "EDM": {
-            "_class": "Dream.MachineManagedJob",
-            "name": "EDM",
-			"operationType": "MT-Load-Setup-Processing"
-        },
-        "AB1": {
-            "_class": "Dream.MouldAssemblyBuffer",
-            "id": "AB1",
-            "name": "Assembly Buffer",
-            "isDummy": "0",
-            "capacity": "-1"
-        },
-        "MA1": {
-            "_class": "Dream.MouldAssembly",
-            "id": "MA1",
-            "name": "Assembly 1",
-			"operationType": "MT-Load-Setup-Processing"
-        },
-        "MA2": {
-            "_class": "Dream.MouldAssembly",
-            "id": "MA2",
-            "name": "Assembly 2",
-			"operationType": "MT-Load-Setup-Processing"
-        },
-        "MA3": {
-            "_class": "Dream.MouldAssembly",
-            "id": "MA3",
-            "name": "Assembly 3",
-			"operationType": "MT-Load-Setup-Processing"
+            "name": "Queue EDM"
         },
         "QIM": {
             "_class": "Dream.QueueManagedJob",
-            "name": "Queue Mould Injection",
+            "capacity": "-1",
             "isDummy": "0",
-            "capacity": "-1"
+            "name": "Queue Mould Injection"
         },
-        "IM": {
-            "_class": "Dream.MachineManagedJob",
-            "name": "Mould Injection",
-			"operationType": "MT-Load-Setup-Processing"
-        },
-        "E1": {
-            "_class": "Dream.ExitJobShop",
-            "name": "Exit"
-        },
-        "OP1": {
-            "_class": "Dream.Operator",
-            "capacity": "1",
-            "name": "Operator1"
+        "QMILL": {
+            "_class": "Dream.QueueManagedJob",
+            "capacity": "-1",
+            "isDummy": "0",
+            "name": "Queue Milling"
         }
     }
 }
