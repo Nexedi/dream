@@ -73,15 +73,14 @@ class BatchDecomposition(CoreObject):
         CoreObject.initialize(self)                 # using the default CoreObject Functionality
         self.Res=Resource(self.numberOfSubBatches)  # initialize the Internal resource (Queue) functionality
             
-    
+    # =======================================================================
+    #     the run method of the BatchDecomposition
+    # =======================================================================
     def run(self):
         while 1:  
             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity
                                                                     #and one predecessor requests it                                                  
-            self.getEntity()                       
-            
-            # self.outputTrace("got into "+self.objName)
-            
+            self.getEntity()                                   
             # set the currentEntity as the Entity just received and initialize the timer timeLastEntityEntered
             self.currentEntity=self.getActiveObjectQueue()[0]       # entity is the current entity processed in Machine
             self.nameLastEntityEntered=self.currentEntity.name      # this holds the name of the last entity that got into Machine                   
@@ -91,7 +90,9 @@ class BatchDecomposition(CoreObject):
             yield hold,self,self.totalProcessingTimeInCurrentEntity
             self.decompose()
         
-        
+    # =======================================================================
+    #     method that decomposes the activeEntity into subBatches
+    # =======================================================================
     def decompose(self):                #, activeEntity=None):
         # maybe I can use as argument the activeEntity passing the getEntity as argument to this function in the run function
         # for example
@@ -123,11 +124,17 @@ class BatchDecomposition(CoreObject):
             activeObjectQueue.append(subBatch)                          #append the sub-batch to the active object Queue
             activeEntity.subBatchList.append(subBatch)
             subBatch.currentStation=self
+            # if the activeEntity is hot then the subBatches should be also hot
+            subBatch.hot=activeEntity.hot
+            # if the activeEntity is in the pendingEntities list then place the subBatches there
+            if activeEntity in G.pendingEntities:
+                G.pendingEntities.append(subBatch)
         activeEntity.numberOfSubBatches=self.numberOfSubBatches  
         self.timeLastEntityEnded=now()
 
-        
-        
+    # =======================================================================
+    #     canAccept logic
+    # =======================================================================
     def canAccept(self,callerObject=None):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
@@ -139,7 +146,9 @@ class BatchDecomposition(CoreObject):
         # the object capacity, and the callerObject is not None but the giverObject
         return len(activeObjectQueue)==0 and (thecaller is giverObject)
     
-    
+    # =======================================================================
+    #     haveToDispose logic
+    # =======================================================================
     def haveToDispose(self,callerObject=None):
         # get active and the receiver object
         activeObject=self.getActiveObject()
@@ -165,8 +174,10 @@ class BatchDecomposition(CoreObject):
         receiverObject=activeObject.getReceiverObject()
         return len(self.Res.activeQ)==self.numberOfSubBatches and \
             (thecaller is receiverObject) and activeObjectQueue[0].type!="Batch"
-            
-            
+    
+    # =======================================================================
+    #     canAcceptAndIsRequested logc
+    # =======================================================================
     def canAcceptAndIsRequested(self):
         # get the active and the giver objects
         activeObject=self.getActiveObject()

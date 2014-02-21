@@ -118,8 +118,14 @@ class BatchReassembly(CoreObject):
         numberOfUnits=0
         for subBatch in activeObjectQueue:
             numberOfUnits+=subBatch.numberOfUnits
-        
+        # the batch to be reassembled
         batchToBeReassembled = activeObjectQueue[0].parentBatch
+        # if the activeEntity is hot then the subBatches should be also hot
+        batchToBeReassembled.hot=activeObjectQueue[0].hot
+        # if the activeEntity is in the pendingEntities list then place the subBatches there
+        if activeObjectQueue[0] in G.pendingEntities:
+            G.pendingEntities.append(batchToBeReassembled)
+        
         del activeObjectQueue[:]
         batchToBeReassembled.numberOfSubBatches = 1
         batchToBeReassembled.numberOfUnits=numberOfUnits
