@@ -121,7 +121,7 @@
             "entity": "Dream.Part",
             "interarrivalTime": {
                 "distributionType": "Fixed",
-                "mean": "0.5"
+                "mean": 0.5
             },
             "left": 0.8636363636363636,
             "name": "Raw Material 1",
@@ -132,7 +132,7 @@
             "entity": "Dream.Part",
             "interarrivalTime": {
                 "distributionType": "Fixed",
-                "mean": "1"
+                "mean": 1.0
             },
             "left": 0.13636363636363635,
             "name": "Raw Material 2",
@@ -143,7 +143,7 @@
             "entity": "Dream.Part",
             "interarrivalTime": {
                 "distributionType": "Fixed",
-                "mean": "2"
+                "mean": 2.0
             },
             "left": 0.5,
             "name": "Raw Material 3",

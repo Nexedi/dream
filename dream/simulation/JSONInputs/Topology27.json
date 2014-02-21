@@ -92,7 +92,7 @@
             "entity": "Dream.Part",
             "interarrivalTime": {
                 "distributionType": "Fixed",
-                "mean": "1"
+                "mean": 1.0
             },
             "left": 0.6968085106382979,
             "name": "Raw Material",

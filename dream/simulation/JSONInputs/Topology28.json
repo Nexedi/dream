@@ -77,7 +77,7 @@
             "entity": "Dream.Part",
             "interarrivalTime": {
                 "distributionType": "Fixed",
-                "mean": "1.5"
+                "mean": 1.5
             },
             "left": 0.30208333333333337,
             "name": "Source",
