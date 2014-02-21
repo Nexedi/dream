@@ -165,7 +165,7 @@ class CoreObject(Process):
         self.totalTimeInCurrentEntity=now()-self.timeLastEntityEntered
         self.totalTimeWaitingForOperator += self.operatorWaitTimeCurrentEntity
         if self.timeLastEntityEnded<self.timeLastShiftStarted:      
-            self.offShiftTimeTryingToReleaseCurrentEntity=self.timeLastShiftStarted-self.timeLastEntityEnded
+            self.offShiftTimeTryingToReleaseCurrentEntity=self.timeLastShiftStarted-self.timeLastShiftEnded
         blockage=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity+self.offShiftTimeTryingToReleaseCurrentEntity)       
         self.totalBlockageTime+=blockage     
     
@@ -223,6 +223,12 @@ class CoreObject(Process):
         self.outputTrace(activeEntity.name, "got into "+self.objName)
 #         # TESTING
 #         print now(), activeEntity.id, "got into "+self.id
+        
+        # if the successor of the object is a machine that is operated with operationType 'Load'
+        #     then the flag hot of the activeEntity must be set to True 
+        #     to signalize that the entity has reached its final destination before the next Machine
+         
+        
         return activeEntity
       
     # =======================================================================
