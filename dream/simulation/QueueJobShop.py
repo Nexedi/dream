@@ -68,8 +68,7 @@ class QueueJobShop(Queue):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         thecaller = callerObject
-        
-        
+
         #if we have only one possible receiver just check if the Queue holds one or more entities
         if(len(activeObject.next)==1 or callerObject==None):
             activeObject.receiver=activeObject.next[0]
@@ -80,20 +79,22 @@ class QueueJobShop(Queue):
         #plant does not do this in every occasion!       
         maxTimeWaiting=0     
                                                         # loop through the object in the successor list
+        hasFreeReceiver=False
         for object in activeObject.next:
             if(object.canAccept(activeObject)):                                 # if the object can accept
+                hasFreeReceiver=True
                 timeWaiting=now()-object.timeLastEntityLeft         # compare the time that it has been waiting 
                 if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# with the others'
                     maxTimeWaiting=timeWaiting
                     self.receiver=object                           # and update the receiver to the index of this object
         
         #return True if the Queue has Entities and the caller is the receiver
-        return len(activeObjectQueue)>0 and (thecaller is self.receiver) 
+        return len(activeObjectQueue)>0 and (thecaller is self.receiver) and hasFreeReceiver
 
     # =======================================================================
     # gets an entity from the predecessor that the predecessor index points to
     # =======================================================================     
-    def getEntity(self):      
+    def getEntity(self):    
         activeObject = self.getActiveObject()
         activeEntity=Queue.getEntity(self)
         # read the possible receivers - update the next list
@@ -104,7 +105,6 @@ class QueueJobShop(Queue):
             nextObject = Globals.findObjectById(nextObjectId)
             nextObjects.append(nextObject)
         activeObject.next = nextObjects
-         
         activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
         return activeEntity  
         
