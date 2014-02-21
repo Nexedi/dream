@@ -100,7 +100,7 @@
             "entity": "Dream.Part",
             "interarrivalTime": {
                 "distributionType": "Fixed",
-                "mean": "0.5"
+                "mean": 0.5
             },
             "left": 0.2142857142857143,
             "name": "Parts",
@@ -111,7 +111,7 @@
             "entity": "Dream.Frame",
             "interarrivalTime": {
                 "distributionType": "Fixed",
-                "mean": "2"
+                "mean": 2.0
             },
             "left": 0.7857142857142857,
             "name": "Frames",

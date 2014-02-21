@@ -58,7 +58,9 @@ def positionGraph(g):
 def format(m):
   for node in m['nodes'].values():
     if node['_class'] in ('Dream.Source', 'Dream.BatchSource'):
-      print node
+      interarrivalTime = node['interarrivalTime']
+      print interarrivalTime
+      interarrivalTime['mean'] = float(interarrivalTime['mean'])
       entity = node['entity']
       if not entity.startswith('Dream.'):
         node['entity'] = 'Dream.%s' % entity
@@ -68,7 +70,7 @@ def format(m):
 with open(sys.argv[1]) as infile:
   m = json.load(infile)
 
-#m.update(format(m))
+m.update(format(m))
 #m.update(preferences=positionGraph(m))
 
 with open(sys.argv[1], "w") as outfile:
