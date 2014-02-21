@@ -100,6 +100,7 @@ def getClassFromName(dotted_name):
   # dream.simulation.Something.Something
   dream, class_name = dotted_name.split('.')
   import dream.simulation as ds
+  __import__('dream.simulation.%s' % class_name)
   return getattr(getattr(ds, class_name), class_name)
 
 # =======================================================================

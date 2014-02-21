@@ -128,7 +128,7 @@
         "S1": {
             "_class": "Dream.BatchSource",
             "batchNumberOfUnits": 80,
-            "entity": "Batch",
+            "entity": "Dream.Batch",
             "interarrivalTime": {
                 "distributionType": "Fixed",
                 "mean": "1.5"

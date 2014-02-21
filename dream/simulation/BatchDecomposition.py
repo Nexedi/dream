@@ -45,7 +45,7 @@ class BatchDecomposition(CoreObject):
     #initialize the id, the capacity of the object and the distribution
     # =======================================================================        
     def __init__(self, id, name, numberOfSubBatches=1, distribution='Fixed', \
-                 mean=1, stdev=0, min=0, max=10,operator='None'):
+                 mean=1, stdev=0, min=0, max=10, operator='None', **kw):
         CoreObject.__init__(self)
         # hold the id, name, and type of the Machine instance
         self.id=id

@@ -36,7 +36,7 @@ from ObjectResource import ObjectResource
 # ===========================================================================
 class Repairman(ObjectResource):
     
-    def __init__(self, id, name, capacity=1):  
+    def __init__(self, id, name, capacity=1, **kw):  
         ObjectResource.__init__(self)  
         self.id=id      
         self.objName=name

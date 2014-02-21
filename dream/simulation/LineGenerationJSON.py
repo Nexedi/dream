@@ -33,7 +33,6 @@ from warnings import warn
 import logging
 logger = logging.getLogger("dream.platform")
 
-
 try:
   import scipy
 except ImportError:
@@ -177,14 +176,22 @@ def createObjects():
     G.QueueManagedJobList=[]
     G.ModelResourceList=[]
     
+    # test that we can instanciate everything.
+    obj_list = []
+    for (element_id, element) in nodes.iteritems():
+        element['id'] = element_id
+        resourceClass = Globals.getClassFromName(element['_class'])
+        resource = resourceClass(**element)
+        resource.nextIds = getSuccessorList(element['id'])
+        obj_list.append(resource)
+
     # -----------------------------------------------------------------------
     #                loop through all the model resources 
     #      search for repairmen and operators in order to create them
     #                   read the data and create them
     # -----------------------------------------------------------------------
+
     for (element_id, element) in nodes.iteritems():                 # use an iterator to go through all the nodes
-                                                                    # the key is the element_id and the second is the 
-                                                                    # element itself 
         element['id'] = element_id                                  # create a new entry for the element (dictionary)
                                                                     # with key 'id' and value the the element_id
         resourceClass = element.get('_class', 'not found')          # get the class type of the element
@@ -263,7 +270,8 @@ def createObjects():
             interarrivalTime=element.get('interarrivalTime',{})
             distributionType=interarrivalTime.get('distributionType', 'not found')
             mean=float(interarrivalTime.get('mean') or 0)
-            entity=str_to_class(element['entity'])     # initialize entity
+            #entity=str_to_class(element['entity'])     # initialize entity
+            entity=element['entity']
             S=Source(id, name, distributionType, mean, entity)          # initialize Source
             S.nextIds=getSuccessorList(id)
             G.SourceList.append(S)
@@ -275,7 +283,8 @@ def createObjects():
             interarrivalTime=element.get('interarrivalTime',{})
             distributionType=interarrivalTime.get('distributionType', 'not found')
             mean=float(interarrivalTime.get('mean') or 0)
-            entity=str_to_class(element['entity'])          
+            #entity=str_to_class(element['entity'])          
+            entity=(element['entity'])          
             batchNumberOfUnits=int(element.get('batchNumberOfUnits', 'not found'))
             S=BatchSource(id, name, distributionType, mean, entity, batchNumberOfUnits)
             S.nextIds=getSuccessorList(id)
@@ -1331,6 +1340,8 @@ def createObjectInterruptions():
 #        used to convert a string read from the input to object type
 # ===========================================================================
 def str_to_class(str):
+    str = str.replace("Dream.", "") # XXX temporary.
+    # actuall this method can be dropped in favor of getClassFromName
     return getattr(sys.modules[__name__], str)
 
 # ===========================================================================

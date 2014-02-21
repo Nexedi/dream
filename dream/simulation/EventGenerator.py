@@ -30,7 +30,8 @@ from SimPy.Simulation import now, hold, Process
 from ObjectInterruption import ObjectInterruption
 
 class EventGenerator(ObjectInterruption):
-    def __init__(self, id=id, name=None, start=None, stop=None, interval=None, duration=None, method=None, argumentDict=None):
+    def __init__(self, id=id, name=None, start=None, stop=None, interval=None,
+                 duration=None, method=None, argumentDict=None, **kw):
         ObjectInterruption.__init__(self)
         self.id=id
         self.name=name

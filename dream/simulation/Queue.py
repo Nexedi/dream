@@ -34,7 +34,7 @@ from CoreObject import CoreObject
 # ===========================================================================
 class Queue(CoreObject):
     
-    def __init__(self, id, name, capacity=1, dummy=False, schedulingRule="FIFO"):
+    def __init__(self, id, name, capacity=1, isDummy=False, schedulingRule="FIFO", **kw):
         CoreObject.__init__(self)
 #         Process.__init__(self)
         # used for the routing of the entities
@@ -61,7 +61,7 @@ class Queue(CoreObject):
 #         self.nextIds=[]                 #list with the ids of the next objects in the flow
 #         self.previousIds=[]             #list with the ids of the previous objects in the flow
 
-        self.isDummy=dummy                      #Boolean that shows if it is the dummy first Queue
+        self.isDummy=isDummy                    #Boolean that shows if it is the dummy first Queue
         self.schedulingRule=schedulingRule      #the scheduling rule that the Queue follows
         self.multipleCriterionList=[]           #list with the criteria used to sort the Entities in the Queue
         SRlist = [schedulingRule]

@@ -27,15 +27,15 @@ models the source object that generates the entities
 '''
 
 from SimPy.Simulation import now, Process, Resource, infinity, hold
-from Part import Part
 from RandomNumberGenerator import RandomNumberGenerator
 from CoreObject import CoreObject
 from Globals import G
+import Globals
 #============================================================================
 #                 The Source object is a Process
 #============================================================================
 class Source(CoreObject): 
-    def __init__(self, id, name, distribution='Fixed', mean=1, item=Part):
+    def __init__(self, id, name, distribution='Fixed', mean=1, item='Dream.Part', **kw):
         CoreObject.__init__(self)
 #         Process.__init__(self)
         # general properties
@@ -53,7 +53,7 @@ class Source(CoreObject):
         self.type="Source"                              #String that shows the type of object
         self.rng=RandomNumberGenerator(self, self.distType)
         self.rng.avg=mean
-        self.item=item                                  #the type of object that the Source will generate
+        self.item=Globals.getClassFromName(item)          #the type of object that the Source will generate
         
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__

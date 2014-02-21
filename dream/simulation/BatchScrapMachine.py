@@ -41,14 +41,16 @@ class BatchScrapMachine(Machine):
     def __init__(self, id, name, capacity=1, \
                  distribution='Fixed', mean=1, stdev=0, min=0, max=10,\
                  failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None',\
-                 scrapDistribution='Fixed',scrMean=1,scrStdev=0,scrMin=0,scrMax=10):
+                 scrapDistribution='Fixed',scrMean=1,scrStdev=0,scrMin=0,scrMax=10,
+                 **kw):
         # initialize using the default method of the object 
         Machine.__init__(self,id=id,name=name,\
                                     capacity=capacity,\
                                     distribution=distribution,\
                                     mean=mean,stdev=stdev,min=min,max=max,\
                                     failureDistribution=failureDistribution,MTTF=MTTF,MTTR=MTTR,\
-                                    availability=availability, repairman=repairman)
+                                    availability=availability,
+                                    repairman=repairman, **kw)
              
         self.scrapDistType=scrapDistribution    #the distribution that the failure follows   
         # Sets the attributes of the scrap quantity distribution
