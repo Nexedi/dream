@@ -350,50 +350,37 @@ class Conveyer(CoreObject):
     #outputs results to JSON File
     def outputResultsJSON(self):
         from Globals import G
+        json={}
+        json['_class'] = 'Dream.Conveyer';
+        json['id'] = str(self.id)
+        json['results'] = {}
         if(G.numberOfReplications==1): #if we had just one replication output the results to excel
-            json={}
-            json['_class'] = 'Dream.Conveyer';
-            json['id'] = str(self.id)
-            json['results'] = {}
             json['results']['working_ratio']=100*self.totalWorkingTime/G.maxSimTime
             json['results']['blockage_ratio']=100*self.totalBlockageTime/G.maxSimTime
             json['results']['waiting_ratio']=100*self.totalWaitingTime/G.maxSimTime
         else: #if we had multiple replications we output confidence intervals to excel
-                #for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
-                #so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
-                #so for each output value we check if there was difference in the runs' results
-                #if yes we output the Confidence Intervals. if not we output just the fix value           
-            json={}
-            json['_class'] = 'Dream.Conveyer';
-            json['id'] = str(self.id)
-            json['results'] = {}
-            json['results']['working_ratio']={}
-            if self.checkIfArrayHasDifValues(self.Working):
-                json['results']['working_ratio']['min']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][0]
-                json['results']['working_ratio']['avg']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][0]
-                json['results']['working_ratio']['max']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][1]
+              #for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
+              #so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
+              #so for each output value we check if there was difference in the runs' results
+              #if yes we output the Confidence Intervals. if not we output just the fix value           
+          for ratio, measureList in (
+              ('failure_ratio', self.Failure),
+              ('working_ratio', self.Working),
+              ('blockage_ratio', self.Blockage),
+              ('waiting_ratio', self.Waiting), ):
+            json['results'][ratio] = {}
+            if self.checkIfArrayHasDifValues(measureList):
+                json['results'][ratio]['min'] = stat.bayes_mvs(
+                  measureList, G.confidenceLevel)[0][1][0]
+                json['results'][ratio]['avg'] = stat.bayes_mvs(
+                  measureList, G.confidenceLevel)[0][0]
+                json['results'][ratio]['max'] = stat.bayes_mvs(
+                  measureList, G.confidenceLevel)[0][1][1]
             else:
-                json['results']['working_ratio']['min']=self.Working[0]
-                json['results']['working_ratio']['avg']=self.Working[0]
-                json['results']['working_ratio']['max']=self.Working[0]   
-            json['results']['blockage_ratio']={}
-            if self.checkIfArrayHasDifValues(self.Blockage):
-                json['results']['blockage_ratio']['min']=stat.bayes_mvs(self.Blockage, G.confidenceLevel)[0][1][0]
-                json['results']['blockage_ratio']['avg']=stat.bayes_mvs(self.Blockage, G.confidenceLevel)[0][0]
-                json['results']['blockage_ratio']['max']=stat.bayes_mvs(self.Blockage, G.confidenceLevel)[0][1][1]
-            else:
-                json['results']['blockage_ratio']['min']=self.Blockage[0]
-                json['results']['blockage_ratio']['avg']=self.Blockage[0]
-                json['results']['blockage_ratio']['max']=self.Blockage[0]                 
-            json['results']['waiting_ratio']={}
-            if self.checkIfArrayHasDifValues(self.Waiting):
-                json['results']['waiting_ratio']['min']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][0]
-                json['results']['waiting_ratio']['avg']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][0]
-                json['results']['waiting_ratio']['max']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][1]
-            else:
-                json['results']['waiting_ratio']['min']=self.Waiting[0]
-                json['results']['waiting_ratio']['avg']=self.Waiting[0]
-                json['results']['waiting_ratio']['max']=self.Waiting[0] 
+                json['results'][ratio]['min'] = \
+                json['results'][ratio]['avg'] = \
+                json['results'][ratio]['max'] = measureList[0]
+
         G.outputJSON['elementList'].append(json)
     
 #Process that handles the moves of the conveyer
