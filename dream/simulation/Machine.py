@@ -457,11 +457,20 @@ class Machine(CoreObject):
     def endProcessingActions(self):
         activeObject=self.getActiveObject()
         activeObjectQueue=activeObject.getActiveObjectQueue()
+        activeEntity=activeObjectQueue[0]
         # the entity that just got processed is cold again it will get 
         # hot again by the time it reaches the giver of the next machine
         # TODO: check first if the next station is not of type Machine before 
         #     you cool the entity down
-        activeObjectQueue[0].hot=False
+        if activeEntity.family=='Entity':
+            successorsAreMachines=True
+            from Globals import G
+            for object in activeObject.next:
+                if not object in G.MachineList:
+                    successorsAreMachines=False
+                    break
+            if not successorsAreMachines:
+                activeObjectQueue[0].hot = False
         from Globals import G
         # the just processed entity is added to the list of entities 
         # pending for the next processing
@@ -646,10 +655,6 @@ class Machine(CoreObject):
         # this is done to achieve better (cpu) processing time        
         if(len(activeObject.next)==1 or callerObject==None): 
             return len(activeObjectQueue)>0 and activeObject.waitToDispose and activeObject.checkIfActive()
-        
-#         # if the Machine is empty it returns false right away
-#         if(len(activeObjectQueue)==0):
-#             return False
    
         thecaller=callerObject
         # give the entity to the successor that is waiting for the most time. 
