@@ -52,10 +52,7 @@ class Machine(CoreObject):
                   loadDistribution="No",loadMean=0, loadStdev=0, loadMin=0, loadMax=10,
                   setupDistribution="No",setupMean=0, setupStdev=0, setupMin=0, setupMax=10,
                   isPreemptive=False, resetOnPreemption=False, **kw):
-        CoreObject.__init__(self)
-        # hold the id, name, and type of the Machine instance
-        self.id=id
-        self.objName=name
+        CoreObject.__init__(self, id, name)
         self.type="Machine"                         #String that shows the type of object
         #     holds the capacity of the machine 
         self.capacity=capacity

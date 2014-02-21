@@ -32,8 +32,10 @@ from SimPy.Simulation import Process, Resource, now
 # ===========================================================================
 class CoreObject(Process):
     
-    def __init__(self):
+    def __init__(self, id, name, **kw):
         Process.__init__(self) 
+        self.id = id
+        self.objName = name
         #     lists that hold the previous and next objects in the flow
         self.next=[]                                #list with the next objects in the flow
         self.previous=[]                            #list with the previous objects in the flow

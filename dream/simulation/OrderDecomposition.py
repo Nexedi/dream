@@ -48,12 +48,8 @@ class MouldComponentException(Exception):
 # the Order-Decomposition Object
 # ===========================================================================
 class OrderDecomposition(CoreObject):
-    def __init__(self, id, name, **kw):
-        CoreObject.__init__(self)
-        self.id=id
-        self.objName=name
-        self.type='OrderDecomposition'
-        
+    type = 'OrderDecomposition'
+
     # =======================================================================
     # the initialize method
     # =======================================================================

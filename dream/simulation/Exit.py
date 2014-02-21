@@ -35,13 +35,11 @@ from CoreObject import CoreObject
 class Exit(CoreObject):    
           
     def __init__(self, id, name=None, **kw):
-        CoreObject.__init__(self)
         if not name:
           name = id
+        CoreObject.__init__(self, id, name)
         self.predecessorIndex=0         # holds the index of the predecessor from which the Exit will take an entity next
         # general properties of the Exit
-        self.id=id
-        self.objName=name
         self.type="Exit" # XXX needed ?
 #         # list with routing information
 #         self.previous=[]                # list with the previous objects in the flow

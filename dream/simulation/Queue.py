@@ -35,14 +35,11 @@ from CoreObject import CoreObject
 class Queue(CoreObject):
     
     def __init__(self, id, name, capacity=1, isDummy=False, schedulingRule="FIFO", **kw):
-        CoreObject.__init__(self)
+        CoreObject.__init__(self, id, name)
 #         Process.__init__(self)
         # used for the routing of the entities
         self.predecessorIndex=0     # holds the index of the predecessor from which the Queue will take an entity next
         self.successorIndex=0       # holds the index of the successor where the Queue will dispose an entity next
-        #     hold the id, name, and type of the Queue instance
-        self.id=id
-        self.objName=name
         self.type="Queue"           # String that shows the type of object
         #     holds the capacity of the Queue
         if capacity>0:
