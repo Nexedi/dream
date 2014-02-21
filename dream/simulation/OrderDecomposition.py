@@ -173,6 +173,9 @@ class OrderDecomposition(CoreObject):
             if entity.type=='Order':
                 self.orderToBeDecomposed=entity
                 activeObjectQueue.remove(entity)            #remove the order from the internal Queue
+                # if the entity is in G.pendingEntities list remove it from there
+                if entity in G.pendingEntities:
+                    G.pendingEntities.remove(entity)
                 #append the components in the internal queue
                 for component in entity.componentsList:
                     self.createOrderComponent(component)
