@@ -1016,6 +1016,9 @@ def createWIP():
     G.OrderComponentList=[]
     G.OrderList=[]
     G.MouldList=[]
+    # entities that just finished processing in a station 
+    # and have to enter the next machine 
+    G.pendingEntities=[]
     
     json_data = G.JSONData
     #Read the json data
