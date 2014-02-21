@@ -26,7 +26,7 @@ class Simulation(ACO.Simulation):
           schema["schedulingRule"]
         ],
         "_class": 'Dream.QueueJobShop',
-        "name": 'Job'
+        "name": 'Queue'
     }
     conf["Dream-ExitJobShop"] = {
         "_class": 'Dream.ExitJobShop',
