@@ -1,24 +1,24 @@
 {
   "edges": {
     "con_10": [
+      "Q1", 
+      "M1", 
+      {}
+    ], 
+    "con_15": [
       "Q2", 
       "M2", 
       {}
     ], 
-    "con_15": [
+    "con_5": [
       "Q3", 
       "EDM", 
-      {}
-    ], 
-    "con_5": [
-      "Q1", 
-      "M1", 
       {}
     ]
   }, 
   "general": {
     "confidenceLevel": "0.95", 
-    "currentDate": "", 
+    "currentDate": "2013/01/01", 
     "maxSimTime": "-1", 
     "numberOfAntsPerGenerations": "20", 
     "numberOfGenerations": "10", 
@@ -215,7 +215,7 @@
       "2013/02/01", 
       "2", 
       "plastic", 
-      "Q1-M1", 
+      "Q1-M1",
       "0-30"
     ], 
     [
