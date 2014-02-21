@@ -41,6 +41,36 @@ class MachineJobShop(Machine):
         self.previous=G.ObjList
         self.next=G.ObjList
         Machine.initialize(self)    #run default behaviour
+    
+    # =======================================================================
+    # actions to be carried out when the processing of an Entity ends
+    # =======================================================================    
+    def endProcessingActions(self):
+        activeObject=self.getActiveObject()
+        activeObjectQueue=activeObject.getActiveObjectQueue()
+        activeEntity=activeObjectQueue[0]
+        import Globals
+        from Globals import G
+        # the entity that just got processed is cold again it will get 
+        # hot again by the time it reaches the giver of the next machine
+        # TODO: Not only Machines require time to process entities
+        if activeEntity.family=='Job':
+            # read the list of next stations for the entity in just finished processing
+            nextObjectIds=activeEntity.remainingRoute[0].get('stationIdsList',[])
+            nextObjects = []
+            for nextObjectId in nextObjectIds:
+                nextObject=Globals.findObjectById(nextObjectId)
+                nextObjects.append(nextObject)
+            successorsAreMachines=True
+            for object in nextObjects:
+                if not object in G.MachineList:
+                    successorsAreMachines=False
+                    break
+            if not successorsAreMachines:
+                activeObjectQueue[0].hot = False
+        # the just processed entity is added to the list of entities 
+        # pending for the next processing
+        G.pendingEntities.append(activeObjectQueue[0])
 
     # =======================================================================
     # gets an entity from the predecessor that the predecessor index points to
@@ -186,15 +216,20 @@ class MachineJobShop(Machine):
         self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
         reactivate(self)
             
-    #just extend the default behaviour in order to read the load time from the Entity to be obtained        
+    #===========================================================================
+    # just extend the default behaviour in order to read the load time 
+    # from the Entity to be obtained        
+    #===========================================================================
     def canAcceptAndIsRequested(self):
         if Machine.canAcceptAndIsRequested(self):
             self.readLoadTime()
             return True
         return False
 
-    #to be called by canAcceptAndIsRequested if it is to return True.
-    #the load timeof the Entity must be read
+    #===========================================================================
+    # to be called by canAcceptAndIsRequested if it is to return True.
+    # the load timeof the Entity must be read
+    #===========================================================================
     def readLoadTime(self):
         self.giver.sortEntities()
         activeEntity=self.giver.getActiveObjectQueue()[0]
