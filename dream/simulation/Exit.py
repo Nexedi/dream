@@ -114,6 +114,10 @@ class Exit(CoreObject):
     # =======================================================================
     def getEntity(self): 
         activeEntity = CoreObject.getEntity(self)           #run the default method
+        # if the entity is in the G.pendingEntities list then remove it from there
+        from Globals import G
+        if activeEntity in G.pendingEntities:
+            G.pendingEntities.remove(activeEntity)
         self.totalLifespan+=now()-activeEntity.startTime    #Add the entity's lifespan to the total one. 
         self.numOfExits+=1                                          # increase the exits by one
         self.totalNumberOfUnitsExited+=activeEntity.numberOfUnits   # add the number of units that xited
