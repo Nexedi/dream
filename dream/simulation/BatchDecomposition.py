@@ -56,7 +56,7 @@ class BatchDecomposition(CoreObject):
         self.operator=operator         
         # Sets the attributes of the processing (and failure) time(s)
         self.rng=RandomNumberGenerator(self, self.distType)
-        self.rng.avg=mean
+        self.rng.mean=mean
         self.rng.stdev=stdev
         self.rng.min=min
         self.rng.max=max

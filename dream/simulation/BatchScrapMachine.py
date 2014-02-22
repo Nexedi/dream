@@ -39,15 +39,18 @@ class BatchScrapMachine(Machine):
     #initialize the id, the capacity of the resource and the distribution       
     # have to find which distribution returns random integers - Discrete distribution 
     def __init__(self, id, name, capacity=1, \
+                 processingTime=None,
                  distribution='Fixed', mean=1, stdev=0, min=0, max=10,\
                  failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None',\
                  scrapDistribution='Fixed',scrMean=1,scrStdev=0,scrMin=0,scrMax=10,
                  **kw):
+        if not processingTime:
+          print "TODO"
         # initialize using the default method of the object 
         Machine.__init__(self,id=id,name=name,\
                                     capacity=capacity,\
-                                    distribution=distribution,\
-                                    mean=mean,stdev=stdev,min=min,max=max,\
+                                    processingTime=dict(distributionType=distribution,
+                                                        mean=mean,stdev=stdev,min=min,max=max,),
                                     failureDistribution=failureDistribution,MTTF=MTTF,MTTR=MTTR,\
                                     availability=availability,
                                     repairman=repairman, **kw)
@@ -55,7 +58,7 @@ class BatchScrapMachine(Machine):
         self.scrapDistType=scrapDistribution    #the distribution that the failure follows   
         # Sets the attributes of the scrap quantity distribution
         self.scrapRng=RandomNumberGenerator(self, self.scrapDistType)
-        self.scrapRng.avg=scrMean
+        self.scrapRng.mean=scrMean
         self.scrapRng.stdev=scrStdev
         self.scrapRng.min=scrMin
         self.scrapRng.max=scrMax

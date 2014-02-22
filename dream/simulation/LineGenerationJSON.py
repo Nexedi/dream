@@ -331,9 +331,8 @@ def createObjects():
             for repairman in G.RepairmanList:                   # check which repairman in the G.RepairmanList
                 if(id in repairman.coreObjectIds):              # (if any) is assigned to repair 
                     r=repairman                                 # the machine with ID equal to id
-            M=Machine(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
+            M=Machine(id, name, 1, processingTime,  failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
-                                                    mean=mean,stdev=stdev,min=min,max=max,
                                                     operatorPool=machineOperatorPoolList, operationType=operationType,
                                                     loadDistribution=loadDistribution, setupDistribution=setupDistribution,
                                                     setupMean=setupMean,setupStdev=setupStdev,setupMin=setupMin,setupMax=setupMax,

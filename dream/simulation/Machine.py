@@ -46,27 +46,30 @@ class Machine(CoreObject):
     # =======================================================================
     # initialise the id the capacity, of the resource and the distribution
     # =======================================================================
-    def __init__(self, id, name, capacity=1, distribution='Fixed', mean=1, stdev=0, min=0, max=10,\
+    def __init__(self, id, name, capacity=1, processingTime=None,
                   failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None',\
                   operatorPool='None',operationType='None',\
                   loadDistribution="No",loadMean=0, loadStdev=0, loadMin=0, loadMax=10,
                   setupDistribution="No",setupMean=0, setupStdev=0, setupMin=0, setupMax=10,
                   isPreemptive=False, resetOnPreemption=False, **kw):
+
         CoreObject.__init__(self, id, name)
         self.type="Machine"                         #String that shows the type of object
+        if not processingTime:
+          processingTime = {'distributionType': 'Fixed',
+                            'mean': 1,
+                            'stdev': 0,
+                            'min': 0,
+                            'max': 10}
+
         #     holds the capacity of the machine 
         self.capacity=capacity
         #     define the distribution types of the processing and failure times respectively
-        self.distType=distribution                  #the distribution that the procTime follows      
         self.failureDistType=failureDistribution    #the distribution that the failure follows   
         #     sets the repairman resource of the Machine
-        self.repairman=repairman         
+        self.repairman=repairman
         #     Sets the attributes of the processing (and failure) time(s)
-        self.rng=RandomNumberGenerator(self, self.distType)
-        self.rng.avg=mean
-        self.rng.stdev=stdev
-        self.rng.min=min
-        self.rng.max=max
+        self.rng=RandomNumberGenerator(self, **processingTime)
         self.MTTF=MTTF
         self.MTTR=MTTR
         self.availability=availability
@@ -99,7 +102,7 @@ class Machine(CoreObject):
         # define the load times
         self.loadDistType=loadDistribution 
         self.loadRng=RandomNumberGenerator(self, self.loadDistType)
-        self.loadRng.avg=loadMean
+        self.loadRng.mean=loadMean
         self.loadRng.stdev=loadStdev
         self.loadRng.min=loadMin
         self.loadRng.max=loadMax
@@ -108,7 +111,7 @@ class Machine(CoreObject):
         # define the setup times
         self.setupDistType=setupDistribution 
         self.stpRng=RandomNumberGenerator(self, self.setupDistType)
-        self.stpRng.avg=setupMean
+        self.stpRng.mean=setupMean
         self.stpRng.stdev=setupStdev
         self.stpRng.min=setupMin
         self.stpRng.max=setupMax
