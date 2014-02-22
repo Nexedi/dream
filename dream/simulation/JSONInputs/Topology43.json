@@ -56,22 +56,22 @@
         },
         "O1": {
             "_class": "Dream.Operator",
-            "capacity": "1",
+            "capacity": 1,
             "name": "Operator1"
         },
         "O2": {
             "_class": "Dream.Operator",
-            "capacity": "1",
+            "capacity": 1,
             "name": "Operator2"
         },
         "OP1": {
             "_class": "Dream.OperatorPool",
-            "capacity": "1",
+            "capacity": 1,
             "name": "Operator Pool 1"
         },
         "Q1": {
             "_class": "Dream.QueueJobShop",
-            "capacity": "1000",
+            "capacity": 1000,
             "isDummy": "0",
             "name": "Queue1",
             "wip": [
@@ -89,7 +89,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "1"
+                                "mean": 1.0
                             },
                             "stationIdsList": [
                                 "M1"
@@ -105,7 +105,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "3"
+                                "mean": 3.0
                             },
                             "stationIdsList": [
                                 "M3"
@@ -121,7 +121,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "2"
+                                "mean": 2.0
                             },
                             "stationIdsList": [
                                 "M2"
@@ -140,14 +140,14 @@
         },
         "Q2": {
             "_class": "Dream.QueueJobShop",
-            "capacity": "1000",
+            "capacity": 1000,
             "id": "Q2",
             "isDummy": "0",
             "name": "Queue2"
         },
         "Q3": {
             "_class": "Dream.QueueJobShop",
-            "capacity": "1000",
+            "capacity": 1000,
             "isDummy": "0",
             "name": "Queue3"
         }

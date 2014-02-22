@@ -32,7 +32,7 @@
             "name": "Moulding",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "1.5"
+                "mean": 1.5
             },
             "shift": {
                 "endUnfinished": 0,

@@ -57,13 +57,23 @@ def positionGraph(g):
 
 def format(m):
   for node in m['nodes'].values():
-    if node['_class'] in ('Dream.Source', 'Dream.BatchSource'):
-      interarrivalTime = node['interarrivalTime']
-      print interarrivalTime
-      interarrivalTime['mean'] = float(interarrivalTime['mean'])
-      entity = node['entity']
-      if not entity.startswith('Dream.'):
-        node['entity'] = 'Dream.%s' % entity
+    if 'processingTime' in node:
+      processingTime = node['processingTime']
+      if 'mean' in processingTime:
+        processingTime['mean'] = float(processingTime['mean'])
+      if 'entity' in node:
+        entity = node['entity']
+        if not entity.startswith('Dream.'):
+          node['entity'] = 'Dream.%s' % entity
+    if 'wip' in node:
+      for job in node['wip']:
+        if 'route' in job:
+          for r in job['route']:
+            print r
+            if 'processingTime' in r:
+              processingTime = r['processingTime']
+              if 'mean' in processingTime:
+                processingTime['mean'] = float(processingTime['mean'])
 
   return m
 

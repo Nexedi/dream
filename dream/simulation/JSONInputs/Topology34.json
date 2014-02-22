@@ -21,7 +21,7 @@
             "name": "Machine1",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "0.25"
+                "mean": 0.25
             }
         },
         "M2": {
@@ -34,12 +34,12 @@
             },
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "1.5"
+                "mean": 1.5
             }
         },
         "Q1": {
             "_class": "Dream.QueueJobShop",
-            "capacity": "-1",
+            "capacity": -1,
             "id": "Q1",
             "isDummy": "0",
             "name": "Queue1",
@@ -53,7 +53,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "0"
+                                "mean": 0.0
                             },
                             "stationIdsList": [
                                 "Q1"
@@ -63,7 +63,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "0.25"
+                                "mean": 0.25
                             },
                             "stationIdsList": [
                                 "M1"
@@ -73,7 +73,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "0"
+                                "mean": 0.0
                             },
                             "stationIdsList": [
                                 "Q2"
@@ -83,7 +83,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "1"
+                                "mean": 1.0
                             },
                             "stationIdsList": [
                                 "M2"
@@ -96,7 +96,7 @@
         },
         "Q2": {
             "_class": "Dream.QueueJobShop",
-            "capacity": "-1",
+            "capacity": -1,
             "id": "Q2",
             "isDummy": "0",
             "name": "Queue2",
@@ -110,7 +110,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "0"
+                                "mean": 0.0
                             },
                             "stationIdsList": [
                                 "Q2"
@@ -120,7 +120,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "1"
+                                "mean": 1.0
                             },
                             "stationIdsList": [
                                 "M2"

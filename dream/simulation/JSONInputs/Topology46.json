@@ -28,17 +28,17 @@
         },
         "O1": {
             "_class": "Dream.Operator",
-            "capacity": "1",
+            "capacity": 1,
             "name": "Operator1"
         },
         "O2": {
             "_class": "Dream.Operator",
-            "capacity": "1",
+            "capacity": 1,
             "name": "Operator2"
         },
         "Q1": {
             "_class": "Dream.QueueManagedJob",
-            "capacity": "-1",
+            "capacity": -1,
             "id": "Q1",
             "isDummy": "0",
             "name": "Queue1",
@@ -59,7 +59,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "0.25"
+                                "mean": 0.25
                             },
                             "stationIdsList": [
                                 "M1"
@@ -75,7 +75,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "1"
+                                "mean": 1.0
                             },
                             "setupTime": {
                                 "setupDistribution": "Fixed",
@@ -98,7 +98,7 @@
         },
         "Q2": {
             "_class": "Dream.QueueManagedJob",
-            "capacity": "-1",
+            "capacity": -1,
             "id": "Q2",
             "isDummy": "0",
             "name": "Queue2",
@@ -119,7 +119,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "1"
+                                "mean": 1.0
                             },
                             "setupTime": {
                                 "setupDistribution": "Fixed",

@@ -65,7 +65,7 @@
             "name": "Machine1",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "0.25"
+                "mean": 0.25
             },
             "top": 0.721556886227545
         },
@@ -78,7 +78,7 @@
             "name": "Machine2",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "1.5"
+                "mean": 1.5
             },
             "top": 0.721556886227545
         },
@@ -91,7 +91,7 @@
             "name": "Machine3",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "1"
+                "mean": 1.0
             },
             "top": 0.721556886227545
         },
@@ -104,13 +104,13 @@
             "name": "Machine4",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "1.25"
+                "mean": 1.25
             },
             "top": 0.2784431137724551
         },
         "Q1": {
             "_class": "Dream.Queue",
-            "capacity": "1",
+            "capacity": 1,
             "isDummy": "0",
             "left": 0.5,
             "name": "Q1",
