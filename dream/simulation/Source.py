@@ -41,7 +41,6 @@ class Source(CoreObject):
           interarrivalTime = {'distributionType': 'Fixed', 'mean': 1}
 
         CoreObject.__init__(self, id, name)
-        self.distType = interarrivalTime['distributionType'] # label that sets the distribution type
         # properties used for statistics
         self.totalInterArrivalTime = 0                    # the total interarrival time 
         self.numberOfArrivals = 0                         # the number of entities that were created
@@ -52,10 +51,7 @@ class Source(CoreObject):
 #                                                         # For the source it is always empty!
         self.type="Source"                              #String that shows the type of object
         
-        # XXX we could just initialize RandomNumberGenerator by passing
-        # interarrivalTime dict
-        self.rng = RandomNumberGenerator(self, self.distType)
-        self.rng.avg = interarrivalTime['mean']
+        self.rng = RandomNumberGenerator(self, **interarrivalTime)
 
         self.item=Globals.getClassFromName(item)          #the type of object that the Source will generate
         

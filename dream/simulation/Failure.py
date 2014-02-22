@@ -73,10 +73,10 @@ class Failure(ObjectInterruption):
             #               if the distribution is fixed
             # --------------------------------------------------------------
             self.rngTTF=RandomNumberGenerator(self, self.distType)
-            self.rngTTF.avg=MTTF            
+            self.rngTTF.mean=MTTF
             self.rngTTR=RandomNumberGenerator(self, self.distType)
-            self.rngTTR.avg=MTTR
-    
+            self.rngTTR.mean=MTTR
+
     # =======================================================================
     #    The run method for the failure which has to served by a repairman
     # =======================================================================

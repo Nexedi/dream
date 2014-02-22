@@ -7,7 +7,7 @@ schema = {
     "id": "entity",
     "type": "string",
     "_class": "Dream.Property",
-    "_default": "Part"
+    "_default": "Dream.Part"
   },
   "mean": {
     "id": "mean",

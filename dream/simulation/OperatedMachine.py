@@ -80,7 +80,7 @@ class OperatedMachine(Machine):
         # define the load times
         self.loadDistType=loadDistribution 
         self.loadRng=RandomNumberGenerator(self, self.loadDistType)
-        self.loadRng.avg=loadMean
+        self.loadRng.mean=loadMean
         self.loadRng.stdev=loadStdev
         self.loadRng.min=loadMin
         self.loadRng.max=loadMax
@@ -89,7 +89,7 @@ class OperatedMachine(Machine):
         # define the setup times
         self.setupDistType=setupDistribution 
         self.stpRng=RandomNumberGenerator(self, self.setupDistType)
-        self.stpRng.avg=setupMean
+        self.stpRng.mean=setupMean
         self.stpRng.stdev=setupStdev
         self.stpRng.min=setupMin
         self.stpRng.max=setupMax

@@ -42,7 +42,7 @@ class Assembly(CoreObject):
         self.type="Assembly"   #String that shows the type of object
         self.distType=distribution          #the distribution that the procTime follows  
         self.rng=RandomNumberGenerator(self, self.distType)
-        self.rng.avg=mean
+        self.rng.mean=mean
         self.rng.stdev=stdev
         self.rng.min=min
         self.rng.max=max                    
