@@ -37,7 +37,7 @@
     "nodes": {
         "DummyQ": {
             "_class": "Dream.Queue",
-            "capacity": "1",
+            "capacity": 1,
             "id": "DummyQ",
             "isDummy": "1",
             "name": "DummyQ"
@@ -53,7 +53,7 @@
             "name": "Machine1",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "0.25"
+                "mean": 0.25
             },
             "scrapQuantity": {
                 "distributionType": "Fixed",
@@ -66,7 +66,7 @@
             "name": "Machine2",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "1"
+                "mean": 1.0
             },
             "scrapQuantity": {
                 "distributionType": "Fixed",
@@ -75,7 +75,7 @@
         },
         "Q1": {
             "_class": "Dream.Queue",
-            "capacity": "1",
+            "capacity": 1,
             "id": "Q1",
             "isDummy": "0",
             "name": "Q1"

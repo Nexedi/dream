@@ -62,7 +62,7 @@
             "numberOfSubBatches": 4,
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "1"
+                "mean": 1.0
             },
             "top": 0.5909090909090908
         },
@@ -73,7 +73,7 @@
             "numberOfSubBatches": 4,
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "0"
+                "mean": 0.0
             },
             "top": 0.5909090909090908
         },
@@ -90,7 +90,7 @@
             "name": "Station1",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "0.1"
+                "mean": 0.1
             },
             "scrapQuantity": {
                 "distributionType": "Fixed",
@@ -105,7 +105,7 @@
             "name": "Station2",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "0.2"
+                "mean": 0.2
             },
             "scrapQuantity": {
                 "distributionType": "Fixed",
@@ -120,7 +120,7 @@
             "name": "Station3",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "0.25"
+                "mean": 0.25
             },
             "scrapQuantity": {
                 "distributionType": "Fixed",
@@ -130,21 +130,21 @@
         },
         "Q1": {
             "_class": "Dream.Queue",
-            "capacity": "-1",
+            "capacity": -1,
             "left": 0.6968085106382979,
             "name": "StartQueue",
             "top": 0.7727272727272727
         },
         "Q2": {
             "_class": "Dream.LineClearance",
-            "capacity": "2",
+            "capacity": 2,
             "left": 0.6968085106382979,
             "name": "Queue1",
             "top": 0.7727272727272727
         },
         "Q3": {
             "_class": "Dream.Queue",
-            "capacity": "1",
+            "capacity": 1,
             "left": 0.6968085106382979,
             "name": "Queue2",
             "top": 0.7727272727272727

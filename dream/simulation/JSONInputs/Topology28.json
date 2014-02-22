@@ -47,7 +47,7 @@
             "operationType": "Processing",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "17"
+                "mean": 17.0
             },
             "top": 0.5
         },
@@ -60,14 +60,14 @@
             "operationType": "Processing",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "2"
+                "mean": 2.0
             },
             "setupTime": {},
             "top": 0.2784431137724551
         },
         "O1": {
             "_class": "Dream.Operator",
-            "capacity": "1",
+            "capacity": 1,
             "left": 0.8489583333333334,
             "name": "Operator1",
             "top": 0.721556886227545

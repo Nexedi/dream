@@ -68,7 +68,7 @@
             "name": "Assembly",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "2"
+                "mean": 2.0
             },
             "top": 0.7720588235294118
         },
@@ -78,7 +78,7 @@
             "name": "Dismantle",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "1"
+                "mean": 1.0
             },
             "successorFrameList": [
                 "M2"
@@ -103,8 +103,8 @@
         "M1": {
             "_class": "Dream.Machine",
             "failures": {
-                "MTTF": "60",
-                "MTTR": "5",
+                "MTTF": 60,
+                "MTTR": 5,
                 "failureDistribution": "Fixed",
                 "repairman": "None"
             },
@@ -112,15 +112,15 @@
             "name": "Moulding",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "0.25"
+                "mean": 0.25
             },
             "top": 0.5906862745098039
         },
         "M2": {
             "_class": "Dream.Machine",
             "failures": {
-                "MTTF": "60",
-                "MTTR": "5",
+                "MTTF": 60,
+                "MTTR": 5,
                 "failureDistribution": "No",
                 "repairman": "None"
             },
@@ -128,15 +128,15 @@
             "name": "Frame Wash",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "1"
+                "mean": 1.0
             },
             "top": 0.2279411764705882
         },
         "M3": {
             "_class": "Dream.Machine",
             "failures": {
-                "MTTF": "60",
-                "MTTR": "5",
+                "MTTF": 60,
+                "MTTR": 5,
                 "failureDistribution": "No",
                 "repairman": "None"
             },
@@ -144,7 +144,7 @@
             "name": "Part Wash",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "0.20"
+                "mean": 0.2
             },
             "top": 0.2279411764705882
         },

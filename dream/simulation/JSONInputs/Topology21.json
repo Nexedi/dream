@@ -37,7 +37,7 @@
             "numberOfSubBatches": 4,
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "1"
+                "mean": 1.0
             },
             "top": 0.5909090909090908
         },
@@ -54,13 +54,13 @@
             "name": "Station1",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "0.5"
+                "mean": 0.5
             },
             "top": 0.5909090909090908
         },
         "Q1": {
             "_class": "Dream.Queue",
-            "capacity": "-1",
+            "capacity": -1,
             "left": 0.6968085106382979,
             "name": "StartQueue",
             "top": 0.7727272727272727

@@ -47,7 +47,7 @@
     "nodes": {
         "DummyQ": {
             "_class": "Dream.Queue",
-            "capacity": "1",
+            "capacity": 1,
             "id": "DummyQ",
             "isDummy": "1",
             "name": "DummyQ"
@@ -60,34 +60,34 @@
         "M1": {
             "_class": "Dream.Machine",
             "failures": {
-                "MTTF": "60",
-                "MTTR": "5",
+                "MTTF": 60,
+                "MTTR": 5,
                 "failureDistribution": "Fixed"
             },
             "id": "M1",
             "name": "Machine1",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "0.25"
+                "mean": 0.25
             }
         },
         "M2": {
             "_class": "Dream.Machine",
             "failures": {
-                "MTTF": "40",
-                "MTTR": "10",
+                "MTTF": 40,
+                "MTTR": 10,
                 "failureDistribution": "Fixed"
             },
             "id": "M2",
             "name": "Machine2",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "1.5"
+                "mean": 1.5
             }
         },
         "Q1": {
             "_class": "Dream.Queue",
-            "capacity": "1",
+            "capacity": 1,
             "id": "Q1",
             "isDummy": "0",
             "name": "Q1"
@@ -104,7 +104,7 @@
         },
         "W1": {
             "_class": "Dream.Repairman",
-            "capacity": "1",
+            "capacity": 1,
             "left": 0.14893617021276595,
             "name": "W1",
             "top": 0.7727272727272727

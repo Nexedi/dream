@@ -40,7 +40,7 @@
             "name": "Moulding",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "0.25"
+                "mean": 0.25
             },
             "scheduledMaintenance": {
                 "duration": "60",
@@ -50,7 +50,7 @@
         },
         "Q1": {
             "_class": "Dream.Queue",
-            "capacity": "-1",
+            "capacity": -1,
             "id": "Q1",
             "isDummy": "0",
             "name": "Queue1"

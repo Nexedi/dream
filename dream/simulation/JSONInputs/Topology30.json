@@ -42,7 +42,7 @@
             "name": "Machine1",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "0.25"
+                "mean": 0.25
             }
         },
         "M2": {
@@ -52,12 +52,12 @@
             "name": "Machine2",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "1.5"
+                "mean": 1.5
             }
         },
         "Q1": {
             "_class": "Dream.Queue",
-            "capacity": "1",
+            "capacity": 1,
             "id": "Q1",
             "isDummy": "0",
             "name": "Queue1",
@@ -76,7 +76,7 @@
         },
         "Q2": {
             "_class": "Dream.Queue",
-            "capacity": "1",
+            "capacity": 1,
             "id": "Q2",
             "isDummy": "0",
             "name": "Queue2",

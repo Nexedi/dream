@@ -52,7 +52,7 @@
     "nodes": {
         "DummyQ": {
             "_class": "Dream.Queue",
-            "capacity": "1",
+            "capacity": 1,
             "isDummy": "1",
             "left": 0.6979166666666667,
             "name": "DummyQ",
@@ -67,30 +67,30 @@
         "M1": {
             "_class": "Dream.Machine",
             "failures": {
-                "MTTF": "60",
-                "MTTR": "5",
+                "MTTF": 60,
+                "MTTR": 5,
                 "failureDistribution": "Fixed"
             },
             "left": 0.4375,
             "name": "Machine1",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "0.25"
+                "mean": 0.25
             },
             "top": 0.6535269709543569
         },
         "M2": {
             "_class": "Dream.Machine",
             "failures": {
-                "MTTF": "40",
-                "MTTR": "10",
+                "MTTF": 40,
+                "MTTR": 10,
                 "failureDistribution": "Fixed"
             },
             "left": 0.296875,
             "name": "Machine2",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "1.5"
+                "mean": 1.5
             },
             "top": 0.34647302904564314
         },
@@ -103,13 +103,13 @@
             "name": "Machine3",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "3"
+                "mean": 3.0
             },
             "top": 0.1929460580912863
         },
         "Q1": {
             "_class": "Dream.Queue",
-            "capacity": "1",
+            "capacity": 1,
             "isDummy": "0",
             "left": 0.4375,
             "name": "Q1",
@@ -128,7 +128,7 @@
         },
         "W1": {
             "_class": "Dream.Repairman",
-            "capacity": "1",
+            "capacity": 1,
             "left": 0.15104166666666663,
             "name": "W1",
             "top": 0.8070539419087137

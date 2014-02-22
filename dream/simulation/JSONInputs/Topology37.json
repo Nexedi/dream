@@ -31,7 +31,7 @@
         },
         "Q0": {
             "_class": "Dream.QueueJobShop",
-            "capacity": "-1",
+            "capacity": -1,
             "isDummy": "0",
             "name": "StartQueue",
             "wip": [
@@ -139,7 +139,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "0"
+                                "mean": 0.0
                             },
                             "stationIdsList": [
                                 "Q0"
@@ -149,7 +149,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "1"
+                                "mean": 1.0
                             },
                             "stationIdsList": [
                                 "M0"
@@ -162,13 +162,13 @@
         },
         "Q1": {
             "_class": "Dream.QueueJobShop",
-            "capacity": "-1",
+            "capacity": -1,
             "isDummy": "0",
             "name": "Queue1"
         },
         "Q2": {
             "_class": "Dream.QueueJobShop",
-            "capacity": "-1",
+            "capacity": -1,
             "id": "Q2",
             "isDummy": "0",
             "name": "Queue2"

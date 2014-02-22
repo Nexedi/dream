@@ -16,8 +16,8 @@
         "M1": {
             "_class": "Dream.MachineJobShop",
             "failures": {
-                "MTTF": "40",
-                "MTTR": "10",
+                "MTTF": 40,
+                "MTTR": 10,
                 "failureDistribution": "No",
                 "repairman": "None"
             },
@@ -25,7 +25,7 @@
             "processingTime": {
                 "distributionType": "Fixed",
                 "max": "1",
-                "mean": "0.9",
+                "mean": 0.9,
                 "min": "0.1",
                 "stdev": "0.1"
             }
@@ -33,8 +33,8 @@
         "M2": {
             "_class": "Dream.MachineJobShop",
             "failures": {
-                "MTTF": "40",
-                "MTTR": "10",
+                "MTTF": 40,
+                "MTTR": 10,
                 "failureDistribution": "No",
                 "repairman": "None"
             },
@@ -42,7 +42,7 @@
             "processingTime": {
                 "distributionType": "Fixed",
                 "max": "1",
-                "mean": "0.9",
+                "mean": 0.9,
                 "min": "0.1",
                 "stdev": "0.1"
             }
@@ -50,8 +50,8 @@
         "M3": {
             "_class": "Dream.MachineJobShop",
             "failures": {
-                "MTTF": "40",
-                "MTTR": "10",
+                "MTTF": 40,
+                "MTTR": 10,
                 "failureDistribution": "No",
                 "repairman": "None"
             },
@@ -59,14 +59,14 @@
             "processingTime": {
                 "distributionType": "Fixed",
                 "max": "1",
-                "mean": "0.9",
+                "mean": 0.9,
                 "min": "0.1",
                 "stdev": "0.1"
             }
         },
         "Q1": {
             "_class": "Dream.QueueJobShop",
-            "capacity": "-1",
+            "capacity": -1,
             "isDummy": "0",
             "name": "Q1",
             "wip": [
@@ -82,7 +82,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "0"
+                                "mean": 0.0
                             },
                             "stationIdsList": [
                                 "Q1"
@@ -92,7 +92,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "10"
+                                "mean": 10.0
                             },
                             "stationIdsList": [
                                 "M1"
@@ -102,7 +102,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "0"
+                                "mean": 0.0
                             },
                             "stationIdsList": [
                                 "Q3"
@@ -112,7 +112,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "20"
+                                "mean": 20.0
                             },
                             "stationIdsList": [
                                 "M3"
@@ -125,7 +125,7 @@
         },
         "Q2": {
             "_class": "Dream.QueueJobShop",
-            "capacity": "-1",
+            "capacity": -1,
             "isDummy": "0",
             "name": "Q2",
             "wip": [
@@ -141,7 +141,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "0"
+                                "mean": 0.0
                             },
                             "stationIdsList": [
                                 "Q2"
@@ -151,7 +151,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "20"
+                                "mean": 20.0
                             },
                             "stationIdsList": [
                                 "M2"
@@ -161,7 +161,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "0"
+                                "mean": 0.0
                             },
                             "stationIdsList": [
                                 "Q1"
@@ -171,7 +171,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "34"
+                                "mean": 34.0
                             },
                             "stationIdsList": [
                                 "M1"
@@ -184,7 +184,7 @@
         },
         "Q3": {
             "_class": "Dream.QueueJobShop",
-            "capacity": "-1",
+            "capacity": -1,
             "isDummy": "0",
             "name": "Q3",
             "wip": [
@@ -200,7 +200,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "0"
+                                "mean": 0.0
                             },
                             "stationIdsList": [
                                 "Q3"
@@ -210,7 +210,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "30"
+                                "mean": 30.0
                             },
                             "stationIdsList": [
                                 "M3"
@@ -220,7 +220,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "0"
+                                "mean": 0.0
                             },
                             "stationIdsList": [
                                 "Q1"
@@ -230,7 +230,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "20"
+                                "mean": 20.0
                             },
                             "stationIdsList": [
                                 "M1"

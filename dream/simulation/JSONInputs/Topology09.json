@@ -35,7 +35,7 @@
             "name": "Moulding",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "0.25"
+                "mean": 0.25
             },
             "top": 0.5
         },

@@ -57,7 +57,7 @@
     "nodes": {
         "DummyQ": {
             "_class": "Dream.Queue",
-            "capacity": "1",
+            "capacity": 1,
             "isDummy": "1",
             "left": 0.639751552795031,
             "name": "DummyQ",
@@ -75,7 +75,7 @@
             "name": "Machine1",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "1.5"
+                "mean": 1.5
             },
             "top": 0.40931372549019607
         },
@@ -86,7 +86,7 @@
             "name": "Machine2",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "1.5"
+                "mean": 1.5
             },
             "top": 0.40931372549019607
         },
@@ -99,13 +99,13 @@
             "name": "Machine3",
             "processingTime": {
                 "distributionType": "Fixed",
-                "mean": "2"
+                "mean": 2.0
             },
             "top": 0.2279411764705882
         },
         "Q1": {
             "_class": "Dream.Queue",
-            "capacity": "1",
+            "capacity": 1,
             "isDummy": "0",
             "left": 0.639751552795031,
             "name": "Q1",
@@ -124,7 +124,7 @@
         },
         "W1": {
             "_class": "Dream.Repairman",
-            "capacity": "1",
+            "capacity": 1,
             "left": 0.18012422360248448,
             "name": "W1",
             "top": 0.5906862745098039

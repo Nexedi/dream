@@ -11,7 +11,7 @@
     "nodes": {
         "AB1": {
             "_class": "Dream.MouldAssemblyBuffer",
-            "capacity": "-1",
+            "capacity": -1,
             "id": "AB1",
             "isDummy": "0",
             "name": "Assembly Buffer"
@@ -84,12 +84,12 @@
         },
         "OP1": {
             "_class": "Dream.OperatorManagedJob",
-            "capacity": "1",
+            "capacity": 1,
             "name": "Operator1"
         },
         "Q0": {
             "_class": "Dream.QueueManagedJob",
-            "capacity": "-1",
+            "capacity": -1,
             "isDummy": "0",
             "name": "StartQueue",
             "wip": [
@@ -335,7 +335,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "1"
+                                "mean": 1.0
                             },
                             "setupTime": {
                                 "setupDistribution": "Fixed",
@@ -591,7 +591,7 @@
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "1.4"
+                                "mean": 1.4
                             },
                             "setupTime": {
                                 "setupDistribution": "Fixed",
@@ -609,25 +609,25 @@
         },
         "QCAM": {
             "_class": "Dream.ConditionalBuffer",
-            "capacity": "-1",
+            "capacity": -1,
             "isDummy": "0",
             "name": "Queue CAM"
         },
         "QEDM": {
             "_class": "Dream.QueueManagedJob",
-            "capacity": "-1",
+            "capacity": -1,
             "isDummy": "0",
             "name": "Queue EDM"
         },
         "QIM": {
             "_class": "Dream.QueueManagedJob",
-            "capacity": "-1",
+            "capacity": -1,
             "isDummy": "0",
             "name": "Queue Mould Injection"
         },
         "QMILL": {
             "_class": "Dream.QueueManagedJob",
-            "capacity": "-1",
+            "capacity": -1,
             "isDummy": "0",
             "name": "Queue Milling"
         }
