@@ -37,21 +37,24 @@ from CoreObject import CoreObject
 class Assembly(CoreObject):
 
     #initialize the object      
-    def __init__(self, id, name, distribution='Fixed', mean=1, stdev=0.1, min=0, max=5, **kw):
+    def __init__(self, id, name, processingTime=None, **kw):
+        if not processingTime:
+          processingTime = {'distributionType': 'Fixed',
+                            'mean': 0,
+                            'stdev': 0,
+                            'min': 0,
+                            'max': 0,}
         CoreObject.__init__(self, id, name)
         self.type="Assembly"   #String that shows the type of object
-        self.distType=distribution          #the distribution that the procTime follows  
-        self.rng=RandomNumberGenerator(self, self.distType)
-        self.rng.mean=mean
-        self.rng.stdev=stdev
-        self.rng.min=min
-        self.rng.max=max                    
+        self.rng=RandomNumberGenerator(self, **processingTime)
+
         self.next=[]        #list with the next objects in the flow
         self.previous=[]     #list with the previous objects in the flow
         self.previousPart=[]    #list with the previous objects that send parts
         self.previousFrame=[]    #list with the previous objects that send frames 
         self.nextIds=[]     #list with the ids of the next objects in the flow
         self.previousIds=[]   #list with the ids of the previous objects in the flow
+        # XXX previousFrameIds and previousPartIds are not used
         self.previousPartIds=[]     #list with the ids of the previous objects in the flow that bring parts  
         self.previousFrameIds=[]     #list with the ids of the previous objects in the flow that bring frames
         
@@ -304,7 +307,7 @@ class Assembly(CoreObject):
                 #so for each output value we check if there was difference in the runs' results
                 #if yes we output the Confidence Intervals. if not we output just the fix value           
             json={}
-            json['_class'] = 'Dream.Assembly';
+            json['_class'] = 'Dream.Assembly'; # TODO: this is the only diff with Machine implementation of this method
             json['id'] = str(self.id)
             json['results'] = {}
             json['results']['working_ratio']={}
