@@ -598,16 +598,8 @@ def createObjects():
             G.ObjList.append(Q)
             
         elif objClass=='Dream.Assembly':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', {})
-            distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean') or 0)
-            stdev=float(processingTime.get('stdev') or 0)
-            min=float(processingTime.get('min') or 0)
-            max=float(processingTime.get('max') or 0)
-            A=Assembly(id, name, distribution=distributionType, mean=mean,stdev=stdev,min=min,max=max)
-            A.nextIds=getSuccessorList(id)
+            A=Assembly(**element)
+            A.nextIds=getSuccessorList(element['id'])
             G.AssemblyList.append(A)
             G.ObjList.append(A)
             
