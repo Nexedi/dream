@@ -5,7 +5,7 @@ from dream.simulation.imports import simulate, activate, initialize
 # choose to output trace or not
 G.trace='Yes'
 # define the objects of the model
-S=BatchSource('S','Source',mean=1.5, item=Batch,batchNumberOfUnits=100)
+S=BatchSource('S','Source',mean=1.5, entity='Dream.Batch', batchNumberOfUnits=100)
 Q=Queue('Q','StartQueue',capacity=-1)
 BD=BatchDecomposition('BC', 'BatchDecomposition', numberOfSubBatches=4, mean=1)
 M1=Machine('M1','Machine1',mean=0.5)

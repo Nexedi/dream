@@ -35,7 +35,7 @@ import Globals
 #                 The Source object is a Process
 #============================================================================
 class Source(CoreObject): 
-    def __init__(self, id, name, interarrivalTime=None, item='Dream.Part', **kw):
+    def __init__(self, id, name, interarrivalTime=None, entity='Dream.Part', **kw):
         # Default values
         if not interarrivalTime:
           interarrivalTime = {'distributionType': 'Fixed', 'mean': 1}
@@ -53,7 +53,7 @@ class Source(CoreObject):
         
         self.rng = RandomNumberGenerator(self, **interarrivalTime)
 
-        self.item=Globals.getClassFromName(item)          #the type of object that the Source will generate
+        self.item=Globals.getClassFromName(entity)       #the type of object that the Source will generate
         
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__

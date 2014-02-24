@@ -2,7 +2,7 @@ from dream.simulation.imports import Machine, Source, Exit, Part, G
 from dream.simulation.imports import simulate, activate, initialize
 
 #define the objects of the model 
-S=Source('S1','Source',distribution='Fixed', mean=0.5, item=Part)
+S=Source('S1','Source',distribution='Fixed', mean=0.5, entity='Dream.Part')
 M=Machine('M1','Machine', mean=0.25)
 E=Exit('E1','Exit')  
 

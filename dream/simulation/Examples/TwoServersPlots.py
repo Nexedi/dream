@@ -6,7 +6,7 @@ from dream.KnowledgeExtraction.Plots import Graphs
 
 #define the objects of the model
 R=Repairman('R1', 'Bob') 
-S=Source('S1','Source', mean=0.5, item=Part)
+S=Source('S1','Source', mean=0.5, entity='Dream.Part')
 M1=Machine('M1','Machine1', mean=0.25, failureDistribution='Fixed', MTTF=60, MTTR=5, repairman=R)
 Q=Queue('Q1','Queue')
 M2=Machine('M2','Machine2', mean=1.5, failureDistribution='Fixed', MTTF=40, MTTR=10,repairman=R)

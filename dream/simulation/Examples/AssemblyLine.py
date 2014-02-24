@@ -3,8 +3,8 @@ from dream.simulation.imports import simulate, activate, initialize
 
 #define the objects of the model
 Frame.capacity=4 
-Sp=Source('SP','Parts', mean=0.5, item=Part)
-Sf=Source('SF','Frames', mean=2, item=Frame)
+Sp=Source('SP','Parts', mean=0.5, entity='Dream.Part')
+Sf=Source('SF','Frames', mean=2, entity='Dream.Frame')
 M=Machine('M','Machine', mean=0.25)
 A=Assembly('A','Assembly', mean=2)
 E=Exit('E1','Exit')  
