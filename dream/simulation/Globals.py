@@ -132,7 +132,9 @@ def setWIP(entityList):
             object=entity.currentStation                        #identify the object
             object.getActiveObjectQueue().append(entity)        #append the entity to its Queue
             entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
-        # if the entity is of type Job/OrderComponent/Order
+            
+        
+        # if the entity is of type Job/OrderComponent/Order/Mould
         elif entity.type=='Job' or 'OrderComponent' or 'Order' or 'Mould':
             # find the list of starting station of the entity
             currentObjectIds=entity.remainingRoute[0].get('stationIdsList',[])
@@ -164,6 +166,21 @@ def setWIP(entityList):
             entity.remainingRoute.pop(0)                        # remove data from the remaining route.   
             entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
             entity.currentStation=object                        # update the current station of the entity 
+            
+        # if the currentStation of the entity is of type Machine then the entity 
+        #     must be processed first and then added to the pendingEntities list
+        #     Its hot flag is not raised
+        if not (entity.currentStation in G.MachineList):    
+            # variable to inform whether the successors are machines or not
+            successorsAreMachines=True
+            for nextObject in entity.currentStation.next:
+                if not nextObject in G.MachineList:
+                    successorsAreMachines=False
+                    break
+            if not successorsAreMachines:
+                entity.hot = False
+            # add the entity to the pendingEntities list
+            G.pendingEntities.append(entity)
        
 def countIntervalThroughput(argumentDict={}):
     currentExited=0  

@@ -109,7 +109,6 @@ class QueueJobShop(Queue):
             # append only if not already in the list
             if nextObject not in activeObject.next:
                 activeObject.next.append(nextObject)
-
         
         # TODO: if the successor of the object is a machine that is operated with operationType 'Load'
         #     then the flag hot of the activeEntity must be set to True 
