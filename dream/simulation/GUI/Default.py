@@ -11,9 +11,9 @@ schema = {
   },
   "mean": {
     "id": "mean",
-    "type": "string",
+    "type": "number",
     "_class": "Dream.Property",
-    "_default": "0.9"
+    "_default": 0.9
   },
   "distributionType": {
     "id": "distributionType",
@@ -23,21 +23,21 @@ schema = {
   },
   "stdev": {
     "id": "stdev",
-    "type": "string",
+    "type": "number",
     "_class": "Dream.Property",
-    "_default": "0.1"
+    "_default": 0.1
   },
   "min": {
     "id": "min",
-    "type": "string",
+    "type": "number",
     "_class": "Dream.Property",
-    "_default": "0.1"
+    "_default": 0.1
   },
   "max": {
     "id": "max",
-    "type": "string",
+    "type": "number",
     "_class": "Dream.Property",
-    "_default": "1"
+    "_default": 1
   },
   "failureDistribution": {
     "id": "failureDistribution",
@@ -47,15 +47,15 @@ schema = {
   },
   "MTTF": {
     "id": "MTTF",
-    "type": "string",
+    "type": "number",
     "_class": "Dream.Property",
-    "_default": "40"
+    "_default": 40
   },
   "MTTR": {
     "id": "MTTR",
-    "type": "string",
+    "type": "number",
     "_class": "Dream.Property",
-    "_default": "10"
+    "_default": 10
   },
   "repairman": {
     "id": "repairman",
@@ -77,45 +77,45 @@ schema = {
   },
   "capacity": {
     "id": "capacity",
-    "type": "string",
+    "type": "number",
     "_class": "Dream.Property",
-    "_default": "1"
+    "_default": 1
   },
   "numberOfReplications": {
     "id": "numberOfReplications",
-    "type": "string",
+    "type": "number",
     "_class": "Dream.Property",
-    "_default": "10"
+    "_default": 10
   },
   "maxSimTime": {
     "id": "maxSimTime",
-    "type": "string",
+    "type": "number",
     "_class": "Dream.Property",
-    "_default": "100"
+    "_default": 100
   },
   "confidenceLevel": {
     "id": "confidenceLevel",
-    "type": "string",
+    "type": "number",
     "_class": "Dream.Property",
-    "_default": "0.5"
+    "_default": 0.5
   },
   "processTimeout": {
     "id": "processTimeout",
-    "type": "string",
+    "type": "number",
     "_class": "Dream.Property",
-    "_default": "10"
+    "_default": 10
   },
   "batchNumberOfUnits": {
     "id": "batchNumberOfUnits",
-    "type": "integer",
+    "type": "number",
     "_class": "Dream.Property",
-    "_default": "10"
+    "_default": 10
   },
   "numberOfSubBatches": {
     "id": "numberOfSubBatches",
-    "type": "integer",
+    "type": "number",
     "_class": "Dream.Property",
-    "_default": "10"
+    "_default": 10
   },
   "method": {
     "id": "method",
@@ -125,27 +125,27 @@ schema = {
   },
   "start": {
     "id": "start",
-    "type": "string",
+    "type": "number",
     "_class": "Dream.Property",
-    "_default": "1"
+    "_default": 1
   },
   "stop": {
     "id": "stop",
-    "type": "string",
+    "type": "number",
     "_class": "Dream.Property",
-    "_default": "-1"
+    "_default": -1
   },
   "interval": {
     "id": "interval",
-    "type": "string",
+    "type": "number",
     "_class": "Dream.Property",
-    "_default": "10"
+    "_default": 10
   },
   "duration": {
     "id": "duration",
-    "type": "string",
+    "type": "number",
     "_class": "Dream.Property",
-    "_default": "10"
+    "_default": 10
   },
   "argumentDict": {
     "id": "argumentDict",
@@ -155,7 +155,7 @@ schema = {
   },
   "currentDate": {
     "id": "currentDate",
-    "type": "string", # XXX format ?
+    "type": "string", # date in YYYY/MM/DD format
     "_class": "Dream.Property",
     "_default": ""
   },

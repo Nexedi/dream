@@ -47,14 +47,14 @@ class Simulation(ShiftsSimulation):
     # some more global properties
     conf["Dream-Configuration"]["property_list"].append( {
       "id": "throughputTarget",
-      "type": "string",
+      "type": "number",
       "_class": "Dream.Property",
-      "_default": "10" })
+      "_default": 10 })
     conf["Dream-Configuration"]["property_list"].append( {
       "id": "desiredPercentageOfSuccess",
-      "type": "string",
+      "type": "number",
       "_class": "Dream.Property",
-      "_default": "0.85" })
+      "_default": 0.85 })
 
     # remove tools that does not make sense here
     conf.pop('Dream-Machine')
