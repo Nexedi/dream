@@ -29,7 +29,7 @@ MASS= importr('MASS')
 
 #The BasicStatisticalMeasures object
 class BasicStatisticalMeasures:
-     # A variety of statistical measures are calculated in this object
+# A variety of statistical measures are calculated in this object
     def length(self, data):                      #Calculate the length of data sample
         data=robjects.FloatVector(data)          ##The given list changes into float vector in order to be handled by RPy2
         rlength = robjects.r['length']           #Call length function-R function
@@ -68,7 +68,7 @@ class BasicStatisticalMeasures:
     def range (self, data):                    #Calculate the range of a data sample
         data=robjects.FloatVector(data)
         rrange = robjects.r['range']           #Call range function - R function
-        return rrange(data)[0]
+        return rrange(data)
         
     def IQR (self, data):                      #Calculate the Interquartile range (IQR) of a data sample
         data=robjects.FloatVector(data)
