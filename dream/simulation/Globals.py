@@ -126,6 +126,7 @@ class SetWipTypeError(Exception):
 # although the entity cannot be in more than one stations
 # =======================================================================
 def setWIP(entityList):
+    # for all the entities in the entityList
     for entity in entityList:
         # if the entity is of type Part
         if entity.type=='Part':
@@ -166,7 +167,6 @@ def setWIP(entityList):
             entity.remainingRoute.pop(0)                        # remove data from the remaining route.   
             entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
             entity.currentStation=object                        # update the current station of the entity 
-            
         # if the currentStation of the entity is of type Machine then the entity 
         #     must be processed first and then added to the pendingEntities list
         #     Its hot flag is not raised
@@ -179,6 +179,8 @@ def setWIP(entityList):
                     break
             if not successorsAreMachines:
                 entity.hot = False
+            else:
+                entity.hot = True
             # add the entity to the pendingEntities list
             G.pendingEntities.append(entity)
        
