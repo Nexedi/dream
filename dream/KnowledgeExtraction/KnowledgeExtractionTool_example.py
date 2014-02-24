@@ -26,6 +26,7 @@ from ImportExceldata import Import_Excel
 from DistributionFitting import DistFittest
 from xml.etree import ElementTree as et
 from ExcelOutput import Output
+from ReplaceMissingValues import HandleMissingValues
 import xlrd
 import json
 
@@ -44,12 +45,16 @@ OperationTimes= X.Input_data(worksheet_OperationTime,workbook)      #It defines 
 Machine1_OpearationTimes = OperationTimes.get('Machine1',[])        #Two lists are defined (Machine1_OpearationTimes, Machine2_OpearationTimes) with the operation times data of each machine
 Machine2_OpearationTimes = OperationTimes.get('Machine2',[])
 
-A=DistFittest()                                     #It calls the DistFittest object
-A.ks_test(Machine2_OpearationTimes)                 #It conducts the Kolmogorov-Smirnov test in the list with the operation times data 
-A.ks_test(Machine1_OpearationTimes)
+A=HandleMissingValues()                                     #Call the HandleMissingValues object
+Machine1_OpearationTimes= A.DeleteMissingValue(Machine1_OpearationTimes)        #It deletes the missing values in the lists with the operation times data
+Machine2_OpearationTimes= A.DeleteMissingValue(Machine2_OpearationTimes)
+
+B=DistFittest()                                     #It calls the DistFittest object
+B.ks_test(Machine2_OpearationTimes)                 #It conducts the Kolmogorov-Smirnov test in the list with the operation times data 
+B.ks_test(Machine1_OpearationTimes)
 lista=[]                                            #It creates a list, that contains the outcome of the Kolmogorov-Smirnov tests  
-lista.append(A.ks_test(Machine1_OpearationTimes))
-lista.append(A.ks_test(Machine2_OpearationTimes))
+lista.append(B.ks_test(Machine1_OpearationTimes))
+lista.append(B.ks_test(Machine2_OpearationTimes))
 
 names = []                                          #It defines the following five lists
 aParameters=[]
@@ -140,8 +145,8 @@ for element in nodes:
     jsonFile.close()                                                                        #It closes the file
         
 #================================ Calling the ExcelOutput object, outputs the outcomes of the statistical analysis in Excel files =============================================#
-B=Output()
-B.PrintDistributionFit(Machine1_OpearationTimes)   
-B.PrintStatisticalMeasures(Machine1_OpearationTimes)
+C=Output()
+C.PrintDistributionFit(Machine1_OpearationTimes)   
+C.PrintStatisticalMeasures(Machine1_OpearationTimes)
 
     
