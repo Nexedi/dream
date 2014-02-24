@@ -155,8 +155,11 @@ def setWIP(entityList):
             for nextObjectId in nextObjectIds:
                 nextObject=findObjectById(nextObjectId)
                 nextObjects.append(nextObject)  
-            # update the receiver and the next list of the object
-            object.next=nextObjects
+            # update the next list of the object
+            for nextObject in nextObjects:
+                # append only if not already in the list
+                if nextObject not in object.next:
+                    object.next.append(nextObject)
             
             entity.remainingRoute.pop(0)                        # remove data from the remaining route.   
             entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
