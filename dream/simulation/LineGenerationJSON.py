@@ -172,15 +172,6 @@ def createObjects():
     G.MachineManagedJobList=[]
     G.QueueManagedJobList=[]
     G.ModelResourceList=[]
-    
-    # test that we can instanciate everything.
-    obj_list = []
-    for (element_id, element) in nodes.iteritems():
-        element['id'] = element_id
-        resourceClass = Globals.getClassFromName(element['_class'])
-        resource = resourceClass(**element)
-        resource.nextIds = getSuccessorList(element['id'])
-        obj_list.append(resource)
 
     # -----------------------------------------------------------------------
     #                loop through all the model resources 
