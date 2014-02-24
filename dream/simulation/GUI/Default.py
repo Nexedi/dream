@@ -245,6 +245,7 @@ class Simulation(object):
         "gui": {
           'debug_json': 0,
           'wip_spreadsheet': 0,
+          'wip_part_spreadsheet': 0,
           'shift_spreadsheet': 0,
 
           'station_utilisation_graph': 1,

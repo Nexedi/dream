@@ -134,6 +134,29 @@
       });
       wip_spreadsheet.find('.htCore').width(wip_spreadsheet.width());
 
+      var wip_part_spreadsheet = $('#wip_part_spreadsheet');
+      var data = [
+        [
+          "Order ID",
+          "Due Date",
+          "Priority",
+          "Project Manager",
+          "Parts",
+          "Part Type",
+          "Sequence",
+          "Processing Times",
+          "Electrodes Needed"
+        ]
+      ];
+      wip_part_spreadsheet.handsontable({
+        data: data,
+        minSpareRows: 1,
+        afterChange: function () {
+          priv.onDataChange();
+        }
+      });
+      wip_part_spreadsheet.find('.htCore').width(wip_part_spreadsheet.width());
+
       var shift_spreadsheet = $('#shift_spreadsheet');
       var data = [
         [
@@ -320,6 +343,10 @@
       var wip_spreadsheet = $('#wip_spreadsheet');
       if (wip_spreadsheet.length > 0) {
         data['wip_spreadsheet'] = wip_spreadsheet.handsontable('getData');
+      }
+      var wip_part_spreadsheet = $('#wip_part_spreadsheet');
+      if (wip_part_spreadsheet.length > 0) {
+        data['wip_part_spreadsheet'] = wip_part_spreadsheet.handsontable('getData');
       }
       var shift_spreadsheet = $('#shift_spreadsheet');
       if (shift_spreadsheet.length > 0) {
