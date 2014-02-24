@@ -190,8 +190,11 @@ def createObjects():
 
     for (element_id, element) in nodes.iteritems():                 # use an iterator to go through all the nodes
         element['id'] = element_id                                  # create a new entry for the element (dictionary)
+        element = element.copy()
+        for k in ('element_id', 'top', 'left'):
+          element.pop(k, None)
                                                                     # with key 'id' and value the the element_id
-        resourceClass = element.get('_class', 'not found')          # get the class type of the element
+        resourceClass = element.pop('_class')          # get the class type of the element
         if resourceClass=='Dream.Repairman':                        # check the object type
             id = element.get('id', 'not found')                     # get the id of the element
             name = element.get('name', id)                          # get the name of the element / default 'not_found'
@@ -218,9 +221,12 @@ def createObjects():
     for (element_id, element) in nodes.iteritems():                 # use an iterator to go through all the nodes
                                                                     # the key is the element_id and the second is the 
                                                                     # element itself 
+        element = element.copy()
         element['id'] = element_id                                  # create a new entry for the element (dictionary)
+        for k in ('element_id', 'top', 'left'):
+          element.pop(k, None)
                                                                     # with key 'id' and value the the element_id
-        resourceClass = element.get('_class', 'not found')          # get the class type of the element
+        resourceClass = element.pop('_class')          # get the class type of the element
         if resourceClass=='Dream.OperatorPool':
             id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
             name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
@@ -243,8 +249,13 @@ def createObjects():
     #                    read the data and create them
     # -----------------------------------------------------------------------
     for (element_id, element) in nodes.iteritems():
+        element = element.copy()
         element['id'] = element_id
-        objClass=element.get('_class', 'not found')   
+        # XXX not sure about top & left.
+        for k in ('element_id', 'top', 'left'):
+          element.pop(k, None)
+        objClass = element.pop('_class')
+
         if objClass=='Dream.Source':
             S=Source(**element)
             S.nextIds=getSuccessorList(element['id'])
