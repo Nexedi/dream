@@ -36,7 +36,6 @@ class Import_Excel:
             i=1
             for i in range(num_cols):
                 title.append(worksheet.cell_value(0, i))  #Put in this new list the names of the first row (attributes)of the worksheet
-            print title                         #Print the new list
             
             i=2
             j=1   
