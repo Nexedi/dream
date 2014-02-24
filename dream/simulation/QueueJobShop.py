@@ -40,7 +40,7 @@ class QueueJobShop(Queue):
     def initialize(self):
         from Globals import G
         self.previous=G.ObjList
-        self.next=G.ObjList
+        self.next=[]
         Queue.initialize(self)  #run default behaviour
     
     # =======================================================================    
@@ -104,7 +104,12 @@ class QueueJobShop(Queue):
         for nextObjectId in nextObjectIds:
             nextObject = Globals.findObjectById(nextObjectId)
             nextObjects.append(nextObject)
-        activeObject.next = nextObjects
+        # update the next list of the object
+        for nextObject in nextObjects:
+            # append only if not already in the list
+            if nextObject not in activeObject.next:
+                activeObject.next.append(nextObject)
+
         
         # TODO: if the successor of the object is a machine that is operated with operationType 'Load'
         #     then the flag hot of the activeEntity must be set to True 
@@ -127,5 +132,25 @@ class QueueJobShop(Queue):
                 activeEntity.hot = True
         
         activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
-        return activeEntity  
+        return activeEntity
+    
+    # =======================================================================
+    # removes an entity from the Queue
+    # extension to remove possible receivers accordingly
+    # =======================================================================
+    def removeEntity(self, entity=None):
+        activeObject=self.getActiveObject()
+        receiverObject=self.receiver  
+        activeEntity=Queue.removeEntity(self, entity)                               #run the default method  
+        removeReceiver=True 
+        # search in the internalQ. If an entity has the same receiver do not remove
+        for ent in self.getActiveObjectQueue():
+            nextObjectIds=ent.remainingRoute[0].get('stationIdsList',[])
+            if receiverObject.id in nextObjectIds:
+                removeReceiver=False      
+        # if not entity had the same receiver then the receiver will be removed 
+        if removeReceiver:
+            activeObject.next.remove(receiverObject)
+        return activeEntity
+
         

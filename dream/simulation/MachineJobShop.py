@@ -39,7 +39,7 @@ class MachineJobShop(Machine):
     def initialize(self):
         from Globals import G
         self.previous=G.ObjList
-        self.next=G.ObjList
+        self.next=[]
         Machine.initialize(self)    #run default behaviour
     
     # =======================================================================
@@ -76,6 +76,7 @@ class MachineJobShop(Machine):
     # gets an entity from the predecessor that the predecessor index points to
     # =======================================================================     
     def getEntity(self):
+        activeObject=self.getActiveObject()
         activeEntity=Machine.getEntity(self)     #run the default code
         
         # read the processing/setup/load times from the corresponding remainingRoute entry
@@ -94,9 +95,11 @@ class MachineJobShop(Machine):
         for nextObjectId in nextObjectIds:
             nextObject=Globals.findObjectById(nextObjectId)
             nextObjects.append(nextObject)
-        self.next=nextObjects
-#         self.next=Globals.findObjectById(activeEntity.remainingRoute[1].get('stationIdsList',[]))  
-#         self.receiver=Globals.findObjectById(activeEntity.remainingRoute[1][0])    #read the next station 
+        # update the next list of the object
+        for nextObject in nextObjects:
+            # append only if not already in the list
+            if nextObject not in activeObject.next:
+                activeObject.next.append(nextObject)
         removedStep = activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
         return activeEntity  
                                                                              
@@ -236,4 +239,24 @@ class MachineJobShop(Machine):
         loadTime=activeEntity.remainingRoute[0].get('loadTime',{})
         self.distType=loadTime.get('loadDistribution','Fixed')
         self.loadTime=float(loadTime.get('loadMean', 0))
+        
+    # =======================================================================
+    # removes an entity from the Machine
+    # extension to remove possible receivers accordingly
+    # =======================================================================
+    def removeEntity(self, entity=None):
+        activeObject=self.getActiveObject()
+        receiverObject=self.receiver  
+        activeEntity=Machine.removeEntity(self, entity)         #run the default method  
+        removeReceiver=True 
+        # search in the internalQ. If an entity has the same receiver do not remove
+        for ent in self.getActiveObjectQueue():
+            nextObjectIds=ent.remainingRoute[0].get('stationIdsList',[])
+            if receiverObject.id in nextObjectIds:
+                removeReceiver=False      
+        # if not entity had the same receiver then the receiver will be removed    
+        if removeReceiver:
+            activeObject.next.remove(receiverObject)
+        return activeEntity
+
         
