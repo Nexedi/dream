@@ -31,9 +31,9 @@ from RandomNumberGenerator import RandomNumberGenerator
 
 class BatchSource(Source):
     def __init__(self, id, name, interarrivalTime=None,
-                 entity='Dream.Batch', batchNumberOfUnits=1, **kw):
+                 entity='Dream.Batch', batchNumberOfUnits=1):
         Source.__init__(self, id=id, name=name,
-                        interarrivalTime=interarrivalTime, entity=entity, **kw)
+                        interarrivalTime=interarrivalTime, entity=entity)
         self.numberOfUnits = batchNumberOfUnits
         
         

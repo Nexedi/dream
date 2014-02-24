@@ -34,8 +34,8 @@ import Globals
 #============================================================================
 #                 The Source object is a Process
 #============================================================================
-class Source(CoreObject): 
-    def __init__(self, id, name, interarrivalTime=None, entity='Dream.Part', **kw):
+class Source(CoreObject):
+    def __init__(self, id, name, interarrivalTime=None, entity='Dream.Part'):
         # Default values
         if not interarrivalTime:
           interarrivalTime = {'distributionType': 'Fixed', 'mean': 1}
