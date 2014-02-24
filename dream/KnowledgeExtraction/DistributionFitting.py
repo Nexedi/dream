@@ -263,49 +263,62 @@ class DistFittest:
     def ks_test(self,data):             #Method that conducts the Kolmogorov-Smirnov statistical test and returns the best fitting distribution among the list of the available statistical distributions
         data=robjects.FloatVector(data)     #The given data sample changes into float vector in order to be handled by RPy2
         
+        self.Norm_kstest(data)
+        self.Lognorm_kstest(data)
+        self.Exp_kstest(data)
+        self.Pois_kstest(data)
+        self.Geom_kstest(data)
+        self.Logis_kstest(data)
+        self.Geom_kstest(data)
+        self.Weib_kstest(data)
+        self.Cauchy_kstest(data)
+        
         #Create a list with strings the available statistical distributions
         list1=('Normal','Lognormal','Exponential','Poisson', 'Geometric','Logistic','Gamma','Weibull', 'Cauchy')
+        list2=[]                                    #Create a list 
+        
         #try...except syntaxes to test if the Kolmogorov-Smirnov statistical tests can be conducted to the available distributions  
         try:
-            arga=self.Normtest[0][0]        #Create a variable that holds the D parameter of the Kolmogorov-Smirnov test in Normal distribution
+            list2.append(self.Normtest[0][0])        #It appends in list2 the D statistic parameter of the Kolmogorov-Smirnov test in Normal distribution
         except:
-            arga=''                         #in case of an error, the variable is left blank 
+            list2.append('')                         #in case of an error, it appends a blank point 
         try:    
-            argb=self.Longnormtest[0][0]    #Create a variable that holds the D parameter of the Kolmogorov-Smirnov test in Lognormal distribution
+            list2.append(self.Lognormtest[0][0])    #It appends in list2 the D statistic parameter of the Kolmogorov-Smirnov test in Lognormal distribution
         except:
-            argb=''    
+            list2.append('')                        # #in case of an error, it appends a blank point
         try:   
-            argd=self.Exptest[0][0]         #Create a variable that holds the D parameter of the Kolmogorov-Smirnov test in Exponential distribution
+            list2.append(self.Exptest[0][0])         #It appends in list2 the D statistic parameter of the Kolmogorov-Smirnov test in Exponential distribution
         except:
-            argd=''                         #in case of an error, the variable is left blank
+            list2.append('')                          #in case of an error, it appends a blank point
         try:
-            arge=self.Poistest[0][0]
+            list2.append(self.Poistest[0][0])
         except:
-            arge=''
+            list2.append('')
         try:
-            argf=self.Geomtest[0][0]
+            list2.append(self.Geomtest[0][0])
         except:         
-            argf=''
+            list2.append('')
         try:
-            argg=self.Logistest[0][0]
+            list2.append(self.Logistest[0][0])
         except:
-            argg=''   
+            list2.append('')   
         try:    
-            argh= self.Gamtest[0][0]
+            list2.append(self.Gamtest[0][0])
         except:
-            argh=''
+            list2.append('')
         try:   
-            argi=self.Weibtest[0][0]
+            list2.append(self.Weibtest[0][0])
         except:
-            argi=''   
+            list2.append('')   
         try:   
-            argj=self.Cauchytest[0][0]
+            list2.append(self.Cauchytest[0][0])
         except:
-            argj=''               
+            list2.append('')               
+        
         #Create a list with parameters the above D parameters calculated by the Kolmogorov-Smirnov tests in the available statistical distributions
-        list2=[arga,argb,argd,arge,argf,argg,argh,argi,argj]
         a=min(list2)     #Create a variable that holds the minimum value from the above list  
         b=list2.index(a) #Create a variable that holds the actual position  of the minimum value in the list
+        
         self=Distributions()
         #Set of if...elif syntax in order to get a Python dictionary with the best fitting statistical distribution and its parameters
         if list1[b]=='Normal':          #Check if in list's b position is the Normal distribution
@@ -344,6 +357,8 @@ class DistFittest:
             self.Cauchy_distrfit(data)
             myDict = {'type':list1[b],'aParameter':'location','bParameter':'scale','aParameterValue':self.Cauchy[0][0],'bParameterValue':self.Cauchy[0][1]}
             return myDict
+         
+ 
          
  
  

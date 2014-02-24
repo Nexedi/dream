@@ -31,7 +31,7 @@ from DistributionFitting import DistFittest
 #The ExcelOutput object export in Excel document both the calculated statistical measures and the distribution fitting test of a dataset 
 class Output(BasicStatisticalMeasures,DistFittest):
     
-    def PrintStatisticalMeasures(self,data):
+    def PrintStatisticalMeasures(self,data,fileName="StatisticalMeasuresResults.xls"):
         data=robjects.FloatVector(data)     #The given list changes into float vector in order to be handled by RPy2
         
         book = Workbook()                   
@@ -103,11 +103,11 @@ class Output(BasicStatisticalMeasures,DistFittest):
         
         ###selfnterquartselfle Range###
         sheet1.write(17,1,(self.IQR(data)))
-        book.save('StatisticalMeasuresResults.xls')  #Save the excel document 
+        book.save(fileName)  #Save the excel document 
         
     
     
-    def PrintDistributionFit(self,data):
+    def PrintDistributionFit(self,data,fileName="DistributionFittingResults.xls"):
         data=robjects.FloatVector(data)
         
         book = Workbook()
@@ -240,5 +240,4 @@ class Output(BasicStatisticalMeasures,DistFittest):
         sheet2.write(15,15,(A.get('aParameterValue')))
         sheet2.write(15,16,(A.get('bParameterValue')))
         
-        #book.save('C:\Eclipse workspace\FirstPrototype\src\ExcelOutput_DistributionFitting.xls')    #Save the excel document in the given directory
-        book.save('DistributionFittingResults.xls')    #Save the excel document 
+        book.save(fileName)    #Save the excel document 
