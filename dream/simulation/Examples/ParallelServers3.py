@@ -34,7 +34,7 @@ class CountingExit(Exit):
         return activeEntity             #return the entity obtained
         
 #define the objects of the model
-S=Source('S','Source', mean=0.5, item=Part)
+S=Source('S','Source', mean=0.5, entity='Dream.Part')
 Q=SelectiveQueue('Q','Queue', capacity=infinity)
 M1=Milling('M1','Milling1', mean=0.25)
 M2=Milling('M2','Milling2', mean=0.25)

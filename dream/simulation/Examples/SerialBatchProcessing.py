@@ -2,7 +2,7 @@ from dream.simulation.imports import Machine, BatchSource, Exit, Batch, BatchDec
 from dream.simulation.imports import simulate, activate, initialize
 
 # define the objects of the model
-S=BatchSource('S','Source',mean=1.5, item=Batch,batchNumberOfUnits=100)
+S=BatchSource('S','Source',mean=1.5, entity='Dream.Batch', batchNumberOfUnits=100)
 Q=Queue('Q','StartQueue',capacity=100000)
 BD=BatchDecomposition('BC', 'BatchDecomposition', numberOfSubBatches=4, mean=1)
 M1=Machine('M1','Machine1',mean=0.5)

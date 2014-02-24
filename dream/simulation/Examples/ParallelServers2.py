@@ -15,7 +15,7 @@ class SelectiveQueue(Queue):
             return len(self.getActiveObjectQueue())>0 and (not (M1.canAccept()))
         
 #define the objects of the model
-S=Source('S','Source', mean=0.5, item=Part)
+S=Source('S','Source', mean=0.5, entity='Dream.Part')
 Q=SelectiveQueue('Q','Queue', capacity=infinity)
 M1=Machine('M1','Milling1', mean=0.25)
 M2=Machine('M2','Milling2', mean=0.25)

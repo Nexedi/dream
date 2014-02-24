@@ -3,7 +3,7 @@ from dream.simulation.imports import simulate, activate, initialize
 
 #define the objects of the model
 R=Repairman('R1', 'Bob') 
-S=Source('S1','Source', mean=0.5, item=Part)
+S=Source('S1','Source', mean=0.5, entity='Dream.Part')
 M1=Machine('M1','Machine1', mean=0.25)
 Q=Queue('Q1','Queue')
 M2=Machine('M2','Machine2', mean=1.5)
