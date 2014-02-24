@@ -133,6 +133,7 @@ class BatchReassembly(CoreObject):
         activeObjectQueue.append(batchToBeReassembled)
         batchToBeReassembled.currentStation=self
         self.timeLastEntityEnded=now()
+        self.outputTrace(batchToBeReassembled.name, 'was reassembled')
         
     # =======================================================================
     #     returns True if the object doensn't hold entities of type Batch
