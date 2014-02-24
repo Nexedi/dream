@@ -59,7 +59,7 @@ class OrderDecomposition(CoreObject):
     # =======================================================================
     def initialize(self):
         self.previous=G.ObjList
-        self.next=G.ObjList
+        self.next=[]
         CoreObject.initialize(self)                 # using the default CoreObject Functionality
         self.Res=Resource(infinity)                 # initialize the Internal resource (Queue) functionality. This is a dummy object so 
                                                     # infinite capacity is assumed
@@ -240,6 +240,19 @@ class OrderDecomposition(CoreObject):
                     for elementId in elementIds:
                         if obj.id==elementId and obj.type=='Exit':
                             exitAssigned=True 
+            # Below it is to assign assemblers if there are any in the corresponding Global list
+            if not exitAssigned:                    
+                if len(G.MouldAssemblyList)!=0:
+                    bufferIDlist = []
+                    assemblerIDlist = []
+                    for assemblyBuffer in G.MouldAssemblyBufferList:
+                        bufferIDlist.append(str(assemblyBuffer.id))
+                    for assembler in G.MouldAssemblyList:
+                        assemblerIDlist.append(str(assembler.id))
+                    route.append({'stationIdsList':bufferIDlist})       # assign MouldAssemblyBuffers
+                    route.append({'stationIdsList':assemblerIDlist})    # assign MouldAssemblies
+                    # if assemblers are assigned then an 'exit' is assigned
+                    exitAssigned=True
             if not exitAssigned:
                 exitId=None
                 for obj in G.ObjList:
