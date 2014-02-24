@@ -40,8 +40,7 @@ class HandleMissingValues:
         for value in mylist:
             if value != '':
                 listX.append(value)            #Add in the new list the non missing values from the given list  
-            i+=1
-        print 'after del', mylist  
+            i+=1 
         return listX                           #Return the new list, which has the non missing values from the initial given list 
     
     def ReplaceWithMean(self,mylist):          #Replace in the given list the missing values with the mean value  
