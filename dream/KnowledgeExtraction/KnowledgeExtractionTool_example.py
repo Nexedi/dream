@@ -117,7 +117,7 @@ for process in process:
         Value.text=str(bParameterValue[1])
     else:
         continue
-    tree.write(datafile,encoding="utf8")                         #It writes the element tree to a specified file, using the 'utf8' output encoding
+    tree.write('CMSD_Topology10_Output.xml',encoding="utf8")                         #It writes the element tree to a specified file, using the 'utf8' output encoding
 
 #================================= Output preparation: output the updated values in the JSON file of Topology10 =========================================================#
 jsonFile= open('JSON_Topology10.json','r')      #It opens the Topology10 JSON file 
@@ -140,13 +140,15 @@ for element in nodes:
     else:
         continue               
         
-    jsonFile = open('JSON_Topology10.json',"w")     #It opens the JSON file
+    jsonFile = open('JSON_Topology10_Output.json',"w")     #It opens the JSON file
     jsonFile.write(json.dumps(data, indent=True))                                           #It writes the updated data to the JSON file 
     jsonFile.close()                                                                        #It closes the file
         
 #================================ Calling the ExcelOutput object, outputs the outcomes of the statistical analysis in Excel files =============================================#
 C=Output()
-C.PrintDistributionFit(Machine1_OpearationTimes)   
-C.PrintStatisticalMeasures(Machine1_OpearationTimes)
+C.PrintDistributionFit(Machine1_OpearationTimes,'Machine1_DistFitResults.xls')   
+C.PrintStatisticalMeasures(Machine1_OpearationTimes,'Machine1_StatResults.xls')
+C.PrintDistributionFit(Machine2_OpearationTimes,'Machine2_DistFitResults.xls')   
+C.PrintStatisticalMeasures(Machine2_OpearationTimes,'Machine2_StatResults.xls')
 
     
