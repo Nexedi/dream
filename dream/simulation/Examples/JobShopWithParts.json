@@ -1,0 +1,263 @@
+{
+ "nodes": {
+  "E1": {
+   "_class": "Dream.ExitJobShop",
+   "element_id": "DreamNode_1"
+  },
+  "QStart": {
+   "_class": "Dream.QueueManagedJob",
+   "element_id": "DreamNode_2",
+   "name": "QStart",
+   "capacity": "1",
+   "isDummy": "0",
+   "schedulingRule": "FIFO"
+  },
+  "CAD1": {
+   "_class": "Dream.MachineJobShop",
+   "element_id": "DreamNode_3",
+   "name": "CAD1",
+   "processingTime": {
+    "mean": "0.9",
+    "distributionType": "Fixed",
+    "stdev": "0.1",
+    "min": "0.1",
+    "max": "1"
+   },
+   "failures": {
+    "failureDistribution": "No",
+    "MTTF": "40",
+    "MTTR": "10",
+    "repairman": "None"
+   }
+  },
+  "CAD2": {
+   "_class": "Dream.MachineJobShop",
+   "element_id": "DreamNode_4",
+   "name": "CAD2",
+   "processingTime": {
+    "mean": "0.9",
+    "distributionType": "Fixed",
+    "stdev": "0.1",
+    "min": "0.1",
+    "max": "1"
+   },
+   "failures": {
+    "failureDistribution": "No",
+    "MTTF": "40",
+    "MTTR": "10",
+    "repairman": "None"
+   }
+  },
+  "Dream-OrderDecomposition_1": {
+   "_class": "Dream.OrderDecomposition",
+   "element_id": "DreamNode_5"
+  },
+  "QCAM": {
+   "_class": "Dream.QueueManagedJob",
+   "element_id": "DreamNode_6",
+   "name": "Dream-QueueManagedJob_1",
+   "capacity": "1",
+   "isDummy": "0",
+   "schedulingRule": "FIFO"
+  },
+  "CAM1": {
+   "_class": "Dream.MachineJobShop",
+   "element_id": "DreamNode_7",
+   "name": "CAM1",
+   "processingTime": {
+    "mean": "0.9",
+    "distributionType": "Fixed",
+    "stdev": "0.1",
+    "min": "0.1",
+    "max": "1"
+   },
+   "failures": {
+    "failureDistribution": "No",
+    "MTTF": "40",
+    "MTTR": "10",
+    "repairman": "None"
+   }
+  },
+  "CAM2": {
+   "_class": "Dream.MachineJobShop",
+   "element_id": "DreamNode_8",
+   "name": "CAM2",
+   "processingTime": {
+    "mean": "0.9",
+    "distributionType": "Fixed",
+    "stdev": "0.1",
+    "min": "0.1",
+    "max": "1"
+   },
+   "failures": {
+    "failureDistribution": "No",
+    "MTTF": "40",
+    "MTTR": "10",
+    "repairman": "None"
+   }
+  }
+ },
+ "edges": {
+  "con_5": [
+   "CAD1",
+   "Dream-OrderDecomposition_1",
+   {}
+  ],
+  "con_10": [
+   "CAD2",
+   "Dream-OrderDecomposition_1",
+   {}
+  ],
+  "con_15": [
+   "QStart",
+   "CAD1",
+   {}
+  ],
+  "con_20": [
+   "QStart",
+   "CAD2",
+   {}
+  ],
+  "con_25": [
+   "Dream-OrderDecomposition_1",
+   "QCAM",
+   {}
+  ],
+  "con_30": [
+   "QCAM",
+   "CAM1",
+   {}
+  ],
+  "con_35": [
+   "QCAM",
+   "CAM2",
+   {}
+  ]
+ },
+ "preference": {
+  "coordinates": {
+   "E1": {
+    "top": 0.37504626611342784,
+    "left": 0.864763881619618
+   },
+   "QStart": {
+    "left": 0.13565460363009282,
+    "top": 0.16642106881541613
+   },
+   "CAD1": {
+    "top": 0.49363124284218185,
+    "left": 0.141694796524387
+   },
+   "CAD2": {
+    "top": 0.4960899425191736,
+    "left": 0.30341115093502347
+   },
+   "Dream-OrderDecomposition_1": {
+    "top": 0.781109974305828,
+    "left": 0.27829062765763835
+   },
+   "QCAM": {
+    "top": 0.8881579756271594,
+    "left": 0.4730332343902185
+   },
+   "CAM1": {
+    "top": 0.4709355535161045,
+    "left": 0.600132859916806
+   },
+   "CAM2": {
+    "top": 0.7073489839960767,
+    "left": 0.6843357695194952
+   }
+  },
+  "zoom_level": 0.99999
+ },
+ "general": {
+  "numberOfReplications": "1",
+  "maxSimTime": "-1",
+  "confidenceLevel": "0.95",
+  "processTimeout": "2000",
+  "currentDate": "",
+  "numberOfGenerations": "10",
+  "numberOfAntsPerGenerations": "20",
+  "numberOfSolutions": "4"
+ },
+ "wip_spreadsheet": [
+  [
+   "Jobs",
+   "ID",
+   "Order Date",
+   "Due Date",
+   "Priority",
+   "Material",
+   "Sequence",
+   "Processing Times"
+  ],
+  [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null
+  ]
+ ],
+ "wip_part_spreadsheet": [
+  [
+   "Order ID",
+   "Due Date",
+   "Priority",
+   "Project Manager",
+   "Parts",
+   "Part Type",
+   "Sequence",
+   "Processing Times",
+   "Electrodes Needed"
+  ],
+  [
+   "Order 1",
+   "2014/03/15",
+   "1",
+   "PM1",
+   "Mould1 Design",
+   "Design",
+   "CAD",
+   "6",
+   null
+  ],
+  [
+   null,
+   null,
+   null,
+   null,
+   "Part1",
+   "Basic",
+   "CAM",
+   "3",
+   null
+  ],
+  [
+   null,
+   null,
+   null,
+   null,
+   "Part2",
+   "Basic",
+   "CAM",
+   "2",
+   null
+  ],
+  [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null
+  ]
+ ]
+}
