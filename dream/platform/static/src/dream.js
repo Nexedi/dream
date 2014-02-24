@@ -61,7 +61,7 @@
         function (idx, property) {
           if (property._class === "Dream.Property") {
             previous_value = previous_data[property.id] || "";
-            if (previous_value.length > 0) {
+            if (previous_value.length > 0 || typeof previous_value == "number") {
               previous_value = ' value="' + previous_value + '"';
             }
             fieldset.append("<label>" + property.id + "</label>" +
@@ -162,6 +162,9 @@
                   prefixed_property_id = prefix + property.id;
                   property_element = $("#" + prefixed_property_id);
                   data[property.id] = property_element.val();
+                  if (property.type === "number") {
+                    data[property.id] = parseFloat(data[property.id])
+                  }
                 } else if (property._class === "Dream.PropertyList") {
                   var next_prefix = prefix + property.id + "-";
                   data[property.id] = {};
@@ -248,6 +251,9 @@
           if (property._class === "Dream.Property") {
             prefixed_property_id = prefix + property.id;
             properties[property.id] = $("#" + prefixed_property_id).val();
+            if (property.type === "number") {
+              properties[property.id] = parseFloat(properties[property.id])
+            }
           }
         });
       that.setGeneralProperties(properties);
