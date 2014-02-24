@@ -1,0 +1,387 @@
+{
+ "nodes": {
+  "Q1": {
+   "capacity": "10", 
+   "name": "Q1", 
+   "isDummy": "0", 
+   "wip": [
+    {
+     "dueDate": 32, 
+     "route": [
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "0"
+       }, 
+       "stationIdsList": [
+        "Q1"
+       ], 
+       "stepNumber": 0
+      }, 
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "10"
+       }, 
+       "stationIdsList": [
+        "M1", 
+        "M2"
+       ], 
+       "stepNumber": 1
+      }, 
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "0"
+       }, 
+       "stationIdsList": [
+        "Q3"
+       ], 
+       "stepNumber": 2
+      }, 
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "30"
+       }, 
+       "stationIdsList": [
+        "EDM"
+       ], 
+       "stepNumber": 3
+      }
+     ], 
+     "_class": "Dream.Job", 
+     "id": "J1", 
+     "name": "J1"
+    }, 
+    {
+     "dueDate": 31, 
+     "route": [
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "0"
+       }, 
+       "stationIdsList": [
+        "Q1"
+       ], 
+       "stepNumber": 0
+      }, 
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "40"
+       }, 
+       "stationIdsList": [
+        "M1", 
+        "M2"
+       ], 
+       "stepNumber": 1
+      }, 
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "0"
+       }, 
+       "stationIdsList": [
+        "Q3"
+       ], 
+       "stepNumber": 2
+      }, 
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "20"
+       }, 
+       "stationIdsList": [
+        "EDM"
+       ], 
+       "stepNumber": 3
+      }
+     ], 
+     "_class": "Dream.Job", 
+     "id": "J2", 
+     "name": "J2"
+    }, 
+    {
+     "dueDate": 31, 
+     "route": [
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "0"
+       }, 
+       "stationIdsList": [
+        "Q1"
+       ], 
+       "stepNumber": 0
+      }, 
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "20"
+       }, 
+       "stationIdsList": [
+        "M1", 
+        "M2"
+       ], 
+       "stepNumber": 1
+      }, 
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "0"
+       }, 
+       "stationIdsList": [
+        "Q3"
+       ], 
+       "stepNumber": 2
+      }, 
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "10"
+       }, 
+       "stationIdsList": [
+        "EDM"
+       ], 
+       "stepNumber": 3
+      }
+     ], 
+     "_class": "Dream.Job", 
+     "id": "J3", 
+     "name": "J3"
+    }, 
+    {
+     "dueDate": 31, 
+     "route": [
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "0"
+       }, 
+       "stationIdsList": [
+        "Q1"
+       ], 
+       "stepNumber": 0
+      }, 
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "10"
+       }, 
+       "stationIdsList": [
+        "M1", 
+        "M2"
+       ], 
+       "stepNumber": 1
+      }, 
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "0"
+       }, 
+       "stationIdsList": [
+        "Q3"
+       ], 
+       "stepNumber": 2
+      }, 
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "20"
+       }, 
+       "stationIdsList": [
+        "EDM"
+       ], 
+       "stepNumber": 3
+      }
+     ], 
+     "_class": "Dream.Job", 
+     "id": "J4", 
+     "name": "J4"
+    }, 
+    {
+     "dueDate": 31, 
+     "route": [
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "0"
+       }, 
+       "stationIdsList": [
+        "Q1"
+       ], 
+       "stepNumber": 0
+      }, 
+      {
+       "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "30"
+       }, 
+       "stationIdsList": [
+        "M1"
+       ], 
+       "stepNumber": 1
+      }
+     ], 
+     "_class": "Dream.Job", 
+     "id": "J5", 
+     "name": "J5"
+    }
+   ], 
+   "element_id": "DreamNode_5", 
+   "_class": "Dream.QueueJobShop", 
+   "schedulingRule": "EDD"
+  }, 
+  "Q3": {
+   "capacity": "10", 
+   "name": "Q3", 
+   "isDummy": "0", 
+   "element_id": "DreamNode_7", 
+   "_class": "Dream.QueueJobShop", 
+   "schedulingRule": "WINQ"
+  }, 
+  "Q2": {
+   "capacity": "10", 
+   "name": "Q2", 
+   "isDummy": "0", 
+   "element_id": "DreamNode_6", 
+   "_class": "Dream.QueueJobShop", 
+   "schedulingRule": "RPC"
+  }, 
+  "EDM": {
+   "processingTime": {
+    "stdev": "0.1", 
+    "max": "1", 
+    "min": "0.1", 
+    "distributionType": "Fixed", 
+    "mean": "0.9"
+   }, 
+   "failures": {
+    "MTTR": "10", 
+    "failureDistribution": "No", 
+    "repairman": "None", 
+    "MTTF": "40"
+   }, 
+   "element_id": "DreamNode_2", 
+   "_class": "Dream.MachineJobShop", 
+   "name": "EDM"
+  }, 
+  "M1": {
+   "processingTime": {
+    "stdev": "0.1", 
+    "max": "1", 
+    "min": "0.1", 
+    "distributionType": "Fixed", 
+    "mean": "0.9"
+   }, 
+   "failures": {
+    "MTTR": "10", 
+    "failureDistribution": "No", 
+    "repairman": "None", 
+    "MTTF": "40"
+   }, 
+   "element_id": "DreamNode_3", 
+   "_class": "Dream.MachineJobShop", 
+   "name": "M1"
+  }, 
+  "M2": {
+   "processingTime": {
+    "stdev": "0.1", 
+    "max": "1", 
+    "min": "0.1", 
+    "distributionType": "Fixed", 
+    "mean": "0.9"
+   }, 
+   "failures": {
+    "MTTR": "10", 
+    "failureDistribution": "No", 
+    "repairman": "None", 
+    "MTTF": "40"
+   }, 
+   "element_id": "DreamNode_4", 
+   "_class": "Dream.MachineJobShop", 
+   "name": "M2"
+  }, 
+  "E1": {
+   "element_id": "DreamNode_1", 
+   "_class": "Dream.ExitJobShop"
+  }
+ }, 
+ "edges": {
+  "con_5": [
+   "Q2", 
+   "M2", 
+   {}
+  ], 
+  "con_15": [
+   "Q1", 
+   "M1", 
+   {}
+  ], 
+  "con_10": [
+   "Q3", 
+   "EDM", 
+   {}
+  ]
+ }, 
+ "preference": {
+  "zoom_level": 0.99999, 
+  "coordinates": {
+   "Q1": {
+    "top": 0.2609784942787208, 
+    "left": 0.06829507631032258
+   }, 
+   "Q3": {
+    "top": 0.27043423682505124, 
+    "left": 0.4397080255596112
+   }, 
+   "Q2": {
+    "top": 0.45009334520533, 
+    "left": 0.07016617429142732
+   }, 
+   "EDM": {
+    "top": 0.4784605728443214, 
+    "left": 0.44157912354071593
+   }, 
+   "M1": {
+    "top": 0.26476079129725294, 
+    "left": 0.20862742489317723
+   }, 
+   "M2": {
+    "top": 0.4538756422238622, 
+    "left": 0.21049852287428195
+   }, 
+   "E1": {
+    "top": 0.3366244346493645, 
+    "left": 0.6866929590654354
+   }
+  }
+ }, 
+ "shift_spreadsheet": [
+  [
+   "Day", 
+   "Machines", 
+   "Start", 
+   "End"
+  ], 
+  [
+   null, 
+   null, 
+   null, 
+   null
+  ]
+ ], 
+ "general": {
+  "numberOfGenerations": "10", 
+  "numberOfReplications": "1", 
+  "numberOfAntsPerGenerations": "20", 
+  "processTimeout": "2000", 
+  "numberOfSolutions": "4", 
+  "confidenceLevel": "0.95", 
+  "maxSimTime": "-1", 
+  "trace": "Yes",
+  "currentDate": "2013/01/01"
+ }
+}
