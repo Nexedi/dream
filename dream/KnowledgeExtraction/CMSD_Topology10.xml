@@ -154,14 +154,14 @@
 				<OperationTime>
 					<Unit>minutes</Unit>
 					<Distribution>
-					<Name>Normal</Name>
+					<Name></Name>
 						<DistributionParameterA>
-							<Name>mean</Name>
-							<Value>4.95573039885</Value>
+							<Name></Name>
+							<Value></Value>
 						</DistributionParameterA>
 						<DistributionParameterB>
-							<Name>standarddeviation</Name>
-							<Value>2.13383045031</Value>
+							<Name></Name>
+							<Value></Value>
 						</DistributionParameterB>
 					</Distribution>
 				</OperationTime>
@@ -243,14 +243,14 @@
 				<OperationTime>
 					<Unit>minutes</Unit>
 					<Distribution>
-					<Name>Normal</Name>
+					<Name></Name>
 						<DistributionParameterA>
-							<Name>mean</Name>
-							<Value>7.90482941621</Value>
+							<Name></Name>
+							<Value></Value>
 						</DistributionParameterA>
 						<DistributionParameterB>
-							<Name>standarddeviation</Name>
-							<Value>0.976553538405</Value>
+							<Name></Name>
+							<Value></Value>
 						</DistributionParameterB>
 					</Distribution>
 				</OperationTime>
