@@ -153,6 +153,30 @@
       });
     });
 
+    // Enable "Run Knowledge Extraction" button
+    $("#run_knowledge_extraction").button().click(
+      function (e) {
+        $("#run_knowledge_extraction").button('disable');
+        $("#ke_loading_spinner").show();
+        $.ajax(
+          '/runKnowledgeExtraction', {
+            data: JSON.stringify({
+              json: dream_instance.getData()
+            }),
+            contentType: 'application/json',
+            type: 'POST',
+            success: function (data, textStatus, jqXHR) {
+              loadData(data);
+              $("#ke_loading_spinner").hide();
+              $("#run_knowledge_extraction").button('enable');
+            },
+            error: function() {
+              $("#ke_loading_spinner").hide();
+              $("#run_knowledge_extraction").button('enable');
+            }
+        });
+      }
+    )
 
     // Enable "Run Simulation" button
     $("#run_simulation").button().click(

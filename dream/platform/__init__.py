@@ -138,6 +138,22 @@ def getGUIInstance():
 def getConfigurationDict():
   return jsonify(getGUIInstance().getConfigurationDict())
 
+@app.route("/runKnowledgeExtraction", methods=["POST", "OPTIONS"])
+def runKnowledgeExtraction():
+  parameter_dict = request.json['json']
+
+  # TODO: really run knowledge extraction and change values:
+  import time
+  time.sleep(.2)
+  parameter_dict['general']['trace'] = "ahah"
+  parameter_dict['nodes']['M1']['processingTime'] = {
+    'distributionType': 'Normal',
+    'stdev': 1.23,
+    'max': 123
+  }
+
+  return jsonify(parameter_dict)
+
 def main(*args):
   parser = argparse.ArgumentParser(description='Launch the DREAM simulation platform.')
   parser.add_argument('gui_class', metavar='GUI_KLASS', nargs="?", default="Default",
