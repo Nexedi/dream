@@ -187,7 +187,7 @@ schema = {
     "name": "Simulation Start Time",
     "description": "The day the experiment starts, in YYYY/MM/DD format",
     "_class": "Dream.Property",
-    "_default": datetime.datetime.now().strftime('%Y/%M/%d')
+    "_default": datetime.datetime.now().strftime('%Y/%m/%d')
   },
   "trace": {
     "id": "trace",
