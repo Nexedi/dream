@@ -138,14 +138,6 @@ def getGUIInstance():
 def getConfigurationDict():
   return jsonify(getGUIInstance().getConfigurationDict())
 
-@app.route("/getOutputIdList", methods=["POST", "OPTIONS"])
-def getOutputIdList():
-  return jsonify(getGUIInstance().getOutputIdList())
-
-@app.route("/getInputIdList", methods=["POST", "OPTIONS"])
-def getInputIdList():
-  return jsonify(getGUIInstance().getInputIdList())
-
 def main(*args):
   # start the server
   file_handler = logging.FileHandler(
