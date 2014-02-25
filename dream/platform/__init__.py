@@ -137,14 +137,6 @@ def getGUIInstance():
 def getConfigurationDict():
   return jsonify(getGUIInstance().getConfigurationDict())
 
-@app.route("/getOutputIdList", methods=["POST", "OPTIONS"])
-def getOutputIdList():
-  return jsonify(getGUIInstance().getOutputIdList())
-
-@app.route("/getInputIdList", methods=["POST", "OPTIONS"])
-def getInputIdList():
-  return jsonify(getGUIInstance().getInputIdList())
-
 def main(*args):
   parser = argparse.ArgumentParser(description='Launch the DREAM simulation platform.')
   parser.add_argument('gui_class', metavar='GUI_KLASS',
