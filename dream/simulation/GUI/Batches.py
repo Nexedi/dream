@@ -30,7 +30,8 @@ class Simulation(ShiftsSimulation):
     zeroProcessingTime = copy.deepcopy(schema['processingTime'])
     for prop in zeroProcessingTime['property_list']:
       if prop['id'] == 'mean':
-        prop['_default']= 0.0
+        prop['_default'] = 0.0
+        prop['description'] = "Processing time per unit"
 
     conf['Dream-BatchDecompositionStartTime'] = {
       "_class": "Dream.BatchDecompositionStartTime",
