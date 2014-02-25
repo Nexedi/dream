@@ -35,7 +35,6 @@ class Simulation(ACO.Simulation):
         "name": 'Exit',
         "short_id": "E",
     }
-    # XXX remove default machines etc ?
     conf["Dream-Configuration"]["gui"]["wip_spreadsheet"] = 1
     conf["Dream-Configuration"]["gui"]["job_schedule_spreadsheet"] = 1
     conf["Dream-Configuration"]["gui"]["job_gantt"] = 1
