@@ -146,11 +146,11 @@ class Simulation(ACO.Simulation):
                         {
                             "processingTime": {
                                 "distributionType": "Fixed",
-                                "mean": "1"
+                                "mean": "6"
                             },
                             "setupTime": {
                                 "setupDistribution": "Fixed",
-                                "setupMean": "0.5"
+                                "setupMean": "0.0"
                             },
                             "stationIdsList": [
                                 "CAD1",
