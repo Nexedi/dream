@@ -135,7 +135,7 @@ schema = {
     "name": "Number of Units",
     "description": "Number of units of the created batch",
     "_class": "Dream.Property",
-    "_default": 10
+    "_default": 80
   },
   "numberOfSubBatches": {
     "id": "numberOfSubBatches",
