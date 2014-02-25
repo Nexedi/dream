@@ -44,14 +44,20 @@ class Simulation(ShiftsSimulation):
     conf["Dream-Configuration"]["gui"]["exit_stat"] = 1
     conf["Dream-Configuration"]["gui"]["debug_json"] = 1
     conf["Dream-Configuration"]["gui"]["shift_spreadsheet"] = 1
+
     # some more global properties
     conf["Dream-Configuration"]["property_list"].append( {
       "id": "throughputTarget",
+      "name": "Daily Throughput Target",
+      "description": "The daily throughput target in units.",
       "type": "number",
       "_class": "Dream.Property",
       "_default": 10 })
     conf["Dream-Configuration"]["property_list"].append( {
       "id": "desiredPercentageOfSuccess",
+      "name": "Desired Percentage Of Success",
+      "description": "The desired percentage of success to determine if daily"
+                     " throughput target has been met.",
       "type": "number",
       "_class": "Dream.Property",
       "_default": 0.85 })
