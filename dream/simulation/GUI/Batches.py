@@ -1,4 +1,4 @@
-from copy import copy
+import copy
 import json
 import time
 import random
@@ -16,7 +16,7 @@ class Simulation(ShiftsSimulation):
       "short_id": "C",
       "property_list": conf['Dream-Queue']['property_list']}
 
-    batch_source_entity = copy(schema["entity"])
+    batch_source_entity = copy.deepcopy(schema["entity"])
     batch_source_entity['_default'] = "Dream.Batch"
     conf['Dream-BatchSource'] = {
         "_class": "Dream.BatchSource",
@@ -27,7 +27,7 @@ class Simulation(ShiftsSimulation):
                           schema['batchNumberOfUnits']]
     }
 
-    zeroProcessingTime = copy(schema['processingTime'])
+    zeroProcessingTime = copy.deepcopy(schema['processingTime'])
     for prop in zeroProcessingTime['property_list']:
       if prop['id'] == 'mean':
         prop['_default']= 0.0
