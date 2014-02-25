@@ -64,8 +64,8 @@
             if (previous_value.length > 0 || typeof previous_value == "number") {
               previous_value = ' value="' + previous_value + '"';
             }
-            fieldset.append("<label>" + property.id + "</label>" +
-              '<input type="text" name="' + prefix + property.id + '"' +
+            fieldset.append("<label>" + (property.name || property.id) + "</label>" +
+              '<input title="' +  (property.description || '') + '" type="text" name="' + prefix + property.id + '"' +
               previous_value + ' id="' + prefix + property.id + '"' +
               ' class="text ui-widget-content ui-corner-all"/>');
           }
@@ -109,12 +109,13 @@
         }
         $.each(property_list, function (key, property) {
           if (property._class === "Dream.Property") {
-            previous_value = previous_data[property.id] || "";
+            previous_value = previous_data[property.id] == undefined ? "" : previous_data[property.id];
+
             if (previous_value.length > 0 || typeof previous_value == "number") {
               previous_value = ' value="' + previous_value + '"';
             }
-            fieldset.append("<label>" + prefix + property.id + "</label>" +
-              '<input type="text" name="' + prefix + property.id + '"' +
+            fieldset.append("<label>" + (property.name || property.id) + "</label>" +
+              '<input title="' + (property.description || '') + '" type="text" name="' + prefix + property.id + '"' +
               previous_value +
               ' id="' + prefix + property.id + '"' +
               ' class="text ui-widget-content ui-corner-all"/>');

@@ -1,10 +1,14 @@
 import json
+import datetime
 from dream.simulation.LineGenerationJSON import main as simulate_line_json
+from dream.simulation.Queue import Queue
 
 # describe type for properties
 schema = {
   "entity": {
     "id": "entity",
+    "name": "Entity Class",
+    "description": "The Class of entity created",
     "type": "string",
     "_class": "Dream.Property",
     "_default": "Dream.Part"
@@ -12,11 +16,15 @@ schema = {
   "mean": {
     "id": "mean",
     "type": "number",
+    "name": "Mean",
+    "description": "Mean value of fixed processing time.",
     "_class": "Dream.Property",
     "_default": 0.9
   },
   "distributionType": {
     "id": "distributionType",
+    "name": "Distribution Type",
+    "description": "The distribution type, one of Fixed, Exp, Normal",
     "type": "string",
     "_class": "Dream.Property",
     "_default": "Fixed"
@@ -24,36 +32,42 @@ schema = {
   "stdev": {
     "id": "stdev",
     "type": "number",
+    "name": "Normal distribution standard deviation",
     "_class": "Dream.Property",
     "_default": 0.1
   },
   "min": {
     "id": "min",
     "type": "number",
+    "name": "Normal distribution minimum value",
     "_class": "Dream.Property",
     "_default": 0.1
   },
   "max": {
     "id": "max",
     "type": "number",
+    "name": "Normal distribution maximum value",
     "_class": "Dream.Property",
     "_default": 1
   },
   "failureDistribution": {
     "id": "failureDistribution",
     "type": "string",
+    "name": "Failures Distribution",
     "_class": "Dream.Property",
     "_default": "No"
   },
   "MTTF": {
     "id": "MTTF",
     "type": "number",
+    "description": "Mean time to failure",
     "_class": "Dream.Property",
     "_default": 40
   },
   "MTTR": {
     "id": "MTTR",
     "type": "number",
+    "description": "Mean time to repair",
     "_class": "Dream.Property",
     "_default": 10
   },
@@ -72,17 +86,22 @@ schema = {
   "schedulingRule": {
     "id": "schedulingRule",
     "type": "string",
+    "name": "Scheduling Rule",
+    "description": "Scheduling Rule, one of %s" % (" ".join(
+        Queue.getSupportedSchedulingRules())),
     "_class": "Dream.Property",
     "_default": "FIFO"
   },
   "capacity": {
     "id": "capacity",
     "type": "number",
+    "name": "Capacity",
     "_class": "Dream.Property",
     "_default": 1
   },
   "numberOfReplications": {
     "id": "numberOfReplications",
+    "name": "Number of replications",
     "type": "number",
     "_class": "Dream.Property",
     "_default": 10
@@ -90,30 +109,39 @@ schema = {
   "maxSimTime": {
     "id": "maxSimTime",
     "type": "number",
+    "name": "Length of experiment",
     "_class": "Dream.Property",
     "_default": 100
   },
   "confidenceLevel": {
     "id": "confidenceLevel",
     "type": "number",
+    "name": "Confidence level",
+    "description": "Confidence level for statiscal analysis of stochastic experiments",
     "_class": "Dream.Property",
     "_default": 0.5
   },
   "processTimeout": {
     "id": "processTimeout",
     "type": "number",
+    "name": "Process Timeout",
+    "description": "Number of seconds before the calculation process is interrupted",
     "_class": "Dream.Property",
     "_default": 10
   },
   "batchNumberOfUnits": {
     "id": "batchNumberOfUnits",
     "type": "number",
+    "name": "Number of Units",
+    "description": "Number of units of the created batch",
     "_class": "Dream.Property",
     "_default": 10
   },
   "numberOfSubBatches": {
     "id": "numberOfSubBatches",
     "type": "number",
+    "name": "Number of sub batches",
+    "description": "Number of sub batches that the batch is split to",
     "_class": "Dream.Property",
     "_default": 10
   },
@@ -121,7 +149,7 @@ schema = {
     "id": "method",
     "type": "string",
     "_class": "Dream.Property",
-    "_default": ""
+    "_default": "Globals.countIntervalThroughput"
   },
   "start": {
     "id": "start",
@@ -155,9 +183,19 @@ schema = {
   },
   "currentDate": {
     "id": "currentDate",
-    "type": "string", # date in YYYY/MM/DD format
+    "type": "string",
+    "name": "Simulation Start Time",
+    "description": "The day the experiment starts, in YYYY/MM/DD format",
     "_class": "Dream.Property",
-    "_default": ""
+    "_default": datetime.datetime.now().strftime('%Y/%M/%d')
+  },
+  "trace": {
+    "id": "trace",
+    "name": "Output Trace",
+    "description": "Create an excel trace file (Yes or No)",
+    "type": "string",
+    "_class": "Dream.Property",
+    "_default": "Yes"
   },
 }
 
@@ -165,16 +203,16 @@ schema = {
 schema["interarrivalTime"] = {
   "id": "interarrivalTime",
   "property_list": [
-    schema["mean"],
-    schema["distributionType"]],
+    schema["distributionType"],
+    schema["mean"]],
   "_class": "Dream.PropertyList"
 }
 
 schema["processingTime"] = {
   "id": "processingTime",
   "property_list": [
-    schema["mean"],
     schema["distributionType"],
+    schema["mean"],
     schema["stdev"],
     schema["min"],
     schema["max"]
@@ -241,6 +279,7 @@ class Simulation(object):
            schema["confidenceLevel"],
            schema["processTimeout"],
            schema["currentDate"],
+           schema["trace"],
         ],
         "gui": {
           'debug_json': 0,
