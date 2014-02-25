@@ -17,14 +17,14 @@
     ]
   }, 
   "general": {
-    "confidenceLevel": "0.95", 
+    "confidenceLevel": 0.95, 
     "currentDate": "2013/01/01", 
-    "maxSimTime": "-1", 
-    "numberOfAntsPerGenerations": "20", 
-    "numberOfGenerations": "10", 
-    "numberOfReplications": "1", 
-    "numberOfSolutions": "4", 
-    "processTimeout": "2000"
+    "maxSimTime": -1, 
+    "numberOfAntsPerGenerations": 20, 
+    "numberOfGenerations": 10, 
+    "numberOfReplications": 1, 
+    "numberOfSolutions": 4, 
+    "processTimeout": 2000
   }, 
   "nodes": {
     "E1": {
