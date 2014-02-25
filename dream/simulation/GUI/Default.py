@@ -246,6 +246,7 @@ class Simulation(object):
           schema["interarrivalTime"],
           schema["entity"]
         ],
+        "short_id": "S",
         "_class": 'Dream.Source'
       },
       "Dream-Machine": {
@@ -253,6 +254,7 @@ class Simulation(object):
           schema["processingTime"],
           schema["failures"]
         ],
+        "short_id": "M",
         "_class": 'Dream.Machine'
       },
       "Dream-Queue": {
@@ -261,12 +263,15 @@ class Simulation(object):
           schema["isDummy"],
           schema["schedulingRule"]
         ],
+        "short_id": "Q",
         "_class": 'Dream.Queue'
       },
       "Dream-Exit": {
+        "short_id": "E",
         "_class": 'Dream.Exit'
       },
       "Dream-Repairman": {
+        "short_id": "R",
         "property_list": [schema["capacity"]],
         "_class": 'Dream.Repairman'
       },

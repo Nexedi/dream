@@ -37,12 +37,12 @@
       return priv.node_container[node_id].element_id;
     };
 
-    that.generateNodeId = function (element_type) {
+    that.generateNodeId = function (element_type, option) {
       var n = 1;
       while ((element_type + '_' + n) in priv.node_container) {
         n += 1;
       }
-      return element_type + '_' + n;
+      return (option['short_id'] || element_type) + n;
     };
 
     that.generateElementId = function () {
@@ -422,6 +422,7 @@
     };
 
     that.newElement = function (element, option) {
+      element.name = element.name || option.name;
       priv.addElementToContainer(element);
       var render_element, style_string = "",
         coordinate = element.coordinate,

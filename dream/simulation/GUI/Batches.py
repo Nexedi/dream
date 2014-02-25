@@ -13,6 +13,7 @@ class Simulation(ShiftsSimulation):
     conf['Dream-LineClearance'] = {
       "_class": "Dream.LineClearance",
       "name": "Clearance",
+      "short_id": "C",
       "property_list": conf['Dream-Queue']['property_list']}
 
     batch_source_entity = copy(schema["entity"])
@@ -20,6 +21,7 @@ class Simulation(ShiftsSimulation):
     conf['Dream-BatchSource'] = {
         "_class": "Dream.BatchSource",
         "name": "Source",
+        "short_id": "S",
         "property_list": [schema['interarrivalTime'],
                           batch_source_entity,
                           schema['batchNumberOfUnits']]
@@ -33,22 +35,26 @@ class Simulation(ShiftsSimulation):
     conf['Dream-BatchDecompositionStartTime'] = {
       "_class": "Dream.BatchDecompositionStartTime",
       "name": "Decomposition",
+      "short_id": "D",
       "property_list": [zeroProcessingTime, schema['numberOfSubBatches'] ]
       }
     conf['Dream-BatchReassembly'] = {
       "_class": "Dream.BatchReassembly",
       "name": "Reassembly",
+      "short_id": "R",
       "property_list": [zeroProcessingTime, schema['numberOfSubBatches'] ]
       }
 
     conf['Dream-BatchScrapMachine'] = {
       "_class": "Dream.BatchScrapMachine",
       "name": "Station",
+      "short_id": "St",
       "property_list": conf['Dream-Machine']['property_list']
       }
     conf['Dream-EventGenerator'] = {
       "_class": "Dream.EventGenerator",
       "name": "Attainment",
+      "short_id": "A",
       "property_list": [schema['start'], schema['stop'], schema['duration'],
           schema['interval'], schema['method'], schema['argumentDict']]
       }

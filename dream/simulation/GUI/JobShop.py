@@ -17,7 +17,8 @@ class Simulation(ACO.Simulation):
           schema["failures"]
         ],
         "_class": 'Dream.MachineJobShop',
-        "name": 'Machine'
+        "name": 'Machine',
+        "short_id": "M",
     }
     conf["Dream-QueueJobShop"] = {
         "property_list": [
@@ -26,11 +27,13 @@ class Simulation(ACO.Simulation):
           schema["schedulingRule"]
         ],
         "_class": 'Dream.QueueJobShop',
-        "name": 'Queue'
+        "name": 'Queue',
+        "short_id": "Q",
     }
     conf["Dream-ExitJobShop"] = {
         "_class": 'Dream.ExitJobShop',
-        "name": 'Exit'
+        "name": 'Exit',
+        "short_id": "E",
     }
     # XXX remove default machines etc ?
     conf["Dream-Configuration"]["gui"]["wip_spreadsheet"] = 1
