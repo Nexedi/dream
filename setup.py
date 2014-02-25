@@ -14,6 +14,7 @@ setup(
         'xlwt',
         'pyparsing==1.5.7',
         'pydot',
+        'rpy2',
     ],
     entry_points=("""
     [console_scripts]
