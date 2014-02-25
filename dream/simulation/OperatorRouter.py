@@ -130,30 +130,6 @@ class Router(ObjectInterruption):
 #                     print '        ', object.id
             #===================================================================
             
-            
-            
-#             for object in G.MachineList:
-#                 if object.inPositionToGet:
-#                     object.canProceedWithGetEntity=True
-#                     object.inPositionToGet=False
-            
-            # have to check also the activeCallersList of each machine about to receive something
-            # now that entities have finished moving the router have to assign operators and allow 
-            #     the machines that have assigned operators to proceed with getEntity
-            
-            
-#                 # TESTING
-#                 import Globals
-#                 giversList=[]
-#                 for object in objList:
-#                     for receiver in objList:
-#                         if object.haveToDispose(receiver):
-#                             giversList.append(object)
-
-#                     # set the variable operatorAssignedTo to activeObject, the operator is then blocked
-#                     activeObject.operatorPool.operators[0].operatorAssignedTo=activeObject
-#                     # TESTING
-#                     print now(), activeObject.operatorPool.operators[0].objName, 'got assigned to', activeObject.id
             del self.calledOperators[:]
             del self.pendingObjects[:]
             self.exitRouter()
