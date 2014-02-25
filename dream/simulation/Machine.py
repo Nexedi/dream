@@ -195,7 +195,6 @@ class Machine(CoreObject):
     def run(self):
         # execute all through simulation time
         while 1:
-            
             # wait until the machine can accept an entity and one predecessor requests it 
             # canAcceptAndIsRequested is invoked to check when the machine requested to receive an entity
             yield waituntil, self, self.canAcceptAndIsRequested
@@ -207,11 +206,9 @@ class Machine(CoreObject):
                 self.requestRouter()
                 # the machine must wait until the router has decided which machine will operated by which operator
                 yield waituntil, self, self.router.routerIsSet
-#                 # TESTING
-#                 print now(), self.id, 'return from router'
                 # if the machine is not picked by the router the it should wait again 
                 if not self.canProceedWithGetEntity:
-                    break 
+                    continue 
                 
             # here or in the getEntity (apart from the loadTimeCurrentEntity)
             # in case they are placed inside the getEntity then the initialize of
@@ -551,21 +548,27 @@ class Machine(CoreObject):
             if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
                                                     or any(type=='Setup' for type in activeObject.multOperationTypeList))):
                 if giverObject.haveToDispose(activeObject):
-                    # TODO: 
-                    # check whether this entity is the one to be hand in
+                    # TODO: check whether this entity is the one to be hand in
                     #     to be used in operatorPreemptive
                     activeObject.requestingEntity=giverObject.getActiveObjectQueue()[0]
-                    # TODO: 
-                    # update the objects requesting the operator
+                    # TODO: update the objects requesting the operator
                     activeObject.operatorPool.requestingObject=activeObject.giver
-                    # TODOD: 
-                    # update the last object calling the operatorPool
+                    # TODOD: update the last object calling the operatorPool
                     activeObject.operatorPool.receivingObject=activeObject
                     
                     if activeObject.operatorPool.checkIfResourceIsAvailable()\
                         and activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity\
                         and not giverObject.exitIsAssigned():
                         activeObject.giver.assignExit()
+                        #=======================================================
+                        # if the activeObject is not in operators' activeCallersList
+                        if activeObject not in activeObject.operatorPool.operators[0].activeCallersList:
+                            # append it to the activeCallerList of the operatorPool operators list
+                            for operator in activeObject.operatorPool.operators:
+                                operator.activeCallersList.append(activeObject)
+#                             # update entityToGet
+#                             activeObject.entityToGet=activeObject.giver.getActiveObjectQueue()[0]
+                        #=======================================================
                         return True
                 else:
                     return False
@@ -606,21 +609,27 @@ class Machine(CoreObject):
         if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
                                                 or any(type=='Setup' for type in activeObject.multOperationTypeList))):
             if isRequested:
-                # TODO: 
-                # check whether this entity is the one to be hand in
+                # TODO: check whether this entity is the one to be hand in
                 #     to be used in operatorPreemptive
                 activeObject.requestingEntity=activeObject.giver.getActiveObjectQueue()[0]
-                # TODO: 
-                # update the object requesting the operator
+                # TODO: update the object requesting the operator
                 activeObject.operatorPool.requestingObject=activeObject.giver
-                # TODOD: 
-                # update the last object calling the operatorPool
+                # TODOD: update the last object calling the operatorPool
                 activeObject.operatorPool.receivingObject=activeObject
                 
                 if activeObject.operatorPool.checkIfResourceIsAvailable()\
                     and activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity\
                     and isRequested and not activeObject.giver.exitIsAssigned():
                     activeObject.giver.assignExit()
+                    #=======================================================
+                    # if the activeObject is not in operators' activeCallersList
+                    if activeObject not in activeObject.operatorPool.operators[0].activeCallersList:
+                        # append it to the activeCallerList of the operatorPool operators list
+                        for operator in activeObject.operatorPool.operators:
+                            operator.activeCallersList.append(activeObject)
+#                         # update entityToGet
+#                         activeObject.entityToGet=activeObject.giver.getActiveObjectQueue()[0]
+                    #=======================================================
                     return True
             else:
                 return False
