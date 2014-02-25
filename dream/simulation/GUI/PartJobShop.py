@@ -135,7 +135,8 @@ class Simulation(ACO.Simulation):
         order_dict["id"] = "%i" % i # XXX hack, we use it in UI to retrieve spreadsheet line
         order_dict["manager"] = project_manager
         order_dict["name"] = order_id
-        # XXX can we do better than this ?
+        # XXX make it dynamic by writing a function that will reuse the
+        # code available a bit after
         order_dict["route"] = [
                         {
                             "stationIdsList": [
