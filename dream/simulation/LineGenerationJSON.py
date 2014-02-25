@@ -261,6 +261,8 @@ def createObjects():
     for (element_id, element) in nodes.iteritems():
         element = element.copy()
         element['id'] = element_id
+        element.setdefault('name', element_id)
+
         # XXX not sure about top & left.
         for k in ('element_id', 'top', 'left'):
           element.pop(k, None)
