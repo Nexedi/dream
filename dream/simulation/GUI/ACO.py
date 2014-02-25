@@ -14,19 +14,22 @@ class Simulation(DefaultSimulation):
     conf = DefaultSimulation.getConfigurationDict(self)
     conf["Dream-Configuration"]["property_list"].append(
         { "id": "numberOfGenerations",
-          "type": "integer",
+          "type": "number",
+          "name": "Number of generations",
           "_class": "Dream.Property",
-          "_default": "10"} )
+          "_default": 10} )
     conf["Dream-Configuration"]["property_list"].append(
         { "id": "numberOfAntsPerGenerations",
-          "type": "integer",
+          "type": "number",
+          "name": "Number of ants per generation",
           "_class": "Dream.Property",
-          "_default": "20"} )
+          "_default": 20} )
     conf["Dream-Configuration"]["property_list"].append(
         { "id": "numberOfSolutions",
-          "type": "integer",
+          "type": "number",
+          "name": "Number of solutions",
           "_class": "Dream.Property",
-          "_default": "4"} )
+          "_default": 4} )
     return conf
 
   def _preprocess(self, data):
@@ -65,15 +68,15 @@ class Simulation(DefaultSimulation):
       if issubclass(node_class, Queue):
         collated[node_id] = list(node_class.getSupportedSchedulingRules())
 
-    max_results = int(data['general']['numberOfSolutions'])
+    max_results = data['general']['numberOfSolutions']
 
     ants = [] #list of ants for keeping track of their performance
 
     # Number of times new ants are to be created, i.e. number of generations (a
     # generation can have more than 1 ant)
-    for i in range(int(data["general"]["numberOfGenerations"])):
+    for i in range(data["general"]["numberOfGenerations"]):
         # number of ants created per generation
-        for j in range(int(data["general"]["numberOfAntsPerGenerations"])):
+        for j in range(data["general"]["numberOfAntsPerGenerations"]):
             # an ant dictionary to contain rule to queue assignment information
             ant = {}
             # for each of the machines, rules are randomly picked from the
