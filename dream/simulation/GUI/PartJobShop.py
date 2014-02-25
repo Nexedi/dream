@@ -132,7 +132,7 @@ class Simulation(ACO.Simulation):
         processing_time_list = processing_time_list.split('-')
 
         order_dict["_class"] = "Dream.Order"
-        order_dict["id"] = order_id
+        order_dict["id"] = "%i" % i # XXX hack, we use it in UI to retrieve spreadsheet line
         order_dict["manager"] = project_manager
         order_dict["name"] = order_id
         # XXX can we do better than this ?
@@ -174,7 +174,7 @@ class Simulation(ACO.Simulation):
             component_dict = {}
             component_dict["_class"] = "Dream.OrderComponent"
             component_dict["componentType"] = part_type
-            component_dict["id"] = "%i" % i
+            component_dict["id"] = "%i" % i # XXX hack, we use it in UI to retrieve spreadsheet line
             component_dict["name"] = part
             component_list.append(component_dict)
             route_list = []

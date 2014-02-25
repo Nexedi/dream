@@ -385,11 +385,15 @@
           // find the corresponding input
           var data = that.getData(),
               input_job;
-          $.each(data.wip_spreadsheet, function(i, line){
-            if (line[1] == obj['id']) {
-              input_job = line;
-            }
-          });
+          if (configuration['Dream-Configuration'].gui.wip_spreadsheet) {
+            $.each(data.wip_spreadsheet, function(i, line){
+              if (line[1] == obj['id']) {
+                input_job = line;
+              }
+            });
+          } else if (configuration['Dream-Configuration'].gui.wip_part_spreadsheet) {
+            input_job = data.wip_part_spreadsheet[obj["id"]];
+          }
 
           var duration = 0;
           gantt_data.data.push({

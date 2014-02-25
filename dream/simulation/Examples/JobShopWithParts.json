@@ -1,38 +1,38 @@
 {
   "edges": {
     "con_10": [
-      "QStart",
-      "CAD2",
-      {}
-    ],
-    "con_15": [
       "CAD1",
       "Decomposition",
       {}
     ],
-    "con_20": [
+    "con_15": [
       "Decomposition",
       "QCAM",
       {}
     ],
-    "con_25": [
+    "con_20": [
       "QCAM",
       "CAM1",
       {}
     ],
-    "con_30": [
+    "con_25": [
       "QCAM",
       "CAM2",
       {}
     ],
-    "con_35": [
+    "con_30": [
       "CAD2",
       "Decomposition",
       {}
     ],
-    "con_5": [
+    "con_35": [
       "QStart",
       "CAD1",
+      {}
+    ],
+    "con_5": [
+      "QStart",
+      "CAD2",
       {}
     ]
   },
