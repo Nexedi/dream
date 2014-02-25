@@ -39,7 +39,7 @@
 
     that.generateNodeId = function (element_type, option) {
       var n = 1;
-      while ((element_type + '_' + n) in priv.node_container) {
+      while (((option['short_id'] || element_type) + n) in priv.node_container) {
         n += 1;
       }
       return (option['short_id'] || element_type) + n;
