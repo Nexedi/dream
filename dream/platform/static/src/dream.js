@@ -199,7 +199,7 @@
         element.id = that.generateNodeId(element_type, configuration[element_type]);
       }
       priv.super_newElement(element, configuration[element_type]);
-      $("#" + element.element_id).on('click', function () {
+      $("#" + element.element_id).on('dblclick', function () {
         $("#dialog-form").dialog("destroy");
         priv.prepareDialogForElement(element.id, element.element_id);
         $("#dialog-form").dialog("open");
