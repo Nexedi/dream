@@ -94,8 +94,29 @@ class Simulation(ACO.Simulation):
           predecessor_list = [x for x in self.getNotMachineNodePredecessorList(predecessor_step) \
                                    if x not in predecessor_list] + predecessor_list
     print "getNotMachineNodePredecessorList, %r : %r" % (step_name, predecessor_list)
-    # XXX We have to returned an ordered list
     return predecessor_list
+
+  def getRouteList(self, sequence_list, processing_time_list):
+    route_list = []
+    route_counter = 0
+    for j, sequence_step in enumerate(sequence_list):
+      for predecessor_step in self.getNotMachineNodePredecessorList(sequence_step):
+        route = {"stationIdsList": [predecessor_step],
+                  "stepNumber": "%i" % route_counter
+                  }
+        route_list.append(route)
+        route_counter += 1
+      route = {"stationIdsList": list(self.getMachineNameSet(sequence_step)),
+                "stepNumber": "%i" % route_counter,
+                "processingTime": {"distributionType": "Fixed",
+                                  "mean": "%i" % int(processing_time_list[j])},
+                "setupTime": {"setupDistribution": "Fixed",
+                              "setupMean": "0.5"}, # XXX hardcoded value
+              }
+      route_list.append(route)
+      route_counter += 1
+    return route_list
+
 
   def _preprocess(self, in_data):
     """ Set the WIP in queue from spreadsheet data.
@@ -137,30 +158,7 @@ class Simulation(ACO.Simulation):
         order_dict["name"] = order_id
         # XXX make it dynamic by writing a function that will reuse the
         # code available a bit after
-        order_dict["route"] = [
-                        {
-                            "stationIdsList": [
-                                "QStart"
-                            ],
-                            "stepNumber": "0"
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": "6"
-                            },
-                            "setupTime": {
-                                "setupDistribution": "Fixed",
-                                "setupMean": "0.0"
-                            },
-                            "stationIdsList": [
-                                "CAD1",
-                                "CAD2"
-                            ],
-                            "stepNumber": "1"
-                        }
-                    ]
-
+        order_dict["route"] = self.getRouteList(sequence_list, processing_time_list)
         i += 1
         component_list = []
         if i < wip_part_spreadsheet_length:
@@ -178,24 +176,7 @@ class Simulation(ACO.Simulation):
             component_dict["id"] = "%i" % i # XXX hack, we use it in UI to retrieve spreadsheet line
             component_dict["name"] = part
             component_list.append(component_dict)
-            route_list = []
-            route_counter = 0
-            for j, sequence_step in enumerate(sequence_list):
-              for predecessor_step in self.getNotMachineNodePredecessorList(sequence_step):
-                route = {"stationIdsList": [predecessor_step],
-                         "stepNumber": "%i" % route_counter
-                         }
-                route_list.append(route)
-                route_counter += 1
-              route = {"stationIdsList": list(self.getMachineNameSet(sequence_step)),
-                       "stepNumber": "%i" % route_counter,
-                       "processingTime": {"distributionType": "Fixed",
-                                          "mean": "%i" % int(processing_time_list[j])},
-                       "setupTime": {"setupDistribution": "Fixed",
-                                     "setupMean": "0.5"}, # XXX hardcoded value
-                      }
-              route_list.append(route)
-              route_counter += 1
+            route_list = self.getRouteList(sequence_list, processing_time_list)
             component_dict["route"] = route_list
             i+=1
           order_dict["componentsList"] = component_list
