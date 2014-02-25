@@ -39,6 +39,11 @@ class Operator(Repairman):
         self.type="Operator"
         self.activeCallersList=[]
         self.schedulingRule=schedulingRule
+#         #=======================================================================
+#         # TESTING
+#         print now(), self.objName, 'schedulingRule'
+#         print self.schedulingRule
+#         #=======================================================================
 
 # =======================================================================
     #    sorts the Entities of the Queue according to the scheduling rule
@@ -50,7 +55,7 @@ class Operator(Repairman):
                self.activeQSorter(criterion=criterion) 
         #else we just use the default scheduling rule
         else:
-            self.activeQSorter()
+            self.activeQSorter(self.schedulingRule)
     
     # =======================================================================
     #    sorts the Entities of the Queue according to the scheduling rule
@@ -64,7 +69,7 @@ class Operator(Repairman):
             pass
         #if the schedulingRule is based on a pre-defined priority
         elif criterion=="Priority":
-            activeObjectQ.sort(key=lambda x: x.priority)
+            activeObjectQ.sort(key=lambda x: x.entityToGet.priority)
         #if the schedulingRule is earliest due date
         elif criterion=="EDD":
             activeObjectQ.sort(key=lambda x: x.dueDate)   

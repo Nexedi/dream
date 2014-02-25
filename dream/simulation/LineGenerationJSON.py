@@ -204,7 +204,7 @@ def createObjects():
             schedulingRule=element.get('schedulingRule', 'FIFO')    # get the scheduling rule of the el. (how to choose which 
                                                                     # station to serve first) / default 'FIFO' i.e. the one that 
                                                                     # called first
-            O = Operator(element_id, name, capacity)                # create an operator object
+            O = Operator(element_id, name, capacity,schedulingRule)                # create an operator object
             O.coreObjectIds=getSuccessorList(id)                	# update the list of objects that the operator operates
 																	# calling the getSuccesorList() method on the operator
             G.OperatorsList.append(O)                               # add the operator to the RepairmanList
@@ -213,7 +213,10 @@ def createObjects():
             id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
             name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
             capacity = int(element.get('capacity', '1'))            # get the capacity of the el. / defautl '1'
-            O = OperatorManagedJob(element_id, name, capacity)                # create an operator object
+            schedulingRule=element.get('schedulingRule', 'FIFO')    # get the scheduling rule of the el. (how to choose which 
+                                                                    # station to serve first) / default 'FIFO' i.e. the one that 
+                                                                    # called first
+            O = OperatorManagedJob(element_id, name, capacity,schedulingRule)      # create an operator object
             O.coreObjectIds=getSuccessorList(id)                    # update the list of objects that the operator operates
                                                                     # calling the getSuccesorList() method on the operator
             G.OperatorsList.append(O)                               # add the operator to the RepairmanList
