@@ -199,6 +199,9 @@ class Machine(CoreObject):
             # canAcceptAndIsRequested is invoked to check when the machine requested to receive an entity
             yield waituntil, self, self.canAcceptAndIsRequested
             
+            # reset the canProceedWithGetEntity flag
+            self.canProceedWithGetEntity=False
+            
             # if the machine must be operated for the loading then the operators must be picked wisely for every machine
             if (self.operatorPool!="None")\
                     and any(type=="Load" for type in self.multOperationTypeList):
