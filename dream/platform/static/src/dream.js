@@ -535,6 +535,9 @@
                   text += "<tr><td>Average Daily Line Attainment</td><td>" + (
                     (attainment_list.reduce(function(a, b){return a+b}) / attainment_list.length ) * 100).toFixed(2) + "%</td></tr>";
               } else {
+                if (typeof value == "number") {
+                   value = value.toFixed(2)
+                }
                 text += "<tr><td>" + metric + "</td><td>" + value + "</td></tr>";
               }
             })
