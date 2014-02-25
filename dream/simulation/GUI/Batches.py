@@ -14,22 +14,33 @@ class Simulation(ShiftsSimulation):
       "_class": "Dream.LineClearance",
       "name": "Clearance",
       "property_list": conf['Dream-Queue']['property_list']}
+
+    batch_source_entity = copy(schema["entity"])
+    batch_source_entity['_default'] = "Dream.Batch"
     conf['Dream-BatchSource'] = {
         "_class": "Dream.BatchSource",
         "name": "Source",
-        "property_list": conf['Dream-Source']['property_list']\
-          + [schema['batchNumberOfUnits']]
+        "property_list": [schema['interarrivalTime'],
+                          batch_source_entity,
+                          schema['batchNumberOfUnits']]
     }
+
+    zeroProcessingTime = copy(schema['processingTime'])
+    for prop in zeroProcessingTime['property_list']:
+      if prop['id'] == 'mean':
+        prop['_default']= 0.0
+
     conf['Dream-BatchDecompositionStartTime'] = {
       "_class": "Dream.BatchDecompositionStartTime",
       "name": "Decomposition",
-      "property_list": [schema['processingTime'], schema['numberOfSubBatches'] ]
+      "property_list": [zeroProcessingTime, schema['numberOfSubBatches'] ]
       }
     conf['Dream-BatchReassembly'] = {
       "_class": "Dream.BatchReassembly",
       "name": "Reassembly",
-      "property_list": [schema['processingTime'], schema['numberOfSubBatches'] ]
+      "property_list": [zeroProcessingTime, schema['numberOfSubBatches'] ]
       }
+
     conf['Dream-BatchScrapMachine'] = {
       "_class": "Dream.BatchScrapMachine",
       "name": "Station",
