@@ -93,8 +93,6 @@ class MachineManagedJob(MachineJobShop):
     # also updates the giver to the one that is to be taken
     # =======================================================================
     def canAcceptAndIsRequested(self):
-#         # TESTING
-#         print now(), self.id, 'canA$iR'
         # get active and giver objects
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
@@ -141,8 +139,8 @@ class MachineManagedJob(MachineJobShop):
                         self.entityToGet=activeObject.giver.getActiveObjectQueue()[0]
                     #make the operators List so that it holds only the manager of the current order
                     activeObject.operatorPool.operators=[activeObject.giver.getActiveObjectQueue()[0].manager]
-                    # set the variable operatorAssignedTo to activeObject, the operator is then blocked
-                    activeObject.operatorPool.operators[0].operatorAssignedTo=activeObject
+#                     # set the variable operatorAssignedTo to activeObject, the operator is then blocked
+#                     activeObject.operatorPool.operators[0].operatorAssignedTo=activeObject
 #                     # TESTING
 #                     print now(), activeObject.operatorPool.operators[0].objName, 'got assigned to', activeObject.id
                     # read the load time of the machine
