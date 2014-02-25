@@ -133,7 +133,7 @@
         autoOpen: false,
         width: 350,
         modal: true,
-        title: title || "",
+        title: node_dict[node_id]._class + " " + title || "",
         buttons: {
           Cancel: function () {
             $(this).dialog("close");
@@ -196,7 +196,7 @@
       var element_type = element._class.replace('.', '-');
       element.element_id = that.generateElementId();
       if (!element.id) {
-        element.id = that.generateNodeId(element_type);
+        element.id = that.generateNodeId(element_type, configuration[element_type]);
       }
       priv.super_newElement(element, configuration[element_type]);
       $("#" + element.element_id).on('click', function () {
