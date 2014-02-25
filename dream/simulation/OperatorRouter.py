@@ -46,6 +46,9 @@ class Router(ObjectInterruption):
         self.type = "Router"
         # variable used to hand in control to the Broker
         self.call=False
+        # list that holds all the objects that can receive
+        self.pendingObjects=[]
+        self.calledOperators=[]
         
     # =======================================================================
     #                          the run method
@@ -59,13 +62,85 @@ class Router(ObjectInterruption):
             #     finished all their moves in stations of non-Machine-type 
             #     before they can enter again a type-Machine object
             yield waituntil, self,self.entitiesFinishedMoving
-            
+            #===================================================================
+#             # TESTING
+#             print now(), self.type, '        entities finished moving'
+            #===================================================================
+            # update the objects to be served list (pendingObjects)
             for object in G.MachineList:
                 if object.inPositionToGet:
-                    object.canProceedWithGetEntity=True
-                    self.inPositionToGet=False
+                    self.pendingObjects.append(object)
+            #===================================================================
+#             # TESTING
+#             print '        the pending objects are'
+#             for entity in self.pendingObjects:
+#                 print '        ', entity.id
+            #===================================================================
+            # update the called operators list
+            for operator in G.OperatorsList:
+                if len(operator.activeCallersList):
+                    self.calledOperators.append(operator)
+            #===================================================================
+#             # TESTING
+#             print '        the called operators are'
+#             for operator in self.calledOperators:
+#                 print '        ', operator.id
+#             #===================================================================
+            # for all the called operators find those available
+            #     sort the objects for each one of them
+            #     and assign the operator to those with the highest priority
+            for operator in self.calledOperators:
+                priorityObject=None
+                if operator.checkIfResourceIsAvailable():
+                    #===========================================================
+#                     # TESTING
+#                     print now(), 'the active callers of', operator.objName, 'before sorting are'
+#                     for caller in operator.activeCallersList:
+#                         print '                        ', caller.id
+                    #===========================================================
+                    operator.sortEntities()
+                    #===========================================================
+#                     # TESTING
+#                     print now(), 'the active callers of', operator.objName, 'after sorting are'
+#                     for caller in operator.activeCallersList:
+#                         print '                        ', caller.id
+                    #===========================================================
+                    priorityObject=next(x for x in operator.activeCallersList if x in self.pendingObjects)
+                    #===========================================================
+#                     # TESTING
+#                     print '                the PRIORITY object is', priorityObject.id
+                    #===========================================================
+                    if priorityObject in self.pendingObjects:
+                        operator.operatorAssignedTo=priorityObject
+                        #=======================================================
+#                         # TESTING
+#                         print now(), operator.objName, 'got assigned to', priorityObject.id
+                        #=======================================================
+                        priorityObject.canProceedWithGetEntity=True
+                        priorityObject.inPositionToGet=False
+            # if an object cannot proceed with getEntity, unAssign the exit of its giver
+            for object in self.pendingObjects:
+                if not object.canProceedWithGetEntity:
+                    object.giver.unAssignExit()
+            #===================================================================
+#             # TESTING
+#             print '        these objects will proceed with getting entities'
+#             for object in self.pendingObjects:
+#                 if object.canProceedWithGetEntity:
+#                     print '        ', object.id
+            #===================================================================
+            
+            
+            
+#             for object in G.MachineList:
+#                 if object.inPositionToGet:
+#                     object.canProceedWithGetEntity=True
+#                     object.inPositionToGet=False
             
             # have to check also the activeCallersList of each machine about to receive something
+            # now that entities have finished moving the router have to assign operators and allow 
+            #     the machines that have assigned operators to proceed with getEntity
+            
             
 #                 # TESTING
 #                 import Globals
@@ -79,7 +154,8 @@ class Router(ObjectInterruption):
 #                     activeObject.operatorPool.operators[0].operatorAssignedTo=activeObject
 #                     # TESTING
 #                     print now(), activeObject.operatorPool.operators[0].objName, 'got assigned to', activeObject.id
-            
+            del self.calledOperators[:]
+            del self.pendingObjects[:]
             self.exitRouter()
     
     #===========================================================================
@@ -91,6 +167,12 @@ class Router(ObjectInterruption):
         #     the first time the Router is called, have reached the last queue (if any)
         #     before the next Machine in their route
         from Globals import G
+        #=======================================================================
+#         # TESTING
+#         print '            the length of the pendingEntities is', len(G.pendingEntities)
+#         for entity in G.pendingEntities:
+#             print '                ', entity.id,'in', entity.currentStation.id
+        #=======================================================================
         # pending entities are entities about to enter an other machine, updated by endProcessingActions()
         # if there are any pending entities
         if len(G.pendingEntities):
