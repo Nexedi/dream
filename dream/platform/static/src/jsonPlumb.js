@@ -251,9 +251,7 @@
       $.publish("Dream.Gui.onDataChange", priv.getData());
     };
 
-    priv.style_attr_list = ['width', 'height', 'font-size', 'padding-top',
-      'line-height'
-    ];
+    priv.style_attr_list = ['width', 'height', 'padding-top', 'line-height'];
 
     that.positionGraph = function () {
       $.ajax(
