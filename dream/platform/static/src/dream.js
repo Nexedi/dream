@@ -405,26 +405,36 @@
             var job_index = parseInt(obj["id"]);
             input_job = data.wip_part_spreadsheet[job_index];
             var i = job_index;
-            while (data.wip_part_spreadsheet[i][0] === null) {
+            while (data.wip_part_spreadsheet[i][0] === null || data.wip_part_spreadsheet[i][0] === "") {
               i = i-1;
             }
             input_order = data.wip_part_spreadsheet[i];
           };
 
           var duration = 0;
-          console.log("input_job", input_job);
-          gantt_data.data.push({
-            id: obj['id'],
-            text: input_job[1],
-            start_date: start_date,
-            duration: obj['results'].completionTime,
-            project: 1,
-            open: false,
-            parent: "by_job"
-          });
+          if (configuration['Dream-Configuration'].gui.wip_spreadsheet) {
+            gantt_data.data.push({
+              id: obj['id'],
+              text: input_job[1],
+              start_date: start_date,
+              duration: obj['results'].completionTime,
+              project: 1,
+              open: false,
+              parent: "by_job"
+            });
+          } else if (configuration['Dream-Configuration'].gui.wip_part_spreadsheet) {
+            if (input_job == input_order) { // if we are on the order definition
+              gantt_data.data.push({
+                id: input_order[0],
+                text: input_order[0],
+                project: 1,
+                open: false,
+                parent: "by_job"
+              });
+            }
+          };
 
           $.each(obj['results']['schedule'], function (i, schedule) {
-            console.log("schedule", schedule);
             // Filter intermediate steps in part job shop
             if (isVisibleStation(schedule['stationId'])) {
               if (configuration['Dream-Configuration'].gui.wip_spreadsheet) {
@@ -441,7 +451,6 @@
                   schedule['stepNumber']
                 ]);
               } else if (configuration['Dream-Configuration'].gui.wip_part_spreadsheet) {
-                console.log("XXXXX going to push wip_part spreadsheet_data", input_order, input_job);
                 spreadsheet_data.push([
                   input_order[0] + "-" + input_job[4],
                   obj['id'],
@@ -461,35 +470,53 @@
                 duration = obj['results'].completionTime - schedule['entranceTime'];
               }
               if (duration > 0.0) {
-                var task_start_date = new Date(start_date.getTime());
-                task_start_date.setDate(task_start_date.getDate() + schedule['entranceTime']);
-                gantt_data.data.push({
-                  id: obj['id'] + '.' + schedule['stepNumber'],
-                  text: schedule['stationId'],
-                  start_date: task_start_date,
-                  duration: duration,
-                  parent: obj['id']
-                });
-                console.log("going to push gantt by station", obj, schedule);
-                gantt_data.data.push({
-                  id: 'job.' + obj['id'] + '.' + schedule['stepNumber'],
-                  text: obj['id'],
-                  start_date: task_start_date,
-                  duration: duration,
-                  parent: schedule['stationId'],
-                  by_station:1
-                });
+                if (configuration['Dream-Configuration'].gui.wip_spreadsheet) {
+                  var task_start_date = new Date(start_date.getTime());
+                  task_start_date.setDate(task_start_date.getDate() + schedule['entranceTime']);
+                  gantt_data.data.push({
+                    id: obj['id'] + '.' + schedule['stepNumber'],
+                    text: schedule['stationId'],
+                    start_date: task_start_date,
+                    duration: duration,
+                    parent: obj['id']
+                  });
+                  console.log("going to push gantt by station", obj, schedule);
+                  gantt_data.data.push({
+                    id: 'job.' + obj['id'] + '.' + schedule['stepNumber'],
+                    text: obj['id'],
+                    start_date: task_start_date,
+                    duration: duration,
+                    parent: schedule['stationId'],
+                    by_station:1
+                  });
+                } else if (configuration['Dream-Configuration'].gui.wip_part_spreadsheet) {
+                  var task_start_date = new Date(start_date.getTime());
+                  task_start_date.setDate(task_start_date.getDate() + schedule['entranceTime']);
+                  console.log("going to push gantt by job", input_order[0], schedule, i);
+                  gantt_data.data.push({
+                    id: input_order[0] + '.' + idx + '_' + i,
+                    text: schedule['stationId'],
+                    start_date: task_start_date,
+                    duration: duration,
+                    parent: input_order[0]
+                  });
+                  gantt_data.data.push({
+                    id: 'job.' + obj['id'] + '.' + idx + '_' + i,
+                    text: input_order[0] + "-" + input_job[4],
+                    start_date: task_start_date,
+                    duration: duration,
+                    parent: schedule['stationId'],
+                    by_station:1
+                  });
+                }
               }
             }
           });
         } else {
-          console.log("in else clause to push by station", obj);
           if (isVisibleStation(obj['id'])) {
             gantt_data.data.push({
               id: obj['id'],
               text: obj['id'],
-              start_date: now,
-              duration: 0,
               project: 1,
               open: false,
               parent: "by_station"

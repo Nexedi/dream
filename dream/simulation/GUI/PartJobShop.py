@@ -148,6 +148,7 @@ class Simulation(ACO.Simulation):
         wip_list.append(order_dict)
         order_id, due_date, priority, project_manager, part, part_type,\
           sequence_list, processing_time_list, electrode_needed = value_list
+        print "evaluate due_date : %r" % (due_date,)
         due_date = (datetime.strptime(due_date, '%Y/%m/%d') - now).days
         sequence_list = sequence_list.split('-')
         processing_time_list = processing_time_list.split('-')
@@ -162,9 +163,10 @@ class Simulation(ACO.Simulation):
         i += 1
         component_list = []
         if i < wip_part_spreadsheet_length:
-          while data['wip_part_spreadsheet'][i][0] == None:
+          print "first cell : %r" %(data['wip_part_spreadsheet'][i][0],)
+          while data['wip_part_spreadsheet'][i][0] in (None, ''):
             value_list = data['wip_part_spreadsheet'][i]
-            if value_list[4] == None:
+            if value_list[4] in (None, ''):
               break
             order_id, due_date, priority, project_manager, part, part_type,\
               sequence_list, processing_time_list, electrode_needed = value_list
