@@ -582,14 +582,27 @@
         } catch (e) {}
 
         var gantt_output_height = 35 * (gantt_data.data.length + 1) + 1;
-        // TODO: gantt data have to be sorted in a clever way:
-        //   jobs by alphabetic order
-        //     for each job, stations in chronological order.
-        //
-        // gantt_data.data = gantt_data.data.sort(function(a,b)
-        //  {return a.name > b.name ? -1 : 1});
+        gantt_data.data.sort(function (a, b) {
+          // sort gantt data in a chronological order
+          var result;
+          console.log("sorting gantt, a, b", a.start_date, b.start_date);
+          if (a.start_date === undefined && b.start_date !== undefined) {
+            result = 1;
+          } else if (a.start_date !== undefined && b.start_date === undefined) {
+            result = - 1;
+          } else if (a.start_date === undefined && b.start_date === undefined) {
+            result = 0;
+          } else if (a.start_date > b.start_date) {
+            result = 1;
+          } else if (a.start_date < b.start_date) {
+            result = -1;
+          } else {
+            result = 0;
+          }
+          return result;
+        });
         if (configuration['Dream-Configuration'].gui.job_gantt){
-          $('#job_gantt').height(gantt_output_height).show().dhx_gantt({
+          $('#job_gantt').show().dhx_gantt({
             data: gantt_data,
             readonly: true,
             /* for days has simulation time unit
@@ -597,12 +610,14 @@
             step: 7
             */
             // for hours has simulation time unit
-            scale_unit: 'hour',
+            scale_unit: 'day',
             duration_unit: 60*60*1000,
-            date_grid: "%H:%i",
-            date_scale: "%d-%H:%i",
-            step: 1
+            //date_grid: "%H:%i",
+            date_scale: "%M/%d",
+            step: 1,
+            subscales: [{unit:"hour", step:4, date:"%H:%i" }]
           });
+          //$('#gantt_grid').width(1000);
         }
       }
     };
