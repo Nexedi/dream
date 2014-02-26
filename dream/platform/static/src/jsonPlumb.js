@@ -112,28 +112,6 @@
     };
 
     priv.initSpreadSheet = function () {
-      var wip_spreadsheet = $('#wip_spreadsheet');
-      var data = [
-        [
-          "Jobs",
-          "ID",
-          "Order Date",
-          "Due Date",
-          "Priority",
-          "Material",
-          "Sequence",
-          "Processing Times"
-        ]
-      ];
-      wip_spreadsheet.handsontable({
-        data: data,
-        minSpareRows: 1,
-        afterChange: function () {
-          priv.onDataChange();
-        }
-      });
-      wip_spreadsheet.find('.htCore').width(wip_spreadsheet.width());
-
       var wip_part_spreadsheet = $('#wip_part_spreadsheet');
       var data = [
         [
