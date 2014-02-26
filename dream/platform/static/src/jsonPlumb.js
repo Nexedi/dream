@@ -211,7 +211,7 @@
       jsPlumb.draggable(jsPlumb.getSelector(".window"), {
         containment: 'parent',
         grid: [10, 10],
-        stop: stop
+        stop: stop // FIXME: we should only accept if dropped in #main
       });
 
       jsPlumb.makeSource(jsPlumb.getSelector(".window"), {
