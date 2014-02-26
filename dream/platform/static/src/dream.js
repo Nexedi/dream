@@ -432,7 +432,10 @@
               }
               if (duration > 0.0) {
                 var task_start_date = new Date(start_date.getTime());
-                task_start_date.setDate(task_start_date.getDate() + schedule['entranceTime']);
+                // for simulation time unit as days
+                // task_start_date.setDate(task_start_date.getDate() + schedule['entranceTime']);
+                // for simulation time unit as days hours
+                task_start_date.setTime(task_start_date.getTime() + schedule['entranceTime']*1000*3600);
                 console.log("going to push gantt by job", input_order[0], schedule, i);
                 gantt_data.data.push({
                   id: input_order[0] + '.' + idx + '_' + i,
@@ -562,9 +565,17 @@
         if (configuration['Dream-Configuration'].gui.job_gantt){
           $('#job_gantt').height(gantt_output_height).show().dhx_gantt({
             data: gantt_data,
-            scale_unit: 'day',
             readonly: true,
+            /* for days has simulation time unit
+            scale_unit: 'day',
             step: 7
+            */
+            // for hours has simulation time unit
+            scale_unit: 'hour',
+            duration_unit: 60*60*1000,
+            date_grid: "%H:%i",
+            date_scale: "%M/%d-%H:%i",
+            step: 1
           });
         }
       }
