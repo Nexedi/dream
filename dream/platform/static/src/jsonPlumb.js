@@ -119,11 +119,11 @@
           "Due Date",
           "Priority",
           "Project Manager",
-          "Parts",
+          "Part",
           "Part Type",
           "Sequence",
           "Processing Times",
-          "Electrodes Needed"
+          "Prerequisites Parts"
         ]
       ];
       wip_part_spreadsheet.handsontable({

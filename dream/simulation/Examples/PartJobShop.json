@@ -220,11 +220,11 @@
       "Due Date",
       "Priority",
       "Project Manager",
-      "Parts",
+      "Part",
       "Part Type",
       "Sequence",
       "Processing Times",
-      "Electrodes Needed"
+      "Prerequisites Parts"
     ],
     [
       "Order 1",
@@ -234,7 +234,7 @@
       "Mould1 Design",
       "Design",
       "CAD",
-      "3",
+      "2",
       null
     ],
     [
@@ -257,7 +257,7 @@
       "Basic",
       "CAM",
       "2",
-      null
+      ""
     ],
     [
       "Order 2",

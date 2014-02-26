@@ -96,7 +96,7 @@ class Simulation(ACO.Simulation):
     print "getNotMachineNodePredecessorList, %r : %r" % (step_name, predecessor_list)
     return predecessor_list
 
-  def getRouteList(self, sequence_list, processing_time_list):
+  def getRouteList(self, sequence_list, processing_time_list, prerequisite_list):
     route_list = []
     route_counter = 0
     for j, sequence_step in enumerate(sequence_list):
@@ -113,10 +113,17 @@ class Simulation(ACO.Simulation):
                 "setupTime": {"setupDistribution": "Fixed",
                               "setupMean": "0.5"}, # XXX hardcoded value
               }
+      if prerequisite_list:
+        route["prerequisites"] = prerequisite_list
       route_list.append(route)
       route_counter += 1
     return route_list
 
+  def getListFromString(self, my_string):
+    my_list = []
+    if not my_string in (None, ''):
+      my_list = my_string.split('-')
+    return my_list
 
   def _preprocess(self, in_data):
     """ Set the WIP in queue from spreadsheet data.
@@ -147,9 +154,10 @@ class Simulation(ACO.Simulation):
         order_dict = {}
         wip_list.append(order_dict)
         order_id, due_date, priority, project_manager, part, part_type,\
-          sequence_list, processing_time_list, electrode_needed = value_list
+          sequence_list, processing_time_list, prerequisite_string = value_list
         print "evaluate due_date : %r" % (due_date,)
         due_date = (datetime.strptime(due_date, '%Y/%m/%d') - now).days
+        prerequisite_list = self.getListFromString(prerequisite_string)
         sequence_list = sequence_list.split('-')
         processing_time_list = processing_time_list.split('-')
 
@@ -159,7 +167,8 @@ class Simulation(ACO.Simulation):
         order_dict["name"] = order_id
         # XXX make it dynamic by writing a function that will reuse the
         # code available a bit after
-        order_dict["route"] = self.getRouteList(sequence_list, processing_time_list)
+        order_dict["route"] = self.getRouteList(sequence_list, processing_time_list,
+                                                prerequisite_list)
         i += 1
         component_list = []
         if i < wip_part_spreadsheet_length:
@@ -169,8 +178,9 @@ class Simulation(ACO.Simulation):
             if value_list[4] in (None, ''):
               break
             order_id, due_date, priority, project_manager, part, part_type,\
-              sequence_list, processing_time_list, electrode_needed = value_list
+              sequence_list, processing_time_list, prerequisite_string = value_list
             sequence_list = sequence_list.split('-')
+            prerequisite_list = self.getListFromString(prerequisite_string)
             processing_time_list = processing_time_list.split('-')
             component_dict = {}
             component_dict["_class"] = "Dream.OrderComponent"
@@ -178,7 +188,8 @@ class Simulation(ACO.Simulation):
             component_dict["id"] = "%i" % i # XXX hack, we use it in UI to retrieve spreadsheet line
             component_dict["name"] = part
             component_list.append(component_dict)
-            route_list = self.getRouteList(sequence_list, processing_time_list)
+            route_list = self.getRouteList(sequence_list, processing_time_list,
+                                           prerequisite_list)
             component_dict["route"] = route_list
             i+=1
           order_dict["componentsList"] = component_list
