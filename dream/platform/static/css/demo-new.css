@@ -334,6 +334,7 @@ border: 1px solid black;
   -webkit-transition:background-color 0.1s ease-in;
   -moz-transition:background-color 0.1s ease-in;
   transition:background-color 0.1s ease-in;
+  border-radius: 5px;
 }
 
 .window:hover {
