@@ -31,6 +31,10 @@ class Simulation(ShiftsSimulation):
     for prop in zeroProcessingTime['property_list']:
       if prop['id'] == 'mean':
         prop['_default'] = 0.0
+
+    perUnitProcessingTime = copy.deepcopy(schema['processingTime'])
+    for prop in perUnitProcessingTime['property_list']:
+      if prop['id'] == 'mean':
         prop['description'] = "Processing time per unit"
 
     conf['Dream-BatchDecompositionStartTime'] = {
@@ -50,7 +54,7 @@ class Simulation(ShiftsSimulation):
       "_class": "Dream.BatchScrapMachine",
       "name": "Station",
       "short_id": "St",
-      "property_list": conf['Dream-Machine']['property_list']
+      "property_list": [perUnitProcessingTime, schema['failures'] ]
       }
     conf['Dream-EventGenerator'] = {
       "_class": "Dream.EventGenerator",
