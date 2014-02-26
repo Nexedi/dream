@@ -432,7 +432,7 @@
         coordinate = priv.updateElementCoordinate(element.id, coordinate);
       }
       render_element.append('<div class="window ' + element._class.replace('.', '-') + '" id="' +
-        element.element_id + '">' + (element.name || element.id) + '<div class="ep"></div></div>');
+        element.element_id + '" title="' + (element.name || element.id) + '">' + element.id + '<div class="ep"></div></div>');
       box = $("#" + element.element_id);
       var absolute_position = priv.convertToAbsolutePosition(
         coordinate.left, coordinate.top);
