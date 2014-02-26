@@ -163,7 +163,7 @@
                   prefixed_property_id = prefix + property.id;
                   property_element = $("#" + prefixed_property_id);
                   data[property.id] = property_element.val();
-                  if (property.type === "number") {
+                  if (property.type === "number" && data[property.id] !== "") {
                     data[property.id] = parseFloat(data[property.id])
                   }
                 } else if (property._class === "Dream.PropertyList") {
@@ -252,7 +252,7 @@
           if (property._class === "Dream.Property") {
             prefixed_property_id = prefix + property.id;
             properties[property.id] = $("#" + prefixed_property_id).val();
-            if (property.type === "number") {
+            if (property.type === "number" && properties[property.id] !== "") {
               properties[property.id] = parseFloat(properties[property.id])
             }
           }
