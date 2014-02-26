@@ -338,7 +338,7 @@
           link: []
         };
 
-      $.each(result.elementList.sort(function(a,b) {return a.name > b.name ? -1 : 1}),
+      $.each(result.elementList.sort(function(a,b) {return a.id < b.id ? -1 : 1}),
         function (idx, obj) {
         if (obj.results !== undefined && obj.results.working_ratio !== undefined) {
           /* when there is only one replication, the ratio is given as a float,
@@ -383,8 +383,7 @@
           }
           failure_data.push([counter, failure_ratio]);
 
-          ticks.push([counter, that.getData().nodes[
-            obj.id].name || obj.id]);
+          ticks.push([counter, obj.id]);
           counter++;
         }
 
