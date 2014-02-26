@@ -1,23 +1,23 @@
 {
   "edges": {
     "con_10": [
-      "CAD1",
-      "Decomposition",
-      {}
-    ],
-    "con_15": [
-      "Decomposition",
-      "QCAM",
-      {}
-    ],
-    "con_20": [
       "QCAM",
       "CAM1",
       {}
     ],
-    "con_25": [
+    "con_15": [
       "QCAM",
       "CAM2",
+      {}
+    ],
+    "con_20": [
+      "QStart",
+      "CAD1",
+      {}
+    ],
+    "con_25": [
+      "CAD1",
+      "Decomposition",
       {}
     ],
     "con_30": [
@@ -26,8 +26,8 @@
       {}
     ],
     "con_35": [
-      "QStart",
-      "CAD1",
+      "Decomposition",
+      "QCAM",
       {}
     ],
     "con_5": [
@@ -121,27 +121,27 @@
     },
     "Decomposition": {
       "_class": "Dream.OrderDecomposition",
-      "element_id": "DreamNode_5",
+      "element_id": "DreamNode_10",
       "name": "Decomposition"
     },
     "E1": {
       "_class": "Dream.ExitJobShop",
-      "element_id": "DreamNode_6"
+      "element_id": "DreamNode_5"
     },
     "PM1": {
       "_class": "Dream.Operator",
-      "element_id": "DreamNode_7",
+      "element_id": "DreamNode_6",
       "name": "PM1"
     },
     "PM2": {
       "_class": "Dream.Operator",
-      "element_id": "DreamNode_8",
+      "element_id": "DreamNode_7",
       "name": "PM2"
     },
     "QCAM": {
       "_class": "Dream.ConditionalBuffer",
       "capacity": "1",
-      "element_id": "DreamNode_9",
+      "element_id": "DreamNode_8",
       "isDummy": "0",
       "name": "QCAM",
       "schedulingRule": "FIFO"
@@ -149,7 +149,7 @@
     "QStart": {
       "_class": "Dream.QueueManagedJob",
       "capacity": "1",
-      "element_id": "DreamNode_10",
+      "element_id": "DreamNode_9",
       "isDummy": "0",
       "name": "QStart",
       "schedulingRule": "FIFO"
@@ -158,8 +158,8 @@
   "preference": {
     "coordinates": {
       "CAD1": {
-        "left": 0.141694796524387,
-        "top": 0.49363124284218185
+        "left": 0.13297574808395032,
+        "top": 0.5322625854546237
       },
       "CAD2": {
         "left": 0.30341115093502347,
@@ -174,8 +174,8 @@
         "top": 0.7073489839960767
       },
       "Decomposition": {
-        "left": 0.27829062765763835,
-        "top": 0.781109974305828
+        "left": 0.256207755567884,
+        "top": 0.8022803426747529
       },
       "E1": {
         "left": 0.864763881619618,
@@ -234,7 +234,7 @@
       "Mould1 Design",
       "Design",
       "CAD",
-      "6",
+      "3",
       null
     ],
     [
@@ -260,29 +260,40 @@
       null
     ],
     [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
+      "Order 2",
+      "2014/03/15",
+      "1",
+      "PM1",
+      "Mould1 Design",
+      "Design",
+      "CAD",
+      "2",
       null
-    ]
-  ],
-  "wip_spreadsheet": [
-    [
-      "Jobs",
-      "ID",
-      "Order Date",
-      "Due Date",
-      "Priority",
-      "Material",
-      "Sequence",
-      "Processing Times"
     ],
     [
+      "",
+      "",
+      "",
+      "",
+      "Part1",
+      "Basic",
+      "CAM",
+      "4",
+      null
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "Part2",
+      "Basic",
+      "CAM",
+      "3",
+      null
+    ],
+    [
+      null,
       null,
       null,
       null,
