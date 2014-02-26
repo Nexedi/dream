@@ -542,7 +542,30 @@
       if (spreadsheet_data.length > 1) {
         var job_schedule_spreadsheet = $('#job_schedule_spreadsheet');
         // Sort the spreadsheet data to an order convenient for end users
-        spreadsheet_data.sort()
+        spreadsheet_data.sort( function(a, b) {
+          var result = 0,
+              order_id_a, order_id_b, entrance_a, entrance_b;
+          order_id_a = a[0].split('-')[0];
+          order_id_b = b[0].split('-')[0];
+          if (order_id_a !== order_id_b) {
+            if (order_id_a > order_id_b) {
+              result = 1;
+            } else {
+              result = -1;
+            }
+          } else {
+            entrance_a = a[6];
+            entrance_b = b[6];
+            if (entrance_a > entrance_b) {
+              result = 1;
+            } else if (entrance_a < entrance_b) {
+              result = -1;
+            } else {
+              result = 0;
+            }
+          }
+          return result;
+        });
         if (configuration['Dream-Configuration'].gui.job_schedule_spreadsheet){
           job_schedule_spreadsheet.show();
           job_schedule_spreadsheet.handsontable({
