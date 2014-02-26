@@ -59,13 +59,43 @@
       "QIM",
       "IM2",
       {}
+    ],
+    "con_65": [
+      "QMASS",
+      "MASS1",
+      {}
+    ],
+    "con_70": [
+      "QMASS",
+      "MASS2",
+      {}
+    ],
+    "con_75": [
+      "QMASS",
+      "MASS3",
+      {}
+    ],
+    "con_80": [
+      "MASS3",
+      "QIM",
+      {}
+    ],
+    "con_85": [
+      "MASS2",
+      "QIM",
+      {}
+    ],
+    "con_90": [
+      "MASS1",
+      "QIM",
+      {}
     ]
   },
   "general": {
     "confidenceLevel": "0.95",
     "currentDate": "",
     "maxSimTime": "-1",
-    "numberOfAntsPerGenerations": "3",
+    "numberOfAntsPerGenerations": "1",
     "numberOfGenerations": "3",
     "numberOfReplications": "1",
     "numberOfSolutions": "4",
@@ -207,6 +237,60 @@
         "stdev": "0.1"
       }
     },
+    "MASS1": {
+      "_class": "Dream.MachineManagedJob",
+      "element_id": "DreamNode_19",
+      "failures": {
+        "MTTF": "40",
+        "MTTR": "10",
+        "failureDistribution": "No",
+        "repairman": "None"
+      },
+      "name": "MASS1",
+      "processingTime": {
+        "distributionType": "Fixed",
+        "max": "1",
+        "mean": "0.9",
+        "min": "0.1",
+        "stdev": "0.1"
+      }
+    },
+    "MASS2": {
+      "_class": "Dream.MachineManagedJob",
+      "element_id": "DreamNode_20",
+      "failures": {
+        "MTTF": "40",
+        "MTTR": "10",
+        "failureDistribution": "No",
+        "repairman": "None"
+      },
+      "name": "MASS2",
+      "processingTime": {
+        "distributionType": "Fixed",
+        "max": "1",
+        "mean": "0.9",
+        "min": "0.1",
+        "stdev": "0.1"
+      }
+    },
+    "MASS3": {
+      "_class": "Dream.MachineManagedJob",
+      "element_id": "DreamNode_21",
+      "failures": {
+        "MTTF": "40",
+        "MTTR": "10",
+        "failureDistribution": "No",
+        "repairman": "None"
+      },
+      "name": "MASS3",
+      "processingTime": {
+        "distributionType": "Fixed",
+        "max": "1",
+        "mean": "0.9",
+        "min": "0.1",
+        "stdev": "0.1"
+      }
+    },
     "MILL1": {
       "_class": "Dream.MachineManagedJob",
       "element_id": "DreamNode_12",
@@ -277,6 +361,14 @@
       "name": "QIM",
       "schedulingRule": "FIFO"
     },
+    "QMASS": {
+      "_class": "Dream.QueueManagedJob",
+      "capacity": "1",
+      "element_id": "DreamNode_22",
+      "isDummy": "0",
+      "name": "QMASS",
+      "schedulingRule": "FIFO"
+    },
     "QMILL": {
       "_class": "Dream.QueueManagedJob",
       "capacity": "-1",
@@ -325,12 +417,24 @@
         "top": 0.9220848382145941
       },
       "IM1": {
-        "left": 0.6878756647676925,
-        "top": 0.5861061267844359
+        "left": 0.8751810178550912,
+        "top": 0.6049810252492097
       },
       "IM2": {
-        "left": 0.687865147184475,
-        "top": 0.8371557737021322
+        "left": 0.8845462397808385,
+        "top": 0.8560412718675537
+      },
+      "MASS1": {
+        "left": 0.5486473277825593,
+        "top": 0.5247930837013548
+      },
+      "MASS2": {
+        "left": 0.5441103624829352,
+        "top": 0.7115787006319392
+      },
+      "MASS3": {
+        "left": 0.5501964991975471,
+        "top": 0.9108024938023543
       },
       "MILL1": {
         "left": 0.1877564659501795,
@@ -357,8 +461,12 @@
         "top": 0.9193157852349616
       },
       "QIM": {
-        "left": 0.47434314600632216,
-        "top": 0.7257734856183408
+        "left": 0.7084640625588505,
+        "top": 0.7069073434280151
+      },
+      "QMASS": {
+        "left": 0.38256911560405105,
+        "top": 0.7012616778705337
       },
       "QMILL": {
         "left": 0.024330940806924675,
@@ -405,7 +513,7 @@
       "Mould1 Design",
       "Design",
       "CAD",
-      "2",
+      "6",
       null
     ],
     [
@@ -415,8 +523,8 @@
       null,
       "Part1",
       "Basic",
-      "CAM",
-      "3",
+      "CAM-MILL-EDM-MILL-IM",
+      "8-4-2-8-12",
       null
     ],
     [
@@ -426,8 +534,19 @@
       null,
       "Part2",
       "Basic",
-      "CAM",
-      "2",
+      "CAM-MILL-EDM-CAM-IM",
+      "20-15-8-4-13",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "Assemble",
+      "Basic",
+      "MASS-IM",
+      "8-12",
       ""
     ],
     [
@@ -439,7 +558,7 @@
       "Design",
       "CAD",
       "2",
-      null
+      ""
     ],
     [
       "",
@@ -450,7 +569,7 @@
       "Basic",
       "CAM",
       "4",
-      null
+      ""
     ],
     [
       "",
@@ -461,7 +580,7 @@
       "Basic",
       "CAM",
       "3",
-      null
+      ""
     ],
     [
       "Order 3",

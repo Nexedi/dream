@@ -97,10 +97,17 @@ class Simulation(ACO.Simulation):
     return predecessor_list
 
   def getRouteList(self, sequence_list, processing_time_list, prerequisite_list):
+    # use to record which predecessor has been already done, used to avoid doing
+    # two times Decomposition
+    predecessor_set = set()
     route_list = []
     route_counter = 0
     for j, sequence_step in enumerate(sequence_list):
       for predecessor_step in self.getNotMachineNodePredecessorList(sequence_step):
+        # We avoid having two time Decomposition in the route. XXX Is this correct ?
+        if predecessor_step == "Decomposition" and predecessor_step in predecessor_set:
+          continue
+        predecessor_set.add(predecessor_step)
         route = {"stationIdsList": [predecessor_step],
                   "stepNumber": "%i" % route_counter
                   }

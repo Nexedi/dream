@@ -384,7 +384,7 @@
 
         var isVisibleStation = function (station) {
           // we should be able to define in the backend which station is visible
-          return  ["CAM", "CAD", "MIL", "EDM", "ASSM"].indexOf(
+          return  ["CAM", "CAD", "MILL", "EDM", "MASS", "IM"].indexOf(
             station.substring(0, station.length - 1)) !== -1;
         };
 
@@ -543,7 +543,6 @@
         var job_schedule_spreadsheet = $('#job_schedule_spreadsheet');
         // Sort the spreadsheet data to an order convenient for end users
         spreadsheet_data.sort()
-        console.log("here the sum", spreadsheet_header + spreadsheet_data);
         if (configuration['Dream-Configuration'].gui.job_schedule_spreadsheet){
           job_schedule_spreadsheet.show();
           job_schedule_spreadsheet.handsontable({
