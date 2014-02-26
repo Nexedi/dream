@@ -196,6 +196,6 @@ class Simulation(ACO.Simulation):
       data["nodes"]["QStart"]["wip"] = wip_list
       del(data['wip_part_spreadsheet'])
     from pprint import pprint
+    print "PartJobShop, data after preprocess :"
     print pprint(data)
     return data
-

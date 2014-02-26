@@ -30,9 +30,34 @@
       "QCAM",
       {}
     ],
+    "con_40": [
+      "QMILL",
+      "MILL2",
+      {}
+    ],
+    "con_45": [
+      "QMILL",
+      "MILL1",
+      {}
+    ],
     "con_5": [
       "QStart",
       "CAD2",
+      {}
+    ],
+    "con_50": [
+      "QEDM",
+      "EDM",
+      {}
+    ],
+    "con_55": [
+      "QIM",
+      "IM1",
+      {}
+    ],
+    "con_60": [
+      "QIM",
+      "IM2",
       {}
     ]
   },
@@ -40,8 +65,8 @@
     "confidenceLevel": "0.95",
     "currentDate": "",
     "maxSimTime": "-1",
-    "numberOfAntsPerGenerations": "20",
-    "numberOfGenerations": "10",
+    "numberOfAntsPerGenerations": "3",
+    "numberOfGenerations": "3",
     "numberOfReplications": "1",
     "numberOfSolutions": "4",
     "processTimeout": "2000"
@@ -128,6 +153,96 @@
       "_class": "Dream.ExitJobShop",
       "element_id": "DreamNode_5"
     },
+    "EDM": {
+      "_class": "Dream.MachineManagedJob",
+      "element_id": "DreamNode_15",
+      "failures": {
+        "MTTF": "40",
+        "MTTR": "10",
+        "failureDistribution": "No",
+        "repairman": "None"
+      },
+      "name": "EDM",
+      "processingTime": {
+        "distributionType": "Fixed",
+        "max": "1",
+        "mean": "0.9",
+        "min": "0.1",
+        "stdev": "0.1"
+      }
+    },
+    "IM1": {
+      "_class": "Dream.MachineManagedJob",
+      "element_id": "DreamNode_17",
+      "failures": {
+        "MTTF": "40",
+        "MTTR": "10",
+        "failureDistribution": "No",
+        "repairman": "None"
+      },
+      "name": "IM1",
+      "processingTime": {
+        "distributionType": "Fixed",
+        "max": "1",
+        "mean": "0.9",
+        "min": "0.1",
+        "stdev": "0.1"
+      }
+    },
+    "IM2": {
+      "_class": "Dream.MachineManagedJob",
+      "element_id": "DreamNode_18",
+      "failures": {
+        "MTTF": "40",
+        "MTTR": "10",
+        "failureDistribution": "No",
+        "repairman": "None"
+      },
+      "name": "IM2",
+      "processingTime": {
+        "distributionType": "Fixed",
+        "max": "1",
+        "mean": "0.9",
+        "min": "0.1",
+        "stdev": "0.1"
+      }
+    },
+    "MILL1": {
+      "_class": "Dream.MachineManagedJob",
+      "element_id": "DreamNode_12",
+      "failures": {
+        "MTTF": "40",
+        "MTTR": "10",
+        "failureDistribution": "No",
+        "repairman": "None"
+      },
+      "name": "MILL1",
+      "processingTime": {
+        "distributionType": "Fixed",
+        "max": "1",
+        "mean": "0.9",
+        "min": "0.1",
+        "stdev": "0.1"
+      }
+    },
+    "MILL2": {
+      "_class": "Dream.MachineManagedJob",
+      "element_id": "DreamNode_13",
+      "failures": {
+        "MTTF": "40",
+        "MTTR": "10",
+        "failureDistribution": "No",
+        "repairman": "None"
+      },
+      "name": "MILL2",
+      "processingTime": {
+        "distributionType": "Fixed",
+        "max": "1",
+        "mean": "0.9",
+        "min": "0.1",
+        "stdev": "0.1"
+      }
+    },
     "PM1": {
       "_class": "Dream.Operator",
       "element_id": "DreamNode_6",
@@ -146,6 +261,30 @@
       "name": "QCAM",
       "schedulingRule": "FIFO"
     },
+    "QEDM": {
+      "_class": "Dream.QueueManagedJob",
+      "capacity": "1",
+      "element_id": "DreamNode_14",
+      "isDummy": "0",
+      "name": "QEDM",
+      "schedulingRule": "FIFO"
+    },
+    "QIM": {
+      "_class": "Dream.QueueManagedJob",
+      "capacity": "1",
+      "element_id": "DreamNode_16",
+      "isDummy": "0",
+      "name": "QIM",
+      "schedulingRule": "FIFO"
+    },
+    "QMILL": {
+      "_class": "Dream.QueueManagedJob",
+      "capacity": "-1",
+      "element_id": "DreamNode_11",
+      "isDummy": "0",
+      "name": "QMILL",
+      "schedulingRule": "FIFO"
+    },
     "QStart": {
       "_class": "Dream.QueueManagedJob",
       "capacity": "1",
@@ -158,28 +297,48 @@
   "preference": {
     "coordinates": {
       "CAD1": {
-        "left": 0.13297574808395032,
-        "top": 0.5322625854546237
+        "left": 0.32963397636897157,
+        "top": 0.2680049626379991
       },
       "CAD2": {
-        "left": 0.30341115093502347,
-        "top": 0.4960899425191736
+        "left": 0.35914551462607636,
+        "top": 0.023577079050914163
       },
       "CAM1": {
-        "left": 0.600132859916806,
-        "top": 0.4709355535161045
+        "left": 0.8156850502215475,
+        "top": 0.03770447816866011
       },
       "CAM2": {
-        "left": 0.6843357695194952,
-        "top": 0.7073489839960767
+        "left": 0.7965020644878134,
+        "top": 0.3105076307737342
       },
       "Decomposition": {
-        "left": 0.256207755567884,
-        "top": 0.8022803426747529
+        "left": 0.5277238535086819,
+        "top": 0.10475955623433687
       },
       "E1": {
-        "left": 0.864763881619618,
-        "top": 0.37504626611342784
+        "left": 0.967876137039781,
+        "top": 0.39355726466863505
+      },
+      "EDM": {
+        "left": 0.18964688721194897,
+        "top": 0.9220848382145941
+      },
+      "IM1": {
+        "left": 0.6878756647676925,
+        "top": 0.5861061267844359
+      },
+      "IM2": {
+        "left": 0.687865147184475,
+        "top": 0.8371557737021322
+      },
+      "MILL1": {
+        "left": 0.1877564659501795,
+        "top": 0.6841812972040019
+      },
+      "MILL2": {
+        "left": 0.18401596464596484,
+        "top": 0.44453459509694726
       },
       "PM1": {
         "left": 0.001216264249816622,
@@ -190,12 +349,24 @@
         "top": 0.2275242854939252
       },
       "QCAM": {
-        "left": 0.501475106078238,
-        "top": 0.8170448157387837
+        "left": 0.6798946482505993,
+        "top": 0.04336252204503648
+      },
+      "QEDM": {
+        "left": 0.05041752133280548,
+        "top": 0.9193157852349616
+      },
+      "QIM": {
+        "left": 0.47434314600632216,
+        "top": 0.7257734856183408
+      },
+      "QMILL": {
+        "left": 0.024330940806924675,
+        "top": 0.571934442232598
       },
       "QStart": {
-        "left": 0.13565460363009282,
-        "top": 0.16642106881541613
+        "left": 0.15404040948036557,
+        "top": 0.05376099760119495
       }
     },
     "zoom_level": 0.99999
@@ -291,6 +462,39 @@
       "CAM",
       "3",
       null
+    ],
+    [
+      "Order 3",
+      "2014/03/15",
+      "1",
+      "PM1",
+      "Mould1 Design",
+      "Design",
+      "CAD",
+      "2",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "Part1",
+      "Basic",
+      "CAM",
+      "4",
+      ""
+    ],
+    [
+      "",
+      "",
+      "",
+      "",
+      "Part2",
+      "Basic",
+      "CAM",
+      "3",
+      ""
     ],
     [
       null,

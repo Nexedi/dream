@@ -294,7 +294,8 @@
         working_data = [],
         ticks = [],
         counter = 1,
-        spreadsheet_data = [
+        spreadsheet_data = [],
+        spreadsheet_header = [
           [
             "Jobs",
             "ID",
@@ -540,10 +541,13 @@
 
       if (spreadsheet_data.length > 1) {
         var job_schedule_spreadsheet = $('#job_schedule_spreadsheet');
+        // Sort the spreadsheet data to an order convenient for end users
+        spreadsheet_data.sort()
+        console.log("here the sum", spreadsheet_header + spreadsheet_data);
         if (configuration['Dream-Configuration'].gui.job_schedule_spreadsheet){
           job_schedule_spreadsheet.show();
           job_schedule_spreadsheet.handsontable({
-            data: spreadsheet_data,
+            data: spreadsheet_header.concat(spreadsheet_data),
             readOnly: true
           });
           job_schedule_spreadsheet.find('.htCore').width(job_schedule_spreadsheet.width());
@@ -574,7 +578,7 @@
             scale_unit: 'hour',
             duration_unit: 60*60*1000,
             date_grid: "%H:%i",
-            date_scale: "%M/%d-%H:%i",
+            date_scale: "%d-%H:%i",
             step: 1
           });
         }
