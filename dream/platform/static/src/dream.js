@@ -318,8 +318,8 @@
         gantt_data = {
           data: [
           {
-            id: "by_job",
-            text: "By Job",
+            id: "by_order",
+            text: "By Order",
             start_date: start_date,
             duration: 0,
             project: 1,
@@ -411,10 +411,11 @@
               text: input_order[0],
               project: 1,
               open: false,
-              parent: "by_job"
+              parent: "by_order"
             });
           }
 
+          var seen_parts = {};
           $.each(obj['results']['schedule'], function (i, schedule) {
             // Filter intermediate steps in part job shop
             if (isVisibleStation(schedule['stationId'])) {
@@ -441,12 +442,20 @@
                 // task_start_date.setDate(task_start_date.getDate() + schedule['entranceTime']);
                 // for simulation time unit as days hours
                 task_start_date.setTime(task_start_date.getTime() + schedule['entranceTime']*1000*3600);
+                if (seen_parts[input_job[4] + "." + input_order[0]] === undefined){
+                  gantt_data.data.push({
+                    id: input_job[4] + "." + input_order[0],
+                    text: input_job[4],
+                    parent: input_order[0]
+                  });
+                  seen_parts[input_job[4] + "." + input_order[0]] = 1;
+                }
                 gantt_data.data.push({
                   id: input_order[0] + '.' + idx + '_' + i,
                   text: schedule['stationId'],
                   start_date: task_start_date,
                   duration: duration,
-                  parent: input_order[0]
+                  parent: input_job[4] + "." + input_order[0]
                 });
                 gantt_data.data.push({
                   id: 'job.' + obj['id'] + '.' + idx + '_' + i,
