@@ -2,47 +2,47 @@
   "edges": {
     "con_10": [
       "QCAM",
-      "CAM1",
-      {}
-    ],
-    "con_15": [
-      "QCAM",
       "CAM2",
       {}
     ],
-    "con_20": [
+    "con_15": [
       "QStart",
       "CAD1",
       {}
     ],
-    "con_25": [
+    "con_20": [
       "CAD1",
+      "Decomposition",
+      {}
+    ],
+    "con_25": [
+      "CAD2",
       "Decomposition",
       {}
     ],
     "con_30": [
-      "CAD2",
-      "Decomposition",
-      {}
-    ],
-    "con_35": [
       "Decomposition",
       "QCAM",
       {}
     ],
-    "con_40": [
+    "con_35": [
       "QMILL",
       "MILL2",
       {}
     ],
-    "con_45": [
+    "con_40": [
       "QMILL",
       "MILL1",
       {}
     ],
-    "con_5": [
+    "con_45": [
       "QStart",
       "CAD2",
+      {}
+    ],
+    "con_5": [
+      "QCAM",
+      "CAM1",
       {}
     ],
     "con_50": [
@@ -95,8 +95,8 @@
     "confidenceLevel": "0.95",
     "currentDate": "",
     "maxSimTime": "-1",
-    "numberOfAntsPerGenerations": "1",
-    "numberOfGenerations": "3",
+    "numberOfAntsPerGenerations": "2",
+    "numberOfGenerations": "4",
     "numberOfReplications": "1",
     "numberOfSolutions": "4",
     "processTimeout": "2000"
@@ -176,16 +176,16 @@
     },
     "Decomposition": {
       "_class": "Dream.OrderDecomposition",
-      "element_id": "DreamNode_10",
+      "element_id": "DreamNode_5",
       "name": "Decomposition"
     },
     "E1": {
       "_class": "Dream.ExitJobShop",
-      "element_id": "DreamNode_5"
+      "element_id": "DreamNode_6"
     },
     "EDM": {
       "_class": "Dream.MachineManagedJob",
-      "element_id": "DreamNode_15",
+      "element_id": "DreamNode_7",
       "failures": {
         "MTTF": "40",
         "MTTR": "10",
@@ -203,7 +203,7 @@
     },
     "IM1": {
       "_class": "Dream.MachineManagedJob",
-      "element_id": "DreamNode_17",
+      "element_id": "DreamNode_8",
       "failures": {
         "MTTF": "40",
         "MTTR": "10",
@@ -221,7 +221,7 @@
     },
     "IM2": {
       "_class": "Dream.MachineManagedJob",
-      "element_id": "DreamNode_18",
+      "element_id": "DreamNode_9",
       "failures": {
         "MTTF": "40",
         "MTTR": "10",
@@ -239,7 +239,7 @@
     },
     "MASS1": {
       "_class": "Dream.MachineManagedJob",
-      "element_id": "DreamNode_19",
+      "element_id": "DreamNode_10",
       "failures": {
         "MTTF": "40",
         "MTTR": "10",
@@ -257,7 +257,7 @@
     },
     "MASS2": {
       "_class": "Dream.MachineManagedJob",
-      "element_id": "DreamNode_20",
+      "element_id": "DreamNode_11",
       "failures": {
         "MTTF": "40",
         "MTTR": "10",
@@ -275,7 +275,7 @@
     },
     "MASS3": {
       "_class": "Dream.MachineManagedJob",
-      "element_id": "DreamNode_21",
+      "element_id": "DreamNode_12",
       "failures": {
         "MTTF": "40",
         "MTTR": "10",
@@ -293,7 +293,7 @@
     },
     "MILL1": {
       "_class": "Dream.MachineManagedJob",
-      "element_id": "DreamNode_12",
+      "element_id": "DreamNode_13",
       "failures": {
         "MTTF": "40",
         "MTTR": "10",
@@ -311,7 +311,7 @@
     },
     "MILL2": {
       "_class": "Dream.MachineManagedJob",
-      "element_id": "DreamNode_13",
+      "element_id": "DreamNode_14",
       "failures": {
         "MTTF": "40",
         "MTTR": "10",
@@ -329,18 +329,18 @@
     },
     "PM1": {
       "_class": "Dream.Operator",
-      "element_id": "DreamNode_6",
+      "element_id": "DreamNode_15",
       "name": "PM1"
     },
     "PM2": {
       "_class": "Dream.Operator",
-      "element_id": "DreamNode_7",
+      "element_id": "DreamNode_16",
       "name": "PM2"
     },
     "QCAM": {
       "_class": "Dream.ConditionalBuffer",
       "capacity": "1",
-      "element_id": "DreamNode_8",
+      "element_id": "DreamNode_17",
       "isDummy": "0",
       "name": "QCAM",
       "schedulingRule": "FIFO"
@@ -348,7 +348,7 @@
     "QEDM": {
       "_class": "Dream.QueueManagedJob",
       "capacity": "1",
-      "element_id": "DreamNode_14",
+      "element_id": "DreamNode_18",
       "isDummy": "0",
       "name": "QEDM",
       "schedulingRule": "FIFO"
@@ -356,7 +356,7 @@
     "QIM": {
       "_class": "Dream.QueueManagedJob",
       "capacity": "1",
-      "element_id": "DreamNode_16",
+      "element_id": "DreamNode_19",
       "isDummy": "0",
       "name": "QIM",
       "schedulingRule": "FIFO"
@@ -364,7 +364,7 @@
     "QMASS": {
       "_class": "Dream.QueueManagedJob",
       "capacity": "1",
-      "element_id": "DreamNode_22",
+      "element_id": "DreamNode_20",
       "isDummy": "0",
       "name": "QMASS",
       "schedulingRule": "FIFO"
@@ -372,7 +372,7 @@
     "QMILL": {
       "_class": "Dream.QueueManagedJob",
       "capacity": "-1",
-      "element_id": "DreamNode_11",
+      "element_id": "DreamNode_21",
       "isDummy": "0",
       "name": "QMILL",
       "schedulingRule": "FIFO"
@@ -380,7 +380,7 @@
     "QStart": {
       "_class": "Dream.QueueManagedJob",
       "capacity": "1",
-      "element_id": "DreamNode_9",
+      "element_id": "DreamNode_22",
       "isDummy": "0",
       "name": "QStart",
       "schedulingRule": "FIFO"
@@ -510,7 +510,7 @@
       "2014/03/15",
       "1",
       "PM1",
-      "Mould1 Design",
+      "Design",
       "Design",
       "CAD",
       "6",
@@ -525,7 +525,7 @@
       "Basic",
       "CAM-MILL-EDM-MILL-IM",
       "8-4-2-8-12",
-      null
+      "Design"
     ],
     [
       null,
@@ -536,7 +536,7 @@
       "Basic",
       "CAM-MILL-EDM-CAM-IM",
       "20-15-8-4-13",
-      ""
+      "Design"
     ],
     [
       "",
@@ -547,17 +547,17 @@
       "Basic",
       "MASS-IM",
       "8-12",
-      ""
+      "Part1-Part2"
     ],
     [
       "Order 2",
       "2014/03/15",
       "1",
       "PM1",
-      "Mould1 Design",
+      "Design",
       "Design",
       "CAD",
-      "2",
+      "8",
       ""
     ],
     [
@@ -567,9 +567,9 @@
       "",
       "Part1",
       "Basic",
-      "CAM",
-      "4",
-      ""
+      "CAM-MILL-EDM-MILL",
+      "20-15-8-12",
+      "Design"
     ],
     [
       "",
@@ -578,16 +578,16 @@
       "",
       "Part2",
       "Basic",
-      "CAM",
-      "3",
-      ""
+      "CAM-MIL",
+      "2-4",
+      "Design"
     ],
     [
       "Order 3",
       "2014/03/15",
       "1",
       "PM1",
-      "Mould1 Design",
+      "Design",
       "Design",
       "CAD",
       "2",
@@ -600,9 +600,9 @@
       "",
       "Part1",
       "Basic",
-      "CAM",
-      "4",
-      ""
+      "CAM-MILL-EDM-MILL-IM",
+      "12-7-3-6-9",
+      "Design"
     ],
     [
       "",
@@ -611,20 +611,20 @@
       "",
       "Part2",
       "Basic",
-      "CAM",
-      "3",
-      ""
+      "CAM-MILL-EDM-CAM-IM",
+      "20-14-9-3-12",
+      "Design"
     ],
     [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
     ]
   ]
 }

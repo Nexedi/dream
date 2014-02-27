@@ -437,7 +437,6 @@
                 // task_start_date.setDate(task_start_date.getDate() + schedule['entranceTime']);
                 // for simulation time unit as days hours
                 task_start_date.setTime(task_start_date.getTime() + schedule['entranceTime']*1000*3600);
-                console.log("going to push gantt by job", input_order[0], schedule, i);
                 gantt_data.data.push({
                   id: input_order[0] + '.' + idx + '_' + i,
                   text: schedule['stationId'],
@@ -585,7 +584,6 @@
         gantt_data.data.sort(function (a, b) {
           // sort gantt data in a chronological order
           var result;
-          console.log("sorting gantt, a, b", a.start_date, b.start_date);
           if (a.start_date === undefined && b.start_date !== undefined) {
             result = 1;
           } else if (a.start_date !== undefined && b.start_date === undefined) {
