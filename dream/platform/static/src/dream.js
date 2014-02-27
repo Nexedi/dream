@@ -299,10 +299,8 @@
           [
             "Jobs",
             "ID",
-            "Order Date",
             "Due Date",
             "Priority",
-            "Material",
             "Entrance Time",
             "Processing Time",
             "Station ID",
@@ -414,14 +412,14 @@
           $.each(obj['results']['schedule'], function (i, schedule) {
             // Filter intermediate steps in part job shop
             if (isVisibleStation(schedule['stationId'])) {
+              var entrance_date = new Date(start_date.getTime());
+              entrance_date.setTime(entrance_date.getTime() + schedule['entranceTime']*1000*3600);
               spreadsheet_data.push([
                 input_order[0] + "-" + input_job[4],
                 obj['id'],
-                null, // orderDate
                 input_order[1], // dueDate
                 input_order[2], // priority
-                null, // material
-                schedule['entranceTime'],
+                moment(entrance_date).format("MMM/DD HH:mm"),
                 input_job[7].split('-')[schedule['stepNumber']] || 0, // processing time
                 schedule['stationId'],
                 schedule['stepNumber']
