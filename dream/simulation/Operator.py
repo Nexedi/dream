@@ -37,13 +37,25 @@ class Operator(Repairman):
     def __init__(self, id, name, capacity=1, schedulingRule="FIFO"):
         Repairman.__init__(self,id=id,name=name,capacity=capacity)
         self.type="Operator"
-        self.activeCallersList=[]
-        self.schedulingRule=schedulingRule
+        self.activeCallersList=[]               # the list of object that request the operator
+        self.schedulingRule=schedulingRule      #the scheduling rule that the Queue follows
 #         #=======================================================================
 #         # TESTING
-#         print now(), self.objName, 'schedulingRule'
+#         print now(), self.id, 'schedulingRule'
 #         print self.schedulingRule
 #         #=======================================================================
+        self.multipleCriterionList=[]           #list with the criteria used to sort the Entities in the Queue
+        SRlist = [schedulingRule]
+        if schedulingRule.startswith("MC"):     # if the first criterion is MC aka multiple criteria
+            SRlist = schedulingRule.split("-")  # split the string of the criteria (delimiter -)
+            self.schedulingRule=SRlist.pop(0)   # take the first criterion of the list
+            self.multipleCriterionList=SRlist   # hold the criteria list in the property multipleCriterionList
+ 
+        for scheduling_rule in SRlist:
+          if scheduling_rule not in ("FIFO", "Priority","WT", "EDD", "EOD",
+            "NumStages", "RPC", "LPT", "SPT", "MS", "WINQ"):
+            raise ValueError("Unknown scheduling rule %s for %s" %
+              (scheduling_rule, id))
 
 # =======================================================================
     #    sorts the Entities of the Queue according to the scheduling rule
@@ -60,6 +72,7 @@ class Operator(Repairman):
     # =======================================================================
     #    sorts the Entities of the Queue according to the scheduling rule
     # =======================================================================
+    # TODO: entityToGet is not updated for all stations, consider using it for all stations or withdraw the idea
     def activeQSorter(self, criterion=None):
         activeObjectQ=self.activeCallersList
         if criterion==None:
@@ -68,7 +81,6 @@ class Operator(Repairman):
         if criterion=="FIFO": 
             pass
         #if the schedulingRule is based on a pre-defined priority
-        # TODO: entityToGet is not updated for all available Objects
         elif criterion=="Priority":
             activeObjectQ.sort(key=lambda x: x.entityToGet.priority)
         #if the scheduling rule is time waiting (time waiting of machine
@@ -86,7 +98,6 @@ class Operator(Repairman):
         elif criterion=="NumStages":
             activeObjectQ.sort(key=lambda x: len(x.entityToGet.remainingRoute), reverse=True)  
         #if the schedulingRule is to sort Entities according to the their remaining processing time in the system
-        # TODO: have to compare the entitiesToGet
         elif criterion=="RPC":
             for object in activeObjectQ:
                 entity=object.entityToGet
@@ -98,7 +109,6 @@ class Operator(Repairman):
                 entity.remainingProcessingTime=RPT
             activeObjectQ.sort(key=lambda x: x.entityToGet.remainingProcessingTime, reverse=True)     
         #if the schedulingRule is to sort Entities according to longest processing time first in the next station
-        # TODO: have to compare the entitiesToGet
         elif criterion=="LPT":
             for object in activeObjectQ:
                 entity=object.entityToGet
@@ -110,7 +120,6 @@ class Operator(Repairman):
                     entity.processingTimeInNextStation=0
             activeObjectQ.sort(key=lambda x: x.entityToGet.processingTimeInNextStation, reverse=True)             
         #if the schedulingRule is to sort Entities according to shortest processing time first in the next station
-        # TODO: have to compare the entitiesToGet
         elif criterion=="SPT":
             for object in activeObjectQ:
                 entity=object.entityToGet
@@ -121,7 +130,6 @@ class Operator(Repairman):
                     entity.processingTimeInNextStation=0
             activeObjectQ.sort(key=lambda x: x.entityToGet.processingTimeInNextStation) 
         #if the schedulingRule is to sort Entities based on the minimum slackness
-        # TODO: have to compare the entitiesToGet
         elif criterion=="MS":
             for object in activeObjectQ:
                 object.entityToGet
@@ -133,7 +141,6 @@ class Operator(Repairman):
                 entity.remainingProcessingTime=RPT
             activeObjectQ.sort(key=lambda x: (x.entityToGet.dueDate-x.entityToGet.remainingProcessingTime))  
         #if the schedulingRule is to sort Entities based on the length of the following Queue
-        # TODO: have to compare the entitiesToGet
         elif criterion=="WINQ":
             from Globals import G
             for object in activeObjectQ:
