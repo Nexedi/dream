@@ -157,7 +157,6 @@ def main(*args):
 
 def run(*args):
   # run with one topology input
-  slmdfksfdmlj()
   args = args or sys.argv[1:]
   input_data = json.load(open(args[0]))
   queue = multiprocessing.Queue()
