@@ -57,17 +57,24 @@ class OperatorPool(ObjectResource):
         self.requestingObject=None
         # TODO: the last object calling the OperatorPool
         self.receivingObject=None
-        
-        # check if an operatorsList is 'None'
-        if operatorsList=='None' or (operatorsList!='None' and len(operatorsList)==0):
+        # if operatorsList is of type list and of length 0
+        #     then no operators will be created, they may be 
+        #     populated earlier on by the logic of the Stations
+        if operatorsList!='None' and len(operatorsList)==0:
             # list of operators that the OperatorPool holds
             self.operators = []
             # the capacity of the OperatorPool in Operators
-            self.capacity=capacity      
+            self.capacity=capacity
+        # check if an operatorsList is 'None'
+        elif operatorsList=='None':
+            # list of operators that the OperatorPool holds
+            self.operators = []
+            # the capacity of the OperatorPool in Operators
+            self.capacity=capacity
             # populate the the operators list and initiate the operators
             for index in range(self.capacity):
-                id='O_'+str(index)
-                name=self.objName+str(index)
+                id=self.id+'_O_'+str(index)
+                name=self.objName+'_Operator_'+str(index)
                 self.operators.append(Operator(id,name))
         # if a list of operators is given then update accordingly the self.operators variable 
         else:
