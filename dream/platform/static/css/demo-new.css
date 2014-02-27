@@ -339,6 +339,7 @@ border: 1px solid black;
 
 .window:hover {
   background-color: #5c96bc;
+  background-image: none;
   color:white;
 }
 
