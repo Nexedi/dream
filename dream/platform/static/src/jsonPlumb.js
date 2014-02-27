@@ -129,11 +129,11 @@
       wip_part_spreadsheet.handsontable({
         data: data,
         minSpareRows: 1,
+        stretchH: 'all',
         afterChange: function () {
           priv.onDataChange();
         }
       });
-      wip_part_spreadsheet.find('.htCore').width(wip_part_spreadsheet.width());
 
       var shift_spreadsheet = $('#shift_spreadsheet');
       var data = [
@@ -147,11 +147,11 @@
       shift_spreadsheet.handsontable({
         data: data,
         minSpareRows: 1,
+        stretchH: 'all',
         afterChange: function () {
           priv.onDataChange();
         }
       });
-      shift_spreadsheet.find('.htCore').width(shift_spreadsheet.width());
 
     };
 
@@ -307,6 +307,13 @@
         element.css('left', absolute_position[0]);
         jsPlumb.repaint(element);
       });
+      // redraw spreadsheets
+      var wip_part_spreadsheet = $("#wip_part_spreadsheet");
+      wip_part_spreadsheet.find('.htCore').width(wip_part_spreadsheet.width());
+      var shift_spreadsheet = $("#shift_spreadsheet");
+      shift_spreadsheet.find('.htCore').width(shift_spreadsheet.width());
+      var job_schedule_spreadsheet = $("#job_schedule_spreadsheet");
+      job_schedule_spreadsheet.find('.htCore').width(job_schedule_spreadsheet.width());
     };
 
     priv.getData = function () {

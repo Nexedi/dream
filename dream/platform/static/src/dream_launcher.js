@@ -87,13 +87,11 @@
         if (shift_spreadsheet_data !== undefined) {
           var spreadsheet = $('#shift_spreadsheet');
           spreadsheet.handsontable('populateFromArray', 0, 0, shift_spreadsheet_data);
-          spreadsheet.find('.htCore').width(spreadsheet.width());
         }
         var wip_part_spreadsheet_data = data.wip_part_spreadsheet;
         if (wip_part_spreadsheet_data !== undefined) {
           var spreadsheet = $('#wip_part_spreadsheet');
           spreadsheet.handsontable('populateFromArray', 0, 0, wip_part_spreadsheet_data);
-          spreadsheet.find('.htCore').width(spreadsheet.width());
         }
 
         var preference = data.preference !== undefined ?
