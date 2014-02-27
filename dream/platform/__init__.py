@@ -18,6 +18,7 @@
 # ===========================================================================
 
 import sys
+import argparse
 import json
 import traceback
 import multiprocessing
@@ -30,6 +31,7 @@ import logging
 
 from flask import Flask, jsonify, redirect, url_for
 from flask import request
+global klass_name
 
 app = Flask(__name__)
 # Serve static file with no cache
@@ -127,9 +129,6 @@ def _runSimulation(parameter_dict, queue):
 
 def getGUIInstance():
     # XXX do not instanciate each time!
-    klass_name = 'dream.simulation.GUI.Default'
-    if len(sys.argv) > 1:
-      klass_name = 'dream.simulation.GUI.%s' % sys.argv[1]
     klass = __import__(klass_name, globals(), {}, klass_name)
     instance = klass.Simulation(logger=app.logger)
     return instance
@@ -147,15 +146,26 @@ def getInputIdList():
   return jsonify(getGUIInstance().getInputIdList())
 
 def main(*args):
+  parser = argparse.ArgumentParser(description='Launch the DREAM simulation platform.')
+  parser.add_argument('gui_class', metavar='GUI_KLASS',
+                   help='The GUI klass to launch')
+  parser.add_argument('--port', dest='port', default=5000, type=int,
+                   help='Port number to listen to')
+  parser.add_argument('--host', dest='host', default="localhost",
+                   help='Host address')
+  arguments = parser.parse_args()
+  global klass_name
+  klass_name = 'dream.simulation.GUI.%s' % arguments.gui_class
   # start the server
   file_handler = logging.FileHandler(
     os.path.join(os.path.dirname(__file__), '..', '..', 'log', 'dream.log'))
   file_handler.setLevel(logging.DEBUG)
   app.logger.addHandler(file_handler)
-  app.run(debug=True)
+  app.run(debug=True, host=arguments.host, port=arguments.port)
 
 def run(*args):
   # run with one topology input
+  slmdfksfdmlj()
   args = args or sys.argv[1:]
   input_data = json.load(open(args[0]))
   queue = multiprocessing.Queue()
@@ -165,4 +175,3 @@ def run(*args):
 
 if __name__ == "__main__":
   main()
-
