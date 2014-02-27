@@ -553,6 +553,10 @@
                 if (typeof value == "number") {
                    value = value.toFixed(2)
                 }
+                // Rename some metric to something more meaningful
+                if (metric == "lifespan" ){
+                  metric = "Cycle Time"
+                }
                 text += "<tr><td>" + metric + "</td><td>" + value + "</td></tr>";
               }
             })
