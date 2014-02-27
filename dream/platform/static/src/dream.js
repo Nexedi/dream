@@ -542,6 +542,14 @@
                   text += "<tr><td>Average Daily Line Attainment</td><td>" + (
                     (attainment_list.reduce(function(a, b){return a+b}) / attainment_list.length ) * 100).toFixed(2) + "%</td></tr>";
               } else {
+                if (typeof value == "object") {
+                   if (value.min == value.max) {
+                      value = value.min;
+                   } else {
+                      // better than [Object] ...
+                     value = JSON.stringify(value, " ", undefined)
+                   }
+                }
                 if (typeof value == "number") {
                    value = value.toFixed(2)
                 }
