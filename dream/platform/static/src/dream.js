@@ -527,13 +527,12 @@
               if (metric == 'intervalThroughputList') {
                 var attainment_list = [],
                     general = that.getData().general,
-                    throughputTarget = parseFloat(general.throughputTarget),
-                    desiredPercentageOfSuccess = parseFloat(general.desiredPercentageOfSuccess);
+                    throughputTarget = parseFloat(general.throughputTarget);
                   text += "<tr><td>Daily Attainment</td><td>"
                   $.each(value, function(i, intervalValue) {
                     var icon = "fa-frown-o";
                     attainment_list.push((intervalValue/throughputTarget));
-                    if ((intervalValue/throughputTarget) > desiredPercentageOfSuccess) {
+                    if (intervalValue > throughputTarget) {
                       icon = "fa-smile-o"
                     }
                     text += intervalValue + ' <i class="fa ' + icon + '"/><br/>';

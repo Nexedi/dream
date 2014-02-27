@@ -75,14 +75,6 @@ class Simulation(ShiftsSimulation):
       "type": "number",
       "_class": "Dream.Property",
       "_default": 10 })
-    conf["Dream-Configuration"]["property_list"].append( {
-      "id": "desiredPercentageOfSuccess",
-      "name": "Desired Percentage Of Success",
-      "description": "The desired percentage of success to determine if daily"
-                     " throughput target has been met.",
-      "type": "number",
-      "_class": "Dream.Property",
-      "_default": 0.85 })
 
     # remove tools that does not make sense here
     conf.pop('Dream-Machine')
