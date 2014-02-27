@@ -39,6 +39,14 @@ class Simulation(ACO.Simulation):
         "_class": 'Dream.ConditionalBuffer',
         "name": 'Buffer'
     }
+    conf["Dream-MouldAssemblyBuffer"] = {
+        "property_list": [
+          schema["capacity"],
+          schema["isDummy"],
+          schema["schedulingRule"]
+        ],
+        "name": 'AssBuffer'
+    }
     conf["Dream-ExitJobShop"] = {
         "_class": 'Dream.ExitJobShop',
         "name": 'Exit'
@@ -202,7 +210,6 @@ class Simulation(ACO.Simulation):
           order_dict["componentsList"] = component_list
       data["nodes"]["QStart"]["wip"] = wip_list
       del(data['wip_part_spreadsheet'])
-    from pprint import pprint
     print "PartJobShop, data after preprocess :"
-    print pprint(data)
+    print json.dumps(data,indent=4)
     return data

@@ -281,7 +281,7 @@ path, ._jsPlumb_endpoint {
   background-image: linear-gradient(to bottom, #fef 0%, #ede 100%);
 }
 
-.Dream-Queue, .Dream-QueueJobShop, .Dream-LineClearance, .Dream-QueueManagedJob, .Dream-ConditionalBuffer, .Dream-OrderDecomposition {
+.Dream-Queue, .Dream-QueueJobShop, .Dream-LineClearance, .Dream-QueueManagedJob, .Dream-ConditionalBuffer, .Dream-OrderDecomposition, .Dream-MouldAssemblyBuffer {
   border: 1px solid #bcc;
   background-color:#eff;
   background-image: linear-gradient(to bottom, #eff 0%, #dee 100%);

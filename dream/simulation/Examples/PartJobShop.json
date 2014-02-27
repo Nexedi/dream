@@ -1,48 +1,53 @@
 {
   "edges": {
     "con_10": [
-      "QCAM",
-      "CAM2",
-      {}
-    ],
-    "con_15": [
       "QStart",
       "CAD1",
       {}
     ],
-    "con_20": [
+    "con_108": [
+      "QMASS",
+      "MASS3",
+      {}
+    ],
+    "con_15": [
       "CAD1",
+      "Decomposition",
+      {}
+    ],
+    "con_20": [
+      "CAD2",
       "Decomposition",
       {}
     ],
     "con_25": [
-      "CAD2",
-      "Decomposition",
-      {}
-    ],
-    "con_30": [
       "Decomposition",
       "QCAM",
       {}
     ],
-    "con_35": [
+    "con_30": [
       "QMILL",
       "MILL2",
       {}
     ],
-    "con_40": [
+    "con_35": [
       "QMILL",
       "MILL1",
       {}
     ],
-    "con_45": [
+    "con_40": [
       "QStart",
       "CAD2",
       {}
     ],
-    "con_5": [
+    "con_45": [
       "QCAM",
       "CAM1",
+      {}
+    ],
+    "con_5": [
+      "QCAM",
+      "CAM2",
       {}
     ],
     "con_50": [
@@ -61,33 +66,28 @@
       {}
     ],
     "con_65": [
-      "QMASS",
-      "MASS1",
+      "MASS3",
+      "QIM",
       {}
     ],
     "con_70": [
-      "QMASS",
       "MASS2",
+      "QIM",
       {}
     ],
     "con_75": [
-      "QMASS",
-      "MASS3",
-      {}
-    ],
-    "con_80": [
-      "MASS3",
-      "QIM",
-      {}
-    ],
-    "con_85": [
-      "MASS2",
-      "QIM",
-      {}
-    ],
-    "con_90": [
       "MASS1",
       "QIM",
+      {}
+    ],
+    "con_82": [
+      "QMASS",
+      "MASS1",
+      {}
+    ],
+    "con_95": [
+      "QMASS",
+      "MASS2",
       {}
     ]
   },
@@ -362,9 +362,9 @@
       "schedulingRule": "FIFO"
     },
     "QMASS": {
-      "_class": "Dream.QueueManagedJob",
+      "_class": "Dream.MouldAssemblyBuffer",
       "capacity": "1",
-      "element_id": "DreamNode_20",
+      "element_id": "DreamNode_22",
       "isDummy": "0",
       "name": "QMASS",
       "schedulingRule": "FIFO"
@@ -372,7 +372,7 @@
     "QMILL": {
       "_class": "Dream.QueueManagedJob",
       "capacity": "-1",
-      "element_id": "DreamNode_21",
+      "element_id": "DreamNode_20",
       "isDummy": "0",
       "name": "QMILL",
       "schedulingRule": "FIFO"
@@ -380,7 +380,7 @@
     "QStart": {
       "_class": "Dream.QueueManagedJob",
       "capacity": "1",
-      "element_id": "DreamNode_22",
+      "element_id": "DreamNode_21",
       "isDummy": "0",
       "name": "QStart",
       "schedulingRule": "FIFO"
@@ -465,8 +465,8 @@
         "top": 0.7069073434280151
       },
       "QMASS": {
-        "left": 0.38256911560405105,
-        "top": 0.7012616778705337
+        "left": 0.39359833360679664,
+        "top": 0.7621221762426658
       },
       "QMILL": {
         "left": 0.024330940806924675,
@@ -590,7 +590,7 @@
       "Design",
       "Design",
       "CAD",
-      "2",
+      "7",
       ""
     ],
     [
@@ -605,10 +605,10 @@
       "Design"
     ],
     [
-      "",
-      "",
-      "",
-      "",
+      null,
+      null,
+      null,
+      null,
       "Part2",
       "Basic",
       "CAM-MILL-EDM-CAM-IM",
@@ -616,15 +616,15 @@
       "Design"
     ],
     [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
     ]
   ]
 }
