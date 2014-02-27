@@ -22,10 +22,6 @@ import argparse
 import json
 import traceback
 import multiprocessing
-try:
-	import pydot
-except ImportError:
-	print "Warning, pydot could not be found"	
 import os.path
 import logging
 
@@ -59,6 +55,11 @@ def postJSONFile():
 def positionGraph():
   """Uses graphviz to position nodes of the graph.
   """
+  try:
+    import pydot
+  except ImportError:
+    return jsonify({})
+
   graph = pydot.Dot()
 
   for node_id, node in request.json['nodes'].iteritems():
