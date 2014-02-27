@@ -241,15 +241,15 @@ class Exit(CoreObject):
                 json['results']['throughput']['avg']=self.Exits[0]
                 json['results']['throughput']['max']=self.Exits[0]   
             if self.Exits!=self.UnitExits:      #output this only if there was variability in units
-                json['results']['unitThroughput']={}
-                if self.checkIfArrayHasDifValues(self.Exits):
-                    json['results']['throughput']['min']=stat.bayes_mvs(self.UnitExits, G.confidenceLevel)[0][1][0]
-                    json['results']['throughput']['avg']=stat.bayes_mvs(self.UnitExits, G.confidenceLevel)[0][0]
-                    json['results']['throughput']['max']=stat.bayes_mvs(self.UnitExits, G.confidenceLevel)[0][1][1]
+                json['results']['unitsThroughput']={}
+                if self.checkIfArrayHasDifValues(self.UnitExits):
+                    json['results']['unitsThroughput']['min']=stat.bayes_mvs(self.UnitExits, G.confidenceLevel)[0][1][0]
+                    json['results']['unitsThroughput']['avg']=stat.bayes_mvs(self.UnitExits, G.confidenceLevel)[0][0]
+                    json['results']['unitsThroughput']['max']=stat.bayes_mvs(self.UnitExits, G.confidenceLevel)[0][1][1]
                 else:
-                    json['results']['throughput']['min']=self.UnitExits[0]
-                    json['results']['throughput']['avg']=self.UnitExits[0]
-                    json['results']['throughput']['max']=self.UnitExits[0]                           
+                    json['results']['unitsThroughput']['min']=self.UnitExits[0]
+                    json['results']['unitsThroughput']['avg']=self.UnitExits[0]
+                    json['results']['unitsThroughput']['max']=self.UnitExits[0]                           
             json['results']['lifespan']={}
             if self.checkIfArrayHasDifValues(self.Lifespan):
                 json['results']['lifespan']['min']=stat.bayes_mvs(self.Lifespan, G.confidenceLevel)[0][1][0]
