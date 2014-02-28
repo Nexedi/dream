@@ -6,7 +6,7 @@
         "numberOfReplications": "1",
         "processTimeout": "0.5",
         "simulationClass": "Leotech",
-        "trace": "Yes"
+        "trace": "No"
     },
     "nodes": {
         "E1": {

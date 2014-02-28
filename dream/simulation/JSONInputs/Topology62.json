@@ -3,10 +3,10 @@
     "edges": {},
     "general": {
         "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "-1",
         "numberOfReplications": "1",
-        "trace": "Yes"
+        "maxSimTime": "-1",
+        "trace": "No",
+        "confidenceLevel": "0.95"
     },
     "nodes": {
         "AB1": {
