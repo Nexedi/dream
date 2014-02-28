@@ -19,8 +19,12 @@
 
 import sys
 import json
+import xlrd
 import traceback
 import multiprocessing
+from dream.KnowledgeExtraction.DistributionFitting import DistFittest
+from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
+
 try:
 	import pydot
 except ImportError:
@@ -143,15 +147,38 @@ def runKnowledgeExtraction():
   parameter_dict = request.json['json']
 
   # TODO: really run knowledge extraction and change values:
-  import time
-  time.sleep(.2)
-  parameter_dict['general']['trace'] = "ahah"
-  parameter_dict['nodes']['M1']['processingTime'] = {
-    'distributionType': 'Normal',
-    'stdev': 1.23,
-    'max': 123
-  }
 
+  workbook = xlrd.open_workbook('dream/KnowledgeExtraction/Mockup_ProcessingTimes.xls')      #Using xlrd library opens the Excel document with the input data 
+  worksheets = workbook.sheet_names()
+  worksheet_ProcessingTimes = worksheets[0]   #It defines the worksheet_ProcessingTimes as the first sheet of the Excel file
+
+  A=Import_Excel()            #Call the Import_Excel object 
+  B=DistFittest()             #Call the Distribution Fitting object
+  ProcessingTimes= A.Input_data(worksheet_ProcessingTimes, workbook)  #Create a dictionary with the imported data from the Excel file
+
+  data = parameter_dict                            #It loads the file
+  nodes = data['nodes'] 
+
+  lista=[]
+  for (element_id, element) in nodes.iteritems():  #This loop appends in a list the id's of the json file
+    element['id'] = element_id 
+    lista.append(element ['id'])
+
+  for element in ProcessingTimes:             #This loop searches the elements of the Excel imported data and if these elements exist in json file append the distribution fitting results in a dictionary   
+    if element in lista:
+      fitDict=B.ks_test(ProcessingTimes[element])
+      aParameter=fitDict.get('aParameter')
+      bParameter=fitDict.get('bParameter')
+      distributionType=fitDict.get('distributionType')
+      aParameterValue=fitDict.get('aParameterValue')
+      bParameterValue=fitDict.get('bParameterValue')
+      dictToAdd={}
+      dictToAdd['distributionType']=distributionType
+      if aParameter:
+        dictToAdd[aParameter]=aParameterValue
+      if bParameter:
+        dictToAdd[bParameter]=bParameterValue      
+      parameter_dict['nodes'][element]['processingTime']=dictToAdd
   return jsonify(parameter_dict)
 
 def main(*args):
