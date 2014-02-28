@@ -140,7 +140,7 @@ def getConfigurationDict():
 
 def main(*args):
   parser = argparse.ArgumentParser(description='Launch the DREAM simulation platform.')
-  parser.add_argument('gui_class', metavar='GUI_KLASS',
+  parser.add_argument('gui_class', metavar='GUI_KLASS', nargs="?", default="Default",
                    help='The GUI klass to launch')
   parser.add_argument('--port', dest='port', default=5000, type=int,
                    help='Port number to listen to')
