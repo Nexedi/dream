@@ -357,7 +357,7 @@ def createObjects():
             scrMean=int(scrapQuantity.get('mean') or 0)
             scrStdev=float(scrapQuantity.get('stdev') or 0)
             scrMin=int(scrapQuantity.get('min') or 0)
-            scrMax=int(scrapQuantity.get('max') or mean+5*stdev)
+            scrMax=int(scrapQuantity.get('max') or scrMean+5*scrStdev)
             failures=element.get('failures', {})  
             failureDistribution=failures.get('failureDistribution', 'not found')
             MTTF=float(failures.get('MTTF') or 0)
@@ -416,11 +416,6 @@ def createObjects():
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
             processingTime=element.get('processingTime', {})
-            distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean') or 0)
-            stdev=float(processingTime.get('stdev') or 0)
-            min=float(processingTime.get('min') or 0)
-            max=float(processingTime.get('max') or mean+5*stdev)
             failures=element.get('failures', {})  
             failureDistribution=failures.get('failureDistribution', 'not found')
             MTTF=float(failures.get('MTTF') or 0)
@@ -433,13 +428,13 @@ def createObjects():
             setupMean = float(setupTime.get('setupMean') or 0)
             setupStdev=float(setupTime.get('setupStdev') or 0)
             setupMin=float(setupTime.get('setupMin') or 0)
-            setupMax=float(setupTime.get('setupMax') or mean+5*stdev)              
+            setupMax=float(setupTime.get('setupMax') or setupMean+5*setupStdev)              
             loadTime = element.get('loadTime',{})
             loadDistribution = loadTime.get('loadDistribution','not found')
             loadMean = float(loadTime.get('loadMean') or 0)
             loadStdev = float(loadTime.get('loadStdev') or 0)
             loadMin=float(loadTime.get('loadMin') or 0)
-            loadMax=float(loadTime.get('loadMax') or mean+5*stdev)
+            loadMax=float(loadTime.get('loadMax') or loadMean+5*loadStdev)
             preemption=element.get('preemption',{})
             isPreemptive=resetOnPreemption=False
             if len(preemption)>0:
@@ -467,9 +462,8 @@ def createObjects():
                 if(id in repairman.coreObjectIds):
                     r=repairman
                     
-            M=MachineJobShop(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
+            M=MachineJobShop(id, name, 1, processingTime=processingTime,  failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
-                                                    mean=mean,stdev=stdev,min=min,max=max,
                                                     operatorPool=machineOperatorPoolList, operationType=operationType,
                                                     loadDistribution=loadDistribution, setupDistribution=setupDistribution,
                                                     setupMean=setupMean,setupStdev=setupStdev,setupMin=setupMin,setupMax=setupMax,
@@ -485,12 +479,7 @@ def createObjects():
         elif objClass=='Dream.MachineManagedJob':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', {})
-            distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean') or 0)
-            stdev=float(processingTime.get('stdev') or 0)
-            min=float(processingTime.get('min') or 0)
-            max=float(processingTime.get('max') or mean+5*stdev)
+            processingTime=element.get('processingTime', None)
             failures=element.get('failures', {})  
             failureDistribution=failures.get('failureDistribution', 'not found')
             MTTF=float(failures.get('MTTF') or 0)
@@ -503,13 +492,13 @@ def createObjects():
             setupMean = float(setupTime.get('setupMean') or 0)
             setupStdev=float(setupTime.get('setupStdev') or 0)
             setupMin=float(setupTime.get('setupMin') or 0)
-            setupMax=float(setupTime.get('setupMax') or mean+5*stdev)
+            setupMax=float(setupTime.get('setupMax') or setupMean+5*setupStdev)
             loadTime = element.get('loadTime',{})
             loadDistribution = loadTime.get('loadDistribution','not found')
             loadMean = float(loadTime.get('loadMean') or 0)
             loadStdev = float(loadTime.get('loadStdev') or 0)
             loadMin=float(loadTime.get('loadMin') or 0)
-            loadMax=float(loadTime.get('loadMax') or mean+5*stdev)
+            loadMax=float(loadTime.get('loadMax') or setupMean+5*setupStdev)
             preemption=element.get('preemption',{})
             isPreemptive=resetOnPreemption=False
             if len(preemption)>0:
@@ -537,9 +526,8 @@ def createObjects():
                 if(id in repairman.coreObjectIds):
                     r=repairman
                     
-            M=MachineManagedJob(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
+            M=MachineManagedJob(id, name, 1, processingTime=processingTime,  failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
-                                                    mean=mean,stdev=stdev,min=min,max=max,
                                                     operatorPool=machineOperatorPoolList, operationType=operationType,
                                                     loadDistribution=loadDistribution, setupDistribution=setupDistribution,
                                                     setupMean=setupMean,setupStdev=setupStdev,setupMin=setupMin,setupMax=setupMax,
@@ -817,12 +805,7 @@ def createObjects():
             from MouldAssembly import MouldAssembly
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element.get('processingTime',{})
-            distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean') or 0)
-            stdev=float(processingTime.get('stdev') or 0)
-            min=float(processingTime.get('min') or 0)
-            max=float(processingTime.get('max') or mean+5*stdev)
+            processingTime=element.get('processingTime', None)
             failures=element.get('failures', {})  
             failureDistribution=failures.get('failureDistribution', 'not found')
             MTTF=float(failures.get('MTTF') or 0)
@@ -836,13 +819,13 @@ def createObjects():
             setupMean = float(setupTime.get('setupMean') or 0)
             setupStdev=float(setupTime.get('setupStdev') or 0)
             setupMin=float(setupTime.get('setupMin') or 0)
-            setupMax=float(setupTime.get('setupMax') or mean+5*stdev)
+            setupMax=float(setupTime.get('setupMax') or setupMean+5*setupStdev)
             loadTime = element.get('loadTime',{})
             loadDistribution = loadTime.get('loadDistribution','not found')
             loadMean = float(loadTime.get('loadMean') or 0)
             loadStdev = float(loadTime.get('loadStdev') or 0)
             loadMin=float(loadTime.get('loadMin') or 0)
-            loadMax=float(loadTime.get('loadMax') or mean+5*stdev)
+            loadMax=float(loadTime.get('loadMax') or loadMean+5*loadStdev)
             resetOnPreemption=bool(int(element.get('resetOnPreemption') or 0))
             
             if len(G.OperatorPoolsList)>0:
@@ -866,9 +849,8 @@ def createObjects():
                 if(id in repairman.coreObjectIds):
                     r=repairman
                     
-            MA=MouldAssembly(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
+            MA=MouldAssembly(id, name, 1, processingTime=processingTime,  failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
-                                                    mean=mean,stdev=stdev,min=min,max=max,
                                                     operatorPool=machineOperatorPoolList, operationType=operationType,
                                                     loadDistribution=loadDistribution, setupDistribution=setupDistribution,
                                                     setupMean=setupMean,setupStdev=setupStdev,setupMin=setupMin,setupMax=setupMax,

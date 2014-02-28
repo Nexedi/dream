@@ -37,13 +37,14 @@ from CoreObject import CoreObject
 class Assembly(CoreObject):
 
     #initialize the object      
-    def __init__(self, id, name, processingTime=None, **kw):
+    def __init__(self, id, name, processingTime=None):
         if not processingTime:
           processingTime = {'distributionType': 'Fixed',
                             'mean': 0,
                             'stdev': 0,
                             'min': 0,
-                            'max': 0,}
+                            'max': 0,
+                            }
         CoreObject.__init__(self, id, name)
         self.type="Assembly"   #String that shows the type of object
         self.rng=RandomNumberGenerator(self, **processingTime)

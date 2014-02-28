@@ -34,7 +34,7 @@ from Repairman import Repairman
 # ===========================================================================
 class Operator(Repairman): # XXX isn't it the other way around ?
 
-    def __init__(self, id, name, capacity=1):
+    def __init__(self, id, name, capacity=1, schedulingRule="FIFO"):
         Repairman.__init__(self, id=id, name=name, capacity=capacity)
         self.type="Operator"
         self.activeCallersList=[]               # the list of object that request the operator

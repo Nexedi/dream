@@ -35,7 +35,7 @@ from CoreObject import CoreObject
 #The conveyer object
 class Conveyer(CoreObject):    
           
-    def __init__(self, id, name, length, speed, **kw):
+    def __init__(self, id, name, length, speed):
         CoreObject.__init__(self, id, name)
         self.type="Conveyer"
         self.speed=speed    #the speed of the conveyer in m/sec

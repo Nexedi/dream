@@ -41,8 +41,7 @@ class Dismantle(CoreObject):
     # =======================================================================
     # initialize the object
     # =======================================================================
-    def __init__(self, id, name, distribution='Fixed', mean=1, stdev=0.1,
-    min=0, max=5, **kw):
+    def __init__(self, id, name, distribution='Fixed', mean=1, stdev=0.1, min=0, max=5):
         CoreObject.__init__(self, id, name)
         self.type="Dismantle"   #String that shows the type of object
         self.distType=distribution          #the distribution that the procTime follows  

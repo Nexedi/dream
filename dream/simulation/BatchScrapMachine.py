@@ -41,8 +41,7 @@ class BatchScrapMachine(Machine):
     def __init__(self, id, name, capacity=1, \
                  processingTime=None,
                  failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None',\
-                 scrapDistribution='Fixed',scrMean=1,scrStdev=0,scrMin=0,scrMax=10,
-                 **kw):
+                 scrapDistribution='Fixed',scrMean=1,scrStdev=0,scrMin=0,scrMax=10):
         if not processingTime:
           processingTime = {'distribution': 'Fixed',
                             'mean': 1}
@@ -52,7 +51,7 @@ class BatchScrapMachine(Machine):
                                     processingTime=processingTime,
                                     failureDistribution=failureDistribution,MTTF=MTTF,MTTR=MTTR,\
                                     availability=availability,
-                                    repairman=repairman, **kw)
+                                    repairman=repairman)
 
         self.scrapDistType=scrapDistribution    #the distribution that the failure follows   
         # Sets the attributes of the scrap quantity distribution

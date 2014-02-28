@@ -34,7 +34,7 @@ from CoreObject import CoreObject
 # ===========================================================================
 class Exit(CoreObject):    
           
-    def __init__(self, id, name=None, **kw):
+    def __init__(self, id, name=None):
         if not name:
           name = id
         CoreObject.__init__(self, id, name)

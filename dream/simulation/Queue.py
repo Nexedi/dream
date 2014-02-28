@@ -34,7 +34,7 @@ from CoreObject import CoreObject
 # ===========================================================================
 class Queue(CoreObject):
     
-    def __init__(self, id, name, capacity=1, isDummy=False, schedulingRule="FIFO", **kw):
+    def __init__(self, id, name, capacity=1, isDummy=False, schedulingRule="FIFO"):
         CoreObject.__init__(self, id, name)
 #         Process.__init__(self)
         # used for the routing of the entities

@@ -36,9 +36,9 @@ from ObjectResource import ObjectResource
 # ===========================================================================
 class Repairman(ObjectResource):
     
-    def __init__(self, id, name, capacity=1, **kw):  
-        ObjectResource.__init__(self)  
-        self.id=id      
+    def __init__(self, id, name, capacity=1):
+        ObjectResource.__init__(self)
+        self.id=id
         self.objName=name
         self.capacity=capacity      # repairman is an instance of resource
         self.type="Repairman"
