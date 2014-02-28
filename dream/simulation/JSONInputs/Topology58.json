@@ -194,7 +194,7 @@
                         {
                             "_class": "Dream.OrderComponent",
                             "componentType": "Secondary",
-                            "id": "C201",
+                            "id": "C2O1",
                             "name": "Component2 from Order1",
                             "route": [
                                 {
