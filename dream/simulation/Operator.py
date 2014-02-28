@@ -87,7 +87,7 @@ class Operator(Repairman):
         # TODO: consider that the timeLastEntityEnded is not a 
         #     indicative identifier of how long the station was waiting
         elif criterion=='WT':
-            activeObjectQ.sort(key=lambda x: x.timeLastEntityEnded)
+            activeObjectQ.sort(key=lambda x: x.entityToGet.schedule[-1][1])
         #if the schedulingRule is earliest due date
         elif criterion=="EDD":
             activeObjectQ.sort(key=lambda x: x.entityToGet.dueDate)   
