@@ -82,75 +82,75 @@ class Operator(Repairman): # XXX isn't it the other way around ?
             pass
         #if the schedulingRule is based on a pre-defined priority
         elif criterion=="Priority":
-            activeObjectQ.sort(key=lambda x: x.entityToGet.priority)
+            activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().priority)
         #if the scheduling rule is time waiting (time waiting of machine
         # TODO: consider that the timeLastEntityEnded is not a 
         #     indicative identifier of how long the station was waiting
         elif criterion=='WT':
-            activeObjectQ.sort(key=lambda x: x.entityToGet.schedule[-1][1])
+            activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().schedule[-1][1])
         #if the schedulingRule is earliest due date
         elif criterion=="EDD":
-            activeObjectQ.sort(key=lambda x: x.entityToGet.dueDate)   
+            activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().dueDate)   
         #if the schedulingRule is earliest order date
         elif criterion=="EOD":
-            activeObjectQ.sort(key=lambda x: x.entityToGet.orderDate)
+            activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().orderDate)
         #if the schedulingRule is to sort Entities according to the stations they have to visit
         elif criterion=="NumStages":
-            activeObjectQ.sort(key=lambda x: len(x.entityToGet.remainingRoute), reverse=True)  
+            activeObjectQ.sort(key=lambda x: len(x.identifyEntityToGet().remainingRoute), reverse=True)  
         #if the schedulingRule is to sort Entities according to the their remaining processing time in the system
         elif criterion=="RPC":
             for object in activeObjectQ:
-                entity=object.entityToGet
+                entity=object.identifyEntityToGet()
                 RPT=0
                 for step in entity.remainingRoute:
                     processingTime=step.get('processingTime',None)
                     if processingTime:
                         RPT+=float(processingTime.get('mean',0))           
                 entity.remainingProcessingTime=RPT
-            activeObjectQ.sort(key=lambda x: x.entityToGet.remainingProcessingTime, reverse=True)     
+            activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().remainingProcessingTime, reverse=True)     
         #if the schedulingRule is to sort Entities according to longest processing time first in the next station
         elif criterion=="LPT":
             for object in activeObjectQ:
-                entity=object.entityToGet
+                entity=object.identifyEntityToGet()
                 processingTime = entity.remainingRoute[0].get('processingTime',None)
                 entity.processingTimeInNextStation=float(processingTime.get('mean',0))
                 if processingTime:
                     entity.processingTimeInNextStation=float(processingTime.get('mean',0))
                 else:
                     entity.processingTimeInNextStation=0
-            activeObjectQ.sort(key=lambda x: x.entityToGet.processingTimeInNextStation, reverse=True)             
+            activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().processingTimeInNextStation, reverse=True)             
         #if the schedulingRule is to sort Entities according to shortest processing time first in the next station
         elif criterion=="SPT":
             for object in activeObjectQ:
-                entity=object.entityToGet
+                entity=object.identifyEntityToGet()
                 processingTime = entity.remainingRoute[0].get('processingTime',None)
                 if processingTime:
                     entity.processingTimeInNextStation=float(processingTime.get('mean',0))
                 else:
                     entity.processingTimeInNextStation=0
-            activeObjectQ.sort(key=lambda x: x.entityToGet.processingTimeInNextStation) 
+            activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().processingTimeInNextStation) 
         #if the schedulingRule is to sort Entities based on the minimum slackness
         elif criterion=="MS":
             for object in activeObjectQ:
-                object.entityToGet
+                object.identifyEntityToGet()
                 RPT=0
                 for step in entity.remainingRoute:
                     processingTime=step.get('processingTime',None)
                     if processingTime:
                         RPT+=float(processingTime.get('mean',0))              
                 entity.remainingProcessingTime=RPT
-            activeObjectQ.sort(key=lambda x: (x.entityToGet.dueDate-x.entityToGet.remainingProcessingTime))  
+            activeObjectQ.sort(key=lambda x: (x.identifyEntityToGet().dueDate-x.identifyEntityToGet().remainingProcessingTime))  
         #if the schedulingRule is to sort Entities based on the length of the following Queue
         elif criterion=="WINQ":
             from Globals import G
             for object in activeObjectQ:
-                entity=object.entityToGet
+                entity=object.identifyEntityToGet()
                 nextObjIds=entity.remainingRoute[1].get('stationIdsList',[])
                 for obj in G.ObjList:
                     if obj.id in nextObjIds:
                         nextObject=obj
                 entity.nextQueueLength=len(nextObject.getActiveObjectQueue())           
-            activeObjectQ.sort(key=lambda x: x.entityToGet.nextQueueLength)
+            activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().nextQueueLength)
         else:
             assert False, "Unknown scheduling criterion %r" % (criterion, )
 
