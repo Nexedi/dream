@@ -1,30 +1,31 @@
 {
+ "_class": "Dream.Simulation", 
  "elementList": [
   {
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
-    "throughput": 5, 
+    "lifespan": 62.0, 
     "takt_time": 20.0, 
-    "lifespan": 62.0
+    "throughput": 5
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "EDM", 
    "results": {
-    "working_ratio": 80.0, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 20.0
+    "waiting_ratio": 20.0, 
+    "working_ratio": 80.0
    }
   }, 
   {
    "_class": "Dream.Job", 
    "id": "J1", 
    "results": {
-    "delay": 68.0, 
     "completionTime": 100.0, 
+    "delay": 68.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -58,8 +59,8 @@
    "_class": "Dream.Job", 
    "id": "J2", 
    "results": {
-    "delay": 39.0, 
     "completionTime": 70.0, 
+    "delay": 39.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -93,8 +94,8 @@
    "_class": "Dream.Job", 
    "id": "J3", 
    "results": {
-    "delay": -1.0, 
     "completionTime": 30.0, 
+    "delay": -1.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -128,8 +129,8 @@
    "_class": "Dream.Job", 
    "id": "J4", 
    "results": {
-    "delay": 19.0, 
     "completionTime": 50.0, 
+    "delay": 19.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -163,8 +164,8 @@
    "_class": "Dream.Job", 
    "id": "J5", 
    "results": {
-    "delay": 29.0, 
     "completionTime": 60.0, 
+    "delay": 29.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -188,39 +189,35 @@
    "_class": "Dream.Machine", 
    "id": "M1", 
    "results": {
-    "working_ratio": 60.0, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 40.0
+    "waiting_ratio": 40.0, 
+    "working_ratio": 60.0
    }
   }, 
   {
    "_class": "Dream.Machine", 
    "id": "M2", 
    "results": {
-    "working_ratio": 50.0, 
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 50.0
+    "waiting_ratio": 50.0, 
+    "working_ratio": 50.0
    }
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q1", 
-   "schedulingRule": "EDD"
+   "id": "Q1"
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q2", 
-   "schedulingRule": "RPC"
+   "id": "Q2"
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q3", 
-   "schedulingRule": "WINQ"
+   "id": "Q3"
   }
  ], 
- "_class": "Dream.Simulation", 
  "general": {
   "_class": "Dream.Configuration"
  }
