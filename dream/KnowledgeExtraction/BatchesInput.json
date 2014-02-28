@@ -1,0 +1,537 @@
+{
+  "edges": {
+    "con_140": [
+      "S1", 
+      "QStart", 
+      {}
+    ], 
+    "con_145": [
+      "QStart", 
+      "BDA", 
+      {}
+    ], 
+    "con_150": [
+      "QStart", 
+      "BDB", 
+      {}
+    ], 
+    "con_155": [
+      "BDA", 
+      "M1A", 
+      {}
+    ], 
+    "con_160": [
+      "M1A", 
+      "Q2A", 
+      {}
+    ], 
+    "con_165": [
+      "Q2A", 
+      "M2A", 
+      {}
+    ], 
+    "con_170": [
+      "M2A", 
+      "Q3A", 
+      {}
+    ], 
+    "con_175": [
+      "Q3A", 
+      "M3A", 
+      {}
+    ], 
+    "con_180": [
+      "M3A", 
+      "BRA", 
+      {}
+    ], 
+    "con_185": [
+      "BRA", 
+      "QM", 
+      {}
+    ], 
+    "con_190": [
+      "BDB", 
+      "M1B", 
+      {}
+    ], 
+    "con_195": [
+      "M1B", 
+      "Q2B", 
+      {}
+    ], 
+    "con_200": [
+      "Q2B", 
+      "M2B", 
+      {}
+    ], 
+    "con_205": [
+      "M2B", 
+      "Q3B", 
+      {}
+    ], 
+    "con_210": [
+      "Q3B", 
+      "M3B", 
+      {}
+    ], 
+    "con_215": [
+      "M3B", 
+      "BRB", 
+      {}
+    ], 
+    "con_220": [
+      "BRB", 
+      "QM", 
+      {}
+    ], 
+    "con_225": [
+      "QM", 
+      "MM", 
+      {}
+    ], 
+    "con_230": [
+      "MM", 
+      "QPr", 
+      {}
+    ], 
+    "con_235": [
+      "QPr", 
+      "PrA", 
+      {}
+    ], 
+    "con_240": [
+      "QPr", 
+      "PrB", 
+      {}
+    ], 
+    "con_245": [
+      "PrA", 
+      "QPa", 
+      {}
+    ], 
+    "con_250": [
+      "PrB", 
+      "QPa", 
+      {}
+    ], 
+    "con_255": [
+      "QPa", 
+      "PaA", 
+      {}
+    ], 
+    "con_260": [
+      "QPa", 
+      "PaB", 
+      {}
+    ], 
+    "con_265": [
+      "PaA", 
+      "E1", 
+      {}
+    ], 
+    "con_270": [
+      "PaB", 
+      "E1", 
+      {}
+    ]
+  }, 
+  "general": {
+    "confidenceLevel": "0.95", 
+    "maxSimTime": "2880", 
+    "numberOfReplications": "1", 
+    "processTimeout": "0.5",
+	"trace": "No"
+  }, 
+  "nodes": {
+    "BDA": {
+      "_class": "Dream.BatchDecompositionStartTime", 
+      "element_id": "DreamNode_1", 
+      "name": "Deco_A", 
+      "numberOfSubBatches": 4, 
+      "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "0"
+      }
+    }, 
+    "BDB": {
+      "_class": "Dream.BatchDecompositionStartTime", 
+      "element_id": "DreamNode_2", 
+      "name": "Deco_B", 
+      "numberOfSubBatches": 4, 
+      "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "0"
+      }
+    }, 
+    "BRA": {
+      "_class": "Dream.BatchReassembly", 
+      "element_id": "DreamNode_3", 
+      "name": "Assembly_A", 
+      "numberOfSubBatches": 4, 
+      "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "0"
+      }
+    }, 
+    "BRB": {
+      "_class": "Dream.BatchReassembly", 
+      "element_id": "DreamNode_4", 
+      "name": "Assembly_B", 
+      "numberOfSubBatches": 4, 
+      "processingTime": {
+        "distributionType": "Fixed", 
+        "mean": "0"
+      }
+    }, 
+    "E1": {
+      "_class": "Dream.Exit", 
+      "element_id": "DreamNode_5", 
+      "name": "Stock"
+    }, 
+    "M1A": {
+      "_class": "Dream.BatchScrapMachine", 
+      "element_id": "DreamNode_6", 
+      "failures": {}, 
+      "name": "RO_E_M_A_A",
+      "shift": {
+		"shiftPattern": [[360,780], [1800,2220]],
+		"endUnfinished": 0
+      },	  
+      "processingTime": {
+      }
+    }, 
+    "M1B": {
+      "_class": "Dream.BatchScrapMachine", 
+      "element_id": "DreamNode_7", 
+      "failures": {}, 
+      "name": "RO_E_M_A_B", 
+      "shift": {
+		"shiftPattern": [[360,1260], [1800,2700]],
+		"endUnfinished": 0
+      },
+      "processingTime": {
+      }
+    }, 
+    "M2A": {
+      "_class": "Dream.BatchScrapMachine", 
+      "element_id": "DreamNode_8", 
+      "failures": {}, 
+      "name": "P_B_A_A", 
+      "shift": {
+		"shiftPattern": [[360,780], [1800,2220]],
+		"endUnfinished": 0
+      },
+      "processingTime": {
+      }
+    }, 
+    "M2B": {
+      "_class": "Dream.BatchScrapMachine", 
+      "element_id": "DreamNode_9", 
+      "failures": {}, 
+      "name": "P_B_A_B", 
+      "shift": {
+		"shiftPattern": [[360,1260], [1800,2700]],
+		"endUnfinished": 0
+      },
+      "processingTime": {
+      }
+    }, 
+    "M3A": {
+      "_class": "Dream.BatchScrapMachine", 
+      "element_id": "DreamNode_10", 
+      "failures": {}, 
+      "name": "D_B_A_A", 
+      "shift": {
+		"shiftPattern": [[360,780], [1800,2220]],
+		"endUnfinished": 0
+      },
+      "processingTime": {
+      }
+    }, 
+    "M3B": {
+      "_class": "Dream.BatchScrapMachine", 
+      "element_id": "DreamNode_11", 
+      "failures": {}, 
+      "name": "D_B_A_B", 
+      "shift": {
+		"shiftPattern": [[360,1260], [1800,2700]],
+		"endUnfinished": 0
+      },
+      "processingTime": {
+      }
+    }, 
+    "MM": {
+      "_class": "Dream.BatchScrapMachine", 
+      "element_id": "DreamNode_12", 
+      "failures": {}, 
+      "name": "Moulding", 
+      "shift": {
+		"shiftPattern": [[360,1260], [1800,2700]],
+		"endUnfinished": 0
+      },
+      "processingTime": {
+      }
+    }, 
+    "PaA": {
+      "_class": "Dream.BatchScrapMachine", 
+      "element_id": "DreamNode_13", 
+      "failures": {}, 
+      "name": "Packaging_A", 
+      "shift": {
+		"shiftPattern": [[360,780], [1800,2220]],
+		"endUnfinished": 0
+      },
+      "processingTime": {
+      }
+    }, 
+    "PaB": {
+      "_class": "Dream.BatchScrapMachine", 
+      "element_id": "DreamNode_14", 
+      "failures": {}, 
+      "name": "Packaging_B", 
+      "shift": {
+		"shiftPattern": [[360,1260], [1800,2700]],
+		"endUnfinished": 0
+      },
+      "processingTime": {
+      }
+    }, 
+    "PrA": {
+      "_class": "Dream.BatchScrapMachine", 
+      "element_id": "DreamNode_15", 
+      "failures": {}, 
+      "name": "Pressure_A", 
+      "shift": {
+		"shiftPattern": [[360,780], [1800,2220]],
+		"endUnfinished": 0
+      },
+      "processingTime": {
+      }
+    }, 
+    "PrB": {
+      "_class": "Dream.BatchScrapMachine", 
+      "element_id": "DreamNode_16", 
+      "failures": {}, 
+      "name": "Pressure_B", 
+      "shift": {
+		"shiftPattern": [[360,1260], [1800,2700]],
+		"endUnfinished": 0
+      },
+      "processingTime": {
+      }
+    }, 
+    "Q2A": {
+      "_class": "Dream.LineClearance", 
+      "capacity": "2", 
+      "element_id": "DreamNode_17", 
+      "isDummy": "0", 
+      "name": "Q2A", 
+      "schedulingRule": "FIFO"
+    }, 
+    "Q2B": {
+      "_class": "Dream.LineClearance", 
+      "capacity": "2", 
+      "element_id": "DreamNode_18", 
+      "isDummy": "0", 
+      "name": "Q2B", 
+      "schedulingRule": "FIFO"
+    }, 
+    "Q3A": {
+      "_class": "Dream.LineClearance", 
+      "capacity": "2", 
+      "element_id": "DreamNode_19", 
+      "isDummy": "0", 
+      "name": "Q3A", 
+      "schedulingRule": "FIFO"
+    }, 
+    "Q3B": {
+      "_class": "Dream.LineClearance", 
+      "capacity": "2", 
+      "element_id": "DreamNode_20", 
+      "isDummy": "0", 
+      "name": "Q3B", 
+      "schedulingRule": "FIFO"
+    }, 
+    "QM": {
+      "_class": "Dream.Queue", 
+      "capacity": "3", 
+      "element_id": "DreamNode_21", 
+      "isDummy": "0", 
+      "name": "QM", 
+      "schedulingRule": "FIFO"
+    }, 
+    "QPa": {
+      "_class": "Dream.Queue", 
+      "capacity": "3", 
+      "element_id": "DreamNode_22", 
+      "isDummy": "0", 
+      "name": "QPa", 
+      "schedulingRule": "FIFO"
+    }, 
+    "QPr": {
+      "_class": "Dream.Queue", 
+      "capacity": "3", 
+      "element_id": "DreamNode_23", 
+      "isDummy": "0", 
+      "name": "QPr", 
+      "schedulingRule": "FIFO"
+    }, 
+    "QStart": {
+      "_class": "Dream.Queue", 
+      "capacity": "-1", 
+      "element_id": "DreamNode_24", 
+      "isDummy": "0", 
+      "name": "StartQueue", 
+      "schedulingRule": "FIFO"
+    }, 
+    "S1": {
+      "_class": "Dream.BatchSource", 
+      "batchNumberOfUnits": 80, 
+      "element_id": "DreamNode_25", 
+      "entity": "Batch", 
+      "interarrivalTime": {
+        "distributionType": "Fixed", 
+        "mean": "0.5"
+      }, 
+      "name": "Source"
+    },
+
+        "EV": {
+            "_class": "Dream.EventGenerator",
+            "name": "attainment",
+            "start": "1440",
+            "interval": "1440",
+            "method": "Globals.countIntervalThroughput",
+            "argumentDict": {
+            }
+        }
+  }, 
+  "preference": {
+    "coordinates": {
+      "BDA": {
+        "left": 0.17522921311349376, 
+        "top": 0.014751694583812569
+      }, 
+      "BDB": {
+        "left": 0.17064206093774784, 
+        "top": 0.18992806776658683
+      }, 
+      "BRA": {
+        "left": 0.7623846916089703, 
+        "top": 0.014751694583812569
+      }, 
+      "BRB": {
+        "left": 0.7486232350817325, 
+        "top": 0.2175874951112354
+      }, 
+      "E1": {
+        "left": 0.781650730747103, 
+        "top": 0.8537543240381524
+      }, 
+      "M1A": {
+        "left": 0.26697225662841195, 
+        "top": 0.005531885468929714
+      }, 
+      "M1B": {
+        "left": 0.2550456609714726, 
+        "top": 0.18992806776658683
+      }, 
+      "M2A": {
+        "left": 0.4596326480097402, 
+        "top": 0.005531885468929714
+      }, 
+      "M2B": {
+        "left": 0.4568803567042926, 
+        "top": 0.18992806776658683
+      }, 
+      "M3A": {
+        "left": 0.6614673437425602, 
+        "top": 0.023971503698695426
+      }, 
+      "M3B": {
+        "left": 0.6495407480856209, 
+        "top": 0.20836768599635255
+      }, 
+      "MM": {
+        "left": 0.882568078613513, 
+        "top": 0.34666482271959537
+      }, 
+      "PaA": {
+        "left": 0.8926598134001541, 
+        "top": 0.7707760420042068
+      }, 
+      "PaB": {
+        "left": 0.670641648094052, 
+        "top": 0.7707760420042068
+      }, 
+      "PrA": {
+        "left": 0.8788983568729164, 
+        "top": 0.6048194779363153
+      }, 
+      "PrB": {
+        "left": 0.6844031046212897, 
+        "top": 0.5863798597065496
+      }, 
+      "Q2A": {
+        "left": 0.35871530014333014, 
+        "top": 0.014751694583812569
+      }, 
+      "Q2B": {
+        "left": 0.3651373131893744, 
+        "top": 0.18070825865170398
+      }, 
+      "Q3A": {
+        "left": 0.569724300227642, 
+        "top": 0.014751694583812569
+      }, 
+      "Q3B": {
+        "left": 0.5577977045707027, 
+        "top": 0.19914787688146968
+      }, 
+      "QM": {
+        "left": 0.8642194699105294, 
+        "top": 0.1530488313070554
+      }, 
+      "QPa": {
+        "left": 0.781650730747103, 
+        "top": 0.6509185235107297
+      }, 
+      "QPr": {
+        "left": 0.7908250350985949, 
+        "top": 0.503401577672604
+      }, 
+      "QStart": {
+        "left": 0.0972476261258133, 
+        "top": 0.09772997661775827
+      }, 
+      "S1": {
+        "left": 0.0037421998521831056, 
+        "top": 0.09077525071036834
+      }
+    }, 
+    "zoom_level": 0.81
+  }, 
+  "spreadsheet": [
+    [
+      "Jobs", 
+      "ID", 
+      "Order Date", 
+      "Due Date", 
+      "Priority", 
+      "Material", 
+      "Sequence", 
+      "Processing Times"
+    ], 
+    [
+      null, 
+      null, 
+      null, 
+      null, 
+      null, 
+      null, 
+      null, 
+      null
+    ]
+  ]
+}
