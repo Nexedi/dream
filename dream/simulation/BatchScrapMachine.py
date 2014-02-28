@@ -40,21 +40,20 @@ class BatchScrapMachine(Machine):
     # have to find which distribution returns random integers - Discrete distribution 
     def __init__(self, id, name, capacity=1, \
                  processingTime=None,
-                 distribution='Fixed', mean=1, stdev=0, min=0, max=10,\
                  failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None',\
                  scrapDistribution='Fixed',scrMean=1,scrStdev=0,scrMin=0,scrMax=10,
                  **kw):
         if not processingTime:
-          print "TODO"
+          processingTime = {'distribution': 'Fixed',
+                            'mean': 1}
         # initialize using the default method of the object 
         Machine.__init__(self,id=id,name=name,\
                                     capacity=capacity,\
-                                    processingTime=dict(distributionType=distribution,
-                                                        mean=mean,stdev=stdev,min=min,max=max,),
+                                    processingTime=processingTime,
                                     failureDistribution=failureDistribution,MTTF=MTTF,MTTR=MTTR,\
                                     availability=availability,
                                     repairman=repairman, **kw)
-             
+
         self.scrapDistType=scrapDistribution    #the distribution that the failure follows   
         # Sets the attributes of the scrap quantity distribution
         self.scrapRng=RandomNumberGenerator(self, self.scrapDistType)
@@ -62,8 +61,7 @@ class BatchScrapMachine(Machine):
         self.scrapRng.stdev=scrStdev
         self.scrapRng.min=scrMin
         self.scrapRng.max=scrMax
-        
-    
+
     def removeEntity(self, entity=None):
         activeEntity = Machine.removeEntity(self, entity)
         scrapQuantity=self.scrapRng.generateNumber()        

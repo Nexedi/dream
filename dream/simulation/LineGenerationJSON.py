@@ -352,11 +352,6 @@ def createObjects():
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
             processingTime=element.get('processingTime',{})
-            distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean') or 0)
-            stdev=float(processingTime.get('stdev') or 0)
-            min=float(processingTime.get('min') or 0)
-            max=float(processingTime.get('max') or mean+5*stdev)
             scrapQuantity=element.get('scrapQuantity', {})
             scrapDistributionType=scrapQuantity.get('distributionType', 'not found')
             scrMean=int(scrapQuantity.get('mean') or 0)
@@ -373,9 +368,9 @@ def createObjects():
                 if(id in repairman.coreObjectIds):              # (if any) is assigned to repair 
                     r=repairman                                 # the machine with ID equal to id
                     
-            M=BatchScrapMachine(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
+            M=BatchScrapMachine(id, name, 1, processingTime, failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, repairman=r,
-                                                    mean=mean,stdev=stdev,min=min,max=max, scrMean=scrMean, 
+                                                    scrMean=scrMean,
                                                     scrStdev=scrStdev,scrMin=scrMin,scrMax=scrMax)
             M.nextIds=getSuccessorList(id)                      # update the nextIDs list of the machine
             G.MachineList.append(M)                             # add machine to global MachineList
