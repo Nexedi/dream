@@ -44,7 +44,7 @@ class Distributions:
             self.Normal= rFitDistr(data,'Normal')   #It fits the normal distribution to the given data sample
         except RRuntimeError:                        
             return None                             #If it doesn't fit Return None
-        myDict = {'type':'Normal','mean':self.Normal[0][0],'sd': self.Normal[0][1]}       #Create a dictionary with keys the name of the distribution and its parameters                       
+        myDict = {'distributionType':'Normal','aParameter':'mean','bParameter':'stdev','aParameterValue':self.Normal[0][0],'bParameterValue': self.Normal[0][1]}      #Create a dictionary with keys distribution's and distribution's parameters  names and the parameters' values                      
         return myDict                      #If there is no Error return the dictionary with the Normal distribution parameters for the given data sample
         
     def Lognormal_distrfit(self,data):
@@ -54,7 +54,7 @@ class Distributions:
             self.Lognormal= rFitDistr(data,'Lognormal')     #It fits the Lognormal distribution to the given data sample
         except RRuntimeError: 
             return None                                     #If it doesn't fit Return None
-        myDict = {'type':'Lognormal','logmean':self.Lognormal[0][0], 'logsd':self.Lognormal[0][1]}      #Create a dictionary with keys the name of the distribution and its parameters
+        myDict ={'distributionType':'Lognormal','aParameter':'logmean','bParameter':'logsd','aParameterValue':self.Lognormal[0][0],'bParameterValue': self.Lognormal[0][1]}      #Create a dictionary with keys distribution's and distribution's parameters  names and the parameters' values                      
         return myDict                                                #If there is no Error return the dictionary with the Lognormal distribution parameters for the given data sample
 
     def NegativeBinomial_distrfit(self,data):
@@ -64,7 +64,7 @@ class Distributions:
             self.NegBinom= rFitDistr(data,'Negative Binomial')
         except RRuntimeError: 
             return None 
-        myDict = {'type':'NegativeBinomial','size':self.NegBinom[0][0],'mu':self.NegBinom[0][1]}
+        myDict = {'distributionType':'NegativeBinomial','size':self.NegBinom[0][0],'mu':self.NegBinom[0][1]}
         return myDict   
     
     def Exponential_distrfit(self,data):
@@ -74,7 +74,7 @@ class Distributions:
             self.Exp= rFitDistr(data,'Exponential')
         except RRuntimeError: 
             return None
-        myDict = {'type':'Exponential','rate':self.Exp[0][0]}
+        myDict = {'distributionType':'Exponential','aParameter':'rate', 'aParameterValue':self.Exp[0][0]}
         return myDict
     
     def Poisson_distrfit(self,data):
@@ -84,7 +84,7 @@ class Distributions:
             self.Poisson= rFitDistr(data,'Poisson')
         except RRuntimeError: 
             return None
-        myDict = {'type':'Poisson','lambda':self.Poisson[0][0]}
+        myDict = {'distributionType':'Poisson','aParameter':'lambda','aParameterValue':self.Poisson[0][0]}
         return myDict
     
     def Logistic_distrfit(self,data): 
@@ -94,7 +94,7 @@ class Distributions:
             self.Logist= rFitDistr(data,'logistic')
         except RRuntimeError: 
             return None
-        myDict = {'type':'Logistic','location':self.Logist[0][0],'scale': self.Logist[0][1]}
+        myDict = {'distributionType':'Logistic','aParameter':'location','bParameter':'scale','aParameterValue':self.Logist[0][0],'bParameterValue':self.Logist[0][1]}
         return myDict
    
     def Geometric_distrfit(self,data): 
@@ -104,7 +104,7 @@ class Distributions:
             self.Geom= rFitDistr(data,'Geometric')
         except RRuntimeError: 
             return None
-        myDict = {'type':'Geometric','probability':self.Geom[0][0]}
+        myDict = {'distributionType':'Geometric','aParameter':'probability','aParameterValue':self.Geom[0][0]}
         return myDict
     
     def Gamma_distrfit(self,data):
@@ -114,7 +114,7 @@ class Distributions:
             self.Gam=rFitDistr(data,'Gamma') 
         except RRuntimeError: 
             return None
-        myDict = {'type':'Gamma','shape':self.Gam[0][0],'rate':self.Gam[0][1]}
+        myDict = {'distributionType':'Gamma','aParameter':'shape','bParameter':'rate','aParameterValue':self.Gam[0][0],'bParameterValue':self.Gam[0][1]}
         return myDict
         
     def Weibull_distrfit(self,data):
@@ -124,7 +124,7 @@ class Distributions:
             self.Weib=rFitDistr(data,'weibull')   
         except RRuntimeError:
             return None
-        myDict = {'type':'Weibull','shape':self.Weib[0][0], 'scale':self.Weib[0][1]}
+        myDict = {'distributionType':'Weibull','aParameter':'shape','bParameter':'scale','aParameterValue':self.Weib[0][0],'bParameterValue':self.Weib[0][1]}
         return myDict
         
     def Cauchy_distrfit(self,data):
@@ -134,7 +134,7 @@ class Distributions:
             self.Cauchy=rFitDistr(data,'Cauchy') 
         except RRuntimeError: 
             return None
-        myDict = {'type':'Cauchy','location':self.Cauchy[0][0],'scale':self.Cauchy[0][1]}
+        myDict = {'distributionType':'Cauchy','aParameter':'location','bParameter':'scale','aParameterValue':self.Cauchy[0][0],'bParameterValue':self.Cauchy[0][1]}
         return myDict
         
 #The Distribution Fitting test object
@@ -323,39 +323,39 @@ class DistFittest:
         #Set of if...elif syntax in order to get a Python dictionary with the best fitting statistical distribution and its parameters
         if list1[b]=='Normal':          #Check if in list's b position is the Normal distribution
             self.Normal_distrfit(data)
-            myDict = {'type':list1[b],'aParameter':'mean','bParameter':'standarddeviation','aParameterValue':self.Normal[0][0],'bParameterValue': self.Normal[0][1]} #Create a dictionary with distribution's and distribution parameters' names and distribution parameters' values
+            myDict = {'distributionType':list1[b],'aParameter':'mean','bParameter':'stdev','aParameterValue':self.Normal[0][0],'bParameterValue': self.Normal[0][1]} #Create a dictionary with distribution's and distribution parameters' names and distribution parameters' values
             return myDict     
         elif list1[b]=='Lognormal':
             self.Lognormal_distrfit(data)
-            myDict = {'type':list1[b],'aParameter':'logmean','bParameter':'logsd','aParameterValue':self.Lognormal[0][0],'bParameterValue': self.Lognormal[0][1]}
+            myDict = {'distributionType':list1[b],'aParameter':'logmean','bParameter':'logsd','aParameterValue':self.Lognormal[0][0],'bParameterValue': self.Lognormal[0][1]}
             return myDict
         elif list1[b]=='Exponential':
             self.Exponential_distrfit(data)
-            myDict = {'type':list1[b],'aParameter':'rate', 'aParameterValue':self.Exp[0][0]}
+            myDict = {'distributionType':list1[b],'aParameter':'rate', 'aParameterValue':self.Exp[0][0]}
             return myDict
         elif list1[b]=='Poisson':
             self.Poisson_distrfit(data)
-            myDict = {'type':list1[b],'aParameter':'lambda','aParameterValue':self.Poisson[0][0]}
+            myDict = {'distributionType':list1[b],'aParameter':'lambda','aParameterValue':self.Poisson[0][0]}
             return myDict
         elif list1[b]=='Geometric':
             self.Geometric_distrfit(data)
-            myDict = {'type':list1[b],'aParameter':'probability','aParameterValue':self.Geom[0][0]}
+            myDict = {'distributionType':list1[b],'aParameter':'probability','aParameterValue':self.Geom[0][0]}
             return myDict
         elif list1[b]=='Logistic':
             self.Logistic_distrfit(data)
-            myDict = {'type':list1[b],'aParameter':'location','bParameter':'scale','aParameterValue':self.Logist[0][0],'bParameterValue':self.Logist[0][1]}
+            myDict = {'distributionType':list1[b],'aParameter':'location','bParameter':'scale','aParameterValue':self.Logist[0][0],'bParameterValue':self.Logist[0][1]}
             return myDict
         elif list1[b]=='Gamma':
             self.Gamma_distrfit(data)
-            myDict = {'type':list1[b],'aParameter':'shape','bParameter':'rate','aParameterValue':self.Gam[0][0],'bParameterValue':self.Gam[0][1]}
+            myDict = {'distributionType':list1[b],'aParameter':'shape','bParameter':'rate','aParameterValue':self.Gam[0][0],'bParameterValue':self.Gam[0][1]}
             return myDict
         elif list1[b]=='Weibull':
             self.Weibull_distrfit(data)
-            myDict = {'type':list1[b],'aParameter':'shape','bParameter':'scale','aParameterValue':self.Weib[0][0],'bParameterValue':self.Weib[0][1]}
+            myDict = {'distributionType':list1[b],'aParameter':'shape','bParameter':'scale','aParameterValue':self.Weib[0][0],'bParameterValue':self.Weib[0][1]}
             return myDict
         else:
             self.Cauchy_distrfit(data)
-            myDict = {'type':list1[b],'aParameter':'location','bParameter':'scale','aParameterValue':self.Cauchy[0][0],'bParameterValue':self.Cauchy[0][1]}
+            myDict = {'distributionType':list1[b],'aParameter':'location','bParameter':'scale','aParameterValue':self.Cauchy[0][0],'bParameterValue':self.Cauchy[0][1]}
             return myDict
          
  
