@@ -60,7 +60,10 @@ class Machine(CoreObject):
                             'mean': 1,
                             'stdev': 0,
                             'min': 0,
-                            'max': 10}
+                            }
+        if processingTime['distributionType'] == 'Normal' and\
+              processingTime.get('max', None) is None:
+          processingTime['max'] = processingTime['mean'] + 5 * processingTime['stdev']
 
         #     holds the capacity of the machine 
         self.capacity=capacity

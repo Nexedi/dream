@@ -43,8 +43,11 @@ class Assembly(CoreObject):
                             'mean': 0,
                             'stdev': 0,
                             'min': 0,
-                            'max': 0,
                             }
+        if processingTime['distributionType'] == 'Normal' and\
+              processingTime.get('max', None) is None:
+          processingTime['max'] = processingTime['mean'] + 5 * processingTime['stdev']
+
         CoreObject.__init__(self, id, name)
         self.type="Assembly"   #String that shows the type of object
         self.rng=RandomNumberGenerator(self, **processingTime)

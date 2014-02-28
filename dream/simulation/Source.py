@@ -39,6 +39,9 @@ class Source(CoreObject):
         # Default values
         if not interarrivalTime:
           interarrivalTime = {'distributionType': 'Fixed', 'mean': 1}
+        if interarrivalTime['distributionType'] == 'Normal' and\
+              interarrivalTime.get('max', None) is None:
+          interarrivalTime['max'] = interarrivalTime['mean'] + 5 * interarrivalTime['stdev']
 
         CoreObject.__init__(self, id, name)
         # properties used for statistics
