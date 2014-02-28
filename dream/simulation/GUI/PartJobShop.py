@@ -59,7 +59,6 @@ class Simulation(ACO.Simulation):
         "_class": 'Dream.OrderDecomposition',
         "name": 'Decompo'
     }
-    # XXX remove default machines etc ?
     conf["Dream-Configuration"]["gui"]["wip_part_spreadsheet"] = 1
     conf["Dream-Configuration"]["gui"]["job_schedule_spreadsheet"] = 1
     conf["Dream-Configuration"]["gui"]["job_gantt"] = 1
@@ -180,6 +179,7 @@ class Simulation(ACO.Simulation):
         order_dict["id"] = "%i" % i # XXX hack, we use it in UI to retrieve spreadsheet line
         order_dict["manager"] = project_manager
         order_dict["name"] = order_id
+        order_dict["dueDate"] = due_date
         # XXX make it dynamic by writing a function that will reuse the
         # code available a bit after
         order_dict["route"] = self.getRouteList(sequence_list, processing_time_list,
