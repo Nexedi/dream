@@ -69,6 +69,7 @@
       $('#job_schedule_spreadsheet').hide();
       $('#shift_spreadsheet').hide();
       $("#job_gantt").hide();
+      $("#queue_stat").hide();
       $("#wip_part_spreadsheet").hide();
 
       if (configuration['Dream-Configuration'].gui.wip_part_spreadsheet){

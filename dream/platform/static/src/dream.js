@@ -517,6 +517,18 @@
         $.plot("#graph", series, options);
       }
 
+      if (configuration['Dream-Configuration'].gui.queue_stat){
+        var queue_stat = $("#queue_stat").show();
+        var series = [];
+        $.each(result.elementList, function(idx, el){
+          if (el._class == 'Dream.Queue'){
+            series.push({label: el.name || el.id,
+                         data: el.wip_stat_list})
+          }
+        })
+        $.plot("#queue_stat_graph", series);
+      }
+
       if (configuration['Dream-Configuration'].gui.exit_stat){
         var exit_stat = $("#exit_stat").show().text("Exit Metrics");
         $.each(result.elementList, function(idx, el){

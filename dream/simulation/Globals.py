@@ -194,6 +194,11 @@ def countIntervalThroughput(argumentDict={}):
             previouslyExited=sum(obj.intervalThroughPutList)
             currentExited+=totalExited-previouslyExited
             obj.intervalThroughPutList.append(currentExited)
-            
-            
-    
+
+
+from Queue import Queue
+def countQueueMetrics(argumentDict={}):
+    for obj in G.ObjList:
+        if isinstance(obj, Queue):
+            obj.wip_stat_list.append((now(), len(obj.Res.activeQ)))
+

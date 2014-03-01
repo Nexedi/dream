@@ -72,6 +72,9 @@ class Queue(CoreObject):
             raise ValueError("Unknown scheduling rule %s for %s" %
               (scheduling_rule, id))
 
+        # Will be populated by an event generator
+        self.wip_stat_list = []
+
     @staticmethod
     def getSupportedSchedulingRules():
         return ("FIFO", "Priority", "EDD", "EOD",
@@ -292,4 +295,8 @@ class Queue(CoreObject):
         from Globals import G
         json = {'_class': 'Dream.%s' % self.__class__.__name__,
                 'id': str(self.id), }
+        # XXX this have to be updated to support multiple generations
+        if G.numberOfReplications == 1 and self.wip_stat_list:
+          json['wip_stat_list'] = self.wip_stat_list
+
         G.outputJSON['elementList'].append(json)

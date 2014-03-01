@@ -275,7 +275,13 @@ class Simulation(object):
         "property_list": [schema["capacity"]],
         "_class": 'Dream.Repairman'
       },
-
+      "Dream-EventGenerator": {
+        "name": "Event Generator",
+        "short_id": "EG",
+        "property_list": [schema['start'], schema['stop'], schema['duration'],
+            schema['interval'], schema['method'], schema['argumentDict']],
+        "_class": "Dream.EventGenerator",
+      },
       # global configuration
       "Dream-Configuration": {
         "property_list": [
@@ -296,6 +302,7 @@ class Simulation(object):
           'job_schedule_spreadsheet': 0,
           'job_gantt': 0,
           'exit_stat': 1,
+          'queue_stat': 1,
         },
         "_class": 'Dream.Configuration'
       },
