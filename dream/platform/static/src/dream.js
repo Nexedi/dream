@@ -596,6 +596,11 @@
           job_schedule_spreadsheet.show();
           job_schedule_spreadsheet.handsontable({
             data: spreadsheet_header.concat(spreadsheet_data),
+            width: function () {
+                return $(window).width() -
+                      job_schedule_spreadsheet.offset().left +
+                      $(window).scrollLeft();
+            },
             readOnly: true
           });
           job_schedule_spreadsheet.find('.htCore').width(job_schedule_spreadsheet.width());

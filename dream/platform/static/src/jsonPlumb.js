@@ -130,9 +130,14 @@
         data: data,
         minSpareRows: 1,
         stretchH: 'all',
+        width: function () {
+            return $(window).width() -
+                  wip_part_spreadsheet.offset().left +
+                  $(window).scrollLeft();
+        },
         afterChange: function () {
           priv.onDataChange();
-        }
+        },
       });
 
       var shift_spreadsheet = $('#shift_spreadsheet');
@@ -148,6 +153,11 @@
         data: data,
         minSpareRows: 1,
         stretchH: 'all',
+        width: function () {
+            return $(window).width() -
+                  shift_spreadsheet.offset().left +
+                  $(window).scrollLeft();
+        },
         afterChange: function () {
           priv.onDataChange();
         }
@@ -307,13 +317,6 @@
         element.css('left', absolute_position[0]);
         jsPlumb.repaint(element);
       });
-      // redraw spreadsheets
-      var wip_part_spreadsheet = $("#wip_part_spreadsheet");
-      wip_part_spreadsheet.find('.htCore').width(wip_part_spreadsheet.width());
-      var shift_spreadsheet = $("#shift_spreadsheet");
-      shift_spreadsheet.find('.htCore').width(shift_spreadsheet.width());
-      var job_schedule_spreadsheet = $("#job_schedule_spreadsheet");
-      job_schedule_spreadsheet.find('.htCore').width(job_schedule_spreadsheet.width());
     };
 
     priv.getData = function () {
