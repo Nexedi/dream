@@ -88,7 +88,6 @@ class Simulation(ACO.Simulation):
     for machine_name in self.data["nodes"].keys():
       if machine_name.startswith(step_name):
         machine_name_set.add(machine_name)
-    print "getMachineNameSet, %r : %r" % (step_name, machine_name_set)
     return machine_name_set
 
   def getNotMachineNodePredecessorList(self, step_name):
@@ -99,7 +98,6 @@ class Simulation(ACO.Simulation):
     predecessor_list = []
     machine_name_set = self.getMachineNameSet(step_name)
     for edge in self.data["edges"].values():
-      print "getNotMachineNodePredecessorList, edge[1]: %r" % edge[1]
       if edge[1] in machine_name_set:
         predecessor_step = edge[0]
         if predecessor_step in predecessor_list:
@@ -108,7 +106,6 @@ class Simulation(ACO.Simulation):
           predecessor_list = [predecessor_step] + predecessor_list
           predecessor_list = [x for x in self.getNotMachineNodePredecessorList(predecessor_step) \
                                    if x not in predecessor_list] + predecessor_list
-    print "getNotMachineNodePredecessorList, %r : %r" % (step_name, predecessor_list)
     return predecessor_list
 
   def getRouteList(self, sequence_list, processing_time_list, prerequisite_list):
@@ -153,21 +150,14 @@ class Simulation(ACO.Simulation):
       now = datetime.strptime(data['general']['currentDate'], '%Y/%m/%d')
 
     if 'wip_part_spreadsheet' in data:
-      # Data is presented as follow, with first line the order, then only parts of this order
-      # Order ID | Due Date | Priority | Project Manager | Parts | Part Type | Sequence | Processing Time | Electrodes needed
-      # Order 1  | 2013/02/15 | 1      |   PM1           | P1    |  type1    | Mach1-Mach2 | 3-5          |
-      #          |            |        |                 | P2    |  type2    | Mach2-Mach3 | 4-7          |
       wip_list = []
-      print "wip part data : %r" % (data['wip_part_spreadsheet'],)
       i = 0
       wip_part_spreadsheet_length = len(data['wip_part_spreadsheet'])
       while i < wip_part_spreadsheet_length:
         value_list = data['wip_part_spreadsheet'][i]
-        print "first value_list: %r" % (value_list,)
         if value_list[0] == 'Order ID' or not value_list[4]:
           i += 1
           continue
-        print "still there after first continue"
         order_dict = {}
         wip_list.append(order_dict)
         order_id, due_date, priority, project_manager, part, part_type,\

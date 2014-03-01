@@ -184,11 +184,12 @@ def setWIP(entityList):
                 entity.hot = True
             # add the entity to the pendingEntities list
             G.pendingEntities.append(entity)
-       
+
+from Exit import Exit
 def countIntervalThroughput(argumentDict={}):
     currentExited=0  
     for obj in G.ObjList:
-        if obj.type is 'Exit':
+        if isinstance(obj, Exit):
             totalExited=obj.totalNumberOfUnitsExited
             previouslyExited=sum(obj.intervalThroughPutList)
             currentExited+=totalExited-previouslyExited
