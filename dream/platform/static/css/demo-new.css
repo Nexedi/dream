@@ -382,6 +382,12 @@ border: 1px solid black;
   transition:box-shadow 0.25s ease-in;
 }
 
+.status {
+  position:absolute;
+  bottom:0px;
+  right:5px;
+}
+
 ._jsPlumb_source_hover, ._jsPlumb_target_hover, .dragHover {
   background-color:#1e8151;
   background-image: none;

@@ -218,8 +218,30 @@ def main(*args):
     file_handler.setLevel(logging.DEBUG)
     app.logger.addHandler(file_handler)
 
-  # start the server
-  app.run(debug=True, host=arguments.host, port=arguments.port)
+
+  from geventwebsocket.handler import WebSocketHandler
+  from gevent.pywsgi import WSGIServer
+
+  http_server = WSGIServer((arguments.host, arguments.port),
+                           app, handler_class=WebSocketHandler)
+  http_server.serve_forever()
+
+
+@app.route('/api')
+def api():
+  if request.environ.get('wsgi.websocket'):
+    ws = request.environ['wsgi.websocket']
+    while True:
+      message = ws.receive()
+      parameter_dict = json.loads(message)
+
+      from dream.simulation import Globals
+      Globals.ws = ws
+
+      result = getGUIInstance().run(parameter_dict)
+      ws.send(json.dumps({'success': result}))
+  return "No websocket"
+
 
 def run(*args):
   # run with one topology input

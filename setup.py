@@ -9,6 +9,8 @@ setup(
     package_dir={'': '.', 'simulation': 'simulation'},
     install_requires=[
         'flask',
+        'gunicorn',
+        'gevent-websocket',
         'SimPy>=2,<3',
         'xlrd',
         'xlwt',

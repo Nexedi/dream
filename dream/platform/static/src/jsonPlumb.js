@@ -360,6 +360,13 @@
         $("#" + element_id).text(data["name"]).append('<div class="ep"></div></div>');
         priv.node_container[node_id].name = data['name'];
       }
+      if (data['status']) {
+        var statusdiv = $("#" + element_id).find(".status");
+        if (!statusdiv.length) {
+          statusdiv = $("<div>").addClass("status").appendTo($("#" + element_id));
+        }
+        statusdiv.text(data['status']);
+      }
       var new_id = data['id'];
       delete(data['id']);
       $.extend(priv.node_container[node_id], data.data);

@@ -25,12 +25,12 @@ Created on 8 Nov 2012
 carries some global variables
 '''
 
-#from SimPy.Simulation import *
 from Machine import Machine
 from Queue import Queue
 from Repairman import Repairman
 import xlwt
 import xlrd
+import json
 from random import Random, expovariate, gammavariate, normalvariate
 from SimPy.Simulation import now
 
@@ -254,7 +254,6 @@ def countQueueMetrics(argumentDict={}):
         if isinstance(obj, Queue):
             obj.wip_stat_list.append((now(), len(obj.Res.activeQ)))
 
-
 # =======================================================================
 # Helper function to calculate the confidence intervals of a serie.
 # =======================================================================
@@ -271,4 +270,25 @@ def getConfidenceIntervals(value_list):
     return {'lb': lb,
             'ub': ub,
             'avg': numpy.mean(value_list) }
+
+from Queue import Queue
+from Machine import Machine
+def updateGui(argumentDict={}):
+    message_list = []
+    for obj in G.ObjList:
+        if isinstance(obj, Queue):
+            message_list.append({'node': obj.id,
+                             'action': 'update_queue_stat',
+                             'capacity': len(obj.Res.activeQ),
+                             })
+        if isinstance(obj, Machine):
+            message_list.append({'node': obj.id,
+                             'action': 'update_machine_status',
+                             'debug': repr(obj.Res.activeQ),
+                             'status': obj.status,
+                             })
+    import Globals
+    Globals.ws.send(json.dumps({'update_gui': message_list, 'now': now()}))
+    import time
+    time.sleep(0.08)
 

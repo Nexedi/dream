@@ -170,7 +170,7 @@
       });
 
     // Enable "Run Simulation" button
-    $("#run_simulation").button().click(
+    $("#xxrun_simulation").button().click(
       function (e) {
         $("#loading_spinner").show();
         $("#run_simulation").button('disable');
@@ -276,5 +276,56 @@
     $("#shift_spreadsheet").hide();
        }
     });
+
+    // XXX create socket on click ?
+    var webSocket = new WebSocket("ws://localhost:5000/api");
+
+    webSocket.onmessage = function(e) {
+      var message = JSON.parse(e.data)
+
+      $.each(message.update_gui || [], function(i, msg){
+        if (msg.action === "update_queue_stat"){
+          dream_instance.updateElementData(msg.node, 
+            {status: msg.capacity});
+        }
+        if (msg.action === "update_machine_status"){
+          dream_instance.updateElementData(msg.node,
+            {status: msg.status});
+        }
+      });
+      if (message['now']) {
+        $("#now").text(message['now']);
+      }
+
+      if (message['success']) {
+        $("#json_result").val(JSON.stringify(message['success'],
+          undefined, " "));
+        $("#loading_spinner").hide();
+        $("#run_simulation").button('enable');
+        $("#result_zone").show();
+        $('#result_list').empty();
+        $('.window > .status').remove();
+        $.each(message['success'], function (idx, obj) {
+          $('#result_list').append('<li class="result"></li>');
+          $('#result_list').children().last().text(
+            idx + ' : ' + obj['score'] + ' ' + obj['key']).click(
+             function (e) {
+              dream_instance.displayResult(idx);
+            }
+          );
+        });
+        dream_instance.displayResult(0);
+      }
+    }
+
+    $("#run_simulation").button().on('click', function(e) {
+      // TODO: we need to update global properties
+      $("#loading_spinner").show();
+      $("#run_simulation").button('disable');
+      var msg = JSON.stringify(dream_instance.getData());
+      webSocket.send(msg);
+      return false;
+    });
+
   });
 })(jQuery);

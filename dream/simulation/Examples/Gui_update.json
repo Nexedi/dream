@@ -1,0 +1,229 @@
+{
+  "edges": {
+    "con_10": [
+      "M2", 
+      "E1", 
+      {}
+    ], 
+    "con_15": [
+      "S1", 
+      "M1", 
+      {}
+    ], 
+    "con_20": [
+      "Q1", 
+      "M3", 
+      {}
+    ], 
+    "con_25": [
+      "M3", 
+      "Q2", 
+      {}
+    ], 
+    "con_30": [
+      "Q2", 
+      "M2", 
+      {}
+    ], 
+    "con_5": [
+      "M1", 
+      "Q1", 
+      {}
+    ]
+  }, 
+  "general": {
+    "confidenceLevel": 0.5, 
+    "currentDate": "2014/03/01", 
+    "maxSimTime": 200, 
+    "numberOfReplications": 1, 
+    "processTimeout": 10, 
+    "trace": "Yes"
+  }, 
+  "nodes": {
+    "E1": {
+      "_class": "Dream.Exit", 
+      "element_id": "DreamNode_1"
+    }, 
+    "M1": {
+      "_class": "Dream.Machine", 
+      "element_id": "DreamNode_2", 
+      "failures": {
+        "MTTF": 40, 
+        "MTTR": 10, 
+        "failureDistribution": "No", 
+        "repairman": "None"
+      }, 
+      "name": "M1: working", 
+      "processingTime": {
+        "distributionType": "Normal", 
+        "max": 3.9, 
+        "mean": 0.1, 
+        "min": 0.1, 
+        "stdev": 2
+      }
+    }, 
+    "M2": {
+      "_class": "Dream.Machine", 
+      "element_id": "DreamNode_3", 
+      "failures": {
+        "MTTF": 40, 
+        "MTTR": 10, 
+        "failureDistribution": "No", 
+        "repairman": "None"
+      }, 
+      "name": "M2: working", 
+      "processingTime": {
+        "distributionType": "Normal", 
+        "max": 3, 
+        "mean": 0.1, 
+        "min": 0.1, 
+        "stdev": 2
+      }
+    }, 
+    "M3": {
+      "_class": "Dream.Machine", 
+      "element_id": "DreamNode_8", 
+      "failures": {
+        "MTTF": 40, 
+        "MTTR": 10, 
+        "failureDistribution": "No", 
+        "repairman": "None"
+      }, 
+      "name": "M3: working", 
+      "processingTime": {
+        "distributionType": "Normal", 
+        "max": 4, 
+        "mean": 3, 
+        "min": 0.1, 
+        "stdev": 2
+      }
+    }, 
+    "Q1": {
+      "_class": "Dream.Queue", 
+      "capacity": 100, 
+      "element_id": "DreamNode_4", 
+      "isDummy": "0", 
+      "name": "Q1: 3", 
+      "schedulingRule": "FIFO"
+    }, 
+    "Q2": {
+      "_class": "Dream.Queue", 
+      "capacity": 130, 
+      "element_id": "DreamNode_7", 
+      "isDummy": "0", 
+      "name": "Q2: 4", 
+      "schedulingRule": "FIFO"
+    }, 
+    "QS1": {
+      "_class": "Dream.EventGenerator", 
+      "argumentDict": "{}", 
+      "duration": 10, 
+      "element_id": "DreamNode_5", 
+      "interval": 10, 
+      "method": "Globals.countQueueMetrics", 
+      "name": "Queue Statistics", 
+      "start": 1, 
+      "stop": -1
+    }, 
+    "QS2": {
+      "_class": "Dream.EventGenerator", 
+      "argumentDict": "{}", 
+      "duration": 10, 
+      "element_id": "DreamNode_9", 
+      "interval": 1, 
+      "method": "Globals.updateGui", 
+      "name": "Queue Statistics", 
+      "start": 1, 
+      "stop": -1
+    }, 
+    "S1": {
+      "_class": "Dream.Source", 
+      "element_id": "DreamNode_6", 
+      "entity": "Dream.Part", 
+      "interarrivalTime": {
+        "distributionType": "Fixed", 
+        "mean": 0.3
+      }, 
+      "name": "S1"
+    }
+  }, 
+  "preference": {
+    "coordinates": {
+      "E1": {
+        "left": 0.8900794036136932, 
+        "top": 0.8658660582253224
+      }, 
+      "M1": {
+        "left": 0.42307670353585936, 
+        "top": 0.026878325532493377
+      }, 
+      "M2": {
+        "left": 0.5502309040521013, 
+        "top": 0.741073832538746
+      }, 
+      "M3": {
+        "left": 0.08785199308394895, 
+        "top": 0.4895695007704151
+      }, 
+      "Q1": {
+        "left": 0.4762502782971969, 
+        "top": 0.2764627769056462
+      }, 
+      "Q2": {
+        "left": 0.5224881693940121, 
+        "top": 0.5222074674884428
+      }, 
+      "QS1": {
+        "left": 0.060109258425859804, 
+        "top": 0.85818653664461
+      }, 
+      "QS2": {
+        "left": 0.9756195021428015, 
+        "top": 0.2783826573008243
+      }, 
+      "S1": {
+        "left": 0.053173574761337515, 
+        "top": 0.10367354133961731
+      }
+    }, 
+    "zoom_level": 1.1111
+  }, 
+  "shift_spreadsheet": [
+    [
+      "Day", 
+      "Machines", 
+      "Start", 
+      "End"
+    ], 
+    [
+      null, 
+      null, 
+      null, 
+      null
+    ]
+  ], 
+  "wip_part_spreadsheet": [
+    [
+      "Order ID", 
+      "Due Date", 
+      "Priority", 
+      "Project Manager", 
+      "Part", 
+      "Part Type", 
+      "Sequence", 
+      "Processing Times", 
+      "Prerequisites Parts"
+    ], 
+    [
+      null, 
+      null, 
+      null, 
+      null, 
+      null, 
+      null, 
+      null, 
+      null, 
+      null
+    ]
+  ]
+}
