@@ -86,6 +86,10 @@ class Machine(CoreObject):
         self.MTTF=MTTF
         self.MTTR=MTTR
         self.availability=availability
+
+        self.changeStatus('waiting') # Can be 'failure', 'working', 'waiting',
+                                     # 'blocked' or 'offshift'
+
         ''' sets the operator resource of the Machine
              check if the operatorPool is a List or a OperatorPool type Object
              if it is a list then initiate a OperatorPool type object containing
@@ -143,6 +147,7 @@ class Machine(CoreObject):
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__
         CoreObject.initialize(self)        
+        self.changeStatus('waiting')
         # initialize the internal Queue (type Resource) of the Machine 
         self.Res=Resource(self.capacity)
         # initiate the Broker responsible to control the request/release
@@ -199,6 +204,7 @@ class Machine(CoreObject):
     def run(self):
         # execute all through simulation time
         while 1:
+            self.changeStatus('waiting')
             # wait until the machine can accept an entity and one predecessor requests it 
             # canAcceptAndIsRequested is invoked to check when the machine requested to receive an entity
             yield waituntil, self, self.canAcceptAndIsRequested
@@ -297,6 +303,7 @@ class Machine(CoreObject):
             # in plantSim the setup is performed when the machine has to process a new type of Entity and only once
             if any(type=="Setup" for type in self.multOperationTypeList) and self.isOperated():
                 self.timeSetupStarted = now()
+                self.changeStatus('working')
                 yield hold,self,self.calculateSetupTime()
                 # if self.interrupted(): There is the issue of failure during the setup
                 self.timeSetupEnded = now()
@@ -323,6 +330,7 @@ class Machine(CoreObject):
             self.downTimeInCurrentEntity=0                          #holds the total time that the 
                                                                     #object was down while holding current entity
             
+            self.changeStatus('working')
             # this loop is repeated until the processing time is expired with no failure
             # check when the processingEndedFlag switched to false              
             while processingNotFinished:
@@ -360,6 +368,7 @@ class Machine(CoreObject):
                         self.releaseOperator()
                         yield waituntil,self,self.broker.brokerIsSet 
     
+                    self.changeStatus('failure')
                     # if there is a failure in the machine it is passivated
                     yield passivate,self
                     # use the timers to count the time that Machine is down and related 
@@ -425,6 +434,7 @@ class Machine(CoreObject):
             self.timeLastEntityEnded=now()                          # this holds the time that the last entity ended processing in Machine 
             self.nameLastEntityEnded=self.currentEntity.name        # this holds the name of the last entity that ended processing in Machine
             self.completedJobs+=1                                   # Machine completed one more Job
+            self.changeStatus('blocked')
             
              
     # =============== release resource after the end of processing

@@ -181,7 +181,15 @@ class CoreObject(Process):
             self.offShiftTimeTryingToReleaseCurrentEntity=self.timeLastShiftStarted-self.timeLastShiftEnded
         blockage=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity+self.offShiftTimeTryingToReleaseCurrentEntity)       
         self.totalBlockageTime+=blockage     
-    
+
+    def changeStatus(self, new_status):
+        self.status = new_status
+        from Globals import send
+        send({"action": "status_change",
+              "object": self.id,
+              "status": new_status,
+              "time": now()})
+
     # =======================================================================
     # gets an entity from the giver 
     # =======================================================================   

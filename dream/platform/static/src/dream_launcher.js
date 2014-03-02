@@ -356,11 +356,17 @@
             displayEntities(destination, message.destination);
           }
         })()
+    }
 
-        
-      }
+    function changeStatus(message, queue) {
+      var obj = dream_instance.getElementId(message.object);
+      dream_instance.updateElementData(message.object, 
+          {status: message.status})
+      $("#now").text(message.time.toFixed(2));
+      $(queue).dequeue()
+    }
   
-    function notifyEndSimulation(message){
+    function notifyEndSimulation(message, queue){
         $("#json_result").val(JSON.stringify(message['success'],
           undefined, " "));
         $("#loading_spinner").hide();
@@ -381,14 +387,22 @@
           );
         });
         dream_instance.displayResult(0);
+        $(queue).dequeue()
       }
 
     function onWebSocketMessage(e) {
       var message = JSON.parse(e.data)
 
+      // XXX queue process message ?
       if (message.action === "move_entity"){
         $("#main").queue(function() {
           moveEntity(message, this);
+        })
+      }
+
+      if (message.action === "status_change"){
+        $("#main").queue(function() {
+          changeStatus(message, this);
         })
       }
 
