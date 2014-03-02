@@ -169,8 +169,7 @@ class Simulation(ACO.Simulation):
         wip_list.append(order_dict)
         order_id, due_date, priority, project_manager, part, part_type,\
           sequence_list, processing_time_list, prerequisite_string = value_list
-        print "evaluate due_date : %r" % (due_date,)
-        due_date = (datetime.strptime(due_date, '%Y/%m/%d') - now).days
+        due_date = (datetime.strptime(due_date, '%Y/%m/%d') - now).days * 24
         prerequisite_list = self.getListFromString(prerequisite_string)
         sequence_list = sequence_list.split('-')
         processing_time_list = processing_time_list.split('-')
