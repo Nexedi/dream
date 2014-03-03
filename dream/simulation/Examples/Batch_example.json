@@ -1,149 +1,148 @@
 {
   "edges": {
     "con_10": [
-      "M1A", 
-      "Q2A", 
-      {}
-    ], 
-    "con_100": [
       "PrB", 
       "QPa", 
       {}
     ], 
+    "con_100": [
+      "Q3B", 
+      "M3B", 
+      {}
+    ], 
     "con_105": [
-      "QPa", 
-      "PaA", 
+      "M3B", 
+      "BRB", 
       {}
     ], 
     "con_110": [
+      "BRB", 
+      "QM", 
+      {}
+    ], 
+    "con_115": [
+      "QM", 
+      "MM", 
+      {}
+    ], 
+    "con_120": [
+      "MM", 
+      "QPr", 
+      {}
+    ], 
+    "con_125": [
+      "QPr", 
+      "PrA", 
+      {}
+    ], 
+    "con_130": [
+      "QPr", 
+      "PrB", 
+      {}
+    ], 
+    "con_135": [
+      "PrA", 
+      "QPa", 
+      {}
+    ], 
+    "con_15": [
+      "QPa", 
+      "PaA", 
+      {}
+    ], 
+    "con_20": [
       "QPa", 
       "PaB", 
       {}
     ], 
-    "con_115": [
+    "con_25": [
       "PaA", 
       "E1", 
       {}
     ], 
-    "con_120": [
+    "con_30": [
       "PaB", 
       "E1", 
       {}
     ], 
-    "con_125": [
+    "con_35": [
       "QStart", 
       "BDA", 
       {}
     ], 
-    "con_130": [
+    "con_40": [
       "QStart", 
       "BDB", 
       {}
     ], 
-    "con_135": [
+    "con_45": [
       "BDA", 
       "M1A", 
       {}
     ], 
-    "con_15": [
+    "con_5": [
+      "M1A", 
+      "Q2A", 
+      {}
+    ], 
+    "con_50": [
       "Q2A", 
       "M2A", 
       {}
     ], 
-    "con_20": [
+    "con_55": [
       "M2A", 
       "Q3A", 
       {}
     ], 
-    "con_25": [
+    "con_60": [
       "Q3A", 
       "M3A", 
       {}
     ], 
-    "con_30": [
+    "con_65": [
       "M3A", 
       "BRA", 
       {}
     ], 
-    "con_35": [
+    "con_70": [
       "S1", 
       "QStart", 
       {}
     ], 
-    "con_40": [
+    "con_75": [
       "BRA", 
       "QM", 
       {}
     ], 
-    "con_45": [
+    "con_80": [
       "BDB", 
       "M1B", 
       {}
     ], 
-    "con_5": [
+    "con_85": [
       "M1B", 
       "Q2B", 
       {}
     ], 
-    "con_50": [
+    "con_90": [
       "Q2B", 
       "M2B", 
       {}
     ], 
-    "con_55": [
+    "con_95": [
       "M2B", 
       "Q3B", 
-      {}
-    ], 
-    "con_60": [
-      "Q3B", 
-      "M3B", 
-      {}
-    ], 
-    "con_65": [
-      "M3B", 
-      "BRB", 
-      {}
-    ], 
-    "con_70": [
-      "BRB", 
-      "QM", 
-      {}
-    ], 
-    "con_75": [
-      "QM", 
-      "MM", 
-      {}
-    ], 
-    "con_80": [
-      "MM", 
-      "QPr", 
-      {}
-    ], 
-    "con_85": [
-      "QPr", 
-      "PrA", 
-      {}
-    ], 
-    "con_90": [
-      "QPr", 
-      "PrB", 
-      {}
-    ], 
-    "con_95": [
-      "PrA", 
-      "QPa", 
       {}
     ]
   }, 
   "general": {
     "confidenceLevel": 0.95, 
     "currentDate": "2014/02/18", 
-    "desiredPercentageOfSuccess": 0.85, 
     "maxSimTime": 2880, 
     "numberOfReplications": 1, 
     "processTimeout": 20, 
-    "throughputTarget": 4600, 
+    "throughputTarget": 4000, 
     "trace": "Yes"
   }, 
   "nodes": {
@@ -380,6 +379,17 @@
       "name": "StartQueue", 
       "schedulingRule": "FIFO"
     }, 
+    "Queues": {
+      "_class": "Dream.EventGenerator", 
+      "argumentDict": "{}", 
+      "duration": 10, 
+      "element_id": "DreamNode_27", 
+      "interval": 10, 
+      "method": "Globals.countQueueMetrics", 
+      "name": "Queues", 
+      "start": 1, 
+      "stop": -1
+    }, 
     "S1": {
       "_class": "Dream.BatchSource", 
       "batchNumberOfUnits": 100, 
@@ -494,6 +504,10 @@
         "left": 0.0972476261258133, 
         "top": 0.09772997661775827
       }, 
+      "Queues": {
+        "left": 0.1174310956990953, 
+        "top": 0.9109171411270984
+      }, 
       "S1": {
         "left": 0.0037421998521831056, 
         "top": 0.09077525071036834
@@ -533,24 +547,26 @@
       "21:00"
     ], 
     [
-      null, 
-      null, 
+      "", 
+      "", 
       null, 
       null
     ]
   ], 
-  "wip_spreadsheet": [
+  "wip_part_spreadsheet": [
     [
-      "Jobs", 
-      "ID", 
-      "Order Date", 
+      "Order ID", 
       "Due Date", 
       "Priority", 
-      "Material", 
+      "Project Manager", 
+      "Part", 
+      "Part Type", 
       "Sequence", 
-      "Processing Times"
+      "Processing Times", 
+      "Prerequisites Parts"
     ], 
     [
+      null, 
       null, 
       null, 
       null, 
