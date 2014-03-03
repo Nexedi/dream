@@ -53,7 +53,7 @@ class QueueManagedJob(QueueJobShop):
             if callerObject:
                 thecaller = callerObject
             else:
-                raise NoCallerError('The caller of the MouldAssemblyBuffer must be defined')
+                raise NoCallerError('The caller of the QueueManagedJob haveToDispose must be defined')
         except NoCallerError as noCaller:
             print 'No caller error: {0}'.format(noCaller)
         

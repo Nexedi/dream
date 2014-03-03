@@ -61,7 +61,7 @@ class OperatorPreemptive(Operator):
             if callerObject:
                 thecaller = callerObject
             else:
-                raise NoCallerError('The caller of the MouldAssemblyBuffer must be defined')
+                raise NoCallerError('The caller must be defined for checkIfResourceCanPreempt')
         except NoCallerError as noCaller:
             print 'No caller error: {0}'.format(noCaller)
 
