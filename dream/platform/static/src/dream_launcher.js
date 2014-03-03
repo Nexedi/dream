@@ -181,6 +181,7 @@
             } else {
               $("#reports").hide();
               $("#json_result").show().effect('shake', 50).val(data['error']);
+              console.error(data['error'])
             }
           });
         e.preventDefault();
