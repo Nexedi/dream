@@ -152,6 +152,8 @@ class Router(ObjectInterruption):
         # pending entities are entities about to enter an other machine, updated by endProcessingActions()
         # if there are any pending entities
         if len(G.pendingEntities):
+            # local variable
+            allEntitiesMoved=False
             # for each one of them
             for entity in G.pendingEntities:
                 # if they are residing in a machine which waits to dispose and is functional
@@ -169,12 +171,16 @@ class Router(ObjectInterruption):
                 elif entity.currentStation in G.QueueList:
                     # if the hot flag of the entity is raised
                     if entity.hot:
-                        return True
+                        allEntitiesMoved=True
+#                         return True
                     else:
                         return False
                 elif entity.currentStation in G.OrderDecompositionList:
                     return False
                 # TODO: this list can check all the available object in G.objList
+            # if no entity returned False then return True
+            if allEntitiesMoved:
+                return True
         return True
     
     # =======================================================================
