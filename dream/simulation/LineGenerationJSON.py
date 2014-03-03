@@ -66,6 +66,7 @@ from BatchScrapMachine import BatchScrapMachine
 from LineClearance import LineClearance
 from EventGenerator import EventGenerator
 from Operator import Operator
+from OperatorPreemptive import OperatorPreemptive
 from OperatorManagedJob import OperatorManagedJob
 from OperatorPool import OperatorPool
 from OperatedPoolBroker import Broker
@@ -151,6 +152,7 @@ def createObjects():
     G.LineClearanceList=[]
     G.EventGeneratorList=[]
     G.OperatorsList = []
+    G.OperatorPreemptivesList = []
     G.OperatorManagedJobsList = []
     G.OperatorPoolsList = []
     G.BrokersList = []
@@ -199,10 +201,23 @@ def createObjects():
 																	# calling the getSuccesorList() method on the operator
             G.OperatorsList.append(O)                               # add the operator to the RepairmanList
             G.ModelResourceList.append(O) 
+        elif resourceClass=='Dream.OperatorPreemptive':
+            id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
+            name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
+            capacity = int(element.get('capacity') or 1)            # get the capacity of the el. / defautl '1'
+            schedulingRule=element.get('schedulingRule', 'FIFO')    # get the scheduling rule of the el. (how to choose which 
+                                                                    # station to serve first) / default 'FIFO' i.e. the one that 
+                                                                    # called first
+            O = OperatorPreemptive(element_id, name, capacity,schedulingRule)      # create an operator object
+            O.coreObjectIds=getSuccessorList(id)                    # update the list of objects that the operator operates
+                                                                    # calling the getSuccesorList() method on the operator
+            G.OperatorsList.append(O)                               # add the operator to the RepairmanList
+            G.OperatorPreemptivesList.append(O)
+            G.ModelResourceList.append(O) 
         elif resourceClass=='Dream.OperatorManagedJob':
             id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
             name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
-            capacity = int(element.get('capacity', '1'))            # get the capacity of the el. / defautl '1'
+            capacity = int(element.get('capacity') or 1)            # get the capacity of the el. / defautl '1'
             schedulingRule=element.get('schedulingRule', 'FIFO')    # get the scheduling rule of the el. (how to choose which 
                                                                     # station to serve first) / default 'FIFO' i.e. the one that 
                                                                     # called first
