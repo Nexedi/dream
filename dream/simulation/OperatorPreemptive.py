@@ -90,7 +90,7 @@ class OperatorPreemptive(Operator):
                 #if the  Entity to be forwarded to the station currently processed by the operator is critical
                 if requestingObjectQueue[0].isCritical:
                     #if the receiver does not hold an Entity that is also critical
-                    if not victimQueue[0].isCritical and not receivingObjectQueue[0].isCritical:
+                    if not victimQueue[0].isCritical and not receivingObjectQueue[0].isCritical and victim.Up:
                         # then the receiver must be preemptied before it can receive any entities from the calerObject
                         victim.shouldPreempt=True
                         victim.preempt()
@@ -105,9 +105,17 @@ class OperatorPreemptive(Operator):
     #                    checks if the worker is available
     # =======================================================================       
     def checkIfResourceIsAvailable(self,callerObject=None): 
-        # TODO: to discuss with George about the use of callerObject
         activeResource= self.getResource()
         activeResourceQueue = activeResource.getResourceQueue()
-        
         len(activeResourceQueue)<self.capacity
+        
+    # =======================================================================
+    # override the default method so that Entities 
+    # that are critical got served first
+    # =======================================================================
+    def sortEntities(self):
+        Operator.sortEntities(self)     #do the default sorting first
+        activeObjectQ=self.activeCallersList
+            
+        activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().isCritical, reverse=True)
         

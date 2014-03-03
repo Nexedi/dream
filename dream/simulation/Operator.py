@@ -58,7 +58,7 @@ class Operator(Repairman): # XXX isn't it the other way around ?
             raise ValueError("Unknown scheduling rule %s for %s" %
               (scheduling_rule, id))
 
-# =======================================================================
+    # =======================================================================
     #    sorts the Entities of the Queue according to the scheduling rule
     # =======================================================================
     def sortEntities(self):
