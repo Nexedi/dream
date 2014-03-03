@@ -241,7 +241,7 @@ path, ._jsPlumb_endpoint {
   box-shadow: 1px 1px 2px #aaa;
   /*margin-top: 20px;
   margin-left: 35px;*/
-  width:7em;
+  min-width:7em;
   height:2em;
   z-index: 10001;
   color: gray;
