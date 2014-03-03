@@ -241,7 +241,7 @@ class Machine(CoreObject):
             if any(type=="Load" for type in self.multOperationTypeList) and self.isOperated():
                 self.timeLoadStarted = now()
                 yield hold,self,self.calculateLoadTime()
-                # if self.interrupted(): There is the issue of failure during the Loading
+                # TODO: if self.interrupted(): There is the issue of failure during the Loading
                 self.timeLoadEnded = now()
                 self.loadTimeCurrentEntity = self.timeLoadEnded-self.timeLoadStarted 
                 self.totalLoadTime += self.loadTimeCurrentEntity
@@ -298,7 +298,7 @@ class Machine(CoreObject):
             if any(type=="Setup" for type in self.multOperationTypeList) and self.isOperated():
                 self.timeSetupStarted = now()
                 yield hold,self,self.calculateSetupTime()
-                # if self.interrupted(): There is the issue of failure during the setup
+                # TODO: if self.interrupted(): There is the issue of failure during the setup
                 self.timeSetupEnded = now()
                 self.setupTimeCurrentEntity = self.timeSetupEnded-self.timeSetupStarted
                 self.totalSetupTime += self.setupTimeCurrentEntity
