@@ -34,9 +34,9 @@ from Operator import Operator
 # ===========================================================================
 class OperatorManagedJob(Operator):
     
-    def __init__(self, id, name, capacity=1,schedulingRule="FIFO"):
-        Operator.__init__(self,id=id,name=name,capacity=capacity,schedulingRule=schedulingRule)
-        self.operatorAssignedTo=None
+#     def __init__(self, id, name, capacity=1,schedulingRule="FIFO"):
+#         Operator.__init__(self,id=id,name=name,capacity=capacity,schedulingRule=schedulingRule)
+#         self.operatorAssignedTo=None
     
     # =======================================================================
     #                    checks if the worker is available

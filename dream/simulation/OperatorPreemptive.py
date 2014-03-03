@@ -53,7 +53,7 @@ class OperatorPreemptive(Operator):
     def checkIfResourceCanPreempt(self,callerObject=None):
         # TODO: to discuss with George about the use of callerObject
         activeResource= self.getResource()
-        activeResourceQueue = activeResource.getResourceQueue()
+        activeResourceQueue = self.getResourceQueue()
         # find out which station is requesting the operator?
         thecaller=callerObject
         # assert that the callerObject is not None
@@ -100,14 +100,6 @@ class OperatorPreemptive(Operator):
             except:
                 pass
         return len(self.Res.activeQ)<self.capacity
-    
-    # =======================================================================
-    #                    checks if the worker is available
-    # =======================================================================       
-    def checkIfResourceIsAvailable(self,callerObject=None): 
-        activeResource= self.getResource()
-        activeResourceQueue = activeResource.getResourceQueue()
-        len(activeResourceQueue)<self.capacity
         
     # =======================================================================
     # override the default method so that Entities 

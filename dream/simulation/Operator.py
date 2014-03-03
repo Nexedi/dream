@@ -57,6 +57,8 @@ class Operator(Repairman): # XXX isn't it the other way around ?
             "NumStages", "RPC", "LPT", "SPT", "MS", "WINQ"):
             raise ValueError("Unknown scheduling rule %s for %s" %
               (scheduling_rule, id))
+        # the station that the operator is assigned to
+        self.operatorAssignedTo=None
 
     # =======================================================================
     #    sorts the Entities of the Queue according to the scheduling rule
