@@ -107,8 +107,7 @@
                             },
                             "stationIdsList": [
                                 "Q1"
-                            ],
-                            "stepNumber": 0
+                            ]
                         },
                         {
                             "processingTime": {
@@ -118,8 +117,7 @@
                             "stationIdsList": [
                                 "M1",
                                 "M2"
-                            ],
-                            "stepNumber": 1
+                            ]
                         },
                         {
                             "processingTime": {
@@ -128,8 +126,7 @@
                             },
                             "stationIdsList": [
                                 "Q3"
-                            ],
-                            "stepNumber": 2
+                            ]
                         },
                         {
                             "processingTime": {
@@ -138,8 +135,7 @@
                             },
                             "stationIdsList": [
                                 "EDM"
-                            ],
-                            "stepNumber": 3
+                            ]
                         }
                     ]
                 },
@@ -156,8 +152,7 @@
                             },
                             "stationIdsList": [
                                 "Q1"
-                            ],
-                            "stepNumber": 0
+                            ]
                         },
                         {
                             "processingTime": {
@@ -167,8 +162,7 @@
                             "stationIdsList": [
                                 "M1",
                                 "M2"
-                            ],
-                            "stepNumber": 1
+                            ]
                         },
                         {
                             "processingTime": {
@@ -177,8 +171,7 @@
                             },
                             "stationIdsList": [
                                 "Q3"
-                            ],
-                            "stepNumber": 2
+                            ]
                         },
                         {
                             "processingTime": {
@@ -187,8 +180,7 @@
                             },
                             "stationIdsList": [
                                 "EDM"
-                            ],
-                            "stepNumber": 3
+                            ]
                         }
                     ]
                 },
@@ -205,8 +197,7 @@
                             },
                             "stationIdsList": [
                                 "Q1"
-                            ],
-                            "stepNumber": 0
+                            ]
                         },
                         {
                             "processingTime": {
@@ -216,8 +207,7 @@
                             "stationIdsList": [
                                 "M1",
                                 "M2"
-                            ],
-                            "stepNumber": 1
+                            ]
                         },
                         {
                             "processingTime": {
@@ -226,8 +216,7 @@
                             },
                             "stationIdsList": [
                                 "Q3"
-                            ],
-                            "stepNumber": 2
+                            ]
                         },
                         {
                             "processingTime": {
@@ -236,8 +225,7 @@
                             },
                             "stationIdsList": [
                                 "EDM"
-                            ],
-                            "stepNumber": 3
+                            ]
                         }
                     ]
                 },
@@ -254,8 +242,7 @@
                             },
                             "stationIdsList": [
                                 "Q1"
-                            ],
-                            "stepNumber": 0
+                            ]
                         },
                         {
                             "processingTime": {
@@ -265,8 +252,7 @@
                             "stationIdsList": [
                                 "M1",
                                 "M2"
-                            ],
-                            "stepNumber": 1
+                            ]
                         },
                         {
                             "processingTime": {
@@ -275,8 +261,7 @@
                             },
                             "stationIdsList": [
                                 "Q3"
-                            ],
-                            "stepNumber": 2
+                            ]
                         },
                         {
                             "processingTime": {
@@ -285,8 +270,7 @@
                             },
                             "stationIdsList": [
                                 "EDM"
-                            ],
-                            "stepNumber": 3
+                            ]
                         }
                     ]
                 },
@@ -303,8 +287,7 @@
                             },
                             "stationIdsList": [
                                 "Q1"
-                            ],
-                            "stepNumber": 0
+                            ]
                         },
                         {
                             "processingTime": {
@@ -313,8 +296,7 @@
                             },
                             "stationIdsList": [
                                 "M1"
-                            ],
-                            "stepNumber": 1
+                            ]
                         }
                     ]
                 }

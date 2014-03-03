@@ -57,8 +57,7 @@
                             },
                             "stationIdsList": [
                                 "Q1"
-                            ],
-                            "stepNumber": "0"
+                            ]
                         },
                         {
                             "processingTime": {
@@ -67,8 +66,7 @@
                             },
                             "stationIdsList": [
                                 "M1"
-                            ],
-                            "stepNumber": "1"
+                            ]
                         },
                         {
                             "processingTime": {
@@ -77,8 +75,7 @@
                             },
                             "stationIdsList": [
                                 "Q2"
-                            ],
-                            "stepNumber": "2"
+                            ]
                         },
                         {
                             "processingTime": {
@@ -87,8 +84,7 @@
                             },
                             "stationIdsList": [
                                 "M2"
-                            ],
-                            "stepNumber": "3"
+                            ]
                         }
                     ]
                 }
@@ -114,8 +110,7 @@
                             },
                             "stationIdsList": [
                                 "Q2"
-                            ],
-                            "stepNumber": "0"
+                            ]
                         },
                         {
                             "processingTime": {
@@ -124,8 +119,7 @@
                             },
                             "stationIdsList": [
                                 "M2"
-                            ],
-                            "stepNumber": "1"
+                            ]
                         }
                     ]
                 }

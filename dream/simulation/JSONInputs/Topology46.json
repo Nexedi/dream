@@ -53,8 +53,7 @@
                         {
                             "stationIdsList": [
                                 "Q1"
-                            ],
-                            "stepNumber": "0"
+                            ]
                         },
                         {
                             "processingTime": {
@@ -63,14 +62,12 @@
                             },
                             "stationIdsList": [
                                 "M1"
-                            ],
-                            "stepNumber": "1"
+                            ]
                         },
                         {
                             "stationIdsList": [
                                 "Q2"
-                            ],
-                            "stepNumber": "2"
+                            ]
                         },
                         {
                             "processingTime": {
@@ -83,14 +80,12 @@
                             },
                             "stationIdsList": [
                                 "M2"
-                            ],
-                            "stepNumber": "3"
+                            ]
                         },
                         {
                             "stationIdsList": [
                                 "E1"
-                            ],
-                            "stepNumber": "4"
+                            ]
                         }
                     ]
                 }
@@ -113,8 +108,7 @@
                         {
                             "stationIdsList": [
                                 "Q2"
-                            ],
-                            "stepNumber": "0"
+                            ]
                         },
                         {
                             "processingTime": {
@@ -127,14 +121,12 @@
                             },
                             "stationIdsList": [
                                 "M2"
-                            ],
-                            "stepNumber": "1"
+                            ]
                         },
                         {
                             "stationIdsList": [
                                 "E1"
-                            ],
-                            "stepNumber": "2"
+                            ]
                         }
                     ]
                 }

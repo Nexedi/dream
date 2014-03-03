@@ -334,8 +334,7 @@
                         {
                             "stationIdsList": [
                                 "Q0"
-                            ],
-                            "stepNumber": "0"
+                            ]
                         },
                         {
                             "processingTime": {
@@ -349,8 +348,7 @@
                             "stationIdsList": [
                                 "CAD1",
                                 "CAD2"
-                            ],
-                            "stepNumber": "1"
+                            ]
                         }
                     ]
                 },
@@ -590,8 +588,7 @@
                         {
                             "stationIdsList": [
                                 "Q0"
-                            ],
-                            "stepNumber": "0"
+                            ]
                         },
                         {
                             "processingTime": {
@@ -605,8 +602,7 @@
                             "stationIdsList": [
                                 "CAD1",
                                 "CAD2"
-                            ],
-                            "stepNumber": "1"
+                            ]
                         }
                     ]
                 }
