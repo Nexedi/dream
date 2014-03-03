@@ -216,9 +216,11 @@ class CoreObject(Process):
         # perform preemption when required
         # if the object is not Exit
         if activeObject.receiver:
-            # if the receiver has an operatorPool
+            # if the receiver has an operatorPool and its operationType is Load
             try:
-                if activeObject.receiver.operatorPool:
+                if activeObject.receiver.operatorPool\
+                     and (activeObject.receiver.type=='MachineJobShop'\
+                       or activeObject.receiver.type=='MachineManagedJob'):
                     # and the operationType list contains Load, the receiver is operated
                     if (activeObject.receiver.operatorPool!="None")\
                         and any(type=="Load" for type in activeObject.receiver.multOperationTypeList):
