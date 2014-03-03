@@ -293,7 +293,7 @@ class Simulation(object):
            schema["trace"],
         ],
         "gui": {
-          'debug_json': 0,
+          'debug_json': 1,
           'wip_spreadsheet': 0,
           'wip_part_spreadsheet': 0,
           'shift_spreadsheet': 0,
