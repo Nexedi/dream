@@ -32,6 +32,13 @@ from SimPy.Simulation import Resource, now
 from Operator import Operator
 
 # ===========================================================================
+# Error in the setting up of the WIP
+# ===========================================================================
+class NoCallerError(Exception):
+    def __init__(self, callerError):
+        Exception.__init__(self, callerError) 
+
+# ===========================================================================
 #                 the resource that operates the machines
 # ===========================================================================
 class OperatorPreemptive(Operator):
@@ -41,19 +48,23 @@ class OperatorPreemptive(Operator):
 #         self.type="OperatorPreemptive"
 
     # =======================================================================
-    #                    checks if the worker is available
-    # =======================================================================       
-    def checkIfResourceIsAvailable(self,callerObject=None): 
+    # Check if Operator Can perform a preemption
+    # =======================================================================
+    def checkIfResourceCanPreempt(self,callerObject=None):
         # TODO: to discuss with George about the use of callerObject
         activeResource= self.getResource()
         activeResourceQueue = activeResource.getResourceQueue()
         # find out which station is requesting the operator?
         thecaller=callerObject
-        # TODO: if the callerObject is None then 
-        #     perform then default behaviour. Used to find free operators 
-        if thecaller==None:
-            # added for testing
-            len(self.Res.activeQ)<self.capacity
+        # assert that the callerObject is not None
+        try:
+            if callerObject:
+                thecaller = callerObject
+            else:
+                raise NoCallerError('The caller of the MouldAssemblyBuffer must be defined')
+        except NoCallerError as noCaller:
+            print 'No caller error: {0}'.format(noCaller)
+
         # Otherwise check the operator has a reason to preempt the machine he is currently working on
         # TODO: update the objects requesting the operator
         requestingObject=thecaller.requestingObject
@@ -89,3 +100,14 @@ class OperatorPreemptive(Operator):
             except:
                 pass
         return len(self.Res.activeQ)<self.capacity
+    
+    # =======================================================================
+    #                    checks if the worker is available
+    # =======================================================================       
+    def checkIfResourceIsAvailable(self,callerObject=None): 
+        # TODO: to discuss with George about the use of callerObject
+        activeResource= self.getResource()
+        activeResourceQueue = activeResource.getResourceQueue()
+        
+        len(activeResourceQueue)<self.capacity
+        
