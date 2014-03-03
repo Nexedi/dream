@@ -273,20 +273,53 @@
     };
 
     that.displayResult = function (idx) {
+      var active_tab = $("#reports").data("ui-tabs") ?
+        $("#reports").tabs("option", "active") : 0;
+      var result = JSON.parse($("#json_result").val())[idx]['result'];
+
       $('li.result').removeClass('active');
       $($('li.result')[idx]).addClass('active');
-      var result = JSON.parse($("#json_result").val())[idx]['result'];
+      if ($("#reports").data("ui-tabs")) {
+        $("#reports").tabs("destroy"); 
+      }
+
+      function showReport(report_id) {
+        $("li > a[href='#" + report_id  + "']").parent().show();
+      }
+      function hideReport(report_id) {
+        $("li > a[href='#" + report_id  + "']").parent().hide();
+      }
+
+      // XXX : use same name and make it a loop
       if (configuration['Dream-Configuration'].gui.debug_json){
-        $("#debug_json").show();
+        showReport("debug_json")
+      } else {
+        hideReport("debug_json")
       }
       if (configuration['Dream-Configuration'].gui.station_utilisation_graph){
-        $("#graph_zone").show();
+        showReport("graph_zone")
+      } else {
+        hideReport("graph_zone")
       }
       if (configuration['Dream-Configuration'].gui.job_schedule_spreadsheet){
-        $("#job_schedule_spreadsheet").show();
+        showReport("job_schedule_spreadsheet")
+      } else {
+        hideReport("job_schedule_spreadsheet")
       }
       if (configuration['Dream-Configuration'].gui.job_gantt){
-        $("#job_gantt").show();
+        showReport("job_gantt")
+      } else {
+        hideReport("job_gantt")
+      }
+      if (configuration['Dream-Configuration'].gui.exit_stat){
+        showReport("exit_stat")
+      } else {
+        hideReport("exit_stat")
+      }
+      if (configuration['Dream-Configuration'].gui.queue_stat){
+        showReport("queue_stat")
+      } else {
+        hideReport("queue_stat")
       }
 
       // temporary hack
@@ -519,7 +552,7 @@
       }
 
       if (configuration['Dream-Configuration'].gui.queue_stat){
-        var queue_stat = $("#queue_stat").show();
+        var queue_stat = $("#queue_stat");
         var series = [];
         $.each(result.elementList, function(idx, el){
           if (el._class == 'Dream.Queue'){
@@ -531,7 +564,7 @@
       }
 
       if (configuration['Dream-Configuration'].gui.exit_stat){
-        var exit_stat = $("#exit_stat").show().text("Exit Metrics");
+        var exit_stat = $("#exit_stat").find('div').empty();
         $.each(result.elementList, function(idx, el){
           if (el._class == 'Dream.Exit'){
             var text = exit_stat.html() + "<table><tr><th colspan='2'>" + (
@@ -663,6 +696,10 @@
           //$('#gantt_grid').width(1000);
         }
       }
+      // make the tabs full width
+      $("#reports li").width((100/$("#reports li:visible").length) - 1 +'%');
+
+      $("#reports").show().tabs({ active: active_tab });
     };
     return that;
   };

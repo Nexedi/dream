@@ -65,11 +65,11 @@
 
     var loadData = function (data) {
       dream_instance.clearAll();
-      $('#graph_zone').hide();
-      $('#job_schedule_spreadsheet').hide();
+      $('#reports').hide();
+      $('#result_zone').hide();
+
       $('#shift_spreadsheet').hide();
-      $("#job_gantt").hide();
-      $("#queue_stat").hide();
+      $("#debug_json").hide();
       $("#wip_part_spreadsheet").hide();
 
       if (configuration['Dream-Configuration'].gui.wip_part_spreadsheet){
@@ -163,6 +163,7 @@
           function (data) {
             $("#loading_spinner").hide();
             $("#run_simulation").button('enable');
+            $("#reports").show();
             $("#result_zone").show();
             $('#result_list').empty();
             if (data['success']) {
@@ -178,11 +179,8 @@
               });
               dream_instance.displayResult(0);
             } else {
-              $("#result_zone").hide();
-              $("#graph_zone").hide();
-              $("#job_schedule_spreadsheet").hide();
-              $("#job_gantt").hide();
-              $("#json_result").effect('shake', 50).val(data['error']);
+              $("#reports").hide();
+              $("#json_result").show().effect('shake', 50).val(data['error']);
             }
           });
         e.preventDefault();
@@ -258,11 +256,8 @@
     $(window).resize(function () {
       dream_instance.redraw();
     });
-    $("#result_zone").hide();
-    $("#graph_zone").hide();
     $("#job_schedule_spreadsheet").hide();
     $("#shift_spreadsheet").hide();
-    $("#job_gantt").hide();
        }
     });
   });

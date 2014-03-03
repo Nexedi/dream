@@ -66,30 +66,50 @@
       <div id="shift_spreadsheet" style="display: none; overflow: scroll"></div>
     </div>
     <div class="twelve columns">
+
       <div id="result_zone">
         <h1>Results</h1>
-        <ul id="result_list"></ul></div>
-      <div id="graph_zone">
-        <div>Stations Utilization</div>
-        <div id="graph"></div>
+        <ul id="result_list"></ul>
       </div>
-      <div id="exit_stat"></div>
-      <div id="queue_stat">
-        <div>Queues Statistics</div>
-        <div id="queue_stat_graph"></div>
-      </div>
-      <div id="job_gantt" style='width:1320px; height:800px;'></div>
-      <div id="job_schedule_spreadsheet" style="display: none; overflow: scroll;"></div>
 
-      <div id="debug_json" style="display: none">
-        <div class="six columns alpha">
-          <div>Input</div>
+      <div id="reports" style="display:none;">
+        <ul>
+          <li><a href="#graph_zone">Stations Utilization</a></li>
+          <li><a href="#exit_stat">Exit Statistics</a></li>
+          <li><a href="#queue_stat">Queue Statistics</a></li>
+          <li><a href="#job_gantt">Job Gantt</a></li>
+          <li><a href="#job_schedule_spreadsheet">Job Schedule</a></li>
+          <li><a href="#debug_json">Debug Json</a></li>
+        </ul>
+        <div id="graph_zone">
+          <h1>Stations Utilization</h1>
+          <div id="graph"></div>
+        </div>
+
+        <div id="exit_stat">
+          <h1>Exit Statistics</h1>
+          <div></div>
+        </div>
+
+        <div id="queue_stat">
+          <h1>Queues Statistics</h1>
+          <div id="queue_stat_graph"></div>
+        </div>
+
+        <div id="job_gantt" style='width:1320px; height:800px;'></div>
+        <div id="job_schedule_spreadsheet" style="overflow: scroll;"></div>
+
+        <div id="debug_json">
+          <h1>Json Used</h1>
+          <table><tr><td>
+          <h4>Input</h4>
           <textarea rows="20" cols="47" id="json_output"></textarea>
-        </div>
-        <div class="six columns alpha">
-          <div>Result</div>
+          </td><td>
+          <h4>Output</h4>
           <textarea rows="20" cols="47" id="json_result"></textarea>
+          </td></tr></table>
         </div>
+
       </div>
     </div>
 
