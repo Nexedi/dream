@@ -290,6 +290,7 @@
       }
 
       // temporary hack
+      // TODO: use the date specified in general input
       var now = new Date();
       now.setHours(0);
       now.setMinutes(0);
