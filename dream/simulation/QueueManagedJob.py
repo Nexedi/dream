@@ -76,9 +76,11 @@ class QueueManagedJob(QueueJobShop):
                     and thecaller==activeObject.receiver
         
         #give the entity to the possible receiver that is waiting for the most time.     
-        maxTimeWaiting=0     
+        maxTimeWaiting=0
+        hasFreeReceiver=False
         for object in activeObject.next:                            # loop through the object in the successor list
             if(object.canAccept(activeObject)):                     # if the object can accept
+                hasFreeReceiver=True
                 timeWaiting=now()-object.timeLastEntityLeft         # compare the time that it has been waiting 
                 if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# with the others'
                     maxTimeWaiting=timeWaiting
@@ -86,7 +88,7 @@ class QueueManagedJob(QueueJobShop):
         #sort the internal queue so that the Entities that have an available manager go in the front
         activeObject.sortEntities()
         #return True if the Queue has Entities and the caller is the receiver
-        return len(activeObjectQueue)>0 and (thecaller is self.receiver) 
+        return len(activeObjectQueue)>0 and (thecaller is self.receiver) and hasFreeReceiver
 
     # =======================================================================
     # override the default method so that Entities 
