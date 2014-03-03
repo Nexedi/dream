@@ -49,6 +49,13 @@ class ObjectResource(object):
         return len(self.Res.activeQ)<self.capacity   
     
     # =======================================================================
+    # Check if Operator Can perform a preemption
+    # =======================================================================
+    def checkIfResourceCanPreempt(self,callerObject=None):
+        # TODO: each resource will return according to its availability for preemption
+        return False
+    
+    # =======================================================================
     #              actions to be taken after the simulation ends
     # =======================================================================
     def postProcessing(self, MaxSimtime=None):
