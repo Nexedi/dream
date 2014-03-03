@@ -38,6 +38,7 @@ from CoreObject import CoreObject
 # the Dismantle object
 # ===========================================================================
 class Dismantle(CoreObject):
+    class_name = 'Dream.Dismantle'
     # =======================================================================
     # initialize the object
     # =======================================================================
@@ -292,93 +293,43 @@ class Dismantle(CoreObject):
             G.outputSheet.write(G.outputIndex,0, "The percentage of Waiting of "+self.objName +" is:")
             G.outputSheet.write(G.outputIndex,1,100*self.totalWaitingTime/MaxSimtime)
             G.outputIndex+=1   
-        else:   #if we had multiple replications we output confidence intervals to excel
-                #for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
-                #so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
-                #so for each output value we check if there was difference in the runs' results
-                #if yes we output the Confidence Intervals. if not we output just the fix value                 
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Working of "+self.objName +" is:")
-            if self.checkIfArrayHasDifValues(self.Working): 
-                G.outputSheet.write(G.outputIndex,1,stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][0])
-                G.outputSheet.write(G.outputIndex,2,stat.bayes_mvs(self.Working, G.confidenceLevel)[0][0])
-                G.outputSheet.write(G.outputIndex,3,stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][1])  
-            else: 
-                G.outputSheet.write(G.outputIndex,1,self.Working[0])
-                G.outputSheet.write(G.outputIndex,2,self.Working[0])
-                G.outputSheet.write(G.outputIndex,3,self.Working[0])          
+        else:
+            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Working of "+ self.objName+" is:")
+            working_ci = self.getConfidenceIntervals(self.Working)
+            G.outputSheet.write(G.outputIndex, 1, working_ci['min'])
+            G.outputSheet.write(G.outputIndex, 2, working_ci['avg'])
+            G.outputSheet.write(G.outputIndex, 3, working_ci['max'])
             G.outputIndex+=1
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Blockage of "+self.objName +" is:")            
-            if self.checkIfArrayHasDifValues(self.Blockage):
-                G.outputSheet.write(G.outputIndex,1,stat.bayes_mvs(self.Blockage, G.confidenceLevel)[0][1][0])
-                G.outputSheet.write(G.outputIndex,2,stat.bayes_mvs(self.Blockage, G.confidenceLevel)[0][0])
-                G.outputSheet.write(G.outputIndex,3,stat.bayes_mvs(self.Blockage, G.confidenceLevel)[0][1][1])
-            else: 
-                G.outputSheet.write(G.outputIndex,1,self.Blockage[0])
-                G.outputSheet.write(G.outputIndex,2,self.Blockage[0])
-                G.outputSheet.write(G.outputIndex,3,self.Blockage[0]) 
+
+            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Blockage of "+ self.objName+" is:")
+            blockage_ci = self.getConfidenceIntervals(self.Blockage)
+            G.outputSheet.write(G.outputIndex, 1, blockage_ci['min'])
+            G.outputSheet.write(G.outputIndex, 2, blockage_ci['avg'])
+            G.outputSheet.write(G.outputIndex, 3, blockage_ci['max'])
             G.outputIndex+=1
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Waiting of "+self.objName +" is:")            
-            if self.checkIfArrayHasDifValues(self.Waiting):
-                G.outputSheet.write(G.outputIndex,1,stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][0])
-                G.outputSheet.write(G.outputIndex,2,stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][0])
-                G.outputSheet.write(G.outputIndex,3,stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][1])
-            else: 
-                G.outputSheet.write(G.outputIndex,1,self.Waiting[0])
-                G.outputSheet.write(G.outputIndex,2,self.Waiting[0])
-                G.outputSheet.write(G.outputIndex,3,self.Waiting[0]) 
+
+            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Waiting of "+ self.objName+" is:")
+            waiting_ci = self.getConfidenceIntervals(self.Waiting)
+            G.outputSheet.write(G.outputIndex, 1, waiting_ci['min'])
+            G.outputSheet.write(G.outputIndex, 2, waiting_ci['avg'])
+            G.outputSheet.write(G.outputIndex, 3, waiting_ci['max'])
             G.outputIndex+=1
-        G.outputIndex+=1 
-    
+        G.outputIndex+=1
+
     # =======================================================================
     # outputs results to JSON File
     # =======================================================================
     def outputResultsJSON(self):
         from Globals import G
-        if(G.numberOfReplications==1): #if we had just one replication output the results to excel
-            json={}
-            json['_class'] = 'Dream.Dismantle';
-            json['id'] = str(self.id)
-            json['results'] = {}
+        json = {'_class': self.class_name,
+                'id': self.id,
+                'results': {}}
+        if(G.numberOfReplications==1):
             json['results']['working_ratio']=100*self.totalWorkingTime/G.maxSimTime
             json['results']['blockage_ratio']=100*self.totalBlockageTime/G.maxSimTime
             json['results']['waiting_ratio']=100*self.totalWaitingTime/G.maxSimTime
-        else: #if we had multiple replications we output confidence intervals to excel
-                #for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
-                #so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
-                #so for each output value we check if there was difference in the runs' results
-                #if yes we output the Confidence Intervals. if not we output just the fix value           
-            json={}
-            json['_class'] = 'Dream.Dismantle';
-            json['id'] = str(self.id)
-            json['results'] = {}
-            json['results']['working_ratio']={}
-            if self.checkIfArrayHasDifValues(self.Working):
-                json['results']['working_ratio']['min']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][0]
-                json['results']['working_ratio']['avg']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][0]
-                json['results']['working_ratio']['max']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][1]
-            else:
-                json['results']['working_ratio']['min']=self.Working[0]
-                json['results']['working_ratio']['avg']=self.Working[0]
-                json['results']['working_ratio']['max']=self.Working[0]   
-            json['results']['blockage_ratio']={}
-            if self.checkIfArrayHasDifValues(self.Blockage):
-                json['results']['blockage_ratio']['min']=stat.bayes_mvs(self.Blockage, G.confidenceLevel)[0][1][0]
-                json['results']['blockage_ratio']['avg']=stat.bayes_mvs(self.Blockage, G.confidenceLevel)[0][0]
-                json['results']['blockage_ratio']['max']=stat.bayes_mvs(self.Blockage, G.confidenceLevel)[0][1][1]
-            else:
-                json['results']['blockage_ratio']['min']=self.Blockage[0]
-                json['results']['blockage_ratio']['avg']=self.Blockage[0]
-                json['results']['blockage_ratio']['max']=self.Blockage[0]                 
-            json['results']['waiting_ratio']={}
-            if self.checkIfArrayHasDifValues(self.Waiting):
-                json['results']['waiting_ratio']['min']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][0]
-                json['results']['waiting_ratio']['avg']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][0]
-                json['results']['waiting_ratio']['max']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][1]
-            else:
-                json['results']['waiting_ratio']['min']=self.Waiting[0]
-                json['results']['waiting_ratio']['avg']=self.Waiting[0]
-                json['results']['waiting_ratio']['max']=self.Waiting[0] 
-                
+        else:
+            json['results']['working_ratio'] = self.getConfidenceIntervals(self.Working)
+            json['results']['blockage_ratio'] = self.getConfidenceIntervals(self.Blockage)
+            json['results']['waiting_ratio'] = self.getConfidenceIntervals(self.Waiting)
         G.outputJSON['elementList'].append(json)
-    
-    

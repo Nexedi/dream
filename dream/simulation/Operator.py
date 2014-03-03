@@ -33,6 +33,7 @@ from Repairman import Repairman
 #                 the resource that operates the machines
 # ===========================================================================
 class Operator(Repairman): # XXX isn't it the other way around ?
+    class_name = 'Dream.Operator'
 
     def __init__(self, id, name, capacity=1, schedulingRule="FIFO"):
         Repairman.__init__(self, id=id, name=name, capacity=capacity)

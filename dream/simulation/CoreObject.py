@@ -26,6 +26,7 @@ Class that acts as an abstract. It should have no instances. All the core-object
 '''
 
 from SimPy.Simulation import Process, Resource, now
+import scipy.stats as stat
 
 # ===========================================================================
 # the core object
@@ -308,18 +309,21 @@ class CoreObject(Process):
     # =======================================================================
     def sortEntities(self):
         pass
-    
+
     # =======================================================================
-    #       takes the array and checks if all its values are identical 
-    #  (returns false) or not (returns true)needed because if somebody runs 
-    #          multiple runs in deterministic case it would crash!
-    # =======================================================================          
-    def checkIfArrayHasDifValues(self, array):
-        difValuesFlag=False 
-        for i in range(1, len(array)):
-           if(array[i]!=array[1]):
-               difValuesFlag=True
-        return difValuesFlag 
+    # Helper method to calculate the min, max and average values of a serie
+    # =======================================================================
+    def getConfidenceIntervals(self, value_list):
+        from Globals import G
+        if len(set(value_list)) == 1:
+            # All values are same, no need to perform statistical analysis
+            return { 'min': value_list[0],
+                     'max': value_list[0],
+                     'avg': value_list[0], }
+        bayes_mvs = stat.bayes_mvs(value_list, G.confidenceLevel)
+        return { 'min': bayes_mvs[0][1][0],
+                 'max': bayes_mvs[0][1][1],
+                 'avg': bayes_mvs[0][0], }
       
     # =======================================================================
     # get the active object. This always returns self 

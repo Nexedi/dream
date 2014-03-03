@@ -32,8 +32,8 @@ from CoreObject import CoreObject
 # ===========================================================================
 #                            The exit object
 # ===========================================================================
-class Exit(CoreObject):    
-          
+class Exit(CoreObject):
+    class_name = 'Dream.Exit'
     def __init__(self, id, name=None):
         if not name:
           name = id
@@ -172,35 +172,24 @@ class Exit(CoreObject):
                 #so for each output value we check if there was difference in the runs' results
                 #if yes we output the Confidence Intervals. if not we output just the fix value                 
             G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean Throughput in " +self.objName + " is:")
-            if self.checkIfArrayHasDifValues(self.Exits): 
-                G.outputSheet.write(G.outputIndex,1,stat.bayes_mvs(self.Exits, G.confidenceLevel)[0][1][0])
-                G.outputSheet.write(G.outputIndex,2,stat.bayes_mvs(self.Exits, G.confidenceLevel)[0][0])
-                G.outputSheet.write(G.outputIndex,3,stat.bayes_mvs(self.Exits, G.confidenceLevel)[0][1][1])  
-            else: 
-                G.outputSheet.write(G.outputIndex,1,self.Exits[0])
-                G.outputSheet.write(G.outputIndex,2,self.Exits[0])
-                G.outputSheet.write(G.outputIndex,3,self.Exits[0])                            
+            throughput_ci = self.getConfidenceIntervals(self.Exits)
+            G.outputSheet.write(G.outputIndex, 1, throughput_ci['min'])
+            G.outputSheet.write(G.outputIndex, 2, throughput_ci['avg'])
+            G.outputSheet.write(G.outputIndex, 3, throughput_ci['max'])
             G.outputIndex+=1
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean Lifespan of an entity that exited from "+ self.objName  + " is:")            
-            if self.checkIfArrayHasDifValues(self.Lifespan):
-                G.outputSheet.write(G.outputIndex,1,stat.bayes_mvs(self.Lifespan, G.confidenceLevel)[0][1][0])
-                G.outputSheet.write(G.outputIndex,2,stat.bayes_mvs(self.Lifespan, G.confidenceLevel)[0][0])
-                G.outputSheet.write(G.outputIndex,3,stat.bayes_mvs(self.Lifespan, G.confidenceLevel)[0][1][1])
-            else: 
-                G.outputSheet.write(G.outputIndex,1,self.Lifespan[0])
-                G.outputSheet.write(G.outputIndex,2,self.Lifespan[0])
-                G.outputSheet.write(G.outputIndex,3,self.Lifespan[0]) 
+
+            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean Lifespan of an entity that exited from "+ self.objName  + " is:")
+            lifespan_ci = self.getConfidenceIntervals(self.Lifespan)
+            G.outputSheet.write(G.outputIndex, 1, lifespan_ci['min'])
+            G.outputSheet.write(G.outputIndex, 2, lifespan_ci['avg'])
+            G.outputSheet.write(G.outputIndex, 3, lifespan_ci['max'])
             G.outputIndex+=1
-            
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the avg takt time in "+ self.objName  + " is:")            
-            if self.checkIfArrayHasDifValues(self.TaktTime):
-                G.outputSheet.write(G.outputIndex,1,stat.bayes_mvs(self.TaktTime, G.confidenceLevel)[0][1][0])
-                G.outputSheet.write(G.outputIndex,2,stat.bayes_mvs(self.TaktTime, G.confidenceLevel)[0][0])
-                G.outputSheet.write(G.outputIndex,3,stat.bayes_mvs(self.TaktTime, G.confidenceLevel)[0][1][1])
-            else: 
-                G.outputSheet.write(G.outputIndex,1,self.TaktTime[0])
-                G.outputSheet.write(G.outputIndex,2,self.TaktTime[0])
-                G.outputSheet.write(G.outputIndex,3,self.TaktTime[0]) 
+
+            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the avg takt time in "+ self.objName  + " is:")
+            takt_time_ci = self.getConfidenceIntervals(self.TaktTime)
+            G.outputSheet.write(G.outputIndex, 1, takt_time_ci['min'])
+            G.outputSheet.write(G.outputIndex, 2, takt_time_ci['avg'])
+            G.outputSheet.write(G.outputIndex, 3, takt_time_ci['max'])
             G.outputIndex+=1
         G.outputIndex+=1
     # =======================================================================
@@ -208,11 +197,10 @@ class Exit(CoreObject):
     # =======================================================================
     def outputResultsJSON(self):
         from Globals import G
-        if(G.numberOfReplications==1): #if we had just one replication output the results to excel
-            json={}
-            json['_class'] = 'Dream.Exit';
-            json['id'] = str(self.id)
-            json['results'] = {}
+        json = { '_class': self.class_name,
+                  'id': self.id,
+                  'results': {} }
+        if(G.numberOfReplications==1):
             json['results']['throughput']=self.numOfExits
             if self.totalNumberOfUnitsExited!=self.numOfExits:   #output this only if there was variability in units
                 json['results']['unitsThroughput']=self.totalNumberOfUnitsExited
@@ -220,52 +208,12 @@ class Exit(CoreObject):
                                                     #TODO - check how to output in stochastic cases
                 json['results']['intervalThroughputList']=self.intervalThroughPutList
             json['results']['lifespan']=self.Lifespan[0]
-            json['results']['takt_time']=self.TaktTime[0]            
-                
-        else: #if we had multiple replications we output confidence intervals to excel
-                #for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
-                #so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
-                #so for each output value we check if there was difference in the runs' results
-                #if yes we output the Confidence Intervals. if not we output just the fix value           
-            json={}
-            json['_class'] = 'Dream.Exit';
-            json['id'] = str(self.id)
-            json['results'] = {}
-            json['results']['throughput']={}
-            if self.checkIfArrayHasDifValues(self.Exits):
-                json['results']['throughput']['min']=stat.bayes_mvs(self.Exits, G.confidenceLevel)[0][1][0]
-                json['results']['throughput']['avg']=stat.bayes_mvs(self.Exits, G.confidenceLevel)[0][0]
-                json['results']['throughput']['max']=stat.bayes_mvs(self.Exits, G.confidenceLevel)[0][1][1]
-            else:
-                json['results']['throughput']['min']=self.Exits[0]
-                json['results']['throughput']['avg']=self.Exits[0]
-                json['results']['throughput']['max']=self.Exits[0]   
+            json['results']['takt_time']=self.TaktTime[0]
+        else:
+            json['results']['throughput'] = self.getConfidenceIntervals(self.Exits)
+            json['results']['lifespan'] = self.getConfidenceIntervals(self.Lifespan)
+            json['results']['takt_time'] = self.getConfidenceIntervals(self.TaktTime)
             if self.Exits!=self.UnitExits:      #output this only if there was variability in units
-                json['results']['unitsThroughput']={}
-                if self.checkIfArrayHasDifValues(self.UnitExits):
-                    json['results']['unitsThroughput']['min']=stat.bayes_mvs(self.UnitExits, G.confidenceLevel)[0][1][0]
-                    json['results']['unitsThroughput']['avg']=stat.bayes_mvs(self.UnitExits, G.confidenceLevel)[0][0]
-                    json['results']['unitsThroughput']['max']=stat.bayes_mvs(self.UnitExits, G.confidenceLevel)[0][1][1]
-                else:
-                    json['results']['unitsThroughput']['min']=self.UnitExits[0]
-                    json['results']['unitsThroughput']['avg']=self.UnitExits[0]
-                    json['results']['unitsThroughput']['max']=self.UnitExits[0]                           
-            json['results']['lifespan']={}
-            if self.checkIfArrayHasDifValues(self.Lifespan):
-                json['results']['lifespan']['min']=stat.bayes_mvs(self.Lifespan, G.confidenceLevel)[0][1][0]
-                json['results']['lifespan']['avg']=stat.bayes_mvs(self.Lifespan, G.confidenceLevel)[0][0]
-                json['results']['lifespan']['max']=stat.bayes_mvs(self.Lifespan, G.confidenceLevel)[0][1][1]
-            else:
-                json['results']['lifespan']['min']=self.Lifespan[0]
-                json['results']['lifespan']['avg']=self.Lifespan[0]
-                json['results']['lifespan']['max']=self.Lifespan[0]                
-            json['results']['taktTime']={}            
-            if self.checkIfArrayHasDifValues(self.TaktTime):
-                json['results']['taktTime']['min']=stat.bayes_mvs(self.TaktTime, G.confidenceLevel)[0][1][0]
-                json['results']['taktTime']['avg']=stat.bayes_mvs(self.TaktTime, G.confidenceLevel)[0][0]
-                json['results']['taktTime']['max']=stat.bayes_mvs(self.TaktTime, G.confidenceLevel)[0][1][1]
-            else:
-                json['results']['taktTime']['min']=self.TaktTime[0]
-                json['results']['taktTime']['avg']=self.TaktTime[0]
-                json['results']['taktTime']['max']=self.TaktTime[0]        
+                json['results']['unitsThroughput'] = self.getConfidenceIntervals(self.UnitExits)
+
         G.outputJSON['elementList'].append(json)

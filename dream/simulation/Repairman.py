@@ -35,7 +35,7 @@ from ObjectResource import ObjectResource
 #                 the resource that repairs the machines
 # ===========================================================================
 class Repairman(ObjectResource):
-    
+    class_name = 'Dream.Repairman'
     def __init__(self, id, name, capacity=1):
         ObjectResource.__init__(self)
         self.id=id
@@ -90,25 +90,18 @@ class Repairman(ObjectResource):
             # so for each output value we check if there was difference in the runs' results
             # if yes we output the Confidence Intervals. if not we output just the fix value    
         else:
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Working of "+self.objName +" is:")
-            if self.checkIfArrayHasDifValues(self.Working): 
-                G.outputSheet.write(G.outputIndex,1,stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][0])
-                G.outputSheet.write(G.outputIndex,2,stat.bayes_mvs(self.Working, G.confidenceLevel)[0][0])
-                G.outputSheet.write(G.outputIndex,3,stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][1])  
-            else: 
-                G.outputSheet.write(G.outputIndex,1,self.Working[0])
-                G.outputSheet.write(G.outputIndex,2,self.Working[0])
-                G.outputSheet.write(G.outputIndex,3,self.Working[0])                            
+            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Working of "+ self.objName+" is:")
+            working_ci = self.getConfidenceIntervals(self.Working)
+            G.outputSheet.write(G.outputIndex, 1, working_ci['min'])
+            G.outputSheet.write(G.outputIndex, 2, working_ci['avg'])
+            G.outputSheet.write(G.outputIndex, 3, working_ci['max'])
             G.outputIndex+=1
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Waiting of "+self.objName +" is:")            
-            if self.checkIfArrayHasDifValues(self.Waiting):
-                G.outputSheet.write(G.outputIndex,1,stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][0])
-                G.outputSheet.write(G.outputIndex,2,stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][0])
-                G.outputSheet.write(G.outputIndex,3,stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][1])
-            else: 
-                G.outputSheet.write(G.outputIndex,1,self.Waiting[0])
-                G.outputSheet.write(G.outputIndex,2,self.Waiting[0])
-                G.outputSheet.write(G.outputIndex,3,self.Waiting[0]) 
+
+            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Waiting of "+ self.objName+" is:")
+            waiting_ci = self.getConfidenceIntervals(self.Waiting)
+            G.outputSheet.write(G.outputIndex, 1, waiting_ci['min'])
+            G.outputSheet.write(G.outputIndex, 2, waiting_ci['avg'])
+            G.outputSheet.write(G.outputIndex, 3, waiting_ci['max'])
             G.outputIndex+=1
         G.outputIndex+=1
 
@@ -117,42 +110,13 @@ class Repairman(ObjectResource):
     # =======================================================================
     def outputResultsJSON(self):
         from Globals import G
-        # if we had just one replication output the results to JSON
-        if(G.numberOfReplications==1): 
-            json={}
-            json['_class'] = 'Dream.'+self.type;
-            json['id'] = str(self.id)
-            json['results'] = {}
+        json = {'_class': self.class_name,
+                'id': self.id,
+                'results': {}}
+        if(G.numberOfReplications==1):
             json['results']['working_ratio']=100*self.totalWorkingTime/G.maxSimTime
             json['results']['waiting_ratio']=100*self.totalWaitingTime/G.maxSimTime
-        #if we had multiple replications we output confidence intervals to excel
-            # for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
-            # so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
-            # so for each output value we check if there was difference in the runs' results
-            # if yes we output the Confidence Intervals. if not we output just the fix value  
-        else:          
-            json={}
-            json['_class'] = 'Dream.Repairman';
-            json['id'] = str(self.id)
-            json['results'] = {}
-            json['results']['working_ratio']={}
-            if self.checkIfArrayHasDifValues(self.Working):
-                json['results']['working_ratio']['min']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][0]
-                json['results']['working_ratio']['avg']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][0]
-                json['results']['working_ratio']['max']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][1]
-            else:
-                json['results']['working_ratio']['min']=self.Working[0]
-                json['results']['working_ratio']['avg']=self.Working[0]
-                json['results']['working_ratio']['max']=self.Working[0]                
-            json['results']['waiting_ratio']={}
-            if self.checkIfArrayHasDifValues(self.Waiting):
-                json['results']['waiting_ratio']['min']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][0]
-                json['results']['waiting_ratio']['avg']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][0]
-                json['results']['waiting_ratio']['max']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][1]
-            else:
-                json['results']['waiting_ratio']['min']=self.Waiting[0]
-                json['results']['waiting_ratio']['avg']=self.Waiting[0]
-                json['results']['waiting_ratio']['max']=self.Waiting[0] 
-                
+        else:
+            json['results']['working_ratio'] = self.getConfidenceIntervals(self.Working)
+            json['results']['waiting_ratio'] = self.getConfidenceIntervals(self.Waiting)
         G.outputJSON['elementList'].append(json)
-        
