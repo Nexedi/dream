@@ -214,11 +214,7 @@ class OrderDecomposition(CoreObject):
             # dummy variable that holds the routes of the jobs the route from the JSON file is a sequence of dictionaries
             JSONRoute=component.get('route', [])
             # variable that holds the argument used in the Job initiation hold None for each entry in the 'route' list
-            route = [None for i in range(len(JSONRoute))]         
-                    
-            for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
-                stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
-                route[stepNumber]=routeentity
+            route = [x for x in JSONRoute]
                     
             # keep a reference of all extra properties passed to the job
             extraPropertyDict = {}

@@ -116,7 +116,6 @@ class Simulation(ACO.Simulation):
     # two times Decomposition
     predecessor_set = set()
     route_list = []
-    route_counter = 0
     for j, sequence_step in enumerate(sequence_list):
       for predecessor_step in self.getNotMachineNodePredecessorList(sequence_step):
         # We avoid having two time Decomposition in the route. XXX Is this correct ?
@@ -124,12 +123,9 @@ class Simulation(ACO.Simulation):
           continue
         predecessor_set.add(predecessor_step)
         route = {"stationIdsList": [predecessor_step],
-                  "stepNumber": "%i" % route_counter
                   }
         route_list.append(route)
-        route_counter += 1
       route = {"stationIdsList": list(self.getMachineNameSet(sequence_step)),
-                "stepNumber": "%i" % route_counter,
                 "processingTime": {"distributionType": "Fixed",
                                   "mean": "%i" % int(processing_time_list[j])},
                 "setupTime": {"setupDistribution": "Fixed",
@@ -138,14 +134,6 @@ class Simulation(ACO.Simulation):
       if prerequisite_list:
         route["prerequisites"] = prerequisite_list
       route_list.append(route)
-      route_counter += 1
-      """
-      if sequence_step == "IM":
-        route_counter += 1
-        route_list.append({"stationIdsList": ["E1"],
-            "stepNumber": "%i" % route_counter})
-      route_counter += 1
-      """
     return route_list
 
   def getListFromString(self, my_string):
@@ -223,10 +211,6 @@ class Simulation(ACO.Simulation):
                                            prerequisite_list)
             if part_type == "Mould":
               route_list = route_list[1:]
-              counter = 0
-              for route in route_list:
-                route["stepNumber"] = "%i" % counter
-                counter += 1
             component_dict["route"] = route_list
             i+=1
           order_dict["componentsList"] = component_list

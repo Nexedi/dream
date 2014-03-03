@@ -39,7 +39,6 @@ as a dictionary with the following layout if the mould is not already in WIP
     },
     "route": [
         {
-            "stepNumber": "0",
             "stationIdsList": [
                 "MA1"
             ],                                                                # the mould assembly stations
@@ -49,7 +48,6 @@ as a dictionary with the following layout if the mould is not already in WIP
             }
         },
         {
-            "stepNumber": "1",
             "stationIdsList": [
                 "IM1"
             ],                                                                # the injection moulding station
@@ -219,11 +217,7 @@ class MouldAssembly(MachineManagedJob):
             # dummy variable that holds the routes of the jobs the route from the JSON file is a sequence of dictionaries
             JSONRoute=component.get('route', [])
             # variable that holds the argument used in the Job initiation hold None for each entry in the 'route' list
-            route = [None for i in range(len(JSONRoute))]         
-                    
-            for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
-                stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumbe
-                route[stepNumber]=routeentity
+            route = [x for x in JSONRoute]       #    copy JSONRoute
             # assert that the assembler is in the moulds route and update the initial step of the mould's route
             firstStep = route.pop(0)
             assert (self.id in firstStep.get('stationIdsList',[])),\

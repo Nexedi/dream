@@ -70,6 +70,7 @@ def format(m):
         if 'route' in job:
           for r in job['route']:
             print r
+            r.pop("stepNumber", None)
             if 'processingTime' in r:
               processingTime = r['processingTime']
               if 'mean' in processingTime:

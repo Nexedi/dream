@@ -1010,12 +1010,7 @@ def createWIP():
                 JSONRoute=entity.get('route', [])                  # dummy variable that holds the routes of the jobs
                                                                     #    the route from the JSON file 
                                                                     #    is a sequence of dictionaries
-                route = [None for i in range(len(JSONRoute))]       #    variable that holds the argument used in the Job initiation
-                                                                    #    hold None for each entry in the 'route' list
-                
-                for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
-                    stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
-                    route[stepNumber]=routeentity
+                route = [x for x in JSONRoute]       #    copy JSONRoute
                 
                 # keep a reference of all extra properties passed to the job
                 extraPropertyDict = {}
@@ -1075,12 +1070,7 @@ def createWIP():
                 JSONRoute=entity.get('route', [])                  # dummy variable that holds the routes of the jobs
                                                                     #    the route from the JSON file 
                                                                     #    is a sequence of dictionaries
-                route = [None for i in range(len(JSONRoute))]       #    variable that holds the argument used in the Job initiation
-                                                                    #    hold None for each entry in the 'route' list
-                
-                for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
-                    stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
-                    route[stepNumber]=routeentity
+                route = [x for x in JSONRoute]       #    copy JSONRoute
                 
                 # keep a reference of all extra properties passed to the job
                 extraPropertyDict = {}
@@ -1125,12 +1115,7 @@ def createWIP():
                 JSONRoute=entity.get('route', [])                  # dummy variable that holds the routes of the jobs
                                                                     #    the route from the JSON file 
                                                                     #    is a sequence of dictionaries
-                route = [None for i in range(len(JSONRoute))]       #    variable that holds the argument used in the Job initiation
-                                                                    #    hold None for each entry in the 'route' list
-                
-                for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
-                    stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
-                    route[stepNumber]=routeentity
+                route = [x for x in JSONRoute]       #    copy JSONRoute
                 
                 # keep a reference of all extra properties passed to the job
                 extraPropertyDict = {}
@@ -1198,12 +1183,7 @@ def createWIP():
                 JSONRoute=entity.get('route', [])                  # dummy variable that holds the routes of the jobs
                                                                     #    the route from the JSON file 
                                                                     #    is a sequence of dictionaries
-                route = [None for i in range(len(JSONRoute))]       #    variable that holds the argument used in the Job initiation
-                                                                    #    hold None for each entry in the 'route' list
-                                                                    
-                for routeentity in JSONRoute:                                          # for each 'step' dictionary in the JSONRoute
-                    stepNumber=int(routeentity.get('stepNumber', '0'))                 #    get the stepNumber
-                    route[stepNumber]=routeentity
+                route = [x for x in JSONRoute]       #    copy JSONRoute
                 
                 # keep a reference of all extra properties passed to the job
                 extraPropertyDict = {}
