@@ -178,19 +178,19 @@ class MachineManagedJob(MachineJobShop):
         # maybe we should work this way in all CoreObjects???
         return self.entityToGet
     
-    # =======================================================================
-    # checks if the object is ready to receive an Entity
-    # =======================================================================    
-    def isReadyToGet(self):
-        # check if the entity that is about to be obtained has a manager (this should be true for this object)
-        if self.entityToGet.manager:
-            manager=self.entityToGet.manager
-            if len(manager.activeCallersList)>0:
-                manager.sortEntities()      # sort the callers of the manager to be used for scheduling rules
-                # return true if the manager is available
-                return manager.checkIfResourceIsAvailable()
-        else:
-            return True
+#     # =======================================================================
+#     # checks if the object is ready to receive an Entity
+#     # =======================================================================    
+#     def isReadyToGet(self):
+#         # check if the entity that is about to be obtained has a manager (this should be true for this object)
+#         if self.entityToGet.manager:
+#             manager=self.entityToGet.manager
+#             if len(manager.activeCallersList)>0:
+#                 manager.sortEntities()      # sort the callers of the manager to be used for scheduling rules
+#                 # return true if the manager is available
+#                 return manager.checkIfResourceIsAvailable()
+#         else:
+#             return True
         
 
     # =======================================================================

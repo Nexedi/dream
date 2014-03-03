@@ -360,7 +360,7 @@ class Machine(CoreObject):
                         self.releaseOperator()
                         yield waituntil,self,self.broker.brokerIsSet 
     
-                    # if there is a failure in the machine it is passivated
+                    # if there is a failure  in the machine or interruption due to preemption, it is passivated
                     yield passivate,self
                     # use the timers to count the time that Machine is down and related 
                     self.downTimeProcessingCurrentEntity+=now()-breakTime       # count the time that Machine is down while processing this Entity
