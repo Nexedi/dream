@@ -580,8 +580,8 @@
               result = -1;
             }
           } else {
-            entrance_a = a[6];
-            entrance_b = b[6];
+            entrance_a = a[4];
+            entrance_b = b[4];
             if (entrance_a > entrance_b) {
               result = 1;
             } else if (entrance_a < entrance_b) {
