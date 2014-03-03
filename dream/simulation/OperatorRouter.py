@@ -66,6 +66,7 @@ class Router(ObjectInterruption):
 #             # TESTING
 #             print now(), self.type, '        entities finished moving'
             #===================================================================
+            
             # update the objects to be served list (pendingObjects)
             for object in G.MachineList:
                 if object.inPositionToGet:
@@ -76,6 +77,7 @@ class Router(ObjectInterruption):
 #             for entity in self.pendingObjects:
 #                 print '        ', entity.id
             #===================================================================
+            
             # update the called operators list
             for operator in G.OperatorsList:
                 if len(operator.activeCallersList):
@@ -86,6 +88,7 @@ class Router(ObjectInterruption):
 #             for operator in self.calledOperators:
 #                 print '        ', operator.id
 #             #===================================================================
+            
             # for all the called operators find those available
             #     sort the objects for each one of them
             #     and assign the operator to those with the highest priority

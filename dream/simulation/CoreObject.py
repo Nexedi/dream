@@ -239,11 +239,23 @@ class CoreObject(Process):
                         self.receiver.preempt()
                         self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
         
-        # activeCallersList of an operator holds the CoreObjects that have called him
-        # when an Entity is obtained that has the operator as manager we need to reset this list 
-        if activeEntity.manager and (self.type=='MachineManagedJob' or self.type=='MFStation'):
-            if activeEntity.manager.activeCallersList:
-                activeEntity.manager.activeCallersList=[]
+        # TODO have to clear the activeCallersList of the operator to start working in the machine
+        #     consider the case where the operator is already released after loading, the getEntity is invoked after that
+        # if the object receiving an entity has an OperatorPool
+        try:
+            if self.operatorPool!='None' and any(type=='Load' for type in self.multOperationTypeList):
+                if self.currentOperator:
+                    self.currentOperator.activeCallersList=[]
+        except:
+            pass
+            
+        
+#         # activeCallersList of an operator holds the CoreObjects that have called him
+#         # when an Entity is obtained that has the operator as manager we need to reset this list 
+#         if activeEntity.manager and (self.type=='MachineManagedJob' or self.type=='MFStation'):
+#             if activeEntity.manager.activeCallersList:
+#                 activeEntity.manager.activeCallersList=[]
+                
         self.outputTrace(activeEntity.name, "got into "+self.objName)
         # TODO: if the successor of the object is a machine that is operated with operationType 'Load'
         #     then the flag hot of the activeEntity must be set to True 

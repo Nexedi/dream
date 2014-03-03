@@ -736,6 +736,13 @@ class Machine(CoreObject):
         self.outputTrace(self.currentOperator.objName, "released from "+ self.objName)
         # set the flag operatorAssignedTo to None
         self.currentOperator.operatorAssignedTo=None
+        # if the operationType is just Load and not Setup or Proceessing
+        #     then clear the activeCallersList of the currentOperator
+        if any(type=='Load' for type in self.multOperationTypeList)\
+            and not (any(type=='Setup' for type in self.multOperationTypeList)\
+                     or any(type=='Processing' for type in self.multOperationTypeList)):
+            self.currentOperator.activeCallersList=[]
+            
         self.broker.invokeBroker()
         self.toBeOperated = False
         
