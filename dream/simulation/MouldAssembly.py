@@ -278,4 +278,5 @@ class MouldAssembly(MachineManagedJob):
         except:
             # added for testing
             print 'the mould to be created', component.get('name', 'not found'), 'cannot be created', 'time', now()
+            raise
         
