@@ -93,10 +93,10 @@
   },
   "general": {
     "confidenceLevel": 0.95,
-    "currentDate": "",
+    "currentDate": "2014/03/12",
     "maxSimTime": -1,
     "numberOfAntsPerGenerations": 2,
-    "numberOfGenerations": 4,
+    "numberOfGenerations": 10,
     "numberOfReplications": 1,
     "numberOfSolutions": 4,
     "processTimeout": 2000,
@@ -526,7 +526,7 @@
       "Part1",
       "Basic",
       "CAM-MILL-EDM-MILL-MASS",
-      "8-4-2-8-8",
+      "8-4-2-8-0",
       ""
     ],
     [
@@ -537,7 +537,7 @@
       "Part2",
       "Basic",
       "CAM-MILL-EDM-MILL-EDM-MASS",
-      "10-7-8-4-13-8-8",
+      "10-7-8-4-13-8-0",
       ""
     ],
     [
@@ -553,7 +553,7 @@
     ],
     [
       "Order 2",
-      "2014/03/15",
+      "2014/03/14",
       "1",
       "PM1",
       "Design",
@@ -570,7 +570,7 @@
       "Part1",
       "Basic",
       "CAM-MILL-EDM-MILL-MASS",
-      "8-4-2-8-8",
+      "8-4-2-8-0",
       ""
     ],
     [
@@ -581,7 +581,7 @@
       "Part2",
       "Basic",
       "CAM-MILL-EDM-MASS",
-      "20-15-8-8-8",
+      "20-15-8-8-0",
       ""
     ],
     [
@@ -614,7 +614,7 @@
       "Part1",
       "Basic",
       "CAM-MILL-EDM-MASS",
-      "8-4-2-8-",
+      "8-4-2-0",
       ""
     ],
     [
@@ -625,7 +625,7 @@
       "Part2",
       "Basic",
       "CAM-MILL-EDM-MASS",
-      "7-15-8-8-8",
+      "7-15-8-8-0",
       ""
     ],
     [
