@@ -52,6 +52,12 @@ except ImportError:
   sys.modules['scipy'] = scipy
   logger.error("Scipy cannot be imported, using dummy implementation")
 
+# By default numpy just prints on stderr when there's an error. We do not want
+# to hide errors.
+import numpy
+numpy.seterr(all='raise')
+
+
 from SimPy.Simulation import activate, initialize, simulate, now, infinity
 from Globals import G 
 from Source import Source
