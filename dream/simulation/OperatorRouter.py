@@ -89,8 +89,12 @@ class Router(ObjectInterruption):
             # for all the called operators find those available
             #     sort the objects for each one of them
             #     and assign the operator to those with the highest priority
+            
+            # for all the operators that are requested
             for operator in self.calledOperators:
                 priorityObject=None
+                
+                # check if they are available
                 if operator.checkIfResourceIsAvailable():
                     #===========================================================
 #                     # TESTING
@@ -98,6 +102,8 @@ class Router(ObjectInterruption):
 #                     for caller in operator.activeCallersList:
 #                         print '                        ', caller.id
                     #===========================================================
+                    
+                    # sort the activeCallersList of the operator
                     operator.sortEntities()
                     #===========================================================
 #                     # TESTING
@@ -105,17 +111,24 @@ class Router(ObjectInterruption):
 #                     for caller in operator.activeCallersList:
 #                         print '                        ', caller.id
                     #===========================================================
+                    
+                    # find the activeCaller that has priority 
                     priorityObject=next(x for x in operator.activeCallersList if x in self.pendingObjects)
                     #===========================================================
 #                     # TESTING
 #                     print '                the PRIORITY object is', priorityObject.id
                     #===========================================================
+                    
+                    # and if the priorityObject is indeed pending
                     if priorityObject in self.pendingObjects:
+                        # assign an operator to it
                         operator.operatorAssignedTo=priorityObject
                         #=======================================================
 #                         # TESTING
 #                         print now(), operator.objName, 'got assigned to', priorityObject.id
                         #=======================================================
+                        
+                        # and let it proceed withGetEntity
                         priorityObject.canProceedWithGetEntity=True
                         priorityObject.inPositionToGet=False
             # if an object cannot proceed with getEntity, unAssign the exit of its giver
