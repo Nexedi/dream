@@ -8,7 +8,7 @@ from datetime import datetime
 from dream.simulation.GUI import ACO
 from dream.simulation.GUI.Default import schema
 
-MACHINE_TYPE_SET = set(["Dream.MachineManagedJob"])
+MACHINE_TYPE_SET = set(["Dream.MachineManagedJob", "Dream.MouldAssembly"])
 
 class Simulation(ACO.Simulation):
   def getConfigurationDict(self):
@@ -20,6 +20,14 @@ class Simulation(ACO.Simulation):
         ],
         "_class": 'Dream.MachineManagedJob',
         "name": 'Machine'
+    }
+    conf["Dream-MouldAssembly"] = {
+        "property_list": [
+          schema["processingTime"],
+          schema["failures"]
+        ],
+        "_class": 'Dream.MouldAssembly',
+        "name": 'MouldAss'
     }
     conf["Dream-QueueManagedJob"] = {
         "property_list": [
@@ -63,7 +71,7 @@ class Simulation(ACO.Simulation):
     conf["Dream-Configuration"]["gui"]["job_schedule_spreadsheet"] = 1
     conf["Dream-Configuration"]["gui"]["job_gantt"] = 1
 
-    #conf["Dream-Configuration"]["gui"]["debug_json"] = 1
+    conf["Dream-Configuration"]["gui"]["debug_json"] = 1
 
     # remove tools that does not make sense here
     conf.pop('Dream-Machine')
@@ -131,6 +139,13 @@ class Simulation(ACO.Simulation):
         route["prerequisites"] = prerequisite_list
       route_list.append(route)
       route_counter += 1
+      """
+      if sequence_step == "IM":
+        route_counter += 1
+        route_list.append({"stationIdsList": ["E1"],
+            "stepNumber": "%i" % route_counter})
+      route_counter += 1
+      """
     return route_list
 
   def getListFromString(self, my_string):
@@ -198,12 +213,20 @@ class Simulation(ACO.Simulation):
             processing_time_list = processing_time_list.split('-')
             component_dict = {}
             component_dict["_class"] = "Dream.OrderComponent"
+            if part_type == "Mould":
+              component_dict["_class"] = "Dream.Mould"
             component_dict["componentType"] = part_type
             component_dict["id"] = "%i" % i # XXX hack, we use it in UI to retrieve spreadsheet line
             component_dict["name"] = part
             component_list.append(component_dict)
             route_list = self.getRouteList(sequence_list, processing_time_list,
                                            prerequisite_list)
+            if part_type == "Mould":
+              route_list = route_list[1:]
+              counter = 0
+              for route in route_list:
+                route["stepNumber"] = "%i" % counter
+                counter += 1
             component_dict["route"] = route_list
             i+=1
           order_dict["componentsList"] = component_list

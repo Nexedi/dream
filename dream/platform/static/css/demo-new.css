@@ -275,7 +275,7 @@ path, ._jsPlumb_endpoint {
   background-image: linear-gradient(to bottom, #ffe 0%, #dde 100%);
 }
 
-.Dream-Machine, .Dream-MachineJobShop, .Dream-BatchScrapMachine, .Dream-MachineManagedJob {
+.Dream-Machine, .Dream-MachineJobShop, .Dream-BatchScrapMachine, .Dream-MachineManagedJob, .Dream-MouldAssembly {
   border: 1px solid #cbc;
   background-color: #fef;
   background-image: linear-gradient(to bottom, #fef 0%, #ede 100%);
