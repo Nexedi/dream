@@ -50,28 +50,23 @@
     "schedule": [
      {
       "entranceTime": 0, 
-      "stationId": "Q1", 
-      "stepNumber": 0
+      "stationId": "Q1"
      }, 
      {
       "entranceTime": 0.0, 
-      "stationId": "M1", 
-      "stepNumber": 1
+      "stationId": "M1"
      }, 
      {
       "entranceTime": 0.75, 
-      "stationId": "Q2", 
-      "stepNumber": 2
+      "stationId": "Q2"
      }, 
      {
       "entranceTime": 2.0, 
-      "stationId": "M2", 
-      "stepNumber": 3
+      "stationId": "M2"
      }, 
      {
       "entranceTime": 3.0, 
-      "stationId": "E1", 
-      "stepNumber": 4
+      "stationId": "E1"
      }
     ]
    }
@@ -84,18 +79,15 @@
     "schedule": [
      {
       "entranceTime": 0, 
-      "stationId": "Q2", 
-      "stepNumber": 0
+      "stationId": "Q2"
      }, 
      {
       "entranceTime": 0.5, 
-      "stationId": "M2", 
-      "stepNumber": 1
+      "stationId": "M2"
      }, 
      {
       "entranceTime": 2.0, 
-      "stationId": "E1", 
-      "stepNumber": 2
+      "stationId": "E1"
      }
     ]
    }

@@ -9,28 +9,23 @@
     "schedule": [
      {
       "entranceTime": 0, 
-      "stationId": "Q1", 
-      "stepNumber": 0
+      "stationId": "Q1"
      }, 
      {
       "entranceTime": 0, 
-      "stationId": "M1", 
-      "stepNumber": 1
+      "stationId": "M1"
      }, 
      {
       "entranceTime": 1.0, 
-      "stationId": "Q2", 
-      "stepNumber": 2
+      "stationId": "Q2"
      }, 
      {
       "entranceTime": 1.0, 
-      "stationId": "M2", 
-      "stepNumber": 3
+      "stationId": "M2"
      }, 
      {
       "entranceTime": 2.0, 
-      "stationId": "E1", 
-      "stepNumber": 4
+      "stationId": "E1"
      }
     ]
    }
@@ -43,28 +38,23 @@
     "schedule": [
      {
       "entranceTime": 0, 
-      "stationId": "Q3", 
-      "stepNumber": 0
+      "stationId": "Q3"
      }, 
      {
       "entranceTime": 0, 
-      "stationId": "M3", 
-      "stepNumber": 1
+      "stationId": "M3"
      }, 
      {
       "entranceTime": 1.0, 
-      "stationId": "Q4", 
-      "stepNumber": 2
+      "stationId": "Q4"
      }, 
      {
       "entranceTime": 1.0, 
-      "stationId": "M4", 
-      "stepNumber": 3
+      "stationId": "M4"
      }, 
      {
       "entranceTime": 3.0, 
-      "stationId": "E1", 
-      "stepNumber": 4
+      "stationId": "E1"
      }
     ]
    }

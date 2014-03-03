@@ -29,28 +29,23 @@
     "schedule": [
      {
       "entranceTime": 0, 
-      "stationId": "Q1", 
-      "stepNumber": 0
+      "stationId": "Q1"
      }, 
      {
       "entranceTime": 40.0, 
-      "stationId": "M2", 
-      "stepNumber": 1
+      "stationId": "M2"
      }, 
      {
       "entranceTime": 50.0, 
-      "stationId": "Q3", 
-      "stepNumber": 2
+      "stationId": "Q3"
      }, 
      {
       "entranceTime": 70.0, 
-      "stationId": "EDM", 
-      "stepNumber": 3
+      "stationId": "EDM"
      }, 
      {
       "entranceTime": 100.0, 
-      "stationId": "E1", 
-      "stepNumber": 4
+      "stationId": "E1"
      }
     ]
    }
@@ -64,28 +59,23 @@
     "schedule": [
      {
       "entranceTime": 0, 
-      "stationId": "Q1", 
-      "stepNumber": 0
+      "stationId": "Q1"
      }, 
      {
       "entranceTime": 0, 
-      "stationId": "M2", 
-      "stepNumber": 1
+      "stationId": "M2"
      }, 
      {
       "entranceTime": 40.0, 
-      "stationId": "Q3", 
-      "stepNumber": 2
+      "stationId": "Q3"
      }, 
      {
       "entranceTime": 50.0, 
-      "stationId": "EDM", 
-      "stepNumber": 3
+      "stationId": "EDM"
      }, 
      {
       "entranceTime": 70.0, 
-      "stationId": "E1", 
-      "stepNumber": 4
+      "stationId": "E1"
      }
     ]
    }
@@ -99,28 +89,23 @@
     "schedule": [
      {
       "entranceTime": 0, 
-      "stationId": "Q1", 
-      "stepNumber": 0
+      "stationId": "Q1"
      }, 
      {
       "entranceTime": 0, 
-      "stationId": "M1", 
-      "stepNumber": 1
+      "stationId": "M1"
      }, 
      {
       "entranceTime": 20.0, 
-      "stationId": "Q3", 
-      "stepNumber": 2
+      "stationId": "Q3"
      }, 
      {
       "entranceTime": 20.0, 
-      "stationId": "EDM", 
-      "stepNumber": 3
+      "stationId": "EDM"
      }, 
      {
       "entranceTime": 30.0, 
-      "stationId": "E1", 
-      "stepNumber": 4
+      "stationId": "E1"
      }
     ]
    }
@@ -134,28 +119,23 @@
     "schedule": [
      {
       "entranceTime": 0, 
-      "stationId": "Q1", 
-      "stepNumber": 0
+      "stationId": "Q1"
      }, 
      {
       "entranceTime": 20.0, 
-      "stationId": "M1", 
-      "stepNumber": 1
+      "stationId": "M1"
      }, 
      {
       "entranceTime": 30.0, 
-      "stationId": "Q3", 
-      "stepNumber": 2
+      "stationId": "Q3"
      }, 
      {
       "entranceTime": 30.0, 
-      "stationId": "EDM", 
-      "stepNumber": 3
+      "stationId": "EDM"
      }, 
      {
       "entranceTime": 50.0, 
-      "stationId": "E1", 
-      "stepNumber": 4
+      "stationId": "E1"
      }
     ]
    }
@@ -169,18 +149,15 @@
     "schedule": [
      {
       "entranceTime": 0, 
-      "stationId": "Q1", 
-      "stepNumber": 0
+      "stationId": "Q1"
      }, 
      {
       "entranceTime": 30.0, 
-      "stationId": "M1", 
-      "stepNumber": 1
+      "stationId": "M1"
      }, 
      {
       "entranceTime": 60.0, 
-      "stationId": "E1", 
-      "stepNumber": 2
+      "stationId": "E1"
      }
     ]
    }

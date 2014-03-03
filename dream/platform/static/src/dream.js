@@ -427,9 +427,9 @@
                 input_order[1], // dueDate
                 input_order[2], // priority
                 moment(entrance_date).format("MMM/DD HH:mm"),
-                input_job[7].split('-')[schedule['stepNumber']] || 0, // processing time
+                input_job[7].split('-')[i] || 0, // processing time
                 schedule['stationId'],
-                schedule['stepNumber']
+                i
               ]);
               if (obj['results']['schedule'][i + 1]) {
                 duration = obj['results']['schedule'][i + 1]['entranceTime'] - schedule['entranceTime'];
