@@ -206,6 +206,11 @@ class Machine(CoreObject):
             # reset the canProceedWithGetEntity flag
             self.canProceedWithGetEntity=False
             
+            #===================================================================
+#             # TESTING
+#             print now(), self.id, 'is in position to get'
+            #===================================================================
+            
             # if the machine must be operated for the loading then the operators must be picked wisely for every machine
             if (self.operatorPool!="None")\
                     and any(type=="Load" for type in self.multOperationTypeList):
@@ -729,6 +734,8 @@ class Machine(CoreObject):
     # =======================================================================
     def releaseOperator(self):
         self.outputTrace(self.currentOperator.objName, "released from "+ self.objName)
+        # set the flag operatorAssignedTo to None
+        self.currentOperator.operatorAssignedTo=None
         self.broker.invokeBroker()
         self.toBeOperated = False
         

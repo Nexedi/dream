@@ -193,15 +193,15 @@ class MachineManagedJob(MachineJobShop):
 #             return True
         
 
-    # =======================================================================
-    #                   prepare the machine to be released
-    # =======================================================================
-    def releaseOperator(self):
-        self.outputTrace(self.currentOperator.objName, "released from "+ self.objName)
-#         # TESTING
-#         print now(), self.id, 'will release operator', self.operatorPool.operators[0].objName
-        # set the flag operatorAssignedTo to None
-        self.operatorPool.operators[0].operatorAssignedTo=None
-        self.broker.invokeBroker()
-        self.toBeOperated = False
+#     # =======================================================================
+#     #                   prepare the machine to be released
+#     # =======================================================================
+#     def releaseOperator(self):
+#         self.outputTrace(self.currentOperator.objName, "released from "+ self.objName)
+# #         # TESTING
+# #         print now(), self.id, 'will release operator', self.operatorPool.operators[0].objName
+#         # set the flag operatorAssignedTo to None
+#         self.currentOperator.operatorAssignedTo=None
+#         self.broker.invokeBroker()
+#         self.toBeOperated = False
 
