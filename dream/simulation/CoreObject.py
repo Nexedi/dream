@@ -229,7 +229,8 @@ class CoreObject(Process):
                 pass
             # if the obtained Entity is critical and the receiver is preemptive and not operated
             #     in the case that the receiver is operated the preemption is performed by the operators
-            if activeEntity.isCritical and activeObject.receiver.isPreemptive and not receiverOperated:
+            #     if the receiver is not Up then no preemption will be performed
+            if activeEntity.isCritical and activeObject.receiver.isPreemptive and activeObject.receiver.Up and not receiverOperated:
                 #if the receiver is not empty
                 if len(self.receiver.getActiveObjectQueue())>0:
                     #if the receiver does not hold an Entity that is also critical
