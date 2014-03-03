@@ -105,14 +105,12 @@
                                 {
                                     "stationIdsList": [
                                         "OD0"
-                                    ],
-                                    "stepNumber": "0"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "QCAM"
-                                    ],
-                                    "stepNumber": "1"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -126,14 +124,12 @@
                                     "stationIdsList": [
                                         "CAM1",
                                         "CAM2"
-                                    ],
-                                    "stepNumber": "2"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "QMILL"
-                                    ],
-                                    "stepNumber": "3"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -147,14 +143,12 @@
                                     "stationIdsList": [
                                         "MILL1",
                                         "MILL2"
-                                    ],
-                                    "stepNumber": "4"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "QEDM"
-                                    ],
-                                    "stepNumber": "5"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -167,22 +161,19 @@
                                     },
                                     "stationIdsList": [
                                         "EDM"
-                                    ],
-                                    "stepNumber": "6"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "AB1"
-                                    ],
-                                    "stepNumber": "7"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "MA1",
                                         "MA2",
                                         "MA3"
-                                    ],
-                                    "stepNumber": "8"
+                                    ]
                                 }
                             ]
                         },
@@ -195,14 +186,12 @@
                                 {
                                     "stationIdsList": [
                                         "OD0"
-                                    ],
-                                    "stepNumber": "0"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "QCAM"
-                                    ],
-                                    "stepNumber": "1"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -216,14 +205,12 @@
                                     "stationIdsList": [
                                         "CAM1",
                                         "CAM2"
-                                    ],
-                                    "stepNumber": "2"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "QMILL"
-                                    ],
-                                    "stepNumber": "3"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -237,14 +224,12 @@
                                     "stationIdsList": [
                                         "MILL1",
                                         "MILL2"
-                                    ],
-                                    "stepNumber": "4"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "QEDM"
-                                    ],
-                                    "stepNumber": "5"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -257,22 +242,19 @@
                                     },
                                     "stationIdsList": [
                                         "EDM"
-                                    ],
-                                    "stepNumber": "6"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "AB1"
-                                    ],
-                                    "stepNumber": "7"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "MA1",
                                         "MA2",
                                         "MA3"
-                                    ],
-                                    "stepNumber": "8"
+                                    ]
                                 }
                             ]
                         },
@@ -290,14 +272,12 @@
                                         "MA1",
                                         "MA2",
                                         "MA3"
-                                    ],
-                                    "stepNumber": "0"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "QIM"
-                                    ],
-                                    "stepNumber": "1"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -310,14 +290,12 @@
                                     },
                                     "stationIdsList": [
                                         "IM"
-                                    ],
-                                    "stepNumber": "2"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "E1"
-                                    ],
-                                    "stepNumber": "3"
+                                    ]
                                 }
                             ]
                         }
@@ -359,14 +337,12 @@
                                 {
                                     "stationIdsList": [
                                         "OD0"
-                                    ],
-                                    "stepNumber": "0"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "QCAM"
-                                    ],
-                                    "stepNumber": "1"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -380,14 +356,12 @@
                                     "stationIdsList": [
                                         "CAM1",
                                         "CAM2"
-                                    ],
-                                    "stepNumber": "2"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "QMILL"
-                                    ],
-                                    "stepNumber": "3"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -401,14 +375,12 @@
                                     "stationIdsList": [
                                         "MILL1",
                                         "MILL2"
-                                    ],
-                                    "stepNumber": "4"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "QEDM"
-                                    ],
-                                    "stepNumber": "5"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -421,22 +393,19 @@
                                     },
                                     "stationIdsList": [
                                         "EDM"
-                                    ],
-                                    "stepNumber": "6"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "AB1"
-                                    ],
-                                    "stepNumber": "7"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "MA1",
                                         "MA2",
                                         "MA3"
-                                    ],
-                                    "stepNumber": "8"
+                                    ]
                                 }
                             ]
                         },
@@ -449,14 +418,12 @@
                                 {
                                     "stationIdsList": [
                                         "OD0"
-                                    ],
-                                    "stepNumber": "0"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "QCAM"
-                                    ],
-                                    "stepNumber": "1"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -470,14 +437,12 @@
                                     "stationIdsList": [
                                         "CAM1",
                                         "CAM2"
-                                    ],
-                                    "stepNumber": "2"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "QMILL"
-                                    ],
-                                    "stepNumber": "3"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -491,14 +456,12 @@
                                     "stationIdsList": [
                                         "MILL1",
                                         "MILL2"
-                                    ],
-                                    "stepNumber": "4"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "QEDM"
-                                    ],
-                                    "stepNumber": "5"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -511,22 +474,19 @@
                                     },
                                     "stationIdsList": [
                                         "EDM"
-                                    ],
-                                    "stepNumber": "6"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "AB1"
-                                    ],
-                                    "stepNumber": "7"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "MA1",
                                         "MA2",
                                         "MA3"
-                                    ],
-                                    "stepNumber": "8"
+                                    ]
                                 }
                             ]
                         },
@@ -544,14 +504,12 @@
                                         "MA1",
                                         "MA2",
                                         "MA3"
-                                    ],
-                                    "stepNumber": "0"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "QIM"
-                                    ],
-                                    "stepNumber": "1"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -564,14 +522,12 @@
                                     },
                                     "stationIdsList": [
                                         "IM"
-                                    ],
-                                    "stepNumber": "2"
+                                    ]
                                 },
                                 {
                                     "stationIdsList": [
                                         "E1"
-                                    ],
-                                    "stepNumber": "3"
+                                    ]
                                 }
                             ]
                         }

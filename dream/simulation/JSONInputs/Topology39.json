@@ -58,8 +58,7 @@
                                     },
                                     "stationIdsList": [
                                         "OD0"
-                                    ],
-                                    "stepNumber": "0"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -68,8 +67,7 @@
                                     },
                                     "stationIdsList": [
                                         "Q1"
-                                    ],
-                                    "stepNumber": "1"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -78,8 +76,7 @@
                                     },
                                     "stationIdsList": [
                                         "M1"
-                                    ],
-                                    "stepNumber": "2"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -88,8 +85,7 @@
                                     },
                                     "stationIdsList": [
                                         "AB1"
-                                    ],
-                                    "stepNumber": "3"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -98,8 +94,7 @@
                                     },
                                     "stationIdsList": [
                                         "MA1"
-                                    ],
-                                    "stepNumber": "4"
+                                    ]
                                 }
                             ]
                         },
@@ -115,8 +110,7 @@
                                     },
                                     "stationIdsList": [
                                         "OD0"
-                                    ],
-                                    "stepNumber": "0"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -125,8 +119,7 @@
                                     },
                                     "stationIdsList": [
                                         "Q1"
-                                    ],
-                                    "stepNumber": "1"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -135,8 +128,7 @@
                                     },
                                     "stationIdsList": [
                                         "M1"
-                                    ],
-                                    "stepNumber": "2"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -145,8 +137,7 @@
                                     },
                                     "stationIdsList": [
                                         "AB1"
-                                    ],
-                                    "stepNumber": "3"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -155,8 +146,7 @@
                                     },
                                     "stationIdsList": [
                                         "MA1"
-                                    ],
-                                    "stepNumber": "4"
+                                    ]
                                 }
                             ]
                         },
@@ -172,8 +162,7 @@
                                     },
                                     "stationIdsList": [
                                         "MA1"
-                                    ],
-                                    "stepNumber": "0"
+                                    ]
                                 },
                                 {
                                     "processingTime": {
@@ -182,8 +171,7 @@
                                     },
                                     "stationIdsList": [
                                         "E1"
-                                    ],
-                                    "stepNumber": "1"
+                                    ]
                                 }
                             ]
                         }

@@ -75,6 +75,9 @@ def format(m):
               processingTime = r['processingTime']
               if 'mean' in processingTime:
                 processingTime['mean'] = float(processingTime['mean'])
+          for component in job.get('componentsList', []):
+            for r in component['route']:
+              r.pop("stepNumber", None)
 
   return m
 
