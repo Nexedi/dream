@@ -348,7 +348,7 @@
             "Step No."
           ]
         ],
-        start_date = new Date(now.getTime()),
+        start_date,
         gantt_data = {
           data: [
           {
@@ -370,6 +370,13 @@
           ],
           link: []
         };
+
+      start_date = that.getData().general.currentDate;
+      if (start_date !== undefined && start_date !== "") {
+        start_date = new Date(start_date);
+      } else {
+        start_date =  new Date(now.getTime())
+      }
 
       $.each(result.elementList.sort(function(a,b) {return a.id < b.id ? -1 : 1}),
         function (idx, obj) {
