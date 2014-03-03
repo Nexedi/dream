@@ -211,11 +211,23 @@ class CoreObject(Process):
         self.nameLastEntityEntered=activeEntity.name      # this holds the name of the last entity that got into Machine      
         self.downTimeProcessingCurrentEntity=0
         
+        # local variable to inform if the receiver is operated for Loading
+        receiverOperated=False
         # perform preemption when required
         # if the object is not Exit
         if activeObject.receiver:
-            # if the obtained Entity is critical and the receiver is preemptive
-            if activeEntity.isCritical and activeObject.receiver.isPreemptive:
+            # if the receiver has an operatorPool
+            try:
+                if activeObject.receiver.operatorPool:
+                    # and the operationType list contains Load, the receiver is operated
+                    if (activeObject.receiver.operatorPool!="None")\
+                        and any(type=="Load" for type in activeObject.receiver.multOperationTypeList):
+                        receiverOperated=True
+            except:
+                pass
+            # if the obtained Entity is critical and the receiver is preemptive and not operated
+            #     in the case that the receiver is operated the preemption is performed by the operators
+            if activeEntity.isCritical and activeObject.receiver.isPreemptive and not receiverOperated:
                 #if the receiver is not empty
                 if len(self.receiver.getActiveObjectQueue())>0:
                     #if the receiver does not hold an Entity that is also critical
@@ -417,11 +429,11 @@ class CoreObject(Process):
     def unAssignExit(self):
         self.exitAssignedToReceiver = False
         
-    # =======================================================================
-    #        actions to be carried whenever the object is preemptied 
-    # =======================================================================
-    def preempt(self):
-        pass
+#     # =======================================================================
+#     #        actions to be carried whenever the object is preemptied 
+#     # =======================================================================
+#     def preempt(self):
+#         pass
         
     # =======================================================================
     #        actions to be carried whenever the object is interrupted 
