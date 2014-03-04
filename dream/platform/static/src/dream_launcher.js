@@ -30,7 +30,7 @@
     var configuration = { };
 
     $.ajax(
-      '/getConfigurationDict', {
+        '../getConfigurationDict', {
        success: function (data) {
          configuration = $.extend(configuration, data);
 
@@ -232,7 +232,7 @@
     $("#import_file").change(function () {
       var form = $(this).parent('form')[0];
       var form_data = new FormData(form);
-      $.ajax('/postJSONFile', {
+      $.ajax('../postJSONFile', {
         type: 'POST',
         contentType: false,
         processData: false,

@@ -260,7 +260,7 @@
       that.setGeneralProperties(properties);
 
       $.ajax(
-        '/runSimulation', {
+          '../runSimulation', {
           data: JSON.stringify({
             json: that.getData()
           }),
