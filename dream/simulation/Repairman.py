@@ -74,6 +74,7 @@ class Repairman(ObjectResource):
     # =======================================================================
     def outputResultsXL(self, MaxSimtime=None):
         from Globals import G
+        from Globals import getConfidenceIntervals
         if MaxSimtime==None:
             MaxSimtime=G.maxSimTime
         # if we had just one replication output the results to excel
@@ -91,14 +92,14 @@ class Repairman(ObjectResource):
             # if yes we output the Confidence Intervals. if not we output just the fix value    
         else:
             G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Working of "+ self.objName+" is:")
-            working_ci = self.getConfidenceIntervals(self.Working)
+            working_ci = getConfidenceIntervals(self.Working)
             G.outputSheet.write(G.outputIndex, 1, working_ci['min'])
             G.outputSheet.write(G.outputIndex, 2, working_ci['avg'])
             G.outputSheet.write(G.outputIndex, 3, working_ci['max'])
             G.outputIndex+=1
 
             G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Waiting of "+ self.objName+" is:")
-            waiting_ci = self.getConfidenceIntervals(self.Waiting)
+            waiting_ci = getConfidenceIntervals(self.Waiting)
             G.outputSheet.write(G.outputIndex, 1, waiting_ci['min'])
             G.outputSheet.write(G.outputIndex, 2, waiting_ci['avg'])
             G.outputSheet.write(G.outputIndex, 3, waiting_ci['max'])
@@ -110,6 +111,7 @@ class Repairman(ObjectResource):
     # =======================================================================
     def outputResultsJSON(self):
         from Globals import G
+        from Globals import getConfidenceIntervals
         json = {'_class': self.class_name,
                 'id': self.id,
                 'results': {}}
@@ -117,6 +119,6 @@ class Repairman(ObjectResource):
             json['results']['working_ratio']=100*self.totalWorkingTime/G.maxSimTime
             json['results']['waiting_ratio']=100*self.totalWaitingTime/G.maxSimTime
         else:
-            json['results']['working_ratio'] = self.getConfidenceIntervals(self.Working)
-            json['results']['waiting_ratio'] = self.getConfidenceIntervals(self.Waiting)
+            json['results']['working_ratio'] = getConfidenceIntervals(self.Working)
+            json['results']['waiting_ratio'] = getConfidenceIntervals(self.Waiting)
         G.outputJSON['elementList'].append(json)

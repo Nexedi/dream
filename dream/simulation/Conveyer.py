@@ -296,6 +296,7 @@ class Conveyer(CoreObject):
     #outputs data to "output.xls"
     def outputResultsXL(self, MaxSimtime=None):
         from Globals import G
+        from Globals import getConfidenceIntervals
         if MaxSimtime==None:
             MaxSimtime=G.maxSimTime
         if(G.numberOfReplications==1): #if we had just one replication output the results to excel
@@ -314,21 +315,21 @@ class Conveyer(CoreObject):
                 #so for each output value we check if there was difference in the runs' results
                 #if yes we output the Confidence Intervals. if not we output just the fix value                 
             G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Working of "+self.objName +" is:")
-            working_ci = self.getConfidenceIntervals(self.Working)
+            working_ci = getConfidenceIntervals(self.Working)
             G.outputSheet.write(G.outputIndex, 1, working_ci['min'])
             G.outputSheet.write(G.outputIndex, 2, working_ci['avg'])
             G.outputSheet.write(G.outputIndex, 3, working_ci['max'])
             G.outputIndex+=1
 
             G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Blockage of "+ self.objName+" is:")
-            blockage_ci = self.getConfidenceIntervals(self.Blockage)
+            blockage_ci = getConfidenceIntervals(self.Blockage)
             G.outputSheet.write(G.outputIndex, 1, blockage_ci['min'])
             G.outputSheet.write(G.outputIndex, 2, blockage_ci['avg'])
             G.outputSheet.write(G.outputIndex, 3, blockage_ci['max'])
             G.outputIndex+=1
 
             G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Waiting of "+ self.objName+" is:")
-            waiting_ci = self.getConfidenceIntervals(self.Waiting)
+            waiting_ci = getConfidenceIntervals(self.Waiting)
             G.outputSheet.write(G.outputIndex, 1, waiting_ci['min'])
             G.outputSheet.write(G.outputIndex, 2, waiting_ci['avg'])
             G.outputSheet.write(G.outputIndex, 3, waiting_ci['max'])
@@ -338,6 +339,7 @@ class Conveyer(CoreObject):
     #outputs results to JSON File
     def outputResultsJSON(self):
         from Globals import G
+        from Globals import getConfidenceIntervals
         json = {'_class': self.class_name,
                 'id': self.id,
                 'results': {}}
@@ -347,9 +349,9 @@ class Conveyer(CoreObject):
             json['results']['blockage_ratio']=100*self.totalBlockageTime/G.maxSimTime
             json['results']['waiting_ratio']=100*self.totalWaitingTime/G.maxSimTime
         else:
-            json['results']['working_ratio'] = self.getConfidenceIntervals(self.Working)
-            json['results']['blockage_ratio'] = self.getConfidenceIntervals(self.Blockage)
-            json['results']['waiting_ratio'] = self.getConfidenceIntervals(self.Waiting)
+            json['results']['working_ratio'] = getConfidenceIntervals(self.Working)
+            json['results']['blockage_ratio'] = getConfidenceIntervals(self.Blockage)
+            json['results']['waiting_ratio'] = getConfidenceIntervals(self.Waiting)
 
         G.outputJSON['elementList'].append(json)
 

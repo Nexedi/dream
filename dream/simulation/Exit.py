@@ -29,6 +29,7 @@ from SimPy.Simulation import now, Process, Resource, infinity, waituntil
 import xlwt
 import scipy.stats as stat
 from CoreObject import CoreObject
+
 # ===========================================================================
 #                            The exit object
 # ===========================================================================
@@ -148,6 +149,7 @@ class Exit(CoreObject):
     # =======================================================================
     def outputResultsXL(self, MaxSimtime=None):
         from Globals import G   
+        from Globals import getConfidenceIntervals
         if MaxSimtime==None:
             MaxSimtime=G.maxSimTime
         if(G.numberOfReplications==1): #if we had just one replication output the results to excel
@@ -172,21 +174,21 @@ class Exit(CoreObject):
                 #so for each output value we check if there was difference in the runs' results
                 #if yes we output the Confidence Intervals. if not we output just the fix value                 
             G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean Throughput in " +self.objName + " is:")
-            throughput_ci = self.getConfidenceIntervals(self.Exits)
+            throughput_ci = getConfidenceIntervals(self.Exits)
             G.outputSheet.write(G.outputIndex, 1, throughput_ci['min'])
             G.outputSheet.write(G.outputIndex, 2, throughput_ci['avg'])
             G.outputSheet.write(G.outputIndex, 3, throughput_ci['max'])
             G.outputIndex+=1
 
             G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean Lifespan of an entity that exited from "+ self.objName  + " is:")
-            lifespan_ci = self.getConfidenceIntervals(self.Lifespan)
+            lifespan_ci = getConfidenceIntervals(self.Lifespan)
             G.outputSheet.write(G.outputIndex, 1, lifespan_ci['min'])
             G.outputSheet.write(G.outputIndex, 2, lifespan_ci['avg'])
             G.outputSheet.write(G.outputIndex, 3, lifespan_ci['max'])
             G.outputIndex+=1
 
             G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the avg takt time in "+ self.objName  + " is:")
-            takt_time_ci = self.getConfidenceIntervals(self.TaktTime)
+            takt_time_ci = getConfidenceIntervals(self.TaktTime)
             G.outputSheet.write(G.outputIndex, 1, takt_time_ci['min'])
             G.outputSheet.write(G.outputIndex, 2, takt_time_ci['avg'])
             G.outputSheet.write(G.outputIndex, 3, takt_time_ci['max'])
@@ -197,6 +199,7 @@ class Exit(CoreObject):
     # =======================================================================
     def outputResultsJSON(self):
         from Globals import G
+        from Globals import getConfidenceIntervals
         json = { '_class': self.class_name,
                   'id': self.id,
                   'results': {} }
@@ -210,10 +213,10 @@ class Exit(CoreObject):
             json['results']['lifespan']=self.Lifespan[0]
             json['results']['takt_time']=self.TaktTime[0]
         else:
-            json['results']['throughput'] = self.getConfidenceIntervals(self.Exits)
-            json['results']['lifespan'] = self.getConfidenceIntervals(self.Lifespan)
-            json['results']['takt_time'] = self.getConfidenceIntervals(self.TaktTime)
+            json['results']['throughput'] = getConfidenceIntervals(self.Exits)
+            json['results']['lifespan'] = getConfidenceIntervals(self.Lifespan)
+            json['results']['takt_time'] = getConfidenceIntervals(self.TaktTime)
             if self.Exits!=self.UnitExits:      #output this only if there was variability in units
-                json['results']['unitsThroughput'] = self.getConfidenceIntervals(self.UnitExits)
+                json['results']['unitsThroughput'] = getConfidenceIntervals(self.UnitExits)
 
         G.outputJSON['elementList'].append(json)

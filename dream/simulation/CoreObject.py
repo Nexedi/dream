@@ -311,21 +311,6 @@ class CoreObject(Process):
         pass
 
     # =======================================================================
-    # Helper method to calculate the min, max and average values of a serie
-    # =======================================================================
-    def getConfidenceIntervals(self, value_list):
-        from Globals import G
-        if len(set(value_list)) == 1:
-            # All values are same, no need to perform statistical analysis
-            return { 'min': value_list[0],
-                     'max': value_list[0],
-                     'avg': value_list[0], }
-        bayes_mvs = stat.bayes_mvs(value_list, G.confidenceLevel)
-        return { 'min': bayes_mvs[0][1][0],
-                 'max': bayes_mvs[0][1][1],
-                 'avg': bayes_mvs[0][0], }
-      
-    # =======================================================================
     # get the active object. This always returns self 
     # =======================================================================  
     def getActiveObject(self):
