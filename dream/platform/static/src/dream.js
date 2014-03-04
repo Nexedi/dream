@@ -705,6 +705,7 @@
       }
       // make the tabs full width
       $("#reports li").width((100/$("#reports li:visible").length) - 1 +'%');
+      $("#reports li a").width('100%').css({'text-align': 'left'});
 
       $("#reports").show().tabs({ active: active_tab });
     };
