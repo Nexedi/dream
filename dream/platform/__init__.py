@@ -31,6 +31,8 @@ import logging
 
 from flask import Flask, jsonify, redirect, url_for
 from flask import request
+
+klass_name = None
 global klass_name
 
 app = Flask(__name__)
