@@ -1263,8 +1263,7 @@ def main(argv=[], input_data=None):
     #run the experiment (replications)          
     for i in xrange(G.numberOfReplications):
         #logger.info("start run number "+str(i+1)) 
-        G.seed+=1
-        G.Rnd=Random(G.seed)     
+        G.Rnd=Random(G.seed + i)
         initialize()                        #initialize the simulation 
         createWIP()
         initializeObjects()
