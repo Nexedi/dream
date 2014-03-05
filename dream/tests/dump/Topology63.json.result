@@ -1,0 +1,70 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.Exit", 
+   "id": "E1", 
+   "results": {
+    "lifespan": {
+     "avg": 8.389456464150808, 
+     "max": 9.862246183668073, 
+     "min": 6.916666744633542
+    }, 
+    "takt_time": {
+     "avg": 1.6638373280700693, 
+     "max": 1.6638373280700693, 
+     "min": 1.6638373280700693
+    }, 
+    "throughput": {
+     "avg": 30.75, 
+     "max": 32.4991076812121, 
+     "min": 29.000892318787898
+    }
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "M1", 
+   "results": {
+    "blockage_ratio": {
+     "avg": 0.0, 
+     "max": 0.0, 
+     "min": 0.0
+    }, 
+    "failure_ratio": {
+     "avg": 0.0, 
+     "max": 0.0, 
+     "min": 0.0
+    }, 
+    "loading_ratio": {
+     "avg": 0.0, 
+     "max": 0.0, 
+     "min": 0.0
+    }, 
+    "off_shift_ratio": {
+     "avg": 0.0, 
+     "max": 0.0, 
+     "min": 0.0
+    }, 
+    "setup_ratio": {
+     "avg": 0.0, 
+     "max": 0.0, 
+     "min": 0.0
+    }, 
+    "waiting_ratio": {
+     "avg": 5.780684174517209, 
+     "max": 7.703045665141752, 
+     "min": 3.8583226838926654
+    }, 
+    "working_ratio": {
+     "avg": 94.2193158254828, 
+     "max": 96.14167731610733, 
+     "min": 92.29695433485826
+    }
+   }
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}
