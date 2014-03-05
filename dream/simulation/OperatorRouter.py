@@ -89,6 +89,17 @@ class Router(ObjectInterruption):
 #                 print '        ', operator.id
             #===================================================================
             
+            # tailored for MachineManagedJob case
+            candidateOperators=[]
+            if len(G.pendingEntities):
+                for entity in G.pendingEntities:
+                    if entity.manager:
+                        if entity.hot and entity.manager.checkIfResourceIsAvailable():
+                            candidateOperators.append(entity.manager)
+            ''' all the pendingEntities that are hot should be examined if they can proceed to the 
+                step of their route as they may not be first in the activeQueue of their currentStations (QueueManagedJob).
+            '''
+            
             # for all the called operators find those available
             #     sort the objects for each one of them
             #     and assign the operator to those with the highest priority
@@ -125,21 +136,6 @@ class Router(ObjectInterruption):
                     # and if the priorityObject is indeed pending
                     if priorityObject in self.pendingObjects:
                         
-#                         # find the giver of the priorityObject, assign its exit
-#                         #     update the operators list of its operatorPool
-#                         #     read its load time (readLoadTime)
-#                         #     and identify the entity to get
-#                         # if the priorityObject has entities to get
-#                         if priorityObject.entitiesToGet:
-#                             # if the entitiesToGet have a defined manager
-#                             if priorityObject.entitiesToGet[0].manager:
-#                                 priorityObject.giver.assignExit()
-#                                 print '    ',priorityObject.giver.exitIsAssigned()
-#                                 priorityObject.entityToGet=priorityObject.giver.getActiveObjectQueue()[0]
-#                                 print '    ',priorityObject.entityToGet.id
-#                                 priorityObject.operatorPool.operators=[priorityObject.giver.getActiveObjectQueue()[0].manager]
-#                                 priorityObject.readLoadTime()
-                                
                         # assign an operator to the priorityObject
                         operator.operatorAssignedTo=priorityObject
                         #=======================================================

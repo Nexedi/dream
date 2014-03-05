@@ -276,8 +276,10 @@ class CoreObject(Process):
             # the hot flag should not be raised
             if successorsAreMachines:
                 activeEntity.hot = True
+        #=======================================================================
 #         # TESTING
 #         print now(), activeEntity.id, "got into "+self.id
+        #=======================================================================
         # update wipStatList
         if self.gatherWipStat:
             self.wipStatList.append([now(), len(activeObjectQueue)])
