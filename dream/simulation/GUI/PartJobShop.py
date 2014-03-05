@@ -16,7 +16,8 @@ class Simulation(ACO.Simulation):
     conf["Dream-MachineManagedJob"] = {
         "property_list": [
           schema["processingTime"],
-          schema["failures"]
+          schema["failures"],
+          schema["operationType"]
         ],
         "_class": 'Dream.MachineManagedJob',
         "name": 'Machine'
@@ -24,7 +25,8 @@ class Simulation(ACO.Simulation):
     conf["Dream-MouldAssembly"] = {
         "property_list": [
           schema["processingTime"],
-          schema["failures"]
+          schema["failures"],
+          schema["operationType"]
         ],
         "_class": 'Dream.MouldAssembly',
         "name": 'MouldAss'

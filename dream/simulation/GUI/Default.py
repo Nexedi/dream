@@ -77,6 +77,13 @@ schema = {
     "_class": "Dream.Property",
     "_default": "None"
   },
+  "operationType": {
+    "id": "operationType",
+    "type": "string",
+    "name": "Operation Type",
+    "_class": "Dream.Property",
+    "_default": "Processing"
+  },
   "isDummy": {
     "id": "isDummy",
     "type": "string",
