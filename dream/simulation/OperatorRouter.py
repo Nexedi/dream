@@ -143,8 +143,8 @@ class Router(ObjectInterruption):
                         # assign an operator to the priorityObject
                         operator.operatorAssignedTo=priorityObject
                         #=======================================================
-                        # TESTING
-                        print now(), operator.objName, 'got assigned to', priorityObject.id
+#                         # TESTING
+#                         print now(), operator.objName, 'got assigned to', priorityObject.id
                         #=======================================================
                         
                         # and let it proceed withGetEntity
