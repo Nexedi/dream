@@ -44,6 +44,10 @@ class RandomNumberGenerator(object):
         elif(self.distributionType=="Exp"):     #if the distribution is Exponential
             return G.Rnd.expovariate(1.0/(self.avg))
         elif(self.distributionType=="Normal"):      #if the distribution is Normal
+            if self.max < self.min:
+                 raise ValueError("Normal distribution for %s uses wrong "
+                                  "parameters. max (%s) > min (%s)" % (
+                                    self.obj.id, self.max, self.min))
             while 1:
                 number=G.Rnd.normalvariate(self.avg, self.stdev)
                 if number>self.max or number<self.min and max!=0:  #if the number is out of bounds repeat the process                                                                      #if max=0 this means that we did not have time "time" bounds             
