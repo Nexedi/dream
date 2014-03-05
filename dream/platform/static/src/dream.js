@@ -429,8 +429,7 @@
 
         var isVisibleStation = function (station) {
           // we should be able to define in the backend which station is visible
-          return  ["CAM", "CAD", "MILL", "EDM", "MASS", "IM"].indexOf(
-            station.substring(0, station.length - 1)) !== -1;
+          return that.getData().nodes[station]._class != "Dream.QueueManagedJob";
         };
 
         if (obj._class === 'Dream.Job') {
