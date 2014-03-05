@@ -61,8 +61,8 @@ class Simulation(ACO.Simulation):
         "_class": 'Dream.ExitJobShop',
         "name": 'Exit'
     }
-    conf["Dream-Operator"] = {
-        "_class": 'Dream.Operator',
+    conf["Dream-OperatorManagedJob"] = {
+        "_class": 'Dream.OperatorManagedJob',
         "name": 'Operator'
     }
     conf["Dream-OrderDecomposition"] = {

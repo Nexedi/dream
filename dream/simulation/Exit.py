@@ -27,7 +27,6 @@ models the exit of the model
 
 from SimPy.Simulation import now, Process, Resource, infinity, waituntil
 import xlwt
-import scipy.stats as stat
 from CoreObject import CoreObject
 
 # ===========================================================================

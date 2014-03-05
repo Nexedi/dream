@@ -37,7 +37,6 @@ from OperatedPoolBroker import Broker
 from OperatorPool import OperatorPool
 
 from RandomNumberGenerator import RandomNumberGenerator
-import scipy.stats as stat
 
 # ===========================================================================
 # the Machine object

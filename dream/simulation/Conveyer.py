@@ -29,7 +29,6 @@ it gathers entities and transfers them with a certain speed
 from SimPy.Simulation import Process, Resource
 from SimPy.Simulation import waituntil, now, hold, infinity, activate
 import xlwt
-import scipy.stats as stat
 from CoreObject import CoreObject
 
 #The conveyer object

@@ -28,7 +28,6 @@ BatchReassembly is a Core Object that takes a number of subBatches and reassembl
 from SimPy.Simulation import Process, Resource
 from SimPy.Simulation import activate, waituntil, now, hold
 
-import scipy.stats as stat
 
 from Globals import G
 from RandomNumberGenerator import RandomNumberGenerator

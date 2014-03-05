@@ -28,7 +28,6 @@ models a Broker that organizes the dispatch of operators/repairmen
 
 from SimPy.Simulation import Resource, now
 import xlwt
-import scipy.stats as stat
 from ObjectResource import ObjectResource
 from Operator import Operator
 

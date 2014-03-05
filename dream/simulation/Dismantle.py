@@ -31,7 +31,6 @@ from SimPy.Simulation import Process, Resource
 from SimPy.Simulation import waituntil, now, hold, infinity
 import xlwt
 from RandomNumberGenerator import RandomNumberGenerator
-import scipy.stats as stat
 from CoreObject import CoreObject
 
 # ===========================================================================

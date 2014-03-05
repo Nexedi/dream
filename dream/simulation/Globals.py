@@ -33,6 +33,7 @@ import xlwt
 import xlrd
 from random import Random, expovariate, gammavariate, normalvariate
 from SimPy.Simulation import now
+import scipy.stats as stat
 
 # ===========================================================================
 # globals
