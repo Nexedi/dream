@@ -85,6 +85,17 @@ class MachineManagedJob(MachineJobShop):
                     #return according to the state of the Queue
                     return len(activeObject.getActiveObjectQueue())<activeObject.capacity\
                         and activeObject.Up
+
+#                 activeEntities=[]
+#                 for entity in thecaller.getActiveObjectQueue():
+#                     if entity.manager.checkIfResourceIsAvailable(self):
+#                         activeEntities.append(entity)
+#                 
+#                 if len(activeEntities)>0:
+#                     for entity in activeEntities:
+#                         if activeObject.id in entity.remainingRoute[0].get('stationIdsList',[]):
+#                             return len(activeObject.getActiveObjectQueue())<activeObject.capacity\
+#                                 and activeObject.Up
         return False
 
     # =======================================================================
@@ -126,7 +137,7 @@ class MachineManagedJob(MachineJobShop):
                 activeObject.operatorPool.requestingObject=activeObject.giver
                 # TODO:  update the last object calling the operatorPool
                 activeObject.operatorPool.receivingObject=activeObject
-                              
+                
                 if activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
                     and self.checkOperator()\
                     and not activeObject.giver.exitIsAssigned():
@@ -139,13 +150,19 @@ class MachineManagedJob(MachineJobShop):
                         self.entityToGet=activeObject.giver.getActiveObjectQueue()[0]
                     #make the operators List so that it holds only the manager of the current order
                     activeObject.operatorPool.operators=[activeObject.giver.getActiveObjectQueue()[0].manager]
-#                     # set the variable operatorAssignedTo to activeObject, the operator is then blocked
-#                     activeObject.operatorPool.operators[0].operatorAssignedTo=activeObject
-#                     # TESTING
-#                     print now(), activeObject.operatorPool.operators[0].objName, 'got assigned to', activeObject.id
                     # read the load time of the machine
                     self.readLoadTime()
                     return True
+#                 if activeObject.Up and len(activeObjectQueue)<activeObject.capacity:
+#                     if not activeObject.giver.exitIsAssigned():
+#                         for entity in activeObject.giver.getActiveObjectQueue():
+#                             if activeObject.checkOperator(entity):
+#                                 if self not in entity.manager.activeCallersList:
+#                                     entity.manager.activeCallersList.append(self)
+#                                 if entity not in self.entitiesToGet:
+#                                     self.entitiesToGet.append(entity)
+# #                                 activeObject.giver.assignExit()
+#                                 return True
             else:
                 return False
         else:
@@ -159,7 +176,7 @@ class MachineManagedJob(MachineJobShop):
     # =======================================================================
     # to be called by canAcceptAndIsRequested and check for the operator
     # =======================================================================    
-    def checkOperator(self):
+    def checkOperator(self): #, candidateEntity=None):
         if self.giver.getActiveObjectQueue()[0].manager:
             manager=self.giver.getActiveObjectQueue()[0].manager
 #             print ''
@@ -167,7 +184,14 @@ class MachineManagedJob(MachineJobShop):
 #             print 'manager',manager.id
             return manager.checkIfResourceIsAvailable()
         else:
-            return True    
+            return True 
+#         if candidateEntity:
+#             if candidateEntity.manager:
+#                 manager=candidateEntity.manager
+#                 return manager.checkIfResourceIsAvailable()
+#             else:
+#                 return True
+#         return False 
         
     # =======================================================================
     #             identifies the Entity to be obtained so that 
