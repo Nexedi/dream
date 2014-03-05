@@ -303,18 +303,8 @@ def createObjects():
             availability=float(failures.get('availability') or 0)
             # type of operation and related times 
             operationType=element.get('operationType','not found')
-            setupTime = element.get('setupTime',{})
-            setupDistribution = setupTime.get('setupDistribution','not found')
-            setupMean = float(setupTime.get('setupMean') or 0)
-            setupStdev=float(setupTime.get('setupStdev') or 0)
-            setupMin=float(setupTime.get('setupMin') or 0)
-            setupMax=float(setupTime.get('setupMax') or mean+5*stdev)
-            loadTime = element.get('loadTime',{})
-            loadDistribution = loadTime.get('loadDistribution','not found')
-            loadMean = float(loadTime.get('loadMean') or 0)
-            loadStdev = float(loadTime.get('loadStdev') or 0)
-            loadMin=float(loadTime.get('loadMin') or 0)
-            loadMax=float(loadTime.get('loadMax') or mean+5*stdev)
+            setupTime = element.get('setupTime', None)
+            loadTime = element.get('loadTime', None)
             preemption=element.get('preemption',{})
             isPreemptive=resetOnPreemption=False
             if len(preemption)>0:
@@ -344,9 +334,8 @@ def createObjects():
             M=Machine(id, name, 1, processingTime,  failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
                                                     operatorPool=machineOperatorPoolList, operationType=operationType,
-                                                    loadDistribution=loadDistribution, setupDistribution=setupDistribution,
-                                                    setupMean=setupMean,setupStdev=setupStdev,setupMin=setupMin,setupMax=setupMax,
-                                                    loadMean=loadMean,loadStdev=loadStdev,loadMin=loadMin,loadMax=loadMax,
+                                                    setupTime=setupTime,
+                                                    loadTime=loadTime,
                                                     repairman=r, isPreemptive=isPreemptive, resetOnPreemption=resetOnPreemption)
             M.nextIds=getSuccessorList(id)                      # update the nextIDs list of the machine
             G.MachineList.append(M)                             # add machine to global MachineList
@@ -429,18 +418,8 @@ def createObjects():
             availability=float(failures.get('availability') or 0)
             # type of operation and related times 
             operationType=element.get('operationType','not found')
-            setupTime = element.get('setupTime',{})
-            setupDistribution = setupTime.get('setupDistribution','not found')
-            setupMean = float(setupTime.get('setupMean') or 0)
-            setupStdev=float(setupTime.get('setupStdev') or 0)
-            setupMin=float(setupTime.get('setupMin') or 0)
-            setupMax=float(setupTime.get('setupMax') or setupMean+5*setupStdev)              
-            loadTime = element.get('loadTime',{})
-            loadDistribution = loadTime.get('loadDistribution','not found')
-            loadMean = float(loadTime.get('loadMean') or 0)
-            loadStdev = float(loadTime.get('loadStdev') or 0)
-            loadMin=float(loadTime.get('loadMin') or 0)
-            loadMax=float(loadTime.get('loadMax') or loadMean+5*loadStdev)
+            setupTime = element.get('setupTime', None)
+            loadTime = element.get('loadTime', None)
             preemption=element.get('preemption',{})
             isPreemptive=resetOnPreemption=False
             if len(preemption)>0:
@@ -471,9 +450,8 @@ def createObjects():
             M=MachineJobShop(id, name, 1, processingTime=processingTime,  failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
                                                     operatorPool=machineOperatorPoolList, operationType=operationType,
-                                                    loadDistribution=loadDistribution, setupDistribution=setupDistribution,
-                                                    setupMean=setupMean,setupStdev=setupStdev,setupMin=setupMin,setupMax=setupMax,
-                                                    loadMean=loadMean,loadStdev=loadStdev,loadMin=loadMin,loadMax=loadMax,
+                                                    setupTime=setupTime,
+                                                    loadTime=loadTime,
                                                     repairman=r, isPreemptive=isPreemptive, resetOnPreemption=resetOnPreemption)
             M.nextIds=getSuccessorList(id)
             G.MachineJobShopList.append(M)
@@ -493,18 +471,8 @@ def createObjects():
             availability=float(failures.get('availability') or 0)
             # type of operation and related times 
             operationType=element.get('operationType','not found')
-            setupTime = element.get('setupTime',{})
-            setupDistribution = setupTime.get('setupDistribution','not found')
-            setupMean = float(setupTime.get('setupMean') or 0)
-            setupStdev=float(setupTime.get('setupStdev') or 0)
-            setupMin=float(setupTime.get('setupMin') or 0)
-            setupMax=float(setupTime.get('setupMax') or setupMean+5*setupStdev)
-            loadTime = element.get('loadTime',{})
-            loadDistribution = loadTime.get('loadDistribution','not found')
-            loadMean = float(loadTime.get('loadMean') or 0)
-            loadStdev = float(loadTime.get('loadStdev') or 0)
-            loadMin=float(loadTime.get('loadMin') or 0)
-            loadMax=float(loadTime.get('loadMax') or setupMean+5*setupStdev)
+            setupTime = element.get('setupTime', None)
+            loadTime = element.get('loadTime', None)
             preemption=element.get('preemption',{})
             isPreemptive=resetOnPreemption=False
             if len(preemption)>0:
@@ -535,9 +503,8 @@ def createObjects():
             M=MachineManagedJob(id, name, 1, processingTime=processingTime,  failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
                                                     operatorPool=machineOperatorPoolList, operationType=operationType,
-                                                    loadDistribution=loadDistribution, setupDistribution=setupDistribution,
-                                                    setupMean=setupMean,setupStdev=setupStdev,setupMin=setupMin,setupMax=setupMax,
-                                                    loadMean=loadMean,loadStdev=loadStdev,loadMin=loadMin,loadMax=loadMax,
+                                                    setupTime=setupTime,
+                                                    loadTime=loadTime,
                                                     repairman=r, isPreemptive=isPreemptive, resetOnPreemption=resetOnPreemption)
             M.nextIds=getSuccessorList(id)
             G.MachineManagedJobList.append(M)
@@ -719,18 +686,8 @@ def createObjects():
             availability=float(failures.get('availability') or 0)
             
             operationType=element.get('operationType','not found')
-            setupTime = element.get('setupTime',{})
-            setupDistribution = setupTime.get('setupDistribution','not found')
-            setupMean = float(setupTime.get('setupMean') or 0)
-            setupStdev=float(setupTime.get('setupStdev') or 0)
-            setupMin=float(setupTime.get('setupMin') or 0)
-            setupMax=float(setupTime.get('setupMax') or mean+5*stdev)
-            loadTime = element.get('loadTime',{})
-            loadDistribution = loadTime.get('loadDistribution','not found')
-            loadMean = float(loadTime.get('loadMean') or 0)
-            loadStdev = float(loadTime.get('loadStdev') or 0)
-            loadMin=float(loadTime.get('loadMin') or 0)
-            loadMax=float(loadTime.get('loadMax') or mean+5*stdev)
+            setupTime = element.get('setupTime', None)
+            loadTime = element.get('loadTime', None)
             
             if len(G.OperatorPoolsList)>0:
                 for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
@@ -771,10 +728,8 @@ def createObjects():
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
                                                     mean=mean,stdev=stdev,min=min,max=max,
                                                     operatorPool=machineOperatorPoolList, operationType=operationType,
-                                                    loadDistribution=loadDistribution, setupDistribution=setupDistribution,
-                                                    setupMean=setupMean,setupStdev=setupStdev,setupMin=setupMin,setupMax=setupMax,
-                                                    loadMean=loadMean,loadStdev=loadStdev,loadMin=loadMin,loadMax=loadMax,
-                                                    repairman=r)
+                                                    setupTime=setupTime,
+                                                    loadTime=loadTime, repairman=r)
             OM.nextIds=getSuccessorList(id)                             # update the nextIDs list of the machine
             G.OperatedMachineList.append(OM)                            # add the machine to the operatedMachines List
             G.MachineList.append(OM)                                    # add machine to global MachineList
@@ -820,18 +775,8 @@ def createObjects():
             resetOnPreemption=bool(int(element.get('resetOnPreemption') or 0))
             # type of operation and related times 
             operationType=element.get('operationType','not found')
-            setupTime = element.get('setupTime',{})
-            setupDistribution = setupTime.get('setupDistribution','not found')
-            setupMean = float(setupTime.get('setupMean') or 0)
-            setupStdev=float(setupTime.get('setupStdev') or 0)
-            setupMin=float(setupTime.get('setupMin') or 0)
-            setupMax=float(setupTime.get('setupMax') or setupMean+5*setupStdev)
-            loadTime = element.get('loadTime',{})
-            loadDistribution = loadTime.get('loadDistribution','not found')
-            loadMean = float(loadTime.get('loadMean') or 0)
-            loadStdev = float(loadTime.get('loadStdev') or 0)
-            loadMin=float(loadTime.get('loadMin') or 0)
-            loadMax=float(loadTime.get('loadMax') or loadMean+5*loadStdev)
+            setupTime = element.get('setupTime', None)
+            loadTime = element.get('loadTime', None)
             resetOnPreemption=bool(int(element.get('resetOnPreemption') or 0))
             
             if len(G.OperatorPoolsList)>0:
@@ -858,10 +803,8 @@ def createObjects():
             MA=MouldAssembly(id, name, 1, processingTime=processingTime,  failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
                                                     operatorPool=machineOperatorPoolList, operationType=operationType,
-                                                    loadDistribution=loadDistribution, setupDistribution=setupDistribution,
-                                                    setupMean=setupMean,setupStdev=setupStdev,setupMin=setupMin,setupMax=setupMax,
-                                                    loadMean=loadMean,loadStdev=loadStdev,loadMin=loadMin,loadMax=loadMax,
-                                                    repairman=r, resetOnPreemption=resetOnPreemption)
+                                                    setupTime=setupTime,
+                                                    loadTime=loadTime, repairman=r, resetOnPreemption=resetOnPreemption)
             MA.nextIds=getSuccessorList(id)
             G.MachineJobShopList.append(MA)
             G.MachineList.append(MA)

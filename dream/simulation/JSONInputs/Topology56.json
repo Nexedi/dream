@@ -118,8 +118,8 @@
                                         "mean": "2"
                                     },
                                     "setupTime": {
-                                        "setupDistribution": "Fixed",
-                                        "setupMean": "0.5"
+                                        "distributionType": "Fixed",
+                                        "mean": "0.5"
                                     },
                                     "stationIdsList": [
                                         "CAM1",
@@ -137,8 +137,8 @@
                                         "mean": "2"
                                     },
                                     "setupTime": {
-                                        "setupDistribution": "Fixed",
-                                        "setupMean": "0.5"
+                                        "distributionType": "Fixed",
+                                        "mean": "0.5"
                                     },
                                     "stationIdsList": [
                                         "MILL1",
@@ -156,8 +156,8 @@
                                         "mean": "2"
                                     },
                                     "setupTime": {
-                                        "setupDistribution": "Fixed",
-                                        "setupMean": "0.5"
+                                        "distributionType": "Fixed",
+                                        "mean": "0.5"
                                     },
                                     "stationIdsList": [
                                         "EDM"
@@ -199,8 +199,8 @@
                                         "mean": "1"
                                     },
                                     "setupTime": {
-                                        "setupDistribution": "Fixed",
-                                        "setupMean": "0.6"
+                                        "distributionType": "Fixed",
+                                        "mean": "0.6"
                                     },
                                     "stationIdsList": [
                                         "CAM1",
@@ -218,8 +218,8 @@
                                         "mean": "4"
                                     },
                                     "setupTime": {
-                                        "setupDistribution": "Fixed",
-                                        "setupMean": "0.4"
+                                        "distributionType": "Fixed",
+                                        "mean": "0.4"
                                     },
                                     "stationIdsList": [
                                         "MILL1",
@@ -237,8 +237,8 @@
                                         "mean": "1"
                                     },
                                     "setupTime": {
-                                        "setupDistribution": "Fixed",
-                                        "setupMean": "0.6"
+                                        "distributionType": "Fixed",
+                                        "mean": "0.6"
                                     },
                                     "stationIdsList": [
                                         "EDM"
@@ -285,8 +285,8 @@
                                         "mean": "2"
                                     },
                                     "setupTime": {
-                                        "setupDistribution": "Fixed",
-                                        "setupMean": "0.5"
+                                        "distributionType": "Fixed",
+                                        "mean": "0.5"
                                     },
                                     "stationIdsList": [
                                         "IM"
@@ -315,8 +315,8 @@
                                 "mean": 1.0
                             },
                             "setupTime": {
-                                "setupDistribution": "Fixed",
-                                "setupMean": "0.5"
+                                "distributionType": "Fixed",
+                                "mean": 0.5
                             },
                             "stationIdsList": [
                                 "CAD1",

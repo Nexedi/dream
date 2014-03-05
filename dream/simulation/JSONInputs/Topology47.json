@@ -56,8 +56,8 @@
                                 "mean": 0.25
                             },
                             "setupTime": {
-                                "setupDistribution": "Fixed",
-                                "setupMean": "0.5"
+                                "distributionType": "Fixed",
+                                "mean": 0.5
                             },
                             "stationIdsList": [
                                 "M1"
@@ -111,8 +111,8 @@
                                 "mean": 1.0
                             },
                             "setupTime": {
-                                "setupDistribution": "Fixed",
-                                "setupMean": "0.5"
+                                "distributionType": "Fixed",
+                                "mean": 0.5
                             },
                             "stationIdsList": [
                                 "M2"

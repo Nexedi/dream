@@ -127,9 +127,9 @@ class Simulation(ACO.Simulation):
         route_list.append(route)
       route = {"stationIdsList": list(self.getMachineNameSet(sequence_step)),
                 "processingTime": {"distributionType": "Fixed",
-                                  "mean": "%i" % int(processing_time_list[j])},
-                "setupTime": {"setupDistribution": "Fixed",
-                              "setupMean": "0.5"}, # XXX hardcoded value
+                                  "mean": int(processing_time_list[j])},
+                "setupTime": {"distributionType": "Fixed",
+                              "mean": .5}, # XXX hardcoded value
               }
       if prerequisite_list:
         route["prerequisites"] = prerequisite_list

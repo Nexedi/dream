@@ -85,8 +85,8 @@ class MachineJobShop(Machine):
         self.procTime=float(processingTime.get('mean', 0))
         
         setupTime=activeEntity.remainingRoute[0].get('setupTime',{})
-        self.distType=setupTime.get('setupDistribution','Fixed')
-        self.setupTime=float(setupTime.get('setupMean', 0))
+        self.distType=setupTime.get('distributionType','Fixed')
+        self.setupTime=float(setupTime.get('mean', 0))
         
         import Globals
         # read the list of next stations
@@ -237,8 +237,8 @@ class MachineJobShop(Machine):
         self.giver.sortEntities()
         activeEntity=self.giver.getActiveObjectQueue()[0]
         loadTime=activeEntity.remainingRoute[0].get('loadTime',{})
-        self.distType=loadTime.get('loadDistribution','Fixed')
-        self.loadTime=float(loadTime.get('loadMean', 0))
+        self.distType=loadTime.get('distributionType','Fixed')
+        self.loadTime=float(loadTime.get('mean', 0))
         
     # =======================================================================
     # removes an entity from the Machine

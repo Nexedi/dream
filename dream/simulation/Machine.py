@@ -49,21 +49,31 @@ class Machine(CoreObject):
     def __init__(self, id, name, capacity=1, processingTime=None,
                   failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None',\
                   operatorPool='None',operationType='None',\
-                  loadDistribution="No",loadMean=0, loadStdev=0, loadMin=0, loadMax=10,
-                  setupDistribution="No",setupMean=0, setupStdev=0, setupMin=0, setupMax=10,
+                  setupTime=None, loadTime=None,
                   isPreemptive=False, resetOnPreemption=False):
 
         CoreObject.__init__(self, id, name)
         self.type="Machine"                         #String that shows the type of object
         if not processingTime:
-          processingTime = {'distributionType': 'Fixed',
-                            'mean': 1,
-                            'stdev': 0,
-                            'min': 0,
-                            }
+          processingTime = { 'distributionType': 'Fixed',
+                             'mean': 1, }
         if processingTime['distributionType'] == 'Normal' and\
               processingTime.get('max', None) is None:
           processingTime['max'] = processingTime['mean'] + 5 * processingTime['stdev']
+
+        if not setupTime:
+          setupTime = { 'distributionType': 'Fixed',
+                        'mean': 1, }
+        if setupTime['distributionType'] == 'Normal' and\
+              setupTime.get('max', None) is None:
+          setupTime['max'] = setupTime['mean'] + 5 * setupTime['stdev']
+
+        if not loadTime:
+          loadTime = { 'distributionType': 'Fixed',
+                        'mean': 1, }
+        if loadTime['distributionType'] == 'Normal' and\
+              loadTime.get('max', None) is None:
+          loadTime['max'] = loadTime['mean'] + 5 * loadTime['stdev']
 
         #     holds the capacity of the machine 
         self.capacity=capacity
@@ -103,21 +113,11 @@ class Machine(CoreObject):
         # boolean to check whether the machine is being operated
         self.toBeOperated = False
         # define the load times
-        self.loadDistType=loadDistribution 
-        self.loadRng=RandomNumberGenerator(self, self.loadDistType)
-        self.loadRng.mean=loadMean
-        self.loadRng.stdev=loadStdev
-        self.loadRng.min=loadMin
-        self.loadRng.max=loadMax
+        self.loadRng = RandomNumberGenerator(self, **loadTime)
         # variable that informs on the need for setup
         self.setUp=True
         # define the setup times
-        self.setupDistType=setupDistribution 
-        self.stpRng=RandomNumberGenerator(self, self.setupDistType)
-        self.stpRng.mean=setupMean
-        self.stpRng.stdev=setupStdev
-        self.stpRng.min=setupMin
-        self.stpRng.max=setupMax
+        self.stpRng = RandomNumberGenerator(self, **setupTime)
         # examine if there are multiple operation types performed by the operator
         #     there can be Setup/Processing operationType
         #     or the combination of both (MT-Load-Setup-Processing) 

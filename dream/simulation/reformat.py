@@ -57,6 +57,14 @@ def positionGraph(g):
 
 def format(m):
   for node in m['nodes'].values():
+    if 'setupTime' in node:
+      setupTime = node['setupTime']
+      if 'mean' in setupTime:
+        setupTime['mean'] = float(setupTime['mean'])
+    if 'loadTime' in node:
+      loadTime = node['loadTime']
+      if 'mean' in loadTime:
+        loadTime['mean'] = float(loadTime['mean'])
     if 'processingTime' in node:
       processingTime = node['processingTime']
       if 'mean' in processingTime:
@@ -75,6 +83,14 @@ def format(m):
               processingTime = r['processingTime']
               if 'mean' in processingTime:
                 processingTime['mean'] = float(processingTime['mean'])
+            if 'loadTime' in r:
+              loadTime = r['loadTime']
+              if 'mean' in loadTime:
+                loadTime['mean'] = float(loadTime['mean'])
+            if 'setupTime' in r:
+              setupTime = r['setupTime']
+              if 'mean' in setupTime:
+                setupTime['mean'] = float(setupTime['mean'])
           for component in job.get('componentsList', []):
             for r in component['route']:
               r.pop("stepNumber", None)

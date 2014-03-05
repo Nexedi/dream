@@ -44,13 +44,18 @@ class OperatedMachine(Machine):
     # =======================================================================
     # initialise the id the capacity, of the resource and the distribution
     # =======================================================================
-    def __init__(self, id, name, capacity=1, distribution='Fixed', mean=1, stdev=0, min=0, max=10,\
+    def __init__(self, id, name, capacity=1, processingTime=None,
                   failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None',\
-                  operatorPool='None',operationType='None',\
-                  loadDistribution="No",loadMean=0, loadStdev=0, loadMin=0, loadMax=10,
-                  setupDistribution="No",setupMean=0, setupStdev=0, setupMin=0, setupMax=10):
-        Machine.__init__(self, id, name, capacity, distribution, mean, stdev, min, max,\
-                          failureDistribution, MTTF, MTTR, availability, repairman)
+                  operatorPool='None',operationType='None',
+                  setupTime=None, loadTime=None):
+        Machine.__init__(self, id, name, capacity=capacity,
+                         processingTime=processingTime,
+                         failureDistribution=failureDistribution, MTTF=MTTF,
+                         MTTR=MTTR, availability=availability,
+                         repairman=repairman, operatorPool=operatorPool,
+                         operationType=operationType, setupTime=setupTime,
+                         loadTime=loadTime,)
+
         # type of the machine
         self.type = "OperatedMachine"
         # sets the operator resource of the Machine
@@ -76,22 +81,7 @@ class OperatedMachine(Machine):
         self.operationType=operationType
         # boolean to check weather the machine is being operated
         self.toBeOperated = False
-        # define the load times
-        self.loadDistType=loadDistribution 
-        self.loadRng=RandomNumberGenerator(self, self.loadDistType)
-        self.loadRng.mean=loadMean
-        self.loadRng.stdev=loadStdev
-        self.loadRng.min=loadMin
-        self.loadRng.max=loadMax
-        # variable that informs on the need for setup
-        self.setUp=True
-        # define the setup times
-        self.setupDistType=setupDistribution 
-        self.stpRng=RandomNumberGenerator(self, self.setupDistType)
-        self.stpRng.mean=setupMean
-        self.stpRng.stdev=setupStdev
-        self.stpRng.min=setupMin
-        self.stpRng.max=setupMax
+
         # examine if there are multiple operation types performed by the operator
         #     there can be Setup/Processing operationType
         #     or the combination of both (MT-Load-Setup-Processing) 

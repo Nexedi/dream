@@ -51,8 +51,8 @@
             "operationType": "MT-Setup-Processing",
             "processingTime": {},
             "setupTime": {
-                "setupDistribution": "Fixed",
-                "setupMean": "0"
+                "distributionType": "Fixed",
+                "mean": 0.0
             }
         },
         "M3": {
@@ -71,8 +71,8 @@
             "operationType": "MT-Setup-Processing",
             "processingTime": {},
             "setupTime": {
-                "setupDistribution": "Fixed",
-                "setupMean": "0"
+                "distributionType": "Fixed",
+                "mean": 0.0
             }
         },
         "O1": {
