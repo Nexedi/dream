@@ -273,12 +273,6 @@ class Machine(CoreObject):
             # TODO: the Machine receive the entity  after the operator is available
             #     the canAcceptAndIsRequested method checks only in case of Load type of operation 
             
-            # after the machine receives an entity, it must be removed from the pendingEntities list
-            # TODO: consider incorporating it in the getEntity of the machine
-            from Globals import G
-            if self.currentEntity in G.pendingEntities:
-                G.pendingEntities.remove(self.currentEntity)
-            
     # ======= request a resource if it is not already assigned an Operator
             if(self.operatorPool!="None")\
                  and (any(type=="Processing" for type in self.multOperationTypeList)\
@@ -663,6 +657,18 @@ class Machine(CoreObject):
     # =======================================================================
     def ifCanDisposeOrHaveFailure(self):
         return self.Up==False or self.getReceiverObject().canAccept(self) or len(self.getActiveObjectQueue())==0  
+    
+    # =======================================================================
+    # get an entity from the giver
+    # =======================================================================
+    def getEntity(self):
+        activeObject=self.getActiveObject()
+        activeEntity=CoreObject.getEntity(self)          # run the default method   
+        # after the machine receives an entity, it must be removed from the pendingEntities list
+        from Globals import G
+        if activeEntity in G.pendingEntities:
+            G.pendingEntities.remove(activeEntity)  
+        return activeEntity
   
     # =======================================================================
     # removes an entity from the Machine
