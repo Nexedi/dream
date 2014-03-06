@@ -85,17 +85,23 @@ class MachineManagedJob(MachineJobShop):
                     #return according to the state of the Queue
                     return len(activeObject.getActiveObjectQueue())<activeObject.capacity\
                         and activeObject.Up
-
-#                 activeEntities=[]
-#                 for entity in thecaller.getActiveObjectQueue():
-#                     if entity.manager.checkIfResourceIsAvailable(self):
-#                         activeEntities.append(entity)
-#                 
-#                 if len(activeEntities)>0:
-#                     for entity in activeEntities:
-#                         if activeObject.id in entity.remainingRoute[0].get('stationIdsList',[]):
-#                             return len(activeObject.getActiveObjectQueue())<activeObject.capacity\
-#                                 and activeObject.Up
+        return False
+    
+    # =======================================================================
+    # checks if the Queue can accept an specific Entity       
+    # it checks also the next station of the Entity 
+    # and returns true only if the active object is the next station
+    # ======================================================================= 
+    def canAcceptEntity(self, callerEntity=None):
+        activeObject=self.getActiveObject()
+        activeObjectQueue=activeObject.getActiveObjectQueue()
+        thecallerentity=callerEntity
+        if (thecallerentity!=None):
+            # if the machine's Id is in the list of the entity's next stations
+            if activeObject.id in thecallerentity.remainingRoute[0].get('stationIdsList',[]):
+                #return according to the state of the Queue
+                return len(activeObject.getActiveObjectQueue())<activeObject.capacity\
+                        and activeObject.Up
         return False
 
     # =======================================================================
