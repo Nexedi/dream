@@ -61,7 +61,7 @@ class Operator(Repairman): # XXX isn't it the other way around ?
         self.operatorAssignedTo=None
 
     # =======================================================================
-    #    sorts the Entities of the Queue according to the scheduling rule
+    #    sorts the activeCallerrs of the Operator according to the scheduling rule
     # =======================================================================
     def sortEntities(self):
         #if we have sorting according to multiple criteria we have to call the sorter many times
@@ -73,7 +73,7 @@ class Operator(Repairman): # XXX isn't it the other way around ?
             self.activeQSorter(self.schedulingRule)
     
     # =======================================================================
-    #    sorts the Entities of the Queue according to the scheduling rule
+    #    sorts the activeCallers of the activeCallersList according to the scheduling rule
     # =======================================================================
     # TODO: entityToGet is not updated for all stations, consider using it for all stations or withdraw the idea
     def activeQSorter(self, criterion=None):
