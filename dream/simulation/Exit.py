@@ -50,6 +50,8 @@ class Exit(CoreObject):
         self.Exits=[]
         self.UnitExits=[]
         self.Lifespan=[] 
+        self.TaktTime=[]                  
+
         
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__
@@ -65,7 +67,6 @@ class Exit(CoreObject):
         self.totalLifespan=0
         
         self.totalTaktTime=0            # the total time between to consecutive exits    
-        self.TaktTime=[]                # list that holds the avg time between to consecutive exits     
         self.intervalThroughPutList=[]                                  
                                                       
   
