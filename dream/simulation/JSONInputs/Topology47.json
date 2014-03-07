@@ -27,7 +27,7 @@
             "operationType": "MT-Load-Setup"
         },
         "O1": {
-            "_class": "Dream.Operator",
+            "_class": "Dream.OperatorManagedJob",
             "capacity": 1,
             "name": "Operator1"
         },
