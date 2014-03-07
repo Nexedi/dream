@@ -1196,19 +1196,16 @@ def createObjectInterruptions():
             SM=ScheduledMaintenance(victim=victim, start=start, duration=duration)
             G.ObjectInterruptionList.append(SM)
             G.ScheduledMaintenanceList.append(SM)
-        failure=element.get('failures', {})
+        failure=element.get('failures', None)
         # if there are failures assigned 
         # initiate them   
-        if len(failure):
+        if failure:
             distributionType=failure.get('failureDistribution', 'No')
             if distributionType=='No':
                 pass
             else:
-                MTTF=float(failure.get('MTTF') or 0)
-                MTTR=float(failure.get('MTTR') or 0)
-                availability=float(failure.get('availability') or 0)
                 victim=Globals.findObjectById(element['id'])
-                F=Failure(victim, distributionType, MTTF, MTTR, availability, victim.id, victim.repairman)
+                F=Failure(victim, distribution=failure, repairman=victim.repairman)
                 G.ObjectInterruptionList.append(F)
                 G.FailureList.append(F)
         # if there is a shift pattern defined 

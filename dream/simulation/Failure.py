@@ -33,13 +33,19 @@ from ObjectInterruption import ObjectInterruption
 
 class Failure(ObjectInterruption):
     
-    def __init__(self, victim=None, distributionType='Fixed', MTTF=60, MTTR=5, availability=100, index=0, repairman=None):
+    def __init__(self, victim=None, distribution=None, index=0, repairman=None):
         #Process.__init__(self)
         ObjectInterruption.__init__(self,victim)
-        self.distType=distributionType              # the distribution that the failure duration follows
-        self.MTTF=MTTF                  # the MTTF
-        self.MTTR=MTTR                  # the MTTR
-        self.availability=availability  # the availability  
+        if distribution:
+            self.distType=distribution.get('failureDistribution','No')              # the distribution that the failure duration follows
+            self.MTTF=distribution.get('MTTF',60)                  # the MTTF
+            self.MTTR=distribution.get('MTTR',5)                  # the MTTR  
+            self.availability=distribution.get('availability',100)  # the availability      
+        else:
+            self.distType='No'
+            self.MTTF=60
+            self.MTTR=5
+            self.availability=100
         self.name="F"+str(index)
         self.repairman=repairman        # the resource that may be needed to fix the failure
                                         # if now resource is needed this will be "None" 
@@ -56,13 +62,11 @@ class Failure(ObjectInterruption):
             #                     beta=(sigma^2)/Mu    
             #                     alpha=Mu/beta
             # --------------------------------------------------------------    
-            self.AvailabilityMTTF=MTTR*(float(availability)/100)/(1-(float(availability)/100))
-            self.sigma=0.707106781185547*MTTR   
-            self.theta=(pow(self.sigma,2))/float(MTTR)             
+            self.AvailabilityMTTF=self.MTTR*(float(availability)/100)/(1-(float(availability)/100))
+            self.sigma=0.707106781185547*self.MTTR   
+            self.theta=(pow(self.sigma,2))/float(self.MTTR)             
             self.beta=self.theta
-            self.alpha=(float(MTTR)/self.theta)        
-
-                
+            self.alpha=(float(self.MTTR)/self.theta)        
             self.rngTTF=RandomNumberGenerator(self, "Exp")
             self.rngTTF.avg=self.AvailabilityMTTF
             self.rngTTR=RandomNumberGenerator(self, "Erlang")
@@ -73,9 +77,9 @@ class Failure(ObjectInterruption):
             #               if the distribution is fixed
             # --------------------------------------------------------------
             self.rngTTF=RandomNumberGenerator(self, self.distType)
-            self.rngTTF.mean=MTTF
+            self.rngTTF.mean=self.MTTF
             self.rngTTR=RandomNumberGenerator(self, self.distType)
-            self.rngTTR.mean=MTTR
+            self.rngTTR.mean=self.MTTR
 
     # =======================================================================
     #    The run method for the failure which has to served by a repairman
