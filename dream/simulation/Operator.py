@@ -59,6 +59,23 @@ class Operator(Repairman): # XXX isn't it the other way around ?
               (scheduling_rule, id))
         # the station that the operator is assigned to
         self.operatorAssignedTo=None
+    
+    # =======================================================================
+    #    sorts the candidateEntities of the Operator according to the scheduling rule
+    # =======================================================================
+    def sortCandidateEntities(self, candidateEntities=[]):
+        pass
+#         # TODO: have to consider what happens in case of a critical order
+#         # FIFO sorting has no meaning when sorting candidateEntities
+#         if self.schedulingRule=="FIFO":
+#             self.activeCandidateQSorter('WT', candidateEntities=candidateEntities)
+#         #if we have sorting according to multiple criteria we have to call the sorter many times
+#         elif self.schedulingRule=="MC":
+#             for criterion in reversed(self.multipleCriterionList):
+#                self.activeCandidateQSorter(criterion=criterion, candidateEntities=candidateEntities) 
+#         #else we just use the default scheduling rule
+#         else:
+#             self.activeCandidateQSorter(self.schedulingRule, candidateEntities=candidateEntities)
 
     # =======================================================================
     #    sorts the activeCallerrs of the Operator according to the scheduling rule
