@@ -234,7 +234,7 @@ class Output(BasicStatisticalMeasures,DistFittest):
         
         ###BestDistributionFit###
         A=self.ks_test(data)
-        sheet2.write(14,14,(A.get('type')))
+        sheet2.write(14,14,(A.get('distributionType')))
         sheet2.write(14,15,(A.get('aParameter')))
         sheet2.write(14,16,(A.get('bParameter')))
         sheet2.write(15,15,(A.get('aParameterValue')))
