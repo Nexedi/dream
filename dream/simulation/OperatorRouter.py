@@ -186,46 +186,45 @@ class Router(ObjectInterruption):
             entitiesWithOccupiedReceivers=[]
             for operator in [x for x in candidateOperators if x.candidateEntities]:
                 operator.sortCandidateEntities(operator.candidateEntities)
-                noAvailableReceivers=False
-                while not noAvailableReceivers:
-                    availableEntity=next(x for x in operator.candidateEntities if not x in entitiesWithOccupiedReceivers)
-                    if availableEntity:
-                        operator.candidateEntity=availableEntity
-                        #=======================================================
-#                         # TESTING
-#                         print '            the candidate receivers for', operator.candidateEntity.id, 'are',\
-#                                  [str(x.id) for x in operator.candidateEntity.candidateReceivers]
-                        #=======================================================
+                operator.noAvailableReceivers=False
+#                 while not operator.noAvailableReceivers:
+                availableEntity=next(x for x in operator.candidateEntities if not x in entitiesWithOccupiedReceivers)
+                if availableEntity:
+                    operator.candidateEntity=availableEntity
+                    #=======================================================
+#                     # TESTING
+#                     print '            the candidate receivers for', operator.candidateEntity.id, 'are',\
+#                                  [str(x.id) for x in operator.candidateEntity.candidateReceivers],
+                    #=======================================================
                         
-                        availableReceivers=[x for x in operator.candidateEntity.candidateReceivers\
+                    availableReceivers=[x for x in operator.candidateEntity.candidateReceivers\
                                                 if not x in occupiedReceivers]
-                        if availableReceivers:
-                            # TODO: must find the receiver that waits the most
-                            maxTimeWaiting=0
-                            for object in availableReceivers:
-                                timeWaiting=now()-object.timeLastEntityLeft 
-                                if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
-                                    maxTimeWaiting=timeWaiting
-                                    availableReceiver=object
-#                             availableReceiver=availableReceivers[0]
-#                             print '    after',
-#                             print availableReceiver.id
-                            operator.candidateEntity.candidateReceiver=availableReceiver
-                            occupiedReceivers.append(availableReceiver)
-                            noAvailableReceivers=True
-                        else:
-                            entitiesWithOccupiedReceivers.append(availableEntity)
+                    if availableReceivers:
+                        # TODO: must find the receiver that waits the most
+                        maxTimeWaiting=0
+                        for object in availableReceivers:
+                            timeWaiting=now()-object.timeLastEntityLeft 
+                            if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
+                                maxTimeWaiting=timeWaiting
+                                availableReceiver=object
+                            
+                        operator.candidateEntity.candidateReceiver=availableReceiver
+                        occupiedReceivers.append(availableReceiver)
+                        operator.noAvailableReceivers=True
+                    else:
+                        entitiesWithOccupiedReceivers.append(availableEntity)
+                        operator.candidateEntity.candidateReceiver=None
+
             #===================================================================
 #             # TESTING
 #             print '            +{}+ candidate operators   :',[str(x.id) for x in candidateOperators if x.candidateEntity] 
 #             print '            +{}+ have entities         :',[str(x.candidateEntity.id) for x in candidateOperators if x.candidateEntity]
-#             print '            +{}+ with receivers        :',[str(x.candidateEntity.candidateReceiver.id) for x in candidateOperators if x.candidateEntity]
+#             print '            +{}+ with receivers        :',[str(x.candidateEntity.candidateReceiver.id) for x in candidateOperators if x.candidateEntity and not x.candidateEntity in entitiesWithOccupiedReceivers]
             #===================================================================
             
             pendingObjectsMustBeSorted=False
             for operator in [x for x in candidateOperators if x.candidateEntity]:
                 operator.called = (operator in self.calledOperators)
-#                 print operator.id, 'is called?', operator.called
                 if not operator.called:
                     operator.candidateEntity.currentStation.sortEntitiesForOperator(operator)
                     pendingObjectsMustBeSorted=True
@@ -310,7 +309,6 @@ class Router(ObjectInterruption):
                         priorityObject.inPositionToGet=False
                 elif not candidateEntityHasActiveReceiver:
                     operator.activeCallersList=[]
-#                     print '        activerCallersList of', operator.id, 'cleared'
             # if an object cannot proceed with getEntity, unAssign the exit of its giver
             for object in self.pendingObjects:
                 if not object.canProceedWithGetEntity:
