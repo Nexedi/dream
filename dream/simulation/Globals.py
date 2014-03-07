@@ -146,10 +146,14 @@ def getClassFromName(dotted_name):
   # XXX dotted name is always Dream.Something, but the real class lives in
   # dream.simulation.Something.Something
   dream, class_name = dotted_name.split('.')
-  import dream.simulation as ds
-  __import__('dream.simulation.%s' % class_name)
-  return getattr(getattr(ds, class_name), class_name)
-
+  try:
+      import dream.simulation as ds
+      __import__('dream.simulation.%s' % class_name)
+      return getattr(getattr(ds, class_name), class_name)
+  except:
+      _class=__import__(class_name)
+      return getattr(_class,class_name)
+  
 # =======================================================================
 # method finding objects by ID
 # =======================================================================
