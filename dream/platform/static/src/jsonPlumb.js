@@ -93,6 +93,7 @@
         if (remove) {
           delete(priv.edge_container[connection.id]);
         } else {
+          $(connection.canvas).attr("id", connection.id)
           priv.edge_container[connection.id] = [
             that.getNodeId(connection.sourceId),
             that.getNodeId(connection.targetId), edge_data || {}
