@@ -261,60 +261,66 @@ class DistFittest:
         return self.Cauchytest
         
     def ks_test(self,data):             #Method that conducts the Kolmogorov-Smirnov statistical test and returns the best fitting distribution among the list of the available statistical distributions
-        data=robjects.FloatVector(data)     #The given data sample changes into float vector in order to be handled by RPy2
-        
-        self.Norm_kstest(data)
-        self.Lognorm_kstest(data)
-        self.Exp_kstest(data)
-        self.Pois_kstest(data)
-        self.Geom_kstest(data)
-        self.Logis_kstest(data)
-        self.Geom_kstest(data)
-        self.Weib_kstest(data)
-        self.Cauchy_kstest(data)
-        
+        data=robjects.FloatVector(data)     #The given data sample changes into float vector in order to be handled by RPy2 
         #Create a list with strings the available statistical distributions
-        list1=('Normal','Lognormal','Exponential','Poisson', 'Geometric','Logistic','Gamma','Weibull', 'Cauchy')
-        list2=[]                                    #Create a list 
+        list1=['Normal','Lognormal','Exponential','Poisson', 'Geometric','Logistic','Gamma','Weibull', 'Cauchy']
+        list2=[]                  #Create a list 
+        #if...else syntaxes to test if the Kolmogorov-Smirnov statistical tests can be conducted to the available distributions 
         
-        #try...except syntaxes to test if the Kolmogorov-Smirnov statistical tests can be conducted to the available distributions  
-        try:
-            list2.append(self.Normtest[0][0])        #It appends in list2 the D statistic parameter of the Kolmogorov-Smirnov test in Normal distribution
-        except:
-            list2.append('')                         #in case of an error, it appends a blank point 
-        try:    
-            list2.append(self.Lognormtest[0][0])    #It appends in list2 the D statistic parameter of the Kolmogorov-Smirnov test in Lognormal distribution
-        except:
-            list2.append('')                        # #in case of an error, it appends a blank point
-        try:   
-            list2.append(self.Exptest[0][0])         #It appends in list2 the D statistic parameter of the Kolmogorov-Smirnov test in Exponential distribution
-        except:
-            list2.append('')                          #in case of an error, it appends a blank point
-        try:
-            list2.append(self.Poistest[0][0])
-        except:
-            list2.append('')
-        try:
-            list2.append(self.Geomtest[0][0])
-        except:         
-            list2.append('')
-        try:
-            list2.append(self.Logistest[0][0])
-        except:
-            list2.append('')   
-        try:    
-            list2.append(self.Gamtest[0][0])
-        except:
-            list2.append('')
-        try:   
-            list2.append(self.Weibtest[0][0])
-        except:
-            list2.append('')   
-        try:   
-            list2.append(self.Cauchytest[0][0])
-        except:
-            list2.append('')               
-        
+        norm_test = self.Norm_kstest(data)
+        if norm_test is not None:
+            list2.insert(0,norm_test[0][0])
+        else:
+            list2.insert(0,'')
+           
+        lognorm_test = self.Lognorm_kstest(data)
+        if lognorm_test is not None:
+            list2.insert(1,lognorm_test[0][0])
+        else:
+            list2.insert(1,'')
+           
+        exp_test = self.Exp_kstest(data)
+        if exp_test is not None:
+            list2.insert(2,exp_test[0][0])
+        else:
+            list2.insert(2,'')
+           
+        pois_test = self.Pois_kstest(data)
+        if pois_test is not None:
+            list2.insert(3,pois_test[0][0])
+        else:
+            list2.insert(3,'')
+           
+        geom_test = self.Geom_kstest(data)
+        if geom_test is not None:
+            list2.insert(4,geom_test[0][0])
+        else:
+            list2.insert(4,'')
+           
+        logis_test = self.Logis_kstest(data)
+        if logis_test is not None:
+            list2.insert(5,logis_test[0][0])
+        else:
+            list2.insert(5,'')
+           
+        gam_test = self.Gam_kstest(data)
+        if gam_test is not None:
+            list2.insert(6,gam_test[0][0])
+        else:
+            list2.insert(6,'')
+           
+        weib_test = self.Weib_kstest(data)
+        if weib_test is not None:
+            list2.insert(7,weib_test[0][0])
+        else:
+            list2.insert(7,'')
+           
+        cauchy_test = self.Cauchy_kstest(data)
+        if cauchy_test is not None:
+            list2.insert(8,cauchy_test[0][0])
+        else:
+            list2.insert(8,'')
+                     
         #Create a list with parameters the above D parameters calculated by the Kolmogorov-Smirnov tests in the available statistical distributions
         a=min(list2)     #Create a variable that holds the minimum value from the above list  
         b=list2.index(a) #Create a variable that holds the actual position  of the minimum value in the list
