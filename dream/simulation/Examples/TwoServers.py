@@ -45,34 +45,43 @@ M2.defineRouting([Q],[E])
 E.defineRouting([M2])
 
 initialize()                        #initialize the simulation (SimPy method)
-    
-#initialize all the objects    
+
+#initialize all the objects
 R.initialize()
 
-for object in G.ObjList:
-    object.initialize()
-    
-for objectInterruption in G.ObjectInterruptionList:
-    objectInterruption.initialize()
+def main():
 
-#activate all the objects 
-for object in G.ObjList:
-    activate(object, object.run())
+  for object in G.ObjList:
+      object.initialize()
 
-for objectInterruption in G.ObjectInterruptionList:
-    activate(objectInterruption, objectInterruption.run())
+  for objectInterruption in G.ObjectInterruptionList:
+      objectInterruption.initialize()
 
+  #activate all the objects
+  for object in G.ObjList:
+      activate(object, object.run())
 
-G.maxSimTime=1440.0     #set G.maxSimTime 1440.0 minutes (1 day)
-    
-simulate(until=G.maxSimTime)    #run the simulation
+  for objectInterruption in G.ObjectInterruptionList:
+      activate(objectInterruption, objectInterruption.run())
 
-#carry on the post processing operations for every object in the topology       
-for object in G.ObjList:
-    object.postProcessing()
-R.postProcessing()
+  G.maxSimTime=1440.0     #set G.maxSimTime 1440.0 minutes (1 day)
 
-#print the results
-print "the system produced", E.numOfExits, "parts"
-print "the blockage ratio of", M1.objName,  "is", (M1.totalBlockageTime/G.maxSimTime)*100, "%"
-print "the working ratio of", R.objName,"is", (R.totalWorkingTime/G.maxSimTime)*100, "%"
+  simulate(until=G.maxSimTime)    #run the simulation
+
+  #carry on the post processing operations for every object in the topology
+  for object in G.ObjList:
+      object.postProcessing()
+  R.postProcessing()
+
+  #print the results
+  print "the system produced", E.numOfExits, "parts"
+  blockage_ratio = (M1.totalBlockageTime/G.maxSimTime)*100
+  working_ratio = (R.totalWorkingTime/G.maxSimTime)*100
+  print "the blockage ratio of", M1.objName,  "is", blockage_ratio, "%"
+  print "the working ratio of", R.objName,"is", working_ratio, "%"
+  return {"parts": E.numOfExits,
+          "blockage_ratio": blockage_ratio,
+          "working_ratio": working_ratio}
+
+if __name__ == '__main__':
+  main()
