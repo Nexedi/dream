@@ -74,6 +74,52 @@ class G:
     
     numberOfEntities = 0
     
+    # -----------------------------------------------------------------------
+    #                define the lists of each object type
+    # -----------------------------------------------------------------------
+    SourceList=[]
+    MachineList=[]
+    ExitList=[]
+    QueueList=[]    
+    RepairmanList=[]
+    AssemblyList=[]
+    DismantleList=[]
+    ConveyerList=[]
+    MachineJobShopList=[]
+    QueueJobShopList=[]
+    ExitJobShopList=[]
+    BatchDecompositionList=[]
+    BatchSourceList=[]
+    BatchReassemblyList=[]
+    LineClearanceList=[]
+    EventGeneratorList=[]
+    OperatorsList = []
+    OperatorManagedJobsList = []
+    OperatorPoolsList = []
+    BrokersList = []
+    RoutersList = []
+    OperatedMachineList = []
+    BatchScrapMachineList=[]
+    OrderDecompositionList=[]
+    ConditionalBufferList=[]
+    MouldAssemblyBufferList=[]
+    MouldAssemblyList=[]
+    MachineManagedJobList=[]
+    QueueManagedJobList=[]
+    ModelResourceList=[]
+    
+    JobList=[]
+    WipList=[]
+    EntityList=[]  
+    PartList=[]
+    OrderComponentList=[]
+    OrderList=[]
+    MouldList=[]
+    # entities that just finished processing in a station 
+    # and have to enter the next machine 
+    pendingEntities=[]
+
+    
 # =======================================================================
 # method to move entities exceeding a certain safety stock
 # =======================================================================
