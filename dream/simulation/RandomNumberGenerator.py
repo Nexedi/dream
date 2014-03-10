@@ -26,9 +26,8 @@ Created on 14 Feb 2013
 holds methods for generations of numbers from different distributions
 '''
 class RandomNumberGenerator(object):
-    def __init__(self, obj, distributionType, mean=0, avg=0, stdev=0, min=0, max=0, alpha=0, beta=0):
+    def __init__(self, obj, distributionType, mean=0, stdev=0, min=0, max=0, alpha=0, beta=0):
         self.distributionType = distributionType
-        self.avg = avg
         self.mean = mean
         self.stdev = stdev
         self.min = min
@@ -42,14 +41,14 @@ class RandomNumberGenerator(object):
         if(self.distributionType=="Fixed"):     #if the distribution is Fixed 
             return self.mean
         elif(self.distributionType=="Exp"):     #if the distribution is Exponential
-            return G.Rnd.expovariate(1.0/(self.avg))
+            return G.Rnd.expovariate(1.0/(self.mean))
         elif(self.distributionType=="Normal"):      #if the distribution is Normal
             if self.max < self.min:
                  raise ValueError("Normal distribution for %s uses wrong "
                                   "parameters. max (%s) > min (%s)" % (
                                     self.obj.id, self.max, self.min))
             while 1:
-                number=G.Rnd.normalvariate(self.avg, self.stdev)
+                number=G.Rnd.normalvariate(self.mean, self.stdev)
                 if number>self.max or number<self.min and max!=0:  #if the number is out of bounds repeat the process                                                                      #if max=0 this means that we did not have time "time" bounds             
                     continue
                 else:           #if the number is in the limits stop the process

@@ -30,7 +30,7 @@ class RandomNumberGeneratorTestCase(TestCase):
         self.assertEquals(rng.generateNumber(), 32)
 
     def testExp(self):
-        rng = RandomNumberGenerator(obj, distributionType='Exp', avg=10)
+        rng = RandomNumberGenerator(obj, distributionType='Exp', mean=10)
         number = rng.generateNumber()
         # at least we make sure we generate a number
         self.assertTrue(number >= 0)
@@ -48,7 +48,7 @@ class RandomNumberGeneratorTestCase(TestCase):
             min=0,
             max=3,
             stdev=.5,
-            avg=2)
+            mean=2)
         for i in range(10):
             number = rng.generateNumber()
             self.assertTrue(number >= 0)
@@ -60,7 +60,7 @@ class RandomNumberGeneratorTestCase(TestCase):
             min=3,
             max=0, # here min > max
             stdev=.5,
-            avg=2)
+            mean=2)
         self.assertRaises(ValueError, rng.generateNumber)
 
     def testUnkonwnDistribution(self):
