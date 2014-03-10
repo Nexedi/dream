@@ -51,7 +51,7 @@
             "failures": {
                 "MTTF": 60,
                 "MTTR": 5,
-                "failureDistribution": "Fixed",
+                "distributionType": "Fixed",
                 "repairman": "None"
             },
             "left": 0.7857142857142857,
@@ -67,7 +67,7 @@
             "failures": {
                 "MTTF": 40,
                 "MTTR": 10,
-                "failureDistribution": "Fixed",
+                "distributionType": "Fixed",
                 "repairman": "None"
             },
             "left": 0.2142857142857143,
@@ -81,7 +81,7 @@
         "M3": {
             "_class": "Dream.Machine",
             "failures": {
-                "failureDistribution": "No"
+                "distributionType": "No"
             },
             "left": 0.5,
             "name": "Machine3",

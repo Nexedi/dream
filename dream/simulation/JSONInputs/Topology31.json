@@ -62,7 +62,7 @@
             "failures": {
                 "MTTF": 60,
                 "MTTR": 5,
-                "failureDistribution": "Fixed"
+                "distributionType": "Fixed"
             },
             "id": "M1",
             "name": "Machine1",
@@ -76,7 +76,7 @@
             "failures": {
                 "MTTF": 40,
                 "MTTR": 10,
-                "failureDistribution": "Fixed"
+                "distributionType": "Fixed"
             },
             "id": "M2",
             "name": "Machine2",

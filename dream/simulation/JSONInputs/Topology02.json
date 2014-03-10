@@ -51,7 +51,7 @@
             "failures": {
                 "MTTF": 60,
                 "MTTR": 5,
-                "failureDistribution": "Fixed",
+                "distributionType": "Fixed",
                 "repairman": "None"
             },
             "left": 0.5,
