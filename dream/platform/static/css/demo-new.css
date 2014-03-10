@@ -384,6 +384,7 @@ border: 1px solid black;
 
 ._jsPlumb_source_hover, ._jsPlumb_target_hover, .dragHover {
   background-color:#1e8151;
+  background-image: none;
   color:white;
 }
 
