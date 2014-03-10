@@ -4,7 +4,7 @@ from dream.simulation.imports import simulate, activate, initialize
 # define the objects of the model
 S=BatchSource('S','Source',interarrivalTime={'distributionType':'Fixed','mean':0.5}, entity='Dream.Batch', batchNumberOfUnits=4)
 Q=Queue('Q','StartQueue',capacity=100000)
-BD=BatchDecomposition('BC', 'BatchDecomposition', numberOfSubBatches=4, mean=1)
+BD=BatchDecomposition('BC', 'BatchDecomposition', numberOfSubBatches=4, processingTime={'distributionType':'Fixed','mean':1})
 M=Machine('M','Machine',processingTime={'distributionType':'Fixed','mean':0.5})
 E=Exit('E','Exit')
 # add all the objects in the G.ObjList so that they can be easier accessed later

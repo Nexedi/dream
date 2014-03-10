@@ -7,11 +7,11 @@ G.trace='Yes'
 # define the objects of the model
 S=BatchSource('S','Source',interarrivalTime={'distributionType':'Fixed','mean':1.5}, entity='Dream.Batch', batchNumberOfUnits=100)
 Q=Queue('Q','StartQueue',capacity=100000)
-BD=BatchDecomposition('BC', 'BatchDecomposition', numberOfSubBatches=4, mean=1)
+BD=BatchDecomposition('BC', 'BatchDecomposition', numberOfSubBatches=4, processingTime={'distributionType':'Fixed','mean':1})
 M1=Machine('M1','Machine1',processingTime={'distributionType':'Fixed','mean':0.5})
 Q1=LineClearance('Q1','Queue1',capacity=2)
 M2=Machine('M2','Machine2',processingTime={'distributionType':'Fixed','mean':4})
-BRA=BatchReassembly('BRA', 'BatchReassembly', numberOfSubBatches=4, mean=0)
+BRA=BatchReassembly('BRA', 'BatchReassembly', numberOfSubBatches=4, processingTime={'distributionType':'Fixed','mean':0})
 M3=Machine('M3','Machine3',processingTime={'distributionType':'Fixed','mean':1})
 E=Exit('E','Exit')
 # add all the objects in the G.ObjList so that they can be easier accessed later
