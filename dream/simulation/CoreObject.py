@@ -331,6 +331,7 @@ class CoreObject(Process):
     #========================================================================
     # checks if the object can dispose an entity 
     #     and returns the entity that it will dispose
+    # To be used as self.canAcceptEntity(giver.haveToDisposeEntity(self))
     #========================================================================
     def haveToDisposeEntity(self, callerObject=None):
         activeObjectQueue=self.getActiveObjectQueue()
