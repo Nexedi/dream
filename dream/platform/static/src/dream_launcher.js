@@ -277,32 +277,98 @@
        }
     });
 
-    // XXX create socket on click ?
-    var webSocket = new WebSocket("ws://localhost:5000/api");
 
-    webSocket.onmessage = function(e) {
-      var message = JSON.parse(e.data)
-
-      $.each(message.update_gui || [], function(i, msg){
-        if (msg.action === "update_queue_stat"){
-          dream_instance.updateElementData(msg.node, 
-            {status: msg.capacity});
-        }
-        if (msg.action === "update_machine_status"){
-          dream_instance.updateElementData(msg.node,
-            {status: msg.status});
-        }
-      });
-      if (message['now']) {
-        $("#now").text(message['now']);
+    // display entities in a station
+    function displayEntities(element_id, node_id) {
+      var node = $("#" + element_id);
+      var node_position = node.position();
+      var entities = $(".in_" + node_id);
+      var offset = 0;
+      if (entities.length > 4) {
+        entities.hide();
+        dream_instance.updateElementData(node_id, 
+            {status: entities.length});
       }
+      entities.each(
+        function (idx, entity) {
+          entity = $(entity)
+          entity.css({top: node_position.top +
+                           node.height() -
+                           (idx * entity.height()) - 
+                           (entity.height() / 2),
+                      left: node_position.left +
+                            node.width() -
+                            entity.width()})
+        }
+      )
+    }
 
-      if (message['success']) {
+    // move an entity from source to destination
+    function moveEntity(message, queue) {
+        var size = 20 * dream_instance.getData().preference.zoom_level;
+        var entity = $("#" + message.entity);
+        var source = dream_instance.getElementId(message.source);
+        var destination = dream_instance.getElementId(message.destination);
+          // XXX do we need a getElementId for edges ? for entities ?
+        var edge = $("#" + message.edge);
+        var win_offset = $('#main').offset()
+        var path = edge.find("path")[1]
+        var offset = edge.find("path:nth(1)").offset();
+        var path_length = path.getTotalLength()
+        var percent = 100;
+        if (!entity.length) {
+          var d= $("<div class='entity' id='" + message.entity + "'>"
+            + message.entity + "</div>").css(
+            {"width": size,
+             "height": size,
+             "position": "absolute",
+             "border-radius": size / 2, 
+             "background": "red"} // TODO: random color ?
+          ).appendTo($("#main"));
+          entity = $("#" + message.entity);
+        }
+
+        // XXX at this point the entity does not have the class yet 
+        entity.removeClass("in_"+ message.source)
+
+        displayEntities(source, message.source);
+        $("#now").text(message.time.toFixed(2));
+
+        var timer;
+        ( function calc() {
+          percent -= Math.min(dream_instance.getData().general.animationSpeed, 100);
+          if (percent < 0) {
+            percent = 0;
+          }
+          timer = setTimeout(calc, 10)
+          var point = path.getPointAtLength(percent*path_length/100);
+          var c = { 'z-index':100,
+                    position:"absolute",
+                    top:(offset.top + point.y - win_offset.top) + "px",
+                    left:(offset.left + point.x - win_offset.left) + "px" }
+          entity.css(c)
+          if (percent == 0){
+            clearTimeout(timer)
+            $(queue).dequeue()
+            entity.removeClass("in_"+ message.source)
+            entity.addClass("in_"+ message.destination)
+            displayEntities(source, message.source);
+            displayEntities(destination, message.destination);
+          }
+        })()
+
+        
+      }
+  
+    function notifyEndSimulation(message){
         $("#json_result").val(JSON.stringify(message['success'],
           undefined, " "));
         $("#loading_spinner").hide();
         $("#run_simulation").button('enable');
         $("#result_zone").show();
+  
+        $(".entity").remove();
+
         $('#result_list').empty();
         $('.window > .status').remove();
         $.each(message['success'], function (idx, obj) {
@@ -316,12 +382,31 @@
         });
         dream_instance.displayResult(0);
       }
-    }
 
+    function onWebSocketMessage(e) {
+      var message = JSON.parse(e.data)
+
+      if (message.action === "move_entity"){
+        $("#main").queue(function() {
+          moveEntity(message, this);
+        })
+      }
+
+      if (message['success']) {
+        $("#main").queue(function() {
+          notifyEndSimulation(message, this);
+        })
+      }
+    };
+
+    var webSocket = new WebSocket("ws://localhost:5000/api");
+    // TODO reorganise
     $("#run_simulation").button().on('click', function(e) {
-      // TODO: we need to update global properties
+      dream_instance.readGeneralPropertiesDialog()
       $("#loading_spinner").show();
       $("#run_simulation").button('disable');
+      webSocket.onmessage = onWebSocketMessage
+
       var msg = JSON.stringify(dream_instance.getData());
       webSocket.send(msg);
       return false;

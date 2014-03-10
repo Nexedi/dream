@@ -1,42 +1,45 @@
 {
   "edges": {
     "con_10": [
-      "M2", 
-      "E1", 
-      {}
-    ], 
-    "con_15": [
       "S1", 
       "M1", 
       {}
     ], 
-    "con_20": [
+    "con_15": [
       "Q1", 
       "M3", 
       {}
     ], 
-    "con_25": [
+    "con_20": [
       "M3", 
       "Q2", 
       {}
     ], 
-    "con_30": [
+    "con_25": [
       "Q2", 
       "M2", 
       {}
     ], 
-    "con_5": [
+    "con_30": [
       "M1", 
       "Q1", 
+      {}
+    ], 
+    "con_5": [
+      "M2", 
+      "E1", 
       {}
     ]
   }, 
   "general": {
+    "animationSpeed": 15, 
     "confidenceLevel": 0.5, 
     "currentDate": "2014/03/01", 
-    "maxSimTime": 200, 
+    "ke_url": "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_ProcessingTimes.xls", 
+    "maxSimTime": 30, 
     "numberOfReplications": 1, 
     "processTimeout": 10, 
+    "seed": "", 
     "trace": "Yes"
   }, 
   "nodes": {
@@ -53,7 +56,6 @@
         "failureDistribution": "No", 
         "repairman": "None"
       }, 
-      "name": "M1: working", 
       "processingTime": {
         "distributionType": "Normal", 
         "max": 3.9, 
@@ -71,7 +73,6 @@
         "failureDistribution": "No", 
         "repairman": "None"
       }, 
-      "name": "M2: working", 
       "processingTime": {
         "distributionType": "Normal", 
         "max": 3, 
@@ -82,14 +83,13 @@
     }, 
     "M3": {
       "_class": "Dream.Machine", 
-      "element_id": "DreamNode_8", 
+      "element_id": "DreamNode_4", 
       "failures": {
         "MTTF": 40, 
         "MTTR": 10, 
         "failureDistribution": "No", 
         "repairman": "None"
       }, 
-      "name": "M3: working", 
       "processingTime": {
         "distributionType": "Normal", 
         "max": 4, 
@@ -101,27 +101,22 @@
     "Q1": {
       "_class": "Dream.Queue", 
       "capacity": 100, 
-      "element_id": "DreamNode_4", 
-      "isDummy": "0", 
-      "name": "Q1: 3", 
+      "element_id": "DreamNode_5", 
       "schedulingRule": "FIFO"
     }, 
     "Q2": {
       "_class": "Dream.Queue", 
       "capacity": 130, 
-      "element_id": "DreamNode_7", 
-      "isDummy": "0", 
-      "name": "Q2: 4", 
+      "element_id": "DreamNode_6", 
       "schedulingRule": "FIFO"
     }, 
     "QS1": {
       "_class": "Dream.EventGenerator", 
       "argumentDict": "{}", 
       "duration": 10, 
-      "element_id": "DreamNode_5", 
+      "element_id": "DreamNode_7", 
       "interval": 10, 
       "method": "Globals.countQueueMetrics", 
-      "name": "Queue Statistics", 
       "start": 1, 
       "stop": -1
     }, 
@@ -129,22 +124,20 @@
       "_class": "Dream.EventGenerator", 
       "argumentDict": "{}", 
       "duration": 10, 
-      "element_id": "DreamNode_9", 
+      "element_id": "DreamNode_8", 
       "interval": 1, 
       "method": "Globals.updateGui", 
-      "name": "Queue Statistics", 
       "start": 1, 
       "stop": -1
     }, 
     "S1": {
       "_class": "Dream.Source", 
-      "element_id": "DreamNode_6", 
+      "element_id": "DreamNode_9", 
       "entity": "Dream.Part", 
       "interarrivalTime": {
         "distributionType": "Fixed", 
         "mean": 0.3
-      }, 
-      "name": "S1"
+      }
     }
   }, 
   "preference": {
@@ -178,15 +171,15 @@
         "top": 0.85818653664461
       }, 
       "QS2": {
-        "left": 0.9756195021428015, 
-        "top": 0.2783826573008243
+        "left": 0.9755049855975303, 
+        "top": 0.277996584331602
       }, 
       "S1": {
         "left": 0.053173574761337515, 
         "top": 0.10367354133961731
       }
     }, 
-    "zoom_level": 1.1111
+    "zoom_level": 0.8999280025199498
   }, 
   "shift_spreadsheet": [
     [

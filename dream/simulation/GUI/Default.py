@@ -161,6 +161,14 @@ schema = {
     "_default":
     "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
   },
+  "animationSpeed": {
+    "id": "animationSpeed",
+    "type": "number",
+    "name": "Animation Speed",
+    "description": "Speed of animation (0..100)",
+    "_class": "Dream.Property",
+    "_default": 5,
+  },
   "batchNumberOfUnits": {
     "id": "batchNumberOfUnits",
     "type": "number",
@@ -336,6 +344,7 @@ class Simulation(object):
            schema["trace"],
            schema["seed"],
            schema["ke_url"],
+           schema["animationSpeed"],
         ],
         "gui": {
           'debug_json': 1,
