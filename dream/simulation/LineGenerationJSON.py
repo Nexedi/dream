@@ -389,7 +389,7 @@ def createObjects():
             scrMin=int(scrapQuantity.get('min') or 0)
             scrMax=int(scrapQuantity.get('max') or mean+5*stdev)
             failures=element.get('failures', {})  
-            failureDistribution=failures.get('failureDistribution', 'not found')
+            failureDistribution=failures.get('distributionType', 'not found')
             MTTF=float(failures.get('MTTF') or 0)
             MTTR=float(failures.get('MTTR') or 0)
             availability=float(failures.get('availability') or 0)
@@ -412,7 +412,7 @@ def createObjects():
             name=element.get('name', 'not found')
             processingTime=element.get('processingTime', {})
             failures=element.get('failures', {})  
-            failureDistribution=failures.get('failureDistribution', 'not found')
+            failureDistribution=failures.get('distributionType', 'not found')
             MTTF=float(failures.get('MTTF') or 0)
             MTTR=float(failures.get('MTTR') or 0)
             availability=float(failures.get('availability') or 0)
@@ -465,7 +465,7 @@ def createObjects():
             name=element.get('name', 'not found')
             processingTime=element.get('processingTime', None)
             failures=element.get('failures', {})  
-            failureDistribution=failures.get('failureDistribution', 'not found')
+            failureDistribution=failures.get('distributionType', 'not found')
             MTTF=float(failures.get('MTTF') or 0)
             MTTR=float(failures.get('MTTR') or 0)
             availability=float(failures.get('availability') or 0)
@@ -680,7 +680,7 @@ def createObjects():
             min=float(processingTime.get('min') or 0)
             max=float(processingTime.get('max') or mean+5*stdev)
             failures=element.get('failures', {})  
-            failureDistribution=failures.get('failureDistribution', 'not found')
+            failureDistribution=failures.get('distributionType', 'not found')
             MTTF=float(failures.get('MTTF') or 0)
             MTTR=float(failures.get('MTTR') or 0)
             availability=float(failures.get('availability') or 0)
@@ -768,7 +768,7 @@ def createObjects():
             name=element.get('name', 'not found')
             processingTime=element.get('processingTime', None)
             failures=element.get('failures', {})  
-            failureDistribution=failures.get('failureDistribution', 'not found')
+            failureDistribution=failures.get('distributionType', 'not found')
             MTTF=float(failures.get('MTTF') or 0)
             MTTR=float(failures.get('MTTR') or 0)
             availability=float(failures.get('availability') or 0)
@@ -1200,7 +1200,7 @@ def createObjectInterruptions():
         # if there are failures assigned 
         # initiate them   
         if failure:
-            distributionType=failure.get('failureDistribution', 'No')
+            distributionType=failure.get('distributionType', 'No')
             if distributionType=='No':
                 pass
             else:

@@ -37,7 +37,7 @@ class Failure(ObjectInterruption):
         #Process.__init__(self)
         ObjectInterruption.__init__(self,victim)
         if distribution:
-            self.distType=distribution.get('failureDistribution','No')              # the distribution that the failure duration follows
+            self.distType=distribution.get('distributionType','No')              # the distribution that the failure duration follows
             self.MTTF=distribution.get('MTTF',60)                  # the MTTF
             self.MTTR=distribution.get('MTTR',5)                  # the MTTR  
             self.availability=distribution.get('availability',100)  # the availability      
