@@ -59,6 +59,10 @@ class Operator(Repairman): # XXX isn't it the other way around ?
               (scheduling_rule, id))
         # the station that the operator is assigned to
         self.operatorAssignedTo=None
+        
+        # variables to be used by OperatorRouter
+        self.candidateEntities=[]               # list of the entities requesting the operator at a certain simulation Time
+        self.candidateEntity=None               # the entity that will be chosen for processing
     
     # =======================================================================
     #    sorts the candidateEntities of the Operator according to the scheduling rule

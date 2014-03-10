@@ -51,7 +51,7 @@ class Entity(object):
         self.schedule=[]
         self.currentStation=None
         #         values to be used in the internal processing of compoundObjects
-        self.internal = False       # informs if the entity is being processed internally
+        self.internal = False               # informs if the entity is being processed internally
         self.isCritical=isCritical          # flag to inform weather the entity is critical -> preemption
         self.manager=None                   # default value
         self.numberOfUnits=1                # default value
@@ -60,6 +60,11 @@ class Entity(object):
         self.hot=False
         # variable used to differentiate entities with and entities without routes
         self.family='Entity'
+        
+        # variables to be used by OperatorRouter
+        self.canProceed=False               # boolean that is used to check weather the entity can proceed to the candidateReceiver
+        self.candidateReceivers=[]          # list of candidateReceivers of the entity (those stations that can receive the entity
+        self.candidateReceiver=None         # the station that is finaly chosen to receive the entity
         
     # =======================================================================
     # outputs results to JSON File 
