@@ -292,3 +292,9 @@ def updateGui(argumentDict={}):
     import time
     time.sleep(0.08)
 
+def send(msg):
+    import Globals
+    Globals.ws.send(json.dumps(msg))
+    import time
+    time.sleep(0.02)
+

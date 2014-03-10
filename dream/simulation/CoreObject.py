@@ -197,6 +197,15 @@ class CoreObject(Process):
         giverObjectQueue=self.getGiverObjectQueue()
         # remove entity from the giver
         activeEntity = giverObject.removeEntity(entity=self.identifyEntityToGet())
+
+        edge_id, edge_data = giverObject.edges_by_destination[self.id][0]
+        from Globals import send
+        send({"action": "move_entity",
+              "source": giverObject.id,
+              "destination": self.id,
+              "edge": edge_id,
+              "entity": activeEntity.id,
+              "time": now()})
         # variable that holds the last giver; used in case of preemption
         self.lastGiver=self.giver
         #get the entity from the previous object and put it in front of the activeQ 
