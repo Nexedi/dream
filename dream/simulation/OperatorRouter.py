@@ -49,6 +49,10 @@ class Router(ObjectInterruption):
         # list that holds all the objects that can receive
         self.pendingObjects=[]
         self.calledOperators=[]
+        # TODO: consider if there must be an argument set for the schedulingRules of the Router
+        self.schedulingRule=''
+        # list of the operators that may handle a machine at the current simulation time
+        self.candidateOperators=[]
         
     # =======================================================================
     #                          the run method
@@ -68,10 +72,7 @@ class Router(ObjectInterruption):
 
             #===================================================================
 #             # TESTING
-#             print now(),'      the pending objects are',
-#             for object in self.pendingObjects:
-#                 print '        ', object.id,
-#             print ''
+#             print now(),'      the pending objects are        ', [str(object.id) for object in self.pendingObjects]
             #===================================================================
             
             # update the called operators list
@@ -79,208 +80,64 @@ class Router(ObjectInterruption):
 
             #===================================================================
 #             # TESTING
-#             print '        the called operators are',
-#             for operator in self.calledOperators:
-#                 print '        ', operator.id, 'from', [str(x.id) for x in operator.activeCallersList],\
-#                     'for entity ', [str(x.giver.getActiveObjectQueue()[0].id) for x in operator.activeCallersList],
-#             print ''
+#             print '        the called operators are        ', [str(operator.id) for operator in self.calledOperators]
+#             print '        from callers                    ', [[str(x.id) for x in operator.activeCallersList] for operator in self.calledOperators]
+#             print '        for entity                      ', [[str(x.giver.getActiveObjectQueue()[0].id)for x in operator.activeCallersList] for operator in self.calledOperators]
             #===================================================================
             
             
             # find the operators that can start working now even if they are not called
-            #     to be found:
-            #     .    the candidate operators
-            #     .    their candidate entities (the entities they will process)
-            #     .    the candidate receivers of the entities (the stations the operators will be working at)
+            self.findCandidateOperators()
             
-            # initiate the local candidateOperators list
-            candidateOperators=[]
-            # if there are pendingEntities
-            if len(G.pendingEntities):
-            # for those pending entities that require a manager (MachineManagedJob case)
-                for entity in [x for x in G.pendingEntities if x.manager]:
-                    # initiate local canProceed flag and candidateReceivers list of the entity 
-                    entity.canProceed=False
-                    entity.candidateReceivers=[]
-            # if the entity is ready to move to a machine and its manager is available
-                    if entity.hot and entity.manager.checkIfResourceIsAvailable():
-                    # for entities of type OrderComponent, if they reside at a conditionalBuffer, they must wait till their basicsEnded flag is raised
-                        if entity.type=='OrderComponent':
-                            from ConditionalBuffer import ConditionalBuffer
-                            if (entity.componentType=='Secondary'\
-                                and type(entity.currentStation) is ConditionalBuffer\
-                                and entity.order.basicsEnded==False):
-                                continue
-                        # TODO: have also to check whether the entity.currentStation canDispose the entity (mouldAssemblyBuffer problem)
-                    # unassembled components of a mould must wait at a MouldAssemblyBuffer till the componentsReadyForAssembly flag is raised 
-                        from MouldAssemblyBuffer import MouldAssemblyBuffer
-                        if type(entity.currentStation) is MouldAssemblyBuffer:
-                            if not entity.order.componentsReadyForAssembly:
-                                continue
-                # for all the possible receivers of an entity check whether they can accept and then set accordingly the canProceed flag of the entity 
-                        for nextObject in [object for object in entity.currentStation.next if object.canAcceptEntity(entity)]:
-                            entity.canProceed=True
-                            entity.candidateReceivers.append(nextObject)
-                # if the entity can proceed, add its manager to the candidateOperators list
-                        if entity.canProceed and not entity.manager in candidateOperators:
-                            candidateOperators.append(entity.manager)
             #===================================================================
 #             # TESTING
 #             if G.pendingEntities:
-#                 print '        {} the pending entities that can proceed are:        ',
+#                 print '                {} the pending entities that can proceed are:                            ',
 #                 print [str(entity.id) for entity in G.pendingEntities if entity.canProceed]
-#             if candidateOperators:
-#                 print '        {} the candidate operators are:                      ',
-#                 print [str(candidate.id) for candidate in candidateOperators]
+#             if self.candidateOperators:
+#                 print '                {} the candidate operators are:                                          ',
+#                 print [str(candidate.id) for candidate in self.candidateOperators]
             #===================================================================
-            '''             all the pendingEntities that are hot should be examined if they can proceed to the 
+            
+            '''             all the pendingEntities that are hot should be examined if they can proceed to the next
             step of their route as they may not be first in the activeQueue of their currentStations (QueueManagedJob).
             If they can be disposed to the next object then the router should wait again till the machine to receive them
             returns canAcceptAndIsRequested (inPositionToGet is True)        '''
             
-            # sort the operators according to their waiting time
-            if candidateOperators:
-                self.sortOperators(candidateOperators)
+            # sort the candidateOperators list
+            self.sortOperators()
             
-            #===================================================================
-#             # TESTING
-#             if candidateOperators:
-#                 print '        {} the candidate operators after sorting are:                      ',
-#                 print [str(candidate.id) for candidate in candidateOperators]
-            #===================================================================
-            
-            # find the candidateEntities of each candidateOperator and sort them according
-            #     to the scheduling rules of the operator and choose an entity that will be served
-            #     and by which machines
-            
-            # initialise the operatorsWithOneOption  
-            operatorsWithOneOption=[]
-            operatorsWithOneCandidateEntity=[]
-            # for all the candidateOperators
-            for operator in candidateOperators:
-                # initialise the local candidateEntities list, candidateEntity and candidateReceiver of each operator
-                operator.candidateEntities=[]
-                operator.candidateEntity=None
-#                 operator.candidateReceiver=None
-                # find which pendingEntities that can move to machines is the operator managing
-                for entity in [x for x in G.pendingEntities if x.canProceed and x.manager==operator]:
-                    operator.candidateEntities.append(entity)                                                           # candidateOperator.candidateEntity
-            # sort the candidate operators so that those who have only one option be served first
-                if len(operator.candidateEntities)==1:
-                    operatorsWithOneCandidateEntity.append(operator)
-                    if len(operator.candidateEntities[0].candidateReceivers)==1:
-                        operatorsWithOneOption.append(operator)
-            # if there operators that have only one option then sort the candidateOperators according to the first one of these
-            # TODO: find out what happens if there are many operators with one option
-            if operatorsWithOneOption:
-#                 candidateOperators.sort(key=lambda x:x==operatorsWithOneOption[0],reverse=True)
-                candidateOperators.sort(key=lambda x: x in operatorsWithOneOption, reverse=True)
-            #===================================================================
-#             # TESTING
-#             if candidateOperators:
-#                 print '        {} the candidate operators after second sorting are:                      ',
-#                 print [str(candidate.id) for candidate in candidateOperators]
-#                 print '        operators with one Option            ', 
-#                 print [str(operator.id) for operator in operatorsWithOneOption]
-#                 for operator in candidateOperators:
-#                     print '            operator', operator.id, 'has candidate entities'
-#                     print [candidateEntity.id for candidateEntity in operator.candidateEntities]
-            #===================================================================
-            
-            # TODO: if there is a critical entity, its manager should be served first
-            
-            # initialise local variables occupiedReceivers and entitiesWithOccupiedReceivers
-            occupiedReceivers=[]
-            entitiesWithOccupiedReceivers=[]
-            # for the candidateOperators that do have candidateEntities pick a candidateEntity
-            for operator in [x for x in candidateOperators if x.candidateEntities]:
-                operator.sortCandidateEntities(operator.candidateEntities)
-                operator.noAvailableReceivers=False
-#                 while not operator.noAvailableReceivers:
-                # find the first available entity that has no occupied receivers
-                availableEntity=next(x for x in operator.candidateEntities if not x in entitiesWithOccupiedReceivers)
-                if availableEntity:
-                    operator.candidateEntity=availableEntity
-                    #=======================================================
-#                     # TESTING
-#                     print '            the candidate receivers for', operator.candidateEntity.id, 'are',\
-#                                  [str(x.id) for x in operator.candidateEntity.candidateReceivers],
-#                     print ''
-                    #=======================================================
-                    # initiate the local list variable available receivers
-                    availableReceivers=[x for x in operator.candidateEntity.candidateReceivers\
-                                                if not x in occupiedReceivers]
-                    # and pick the object that is waiting for the most time
-                    if availableReceivers:
-                        # TODO: must find the receiver that waits the most
-                        maxTimeWaiting=0
-                        for object in availableReceivers:
-                            timeWaiting=now()-object.timeLastEntityLeft 
-                            if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
-                                maxTimeWaiting=timeWaiting
-                                availableReceiver=object
-                            
-                        operator.candidateEntity.candidateReceiver=availableReceiver
-                        occupiedReceivers.append(availableReceiver)
-                        operator.noAvailableReceivers=True
-                    # if there is no available receiver add the entity to the entitiesWithOccupiedReceivers list
-                    else:
-                        entitiesWithOccupiedReceivers.append(availableEntity)
-                        operator.candidateEntity.candidateReceiver=None
+            # find the entity that will occupy the resource, and the station that will receive it (if any available)
+            self.findCandidateReceivers()
 
-            #===================================================================
-#             # TESTING
-#             print '            +{}+ candidate operators   :',[str(x.id) for x in candidateOperators if x.candidateEntity] 
-#             print '            +{}+ have entities         :',[str(x.candidateEntity.id) for x in candidateOperators if x.candidateEntity]
-#             print '            +{}+ with receivers        :',[str(x.candidateEntity.candidateReceiver.id) for x in candidateOperators if x.candidateEntity and not x.candidateEntity in entitiesWithOccupiedReceivers]
-            #===================================================================
-            # local variable used for testing
-            pendingObjectsMustBeSorted=False
-            # for those operators that do have candidateEntity
-            for operator in [x for x in candidateOperators if x.candidateEntity]:
-                # check whether are called by objects that require the resource
-                operator.called = (operator in self.calledOperators)
-                # if they are not called or are not in the pendingObjects list sort the queues of the 
-                #     of the requesting the operator entities.  
-                if not operator.called:
-                    operator.candidateEntity.currentStation.sortEntitiesForOperator(operator)
-                    pendingObjectsMustBeSorted=True
-                # TODO: if the first candidate is not called then must run again
-                #     if the first is called then this one must proceed with get entity 
-                elif not operator.candidateEntity.candidateReceiver in self.pendingObjects:
-                    operator.candidateEntity.currentStation.sortEntitiesForOperator(operator)
-                    pendingObjectsMustBeSorted=True
-                else:
-                    break    
-            #===================================================================
-#             # TESTING
-#             print '!?!? can the machines proceed with getEntity? ',not pendingObjectsMustBeSorted, '==============='
-            #===================================================================
             
-            '''
-                # now must sort the candidateEntities
-                # and possibly choose one of the candidate receivers of the entities
-                # we should also sort the queues were the chosen entities lie in order to bring them in front
+            # sort the givers for the operators that will process the entities
+            self.sortGivers()
+            
+
+            '''        # now must sort the candidateEntities
+            # and possibly choose one of the candidate receivers of the entities
+            # we should also sort the queues were the chosen entities lie in order to bring them in front
+            
             # then we must check if there is conflict among the choices of the operators
             #     if there is conflict we must sort the operators
             # if an chosen operator is not in the calledOperators list then no machine should proceed with get entity
             #     but wait till the chosen receiver returns True 
             # for all the called operators find those available
             #     sort the objects for each one of them
-            #     and assign the operator to those with the highest priority
-            '''
+            #     and assign the operator to those with the highest priority    '''
             
-#             # if operators that can proceed are not called then the pending objects cannot proceed
-#             if not pendingObjectsMustBeSorted:
+            
             # for all the operators that are requested
             for operator in self.calledOperators:
                 priorityObject=None
                 #===============================================================
 #                 # TESTING
-#                 print '        calledOperator',operator.id
-#                 print '        its candidateReceiver',operator.candidateEntity.candidateReceiver.id
+#                 print '        calledOperator prioritising',operator.id
+#                 if operator.candidateEntity:
+#                     if operator.candidateEntity.candidateReceiver:
+#                         print '        its candidateReceiver',operator.candidateEntity.candidateReceiver.id
 #                 print '        its activeCallers',[str(x.id) for x in operator.activeCallersList]
-#                 print '            pendingObjectsMustBeSorted', pendingObjectsMustBeSorted
                 #===============================================================
                 
                 # check if the candidateReceivers are inPositionToGet and  if they are already called
@@ -294,18 +151,16 @@ class Router(ObjectInterruption):
                         candidateEntityHasActiveReceiver:
                     #===========================================================
 #                     # TESTING
-#                     print now(), 'the active callers of', operator.objName, 'before sorting are'
-#                     for caller in operator.activeCallersList:
-#                         print '                        ', caller.id
+#                     print now(), 'the active callers of', operator.objName, 'before sorting are            ',
+#                     print [str(caller.id) for caller in operator.activeCallersList]
                     #===========================================================
                     
                     # sort the activeCallersList of the operator
                     operator.sortEntities()
                     #===========================================================
 #                     # TESTING
-#                     print now(), 'the active callers of', operator.objName, 'after sorting are'
-#                     for caller in operator.activeCallersList:
-#                         print '                        ', caller.id
+#                     print now(), 'the active callers of', operator.objName, 'after sorting are            ',
+#                     print [str(caller.id) for caller in operator.activeCallersList]
                     #===========================================================
                     
                     # find the activeCaller that has priority 
@@ -337,15 +192,10 @@ class Router(ObjectInterruption):
                     object.giver.unAssignExit()
             #===================================================================
 #             # TESTING
-#             print '        these objects will proceed with getting entities', 
-#             for object in self.pendingObjects:
-#                 if object.canProceedWithGetEntity:
-#                     print '        ', object.id,
-#             print ''
+#             print '        these objects will proceed with getting entities',
+#             print [str(object.id) for object in self.pendingObjects if object.canProceedWithGetEntity]
             #===================================================================
             
-            del self.calledOperators[:]
-            del self.pendingObjects[:]
             self.exitRouter()
     
     #===========================================================================
@@ -392,14 +242,6 @@ class Router(ObjectInterruption):
         return True
     
     # =======================================================================
-    #       sort the candidateOperators according to their waiting time
-    # =======================================================================
-    def sortOperators(self, candidateOperators=[]):
-        if not candidateOperators:
-            assert False, "empty candidateOperators list"
-        candidateOperators.sort(key=lambda x: x.totalWorkingTime)
-    
-    # =======================================================================
     #                        call the Scheduler 
     #        filter for Broker - yield waituntil brokerIsCalled
     # =======================================================================
@@ -424,9 +266,187 @@ class Router(ObjectInterruption):
     #                 return control to the Machine.run
     # =======================================================================
     def exitRouter(self):
+        from Globals import G
+        # reset the variables that are used from the Router
+        for operator in self.candidateOperators:
+            operator.candidateEntities=[]
+            operator.candidateEntity=None
+        for entity in G.pendingEntities:
+            entity.canProceed=False
+            entity.candidateReceivers=[]
+            entity.candidateReceiver=None    
+        del self.candidateOperators[:]
+        del self.calledOperators[:]
+        del self.pendingObjects[:]
         self.call=False
         
+    #========================================================================
+    # Find candidate Operators
+    #========================================================================
+    def findCandidateOperators(self):
+        # find the operators that can start working now even if they are not called
+        #     to be found:
+        #     .    the candidate operators
+        #     .    their candidate entities (the entities they will process)
+        #     .    the candidate receivers of the entities (the stations the operators will be working at)
+        from Globals import G
+        # if there are pendingEntities
+        if len(G.pendingEntities):
+        # for those pending entities that require a manager (MachineManagedJob case)
+            for entity in [x for x in G.pendingEntities if x.manager]:
+        # if the entity is ready to move to a machine and its manager is available
+                if entity.hot and entity.manager.checkIfResourceIsAvailable():
+                # for entities of type OrderComponent, if they reside at a conditionalBuffer, 
+                #     they must wait till their basicsEnded flag is raised
+                    if entity.type=='OrderComponent':
+                        from ConditionalBuffer import ConditionalBuffer
+                        if (entity.componentType=='Secondary'\
+                            and type(entity.currentStation) is ConditionalBuffer\
+                            and entity.order.basicsEnded==False):
+                            continue
+                # unassembled components of a mould must wait at a MouldAssemblyBuffer till the componentsReadyForAssembly flag is raised 
+                    from MouldAssemblyBuffer import MouldAssemblyBuffer
+                    if type(entity.currentStation) is MouldAssemblyBuffer:
+                        if not entity.order.componentsReadyForAssembly:
+                            continue
+            # for all the possible receivers of an entity check whether they can accept and then set accordingly the canProceed flag of the entity 
+                    for nextObject in [object for object in entity.currentStation.next if object.canAcceptEntity(entity)]:
+                        entity.canProceed=True
+                        entity.candidateReceivers.append(nextObject)
+            # if the entity can proceed, add its manager to the candidateOperators list
+                    if entity.canProceed and not entity.manager in self.candidateOperators:
+                        self.candidateOperators.append(entity.manager)
     
-
-                    
+    #=======================================================================
+    # Sort Candidate Operators
+    # TODO: consider if there must be an argument set for the schedulingRules of the Router
+    #=======================================================================
+    def sortOperators(self):
+        from Globals import G
+        # TODO: sort accordting to the number of pending Jobs
+        # sort the operators according to their waiting time
+        self.candidateOperators.sort(key=lambda x: x.totalWorkingTime)                          # sort with total Working Time
+        #===================================================================
+#             # TESTING
+#             if candidateOperators:
+#                 print '        {} the candidate operators after sorting are:                      ',
+#                 print [str(candidate.id) for candidate in candidateOperators]
+        #===================================================================
+            
+        # find the candidateEntities of each candidateOperator and sort them according
+        #     to the scheduling rules of the operator and choose an entity that will be served
+        #     and by which machines
         
+        # initialise the operatorsWithOneOption  
+        operatorsWithOneOption=[]
+        operatorsWithOneCandidateEntity=[]
+        # for all the candidateOperators
+        for operator in self.candidateOperators:
+            # find which pendingEntities that can move to machines is the operator managing
+            for entity in [x for x in G.pendingEntities if x.canProceed and x.manager==operator]:
+                operator.candidateEntities.append(entity)
+        # sort the candidate operators so that those who have only one option be served first
+            if len(operator.candidateEntities)==1:
+                operatorsWithOneCandidateEntity.append(operator)
+                # if the candidate entity has only one receiver then append the operator to operatorsWithOneOption list
+                if len(operator.candidateEntities[0].candidateReceivers)==1:
+                    operatorsWithOneOption.append(operator)
+        # if there operators that have only one option then sort the candidateOperators according to the first one of these
+        # TODO: find out what happens if there are many operators with one option
+        if operatorsWithOneOption:
+#                 candidateOperators.sort(key=lambda x:x==operatorsWithOneOption[0],reverse=True)
+            self.candidateOperators.sort(key=lambda x: x in operatorsWithOneOption, reverse=True)   # sort according to the number of options
+            
+        #===================================================================
+#         # TESTING
+#         if self.candidateOperators:
+#             print '                {} the candidate operators after second sorting are:                      ',
+#             print [str(candidate.id) for candidate in self.candidateOperators]
+#             print '        operators with one Option            ', 
+#             print [str(operator.id) for operator in operatorsWithOneOption]
+#             for operator in self.candidateOperators:
+#                 print '            operator', operator.id, 'has candidate entities        ',
+#                 print [candidateEntity.id for candidateEntity in operator.candidateEntities]
+        #===================================================================
+            
+    #=======================================================================
+    # Find candidate entities and their receivers
+    #=======================================================================
+    def findCandidateReceivers(self):
+        # TODO: if there is a critical entity, its manager should be served first
+        
+        # initialise local variables occupiedReceivers and entitiesWithOccupiedReceivers
+        occupiedReceivers=[]                    # occupied candidateReceivers of a candidateEntity
+        entitiesWithOccupiedReceivers=[]        # list of entities that have no available receivers
+        # for the candidateOperators that do have candidateEntities pick a candidateEntity
+        for operator in [x for x in self.candidateOperators if x.candidateEntities]:
+            operator.sortCandidateEntities(operator.candidateEntities)
+            operator.noAvailableReceivers=False
+            # find the first available entity that has no occupied receivers
+            availableEntity=next(x for x in operator.candidateEntities if not x in entitiesWithOccupiedReceivers)
+            if availableEntity:
+                operator.candidateEntity=availableEntity
+                #=======================================================
+#                 # TESTING
+#                 print '            the candidate receivers for', operator.candidateEntity.id, 'are',\
+#                                  [str(x.id) for x in operator.candidateEntity.candidateReceivers]
+                #=======================================================
+                # initiate the local list variable available receivers
+                availableReceivers=[x for x in operator.candidateEntity.candidateReceivers\
+                                            if not x in occupiedReceivers]
+                # and pick the object that is waiting for the most time
+                if availableReceivers:
+                    # TODO: must find the receiver that waits the most
+                    maxTimeWaiting=0
+                    for object in availableReceivers:
+                        timeWaiting=now()-object.timeLastEntityLeft 
+                        if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
+                            maxTimeWaiting=timeWaiting
+                            availableReceiver=object
+                        
+                    operator.candidateEntity.candidateReceiver=availableReceiver
+                    occupiedReceivers.append(availableReceiver)
+                    operator.noAvailableReceivers=True
+                # if there is no available receiver add the entity to the entitiesWithOccupiedReceivers list
+                else:
+                    entitiesWithOccupiedReceivers.append(availableEntity)
+                    operator.candidateEntity.candidateReceiver=None
+        #===================================================================
+#         # TESTING
+#         print '                    +{}+ candidate operators   :',
+#         print [str(x.id) for x in self.candidateOperators if x.candidateEntity] 
+#         print '                    +{}+ have entities         :',
+#         print [str(x.candidateEntity.id) for x in self.candidateOperators if x.candidateEntity]
+#         print '                    +{}+ with receivers        :',
+#         print [str(x.candidateEntity.candidateReceiver.id) for x in self.candidateOperators if x.candidateEntity and not x.candidateEntity in entitiesWithOccupiedReceivers]
+        #===================================================================
+                    
+    #=======================================================================
+    # Sort Givers
+    # TODO: the method currently checks only the first operator of the candidateOperators list
+    #    consider populating the controls
+    #=======================================================================
+    def sortGivers(self):
+        # local variable used for testing
+        pendingObjectsMustBeSorted=False
+        # for those operators that do have candidateEntity
+        for operator in [x for x in self.candidateOperators if x.candidateEntity]:
+            # check whether are called by objects that require the resource
+            operator.called = (operator in self.calledOperators)
+            # if they are not called or are not in the pendingObjects list sort the queues of the 
+            #     of the requesting the operator entities.  
+            if not operator.called:
+                operator.candidateEntity.currentStation.sortEntitiesForOperator(operator)
+                pendingObjectsMustBeSorted=True
+            # TODO: if the first candidate is not called then must run again
+            #     if the first is called then this one must proceed with get entity 
+            elif not operator.candidateEntity.candidateReceiver in self.pendingObjects:
+                operator.candidateEntity.currentStation.sortEntitiesForOperator(operator)
+                pendingObjectsMustBeSorted=True
+            else:
+                break
+            
+        #===================================================================
+#         # TESTING
+#         print '======= can the machines proceed with getEntity? ',not pendingObjectsMustBeSorted, '==============='
+        #===================================================================
