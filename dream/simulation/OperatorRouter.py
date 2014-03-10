@@ -64,6 +64,7 @@ class Router(ObjectInterruption):
             yield waituntil, self,self.entitiesFinishedMoving
             
             # update the objects to be served list (pendingObjects)
+#             self.pendingObjects=[object for object in G.MachineList if object.inPositionToGet]
             for object in G.MachineList:
                 if object.inPositionToGet:
                     self.pendingObjects.append(object)
@@ -76,6 +77,7 @@ class Router(ObjectInterruption):
             #===================================================================
             
             # update the called operators list
+#             self.calledOperators=[operator for operator in G.OperatorsList if len(operator.activeCallersList)]
             for operator in G.OperatorsList:
                 if len(operator.activeCallersList):
                     self.calledOperators.append(operator)
@@ -157,27 +159,36 @@ class Router(ObjectInterruption):
             
             # initialise the operatorsWithOneOption  
             operatorsWithOneOption=[]
+            operatorsWithOneCandidateEntity=[]
             # for all the candidateOperators
             for operator in candidateOperators:
                 # initialise the local candidateEntities list, candidateEntity and candidateReceiver of each operator
                 operator.candidateEntities=[]
                 operator.candidateEntity=None
-                operator.candidateReceiver=None
+#                 operator.candidateReceiver=None
                 # find which pendingEntities that can move to machines is the operator managing
                 for entity in [x for x in G.pendingEntities if x.canProceed and x.manager==operator]:
                     operator.candidateEntities.append(entity)                                                           # candidateOperator.candidateEntity
             # sort the candidate operators so that those who have only one option be served first
                 if len(operator.candidateEntities)==1:
-                    operatorsWithOneOption.append(operator)
+                    operatorsWithOneCandidateEntity.append(operator)
+                    if len(operator.candidateEntities[0].candidateReceivers)==1:
+                        operatorsWithOneOption.append(operator)
             # if there operators that have only one option then sort the candidateOperators according to the first one of these
             # TODO: find out what happens if there are many operators with one option
             if operatorsWithOneOption:
-                candidateOperators.sort(key=lambda x:x==operatorsWithOneOption[0],reverse=True)
+#                 candidateOperators.sort(key=lambda x:x==operatorsWithOneOption[0],reverse=True)
+                candidateOperators.sort(key=lambda x: x in operatorsWithOneOption, reverse=True)
             #===================================================================
 #             # TESTING
 #             if candidateOperators:
 #                 print '        {} the candidate operators after second sorting are:                      ',
 #                 print [str(candidate.id) for candidate in candidateOperators]
+#                 print '        operators with one Option            ', 
+#                 print [str(operator.id) for operator in operatorsWithOneOption]
+#                 for operator in candidateOperators:
+#                     print '            operator', operator.id, 'has candidate entities'
+#                     print [candidateEntity.id for candidateEntity in operator.candidateEntities]
             #===================================================================
             
             # TODO: if there is a critical entity, its manager should be served first
@@ -195,6 +206,7 @@ class Router(ObjectInterruption):
 #                     # TESTING
 #                     print '            the candidate receivers for', operator.candidateEntity.id, 'are',\
 #                                  [str(x.id) for x in operator.candidateEntity.candidateReceivers],
+#                     print ''
                     #=======================================================
                         
                     availableReceivers=[x for x in operator.candidateEntity.candidateReceivers\
@@ -230,6 +242,10 @@ class Router(ObjectInterruption):
                     pendingObjectsMustBeSorted=True
                 # TODO: if the first candidate is not called then must run again
                 #     if the first is called then this one must proceed with get entity 
+                elif not operator.candidateEntity.candidateReceiver in self.pendingObjects:
+                    print '!!!!!!!!!!!!!!!!!!!!!!!!'
+                    operator.candidateEntity.currentStation.sortEntitiesForOperator(operator)
+                    pendingObjectsMustBeSorted=True
                 else:
                     break    
             #===================================================================
@@ -263,19 +279,20 @@ class Router(ObjectInterruption):
 #                 print '            pendingObjectsMustBeSorted', pendingObjectsMustBeSorted
                 #===============================================================
                 
-                # check if they are available 
+                # check if the candidateReceivers are inPositionToGet or if they are already called
                 try:
-                    candidateEntityHasActiveReceiver=(operator.candidateEntity.candidateReceiver in operator.activeCallersList)
+                    candidateEntityHasActiveReceiver=(operator.candidateEntity.candidateReceiver in operator.activeCallersList\
+                                                  and operator.candidateEntity.candidateReceiver in self.pendingObjects )
                 except:
                     candidateEntityHasActiveReceiver=True
-                
+                # check if they are available 
                 if operator.checkIfResourceIsAvailable() and \
                         candidateEntityHasActiveReceiver:
                     #===========================================================
-                    # TESTING
-                    #print now(), 'the active callers of', operator.objName, 'before sorting are'
-                    #for caller in operator.activeCallersList:
-                    #    print '                        ', caller.id
+#                     # TESTING
+#                     print now(), 'the active callers of', operator.objName, 'before sorting are'
+#                     for caller in operator.activeCallersList:
+#                         print '                        ', caller.id
                     #===========================================================
                     
                     # sort the activeCallersList of the operator
@@ -290,8 +307,8 @@ class Router(ObjectInterruption):
                     # find the activeCaller that has priority 
                     priorityObject=next(x for x in operator.activeCallersList if x in self.pendingObjects)
                     #===========================================================
-                    # TESTING
-                    #print '                the PRIORITY object is', priorityObject.id
+#                     # TESTING
+#                     print '                the PRIORITY object is', priorityObject.id
                     #===========================================================
                     
                     # and if the priorityObject is indeed pending
