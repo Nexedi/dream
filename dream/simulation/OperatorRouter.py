@@ -64,10 +64,8 @@ class Router(ObjectInterruption):
             yield waituntil, self,self.entitiesFinishedMoving
             
             # update the objects to be served list (pendingObjects)
-#             self.pendingObjects=[object for object in G.MachineList if object.inPositionToGet]
-            for object in G.MachineList:
-                if object.inPositionToGet:
-                    self.pendingObjects.append(object)
+            self.pendingObjects=[object for object in G.MachineList if object.inPositionToGet]
+
             #===================================================================
 #             # TESTING
 #             print now(),'      the pending objects are',
@@ -77,10 +75,8 @@ class Router(ObjectInterruption):
             #===================================================================
             
             # update the called operators list
-#             self.calledOperators=[operator for operator in G.OperatorsList if len(operator.activeCallersList)]
-            for operator in G.OperatorsList:
-                if len(operator.activeCallersList):
-                    self.calledOperators.append(operator)
+            self.calledOperators=[operator for operator in G.OperatorsList if len(operator.activeCallersList)]
+
             #===================================================================
 #             # TESTING
 #             print '        the called operators are',
@@ -193,12 +189,15 @@ class Router(ObjectInterruption):
             
             # TODO: if there is a critical entity, its manager should be served first
             
+            # initialise local variables occupiedReceivers and entitiesWithOccupiedReceivers
             occupiedReceivers=[]
             entitiesWithOccupiedReceivers=[]
+            # for the candidateOperators that do have candidateEntities pick a candidateEntity
             for operator in [x for x in candidateOperators if x.candidateEntities]:
                 operator.sortCandidateEntities(operator.candidateEntities)
                 operator.noAvailableReceivers=False
 #                 while not operator.noAvailableReceivers:
+                # find the first available entity that has no occupied receivers
                 availableEntity=next(x for x in operator.candidateEntities if not x in entitiesWithOccupiedReceivers)
                 if availableEntity:
                     operator.candidateEntity=availableEntity
@@ -208,9 +207,10 @@ class Router(ObjectInterruption):
 #                                  [str(x.id) for x in operator.candidateEntity.candidateReceivers],
 #                     print ''
                     #=======================================================
-                        
+                    # initiate the local list variable available receivers
                     availableReceivers=[x for x in operator.candidateEntity.candidateReceivers\
                                                 if not x in occupiedReceivers]
+                    # and pick the object that is waiting for the most time
                     if availableReceivers:
                         # TODO: must find the receiver that waits the most
                         maxTimeWaiting=0
@@ -223,6 +223,7 @@ class Router(ObjectInterruption):
                         operator.candidateEntity.candidateReceiver=availableReceiver
                         occupiedReceivers.append(availableReceiver)
                         operator.noAvailableReceivers=True
+                    # if there is no available receiver add the entity to the entitiesWithOccupiedReceivers list
                     else:
                         entitiesWithOccupiedReceivers.append(availableEntity)
                         operator.candidateEntity.candidateReceiver=None
@@ -233,17 +234,20 @@ class Router(ObjectInterruption):
 #             print '            +{}+ have entities         :',[str(x.candidateEntity.id) for x in candidateOperators if x.candidateEntity]
 #             print '            +{}+ with receivers        :',[str(x.candidateEntity.candidateReceiver.id) for x in candidateOperators if x.candidateEntity and not x.candidateEntity in entitiesWithOccupiedReceivers]
             #===================================================================
-            
+            # local variable used for testing
             pendingObjectsMustBeSorted=False
+            # for those operators that do have candidateEntity
             for operator in [x for x in candidateOperators if x.candidateEntity]:
+                # check whether are called by objects that require the resource
                 operator.called = (operator in self.calledOperators)
+                # if they are not called or are not in the pendingObjects list sort the queues of the 
+                #     of the requesting the operator entities.  
                 if not operator.called:
                     operator.candidateEntity.currentStation.sortEntitiesForOperator(operator)
                     pendingObjectsMustBeSorted=True
                 # TODO: if the first candidate is not called then must run again
                 #     if the first is called then this one must proceed with get entity 
                 elif not operator.candidateEntity.candidateReceiver in self.pendingObjects:
-                    print '!!!!!!!!!!!!!!!!!!!!!!!!'
                     operator.candidateEntity.currentStation.sortEntitiesForOperator(operator)
                     pendingObjectsMustBeSorted=True
                 else:
@@ -279,13 +283,13 @@ class Router(ObjectInterruption):
 #                 print '            pendingObjectsMustBeSorted', pendingObjectsMustBeSorted
                 #===============================================================
                 
-                # check if the candidateReceivers are inPositionToGet or if they are already called
+                # check if the candidateReceivers are inPositionToGet and  if they are already called
                 try:
                     candidateEntityHasActiveReceiver=(operator.candidateEntity.candidateReceiver in operator.activeCallersList\
                                                   and operator.candidateEntity.candidateReceiver in self.pendingObjects )
                 except:
                     candidateEntityHasActiveReceiver=True
-                # check if they are available 
+                # check if the candidateOperators are available, if the are requested and reside in the pendingObjects list 
                 if operator.checkIfResourceIsAvailable() and \
                         candidateEntityHasActiveReceiver:
                     #===========================================================
@@ -324,6 +328,7 @@ class Router(ObjectInterruption):
                         # and let it proceed withGetEntity
                         priorityObject.canProceedWithGetEntity=True
                         priorityObject.inPositionToGet=False
+                # if the are not called and they are not in the pendingObjects list clear their activeCallersList
                 elif not candidateEntityHasActiveReceiver:
                     operator.activeCallersList=[]
             # if an object cannot proceed with getEntity, unAssign the exit of its giver
