@@ -136,7 +136,10 @@
       _id: "dream_demo"
     }, function (err, response) {
       if (response !== undefined && response.data !== undefined) {
-        loadData(response.data);
+        var load = function () {
+          loadData(response.data);
+        }
+        jsPlumb.doWhileSuspended(load);
       }
       // once the data is read, we can subscribe to every changes
       $.subscribe("Dream.Gui.onDataChange", function (event, data) {
