@@ -41,7 +41,7 @@ def main():
     for object in G.ObjList:
         object.postProcessing()
     # print the results 
-    print "the system produced", E.numOfExits, "parts"
+    print "the system produced", E.numOfExits, "batches"
     working_ratio_M1 = (M1.totalWorkingTime/G.maxSimTime)*100
     blockage_ratio_M1 = (M1.totalBlockageTime/G.maxSimTime)*100
     waiting_ratio_M1 = (M1.totalWaitingTime/G.maxSimTime)*100
@@ -61,7 +61,7 @@ def main():
     print "the blockage ratio of", M3.objName, 'is', blockage_ratio_M3
     print "the waiting ratio of", M3.objName, 'is', waiting_ratio_M3
 
-    return {"parts": E.numOfExits,
+    return {"batches": E.numOfExits,
            "working_ratio_M1": working_ratio_M1,
           "blockage_ratio_M1": blockage_ratio_M1,
           "waiting_ratio_M1": waiting_ratio_M1,

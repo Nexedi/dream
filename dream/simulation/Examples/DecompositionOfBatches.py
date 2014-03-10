@@ -33,14 +33,14 @@ def main():
     for object in G.ObjList:
         object.postProcessing()
     # print the results 
-    print "the system produced", E.numOfExits, "parts"
+    print "the system produced", E.numOfExits, "subbatches"
     working_ratio = (M.totalWorkingTime/G.maxSimTime)*100
     blockage_ratio = (M.totalBlockageTime/G.maxSimTime)*100
     waiting_ratio = (M.totalWaitingTime/G.maxSimTime)*100
     print "the working ratio of", M.objName, "is", working_ratio
     print "the blockage ratio of", M.objName, 'is', blockage_ratio
     print "the waiting ratio of", M.objName, 'is', waiting_ratio
-    return {"parts": E.numOfExits,
+    return {"subbatches": E.numOfExits,
            "working_ratio": working_ratio,
           "blockage_ratio": blockage_ratio,
           "waiting_ratio": waiting_ratio}
