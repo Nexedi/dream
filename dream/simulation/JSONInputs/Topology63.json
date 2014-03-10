@@ -45,7 +45,7 @@
       "entity": "Dream.Part", 
       "interarrivalTime": {
         "distributionType": "Normal",
-		"mean": 0,		
+		"mean": 1.25,		
         "max": 2, 
         "min": 1, 
         "stdev": 0.5
