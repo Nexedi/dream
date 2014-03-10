@@ -44,22 +44,23 @@ class BatchDecomposition(CoreObject):
     # =======================================================================
     #initialize the id, the capacity of the object and the distribution
     # =======================================================================        
-    def __init__(self, id, name, numberOfSubBatches=1, distribution='Fixed', \
-                 mean=1, stdev=0, min=0, max=10, operator='None'):
+    def __init__(self, id, name, processingTime=None, numberOfSubBatches=1, operator='None'):
         CoreObject.__init__(self, id, name)
         self.type="BatchDecomposition"              #String that shows the type of object
+
+        if not processingTime:
+          processingTime = { 'distributionType': 'Fixed',
+                             'mean': 1, }
+        if processingTime['distributionType'] == 'Normal' and\
+              processingTime.get('max', None) is None:
+          processingTime['max'] = processingTime['mean'] + 5 * processingTime['stdev']
+        
         # holds the capacity of the object 
         self.numberOfSubBatches=numberOfSubBatches
-        # define the distribution types of the processing and failure times respectively
-        self.distType=distribution                  #the distribution that the procTime follows      
         # sets the operator resource of the Machine
         self.operator=operator         
         # Sets the attributes of the processing (and failure) time(s)
-        self.rng=RandomNumberGenerator(self, self.distType)
-        self.rng.mean=mean
-        self.rng.stdev=stdev
-        self.rng.min=min
-        self.rng.max=max
+        self.rng=RandomNumberGenerator(self, **processingTime)
 
     # =======================================================================
     #     initialize the internal resource of the object

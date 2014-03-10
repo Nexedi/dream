@@ -44,25 +44,25 @@ class BatchReassembly(CoreObject):
     # =======================================================================
     #initialize the id, the capacity of the object and the distribution
     # =======================================================================        
-    def __init__(self, id, name, numberOfSubBatches=1, distribution='Fixed', \
-                 mean=1, stdev=0, min=0, max=10, operator='None'):
+    def __init__(self, id, name, numberOfSubBatches=1, processingTime=None, operator='None'):
         Process.__init__(self)
         # hold the id, name, and type of the Machine instance
         self.id=id
         self.objName=name
         self.type="BatchRassembly"              #String that shows the type of object
+        if not processingTime:
+          processingTime = { 'distributionType': 'Fixed',
+                             'mean': 1, }
+        if processingTime['distributionType'] == 'Normal' and\
+              processingTime.get('max', None) is None:
+          processingTime['max'] = processingTime['mean'] + 5 * processingTime['stdev']
+          
         # holds the capacity of the object 
         self.numberOfSubBatches=numberOfSubBatches
-        # define the distribution types of the processing and failure times respectively
-        self.distType=distribution                  #the distribution that the procTime follows      
         # sets the operator resource of the Machine
         self.operator=operator         
         # Sets the attributes of the processing (and failure) time(s)
-        self.rng=RandomNumberGenerator(self, self.distType)
-        self.rng.mean=mean
-        self.rng.stdev=stdev
-        self.rng.min=min
-        self.rng.max=max
+        self.rng=RandomNumberGenerator(self, **processingTime)
         # for routing purposes 
         self.next=[]                                #list with the next objects in the flow
         self.previous=[]                            #list with the previous objects in the flow

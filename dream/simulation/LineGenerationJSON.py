@@ -620,8 +620,7 @@ def createObjects():
             min=float(processingTime.get('min') or 0)
             max=float(processingTime.get('max') or mean+5*stdev)
             numberOfSubBatches=int(element.get('numberOfSubBatches') or 0)
-            BD=BatchDecomposition(id, name, distribution=distributionType,  numberOfSubBatches=numberOfSubBatches,
-                                                    mean=mean,stdev=stdev,min=min,max=max)
+            BD=BatchDecomposition(id, name, processingTime=processingTime, numberOfSubBatches=numberOfSubBatches)
             BD.nextIds=getSuccessorList(id)
             G.BatchDecompositionList.append(BD)
             G.ObjList.append(BD)       
@@ -636,13 +635,11 @@ def createObjects():
             min=float(processingTime.get('min') or 0)
             max=float(processingTime.get('max') or mean+5*stdev)
             numberOfSubBatches=int(element.get('numberOfSubBatches') or 0)
-            BD=BatchDecompositionStartTime(id, name, distribution=distributionType,  numberOfSubBatches=numberOfSubBatches,
-                                                    mean=mean,stdev=stdev,min=min,max=max)
+            BD=BatchDecompositionStartTime(id, name, processingTime=processingTime, numberOfSubBatches=numberOfSubBatches)
             BD.nextIds=getSuccessorList(id)
             G.BatchDecompositionList.append(BD)
             G.ObjList.append(BD) 
-
-            
+    
         elif objClass=='Dream.BatchReassembly':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
@@ -653,8 +650,7 @@ def createObjects():
             min=float(processingTime.get('min') or 0)
             max=float(processingTime.get('max') or 0)
             numberOfSubBatches=int(element.get('numberOfSubBatches') or 0)
-            BR=BatchReassembly(id, name, distribution=distributionType,  numberOfSubBatches=numberOfSubBatches,
-                                                    mean=mean,stdev=stdev,min=min,max=max)
+            BR=BatchReassembly(id, name, processingTime=processingTime, numberOfSubBatches=numberOfSubBatches)
             BR.nextIds=getSuccessorList(id)
             G.BatchReassemblyList.append(BR)
             G.ObjList.append(BR)       
