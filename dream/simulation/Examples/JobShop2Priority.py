@@ -48,34 +48,38 @@ J3=Job('J3','Job3',route=J3Route, priority=0, dueDate=110)
 G.JobList=[J1,J2,J3]        #a list to hold all the jobs
 
 G.maxSimTime=1440.0     #set G.maxSimTime 1440.0 minutes (1 day)
+
+def main():
+    initialize()            #initialize the simulation (SimPy method)
+            
+    #initialize all the objects    
+    for object in G.ObjList:
+        object.initialize()
     
-initialize()            #initialize the simulation (SimPy method)
+    #initialize all the jobs
+    for job in G.JobList: 
+        job.initialize()
+    
+    #set the WIP for all the jobs
+    Globals.setWIP(G.JobList)
         
-#initialize all the objects    
-for object in G.ObjList:
-    object.initialize()
-
-#initialize all the jobs
-for job in G.JobList: 
-    job.initialize()
-
-#set the WIP for all the jobs
-Globals.setWIP(G.JobList)
+    #activate all the objects 
+    for object in G.ObjList:
+        activate(object, object.run())
     
-#activate all the objects 
-for object in G.ObjList:
-    activate(object, object.run())
-
-simulate(until=G.maxSimTime)    #run the simulation
-
-#output the schedule of every job
-for job in G.JobList: 
-    #loop in the schedule to print the results
-    for record in job.schedule:
-        #schedule holds ids of objects. The following loop will identify the name of the CoreObject with the given id
-        name=None
-        for obj in G.ObjList:
-            if obj is record[0]:
-                name=obj.objName
-        print job.name, "got into", name, "at", record[1]
-    print "-"*30
+    simulate(until=G.maxSimTime)    #run the simulation
+    
+    #output the schedule of every job
+    returnSchedule=[]     # dummy variable used just for returning values and testing
+    for job in G.JobList: 
+        #loop in the schedule to print the results
+        for record in job.schedule:
+            #schedule holds ids of objects. The following loop will identify the name of the CoreObject with the given id
+            name=None
+            returnSchedule.append([record[0].objName,record[1]])
+            print job.name, "got into", record[0].objName, "at", record[1]
+        print "-"*30
+    return returnSchedule
+    
+if __name__ == '__main__':
+    main()

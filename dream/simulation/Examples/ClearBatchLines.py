@@ -5,14 +5,14 @@ from dream.simulation.imports import simulate, activate, initialize
 # choose to output trace or not
 G.trace='Yes'
 # define the objects of the model
-S=BatchSource('S','Source',mean=1.5, entity='Dream.Batch', batchNumberOfUnits=100)
-Q=Queue('Q','StartQueue',capacity=-1)
+S=BatchSource('S','Source',interarrivalTime={'distributionType':'Fixed','mean':1.5}, entity='Dream.Batch', batchNumberOfUnits=100)
+Q=Queue('Q','StartQueue',capacity=100000)
 BD=BatchDecomposition('BC', 'BatchDecomposition', numberOfSubBatches=4, mean=1)
-M1=Machine('M1','Machine1',mean=0.5)
+M1=Machine('M1','Machine1',processingTime={'distributionType':'Fixed','mean':0.5})
 Q1=LineClearance('Q1','Queue1',capacity=2)
-M2=Machine('M2','Machine2',mean=4)
+M2=Machine('M2','Machine2',processingTime={'distributionType':'Fixed','mean':4})
 BRA=BatchReassembly('BRA', 'BatchReassembly', numberOfSubBatches=4, mean=0)
-M3=Machine('M3','Machine3',mean=1)
+M3=Machine('M3','Machine3',processingTime={'distributionType':'Fixed','mean':1})
 E=Exit('E','Exit')
 # add all the objects in the G.ObjList so that they can be easier accessed later
 G.ObjList=[S,Q,BD,M1,Q1,M2,BRA,M3,E]
@@ -26,31 +26,55 @@ M2.defineRouting([Q1],[BRA])
 BRA.defineRouting([M2],[M3])
 M3.defineRouting([BRA],[E])
 E.defineRouting([M3])
-# initialize the simulation (SimPy method)
-initialize()
-# initialize all the objects
-for object in G.ObjList:
-    object.initialize()
-# activate all the objects
-for object in G.ObjList:
-    activate(object,object.run())
-# set G.maxSimTime 1440.0 minutes (1 day)
-G.maxSimTime=1440.0
-# run the simulation
-simulate(until=G.maxSimTime)
-# carry on the post processing operations for every object in the topology
-for object in G.ObjList:
-    object.postProcessing()
-# print trace
-ExcelHandler.outputTrace('Trace')  
-# print the results 
-print "the system produced", E.numOfExits, "parts"
-print "the working ratio of", M1.objName, "is", (M1.totalWorkingTime/G.maxSimTime)*100
-print "the blockage ratio of", M1.objName, 'is', (M1.totalBlockageTime/G.maxSimTime)*100
-print "the waiting ratio of", M1.objName, 'is', (M1.totalWaitingTime/G.maxSimTime)*100
-print "the working ratio of", M2.objName, "is", (M2.totalWorkingTime/G.maxSimTime)*100
-print "the blockage ratio of", M2.objName, 'is', (M2.totalBlockageTime/G.maxSimTime)*100
-print "the waiting ratio of", M2.objName, 'is', (M2.totalWaitingTime/G.maxSimTime)*100
-print "the working ratio of", M3.objName, "is", (M3.totalWorkingTime/G.maxSimTime)*100
-print "the blockage ratio of", M3.objName, 'is', (M3.totalBlockageTime/G.maxSimTime)*100
-print "the waiting ratio of", M3.objName, 'is', (M3.totalWaitingTime/G.maxSimTime)*100
+
+def main():
+    # initialize the simulation (SimPy method)
+    initialize()
+    # initialize all the objects
+    for object in G.ObjList:
+        object.initialize()
+    # activate all the objects
+    for object in G.ObjList:
+        activate(object,object.run())
+    # set G.maxSimTime 1440.0 minutes (1 day)
+    G.maxSimTime=1440.0
+    # run the simulation
+    simulate(until=G.maxSimTime)
+    # carry on the post processing operations for every object in the topology
+    for object in G.ObjList:
+        object.postProcessing()
+    # print the results 
+    print "the system produced", E.numOfExits, "parts"
+    working_ratio_M1 = (M1.totalWorkingTime/G.maxSimTime)*100
+    blockage_ratio_M1 = (M1.totalBlockageTime/G.maxSimTime)*100
+    waiting_ratio_M1 = (M1.totalWaitingTime/G.maxSimTime)*100
+    print "the working ratio of", M1.objName, "is", working_ratio_M1
+    print "the blockage ratio of", M1.objName, 'is', blockage_ratio_M1
+    print "the waiting ratio of", M1.objName, 'is', waiting_ratio_M1
+    working_ratio_M2 = (M2.totalWorkingTime/G.maxSimTime)*100
+    blockage_ratio_M2 = (M2.totalBlockageTime/G.maxSimTime)*100
+    waiting_ratio_M2 = (M2.totalWaitingTime/G.maxSimTime)*100
+    print "the working ratio of", M2.objName, "is", working_ratio_M2
+    print "the blockage ratio of", M2.objName, 'is', blockage_ratio_M2
+    print "the waiting ratio of", M2.objName, 'is', waiting_ratio_M2
+    working_ratio_M3 = (M3.totalWorkingTime/G.maxSimTime)*100
+    blockage_ratio_M3 = (M3.totalBlockageTime/G.maxSimTime)*100
+    waiting_ratio_M3 = (M3.totalWaitingTime/G.maxSimTime)*100
+    print "the working ratio of", M3.objName, "is", working_ratio_M3
+    print "the blockage ratio of", M3.objName, 'is', blockage_ratio_M3
+    print "the waiting ratio of", M3.objName, 'is', waiting_ratio_M3
+
+    return {"parts": E.numOfExits,
+           "working_ratio_M1": working_ratio_M1,
+          "blockage_ratio_M1": blockage_ratio_M1,
+          "waiting_ratio_M1": waiting_ratio_M1,
+           "working_ratio_M2": working_ratio_M2,
+          "blockage_ratio_M2": blockage_ratio_M2,
+          "waiting_ratio_M2": waiting_ratio_M2,   
+           "working_ratio_M3": working_ratio_M3,
+          "blockage_ratio_M3": blockage_ratio_M3,
+          "waiting_ratio_M3": waiting_ratio_M3,       
+          }
+    
+if __name__ == '__main__':
+    main()

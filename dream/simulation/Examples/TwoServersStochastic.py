@@ -3,15 +3,15 @@ from dream.simulation.imports import simulate, activate, initialize
 
 #define the objects of the model
 R=Repairman('R1', 'Bob') 
-S=Source('S1','Source', mean=0.5, entity='Dream.Part')
-M1=Machine('M1','Machine1', distribution='Normal', mean=0.25, stdev=0.1, min=0.1, max=1)
+S=Source('S1','Source', interarrivalTime={'distributionType':'Exp','mean':0.5}, entity='Dream.Part')
+M1=Machine('M1','Machine1', processingTime={'distributionType':'Normal','mean':0.25,'stdev':0.1,'min':0.1,'max':1})
+M2=Machine('M2','Machine2', processingTime={'distributionType':'Normal','mean':1.5,'stdev':0.3,'min':0.5,'max':5})
 Q=Queue('Q1','Queue')
-M2=Machine('M2','Machine2', distribution='Normal', mean=1.5, stdev=0.3, min=0.5, max=5)
 E=Exit('E1','Exit')  
 
 #create failures
-F1=Failure(victim=M1, distributionType='Fixed', MTTF=60, MTTR=5, repairman=R) 
-F2=Failure(victim=M2, distributionType='Fixed', MTTF=40, MTTR=10, repairman=R)
+F1=Failure(victim=M1, distribution={'distributionType':'Fixed','MTTF':60,'MTTR':5}, repairman=R) 
+F2=Failure(victim=M2, distribution={'distributionType':'Fixed','MTTF':40,'MTTR':10}, repairman=R)
 
 G.ObjList=[S,M1,M2,E,Q]   #add all the objects in G.ObjList so that they can be easier accessed later
 

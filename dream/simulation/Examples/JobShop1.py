@@ -23,31 +23,32 @@ J1Route=[{"stationIdsList": ["Q1"]},
 #define the Jobs
 J=Job('J1','Job1',route=J1Route)
 G.EntityList=[J]        #a list to hold all the jobs
-   
-initialize()                        #initialize the simulation (SimPy method)
-        
-#initialize all the objects    
-for object in G.ObjList:
-    object.initialize()
-J.initialize()
 
-#set the WIP
-Globals.setWIP(G.EntityList)
+def main():
+    initialize()                        #initialize the simulation (SimPy method)
+            
+    #initialize all the objects    
+    for object in G.ObjList:
+        object.initialize()
+    J.initialize()
     
-#activate all the objects 
-for object in G.ObjList:
-    activate(object, object.run())
+    #set the WIP
+    Globals.setWIP(G.EntityList)
+        
+    #activate all the objects 
+    for object in G.ObjList:
+        activate(object, object.run())
+    
+    simulate(until=infinity)    #run the simulation until there are no more events
+    
+    G.maxSimTime=E.timeLastEntityLeft   #calculate the maxSimTime as the time that the last Job left
+    
+    #loop in the schedule to print the results
+    returnSchedule=[]     # dummy variable used just for returning values and testing
+    for record in J.schedule:
+        returnSchedule.append([record[0].objName,record[1]])
+        print J.name, "got into", record[0].objName, "at", record[1]
+    return returnSchedule 
 
-simulate(until=infinity)    #run the simulation until there are no more events
-
-G.maxSimTime=E.timeLastEntityLeft   #calculate the maxSimTime as the time that the last Job left
-
-#loop in the schedule to print the results
-for record in J.schedule:
-    #schedule holds ids of objects. The following loop will identify the name of the CoreObject with the given id
-    name=None
-    for obj in G.ObjList:
-        if obj is record[0]:
-            name=obj.objName
-    print J.name, "got into", name, "at", record[1]
-               
+if __name__ == '__main__':
+    main()              

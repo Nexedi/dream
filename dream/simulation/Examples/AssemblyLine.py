@@ -54,5 +54,5 @@ def main():
           "working_ratio": working_ratio}
 
 if __name__ == '__main__':
-  main()
+    main()
 
