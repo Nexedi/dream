@@ -812,7 +812,7 @@ def createObjects():
 # ===========================================================================
 #    defines the topology (predecessors and successors for all the objects)
 # ===========================================================================
-def setTopology():
+def setTopology(model):
     #loop through all the objects  
     for element in G.ObjList:
         next=[]
@@ -825,8 +825,14 @@ def setTopology():
         for j in range(len(element.nextIds)):
             for q in range(len(G.ObjList)):
                 if G.ObjList[q].id==element.nextIds[j]:
-                    next.append(G.ObjList[q])      
-                             
+                    next.append(G.ObjList[q])
+
+        # XXX we need a class for topology ...
+        for edge_id, (source_id, destination_id, edge_data) in model['edges'].items():
+            if element.id == source_id:
+                element.edges_by_destination.setdefault(destination_id, []
+                    ).append((edge_id, edge_data))
+
         if element.type=="Source":
             element.defineRouting(next)
         elif element.type=="Exit":
@@ -1247,8 +1253,8 @@ def main(argv=[], input_data=None):
     readGeneralInput()
     createObjects()
     createObjectInterruptions()
-    setTopology()
-
+    setTopology(G.JSONData)
+    
     #run the experiment (replications)          
     for i in xrange(G.numberOfReplications):
         #logger.info("start run number "+str(i+1)) 

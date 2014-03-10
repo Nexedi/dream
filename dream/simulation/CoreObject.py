@@ -53,7 +53,11 @@ class CoreObject(Process):
         self.resetOnPreemption=False
         self.interruptCause=None
         self.gatherWipStat=False
-    
+
+        # destination id -> (edge_id, edge_data)
+        # will be populated later (in setTopology)
+        self.edges_by_destination = {}
+
     def initialize(self):
         # XXX why call super.__init__ outside of __init__ ?
         Process.__init__(self) 
