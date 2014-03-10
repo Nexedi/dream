@@ -328,6 +328,14 @@ class CoreObject(Process):
         activeObjectQueue=self.getActiveObjectQueue()    
         return len(activeObjectQueue)>0
     
+    #========================================================================
+    # checks if the object can dispose an entity 
+    #     and returns the entity that it will dispose
+    #========================================================================
+    def haveToDisposeEntity(self, callerObject=None):
+        activeObjectQueue=self.getActiveObjectQueue()
+        if self.haveToDispose(callerObject):
+            return activeObjectQueue[0]
     # =======================================================================
     #    checks if the Object can accept an entity and there is an entity 
     #                in some possible giver waiting for it
@@ -340,6 +348,12 @@ class CoreObject(Process):
     # =======================================================================
     def canAccept(self, callerObject=None): 
         pass
+    
+    # =======================================================================
+    # checks if the object can accept an specific Entity       
+    # ======================================================================= 
+    def canAcceptEntity(self, callerEntity=None):
+        return True
     
     # =======================================================================
     # sorts the Entities in the activeQ of the objects 
