@@ -38,5 +38,10 @@ class SimulationExamples(TestCase):
     from dream.simulation.Examples.TwoServers import main
     result = main()
     self.assertEquals(result['parts'], 732)
-    self.assertTrue(78 < result["blockage_ratio"] < 79)
-    self.assertTrue(26 < result["working_ratio"] < 27)
+    self.assertTrue(78.17 < result["blockage_ratio"] < 78.18)
+    self.assertTrue(26.73 < result["working_ratio"] < 27.74)
+    from dream.simulation.Examples.AssemblyLine import main
+    result = main()
+    self.assertEquals(result['frames'], 664)
+    self.assertTrue(92.36 < result["working_ratio"] < 93.37)
+

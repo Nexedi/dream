@@ -25,42 +25,42 @@ Q.defineRouting([M1],[M2])
 M2.defineRouting([Q],[E])
 E.defineRouting([M2])
 
-initialize()                        #initialize the simulation (SimPy method)
-
-#initialize all the objects
-R.initialize()
-
 def main():
+    initialize()                        #initialize the simulation (SimPy method)
+    
+    #initialize all the objects
+    R.initialize()
 
-  for object in G.ObjList:
-      object.initialize()
 
-  for objectInterruption in G.ObjectInterruptionList:
-      objectInterruption.initialize()
+    for object in G.ObjList:
+        object.initialize()
 
-  #activate all the objects
-  for object in G.ObjList:
-      activate(object, object.run())
+    for objectInterruption in G.ObjectInterruptionList:
+        objectInterruption.initialize()
 
-  for objectInterruption in G.ObjectInterruptionList:
-      activate(objectInterruption, objectInterruption.run())
+    #activate all the objects
+    for object in G.ObjList:
+        activate(object, object.run())
 
-  G.maxSimTime=1440.0     #set G.maxSimTime 1440.0 minutes (1 day)
+    for objectInterruption in G.ObjectInterruptionList:
+        activate(objectInterruption, objectInterruption.run())
 
-  simulate(until=G.maxSimTime)    #run the simulation
+    G.maxSimTime=1440.0     #set G.maxSimTime 1440.0 minutes (1 day)
 
-  #carry on the post processing operations for every object in the topology
-  for object in G.ObjList:
-      object.postProcessing()
-  R.postProcessing()
+    simulate(until=G.maxSimTime)    #run the simulation
 
-  #print the results
-  print "the system produced", E.numOfExits, "parts"
-  blockage_ratio = (M1.totalBlockageTime/G.maxSimTime)*100
-  working_ratio = (R.totalWorkingTime/G.maxSimTime)*100
-  print "the blockage ratio of", M1.objName,  "is", blockage_ratio, "%"
-  print "the working ratio of", R.objName,"is", working_ratio, "%"
-  return {"parts": E.numOfExits,
+    #carry on the post processing operations for every object in the topology
+    for object in G.ObjList:
+        object.postProcessing()
+    R.postProcessing()
+
+    #print the results
+    print "the system produced", E.numOfExits, "parts"
+    blockage_ratio = (M1.totalBlockageTime/G.maxSimTime)*100
+    working_ratio = (R.totalWorkingTime/G.maxSimTime)*100
+    print "the blockage ratio of", M1.objName,  "is", blockage_ratio, "%"
+    print "the working ratio of", R.objName,"is", working_ratio, "%"
+    return {"parts": E.numOfExits,
           "blockage_ratio": blockage_ratio,
           "working_ratio": working_ratio}
 
