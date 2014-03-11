@@ -213,14 +213,6 @@ schema = {
 }
 
 # complex schemas (Dream.PropertyList)
-schema["interarrivalTime"] = {
-  "id": "interarrivalTime",
-  "property_list": [
-    schema["distributionType"],
-    schema["mean"]],
-  "_class": "Dream.PropertyList"
-}
-
 schema["processingTime"] = {
   "id": "processingTime",
   "property_list": [
@@ -232,6 +224,19 @@ schema["processingTime"] = {
   ],
   "_class": "Dream.PropertyList"
 }
+
+schema["interarrivalTime"] = {
+  "id": "interarrivalTime",
+  "property_list": [
+    schema["distributionType"],
+    schema["mean"],
+    schema["stdev"],
+    schema["min"],
+    schema["max"],
+  ],
+  "_class": "Dream.PropertyList"
+}
+
 
 schema["failures"] = {
   "id": "failures",
