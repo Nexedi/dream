@@ -252,7 +252,6 @@
       var element_data = {
         _class: element._class,
         element_id: element.element_id,
-        name: element.name
       };
       priv.node_container[element.id] = element_data;
     };
