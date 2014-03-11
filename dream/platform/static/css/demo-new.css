@@ -364,6 +364,10 @@ border: 1px solid black;
   width:95%;
 }
 
+#error{
+  text-align: left;
+}
+
 .ep {
   position:absolute;
   bottom:37%;

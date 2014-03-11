@@ -190,6 +190,7 @@
             $("#reports").show();
             $("#result_zone").show();
             $('#result_list').empty();
+            $('#error').empty();
             if (data['success']) {
               $("#json_result").val(JSON.stringify(data['success'],
                 undefined, " "));
@@ -204,7 +205,7 @@
               dream_instance.displayResult(0);
             } else {
               $("#reports").hide();
-              $("#json_result").show().effect('shake', 50).val(data['error']);
+              $("#error").text(data["error"]).show().effect('shake', 50);
               console.error(data['error'])
             }
           });
