@@ -50,7 +50,9 @@ class Simulation(DefaultSimulation):
         if elementClass=='Dream.Job':
             results=element['results']
             delay = float(results.get('delay', "0"))
-            totalDelay += delay
+            # A negative delay would mean we are ahead of schedule. This
+            # should not be considered better than being on time.
+            totalDelay += max(delay, 0)
     return totalDelay
 
 
