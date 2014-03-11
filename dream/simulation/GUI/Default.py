@@ -26,6 +26,9 @@ schema = {
     "name": "Distribution Type",
     "description": "The distribution type, one of Fixed, Exp, Normal",
     "type": "string",
+    "choice": ([["Fixed", "Fixed"],
+                ["Exp", "Exp"],
+                ["Normal", "Normal"]]),
     "_class": "Dream.Property",
     "_default": "Fixed"
   },
@@ -81,8 +84,10 @@ schema = {
     "id": "operationType",
     "type": "string",
     "name": "Operation Type",
+    "choice": [["Auto", "MT-Load-Setup"],
+               ["Manual", "MT-Load-Processing"]],
     "_class": "Dream.Property",
-    "_default": "Processing"
+    "_default": "MT-Load-Processing"
   },
   "isDummy": {
     "id": "isDummy",
@@ -96,6 +101,7 @@ schema = {
     "name": "Scheduling Rule",
     "description": "Scheduling Rule, one of %s" % (" ".join(
         Queue.getSupportedSchedulingRules())),
+    "choice": [(rule, rule) for rule in Queue.getSupportedSchedulingRules()],
     "_class": "Dream.Property",
     "_default": "FIFO"
   },
