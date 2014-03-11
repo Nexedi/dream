@@ -109,16 +109,29 @@
         }
         $.each(property_list, function (key, property) {
           if (property._class === "Dream.Property") {
-            previous_value = previous_data[property.id] == undefined ? "" : previous_data[property.id];
+            if (!property.non_editable){
+              fieldset.append($("<label>").text(property.name || property.id));
+              var input =  $("<input type='text'>")
+              if (property.choice) {
+                input = $("<select/>");
+                input.append("<option/>");
+                $.each(property.choice, function(idx, option) {
+                  input.append($("<option/>").val(option[1]).text(option[0]));
+                });
+                
+              }
+              input.attr({
+                'name':  prefix + property.id,
+                'title': (property.description || ''),
+                'id': prefix + property.id,
+                'class': 'text ui-widget-content ui-corner-all',
+              })
 
-            if (previous_value.length > 0 || typeof previous_value == "number") {
-              previous_value = ' value="' + previous_value + '"';
+              previous_value = previous_data[property.id];
+              input.val(previous_value);
+
+              fieldset.append(input);
             }
-            fieldset.append("<label>" + (property.name || property.id) + "</label>" +
-              '<input title="' + (property.description || '') + '" type="text" name="' + prefix + property.id + '"' +
-              previous_value +
-              ' id="' + prefix + property.id + '"' +
-              ' class="text ui-widget-content ui-corner-all"/>');
           } else if (property._class === "Dream.PropertyList") {
             var next_prefix = prefix + property.id + "-";
             var next_previous_data = previous_data[property.id] || {};
