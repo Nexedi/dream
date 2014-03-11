@@ -188,7 +188,7 @@ def setWIP(entityList):
             
         
         # if the entity is of type Job/OrderComponent/Order/Mould
-        elif entity.type=='Job' or 'OrderComponent' or 'Order' or 'Mould':
+        elif entity.type=='Job' or entity.type=='OrderComponent' or entity.type=='Order' or entity.type=='Mould':
             # find the list of starting station of the entity
             currentObjectIds=entity.remainingRoute[0].get('stationIdsList',[])
             # if the list of starting stations has length greater than one then there is a starting WIP definition error 
