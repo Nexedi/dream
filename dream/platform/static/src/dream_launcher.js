@@ -159,7 +159,7 @@
         $("#run_knowledge_extraction").button('disable');
         $("#ke_loading_spinner").show();
         $.ajax(
-          '/runKnowledgeExtraction', {
+          '../runKnowledgeExtraction', {
             data: JSON.stringify({
               json: dream_instance.getData()
             }),
