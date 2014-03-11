@@ -1106,7 +1106,7 @@ def createWIP():
                 for entity in G.BatchList:
                     if entity.id==parentBatchId:
                         batch=entity
-                if batch:               #if the parent batch was found create add the number of units of current sub-batch
+                if batch:               #if the parent batch was found add the number of units of current sub-batch
                     batch.numberOfUnits+=numberOfUnits
                 else:     #if the parent batch was not found create it
                     batch=Batch(parentBatchId,parentBatchName, numberOfUnits)
