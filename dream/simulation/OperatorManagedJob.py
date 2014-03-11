@@ -72,11 +72,8 @@ class OperatorManagedJob(Operator):
     # =======================================================================
     def sortCandidateEntities(self, candidateEntities=[]):
         # TODO: have to consider what happens in case of a critical order
-        # FIFO sorting has no meaning when sorting candidateEntities
-        if self.schedulingRule=="FIFO":
-            self.activeCandidateQSorter('WT', candidateEntities=candidateEntities)
         #if we have sorting according to multiple criteria we have to call the sorter many times
-        elif self.schedulingRule=="MC":
+        if self.schedulingRule=="MC":
             for criterion in reversed(self.multipleCriterionList):
                self.activeCandidateQSorter(criterion=criterion, candidateEntities=candidateEntities) 
         #else we just use the default scheduling rule
@@ -95,7 +92,11 @@ class OperatorManagedJob(Operator):
             criterion=self.schedulingRule           
         #if the schedulingRule is first in first out
         if criterion=="FIFO": 
-            pass
+            # FIFO sorting has no meaning when sorting candidateEntities
+            self.activeCandidateQSorter('WT', candidateEntities=candidateEntities)
+            # added for testing
+#             print 'there is no point of using FIFO scheduling rule for operators candidateEntities,\
+#                     WT scheduling rule used instead'
         #if the schedulingRule is based on a pre-defined priority
         elif criterion=="Priority":
             
