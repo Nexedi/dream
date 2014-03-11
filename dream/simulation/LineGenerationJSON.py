@@ -603,7 +603,7 @@ def createObjects():
         elif objClass=='Dream.BatchDecomposition':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element['processingTime']
+            processingTime=element.get('processingTime', {})
             numberOfSubBatches=int(element.get('numberOfSubBatches') or 0)
             BD=BatchDecomposition(id, name, processingTime=processingTime, numberOfSubBatches=numberOfSubBatches)
             BD.nextIds=getSuccessorList(id)
@@ -905,6 +905,7 @@ def createWIP():
     G.OrderComponentList=[]
     G.OrderList=[]
     G.MouldList=[]
+    G.BatchList=[]
     # entities that just finished processing in a station 
     # and have to enter the next machine 
     G.pendingEntities=[]
@@ -1080,6 +1081,17 @@ def createWIP():
                 G.EntityList.append(P)  
                 object=Globals.findObjectById(element['id'])
                 P.currentStation=object
+
+            elif entityClass=='Dream.Batch':
+                id=entity.get('id', 'not found')
+                name=entity.get('name', 'not found')
+                numberOfUnits=int(entity.get('numberOfUnits', '4'))
+                B=Batch(id,name, numberOfUnits)
+                G.BatchList.append(B)   
+                G.WipList.append(B)  
+                G.EntityList.append(B)  
+                object=Globals.findObjectById(element['id'])
+                B.currentStation=object
 
             if entityClass=='Dream.Order':
                 id=entity.get('id', 'not found')
