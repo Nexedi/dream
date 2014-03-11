@@ -400,7 +400,6 @@ def createObjects():
         elif objClass=='Dream.MachineJobShop':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', {})
             failures=element.get('failures', {})  
             failureDistribution=failures.get('distributionType', 'not found')
             MTTF=float(failures.get('MTTF') or 0)
@@ -437,7 +436,7 @@ def createObjects():
                 if(id in repairman.coreObjectIds):
                     r=repairman
                     
-            M=MachineJobShop(id, name, 1, processingTime=processingTime,  failureDistribution=failureDistribution,
+            M=MachineJobShop(id, name, 1, failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
                                                     operatorPool=machineOperatorPoolList, operationType=operationType,
                                                     setupTime=setupTime,
@@ -453,7 +452,6 @@ def createObjects():
         elif objClass=='Dream.MachineManagedJob':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', None)
             failures=element.get('failures', {})  
             failureDistribution=failures.get('distributionType', 'not found')
             MTTF=float(failures.get('MTTF') or 0)
@@ -490,7 +488,7 @@ def createObjects():
                 if(id in repairman.coreObjectIds):
                     r=repairman
                     
-            M=MachineManagedJob(id, name, 1, processingTime=processingTime,  failureDistribution=failureDistribution,
+            M=MachineManagedJob(id, name, 1, failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
                                                     operatorPool=machineOperatorPoolList, operationType=operationType,
                                                     setupTime=setupTime,
@@ -737,7 +735,6 @@ def createObjects():
             from MouldAssembly import MouldAssembly
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', None)
             failures=element.get('failures', {})  
             failureDistribution=failures.get('distributionType', 'not found')
             MTTF=float(failures.get('MTTF') or 0)
@@ -771,7 +768,7 @@ def createObjects():
                 if(id in repairman.coreObjectIds):
                     r=repairman
                     
-            MA=MouldAssembly(id, name, 1, processingTime=processingTime,  failureDistribution=failureDistribution,
+            MA=MouldAssembly(id, name, 1, failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
                                                     operatorPool=machineOperatorPoolList, operationType=operationType,
                                                     setupTime=setupTime,
