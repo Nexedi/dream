@@ -119,7 +119,7 @@
           }
         });
         $.each(data.edges, function (key, value) {
-          dream_instance.connect(value[0], value[1]);
+          dream_instance.addEdge(key, value);
         });
 
         dream_instance.updateGeneralProperties(data.general);

@@ -88,13 +88,14 @@
 
       jsPlumb.bind("connectionDragStop", function (connection) {});
 
-      var updateConnectionData = function (connection, remove) {
+      // split in 2 methods ? one for events one for manip
+      that.updateConnectionData = function (connection, remove, edge_data) {
         if (remove) {
           delete(priv.edge_container[connection.id]);
         } else {
           priv.edge_container[connection.id] = [
             that.getNodeId(connection.sourceId),
-            that.getNodeId(connection.targetId), {}
+            that.getNodeId(connection.targetId), edge_data || {}
           ];
         }
         priv.onDataChange();
@@ -102,10 +103,10 @@
 
       // bind to connection/connectionDetached events, and update the list of connections on screen.
       jsPlumb.bind("connection", function (info, originalEvent) {
-        updateConnectionData(info.connection);
+        that.updateConnectionData(info.connection);
       });
       jsPlumb.bind("connectionDetached", function (info, originalEvent) {
-        updateConnectionData(info.connection, true);
+        that.updateConnectionData(info.connection, true);
       });
       priv.onDataChange();
       priv.draggable();
@@ -412,11 +413,28 @@
       that.prepareDialogForGeneralProperties();
     };
 
-    that.connect = function (source_id, target_id) {
-      jsPlumb.connect({
+    that.addEdge = function (edge_id, edge_data) {
+      var source_id = edge_data[0],
+          target_id = edge_data[1],
+          data = edge_data[2],
+          overlays = []
+
+      if (data && data.title){
+        overlays = [ ["Label", { cssClass:"l1 component label",
+                                label: data.title,
+                            }] ]
+
+      }
+      var connection = jsPlumb.connect({
         source: that.getElementId(source_id),
-        target: that.getElementId(target_id)
+        target: that.getElementId(target_id),
+        Connector: [ "Bezier", { curviness:75 } ],
+        overlays:overlays
+
       });
+      // call again updateConnectionData to set the connection data that
+      // was not passed to the connection hook
+      that.updateConnectionData(connection, 0, data)
     };
 
     that.setPreferences = function (preferences) {
