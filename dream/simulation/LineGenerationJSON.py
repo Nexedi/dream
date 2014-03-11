@@ -906,6 +906,7 @@ def createWIP():
     G.OrderList=[]
     G.MouldList=[]
     G.BatchList=[]
+    G.SubBatchList=[]
     # entities that just finished processing in a station 
     # and have to enter the next machine 
     G.pendingEntities=[]
@@ -1092,6 +1093,33 @@ def createWIP():
                 G.EntityList.append(B)  
                 object=Globals.findObjectById(element['id'])
                 B.currentStation=object
+                
+            elif entityClass=='Dream.SubBatch':
+                id=entity.get('id', 'not found')
+                name=entity.get('name', 'not found')
+                numberOfUnits=int(entity.get('numberOfUnits', '4'))
+                parentBatchId=entity.get('parentBatchId', 'not found')
+                parentBatchName=entity.get('parentBatchName', 'not found')
+            
+                # check if the parent batch is already created. If not, then create it
+                batch=None
+                for entity in G.BatchList:
+                    if entity.id==parentBatchId:
+                        batch=entity
+                if batch:               #if the parent batch was found create add the number of units of current sub-batch
+                    batch.numberOfUnits+=numberOfUnits
+                else:     #if the parent batch was not found create it
+                    batch=Batch(parentBatchId,parentBatchName, numberOfUnits)
+                    G.BatchList.append(B)   
+                    G.WipList.append(B)  
+                    G.EntityList.append(B)               
+                           
+                SB=SubBatch(id,name, numberOfUnits=numberOfUnits, parentBatch=batch)
+                G.SubBatchList.append(SB)   
+                G.WipList.append(SB)  
+                G.EntityList.append(SB)  
+                object=Globals.findObjectById(element['id'])
+                SB.currentStation=object
 
             if entityClass=='Dream.Order':
                 id=entity.get('id', 'not found')

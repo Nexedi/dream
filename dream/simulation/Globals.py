@@ -181,7 +181,7 @@ def setWIP(entityList):
     # for all the entities in the entityList
     for entity in entityList:
         # if the entity is of type Part
-        if entity.type=='Part' or entity.type=='Batch':
+        if entity.type=='Part' or entity.type=='Batch' or entity.type=='SubBatch':
             object=entity.currentStation                        #identify the object
             object.getActiveObjectQueue().append(entity)        #append the entity to its Queue
             entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
