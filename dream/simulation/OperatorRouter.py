@@ -53,10 +53,18 @@ class Router(ObjectInterruption):
         self.schedulingRule=''
         # list of the operators that may handle a machine at the current simulation time
         self.candidateOperators=[]
+        # list of criteria
+        self.multipleCriterionList=[]
         
     # =======================================================================
     #                          the run method
-    # =======================================================================    
+    # =======================================================================
+    '''
+    all the pendingEntities that are hot should be examined if they can proceed to the next
+    step of their route as they may not be first in the activeQueue of their currentStations (QueueManagedJob).
+    If they can be disposed to the next object then the router should wait again till the machine to receive them
+    returns canAcceptAndIsRequested (inPositionToGet is True)
+    '''
     def run(self):
         from Globals import G
         while 1:
@@ -72,10 +80,11 @@ class Router(ObjectInterruption):
 
             #===================================================================
 #             # TESTING
-#             print now(),'      the pending objects are        ', [str(object.id) for object in self.pendingObjects]
+#             print now(), '================================================================================'
+#             print '        the pending objects are        ', [str(object.id) for object in self.pendingObjects]
             #===================================================================
             
-            # update the called operators list
+            # update the calledOperators list
             self.calledOperators=[operator for operator in G.OperatorsList if len(operator.activeCallersList)]
 
             #===================================================================
@@ -85,9 +94,11 @@ class Router(ObjectInterruption):
 #             print '        for entity                      ', [[str(x.giver.getActiveObjectQueue()[0].id)for x in operator.activeCallersList] for operator in self.calledOperators]
             #===================================================================
             
-            
             # find the operators that can start working now even if they are not called
             self.findCandidateOperators()
+            
+            # sort the pendingEntities list
+            self.sortPendingEntities()
             
             #===================================================================
 #             # TESTING
@@ -99,34 +110,33 @@ class Router(ObjectInterruption):
 #                 print [str(candidate.id) for candidate in self.candidateOperators]
             #===================================================================
             
-            '''             all the pendingEntities that are hot should be examined if they can proceed to the next
-            step of their route as they may not be first in the activeQueue of their currentStations (QueueManagedJob).
-            If they can be disposed to the next object then the router should wait again till the machine to receive them
-            returns canAcceptAndIsRequested (inPositionToGet is True)        '''
-            
-            # sort the candidateOperators list
-            self.sortOperators()
+            # find the operators candidateEntities
+            self.findCandidateEntities()
             
             # find the entity that will occupy the resource, and the station that will receive it (if any available)
             self.findCandidateReceivers()
-
             
+            #===================================================================
+#             # TESTING
+#             print '                    after findReceivers',
+#             print [(str(operator.id),[str(candidateEntity.id) for candidateEntity in operator.candidateEntities],)\
+#                             for operator in self.candidateOperators]
+#             print 'after find receivers'
+#             print [str(op.id) for op in self.candidateOperators if op.candidateEntity.candidateReceiver]
+#             print [(op.id, op.candidateEntity.id, op.candidateEntity.candidateReceiver.id)\
+#                     for op in self.candidateOperators if op.candidateEntity.candidateReceiver]
+            #===================================================================
+
             # sort the givers for the operators that will process the entities
-            self.sortGivers()
+            self.sortGiverQueue()
             
-
-            '''        # now must sort the candidateEntities
-            # and possibly choose one of the candidate receivers of the entities
-            # we should also sort the queues were the chosen entities lie in order to bring them in front
-            
-            # then we must check if there is conflict among the choices of the operators
-            #     if there is conflict we must sort the operators
-            # if an chosen operator is not in the calledOperators list then no machine should proceed with get entity
-            #     but wait till the chosen receiver returns True 
-            # for all the called operators find those available
-            #     sort the objects for each one of them
-            #     and assign the operator to those with the highest priority    '''
-            
+            #===================================================================
+#             # TESTING
+#             print 'after sortGiverQueue'
+#             print [str(op.id) for op in self.candidateOperators if op.candidateEntity.candidateReceiver]
+#             print [(op.id, op.candidateEntity.id, op.candidateEntity.candidateReceiver.id)\
+#                     for op in self.candidateOperators if op.candidateEntity.candidateReceiver]
+            #===================================================================
             
             # for all the operators that are requested
             for operator in self.calledOperators:
@@ -142,13 +152,14 @@ class Router(ObjectInterruption):
                 
                 # check if the candidateReceivers are inPositionToGet and  if they are already called
                 try:
-                    candidateEntityHasActiveReceiver=(operator.candidateEntity.candidateReceiver in operator.activeCallersList\
+                    receiverIsActive=(operator.candidateEntity.candidateReceiver in operator.activeCallersList\
                                                   and operator.candidateEntity.candidateReceiver in self.pendingObjects )
                 except:
-                    candidateEntityHasActiveReceiver=True
+                    receiverIsActive=True
+                
                 # check if the candidateOperators are available, if the are requested and reside in the pendingObjects list 
                 if operator.checkIfResourceIsAvailable() and \
-                        candidateEntityHasActiveReceiver:
+                        receiverIsActive:
                     #===========================================================
 #                     # TESTING
 #                     print now(), 'the active callers of', operator.objName, 'before sorting are            ',
@@ -184,7 +195,7 @@ class Router(ObjectInterruption):
                         priorityObject.canProceedWithGetEntity=True
                         priorityObject.inPositionToGet=False
                 # if the are not called and they are not in the pendingObjects list clear their activeCallersList
-                elif not candidateEntityHasActiveReceiver:
+                elif not receiverIsActive:
                     operator.activeCallersList=[]
             # if an object cannot proceed with getEntity, unAssign the exit of its giver
             for object in self.pendingObjects:
@@ -278,17 +289,50 @@ class Router(ObjectInterruption):
         del self.candidateOperators[:]
         del self.calledOperators[:]
         del self.pendingObjects[:]
+        del self.multipleCriterionList[:]
         self.call=False
+        
+    #=======================================================================
+    #                             Sort pendingEntities
+    # TODO: sorting them according to the operators schedulingRule
+    #=======================================================================
+    def sortPendingEntities(self):
+        # TODO: to be used for sorting of operators
+        if self.candidateOperators:
+            for operator in self.candidateOperators:
+                if operator.multipleCriterionList:
+                    for criterion in operator.multipleCriterionList:
+                        if not criterion in self.multipleCriterionList:
+                            self.multipleCriterionList.append(criterion)
+                else:
+                    if not operator.schedulingRule in self.multipleCriterionList:
+                        self.multipleCriterionList.append(operator.schedulingRule)
+            # TODO: For the moment all operators should have only one scheduling rule and the same among them
+            # added for testing
+            assert len(self.multipleCriterionList)==1,'The operators must have the same (one) scheduling rule' 
+        
+            self.activePendingQSorter(criterion=self.multipleCriterionList[0])
+        
+    #=======================================================================
+    #                             Sort candidateOperators
+    # TODO: consider if there must be an argument set for the schedulingRules of the Router
+    # TODO: consider if the scheduling rule for the operators must be global for all of them
+    #=======================================================================
+    def sortOperators(self):
+        # TODO: there must be criteria for sorting the cadidateOperators
+        #if we have sorting according to multiple criteria we have to call the sorter many times
+        if self.multipleCriterionList:
+            self.activeOperatorQSorter(criterion=self.multipleCriterionList[0])
         
     #========================================================================
     # Find candidate Operators
+    # find the operators that can start working now even if they are not called
+    #     to be found:
+    #     .    the candidate operators
+    #     .    their candidate entities (the entities they will process)
+    #     .    the candidate receivers of the entities (the stations the operators will be working at)
     #========================================================================
     def findCandidateOperators(self):
-        # find the operators that can start working now even if they are not called
-        #     to be found:
-        #     .    the candidate operators
-        #     .    their candidate entities (the entities they will process)
-        #     .    the candidate receivers of the entities (the stations the operators will be working at)
         from Globals import G
         # if there are pendingEntities
         if len(G.pendingEntities):
@@ -318,26 +362,17 @@ class Router(ObjectInterruption):
                         self.candidateOperators.append(entity.manager)
     
     #=======================================================================
-    # Sort Candidate Operators
-    # TODO: consider if there must be an argument set for the schedulingRules of the Router
+    #         Find the candidateEntities for each candidateOperator
+    # find the candidateEntities of each candidateOperator and sort them according
+    #     to the scheduling rules of the operator and choose an entity that will be served
+    #     and by which machines
     #=======================================================================
-    def sortOperators(self):
+    def findCandidateEntities(self):
         from Globals import G
-        # TODO: sort accordting to the number of pending Jobs
-        # sort the operators according to their waiting time
-        self.candidateOperators.sort(key=lambda x: x.totalWorkingTime)                          # sort with total Working Time
-        #===================================================================
-#             # TESTING
-#             if candidateOperators:
-#                 print '        {} the candidate operators after sorting are:                      ',
-#                 print [str(candidate.id) for candidate in candidateOperators]
-        #===================================================================
-            
-        # find the candidateEntities of each candidateOperator and sort them according
-        #     to the scheduling rules of the operator and choose an entity that will be served
-        #     and by which machines
+        # TODO: sort according to the number of pending Jobs
+        # TODO Have to sort again according to the priority used by the operators
         
-        # initialise the operatorsWithOneOption  
+        # initialise the operatorsWithOneOption and operatorsWithOneCandidateEntity lists
         operatorsWithOneOption=[]
         operatorsWithOneCandidateEntity=[]
         # for all the candidateOperators
@@ -351,46 +386,64 @@ class Router(ObjectInterruption):
                 # if the candidate entity has only one receiver then append the operator to operatorsWithOneOption list
                 if len(operator.candidateEntities[0].candidateReceivers)==1:
                     operatorsWithOneOption.append(operator)
+        
+        # sort the candidateEntities list of each operator according to its schedulingRule
+        for operator in [x for x in self.candidateOperators if x.candidateEntities]:
+            operator.sortCandidateEntities(operator.candidateEntities)
+            
         # if there operators that have only one option then sort the candidateOperators according to the first one of these
         # TODO: find out what happens if there are many operators with one option
+        # TODO: incorporate that to sortOperators() method
+        
+        # sort the operators according to their waiting time
+        self.candidateOperators.sort(key=lambda x: x.totalWorkingTime)
         if operatorsWithOneOption:
-#                 candidateOperators.sort(key=lambda x:x==operatorsWithOneOption[0],reverse=True)
             self.candidateOperators.sort(key=lambda x: x in operatorsWithOneOption, reverse=True)   # sort according to the number of options
+            
             
         #===================================================================
 #         # TESTING
 #         if self.candidateOperators:
-#             print '                {} the candidate operators after second sorting are:                      ',
-#             print [str(candidate.id) for candidate in self.candidateOperators]
-#             print '        operators with one Option            ', 
-#             print [str(operator.id) for operator in operatorsWithOneOption]
-#             for operator in self.candidateOperators:
-#                 print '            operator', operator.id, 'has candidate entities        ',
-#                 print [candidateEntity.id for candidateEntity in operator.candidateEntities]
+#             print '                        findEntities',
+#             print [(str(operator.id),[str(candidateEntity.id) for candidateEntity in operator.candidateEntities])\
+#                      for operator in self.candidateOperators]
         #===================================================================
             
     #=======================================================================
     # Find candidate entities and their receivers
+    # TODO: if there is a critical entity, its manager should be served first
+    # TODO: have to sort again after choosing candidateEntity
     #=======================================================================
     def findCandidateReceivers(self):
-        # TODO: if there is a critical entity, its manager should be served first
-        
         # initialise local variables occupiedReceivers and entitiesWithOccupiedReceivers
         occupiedReceivers=[]                    # occupied candidateReceivers of a candidateEntity
         entitiesWithOccupiedReceivers=[]        # list of entities that have no available receivers
+        
+        # finally we have to sort before giving the entities to the operators
+        # If there is an entity which must have priority then it should be assigned first
+        
+        
+        for operator in [x for x in self.candidateOperators if x.candidateEntities]:
+            operator.candidateEntity=operator.candidateEntities[0]
+        #===================================================================
+        # TESTING
+#         print '        first assignment of candidateEntity'
+#         print [(str(x.id), str(x.candidateEntity.id)) for x in self.candidateOperators if x.candidateEntity]
+        #===================================================================
+        # TODO: sorting again after choosing candidateEntity
+        self.sortOperators()
+        
+        
+        
+        
+        
         # for the candidateOperators that do have candidateEntities pick a candidateEntity
         for operator in [x for x in self.candidateOperators if x.candidateEntities]:
-            operator.sortCandidateEntities(operator.candidateEntities)
-            operator.noAvailableReceivers=False
             # find the first available entity that has no occupied receivers
             availableEntity=next(x for x in operator.candidateEntities if not x in entitiesWithOccupiedReceivers)
             if availableEntity:
                 operator.candidateEntity=availableEntity
-                #=======================================================
-#                 # TESTING
-#                 print '            the candidate receivers for', operator.candidateEntity.id, 'are',\
-#                                  [str(x.id) for x in operator.candidateEntity.candidateReceivers]
-                #=======================================================
+        
                 # initiate the local list variable available receivers
                 availableReceivers=[x for x in operator.candidateEntity.candidateReceivers\
                                             if not x in occupiedReceivers]
@@ -406,19 +459,17 @@ class Router(ObjectInterruption):
                         
                     operator.candidateEntity.candidateReceiver=availableReceiver
                     occupiedReceivers.append(availableReceiver)
-                    operator.noAvailableReceivers=True
                 # if there is no available receiver add the entity to the entitiesWithOccupiedReceivers list
                 else:
                     entitiesWithOccupiedReceivers.append(availableEntity)
                     operator.candidateEntity.candidateReceiver=None
+#         # TODO: sorting again after choosing candidateEntity
+#         self.sortOperators()
         #===================================================================
 #         # TESTING
-#         print '                    +{}+ candidate operators   :',
-#         print [str(x.id) for x in self.candidateOperators if x.candidateEntity] 
-#         print '                    +{}+ have entities         :',
-#         print [str(x.candidateEntity.id) for x in self.candidateOperators if x.candidateEntity]
-#         print '                    +{}+ with receivers        :',
-#         print [str(x.candidateEntity.candidateReceiver.id) for x in self.candidateOperators if x.candidateEntity and not x.candidateEntity in entitiesWithOccupiedReceivers]
+#         print '                    findReceivers',
+#         print [(str(operator.id),[str(candidateEntity.id) for candidateEntity in operator.candidateEntities])\
+#                         for operator in self.candidateOperators]
         #===================================================================
                     
     #=======================================================================
@@ -426,9 +477,7 @@ class Router(ObjectInterruption):
     # TODO: the method currently checks only the first operator of the candidateOperators list
     #    consider populating the controls
     #=======================================================================
-    def sortGivers(self):
-        # local variable used for testing
-        pendingObjectsMustBeSorted=False
+    def sortGiverQueue(self):
         # for those operators that do have candidateEntity
         for operator in [x for x in self.candidateOperators if x.candidateEntity]:
             # check whether are called by objects that require the resource
@@ -437,16 +486,200 @@ class Router(ObjectInterruption):
             #     of the requesting the operator entities.  
             if not operator.called:
                 operator.candidateEntity.currentStation.sortEntitiesForOperator(operator)
-                pendingObjectsMustBeSorted=True
             # TODO: if the first candidate is not called then must run again
             #     if the first is called then this one must proceed with get entity 
             elif not operator.candidateEntity.candidateReceiver in self.pendingObjects:
                 operator.candidateEntity.currentStation.sortEntitiesForOperator(operator)
-                pendingObjectsMustBeSorted=True
             else:
                 break
+        
+    # =======================================================================
+    #    sorts the Entities of the Queue according to the scheduling rule
+    # =======================================================================
+    def activePendingQSorter(self, criterion=None):
+        from Globals import G
+        activeObjectQ=G.pendingEntities
+        if not activeObjectQ:
+            assert False, "empty candidate list"
+        if criterion==None:
+            criterion=self.schedulingRule           
+        #if the schedulingRule is first in first out
+        if criterion=="FIFO": 
+            # FIFO sorting has no meaning when sorting candidateEntities
+            self.activePendingQSorter('WT')
+            # added for testing
+#             print 'there is no point of using FIFO scheduling rule for operators candidateEntities,\
+#                     WT scheduling rule used instead'
+        #if the schedulingRule is based on a pre-defined priority
+        elif criterion=="Priority":
             
-        #===================================================================
-#         # TESTING
-#         print '======= can the machines proceed with getEntity? ',not pendingObjectsMustBeSorted, '==============='
-        #===================================================================
+            activeObjectQ.sort(key=lambda x: x.priority)
+        #if the scheduling rule is time waiting (time waiting of machine
+        # TODO: consider that the timeLastEntityEnded is not a 
+        #     indicative identifier of how long the station was waiting
+        elif criterion=='WT':
+            
+            activeObjectQ.sort(key=lambda x: x.schedule[-1][1])
+        #if the schedulingRule is earliest due date
+        elif criterion=="EDD":
+            
+            activeObjectQ.sort(key=lambda x: x.dueDate)   
+        #if the schedulingRule is earliest order date
+        elif criterion=="EOD":
+            
+            activeObjectQ.sort(key=lambda x: x.orderDate)
+        #if the schedulingRule is to sort Entities according to the stations they have to visit
+        elif criterion=="NumStages":
+            
+            activeObjectQ.sort(key=lambda x: len(x.remainingRoute), reverse=True)  
+        #if the schedulingRule is to sort Entities according to the their remaining processing time in the system
+        elif criterion=="RPC":
+            
+            for entity in activeObjectQ:
+                RPT=0
+                for step in entity.remainingRoute:
+                    processingTime=step.get('processingTime',None)
+                    if processingTime:
+                        RPT+=float(processingTime.get('mean',0))           
+                entity.remainingProcessingTime=RPT
+            activeObjectQ.sort(key=lambda x: x.remainingProcessingTime, reverse=True)     
+        #if the schedulingRule is to sort Entities according to longest processing time first in the next station
+        elif criterion=="LPT":
+            
+            for entity in activeObjectQ:
+                processingTime = entity.remainingRoute[0].get('processingTime',None)
+                entity.processingTimeInNextStation=float(processingTime.get('mean',0))
+                if processingTime:
+                    entity.processingTimeInNextStation=float(processingTime.get('mean',0))
+                else:
+                    entity.processingTimeInNextStation=0
+            activeObjectQ.sort(key=lambda x: x.processingTimeInNextStation, reverse=True)             
+        #if the schedulingRule is to sort Entities according to shortest processing time first in the next station
+        elif criterion=="SPT":
+            
+            for entity in activeObjectQ:
+                processingTime = entity.remainingRoute[0].get('processingTime',None)
+                if processingTime:
+                    entity.processingTimeInNextStation=float(processingTime.get('mean',0))
+                else:
+                    entity.processingTimeInNextStation=0
+            activeObjectQ.sort(key=lambda x: x.processingTimeInNextStation) 
+        #if the schedulingRule is to sort Entities based on the minimum slackness
+        elif criterion=="MS":
+            
+            for entity in activeObjectQ:
+                RPT=0
+                for step in entity.remainingRoute:
+                    processingTime=step.get('processingTime',None)
+                    if processingTime:
+                        RPT+=float(processingTime.get('mean',0))              
+                entity.remainingProcessingTime=RPT
+            activeObjectQ.sort(key=lambda x: (x.dueDate-x.remainingProcessingTime))  
+        #if the schedulingRule is to sort Entities based on the length of the following Queue
+        elif criterion=="WINQ":
+            
+            from Globals import G
+            for entity in activeObjectQ:
+                nextObjIds=entity.remainingRoute[1].get('stationIdsList',[])
+                for obj in G.ObjList:
+                    if obj.id in nextObjIds:
+                        nextObject=obj
+                entity.nextQueueLength=len(nextObject.getActiveObjectQueue())           
+            activeObjectQ.sort(key=lambda x: x.nextQueueLength)
+        else:
+            assert False, "Unknown scheduling criterion %r" % (criterion, )
+            
+    # =======================================================================
+    #    sorts the Operators of the Queue according to the scheduling rule
+    # =======================================================================
+    def activeOperatorQSorter(self, criterion=None):
+        activeObjectQ=self.candidateOperators
+        if not activeObjectQ:
+            assert False, "empty candidateOperators list"
+        if criterion==None:
+            criterion=self.multipleCriterionList[0]           
+        #if the schedulingRule is first in first out
+        if criterion=="FIFO": 
+            # FIFO sorting has no meaning when sorting candidateEntities
+            self.activeOperatorQSorter('WT')
+            # added for testing
+#             print 'there is no point of using FIFO scheduling rule for operators candidateEntities,\
+#                     WT scheduling rule used instead'
+        #if the schedulingRule is based on a pre-defined priority
+        elif criterion=="Priority":
+            
+            activeObjectQ.sort(key=lambda x: x.candidateEntity.priority)
+        #if the scheduling rule is time waiting (time waiting of machine
+        # TODO: consider that the timeLastEntityEnded is not a 
+        #     indicative identifier of how long the station was waiting
+        elif criterion=='WT':
+            
+            activeObjectQ.sort(key=lambda x: x.candidateEntity.schedule[-1][1])
+        #if the schedulingRule is earliest due date
+        elif criterion=="EDD":
+            
+            activeObjectQ.sort(key=lambda x: x.candidateEntity.dueDate)   
+        #if the schedulingRule is earliest order date
+        elif criterion=="EOD":
+            
+            activeObjectQ.sort(key=lambda x: x.candidateEntity.orderDate)
+        #if the schedulingRule is to sort Entities according to the stations they have to visit
+        elif criterion=="NumStages":
+            
+            activeObjectQ.sort(key=lambda x: len(x.candidateEntity.remainingRoute), reverse=True)  
+        #if the schedulingRule is to sort Entities according to the their remaining processing time in the system
+        elif criterion=="RPC":
+            
+            for entity in [operator.candidateEntity for operator in activeObjectQ]:
+                RPT=0
+                for step in entity.remainingRoute:
+                    processingTime=step.get('processingTime',None)
+                    if processingTime:
+                        RPT+=float(processingTime.get('mean',0))           
+                entity.remainingProcessingTime=RPT
+            activeObjectQ.sort(key=lambda x: x.candidateEntity.remainingProcessingTime, reverse=True)     
+        #if the schedulingRule is to sort Entities according to longest processing time first in the next station
+        elif criterion=="LPT":
+            
+            for entity in [operator.candidateEntity for operator in activeObjectQ]:
+                processingTime = entity.remainingRoute[0].get('processingTime',None)
+                entity.processingTimeInNextStation=float(processingTime.get('mean',0))
+                if processingTime:
+                    entity.processingTimeInNextStation=float(processingTime.get('mean',0))
+                else:
+                    entity.processingTimeInNextStation=0
+            activeObjectQ.sort(key=lambda x: x.candidateEntity.processingTimeInNextStation, reverse=True)             
+        #if the schedulingRule is to sort Entities according to shortest processing time first in the next station
+        elif criterion=="SPT":
+            
+            for entity in [operator.candidateEntity for operator in activeObjectQ]:
+                processingTime = entity.remainingRoute[0].get('processingTime',None)
+                if processingTime:
+                    entity.processingTimeInNextStation=float(processingTime.get('mean',0))
+                else:
+                    entity.processingTimeInNextStation=0
+            activeObjectQ.sort(key=lambda x: x.candidateEntity.processingTimeInNextStation) 
+        #if the schedulingRule is to sort Entities based on the minimum slackness
+        elif criterion=="MS":
+            
+            for entity in [operator.candidateEntity for operator in activeObjectQ]:
+                RPT=0
+                for step in entity.remainingRoute:
+                    processingTime=step.get('processingTime',None)
+                    if processingTime:
+                        RPT+=float(processingTime.get('mean',0))              
+                entity.remainingProcessingTime=RPT
+            activeObjectQ.sort(key=lambda x: (x.candidateEntity.dueDate-x.candidateEntity.remainingProcessingTime))  
+        #if the schedulingRule is to sort Entities based on the length of the following Queue
+        elif criterion=="WINQ":
+            
+            from Globals import G
+            for entity in [operator.candidateEntity for operator in activeObjectQ]:
+                nextObjIds=entity.remainingRoute[1].get('stationIdsList',[])
+                for obj in G.ObjList:
+                    if obj.id in nextObjIds:
+                        nextObject=obj
+                entity.nextQueueLength=len(nextObject.getActiveObjectQueue())           
+            activeObjectQ.sort(key=lambda x: x.candidateEntity.nextQueueLength)
+        else:
+            assert False, "Unknown scheduling criterion %r" % (criterion, )
