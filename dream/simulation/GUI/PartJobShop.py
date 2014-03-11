@@ -15,59 +15,60 @@ class Simulation(ACO.Simulation):
     conf = ACO.Simulation.getConfigurationDict(self)
     conf["Dream-MachineManagedJob"] = {
         "property_list": [
-          schema["processingTime"],
-          schema["failures"],
           schema["operationType"]
         ],
         "_class": 'Dream.MachineManagedJob',
-        "name": 'Machine'
+        "name": 'Machine',
+        "short_id": "M",
     }
     conf["Dream-MouldAssembly"] = {
         "property_list": [
-          schema["processingTime"],
-          schema["failures"],
           schema["operationType"]
         ],
         "_class": 'Dream.MouldAssembly',
-        "name": 'MouldAss'
+        "name": 'MouldAss',
+        "short_id": "MA",
     }
     conf["Dream-QueueManagedJob"] = {
         "property_list": [
           schema["capacity"],
-          schema["isDummy"],
           schema["schedulingRule"]
         ],
         "_class": 'Dream.QueueManagedJob',
-        "name": 'Queue'
+        "name": 'Queue',
+        "short_id": "Q",
     }
     conf["Dream-ConditionalBuffer"] = {
         "property_list": [
           schema["capacity"],
-          schema["isDummy"],
           schema["schedulingRule"]
         ],
         "_class": 'Dream.ConditionalBuffer',
-        "name": 'Buffer'
+        "name": 'Buffer',
+        "short_id": "B",
     }
     conf["Dream-MouldAssemblyBuffer"] = {
         "property_list": [
           schema["capacity"],
-          schema["isDummy"],
           schema["schedulingRule"]
         ],
-        "name": 'AssBuffer'
+        "name": 'AssBuffer',
+        "short_id": "MA",
     }
     conf["Dream-ExitJobShop"] = {
         "_class": 'Dream.ExitJobShop',
-        "name": 'Exit'
+        "name": 'Exit',
+        "short_id": "E",
     }
     conf["Dream-OperatorManagedJob"] = {
         "_class": 'Dream.OperatorManagedJob',
-        "name": 'Operator'
+        "name": 'Operator',
+        "short_id": "PM",
     }
     conf["Dream-OrderDecomposition"] = {
         "_class": 'Dream.OrderDecomposition',
-        "name": 'Decompo'
+        "name": 'Decompo',
+        "short_id": "D",
     }
     conf["Dream-Configuration"]["gui"]["wip_part_spreadsheet"] = 1
     conf["Dream-Configuration"]["gui"]["job_schedule_spreadsheet"] = 1
