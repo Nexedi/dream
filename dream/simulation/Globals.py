@@ -115,6 +115,8 @@ class G:
     OrderComponentList=[]
     OrderList=[]
     MouldList=[]
+    BatchList=[]
+    SubBatchList=[]
     # entities that just finished processing in a station 
     # and have to enter the next machine 
     pendingEntities=[]
