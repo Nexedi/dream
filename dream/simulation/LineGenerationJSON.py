@@ -121,6 +121,7 @@ def readGeneralInput():
     G.maxSimTime=float(general.get('maxSimTime', '100'))                    # get the maxSimTime / default 100
     G.trace=general.get('trace', 'No')                                      # get trace in order to check if trace is requested
     G.confidenceLevel=float(general.get('confidenceLevel', '0.95'))         # get the confidence level
+    G.seed = general.get('seed')
 
 # ===========================================================================
 #                       creates the simulation objects
@@ -1263,12 +1264,15 @@ def main(argv=[], input_data=None):
     readGeneralInput()
     createObjects()
     createObjectInterruptions()
-    setTopology()    
-    
+    setTopology()
+
     #run the experiment (replications)          
     for i in xrange(G.numberOfReplications):
         #logger.info("start run number "+str(i+1)) 
-        G.Rnd=Random(G.seed + i)
+        if G.seed:
+          G.Rnd=Random('%s%s' % (G.seed, i))
+        else:
+          G.Rnd=Random()
         initialize()                        #initialize the simulation 
         createWIP()
         initializeObjects()

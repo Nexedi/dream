@@ -142,6 +142,15 @@ schema = {
     "_class": "Dream.Property",
     "_default": 10
   },
+  "seed": {
+    "id": "seed",
+    "name": "Seed for random number generator",
+    "description": "When using the same seed, the random number generator"
+                   " produce the same sequence of numbers",
+    "type": "string",
+    "_class": "Dream.Property",
+    "_default": "",
+  },
   "batchNumberOfUnits": {
     "id": "batchNumberOfUnits",
     "type": "number",
@@ -309,6 +318,7 @@ class Simulation(object):
            schema["processTimeout"],
            schema["currentDate"],
            schema["trace"],
+           schema["seed"],
         ],
         "gui": {
           'debug_json': 1,
