@@ -48,7 +48,7 @@ label, input {
   display:block;
 }
 
-input.text {
+input.text, select {
   margin:4px;
   padding:0;
   width:95%;
