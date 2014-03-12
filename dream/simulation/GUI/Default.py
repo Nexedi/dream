@@ -35,21 +35,21 @@ schema = {
   "stdev": {
     "id": "stdev",
     "type": "number",
-    "name": "Normal distribution standard deviation",
+    "name": "Standard deviation",
     "_class": "Dream.Property",
     "_default": 0.1
   },
   "min": {
     "id": "min",
     "type": "number",
-    "name": "Normal distribution minimum value",
+    "name": "Minimum value",
     "_class": "Dream.Property",
     "_default": 0.1
   },
   "max": {
     "id": "max",
     "type": "number",
-    "name": "Normal distribution maximum value",
+    "name": "Maximum value",
     "_class": "Dream.Property",
     "_default": 1
   },
