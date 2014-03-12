@@ -252,11 +252,8 @@
       that.prepareDialogForGeneralProperties();
     };
 
-    /** Runs the simulation, and call the callback with results once the
-     * simulation is finished.
-     */
-    that.runSimulation = function (callback) {
-      // handle Dream.General properties (in another function maybe ?)
+    that.readGeneralPropertiesDialog = function () {
+      // handle Dream.General properties
       var prefix = "General-",
         properties = {}, prefixed_property_id;
 
@@ -271,9 +268,33 @@
           }
         });
       that.setGeneralProperties(properties);
+    }
 
+    /** Runs the simulation, and call the callback with results once the
+     * simulation is finished.
+     */
+    that.runSimulation = function (callback) {
+      that.readGeneralPropertiesDialog()
       $.ajax(
           '../runSimulation', {
+          data: JSON.stringify({
+            json: that.getData()
+          }),
+          contentType: 'application/json',
+          type: 'POST',
+          success: function (data, textStatus, jqXHR) {
+            callback(data);
+          }
+        });
+    };
+
+    /** Runs the knowledge extraction, and call the callback with results once the
+     * KE is finished.
+     */
+    that.runKnowledgeExtraction = function (callback) {
+      that.readGeneralPropertiesDialog()
+      $.ajax(
+          '../runKnowledgeExtraction', {
           data: JSON.stringify({
             json: that.getData()
           }),

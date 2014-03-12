@@ -151,6 +151,17 @@ schema = {
     "_class": "Dream.Property",
     "_default": "",
   },
+  "ke_url": {
+    "id": "ke_url",
+    "name": "URL for Knowledge Extraction Spreadsheet",
+    "description": "The URL for knowledge extraction to access its data"
+                   " for example "
+                   "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_ProcessingTimes.xls",
+    "type": "string",
+    "_class": "Dream.Property",
+    "_default":
+    "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_ProcessingTimes.xls",
+  },
   "batchNumberOfUnits": {
     "id": "batchNumberOfUnits",
     "type": "number",
@@ -319,6 +330,7 @@ class Simulation(object):
            schema["currentDate"],
            schema["trace"],
            schema["seed"],
+           schema["ke_url"],
         ],
         "gui": {
           'debug_json': 1,
