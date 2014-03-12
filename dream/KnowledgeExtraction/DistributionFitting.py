@@ -71,7 +71,7 @@ class Distributions:
         data=robjects.FloatVector(data)    
         rFitDistr=robjects.r['fitdistr']
         try:    
-            self.Exp= rFitDistr(data,'Exponential')
+            self.Exp= rFitDistr(data,'Exp')
         except RRuntimeError: 
             return None
         myDict = {'distributionType':'Exponential','aParameter':'rate', 'aParameterValue':self.Exp[0][0]}
@@ -263,7 +263,7 @@ class DistFittest:
     def ks_test(self,data):             #Method that conducts the Kolmogorov-Smirnov statistical test and returns the best fitting distribution among the list of the available statistical distributions
         data=robjects.FloatVector(data)     #The given data sample changes into float vector in order to be handled by RPy2 
         #Create a list with strings the available statistical distributions
-        list1=['Normal','Lognormal','Exponential','Poisson', 'Geometric','Logistic','Gamma','Weibull', 'Cauchy']
+        list1=['Normal','Lognormal','Exp','Poisson', 'Geometric','Logistic','Gamma','Weibull', 'Cauchy']
         list2=[]                  #Create a list 
         #if...else syntaxes to test if the Kolmogorov-Smirnov statistical tests can be conducted to the available distributions 
         
