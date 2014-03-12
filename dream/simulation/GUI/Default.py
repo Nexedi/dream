@@ -306,7 +306,7 @@ class Simulation(object):
       "Dream-Queue": {
         "property_list": [
           schema["capacity"],
-          schema["isDummy"],
+          # schema["isDummy"],
           schema["schedulingRule"]
         ],
         "short_id": "Q",
