@@ -2,6 +2,7 @@ import json
 import datetime
 from dream.simulation.LineGenerationJSON import main as simulate_line_json
 from dream.simulation.Queue import Queue
+from copy import deepcopy
 
 # describe type for properties
 schema = {
@@ -19,7 +20,7 @@ schema = {
     "name": "Mean",
     "description": "Mean value of fixed processing time.",
     "_class": "Dream.Property",
-    "_default": 0.9
+    "_default": 1,
   },
   "distributionType": {
     "id": "distributionType",
@@ -37,7 +38,7 @@ schema = {
     "type": "number",
     "name": "Standard deviation",
     "_class": "Dream.Property",
-    "_default": 0.1
+    "_default": 0.5
   },
   "min": {
     "id": "min",
@@ -76,6 +77,7 @@ schema = {
   },
   "repairman": {
     "id": "repairman",
+    "name": "Repairman",
     "type": "string",
     "_class": "Dream.Property",
     "_default": "None"
@@ -132,7 +134,7 @@ schema = {
     "name": "Confidence level",
     "description": "Confidence level for statiscal analysis of stochastic experiments",
     "_class": "Dream.Property",
-    "_default": 0.5
+    "_default": 0.95
   },
   "processTimeout": {
     "id": "processTimeout",
@@ -232,12 +234,18 @@ schema = {
   },
 }
 
+# helper function to overload a property
+def overloaded_property(prop, overload):
+  prop = deepcopy(prop)
+  prop.update(overload)
+  return prop
+
 # complex schemas (Dream.PropertyList)
 schema["processingTime"] = {
   "id": "processingTime",
   "property_list": [
     schema["distributionType"],
-    schema["mean"],
+    overloaded_property(schema["mean"], {"_default": 0.75}),
     schema["stdev"],
     schema["min"],
     schema["max"]
