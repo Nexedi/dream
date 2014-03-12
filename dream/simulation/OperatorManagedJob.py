@@ -192,7 +192,7 @@ class OperatorManagedJob(Operator):
             
             for object in activeObjectQ:
                 object.giver.sortEntitiesForOperator(self)
-            
+            # TODO: the entities should be also sort according to their waiting time in case the priority is the same
             activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].priority)
         #if the scheduling rule is time waiting (time waiting of machine
         # TODO: consider that the timeLastEntityEnded is not a 
