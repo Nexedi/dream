@@ -40,11 +40,6 @@ class Operator(Repairman): # XXX isn't it the other way around ?
         self.type="Operator"
         self.activeCallersList=[]               # the list of object that request the operator
         self.schedulingRule=schedulingRule      #the scheduling rule that the Queue follows
-#         #=======================================================================
-#         # TESTING
-#         print now(), self.id, 'schedulingRule'
-#         print self.schedulingRule
-#         #=======================================================================
         self.multipleCriterionList=[]           #list with the criteria used to sort the Entities in the Queue
         SRlist = [schedulingRule]
         if schedulingRule.startswith("MC"):     # if the first criterion is MC aka multiple criteria
