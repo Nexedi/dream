@@ -61,6 +61,8 @@ class Operator(Repairman): # XXX isn't it the other way around ?
     
     # =======================================================================
     #    sorts the candidateEntities of the Operator according to the scheduling rule
+    #     TODO: clean the comments
+    #     TODO: maybe the argument is not needed. the candidate entities is a variable of the object
     # =======================================================================
     def sortCandidateEntities(self, candidateEntities=[]):
         pass
@@ -78,6 +80,7 @@ class Operator(Repairman): # XXX isn't it the other way around ?
 
     # =======================================================================
     #    sorts the activeCallerrs of the Operator according to the scheduling rule
+    #    TODO: change the name of the class (they are not entities)
     # =======================================================================
     def sortEntities(self):
         #if we have sorting according to multiple criteria we have to call the sorter many times

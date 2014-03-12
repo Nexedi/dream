@@ -102,13 +102,15 @@ class Router(ObjectInterruption):
 #             # TESTING
 #             print '                {} the candidateOperators                                      ',
 #             print [str(op.id) for op in self.candidateOperators]
+#             print [str(entity.id) for entity in G.pendingEntities]
             #===================================================================
             
             # sort the pendingEntities list
             self.sortPendingEntities()
-            
+
             #===================================================================
 #             # TESTING
+#             print [str(entity.id) for entity in G.pendingEntities]
 #             if G.pendingEntities:
 #                 print '                {} the pending entities that can proceed are:                  ',
 #                 print [str(entity.id) for entity in G.pendingEntities if entity.canProceed]
@@ -160,11 +162,13 @@ class Router(ObjectInterruption):
                     
                     # sort the activeCallersList of the operator
                     operator.sortEntities()
+
                     
                     # find the activeCaller that has priority 
                     priorityObject=next(x for x in operator.activeCallersList if x in self.pendingObjects)
                     #===========================================================
 #                     # TESTING
+#                     print [str(caller.id) for caller in operator.activeCallersList]
 #                     print '                the PRIORITY object is', priorityObject.id
                     #===========================================================
                     
@@ -281,6 +285,11 @@ class Router(ObjectInterruption):
     #=======================================================================
     def sortPendingEntities(self):
         # TODO: to be used for sorting of operators
+        #    there must be also a schedulingRule property for the Router
+        #    there must also be a way to have multiple criteria for the operators (eg MC-Priority-WT)
+        #    WT may be needed to be applied everywhere 
+        # TODO: move that piece of code elsewhere, it doesn't look nice here. and there is not point in doing it here
+        #    maybe it's better in findCandidateOperators method
         if self.candidateOperators:
             for operator in self.candidateOperators:
                 if operator.multipleCriterionList:
@@ -396,9 +405,10 @@ class Router(ObjectInterruption):
         # finally we have to sort before giving the entities to the operators
         # If there is an entity which must have priority then it should be assigned first
         
+        #local method that finds a candidate entity for an operator
         def findCandidateEntity():
             return next(x for x in operator.candidateEntities if not x in entitiesWithOccupiedReceivers)
-        
+        #local method that finds a receiver for a candidate entity
         def findCandidateReceiver():
             # initiate the local list variable available receivers
             availableReceivers=[x for x in operator.candidateEntity.candidateReceivers\
@@ -458,8 +468,10 @@ class Router(ObjectInterruption):
                     
     #=======================================================================
     # Sort Givers
-    # TODO: the method currently checks only the first operator of the candidateOperators list
-    #    consider populating the controls
+    # TODO: the queues of the candidate givers are sorted only if their receiver is not in activeCallersList
+    #     if an operator is called the control returns to the generator of the Router (run())
+    #     the next objects are not checked 
+    #     They must be control
     #=======================================================================
     def sortGiverQueue(self):
         # for those operators that do have candidateEntity
@@ -479,6 +491,7 @@ class Router(ObjectInterruption):
         
     # =======================================================================
     #    sorts the Entities of the Queue according to the scheduling rule
+    # TODO: refine the criteria
     # =======================================================================
     def activePendingQSorter(self, criterion=None):
         from Globals import G
@@ -489,7 +502,7 @@ class Router(ObjectInterruption):
             criterion=self.schedulingRule           
         #if the schedulingRule is first in first out
         if criterion=="FIFO": 
-            # FIFO sorting has no meaning when sorting candidateEntities
+            # TODO: FIFO sorting has no meaning when sorting candidateEntities
             self.activePendingQSorter('WT')
             # added for testing
 #             print 'there is no point of using FIFO scheduling rule for operators candidateEntities,\

@@ -69,6 +69,7 @@ class OperatorManagedJob(Operator):
         
     # =======================================================================
     #    sorts the candidateEntities of the Operator according to the scheduling rule
+    #     TODO: maybe the argument is not needed. the candidate entities is a variable of the object
     # =======================================================================
     def sortCandidateEntities(self, candidateEntities=[]):
         # TODO: have to consider what happens in case of a critical order
@@ -209,21 +210,21 @@ class OperatorManagedJob(Operator):
             
             for object in activeObjectQ:
                 object.giver.sortEntitiesForOperator(self)
-            
+            # TODO: the entities should be also sort according to their waiting time in case the EDD is the same
             activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].dueDate)   
         #if the schedulingRule is earliest order date
         elif criterion=="EOD":
             
             for object in activeObjectQ:
                 object.giver.sortEntitiesForOperator(self)
-            
+            # TODO: the entities should be also sort according to their waiting time in case the EOD is the same
             activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].orderDate)
         #if the schedulingRule is to sort Entities according to the stations they have to visit
         elif criterion=="NumStages":
             
             for object in activeObjectQ:
                 object.giver.sortEntitiesForOperator(self)
-            
+            # TODO: the entities should be also sort according to their waiting time in case the NumStages are the same
             activeObjectQ.sort(key=lambda x: len(x.giver.getActiveObjectQueue()[0].remainingRoute), reverse=True)  
         #if the schedulingRule is to sort Entities according to the their remaining processing time in the system
         elif criterion=="RPC":
@@ -239,6 +240,7 @@ class OperatorManagedJob(Operator):
                     if processingTime:
                         RPT+=float(processingTime.get('mean',0))           
                 entity.remainingProcessingTime=RPT
+            # TODO: the entities should be also sort according to their waiting time in case the remainingProcTime is the same
             activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].remainingProcessingTime, reverse=True)     
         #if the schedulingRule is to sort Entities according to longest processing time first in the next station
         elif criterion=="LPT":
@@ -254,6 +256,7 @@ class OperatorManagedJob(Operator):
                     entity.processingTimeInNextStation=float(processingTime.get('mean',0))
                 else:
                     entity.processingTimeInNextStation=0
+            # TODO: the entities should be also sort according to their waiting time in case the ProcessingTimeInNextStation is the same
             activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].processingTimeInNextStation, reverse=True)             
         #if the schedulingRule is to sort Entities according to shortest processing time first in the next station
         elif criterion=="SPT":
@@ -268,6 +271,7 @@ class OperatorManagedJob(Operator):
                     entity.processingTimeInNextStation=float(processingTime.get('mean',0))
                 else:
                     entity.processingTimeInNextStation=0
+            # TODO: the entities should be also sort according to their waiting time in case the procTimeInNextStation is the same
             activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].processingTimeInNextStation) 
         #if the schedulingRule is to sort Entities based on the minimum slackness
         elif criterion=="MS":
@@ -283,6 +287,7 @@ class OperatorManagedJob(Operator):
                     if processingTime:
                         RPT+=float(processingTime.get('mean',0))              
                 entity.remainingProcessingTime=RPT
+            # TODO: the entities should be also sort according to their waiting time in case the minimum slackness are the same
             activeObjectQ.sort(key=lambda x: (x.giver.getActiveObjectQueue()[0].dueDate-x.giver.getActiveObjectQueue()[0].remainingProcessingTime))  
         #if the schedulingRule is to sort Entities based on the length of the following Queue
         elif criterion=="WINQ":
@@ -298,6 +303,7 @@ class OperatorManagedJob(Operator):
                     if obj.id in nextObjIds:
                         nextObject=obj
                 entity.nextQueueLength=len(nextObject.getActiveObjectQueue())           
+            # TODO: the entities should be also sort according to their waiting time in case length of the following queues are the same
             activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].nextQueueLength)
         else:
             assert False, "Unknown scheduling criterion %r" % (criterion, )
