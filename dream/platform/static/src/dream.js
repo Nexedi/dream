@@ -471,6 +471,7 @@
           var data = that.getData(),
               input_job, input_order;
           var job_index = parseInt(obj["id"]);
+          // TODO: do not read spreadsheet, use input JSON to get data
           input_job = data.wip_part_spreadsheet[job_index];
           var i = job_index;
           while (data.wip_part_spreadsheet[i][0] === null || data.wip_part_spreadsheet[i][0] === "") {
