@@ -55,6 +55,8 @@ class Router(ObjectInterruption):
         self.candidateOperators=[]
         # list of criteria
         self.multipleCriterionList=[]
+        # TODO: find out which must be the default for the scheduling Rule
+        self.schedulingRule='WT'
         
     # =======================================================================
     #                          the run method
@@ -162,7 +164,6 @@ class Router(ObjectInterruption):
                     
                     # sort the activeCallersList of the operator
                     operator.sortActiveCallers()
-
                     
                     # find the activeCaller that has priority 
                     priorityObject=next(x for x in operator.activeCallersList if x in self.pendingObjects)
@@ -277,6 +278,7 @@ class Router(ObjectInterruption):
         del self.calledOperators[:]
         del self.pendingObjects[:]
         del self.multipleCriterionList[:]
+        self.schedulingRule='WT'
         # reset the call flag of the Router
         self.call=False
         
@@ -292,19 +294,7 @@ class Router(ObjectInterruption):
         # TODO: move that piece of code elsewhere, it doesn't look nice here. and there is not point in doing it here
         #    maybe it's better in findCandidateOperators method
         if self.candidateOperators:
-            for operator in self.candidateOperators:
-                if operator.multipleCriterionList:
-                    for criterion in operator.multipleCriterionList:
-                        if not criterion in self.multipleCriterionList:
-                            self.multipleCriterionList.append(criterion)
-                else:
-                    if not operator.schedulingRule in self.multipleCriterionList:
-                        self.multipleCriterionList.append(operator.schedulingRule)
-            # TODO: For the moment all operators should have only one scheduling rule and the same among them
-            # added for testing
-            assert len(self.multipleCriterionList)==1,'The operators must have the same (one) scheduling rule' 
-        
-            self.activePendingQSorter(criterion=self.multipleCriterionList[0])
+            self.activePendingQSorter(criterion=self.schedulingRule)
         
     #=======================================================================
     #                             Sort candidateOperators
@@ -314,8 +304,9 @@ class Router(ObjectInterruption):
     def sortOperators(self):
         # TODO: there must be criteria for sorting the cadidateOperators
         #if we have sorting according to multiple criteria we have to call the sorter many times
-        if self.multipleCriterionList:
-            self.activeOperatorQSorter(criterion=self.multipleCriterionList[0])
+        # TODO: find out what happens in case of multiple criteria 
+        if self.candidateOperators:
+            self.activeOperatorQSorter(criterion=self.schedulingRule)
         
     #========================================================================
     # Find candidate Operators
@@ -353,6 +344,28 @@ class Router(ObjectInterruption):
             # if the entity can proceed, add its manager to the candidateOperators list
                     if entity.canProceed and not entity.manager in self.candidateOperators:
                         self.candidateOperators.append(entity.manager)
+            # update the schedulingRule/multipleCriterionList of the Router
+            self.updateSchedulingRule()
+            
+            
+    #=======================================================================
+    # find the schedulingRules of the candidateOperators
+    #=======================================================================
+    def updateSchedulingRule(self):
+        if self.candidateOperators:
+            for operator in self.candidateOperators:
+                if operator.multipleCriterionList:
+                    for criterion in operator.multipleCriterionList:
+                        if not criterion in self.multipleCriterionList:
+                            self.multipleCriterionList.append(criterion)
+                else: # if operator has only simple scheduling Rule
+                    if not operator.schedulingRule in self.multipleCriterionList:
+                        self.multipleCriterionList.append(operator.schedulingRule)
+            # TODO: For the moment all operators should have only one scheduling rule and the same among them
+            # added for testing
+            assert len(self.multipleCriterionList)==1,'The operators must have the same (one) scheduling rule' 
+            if len(self.multipleCriterionList)==1:
+                    self.schedulingRule=self.multipleCriterionList[0]
     
     #=======================================================================
     #         Find the candidateEntities for each candidateOperator
