@@ -82,20 +82,20 @@ class Operator(Repairman): # XXX isn't it the other way around ?
     #    sorts the activeCallerrs of the Operator according to the scheduling rule
     #    TODO: change the name of the class (they are not entities)
     # =======================================================================
-    def sortEntities(self):
+    def sortActiveCallers(self):
         #if we have sorting according to multiple criteria we have to call the sorter many times
         if self.schedulingRule=="MC":
             for criterion in reversed(self.multipleCriterionList):
-               self.activeQSorter(criterion=criterion) 
+               self.activeCallerQSorter(criterion=criterion) 
         #else we just use the default scheduling rule
         else:
-            self.activeQSorter(self.schedulingRule)
+            self.activeCallerQSorter(self.schedulingRule)
     
     # =======================================================================
     #    sorts the activeCallers of the activeCallersList according to the scheduling rule
     # =======================================================================
     # TODO: entityToGet is not updated for all stations, consider using it for all stations or withdraw the idea
-    def activeQSorter(self, criterion=None):
+    def activeCallerQSorter(self, criterion=None):
         activeObjectQ=self.activeCallersList
         if criterion==None:
             criterion=self.schedulingRule           

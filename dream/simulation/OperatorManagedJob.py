@@ -181,7 +181,7 @@ class OperatorManagedJob(Operator):
     #    sorts the Entities of the Queue according to the scheduling rule
     # =======================================================================
     # TODO: entityToGet is not updated for all stations, consider using it for all stations or withdraw the idea
-    def activeQSorter(self, criterion=None):
+    def activeCallerQSorter(self, criterion=None):
         activeObjectQ=self.activeCallersList
         if criterion==None:
             criterion=self.schedulingRule           

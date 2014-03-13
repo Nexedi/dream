@@ -161,7 +161,7 @@ class Router(ObjectInterruption):
                         receiverIsActive:
                     
                     # sort the activeCallersList of the operator
-                    operator.sortEntities()
+                    operator.sortActiveCallers()
 
                     
                     # find the activeCaller that has priority 
