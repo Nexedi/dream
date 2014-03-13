@@ -71,10 +71,10 @@ class Distributions:
         data=robjects.FloatVector(data)    
         rFitDistr=robjects.r['fitdistr']
         try:    
-            self.Exp= rFitDistr(data,'Exp')
+            self.Exp= rFitDistr(data,'Exponential')
         except RRuntimeError: 
             return None
-        myDict = {'distributionType':'Exponential','aParameter':'rate', 'aParameterValue':self.Exp[0][0]}
+        myDict = {'distributionType':'Exp','aParameter':'mean', 'aParameterValue':self.Exp[0][0]}
         return myDict
     
     def Poisson_distrfit(self,data):
@@ -335,9 +335,9 @@ class DistFittest:
             self.Lognormal_distrfit(data)
             myDict = {'distributionType':list1[b],'aParameter':'logmean','bParameter':'logsd','aParameterValue':self.Lognormal[0][0],'bParameterValue': self.Lognormal[0][1]}
             return myDict
-        elif list1[b]=='Exponential':
+        elif list1[b]=='Exp':
             self.Exponential_distrfit(data)
-            myDict = {'distributionType':list1[b],'aParameter':'rate', 'aParameterValue':self.Exp[0][0]}
+            myDict = {'distributionType':list1[b],'aParameter':'mean', 'aParameterValue':self.Exp[0][0]}
             return myDict
         elif list1[b]=='Poisson':
             self.Poisson_distrfit(data)
