@@ -71,22 +71,22 @@ class OperatorManagedJob(Operator):
     #    sorts the candidateEntities of the Operator according to the scheduling rule
     #     TODO: maybe the argument is not needed. the candidate entities is a variable of the object
     # =======================================================================
-    def sortCandidateEntities(self, candidateEntities=[]):
+    def sortCandidateEntities(self):
         # TODO: have to consider what happens in case of a critical order
         #if we have sorting according to multiple criteria we have to call the sorter many times
         if self.schedulingRule=="MC":
             for criterion in reversed(self.multipleCriterionList):
-               self.activeCandidateQSorter(criterion=criterion, candidateEntities=candidateEntities) 
+               self.activeCandidateQSorter(criterion=criterion) 
         #else we just use the default scheduling rule
         else:
-            self.activeCandidateQSorter(self.schedulingRule, candidateEntities=candidateEntities)
+            self.activeCandidateQSorter(self.schedulingRule)
             
     # =======================================================================
     #    sorts the Entities of the Queue according to the scheduling rule
     # =======================================================================
     # TODO: entityToGet is not updated for all stations, consider using it for all stations or withdraw the idea
-    def activeCandidateQSorter(self, criterion=None, candidateEntities=[]):
-        activeObjectQ=candidateEntities
+    def activeCandidateQSorter(self, criterion=None):
+        activeObjectQ=self.candidateEntities
         if not activeObjectQ:
             assert False, "empty candidate list"
         if criterion==None:
@@ -94,7 +94,7 @@ class OperatorManagedJob(Operator):
         #if the schedulingRule is first in first out
         if criterion=="FIFO": 
             # FIFO sorting has no meaning when sorting candidateEntities
-            self.activeCandidateQSorter('WT', candidateEntities=candidateEntities)
+            self.activeCandidateQSorter('WT')
             # added for testing
 #             print 'there is no point of using FIFO scheduling rule for operators candidateEntities,\
 #                     WT scheduling rule used instead'

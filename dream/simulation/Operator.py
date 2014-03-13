@@ -64,7 +64,7 @@ class Operator(Repairman): # XXX isn't it the other way around ?
     #     TODO: clean the comments
     #     TODO: maybe the argument is not needed. the candidate entities is a variable of the object
     # =======================================================================
-    def sortCandidateEntities(self, candidateEntities=[]):
+    def sortCandidateEntities(self):
         pass
 #         # TODO: have to consider what happens in case of a critical order
 #         # FIFO sorting has no meaning when sorting candidateEntities

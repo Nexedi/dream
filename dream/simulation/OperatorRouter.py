@@ -146,7 +146,7 @@ class Router(ObjectInterruption):
                 # check if the candidateReceivers are inPositionToGet and  if they are already called
                 try:
                     receiverIsActive=(operator.candidateEntity.candidateReceiver in operator.activeCallersList\
-                                                  and operator.candidateEntity.candidateReceiver in self.pendingObjects )
+                                  and operator.candidateEntity.candidateReceiver in self.pendingObjects )
                 except:
                     receiverIsActive=True
                     
@@ -277,6 +277,7 @@ class Router(ObjectInterruption):
         del self.calledOperators[:]
         del self.pendingObjects[:]
         del self.multipleCriterionList[:]
+        # reset the call flag of the Router
         self.call=False
         
     #=======================================================================
@@ -381,7 +382,7 @@ class Router(ObjectInterruption):
         
         # sort the candidateEntities list of each operator according to its schedulingRule
         for operator in [x for x in self.candidateOperators if x.candidateEntities]:
-            operator.sortCandidateEntities(operator.candidateEntities)
+            operator.sortCandidateEntities()
             
         # if there operators that have only one option then sort the candidateOperators according to the first one of these
         # TODO: find out what happens if there are many operators with one option
