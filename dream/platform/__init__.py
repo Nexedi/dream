@@ -33,8 +33,8 @@ import logging
 from flask import Flask, jsonify, redirect, url_for
 from flask import request
 
-klass_name = None
 global klass_name
+klass_name = None
 
 app = Flask(__name__)
 # Serve static file with no cache
