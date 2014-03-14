@@ -417,7 +417,7 @@
         function (idx, obj) {
         if (obj.results !== undefined && obj.results.working_ratio !== undefined) {
           /* when there is only one replication, the ratio is given as a float,
-              otherwise we have a mapping avg, min max */
+              otherwise we have a mapping avg, ub lb */
           var blockage_ratio = 0.0;
           if (obj.results.blockage_ratio !== undefined) {
             if (obj.results.blockage_ratio.avg !== undefined) {
@@ -632,8 +632,8 @@
                     (attainment_list.reduce(function(a, b){return a+b}) / attainment_list.length ) * 100).toFixed(2) + "%</td></tr>";
               } else {
                 if (typeof value == "object") {
-                   if (value.min == value.max) {
-                      value = value.min;
+                   if (value.ub == value.lb) {
+                      value = value.ub;
                    } else {
                       // better than [Object] ...
                      value = JSON.stringify(value, " ", undefined)
