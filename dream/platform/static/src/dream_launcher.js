@@ -238,6 +238,7 @@
     // Enable "Export" button
     $("#export").button().click(
       function (e) {
+        dream_instance.readGeneralPropertiesDialog();
         $('#export_json').val(JSON.stringify(dream_instance.getData()));
         $('#export_form').submit();
         return false;
