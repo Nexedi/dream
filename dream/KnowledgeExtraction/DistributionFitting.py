@@ -44,7 +44,7 @@ class Distributions:
             self.Normal= rFitDistr(data,'Normal')   #It fits the normal distribution to the given data sample
         except RRuntimeError:                        
             return None                             #If it doesn't fit Return None
-        myDict = {'distributionType':'Normal','aParameter':'mean','bParameter':'stdev','aParameterValue':self.Normal[0][0],'bParameterValue': self.Normal[0][1]}      #Create a dictionary with keys distribution's and distribution's parameters  names and the parameters' values                      
+        myDict = {'distributionType':'Normal','aParameter':'mean','bParameter':'stdev','aParameterValue':self.Normal[0][0],'bParameterValue': self.Normal[0][1],'min':0, 'max':(self.Normal[0][0]+3*self.Normal[0][1])}      #Create a dictionary with keys distribution's and distribution's parameters  names and the parameters' values                      
         return myDict                      #If there is no Error return the dictionary with the Normal distribution parameters for the given data sample
         
     def Lognormal_distrfit(self,data):
@@ -329,7 +329,7 @@ class DistFittest:
         #Set of if...elif syntax in order to get a Python dictionary with the best fitting statistical distribution and its parameters
         if list1[b]=='Normal':          #Check if in list's b position is the Normal distribution
             self.Normal_distrfit(data)
-            myDict = {'distributionType':list1[b],'aParameter':'mean','bParameter':'stdev','aParameterValue':self.Normal[0][0],'bParameterValue': self.Normal[0][1]} #Create a dictionary with distribution's and distribution parameters' names and distribution parameters' values
+            myDict = {'distributionType':list1[b],'aParameter':'mean','bParameter':'stdev','aParameterValue':self.Normal[0][0],'bParameterValue': self.Normal[0][1],'min':0, 'max':(self.Normal[0][0]+3*self.Normal[0][1])} #Create a dictionary with distribution's and distribution parameters' names and distribution parameters' values
             return myDict     
         elif list1[b]=='Lognormal':
             self.Lognormal_distrfit(data)
