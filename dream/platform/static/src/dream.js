@@ -646,6 +646,9 @@
                 if (metric == "lifespan" ){
                   metric = "Cycle Time"
                 }
+                if (metric == "takt_time" ){
+                  metric = "Average Departure Rate"
+                }
                 text += "<tr><td>" + metric + "</td><td>" + value + "</td></tr>";
               }
             })
