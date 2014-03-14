@@ -230,7 +230,7 @@ schema = {
     "description": "Create an excel trace file (Yes or No)",
     "type": "string",
     "_class": "Dream.Property",
-    "_default": "Yes"
+    "_default": "No"
   },
 }
 
