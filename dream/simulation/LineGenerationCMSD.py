@@ -30,25 +30,6 @@ import logging
 logger = logging.getLogger("dream.platform")
 
 
-try:
-  import scipy
-except ImportError:
-  class scipy:
-    class stats:
-      @staticmethod
-      def bayes_mvs(*args, **kw):
-        warn("Scipy is missing, using fake implementation")
-        serie, confidence = args
-        import numpy
-        mean = numpy.mean(serie), (numpy.min(serie), numpy.max(serie))
-        var = 0, (0, 0)
-        std = 0, (0, 0) 
-        return mean, var, std
-  import sys
-  sys.modules['scipy.stats'] = scipy.stats
-  sys.modules['scipy'] = scipy
-  logger.error("Scipy cannot be imported, using dummy implementation")
-
 from SimPy.Simulation import activate, initialize, simulate, now, infinity
 from Globals import G 
 from Source import Source

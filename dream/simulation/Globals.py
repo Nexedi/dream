@@ -33,7 +33,6 @@ import xlwt
 import xlrd
 from random import Random, expovariate, gammavariate, normalvariate
 from SimPy.Simulation import now
-import scipy.stats as stat
 
 # ===========================================================================
 # globals
@@ -257,7 +256,7 @@ def countQueueMetrics(argumentDict={}):
 
 
 # =======================================================================
-# Helper function to calculate the min, max and average values of a serie
+# Helper function to calculate the confidence intervals of a serie.
 # =======================================================================
 def getConfidenceIntervals(value_list):
     from Globals import G
@@ -266,8 +265,10 @@ def getConfidenceIntervals(value_list):
         return { 'lb': value_list[0],
                  'ub': value_list[0],
                  'avg': value_list[0], }
-    bayes_mvs = stat.bayes_mvs(value_list, G.confidenceLevel)
-    return { 'lb': bayes_mvs[0][1][0],
-             'ub': bayes_mvs[0][1][1],
-             'avg': bayes_mvs[0][0], }
+    from dream.KnowledgeExtraction.ConfidenceIntervals import Intervals
+    import numpy
+    lb, ub = Intervals().ConfidIntervals(value_list, G.confidenceLevel)
+    return {'lb': lb,
+            'ub': ub,
+            'avg': numpy.mean(value_list) }
 
