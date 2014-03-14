@@ -26,7 +26,7 @@ class Simulation(ACO.Simulation):
           schema["operationType"]
         ],
         "_class": 'Dream.MouldAssembly',
-        "name": 'MouldAss',
+        "name": 'Assembly',
         "short_id": "MA",
     }
     conf["Dream-QueueManagedJob"] = {
@@ -44,7 +44,7 @@ class Simulation(ACO.Simulation):
           schema["schedulingRule"]
         ],
         "_class": 'Dream.ConditionalBuffer',
-        "name": 'Buffer',
+        "name": 'CamQ',
         "short_id": "B",
     }
     conf["Dream-MouldAssemblyBuffer"] = {
@@ -52,7 +52,7 @@ class Simulation(ACO.Simulation):
           schema["capacity"],
           schema["schedulingRule"]
         ],
-        "name": 'AssBuffer',
+        "name": 'ReassemblyQ',
         "short_id": "MA",
     }
     conf["Dream-ExitJobShop"] = {
@@ -67,7 +67,7 @@ class Simulation(ACO.Simulation):
     }
     conf["Dream-OrderDecomposition"] = {
         "_class": 'Dream.OrderDecomposition',
-        "name": 'Decompo',
+        "name": 'Decomposition',
         "short_id": "D",
     }
     conf["Dream-Configuration"]["gui"]["wip_part_spreadsheet"] = 1
@@ -81,6 +81,9 @@ class Simulation(ACO.Simulation):
     conf.pop('Dream-Machine')
     conf.pop('Dream-Queue')
     conf.pop('Dream-Exit')
+    conf.pop('Dream-Repairman')
+    conf.pop('Dream-Source')
+    conf.pop('Dream-EventGenerator')
     return conf
 
   def getMachineNameSet(self, step_name):
