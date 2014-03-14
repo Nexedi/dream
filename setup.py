@@ -14,6 +14,7 @@ setup(
         'xlwt',
         'pyparsing==1.5.7',
         'pydot',
+        'numpy',
         'rpy2',
     ],
     entry_points=("""
