@@ -186,7 +186,6 @@ class Simulation(ACO.Simulation):
         i += 1
         component_list = []
         if i < wip_part_spreadsheet_length:
-          print "first cell : %r" %(data['wip_part_spreadsheet'][i][0],)
           while data['wip_part_spreadsheet'][i][0] in (None, ''):
             value_list = data['wip_part_spreadsheet'][i]
             if value_list[4] in (None, ''):
@@ -213,6 +212,4 @@ class Simulation(ACO.Simulation):
           order_dict["componentsList"] = component_list
       data["nodes"]["QStart"]["wip"] = wip_list
       del(data['wip_part_spreadsheet'])
-    print "PartJobShop, data after preprocess :"
-    print json.dumps(data,indent=4)
     return data
