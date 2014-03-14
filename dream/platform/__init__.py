@@ -95,45 +95,55 @@ def positionGraph():
 
   return jsonify(preference_dict)
 
+class TimeoutError(Exception):
+  pass
 
-@app.route("/runSimulation", methods=["POST", "OPTIONS"])
-def runSimulation():
-  parameter_dict = request.json['json']
-  if 0:
-    app.logger.debug("running with:\n%s" % (json.dumps(parameter_dict,
-                                          sort_keys=True, indent=2)))
-
-  try:
-    timeout = int(parameter_dict['general']['processTimeout'])
-  except (KeyError, ValueError, TypeError):
-    timeout = 60
-
+def runWithTimeout(func, timeout, *args, **kw):
   queue = multiprocessing.Queue()
   process = multiprocessing.Process(
-    target=_runSimulation,
-    args=(parameter_dict, queue))
+    target=_runWithTimeout,
+    args=(queue, func, args, kw))
   process.start()
   process.join(timeout)
   if process.is_alive():
     # process still alive after timeout, terminate it
     process.terminate()
     process.join()
-    return jsonify(dict(error='Timeout after %s seconds' % timeout))
+    raise TimeoutError()
+  return queue.get()
 
-  result = queue.get()
-  if 0:
-    app.logger.debug("result\n%s" % (json.dumps(result,
-                                            sort_keys=True, indent=2)))
-  return jsonify(result)
+def _runWithTimeout(queue, func, args, kw):
+   import signal
+   import traceback
 
-def _runSimulation(parameter_dict, queue):
+   signal.signal(signal.SIGUSR1, lambda sig, stack: traceback.print_stack(stack))
+   import os
+   print "To see current traceback:"
+   print "  kill -SIGUSR1 %s" % os.getpid()
+
+   queue.put(func(*args, **kw))
+
+@app.route("/runSimulation", methods=["POST", "OPTIONS"])
+def runSimulation():
+  parameter_dict = request.json['json']
   try:
-    result = getGUIInstance().run(parameter_dict)
-    queue.put(dict(success=result))
+    timeout = int(parameter_dict['general']['processTimeout'])
+  except (KeyError, ValueError, TypeError):
+    timeout = 60
+
+  try:
+    result = runWithTimeout(_runSimulation, timeout, parameter_dict)
+    return jsonify(result)
+  except TimeoutError:
+    return jsonify(dict(error="Timeout after %s seconds" % timeout))
+
+def _runSimulation(parameter_dict):
+  try:
+    return dict(success=getGUIInstance().run(parameter_dict))
   except Exception, e:
     tb = traceback.format_exc()
     app.logger.error(tb)
-    queue.put(dict(error=tb))
+    return dict(error=tb)
 
 def getGUIInstance():
     # XXX do not instanciate each time!
@@ -148,7 +158,18 @@ def getConfigurationDict():
 @app.route("/runKnowledgeExtraction", methods=["POST", "OPTIONS"])
 def runKnowledgeExtraction():
   parameter_dict = request.json['json']
+  try:
+    timeout = int(parameter_dict['general']['processTimeout'])
+  except (KeyError, ValueError, TypeError):
+    timeout = 60
 
+  try:
+    result = runWithTimeout(_runKnowledgeExtraction, timeout, parameter_dict)
+    return jsonify(result)
+  except TimeoutError:
+    return jsonify(dict(error="Timeout after %s seconds" % timeout))
+
+def _runKnowledgeExtraction(parameter_dict):
   try:
     workbook = xlrd.open_workbook(
         file_contents=urllib.urlopen(parameter_dict['general']['ke_url']).read())
@@ -182,11 +203,11 @@ def runKnowledgeExtraction():
         if bParameter:
           dictToAdd[bParameter]=bParameterValue
         parameter_dict['nodes'][element]['processingTime']=dictToAdd
-    return jsonify(dict(success=True, data=parameter_dict))
+    return dict(success=True, data=parameter_dict)
   except Exception, e:
     tb = traceback.format_exc()
     app.logger.error(tb)
-    return jsonify(dict(error=tb))
+    return dict(error=tb)
 
 def main(*args):
   parser = argparse.ArgumentParser(description='Launch the DREAM simulation platform.')
