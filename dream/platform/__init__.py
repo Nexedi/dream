@@ -192,19 +192,7 @@ def _runKnowledgeExtraction(parameter_dict):
 
     for element in ProcessingTimes:             #This loop searches the elements of the Excel imported data and if these elements exist in json file append the distribution fitting results in a dictionary   
       if element in lista:
-        fitDict=B.ks_test(ProcessingTimes[element])
-        aParameter=fitDict.get('aParameter')
-        bParameter=fitDict.get('bParameter')
-        distributionType=fitDict.get('distributionType')
-        aParameterValue=fitDict.get('aParameterValue')
-        bParameterValue=fitDict.get('bParameterValue')
-        dictToAdd={}
-        dictToAdd['distributionType']=distributionType
-        if aParameter:
-          dictToAdd[aParameter]=aParameterValue
-        if bParameter:
-          dictToAdd[bParameter]=bParameterValue
-        parameter_dict['nodes'][element]['processingTime']=dictToAdd
+        parameter_dict['nodes'][element]['processingTime']=element
     return dict(success=True, data=parameter_dict)
   except Exception, e:
     tb = traceback.format_exc()
