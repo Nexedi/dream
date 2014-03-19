@@ -131,7 +131,7 @@ class Simulation(ACO.Simulation):
         route_list.append(route)
       route = {"stationIdsList": list(self.getMachineNameSet(sequence_step)),
                 "processingTime": {"distributionType": "Fixed",
-                                  "mean": int(processing_time_list[j])},
+                                  "mean": float(processing_time_list[j])},
                 "setupTime": {"distributionType": "Fixed",
                               "mean": .5}, # XXX hardcoded value
               }
