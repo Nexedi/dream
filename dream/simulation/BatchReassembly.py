@@ -45,7 +45,7 @@ class BatchReassembly(CoreObject):
     #initialize the id, the capacity of the object and the distribution
     # =======================================================================        
     def __init__(self, id, name, numberOfSubBatches=1, processingTime=None, operator='None'):
-        Process.__init__(self)
+        CoreObject.__init__(self, id, name)
         # hold the id, name, and type of the Machine instance
         self.id=id
         self.objName=name
