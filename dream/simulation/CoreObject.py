@@ -52,8 +52,7 @@ class CoreObject(Process):
         self.isPreemptive=False
         self.resetOnPreemption=False
         self.interruptCause=None
-        
-
+        self.gatherWipStat=False
     
     def initialize(self):
         # XXX why call super.__init__ outside of __init__ ?
@@ -118,6 +117,10 @@ class CoreObject(Process):
         self.shouldPreempt=False    #flag that shows that the machine should preempt or not
         
         self.lastGiver=None         # variable that holds the last giver of the object, used by machine in case of preemption    
+        # initialize the wipStatList - 
+        # TODO, think what to do in multiple runs
+        # TODO, this should be also updated in Globals.setWIP (in case we have initial wip)
+        self.wipStatList=[[0,0]]
 
     # =======================================================================
     #                the main process of the core object 
@@ -149,6 +152,9 @@ class CoreObject(Process):
         
         self.timeLastEntityLeft=now()
         self.outputTrace(entity.name, "released "+self.objName) 
+        # update wipStatList
+        if self.gatherWipStat:
+            self.wipStatList.append([now(), len(activeObjectQueue)])
         return entity     
     
     # =======================================================================
@@ -245,6 +251,9 @@ class CoreObject(Process):
                 activeEntity.hot = True
 #         # TESTING
 #         print now(), activeEntity.id, "got into "+self.id
+        # update wipStatList
+        if self.gatherWipStat:
+            self.wipStatList.append([now(), len(activeObjectQueue)])
         return activeEntity
       
     # =======================================================================
