@@ -34,7 +34,7 @@ from CoreObject import CoreObject
 # ===========================================================================
 class Queue(CoreObject):
     
-    def __init__(self, id, name, capacity=1, isDummy=False, schedulingRule="FIFO"):
+    def __init__(self, id, name, capacity=1, isDummy=False, schedulingRule="FIFO", gatherWipStat=False):
         CoreObject.__init__(self, id, name)
 #         Process.__init__(self)
         # used for the routing of the entities
@@ -72,8 +72,9 @@ class Queue(CoreObject):
             raise ValueError("Unknown scheduling rule %s for %s" %
               (scheduling_rule, id))
 
-        # Will be populated by an event generator
-        self.wip_stat_list = []
+        self.gatherWipStat=gatherWipStat
+#         # Will be populated by an event generator
+#         self.wip_stat_list = []
 
     @staticmethod
     def getSupportedSchedulingRules():
@@ -296,7 +297,9 @@ class Queue(CoreObject):
         json = {'_class': 'Dream.%s' % self.__class__.__name__,
                 'id': str(self.id), }
         # XXX this have to be updated to support multiple generations
-        if G.numberOfReplications == 1 and self.wip_stat_list:
-          json['wip_stat_list'] = self.wip_stat_list
-
+#         if G.numberOfReplications == 1 and self.wip_stat_list:
+#           json['wip_stat_list'] = self.wip_stat_list
+        # XXX this have to be updated to support multiple generations
+        if G.numberOfReplications == 1 and self.gatherWipStat:
+            json['wip_stat_list']=self.wipStatList
         G.outputJSON['elementList'].append(json)
