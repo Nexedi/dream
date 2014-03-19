@@ -18,6 +18,7 @@
 # ===========================================================================
 
 import sys
+import os
 import argparse
 import json
 import urllib
@@ -116,10 +117,11 @@ def _runWithTimeout(queue, func, args, kw):
    import signal
    import traceback
 
-   signal.signal(signal.SIGUSR1, lambda sig, stack: traceback.print_stack(stack))
-   import os
-   print "To see current traceback:"
-   print "  kill -SIGUSR1 %s" % os.getpid()
+   if hasattr(signal, 'SIGUSR1'):
+     signal.signal(signal.SIGUSR1, lambda sig, stack: traceback.print_stack(stack))
+     print "To see current traceback:"
+     print "  kill -SIGUSR1 %s" % os.getpid()
+   signal.signal(signal.SIGTERM, lambda sig, stack: traceback.print_stack(stack))
 
    queue.put(func(*args, **kw))
 
