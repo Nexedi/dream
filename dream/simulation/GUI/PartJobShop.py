@@ -52,7 +52,7 @@ class Simulation(ACO.Simulation):
           schema["capacity"],
           schema["schedulingRule"]
         ],
-        "name": 'ReassemblyQ',
+        "name": 'Assembly Queue',
         "short_id": "MA",
     }
     conf["Dream-ExitJobShop"] = {
