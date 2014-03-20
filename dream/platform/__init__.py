@@ -185,14 +185,9 @@ def _runKnowledgeExtraction(parameter_dict):
     data = parameter_dict                            #It loads the file
     nodes = data['nodes'] 
 
-    lista=[]
-    for (element_id, element) in nodes.iteritems():  #This loop appends in a list the id's of the json file
-      element['id'] = element_id 
-      lista.append(element ['id'])
-
-    for element in ProcessingTimes:             #This loop searches the elements of the Excel imported data and if these elements exist in json file append the distribution fitting results in a dictionary   
-      if element in lista:
-        parameter_dict['nodes'][element]['processingTime']=element
+    for station, values in ProcessingTimes.items():             #This loop searches the elements of the Excel imported data and if these elements exist in json file append the distribution fitting results in a dictionary   
+      if station in nodes:
+        parameter_dict['nodes'][station]['processingTime'] = B.ks_test(values)
     return dict(success=True, data=parameter_dict)
   except Exception, e:
     tb = traceback.format_exc()
