@@ -31,13 +31,17 @@ from SimPy.Simulation import activate, passivate, waituntil, now, hold
 from RandomNumberGenerator import RandomNumberGenerator
 
 from Machine import Machine
+
 # ================================================================
 #                  the BatchScrapMachine object
 # ================================================================
 class BatchScrapMachine(Machine):
     
-    #initialize the id, the capacity of the resource and the distribution       
-    # have to find which distribution returns random integers - Discrete distribution 
+    # =======================================================================
+    # constructor run every time a new instance is created
+    # calls the Machine constructor, but also reads attributes for 
+    # scraping distribution
+    # ======================================================================= 
     def __init__(self, id, name, capacity=1, \
                  processingTime=None,
                  failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None',\
@@ -54,13 +58,19 @@ class BatchScrapMachine(Machine):
                                     repairman=repairman)
 
         self.scrapDistType=scrapDistribution    #the distribution that the failure follows   
-        # Sets the attributes of the scrap quantity distribution
+        # set the attributes of the scrap quantity distribution
         self.scrapRng=RandomNumberGenerator(self, self.scrapDistType)
         self.scrapRng.mean=scrMean
         self.scrapRng.stdev=scrStdev
         self.scrapRng.min=scrMin
         self.scrapRng.max=scrMax
 
+    # =======================================================================
+    # removes an Entity from the Object the Entity to be removed is passed
+    # as argument by getEntity of the receiver
+    # extends the default behaviour so that
+    # it can scrap a number of units before disposing the Batch/SubBatch
+    # =======================================================================
     def removeEntity(self, entity=None):
         activeEntity = Machine.removeEntity(self, entity)
         scrapQuantity=self.scrapRng.generateNumber()        
@@ -69,10 +79,14 @@ class BatchScrapMachine(Machine):
             activeEntity.numberOfUnits==0
         return activeEntity
 
-                                                                                
-    #calculates the processing time
+
+    # =======================================================================
+    # calculates the processing time
+    # extends the default behaviour so that 
+    # the per-unit processing time is multiplied with the number of units
+    # =======================================================================                                                                                
     def calculateProcessingTime(self):
         activeEntity = self.getActiveObjectQueue()[0]
-        return self.rng.generateNumber()*activeEntity.numberOfUnits         # this is if we have a default processing time for all the entities
+        return self.rng.generateNumber()*activeEntity.numberOfUnits        
 
                 
