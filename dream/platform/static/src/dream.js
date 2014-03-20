@@ -428,12 +428,27 @@
           }
           blockage_data.push([counter, blockage_ratio]);
 
+// XXX merge setup & loading ratio in working ratio for now
           var working_ratio = 0.0;
+          if (obj.results.setup_ratio !== undefined) {
+            if (obj.results.setup_ratio.avg !== undefined) {
+              working_ratio += obj.results.setup_ratio.avg;
+            } else {
+              working_ratio += obj.results.setup_ratio;
+            }
+          }
+          if (obj.results.loading_ratio !== undefined) {
+            if (obj.results.loading_ratio.avg !== undefined) {
+              working_ratio += obj.results.loading_ratio.avg;
+            } else {
+              working_ratio += obj.results.loading_ratio;
+            }
+          }
           if (obj.results.working_ratio !== undefined) {
             if (obj.results.working_ratio.avg !== undefined) {
-              working_ratio = obj.results.working_ratio.avg;
+              working_ratio += obj.results.working_ratio.avg;
             } else {
-              working_ratio = obj.results.working_ratio;
+              working_ratio += obj.results.working_ratio;
             }
           }
           working_data.push([counter, working_ratio]);
