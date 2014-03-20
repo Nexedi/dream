@@ -49,38 +49,39 @@ A=HandleMissingValues()                                     #Call the HandleMiss
 Machine1_OpearationTimes= A.DeleteMissingValue(Machine1_OpearationTimes)        #It deletes the missing values in the lists with the operation times data
 Machine2_OpearationTimes= A.DeleteMissingValue(Machine2_OpearationTimes)
 
+Dict={}
 B=DistFittest()                                     #It calls the DistFittest object
-B.ks_test(Machine2_OpearationTimes)                 #It conducts the Kolmogorov-Smirnov test in the list with the operation times data 
-B.ks_test(Machine1_OpearationTimes)
-lista=[]                                            #It creates a list, that contains the outcome of the Kolmogorov-Smirnov tests  
-lista.append(B.ks_test(Machine1_OpearationTimes))
-lista.append(B.ks_test(Machine2_OpearationTimes))
+Dict['M1']=B.ks_test(Machine1_OpearationTimes)                 #It conducts the Kolmogorov-Smirnov test in the list with the operation times data 
+Dict['M2']=B.ks_test(Machine2_OpearationTimes)
+M1=Dict.get('M1')
+M2=Dict.get('M2')
 
-names = []                                          #It defines the following five lists
-aParameters=[]
-bParameters=[]
-aParameterValue=[]
-bParameterValue=[]
-
-for index in range(len(lista)):
-    names.append(lista[index].get('type'))   #Insert the distribution names from the dictionary into the names list 
-    aParameters.append(lista[index].get('aParameter'))    #Insert the name of the first parameter of each distribution from the dictionary into the aParameters list   
-        
-    try:
-        bParameters.append(lista[index].get('bParameter'))   #Insert the name of the second parameter of each distribution from the dictionary (if there are any->use of except) into the bParameters list   
-    except:
-        bParameters.append('')
-    aParameterValue.append(lista[index].get('aParameterValue'))     #Insert the value of the first parameter of each distribution from the dictionary into the aParameterValue list 
-    try:
-        bParameterValue.append(lista[index].get('bParameterValue'))     #Insert the value of the second parameter of each distribution from the dictionary (if there are any->use of except) into the bParameterValue list
-    except:
-        bParameterValue.append('')   
 
 #==================================== Output preparation: output the updated values in the CMSD information model of Topology10 ====================================================#
 
 datafile=('CMSD_Topology10.xml')       #It defines the name or the directory of the XML file that is manually written the CMSD information model
 tree = et.parse(datafile)                                               #This file will be parsed using the XML.ETREE Python library
-       
+
+M1Parameters=[]
+M1ParameterValue=[]
+for index in list(Dict['M1'].keys()):
+    if index is not 'distributionType':
+        M1Parameters.append(index)
+        M1ParameterValue.append(Dict['M1'][index])
+if Dict['M1']['distributionType']=='Normal':
+    del M1['min']
+    del M1['max']
+elif Dict['M2']['distributionType']=='Normal':
+    del M2['min']
+    del M2['max']
+
+M2Parameters=[]
+M2ParameterValue=[]
+for index in list(Dict['M2'].keys()):
+    if index is not 'distributionType':
+        M2Parameters.append(index)
+        M2ParameterValue.append(Dict['M2'][index])       
+
 root=tree.getroot()
 process=tree.findall('./DataSection/ProcessPlan/Process')               #It creates a new variable and using the 'findall' order in XML.ETREE library, this new variable holds all the processes defined in the XML file
 for process in process:
@@ -89,32 +90,32 @@ for process in process:
         OperationTime=process.get('OpeationTime')                       #It gets the element attribute OpearationTime inside the Process node
         Distribution=process.get('./OperationTime/Distribution')        #It gets the element attribute Distribution inside the OpearationTime node
         Name=process.find('./OperationTime/Distribution/Name')          #It finds the subelement Name inside the Distribution attribute
-        Name.text=str(names[0])                                     #It changes the text between the Name element tags, putting the name of the distribution (e.g. in Normal distribution that will be Normal) 
+        Name.text=Dict['M1']['distributionType']                                     #It changes the text between the Name element tags, putting the name of the distribution (e.g. in Normal distribution that will be Normal) 
         DistributionParameterA=process.get('./OperationTime/Distribution/DistributionParameterA')
         Name=process.find('./OperationTime/Distribution/DistributionParameterA/Name')
-        Name.text=str(aParameters[0])                               #It changes the text between the Name element tags, putting the name of the distribution's first parameter (e.g. in Normal that will be the mean)
+        Name.text=str(M1Parameters[0])                               #It changes the text between the Name element tags, putting the name of the distribution's first parameter (e.g. in Normal that will be the mean)
         Value=process.find('./OperationTime/Distribution/DistributionParameterA/Value')
-        Value.text=str(aParameterValue[0])                          #It changes the text between the Value element tags, putting the value of the distribution's first parameter (e.g. in Normal so for mean value that will be 5.0)
+        Value.text=str(M1ParameterValue[0])                          #It changes the text between the Value element tags, putting the value of the distribution's first parameter (e.g. in Normal so for mean value that will be 5.0)
         DistributionParameterB=process.get('./OperationTime/Distribution/DistributionParameterB')
         Name=process.find('./OperationTime/Distribution/DistributionParameterB/Name')
-        Name.text=str(bParameters[0])                               #It changes the text between the Name element tags, putting the name of the distribution's second parameter (e.g. in Normal that will be the standarddeviation)
+        Name.text=str(M1Parameters[1])                                #It changes the text between the Name element tags, putting the name of the distribution's second parameter (e.g. in Normal that will be the standarddeviation)
         Value=process.find('./OperationTime/Distribution/DistributionParameterB/Value')
-        Value.text=str(bParameterValue[0])                          #It changes the text between the Value element tags, putting the value of the distribution's second parameter (e.g. in Normal so for standarddeviation value that will be 1.3)
+        Value.text=str(M1ParameterValue[1])                           #It changes the text between the Value element tags, putting the value of the distribution's second parameter (e.g. in Normal so for standarddeviation value that will be 1.3)
     elif process_identifier=='A040':                                #It checks using if...elif syntax if the process identifier is 'A040', so the process that uses the second machine 
         OperationTime=process.get('OpeationTime')
         Distribution=process.get('./OperationTime/Distribution')
         Name=process.find('./OperationTime/Distribution/Name')
-        Name.text=str(names[1])
+        Name.text=Dict['M2']['distributionType'] 
         DistributionParameterA=process.get('./OperationTime/Distribution/DistributionParameterA')
         Name=process.find('./OperationTime/Distribution/DistributionParameterA/Name')
-        Name.text=str(aParameters[1])
+        Name.text=str(M2Parameters[0]) 
         Value=process.find('./OperationTime/Distribution/DistributionParameterA/Value')
-        Value.text=str(aParameterValue[1])
+        Value.text=str(M2ParameterValue[0]) 
         DistributionParameterB=process.get('./OperationTime/Distribution/DistributionParameterB')
         Name=process.find('./OperationTime/Distribution/DistributionParameterB/Name')
-        Name.text=str(bParameters[1])
+        Name.text=str(M2Parameters[1]) 
         Value=process.find('./OperationTime/Distribution/DistributionParameterB/Value')
-        Value.text=str(bParameterValue[1])
+        Value.text=str(M1ParameterValue[1]) 
     else:
         continue
     tree.write('CMSD_Topology10_Output.xml',encoding="utf8")                         #It writes the element tree to a specified file, using the 'utf8' output encoding
@@ -129,16 +130,12 @@ for element in nodes:
     name=element.get('name')                                                            #It creates a variable that gets the element attribute 'name'
     processingTime=element.get('processingTime',{})                                     #It creates a variable that gets the element attribute 'processingTime'
         
-    if name =='Machine1':                                                               #It checks using if...elif syntax if the name is 'Machine1', so the first machine in the Topology10
-        processingTime['distributionType']=str(names[0])                                #It changes the attribute's ('distributionType') name, putting the name of the distribution (e.g. in Normal distribution that will be Normal) 
-        processingTime[str(aParameters[0])]=str(aParameterValue[0])                     # It adds a new attribute in the JSON file with the name of the first argument in aParameter's list (e.g. in Normal that will be the mean), putting the value of the distribution's first parameter (e.g. in Normal so for mean value that will be 7.0)
-        processingTime[str(bParameters[0])]=str(bParameterValue[0])                     # It adds a new attribute in the JSON file with the name of the second argument in aParameter's list (e.g. in Normal that will be the standarddeviation), putting the value of the distribution's second parameter (e.g. in Normal so for standarddeviation value that will be 7.0)
-    elif name=='Machine2':
-        processingTime['distributionType']=str(names[1])
-        processingTime[str(aParameters[1])]=str(aParameterValue[1])
-        processingTime[str(bParameters[1])]=str(bParameterValue[1])
+    if name =='Machine1':
+        element['processingTime']=Dict['M1']                            #It checks using if...elif syntax if the name is 'Machine1', so the first machine in the Topology10
+    elif name=='Machine2':                        
+        element['processingTime']=Dict['M2']
     else:
-        continue               
+        continue                            
         
     jsonFile = open('JSON_Topology10_Output.json',"w")     #It opens the JSON file
     jsonFile.write(json.dumps(data, indent=True))                                           #It writes the updated data to the JSON file 
