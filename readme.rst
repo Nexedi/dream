@@ -12,9 +12,9 @@ Scope
 ============
 
 The scope of the project is to provide simulation modellers with a collection of open-
-source DES objects that can be connected like "black boxes" in order to form a model. This 
+source DES objects that can be connected like "black boxes" in order to form a model. 
 
-collection is desired to be expandable by giving means to developers for:  
+This collection is desired to be expandable by giving means to developers for:  
  + customizing existing objects  
  + adding completely new objects to the list
 
@@ -89,5 +89,7 @@ Jerome Perrin
 Sebastien Robin
 
 Ioannis Papagiannopoulos
+
+Panos Barlas
 
 Kazuhiko Shiozaki
