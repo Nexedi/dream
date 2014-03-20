@@ -149,7 +149,7 @@ class Simulation(ACO.Simulation):
   def _preprocess(self, in_data):
     """ Set the WIP in queue from spreadsheet data.
     """
-    data = copy(in_data)
+    data = copy(ACO.Simulation._preprocess(self, in_data))
     self.data = data
 
     now = datetime.now()
