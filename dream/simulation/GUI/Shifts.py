@@ -14,7 +14,7 @@ class Simulation(DefaultSimulation):
   def _preprocess(self, data):
     """Preprocess data, reading shift spreadsheet
     """
-    data = DefaultSimulation._preprocess(data)
+    data = DefaultSimulation._preprocess(self, data)
     strptime = datetime.datetime.strptime
     now = strptime(data['general']['currentDate'], '%Y/%m/%d')
 
