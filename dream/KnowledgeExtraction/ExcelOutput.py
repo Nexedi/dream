@@ -235,9 +235,15 @@ class Output(BasicStatisticalMeasures,DistFittest):
         ###BestDistributionFit###
         A=self.ks_test(data)
         sheet2.write(14,14,(A.get('distributionType')))
-        sheet2.write(14,15,(A.get('aParameter')))
-        sheet2.write(14,16,(A.get('bParameter')))
-        sheet2.write(15,15,(A.get('aParameterValue')))
-        sheet2.write(15,16,(A.get('bParameterValue')))
+        if A['distributionType']=='Normal':
+            del A['min']
+            del A['max']
+            del A['distributionType']
+        else:
+            del A['distributionType']
+        sheet2.write(14,15,(A.keys()[0]))
+        sheet2.write(14,16,(A.keys()[1]))
+        sheet2.write(15,15,(A.values()[0]))
+        sheet2.write(15,16,(A.values()[1]))
         
         book.save(fileName)    #Save the excel document 
