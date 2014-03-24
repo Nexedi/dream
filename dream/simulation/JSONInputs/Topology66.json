@@ -3,7 +3,7 @@
     "edges": {},
     "general": {
         "_class": "Dream.Configuration",
-        "numberOfReplications": "8",
+        "numberOfReplications": "1",
         "maxSimTime": "-1",
         "trace": "Yes",
         "confidenceLevel": "0.95"
