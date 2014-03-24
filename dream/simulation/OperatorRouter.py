@@ -49,8 +49,8 @@ class Router(ObjectInterruption):
         # list that holds all the objects that can receive
         self.pendingObjects=[]
         self.calledOperators=[]
-        # TODO: consider if there must be an argument set for the schedulingRules of the Router
-        self.schedulingRule=''
+#         # TODO: consider if there must be an argument set for the schedulingRules of the Router
+#         self.schedulingRule=''
         # list of the operators that may handle a machine at the current simulation time
         self.candidateOperators=[]
         # list of criteria
@@ -399,12 +399,14 @@ class Router(ObjectInterruption):
             
         # if there operators that have only one option then sort the candidateOperators according to the first one of these
         # TODO: find out what happens if there are many operators with one option
-        # TODO: incorporate that to sortOperators() method
+        # TODO: incorporate that to 
+#         self.sortOperators() 
         
         # sort the operators according to their waiting time
         self.candidateOperators.sort(key=lambda x: x.totalWorkingTime)
+        # sort according to the number of options
         if operatorsWithOneOption:
-            self.candidateOperators.sort(key=lambda x: x in operatorsWithOneOption, reverse=True)   # sort according to the number of options
+            self.candidateOperators.sort(key=lambda x: x in operatorsWithOneOption, reverse=True)
         
     #=======================================================================
     # Find candidate entities and their receivers

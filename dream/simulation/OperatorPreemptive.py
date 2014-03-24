@@ -104,6 +104,7 @@ class OperatorPreemptive(Operator):
     # =======================================================================
     # override the default method so that Entities 
     # that are critical got served first
+    # TODO: NOT USED!
     # =======================================================================
     def sortEntities(self):
         Operator.sortEntities(self)     #do the default sorting first
