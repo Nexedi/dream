@@ -282,12 +282,29 @@
     function displayEntities(element_id, node_id) {
       var node = $("#" + element_id);
       var node_position = node.position();
-      var entities = $(".in_" + node_id);
+      var entities = $(".in_" + node_id).show();
       var offset = 0;
+
+      // When there is not enough space, just display the number of entities in
+      // the station.
       if (entities.length > 4) {
         entities.hide();
-        dream_instance.updateElementData(node_id, 
-            {status: entities.length});
+        var size = 20 * dream_instance.getData().preference.zoom_level;
+        var count_div = $("#" + element_id).find(".count");
+        if (!count_div.length) {
+          count_div = $("<div>").addClass("count").css(
+            {"width": size,
+             "height": size,
+             "position": "absolute",
+             "right": "0px",
+             "bottom": "5px",
+             "border-radius": size / 2, 
+             "background": "red"}
+          ).appendTo($("#" + element_id));
+        }
+        count_div.text(entities.length);
+      } else {
+        $("#" + element_id + " > .count").remove();
       }
       entities.each(
         function (idx, entity) {
@@ -397,6 +414,7 @@
 
         $('#result_list').empty();
         $('.window > .status').remove();
+        $('.window > .count').remove();
         $.each(message['success'], function (idx, obj) {
           $('#result_list').append('<li class="result"></li>');
           $('#result_list').children().last().text(
