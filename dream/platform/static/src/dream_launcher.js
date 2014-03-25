@@ -359,9 +359,29 @@
     }
 
     function changeStatus(message, queue) {
-      var obj = dream_instance.getElementId(message.object);
-      dream_instance.updateElementData(message.object, 
-          {status: message.status})
+      var element_id = dream_instance.getElementId(message.object);
+      var statusdiv = $("#" + element_id).find(".status");
+      if (!statusdiv.length) {
+        statusdiv = $("<div>").addClass("status").appendTo($("#" + element_id));
+      }
+      if (message.status == 'setup') {
+        statusdiv.html("<i class='fa fa-wrench'></i> setup")
+      }
+      if (message.status == 'loading') {
+        statusdiv.html("<i class='fa fa-upload'></i> loading")
+      }
+      if (message.status == 'working') {
+        statusdiv.html("<i class='fa fa-gear fa-spin'></i> working")
+      }
+      if (message.status == 'waiting') {
+        statusdiv.html("<i class='fa fa-coffee'></i> waiting")
+      }
+      if (message.status == 'blocked') {
+        statusdiv.html("<i class='fa fa-exclamation'></i> blocked")
+      }
+      if (message.status == 'failure') {
+        statusdiv.html("<i class='fa fa-fire'></i> failure")
+      }
       $("#now").text(message.time.toFixed(2));
       $(queue).dequeue()
     }

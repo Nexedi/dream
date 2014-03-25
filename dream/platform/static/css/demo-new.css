@@ -337,7 +337,7 @@ border: 1px solid black;
   color:black;
   font-family:serif;
   font-style:italic;
-  padding-top:0.9em;
+  padding-top:1.4em;
   font-size:0.9em;
   cursor:move;
   font-size:11px;
@@ -384,8 +384,8 @@ border: 1px solid black;
 
 .status {
   position:absolute;
-  bottom:0px;
-  right:5px;
+  top:0px;
+  left:5px;
 }
 
 ._jsPlumb_source_hover, ._jsPlumb_target_hover, .dragHover {
