@@ -25,6 +25,16 @@
       "Q1", 
       {}
     ], 
+    "con_35": [
+      "Q1", 
+      "M4", 
+      {}
+    ], 
+    "con_40": [
+      "M4", 
+      "Q2", 
+      {}
+    ], 
     "con_5": [
       "M2", 
       "E1", 
@@ -77,7 +87,7 @@
         "distributionType": "Normal", 
         "max": 3, 
         "mean": 0.1, 
-        "min": 0.1, 
+        "min": 1.1, 
         "stdev": 2
       }
     }, 
@@ -98,6 +108,23 @@
         "stdev": 2
       }
     }, 
+    "M4": {
+      "_class": "Dream.Machine", 
+      "element_id": "DreamNode_8", 
+      "failures": {
+        "MTTF": 40, 
+        "MTTR": 10, 
+        "failureDistribution": "No", 
+        "repairman": "None"
+      }, 
+      "processingTime": {
+        "distributionType": "Fixed", 
+        "max": 1, 
+        "mean": 0.5, 
+        "min": 0.1, 
+        "stdev": 0.5
+      }
+    }, 
     "Q1": {
       "_class": "Dream.Queue", 
       "capacity": 100, 
@@ -106,33 +133,13 @@
     }, 
     "Q2": {
       "_class": "Dream.Queue", 
-      "capacity": 130, 
+      "capacity": 2, 
       "element_id": "DreamNode_6", 
       "schedulingRule": "FIFO"
     }, 
-    "QS1": {
-      "_class": "Dream.EventGenerator", 
-      "argumentDict": "{}", 
-      "duration": 10, 
-      "element_id": "DreamNode_7", 
-      "interval": 10, 
-      "method": "Globals.countQueueMetrics", 
-      "start": 1, 
-      "stop": -1
-    }, 
-    "QS2": {
-      "_class": "Dream.EventGenerator", 
-      "argumentDict": "{}", 
-      "duration": 10, 
-      "element_id": "DreamNode_8", 
-      "interval": 1, 
-      "method": "Globals.updateGui", 
-      "start": 1, 
-      "stop": -1
-    }, 
     "S1": {
       "_class": "Dream.Source", 
-      "element_id": "DreamNode_9", 
+      "element_id": "DreamNode_7", 
       "entity": "Dream.Part", 
       "interarrivalTime": {
         "distributionType": "Fixed", 
@@ -143,40 +150,36 @@
   "preference": {
     "coordinates": {
       "E1": {
-        "left": 0.8900794036136932, 
-        "top": 0.8658660582253224
+        "left": 0.9166485756421163, 
+        "top": 0.830369863384717
       }, 
       "M1": {
-        "left": 0.42307670353585936, 
-        "top": 0.026878325532493377
+        "left": 0.850860400356797, 
+        "top": 0.08023798679897265
       }, 
       "M2": {
-        "left": 0.5502309040521013, 
-        "top": 0.741073832538746
+        "left": 0.1491198639800572, 
+        "top": 0.9553918428156744
       }, 
       "M3": {
-        "left": 0.08785199308394895, 
-        "top": 0.4895695007704151
+        "left": 0.0942963845756244, 
+        "top": 0.4982219180308302
+      }, 
+      "M4": {
+        "left": 0.9517356024609533, 
+        "top": 0.47956192110083656
       }, 
       "Q1": {
-        "left": 0.4762502782971969, 
-        "top": 0.2764627769056462
+        "left": 0.4999901321684271, 
+        "top": 0.30788994934489505
       }, 
       "Q2": {
-        "left": 0.5224881693940121, 
-        "top": 0.5222074674884428
-      }, 
-      "QS1": {
-        "left": 0.060109258425859804, 
-        "top": 0.85818653664461
-      }, 
-      "QS2": {
-        "left": 0.9755049855975303, 
-        "top": 0.277996584331602
+        "left": 0.5438489156919734, 
+        "top": 0.671759889479771
       }, 
       "S1": {
-        "left": 0.053173574761337515, 
-        "top": 0.10367354133961731
+        "left": 0.1710492557418303, 
+        "top": 0.07463998771997456
       }
     }, 
     "zoom_level": 0.8999280025199498
