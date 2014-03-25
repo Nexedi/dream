@@ -408,7 +408,9 @@
           undefined, " "));
         $("#loading_spinner").hide();
         $("#run_simulation").button('enable');
+        $("#reports").show();
         $("#result_zone").show();
+        $('#error').empty();
   
         $(".entity").remove();
 
