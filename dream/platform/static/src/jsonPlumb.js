@@ -229,9 +229,10 @@
       jsPlumb.makeSource(jsPlumb.getSelector(".window"), {
         filter: ".ep",
         anchor: "Continuous",
-        connector: ["StateMachine", {
+        /* connector: ["StateMachine", {
           curviness: 20
         }],
+        */
         connectorStyle: {
           strokeStyle: "#5c96bc",
           lineWidth: 2,
