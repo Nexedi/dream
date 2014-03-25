@@ -45,14 +45,14 @@
         top: 0,
         left: 0
       },
-      stop: function (tool) {
+      stop: function (event) {
         var box_top, box_left, _class;
         var offset = $("#main").offset();
-        box_top = tool.clientY - offset.top + "px";
-        box_left = tool.clientX - offset.left + "px";
+        box_top = event.clientY - offset.top + "px";
+        box_left = event.clientX - offset.left + "px";
         var relative_position = dream_instance.convertToRelativePosition(
           box_left, box_top);
-        _class = tool.target.id.replace('-', '.'); // XXX - vs .
+        _class = event.target.id.replace('-', '.'); // XXX - vs .
         dream_instance.newElement({
           coordinate: {
             top: relative_position[1],
