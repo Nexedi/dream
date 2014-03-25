@@ -44,7 +44,7 @@ class Simulation(ACO.Simulation):
           schema["schedulingRule"]
         ],
         "_class": 'Dream.ConditionalBuffer',
-        "name": 'CamQ',
+        "name": 'Cam Queue',
         "short_id": "B",
     }
     conf["Dream-MouldAssemblyBuffer"] = {
