@@ -238,9 +238,11 @@
         });
       };
       updateDefaultData(data, property_list);
-      that.updateElementData(element.id, {
-        data: data
-      });
+      var update_dict = {data: data}
+      if (element.name) {
+        update_dict["name"] = element.name;
+      }
+      that.updateElementData(element.id, update_dict);
     };
 
     priv.super_start = that.start;
