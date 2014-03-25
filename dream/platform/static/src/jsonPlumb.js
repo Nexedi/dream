@@ -215,7 +215,6 @@
     };
 
     priv.draggable = function () {
-      // make all the window divs draggable
       var stop = function (element) {
         priv.updateElementCoordinate(that.getNodeId(element.target.id));
       };
