@@ -652,8 +652,12 @@
                    if (value.ub == value.lb) {
                       value = value.ub;
                    } else {
-                      // better than [Object] ...
-                     value = JSON.stringify(value, " ", undefined)
+                     var ci_text = "<table width='100%'><tbody>"
+                     ci_text += "<tr><td>Average</td><td>" + value.avg.toFixed(2) + "</td></tr>"
+                     ci_text += "<tr><td>Lower Bound</td><td>" + value.lb.toFixed(2) + "</td></tr>"
+                     ci_text += "<tr><td>Upper Bound</td><td>" + value.ub.toFixed(2) + "</td></tr>"
+                     ci_text += "</tbody></table>"
+                     value = ci_text;
                    }
                 }
                 if (typeof value == "number") {
