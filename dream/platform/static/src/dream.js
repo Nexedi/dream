@@ -333,9 +333,9 @@
         hideReport("debug_json")
       }
       if (configuration['Dream-Configuration'].gui.station_utilisation_graph){
-        showReport("graph_zone")
+        showReport("station_utilisation_graph")
       } else {
-        hideReport("graph_zone")
+        hideReport("station_utilisation_graph")
       }
       if (configuration['Dream-Configuration'].gui.job_schedule_spreadsheet){
         showReport("job_schedule_spreadsheet")
