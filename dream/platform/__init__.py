@@ -121,7 +121,12 @@ def _runWithTimeout(queue, func, args, kw):
      signal.signal(signal.SIGUSR1, lambda sig, stack: traceback.print_stack(stack))
      print "To see current traceback:"
      print "  kill -SIGUSR1 %s" % os.getpid()
-   signal.signal(signal.SIGTERM, lambda sig, stack: traceback.print_stack(stack))
+
+   # print a traceback when terminated.
+   def handler(sig, stack):
+     traceback.print_stack(stack)
+     sys.exit(0)
+   signal.signal(signal.SIGTERM, handler)
 
    queue.put(func(*args, **kw))
 
