@@ -229,7 +229,7 @@ class Machine(CoreObject):
                 self.router.startCycle.signal(self.id)
                 # the machine must wait until the router has decided which machine will operated by which operator
 #                 yield waitevent, self, self.routerCycleOver
-                yield waituntil, self, self.router.routerIsSet
+                yield waituntil, self, self.router.isSet
                 self.router.victim=None
                 # if the machine is not picked by the router the it should wait again 
                 if not self.canProceedWithGetEntity:
@@ -250,7 +250,7 @@ class Machine(CoreObject):
                 self.requestOperator()
                 self.timeWaitForLoadOperatorStarted = now()
                 # wait until the Broker has waited times equal to loadTime (if any)
-                yield waituntil, self, self.broker.brokerIsSet
+                yield waituntil, self, self.broker.isSet
                 self.timeWaitForLoadOperatorEnded = now()
                 self.loadOperatorWaitTimeCurrentEntity += self.timeWaitForLoadOperatorEnded-self.timeWaitForLoadOperatorStarted
                 self.totalTimeWaitingForLoadOperator += self.loadOperatorWaitTimeCurrentEntity 
@@ -274,7 +274,7 @@ class Machine(CoreObject):
                 # machine has to release the operator
                 self.releaseOperator()
                 # wait until the Broker has finished processing
-                yield waituntil, self, self.broker.brokerIsSet
+                yield waituntil, self, self.broker.isSet
             
             # TODO: reset the requestinEntity before receiving the currentEntity
             self.requestingEntity=None
@@ -296,7 +296,7 @@ class Machine(CoreObject):
                 self.requestOperator()
                 self.timeWaitForOperatorStarted = now()
                 # wait until the Broker has waited times equal to loadTime (if any)
-                yield waituntil, self, self.broker.brokerIsSet
+                yield waituntil, self, self.broker.isSet
                 self.timeWaitForOperatorEnded = now()
                 self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
             
@@ -325,7 +325,7 @@ class Machine(CoreObject):
                 # machine has to release the operator
                 self.releaseOperator()
                 # wait until the Broker has finished processing
-                yield waituntil, self, self.broker.brokerIsSet
+                yield waituntil, self, self.broker.isSet
                                                                                  
             # variables used to flag any interruptions and the end of the processing     
             interruption=False    
@@ -370,7 +370,7 @@ class Machine(CoreObject):
                         and self.isOperated()\
                         and any(type=="Processing" for type in self.multOperationTypeList):
                         self.releaseOperator()
-                        yield waituntil,self,self.broker.brokerIsSet 
+                        yield waituntil,self,self.broker.isSet 
     
                     # if there is a failure  in the machine or interruption due to preemption, it is passivated
                     yield passivate,self
@@ -392,7 +392,7 @@ class Machine(CoreObject):
                         and not interruption:
                         self.timeWaitForOperatorStarted = now()
                         self.requestOperator()
-                        yield waituntil,self,self.broker.brokerIsSet
+                        yield waituntil,self,self.broker.isSet
                         self.timeWaitForOperatorEnded = now() 
                         self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
                 
@@ -410,7 +410,7 @@ class Machine(CoreObject):
                     and any(type=="Processing" for type in self.multOperationTypeList)\
                     and not interruption: 
                     self.releaseOperator()
-                    yield waituntil,self,self.broker.brokerIsSet
+                    yield waituntil,self,self.broker.isSet
                 continue
             
             # output to trace that the processing in the Machine self.objName ended 
@@ -444,7 +444,7 @@ class Machine(CoreObject):
                 and any(type=="Processing" for type in self.multOperationTypeList)\
                 and not interruption: 
                 self.releaseOperator()
-                yield waituntil,self,self.broker.brokerIsSet
+                yield waituntil,self,self.broker.isSet
             
             
             while 1:
@@ -738,14 +738,14 @@ class Machine(CoreObject):
 #         # TESTING
 #         print now(), self.id, 'requested router'
         self.inPositionToGet=True
-        if not self.router.routerIsCalled():
-            self.router.invokeRouter()
+        if not self.router.isCalled():
+            self.router.invoke()
     
     # =======================================================================
     #                   prepare the machine to be operated
     # =======================================================================
     def requestOperator(self):
-        self.broker.invokeBroker()
+        self.broker.invoke()
         self.toBeOperated = True
     
     # =======================================================================
@@ -762,7 +762,7 @@ class Machine(CoreObject):
                      or any(type=='Processing' for type in self.multOperationTypeList)):
             self.currentOperator.activeCallersList=[]
             
-        self.broker.invokeBroker()
+        self.broker.invoke()
         self.toBeOperated = False
         
     # =======================================================================

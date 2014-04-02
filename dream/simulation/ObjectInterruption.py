@@ -33,15 +33,45 @@ class ObjectInterruption(Process):
     def __init__(self, victim=None):
         Process.__init__(self)
         self.victim=victim
+        # variable used to hand in control to the objectInterruption
+        self.call=False
     
     def initialize(self):
         Process.__init__(self)
+        self.call=False
     
     #the main process of the core object
     #this is dummy, every object must have its own implementation
     def run(self):
         raise NotImplementedError("Subclass must define 'run' method")
-
+    
+    # =======================================================================
+    #           hand in the control to the objectIterruption.run
+    #                   to be called by the machine
+    # =======================================================================    
+    def invoke(self):
+        self.call=True
+    
+    # =======================================================================
+    #                 return control to the Machine.run
+    # =======================================================================
+    def exit(self):
+        self.call=False
+    
+    # =======================================================================
+    #                        call the objectInterruption 
+    #        filter for object interruption - yield waituntil isCalled
+    # =======================================================================
+    def isCalled(self):
+        return self.call
+    
+    # =======================================================================
+    #        the objectIterruption returns control to machine.Run
+    #        filter for Machine - yield request/release operator
+    # =======================================================================
+    def isSet(self):
+        return not self.call
+    
     #outputs data to "output.xls"
     def outputTrace(self, message):
         pass

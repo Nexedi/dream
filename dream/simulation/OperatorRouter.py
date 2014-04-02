@@ -44,8 +44,6 @@ class Router(ObjectInterruption):
     def __init__(self):
         ObjectInterruption.__init__(self)
         self.type = "Router"
-        # variable used to hand in control to the Broker
-        self.call=False
         # signal used to initiate the generator of the Router
         self.startCycle=SimEvent('startCycle')
         # TODO: create an initialise method for router to reset the attributes for every replication
@@ -59,7 +57,6 @@ class Router(ObjectInterruption):
     #===========================================================================
     def initialize(self):
         ObjectInterruption.initialize(self)
-        self.call=False
         # list that holds all the objects that can receive
         self.pendingObjects=[]
         self.calledOperator=[]
@@ -87,7 +84,8 @@ class Router(ObjectInterruption):
             yield waitevent, self, self.startCycle
             self.victim=findObjectById(self.startCycle.signalparam)
             
-#             yield waituntil,self,self.routerIsCalled
+#             yield waituntil,self,self.isCalled
+
             # when the router is called for the first time wait till all the entities 
             #     finished all their moves in stations of non-Machine-type 
             #     before they can enter again a type-Machine object
@@ -214,7 +212,7 @@ class Router(ObjectInterruption):
 #             print [str(object.id) for object in self.pendingObjects if object.canProceedWithGetEntity]
             #===================================================================
             
-            self.exitRouter()
+            self.exit()
     
     #===========================================================================
     #     have the entities that have ended their processing when the router
@@ -258,32 +256,11 @@ class Router(ObjectInterruption):
             if allEntitiesMoved:
                 return True
         return True
-    
-    # =======================================================================
-    #                        call the Scheduler 
-    #        filter for Broker - yield waituntil brokerIsCalled
-    # =======================================================================
-    def routerIsCalled(self):
-        return self.call 
-    
-    # =======================================================================
-    #         the broker returns control to OperatedMachine.Run
-    #        filter for Machine - yield request/release operator
-    # =======================================================================
-    def routerIsSet(self):
-        return not self.call
-    
-    # =======================================================================
-    #               hand in the control to the Broker.run
-    #                   to be called by the machine
-    # =======================================================================
-    def invokeRouter(self):
-        self.call=True
         
     # =======================================================================
     #                 return control to the Machine.run
     # =======================================================================
-    def exitRouter(self):
+    def exit(self):
         from Globals import G
         # reset the variables that are used from the Router
         for operator in self.candidateOperators:
@@ -298,8 +275,8 @@ class Router(ObjectInterruption):
         del self.pendingObjects[:]
         del self.multipleCriterionList[:]
         self.schedulingRule='WT'
-        # reset the call flag of the Router
-        self.call=False
+        
+        ObjectInterruption.exit(self)
 #         self.victim.routerCycleOver.signal('router has implemented its logic')
         
     #=======================================================================

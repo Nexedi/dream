@@ -43,8 +43,6 @@ class Broker(ObjectInterruption):
     def __init__(self, operatedMachine):
         ObjectInterruption.__init__(self,operatedMachine)
         self.type = "Broker"
-        # variable used to hand in control to the Broker
-        self.call=False
         # variables that have to do with timing
         self.timeOperationStarted = 0
         self.timeLastOperationEnded = 0
@@ -55,7 +53,6 @@ class Broker(ObjectInterruption):
     #===========================================================================
     def initialize(self):
         ObjectInterruption.initialize(self)
-        self.call=False
         self.timeLastOperationEnded=0
         self.timeOperationStarted=0
         self.timeWaitForOperatorStarted=0
@@ -65,7 +62,7 @@ class Broker(ObjectInterruption):
     # =======================================================================    
     def run(self):
         while 1:
-            yield waituntil,self,self.brokerIsCalled # wait until the broker is called
+            yield waituntil,self,self.isCalled # wait until the broker is called
     # ======= request a resource
             if self.victim.isOperated()\
                 and any(type=="Load" or type=="Setup" or type=="Processing"\
@@ -109,37 +106,5 @@ class Broker(ObjectInterruption):
             else:
                 pass
             # return the control the machine.run
-            self.exitBroker()
-        
-        
-    # =======================================================================
-    #                        call the broker 
-    #        filter for Broker - yield waituntil brokerIsCalled
-    # =======================================================================
-    def brokerIsCalled(self):
-        return self.call 
-    
-    # =======================================================================
-    #         the broker returns control to OperatedMachine.Run
-    #        filter for Machine - yield request/release operator
-    # =======================================================================
-    def brokerIsSet(self):
-        return not self.call
-    
-    # =======================================================================
-    #               hand in the control to the Broker.run
-    #                   to be called by the machine
-    # =======================================================================
-    def invokeBroker(self):
-        self.call=True
-        
-    # =======================================================================
-    #                 return control to the Machine.run
-    # =======================================================================
-    def exitBroker(self):
-        self.call=False
-        
-    
-
-                    
+            self.exit()
         
