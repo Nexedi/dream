@@ -50,6 +50,16 @@ class Broker(ObjectInterruption):
         self.timeLastOperationEnded = 0
         self.timeWaitForOperatorStarted=0
         
+    #===========================================================================
+    #                           the initialize method
+    #===========================================================================
+    def initialize(self):
+        ObjectInterruption.initialize(self)
+        self.call=False
+        self.timeLastOperationEnded=0
+        self.timeOperationStarted=0
+        self.timeWaitForOperatorStarted=0
+        
     # =======================================================================
     #                          the run method
     # =======================================================================    
