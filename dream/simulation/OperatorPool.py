@@ -44,10 +44,6 @@ class OperatorPool(ObjectResource):
         self.objName=name
         
         self.type="OperatorPool"
-#         self.Res=Resource(self.capacity)
-        # lists to hold statistics of multiple runs
-#         self.Waiting=[]             # holds the percentage of waiting time 
-#         self.Working=[]             # holds the percentage of working time 
         # list with the coreObjects IDs that the Operators operate
         self.coreObjectIds=[]
         # list with the coreObjects that the Operators operate
@@ -89,13 +85,9 @@ class OperatorPool(ObjectResource):
     #                     initialize the object 
     # =======================================================================
     def initialize(self):
-#         self.totalWorkingTime=0         #holds the total working time
-#         self.totalWaitingTime=0         #holds the total waiting time
-#         self.timeLastOperationStarted=0    #holds the time that the last operation was started        
-
         # initialize the operators
         # an operator that may have been initialized by an other operator pool, is initiated again
-        # reconsider
+        # TODO: reconsider
         for operator in self.operators:
             if not operator.isInitialized():
                 operator.initialize()

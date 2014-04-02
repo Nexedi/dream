@@ -41,6 +41,10 @@ class ObjectResource(object):
         self.Res=Resource(self.capacity)
         # variable that checks whether the resource is already initialized
         self.initialized = True
+        # list with the coreObjects IDs that the resource services
+        self.coreObjectIds=[]
+        # list with the coreObjects that the resource services
+        self.coreObjects=[]
     
     # =======================================================================
     #                    checks if the worker is available

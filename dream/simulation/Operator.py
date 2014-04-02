@@ -27,17 +27,28 @@ models an operator that operates a machine
 '''
 
 from SimPy.Simulation import Resource, now
-from Repairman import Repairman
+import xlwt
+import scipy.stats as stat
+from ObjectResource import ObjectResource
 
 # ===========================================================================
 #                 the resource that operates the machines
 # ===========================================================================
-class Operator(Repairman): # XXX isn't it the other way around ?
+class Operator(ObjectResource):
     class_name = 'Dream.Operator'
-
-    def __init__(self, id, name, capacity=1, schedulingRule="FIFO"):
-        Repairman.__init__(self, id=id, name=name, capacity=capacity)
+    
+    
+    def __init__(self, id, name, capacity=1, schedulingRule='FIFO'):
+        ObjectResource.__init__(self)
+        self.id=id
+        self.objName=name
+        self.capacity=capacity      # repairman is an instance of resource
         self.type="Operator"
+        # lists to hold statistics of multiple runs
+        self.Waiting=[]             # holds the percentage of waiting time 
+        self.Working=[]             # holds the percentage of working time 
+    
+        # the following attributes are not used by the Repairman
         self.activeCallersList=[]               # the list of object that request the operator
         self.schedulingRule=schedulingRule      #the scheduling rule that the Queue follows
         self.multipleCriterionList=[]           #list with the criteria used to sort the Entities in the Queue
@@ -175,5 +186,109 @@ class Operator(Repairman): # XXX isn't it the other way around ?
             activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().nextQueueLength)
         else:
             assert False, "Unknown scheduling criterion %r" % (criterion, )
+            
+    # =======================================================================    
+    #            actions to be taken after the simulation ends
+    # =======================================================================
+    def postProcessing(self, MaxSimtime=None):
+        if MaxSimtime==None:
+            from Globals import G
+            MaxSimtime=G.maxSimTime
+        # if the repairman is currently working we have to count the time of this work    
+#         if len(self.getResourceQueue())>0:
+        if not self.checkIfResourceIsAvailable():
+            self.totalWorkingTime+=now()-self.timeLastOperationStarted
+                
+        # Repairman was idle when he was not in any other state
+        self.totalWaitingTime=MaxSimtime-self.totalWorkingTime   
+        # update the waiting/working time percentages lists
+        self.Waiting.append(100*self.totalWaitingTime/MaxSimtime)
+        self.Working.append(100*self.totalWorkingTime/MaxSimtime)
+    
+    # =======================================================================
+    #                    outputs data to "output.xls"
+    # =======================================================================
+    def outputResultsXL(self, MaxSimtime=None):
+        from Globals import G
+        if MaxSimtime==None:
+            MaxSimtime=G.maxSimTime
+        # if we had just one replication output the results to excel
+        if(G.numberOfReplications==1): 
+            G.outputSheet.write(G.outputIndex,0, "The percentage of working of "+self.objName +" is:")
+            G.outputSheet.write(G.outputIndex,1,100*self.totalWorkingTime/MaxSimtime)
+            G.outputIndex+=1
+            G.outputSheet.write(G.outputIndex,0, "The percentage of waiting of "+self.objName +" is:")
+            G.outputSheet.write(G.outputIndex,1,100*self.totalWaitingTime/MaxSimtime)
+            G.outputIndex+=1
+        #if we had multiple replications we output confidence intervals to excel
+            # for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
+            # so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
+            # so for each output value we check if there was difference in the runs' results
+            # if yes we output the Confidence Intervals. if not we output just the fix value    
+        else:
+            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Working of "+self.objName +" is:")
+            if self.checkIfArrayHasDifValues(self.Working): 
+                G.outputSheet.write(G.outputIndex,1,stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][0])
+                G.outputSheet.write(G.outputIndex,2,stat.bayes_mvs(self.Working, G.confidenceLevel)[0][0])
+                G.outputSheet.write(G.outputIndex,3,stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][1])  
+            else: 
+                G.outputSheet.write(G.outputIndex,1,self.Working[0])
+                G.outputSheet.write(G.outputIndex,2,self.Working[0])
+                G.outputSheet.write(G.outputIndex,3,self.Working[0])                            
+            G.outputIndex+=1
+            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Waiting of "+self.objName +" is:")            
+            if self.checkIfArrayHasDifValues(self.Waiting):
+                G.outputSheet.write(G.outputIndex,1,stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][0])
+                G.outputSheet.write(G.outputIndex,2,stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][0])
+                G.outputSheet.write(G.outputIndex,3,stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][1])
+            else: 
+                G.outputSheet.write(G.outputIndex,1,self.Waiting[0])
+                G.outputSheet.write(G.outputIndex,2,self.Waiting[0])
+                G.outputSheet.write(G.outputIndex,3,self.Waiting[0]) 
+            G.outputIndex+=1
+        G.outputIndex+=1
 
-
+    # =======================================================================
+    #                    outputs results to JSON File
+    # =======================================================================
+    def outputResultsJSON(self):
+        from Globals import G
+        # if we had just one replication output the results to JSON
+        if(G.numberOfReplications==1): 
+            json={}
+            json['_class'] = 'Dream.'+self.type;
+            json['id'] = str(self.id)
+            json['results'] = {}
+            json['results']['working_ratio']=100*self.totalWorkingTime/G.maxSimTime
+            json['results']['waiting_ratio']=100*self.totalWaitingTime/G.maxSimTime
+        #if we had multiple replications we output confidence intervals to excel
+            # for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
+            # so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
+            # so for each output value we check if there was difference in the runs' results
+            # if yes we output the Confidence Intervals. if not we output just the fix value  
+        else:          
+            json={}
+            json['_class'] = 'Dream.Repairman';
+            json['id'] = str(self.id)
+            json['results'] = {}
+            json['results']['working_ratio']={}
+            if self.checkIfArrayHasDifValues(self.Working):
+                json['results']['working_ratio']['min']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][0]
+                json['results']['working_ratio']['avg']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][0]
+                json['results']['working_ratio']['max']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][1]
+            else:
+                json['results']['working_ratio']['min']=self.Working[0]
+                json['results']['working_ratio']['avg']=self.Working[0]
+                json['results']['working_ratio']['max']=self.Working[0]                
+            json['results']['waiting_ratio']={}
+            if self.checkIfArrayHasDifValues(self.Waiting):
+                json['results']['waiting_ratio']['min']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][0]
+                json['results']['waiting_ratio']['avg']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][0]
+                json['results']['waiting_ratio']['max']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][1]
+            else:
+                json['results']['waiting_ratio']['min']=self.Waiting[0]
+                json['results']['waiting_ratio']['avg']=self.Waiting[0]
+                json['results']['waiting_ratio']['max']=self.Waiting[0] 
+                
+        G.outputJSON['elementList'].append(json)
+        
