@@ -46,20 +46,30 @@ class Router(ObjectInterruption):
         self.type = "Router"
         # variable used to hand in control to the Broker
         self.call=False
-        # list that holds all the objects that can receive
-        self.pendingObjects=[]
-        self.calledOperators=[]
         # signal used to initiate the generator of the Router
         self.startCycle=SimEvent('startCycle')
-#         # TODO: consider if there must be an argument set for the schedulingRules of the Router
-#         self.schedulingRule=''
+        # TODO: create an initialise method for router to reset the attributes for every replication
+        self.isInitialized=False
+        self.candidateOperators=[]
+        self.multipleCriterionList=[]
+        self.schedulingRule='WT'
+        
+    #===========================================================================
+    #                         the initialize method
+    #===========================================================================
+    def initialize(self):
+        ObjectInterruption.initialize(self)
+        self.call=False
+        # list that holds all the objects that can receive
+        self.pendingObjects=[]
+        self.calledOperator=[]
         # list of the operators that may handle a machine at the current simulation time
         self.candidateOperators=[]
         # list of criteria
         self.multipleCriterionList=[]
         # TODO: find out which must be the default for the scheduling Rule
         self.schedulingRule='WT'
-        # TODO: create an initialise method for router to reset the attributes for every replication
+        self.isInitialized=True
         
     # =======================================================================
     #                          the run method

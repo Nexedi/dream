@@ -128,16 +128,29 @@ class Machine(CoreObject):
             self.multOperationTypeList = OTlist
         else:
             self.multOperationTypeList.append(self.operationType)
+        # initiate the Broker and the router
+        if (self.operatorPool!='None'):
+            self.broker=Broker(self)
+            from Globals import G
+            # if there is no router in G.RouterList
+            if len(G.RoutersList)==0:
+                self.router=Router()
+                G.RoutersList.append(self.router)
+            # otherwise set the already existing router as the machines Router
+            else:
+                self.router=G.RoutersList[0]
         #     lists to hold statistics of multiple runs
         self.WaitingForOperator=[]
         self.WaitingForLoadOperator=[]
         self.Loading = []
         self.SettingUp =[]
-        
+        # flags used for preemption purposes
         self.isPreemptive=isPreemptive
         self.resetOnPreemption=resetOnPreemption
-        
+        # event used by the router
         self.routerCycleOver=SimEvent('routerCycleOver')
+        
+
     
     # =======================================================================
     # initialize the machine
@@ -152,18 +165,12 @@ class Machine(CoreObject):
         # initialize the operator pool if any
         if (self.operatorPool!="None"):
             self.operatorPool.initialize()
-            self.broker = Broker(self)
+            self.broker.initialize()
             activate(self.broker,self.broker.run())
-            # if there is no router in G.RouterList
-            # initialise a new router
-            from Globals import G
-            if len(G.RoutersList)==0:
-                self.router=Router()
+            # initialise the router only once
+            if not self.router.isInitialized:
+                self.router.initialize()
                 activate(self.router,self.router.run())
-                G.RoutersList.append(self.router)
-            # otherwise set the already existing router as the machines Router
-            else:
-                self.router=G.RoutersList[0]
             for operator in self.operatorPool.operators:
                 operator.coreObjectIds.append(self.id)
                 operator.coreObjects.append(self)
