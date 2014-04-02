@@ -54,7 +54,7 @@
    "_class": "Dream.Job", 
    "id": "C1O2", 
    "results": {
-    "completionTime": 31.2, 
+    "completionTime": 28.7, 
     "schedule": [
      {
       "entranceTime": 3.6, 
@@ -81,15 +81,15 @@
       "stationId": "QEDM"
      }, 
      {
-      "entranceTime": 21.7, 
+      "entranceTime": 17.3, 
       "stationId": "EDM"
      }, 
      {
-      "entranceTime": 22.9, 
+      "entranceTime": 18.5, 
       "stationId": "AB1"
      }, 
      {
-      "entranceTime": 31.2, 
+      "entranceTime": 28.7, 
       "stationId": "MA2"
      }
     ]
@@ -118,11 +118,11 @@
       "stationId": "QMILL"
      }, 
      {
-      "entranceTime": 17.3, 
+      "entranceTime": 19.5, 
       "stationId": "MILL1"
      }, 
      {
-      "entranceTime": 21.7, 
+      "entranceTime": 23.9, 
       "stationId": "QEDM"
      }, 
      {
@@ -144,7 +144,7 @@
    "_class": "Dream.Job", 
    "id": "C2O2", 
    "results": {
-    "completionTime": 31.2, 
+    "completionTime": 28.7, 
     "schedule": [
      {
       "entranceTime": 3.6, 
@@ -155,11 +155,11 @@
       "stationId": "QCAM"
      }, 
      {
-      "entranceTime": 22.9, 
+      "entranceTime": 18.5, 
       "stationId": "CAM2"
      }, 
      {
-      "entranceTime": 23.9, 
+      "entranceTime": 19.5, 
       "stationId": "QMILL"
      }, 
      {
@@ -171,15 +171,15 @@
       "stationId": "QEDM"
      }, 
      {
-      "entranceTime": 29.5, 
+      "entranceTime": 27.0, 
       "stationId": "EDM"
      }, 
      {
-      "entranceTime": 31.2, 
+      "entranceTime": 28.7, 
       "stationId": "AB1"
      }, 
      {
-      "entranceTime": 31.2, 
+      "entranceTime": 28.7, 
       "stationId": "MA2"
      }
     ]
@@ -237,7 +237,7 @@
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 31.750000000000004, 
+    "lifespan": 33.60000000000001, 
     "takt_time": 17.000000000000004, 
     "throughput": 2
    }
@@ -270,7 +270,7 @@
    "_class": "Dream.Job", 
    "id": "M1O1", 
    "results": {
-    "completionTime": 29.5, 
+    "completionTime": 33.2, 
     "schedule": [
      {
       "entranceTime": 26.0, 
@@ -281,11 +281,11 @@
       "stationId": "QIM"
      }, 
      {
-      "entranceTime": 27.0, 
+      "entranceTime": 30.7, 
       "stationId": "IM"
      }, 
      {
-      "entranceTime": 29.5, 
+      "entranceTime": 33.2, 
       "stationId": "E1"
      }
     ]
@@ -298,11 +298,11 @@
     "completionTime": 34.00000000000001, 
     "schedule": [
      {
-      "entranceTime": 31.2, 
+      "entranceTime": 28.7, 
       "stationId": "MA2"
      }, 
      {
-      "entranceTime": 33.2, 
+      "entranceTime": 30.7, 
       "stationId": "QIM"
      }, 
      {

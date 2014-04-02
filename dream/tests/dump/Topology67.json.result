@@ -171,7 +171,7 @@
    "_class": "Dream.Job", 
    "id": "C1O4", 
    "results": {
-    "completionTime": 34.39999999999999, 
+    "completionTime": 34.4, 
     "schedule": [
      {
       "entranceTime": 17.099999999999998, 
@@ -214,7 +214,7 @@
       "stepNumber": 7
      }, 
      {
-      "entranceTime": 34.39999999999999, 
+      "entranceTime": 34.4, 
       "stationId": "MA1", 
       "stepNumber": 8
      }
@@ -387,7 +387,7 @@
    "_class": "Dream.Job", 
    "id": "C2O4", 
    "results": {
-    "completionTime": 34.39999999999999, 
+    "completionTime": 34.4, 
     "schedule": [
      {
       "entranceTime": 17.099999999999998, 
@@ -410,27 +410,27 @@
       "stepNumber": 3
      }, 
      {
-      "entranceTime": 29.0, 
+      "entranceTime": 30.0, 
       "stationId": "MILL1", 
       "stepNumber": 4
      }, 
      {
-      "entranceTime": 29.5, 
+      "entranceTime": 30.5, 
       "stationId": "QEDM", 
       "stepNumber": 5
      }, 
      {
-      "entranceTime": 29.5, 
+      "entranceTime": 31.0, 
       "stationId": "EDM", 
       "stepNumber": 6
      }, 
      {
-      "entranceTime": 31.2, 
+      "entranceTime": 32.7, 
       "stationId": "AB1", 
       "stepNumber": 7
      }, 
      {
-      "entranceTime": 34.39999999999999, 
+      "entranceTime": 34.4, 
       "stationId": "MA1", 
       "stepNumber": 8
      }
@@ -441,7 +441,7 @@
    "_class": "Dream.Job", 
    "id": "C3O4", 
    "results": {
-    "completionTime": 34.39999999999999, 
+    "completionTime": 34.4, 
     "schedule": [
      {
       "entranceTime": 17.099999999999998, 
@@ -454,37 +454,37 @@
       "stepNumber": 1
      }, 
      {
-      "entranceTime": 31.2, 
+      "entranceTime": 29.0, 
       "stationId": "CAM2", 
       "stepNumber": 2
      }, 
      {
-      "entranceTime": 32.199999999999996, 
+      "entranceTime": 30.0, 
       "stationId": "QMILL", 
       "stepNumber": 3
      }, 
      {
-      "entranceTime": 32.199999999999996, 
+      "entranceTime": 30.5, 
       "stationId": "MILL2", 
       "stepNumber": 4
      }, 
      {
-      "entranceTime": 32.699999999999996, 
+      "entranceTime": 31.0, 
       "stationId": "QEDM", 
       "stepNumber": 5
      }, 
      {
-      "entranceTime": 32.699999999999996, 
+      "entranceTime": 32.7, 
       "stationId": "EDM", 
       "stepNumber": 6
      }, 
      {
-      "entranceTime": 34.39999999999999, 
+      "entranceTime": 34.4, 
       "stationId": "AB1", 
       "stepNumber": 7
      }, 
      {
-      "entranceTime": 34.39999999999999, 
+      "entranceTime": 34.4, 
       "stationId": "MA1", 
       "stepNumber": 8
      }
@@ -498,9 +498,9 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "setup_ratio": 3.7634408602150518, 
-    "waiting_ratio": 88.70967741935485, 
-    "working_ratio": 7.526881720430108
+    "setup_ratio": 3.7634408602150513, 
+    "waiting_ratio": 88.70967741935486, 
+    "working_ratio": 7.526881720430107
    }
   }, 
   {
@@ -510,9 +510,9 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "setup_ratio": 3.225806451612904, 
-    "waiting_ratio": 90.3225806451613, 
-    "working_ratio": 6.451612903225807
+    "setup_ratio": 3.2258064516129035, 
+    "waiting_ratio": 90.32258064516128, 
+    "working_ratio": 6.451612903225806
    }
   }, 
   {
@@ -524,7 +524,7 @@
     "load_ratio": 0.0, 
     "setup_ratio": 4.032258064516125, 
     "waiting_ratio": 83.6021505376344, 
-    "working_ratio": 12.365591397849462
+    "working_ratio": 12.36559139784946
    }
   }, 
   {
@@ -534,9 +534,9 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "setup_ratio": 1.8817204301075274, 
-    "waiting_ratio": 91.39784946236557, 
-    "working_ratio": 6.720430107526883
+    "setup_ratio": 1.8817204301075272, 
+    "waiting_ratio": 91.39784946236558, 
+    "working_ratio": 6.720430107526881
    }
   }, 
   {
@@ -544,7 +544,7 @@
    "id": "E1", 
    "results": {
     "lifespan": 23.475, 
-    "takt_time": 9.299999999999999, 
+    "takt_time": 9.3, 
     "throughput": 4
    }
   }, 
@@ -555,9 +555,9 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "setup_ratio": 8.602150537634417, 
-    "waiting_ratio": 61.02150537634407, 
-    "working_ratio": 30.376344086021508
+    "setup_ratio": 8.602150537634415, 
+    "waiting_ratio": 61.02150537634408, 
+    "working_ratio": 30.376344086021504
    }
   }, 
   {
@@ -567,9 +567,9 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "setup_ratio": 2.150537634408609, 
+    "setup_ratio": 2.1505376344086087, 
     "waiting_ratio": 86.8279569892473, 
-    "working_ratio": 11.021505376344086
+    "working_ratio": 11.021505376344084
    }
   }, 
   {
@@ -663,25 +663,25 @@
    "_class": "Dream.Job", 
    "id": "M1O4", 
    "results": {
-    "completionTime": 37.199999999999996, 
+    "completionTime": 37.2, 
     "schedule": [
      {
-      "entranceTime": 34.39999999999999, 
+      "entranceTime": 34.4, 
       "stationId": "MA1", 
       "stepNumber": 0
      }, 
      {
-      "entranceTime": 36.39999999999999, 
+      "entranceTime": 36.4, 
       "stationId": "QIM", 
       "stepNumber": 1
      }, 
      {
-      "entranceTime": 36.39999999999999, 
+      "entranceTime": 36.4, 
       "stationId": "IM", 
       "stepNumber": 2
      }, 
      {
-      "entranceTime": 37.199999999999996, 
+      "entranceTime": 37.2, 
       "stationId": "E1", 
       "stepNumber": 3
      }
@@ -697,7 +697,7 @@
     "load_ratio": 0.0, 
     "setup_ratio": 0.0, 
     "waiting_ratio": 89.24731182795699, 
-    "working_ratio": 10.752688172043012
+    "working_ratio": 10.75268817204301
    }
   }, 
   {
@@ -709,7 +709,7 @@
     "load_ratio": 0.0, 
     "setup_ratio": 0.0, 
     "waiting_ratio": 94.6236559139785, 
-    "working_ratio": 5.376344086021506
+    "working_ratio": 5.376344086021505
    }
   }, 
   {
@@ -721,7 +721,7 @@
     "load_ratio": 0.0, 
     "setup_ratio": 0.0, 
     "waiting_ratio": 97.31182795698925, 
-    "working_ratio": 2.688172043010753
+    "working_ratio": 2.6881720430107525
    }
   }, 
   {
@@ -731,9 +731,9 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "setup_ratio": 4.5698924731182835, 
+    "setup_ratio": 4.569892473118283, 
     "waiting_ratio": 75.53763440860214, 
-    "working_ratio": 19.89247311827957
+    "working_ratio": 19.892473118279568
    }
   }, 
   {
@@ -743,9 +743,9 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "setup_ratio": 8.60215053763441, 
+    "setup_ratio": 8.602150537634408, 
     "waiting_ratio": 66.66666666666666, 
-    "working_ratio": 24.73118279569893
+    "working_ratio": 24.731182795698928
    }
   }, 
   {
@@ -856,8 +856,8 @@
    "_class": "Dream.Operator", 
    "id": "OP2", 
    "results": {
-    "waiting_ratio": 62.63440860215053, 
-    "working_ratio": 37.36559139784947
+    "waiting_ratio": 62.634408602150536, 
+    "working_ratio": 37.365591397849464
    }
   }, 
   {
@@ -865,7 +865,7 @@
    "id": "OP3", 
    "results": {
     "waiting_ratio": 62.63440860215052, 
-    "working_ratio": 37.36559139784948
+    "working_ratio": 37.36559139784947
    }
   }, 
   {
