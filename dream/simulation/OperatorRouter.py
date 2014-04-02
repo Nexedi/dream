@@ -26,9 +26,9 @@ Created on 19 Feb 2013
 Models an Interruption that schedules the operation of the machines by different managers
 '''
 
-from SimPy.Simulation import Process, Resource
+from SimPy.Simulation import Process, Resource, SimEvent
 from ObjectInterruption import ObjectInterruption
-from SimPy.Simulation import waituntil, now, hold, request, release
+from SimPy.Simulation import waituntil, now, hold, request, release, waitevent
 
 
 # ===========================================================================
@@ -49,6 +49,8 @@ class Router(ObjectInterruption):
         # list that holds all the objects that can receive
         self.pendingObjects=[]
         self.calledOperators=[]
+        # signal used to initiate the generator of the Router
+        self.startCycle=SimEvent('startCycle')
 #         # TODO: consider if there must be an argument set for the schedulingRules of the Router
 #         self.schedulingRule=''
         # list of the operators that may handle a machine at the current simulation time
@@ -57,6 +59,7 @@ class Router(ObjectInterruption):
         self.multipleCriterionList=[]
         # TODO: find out which must be the default for the scheduling Rule
         self.schedulingRule='WT'
+        # TODO: create an initialise method for router to reset the attributes for every replication
         
     # =======================================================================
     #                          the run method
@@ -68,15 +71,17 @@ class Router(ObjectInterruption):
     returns canAcceptAndIsRequested (inPositionToGet is True)
     '''
     def run(self):
-        from Globals import G
+        from Globals import G, findObjectById
         while 1:
             # wait until the router is called
-            yield waituntil,self,self.routerIsCalled
+            yield waitevent, self, self.startCycle
+            self.victim=findObjectById(self.startCycle.signalparam)
+            
+#             yield waituntil,self,self.routerIsCalled
             # when the router is called for the first time wait till all the entities 
             #     finished all their moves in stations of non-Machine-type 
             #     before they can enter again a type-Machine object
             yield waituntil, self,self.entitiesFinishedMoving
-            
             # update the objects to be served list (pendingObjects)
             self.pendingObjects=[object for object in G.MachineList if object.inPositionToGet]
 
@@ -178,6 +183,10 @@ class Router(ObjectInterruption):
                         
                         # assign an operator to the priorityObject
                         operator.operatorAssignedTo=priorityObject
+                        #=======================================================
+#                         # TESTING
+#                         print operator.id, 'got assigned to', priorityObject.id
+                        #=======================================================
                         
                         # and let it proceed withGetEntity
                         priorityObject.canProceedWithGetEntity=True
@@ -281,6 +290,7 @@ class Router(ObjectInterruption):
         self.schedulingRule='WT'
         # reset the call flag of the Router
         self.call=False
+#         self.victim.routerCycleOver.signal('router has implemented its logic')
         
     #=======================================================================
     #                             Sort pendingEntities
@@ -460,26 +470,6 @@ class Router(ObjectInterruption):
             operator.candidateEntity=findCandidateEntity()
             if operator.candidateEntity:
                 operator.candidateEntity.candidateReceiver=findCandidateReceiver()
-                
-#                 # initiate the local list variable available receivers
-#                 availableReceivers=[x for x in operator.candidateEntity.candidateReceivers\
-#                                             if not x in occupiedReceivers]
-#                 # and pick the object that is waiting for the most time
-#                 if availableReceivers:
-#                     # TODO: must find the receiver that waits the most
-#                     maxTimeWaiting=0
-#                     for object in availableReceivers:
-#                         timeWaiting=now()-object.timeLastEntityLeft 
-#                         if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
-#                             maxTimeWaiting=timeWaiting
-#                             availableReceiver=object
-#                          
-#                     operator.candidateEntity.candidateReceiver=availableReceiver
-#                     occupiedReceivers.append(availableReceiver)
-#                 # if there is no available receiver add the entity to the entitiesWithOccupiedReceivers list
-#                 else:
-#                     entitiesWithOccupiedReceivers.append(availableEntity)
-#                     operator.candidateEntity.candidateReceiver=None
     
                     
     #=======================================================================

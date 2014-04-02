@@ -25,8 +25,8 @@ Created on 8 Nov 2012
 Models a machine that can also have failures
 '''
 
-from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import activate, passivate, waituntil, now, hold, request, release
+from SimPy.Simulation import Process, Resource, SimEvent
+from SimPy.Simulation import activate, passivate, waituntil, now, hold, request, release, waitevent
 
 from Failure import Failure
 from CoreObject import CoreObject
@@ -136,11 +136,14 @@ class Machine(CoreObject):
         
         self.isPreemptive=isPreemptive
         self.resetOnPreemption=resetOnPreemption
+        
+        self.routerCycleOver=SimEvent('routerCycleOver')
     
     # =======================================================================
     # initialize the machine
     # =======================================================================        
     def initialize(self):
+        # TODO: initialise Router for every replication
         # using the Process __init__ and not the CoreObject __init__
         CoreObject.initialize(self)        
         # initialize the internal Queue (type Resource) of the Machine 
@@ -216,8 +219,11 @@ class Machine(CoreObject):
                     and any(type=="Load" for type in self.multOperationTypeList):
                 # the machine informs the router that it can receive from a requesting object
                 self.requestRouter()
+                self.router.startCycle.signal(self.id)
                 # the machine must wait until the router has decided which machine will operated by which operator
+#                 yield waitevent, self, self.routerCycleOver
                 yield waituntil, self, self.router.routerIsSet
+                self.router.victim=None
                 # if the machine is not picked by the router the it should wait again 
                 if not self.canProceedWithGetEntity:
                     continue 
