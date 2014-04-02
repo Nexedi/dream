@@ -1,0 +1,895 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.MouldAssemblyBuffer", 
+   "id": "AB1"
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "C1O1", 
+   "results": {
+    "completionTime": 18.7, 
+    "schedule": [
+     {
+      "entranceTime": 1.5, 
+      "stationId": "OD0", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 1.5, 
+      "stationId": "QCAM", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 1.5, 
+      "stationId": "CAM1", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 4.0, 
+      "stationId": "QMILL", 
+      "stepNumber": 3
+     }, 
+     {
+      "entranceTime": 4.0, 
+      "stationId": "MILL2", 
+      "stepNumber": 4
+     }, 
+     {
+      "entranceTime": 6.5, 
+      "stationId": "QEDM", 
+      "stepNumber": 5
+     }, 
+     {
+      "entranceTime": 6.5, 
+      "stationId": "EDM", 
+      "stepNumber": 6
+     }, 
+     {
+      "entranceTime": 9.0, 
+      "stationId": "AB1", 
+      "stepNumber": 7
+     }, 
+     {
+      "entranceTime": 18.7, 
+      "stationId": "MA3", 
+      "stepNumber": 8
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "C1O2", 
+   "results": {
+    "completionTime": 13.600000000000001, 
+    "schedule": [
+     {
+      "entranceTime": 2.0999999999999996, 
+      "stationId": "OD0", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 2.0999999999999996, 
+      "stationId": "QCAM", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 2.0999999999999996, 
+      "stationId": "CAM2", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 2.4999999999999996, 
+      "stationId": "QMILL", 
+      "stepNumber": 3
+     }, 
+     {
+      "entranceTime": 2.4999999999999996, 
+      "stationId": "MILL1", 
+      "stepNumber": 4
+     }, 
+     {
+      "entranceTime": 6.699999999999999, 
+      "stationId": "QEDM", 
+      "stepNumber": 5
+     }, 
+     {
+      "entranceTime": 9.0, 
+      "stationId": "EDM", 
+      "stepNumber": 6
+     }, 
+     {
+      "entranceTime": 10.200000000000001, 
+      "stationId": "AB1", 
+      "stepNumber": 7
+     }, 
+     {
+      "entranceTime": 13.600000000000001, 
+      "stationId": "MA1", 
+      "stepNumber": 8
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "C1O3", 
+   "results": {
+    "completionTime": 15.300000000000002, 
+    "schedule": [
+     {
+      "entranceTime": 3.6, 
+      "stationId": "OD0", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 3.6, 
+      "stationId": "QCAM", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 3.6, 
+      "stationId": "CAM2", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 4.0, 
+      "stationId": "QMILL", 
+      "stepNumber": 3
+     }, 
+     {
+      "entranceTime": 6.5, 
+      "stationId": "MILL2", 
+      "stepNumber": 4
+     }, 
+     {
+      "entranceTime": 10.7, 
+      "stationId": "QEDM", 
+      "stepNumber": 5
+     }, 
+     {
+      "entranceTime": 10.7, 
+      "stationId": "EDM", 
+      "stepNumber": 6
+     }, 
+     {
+      "entranceTime": 11.9, 
+      "stationId": "AB1", 
+      "stepNumber": 7
+     }, 
+     {
+      "entranceTime": 15.300000000000002, 
+      "stationId": "MA2", 
+      "stepNumber": 8
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "C1O4", 
+   "results": {
+    "completionTime": 34.39999999999999, 
+    "schedule": [
+     {
+      "entranceTime": 17.099999999999998, 
+      "stationId": "OD0", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 17.099999999999998, 
+      "stationId": "QCAM", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 22.2, 
+      "stationId": "CAM2", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 22.6, 
+      "stationId": "QMILL", 
+      "stepNumber": 3
+     }, 
+     {
+      "entranceTime": 22.6, 
+      "stationId": "MILL2", 
+      "stepNumber": 4
+     }, 
+     {
+      "entranceTime": 26.8, 
+      "stationId": "QEDM", 
+      "stepNumber": 5
+     }, 
+     {
+      "entranceTime": 26.8, 
+      "stationId": "EDM", 
+      "stepNumber": 6
+     }, 
+     {
+      "entranceTime": 28.0, 
+      "stationId": "AB1", 
+      "stepNumber": 7
+     }, 
+     {
+      "entranceTime": 34.39999999999999, 
+      "stationId": "MA1", 
+      "stepNumber": 8
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "C2O1", 
+   "results": {
+    "completionTime": 18.7, 
+    "schedule": [
+     {
+      "entranceTime": 1.5, 
+      "stationId": "OD0", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 1.5, 
+      "stationId": "QCAM", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 9.0, 
+      "stationId": "CAM1", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 10.6, 
+      "stationId": "QMILL", 
+      "stepNumber": 3
+     }, 
+     {
+      "entranceTime": 10.6, 
+      "stationId": "MILL1", 
+      "stepNumber": 4
+     }, 
+     {
+      "entranceTime": 15.0, 
+      "stationId": "QEDM", 
+      "stepNumber": 5
+     }, 
+     {
+      "entranceTime": 17.099999999999998, 
+      "stationId": "EDM", 
+      "stepNumber": 6
+     }, 
+     {
+      "entranceTime": 18.7, 
+      "stationId": "AB1", 
+      "stepNumber": 7
+     }, 
+     {
+      "entranceTime": 18.7, 
+      "stationId": "MA3", 
+      "stepNumber": 8
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "C2O2", 
+   "results": {
+    "completionTime": 13.600000000000001, 
+    "schedule": [
+     {
+      "entranceTime": 2.0999999999999996, 
+      "stationId": "OD0", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 2.0999999999999996, 
+      "stationId": "QCAM", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 10.200000000000001, 
+      "stationId": "CAM2", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 11.200000000000001, 
+      "stationId": "QMILL", 
+      "stepNumber": 3
+     }, 
+     {
+      "entranceTime": 11.200000000000001, 
+      "stationId": "MILL2", 
+      "stepNumber": 4
+     }, 
+     {
+      "entranceTime": 11.700000000000001, 
+      "stationId": "QEDM", 
+      "stepNumber": 5
+     }, 
+     {
+      "entranceTime": 11.9, 
+      "stationId": "EDM", 
+      "stepNumber": 6
+     }, 
+     {
+      "entranceTime": 13.600000000000001, 
+      "stationId": "AB1", 
+      "stepNumber": 7
+     }, 
+     {
+      "entranceTime": 13.600000000000001, 
+      "stationId": "MA1", 
+      "stepNumber": 8
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "C2O3", 
+   "results": {
+    "completionTime": 15.300000000000002, 
+    "schedule": [
+     {
+      "entranceTime": 3.6, 
+      "stationId": "OD0", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 3.6, 
+      "stationId": "QCAM", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 11.9, 
+      "stationId": "CAM1", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 12.9, 
+      "stationId": "QMILL", 
+      "stepNumber": 3
+     }, 
+     {
+      "entranceTime": 12.9, 
+      "stationId": "MILL2", 
+      "stepNumber": 4
+     }, 
+     {
+      "entranceTime": 13.4, 
+      "stationId": "QEDM", 
+      "stepNumber": 5
+     }, 
+     {
+      "entranceTime": 13.600000000000001, 
+      "stationId": "EDM", 
+      "stepNumber": 6
+     }, 
+     {
+      "entranceTime": 15.300000000000002, 
+      "stationId": "AB1", 
+      "stepNumber": 7
+     }, 
+     {
+      "entranceTime": 15.300000000000002, 
+      "stationId": "MA2", 
+      "stepNumber": 8
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "C2O4", 
+   "results": {
+    "completionTime": 34.39999999999999, 
+    "schedule": [
+     {
+      "entranceTime": 17.099999999999998, 
+      "stationId": "OD0", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 17.099999999999998, 
+      "stationId": "QCAM", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 28.0, 
+      "stationId": "CAM1", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 29.0, 
+      "stationId": "QMILL", 
+      "stepNumber": 3
+     }, 
+     {
+      "entranceTime": 29.0, 
+      "stationId": "MILL1", 
+      "stepNumber": 4
+     }, 
+     {
+      "entranceTime": 29.5, 
+      "stationId": "QEDM", 
+      "stepNumber": 5
+     }, 
+     {
+      "entranceTime": 29.5, 
+      "stationId": "EDM", 
+      "stepNumber": 6
+     }, 
+     {
+      "entranceTime": 31.2, 
+      "stationId": "AB1", 
+      "stepNumber": 7
+     }, 
+     {
+      "entranceTime": 34.39999999999999, 
+      "stationId": "MA1", 
+      "stepNumber": 8
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "C3O4", 
+   "results": {
+    "completionTime": 34.39999999999999, 
+    "schedule": [
+     {
+      "entranceTime": 17.099999999999998, 
+      "stationId": "OD0", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 17.099999999999998, 
+      "stationId": "QCAM", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 31.2, 
+      "stationId": "CAM2", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 32.199999999999996, 
+      "stationId": "QMILL", 
+      "stepNumber": 3
+     }, 
+     {
+      "entranceTime": 32.199999999999996, 
+      "stationId": "MILL2", 
+      "stepNumber": 4
+     }, 
+     {
+      "entranceTime": 32.699999999999996, 
+      "stationId": "QEDM", 
+      "stepNumber": 5
+     }, 
+     {
+      "entranceTime": 32.699999999999996, 
+      "stationId": "EDM", 
+      "stepNumber": 6
+     }, 
+     {
+      "entranceTime": 34.39999999999999, 
+      "stationId": "AB1", 
+      "stepNumber": 7
+     }, 
+     {
+      "entranceTime": 34.39999999999999, 
+      "stationId": "MA1", 
+      "stepNumber": 8
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "CAD1", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "setup_ratio": 3.7634408602150518, 
+    "waiting_ratio": 88.70967741935485, 
+    "working_ratio": 7.526881720430108
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "CAD2", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "setup_ratio": 3.225806451612904, 
+    "waiting_ratio": 90.3225806451613, 
+    "working_ratio": 6.451612903225807
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "CAM1", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "setup_ratio": 4.032258064516125, 
+    "waiting_ratio": 83.6021505376344, 
+    "working_ratio": 12.365591397849462
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "CAM2", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "setup_ratio": 1.8817204301075274, 
+    "waiting_ratio": 91.39784946236557, 
+    "working_ratio": 6.720430107526883
+   }
+  }, 
+  {
+   "_class": "Dream.Exit", 
+   "id": "E1", 
+   "results": {
+    "lifespan": 23.475, 
+    "takt_time": 9.299999999999999, 
+    "throughput": 4
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "EDM", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "setup_ratio": 8.602150537634417, 
+    "waiting_ratio": 61.02150537634407, 
+    "working_ratio": 30.376344086021508
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "IM", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "setup_ratio": 2.150537634408609, 
+    "waiting_ratio": 86.8279569892473, 
+    "working_ratio": 11.021505376344086
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "M1O1", 
+   "results": {
+    "completionTime": 22.2, 
+    "schedule": [
+     {
+      "entranceTime": 18.7, 
+      "stationId": "MA3", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 19.7, 
+      "stationId": "QIM", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 19.7, 
+      "stationId": "IM", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 22.2, 
+      "stationId": "E1", 
+      "stepNumber": 3
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "M1O2", 
+   "results": {
+    "completionTime": 16.400000000000002, 
+    "schedule": [
+     {
+      "entranceTime": 13.600000000000001, 
+      "stationId": "MA1", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 15.600000000000001, 
+      "stationId": "QIM", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 15.600000000000001, 
+      "stationId": "IM", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 16.400000000000002, 
+      "stationId": "E1", 
+      "stepNumber": 3
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "M1O3", 
+   "results": {
+    "completionTime": 18.100000000000005, 
+    "schedule": [
+     {
+      "entranceTime": 15.300000000000002, 
+      "stationId": "MA2", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 17.300000000000004, 
+      "stationId": "QIM", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 17.300000000000004, 
+      "stationId": "IM", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 18.100000000000005, 
+      "stationId": "E1", 
+      "stepNumber": 3
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "M1O4", 
+   "results": {
+    "completionTime": 37.199999999999996, 
+    "schedule": [
+     {
+      "entranceTime": 34.39999999999999, 
+      "stationId": "MA1", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 36.39999999999999, 
+      "stationId": "QIM", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 36.39999999999999, 
+      "stationId": "IM", 
+      "stepNumber": 2
+     }, 
+     {
+      "entranceTime": 37.199999999999996, 
+      "stationId": "E1", 
+      "stepNumber": 3
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "MA1", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "setup_ratio": 0.0, 
+    "waiting_ratio": 89.24731182795699, 
+    "working_ratio": 10.752688172043012
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "MA2", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "setup_ratio": 0.0, 
+    "waiting_ratio": 94.6236559139785, 
+    "working_ratio": 5.376344086021506
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "MA3", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "setup_ratio": 0.0, 
+    "waiting_ratio": 97.31182795698925, 
+    "working_ratio": 2.688172043010753
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "MILL1", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "setup_ratio": 4.5698924731182835, 
+    "waiting_ratio": 75.53763440860214, 
+    "working_ratio": 19.89247311827957
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "MILL2", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "setup_ratio": 8.60215053763441, 
+    "waiting_ratio": 66.66666666666666, 
+    "working_ratio": 24.73118279569893
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "O1", 
+   "results": {
+    "completionTime": 1.5, 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "stationId": "Q0", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "stationId": "CAD2", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 1.5, 
+      "stationId": "OD0", 
+      "stepNumber": 2
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "O2", 
+   "results": {
+    "completionTime": 2.0999999999999996, 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "stationId": "Q0", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "stationId": "CAD1", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 2.0999999999999996, 
+      "stationId": "OD0", 
+      "stepNumber": 2
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "O3", 
+   "results": {
+    "completionTime": 3.6, 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "stationId": "Q0", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 1.5, 
+      "stationId": "CAD2", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 3.6, 
+      "stationId": "OD0", 
+      "stepNumber": 2
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "O4", 
+   "results": {
+    "completionTime": 17.099999999999998, 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "stationId": "Q0", 
+      "stepNumber": 0
+     }, 
+     {
+      "entranceTime": 15.0, 
+      "stationId": "CAD1", 
+      "stepNumber": 1
+     }, 
+     {
+      "entranceTime": 17.099999999999998, 
+      "stationId": "OD0", 
+      "stepNumber": 2
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "id": "OP1", 
+   "results": {
+    "waiting_ratio": 0.0, 
+    "working_ratio": 100.0
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "id": "OP2", 
+   "results": {
+    "waiting_ratio": 62.63440860215053, 
+    "working_ratio": 37.36559139784947
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "id": "OP3", 
+   "results": {
+    "waiting_ratio": 62.63440860215052, 
+    "working_ratio": 37.36559139784948
+   }
+  }, 
+  {
+   "_class": "Dream.QueueManagedJob", 
+   "id": "Q0"
+  }, 
+  {
+   "_class": "Dream.ConditionalBuffer", 
+   "id": "QCAM"
+  }, 
+  {
+   "_class": "Dream.QueueManagedJob", 
+   "id": "QEDM"
+  }, 
+  {
+   "_class": "Dream.QueueManagedJob", 
+   "id": "QIM"
+  }, 
+  {
+   "_class": "Dream.QueueManagedJob", 
+   "id": "QMILL"
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}
