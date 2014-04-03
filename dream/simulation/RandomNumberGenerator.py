@@ -55,7 +55,8 @@ class RandomNumberGenerator(object):
                     return number
         elif self.distributionType=="Erlang":    #if the distribution is erlang          
             return G.Rnd.gammavariate(self.alpha, self.beta)
+        elif(self.distributionType=="Uniform"):     #if the distribution is uniform 
+            return G.Rnd.uniform(self.min, self.max)
         else:
             raise ValueError("Unknown distribution %r used in %s %s" %
                             (self.distributionType, self.obj.__class__, self.obj.id))
-
