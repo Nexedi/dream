@@ -1,0 +1,196 @@
+{
+  "edges": {
+    "con_108": [
+      "M2", 
+      "E2", 
+      {}
+    ], 
+    "con_123": [
+      "M2", 
+      "Q1", 
+      {}
+    ], 
+    "con_19": [
+      "S1", 
+      "Q1", 
+      {}
+    ], 
+    "con_38": [
+      "Q1", 
+      "M1", 
+      {}
+    ], 
+    "con_61": [
+      "M1", 
+      "Q2", 
+      {}
+    ], 
+    "con_78": [
+      "Q2", 
+      "M2", 
+      {}
+    ], 
+    "con_93": [
+      "M2", 
+      "E1", 
+      {}
+    ]
+  }, 
+  "general": {
+    "confidenceLevel": 0.95, 
+    "currentDate": "2014/04/03", 
+    "ke_url": "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
+    "maxSimTime": 100, 
+    "numberOfReplications": 1, 
+    "processTimeout": 10, 
+    "seed": "1", 
+    "trace": "Yes"
+  }, 
+  "nodes": {
+    "E1": {
+      "_class": "Dream.Exit", 
+      "element_id": "DreamNode_3"
+    }, 
+    "E2": {
+      "_class": "Dream.Exit", 
+      "element_id": "DreamNode_7"
+    }, 
+    "M1": {
+      "_class": "Dream.Machine", 
+      "element_id": "DreamNode_2", 
+      "failures": {
+        "MTTF": 40, 
+        "MTTR": 10, 
+        "failureDistribution": "No", 
+        "repairman": "None"
+      }, 
+      "name": "Grinding", 
+      "processingTime": {
+        "distributionType": "Fixed", 
+        "max": "", 
+        "mean": 0.25, 
+        "min": "", 
+        "stdev": ""
+      }
+    }, 
+    "M2": {
+      "_class": "Dream.MachineProbOut", 
+      "element_id": "DreamNode_6", 
+      "failures": {
+        "MTTF": 40, 
+        "MTTR": 10, 
+        "failureDistribution": "No", 
+        "repairman": "None"
+      }, 
+      "name": "Testing", 
+      "processingTime": {
+        "distributionType": "Fixed", 
+        "max": "", 
+        "mean": 0.75, 
+        "min": "", 
+        "stdev": ""
+      },
+	  "routingOutProbabilities":{
+		"E1":70,
+		"E2":20,
+		"Q1":10
+	  }
+    }, 
+    "Q1": {
+      "_class": "Dream.Queue", 
+      "capacity": -1, 
+      "element_id": "DreamNode_4", 
+      "name": "Q1", 
+      "schedulingRule": "FIFO"
+    }, 
+    "Q2": {
+      "_class": "Dream.Queue", 
+      "capacity": 1, 
+      "element_id": "DreamNode_5", 
+      "schedulingRule": "FIFO"
+    }, 
+    "S1": {
+      "_class": "Dream.Source", 
+      "element_id": "DreamNode_1", 
+      "entity": "Dream.Part", 
+      "interarrivalTime": {
+        "distributionType": "Fixed", 
+        "max": "", 
+        "mean": 1, 
+        "min": "", 
+        "stdev": ""
+      }, 
+      "name": "S1"
+    }
+  }, 
+  "preference": {
+    "coordinates": {
+      "E1": {
+        "left": 0.9196456136739982, 
+        "top": 0.6051683385542048
+      }, 
+      "E2": {
+        "left": 0.7390844708061634, 
+        "top": 0.9058613567733254
+      }, 
+      "M1": {
+        "left": 0.5388767787143672, 
+        "top": 0.1323805740587323
+      }, 
+      "M2": {
+        "left": 0.7166312716930647, 
+        "top": 0.5749099216264946
+      }, 
+      "Q1": {
+        "left": 0.26288953961586314, 
+        "top": 0.16453014204442443
+      }, 
+      "Q2": {
+        "left": 0.727932077385246, 
+        "top": 0.15181413132672905
+      }, 
+      "S1": {
+        "left": 0.052390797930563476, 
+        "top": 0.13805402723267798
+      }
+    }
+  }, 
+  "shift_spreadsheet": [
+    [
+      "Day", 
+      "Machines", 
+      "Start", 
+      "End"
+    ], 
+    [
+      null, 
+      null, 
+      null, 
+      null
+    ]
+  ], 
+  "wip_part_spreadsheet": [
+    [
+      "Order ID", 
+      "Due Date", 
+      "Priority", 
+      "Project Manager", 
+      "Part", 
+      "Part Type", 
+      "Sequence", 
+      "Processing Times", 
+      "Prerequisites Parts"
+    ], 
+    [
+      null, 
+      null, 
+      null, 
+      null, 
+      null, 
+      null, 
+      null, 
+      null, 
+      null
+    ]
+  ]
+}
