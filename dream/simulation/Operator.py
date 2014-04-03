@@ -57,41 +57,46 @@ class Operator(ObjectResource):
             SRlist = schedulingRule.split("-")  # split the string of the criteria (delimiter -)
             self.schedulingRule=SRlist.pop(0)   # take the first criterion of the list
             self.multipleCriterionList=SRlist   # hold the criteria list in the property multipleCriterionList
- 
+            
         for scheduling_rule in SRlist:
-          if scheduling_rule not in ("FIFO", "Priority","WT", "EDD", "EOD",
-            "NumStages", "RPC", "LPT", "SPT", "MS", "WINQ"):
+          if scheduling_rule not in self.getSupportedSchedulingRules():
             raise ValueError("Unknown scheduling rule %s for %s" %
               (scheduling_rule, id))
+        
         # the station that the operator is assigned to
         self.operatorAssignedTo=None
         
         # variables to be used by OperatorRouter
         self.candidateEntities=[]               # list of the entities requesting the operator at a certain simulation Time
         self.candidateEntity=None               # the entity that will be chosen for processing
+        
+    @staticmethod
+    def getSupportedSchedulingRules():
+        return ("FIFO", "Priority", "WT", "EDD", "EOD",
+            "NumStages", "RPC", "LPT", "SPT", "MS", "WINQ")
     
     # =======================================================================
     #    sorts the candidateEntities of the Operator according to the scheduling rule
-    #     TODO: clean the comments
-    #     TODO: maybe the argument is not needed. the candidate entities is a variable of the object
     # =======================================================================
     def sortCandidateEntities(self):
+        # TODO: have to consider what happens in case of a critical order
+        #if we have sorting according to multiple criteria we have to call the sorter many times
+        if self.schedulingRule=="MC":
+            for criterion in reversed(self.multipleCriterionList):
+               self.activeCandidateQSorter(criterion=criterion) 
+        #else we just use the default scheduling rule
+        else:
+            self.activeCandidateQSorter(self.schedulingRule)
+    
+
+    # =======================================================================
+    #    sorts the Entities of the Queue according to the scheduling rule
+    # =======================================================================
+    def activeCandidateQSorter(self, criterion=None):
         pass
-#         # TODO: have to consider what happens in case of a critical order
-#         # FIFO sorting has no meaning when sorting candidateEntities
-#         if self.schedulingRule=="FIFO":
-#             self.activeCandidateQSorter('WT', candidateEntities=candidateEntities)
-#         #if we have sorting according to multiple criteria we have to call the sorter many times
-#         elif self.schedulingRule=="MC":
-#             for criterion in reversed(self.multipleCriterionList):
-#                self.activeCandidateQSorter(criterion=criterion, candidateEntities=candidateEntities) 
-#         #else we just use the default scheduling rule
-#         else:
-#             self.activeCandidateQSorter(self.schedulingRule, candidateEntities=candidateEntities)
 
     # =======================================================================
     #    sorts the activeCallerrs of the Operator according to the scheduling rule
-    #    TODO: change the name of the class (they are not entities)
     # =======================================================================
     def sortActiveCallers(self):
         #if we have sorting according to multiple criteria we have to call the sorter many times

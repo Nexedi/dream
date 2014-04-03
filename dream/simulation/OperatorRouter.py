@@ -40,6 +40,8 @@ class Router(ObjectInterruption):
     #   according to this implementation one machine per broker is allowed
     #     The Broker is initiated within the Machine and considered as 
     #                black box for the ManPy end Developer
+    # TODO: we should maybe define a global schedulingRule criterion that will be 
+    #         chosen in case of multiple criteria for different Operators
     # ======================================================================= 
     def __init__(self):
         ObjectInterruption.__init__(self)
@@ -83,119 +85,45 @@ class Router(ObjectInterruption):
             # wait until the router is called
             yield waitevent, self, self.startCycle
             self.victim=findObjectById(self.startCycle.signalparam)
-            
 #             yield waituntil,self,self.isCalled
-
             # when the router is called for the first time wait till all the entities 
             #     finished all their moves in stations of non-Machine-type 
             #     before they can enter again a type-Machine object
             yield waituntil, self,self.entitiesFinishedMoving
             # update the objects to be served list (pendingObjects)
             self.pendingObjects=[object for object in G.MachineList if object.inPositionToGet]
-
-            #===================================================================
-#             # TESTING
-#             print now(), '================================================================================'
-#             print '        the pending objects are        ', [str(object.id) for object in self.pendingObjects]
-            #===================================================================
-            
             # update the calledOperators list
             self.calledOperators=[operator for operator in G.OperatorsList if len(operator.activeCallersList)]
-
-            #===================================================================
-#             # TESTING
-#             print '        (calledOperators, activeCallers, callerEntities): ', [(str(operator.id),\
-#                                                                 [str(x.id) for x in operator.activeCallersList],\
-#                                                                 [str(x.giver.getActiveObjectQueue()[0].id)for x in operator.activeCallersList])\
-#                                                                 for operator in self.calledOperators]
-            #===================================================================
-            
             # find the operators that can start working now even if they are not called
             self.findCandidateOperators()
-            
-            #===================================================================
-#             # TESTING
-#             print '                {} the candidateOperators                                      ',
-#             print [str(op.id) for op in self.candidateOperators]
-#             print [str(entity.id) for entity in G.pendingEntities]
-            #===================================================================
-            
             # sort the pendingEntities list
             self.sortPendingEntities()
-
-            #===================================================================
-#             # TESTING
-#             print [str(entity.id) for entity in G.pendingEntities]
-#             if G.pendingEntities:
-#                 print '                {} the pending entities that can proceed are:                  ',
-#                 print [str(entity.id) for entity in G.pendingEntities if entity.canProceed]
-            #===================================================================
-            
             # find the operators candidateEntities
             self.findCandidateEntities()
-            
-            #===================================================================
-#             # TESTING
-#             print '                {} candidate entities for each candidateOperator               ',
-#             print [(str(operator.id),[str(candidateEntity.id) for candidateEntity in operator.candidateEntities],)\
-#                             for operator in self.candidateOperators]
-            #===================================================================
-            
             # find the entity that will occupy the resource, and the station that will receive it (if any available)
             self.findCandidateReceivers()
-            
-            #===================================================================
-#             # TESTING
-#             print '                {} (candidateOperator, candidateEntity, candidateReceiver)     ',
-#             print [(str(op.id), str(op.candidateEntity.id), str(op.candidateEntity.candidateReceiver.id))\
-#                     for op in self.candidateOperators if op.candidateEntity.candidateReceiver]
-            #===================================================================
-            
             # sort the givers for the operators that will process the entities
             self.sortGiverQueue()
-            
             # for all the operators that are requested
             for operator in self.calledOperators:
                 priorityObject=None
-                
                 # check if the candidateReceivers are inPositionToGet and  if they are already called
                 try:
                     receiverIsActive=(operator.candidateEntity.candidateReceiver in operator.activeCallersList\
                                   and operator.candidateEntity.candidateReceiver in self.pendingObjects )
                 except:
                     receiverIsActive=True
-                    
-                #===============================================================
-#                 # TESTING
-#                 print '        calledOperator', operator.id,
-#                 print 'will receive?',operator.checkIfResourceIsAvailable() and receiverIsActive
-                #===============================================================
-                
                 # check if the candidateOperators are available, if the are requested and reside in the pendingObjects list 
                 if operator.checkIfResourceIsAvailable() and \
                         receiverIsActive:
-                    
                     # sort the activeCallersList of the operator
                     operator.sortActiveCallers()
-                    
                     # find the activeCaller that has priority 
                     priorityObject=next(x for x in operator.activeCallersList if x in self.pendingObjects)
-                    #===========================================================
-#                     # TESTING
-#                     print [str(caller.id) for caller in operator.activeCallersList]
-#                     print '                the PRIORITY object is', priorityObject.id
-                    #===========================================================
-                    
                     # and if the priorityObject is indeed pending
                     if priorityObject in self.pendingObjects:
-                        
                         # assign an operator to the priorityObject
                         operator.operatorAssignedTo=priorityObject
-                        #=======================================================
-#                         # TESTING
-#                         print operator.id, 'got assigned to', priorityObject.id
-                        #=======================================================
-                        
                         # and let it proceed withGetEntity
                         priorityObject.canProceedWithGetEntity=True
                         priorityObject.inPositionToGet=False
@@ -206,12 +134,6 @@ class Router(ObjectInterruption):
             for object in self.pendingObjects:
                 if not object.canProceedWithGetEntity:
                     object.giver.unAssignExit()
-            #===================================================================
-#             # TESTING
-#             print '        these objects will proceed with getting entities',
-#             print [str(object.id) for object in self.pendingObjects if object.canProceedWithGetEntity]
-            #===================================================================
-            
             self.exit()
     
     #===========================================================================
