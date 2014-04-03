@@ -39,8 +39,8 @@
                                 "mean": "1"
                             },
                             "setupTime": {
-                                "setupDistribution": "Fixed",
-                                "setupMean": "0.5"
+                                "distributionType": "Fixed",
+                                "mean": "0.5"
                             }
                         }
                     ],
@@ -73,8 +73,8 @@
                                         "mean": "2"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.5"
+										"distributionType": "Fixed",
+										"mean": "0.5"
 									}
                                 },
                                 {
@@ -93,8 +93,8 @@
                                         "mean": "2"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.5"
+										"distributionType": "Fixed",
+										"mean": "0.5"
 									}
                                 },
                                 {
@@ -113,8 +113,8 @@
                                         "mean": "2"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.5"
+										"distributionType": "Fixed",
+										"mean": "0.5"
 									}
                                 },
                                 {
@@ -159,8 +159,8 @@
                                         "mean": "1"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.6"
+										"distributionType": "Fixed",
+										"mean": "0.6"
 									}
                                 },
                                 {
@@ -179,8 +179,8 @@
                                         "mean": "4"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.4"
+										"distributionType": "Fixed",
+										"mean": "0.4"
 									}
                                 },
                                 {
@@ -199,8 +199,8 @@
                                         "mean": "1"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.6"
+										"distributionType": "Fixed",
+										"mean": "0.6"
 									}
                                 },
                                 {
@@ -248,8 +248,8 @@
                                         "mean": "2"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.5"
+										"distributionType": "Fixed",
+										"mean": "0.5"
 									}
                                 },
                                 {
@@ -285,8 +285,8 @@
                                 "mean": "1.4"
                             },
                             "setupTime": {
-                                "setupDistribution": "Fixed",
-                                "setupMean": "0.7"
+                                "distributionType": "Fixed",
+                                "mean": "0.7"
                             }
                         }
                     ],
@@ -319,8 +319,8 @@
                                         "mean": "0.3"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.1"
+										"distributionType": "Fixed",
+										"mean": "0.1"
 									}
                                 },
                                 {
@@ -339,8 +339,8 @@
                                         "mean": "3"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "1.2"
+										"distributionType": "Fixed",
+										"mean": "1.2"
 									}
                                 },
                                 {
@@ -359,8 +359,8 @@
                                         "mean": "0.9"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.3"
+										"distributionType": "Fixed",
+										"mean": "0.3"
 									}
                                 },
                                 {
@@ -405,8 +405,8 @@
                                         "mean": "0.8"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.2"
+										"distributionType": "Fixed",
+										"mean": "0.2"
 									}
                                 },
                                 {
@@ -425,8 +425,8 @@
                                         "mean": "0.4"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.1"
+										"distributionType": "Fixed",
+										"mean": "0.1"
 									}
                                 },
                                 {
@@ -445,8 +445,8 @@
                                         "mean": "1.4"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.3"
+										"distributionType": "Fixed",
+										"mean": "0.3"
 									}
                                 },
                                 {
@@ -494,8 +494,8 @@
                                         "mean": "0.7"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.1"
+										"distributionType": "Fixed",
+										"mean": "0.1"
 									}
                                 },
                                 {
@@ -531,8 +531,8 @@
                                 "mean": "1.4"
                             },
                             "setupTime": {
-                                "setupDistribution": "Fixed",
-                                "setupMean": "0.7"
+                                "distributionType": "Fixed",
+                                "mean": "0.7"
                             }
                         }
                     ],
@@ -565,8 +565,8 @@
                                         "mean": "0.3"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.1"
+										"distributionType": "Fixed",
+										"mean": "0.1"
 									}
                                 },
                                 {
@@ -585,8 +585,8 @@
                                         "mean": "3"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "1.2"
+										"distributionType": "Fixed",
+										"mean": "1.2"
 									}
                                 },
                                 {
@@ -605,8 +605,8 @@
                                         "mean": "0.9"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.3"
+										"distributionType": "Fixed",
+										"mean": "0.3"
 									}
                                 },
                                 {
@@ -651,8 +651,8 @@
                                         "mean": "0.8"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.2"
+										"distributionType": "Fixed",
+										"mean": "0.2"
 									}
                                 },
                                 {
@@ -671,8 +671,8 @@
                                         "mean": "0.4"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.1"
+										"distributionType": "Fixed",
+										"mean": "0.1"
 									}
                                 },
                                 {
@@ -691,8 +691,8 @@
                                         "mean": "1.4"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.3"
+										"distributionType": "Fixed",
+										"mean": "0.3"
 									}
                                 },
                                 {
@@ -740,8 +740,8 @@
                                         "mean": "0.7"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.1"
+										"distributionType": "Fixed",
+										"mean": "0.1"
 									}
                                 },
                                 {
@@ -777,8 +777,8 @@
                                 "mean": "1.4"
                             },
                             "setupTime": {
-                                "setupDistribution": "Fixed",
-                                "setupMean": "0.7"
+                                "distributionType": "Fixed",
+                                "mean": "0.7"
                             }
                         }
                     ],
@@ -811,8 +811,8 @@
                                         "mean": "0.3"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.1"
+										"distributionType": "Fixed",
+										"mean": "0.1"
 									}
                                 },
                                 {
@@ -831,8 +831,8 @@
                                         "mean": "3"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "1.2"
+										"distributionType": "Fixed",
+										"mean": "1.2"
 									}
                                 },
                                 {
@@ -851,8 +851,8 @@
                                         "mean": "0.9"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.3"
+										"distributionType": "Fixed",
+										"mean": "0.3"
 									}
                                 },
                                 {
@@ -897,8 +897,8 @@
                                         "mean": "0.8"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.2"
+										"distributionType": "Fixed",
+										"mean": "0.2"
 									}
                                 },
                                 {
@@ -917,8 +917,8 @@
                                         "mean": "0.4"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.1"
+										"distributionType": "Fixed",
+										"mean": "0.1"
 									}
                                 },
                                 {
@@ -937,8 +937,8 @@
                                         "mean": "1.4"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.3"
+										"distributionType": "Fixed",
+										"mean": "0.3"
 									}
                                 },
                                 {
@@ -983,8 +983,8 @@
                                         "mean": "0.8"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.2"
+										"distributionType": "Fixed",
+										"mean": "0.2"
 									}
                                 },
                                 {
@@ -1003,8 +1003,8 @@
                                         "mean": "0.4"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.1"
+										"distributionType": "Fixed",
+										"mean": "0.1"
 									}
                                 },
                                 {
@@ -1023,8 +1023,8 @@
                                         "mean": "1.4"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.3"
+										"distributionType": "Fixed",
+										"mean": "0.3"
 									}
                                 },
                                 {
@@ -1072,8 +1072,8 @@
                                         "mean": "0.7"
                                     },
 									"setupTime":{
-										"setupDistribution": "Fixed",
-										"setupMean": "0.1"
+										"distributionType": "Fixed",
+										"mean": "0.1"
 									}
                                 },
                                 {
