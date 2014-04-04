@@ -118,11 +118,8 @@ class QueueManagedJob(QueueJobShop):
     def sortEntitiesForOperator(self, operator=None):
         activeObjectQueue=self.getActiveObjectQueue()
         if operator:
-            self.sortEntities()
-            activeObjectQueue.sort(key=lambda x: x.manager==operator, reverse=True)
-            if not activeObjectQueue[0].managerAvailable:
-                # added for testing
-                print 'the entity in front of the internal queue has no manager available, revise'
+#             self.sortEntities()
+            activeObjectQueue.sort(key=lambda x: x.manager==operator and x.managerAvailable, reverse=True)
         else:
             # added for testing
             print 'there must be a caller defined for this kind of Queue sorting'
