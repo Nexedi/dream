@@ -124,7 +124,8 @@ def _runWithTimeout(queue, func, args, kw):
 
    # print a traceback when terminated.
    def handler(sig, stack):
-     traceback.print_stack(stack)
+     app.logger.error("Terminating")
+     app.logger.info("".join(traceback.format_stack(stack)))
      sys.exit(0)
    signal.signal(signal.SIGTERM, handler)
 
@@ -207,14 +208,16 @@ def main(*args):
                    help='Port number to listen to')
   parser.add_argument('--host', dest='host', default="localhost",
                    help='Host address')
+  parser.add_argument('--logfile', dest='logfile', help='Log to file')
   arguments = parser.parse_args()
   global klass_name
   klass_name = 'dream.simulation.GUI.%s' % arguments.gui_class
+  if arguments.logfile:
+    file_handler = logging.FileHandler(arguments.logfile)
+    file_handler.setLevel(logging.DEBUG)
+    app.logger.addHandler(file_handler)
+
   # start the server
-  file_handler = logging.FileHandler(
-    os.path.join(os.path.dirname(__file__), '..', '..', 'log', 'dream.log'))
-  file_handler.setLevel(logging.DEBUG)
-  app.logger.addHandler(file_handler)
   app.run(debug=True, host=arguments.host, port=arguments.port)
 
 def run(*args):
