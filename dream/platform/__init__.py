@@ -212,7 +212,7 @@ def main(*args):
   global klass_name
   klass_name = 'dream.simulation.GUI.%s' % arguments.gui_class
   if arguments.logfile:
-    file_handler = logging.FileHandler(arguments.logfile)
+    file_handler = logging.FileHandler(os.path.expanduser(arguments.logfile))
     file_handler.setLevel(logging.DEBUG)
     app.logger.addHandler(file_handler)
 
