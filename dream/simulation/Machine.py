@@ -314,6 +314,29 @@ class Machine(CoreObject):
                 self.timeSetupEnded = now()
                 self.setupTimeCurrentEntity = self.timeSetupEnded-self.timeSetupStarted
                 self.totalSetupTime += self.setupTimeCurrentEntity
+            # setup is performed only when setup is set in Machines multOperationTypeList
+            # TODO: This must be also performed when no such operation is defined for the operator
+            #     but setupTime is given for the entity to be processed
+#             try:
+#                 if self.setupTime and not any(type=="Setup" for type in self.multOperationTypeList):
+#                     #===============================================================
+#                     # testing
+#                     if self.id=='MILL1' or self.id=='MILL2':
+#                         print '    ', now(), self.id, 'auto-setup'
+#                     #===============================================================
+#                     self.timeSetupStarted = now()
+#                     yield hold,self,self.calculateSetupTime()
+#                     #===========================================================
+#                     # testing
+#                     if self.id=='MILL1' or self.id=='MILL2':
+#                         print '    ', now()
+#                     #===========================================================
+#                     # TODO: if self.interrupted(): There is the issue of failure during the setup
+#                     self.timeSetupEnded = now()
+#                     self.setupTimeCurrentEntity = self.timeSetupEnded-self.timeSetupStarted
+#                     self.totalSetupTime += self.setupTimeCurrentEntity
+#             except:
+#                 pass
             
     # ======= release a resource if the only operation type is Setup
             if (self.operatorPool!="None")\
