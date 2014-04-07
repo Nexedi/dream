@@ -147,7 +147,7 @@ def runSimulation():
 def _runSimulation(parameter_dict):
   try:
     return dict(success=getGUIInstance().run(parameter_dict))
-  except Exception, e:
+  except Exception as e:
     tb = traceback.format_exc()
     app.logger.error(tb)
     return dict(error=tb)
@@ -194,7 +194,7 @@ def _runKnowledgeExtraction(parameter_dict):
       if station in nodes:
         parameter_dict['nodes'][station]['processingTime'] = B.ks_test(values)
     return dict(success=True, data=parameter_dict)
-  except Exception, e:
+  except Exception as e:
     tb = traceback.format_exc()
     app.logger.error(tb)
     return dict(error=tb)
