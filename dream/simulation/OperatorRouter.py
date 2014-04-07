@@ -43,7 +43,7 @@ class Router(ObjectInterruption):
     # TODO: we should maybe define a global schedulingRule criterion that will be 
     #         chosen in case of multiple criteria for different Operators
     # ======================================================================= 
-    def __init__(self):
+    def __init__(self,sorting=False):
         ObjectInterruption.__init__(self)
         self.type = "Router"
         # signal used to initiate the generator of the Router
@@ -52,7 +52,8 @@ class Router(ObjectInterruption):
         self.candidateOperators=[]
         self.multipleCriterionList=[]
         self.schedulingRule='WT'
-        self.sorting=False
+        # boolean flag to check whether the Router should perform sorting on operators and on pendingEntities
+        self.sorting=sorting
         
     #===========================================================================
     #                         the initialize method
@@ -70,8 +71,6 @@ class Router(ObjectInterruption):
         self.schedulingRule='WT'
         # flag used to check if the Router is initialised
         self.isInitialized=True
-        # boolean flag to check whether the Router should perform sorting on operators and on pendingEntities
-        self.sorting=False
         
     # =======================================================================
     #                          the run method
@@ -124,7 +123,8 @@ class Router(ObjectInterruption):
             #===================================================================
             
             # sort the pendingEntities list
-            self.sortPendingEntities()
+            if self.sorting:
+                self.sortPendingEntities()
             
             #===================================================================
 #             # TESTING
@@ -346,7 +346,8 @@ class Router(ObjectInterruption):
                     if entity.canProceed and not entity.manager in self.candidateOperators:
                         self.candidateOperators.append(entity.manager)
             # update the schedulingRule/multipleCriterionList of the Router
-            self.updateSchedulingRule()
+            if self.sorting:
+                self.updateSchedulingRule()
             
             
     #=======================================================================
@@ -401,13 +402,14 @@ class Router(ObjectInterruption):
         # if there operators that have only one option then sort the candidateOperators according to the first one of these
         # TODO: find out what happens if there are many operators with one option
         # TODO: incorporate that to 
-#         self.sortOperators() 
+        # self.sortOperators() 
         
-        # sort the operators according to their waiting time
-        self.candidateOperators.sort(key=lambda x: x.totalWorkingTime)
-        # sort according to the number of options
-        if operatorsWithOneOption:
-            self.candidateOperators.sort(key=lambda x: x in operatorsWithOneOption, reverse=True)
+        if self.sorting:
+            # sort the operators according to their waiting time
+            self.candidateOperators.sort(key=lambda x: x.totalWorkingTime)
+            # sort according to the number of options
+            if operatorsWithOneOption:
+                self.candidateOperators.sort(key=lambda x: x in operatorsWithOneOption, reverse=True)
         
     #=======================================================================
     # Find candidate entities and their receivers
@@ -448,11 +450,12 @@ class Router(ObjectInterruption):
 #                 operator.candidateEntity.candidateReceiver=None
             return availableReceiver
         
-        for operator in [x for x in self.candidateOperators if x.candidateEntities]:
-            operator.candidateEntity=operator.candidateEntities[0]
+#         for operator in [x for x in self.candidateOperators if x.candidateEntities]:
+#             operator.candidateEntity=operator.candidateEntities[0]
             
         # TODO: sorting again after choosing candidateEntity
-        self.sortOperators()
+        if self.sorting:
+            self.sortOperators()
         
         # for the candidateOperators that do have candidateEntities pick a candidateEntity
         for operator in [x for x in self.candidateOperators if x.candidateEntities]:
