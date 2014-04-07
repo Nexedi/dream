@@ -1,12 +1,19 @@
 
 from setuptools import setup, find_packages
 
+import finddata
+
+package_data = {
+    'dream.platform': finddata.find_package_data()['dream.platform']
+}
+
 setup(
     name='dream',
     version='0.0.1',
     license='LGPL',
     packages=find_packages('.'),
     package_dir={'': '.', 'simulation': 'simulation'},
+    package_data=package_data,
     install_requires=[
         'flask',
         'SimPy>=2,<3',
