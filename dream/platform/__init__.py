@@ -18,22 +18,22 @@
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 
-import sys
-import os
 import argparse
 import json
-import urllib
-import xlrd
-import traceback
-import multiprocessing
-from dream.KnowledgeExtraction.DistributionFitting import DistFittest
-from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
-
-import os.path
 import logging
+import multiprocessing
+import os
+import signal
+import sys
+import traceback
+import urllib
 
 from flask import Flask, jsonify, redirect, url_for
 from flask import request
+import xlrd
+
+from dream.KnowledgeExtraction.DistributionFitting import DistFittest
+from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
 
 global klass_name
 klass_name = None
@@ -115,8 +115,6 @@ def runWithTimeout(func, timeout, *args, **kw):
   return queue.get()
 
 def _runWithTimeout(queue, func, args, kw):
-   import signal
-   import traceback
 
    if hasattr(signal, 'SIGUSR1'):
      signal.signal(signal.SIGUSR1, lambda sig, stack: traceback.print_stack(stack))
