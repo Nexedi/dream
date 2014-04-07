@@ -48,11 +48,11 @@ class Router(ObjectInterruption):
         self.type = "Router"
         # signal used to initiate the generator of the Router
         self.startCycle=SimEvent('startCycle')
-        # TODO: create an initialise method for router to reset the attributes for every replication
         self.isInitialized=False
         self.candidateOperators=[]
         self.multipleCriterionList=[]
         self.schedulingRule='WT'
+        self.sorting=False
         
     #===========================================================================
     #                         the initialize method
@@ -68,7 +68,10 @@ class Router(ObjectInterruption):
         self.multipleCriterionList=[]
         # TODO: find out which must be the default for the scheduling Rule
         self.schedulingRule='WT'
+        # flag used to check if the Router is initialised
         self.isInitialized=True
+        # boolean flag to check whether the Router should perform sorting on operators and on pendingEntities
+        self.sorting=False
         
     # =======================================================================
     #                          the run method
