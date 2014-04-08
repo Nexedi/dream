@@ -398,6 +398,8 @@ class Router(ObjectInterruption):
                 if len(operator.candidateEntities[0].candidateReceivers)==1:
                     operatorsWithOneOption.append(operator)
         
+        # TODO: the operator here actually chooses entity. This may pose a problem as two entities may be equivalent
+        #       and as the operators chooses the sorting of the queue (if they do reside in the same queue is not taken into account)
         # sort the candidateEntities list of each operator according to its schedulingRule
         for operator in [x for x in self.candidateOperators if x.candidateEntities]:
             operator.sortCandidateEntities()
