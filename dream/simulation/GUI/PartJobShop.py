@@ -179,6 +179,7 @@ class Simulation(ACO.Simulation):
         order_dict["manager"] = project_manager
         order_dict["name"] = order_id
         order_dict["dueDate"] = due_date
+        order_dict["priority"] = float(priority)
         # XXX make it dynamic by writing a function that will reuse the
         # code available a bit after
         order_dict["route"] = self.getRouteList(sequence_list, processing_time_list,
