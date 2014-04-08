@@ -69,7 +69,6 @@
       $('#result_zone').hide();
 
       $('#shift_spreadsheet').hide();
-      $("#debug_json").hide();
       $("#wip_part_spreadsheet").hide();
 
       if (configuration['Dream-Configuration'].gui.wip_part_spreadsheet){
@@ -77,9 +76,6 @@
       }
       if (configuration['Dream-Configuration'].gui.shift_spreadsheet){
         $("#shift_spreadsheet").show();
-      }
-      if (configuration['Dream-Configuration'].gui.debug_json){
-        $("#debug_json").show();
       }
 
       try {
@@ -124,8 +120,7 @@
 
         dream_instance.updateGeneralProperties(data.general);
         dream_instance.prepareDialogForGeneralProperties();
-        $("#json_output").val(JSON.stringify(dream_instance.getData(),
-          undefined, " "));
+
         if ($.isEmptyObject(coordinates)) {
           dream_instance.positionGraph();
         } else {
@@ -145,7 +140,6 @@
       }
       // once the data is read, we can subscribe to every changes
       $.subscribe("Dream.Gui.onDataChange", function (event, data) {
-        $("#json_output").val(JSON.stringify(data, undefined, " "));
         jio.put({
           _id: "dream_demo",
           data: data
@@ -186,7 +180,6 @@
             $('#result_list').empty();
             $('#error').empty();
             if (data['success']) {
-              $("#json_result").val(JSON.stringify(data.data, undefined, " "));
 
               $.each(data.data, function (idx, result) {
                 $('#result_list').append('<li class="result"></li>');
@@ -263,7 +256,6 @@
         },
         success: function (data, textStatus, jqXHR) {
           form.reset();
-          $("#json_output").val(JSON.stringify(data));
           loadData(data);
         }
       });

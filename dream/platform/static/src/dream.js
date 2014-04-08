@@ -516,6 +516,10 @@
           });
   }
 
+  function debug_json_widget(input_data, output_data) {
+    $("#json_output").val(JSON.stringify(input_data, undefined, " "));
+    $("#json_result").val(JSON.stringify(output_data, undefined, " "));
+  }
 
   scope.Dream = function (configuration) {
     var that = jsonPlumb(),
@@ -850,6 +854,9 @@
       }
       if (configuration['Dream-Configuration'].gui.job_gantt){
         job_gantt_widget(input, result);
+      }
+      if (configuration['Dream-Configuration'].gui.debug_json){
+        debug_json_widget(input, result);
       }
 
       // hack: make the tabs full width
