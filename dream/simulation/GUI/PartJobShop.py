@@ -212,5 +212,4 @@ class Simulation(ACO.Simulation):
             i+=1
           order_dict["componentsList"] = component_list
       data["nodes"]["QStart"]["wip"] = wip_list
-      del(data['wip_part_spreadsheet'])
     return data
