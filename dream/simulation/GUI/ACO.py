@@ -104,6 +104,7 @@ class Simulation(DefaultSimulation):
 
                 # TODO: those two steps have to be parallelized
                 ant['result'] = DefaultSimulation.runOneScenario(self, ant_data)
+                ant['input'] = ant_data
                 ant['score'] = self._calculateAntScore(ant)
 
         # remove ants that outputs the same schedules

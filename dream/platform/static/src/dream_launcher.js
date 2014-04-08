@@ -188,15 +188,15 @@
             if (data['success']) {
               $("#json_result").val(JSON.stringify(data.data, undefined, " "));
 
-              $.each(data['success'], function (idx, obj) {
+              $.each(data.data, function (idx, result) {
                 $('#result_list').append('<li class="result"></li>');
-                $('#result_list').children().last().text(idx + ' : ' + obj['score'] + ' ' + obj['key']).click(
+                $('#result_list').children().last().text(idx + ' : ' + result['score'] + ' ' + result['key']).click(
                   function (e) {
-                    dream_instance.displayResult(idx);
+                    dream_instance.displayResult(idx, result)
                   }
                 );
               });
-              dream_instance.displayResult(0);
+              dream_instance.displayResult(0, data.data[0]);
             } else {
               $("#reports").hide();
               $("#error").text(data["error"]).show().effect('shake', 50);

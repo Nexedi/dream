@@ -230,32 +230,56 @@
 
       $.each(output_data.elementList, function(idx, obj) {
         if (obj._class === 'Dream.Job') {
-          var input_job, input_order, job_index = parseInt(obj["id"]);
-
-          // TODO: do not read spreadsheet, use input JSON to get data
-          // ... afterall why ?
+          var input_job = null, input_order = null;
           
-          input_job = input_data.wip_part_spreadsheet[job_index];
-          // If this line is an order component, find the order.
-          var i = job_index;
-          while (input_data.wip_part_spreadsheet[i][0] === null ||
-                 input_data.wip_part_spreadsheet[i][0] === "") {
-            i = i-1;
+          // find the input order and order component for this job
+          for (var node_id in input_data.nodes) {
+            var node = input_data.nodes[node_id];
+            if (node.wip) {
+              for (var i=0; i<node.wip.length; i++) {
+                var order = node.wip[i];
+                if (order.id == obj.id) {
+                  input_job = input_order = order;
+                }
+                if (input_job === null) {
+                  for (var j=0; j<order.componentsList.length; j++){
+                    var component = order.componentsList[j];
+                    if (component.id == obj.id){
+                      input_order = order;
+                      input_job = component;
+                    }
+                  }
+                }
+              }
+            }
           }
-          input_order = input_data.wip_part_spreadsheet[i];
+
+          var due_date = new Date(simulation_start_date.getTime() +
+                                  input_order.dueDate * 1000 * 3600);
           $.each(obj['results']['schedule'], function (i, schedule) {
             var entrance_date = new Date(simulation_start_date.getTime() +
                                           // TODO: time unit
                                          schedule['entranceTime'] * 1000 * 3600);
+            var duration = 0;
+            // Duration is calculated by difference of entranceTime of this
+            // step and entranceTime of the next step, or completionTime when
+            // this is the last step
+            if (i+1 == obj['results']['schedule'].length) {
+              duration = obj['results']['completionTime'] - schedule['entranceTime'];
+            } else {
+              duration = obj['results']['schedule'][i+1]['entranceTime'] - schedule['entranceTime'];
+            }
 
             spreadsheet_data.push([
-              input_order[0] + "-" + input_job[4],
+              // XXX this label is incorrect for design step, during design
+              // phase we still have an order and not an order component.
+              input_order.name + "-" + input_job.name,
               obj['id'],
-              input_order[3], // operator
-              input_order[1], // dueDate
-              input_order[2], // priority
+              input_order.manager,
+              moment(due_date).format("YYYY/MM/DD"),
+              input_order.priority,
               moment(entrance_date).format("MMM/DD HH:mm"),
-              input_job[7].split('-')[i] || 0, // processing time
+              duration,
               schedule['stationId'],
               i
             ]);
@@ -356,22 +380,34 @@
 
         if (obj._class === 'Dream.Job') {
           // find the corresponding input
-          var input_job, input_order;
-          var job_index = parseInt(obj["id"]);
-          // TODO: do not read spreadsheet, use input JSON to get data
-          input_job = input_data.wip_part_spreadsheet[job_index];
-          var i = job_index;
-          while (input_data.wip_part_spreadsheet[i][0] === null ||
-                 input_data.wip_part_spreadsheet[i][0] === "") {
-            i = i-1;
+          var input_job = null, input_order = null;
+          // find the input order and order component for this job
+          for (var node_id in input_data.nodes) {
+            var node = input_data.nodes[node_id];
+            if (node.wip) {
+              for (var i=0; i<node.wip.length; i++) {
+                var order = node.wip[i];
+                if (order.id == obj.id) {
+                  input_job = input_order = order;
+                }
+                if (input_job === null) {
+                  for (var j=0; j<order.componentsList.length; j++){
+                    var component = order.componentsList[j];
+                    if (component.id == obj.id){
+                      input_order = order;
+                      input_job = component;
+                    }
+                  }
+                }
+              }
+            }
           }
-          input_order = input_data.wip_part_spreadsheet[i];
 
           var duration = 0;
           if (input_job == input_order) { // if we are on the order definition
             gantt_data.data.push({
-              id: input_order[0],
-              text: input_order[0],
+              id: input_order.id,
+              text: input_order.name,
               project: 1,
               open: false,
               parent: "by_order"
@@ -395,24 +431,26 @@
                 // task_start_date.setDate(task_start_date.getDate() + schedule['entranceTime']);
                 // for simulation time unit as days hours
                 task_start_date.setTime(task_start_date.getTime() + schedule['entranceTime']*1000*3600);
-                if (seen_parts[input_job[4] + "." + input_order[0]] === undefined){
+
+                var job_full_id = input_job.id + "." + input_order.id;
+                if (seen_parts[job_full_id] === undefined){
                   gantt_data.data.push({
-                    id: input_job[4] + "." + input_order[0],
-                    text: input_job[4],
-                    parent: input_order[0]
+                    id: job_full_id,
+                    text: input_job.name,
+                    parent: input_order.id
                   });
-                  seen_parts[input_job[4] + "." + input_order[0]] = 1;
+                  seen_parts[job_full_id] = 1;
                 }
                 gantt_data.data.push({
-                  id: input_order[0] + '.' + idx + '_' + i,
+                  id: input_order.id + '.' + idx + '_' + i,
                   text: schedule['stationId'],
                   start_date: task_start_date,
                   duration: duration,
-                  parent: input_job[4] + "." + input_order[0]
+                  parent: job_full_id
                 });
                 gantt_data.data.push({
                   id: 'job.' + obj['id'] + '.' + idx + '_' + i,
-                  text: input_order[0] + "-" + input_job[4],
+                  text: input_order.name + "-" + input_job.name,
                   start_date: task_start_date,
                   duration: duration,
                   parent: schedule['stationId'],
@@ -766,10 +804,9 @@
         });
     };
 
-    that.displayResult = function (idx) {
+    that.displayResult = function (idx, result) {
       var active_tab = $("#reports").data("ui-tabs") ?
         $("#reports").tabs("option", "active") : 0; // XXX should not be 0, but the first enabled one
-      var result = JSON.parse($("#json_result").val())[idx]['result'];
 
       $('li.result').removeClass('active');
       $($('li.result')[idx]).addClass('active');
@@ -795,7 +832,8 @@
         }
       }
 
-      var input = that.getData(); // XXX how to get input json ?
+      var input = result.input;
+      result = result.result;
 
       // display each of the enabled widget
       if (configuration['Dream-Configuration'].gui.station_utilisation_graph){
