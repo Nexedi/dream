@@ -54,6 +54,7 @@ class Router(ObjectInterruption):
         self.schedulingRule='WT'
         # boolean flag to check whether the Router should perform sorting on operators and on pendingEntities
         self.sorting=sorting
+        self.conflictingOperators=[]
         
     #===========================================================================
     #                         the initialize method
@@ -71,6 +72,7 @@ class Router(ObjectInterruption):
         self.schedulingRule='WT'
         # flag used to check if the Router is initialised
         self.isInitialized=True
+        self.conflictingOperators=[]
         
     # =======================================================================
     #                          the run method
@@ -275,6 +277,7 @@ class Router(ObjectInterruption):
         del self.calledOperators[:]
         del self.pendingObjects[:]
         del self.multipleCriterionList[:]
+        del self.conflictingOperators[:]
         self.schedulingRule='WT'
         
         ObjectInterruption.exit(self)
@@ -418,40 +421,51 @@ class Router(ObjectInterruption):
     #=======================================================================
     def findCandidateReceivers(self):
         # initialise local variables occupiedReceivers and entitiesWithOccupiedReceivers
-        occupiedReceivers=[]                                 # occupied candidateReceivers of a candidateEntity
-        entitiesWithOccupiedReceivers=[]         # list of entities that have no available receivers
+        conflictingOperators=[]                 # list with the operators that have candidateEntity with conflicting candidateReceivers
+        conflictingEntities=[]                  # entities with conflictingReceivers
+        occupiedReceivers=[]                    # occupied candidateReceivers of a candidateEntity
+        entitiesWithOccupiedReceivers=[]        # list of entities that have no available receivers
         
         # finally we have to sort before giving the entities to the operators
         # If there is an entity which must have priority then it should be assigned first
         
         #local method that finds a candidate entity for an operator
         def findCandidateEntity():
-            return next(x for x in operator.candidateEntities if not x in entitiesWithOccupiedReceivers)
+            candidateEntity=next(x for x in operator.candidateEntities if not x in entitiesWithOccupiedReceivers)
+            if not self.sorting:
+                if not candidateEntity:
+                    candidateEntity=next(x for x in operator.candidateEntities)
+                    conflictingEntities.append(candidateEntity)
+            return candidateEntity
+        
         #local method that finds a receiver for a candidate entity
         def findCandidateReceiver():
+            # find the receiver that waits the most
+            def chooseReceiverFrom(list):
+                maxTimeWaiting=0
+                for object in list:
+                    timeWaiting=now()-object.timeLastEntityLeft
+                    if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
+                        maxTimeWaiting=timeWaiting
+                        receiver=object
+                return receiver
             # initiate the local list variable available receivers
             availableReceivers=[x for x in operator.candidateEntity.candidateReceivers\
                                             if not x in occupiedReceivers]
             # and pick the object that is waiting for the most time
             if availableReceivers:
                 # TODO: must find the receiver that waits the most
-                maxTimeWaiting=0
-                for object in availableReceivers:
-                    timeWaiting=now()-object.timeLastEntityLeft 
-                    if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
-                        maxTimeWaiting=timeWaiting
-                        availableReceiver=object
-#                 operator.candidateEntity.candidateReceiver=availableReceiver
+                availableReceiver=chooseReceiverFrom(availableReceivers)
                 occupiedReceivers.append(availableReceiver)
             # if there is no available receiver add the entity to the entitiesWithOccupiedReceivers list
             else:
                 entitiesWithOccupiedReceivers.append(operator.candidateEntity)
                 availableReceiver=None
-#                 operator.candidateEntity.candidateReceiver=None
+            # if the sorting flag is not set then the sorting of each queue must prevail in case of operators conflict
+            if not self.sorting and not availableReceiver and availableReceivers:
+                availableReceiver=chooseReceiverFrom(operator.candidateEntity.candidateReceivers)
             return availableReceiver
         
-#         for operator in [x for x in self.candidateOperators if x.candidateEntities]:
-#             operator.candidateEntity=operator.candidateEntities[0]
             
         # TODO: sorting again after choosing candidateEntity
         if self.sorting:
@@ -460,10 +474,40 @@ class Router(ObjectInterruption):
         # for the candidateOperators that do have candidateEntities pick a candidateEntity
         for operator in [x for x in self.candidateOperators if x.candidateEntities]:
             # find the first available entity that has no occupied receivers
-#             availableEntity=next(x for x in operator.candidateEntities if not x in entitiesWithOccupiedReceivers)
             operator.candidateEntity=findCandidateEntity()
             if operator.candidateEntity:
                 operator.candidateEntity.candidateReceiver=findCandidateReceiver()
+        
+        # find the resources that are 'competing' for the same station
+        if not self.sorting:
+            # if there are entities that have conflicting receivers
+            if len(conflictingEntities):
+                for operator in self.candidateOperators:
+                    if operator.candidateEntity in conflictingEntities:
+                        conflictingOperators.append(operator)
+                    elif operator.candidateEntity.candidateReceiver in [x.candidateReceiver for x in conflinctingEntities]:
+                        conflictingOperators.append(operator)
+            self.conflictingOperators=conflictingOperators 
+        # keep the sorting provided by the queues if there is conflict between operators
+        conflictingGroup=[]                     # list that holds the operators that have the same recipient
+        if not self.sorting and self.conflictingOperators:
+            # for each of the candidateReceivers
+            for receiver in [x.candidateEntity.candidateReceiver for x in self.conflictingOperators]:
+                # find the group of operators that compete for this station
+                conflictingGroup=[operator for operator in self.conflictingOperators if operator.candidateEntity.candidateReceiver==receiver]
+                assert len([station for station in [x.candidateEntity.currentStation for x in conflictingGroup]]),\
+                            'the conflicting entities must reside in the same queue'
+                # for each of the competing for the same station operators 
+                for operator in conflictingGroup:
+                #     find the index of entities to be operated by them in the queue that holds them
+                    operator.ind=operator.candidateEntity.currentStation.getActiveObjectQueue().index(operator.candidateEntity)
+                # the operator that can proceed is the manager of the entity as sorted by the queue that holds them
+                conflictingGroup.sort(key=lambda x: x.ind)
+            # the operators that are not first in the list cannot proceed
+            for operator in conflitingGroup:
+                if conflictingGroup.index(operator)!=0:
+                    self.candidateOperators.remove(operator)
+                    self.calledOperators.remove(operator)
     
     #=======================================================================
     # Sort Givers
