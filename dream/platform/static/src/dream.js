@@ -349,7 +349,9 @@
 
         var isVisibleStation = function (station) {
           // we should be able to define in the backend which station is visible
-          return input_data.nodes[station]._class != "Dream.QueueManagedJob";
+          return input_data.nodes[station]._class != "Dream.QueueManagedJob" &&
+                 input_data.nodes[station]._class != "Dream.OperatorManagedJob" &&
+                 input_data.nodes[station]._class != "Dream.ExitJobShop"
         };
 
         if (obj._class === 'Dream.Job') {
