@@ -186,8 +186,8 @@
             $('#result_list').empty();
             $('#error').empty();
             if (data['success']) {
-              $("#json_result").val(JSON.stringify(data['success'],
-                undefined, " "));
+              $("#json_result").val(JSON.stringify(data.data, undefined, " "));
+
               $.each(data['success'], function (idx, obj) {
                 $('#result_list').append('<li class="result"></li>');
                 $('#result_list').children().last().text(idx + ' : ' + obj['score'] + ' ' + obj['key']).click(

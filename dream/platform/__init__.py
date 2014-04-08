@@ -147,7 +147,7 @@ def runSimulation():
 
 def _runSimulation(parameter_dict):
   try:
-    return dict(success=getGUIInstance().run(parameter_dict))
+    return dict(success=True, data=getGUIInstance().run(parameter_dict))
   except Exception, e:
     tb = traceback.format_exc()
     app.logger.error(tb)
