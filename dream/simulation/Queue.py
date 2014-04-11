@@ -33,7 +33,9 @@ from CoreObject import CoreObject
 #                            the Queue object
 # ===========================================================================
 class Queue(CoreObject):
-    
+    #===========================================================================
+    # the __init__ method of the Queue
+    #===========================================================================
     def __init__(self, id, name, capacity=1, isDummy=False, schedulingRule="FIFO", gatherWipStat=False):
         CoreObject.__init__(self, id, name)
 #         Process.__init__(self)
@@ -46,17 +48,8 @@ class Queue(CoreObject):
             self.capacity=capacity
         else:
             self.capacity=infinity
-        # consider removing the following, the are restated in the initialize() method
-#         self.nameLastEntityEntered=""   #keeps the name of the last entity that entered in the object
-#         self.timeLastEntityEntered=0    #keeps the time of the last entity that entered in the object
 
-        #     No failures are considered for the Queue
-        
-#         #     lists that hold the previous and next objects in the flow
-#         self.next=[]                    #list with the next objects in the flow
-#         self.previous=[]                #list with the previous objects in the flow
-#         self.nextIds=[]                 #list with the ids of the next objects in the flow
-#         self.previousIds=[]             #list with the ids of the previous objects in the flow
+        #     No failures are considered for the Queue        
 
         self.isDummy=isDummy                    #Boolean that shows if it is the dummy first Queue
         self.schedulingRule=schedulingRule      #the scheduling rule that the Queue follows
@@ -80,7 +73,10 @@ class Queue(CoreObject):
     def getSupportedSchedulingRules():
         return ("FIFO", "Priority", "EDD", "EOD",
             "NumStages", "RPC", "LPT", "SPT", "MS", "WINQ")
-
+    
+    #===========================================================================
+    # the initialize method of the Queue class
+    #===========================================================================
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__
         CoreObject.initialize(self)
@@ -94,13 +90,19 @@ class Queue(CoreObject):
         activeObjectQueue=self.getActiveObjectQueue()
         
         while 1:  
-            yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity
-                                                                    #and one predecessor requests it
-            self.getEntity()                                                               
-            
-            #if entity just got to the dummyQ set its startTime as the current time         
-            if self.isDummy:               
-                activeObjectQueue[0].startTime=now() 
+            # wait until the Queue can accept an entity and one predecessor requests it
+            yield waitevent, self, [self.isRequested,self.canDispose]
+            # if the event that activated the thread is isRequested then getEntity
+            if self.isRequested.signalparam:
+                self.getEntity()
+                #if entity just got to the dummyQ set its startTime as the current time
+                if self.isDummy:
+                    activeObjectQueue[0].startTime=now()
+                # reset the isRequested signal parameter
+                self.isRequested.signalparam=None
+            # if the event that activated the thread is canDispose then signalReceiver
+            if self.haveToDispose():
+                self.signalReceiver()
     
     # =======================================================================
     #               checks if the Queue can accept an entity       
@@ -111,24 +113,14 @@ class Queue(CoreObject):
         # get active and giver objects
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        giverObject=self.getGiverObject()
-        
         #if we have only one predecessor just check if there is a place available
         # this is done to achieve better (cpu) processing time 
         # then we can also use it as a filter for a yield method
         if(len(activeObject.previous)==1 or callerObject==None):
             return len(activeObjectQueue)<activeObject.capacity   
-    
-#         if len(activeObjectQueue)==activeObject.capacity:
-#             return False
-        
         thecaller=callerObject
-        
-        #return true only to the predecessor from which the queue will take 
-        #flag=False
-        #if thecaller is self.previous[self.predecessorIndex]:
-        #    flag=True
-        return len(activeObjectQueue)<activeObject.capacity and thecaller==giverObject  
+        return len(activeObjectQueue)<activeObject.capacity and (thecaller in activeObject.previous)
+    
     # =======================================================================
     #    checks if the Queue can dispose an entity to the following object
     #            it checks also who called it and returns TRUE 
@@ -142,31 +134,21 @@ class Queue(CoreObject):
         
         #if we have only one possible receiver just check if the Queue holds one or more entities
         if(len(activeObject.next)==1 or callerObject==None):
-            return len(self.Res.activeQ)>0 
+            return len(activeObjectQueue)>0 
          
         thecaller=callerObject
-               
-        #give the entity to the possible receiver that is waiting for the most time. 
-        #plant does not do this in every occasion!       
-        maxTimeWaiting=0     
-                                                        # loop through the object in the successor list
-        for object in activeObject.next:
-            if(object.canAccept()):                                 # if the object can accept
-                timeWaiting=now()-object.timeLastEntityLeft         # compare the time that it has been waiting 
-                if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# with the others'
-                    maxTimeWaiting=timeWaiting
-                    self.receiver=object                           # and update the receiver to the index of this object
-              
-        #return true only to the predecessor from which the queue will take 
-        receiverObject=activeObject.getReceiverObject()
-        return len(self.Res.activeQ)>0 and (thecaller is receiverObject)    
+        return len(activeObjectQueue)>0 and (thecaller in activeObject.next)
+    
     # =======================================================================
     #                    removes an entity from the Object
     # =======================================================================
     def removeEntity(self, entity=None):        
         activeObject=self.getActiveObject()                                  
-        activeEntity=CoreObject.removeEntity(self, entity)                  #run the default method     
+        activeEntity=CoreObject.removeEntity(self, entity)                  #run the default method
+        if self.canAccept():
+            self.signalGiver()
         return activeEntity
+    
     # =======================================================================
     #            checks if the Queue can accept an entity and 
     #        there is an entity in some predecessor waiting for it
@@ -177,29 +159,9 @@ class Queue(CoreObject):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
-               
-        #if we have only one predecessor just check if there is a place available and the predecessor has an entity to dispose
-        if(len(activeObject.previous)==1):
-            
-            return len(activeObjectQueue)<self.capacity and giverObject.haveToDispose(activeObject) 
+        return len(activeObjectQueue)<self.capacity and giverObject.haveToDispose(activeObject) 
     
-        isRequested=False               # dummy boolean variable to check if any predecessor has something to hand in
-        maxTimeWaiting=0                # dummy timer to check which predecessor has been waiting the most
-        
-        #loop through the predecessors to see which have to dispose and which is the one blocked for longer                                                      # loop through all the predecessors
-        for object in activeObject.previous:
-            if(object.haveToDispose(activeObject) and object.receiver==self):                 # if they have something to dispose off
-                isRequested=True                                    # then the Queue is requested to handle the entity
-                if(object.downTimeInTryingToReleaseCurrentEntity>0):# if the predecessor has failed wile waiting 
-                    timeWaiting=now()-object.timeLastFailureEnded   # then update according the timeWaiting to be compared with the ones
-                else:                                               # of the other machines
-                    timeWaiting=now()-object.timeLastEntityEnded
-                
-                #if more than one predecessor have to dispose take the part from the one that is blocked longer
-                if(timeWaiting>=maxTimeWaiting):                    
-                    activeObject.giver=object  
-                    maxTimeWaiting=timeWaiting                                                                       # pick the predecessor waiting the more
-        return len(activeObjectQueue)<self.capacity and isRequested # return true when the Queue is not fully occupied and a predecessor is requesting it
+    
     # =======================================================================
     #            gets an entity from the predecessor that 
     #                the predecessor index points to
@@ -207,6 +169,7 @@ class Queue(CoreObject):
     def getEntity(self):
         activeEntity=CoreObject.getEntity(self)  #run the default behavior 
         return activeEntity
+            
     # =======================================================================
     #    sorts the Entities of the Queue according to the scheduling rule
     # =======================================================================
@@ -218,6 +181,7 @@ class Queue(CoreObject):
         #else we just use the default scheduling rule
         else:
             self.activeQSorter()
+            
     # =======================================================================
     #    sorts the Entities of the Queue according to the scheduling rule
     # =======================================================================
