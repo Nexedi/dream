@@ -41,10 +41,6 @@ class Exit(CoreObject):
         self.predecessorIndex=0         # holds the index of the predecessor from which the Exit will take an entity next
         # general properties of the Exit
         self.type="Exit" # XXX needed ?
-#         # list with routing information
-#         self.previous=[]                # list with the previous objects in the flow
-#         self.nextIds=[]                 # list with the ids of the next objects in the flow. For the exit it is always empty!
-#         self.previousIds=[]             # list with the ids of the previous objects in the flow
         
         #lists to hold statistics of multiple runs
         self.Exits=[]
@@ -56,7 +52,6 @@ class Exit(CoreObject):
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__
         CoreObject.initialize(self)
-        # no predecessorIndex nor successorIndex
         
         # initialize the internal Queue (type Resource) of the Exit 
         self.Res=Resource(capacity=infinity)         
@@ -72,9 +67,10 @@ class Exit(CoreObject):
   
     def run(self):
         while 1:
-            yield waituntil, self, self.canAcceptAndIsRequested     # wait until the Queue can accept an entity
-                                                                     # and one predecessor requests it  
-            self.getEntity()                                                                                                  
+            # wait until the Queue can accept an entity and one predecessor requests it
+            yield waitevent, self, self.isRequested
+            # TODO: insert extra controls to check whether the self.giver attribute is correctly updated
+            self.getEntity()
 
     # =======================================================================
     #                sets the routing in element for the Exit
@@ -86,6 +82,7 @@ class Exit(CoreObject):
     # =======================================================================    
     def canAccept(self, callerObject=None): 
         return True                                                 #the exit always can accept an entity
+    
     # =======================================================================
     #                checks if the Exit can accept an entity 
     #                 and there is an entity waiting for it
@@ -94,21 +91,9 @@ class Exit(CoreObject):
         # get the active object and its internal queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        # check if there is only one predecessor 
-        # and if true is returned then control if the 
-        # predecessor has an Entity to dispose off 
-        if(len(activeObject.previous)==1):  
-            object=activeObject.previous[0]
-            return object.haveToDispose(self)    
+        giverObject=activeObject.getGiverObject() 
+        return giverObject.haveToDispose(self)
     
-        isRequested=False   # dummy variable used to check if any of the  possible givers has something to deliver
-        # check if any of the possible givers has something to deliver
-        # if yes, then return true and update the giver
-        for object in self.previous:
-            if(object.haveToDispose(activeObject) and object.receiver==self): 
-                isRequested=True
-                self.giver=object
-        return isRequested
     # =======================================================================
     #                    gets an entity from the predecessor     
     # =======================================================================
