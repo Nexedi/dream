@@ -26,7 +26,7 @@ Created on 8 Nov 2012
 models the source object that generates the entities
 '''
 
-from SimPy.Simulation import now, Process, Resource, infinity, hold, SimEvent
+from SimPy.Simulation import now, Process, Resource, infinity, hold, SimEvent, activate
 from RandomNumberGenerator import RandomNumberGenerator
 from CoreObject import CoreObject
 from Globals import G
@@ -49,7 +49,8 @@ class EntityGenerator(Process):
     # initialize method of the EntityGenerator
     #===========================================================================
     def initialize(self):
-        Process.initialize(self)                             
+        pass
+        #Process.initialize(self)                             
         
     #===========================================================================
     # the generator of the EntitiesGenerator
@@ -59,11 +60,11 @@ class EntityGenerator(Process):
             entity=self.victim.createEntity()                       # create the Entity object and assign its name 
             entity.creationTime=now()                               # assign the current simulation time as the Entity's creation time 
             entity.startTime=now()                                  # assign the current simulation time as the Entity's start time 
-            entity.currentStation=victim                            # update the current station of the Entity
+            entity.currentStation=self.victim                            # update the current station of the Entity
             G.EntityList.append(entity)
             self.victim.outputTrace(entity.name, "generated")       # output the trace
-            victim.getActiveObjectQueue().append(entity)            # append the entity to the resource 
-            victim.numberOfArrivals+=1                              # we have one new arrival
+            self.victim.getActiveObjectQueue().append(entity)            # append the entity to the resource 
+            self.victim.numberOfArrivals+=1                              # we have one new arrival
             G.numberOfEntities+=1       
             yield hold,self,self.victim.calculateInterarrivalTime() # wait until the next arrival
             self.victim.entityCreated.signal(str(entity.id)+' created')
@@ -94,7 +95,7 @@ class Source(CoreObject):
 
         self.item=Globals.getClassFromName(entity)      #the type of object that the Source will generate
         
-        self.generator=EntityGenerator(victim=self)     # the EntityGenerator of the Source
+        self.entityGenerator=EntityGenerator(victim=self)     # the EntityGenerator of the Source
         
         self.entityCreated=SimEvent('an entity is created')
     
