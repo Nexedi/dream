@@ -25,7 +25,7 @@ Created on 12 Jul 2012
 Class that acts as an abstract. It should have no instances. All the core-objects should inherit from it
 '''
 
-from SimPy.Simulation import Process, Resource, now
+from SimPy.Simulation import Process, Resource, now, SimEvent, waitEvent
 
 # ===========================================================================
 # the core object
@@ -53,6 +53,10 @@ class CoreObject(Process):
         self.resetOnPreemption=False
         self.interruptCause=None
         self.gatherWipStat=False
+        # signalizing an event that activates the generator
+        self.isRequested=SimEvent('isRequested')
+        self.canDispose=SimEvent('canDispose')
+        self.interruptionEnd=SimEvent('interruptionEnd')
     
     def initialize(self):
         # XXX why call super.__init__ outside of __init__ ?
@@ -101,7 +105,7 @@ class CoreObject(Process):
         if len(self.next)>0:
             self.receiver=self.next[0]
         # ============================== variable that is used for the loading of machines =============
-        self.exitAssignedToReceiver = False             # by default the objects are not blocked 
+        self.exitAssignedToReceiver = None              # by default the objects are not blocked 
                                                         # when the entities have to be loaded to operatedMachines
                                                         # then the giverObjects have to be blocked for the time
                                                         # that the machine is being loaded 
@@ -199,7 +203,7 @@ class CoreObject(Process):
         activeObjectQueue.append(activeEntity)   
         # if the giverObject is blocked then unBlock it
         if giverObject.exitIsAssigned():
-            giverObject.unAssignExit()                
+            giverObject.unAssignExit()
         #append the time to schedule so that it can be read in the result
         #remember that every entity has it's schedule which is supposed to be updated every time 
         # he entity enters a new object
@@ -284,7 +288,88 @@ class CoreObject(Process):
         if self.gatherWipStat:
             self.wipStatList.append([now(), len(activeObjectQueue)])
         return activeEntity
-      
+    
+    # =======================================================================
+    # signal the successor that the object can dispose an entity 
+    # =======================================================================
+    def signalReceiver(self):
+        activeObject=self.getActiveObject()
+        possibleReceivers=[]
+        for object in [x for x in self.next if x.canAccept(activeObject)]:
+            possibleReceivers.append(object)
+        if possibleReceivers:
+            activeObject.receiver=activeObject.selectReceiver(possibleReceivers)
+            activeObject.receiver.giver=activeObject
+            # perform the checks that canAcceptAndIsRequested used to perform and update activeCallersList or assignExit and operatorPool
+            while not activeObject.receiver.canAcceptAndIsRequested():
+                possibleReceivers.remove(activeObject.receiver)
+                if not possibleReceivers:
+                    return False
+                activeObject.receiver=activeObject.selectReceiver(possibleReceivers)
+                activeObject.receiver.giver=activeObject
+            activeObject.receiver.isRequested.signal(activeObject)
+            return True
+        return False
+    
+    # =======================================================================
+    # select a receiver Object
+    # =======================================================================
+    def selectReceiver(self,possibleReceivers=[]):
+        activeObject=self.getActiveObject()
+        candidates=possibleReceivevrs
+        # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
+        maxTimeWaiting=0                                            # dummy variable counting the time a successor is waiting
+        receiver=None
+        for object in candidates:
+            timeWaiting=now()-object.timeLastEntityLeft         # the time it has been waiting is updated and stored in dummy variable timeWaiting
+            if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# if the timeWaiting is the maximum among the ones of the successors 
+                maxTimeWaiting=timeWaiting
+                receiver=object                                 # set the receiver as the longest waiting possible receiver
+        return receiver
+    
+    # =======================================================================
+    # signal the giver that the entity is removed from its internalQueue
+    # =======================================================================
+    def signalGiver(self):
+        activeObject=self.getActiveObject()
+        possibleGivers=[]
+        for object in [x for x in activeObject.next if x.haveToDispose(activeObject)]:
+            possibleGivers.append(object)
+        if possibleGivers:
+            activeObject.giver=activeObject.selectGiver(possibleGivers)
+            activeObject.giver.receiver=activeObject
+            # perform the checks that canAcceptAndIsRequested used to perform and update activeCallersList or assignExit and operatorPool
+            while not activeObject.canAcceptAndIsRequested():
+                possibleGivers.remove(activeObject.giver)
+                if not possibleGivers:
+                    return False
+                activeObject.giver=activeObject.selectGiver(possibleGivers)
+                activeObject.giver.receiver=activeObject
+            activeObject.giver.canDispose.signal(activeObject)
+            return True
+        return False
+    
+    # =======================================================================
+    # select a giver Object
+    # =======================================================================
+    def selectGiver(self,possibleGivers=[]):
+        activeObject=self.getActiveObject()
+        candidates=possibleGivers
+        # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
+        maxTimeWaiting=0                                            # dummy variable counting the time a predecessor is blocked
+        giver=None
+        # loop through the possible givers to see which have to dispose and which is the one blocked for longer
+        for object in candidates:
+            if(object.downTimeInTryingToReleaseCurrentEntity>0):# and the predecessor has been down while trying to give away the Entity
+                timeWaiting=now()-object.timeLastFailureEnded   # the timeWaiting dummy variable counts the time end of the last failure of the giver object
+            else:
+                timeWaiting=now()-object.timeLastEntityEnded    # in any other case, it holds the time since the end of the Entity processing
+            #if more than one predecessor have to dispose take the part from the one that is blocked longer
+            if(timeWaiting>=maxTimeWaiting): 
+                giver=object                 # the object to deliver the Entity to the activeObject is set to the ith member of the previous list
+                maxTimeWaiting=timeWaiting    
+        return giver
+    
     # =======================================================================
     # actions to be taken after the simulation ends 
     # =======================================================================
@@ -446,20 +531,20 @@ class CoreObject(Process):
     # =======================================================================
     # checks if the machine is blocked
     # =======================================================================
-    def exitIsAssigned(self):
+    def exitIsAssignedTo(self):
         return self.exitAssignedToReceiver
     
     # =======================================================================
     # assign Exit of the object
     # =======================================================================
-    def assignExit(self):
-        self.exitAssignedToReceiver = True
+    def assignExitTo(self):
+        self.exitAssignedToReceiver = self.receiver
         
     # =======================================================================
     # unblock the object
     # =======================================================================
     def unAssignExit(self):
-        self.exitAssignedToReceiver = False
+        self.exitAssignedToReceiver = None
         
 #     # =======================================================================
 #     #        actions to be carried whenever the object is preemptied 
