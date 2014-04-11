@@ -57,6 +57,7 @@ class CoreObject(Process):
         self.isRequested=SimEvent('isRequested')
         self.canDispose=SimEvent('canDispose')
         self.interruptionEnd=SimEvent('interruptionEnd')
+        self.interruptionStart=SimEvent('interruptionStart')
     
     def initialize(self):
         # XXX why call super.__init__ outside of __init__ ?

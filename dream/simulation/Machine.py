@@ -454,16 +454,18 @@ class Machine(CoreObject):
             if not self.signalReceiver():
             # if there was no available receiver, get into blocking control
                 while 1:
+
                     # wait the event canDispose, this means that the station can deliver the item to successor
-                    yield waitevent, self, self.canDispose
+                    event=yield waitevent, self, [self.canDispose, self.interruptionStart]
                     # if there was interruption
-                    if self.interrupted():
+                    #if self.interrupted():
+                    # TODO not good implementation
+                    if self.interruptionStart.signalparam==now():
                     # wait for the end of the interruption
                         self.interruptionActions()                          # execute interruption actions
                         yield waitevent, self, self.interruptionEnd         # interruptionEnd to be triggered by ObjectInterruption
                         assert self==self.interruptionEnd.signalparam, 'the victim of the failure is not the object that received it'
                         self.postInterruptionActions()
-                        
                         #=======================================================
                         # TODO: not sure if this is required now
                         # #if during the interruption the object became empty break

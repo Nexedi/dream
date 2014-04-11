@@ -112,9 +112,9 @@ class Failure(ObjectInterruption):
                 yield release,self,self.repairman.getResource() 
                 self.repairman.totalWorkingTime+=now()-timeOperationStarted                                
     
-    #===========================================================================
-    # interrupts the victim
-    #===========================================================================
-    def interruptVictim(self):
-        ObjectInterruption.interrupt(self)
-        # TODO: check whether it is a good idea to update the failure timers here
+#     #===========================================================================
+#     # interrupts the victim
+#     #===========================================================================
+#     def interruptVictim(self):
+#         ObjectInterruption.interrupt(self)
+#         # TODO: check whether it is a good idea to update the failure timers here
