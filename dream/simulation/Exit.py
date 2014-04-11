@@ -25,7 +25,7 @@ Created on 6 Feb 2013
 models the exit of the model
 '''
 
-from SimPy.Simulation import now, Process, Resource, infinity, waituntil
+from SimPy.Simulation import now, Process, Resource, infinity, waituntil, waitevent
 import xlwt
 from CoreObject import CoreObject
 

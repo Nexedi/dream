@@ -26,7 +26,7 @@ Created on 8 Nov 2012
 models the source object that generates the entities
 '''
 
-from SimPy.Simulation import now, Process, Resource, infinity, hold, SimEvent, activate
+from SimPy.Simulation import now, Process, Resource, infinity, hold, SimEvent, activate, waitevent
 from RandomNumberGenerator import RandomNumberGenerator
 from CoreObject import CoreObject
 from Globals import G
@@ -67,7 +67,7 @@ class EntityGenerator(Process):
             self.victim.numberOfArrivals+=1                              # we have one new arrival
             G.numberOfEntities+=1       
             yield hold,self,self.victim.calculateInterarrivalTime() # wait until the next arrival
-            self.victim.entityCreated.signal(str(entity.id)+' created')
+            self.victim.entityCreated.signal(str(entity.name)+' created')
 
 #============================================================================
 #                 The Source object is a Process
@@ -132,7 +132,11 @@ class Source(CoreObject):
                     yield waitevent, self, self.canDispose
                     if activeObject.signalReceiver():
                         break
-    
+            # note, it needs to lose the control here. 
+            # TODO Need to think
+            else:
+                yield hold, self, 0
+
     #============================================================================
     #            sets the routing out element for the Source
     #============================================================================
