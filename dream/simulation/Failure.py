@@ -111,3 +111,10 @@ class Failure(ObjectInterruption):
             if(self.repairman and self.repairman!="None"): #if a resource was used, it is now released
                 yield release,self,self.repairman.getResource() 
                 self.repairman.totalWorkingTime+=now()-timeOperationStarted                                
+    
+    #===========================================================================
+    # interrupts the victim
+    #===========================================================================
+    def interruptVictim(self):
+        ObjectInterruption.interrupt(self)
+        # TODO: check whether it is a good idea to update the failure timers here

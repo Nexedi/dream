@@ -89,7 +89,8 @@ class ObjectInterruption(Process):
     
     #reactivate the victim
     def reactivateVictim(self):
-        reactivate(self.victim)  
+        self.victim.interruptionEnd.signal(victim)
+#         reactivate(self.victim)  
         
     #outputs message to the trace.xls. Format is (Simulation Time | Victim Name | message)            
     def outputTrace(self, message):
