@@ -27,7 +27,7 @@ Models a FIFO queue where entities can wait in order to get into a server
 
 
 from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import waituntil, now, infinity
+from SimPy.Simulation import waituntil, now, infinity, waitevent
 from CoreObject import CoreObject
 # ===========================================================================
 #                            the Queue object
