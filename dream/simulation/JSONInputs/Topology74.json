@@ -1,0 +1,102 @@
+{
+    "_class": "Dream.Simulation",
+    "edges": {
+        "0": [
+            "W1",
+            "M1",
+            {}
+        ],
+        "1": [
+            "W1",
+            "M2",
+            {}
+        ],
+        "2": [
+            "S1",
+            "DummyQ",
+            {}
+        ],
+        "3": [
+            "M1",
+            "Q1",
+            {}
+        ],
+        "4": [
+            "M2",
+            "E1",
+            {}
+        ],
+        "5": [
+            "DummyQ",
+            "M1",
+            {}
+        ],
+        "6": [
+            "Q1",
+            "M2",
+            {}
+        ]
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "confidenceLevel": "0.95",
+        "maxSimTime": "1440",
+        "numberOfReplications": "1",
+        "trace": "No"
+    },
+    "nodes": {
+        "DummyQ": {
+            "_class": "Dream.Queue",
+            "capacity": 1,
+            "isDummy": "1",
+            "left": 0.6968085106382979,
+            "name": "DummyQ",
+            "top": 0.7727272727272727
+        },
+        "E1": {
+            "_class": "Dream.Exit",
+            "left": 0.2978723404255319,
+            "name": "Stock",
+            "top": 0.045454545454545414
+        },
+        "M1": {
+            "_class": "Dream.Machine",
+            "left": 0.4414893617021277,
+            "name": "Machine1",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0.25
+            },
+            "top": 0.5909090909090908
+        },
+        "M2": {
+            "_class": "Dream.Machine",
+            "left": 0.2978723404255319,
+            "name": "Machine2",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 1.5
+            },
+            "top": 0.2272727272727273
+        },
+        "Q1": {
+            "_class": "Dream.Queue",
+            "capacity": 1,
+            "left": 0.4414893617021277,
+            "name": "Q1",
+            "top": 0.40909090909090906,
+			"name": "Q1"
+        },
+        "S1": {
+            "_class": "Dream.Source",
+            "entity": "Dream.Part",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": 0.5
+            },
+            "left": 0.6968085106382979,
+            "name": "Raw Material",
+            "top": 0.9545454545454546
+        }
+    }
+}
