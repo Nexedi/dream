@@ -156,7 +156,7 @@
         $.each(el.results, function(metric, value){
           if (metric == 'intervalThroughputList') {
             var attainment_list = [],
-                general = that.getData().general,
+                general = input_data.general,
                 throughputTarget = parseFloat(general.throughputTarget);
               text += "<tr><td>Daily Attainment</td><td>"
               $.each(value, function(i, intervalValue) {
