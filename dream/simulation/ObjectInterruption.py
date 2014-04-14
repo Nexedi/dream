@@ -40,7 +40,7 @@ class ObjectInterruption(Process):
         self.call=False
     
     def initialize(self):
-        Process.__init__(self)
+#         Process.__init__(self)
         self.call=False
     
     #===========================================================================
@@ -100,18 +100,10 @@ class ObjectInterruption(Process):
     #===========================================================================
     def interruptVictim(self):
         # if the victim is not in position to dispose an entity, then interrupt the processing
-        if not self.victim.waitToDispose:
-            #===================================================================
-            # testing
-            print now(), self.name, 'interrupts', self.victim.id, 'while processing'
-            #===================================================================
+        if not self.victim.waitToDispose and self.victim.getActiveObjectQueue():
             self.interrupt(self.victim)
         # otherwise it waits for an interruption event
         else:
-            #===================================================================
-            # testing
-            print now(), self.name, 'interrupts', self.victim.id, 'while waiting'
-            #===================================================================
             self.victim.interruptionStart.signal(now()) 
     
     #===========================================================================
@@ -119,10 +111,6 @@ class ObjectInterruption(Process):
     #===========================================================================
     def reactivateVictim(self):
         self.victim.interruptionEnd.signal(self.victim)
-        #===================================================================
-        # testing
-        print now(), self.name, 'reactivates', self.victim.id 
-        #===================================================================
 #         reactivate(self.victim)  
         
     #===========================================================================
