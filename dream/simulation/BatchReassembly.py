@@ -26,7 +26,7 @@ BatchReassembly is a Core Object that takes a number of subBatches and reassembl
 '''
 
 from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import activate, waituntil, now, hold
+from SimPy.Simulation import activate, waituntil, now, hold, waitevent
 
 
 from Globals import G
@@ -66,8 +66,8 @@ class BatchReassembly(CoreObject):
         # for routing purposes 
         self.next=[]                                #list with the next objects in the flow
         self.previous=[]                            #list with the previous objects in the flow
-        self.nextIds=[]                             #list with the ids of the next objects in the flow
-        self.previousIds=[]                         #list with the ids of the previous objects in the flow
+#         self.nextIds=[]                             #list with the ids of the next objects in the flow
+#         self.previousIds=[]                         #list with the ids of the previous objects in the flow
 
     # =======================================================================
     #     initialize the internal resource of the object
@@ -82,21 +82,49 @@ class BatchReassembly(CoreObject):
     def run(self):
         activeObjectQueue=self.getActiveObjectQueue()
         
-        while 1:  
-            yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity
-                                                                    #and one predecessor requests it
-            self.getEntity()
+        while 1:
+            while 1:
+                yield waitevent, self, [self.isRequested, self.interruptionStart]
+                if self.interruptionStart.signalparam==now():
+                    yield waitevent, self, self.interruptionEnd
+                    assert self==self.interruptionEnd.signalparam, 'the victim of the failure is not the object that received the interruptionEnd event'
+                    if self.signalGiver():
+                        break
+                else:
+                    break
+            requestingObject=self.isRequested.signalparam
+            assert requestingObject==self.giver, 'the giver is not the requestingObject'
+            
+#             self.operatorWaitTimeCurrentEntity = 0
+#             self.loadOperatorWaitTimeCurrentEntity = 0
+#             self.loadTimeCurrentEntity = 0
+#             self.setupTimeCurrentEntity = 0
+            
+#             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity
+#                                                                     #and one predecessor requests it
+            self.currentEntity=self.getEntity()
             
             # self.outputTrace("got into "+self.objName)
             
             # set the currentEntity as the Entity just received and initialize the timer timeLastEntityEntered
-            self.currentEntity=self.getActiveObjectQueue()[0]       # entity is the current entity processed in object
+#             self.currentEntity=self.getActiveObjectQueue()[0]       # entity is the current entity processed in object
             self.nameLastEntityEntered=self.currentEntity.name      # this holds the name of the last entity that got into Machine                   
             self.timeLastEntityEntered=now()                        #this holds the last time that an entity got into Machine  
+            
+#             self.tinM=self.totalProcessingTimeInCurrentEntity                                          # timer to hold the processing time left
             
             if len(self.getActiveObjectQueue())==self.numberOfSubBatches and self.currentEntity.type!='Batch':
                 yield hold,self,self.calculateProcessingTime()
                 self.reassemble()
+                
+            if not self.signalReceiver():
+                while 1:
+                    event=yield waitevent, self, [self.canDispose, self.interruptiontStart]
+                    if self.interruptionStart.signalparam==now():
+                        yield waitevent, self, self.interruptionEnd
+                        assert self==self.interruptionEnd.signalparam
+                    if self.signalReceiver():
+                        break
         
     # =======================================================================
     #     reassemble method that assembles the subBatches back together to a Batch
@@ -143,27 +171,29 @@ class BatchReassembly(CoreObject):
     def canAccept(self,callerObject=None):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        giverObject=self.getGiverObject()
-        giverObjectQueue = self.getGiverObjectQueue()
+#         giverObject=self.getGiverObject()
+#         giverObjectQueue = self.getGiverObjectQueue()
+        if len(activeObject.previous)!=1:
+            assert callerObject!=None, 'the callerObject cannot be None for canAccept of BatchReassembly'
 
-        if(len(activeObject.previous)==1 or callerObject==None):
+        if(len(activeObject.previous)==1):
             if len(activeObjectQueue)==0:
                 return activeObject.Up
-            elif len(giverObjectQueue)==0:
+            elif len(activeObject.previous[0].getActiveObjectQueue())==0:
                 return False
             else:
                 return activeObject.Up\
                      and activeObjectQueue[0].type!='Batch'\
                      and len(activeObjectQueue)<self.numberOfSubBatches\
-                     and giverObjectQueue[0].batchId==activeObjectQueue[0].batchId
+                     and activeObject.previous[0].getActiveObjectQueue()[0].batchId==activeObjectQueue[0].batchId
         
         thecaller=callerObject
         # return True ONLY if the length of the activeOjbectQueue is smaller than
         # the object capacity, and the callerObject is not None but the giverObject
         return len(activeObjectQueue)<self.numberOfSubBatches\
-                and (thecaller is giverObject)\
+                and (thecaller in activeObject.previous)\
                 and activeObjectQueue[0].type != 'Batch'\
-                and giverObjectQueue[0].batchId==activeObjectQueue[0].batchId
+                and thecaller.getActiveObjectQueue()[0].batchId==activeObjectQueue[0].batchId
 
     # =======================================================================
     #     returns True if it holds an entity of type Batch
@@ -172,7 +202,7 @@ class BatchReassembly(CoreObject):
         # get active and the receiver object
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()    
-        receiverObject=activeObject.getReceiverObject() 
+#         receiverObject=activeObject.getReceiverObject()
         #if we have only one successor just check if object waits to dispose and also is up
         # this is done to achieve better (cpu) processing time        
         if(len(activeObject.next)==1 or callerObject==None): 
@@ -180,20 +210,20 @@ class BatchReassembly(CoreObject):
                     and activeObjectQueue[0].type=="Batch" # the control of the length of the queue is not needed
         
         thecaller=callerObject 
-        #give the entity to the receiver that is waiting for the most time. 
-        #plant does not do this in every occasion!       
-        maxTimeWaiting=0     
-        for object in activeObject.next:
-            if(object.canAccept()):                                 # if the object can accept
-                timeWaiting=now()-object.timeLastEntityLeft         # compare the time that it has been waiting 
-                if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# with the others'
-                    maxTimeWaiting=timeWaiting
-                    self.receiver=object                           # and update the successorIndex to the index of this object
-              
-        #return true only to the predecessor from which the queue will take 
-        receiverObject=activeObject.getReceiverObject()
-        return len(self.getActiveObjectueue)==1\
-                and (thecaller is receiverObject)\
+#         #give the entity to the receiver that is waiting for the most time. 
+#         #plant does not do this in every occasion!       
+#         maxTimeWaiting=0     
+#         for object in activeObject.next:
+#             if(object.canAccept()):                                 # if the object can accept
+#                 timeWaiting=now()-object.timeLastEntityLeft         # compare the time that it has been waiting 
+#                 if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# with the others'
+#                     maxTimeWaiting=timeWaiting
+#                     self.receiver=object                           # and update the successorIndex to the index of this object
+#               
+#         #return true only to the predecessor from which the queue will take 
+#         receiverObject=activeObject.getReceiverObject()
+        return len(activeObjectQueue)==1\
+                and (thecaller in activeObject.next)\
                 and activeObjectQueue[0].type!="Batch" # the control of the length of the queue is not needed
             
     # =======================================================================
@@ -207,35 +237,39 @@ class BatchReassembly(CoreObject):
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
         giverObjectQueue=self.getGiverObjectQueue()
-        #if we have only one predecessor just check if there is a place available and the predecessor has an entity to dispose
-        if(len(activeObject.previous)==1):
-            if len(activeObjectQueue)==0:
-                return activeObject.Up and giverObject.haveToDispose(activeObject)
-            else:
-                return activeObject.Up and giverObject.haveToDispose(activeObject)\
-                     and activeObjectQueue[0].type!='Batch'\
-                     and len(activeObjectQueue)<self.numberOfSubBatches\
-                     and giverObjectQueue[0].batchId==activeObjectQueue[0].batchId 
-    
-        isRequested=False               # dummy boolean variable to check if any predecessor has something to hand in
-        maxTimeWaiting=0                # dummy timer to check which predecessor has been waiting the most
-        
-        #loop through the predecessors to see which have to dispose and which is the one blocked for longer                                                    # loop through all the predecessors
-        for object in activeObject.previous:
-            if(object.haveToDispose(activeObject)):                 # if they have something to dispose off
-                isRequested=True                                    # then the Queue is requested to handle the entity
-                if(object.downTimeInTryingToReleaseCurrentEntity>0):# if the predecessor has failed wile waiting 
-                    timeWaiting=now()-object.timeLastFailureEnded   # then update according the timeWaiting to be compared with the ones
-                else:                                               # of the other machines
-                    timeWaiting=now()-object.timeLastEntityEnded
-                
-                #if more than one predecessor have to dispose take the part from the one that is blocked longer
-                if(timeWaiting>=maxTimeWaiting):                    
-                    activeObject.giver=object  
-                    maxTimeWaiting=timeWaiting                   
-        return isRequested\
-                and activeObject.Up\
-                and len(activeObjectQueue<self.numberOfSubBatches)\
-                and (len(activeObjectQueue)==0 or activeObjectQueue[0].type!='Batch')\
-                and activeObject.getGiverObjectQueue()[0].batchId==activeObjectQueue[0].batchId
+#         #if we have only one predecessor just check if there is a place available and the predecessor has an entity to dispose
+#         if(len(activeObject.previous)==1):
+#             if len(activeObjectQueue)==0:
+#                 return activeObject.Up and giverObject.haveToDispose(activeObject)
+#             else:
+#                 return activeObject.Up and giverObject.haveToDispose(activeObject)\
+#                      and activeObjectQueue[0].type!='Batch'\
+#                      and len(activeObjectQueue)<self.numberOfSubBatches\
+#                      and giverObjectQueue[0].batchId==activeObjectQueue[0].batchId 
+#     
+#         isRequested=False               # dummy boolean variable to check if any predecessor has something to hand in
+#         maxTimeWaiting=0                # dummy timer to check which predecessor has been waiting the most
+#         
+#         #loop through the predecessors to see which have to dispose and which is the one blocked for longer                                                    # loop through all the predecessors
+#         for object in activeObject.previous:
+#             if(object.haveToDispose(activeObject)):                 # if they have something to dispose off
+#                 isRequested=True                                    # then the Queue is requested to handle the entity
+#                 if(object.downTimeInTryingToReleaseCurrentEntity>0):# if the predecessor has failed wile waiting 
+#                     timeWaiting=now()-object.timeLastFailureEnded   # then update according the timeWaiting to be compared with the ones
+#                 else:                                               # of the other machines
+#                     timeWaiting=now()-object.timeLastEntityEnded
+#                 
+#                 #if more than one predecessor have to dispose take the part from the one that is blocked longer
+#                 if(timeWaiting>=maxTimeWaiting):
+#                     activeObject.giver=object
+#                     maxTimeWaiting=timeWaiting
+#         return isRequested\
+#                 and activeObject.Up\
+#                 and len(activeObjectQueue)<self.numberOfSubBatches\
+#                 and (len(activeObjectQueue)==0 or activeObjectQueue[0].type!='Batch')\
+#                 and activeObject.getGiverObjectQueue()[0].batchId==activeObjectQueue[0].batchId
         # return true when the Queue is not fully occupied and a predecessor is requesting it
+        return activeObject.Up and giverObject.haveToDispose(activeObject)\
+                and len(activeObjectQueue)<activeObject.numberOfSubBatches\
+                and (len(activeObjectQueue)==0 or activeObjectQueue[0].type!='Batch')\
+                and giverObjectQueue[0].batchId==activeObjectQueue[0].batchId
