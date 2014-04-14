@@ -705,8 +705,8 @@ class Machine(CoreObject):
         activeObject=self.getActiveObject()
         activeEntity=CoreObject.removeEntity(self, entity)          # run the default method     
         activeObject.waitToDispose=False                            # update the waitToDispose flag
-        if self.canAccept():
-            self.signalGiver()
+        if activeObject.canAccept():
+            activeObject.signalGiver()
         return activeEntity
     
     # ======================================================================= 
