@@ -28,6 +28,9 @@ Class that acts as an abstract. It should have no instances. All object interrup
 
 from SimPy.Simulation import Process, Resource, reactivate, now
 
+#===============================================================================
+# The ObjectInterruption process
+#===============================================================================
 class ObjectInterruption(Process):
     
     def __init__(self, victim=None):
@@ -40,8 +43,10 @@ class ObjectInterruption(Process):
         Process.__init__(self)
         self.call=False
     
-    #the main process of the core object
-    #this is dummy, every object must have its own implementation
+    #===========================================================================
+    # the main process of the core object
+    # this is dummy, every object must have its own implementation
+    #===========================================================================
     def run(self):
         raise NotImplementedError("Subclass must define 'run' method")
     
@@ -72,28 +77,57 @@ class ObjectInterruption(Process):
     def isSet(self):
         return not self.call
     
-    #outputs data to "output.xls"
+    #===========================================================================
+    # outputs data to "output.xls"
+    #===========================================================================
     def outputTrace(self, message):
         pass
     
-    #returns the internal queue of the victim
+    #===========================================================================
+    # returns the internal queue of the victim
+    #===========================================================================
     def getVictimQueue(self):
         return self.victim.getActiveObjectQueue()
     
+    #===========================================================================
+    # actions to be performed after the end of the simulation
+    #===========================================================================
     def postProcessing(self):
         pass
     
-    #interrupts the victim
+    #===========================================================================
+    # interrupts the victim
+    #===========================================================================
     def interruptVictim(self):
-        self.interrupt(self.victim)
-        self.victim.interruptionStart.signal(now()) 
+        # if the victim is not in position to dispose an entity, then interrupt the processing
+        if not self.victim.waitToDispose:
+            #===================================================================
+            # testing
+            print now(), self.name, 'interrupts', self.victim.id, 'while processing'
+            #===================================================================
+            self.interrupt(self.victim)
+        # otherwise it waits for an interruption event
+        else:
+            #===================================================================
+            # testing
+            print now(), self.name, 'interrupts', self.victim.id, 'while waiting'
+            #===================================================================
+            self.victim.interruptionStart.signal(now()) 
     
-    #reactivate the victim
+    #===========================================================================
+    # reactivate the victim
+    #===========================================================================
     def reactivateVictim(self):
         self.victim.interruptionEnd.signal(self.victim)
+        #===================================================================
+        # testing
+        print now(), self.name, 'reactivates', self.victim.id 
+        #===================================================================
 #         reactivate(self.victim)  
         
-    #outputs message to the trace.xls. Format is (Simulation Time | Victim Name | message)            
+    #===========================================================================
+    # outputs message to the trace.xls. Format is (Simulation Time | Victim Name | message)            
+    #===========================================================================
     def outputTrace(self, message):
         from Globals import G  
         if(G.trace=="Yes"):     #output only if the user has selected to
