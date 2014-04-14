@@ -55,7 +55,8 @@ class EntityGenerator(Process):
     #===========================================================================
     # the generator of the EntitiesGenerator
     #===========================================================================
-    def run(self):        
+    def run(self):     
+#         print 'entity generator starts'   
         while 1:
             entity=self.victim.createEntity()                       # create the Entity object and assign its name 
             entity.creationTime=now()                               # assign the current simulation time as the Entity's creation time 
@@ -65,9 +66,9 @@ class EntityGenerator(Process):
             self.victim.outputTrace(entity.name, "generated")       # output the trace
             self.victim.getActiveObjectQueue().append(entity)            # append the entity to the resource 
             self.victim.numberOfArrivals+=1                              # we have one new arrival
-            G.numberOfEntities+=1       
-            yield hold,self,self.victim.calculateInterarrivalTime() # wait until the next arrival
+            G.numberOfEntities+=1
             self.victim.entityCreated.signal(str(entity.name)+' created')
+            yield hold,self,self.victim.calculateInterarrivalTime() # wait until the next arrival
 
 #============================================================================
 #                 The Source object is a Process
@@ -110,9 +111,10 @@ class Source(CoreObject):
         self.Res=Resource(capacity=infinity)
         self.Res.activeQ=[]                                 
         self.Res.waitQ=[]   
-                                        
+        
+        self.entityGenerator.initialize()                                
         activate(self.entityGenerator,self.entityGenerator.run())
-        self.entityGenerator.initialize()
+        
     
     #===========================================================================
     # the generator of the Source class 
@@ -123,19 +125,34 @@ class Source(CoreObject):
         activeObjectQueue=self.getActiveObjectQueue()
         
         while 1:
-            # if the source has no entity to dispose of has to wait till it has something
-            if not self.haveToDispose():
-                yield waitevent, self, self.entityCreated
-            # if there is no available successor to signal the source has to wait till there is one available
-            if not activeObject.signalReceiver():
-                while 1:
-                    yield waitevent, self, self.canDispose
-                    if activeObject.signalReceiver():
-                        break
-            # note, it needs to lose the control here. 
-            # TODO Need to think
-            else:
-                yield hold, self, 0
+            # wait for any event (entity creation or request for disposal of entity)
+            yield waitevent, self, [self.entityCreated, self.canDispose]
+            # if an entity is created try to signal the receiver and continue
+            if self.entityCreated.signalparam:
+                self.entityCreated.signalparam=None
+                if self.signalReceiver():
+                    continue
+            # otherwise, if the receiver requests availability then try to signal him if there is anything to dispose of
+            if self.canDispose.signalparam:
+                self.canDispose.signalparam=None
+                if self.haveToDispose():
+                    if self.signalReceiver():
+                        continue
+            
+                
+#             # if the source has no entity to dispose of has to wait till it has something
+#             if not self.haveToDispose():
+#                 yield waitevent, self, self.entityCreated
+#             # if there is no available successor to signal the source has to wait till there is one available
+#             if not activeObject.signalReceiver():
+#                 while 1:
+#                     yield waitevent, self, self.canDispose
+#                     if activeObject.signalReceiver():
+#                         break
+#             # note, it needs to lose the control here. 
+#             # TODO Need to think
+#             else:
+#                 yield hold, self, 0
 
     #============================================================================
     #            sets the routing out element for the Source
