@@ -25,6 +25,7 @@ import urllib
 import xlrd
 import traceback
 import multiprocessing
+import Queue
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
 from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
 
@@ -105,13 +106,13 @@ def runWithTimeout(func, timeout, *args, **kw):
     target=_runWithTimeout,
     args=(queue, func, args, kw))
   process.start()
-  process.join(timeout)
-  if process.is_alive():
-    # process still alive after timeout, terminate it
+  try:
+    return queue.get(timeout=timeout)
+  except Queue.Empty:
     process.terminate()
-    process.join()
     raise TimeoutError()
-  return queue.get()
+  finally:
+    process.join()
 
 def _runWithTimeout(queue, func, args, kw):
   import signal
