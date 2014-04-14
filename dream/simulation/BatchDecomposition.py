@@ -76,68 +76,57 @@ class BatchDecomposition(CoreObject):
     # =======================================================================
     def run(self):
         while 1:
+            # wait for an event or an interruption
             while 1:
                 yield waitevent, self, [self.isRequested, self.interruptionStart]
+                # if an interruption has occurred 
                 if self.interruptionStart.signalparam==now():
+                    # wait till it is over
                     yield waitevent, self, self.interruptionEnd
                     assert self==self.interruptionEnd.signalparam, 'the victim of the failure is not the object that received the interruptionEnd event'
                     if self.signalGiver():
                         break
+                # otherwise proceed with getEntity
                 else:
                     break
             requestingObject=self.isRequested.signalparam
             assert requestingObject==self.giver, 'the giver is not the requestingObject'
-            
-#             self.operatorWaitTimeCurrentEntity = 0
-#             self.loadOperatorWaitTimeCurrentEntity = 0
-#             self.loadTimeCurrentEntity = 0
-#             self.setupTimeCurrentEntity = 0
-            
-#             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity
-#                                                                     #and one predecessor requests it                                                  
+                                                              
             self.currentEntity=self.getEntity()
-#             print '$'*40                    
             # set the currentEntity as the Entity just received and initialize the timer timeLastEntityEntered
             self.nameLastEntityEntered=self.currentEntity.name      # this holds the name of the last entity that got into Machine                   
             self.timeLastEntityEntered=now()                        #this holds the last time that an entity got into Machine  
             
             self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()
- 
-#             self.tinM=self.totalProcessingTimeInCurrentEntity                                          # timer to hold the processing time left
             
             yield hold,self,self.totalProcessingTimeInCurrentEntity
-#             print self.currentEntity.name, 'of type', self.currentEntity.type
             self.decompose()
             
+            # TODO: add failure control
+            # as long as there are sub-Batches in the internal Resource
             for i in range(self.numberOfSubBatches):
-#                 print '                                    ', i
+                # added here temporarily, it is supposed to break when i==numberOfSubBatches
                 if not self.getActiveObjectQueue():
                     break
+                # if the loop is run for the first time (i=0)
                 if i==0:
+                    # try to signal the receiver
                     signaling=self.signalReceiver()
                     if not signaling:
+                        # if there was no success wait till the receiver is available
                         while 1:
                             yield waitevent, self, self.canDispose
+                            # signal the receiver again and break
                             if self.signalReceiver():
                                 break
+                # for the consecutive times wait till the receiver is available and then signalReceiver
+                #     we know that the receiver is occupied with the previous sub-batch
                 else:
-                    yield waitevent, self, self.canDispose
-                    signaling=self.signalReceiver()
-                    if not signaling:
-                        while 1:
-                            yield waitevent, self, self.canDispose
-                            if self.signalReceiver():
-                                break
-                    
-                
-#             if not self.signalReceiver():
-#                 while 1:
-#                     event=yield waitevent, self, [self.canDispose, self.interruptionStart]
-#                     if self.interruptionStart.signalparam==now():
-#                         yield waitevent, self, self.interruptionEnd
-#                         assert self==self.interruptionEnd.signalparam
-#                     if self.signalReceiver():
-#                         break
+                    while 1:
+                        yield waitevent,self,self.canDispose
+                        signaling=self.signalReceiver()
+                        if signaling:
+                            break
         
     # =======================================================================
     #     method that decomposes the activeEntity into subBatches
@@ -158,7 +147,6 @@ class BatchDecomposition(CoreObject):
         #for example: 
         #if the total is 99 and we have 4 sub-batches it should be [25,25,25,24]
         #if the total is 94 and we have 4 sub-batches it should be [24,24,24,22]
-#         print now(), '*'*10
         for i in range(self.numberOfSubBatches):
             if i==self.numberOfSubBatches-1:
                 numberOfSubBatchUnits=batchNumberOfUnits-alreadyAllocatedUnits
@@ -185,7 +173,6 @@ class BatchDecomposition(CoreObject):
             if activeEntity in G.pendingEntities:
                 G.pendingEntities.append(subBatch)
                 G.pendingEntities.remove(activeEntity)
-#         print now(),'*'*10
         activeEntity.numberOfSubBatches=self.numberOfSubBatches
         self.timeLastEntityEnded=now()
 
@@ -210,32 +197,12 @@ class BatchDecomposition(CoreObject):
         # get active and the receiver object
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()    
-#         receiverObject=activeObject.getReceiverObject() 
         #if we have only one successor just check if object waits to dispose and also is up
         # this is done to achieve better (cpu) processing time        
         if(len(activeObject.next)==1 or callerObject==None): 
-#             #===================================================================
-#             # TESTING
-#             print now(), self.id,
-#             print '    ', len(activeObjectQueue)
-#             if activeObjectQueue:
-#                 print '    ', activeObjectQueue[0].type
-#             #===================================================================
             return len(activeObjectQueue)>0 and activeObjectQueue[0].type!="Batch" and activeObject.Up
         
         thecaller=callerObject
-#         #give the entity to the successor that is waiting for the most time. 
-#         #plant does not do this in every occasion!       
-#         maxTimeWaiting=0     
-#         for object in activeObject.next:
-#             if(object.canAccept()):                                 # if the object can accept
-#                 timeWaiting=now()-object.timeLastEntityLeft         # compare the time that it has been waiting 
-#                 if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# with the others'
-#                     maxTimeWaiting=timeWaiting
-#                     self.receiver=object                           # and update the successorIndex to the index of this object
-#               
-#         #return true only to the predecessor from which the queue will take 
-#         receiverObject=activeObject.getReceiverObject()
         return len(activeObjectQueue)==self.numberOfSubBatches and \
             (thecaller in activeObject.next) and activeObjectQueue[0].type!="Batch" and activeObject.Up
     
@@ -248,25 +215,4 @@ class BatchDecomposition(CoreObject):
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
         
-#         #if we have only one predecessor just check if there is a place available and the predecessor has an entity to dispose
-#         if(len(activeObject.previous)==1):
-#             return self.canAccept() and giverObject.haveToDispose(activeObject) 
-#     
-#         isRequested=False               # dummy boolean variable to check if any predecessor has something to hand in
-#         maxTimeWaiting=0                # dummy timer to check which predecessor has been waiting the most
-#         
-#         #loop through the predecessors to see which have to dispose and which is the one blocked for longer
-#         for object in activeObject.previous:
-#             if(object.haveToDispose(activeObject)):                 # if they have something to dispose off
-#                 isRequested=True                                    # then the Queue is requested to handle the entity
-#                 if(object.downTimeInTryingToReleaseCurrentEntity>0):# if the predecessor has failed wile waiting 
-#                     timeWaiting=now()-object.timeLastFailureEnded   # then update according the timeWaiting to be compared with the ones
-#                 else:                                               # of the other machines
-#                     timeWaiting=now()-object.timeLastEntityEnded
-#                 
-#                 #if more than one predecessor have to dispose take the part from the one that is blocked longer
-#                 if(timeWaiting>=maxTimeWaiting):                    
-#                     activeObject.giver=object  
-#                     maxTimeWaiting=timeWaiting                   
-#         return self.canAccept(self) and isRequested     # return true when the Queue is not fully occupied and a predecessor is requesting it
         return activeObject.Up and len(activeObjectQueue)==0 and giverObject.haveToDispose(activeObject)
