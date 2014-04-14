@@ -211,9 +211,20 @@ class Machine(CoreObject):
     def run(self):
         # execute all through simulation time
         while 1:
-            # wait until the machine can accept an entity and one predecessor requests it 
-            # canAcceptAndIsRequested is invoked to check when the machine requested to receive an entity
-            yield waitevent, self, self.isRequested
+            # waitEvent isRequested or interruption start 
+            while 1:
+                yield waitevent, self, [self.isRequested, self.interruptionStart]
+                # if the machine is interrupted
+                if self.interruptionStart.signalparam==now():
+                    # wait until the interruption is ended
+                    yield waitevent, self, self.interruptionEnd         # interruptionEnd to be triggered by ObjectInterruption
+                    assert self==self.interruptionEnd.signalparam, 'the victim of the failure is not the object that received it'
+                    # and signal the Giver, otherwise wait until it is requested
+                    if self.signalGiver():
+                        break   
+                # if the machine can accept an entity and one predecessor requests it continuew with receiving the entity
+                else:
+                    break
             # TODO: maybe here have to assigneExit of the giver and add self to operator activeCallers list
             requestingObject=self.isRequested.signalparam
             assert requestingObject==self.giver, 'the giver is not the requestingObject'
