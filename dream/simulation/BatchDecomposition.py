@@ -75,6 +75,8 @@ class BatchDecomposition(CoreObject):
     #     the run method of the BatchDecomposition
     # =======================================================================
     def run(self):
+        # check if there is WIP and signal receiver
+        self.initialSignalReceiver()
         while 1:
             # wait for an event or an interruption
             while 1:

@@ -140,6 +140,15 @@ class CoreObject(Process):
     def defineRouting(self, predecessorList=[], successorList=[]):
         self.next=successorList
         self.previous=predecessorList
+        
+    # =======================================================================
+    # checks if there is anything set as WIP at the begging of the simulation
+    # and sends an event to initialize the simulation
+    # =======================================================================
+    def initialSignalReceiver(self):
+        activeObject=self.getActiveObject()
+        if self.haveToDispose():
+            self.signalReceiver()
     
     # =======================================================================
     # removes an Entity from the Object the Entity to be removed is passed

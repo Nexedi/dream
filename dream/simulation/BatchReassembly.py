@@ -73,7 +73,8 @@ class BatchReassembly(CoreObject):
     # =======================================================================
     def run(self):
         activeObjectQueue=self.getActiveObjectQueue()
-        
+        # check if there is WIP and signal receiver
+        self.initialSignalReceiver()
         while 1:
             while 1:
                 yield waitevent, self, [self.isRequested, self.interruptionStart]

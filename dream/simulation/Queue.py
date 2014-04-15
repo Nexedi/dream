@@ -88,7 +88,8 @@ class Queue(CoreObject):
     #===========================================================================
     def run(self):  
         activeObjectQueue=self.getActiveObjectQueue()
-        
+        # check if there is WIP and signal receiver
+        self.initialSignalReceiver()
         while 1:  
             # wait until the Queue can accept an entity and one predecessor requests it
             yield waitevent, self, [self.isRequested,self.canDispose]
