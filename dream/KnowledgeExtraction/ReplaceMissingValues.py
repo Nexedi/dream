@@ -22,9 +22,10 @@ Created on 19 Feb 2014
 
 @author: Panos
 '''
+from StatisticalMeasures import BasicStatisticalMeasures
 
 #The HandleMissingValues object
-class HandleMissingValues:
+class HandleMissingValues(BasicStatisticalMeasures):
 #Three different approaches to handle missing values are included in this object 
     def ReplaceWithZero(self,mylist):          #Replace in the given list the missing values with zero
         i=0   
@@ -53,3 +54,14 @@ class HandleMissingValues:
                 mylist[i]=mean                #For the values in the initial given list if there is a missing value replace it with the mean value of the new list
             i+=1 
         return mylist                         #Return the given list, in which the missing values are replaced with the mean value 
+    
+    def ReplaceWithMedian(self,mylist):       #Replace in the given list the missing values with the median value 
+        list1=self.DeleteMissingValue(mylist) #Create a new list, which is the given list deleting the missing values (calling the DeleteMissingValue method)
+        A=BasicStatisticalMeasures()          #Call the BasicStatisticalMeasures to calculate the median value
+        median=A.median(list1)                #Calculate the median value of the new list
+        i=0
+        for value in mylist:
+            if value is '' :
+                mylist[i]=median                #For the values in the initial given list if there is a missing value replace it with the mean value of the new list
+            i+=1 
+        return mylist                         #Return the given list, in which the missing values are replaced with the mean value
