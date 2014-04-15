@@ -53,29 +53,31 @@ class ObjectInterruption(Process):
     # =======================================================================
     #           hand in the control to the objectIterruption.run
     #                   to be called by the machine
+    # TODO: consider removing this method, 
+    #     signalling can be done via Machine request/releaseOperator
     # =======================================================================    
     def invoke(self):
-        self.call=True
+        self.brokerIsCalled.signal(now())
     
-    # =======================================================================
-    #                 return control to the Machine.run
-    # =======================================================================
-    def exit(self):
-        self.call=False
+#     # =======================================================================
+#     #                 return control to the Machine.run
+#     # =======================================================================
+#     def exit(self):
+#         self.call=False
     
-    # =======================================================================
-    #                        call the objectInterruption 
-    #        filter for object interruption - yield waituntil isCalled
-    # =======================================================================
-    def isCalled(self):
-        return self.call
+#     # =======================================================================
+#     #                        call the objectInterruption 
+#     #        filter for object interruption - yield waituntil isCalled
+#     # =======================================================================
+#     def isCalled(self):
+#         return self.call
     
-    # =======================================================================
-    #        the objectIterruption returns control to machine.Run
-    #        filter for Machine - yield request/release operator
-    # =======================================================================
-    def isSet(self):
-        return not self.call
+#     # =======================================================================
+#     #        the objectIterruption returns control to machine.Run
+#     #        filter for Machine - yield request/release operator
+#     # =======================================================================
+#     def isSet(self):
+#         return not self.call
     
     #===========================================================================
     # outputs data to "output.xls"
@@ -110,7 +112,7 @@ class ObjectInterruption(Process):
     # reactivate the victim
     #===========================================================================
     def reactivateVictim(self):
-        self.victim.interruptionEnd.signal(self.victim)
+        self.victim.interruptionEnd.signal(now())
 #         reactivate(self.victim)  
         
     #===========================================================================

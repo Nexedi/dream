@@ -26,9 +26,9 @@ Created on 27 Nov 2013
 Models an Interruption that handles the operating of a Station by an ObjectResource
 '''
 
-from SimPy.Simulation import Process, Resource
+from SimPy.Simulation import Process, Resource, SimEvent
 from ObjectInterruption import ObjectInterruption
-from SimPy.Simulation import waituntil, now, hold, request, release
+from SimPy.Simulation import waituntil, now, hold, request, release, waitevent
 
 # ===========================================================================
 #               Class that handles the Operator Behavior
@@ -47,6 +47,10 @@ class Broker(ObjectInterruption):
         self.timeOperationStarted = 0
         self.timeLastOperationEnded = 0
         self.timeWaitForOperatorStarted=0
+        # Broker events
+        self.brokerIsCalled=SimEvent('brokerIsCalled')
+        self.victimQueueIsEmpty=SimEvent('victimQueueIsEmpty')
+        self.resourceAvailable=SimEvent('resourceAvailable')
         
     #===========================================================================
     #                           the initialize method
@@ -62,25 +66,27 @@ class Broker(ObjectInterruption):
     # =======================================================================    
     def run(self):
         while 1:
-            yield waituntil,self,self.isCalled # wait until the broker is called
+            # TODO: add new broker event - brokerIsCalled
+            yield waitevent, self, self.brokerIsCalled
+            assert self.brokerIsCalled.signalparam==now(), 'the broker should be granted control instantly'
     # ======= request a resource
             if self.victim.isOperated()\
-                and any(type=="Load" or type=="Setup" or type=="Processing"\
-                         for type in self.victim.multOperationTypeList):
+                and any(type=='Load' or type=='Setup' or type=='Processing'\
+                        for type in self.victim.multOperationTypeList):
                 # update the time that the station is waiting for the operator
                 self.timeWaitForOperatorStarted=now()
-#                 # update the currentObject of the operatorPool
-#                 self.victim.operatorPool.currentObject = self.victim
-                # wait until a resource is available
-                yield waituntil, self, self.victim.operatorPool.checkIfResourceIsAvailable
+                # TODO: cannot wait till the operatorPool has available resources. 
+                #     They are supposed to be available for the Broker to be called
+                if not self.victim.operatorPool.checkIfResourceIsAvailable():
+                    yield waitevent, self, self.resourceAvailable
+                assert self.victim.operatorPool.checkIfResourceIsAvailable(), 'there is no available operator to request'
                 # set the available resource as the currentOperator
                 self.victim.currentOperator=self.victim.operatorPool.findAvailableOperator()
-                yield request,self,self.victim.operatorPool.getResource(self.victim.currentOperator)
+                yield request, self, self.victim.operatorPool.getResource(self.victim.currentOperator)
                 #===============================================================
 #                 # TESTING
 #                 print now(), self.victim.currentOperator.objName, 'started work in ', self.victim.id
                 #===============================================================
-#                 self.victim.totalTimeWaitingForOperator+=now()-self.timeWaitForOperatorStarted
                 # clear the timeWaitForOperatorStarted variable
                 self.timeWaitForOperatorStarted = 0
                 # update the time that the operation started
@@ -89,22 +95,107 @@ class Broker(ObjectInterruption):
                 self.victim.currentOperator.timeLastOperationStarted=now()
     # ======= release a resource        
             elif not self.victim.isOperated():
-                self.victim.currentOperator.totalWorkingTime+=now()-self.victim.currentOperator.timeLastOperationStarted
+                self.victim.currentOperator.totalWorkingTime+=now()-self.victim.currentOperator.timeLastOperationStarted                
+                # TODO: cannot be implemented at the moment as the Machine first releases the operator and then 
+                #       signals the receiver when the removeEntity signals the victimQueueIsEmpty
                 # if the victim releasing the operator has receiver
-                if self.victim.receiver:
-                    # if the following object is not of type Machine
-                    if self.victim.receiver.type!='Machine':
-                        # if the processingType is 'Processing' and not only 'Load' or 'Setup'
-                        if any(type=='Processing' for type in self.victim.multOperationTypeList):
-                            # wait until the victim has released the entity it was processing
-                            yield waituntil, self, self.victim.activeQueueIsEmpty
+#                 if self.victim.receiver:
+#                     # if the following object is not of type Machine
+#                     if self.victim.receiver.type!='Machine':
+#                         # if the processingType is 'Processing' and not only 'Load' or 'Setup'
+#                         if any(type=='Processing' for type in self.victim.multOperationTypeList):
+#                             # wait until the victim has released the entity it was processing
+#                             # TODO: add new event, to be signalled from the Machine removeEntity
+#                             yield waitevent, self, self.victimQueueIsEmpty
+#                             assert self.victimQueueIsEmpty.signalparam==now(), 'the broker should be granted control instantly'
                 #self.victim.outputTrace(self.victim.currentOperator.objName, "left "+ self.victim.objName)
                 yield release,self,self.victim.operatorPool.getResource(self.victim.currentOperator)
+                # TODO: somehow signal the other brokers waiting for the same operators that they are now free
+                from Globals import G
+                candidateMachines=[]
+                pendingMachines=[]
+                for operatorpool in G.OperatorPoolsList:
+                    if self.victim.currentOperator in operatorpool.operators:
+                        for machine in operatorpool.coreObjects:
+                            if machine.broker.timeWaitForOperatorStarted:
+                                candidateMachines.append(machine)
+                            if machine.canAccept() and any(type=='Load' for type in machine.multOperationTypeList):
+                                #===============================================
+#                                 # TESTING
+#                                 print now(), self.victim.id, 'broker signalling', machine.id, 'loadOperatorAvailable'
+                                #===============================================
+                                machine.loadOperatorAvailable.signal(now())
+                if candidateMachines:
+                    maxTimeWaiting=0
+                    receiver=None
+                    for machine in candidateMachines:
+                        timeWaiting=now()-machine.broker.timeWaitForOperatorStarted
+                        if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
+                            maxTimeWaiting=timeWaiting
+                            receiver=machine
+                    #===========================================================
+#                     # TESTING
+#                     print now(), self.victim.id, 'broker signalling', machine.id, 'resourceAvailable'
+                    #===========================================================
+                    receiver.broker.resourceAvailable.signal(now())
+                
+                #===============================================================
+#                 # TESTING
+#                 print now(), self.victim.currentOperator.objName, 'released', self.victim.id
+                #===============================================================
                 # the victim current operator must be cleared after the operator is released
                 self.timeLastOperationEnded = now()
                 self.victim.currentOperator = None
             else:
                 pass
-            # return the control the machine.run
-            self.exit()
+            # TODO: exit method can perform the signalling 
+            # TODO: the victim must have a new event brokerIsSet
+            self.victim.brokerIsSet.signal(now())
+                
+            
+#             yield waituntil,self,self.isCalled # wait until the broker is called
+#     # ======= request a resource
+#             if self.victim.isOperated()\
+#                 and any(type=="Load" or type=="Setup" or type=="Processing"\
+#                          for type in self.victim.multOperationTypeList):
+#                 # update the time that the station is waiting for the operator
+#                 self.timeWaitForOperatorStarted=now()
+# #                 # update the currentObject of the operatorPool
+# #                 self.victim.operatorPool.currentObject = self.victim
+#                 # wait until a resource is available
+#                 yield waituntil, self, self.victim.operatorPool.checkIfResourceIsAvailable
+#                 # set the available resource as the currentOperator
+#                 self.victim.currentOperator=self.victim.operatorPool.findAvailableOperator()
+#                 yield request,self,self.victim.operatorPool.getResource(self.victim.currentOperator)
+#                 #===============================================================
+# #                 # TESTING
+# #                 print now(), self.victim.currentOperator.objName, 'started work in ', self.victim.id
+#                 #===============================================================
+# #                 self.victim.totalTimeWaitingForOperator+=now()-self.timeWaitForOperatorStarted
+#                 # clear the timeWaitForOperatorStarted variable
+#                 self.timeWaitForOperatorStarted = 0
+#                 # update the time that the operation started
+#                 self.timeOperationStarted = now()
+#                 self.victim.outputTrace(self.victim.currentOperator.objName, "started work in "+ self.victim.objName)
+#                 self.victim.currentOperator.timeLastOperationStarted=now()
+#     # ======= release a resource        
+#             elif not self.victim.isOperated():
+#                 self.victim.currentOperator.totalWorkingTime+=now()-self.victim.currentOperator.timeLastOperationStarted
+#                 # if the victim releasing the operator has receiver
+#                 if self.victim.receiver:
+#                     # if the following object is not of type Machine
+#                     if self.victim.receiver.type!='Machine':
+#                         # if the processingType is 'Processing' and not only 'Load' or 'Setup'
+#                         if any(type=='Processing' for type in self.victim.multOperationTypeList):
+#                             # wait until the victim has released the entity it was processing
+#                             yield waituntil, self, self.victim.activeQueueIsEmpty
+#                 #self.victim.outputTrace(self.victim.currentOperator.objName, "left "+ self.victim.objName)
+#                 yield release,self,self.victim.operatorPool.getResource(self.victim.currentOperator)
+#                 # the victim current operator must be cleared after the operator is released
+#                 self.timeLastOperationEnded = now()
+#                 self.victim.currentOperator = None
+#             else:
+#                 pass
+#             # return the control the machine.run
+#             self.exit()
         
