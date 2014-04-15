@@ -127,6 +127,16 @@ class BatchDecomposition(CoreObject):
                         signaling=self.signalReceiver()
                         if signaling:
                             break
+    # =======================================================================
+    # removes an entity from the Machine
+    # =======================================================================
+    def removeEntity(self, entity=None):
+        activeObject=self.getActiveObject()
+        activeEntity=CoreObject.removeEntity(self, entity)          # run the default method     
+        activeObject.waitToDispose=False                            # update the waitToDispose flag
+        if activeObject.canAccept():
+            activeObject.signalGiver()
+        return activeEntity
         
     # =======================================================================
     #     method that decomposes the activeEntity into subBatches
