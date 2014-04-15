@@ -97,6 +97,8 @@ class Machine(CoreObject):
             id = id+'_OP'
             name=self.objName+'_operatorPool'
             self.operatorPool=OperatorPool(id, name, operatorsList=operatorPool)
+            from Globals import G
+            G.OperatorPoolsList.append(self.operatorPool)
         elif(type(operatorPool) is OperatorPool):
             self.operatorPool=operatorPool         
         else:
@@ -147,7 +149,14 @@ class Machine(CoreObject):
         # flags used for preemption purposes
         self.isPreemptive=isPreemptive
         self.resetOnPreemption=resetOnPreemption
-        # event used by the router
+        # events used by the broker
+        self.brokerIsSet=SimEvent('brokerIsSet')
+            # this event is generated every time an operator is requested by machine for Load operation type.
+            #     if the machine has not succeeded in getting an entity due to the resource absence 
+            #     and waits for the next event to get the entity, 
+            #     then it must be signalled that the operator is now available
+        self.loadOperatorAvailable=SimEvent('loadOperatorAvailable')
+        
         self.routerCycleOver=SimEvent('routerCycleOver')
     
     # =======================================================================
@@ -213,24 +222,25 @@ class Machine(CoreObject):
         self.initialSignalReceiver()
         # execute all through simulation time
         while 1:
-            # waitEvent isRequested or interruption start 
+            # waitEvent isRequested or an interruptionEnd
             while 1:
-                yield waitevent, self, [self.isRequested, self.interruptionStart]
-                # if the machine is interrupted
-                if self.interruptionStart.signalparam==now():
-                    # wait until the interruption is ended
-                    yield waitevent, self, self.interruptionEnd         # interruptionEnd to be triggered by ObjectInterruption
-                    assert self==self.interruptionEnd.signalparam, 'the victim of the failure is not the object that received it'
+                yield waitevent, self, [self.isRequested, self.interruptionEnd, self.loadOperatorAvailable]
+                # if the machine can accept an entity and one predecessor requests it continue with receiving the entity
+                if self.isRequested.signalparam:
+                    assert self.isRequested.signalparam==self.giver, 'the giver is not the requestingObject'
+                    self.isRequested.signalparam=None
+                    break
+                # if an interruption caused the control to be taken by the machine
+                if self.interruptionEnd.signalparam==now():
                     # and signal the Giver, otherwise wait until it is requested
                     if self.signalGiver():
-                        break   
-                # if the machine can accept an entity and one predecessor requests it continuew with receiving the entity
-                else:
-                    break
+                        break
+                # if an operator was rendered available while it was needed by the machine to proceed with getting
+                elif self.loadOperatorAvailable.signalparam==now():
+                    # try to signal the giver, otherwise wait until it is requested
+                    if self.signalGiver():
+                        break
             # TODO: maybe here have to assigneExit of the giver and add self to operator activeCallers list
-            requestingObject=self.isRequested.signalparam
-            assert requestingObject==self.giver, 'the giver is not the requestingObject'
-              
 #===============================================================================
 #             # reset the canProceedWithGetEntity flag
 #             self.canProceedWithGetEntity=False
@@ -264,41 +274,41 @@ class Machine(CoreObject):
             self.setupTimeCurrentEntity = 0
             
     #===========================================================================
-    # # ======= request a resource
-    #         if(self.operatorPool!="None") and any(type=='Load' for type in self.multOperationTypeList):
-    #             # when it's ready to accept (canAcceptAndIsRequested) then inform the broker
-    #             # machines waits to be operated (waits for the operator)
-    #             self.requestOperator()
-    #             self.timeWaitForLoadOperatorStarted = now()
-    #             # wait until the Broker has waited times equal to loadTime (if any)
-    #             yield waituntil, self, self.broker.isSet
-    #             self.timeWaitForLoadOperatorEnded = now()
-    #             self.loadOperatorWaitTimeCurrentEntity += self.timeWaitForLoadOperatorEnded-self.timeWaitForLoadOperatorStarted
-    #             self.totalTimeWaitingForLoadOperator += self.loadOperatorWaitTimeCurrentEntity 
-    #             
-    # # ======= Load the machine if the Load is defined as one of the Operators' operation types
-    #         if any(type=="Load" for type in self.multOperationTypeList) and self.isOperated():
-    #             self.timeLoadStarted = now()
-    #             yield hold,self,self.calculateLoadTime()
-    #             # TODO: if self.interrupted(): There is the issue of failure during the Loading
-    #             self.timeLoadEnded = now()
-    #             self.loadTimeCurrentEntity = self.timeLoadEnded-self.timeLoadStarted 
-    #             self.totalLoadTime += self.loadTimeCurrentEntity
-    #             
-    # # ======= release a resource if the only operation type is Load
-    #         if (self.operatorPool!="None")\
-    #              and any(type=="Load" for type in self.multOperationTypeList)\
-    #              and not (any(type=="Processing" for type in self.multOperationTypeList)\
-    #                       or any(type=="Setup" for type in self.multOperationTypeList))\
-    #              and self.isOperated():
-    #             # after getting the entity release the operator
-    #             # machine has to release the operator
-    #             self.releaseOperator()
-    #             # wait until the Broker has finished processing
-    #             yield waituntil, self, self.broker.isSet
-    #         
-    #         # TODO: reset the requestinEntity before receiving the currentEntity
-    #         self.requestingEntity=None
+    # ======= request a resource
+            if(self.operatorPool!="None") and any(type=='Load' for type in self.multOperationTypeList):
+                # when it's ready to accept (canAcceptAndIsRequested) then inform the broker
+                # machines waits to be operated (waits for the operator)
+                self.requestOperator()
+                self.timeWaitForLoadOperatorStarted = now()
+                # wait until the Broker has waited times equal to loadTime (if any)
+                yield waitevent, self, self.brokerIsSet
+                self.timeWaitForLoadOperatorEnded = now()
+                self.loadOperatorWaitTimeCurrentEntity += self.timeWaitForLoadOperatorEnded-self.timeWaitForLoadOperatorStarted
+                self.totalTimeWaitingForLoadOperator += self.loadOperatorWaitTimeCurrentEntity 
+                 
+    # ======= Load the machine if the Load is defined as one of the Operators' operation types
+            if any(type=="Load" for type in self.multOperationTypeList) and self.isOperated():
+                self.timeLoadStarted = now()
+                yield hold,self,self.calculateLoadTime()
+                # TODO: if self.interrupted(): There is the issue of failure during the Loading
+                self.timeLoadEnded = now()
+                self.loadTimeCurrentEntity = self.timeLoadEnded-self.timeLoadStarted 
+                self.totalLoadTime += self.loadTimeCurrentEntity
+                 
+    # ======= release a resource if the only operation type is Load
+            if (self.operatorPool!="None")\
+                 and any(type=="Load" for type in self.multOperationTypeList)\
+                 and not (any(type=="Processing" for type in self.multOperationTypeList)\
+                          or any(type=="Setup" for type in self.multOperationTypeList))\
+                 and self.isOperated():
+                # after getting the entity release the operator
+                # machine has to release the operator
+                self.releaseOperator()
+                # wait until the Broker has finished processing
+                yield waitevent, self, self.brokerIsSet
+             
+            # TODO: reset the requestinEntity before receiving the currentEntity
+            self.requestingEntity=None
     #===========================================================================
             # get the entity
                     # TODO: if there was loading time then we must solve the problem of getting an entity
@@ -309,19 +319,19 @@ class Machine(CoreObject):
             #     the canAcceptAndIsRequested method checks only in case of Load type of operation 
             
     #===========================================================================
-    # # ======= request a resource if it is not already assigned an Operator
-    #         if(self.operatorPool!="None")\
-    #              and (any(type=="Processing" for type in self.multOperationTypeList)\
-    #                   or any(type=="Setup" for type in self.multOperationTypeList))\
-    #              and not self.isOperated():
-    #             # when it's ready to accept (canAcceptAndIsRequested) then inform the broker
-    #             # machines waits to be operated (waits for the operator)
-    #             self.requestOperator()
-    #             self.timeWaitForOperatorStarted = now()
-    #             # wait until the Broker has waited times equal to loadTime (if any)
-    #             yield waituntil, self, self.broker.isSet
-    #             self.timeWaitForOperatorEnded = now()
-    #             self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
+    # ======= request a resource if it is not already assigned an Operator
+            if(self.operatorPool!="None")\
+                 and (any(type=="Processing" for type in self.multOperationTypeList)\
+                      or any(type=="Setup" for type in self.multOperationTypeList))\
+                 and not self.isOperated():
+                # when it's ready to accept (canAcceptAndIsRequested) then inform the broker
+                # machines waits to be operated (waits for the operator)
+                self.requestOperator()
+                self.timeWaitForOperatorStarted = now()
+                # wait until the Broker has waited times equal to loadTime (if any)
+                yield waitevent, self, self.brokerIsSet
+                self.timeWaitForOperatorEnded = now()
+                self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
     #===========================================================================
             
             # variables dedicated to hold the processing times, the time when the Entity entered, 
@@ -330,51 +340,51 @@ class Machine(CoreObject):
             self.tinM=self.totalProcessingTimeInCurrentEntity                                          # timer to hold the processing time left
             
 #===============================================================================
-#     # ======= setup the machine if the Setup is defined as one of the Operators' operation types
-#             # in plantSim the setup is performed when the machine has to process a new type of Entity and only once
-#             if any(type=="Setup" for type in self.multOperationTypeList) and self.isOperated():
-#                 self.timeSetupStarted = now()
-#                 yield hold,self,self.calculateSetupTime()
-#                 # TODO: if self.interrupted(): There is the issue of failure during the setup
-#                 self.timeSetupEnded = now()
-#                 self.setupTimeCurrentEntity = self.timeSetupEnded-self.timeSetupStarted
-#                 self.totalSetupTime += self.setupTimeCurrentEntity
-#                 
-#             # setup is performed only when setup is set in Machines multOperationTypeList
-#             # TODO: This must be also performed when no such operation is defined for the operator
-#             #     but setupTime is given for the entity to be processed
-# #             try:
-# #                 if self.setupTime and not any(type=="Setup" for type in self.multOperationTypeList):
-# #                     #===============================================================
-# #                     # testing
-# #                     if self.id=='MILL1' or self.id=='MILL2':
-# #                         print '    ', now(), self.id, 'auto-setup'
-# #                     #===============================================================
-# #                     self.timeSetupStarted = now()
-# #                     yield hold,self,self.calculateSetupTime()
-# #                     #===========================================================
-# #                     # testing
-# #                     if self.id=='MILL1' or self.id=='MILL2':
-# #                         print '    ', now()
-# #                     #===========================================================
-# #                     # TODO: if self.interrupted(): There is the issue of failure during the setup
-# #                     self.timeSetupEnded = now()
-# #                     self.setupTimeCurrentEntity = self.timeSetupEnded-self.timeSetupStarted
-# #                     self.totalSetupTime += self.setupTimeCurrentEntity
-# #             except:
-# #                 pass
-#             
-#     # ======= release a resource if the only operation type is Setup
-#             if (self.operatorPool!="None")\
-#                 and self.isOperated()\
-#                 and (any(type=="Setup" for type in self.multOperationTypeList)\
-#                      or any(type=="Load" for type in self.multOperationTypeList))\
-#                 and not any(type=="Processing" for type in self.multOperationTypeList):
-#                 # after getting the entity release the operator
-#                 # machine has to release the operator
-#                 self.releaseOperator()
-#                 # wait until the Broker has finished processing
-#                 yield waituntil, self, self.broker.isSet
+    # ======= setup the machine if the Setup is defined as one of the Operators' operation types
+            # in plantSim the setup is performed when the machine has to process a new type of Entity and only once
+            if any(type=="Setup" for type in self.multOperationTypeList) and self.isOperated():
+                self.timeSetupStarted = now()
+                yield hold,self,self.calculateSetupTime()
+                # TODO: if self.interrupted(): There is the issue of failure during the setup
+                self.timeSetupEnded = now()
+                self.setupTimeCurrentEntity = self.timeSetupEnded-self.timeSetupStarted
+                self.totalSetupTime += self.setupTimeCurrentEntity
+                 
+            # setup is performed only when setup is set in Machines multOperationTypeList
+            # TODO: This must be also performed when no such operation is defined for the operator
+            #     but setupTime is given for the entity to be processed
+#             try:
+#                 if self.setupTime and not any(type=="Setup" for type in self.multOperationTypeList):
+#                     #===============================================================
+#                     # testing
+#                     if self.id=='MILL1' or self.id=='MILL2':
+#                         print '    ', now(), self.id, 'auto-setup'
+#                     #===============================================================
+#                     self.timeSetupStarted = now()
+#                     yield hold,self,self.calculateSetupTime()
+#                     #===========================================================
+#                     # testing
+#                     if self.id=='MILL1' or self.id=='MILL2':
+#                         print '    ', now()
+#                     #===========================================================
+#                     # TODO: if self.interrupted(): There is the issue of failure during the setup
+#                     self.timeSetupEnded = now()
+#                     self.setupTimeCurrentEntity = self.timeSetupEnded-self.timeSetupStarted
+#                     self.totalSetupTime += self.setupTimeCurrentEntity
+#             except:
+#                 pass
+             
+    # ======= release a resource if the only operation type is Setup
+            if (self.operatorPool!="None")\
+                and self.isOperated()\
+                and (any(type=="Setup" for type in self.multOperationTypeList)\
+                     or any(type=="Load" for type in self.multOperationTypeList))\
+                and not any(type=="Processing" for type in self.multOperationTypeList):
+                # after getting the entity release the operator
+                # machine has to release the operator
+                self.releaseOperator()
+                # wait until the Broker has finished processing
+                yield waitevent, self, self.brokerIsSet
 #===============================================================================
                                                                                  
             # variables used to flag any interruptions and the end of the processing
@@ -398,18 +408,18 @@ class Machine(CoreObject):
                     self.interruptionActions()                      # execute interruption actions
                     
     #===========================================================================
-    # # =============== release the operator if there is interruption 
-    #                 if (self.operatorPool!="None")\
-    #                     and self.isOperated()\
-    #                     and any(type=="Processing" for type in self.multOperationTypeList):
-    #                     self.releaseOperator()
-    #                     yield waituntil,self,self.broker.isSet 
+    # =============== release the operator if there is interruption 
+                    if (self.operatorPool!="None")\
+                        and self.isOperated()\
+                        and any(type=="Processing" for type in self.multOperationTypeList):
+                        self.releaseOperator()
+                        yield waitevent,self,self.brokerIsSet 
     #===========================================================================
     
                     # if there is a failure  in the machine or interruption due to preemption, it is passivated
                     # passivate the Machine for as long as there is no repair
                     yield waitevent, self, self.interruptionEnd
-                    assert self==self.interruptionEnd.signalparam, 'the victim of the failure is not the object that received it'
+                    assert now()==self.interruptionEnd.signalparam, 'the victim of the failure is not the object that received it'
                     self.postInterruptionActions()
                     
                     #===========================================================
@@ -419,15 +429,15 @@ class Machine(CoreObject):
                     #===========================================================
                 
     #===========================================================================
-    # # =============== request a resource after the repair
-    #                 if (self.operatorPool!="None")\
-    #                     and any(type=="Processing" for type in self.multOperationTypeList)\
-    #                     and not self.interruption:
-    #                     self.timeWaitForOperatorStarted = now()
-    #                     self.requestOperator()
-    #                     yield waituntil,self,self.broker.isSet
-    #                     self.timeWaitForOperatorEnded = now() 
-    #                     self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
+    # =============== request a resource after the repair
+                    if (self.operatorPool!="None")\
+                        and any(type=="Processing" for type in self.multOperationTypeList)\
+                        and not self.interruption:
+                        self.timeWaitForOperatorStarted = now()
+                        self.requestOperator()
+                        yield waitevent,self,self.brokerIsSet
+                        self.timeWaitForOperatorEnded = now() 
+                        self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
     #===========================================================================
                 
                 # if no interruption occurred the processing in M1 is ended 
@@ -455,12 +465,12 @@ class Machine(CoreObject):
             self.endProcessingActions()
              
     #===========================================================================
-    # # =============== release resource after the end of processing
-    #         if (self.operatorPool!='None')\
-    #             and any(type=="Processing" for type in self.multOperationTypeList)\
-    #             and not self.interruption: 
-    #             self.releaseOperator()
-    #             yield waituntil,self,self.broker.isSet
+    # =============== release resource after the end of processing
+            if (self.operatorPool!='None')\
+                and any(type=="Processing" for type in self.multOperationTypeList)\
+                and not self.interruption: 
+                self.releaseOperator()
+                yield waitevent,self,self.brokerIsSet
     #===========================================================================
             
             # signal the receiver that the activeObject has something to dispose of
@@ -477,7 +487,7 @@ class Machine(CoreObject):
                     # wait for the end of the interruption
                         self.interruptionActions()                          # execute interruption actions
                         yield waitevent, self, self.interruptionEnd         # interruptionEnd to be triggered by ObjectInterruption
-                        assert self==self.interruptionEnd.signalparam, 'the victim of the failure is not the object that received it'
+                        assert now()==self.interruptionEnd.signalparam, 'the victim of the failure is not the object that received it'
                         self.postInterruptionActions()
                         #=======================================================
                         # TODO: not sure if this is required now
@@ -489,6 +499,9 @@ class Machine(CoreObject):
                         
                     if self.signalReceiver():
                         break
+            # TODO: in operated Machine, sometimes the giver is not signalled from the removeEntity method because there
+            #       there was no operator available. In this case, by the time the operator is available again the Machine
+            #       must receive the entity from the predecessor and thus the 
     
     # =======================================================================
     # actions to be carried out when the processing of an Entity ends
@@ -707,8 +720,16 @@ class Machine(CoreObject):
         activeObject=self.getActiveObject()
         activeEntity=CoreObject.removeEntity(self, entity)          # run the default method     
         activeObject.waitToDispose=False                            # update the waitToDispose flag
+        # if the Machine canAccept then signal a giver
         if activeObject.canAccept():
             activeObject.signalGiver()
+        # if the Machine is operated then signal Broker that the internal queue is now empty
+        if activeObject.currentOperator:
+            #===================================================================
+#             # TESTING
+#             print now(), self.id, 'signalling broker that removed entity'
+            #===================================================================
+            activeObject.broker.victimQueueIsEmpty.signal(now())
         return activeEntity
     
     # ======================================================================= 
@@ -720,7 +741,7 @@ class Machine(CoreObject):
         activeObjectQueue=self.getActiveObjectQueue()
         #if we have only one successor just check if machine waits to dispose and also is up
         # this is done to achieve better (cpu) processing time        
-        if(len(activeObject.next)==1 or callerObject==None): 
+        if(len(activeObject.next)==1 or callerObject==None):
             return len(activeObjectQueue)>0 and activeObject.waitToDispose and activeObject.checkIfActive()
         thecaller=callerObject
         return len(activeObjectQueue)>0 and activeObject.waitToDispose\
