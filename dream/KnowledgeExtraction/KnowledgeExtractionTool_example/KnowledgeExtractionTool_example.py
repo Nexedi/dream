@@ -115,7 +115,7 @@ for process in process:
         Name=process.find('./OperationTime/Distribution/DistributionParameterB/Name')
         Name.text=str(M2Parameters[1]) 
         Value=process.find('./OperationTime/Distribution/DistributionParameterB/Value')
-        Value.text=str(M1ParameterValue[1]) 
+        Value.text=str(M2ParameterValue[1]) 
     else:
         continue
     tree.write('CMSD_Topology10_Output.xml',encoding="utf8")                         #It writes the element tree to a specified file, using the 'utf8' output encoding
