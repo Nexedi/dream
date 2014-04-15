@@ -55,6 +55,11 @@ class BasicStatisticalMeasures:
         rmean = robjects.r['mean']             #Call mean - R function
         return rmean(data)[0]
     
+    def median (self, data):                     #Calculate the median value of a data sample 
+        data=robjects.FloatVector(data)
+        rmedian = robjects.r['median']             #Call median - R function
+        return rmedian(data)[0]
+    
     def var (self, data):                      #Calculate the variance of a data sample
         data=robjects.FloatVector(data)
         rvar = robjects.r['var']               #Call variance function - R function
