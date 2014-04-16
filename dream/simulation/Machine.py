@@ -222,22 +222,20 @@ class Machine(CoreObject):
         self.initialSignalReceiver()
         # execute all through simulation time
         while 1:
-            # waitEvent isRequested or an interruptionEnd
+            # waitEvent isRequested /interruptionEnd/loadOperatorAvailable
             while 1:
                 yield waitevent, self, [self.isRequested, self.interruptionEnd, self.loadOperatorAvailable]
                 # if the machine can accept an entity and one predecessor requests it continue with receiving the entity
                 if self.isRequested.signalparam:
                     assert self.isRequested.signalparam==self.giver, 'the giver is not the requestingObject'
+                    assert self.giver.receiver==self, 'the receiver of the signalling object in not the station'
+                    # reset the signalparam of the isRequested event
                     self.isRequested.signalparam=None
                     break
-                # if an interruption caused the control to be taken by the machine
-                if self.interruptionEnd.signalparam==now():
-                    # and signal the Giver, otherwise wait until it is requested
-                    if self.signalGiver():
-                        break
-                # if an operator was rendered available while it was needed by the machine to proceed with getting
-                elif self.loadOperatorAvailable.signalparam==now():
-                    # try to signal the giver, otherwise wait until it is requested
+                # if an interruption caused the control to be taken by the machine or
+                # if an operator was rendered available while it was needed by the machine to proceed with getEntity
+                if self.interruptionEnd.signalparam==now() or self.loadOperatorAvailable.signalparam==now():
+                    # try to signal the Giver, otherwise wait until it is requested
                     if self.signalGiver():
                         break
             # TODO: maybe here have to assigneExit of the giver and add self to operator activeCallers list
@@ -722,6 +720,7 @@ class Machine(CoreObject):
         activeObject.waitToDispose=False                            # update the waitToDispose flag
         # if the Machine canAccept then signal a giver
         if activeObject.canAccept():
+#             print now(), self.id, 'will singal giver'
             activeObject.signalGiver()
         # if the Machine is operated then signal Broker that the internal queue is now empty
         if activeObject.currentOperator:
