@@ -48,48 +48,67 @@ class QueueJobShop(Queue):
     # it checks also the next station of the Entity 
     # and returns true only if the active object is the next station
     # ======================================================================= 
-    def canAccept(self, callerObject=None): 
-        if callerObject!=None:
+    def canAccept(self, callerObject=None):
+        activeObject=self.getActiveObject()
+        activeObjectQueue=activeObject.getActiveObjectQueue()
+        thecaller=callerObject
+            #return according to the state of the Queue
             #check it the caller object holds an Entity that requests for current object
-            if len(callerObject.getActiveObjectQueue())>0:
-                activeEntity=callerObject.getActiveObjectQueue()[0]
-                # check if the object in the active entity's route next step
-                if self.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
-#                 if activeEntity.remainingRoute[0][0]==self.id:
-                    return len(self.getActiveObjectQueue())<self.capacity  #return according to the state of the Queue
-        return False   
+        return len(self.getActiveObjectQueue())<activeObject.capacity\
+                and activeObject.isInRoute(callerObject)
+    
+    #===========================================================================
+    # method used to check whether the station is in the entity-to-be-received route
+    # TODO: consider giving the activeEntity as attribute
+    #===========================================================================
+    def isInRoute(self, callerObject=None):
+        activeObject=self.getActiveObject()
+        activeObjectQueue=activeObject.getActiveObjectQueue()
+        thecaller=callerObject
+        # if the caller is not defined then return True. We are only interested in checking whether 
+        # the station can accept whatever entity from whichever giver
+        if not thecaller:
+            return True
+        #check it the caller object holds an Entity that requests for current object
+        if len(thecaller.getActiveObjectQueue())>0:
+            # TODO: make sure that the first entity of the callerObject is to be disposed
+            activeEntity=thecaller.getActiveObjectQueue()[0]
+            # if the machine's Id is in the list of the entity's next stations
+            if activeObject.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
+                return True
+        return False
     
     # =======================================================================
     # checks if the Queue can dispose an entity. 
     # Returns True only to the potential receiver
     # =======================================================================     
     def haveToDispose(self, callerObject=None):
+#         print self.id, 'htd',
+#         if callerObject:
+#             print callerObject.id
         # get active object and its queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         thecaller = callerObject
 
         #if we have only one possible receiver just check if the Queue holds one or more entities
-        if(len(activeObject.next)==1 or callerObject==None):
-            activeObject.receiver=activeObject.next[0]
-            return len(activeObjectQueue)>0\
-                    and thecaller==activeObject.receiver
+        if(callerObject==None):
+            return len(activeObjectQueue)>0
         
-        #give the entity to the possible receiver that is waiting for the most time. 
-        #plant does not do this in every occasion!       
-        maxTimeWaiting=0
-        hasFreeReceiver=False
-        # loop through the object in the successor list
-        for object in activeObject.next:
-            if(object.canAccept(activeObject)):                                 # if the object can accept
-                hasFreeReceiver=True
-                timeWaiting=now()-object.timeLastEntityLeft         # compare the time that it has been waiting 
-                if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# with the others'
-                    maxTimeWaiting=timeWaiting
-                    self.receiver=object                           # and update the receiver to the index of this object
-        
-        #return True if the Queue has Entities and the caller is the receiver
-        return len(activeObjectQueue)>0 and (thecaller is self.receiver) and hasFreeReceiver
+        #return True if the Queue has Entities and the caller is in the self.next list
+        return len(activeObjectQueue)>0\
+                and (thecaller in activeObject.next)\
+                and thecaller.isInRoute(activeObject)
+    
+    #===========================================================================
+    # extend the default behaviour to check if whether the station 
+    #     is in the route of the entity to be received
+    #===========================================================================
+    def canAcceptAndIsRequested(self):
+        activeObject=self.getActiveObject()
+        giverObject=activeObject.getGiverObject()
+        if activeObject.isInRoute(giverObject):
+            return Queue.canAcceptAndIsRequested(self)
 
     # =======================================================================
     # gets an entity from the predecessor that the predecessor index points to
@@ -139,8 +158,9 @@ class QueueJobShop(Queue):
     # =======================================================================
     def removeEntity(self, entity=None):
         activeObject=self.getActiveObject()
-        receiverObject=self.receiver  
-        activeEntity=Queue.removeEntity(self, entity)                               #run the default method  
+        receiverObject=activeObject.getReceiverObject()
+        #run the default method
+        activeEntity=Queue.removeEntity(self, entity)
         removeReceiver=True 
         # search in the internalQ. If an entity has the same receiver do not remove
         for ent in self.getActiveObjectQueue():

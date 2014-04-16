@@ -49,6 +49,15 @@ class MachineJobShop(Machine):
         activeObject=self.getActiveObject()
         activeObjectQueue=activeObject.getActiveObjectQueue()
         activeEntity=activeObjectQueue[0]
+        # reset the variables used to handle the interruptions timing 
+        self.timeRestartingProcessing=0
+        self.breakTime=0
+        # output to trace that the processing in the Machine self.objName ended 
+        try:
+            activeObject.outputTrace(activeObject.getActiveObjectQueue()[0].name,"ended processing in "+activeObject.objName)
+        except IndexError:
+            pass
+        
         import Globals
         from Globals import G
         # the entity that just got processed is cold again it will get 
@@ -71,6 +80,21 @@ class MachineJobShop(Machine):
         # the just processed entity is added to the list of entities 
         # pending for the next processing
         G.pendingEntities.append(activeObjectQueue[0])
+        # set the variable that flags an Entity is ready to be disposed 
+        activeObject.waitToDispose=True
+        #do this so that if it is overtime working it is not counted as off-shift time
+        if not activeObject.onShift:
+            activeObject.timeLastShiftEnded=now()
+        # update the total working time # the total processing time for this entity is what the distribution initially gave
+        activeObject.totalWorkingTime+=activeObject.totalProcessingTimeInCurrentEntity
+        # update the variables keeping track of Entity related attributes of the machine
+        activeObject.timeLastEntityEnded=now()                              # this holds the time that the last entity ended processing in Machine 
+        activeObject.nameLastEntityEnded=activeObject.currentEntity.name    # this holds the name of the last entity that ended processing in Machine
+        activeObject.completedJobs+=1                                       # Machine completed one more Job
+        
+        
+        # TODO: collapse that to Machine
+
 
     # =======================================================================
     # gets an entity from the predecessor that the predecessor index points to
@@ -130,23 +154,40 @@ class MachineJobShop(Machine):
         activeObject=self.getActiveObject()
         activeObjectQueue=activeObject.getActiveObjectQueue()
         thecaller=callerObject
-        if (thecaller!=None):
-            #check it the caller object holds an Entity that requests for current object
-            if len(thecaller.getActiveObjectQueue())>0:
-                # TODO: make sure that the first entity of the callerObject is to be disposed
-                activeEntity=thecaller.getActiveObjectQueue()[0]
-                # if the machine's Id is in the list of the entity's next stations
-                if activeObject.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
-                    #return according to the state of the Queue
-                    # also check if (if the machine is to be operated) there are available operators
-                    if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
-                                                            or any(type=='Setup' for type in activeObject.multOperationTypeList))):
-                        return activeObject.operatorPool.checkIfResourceIsAvailable()\
-                                and len(activeObject.getActiveObjectQueue())<activeObject.capacity\
-                                and activeObject.Up
-                    else:
-                        return len(activeObject.getActiveObjectQueue())<activeObject.capacity\
-                                and activeObject.Up
+        #return according to the state of the Queue
+        # also check if (if the machine is to be operated) there are available operators
+        if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
+                                                or any(type=='Setup' for type in activeObject.multOperationTypeList))):
+            return activeObject.operatorPool.checkIfResourceIsAvailable()\
+                    and len(activeObject.getActiveObjectQueue())<activeObject.capacity\
+                    and activeObject.checkIfMachineIsUp()\
+                    and activeObject.isInRoute(thecaller)
+        else:
+            return len(activeObject.getActiveObjectQueue())<activeObject.capacity\
+                    and activeObject.checkIfMachineIsUp()\
+                    and activeObject.isInRoute(thecaller)
+                        
+    #===========================================================================
+    # method used to check whether the station is in the entity-to-be-received route
+    # TODO: consider giving the activeEntity as attribute
+    # TODO: consider the case when no caller is defined, 
+    #         postProcessing calls canAccept on next members with no arguments
+    #===========================================================================
+    def isInRoute(self, callerObject=None):
+        activeObject=self.getActiveObject()
+        activeObjectQueue=activeObject.getActiveObjectQueue()
+        thecaller=callerObject
+        # if the caller is not defined then return True. We are only interested in checking whether 
+        # the station can accept whatever entity from whichever giver
+        if not thecaller:
+            return True
+        #check it the caller object holds an Entity that requests for current object
+        if len(thecaller.getActiveObjectQueue())>0:
+            # TODO: make sure that the first entity of the callerObject is to be disposed
+            activeEntity=thecaller.getActiveObjectQueue()[0]
+            # if the machine's Id is in the list of the entity's next stations
+            if activeObject.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
+                return True
         return False
     
     # =======================================================================   
@@ -157,76 +198,65 @@ class MachineJobShop(Machine):
         # get active object and its queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        thecaller = callerObject
+        thecaller=callerObject
         
         #if we have only one successor just check if machine waits to dispose and also is up
-        # this is done to achieve better (cpu) processing time        
-        if(len(activeObject.next)==1 or callerObject==None): 
-            activeObject.receiver=activeObject.next[0]
+        # this is done to achieve better (cpu) processing time
+        if(callerObject==None):
             return len(activeObjectQueue)>0\
                  and activeObject.waitToDispose\
-                 and activeObject.Up\
-                 and thecaller==activeObject.receiver
+                 and activeObject.checkIfMachineIsUp()\
         
-        thecaller=callerObject
-        # give the entity to the successor that is waiting for the most time. 
-        # (plant simulation does not do this in every occasion!)       
-        maxTimeWaiting=0                                            # dummy variable counting the time a successor is waiting
-        for object in activeObject.next:
-            if(object.canAccept(activeObject)):                     # if a successor can accept an object
-                timeWaiting=now()-object.timeLastEntityLeft         # the time it has been waiting is updated and stored in dummy variable timeWaiting
-                if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# if the timeWaiting is the maximum among the ones of the successors 
-                    maxTimeWaiting=timeWaiting
-                    activeObject.receiver=object                    # set the receiver as the longest waiting possible receiver
-                                                                    # in the next loops, check the other successors in the previous list
-
-        
-        #return True if the Machine in the state of disposing and the caller is the receiver  
+        #return True if the Machine in the state of disposing and the caller is the receiver
         return len(activeObjectQueue)>0\
              and activeObject.waitToDispose\
-             and activeObject.Up\
-             and (thecaller is self.receiver)       
+             and activeObject.checkIfMachineIsUp()\
+             and (thecaller in activeObject.next)\
+             and thecaller.isInRoute(activeObject)
 
-    # =======================================================================
-    # method to execute preemption
-    # =======================================================================    
-    def preempt(self):
-        activeObject=self.getActiveObject()
-        activeEntity=self.getActiveObjectQueue()[0] #get the active Entity
-        #calculate the remaining processing time
-        #if it is reset then set it as the original processing time
-        if self.resetOnPreemption:
-            remainingProcessingTime=self.procTime
-        #else subtract the time that passed since the entity entered
-        #(may need also failure time if there was. TO BE MELIORATED)
-        else:
-            remainingProcessingTime=self.procTime-(now()-self.timeLastEntityEntered)
-        #update the remaining route of activeEntity
-        activeEntity.remainingRoute.insert(0, {'stationIdsList':[str(self.id)],\
-                                               'processingTime':\
-                                                    {'distributionType':'Fixed',\
-                                                     'mean':str(remainingProcessingTime)}})
-#         activeEntity.remainingRoute.insert(0, [self.id, remainingProcessingTime])
-        activeEntity.remainingRoute.insert(0, {'stationIdsList':[str(self.lastGiver.id)],\
-                                               'processingTime':\
-                                                    {'distributionType':'Fixed',\
-                                                     'mean':'0'}})
-#         activeEntity.remainingRoute.insert(0, [self.lastGiver.id, 0])        
-        #set the receiver  as the object where the active entity was preempted from 
-        self.receiver=self.lastGiver
-        self.next=[self.receiver]
-        self.waitToDispose=True                     #set that I have to dispose
-        self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
-        reactivate(self)
+#     # =======================================================================
+#     # method to execute preemption
+#     # =======================================================================    
+#     def preempt(self):
+#         activeObject=self.getActiveObject()
+#         activeEntity=self.getActiveObjectQueue()[0] #get the active Entity
+#         #calculate the remaining processing time
+#         #if it is reset then set it as the original processing time
+#         if self.resetOnPreemption:
+#             remainingProcessingTime=self.procTime
+#         #else subtract the time that passed since the entity entered
+#         #(may need also failure time if there was. TO BE MELIORATED)
+#         else:
+#             remainingProcessingTime=self.procTime-(now()-self.timeLastEntityEntered)
+#         #update the remaining route of activeEntity
+#         activeEntity.remainingRoute.insert(0, {'stationIdsList':[str(self.id)],\
+#                                                'processingTime':\
+#                                                     {'distributionType':'Fixed',\
+#                                                      'mean':str(remainingProcessingTime)}})
+# #         activeEntity.remainingRoute.insert(0, [self.id, remainingProcessingTime])
+#         activeEntity.remainingRoute.insert(0, {'stationIdsList':[str(self.lastGiver.id)],\
+#                                                'processingTime':\
+#                                                     {'distributionType':'Fixed',\
+#                                                      'mean':'0'}})
+# #         activeEntity.remainingRoute.insert(0, [self.lastGiver.id, 0])        
+#         #set the receiver  as the object where the active entity was preempted from 
+#         self.receiver=self.lastGiver
+#         self.next=[self.receiver]
+#         self.waitToDispose=True                     #set that I have to dispose
+#         self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
+#         reactivate(self)
             
     #===========================================================================
-    # just extend the default behaviour in order to read the load time 
-    # from the Entity to be obtained        
+    # extend the default behaviour to check if whether the station 
+    #     is in the route of the entity to be received
     #===========================================================================
     def canAcceptAndIsRequested(self):
-        if Machine.canAcceptAndIsRequested(self):
-            self.readLoadTime()
-            return True
+        activeObject=self.getActiveObject()
+        giverObject=activeObject.getGiverObject()
+        if activeObject.isInRoute(giverObject):
+            if Machine.canAcceptAndIsRequested(self):
+                activeObject.readLoadTime()
+                return True
         return False
 
     #===========================================================================
@@ -234,11 +264,12 @@ class MachineJobShop(Machine):
     # the load timeof the Entity must be read
     #===========================================================================
     def readLoadTime(self):
-        self.giver.sortEntities()
-        activeEntity=self.giver.getActiveObjectQueue()[0]
+        activeObject=self.getActiveObject()
+        activeObject.giver.sortEntities()
+        activeEntity=activeObject.giver.getActiveObjectQueue()[0]
         loadTime=activeEntity.remainingRoute[0].get('loadTime',{})
-        self.distType=loadTime.get('distributionType','Fixed')
-        self.loadTime=float(loadTime.get('mean', 0))
+        activeObject.distType=loadTime.get('distributionType','Fixed')
+        activeObject.loadTime=float(loadTime.get('mean', 0))
         
     # =======================================================================
     # removes an entity from the Machine

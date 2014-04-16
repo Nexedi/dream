@@ -160,7 +160,7 @@ class Queue(CoreObject):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
-        return len(activeObjectQueue)<self.capacity and giverObject.haveToDispose(activeObject) 
+        return len(activeObjectQueue)<activeObject.capacity and giverObject.haveToDispose(activeObject) 
     
     
     # =======================================================================

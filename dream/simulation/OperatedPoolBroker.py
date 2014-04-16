@@ -135,7 +135,7 @@ class Broker(ObjectInterruption):
                 if candidateMachines:
                     maxTimeWaiting=0
                     receiver=None
-                # choose the one that waits the most time and assign give it the chance to grasp the resource
+                # choose the one that waits the most time and give it the chance to grasp the resource
                     for machine in candidateMachines:
                         timeWaiting=now()-machine.broker.timeWaitForOperatorStarted
                         if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):

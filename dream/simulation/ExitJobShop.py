@@ -42,3 +42,24 @@ class ExitJobShop(Exit):
         self.previous=G.ObjList
         Exit.initialize(self)   #run default behaviour
         
+    #===========================================================================
+    # method used to check whether the station is in the entity-to-be-received route
+    # TODO: consider giving the activeEntity as attribute
+    #===========================================================================
+    def isInRoute(self, callerObject=None):
+        activeObject=self.getActiveObject()
+        activeObjectQueue=activeObject.getActiveObjectQueue()
+        thecaller=callerObject
+        # if the caller is not defined then return True. We are only interested in checking whether 
+        # the station can accept whatever entity from whichever giver
+        if not thecaller:
+            return True
+        #check it the caller object holds an Entity that requests for current object
+        if len(thecaller.getActiveObjectQueue())>0:
+            # TODO: make sure that the first entity of the callerObject is to be disposed
+            activeEntity=thecaller.getActiveObjectQueue()[0]
+            # if the machine's Id is in the list of the entity's next stations
+            if activeObject.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
+                return True
+        return False
+        
