@@ -309,17 +309,19 @@ class CoreObject(Process):
             possibleReceivers.append(object)
         if possibleReceivers:
             activeObject.receiver=activeObject.selectReceiver(possibleReceivers)
-            activeObject.receiver.giver=activeObject
+            activeObject.receiver.giver=activeObject 
             # perform the checks that canAcceptAndIsRequested used to perform and update activeCallersList or assignExit and operatorPool
             while not activeObject.receiver.canAcceptAndIsRequested():
                 possibleReceivers.remove(activeObject.receiver)
                 if not possibleReceivers:
+                    activeObject.receiver.giver=None
+                    activeObject.receiver=None
                     return False
                 activeObject.receiver=activeObject.selectReceiver(possibleReceivers)
                 activeObject.receiver.giver=activeObject
             #===================================================================
 #             # TESTING
-#             print now(), self.id,' '*50, 'signaling receiver', self.receiver.id
+#             print now(), self.id,' '*50, 'signalling receiver', self.receiver.id
             #===================================================================
             activeObject.receiver.isRequested.signal(activeObject)
             return True
@@ -351,14 +353,14 @@ class CoreObject(Process):
             possibleGivers.append(object)
         if possibleGivers:
             activeObject.giver=activeObject.selectGiver(possibleGivers)
-            activeObject.giver.receiver=activeObject
+            activeObject.giver.receiver=activeObject 
             # perform the checks that canAcceptAndIsRequested used to perform and update activeCallersList or assignExit and operatorPool
             while not activeObject.canAcceptAndIsRequested():
                 possibleGivers.remove(activeObject.giver)
                 if not possibleGivers:
                     return False
                 activeObject.giver=activeObject.selectGiver(possibleGivers)
-                activeObject.giver.receiver=activeObject
+                activeObject.giver.receiver=activeObject 
             #===================================================================
 #             # TESTING
 #             print now(), self.id,' '*50, 'signaling giver', self.giver.id
@@ -501,44 +503,44 @@ class CoreObject(Process):
     def getReceiverObjectQueue(self):
         return self.getReceiverObject().getActiveObjectQueue()
     
-    # =======================================================================
-	# get the giver object queue in a getEntity transaction. 
-    # =======================================================================    
-    def updateGiverObject(self):
-        activeObject=self
-        # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
-        maxTimeWaiting=0                                            # dummy variable counting the time a predecessor is blocked
-        giver=None
-        
-        # loop through the possible givers to see which have to dispose and which is the one blocked for longer
-        for object in activeObject.previous:
-            if(object.haveToDispose(activeObject) and object.receiver==self):
-                if(object.downTimeInTryingToReleaseCurrentEntity>0):# and the predecessor has been down while trying to give away the Entity
-                    timeWaiting=now()-object.timeLastFailureEnded   # the timeWaiting dummy variable counts the time end of the last failure of the giver object
-                else:
-                    timeWaiting=now()-object.timeLastEntityEnded    # in any other case, it holds the time since the end of the Entity processing
-                
-                #if more than one predecessor have to dispose take the part from the one that is blocked longer
-                if(timeWaiting>=maxTimeWaiting): 
-                    giver=object                 # the object to deliver the Entity to the activeObject is set to the ith member of the previous list
-                    maxTimeWaiting=timeWaiting    
-        return giver
+#     # =======================================================================
+# 	# get the giver object queue in a getEntity transaction. 
+#     # =======================================================================    
+#     def updateGiverObject(self):
+#         activeObject=self
+#         # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
+#         maxTimeWaiting=0                                            # dummy variable counting the time a predecessor is blocked
+#         giver=None
+#         
+#         # loop through the possible givers to see which have to dispose and which is the one blocked for longer
+#         for object in activeObject.previous:
+#             if(object.haveToDispose(activeObject) and object.receiver==self):
+#                 if(object.downTimeInTryingToReleaseCurrentEntity>0):# and the predecessor has been down while trying to give away the Entity
+#                     timeWaiting=now()-object.timeLastFailureEnded   # the timeWaiting dummy variable counts the time end of the last failure of the giver object
+#                 else:
+#                     timeWaiting=now()-object.timeLastEntityEnded    # in any other case, it holds the time since the end of the Entity processing
+#                 
+#                 #if more than one predecessor have to dispose take the part from the one that is blocked longer
+#                 if(timeWaiting>=maxTimeWaiting): 
+#                     giver=object                 # the object to deliver the Entity to the activeObject is set to the ith member of the previous list
+#                     maxTimeWaiting=timeWaiting    
+#         return giver
     
-    # =======================================================================
-    # get the receiver object 
-    # =======================================================================
-    def updateReceiverObject(self):
-        activeObject=self
-        # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
-        maxTimeWaiting=0                                            # dummy variable counting the time a successor is waiting
-        receiver=None
-        for object in activeObject.next:
-            if(object.canAccept(activeObject)):                     # if a successor can accept an object
-                timeWaiting=now()-object.timeLastEntityLeft         # the time it has been waiting is updated and stored in dummy variable timeWaiting
-                if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# if the timeWaiting is the maximum among the ones of the successors 
-                    maxTimeWaiting=timeWaiting
-                    receiver=object                    # set the receiver as the longest waiting possible receiver
-        return receiver
+#     # =======================================================================
+#     # get the receiver object 
+#     # =======================================================================
+#     def updateReceiverObject(self):
+#         activeObject=self
+#         # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
+#         maxTimeWaiting=0                                            # dummy variable counting the time a successor is waiting
+#         receiver=None
+#         for object in activeObject.next:
+#             if(object.canAccept(activeObject)):                     # if a successor can accept an object
+#                 timeWaiting=now()-object.timeLastEntityLeft         # the time it has been waiting is updated and stored in dummy variable timeWaiting
+#                 if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# if the timeWaiting is the maximum among the ones of the successors 
+#                     maxTimeWaiting=timeWaiting
+#                     receiver=object                    # set the receiver as the longest waiting possible receiver
+#         return receiver
 	
     # =======================================================================
     # calculates the processing time
