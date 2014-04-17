@@ -86,12 +86,16 @@ class MachineJobShop(Machine):
         if not activeObject.onShift:
             activeObject.timeLastShiftEnded=now()
         # update the total working time # the total processing time for this entity is what the distribution initially gave
-        activeObject.totalWorkingTime+=activeObject.totalProcessingTimeInCurrentEntity
+        if not self.shouldPreempt:
+            activeObject.totalWorkingTime+=activeObject.totalProcessingTimeInCurrentEntity
+        else:
+            activeObject.totalWorkingTime+=now()-(self.timeLastEntityEntered)
         # update the variables keeping track of Entity related attributes of the machine
         activeObject.timeLastEntityEnded=now()                              # this holds the time that the last entity ended processing in Machine 
         activeObject.nameLastEntityEnded=activeObject.currentEntity.name    # this holds the name of the last entity that ended processing in Machine
         activeObject.completedJobs+=1                                       # Machine completed one more Job
-        
+        # reseting the preemption flag
+        self.shouldPreempt=False 
         
         # TODO: collapse that to Machine
 
@@ -214,37 +218,40 @@ class MachineJobShop(Machine):
              and (thecaller in activeObject.next)\
              and thecaller.isInRoute(activeObject)
 
-#     # =======================================================================
-#     # method to execute preemption
-#     # =======================================================================    
-#     def preempt(self):
-#         activeObject=self.getActiveObject()
-#         activeEntity=self.getActiveObjectQueue()[0] #get the active Entity
-#         #calculate the remaining processing time
-#         #if it is reset then set it as the original processing time
-#         if self.resetOnPreemption:
-#             remainingProcessingTime=self.procTime
-#         #else subtract the time that passed since the entity entered
-#         #(may need also failure time if there was. TO BE MELIORATED)
-#         else:
-#             remainingProcessingTime=self.procTime-(now()-self.timeLastEntityEntered)
-#         #update the remaining route of activeEntity
-#         activeEntity.remainingRoute.insert(0, {'stationIdsList':[str(self.id)],\
-#                                                'processingTime':\
-#                                                     {'distributionType':'Fixed',\
-#                                                      'mean':str(remainingProcessingTime)}})
-# #         activeEntity.remainingRoute.insert(0, [self.id, remainingProcessingTime])
-#         activeEntity.remainingRoute.insert(0, {'stationIdsList':[str(self.lastGiver.id)],\
-#                                                'processingTime':\
-#                                                     {'distributionType':'Fixed',\
-#                                                      'mean':'0'}})
-# #         activeEntity.remainingRoute.insert(0, [self.lastGiver.id, 0])        
-#         #set the receiver  as the object where the active entity was preempted from 
-#         self.receiver=self.lastGiver
-#         self.next=[self.receiver]
-#         self.waitToDispose=True                     #set that I have to dispose
-#         self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
-#         reactivate(self)
+    # =======================================================================
+    # method to execute preemption
+    # =======================================================================    
+    def preempt(self):
+        activeObject=self.getActiveObject()
+        activeEntity=self.getActiveObjectQueue()[0] #get the active Entity
+        #calculate the remaining processing time
+        #if it is reset then set it as the original processing time
+        if self.resetOnPreemption:
+            remainingProcessingTime=self.procTime
+        #else subtract the time that passed since the entity entered
+        #(may need also failure time if there was. TO BE MELIORATED)
+        else:
+            remainingProcessingTime=self.procTime-(now()-self.timeLastEntityEntered)
+        #update the remaining route of activeEntity
+        activeEntity.remainingRoute.insert(0, {'stationIdsList':[str(self.id)],\
+                                               'processingTime':\
+                                                    {'distributionType':'Fixed',\
+                                                     'mean':str(remainingProcessingTime)}})
+#         activeEntity.remainingRoute.insert(0, [self.id, remainingProcessingTime])
+        activeEntity.remainingRoute.insert(0, {'stationIdsList':[str(self.lastGiver.id)],\
+                                               'processingTime':\
+                                                    {'distributionType':'Fixed',\
+                                                     'mean':'0'}})
+#         activeEntity.remainingRoute.insert(0, [self.lastGiver.id, 0])        
+        #set the receiver  as the object where the active entity was preempted from 
+        self.receiver=self.lastGiver
+        self.next=[self.receiver]
+        self.waitToDispose=True                     #set that I have to dispose
+        self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
+        # TODO: use a signal and wait for it, reactivation is not recognised as interruption
+        reactivate(self)
+        # TODO: consider the case when a failure has the Station down. The event preempt will not be received now()
+        #     but at a later simulation time. 
             
     #===========================================================================
     # extend the default behaviour to check if whether the station 

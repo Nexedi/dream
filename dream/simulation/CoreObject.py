@@ -566,12 +566,6 @@ class CoreObject(Process):
     def unAssignExit(self):
         self.exitAssignedToReceiver = None
         
-#     # =======================================================================
-#     #        actions to be carried whenever the object is preemptied 
-#     # =======================================================================
-#     def preempt(self):
-#         pass
-        
     # =======================================================================
     #        actions to be carried whenever the object is interrupted 
     #                  (failure, break, preemption, etc)

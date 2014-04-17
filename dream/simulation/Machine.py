@@ -151,10 +151,10 @@ class Machine(CoreObject):
         self.resetOnPreemption=resetOnPreemption
         # events used by the broker
         self.brokerIsSet=SimEvent('brokerIsSet')
-            # this event is generated every time an operator is requested by machine for Load operation type.
-            #     if the machine has not succeeded in getting an entity due to the resource absence 
-            #     and waits for the next event to get the entity, 
-            #     then it must be signalled that the operator is now available
+        # this event is generated every time an operator is requested by machine for Load operation type.
+        #     if the machine has not succeeded in getting an entity due to the resource absence 
+        #     and waits for the next event to get the entity, 
+        #     then it must be signalled that the operator is now available
         self.loadOperatorAvailable=SimEvent('loadOperatorAvailable')
         
         self.routerCycleOver=SimEvent('routerCycleOver')
@@ -271,7 +271,6 @@ class Machine(CoreObject):
             self.loadTimeCurrentEntity = 0
             self.setupTimeCurrentEntity = 0
             
-    #===========================================================================
     # ======= request a resource
             if(self.operatorPool!="None") and any(type=='Load' for type in self.multOperationTypeList):
                 # when it's ready to accept (canAcceptAndIsRequested) then inform the broker
@@ -307,7 +306,6 @@ class Machine(CoreObject):
              
             # TODO: reset the requestinEntity before receiving the currentEntity
             self.requestingEntity=None
-    #===========================================================================
             # get the entity
                     # TODO: if there was loading time then we must solve the problem of getting an entity
                     # from an unidentified giver or not getting an entity at all as the giver 
@@ -316,7 +314,6 @@ class Machine(CoreObject):
             # TODO: the Machine receive the entity  after the operator is available
             #     the canAcceptAndIsRequested method checks only in case of Load type of operation 
             
-    #===========================================================================
     # ======= request a resource if it is not already assigned an Operator
             if(self.operatorPool!="None")\
                  and (any(type=="Processing" for type in self.multOperationTypeList)\
@@ -330,14 +327,12 @@ class Machine(CoreObject):
                 yield waitevent, self, self.brokerIsSet
                 self.timeWaitForOperatorEnded = now()
                 self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
-    #===========================================================================
             
             # variables dedicated to hold the processing times, the time when the Entity entered, 
             # and the processing time left 
             self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()                # get the processing time, tinMStarts holds the processing time of the machine 
             self.tinM=self.totalProcessingTimeInCurrentEntity                                          # timer to hold the processing time left
             
-#===============================================================================
     # ======= setup the machine if the Setup is defined as one of the Operators' operation types
             # in plantSim the setup is performed when the machine has to process a new type of Entity and only once
             if any(type=="Setup" for type in self.multOperationTypeList) and self.isOperated():
@@ -383,7 +378,6 @@ class Machine(CoreObject):
                 self.releaseOperator()
                 # wait until the Broker has finished processing
                 yield waitevent, self, self.brokerIsSet
-#===============================================================================
                                                                                  
             # variables used to flag any interruptions and the end of the processing
             self.interruption=False
@@ -397,22 +391,20 @@ class Machine(CoreObject):
                 # timeRestartingProcessing : dummy variable to keep track of the time that the processing starts after 
                 #           every interruption                        
                 self.timeRestartingProcessing=now()
-                # wait for the processing time left tinM, if no interruption occurs then change the 
-                # processingEndedFlag and exit loop,
-                # else (if interrupted()) set interruption flag to true (only if tinM==0),
-                # and recalculate the processing time left tinM, passivate while waiting for repair.
-                yield hold,self,self.tinM                           # getting processed for remaining processing time tinM
+                # wait for the processing time left tinM, if no interruption occurs then change the processingEndedFlag and exit loop,
+                #     else (if interrupted()) set interruption flag to true (only if tinM==0), 
+                #     and recalculate the processing time left tinM, passivate while waiting for repair.
+                # if a preemption has occurred then react accordingly (proceed with getting the critical entity)
+                yield hold,self, self.tinM                          # getting processed for remaining processing time tinM
                 if self.interrupted():                              # if a failure occurs while processing the machine is interrupted.
                     self.interruptionActions()                      # execute interruption actions
                     
-    #===========================================================================
     # =============== release the operator if there is interruption 
                     if (self.operatorPool!="None")\
                         and self.isOperated()\
                         and any(type=="Processing" for type in self.multOperationTypeList):
                         self.releaseOperator()
                         yield waitevent,self,self.brokerIsSet 
-    #===========================================================================
     
                     # if there is a failure  in the machine or interruption due to preemption, it is passivated
                     # passivate the Machine for as long as there is no repair
@@ -420,13 +412,7 @@ class Machine(CoreObject):
                     assert now()==self.interruptionEnd.signalparam, 'the victim of the failure is not the object that received it'
                     self.postInterruptionActions()
                     
-                    #===========================================================
-                    # #if during the interruption the object became empty break        
-                    # if (len(self.getActiveObjectQueue())==0 and self.shouldPreempt):
-                    #     break
-                    #===========================================================
                 
-    #===========================================================================
     # =============== request a resource after the repair
                     if (self.operatorPool!="None")\
                         and any(type=="Processing" for type in self.multOperationTypeList)\
@@ -436,40 +422,33 @@ class Machine(CoreObject):
                         yield waitevent,self,self.brokerIsSet
                         self.timeWaitForOperatorEnded = now() 
                         self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
-    #===========================================================================
+                # if the station is reactivated by the preempt method
+                elif(self.shouldPreempt):
+                    self.interruptionActions()                      # execute interruption actions
+                     
+    # =============== release the operator if there is interruption 
+                    if (self.operatorPool!="None")\
+                        and self.isOperated()\
+                        and any(type=="Processing" for type in self.multOperationTypeList):
+                        self.releaseOperator()
+                        yield waitevent,self,self.brokerIsSet 
+                     
+                    self.postInterruptionActions()
+                    break
                 
                 # if no interruption occurred the processing in M1 is ended 
                 else:
                     processingNotFinished=False
-                    
-            #===================================================================
-            # #if during the interruption the object became empty continue        
-            # if (len(self.getActiveObjectQueue())==0 and self.shouldPreempt):
-            #     self.shouldPreempt=False
-            #     self.totalWorkingTime+=now()-(self.timeLastEntityEntered)
-            #===================================================================
-    #===========================================================================
-    #             # TODO: Should release operator here
-    # # =============== release resource in case of preemption
-    #             if (self.operatorPool!='None')\
-    #                 and any(type=="Processing" for type in self.multOperationTypeList)\
-    #                 and not self.interruption: 
-    #                 self.releaseOperator()
-    #                 yield waituntil,self,self.broker.isSet
-    #             continue
-    #===========================================================================
             
             # carry on actions that have to take place when an Entity ends its processing
             self.endProcessingActions()
-             
-    #===========================================================================
+            
     # =============== release resource after the end of processing
             if (self.operatorPool!='None')\
                 and any(type=="Processing" for type in self.multOperationTypeList)\
                 and not self.interruption: 
                 self.releaseOperator()
                 yield waitevent,self,self.brokerIsSet
-    #===========================================================================
             
             # signal the receiver that the activeObject has something to dispose of
             if not self.signalReceiver():
@@ -541,12 +520,19 @@ class Machine(CoreObject):
         #do this so that if it is overtime working it is not counted as off-shift time
         if not activeObject.onShift:
             activeObject.timeLastShiftEnded=now()
-        # update the total working time # the total processing time for this entity is what the distribution initially gave
-        activeObject.totalWorkingTime+=activeObject.totalProcessingTimeInCurrentEntity
+        # update the total working time 
+        # the total processing time for this entity is what the distribution initially gave
+        if not self.shouldPreempt:
+            activeObject.totalWorkingTime+=activeObject.totalProcessingTimeInCurrentEntity
+        # if the station was preemptied for a critical order then calculate the total working time accorindingly
+        else:
+            activeObject.totalWorkingTime+=now()-(self.timeLastEntityEntered)
         # update the variables keeping track of Entity related attributes of the machine    
         activeObject.timeLastEntityEnded=now()                          # this holds the time that the last entity ended processing in Machine 
         activeObject.nameLastEntityEnded=activeObject.currentEntity.name        # this holds the name of the last entity that ended processing in Machine
         activeObject.completedJobs+=1                                   # Machine completed one more Job
+        # reseting the shouldPreempt flag
+        self.shouldPreempt=False 
     
     # =======================================================================
     # actions to be carried out when the processing of an Entity ends
@@ -720,7 +706,6 @@ class Machine(CoreObject):
         activeObject.waitToDispose=False                            # update the waitToDispose flag
         # if the Machine canAccept then signal a giver
         if activeObject.canAccept():
-#             print now(), self.id, 'will singal giver'
             activeObject.signalGiver()
         # if the Machine is operated then signal Broker that the internal queue is now empty
         if activeObject.currentOperator:
@@ -859,6 +844,7 @@ class Machine(CoreObject):
                                                 -activeObject.setupTimeCurrentEntity\
                                                 -offShiftTimeInCurrentEntity
             activeObject.totalTimeWaitingForOperator+=activeObject.operatorWaitTimeCurrentEntity
+        
         elif(len(activeObject.getActiveObjectQueue())>0)\
             and (not (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered))\
             and (activeObject.currentOperator==None):
