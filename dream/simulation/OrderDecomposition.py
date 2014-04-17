@@ -27,7 +27,7 @@ dummy object: infinite capacity no processing time
 '''
 
 from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import waituntil, now, hold, infinity
+from SimPy.Simulation import waituntil, now, hold, infinity, waitevent
 
 from Globals import G
 from CoreObject import CoreObject
@@ -66,11 +66,32 @@ class OrderDecomposition(CoreObject):
     # run just waits until there is something to get and gets it
     # =======================================================================
     def run(self):
+        # check if there is WIP and signal receiver
+        self.initialSignalReceiver()
         while 1:  
-            yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity
-                                                                    #and one predecessor requests it                                                  
-            self.getEntity()  
-            self.decompose()                     
+            #wait until the Queue can accept an entity and one predecessor requests it
+            yield waitevent, self, [self.isRequested,self.canDispose]
+            # if the event that activated the thread is isRequested then getEntity
+            if self.isRequested.signalparam:
+                self.getEntity()
+                self.decompose()
+                # reset the isRequested signal parameter
+                self.isRequested.signalparam=None
+            # if the event that activated the thread is canDispose then signalReceiver
+            if self.haveToDispose():
+                self.signalReceiver()
+                
+    # =======================================================================
+    #                    removes an entity from the Object
+    # =======================================================================
+    def removeEntity(self, entity=None):        
+        activeObject=self.getActiveObject()                                  
+        activeEntity=CoreObject.removeEntity(self, entity)                  #run the default method
+        if self.canAccept():
+            self.signalGiver()
+        if self.haveToDispose():
+            self.signalReceiver()
+        return activeEntity
         
     # =======================================================================
     # as a dummy object can always accept 
@@ -91,29 +112,7 @@ class OrderDecomposition(CoreObject):
         # if we have only one possible giver just check if there is a place, 
         # the machine is up and the predecessor has an entity to dispose
         # this is done to achieve better (cpu) processing time
-        if(len(activeObject.previous)==1):
-            return activeObject.Up and giverObject.haveToDispose(activeObject) 
-        
-        # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
-        isRequested=False                                           # is requested is dummyVariable checking if it is requested to accept an item
-        maxTimeWaiting=0                                            # dummy variable counting the time a predecessor is blocked
-
-        # loop through the possible givers to see which have to dispose and which is the one blocked for longer
-        for object in activeObject.previous:
-            if(object.haveToDispose(activeObject) and object.receiver==self):
-                isRequested=True                                    # if the predecessor objects have entities to dispose of
-                if(object.downTimeInTryingToReleaseCurrentEntity>0):# and the predecessor has been down while trying to give away the Entity
-                    timeWaiting=now()-object.timeLastFailureEnded   # the timeWaiting dummy variable counts the time end of the last failure of the giver object
-                else:
-                    timeWaiting=now()-object.timeLastEntityEnded    # in any other case, it holds the time since the end of the Entity processing
-                
-                #if more than one predecessor have to dispose take the part from the one that is blocked longer
-                if(timeWaiting>=maxTimeWaiting): 
-                    activeObject.giver=object                 # the object to deliver the Entity to the activeObject is set to the ith member of the previous list
-                    maxTimeWaiting=timeWaiting    
-                                                 # in the next loops, check the other predecessors in the previous list
-
-        return activeObject.Up and isRequested    
+        return activeObject.Up and giverObject.haveToDispose(activeObject) 
 
     # ======================================================================= 
     # checks if the OrderDecomposition can dispose 
@@ -136,28 +135,34 @@ class OrderDecomposition(CoreObject):
             nextObject = Globals.findObjectById(nextObjectId)
             nextObjects.append(nextObject)
         self.next=nextObjects
-        # find the suitable receiver
         
         #if we have only one possible receiver just check if the Queue holds one or more entities
-        if(len(activeObject.next)==1 or callerObject==None):
-            activeObject.receiver=activeObject.next[0]
-            return len(activeObjectQueue)>0\
-                    and thecaller==activeObject.receiver
+        if(callerObject==None):
+            return True
         
-        #give the entity to the possible receiver that is waiting for the most time. 
-        #plant does not do this in every occasion!       
-        maxTimeWaiting=0     
-                                                        # loop through the object in the successor list
-        for object in activeObject.next:
-            if(object.canAccept()):                                 # if the object can accept
-                timeWaiting=now()-object.timeLastEntityLeft         # compare the time that it has been waiting 
-                if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# with the others'
-                    maxTimeWaiting=timeWaiting
-                    self.receiver=object                           # and update the receiver to the index of this object
-        
-#         self.receiver=Globals.findObjectById(activeEntity.remainingRoute[0][0])    #read the next station 
         #return True if the OrderDecomposition in the state of disposing and the caller is the receiver
-        return self.Up and (callerObject is self.receiver) 
+        return self.Up and thecaller.isInRoute(activeObject)
+    
+    #===========================================================================
+    # method used to check whether the station is in the entity-to-be-received route
+    # TODO: consider giving the activeEntity as attribute
+    #===========================================================================
+    def isInRoute(self, callerObject=None):
+        activeObject=self.getActiveObject()
+        activeObjectQueue=activeObject.getActiveObjectQueue()
+        thecaller=callerObject
+        # if the caller is not defined then return True. We are only interested in checking whether 
+        # the station can accept whatever entity from whichever giver
+        if not thecaller:
+            return True
+        #check it the caller object holds an Entity that requests for current object
+        if len(thecaller.getActiveObjectQueue())>0:
+            # TODO: make sure that the first entity of the callerObject is to be disposed
+            activeEntity=thecaller.getActiveObjectQueue()[0]
+            # if the machine's Id is in the list of the entity's next stations
+            if activeObject.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
+                return True
+        return False
     
     # =======================================================================
     # decomposes the order to its components
@@ -190,9 +195,11 @@ class OrderDecomposition(CoreObject):
         if self.orderToBeDecomposed:
             import Globals
             Globals.setWIP(self.newlyCreatedComponents)     #set the new components as wip
+            # TODO: consider signalling the receivers if any WIP is set now
             #reset attributes
             self.orderToBeDecomposed=None
             self.newlyCreatedComponents=[]
+            
     
     # =======================================================================
     # creates the components
