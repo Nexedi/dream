@@ -25,6 +25,8 @@ Created on 18 Aug 2013
 Class that acts as an abstract. It should have no instances. All the Entities should inherit from it
 '''
 
+from SimPy.Simulation import now
+
 # ===========================================================================
 # The entity object 
 # ===========================================================================
@@ -66,6 +68,28 @@ class Entity(object):
         self.candidateReceivers=[]          # list of candidateReceivers of the entity (those stations that can receive the entity
         self.candidateReceiver=None         # the station that is finaly chosen to receive the entity
         
+        # variables used to avoid signalling the same object twice before it receives an entity
+        self.receiver=None
+        self.timeOfAssignement=0
+    #===========================================================================
+    # assign the entity to a station
+    #===========================================================================
+    def assignTo(self, object=None):
+        self.receiver=object
+        self.timeOfAssignement=now()
+        
+    #===========================================================================
+    # unassign the entity from the object it is currently assigned to
+    #===========================================================================
+    def unassign(self):
+        self.receiver=None
+        self.timeOfAssignement=0
+        
+    #===========================================================================
+    # returns the object the entity is currently assigned to
+    #===========================================================================
+    def isAssignedTo(self):
+        return self.receiver
     # =======================================================================
     # outputs results to JSON File 
     # =======================================================================

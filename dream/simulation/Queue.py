@@ -135,7 +135,7 @@ class Queue(CoreObject):
         activeObjectQueue=self.getActiveObjectQueue()     
         
         #if we have only one possible receiver just check if the Queue holds one or more entities
-        if(len(activeObject.next)==1 or callerObject==None):
+        if(callerObject==None):
             return len(activeObjectQueue)>0 
          
         thecaller=callerObject
@@ -144,8 +144,8 @@ class Queue(CoreObject):
     # =======================================================================
     #                    removes an entity from the Object
     # =======================================================================
-    def removeEntity(self, entity=None):        
-        activeObject=self.getActiveObject()                                  
+    def removeEntity(self, entity=None):
+        activeObject=self.getActiveObject()
         activeEntity=CoreObject.removeEntity(self, entity)                  #run the default method
         if self.canAccept():
             self.signalGiver()
