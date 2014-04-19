@@ -225,8 +225,10 @@ class Machine(CoreObject):
             # waitEvent isRequested /interruptionEnd/loadOperatorAvailable
             while 1:
                 yield waitevent, self, [self.isRequested, self.interruptionEnd, self.loadOperatorAvailable]
+#                 print now(), self.id, 'received an event'
                 # if the machine can accept an entity and one predecessor requests it continue with receiving the entity
                 if self.isRequested.signalparam:
+#                     print now(), self.id, 'received an isRequested event from', self.isRequested.signalparam.id
                     assert self.isRequested.signalparam==self.giver, 'the giver is not the requestingObject'
                     assert self.giver.receiver==self, 'the receiver of the signalling object in not the station'
                     # reset the signalparam of the isRequested event

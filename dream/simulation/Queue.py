@@ -101,8 +101,15 @@ class Queue(CoreObject):
                 #if entity just got to the dummyQ set its startTime as the current time
                 if self.isDummy:
                     activeObjectQueue[0].startTime=now()
+#             if self.canDispose.signalparam:
+#                 print now(), self.id, 'received a canDispose event from', self.canDispose.signalparam
             # if the event that activated the thread is canDispose then signalReceiver
             if self.haveToDispose():
+#                 print now(), self.id, 'will try to signal a receiver from generator'
+                if self.receiver:
+                    if not self.receiver.entryIsAssignedTo():
+                        self.signalReceiver()
+                    continue
                 self.signalReceiver()
             
             
@@ -152,6 +159,7 @@ class Queue(CoreObject):
         # TODO: disable that for the mouldAssemblyBuffer
         if not self.__class__.__name__=='MouldAssemblyBuffer':
             if self.haveToDispose():
+#                 print now(), self.id, 'will try to signal a receiver from removeEntity'
                 self.signalReceiver()
         return activeEntity
     

@@ -165,6 +165,10 @@ class CoreObject(Process):
         
         activeObjectQueue=self.getActiveObjectQueue()  
         activeObjectQueue.remove(entity)       #remove the Entity from the queue
+        if self.receiver:
+            receiverObject=self.getReceiverObject()
+            receiverObjectQueue=receiverObject.getActiveObjectQueue()
+            receiverObjectQueue.append(entity)
         
         self.failureTimeInCurrentEntity=0 
         self.downTimeInTryingToReleaseCurrentEntity=0
@@ -214,17 +218,18 @@ class CoreObject(Process):
         # if the giverObject is blocked then unBlock it
         if giverObject.exitIsAssignedTo():
             giverObject.unAssignExit()
-        
+        # if the activeObject entry is blocked then unBlock it
+        if activeObject.entryIsAssignedTo():
+            activeObject.unAssignEntry()
+            
         # remove entity from the giver
         activeEntity = giverObject.removeEntity(entity=self.identifyEntityToGet())
         # variable that holds the last giver; used in case of preemption
         self.lastGiver=self.giver
-        #get the entity from the previous object and put it in front of the activeQ 
-        activeObjectQueue.append(activeEntity)
+#         #get the entity from the previous object and put it in front of the activeQ 
+#         activeObjectQueue.append(activeEntity)
         
-        # if the activeObject entry is blocked then unBlock it
-        if activeObject.entryIsAssignedTo():
-            activeObject.unAssignEntry()
+        
         #append the time to schedule so that it can be read in the result
         #remember that every entity has it's schedule which is supposed to be updated every time 
         # he entity enters a new object
@@ -325,6 +330,7 @@ class CoreObject(Process):
             while not activeObject.receiver.canAcceptAndIsRequested():
                 possibleReceivers.remove(activeObject.receiver)
                 if not possibleReceivers:
+#                     print self.id, 'reseting receiver'
                     activeObject.receiver.giver=None
                     activeObject.receiver=None
                     return False
