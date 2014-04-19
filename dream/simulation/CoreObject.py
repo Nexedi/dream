@@ -110,6 +110,12 @@ class CoreObject(Process):
                                                         # when the entities have to be loaded to operatedMachines
                                                         # then the giverObjects have to be blocked for the time
                                                         # that the machine is being loaded 
+        # ============================== variable that is used signalling of machines ==================
+        self.entryAssignedToGiver = None                # by default the objects are not blocked 
+                                                        # when the entities have to be received by machines
+                                                        # then the machines have to be blocked after the first signal they receive
+                                                        # in order to avoid signalling the same machine 
+                                                        # while it has not received the entity it has been originally signalled for
         # ============================== lists to hold statistics of multiple runs =====================
         self.totalTimeWaitingForOperator=0 
         self.operatorWaitTimeCurrentEntity=0 
@@ -154,7 +160,7 @@ class CoreObject(Process):
     # removes an Entity from the Object the Entity to be removed is passed
     # as argument by getEntity of the receiver
     # =======================================================================
-    def removeEntity(self, entity=None): 
+    def removeEntity(self, entity=None):
         self.addBlockage()
         
         activeObjectQueue=self.getActiveObjectQueue()  
@@ -205,15 +211,20 @@ class CoreObject(Process):
         giverObject.sortEntities()                      #sort the Entities of the giver 
                                                         #according to the scheduling rule if applied
         giverObjectQueue=self.getGiverObjectQueue()
+        # if the giverObject is blocked then unBlock it
+        if giverObject.exitIsAssignedTo():
+            giverObject.unAssignExit()
+        
         # remove entity from the giver
         activeEntity = giverObject.removeEntity(entity=self.identifyEntityToGet())
         # variable that holds the last giver; used in case of preemption
         self.lastGiver=self.giver
         #get the entity from the previous object and put it in front of the activeQ 
-        activeObjectQueue.append(activeEntity)   
-        # if the giverObject is blocked then unBlock it
-        if giverObject.exitIsAssignedTo():
-            giverObject.unAssignExit()
+        activeObjectQueue.append(activeEntity)
+        
+        # if the activeObject entry is blocked then unBlock it
+        if activeObject.entryIsAssignedTo():
+            activeObject.unAssignEntry()
         #append the time to schedule so that it can be read in the result
         #remember that every entity has it's schedule which is supposed to be updated every time 
         # he entity enters a new object
@@ -323,6 +334,8 @@ class CoreObject(Process):
 #             # TESTING
 #             print now(), self.id,' '*50, 'signalling receiver', self.receiver.id
             #===================================================================
+            # assign the entry of the receiver
+            activeObject.receiver.assignEntryTo()
             activeObject.receiver.isRequested.signal(activeObject)
             return True
         return False
@@ -349,8 +362,9 @@ class CoreObject(Process):
     def signalGiver(self):
         activeObject=self.getActiveObject()
         possibleGivers=[]
-        for object in [x for x in activeObject.previous if x.haveToDispose(activeObject)]:
-            possibleGivers.append(object)
+        for object in [x for x in activeObject.previous if(not x is activeObject)]:
+            if object.haveToDispose(activeObject): 
+                possibleGivers.append(object)
         if possibleGivers:
             activeObject.giver=activeObject.selectGiver(possibleGivers)
             activeObject.giver.receiver=activeObject 
@@ -565,6 +579,24 @@ class CoreObject(Process):
     # =======================================================================
     def unAssignExit(self):
         self.exitAssignedToReceiver = None
+        
+    # =======================================================================
+    # checks if the machine is blocked
+    # =======================================================================
+    def entryIsAssignedTo(self):
+        return self.entryAssignedToGiver
+    
+    # =======================================================================
+    # assign Exit of the object
+    # =======================================================================
+    def assignEntryTo(self):
+        self.entryAssignedToGiver = self.giver
+        
+    # =======================================================================
+    # unblock the object
+    # =======================================================================
+    def unAssignEntry(self):
+        self.entryAssignedToGiver = None
         
     # =======================================================================
     #        actions to be carried whenever the object is interrupted 
