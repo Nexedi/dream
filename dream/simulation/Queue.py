@@ -95,16 +95,17 @@ class Queue(CoreObject):
             yield waitevent, self, [self.isRequested,self.canDispose]
             # if the event that activated the thread is isRequested then getEntity
             if self.isRequested.signalparam:
+                # reset the isRequested signal parameter
+                self.isRequested.signalparam=None
                 self.getEntity()
                 #if entity just got to the dummyQ set its startTime as the current time
                 if self.isDummy:
                     activeObjectQueue[0].startTime=now()
-                # reset the isRequested signal parameter
-                self.isRequested.signalparam=None
             # if the event that activated the thread is canDispose then signalReceiver
             if self.haveToDispose():
                 self.signalReceiver()
-    
+            
+            
     # =======================================================================
     #               checks if the Queue can accept an entity       
     #             it checks also who called it and returns TRUE 
@@ -117,8 +118,8 @@ class Queue(CoreObject):
         #if we have only one predecessor just check if there is a place available
         # this is done to achieve better (cpu) processing time 
         # then we can also use it as a filter for a yield method
-        if(len(activeObject.previous)==1 or callerObject==None):
-            return len(activeObjectQueue)<activeObject.capacity   
+        if(callerObject==None):
+            return len(activeObjectQueue)<activeObject.capacity
         thecaller=callerObject
         return len(activeObjectQueue)<activeObject.capacity and (thecaller in activeObject.previous)
     
@@ -148,6 +149,10 @@ class Queue(CoreObject):
         activeEntity=CoreObject.removeEntity(self, entity)                  #run the default method
         if self.canAccept():
             self.signalGiver()
+        # TODO: disable that for the mouldAssemblyBuffer
+        if not self.__class__.__name__=='MouldAssemblyBuffer':
+            if self.haveToDispose():
+                self.signalReceiver()
         return activeEntity
     
     # =======================================================================
