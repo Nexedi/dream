@@ -454,7 +454,6 @@ class Machine(CoreObject):
             if not self.signalReceiver():
             # if there was no available receiver, get into blocking control
                 while 1:
-
                     # wait the event canDispose, this means that the station can deliver the item to successor
                     event=yield waitevent, self, [self.canDispose, self.interruptionStart]
                     # if there was interruption
@@ -487,6 +486,10 @@ class Machine(CoreObject):
         activeObject=self.getActiveObject()
         activeObjectQueue=activeObject.getActiveObjectQueue()
         activeEntity=activeObjectQueue[0]
+        #=======================================================================
+#         # TESTING
+#         print activeObject.getActiveObjectQueue()[0].name,"ended processing in "+activeObject.objName
+        #=======================================================================
         # reset the variables used to handle the interruptions timing 
         self.timeRestartingProcessing=0
         self.breakTime=0
@@ -606,14 +609,17 @@ class Machine(CoreObject):
         # if we have only one predecessor just check if there is a place and the machine is up
         # this is done to achieve better (cpu) processing time 
         # then we can also use it as a filter for a yield method
-        if(len(activeObject.previous)==1 or callerObject==None):
+        if(callerObject==None):
             if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
                                                     or any(type=='Setup' for type in activeObject.multOperationTypeList))):
                 return activeObject.operatorPool.checkIfResourceIsAvailable()\
                         and activeObject.checkIfMachineIsUp()\
-                        and len(activeObjectQueue)<activeObject.capacity
+                        and len(activeObjectQueue)<activeObject.capacity\
+                        and not activeObject.entryIsAssignedTo()
             else:
-                return activeObject.checkIfMachineIsUp() and len(activeObjectQueue)<activeObject.capacity\
+                return activeObject.checkIfMachineIsUp()\
+                        and len(activeObjectQueue)<activeObject.capacity\
+                        and not activeObject.entryIsAssignedTo()
                       
         thecaller=callerObject
         # return True ONLY if the length of the activeOjbectQue is smaller than
@@ -622,11 +628,15 @@ class Machine(CoreObject):
                                                 or any(type=='Setup' for type in activeObject.multOperationTypeList))):
             return activeObject.operatorPool.checkIfResourceIsAvailable()\
                 and activeObject.checkIfMachineIsUp()\
-                and len(activeObjectQueue)<activeObject.capacity
+                and len(activeObjectQueue)<activeObject.capacity\
+                and not activeObject.entryIsAssignedTo()
         else:
             # the operator doesn't have to be present for the loading of the machine as the load operation
             # is not assigned to operators
-            return activeObject.checkIfMachineIsUp() and len(activeObjectQueue)<activeObject.capacity and (thecaller in activeObject.previous)
+            return activeObject.checkIfMachineIsUp()\
+                and len(activeObjectQueue)<activeObject.capacity\
+                and (thecaller in activeObject.previous)\
+                and not activeObject.entryIsAssignedTo()
     
     # =======================================================================
     # checks if the Machine can accept an entity and there is an entity in 
