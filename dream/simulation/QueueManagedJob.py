@@ -40,6 +40,21 @@ class NoCallerError(Exception):
 # ===========================================================================
 class QueueManagedJob(QueueJobShop):
     
+    def __init__(self, id, name, capacity=1, isDummy=False, schedulingRule="FIFO"):
+        QueueJobShop.__init__(self, id=id, name=name,capacity=capacity, isDummy=isDummy, schedulingRule=schedulingRule)
+        # variable used by the sortEntities method 
+        #     to identify the object it will be sorting for (manager.checkIfResourceIsAvailable(self.objectSortingFor))
+        self.objectSortingFor=None
+        
+    # =======================================================================
+    # set all the objects in previous and next
+    # =======================================================================
+    def initialize(self):
+        QueueJobShop.initialize(self)  #run default behaviour
+        # variable used by the sortEntities method 
+        #     to identify the object it will be sorting for (manager.checkIfResourceIsAvailable(self.objectSortingFor))
+        self.objectSortingFor=None
+        
     # =======================================================================
     # checks if the Queue can dispose an entity. 
     # Returns True only to the potential receiver
@@ -48,51 +63,48 @@ class QueueManagedJob(QueueJobShop):
         # get active object and its queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        # assert that the callerObject is not None
-        try:
-            if callerObject:
-                thecaller = callerObject
-            else:
-                raise NoCallerError('The caller of the QueueManagedJob haveToDispose must be defined')
-        except NoCallerError as noCaller:
-            print 'No caller error: {0}'.format(noCaller)
+        thecaller=callerObject
+        # update the objectSortingFor variable to hold the value of the callerObject
+        activeObject.objectSortingFor=thecaller
+        # TODO: when the callerObject is not defined will receive error ass the checkIfResourceIsAvailable requests a caller
         
-        #search if for one or more of the Entities the operator is available
+        #search if for one or more of the Entities the operator is available        
         haveEntityWithAvailableManager=False
         for entity in activeObjectQueue:
             if entity.manager:
                 if entity.manager.checkIfResourceIsAvailable(thecaller):
                     haveEntityWithAvailableManager=True
                     break
+            else:
+                haveEntityWithAvailableManager=True
+                break
+#         for entity in [x for x in activeObjectQueue if x.manager]:
+#             if entity.manager.checkIfResourceIsAvailable(thecaller):
+#                 haveEntityWithAvailableManager=True
+#                 break
         #if none of the Entities has an available manager return False
         if not haveEntityWithAvailableManager:
             return False
-        #if we have only one possible receiver just check if the Queue holds one or more entities
-        if(len(activeObject.next)==1):
-            activeObject.receiver=activeObject.next[0]
-            #sort the internal queue so that the Entities that have an available manager go in the front
-            activeObject.sortEntities()
-            return len(activeObjectQueue)>0\
-                    and thecaller==activeObject.receiver
-        
-        #give the entity to the possible receiver that is waiting for the most time.     
-        maxTimeWaiting=0
-        hasFreeReceiver=False
-        for object in activeObject.next:                            # loop through the object in the successor list
-            if(object.canAccept(activeObject)):                     # if the object can accept
-                hasFreeReceiver=True
-                timeWaiting=now()-object.timeLastEntityLeft         # compare the time that it has been waiting 
-                if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# with the others'
-                    maxTimeWaiting=timeWaiting
-                    self.receiver=object                            # and update the receiver
         #sort the internal queue so that the Entities that have an available manager go in the front
+        # the sortEntities method needs a receiver defined to sort the entities according to the availability of the manager
+        #     so if there is a caller define him ass receiver and after the sorting set the receiver again to None
         activeObject.sortEntities()
-        #return True if the Queue has Entities and the caller is the receiver
-        return len(activeObjectQueue)>0 and (thecaller is self.receiver) and hasFreeReceiver
+        
+        # and then perform the default behaviour
+        return QueueJobShop.haveToDispose(self,thecaller)
+#         #if we have only one possible receiver just check if the Queue holds one or more entities
+#         if(thecaller==None):
+#             return len(activeObjectQueue)>0
+#         
+#         #return True if the Queue has Entities and the caller is the receiver
+#         return len(activeObjectQueue)>0\
+#                 and (thecaller in activeObject.next)\
+#                 and thecaller.isInRoute(activeObject)
 
     # =======================================================================
     # override the default method so that Entities 
     # that have the manager available go in front
+    # TODO: need receiver to sort the entities
     # =======================================================================
     def sortEntities(self):
         QueueJobShop.sortEntities(self)     #do the default sorting first
@@ -103,7 +115,7 @@ class QueueManagedJob(QueueJobShop):
             # if the entity has manager assigned
             if entity.manager:
                 # check his availability    
-                if entity.manager.checkIfResourceIsAvailable(self.receiver):
+                if entity.manager.checkIfResourceIsAvailable(self.objectSortingFor):
                     entity.managerAvailable=True
         # sort the active queue according to the availability of the managers
         activeObjectQueue.sort(key=lambda x: x.managerAvailable, reverse=True)

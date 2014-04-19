@@ -58,60 +58,33 @@ class ConditionalBuffer(QueueManagedJob):
         # get active object and its queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        # assert that the callerObject is not None
-        try:
-            if callerObject:
-                thecaller = callerObject
-            else:
-                raise NoCallerError('The caller of the MouldAssemblyBuffer must be defined')
-        except NoCallerError as noCaller:
-            print 'No caller error: {0}'.format(noCaller)
-        # check the length of the activeObjectQueue 
-        # if the length is zero then no componentType or entity.type can be read
-        if len(activeObjectQueue)==0:
-            return False
         
-        #search if for one or more of the Entities the operator is available
-        operatedJobs=[]
-        haveEntityWithAvailableManager=False
-        for entity in activeObjectQueue:
-            if entity.manager:
-                operatedJobs.append(entity)
-                if entity.manager.checkIfResourceIsAvailable(thecaller):
-                    haveEntityWithAvailableManager=True
-                    break
-        # if there are operated entities then check if there are available managers
-        if len(operatedJobs)>0:
-            #if none of the Entities has an available manager return False
-            if not haveEntityWithAvailableManager:
-                return False
+#         # TODO: when the callerObject is not defined will receive error ass the checkIfResourceIsAvailable requests a caller
+#         
+#         #search if for one or more of the Entities the operator is available
+#         haveEntityWithAvailableManager=False
+#         for entity in [x for x in activeObjectQueue if x.manager]:
+#             if entity.manager.checkIfResourceIsAvailable(thecaller):
+#                 haveEntityWithAvailableManager=True
+#                 break
+#         #if none of the Entities has an available manager return False
+#         if not haveEntityWithAvailableManager:
+#             return False
+#         #sort the internal queue so that the Entities that have an available manager go in the front
+#         activeObject.sortEntities()
+#         #if we have only one possible receiver just check if the Queue holds one or more entities
+#         if(callerObject==None):
+#             return len(activeObjectQueue)>0
+#         
+#         #return True if the Queue has Entities and the caller is in the self.next list
+#         return len(activeObjectQueue)>0\
+#                 and (thecaller in activeObject.next)\
+#                 and thecaller.isInRoute(activeObject)
         
-        #if we have only one possible receiver just check if the receiver is the caller
-        if(len(activeObject.next)==1):
-            activeObject.receiver=activeObject.next[0]
-            #sort the internal queue so that the Entities that have an available manager go in the front
-            #    now that the receiver is updated
-            activeObject.sortEntities()
-            return thecaller is activeObject.receiver\
-                and activeObject.checkCondition()
-        #give the entity to the possible receiver that is waiting for the most time. 
-        #plant does not do this in every occasion!       
-        maxTimeWaiting=0     
-        # loop through the object in the successor list
-        for object in activeObject.next:
-            # if the object can accept
-            if(object.canAccept(activeObject)):
-                timeWaiting=now()-object.timeLastEntityLeft
-                # compare the time that it has been waiting with the others'
-                if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
-                    maxTimeWaiting=timeWaiting
-                    # and update the receiver to the index of this object
-                    activeObject.receiver=object
-        #sort the internal queue so that the Entities that have an available manager go in the front
-        activeObject.sortEntities()
-        #return True if the Queue caller is the receiver
-        return thecaller is activeObject.receiver\
-            and activeObject.checkCondition()
+        # and then perform the default behaviour
+        if QueueManagedJob.haveToDispose(self,callerObject):
+            return activeObject.checkCondition()
+        return False
         
     # =======================================================================
     # check whether the condition is True
@@ -162,7 +135,7 @@ class ConditionalBuffer(QueueManagedJob):
             entity.managerAvailable=False
             if entity.manager:
                 managedEntities.append(entity)
-                if entity.manager.checkIfResourceIsAvailable(self.receiver):
+                if entity.manager.checkIfResourceIsAvailable(self.objectSortingFor):
                     entity.managerAvailable=True
         # if the entities are operated
         if len(managedEntities):

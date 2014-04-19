@@ -73,10 +73,10 @@ class OrderDecomposition(CoreObject):
             yield waitevent, self, [self.isRequested,self.canDispose]
             # if the event that activated the thread is isRequested then getEntity
             if self.isRequested.signalparam:
-                self.getEntity()
-                self.decompose()
                 # reset the isRequested signal parameter
                 self.isRequested.signalparam=None
+                self.getEntity()
+                self.decompose()
             # if the event that activated the thread is canDispose then signalReceiver
             if self.haveToDispose():
                 self.signalReceiver()
@@ -84,7 +84,7 @@ class OrderDecomposition(CoreObject):
     # =======================================================================
     #                    removes an entity from the Object
     # =======================================================================
-    def removeEntity(self, entity=None):        
+    def removeEntity(self, entity=None):
         activeObject=self.getActiveObject()                                  
         activeEntity=CoreObject.removeEntity(self, entity)                  #run the default method
         if self.canAccept():

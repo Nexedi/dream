@@ -79,6 +79,7 @@ class MouldAssemblyBuffer(QueueManagedJob):
     # We suppose that only one MouldAssembly buffer is present in the topology
     #     and thus there is no need to check if entities of the same parentOrder
     #     are present in other MouldAssemblyBuffers
+    # TODO: has to signal ConditionalBuffer to start sending entities again
     # =======================================================================
     def getEntity(self):
         activeObject = self.getActiveObject()
@@ -104,6 +105,11 @@ class MouldAssemblyBuffer(QueueManagedJob):
                 # if all are present then basicsEnded
                 if allBasicsPresent:
                     activeEntity.order.basicsEnded = 1
+                # TODO: has to signal ConditionalBuffer to start sending entities again
+                for secondary in [x for x in activeEntity.order.secondaryComponentsList if activeEntity.order.basicsEnded]:
+                    if secondary.currentStation.__class__.__name__=='ConditionalBuffer':
+                        secondary.currentStation.canDispose.signal(now())
+                        break
             # for all the components that have the same parent Order as the activeEntity
             activeEntity.order.componentsReadyForAssembly = 1
             for entity in activeEntity.order.basicComponentsList+\
@@ -128,18 +134,12 @@ class MouldAssemblyBuffer(QueueManagedJob):
         # get active object and its queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        try:
-            if callerObject:
-                thecaller = callerObject
-            else:
-                raise NoCallerError('The caller of the MouldAssemblyBuffer must be defined')
-        except NoCallerError as noCaller:
-            print 'No caller error: {0}'.format(noCaller)
+        thecaller=callerObject
+        activeObject.objectSortingFor=thecaller
         # check the length of the activeObjectQueue 
         # if the length is zero then no componentType or entity.type can be read
         if len(activeObjectQueue)==0:
             return False
-        
         # find out if there are entities with available managers that are ready for assembly
         activeEntity=None
         for entity in activeObjectQueue:
@@ -156,38 +156,26 @@ class MouldAssemblyBuffer(QueueManagedJob):
         if not activeEntity:
         # return false
             return False
-        if(len(activeObject.next)==1):  #if we have only one possible receiver 
-            activeObject.receiver=activeObject.next[0]
-        else:                           # otherwise,
-            maxTimeWaiting=0            #give the entity to the possible receiver that is waiting for the most time.
-            for object in activeObject.next:                            # loop through the object in the successor list
-                if(object.canAccept(activeObject)):                     # if the object can accept
-                    timeWaiting=now()-object.timeLastEntityLeft
-                    if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# check the time that it has been waiting
-                        maxTimeWaiting=timeWaiting
-                        activeObject.receiver=object                    # and update the receiver
-        # if the receiverQueue cannot be read, return False
-        try:
-            receiverQueue = activeObject.receiver.getActiveObjectQueue()
-        except:
-            return False
         # sort the entities now that the receiver is updated
-        self.sortEntities()
+        activeObject.sortEntities()
         # update the activeEntity
         activeEntity=activeObjectQueue[0]
+        # if no caller is defined then check if the entity to be disposed has the flag componentsReadyForAssembly raised
+        if not thecaller:
+            return activeEntity.order.componentsReadyForAssembly
         # if the successors (MouldAssembly) internal queue is empty then proceed with checking weather
         # the caller is the receiver
         # TODO: the activeEntity is already checked for the flag componentsReadyForAssembly
-        if len(receiverQueue)==0:
+        if len(thecaller.getActiveObjectQueue())==0:
             if activeEntity.type=='Mould':
-                return thecaller is activeObject.receiver
+                return thecaller.isInRoute(activeObject)
             else:
-                return thecaller is activeObject.receiver\
+                return thecaller.isInRoute(activeObject)\
                         and activeEntity.order.componentsReadyForAssembly
         # otherwise, check additionally if the receiver holds orderComponents of the same order
         # TODO: should revise, this check may be redundant, as the receiver (assembler must be empty in order to start receiving
         # It is therefore needed that the control is performed by the assembler's getEntity() 
         else:
-            return thecaller is activeObject.receiver\
-                    and receiverQueue[0].order is activeObjectQueue[0].order\
+            return thecaller.isInRoute(activeObject)\
+                    and thecaller.getActiveObjectQueue()[0].order is activeEntity.order\
                     and activeEntity.order.componentsReadyForAssembly

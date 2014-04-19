@@ -52,8 +52,8 @@ class QueueJobShop(Queue):
         activeObject=self.getActiveObject()
         activeObjectQueue=activeObject.getActiveObjectQueue()
         thecaller=callerObject
-            #return according to the state of the Queue
-            #check it the caller object holds an Entity that requests for current object
+        #return according to the state of the Queue
+        #check it the caller object holds an Entity that requests for current object
         return len(self.getActiveObjectQueue())<activeObject.capacity\
                 and activeObject.isInRoute(callerObject)
     
@@ -83,14 +83,10 @@ class QueueJobShop(Queue):
     # Returns True only to the potential receiver
     # =======================================================================     
     def haveToDispose(self, callerObject=None):
-#         print self.id, 'htd',
-#         if callerObject:
-#             print callerObject.id
         # get active object and its queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         thecaller = callerObject
-
         #if we have only one possible receiver just check if the Queue holds one or more entities
         if(callerObject==None):
             return len(activeObjectQueue)>0
