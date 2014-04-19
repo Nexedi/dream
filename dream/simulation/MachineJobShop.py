@@ -49,6 +49,10 @@ class MachineJobShop(Machine):
         activeObject=self.getActiveObject()
         activeObjectQueue=activeObject.getActiveObjectQueue()
         activeEntity=activeObjectQueue[0]
+        #=======================================================================
+#         # TESTING
+#         print activeObject.getActiveObjectQueue()[0].name,"ended processing in "+activeObject.objName
+        #=======================================================================
         # reset the variables used to handle the interruptions timing 
         self.timeRestartingProcessing=0
         self.breakTime=0
@@ -165,11 +169,13 @@ class MachineJobShop(Machine):
             return activeObject.operatorPool.checkIfResourceIsAvailable()\
                     and len(activeObject.getActiveObjectQueue())<activeObject.capacity\
                     and activeObject.checkIfMachineIsUp()\
-                    and activeObject.isInRoute(thecaller)
+                    and activeObject.isInRoute(thecaller)\
+                    and not activeObject.entryIsAssignedTo()
         else:
             return len(activeObject.getActiveObjectQueue())<activeObject.capacity\
                     and activeObject.checkIfMachineIsUp()\
-                    and activeObject.isInRoute(thecaller)
+                    and activeObject.isInRoute(thecaller)\
+                    and not activeObject.entryIsAssignedTo()
                         
     #===========================================================================
     # method used to check whether the station is in the entity-to-be-received route
@@ -209,12 +215,12 @@ class MachineJobShop(Machine):
         if(callerObject==None):
             return len(activeObjectQueue)>0\
                  and activeObject.waitToDispose\
-                 and activeObject.checkIfMachineIsUp()\
+                 and activeObject.checkIfActive()\
         
         #return True if the Machine in the state of disposing and the caller is the receiver
         return len(activeObjectQueue)>0\
              and activeObject.waitToDispose\
-             and activeObject.checkIfMachineIsUp()\
+             and activeObject.checkIfActive()\
              and (thecaller in activeObject.next)\
              and thecaller.isInRoute(activeObject)
 
