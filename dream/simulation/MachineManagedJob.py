@@ -122,8 +122,8 @@ class MachineManagedJob(MachineJobShop):
                 #===============================================================
                 if activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity\
                     and activeObject.checkOperator()\
-                    and not giverObject.exitIsAssigned():
-                    giverObject.assignExit()
+                    and not giverObject.exitIsAssignedTo():
+                    giverObject.assignExitTo()
                     # if the activeObject is not in manager's activeCallersList of the entityToGet
                     if activeObject not in giverObjectQueue[0].manager.activeCallersList:
                         # append it to the activeCallerList of the manager of the entity to be received
@@ -159,8 +159,8 @@ class MachineManagedJob(MachineJobShop):
                 #     the entityToGet should be updated
                 if activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity:#\
 #                     and self.checkOperator()\
-#                     and not activeObject.giver.exitIsAssigned():
-#                     activeObject.giver.assignExit()
+#                     and not activeObject.giver.exitIsAssignedTo():
+#                     activeObject.giver.assignExitTo()
 #                     # if the activeObject is not in manager's activeCallersList of the entityToGet
 #                     if self not in activeObject.giver.getActiveObjectQueue()[0].manager.activeCallersList:
 #                         # append it to the activeCallerList of the manager of the entity to be received
