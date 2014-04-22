@@ -653,8 +653,7 @@ class Machine(CoreObject):
         # check if there is a place, the machine is up and the predecessor has an entity to dispose. if the machine has to compete 
         # for an Operator that loads the entities onto it check if the predecessor if blocked by an other Machine. if not then the machine 
         # has to block the predecessor giverObject to avoid conflicts with other competing machines
-        if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
-                                                or any(type=='Setup' for type in activeObject.multOperationTypeList))):
+        if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList))):
             if giverObject.haveToDispose(activeObject):
                 #===============================================================
                 # # TODO: check whether this entity is the one to be hand in
@@ -718,6 +717,7 @@ class Machine(CoreObject):
         activeObject.waitToDispose=False                            # update the waitToDispose flag
         # if the Machine canAccept then signal a giver
         if activeObject.canAccept():
+#             print self.id, now(), 'will try signalling a giver from removeEntity'
             activeObject.signalGiver()
         # if the Machine is operated then signal Broker that the internal queue is now empty
         if activeObject.currentOperator:

@@ -90,9 +90,11 @@ class Queue(CoreObject):
         activeObjectQueue=self.getActiveObjectQueue()
         # check if there is WIP and signal receiver
         self.initialSignalReceiver()
-        while 1:  
+        while 1:
+#             print self.id, 'will wait for event', now()
             # wait until the Queue can accept an entity and one predecessor requests it
             yield waitevent, self, [self.isRequested,self.canDispose]
+#             print now(), self.id, 'just received an event'
             # if the event that activated the thread is isRequested then getEntity
             if self.isRequested.signalparam:
                 # reset the isRequested signal parameter
@@ -102,7 +104,7 @@ class Queue(CoreObject):
                 if self.isDummy:
                     activeObjectQueue[0].startTime=now()
 #             if self.canDispose.signalparam:
-#                 print now(), self.id, 'received a canDispose event from', self.canDispose.signalparam
+#                 print now(), self.id, 'received a canDispose event from', self.canDispose.signalparam.id
             # if the event that activated the thread is canDispose then signalReceiver
             if self.haveToDispose():
 #                 print now(), self.id, 'will try to signal a receiver from generator'

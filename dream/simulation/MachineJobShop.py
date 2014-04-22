@@ -164,8 +164,7 @@ class MachineJobShop(Machine):
         thecaller=callerObject
         #return according to the state of the Queue
         # also check if (if the machine is to be operated) there are available operators
-        if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
-                                                or any(type=='Setup' for type in activeObject.multOperationTypeList))):
+        if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList))):
             return activeObject.operatorPool.checkIfResourceIsAvailable()\
                     and len(activeObject.getActiveObjectQueue())<activeObject.capacity\
                     and activeObject.checkIfMachineIsUp()\

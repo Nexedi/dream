@@ -48,6 +48,8 @@ class MachineManagedJob(MachineJobShop):
         id = self.id+'_OP'
         name=self.objName+'_operatorPool'
         self.operatorPool=OperatorPool(id, name, operatorsList=[])
+        from Globals import G
+        G.OperatorPoolsList.append(self.operatorPool)
         self.operatorPool.initialize()
         self.operatorPool.operators=[]
         #create a Broker
@@ -121,9 +123,11 @@ class MachineManagedJob(MachineJobShop):
                 # activeObject.operatorPool.receivingObject=activeObject
                 #===============================================================
                 if activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity\
-                    and activeObject.checkOperator()\
-                    and not giverObject.exitIsAssignedTo():
-                    giverObject.assignExitTo()
+                    and activeObject.checkOperator():
+                    if not giverObject.exitIsAssignedTo():
+                        giverObject.assignExitTo()
+                    elif giverObject.exitIsAssignedTo()!=activeObject:
+                        return False
                     # if the activeObject is not in manager's activeCallersList of the entityToGet
                     if activeObject not in giverObjectQueue[0].manager.activeCallersList:
                         # append it to the activeCallerList of the manager of the entity to be received
