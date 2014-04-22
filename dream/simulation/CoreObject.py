@@ -323,9 +323,10 @@ class CoreObject(Process):
         possibleReceivers=[]
         for object in [x for x in self.next if x.canAccept(activeObject)]:
             possibleReceivers.append(object)
+#         print now(), self.id,'possibleReceivers',[str(x.id) for x in possibleReceivers]
         if possibleReceivers:
             activeObject.receiver=activeObject.selectReceiver(possibleReceivers)
-            activeObject.receiver.giver=activeObject 
+            activeObject.receiver.giver=activeObject
             # perform the checks that canAcceptAndIsRequested used to perform and update activeCallersList or assignExit and operatorPool
             while not activeObject.receiver.canAcceptAndIsRequested():
                 possibleReceivers.remove(activeObject.receiver)
@@ -371,6 +372,7 @@ class CoreObject(Process):
         for object in [x for x in activeObject.previous if(not x is activeObject)]:
             if object.haveToDispose(activeObject): 
                 possibleGivers.append(object)
+#         print 'possibleGivers:', [str(x.id) for x in possibleGivers]
         if possibleGivers:
             activeObject.giver=activeObject.selectGiver(possibleGivers)
             activeObject.giver.receiver=activeObject 
@@ -578,12 +580,14 @@ class CoreObject(Process):
     # assign Exit of the object
     # =======================================================================
     def assignExitTo(self):
+#         print self.id, 'assignExit'
         self.exitAssignedToReceiver = self.receiver
         
     # =======================================================================
     # unblock the object
     # =======================================================================
     def unAssignExit(self):
+#         print now(),self.id, 'unassignExit'
         self.exitAssignedToReceiver = None
         
     # =======================================================================
