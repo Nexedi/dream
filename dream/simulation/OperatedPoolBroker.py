@@ -193,7 +193,7 @@ class Broker(ObjectInterruption):
                 
                 #===============================================================
 #                 # TESTING
-                print now(), self.victim.currentOperator.objName, 'released', self.victim.id
+#                 print now(), self.victim.currentOperator.objName, 'released', self.victim.id
                 #===============================================================
                 # the victim current operator must be cleared after the operator is released
                 self.timeLastOperationEnded = now()
