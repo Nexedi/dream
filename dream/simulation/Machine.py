@@ -237,6 +237,7 @@ class Machine(CoreObject):
                 # if an interruption caused the control to be taken by the machine or
                 # if an operator was rendered available while it was needed by the machine to proceed with getEntity
                 if self.interruptionEnd.signalparam==now() or self.loadOperatorAvailable.signalparam==now():
+#                     print now(), self.id, 'received an other type of event sent at ', self.loadOperatorAvailable.signalparam
                     # try to signal the Giver, otherwise wait until it is requested
                     if self.signalGiver():
                         break

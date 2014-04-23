@@ -97,14 +97,17 @@ class Queue(CoreObject):
 #             print now(), self.id, 'just received an event'
             # if the event that activated the thread is isRequested then getEntity
             if self.isRequested.signalparam:
+#                 print now(), self.id, 'received a isRequested event from', self.isRequested.signalparam.id
                 # reset the isRequested signal parameter
                 self.isRequested.signalparam=None
                 self.getEntity()
                 #if entity just got to the dummyQ set its startTime as the current time
                 if self.isDummy:
                     activeObjectQueue[0].startTime=now()
-#             if self.canDispose.signalparam:
-#                 print now(), self.id, 'received a canDispose event from', self.canDispose.signalparam.id
+            # if the queue received an canDispose with signalparam time, this means that the signals was sent from a MouldAssemblyBuffer
+            if self.canDispose.signalparam:
+#                 print now(), self.id, 'received a canDispose event from', self.canDispose.signalparam
+                self.canDispose.signalparam=None
             # if the event that activated the thread is canDispose then signalReceiver
             if self.haveToDispose():
 #                 print now(), self.id, 'will try to signal a receiver from generator'

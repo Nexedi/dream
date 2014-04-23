@@ -125,6 +125,7 @@ class MachineManagedJob(MachineJobShop):
                 if activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity\
                     and activeObject.checkOperator():
                     if not giverObject.exitIsAssignedTo():
+#                         print self.id, 'assigning givers exit'
                         giverObject.assignExitTo()
                     elif giverObject.exitIsAssignedTo()!=activeObject:
                         return False

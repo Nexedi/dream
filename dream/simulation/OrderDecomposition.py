@@ -79,6 +79,7 @@ class OrderDecomposition(CoreObject):
                 self.decompose()
             # if the event that activated the thread is canDispose then signalReceiver
             if self.haveToDispose():
+#                 print now(), self.id, 'will try to signal a receiver from generator'
                 self.signalReceiver()
                 
     # =======================================================================
@@ -90,6 +91,7 @@ class OrderDecomposition(CoreObject):
         if self.canAccept():
             self.signalGiver()
         if self.haveToDispose():
+#             print now(), self.id, 'will try to signal a receiver from removeEntity'
             self.signalReceiver()
         return activeEntity
         
