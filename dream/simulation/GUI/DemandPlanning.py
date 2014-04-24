@@ -19,7 +19,7 @@
 '''
 Created on 17 Apr 2014
 
-@author: George
+@author: Anna, George
 '''
 '''
 test script to convert the static excels to JSON. It does not communicate with GUI yet
@@ -28,49 +28,43 @@ test script to convert the static excels to JSON. It does not communicate with G
 import xlwt
 import xlrd
 import json
+from dream.simulation. Globals import G
 
-'''
-Created on 5 Sep 2013
-
-@author: Anna
-'''
-
-class G:
-    TargetPPOS = 0
-    TargetPPOSqty = 0
-    TargetPPOSweek = 0
-    ReplicationNo = 0
-    replication = 0
-    PPOSlist = {}
-    Capacity = []
-    route = {}
-    maxEarliness = 0        # max number of weeks for earliness
-    maxLateness = 0         # max number of weeks for lateness
-    planningHorizon =0      # for future demand purposes
-    demandFile = None
-    currentCapacity = None
-    reCapacity = []
-    PPOSprofile = []        # initial disaggregation for PPOS
-    FutureProfile = []      # initial disaggregation for future demand
-    AllocationFuture = []
-    FutureLateness = []
-    FutureEarliness = []    
-    AllocationPPOS = []
-    PPOSLateness = []
-    PPOSEarliness = []
-    minPackingSize = 0
-    Buffer = []
-    ExcessPPOSBuffer = []
-    ExcessPPOSminBuffer = []
-    ExcessFutureBuffer = []
-    ExcessFutureMinBuffer = []    
-    DistributionType=None
-    CapacityDict={}
-    RouteDict={}
+def createGlobals():
+    G.TargetPPOS = 0
+    G.TargetPPOSqty = 0
+    G.TargetPPOSweek = 0
+    G.ReplicationNo = 0
+    G.replication = 0
+    G.PPOSlist = {}
+    G.Capacity = []
+    G.route = {}
+    G.maxEarliness = 0        # max number of weeks for earliness
+    G.maxLateness = 0         # max number of weeks for lateness
+    G.planningHorizon =0      # for future demand purposes
+    G.demandFile = None
+    G.currentCapacity = None
+    G.reCapacity = []
+    G.PPOSprofile = []        # initial disaggregation for PPOS
+    G.FutureProfile = []      # initial disaggregation for future demand
+    G.AllocationFuture = []
+    G.FutureLateness = []
+    G.FutureEarliness = []    
+    G.AllocationPPOS = []
+    G.PPOSLateness = []
+    G.PPOSEarliness = []
+    G.minPackingSize = 0
+    G.Buffer = []
+    G.ExcessPPOSBuffer = []
+    G.ExcessPPOSminBuffer = []
+    G.ExcessFutureBuffer = []
+    G.ExcessFutureMinBuffer = []    
+    G.DistributionType=None
+    G.CapacityDict={}
+    G.RouteDict={}
 
 #    filterItem = 0
 #    filterWeek = 0
-
 
 #===================================
 # import simulation input data
@@ -121,6 +115,8 @@ def readGeneralInput():
             G.RouteDict[id]['route'][sh.cell(2,j+3).value]=routeValues[j]
 
 def main():    
+    # set up global variables
+    createGlobals()
     # read from inputs spreadsheet
     readGeneralInput()
     # open json file
