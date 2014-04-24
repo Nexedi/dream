@@ -28,7 +28,8 @@ test script to convert the static excels to JSON. It does not communicate with G
 import xlwt
 import xlrd
 import json
-from dream.simulation. Globals import G
+from dream.simulation.Globals import G
+from dream.simulation.FutureDemandCreator import FutureDemandCreator
 
 def createGlobals():
     G.TargetPPOS = 0
@@ -145,10 +146,12 @@ def main():
     argumentDict['argumentDict']['capacity']=G.CapacityDict    
 
     # set MA attributes
-    argumentDict['argumentDict']['MA']=G.RouteDict  
+    argumentDict['argumentDict']['MAList']=G.RouteDict  
     
-    argumentDictString=json.dumps(argumentDict, indent=5)
-    argumentDictFile.write(argumentDictString)
+    G.argumentDictString=json.dumps(argumentDict, indent=5)
+    argumentDictFile.write(G.argumentDictString)
+#     FDC=FutureDemandCreator()
+#     FDC.run()
     
 if __name__ == '__main__':
     main()
