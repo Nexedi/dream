@@ -262,12 +262,14 @@ class MachineJobShop(Machine):
     # extend the default behaviour to check if whether the station 
     #     is in the route of the entity to be received
     #===========================================================================
-    def canAcceptAndIsRequested(self):
+    def canAcceptAndIsRequested(self,callerObject):
         activeObject=self.getActiveObject()
-        giverObject=activeObject.getGiverObject()
+#         giverObject=activeObject.getGiverObject()
+        giverObject=callerObject
+        assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
         if activeObject.isInRoute(giverObject):
-            if Machine.canAcceptAndIsRequested(self):
-                activeObject.readLoadTime()
+            if Machine.canAcceptAndIsRequested(self,giverObject):
+                activeObject.readLoadTime(giverObject)
                 return True
         return False
 
@@ -275,10 +277,12 @@ class MachineJobShop(Machine):
     # to be called by canAcceptAndIsRequested if it is to return True.
     # the load timeof the Entity must be read
     #===========================================================================
-    def readLoadTime(self):
+    def readLoadTime(self,callerObject=None):
+        assert callerObject!=None, 'the caller of readLoadTime cannot be None'
         activeObject=self.getActiveObject()
-        activeObject.giver.sortEntities()
-        activeEntity=activeObject.giver.getActiveObjectQueue()[0]
+        thecaller=callerObject
+        thecaller.sortEntities()
+        activeEntity=thecaller.getActiveObjectQueue()[0]
         loadTime=activeEntity.remainingRoute[0].get('loadTime',{})
         activeObject.distType=loadTime.get('distributionType','Fixed')
         activeObject.loadTime=float(loadTime.get('mean', 0))

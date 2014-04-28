@@ -75,6 +75,7 @@ class Broker(ObjectInterruption):
             if self.victim.isOperated()\
                 and any(type=='Load' or type=='Setup' or type=='Processing'\
                         for type in self.victim.multOperationTypeList):
+#                 print now(), self.victim.id, 'broker is invoked'
                 # update the time that the station is waiting for the operator
                 self.timeWaitForOperatorStarted=now()                
                 # if the resource is not available wait until a rousourceAvailable event
@@ -252,28 +253,11 @@ class Broker(ObjectInterruption):
 #                     # TESTING
 #                     print now(), self.victim.id, 'broker signalling                                ', machine.id, 'loadOperatorAvailable2'
                     #===============================================
-#                     machine.loadOperatorAvailable.signal(now())
+                    machine.loadOperatorAvailable.signal(now())
                         
 #         print 'machines waitingForLoadOperator',[str(x.id) for x in loadPendingMachines]
 #         print 'machines waitingForOperator',[str(x.id) for x in candidateMachines]
         
-#         # for the candidateMachines
-#         if loadPendingMachines:
-#             maxTimeWaiting=0
-#             receiver=None
-#         # choose the one that waits the most time and give it the chance to grasp the resource
-#         # TODO: failures after the end of processing are not considered here
-#             for machine in loadPendingMachines:
-#                 timeWaiting=now()-machine.timeLastEntityEnded
-#                 if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
-#                     maxTimeWaiting=timeWaiting
-#                     receiver=machine
-#             #===============================================
-# #             # TESTING
-# #             print now(), self.victim.id, 'broker signalling', machine.id, 'loadOperatorAvailable'
-#             #===============================================
-#             # finally signal the machine to receive the operator
-#             receiver.loadOperatorAvailable.signal(now())
                 
         # for the candidateMachines
         if candidateMachines:

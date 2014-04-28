@@ -100,11 +100,13 @@ class QueueJobShop(Queue):
     # extend the default behaviour to check if whether the station 
     #     is in the route of the entity to be received
     #===========================================================================
-    def canAcceptAndIsRequested(self):
+    def canAcceptAndIsRequested(self,callerObject=None):
         activeObject=self.getActiveObject()
-        giverObject=activeObject.getGiverObject()
+#         giverObject=activeObject.getGiverObject()
+        giverObject=callerObject
+        assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
         if activeObject.isInRoute(giverObject):
-            return Queue.canAcceptAndIsRequested(self)
+            return Queue.canAcceptAndIsRequested(self,giverObject)
 
     # =======================================================================
     # gets an entity from the predecessor that the predecessor index points to

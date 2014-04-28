@@ -103,11 +103,13 @@ class MachineManagedJob(MachineJobShop):
     # some possible giver waiting for it
     # also updates the giver to the one that is to be taken
     # =======================================================================
-    def canAcceptAndIsRequested(self):
+    def canAcceptAndIsRequested(self,callerObject=None):
         # get active and giver objects
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        giverObject=activeObject.getGiverObject()
+#         giverObject=activeObject.getGiverObject()
+        giverObject=callerObject
+        assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
         giverObjectQueue=giverObject.getActiveObjectQueue()
         # if the multOperationTypeList of the machine contains Load or Setup
         if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
@@ -123,10 +125,10 @@ class MachineManagedJob(MachineJobShop):
                 # activeObject.operatorPool.receivingObject=activeObject
                 #===============================================================
                 if activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity\
-                    and activeObject.checkOperator():
+                    and activeObject.checkOperator(giverObject):
                     if not giverObject.exitIsAssignedTo():
 #                         print self.id, 'assigning givers exit'
-                        giverObject.assignExitTo()
+                        giverObject.assignExitTo(activeObject)
                     elif giverObject.exitIsAssignedTo()!=activeObject:
                         return False
                     # if the activeObject is not in manager's activeCallersList of the entityToGet
@@ -138,7 +140,7 @@ class MachineManagedJob(MachineJobShop):
                     #make the operators List so that it holds only the manager of the current order
                     activeObject.operatorPool.operators=[giverObjectQueue[0].manager]
                     # read the load time of the machine
-                    activeObject.readLoadTime()
+                    activeObject.readLoadTime(giverObject)
                     return True
             else:
                 return False
@@ -176,7 +178,7 @@ class MachineManagedJob(MachineJobShop):
                     #make the operators List so that it holds only the manager of the current order
                     activeObject.operatorPool.operators=[giverObjectQueue[0].manager]
                     # read the load time of the machine
-                    activeObject.readLoadTime()
+                    activeObject.readLoadTime(giverObject)
                     return True
             else:
                 return False
@@ -185,16 +187,18 @@ class MachineManagedJob(MachineJobShop):
             # is not assigned to operators
             if activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity and giverObject.haveToDispose(activeObject):
                 # update entityToGet
-                activeObject.entityToGet=self.giver.getActiveObjectQueue()[0]
-                activeObject.readLoadTime()
+                activeObject.entityToGet=giverObject.getActiveObjectQueue()[0]
+                activeObject.readLoadTime(giverObject)
             return activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity and giverObject.haveToDispose(activeObject)
 
     # =======================================================================
     # to be called by canAcceptAndIsRequested and check for the operator
     # =======================================================================    
-    def checkOperator(self): #, candidateEntity=None):
+    def checkOperator(self,callerObject=None): #, candidateEntity=None):
+        assert callerObject!=None, 'checkOperator must have a caller for MachineManagedJob'
         activeObject=self.getActiveObject()
-        giverObject=activeObject.getGiverObject()
+#         giverObject=activeObject.getGiverObject()
+        giverObject=callerObject
         giverObjectQueue=giverObject.getActiveObjectQueue()
         if giverObjectQueue[0].manager:
             manager=giverObjectQueue[0].manager

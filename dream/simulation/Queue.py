@@ -106,7 +106,7 @@ class Queue(CoreObject):
                     activeObjectQueue[0].startTime=now()
             # if the queue received an canDispose with signalparam time, this means that the signals was sent from a MouldAssemblyBuffer
             if self.canDispose.signalparam:
-#                 print now(), self.id, 'received a canDispose event from', self.canDispose.signalparam
+#                 print now(), self.id, 'received a canDispose event'
                 self.canDispose.signalparam=None
             # if the event that activated the thread is canDispose then signalReceiver
             if self.haveToDispose():
@@ -173,11 +173,13 @@ class Queue(CoreObject):
     #        there is an entity in some predecessor waiting for it
     #   also updates the predecessorIndex to the one that is to be taken
     # =======================================================================
-    def canAcceptAndIsRequested(self):
+    def canAcceptAndIsRequested(self,callerObject=None):
         # get the active and the giver objects
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        giverObject=self.getGiverObject()
+#         giverObject=self.getGiverObject()
+        giverObject=callerObject
+        assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
         return len(activeObjectQueue)<activeObject.capacity and giverObject.haveToDispose(activeObject) 
     
     

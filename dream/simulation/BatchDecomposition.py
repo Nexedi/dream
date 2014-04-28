@@ -219,12 +219,13 @@ class BatchDecomposition(CoreObject):
             (thecaller in activeObject.next) and activeObjectQueue[0].type!="Batch" and activeObject.Up
     
     # =======================================================================
-    #     canAcceptAndIsRequested logc
+    #     canAcceptAndIsRequested logic
     # =======================================================================
-    def canAcceptAndIsRequested(self):
+    def canAcceptAndIsRequested(self,callerObject=None):
         # get the active and the giver objects
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        giverObject=self.getGiverObject()
-        
+#         giverObject=self.getGiverObject()
+        giverObject=callerObject
+        assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
         return activeObject.Up and len(activeObjectQueue)==0 and giverObject.haveToDispose(activeObject)

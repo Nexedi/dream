@@ -222,12 +222,14 @@ class BatchReassembly(CoreObject):
     # which is of the same batchId as the ones that the assembler currently holds 
     # (if it holds any), and if doesn't hold any entities of type Batch 
     # =======================================================================
-    def canAcceptAndIsRequested(self):
+    def canAcceptAndIsRequested(self,callerObject=None):
         # get the active and the giver objects
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        giverObject=self.getGiverObject()
-        giverObjectQueue=self.getGiverObjectQueue()
+#         giverObject=self.getGiverObject()
+        giverObject=callerObject
+        assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
+        giverObjectQueue=giverObject.getActiveObjectQueue()
         
         if (len(activeObjectQueue)==0):
             return activeObject.Up and giverObject.haveToDispose(activeObject)

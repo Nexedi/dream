@@ -87,11 +87,13 @@ class Exit(CoreObject):
     #                checks if the Exit can accept an entity 
     #                 and there is an entity waiting for it
     # =======================================================================
-    def canAcceptAndIsRequested(self):
+    def canAcceptAndIsRequested(self,callerObject=None):
         # get the active object and its internal queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        giverObject=activeObject.getGiverObject() 
+#         giverObject=activeObject.getGiverObject()
+        giverObject=callerObject
+        assert giverObject, 'there must be a caller for canAcceptAndIsRequested' 
         return giverObject.haveToDispose(self)
     
     # =======================================================================

@@ -106,11 +106,13 @@ class OrderDecomposition(CoreObject):
     # and there is an entity in some possible giver waiting for it
     # also updates the giver to the one that is to be taken
     # =======================================================================
-    def canAcceptAndIsRequested(self):
+    def canAcceptAndIsRequested(self,callerObject=None):
         # get active and giver objects
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        giverObject=self.getGiverObject()
+#         giverObject=self.getGiverObject()
+        giverObject=callerObject
+        assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
         # if we have only one possible giver just check if there is a place, 
         # the machine is up and the predecessor has an entity to dispose
         # this is done to achieve better (cpu) processing time

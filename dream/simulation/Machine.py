@@ -224,6 +224,7 @@ class Machine(CoreObject):
         while 1:
             # waitEvent isRequested /interruptionEnd/loadOperatorAvailable
             while 1:
+#                 print now(), self.id, 'will wait for event'
                 yield waitevent, self, [self.isRequested, self.interruptionEnd, self.loadOperatorAvailable]
 #                 print now(), self.id, 'received an event'
                 # if the machine can accept an entity and one predecessor requests it continue with receiving the entity
@@ -646,11 +647,13 @@ class Machine(CoreObject):
     # some possible giver waiting for it
     # also updates the giver to the one that is to be taken
     # =======================================================================
-    def canAcceptAndIsRequested(self):
+    def canAcceptAndIsRequested(self,callerObject=None):
         # get active and giver objects
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        giverObject=self.getGiverObject()
+#         giverObject=self.getGiverObject()
+        giverObject=callerObject
+        assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
         # check if there is a place, the machine is up and the predecessor has an entity to dispose. if the machine has to compete 
         # for an Operator that loads the entities onto it check if the predecessor if blocked by an other Machine. if not then the machine 
         # has to block the predecessor giverObject to avoid conflicts with other competing machines
@@ -668,7 +671,7 @@ class Machine(CoreObject):
                 if activeObject.operatorPool.checkIfResourceIsAvailable()\
                     and activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity:
                     if not giverObject.exitIsAssignedTo():
-                        activeObject.giver.assignExitTo()
+                        giverObject.assignExitTo(activeObject)
                     elif giverObject.exitIsAssignedTo()!=activeObject:
                         return False
                     # if the activeObject is not in operators' activeCallersList
@@ -686,7 +689,7 @@ class Machine(CoreObject):
             if activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity\
                     and giverObject.haveToDispose(activeObject):
                 if not giverObject.exitIsAssignedTo():
-                    activeObject.giver.assignExitTo()
+                    giverObject.assignExitTo(activeObject)
                 elif giverObject.exitIsAssignedTo()!=activeObject:
                     return False
                 return True
