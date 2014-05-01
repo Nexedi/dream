@@ -57,7 +57,7 @@ class ObjectInterruption(Process):
     #     signalling can be done via Machine request/releaseOperator
     # =======================================================================    
     def invoke(self):
-        self.brokerIsCalled.signal(now())
+        self.isCalled.signal(now())
     
 #     # =======================================================================
 #     #                 return control to the Machine.run

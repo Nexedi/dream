@@ -48,7 +48,7 @@ class Broker(ObjectInterruption):
         self.timeLastOperationEnded = 0
         self.timeWaitForOperatorStarted=0
         # Broker events
-        self.brokerIsCalled=SimEvent('brokerIsCalled')
+        self.isCalled=SimEvent('brokerIsCalled')
         self.victimQueueIsEmpty=SimEvent('victimQueueIsEmpty')
         self.resourceAvailable=SimEvent('resourceAvailable')
         self.waitForOperator=False
@@ -69,8 +69,8 @@ class Broker(ObjectInterruption):
     def run(self):
         while 1:
             # TODO: add new broker event - brokerIsCalled
-            yield waitevent, self, self.brokerIsCalled
-            assert self.brokerIsCalled.signalparam==now(), 'the broker should be granted control instantly'
+            yield waitevent, self, self.isCalled
+            assert self.isCalled.signalparam==now(), 'the broker should be granted control instantly'
     # ======= request a resource
             if self.victim.isOperated()\
                 and any(type=='Load' or type=='Setup' or type=='Processing'\
@@ -129,6 +129,7 @@ class Broker(ObjectInterruption):
                 yield release,self,self.victim.operatorPool.getResource(self.victim.currentOperator)
                 # signal the other brokers waiting for the same operators that they are now free
                 # also signal the stations that were not requested to receive because the operator was occupied
+#                 self.victim.router.isCalled.signal(now())
                 self.signalLoadStations()
                 
 #                 #     but now must have the option to proceed
