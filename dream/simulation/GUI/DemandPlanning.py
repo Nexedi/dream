@@ -28,8 +28,10 @@ test script to convert the static excels to JSON. It does not communicate with G
 import xlwt
 import xlrd
 import json
+from AllocManagement import AllocManagement
 from dream.simulation.Globals import G
 from dream.simulation.FutureDemandCreator import FutureDemandCreator
+
 
 def createGlobals():
     G.TargetPPOS = 0
@@ -150,8 +152,13 @@ def main():
     
     G.argumentDictString=json.dumps(argumentDict, indent=5)
     argumentDictFile.write(G.argumentDictString)
+    
+    # create the future demand
     FDC=FutureDemandCreator()
     FDC.run()
+    #call the AllocManagement routine
+    AM = AllocManagement()
+    AM.Run()
     
 if __name__ == '__main__':
     main()
