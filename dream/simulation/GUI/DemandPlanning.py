@@ -150,8 +150,8 @@ def main():
     
     G.argumentDictString=json.dumps(argumentDict, indent=5)
     argumentDictFile.write(G.argumentDictString)
-#     FDC=FutureDemandCreator()
-#     FDC.run()
+    FDC=FutureDemandCreator()
+    FDC.run()
     
 if __name__ == '__main__':
     main()

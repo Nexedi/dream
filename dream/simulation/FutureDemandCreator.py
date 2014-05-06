@@ -1,12 +1,34 @@
+# ===========================================================================
+# Copyright 2013 University of Limerick
+#
+# This file is part of DREAM.
+#
+# DREAM is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# DREAM is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
+# ===========================================================================
 '''
-Created on 3 Oct 2013
+Created on 27 Apr 2013
 
-@author: Anna
+@author: Anna, George
+'''
+'''
+module that creates the future demand and appends it to buffers
 '''
 
 import xlrd
 import json
 from Globals import G
+from JobMA import JobMA
 
 class FutureDemandCreator(): 
         
@@ -72,10 +94,9 @@ class FutureDemandCreator():
                 
                 SP = MAData[str(MA)]['SP']
                 PPOS = MAData[str(MA)]['PPOS']
-                print SP, PPOS
     
                 # create item
-                newItem = Job(orderID=order, MAid=MA, SPid=SP, PPOSid=PPOS, qty=orderQty, minQty=orderMinQty, origWeek=week, future=fut)
+                newItem = JobMA(orderID=order, MAid=MA, SPid=SP, PPOSid=PPOS, qty=orderQty, minQty=orderMinQty, origWeek=week, future=fut)
                 G.Buffer[G.replication].append(newItem)
             
             if k == 0:
