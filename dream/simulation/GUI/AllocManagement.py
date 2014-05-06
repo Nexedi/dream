@@ -17,7 +17,7 @@ from dream.simulation.Globals import G
 class AllocManagement(): 
         
     def Run(self):
-        
+        G.CurrentCapacityDict=G.CapacityDict
         for kWeek in range(G.planningHorizon):
         # activate allocation procedure for future items at target week
             procedureFuture = AllocationRoutine(initialWeek=kWeek, itemType=1)
@@ -26,9 +26,9 @@ class AllocManagement():
         # activate allocation procedure for PPOS items at target week
         procedurePPOS = AllocationRoutine(initialWeek=G.TargetPPOSweek, itemType=0)
         procedurePPOS.Run()
-
         G.reCapacity.append(G.currentCapacity)
-        
+        k=0
+        print 'excess future', [i.orderID for i in G.ExcessFutureBuffer[k]], [i.qty for i in G.ExcessFutureBuffer[k]]
 
 
         

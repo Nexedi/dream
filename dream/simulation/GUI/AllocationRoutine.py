@@ -2,11 +2,11 @@
 Created on 5 Sep 2013
 
 @author: Anna
-
 '''
+
 from dream.simulation.Globals import G
 from Allocation import Allocation
-from dream.simulation.JobMA import Job
+from dream.simulation.JobMA import JobMA
 
 class AllocationRoutine():
     def __init__(self, initialWeek, itemType):
@@ -62,7 +62,7 @@ class AllocationRoutine():
                 for item in self.internalBuffer:
                     # if the item presents min qty then create a new item and store it into minBuffer
                     if item.minQty:
-                        newJob = Job(item.orderID, item.MAid, item.SPid, item.PPOSid, item.minQty, item.minQty, item.originalWeek, item.future)
+                        newJob = JobMA(item.orderID, item.MAid, item.SPid, item.PPOSid, item.minQty, item.minQty, item.originalWeek, item.future)
                         self.minBuffer.append(newJob)
                         item.qty = item.qty - item.minQty
                         item.minQty = 0
