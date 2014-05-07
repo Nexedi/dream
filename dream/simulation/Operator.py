@@ -69,11 +69,31 @@ class Operator(ObjectResource):
         # variables to be used by OperatorRouter
         self.candidateEntities=[]               # list of the entities requesting the operator at a certain simulation Time
         self.candidateEntity=None               # the entity that will be chosen for processing
+        self.candidateStations=[]               # list of candidateStations of the stations (those stations that can receive an entity)
         
     @staticmethod
     def getSupportedSchedulingRules():
         return ("FIFO", "Priority", "WT", "EDD", "EOD",
             "NumStages", "RPC", "LPT", "SPT", "MS", "WINQ")
+    
+    #===========================================================================
+    # assign an operator
+    #===========================================================================
+    def assignTo(self, callerObject=None):
+        assert callerObject!=None, 'the operator cannot be assigned to None'
+        self.operatorAssignedTo=callerObject
+    
+    #===========================================================================
+    # un-assign an operator
+    #===========================================================================
+    def unAssign(self):
+        self.operatorAssignedTo=None
+    
+    #===========================================================================
+    # check whether the operator is assigned
+    #===========================================================================
+    def isAssignedTo(self):
+        return self.operatorAssignedTo
     
     # =======================================================================
     #    sorts the candidateEntities of the Operator according to the scheduling rule
@@ -93,26 +113,8 @@ class Operator(ObjectResource):
     #    sorts the Entities of the Queue according to the scheduling rule
     # =======================================================================
     def activeCandidateQSorter(self, criterion=None):
-        pass
-
-    # =======================================================================
-    #    sorts the activeCallerrs of the Operator according to the scheduling rule
-    # =======================================================================
-    def sortActiveCallers(self):
-        #if we have sorting according to multiple criteria we have to call the sorter many times
-        if self.schedulingRule=="MC":
-            for criterion in reversed(self.multipleCriterionList):
-               self.activeCallerQSorter(criterion=criterion) 
-        #else we just use the default scheduling rule
-        else:
-            self.activeCallerQSorter(self.schedulingRule)
-    
-    # =======================================================================
-    #    sorts the activeCallers of the activeCallersList according to the scheduling rule
-    # =======================================================================
     # TODO: entityToGet is not updated for all stations, consider using it for all stations or withdraw the idea
-    def activeCallerQSorter(self, criterion=None):
-        activeObjectQ=self.activeCallersList
+        activeObjectQ=self.candidateStations
         if criterion==None:
             criterion=self.schedulingRule           
         #if the schedulingRule is first in first out
