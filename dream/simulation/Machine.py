@@ -157,7 +157,6 @@ class Machine(CoreObject):
         #     then it must be signalled that the operator is now available
         self.loadOperatorAvailable=SimEvent('loadOperatorAvailable')
         
-        self.routerCycleOver=SimEvent('routerCycleOver')
     
     # =======================================================================
     # initialize the machine
