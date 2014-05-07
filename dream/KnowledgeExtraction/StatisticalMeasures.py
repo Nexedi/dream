@@ -45,12 +45,22 @@ class BasicStatisticalMeasures:
         rquantile = robjects.r['quantile']     #Call quantile - R function
         return rquantile(data)
     
+    def min(self,data):                     #Calculate the minimum value of a data sample
+        data=robjects.FloatVector(data)
+        rmin= robjects.r['min']            #Call min - R function
+        return rmin(data)[0]
+    
+    def max(self,data):                     #Calculate the maximum value of a data sample
+        data=robjects.FloatVector(data)
+        rmax= robjects.r['max']            #Call max - R function
+        return rmax(data)[0]
+         
     def frequency(self,data):                  #Calculate the frequency of a data point in the sample
         data=robjects.FloatVector(data)
         rtable= robjects.r['table']            #Call table - R function
         return rtable(data)
         
-    def mean (self, data):                     #Calculate the mean value of a data sample 
+    def mean(self, data):                     #Calculate the mean value of a data sample 
         data=robjects.FloatVector(data)
         rmean = robjects.r['mean']             #Call mean - R function
         return rmean(data)[0]
@@ -73,7 +83,12 @@ class BasicStatisticalMeasures:
     def range (self, data):                    #Calculate the range of a data sample
         data=robjects.FloatVector(data)
         rrange = robjects.r['range']           #Call range function - R function
-        return rrange(data)
+        return list(rrange(data))
+    
+    def mad (self,data):                        #Calculate the median absolute deviation of a data sample
+        data=robjects.FloatVector(data)
+        rmad = robjects.r['mad']                  #Call mad function - R function
+        return rmad(data)[0]
         
     def IQR (self, data):                      #Calculate the Interquartile range (IQR) of a data sample
         data=robjects.FloatVector(data)
@@ -82,12 +97,16 @@ class BasicStatisticalMeasures:
     
     def all(self, data):                       #Print the results of the above measures
         data=robjects.FloatVector(data)
-        print 'The length of the data set is:', self.length(data)[0]
+        print 'The length of the data set is:', self.length(data)
         print 'The summary is:', self.summary(data)
         print 'The quartiles and percentiles of the data set are:', self.quantile(data)
         print 'The frequency of the datapoints are:', self.frequency(data)
-        print 'The mean value is:', self.mean(data)[0]
-        print 'The standard deviation is:', self.sd(data)[0]
-        print 'The variance is:', self.var(data)[0]
-        print 'The range is:', self.range(data)[0]
-        print 'The Interquartile Range is:', self.IQR(data)[0]
+        print 'The mean value is:', self.mean(data)
+        print 'The median value is:', self.median(data)
+        print 'The max value is:', self.max(data)
+        print 'The min value is:', self.min(data)
+        print 'The standard deviation is:', self.sd(data)
+        print 'The variance is:', self.var(data)
+        print 'The median absolute deviation is:', self.mad(data)
+        print 'The range is:', self.range(data)
+        print 'The Interquartile Range is:', self.IQR(data)
