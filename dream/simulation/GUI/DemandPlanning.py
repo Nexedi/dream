@@ -190,10 +190,10 @@ def writeOutput():
             print 'allocation', alloc
             counterCols = [5 for i in range(len(profile))]  
             # TODO the below crashes, got to check             
-#             for i in range(len(alloc)):
-#                 for j in range(3):
-#                     sheet.write(alloc[i][0]+2,counterCols[alloc[i][0]]+j,alloc[i][j+1])
-#                 counterCols[alloc[i][0]] += 3
+            for i in range(len(alloc)):
+                for j in range(3):
+                    sheet.write(alloc[i][0]+2,counterCols[alloc[i][0]]+j,alloc[i][j+1])
+                counterCols[alloc[i][0]] += 3
             
             attempts = (max(counterCols)-5)/3
             for i in range(attempts):
@@ -229,7 +229,7 @@ def writeOutput():
                     sheet.write(0,2,'excess Units')
                     for i in buf:
                         sheet.write(row,0,i.orderID+1)
-                        sheet.write(row,1,i.MAid+1)
+                        sheet.write(row,1,i.MAid)
                         sheet.write(row,2,i.qty)
                         row +=1
                         
@@ -241,7 +241,6 @@ def writeOutput():
         sheet.write_merge(0,1,0,0,'Bottlenecks')
         i=2
         for record in G.CurrentCapacityDict:
-            print record, G.CurrentCapacityDict[record]
             sheet.write(i,0,record)
             sheet.write(i,1,G.CurrentCapacityDict[record][0])
             sheet.write(i,2,G.CurrentCapacityDict[record][1])
@@ -294,6 +293,7 @@ def main():
     AM = AllocManagement()
     AM.Run()
     writeOutput()   # currently to excel for verification. To be outputted in JSON
+    print G.AllocationPPOS
     
 if __name__ == '__main__':
     main()

@@ -183,11 +183,11 @@ class Allocation():
                 # update allocation output variable
                 # distinguish case of FutureDemand from PPOSdemand
                 if MA.future == 1: 
-                    G.AllocationFuture[G.replication].append([MA.orderID, alternativeMADict[chosenMAId], allocableQty, self.week+1])
+                    G.AllocationFuture[G.replication].append([MA.orderID, chosenMAId, allocableQty, self.week+1])
                     G.FutureLateness[G.replication] += max([0, self.week - MA.originalWeek])*allocableQty
                     G.FutureEarliness[G.replication] += max([0, MA.originalWeek - self.week])*allocableQty
                 else:
-                    G.AllocationPPOS[G.replication].append([MA.orderID, alternativeMADict[chosenMAId], allocableQty, self.week+1])
+                    G.AllocationPPOS[G.replication].append([MA.orderID, chosenMAId, allocableQty, self.week+1])
                     G.PPOSLateness[G.replication] += max([0, self.week - MA.originalWeek])*allocableQty
                     G.PPOSEarliness[G.replication] += max([0, MA.originalWeek - self.week])*allocableQty
                     
