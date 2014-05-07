@@ -67,6 +67,25 @@ class OperatorManagedJob(Operator):
 #                 return False
             return len(self.Res.activeQ)<self.capacity
         
+#     #===========================================================================
+#     # assign an operator
+#     #===========================================================================
+#     def assignTo(self, callerObject=None):
+#         assert callerObject!=None, 'the operator cannot be assigned to None'
+#         self.operatorAssignedTo=callerObject
+#     
+#     #===========================================================================
+#     # un-assign an operator
+#     #===========================================================================
+#     def unAssign(self):
+#         self.operatorAssignedTo=None
+#     
+#     #===========================================================================
+#     # check whether the operator is assigned
+#     #===========================================================================
+#     def isAssignedTo(self):
+#         return self.operatorAssignedTo
+        
 #     # =======================================================================
 #     #    sorts the candidateEntities of the Operator according to the scheduling rule
 #     #     TODO: maybe the argument is not needed. the candidate entities is a variable of the object
@@ -177,133 +196,133 @@ class OperatorManagedJob(Operator):
         else:
             assert False, "Unknown scheduling criterion %r" % (criterion, )
 
-    # =======================================================================
-    #    sorts the Entities of the Queue according to the scheduling rule
-    # =======================================================================
-    # TODO: entityToGet is not updated for all stations, consider using it for all stations or withdraw the idea
-    def activeCallerQSorter(self, criterion=None):
-        activeObjectQ=self.activeCallersList
-        if criterion==None:
-            criterion=self.schedulingRule           
-        #if the schedulingRule is first in first out
-        if criterion=="FIFO": 
-            pass
-        #if the schedulingRule is based on a pre-defined priority
-        elif criterion=="Priority":
-            
-            for object in activeObjectQ:
-                object.giver.sortEntitiesForOperator(self)
-            # TODO: the entities should be also sort according to their waiting time in case the priority is the same
-            activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].priority)
-        #if the scheduling rule is time waiting (time waiting of machine
-        # TODO: consider that the timeLastEntityEnded is not a 
-        #     indicative identifier of how long the station was waiting
-        elif criterion=='WT':
-            
-            for object in activeObjectQ:
-                object.giver.sortEntitiesForOperator(self)
-                
-            
-            activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].schedule[-1][1])
-        #if the schedulingRule is earliest due date
-        elif criterion=="EDD":
-            
-            for object in activeObjectQ:
-                object.giver.sortEntitiesForOperator(self)
-            # TODO: the entities should be also sort according to their waiting time in case the EDD is the same
-            activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].dueDate)   
-        #if the schedulingRule is earliest order date
-        elif criterion=="EOD":
-            
-            for object in activeObjectQ:
-                object.giver.sortEntitiesForOperator(self)
-            # TODO: the entities should be also sort according to their waiting time in case the EOD is the same
-            activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].orderDate)
-        #if the schedulingRule is to sort Entities according to the stations they have to visit
-        elif criterion=="NumStages":
-            
-            for object in activeObjectQ:
-                object.giver.sortEntitiesForOperator(self)
-            # TODO: the entities should be also sort according to their waiting time in case the NumStages are the same
-            activeObjectQ.sort(key=lambda x: len(x.giver.getActiveObjectQueue()[0].remainingRoute), reverse=True)  
-        #if the schedulingRule is to sort Entities according to the their remaining processing time in the system
-        elif criterion=="RPC":
-            
-            for object in activeObjectQ:
-                object.giver.sortEntitiesForOperator(self)
-            
-            for object in activeObjectQ:
-                entity=object.giver.getActiveObjectQueue()[0]
-                RPT=0
-                for step in entity.remainingRoute:
-                    processingTime=step.get('processingTime',None)
-                    if processingTime:
-                        RPT+=float(processingTime.get('mean',0))           
-                entity.remainingProcessingTime=RPT
-            # TODO: the entities should be also sort according to their waiting time in case the remainingProcTime is the same
-            activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].remainingProcessingTime, reverse=True)     
-        #if the schedulingRule is to sort Entities according to longest processing time first in the next station
-        elif criterion=="LPT":
-            
-            for object in activeObjectQ:
-                object.giver.sortEntitiesForOperator(self)
-            
-            for object in activeObjectQ:
-                entity=object.giver.getActiveObjectQueue()[0]
-                processingTime = entity.remainingRoute[0].get('processingTime',None)
-                entity.processingTimeInNextStation=float(processingTime.get('mean',0))
-                if processingTime:
-                    entity.processingTimeInNextStation=float(processingTime.get('mean',0))
-                else:
-                    entity.processingTimeInNextStation=0
-            # TODO: the entities should be also sort according to their waiting time in case the ProcessingTimeInNextStation is the same
-            activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].processingTimeInNextStation, reverse=True)             
-        #if the schedulingRule is to sort Entities according to shortest processing time first in the next station
-        elif criterion=="SPT":
-            
-            for object in activeObjectQ:
-                object.giver.sortEntitiesForOperator(self)
-            
-            for object in activeObjectQ:
-                entity=object.giver.getActiveObjectQueue()[0]
-                processingTime = entity.remainingRoute[0].get('processingTime',None)
-                if processingTime:
-                    entity.processingTimeInNextStation=float(processingTime.get('mean',0))
-                else:
-                    entity.processingTimeInNextStation=0
-            # TODO: the entities should be also sort according to their waiting time in case the procTimeInNextStation is the same
-            activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].processingTimeInNextStation) 
-        #if the schedulingRule is to sort Entities based on the minimum slackness
-        elif criterion=="MS":
-            
-            for object in activeObjectQ:
-                object.giver.sortEntitiesForOperator(self)
-            
-            for object in activeObjectQ:
-                entity=object.giver.getActiveObjectQueue()[0]
-                RPT=0
-                for step in entity.remainingRoute:
-                    processingTime=step.get('processingTime',None)
-                    if processingTime:
-                        RPT+=float(processingTime.get('mean',0))              
-                entity.remainingProcessingTime=RPT
-            # TODO: the entities should be also sort according to their waiting time in case the minimum slackness are the same
-            activeObjectQ.sort(key=lambda x: (x.giver.getActiveObjectQueue()[0].dueDate-x.giver.getActiveObjectQueue()[0].remainingProcessingTime))  
-        #if the schedulingRule is to sort Entities based on the length of the following Queue
-        elif criterion=="WINQ":
-            
-            for object in activeObjectQ:
-                object.giver.sortEntitiesForOperator(self)
-            
-            from Globals import G
-            for object in activeObjectQ:
-                entity=object.giver.getActiveObjectQueue()[0]
-                nextObjIds=entity.remainingRoute[1].get('stationIdsList',[])
-                for obj in G.ObjList:
-                    if obj.id in nextObjIds:
-                        nextObject=obj
-                entity.nextQueueLength=len(nextObject.getActiveObjectQueue())           
-            # TODO: the entities should be also sort according to their waiting time in case length of the following queues are the same
-            activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].nextQueueLength)
-        else:
-            assert False, "Unknown scheduling criterion %r" % (criterion, )
+#     # =======================================================================
+#     #    sorts the Entities of the Queue according to the scheduling rule
+#     # =======================================================================
+#     # TODO: entityToGet is not updated for all stations, consider using it for all stations or withdraw the idea
+#     def activeCallerQSorter(self, criterion=None):
+#         activeObjectQ=self.activeCallersList
+#         if criterion==None:
+#             criterion=self.schedulingRule           
+#         #if the schedulingRule is first in first out
+#         if criterion=="FIFO": 
+#             pass
+#         #if the schedulingRule is based on a pre-defined priority
+#         elif criterion=="Priority":
+#             
+#             for object in activeObjectQ:
+#                 object.giver.sortEntitiesForOperator(self)
+#             # TODO: the entities should be also sort according to their waiting time in case the priority is the same
+#             activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].priority)
+#         #if the scheduling rule is time waiting (time waiting of machine
+#         # TODO: consider that the timeLastEntityEnded is not a 
+#         #     indicative identifier of how long the station was waiting
+#         elif criterion=='WT':
+#             
+#             for object in activeObjectQ:
+#                 object.giver.sortEntitiesForOperator(self)
+#                 
+#             
+#             activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].schedule[-1][1])
+#         #if the schedulingRule is earliest due date
+#         elif criterion=="EDD":
+#             
+#             for object in activeObjectQ:
+#                 object.giver.sortEntitiesForOperator(self)
+#             # TODO: the entities should be also sort according to their waiting time in case the EDD is the same
+#             activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].dueDate)   
+#         #if the schedulingRule is earliest order date
+#         elif criterion=="EOD":
+#             
+#             for object in activeObjectQ:
+#                 object.giver.sortEntitiesForOperator(self)
+#             # TODO: the entities should be also sort according to their waiting time in case the EOD is the same
+#             activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].orderDate)
+#         #if the schedulingRule is to sort Entities according to the stations they have to visit
+#         elif criterion=="NumStages":
+#             
+#             for object in activeObjectQ:
+#                 object.giver.sortEntitiesForOperator(self)
+#             # TODO: the entities should be also sort according to their waiting time in case the NumStages are the same
+#             activeObjectQ.sort(key=lambda x: len(x.giver.getActiveObjectQueue()[0].remainingRoute), reverse=True)  
+#         #if the schedulingRule is to sort Entities according to the their remaining processing time in the system
+#         elif criterion=="RPC":
+#             
+#             for object in activeObjectQ:
+#                 object.giver.sortEntitiesForOperator(self)
+#             
+#             for object in activeObjectQ:
+#                 entity=object.giver.getActiveObjectQueue()[0]
+#                 RPT=0
+#                 for step in entity.remainingRoute:
+#                     processingTime=step.get('processingTime',None)
+#                     if processingTime:
+#                         RPT+=float(processingTime.get('mean',0))           
+#                 entity.remainingProcessingTime=RPT
+#             # TODO: the entities should be also sort according to their waiting time in case the remainingProcTime is the same
+#             activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].remainingProcessingTime, reverse=True)     
+#         #if the schedulingRule is to sort Entities according to longest processing time first in the next station
+#         elif criterion=="LPT":
+#             
+#             for object in activeObjectQ:
+#                 object.giver.sortEntitiesForOperator(self)
+#             
+#             for object in activeObjectQ:
+#                 entity=object.giver.getActiveObjectQueue()[0]
+#                 processingTime = entity.remainingRoute[0].get('processingTime',None)
+#                 entity.processingTimeInNextStation=float(processingTime.get('mean',0))
+#                 if processingTime:
+#                     entity.processingTimeInNextStation=float(processingTime.get('mean',0))
+#                 else:
+#                     entity.processingTimeInNextStation=0
+#             # TODO: the entities should be also sort according to their waiting time in case the ProcessingTimeInNextStation is the same
+#             activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].processingTimeInNextStation, reverse=True)             
+#         #if the schedulingRule is to sort Entities according to shortest processing time first in the next station
+#         elif criterion=="SPT":
+#             
+#             for object in activeObjectQ:
+#                 object.giver.sortEntitiesForOperator(self)
+#             
+#             for object in activeObjectQ:
+#                 entity=object.giver.getActiveObjectQueue()[0]
+#                 processingTime = entity.remainingRoute[0].get('processingTime',None)
+#                 if processingTime:
+#                     entity.processingTimeInNextStation=float(processingTime.get('mean',0))
+#                 else:
+#                     entity.processingTimeInNextStation=0
+#             # TODO: the entities should be also sort according to their waiting time in case the procTimeInNextStation is the same
+#             activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].processingTimeInNextStation) 
+#         #if the schedulingRule is to sort Entities based on the minimum slackness
+#         elif criterion=="MS":
+#             
+#             for object in activeObjectQ:
+#                 object.giver.sortEntitiesForOperator(self)
+#             
+#             for object in activeObjectQ:
+#                 entity=object.giver.getActiveObjectQueue()[0]
+#                 RPT=0
+#                 for step in entity.remainingRoute:
+#                     processingTime=step.get('processingTime',None)
+#                     if processingTime:
+#                         RPT+=float(processingTime.get('mean',0))              
+#                 entity.remainingProcessingTime=RPT
+#             # TODO: the entities should be also sort according to their waiting time in case the minimum slackness are the same
+#             activeObjectQ.sort(key=lambda x: (x.giver.getActiveObjectQueue()[0].dueDate-x.giver.getActiveObjectQueue()[0].remainingProcessingTime))  
+#         #if the schedulingRule is to sort Entities based on the length of the following Queue
+#         elif criterion=="WINQ":
+#             
+#             for object in activeObjectQ:
+#                 object.giver.sortEntitiesForOperator(self)
+#             
+#             from Globals import G
+#             for object in activeObjectQ:
+#                 entity=object.giver.getActiveObjectQueue()[0]
+#                 nextObjIds=entity.remainingRoute[1].get('stationIdsList',[])
+#                 for obj in G.ObjList:
+#                     if obj.id in nextObjIds:
+#                         nextObject=obj
+#                 entity.nextQueueLength=len(nextObject.getActiveObjectQueue())           
+#             # TODO: the entities should be also sort according to their waiting time in case length of the following queues are the same
+#             activeObjectQ.sort(key=lambda x: x.giver.getActiveObjectQueue()[0].nextQueueLength)
+#         else:
+#             assert False, "Unknown scheduling criterion %r" % (criterion, )
