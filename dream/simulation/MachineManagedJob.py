@@ -56,6 +56,7 @@ class MachineManagedJob(MachineJobShop):
         self.broker = Broker(self)
         activate(self.broker,self.broker.run())
         #create a Router
+        # TODO: this is already performed in __init__ of Machine
         from Globals import G
         if len(G.RoutersList)==0:
             self.router=Router()
@@ -94,8 +95,8 @@ class MachineManagedJob(MachineJobShop):
             # if the machine's Id is in the list of the entity's next stations
             if activeObject.id in thecallerentity.remainingRoute[0].get('stationIdsList',[]):
                 #return according to the state of the Queue
-                return len(activeObject.getActiveObjectQueue())<activeObject.capacity\
-                        and activeObject.Up
+                return len(activeObjectQueue)<activeObject.capacity\
+                        and activeObject.checkIfMachineIsUp()
         return False
 
     # =======================================================================
@@ -104,6 +105,7 @@ class MachineManagedJob(MachineJobShop):
     # also updates the giver to the one that is to be taken
     # =======================================================================
     def canAcceptAndIsRequested(self,callerObject=None):
+#         print self.id, 'CAAIR'
         # get active and giver objects
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
@@ -127,7 +129,6 @@ class MachineManagedJob(MachineJobShop):
                 if activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity\
                     and activeObject.checkOperator(giverObject):
                     if not giverObject.exitIsAssignedTo():
-#                         print self.id, 'assigning givers exit'
                         giverObject.assignExitTo(activeObject)
                     elif giverObject.exitIsAssignedTo()!=activeObject:
                         return False
@@ -135,8 +136,8 @@ class MachineManagedJob(MachineJobShop):
                     if activeObject not in giverObjectQueue[0].manager.activeCallersList:
                         # append it to the activeCallerList of the manager of the entity to be received
                         giverObjectQueue[0].manager.activeCallersList.append(self)
-                        # update entityToGet
-                        activeObject.entityToGet=giverObjectQueue[0]
+                    # update entityToGet
+                    activeObject.entityToGet=giverObjectQueue[0]
                     #make the operators List so that it holds only the manager of the current order
                     activeObject.operatorPool.operators=[giverObjectQueue[0].manager]
                     # read the load time of the machine
@@ -202,10 +203,8 @@ class MachineManagedJob(MachineJobShop):
         giverObjectQueue=giverObject.getActiveObjectQueue()
         if giverObjectQueue[0].manager:
             manager=giverObjectQueue[0].manager
-#             print ''
-#             print 'Entity',self.giver.getActiveObjectQueue()[0].id
-#             print 'manager',manager.id
-            return manager.checkIfResourceIsAvailable()
+            # TODO: consider using a caller in this case
+            return manager.checkIfResourceIsAvailable(activeObject)
         else:
             return True 
 #         if candidateEntity:
@@ -224,20 +223,6 @@ class MachineManagedJob(MachineJobShop):
         # ToDecide
         # maybe we should work this way in all CoreObjects???
         return self.entityToGet
-    
-#     # =======================================================================
-#     # checks if the object is ready to receive an Entity
-#     # =======================================================================    
-#     def isReadyToGet(self):
-#         # check if the entity that is about to be obtained has a manager (this should be true for this object)
-#         if self.entityToGet.manager:
-#             manager=self.entityToGet.manager
-#             if len(manager.activeCallersList)>0:
-#                 manager.sortEntities()      # sort the callers of the manager to be used for scheduling rules
-#                 # return true if the manager is available
-#                 return manager.checkIfResourceIsAvailable()
-#         else:
-#             return True
         
 
 #     # =======================================================================
