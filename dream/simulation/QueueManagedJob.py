@@ -101,6 +101,58 @@ class QueueManagedJob(QueueJobShop):
 #                 and (thecaller in activeObject.next)\
 #                 and thecaller.isInRoute(activeObject)
 
+
+    #===========================================================================
+    # signalReceiver Method
+    #===========================================================================
+    def signalReceiver(self):
+#         print now(), self.id, 'trying to signal receiver'
+        activeObject=self.getActiveObject()
+        possibleReceivers=[]
+        for object in [x for x in self.next if x.canAccept(activeObject)]:
+            possibleReceivers.append(object)
+        if possibleReceivers:
+            receiver=activeObject.selectReceiver(possibleReceivers)
+            receiversGiver=activeObject
+            # perform the checks that canAcceptAndIsRequested used to perform and update assignExit and operatorPool
+            while not receiver.canAcceptAndIsRequested(receiversGiver):
+#                 print 'removing receiver from possibleReceivrs', receiver.id
+                possibleReceivers.remove(receiver)
+                if not possibleReceivers:
+                    receiversGiver=None
+                    receiver=None
+                    return False
+                receiver=activeObject.selectReceiver(possibleReceivers)
+                receiversGiver=activeObject
+            # if an operator is not assigned to the receiver then do not signal the receiver but the Router
+            # TODO: identifyEntityToGet needs giver defined but here is not yet defined for Machines and machineJobShops
+            try:
+                if receiver.identifyEntityToGet().manager:
+                    if receiver.identifyEntityToGet().manager.isAssignedTo()!=receiver:
+                        from Globals import G
+                        if not G.RoutersList[0].invoked:
+                            #===================================================================
+# #                             # TESTING
+#                             print now(), self.id,' '*50, 'signalling router'
+                            #===================================================================
+                            G.RoutersList[0].invoked=True
+                            G.RoutersList[0].isCalled.signal(now())
+                        return False
+            except:
+                pass
+            activeObject.receiver=receiver
+            activeObject.receiver.giver=activeObject
+            #===================================================================
+# #             # TESTING
+#             print now(), self.id,' '*50, 'signalling receiver', self.receiver.id
+            #===================================================================
+            # assign the entry of the receiver
+            activeObject.receiver.assignEntryTo()
+            activeObject.receiver.isRequested.signal(activeObject)
+            return True
+        return False
+        
+
     # =======================================================================
     # override the default method so that Entities 
     # that have the manager available go in front
