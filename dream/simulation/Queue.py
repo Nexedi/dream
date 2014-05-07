@@ -26,7 +26,7 @@ Models a FIFO queue where entities can wait in order to get into a server
 '''
 
 
-from SimPy.Simulation import Process, Resource
+from SimPy.Simulation import Process, Resource, SimEvent
 from SimPy.Simulation import waituntil, now, infinity, waitevent
 from CoreObject import CoreObject
 # ===========================================================================
@@ -66,8 +66,12 @@ class Queue(CoreObject):
               (scheduling_rule, id))
 
         self.gatherWipStat=gatherWipStat
-#         # Will be populated by an event generator
-#         self.wip_stat_list = []
+        # Will be populated by an event generator
+        self.wip_stat_list = []
+        # event used by router
+        self.loadOperatorAvailable=SimEvent('loadOperatorAvailable')
+        # flag used by router to check whether the 
+        self.canProceedWithGetEntity=False
 
     @staticmethod
     def getSupportedSchedulingRules():
@@ -93,7 +97,7 @@ class Queue(CoreObject):
         while 1:
 #             print self.id, 'will wait for event', now()
             # wait until the Queue can accept an entity and one predecessor requests it
-            yield waitevent, self, [self.isRequested,self.canDispose]
+            yield waitevent, self, [self.isRequested,self.canDispose, self.loadOperatorAvailable]
 #             print now(), self.id, 'just received an event'
             # if the event that activated the thread is isRequested then getEntity
             if self.isRequested.signalparam:
@@ -104,6 +108,10 @@ class Queue(CoreObject):
                 #if entity just got to the dummyQ set its startTime as the current time
                 if self.isDummy:
                     activeObjectQueue[0].startTime=now()
+            # if the queue received an loadOperatorIsAvailable (from Router) with signalparam time
+            if self.loadOperatorAvailable.signalparam:
+#                 print now(), self.id, 'received a loadOperatorAvailable event'
+                self.loadOperatorAvailable.signalparam=None
             # if the queue received an canDispose with signalparam time, this means that the signals was sent from a MouldAssemblyBuffer
             if self.canDispose.signalparam:
 #                 print now(), self.id, 'received a canDispose event'
@@ -116,8 +124,7 @@ class Queue(CoreObject):
                         self.signalReceiver()
                     continue
                 self.signalReceiver()
-            
-            
+    
     # =======================================================================
     #               checks if the Queue can accept an entity       
     #             it checks also who called it and returns TRUE 
