@@ -331,8 +331,8 @@ class Router(ObjectInterruption):
         #=======================================================================
 #         # testing
 #         if self.managed:
-#             print 'found pending entities'
-#             print [entity.id for entity in self.pending if not entity.type=='Part']
+#         print 'found pending entities'
+#         print [entity.id for entity in self.pending if not entity.type=='Part']
         #=======================================================================
         
     #========================================================================
