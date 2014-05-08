@@ -58,7 +58,7 @@ class EntityGenerator(Process):
     def run(self):     
 #         print 'entity generator starts'   
         while 1:
-            entity=self.victim.createEntity()                       # create the Entity object and assign its name 
+            entity=self.victim.createEntity()                       # create the Entity object and assign its name
             entity.creationTime=now()                               # assign the current simulation time as the Entity's creation time 
             entity.startTime=now()                                  # assign the current simulation time as the Entity's start time 
             entity.currentStation=self.victim                            # update the current station of the Entity
@@ -67,7 +67,7 @@ class EntityGenerator(Process):
             self.victim.getActiveObjectQueue().append(entity)            # append the entity to the resource 
             self.victim.numberOfArrivals+=1                              # we have one new arrival
             G.numberOfEntities+=1
-            self.victim.entityCreated.signal(str(entity.name)+' created')
+            self.victim.entityCreated.signal(entity)
             yield hold,self,self.victim.calculateInterarrivalTime() # wait until the next arrival
 
 #============================================================================
@@ -129,6 +129,7 @@ class Source(CoreObject):
             yield waitevent, self, [self.entityCreated, self.canDispose]
             # if an entity is created try to signal the receiver and continue
             if self.entityCreated.signalparam:
+                self.appendEntity(self.entityCreated.signalparam)
                 self.entityCreated.signalparam=None
                 if self.signalReceiver():
                     continue
@@ -138,21 +139,34 @@ class Source(CoreObject):
                 if self.haveToDispose():
                     if self.signalReceiver():
                         continue
-            
-                
-#             # if the source has no entity to dispose of has to wait till it has something
-#             if not self.haveToDispose():
-#                 yield waitevent, self, self.entityCreated
-#             # if there is no available successor to signal the source has to wait till there is one available
-#             if not activeObject.signalReceiver():
-#                 while 1:
-#                     yield waitevent, self, self.canDispose
-#                     if activeObject.signalReceiver():
-#                         break
-#             # note, it needs to lose the control here. 
-#             # TODO Need to think
-#             else:
-#                 yield hold, self, 0
+        
+    #===========================================================================
+    # add newly created entity to pendingEntities
+    #===========================================================================
+    def appendEntity(self, entity):
+        from Globals import G
+        assert entity, 'cannot append None entity'
+        activeEntity=entity
+        # at the newly created entity to the pendingEntities
+        G.pendingEntities.append(activeEntity)
+        # TODO: if the successor of the object is a machine that is operated with operationType 'Load'
+        #     then the flag hot of the activeEntity must be set to True 
+        #     to signalize that the entity has reached its final destination before the next Machine
+        # if the entity is not of type Job
+        if activeEntity.family=='Entity':
+            successorsAreMachines=True
+            # for all the objects in the next list
+            for object in self.next:
+            # if the object is not in the MachineList
+            # TODO: We must consider also the case that entities can be blocked before they can reach 
+            #     the heating point. In such a case they must be removed from the G.pendingEntities list
+            #     and added again after they are unblocked
+                if not object in G.MachineList:
+                    successorsAreMachines=False
+                    break
+            # the hot flag should not be raised
+            if successorsAreMachines:
+                activeEntity.hot = True
 
     #============================================================================
     #            sets the routing out element for the Source
