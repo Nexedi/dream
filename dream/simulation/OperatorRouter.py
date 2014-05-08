@@ -187,18 +187,22 @@ class Router(ObjectInterruption):
 #                         print 'router will assign', operator.id, 'to', operator.candidateStation.id
                         #=======================================================
                         operator.assignTo(operator.candidateStation)
-                        self.toBeSignalled.append(operator.candidateStation)
+                        if not operator.candidateStation in self.toBeSignalled:
+                            self.toBeSignalled.append(operator.candidateStation)
                 #------------------------------------------------------------------------------
                 else:
                     # and if the priorityObject is indeed pending
-                    if (operator.candidateEntity.currentStation in self.pendingObjects) and (not operator in self.conflictingOperators):
+                    if (operator.candidateEntity.currentStation in self.pendingObjects)\
+                        and (not operator in self.conflictingOperators)\
+                        and operator.candidateEntity.candidateReceiver:
                         # assign an operator to the priorityObject
                         #=======================================================
 #                         # testing
 #                         print 'router will assign', operator.id, 'to', operator.candidateEntity.candidateReceiver.id
                         #=======================================================
                         operator.assignTo(operator.candidateEntity.candidateReceiver)
-                        self.toBeSignalled.append(operator.candidateEntity.currentStation)
+                        if not operator.candidateEntity.currentStation in self.toBeSignalled:
+                            self.toBeSignalled.append(operator.candidateEntity.currentStation)
         #===================================================================
 #         # testing
 #         print 'router found objects to be signalled'
@@ -591,7 +595,7 @@ class Router(ObjectInterruption):
                     for operator in self.candidateOperators:
                         if operator.candidateStation in conflictingStations:
                             conflictingOperators.append(operator)
-                self.conflictingOperators=conflictingOperators 
+                self.conflictingOperators=conflictingOperators
             # keep the sorting provided by the queues if there is conflict between operators
             conflictingGroup=[]                     # list that holds the operators that have the same recipient
             if not self.sorting and self.conflictingOperators:
@@ -680,7 +684,7 @@ class Router(ObjectInterruption):
                             conflictingOperators.append(operator)
                         elif operator.candidateEntity.candidateReceiver in [x.candidateReceiver for x in conflinctingEntities]:
                             conflictingOperators.append(operator)
-                self.conflictingOperators=conflictingOperators 
+                self.conflictingOperators=conflictingOperators
             # keep the sorting provided by the queues if there is conflict between operators
             conflictingGroup=[]                     # list that holds the operators that have the same recipient
             if not self.sorting and self.conflictingOperators:

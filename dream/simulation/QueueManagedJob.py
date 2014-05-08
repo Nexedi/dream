@@ -124,6 +124,14 @@ class QueueManagedJob(QueueJobShop):
                     return False
                 receiver=activeObject.selectReceiver(possibleReceivers)
                 receiversGiver=activeObject
+            #------------------------------------------------------------------------------ 
+            # TODO: if the receiver is already assigned an operator then the giver should sort for that manager
+            from Globals import G
+            for operator in G.OperatorsList:
+                if operator.isAssignedTo()==receiver:
+                    activeObject.sortEntitiesForOperator(operator)
+                    break
+            #------------------------------------------------------------------------------ 
             # if an operator is not assigned to the receiver then do not signal the receiver but the Router
             # TODO: identifyEntityToGet needs giver defined but here is not yet defined for Machines and machineJobShops
             try:

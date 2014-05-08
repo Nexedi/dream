@@ -423,7 +423,7 @@ class CoreObject(Process):
             activeObject.giver.receiver=activeObject
             #===================================================================
 #             # TESTING
-#             print now(), self.id,' '*50, 'signaling giver', self.giver.id
+#             print now(), self.id,' '*50, 'signalling giver', self.giver.id
             #===================================================================
             activeObject.giver.canDispose.signal(activeObject)
             return True
