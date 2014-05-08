@@ -156,7 +156,8 @@ class Machine(CoreObject):
         #     and waits for the next event to get the entity, 
         #     then it must be signalled that the operator is now available
         self.loadOperatorAvailable=SimEvent('loadOperatorAvailable')
-        
+        # flag notifying that there is operator assigned to the actievObject
+        self.assignedOperator=True
     
     # =======================================================================
     # initialize the machine
@@ -212,6 +213,8 @@ class Machine(CoreObject):
         self.timeRestartingProcessing=0
         self.interruption=False
         self.breakTime=0
+        # flag notifying that there is operator assigned to the actievObject
+        self.assignedOperator=True
     
     # =======================================================================
     # the main process of the machine
@@ -237,7 +240,10 @@ class Machine(CoreObject):
                 # if an interruption caused the control to be taken by the machine or
                 # if an operator was rendered available while it was needed by the machine to proceed with getEntity
                 if self.interruptionEnd.signalparam==now() or self.loadOperatorAvailable.signalparam==now():
-#                     print now(), self.id, 'received an other type of event sent at ', self.loadOperatorAvailable.signalparam
+#                     if self.interruptionEnd.signalparam==now():
+#                         print self.id, 'received an interruptionEnd event sent at ', self.interruptionEnd.signalparam
+#                     elif self.loadOperatorAvailable.signalparam==now():
+#                         print now(), self.id, 'received an loadOperatorAvailable event sent at ', self.loadOperatorAvailable.signalparam
                     # try to signal the Giver, otherwise wait until it is requested
                     if self.signalGiver():
                         break
@@ -475,8 +481,17 @@ class Machine(CoreObject):
                         #     self.shouldPreempt==False
                         #     break
                         #=======================================================
-                        
+                    # try to signal a receiver, if successful then proceed to get an other entity
                     if self.signalReceiver():
+                        break
+                    # TODO: router most probably should signal givers and not receivers in order to avoid this hold,self,0
+                    #       As the receiver (e.g.) a machine that follows the machine receives an loadOperatorAvailable event,
+                    #       signals the preceding station (e.g. self.machine) and immediately after that gets the entity.
+                    #       the preceding machine gets the canDispose signal which is actually useless, is emptied by the following station
+                    #       and then cannot exit an infinite loop.
+                    yield hold, self, 0
+                    # if while waiting (for a canDispose event) became free as the machines that follows emptied it, then proceed
+                    if not self.haveToDispose():
                         break
             # TODO: in operated Machine, sometimes the giver is not signalled from the removeEntity method because there
             #       there was no operator available. In this case, by the time the operator is available again the Machine
@@ -667,7 +682,7 @@ class Machine(CoreObject):
                 # # TODOD: update the last object calling the operatorPool
                 # activeObject.operatorPool.receivingObject=activeObject
                 #===============================================================
-                if activeObject.operatorPool.checkIfResourceIsAvailable()\
+                if activeObject.checkOperator()\
                     and activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity:
                     if not giverObject.exitIsAssignedTo():
                         giverObject.assignExitTo(activeObject)
@@ -692,6 +707,30 @@ class Machine(CoreObject):
                 elif giverObject.exitIsAssignedTo()!=activeObject:
                     return False
                 return True
+    
+    # =======================================================================
+    # to be called by canAcceptAndIsRequested and check for the operator
+    # =======================================================================    
+    def checkOperator(self,callerObject=None):
+        activeObject=self.getActiveObject()
+        mayProceed=False
+        if activeObject.operatorPool.operators:
+            # flag notifying that there is operator assigned to the actievObject
+            self.assignedOperator=False
+            # the operators operating the station
+            operators=activeObject.operatorPool.operators
+            if activeObject.operatorPool.checkIfResourceIsAvailable():
+                for operator in [x for x in operators if x.checkIfResourceIsAvailable()]:
+                    # if there are operators available not assigned to the station then the station may proceed signalling the Router
+                    if not operator.isAssignedTo():
+                        mayProceed=True
+                    # if there are operators assigned to the station then proceed without invoking the Router
+                    elif operator.isAssignedTo()==activeObject:
+                        self.assignedOperator=True
+                        break
+            return mayProceed or self.assignedOperator
+        else:
+            return True
     
     # =======================================================================
     # checks if the machine down or it can dispose the object
