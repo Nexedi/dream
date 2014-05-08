@@ -97,16 +97,29 @@ class Operator(ObjectResource):
     
     # =======================================================================
     #    sorts the candidateEntities of the Operator according to the scheduling rule
+    # TODO: find a way to sort machines or candidate entities for machines, 
+    #       now picks the machine that waits the most
     # =======================================================================
     def sortCandidateEntities(self):
-        # TODO: have to consider what happens in case of a critical order
-        #if we have sorting according to multiple criteria we have to call the sorter many times
-        if self.schedulingRule=="MC":
-            for criterion in reversed(self.multipleCriterionList):
-               self.activeCandidateQSorter(criterion=criterion) 
-        #else we just use the default scheduling rule
-        else:
-            self.activeCandidateQSorter(self.schedulingRule)
+        candidateMachines=self.candidateStations
+        # for the candidateMachines
+        if candidateMachines:
+            # choose the one that waits the most time and give it the chance to grasp the resource
+            for machine in candidateMachines:
+                if machine.broker.waitForOperator:
+                    machine.timeWaiting=now()-machine.broker.timeWaitForOperatorStarted
+                else:
+                    machine.timeWaiting=now()-machine.timeLastEntityLeft
+        self.candidateStations.sort(key= lambda x: x.timeWaiting, reverse=True)
+#         # TODO: have to consider what happens in case of a critical order
+#         #if we have sorting according to multiple criteria we have to call the sorter many times
+#         if self.schedulingRule=="MC":
+#             for criterion in reversed(self.multipleCriterionList):
+#                self.activeCandidateQSorter(criterion=criterion) 
+#         #else we just use the default scheduling rule
+#         else:
+#             print self.schedulingRule
+#             self.activeCandidateQSorter(self.schedulingRule)
     
 
     # =======================================================================
@@ -114,12 +127,17 @@ class Operator(ObjectResource):
     # =======================================================================
     def activeCandidateQSorter(self, criterion=None):
     # TODO: entityToGet is not updated for all stations, consider using it for all stations or withdraw the idea
+    # TODO: sorting candidateStations is strange. some of them are waiting to get an entity, others are waiting for operator while holding an entity
         activeObjectQ=self.candidateStations
         if criterion==None:
             criterion=self.schedulingRule           
         #if the schedulingRule is first in first out
         if criterion=="FIFO": 
-            pass
+            # FIFO sorting has no meaning when sorting candidateEntities
+            self.activeCandidateQSorter('WT')
+            # added for testing
+#             print 'there is no point of using FIFO scheduling rule for operators candidateEntities,\
+#                     WT scheduling rule used instead'
         #if the schedulingRule is based on a pre-defined priority
         elif criterion=="Priority":
             activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().priority)
