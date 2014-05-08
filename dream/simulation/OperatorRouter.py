@@ -203,7 +203,6 @@ class Router(ObjectInterruption):
 #         # testing
 #         print 'router found objects to be signalled'
 #         print [str(object.id) for object in self.toBeSignalled] 
-#         print [str(object.exitIsAssignedTo().id) for object in self.toBeSignalled if object.exitIsAssignedTo()]
         #===================================================================
     
     # =======================================================================
@@ -249,7 +248,7 @@ class Router(ObjectInterruption):
                         # signal this station's broker that the resource is available
                         #===========================================================
 #                         # testing
-#                         print now(), 'router signalling broker of', operator.isAssignedTo().id
+#                         print now(), 'router signalling broker of                            ', operator.isAssignedTo().id
                         #===========================================================
                         station.broker.resourceAvailable.signal(now())
                     else:
@@ -258,7 +257,7 @@ class Router(ObjectInterruption):
                              and any(type=='Load' for type in station.multOperationTypeList):
                             #=======================================================
 #                             # testing
-#                             print now(), 'router signalling', operator.isAssignedTo().id
+#                             print now(), 'router signalling                                    ', operator.isAssignedTo().id
                             #=======================================================
                             station.loadOperatorAvailable.signal(now())
                 # in case the router deals with managed entities
@@ -300,7 +299,7 @@ class Router(ObjectInterruption):
         self.clearPending()
         for entity in G.pendingEntities:
             for machine in entity.currentStation.next:
-                if any(type=='Load' for type in machine.multOperationTypeList):
+                if any(type=='Load' for type in machine.multOperationTypeList) and not entity.currentStation in self.pendingQueues:
                     self.pendingQueues.append(entity.currentStation)
                     self.pendingObjects.append(entity.currentStation)
                     break
@@ -331,8 +330,9 @@ class Router(ObjectInterruption):
                 self.managed=True
         #=======================================================================
 #         # testing
-#         print 'found pending entities'
-#         print [entity.id for entity in self.pending if not entity.type=='Part']
+#         if self.managed:
+#             print 'found pending entities'
+#             print [entity.id for entity in self.pending if not entity.type=='Part']
         #=======================================================================
         
     #========================================================================
@@ -365,7 +365,7 @@ class Router(ObjectInterruption):
                                 candidateOperator=nextobject.operatorPool.findAvailableOperator()
                                 if not candidateOperator in self.candidateOperators:
                                     self.candidateOperators.append(candidateOperator)
-                                candidateOperator.candidateStations.append(object)
+                                candidateOperator.candidateStations.append(nextobject)
                 # update the schedulingRule/multipleCriterionList of the Router
                 if self.sorting:
                     self.updateSchedulingRule()
@@ -407,7 +407,10 @@ class Router(ObjectInterruption):
         #=======================================================================
 #         # testing
 #         print 'router found candidate operators'
-#         print [operator.id for operator in self.candidateOperators]
+#         if self.managed:
+#             print [operator.id for operator in self.candidateOperators]
+#         else:
+#             print [(operator.id, [station.id for station in operator.candidateStations]) for operator in self.candidateOperators]
         #=======================================================================
     
     #=======================================================================
@@ -507,10 +510,11 @@ class Router(ObjectInterruption):
                     self.candidateOperators.sort(key=lambda x: x in operatorsWithOneOption, reverse=True)
         #=======================================================================
 #         # testing
-#         print 'router found the candidate entities for each operator'
-#         print [(str(operator.id),\
-#                  [str(x.id) for x in operator.candidateEntities])
-#                  for operator in self.candidateOperators]
+#         if self.managed:
+#             print 'router found the candidate entities for each operator'
+#             print [(str(operator.id),\
+#                      [str(x.id) for x in operator.candidateEntities])
+#                      for operator in self.candidateOperators]
         #=======================================================================
 
     #=======================================================================
@@ -700,10 +704,11 @@ class Router(ObjectInterruption):
             
         #=======================================================================
 #         # testing
-#         print 'router found candidate receivers for each entity'
-#         print [(str(entity.id),\
-#                  str(entity.candidateReceiver.id))
-#                  for entity in self.pending if entity.candidateReceiver]
+#         if self.managed:
+#             print 'router found candidate receivers for each entity'
+#             print [(str(entity.id),\
+#                      str(entity.candidateReceiver.id))
+#                      for entity in self.pending if entity.candidateReceiver]
         #=======================================================================     
          
     # =======================================================================
