@@ -625,7 +625,25 @@ class Router(ObjectInterruption):
              
             #local method that finds a candidate entity for an operator
             def findCandidateEntity():
-                candidateEntity=next(x for x in operator.candidateEntities if not x in entitiesWithOccupiedReceivers)
+                # local recursive method that searches for entities with available receivers
+                def findAvailableEntity():
+                    # if the candidateEntities and the entitiesWithOccupiedReceivers lists are identical then return None 
+                    if len(set(operator.candidateEntities).intersection(entitiesWithOccupiedReceivers))==len(operator.candidateEntities):
+                        return None
+                    availableEntity=next(x for x in operator.candidateEntities if not x in entitiesWithOccupiedReceivers)
+                    receiverAvailability=False
+                    if availableEntity:
+                        for receiver in availableEntity.candidateReceivers:
+                            if not receiver in occupiedReceivers:
+                                receiverAvailability=True
+                                break
+                        # if there are no available receivers for the entity
+                        if not receiverAvailability:
+                            entitiesWithOccupiedReceivers.append(availableEntity)
+                            return findAvailableEntity()
+                    return availableEntity
+                # pick a candidateEntity
+                candidateEntity=findAvailableEntity()
                 if not self.sorting:
                     if not candidateEntity:
                         candidateEntity=next(x for x in operator.candidateEntities)
@@ -682,7 +700,7 @@ class Router(ObjectInterruption):
                     for operator in self.candidateOperators:
                         if operator.candidateEntity in conflictingEntities:
                             conflictingOperators.append(operator)
-                        elif operator.candidateEntity.candidateReceiver in [x.candidateReceiver for x in conflinctingEntities]:
+                        elif operator.candidateEntity.candidateReceiver in [x.candidateReceiver for x in conflictingEntities]:
                             conflictingOperators.append(operator)
                 self.conflictingOperators=conflictingOperators
             # keep the sorting provided by the queues if there is conflict between operators
@@ -701,7 +719,7 @@ class Router(ObjectInterruption):
                     # the operator that can proceed is the manager of the entity as sorted by the queue that holds them
                     conflictingGroup.sort(key=lambda x: x.ind)
                 # the operators that are not first in the list cannot proceed
-                for operator in conflitingGroup:
+                for operator in conflictingGroup:
                     if conflictingGroup.index(operator)!=0:
                         self.candidateOperators.remove(operator)
                         self.calledOperators.remove(operator)
