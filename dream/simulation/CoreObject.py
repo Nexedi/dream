@@ -346,6 +346,24 @@ class CoreObject(Process):
 #                 activeObject.receiver=activeObject.selectReceiver(possibleReceivers)
                 receiversGiver=activeObject
 #                 activeObject.receiver.giver=activeObject
+
+            #------------------------------------------------------------------------------ 
+            # if an operator is not assigned to the receiver then do not signal the receiver but the Router
+            try:
+                if not receiver.assignedOperator:
+                    from Globals import G
+                    if not G.RoutersList[0].invoked:
+                        #===================================================================
+#                         # TESTING
+#                         print now(), self.id,' '*50, 'signalling router'
+                        #===================================================================
+                        G.RoutersList[0].invoked=True
+                        G.RoutersList[0].isCalled.signal(now())
+                    return False
+            except:
+                pass
+            #------------------------------------------------------------------------------ 
+
             activeObject.receiver=receiver
             activeObject.receiver.giver=activeObject
             #===================================================================
