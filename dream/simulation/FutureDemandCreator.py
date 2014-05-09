@@ -66,7 +66,7 @@ class FutureDemandCreator():
         G.demandFile = 'GUI/DemandProfile.xlsx'
         wbin = xlrd.open_workbook(G.demandFile)
         
-        MAData=json.loads(G.argumentDictString)['argumentDict']['MAList']
+        MAData=G.RouteDict
         for k in range(2):
             if k == 0:
                 #sh = wbin.sheet_by_name('PPOS_Profile')
@@ -82,7 +82,7 @@ class FutureDemandCreator():
             nRows = sh.nrows
             for i in range(1,nRows):
                 order = int(sh.cell_value(i,0)) - 1
-                MA = sh.cell_value(i,1)      # -1 in order to start from 0
+                MA = str(sh.cell_value(i,1))
                 orderQty = float(sh.cell_value(i,2))
                 orderMinQty = float(sh.cell_value(i,3))
                 week = int(sh.cell_value(i,4)) - 1  
@@ -92,8 +92,8 @@ class FutureDemandCreator():
                 elif k == 1:
                     fProf.append([order+1, MA, orderQty, orderMinQty, week+1])
                 
-                SP = MAData[str(MA)]['SP']
-                PPOS = MAData[str(MA)]['PPOS']
+                SP = MAData[MA]['SP']
+                PPOS = MAData[MA]['PPOS']
     
                 # create item
                 newItem = JobMA(orderID=order, MAid=MA, SPid=SP, PPOSid=PPOS, qty=orderQty, minQty=orderMinQty, origWeek=week, future=fut)
