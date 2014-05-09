@@ -31,13 +31,19 @@ import json
 from AllocManagement import AllocManagement
 from dream.simulation.LineGenerationJSON import main as simulate_line_json
 from dream.simulation.Globals import G
-from dream.simulation.FutureDemandCreator import FutureDemandCreator
 
+
+class IG:
+    TargetPPOS = 0
+    TargetPPOSqty = 0
+    TargetPPOSweek = 0
+    maxEarliness = 0        # max number of weeks for earliness
+    maxLateness = 0         # max number of weeks for lateness
+    minPackingSize = 0
+    CapacityDict={}
+    RouteDict={}
 
 def createGlobals():
-    G.TargetPPOS = 0
-    G.TargetPPOSqty = 0
-    G.TargetPPOSweek = 0
     G.ReplicationNo = 0
     G.replication = 0
     G.PPOSlist = {}
@@ -64,8 +70,7 @@ def createGlobals():
     G.ExcessFutureBuffer = []
     G.ExcessFutureMinBuffer = []    
     G.DistributionType=None
-    G.CapacityDict={}
-    G.RouteDict={}
+
 
 #    filterItem = 0
 #    filterWeek = 0
@@ -77,14 +82,14 @@ def readGeneralInput():
     # general simulation input
     wbin = xlrd.open_workbook('GUI/inputs.xlsx')
     sh = wbin.sheet_by_name('Scalar_Var')
-    G.TargetPPOS = int(sh.cell(2,1).value) -1 
-    G.TargetPPOSqty = int(sh.cell(3,1).value)
-    G.TargetPPOSweek = int(sh.cell(6,1).value) -1    
+    IG.TargetPPOS = int(sh.cell(2,1).value) -1 
+    IG.TargetPPOSqty = int(sh.cell(3,1).value)
+    IG.TargetPPOSweek = int(sh.cell(6,1).value) -1    
     G.planningHorizon = int(sh.cell(7,1).value) 
     G.ReplicationNo = int(sh.cell(15,1).value) 
-    G.maxEarliness = int(sh.cell(18,1).value) 
-    G.maxLateness = int(sh.cell(19,1).value) 
-    G.minPackingSize = int(sh.cell(22,1).value)
+    IG.maxEarliness = int(sh.cell(18,1).value) 
+    IG.maxLateness = int(sh.cell(19,1).value) 
+    IG.minPackingSize = int(sh.cell(22,1).value)
 
     # capacity information
     sh = wbin.sheet_by_name('Capacity')
@@ -105,7 +110,7 @@ def readGeneralInput():
     nCols = sh.ncols
     # prepare a dict that holds the capacity of every bottleneck  per week
     for i in range(3,nCols):
-        G.CapacityDict[sh.cell(2,i).value]=G.Capacity[i-3]
+        IG.CapacityDict[sh.cell(2,i).value]=G.Capacity[i-3]
     
     
     for i in range(4,nRows):
@@ -114,9 +119,9 @@ def readGeneralInput():
         ppos=tempPPOSlist[0]
         sp=tempPPOSlist[1]
         routeValues=sh.row_values(i,3,nCols)
-        G.RouteDict[id]={'PPOS':ppos, 'SP':sp, 'route':{}}
+        IG.RouteDict[id]={'PPOS':ppos, 'SP':sp, 'route':{}}
         for j in range(len(routeValues)):
-            G.RouteDict[id]['route'][sh.cell(2,j+3).value]=routeValues[j]
+            IG.RouteDict[id]['route'][sh.cell(2,j+3).value]=routeValues[j]
 
 def writeOutput():
     
@@ -268,6 +273,7 @@ def main():
     inputDict['general']['numberOfReplications']=G.ReplicationNo
     inputDict['general']['_class']='Dream.Simulation'
     
+    inputDict['edges']={}
     inputDict['nodes']={}
     inputDict['nodes']['AM']={}
     inputDict['nodes']['AM']['_class']='Dream.AllocationManagement'
@@ -277,31 +283,26 @@ def main():
     
     # set current PPOS attributes
     inputDict['nodes']['AM']['argumentDict']['currentPPOS']={}
-    inputDict['nodes']['AM']['argumentDict']['currentPPOS']['id']=G.TargetPPOS
-    inputDict['nodes']['AM']['argumentDict']['currentPPOS']['quantity']=G.TargetPPOSqty
-    inputDict['nodes']['AM']['argumentDict']['currentPPOS']['targetWeek']=G.TargetPPOSweek
+    inputDict['nodes']['AM']['argumentDict']['currentPPOS']['id']=IG.TargetPPOS
+    inputDict['nodes']['AM']['argumentDict']['currentPPOS']['quantity']=IG.TargetPPOSqty
+    inputDict['nodes']['AM']['argumentDict']['currentPPOS']['targetWeek']=IG.TargetPPOSweek
     
     # set allocation attributes
     inputDict['nodes']['AM']['argumentDict']['allocationData']={}
-    inputDict['nodes']['AM']['argumentDict']['allocationData']['maxEarliness']=G.maxEarliness
-    inputDict['nodes']['AM']['argumentDict']['allocationData']['maxLateness']=G.maxLateness
-    inputDict['nodes']['AM']['argumentDict']['allocationData']['minPackingSize']=G.minPackingSize
+    inputDict['nodes']['AM']['argumentDict']['allocationData']['maxEarliness']=IG.maxEarliness
+    inputDict['nodes']['AM']['argumentDict']['allocationData']['maxLateness']=IG.maxLateness
+    inputDict['nodes']['AM']['argumentDict']['allocationData']['minPackingSize']=IG.minPackingSize
         
     # set capacity attributes
-    inputDict['nodes']['AM']['argumentDict']['capacity']=G.CapacityDict    
+    inputDict['nodes']['AM']['argumentDict']['capacity']=IG.CapacityDict    
 
     # set MA attributes
-    inputDict['nodes']['AM']['argumentDict']['MAList']=G.RouteDict  
+    inputDict['nodes']['AM']['argumentDict']['MAList']=IG.RouteDict  
     
     G.argumentDictString=json.dumps(inputDict, indent=5)
     argumentDictFile.write(G.argumentDictString)
     
-#     # create the future demand
-#     FDC=FutureDemandCreator()
-#     FDC.run()
-#     #call the AllocManagement routine
-#     AM = AllocManagement()
-#     AM.Run()
+    simulate_line_json(input_data=(G.argumentDictString))
 #     writeOutput()   # currently to excel for verification. To be outputted in JSON
 
     
