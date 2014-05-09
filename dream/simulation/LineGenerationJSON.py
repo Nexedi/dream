@@ -88,6 +88,8 @@ from ShiftScheduler import ShiftScheduler
 
 import PrintRoute
 from CapacityStation import CapacityStation
+from AllocationManagement import AllocationManagement
+
 from CapacityStationExit import CapacityStationExit
 from CapacityStationBuffer import CapacityStationBuffer
 from CapacityStationController import CapacityStationController
@@ -181,6 +183,7 @@ def createObjectResourcesAndCoreObjects():
     G.QueueManagedJobList=[]
     G.ObjectResourceList=[]
     G.CapacityStationBufferList=[]
+    G.AllocationManagementList=[]
     G.CapacityStationList=[]
     G.CapacityStationExitList=[]
     G.CapacityStationControllerList=[]
@@ -267,6 +270,13 @@ def createObjectResourcesAndCoreObjects():
             # get the successorList for the 'Frames'
             coreObject.nextFrameIds=getSuccessorList(element['id'], lambda source, destination, edge_data: edge_data.get('entity') == 'Frame')
                          
+        elif objClass=='Dream.AllocationManagement':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            argumentDict=element.get('argumentDict', {})
+            AM=AllocationManagement(id, name, argumentDict=argumentDict)
+            G.AllocationManagementList.append(AM)
+            
     # -----------------------------------------------------------------------
     #                    loop through all the core objects    
     #                         to read predecessors
