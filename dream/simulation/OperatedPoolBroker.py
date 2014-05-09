@@ -65,6 +65,7 @@ class Broker(ObjectInterruption):
         
     # =======================================================================
     #                          the run method
+    # TODO: have to signal Router that broker is asking operator, and wait till the Router decides
     # =======================================================================    
     def run(self):
         while 1:

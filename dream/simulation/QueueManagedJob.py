@@ -133,19 +133,20 @@ class QueueManagedJob(QueueJobShop):
                     break
             #------------------------------------------------------------------------------ 
             # if an operator is not assigned to the receiver then do not signal the receiver but the Router
-            # TODO: identifyEntityToGet needs giver defined but here is not yet defined for Machines and machineJobShops
+            # TODO: identifyEntityToGet needs giver defined but here is not yet defined for Machines and machineJobShops 
             try:
                 if receiver.identifyEntityToGet().manager:
-                    if receiver.identifyEntityToGet().manager.isAssignedTo()!=receiver:
-                        from Globals import G
-                        if not G.RoutersList[0].invoked:
-                            #===================================================================
-# #                             # TESTING
-#                             print now(), self.id,' '*50, 'signalling router'
-                            #===================================================================
-                            G.RoutersList[0].invoked=True
-                            G.RoutersList[0].isCalled.signal(now())
-                        return False
+                    if any(type=='Load' or type=='Setup' for type in receiver.multOperationTypeList):
+                        if receiver.identifyEntityToGet().manager.isAssignedTo()!=receiver:
+                            from Globals import G
+                            if not G.RoutersList[0].invoked:
+                                #===================================================================
+    #                             # TESTING
+#                                 print now(), self.id,' '*50, 'signalling router'
+                                #===================================================================
+                                G.RoutersList[0].invoked=True
+                                G.RoutersList[0].isCalled.signal(now())
+                            return False
             except:
                 pass
             activeObject.receiver=receiver
