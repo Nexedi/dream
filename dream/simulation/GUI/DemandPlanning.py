@@ -29,6 +29,7 @@ import xlwt
 import xlrd
 import json
 from AllocManagement import AllocManagement
+from dream.simulation.LineGenerationJSON import main as simulate_line_json
 from dream.simulation.Globals import G
 from dream.simulation.FutureDemandCreator import FutureDemandCreator
 
@@ -256,44 +257,53 @@ def main():
     # read from inputs spreadsheet
     readGeneralInput()
     # open json file
-    argumentDictFile=open('argumentDict.json', mode='w')
-    argumentDict={}
-    argumentDict['argumentDict']={}
+    argumentDictFile=open('inputFile.json', mode='w')
+    inputDict={}
+
+    inputDict['_class']='Dream.Simulation'    
     
     # set general attributes
-    argumentDict['general']={}
-    argumentDict['general']['maxSimTime']=G.planningHorizon
-    argumentDict['general']['numberOfReplications']=G.ReplicationNo
+    inputDict['general']={}
+    inputDict['general']['maxSimTime']=G.planningHorizon
+    inputDict['general']['numberOfReplications']=G.ReplicationNo
+    inputDict['general']['_class']='Dream.Simulation'
+    
+    inputDict['nodes']={}
+    inputDict['nodes']['AM']={}
+    inputDict['nodes']['AM']['_class']='Dream.AllocationManagement'
+    inputDict['nodes']['AM']['id']='AM1'
+    inputDict['nodes']['AM']['name']='AM1'    
+    inputDict['nodes']['AM']['argumentDict']={}
     
     # set current PPOS attributes
-    argumentDict['argumentDict']['currentPPOS']={}
-    argumentDict['argumentDict']['currentPPOS']['id']=G.TargetPPOS
-    argumentDict['argumentDict']['currentPPOS']['quantity']=G.TargetPPOSqty
-    argumentDict['argumentDict']['currentPPOS']['targetWeek']=G.TargetPPOSweek
+    inputDict['nodes']['AM']['argumentDict']['currentPPOS']={}
+    inputDict['nodes']['AM']['argumentDict']['currentPPOS']['id']=G.TargetPPOS
+    inputDict['nodes']['AM']['argumentDict']['currentPPOS']['quantity']=G.TargetPPOSqty
+    inputDict['nodes']['AM']['argumentDict']['currentPPOS']['targetWeek']=G.TargetPPOSweek
     
     # set allocation attributes
-    argumentDict['argumentDict']['allocationData']={}
-    argumentDict['argumentDict']['allocationData']['maxEarliness']=G.maxEarliness
-    argumentDict['argumentDict']['allocationData']['maxLateness']=G.maxLateness
-    argumentDict['argumentDict']['allocationData']['minPackingSize']=G.minPackingSize
+    inputDict['nodes']['AM']['argumentDict']['allocationData']={}
+    inputDict['nodes']['AM']['argumentDict']['allocationData']['maxEarliness']=G.maxEarliness
+    inputDict['nodes']['AM']['argumentDict']['allocationData']['maxLateness']=G.maxLateness
+    inputDict['nodes']['AM']['argumentDict']['allocationData']['minPackingSize']=G.minPackingSize
         
     # set capacity attributes
-    argumentDict['argumentDict']['capacity']=G.CapacityDict    
+    inputDict['nodes']['AM']['argumentDict']['capacity']=G.CapacityDict    
 
     # set MA attributes
-    argumentDict['argumentDict']['MAList']=G.RouteDict  
+    inputDict['nodes']['AM']['argumentDict']['MAList']=G.RouteDict  
     
-    G.argumentDictString=json.dumps(argumentDict, indent=5)
+    G.argumentDictString=json.dumps(inputDict, indent=5)
     argumentDictFile.write(G.argumentDictString)
     
-    # create the future demand
-    FDC=FutureDemandCreator()
-    FDC.run()
-    #call the AllocManagement routine
-    AM = AllocManagement()
-    AM.Run()
-    writeOutput()   # currently to excel for verification. To be outputted in JSON
-    print G.AllocationPPOS
+#     # create the future demand
+#     FDC=FutureDemandCreator()
+#     FDC.run()
+#     #call the AllocManagement routine
+#     AM = AllocManagement()
+#     AM.Run()
+#     writeOutput()   # currently to excel for verification. To be outputted in JSON
+
     
 if __name__ == '__main__':
     main()
