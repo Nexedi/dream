@@ -302,17 +302,22 @@ class Router(ObjectInterruption):
         from Globals import G
         self.clearPending()
         for entity in G.pendingEntities:
+            if entity.currentStation in G.MachineList:
+                if entity.currentStation.broker.waitForOperator:
+                    self.pendingMachines.append(entity.currentStation)
             for machine in entity.currentStation.next:
-                if any(type=='Load' for type in machine.multOperationTypeList) and not entity.currentStation in self.pendingQueues:
-                    self.pendingQueues.append(entity.currentStation)
-                    self.pendingObjects.append(entity.currentStation)
-                    break
-        self.pendingMachines=[machine for machine in G.MachineList if machine.broker.waitForOperator]
+                if machine in G.MachineList:
+                    if any(type=='Load' for type in machine.multOperationTypeList) and not entity.currentStation in self.pendingQueues:
+                        self.pendingQueues.append(entity.currentStation)
+                        self.pendingObjects.append(entity.currentStation)
+                        break
+#         self.pendingMachines=[machine for machine in G.MachineList if machine.broker.waitForOperator]
         self.pendingObjects=self.pendingQueues+self.pendingMachines
         #=======================================================================
 #         # testing
-#         print 'router found pending objects'
-#         print [object.id for object in self.pendingObjects]
+#         print 'router found pending objects', [object.id for object in self.pendingObjects]
+#         print 'pendingMachines', [object.id for object in self.pendingMachines]
+#         print 'pendingQueues', [object.id for object in self.pendingQueues]
         #=======================================================================
     
     #===========================================================================
@@ -324,10 +329,11 @@ class Router(ObjectInterruption):
         for machine in self.pendingMachines:
             self.pending.append(machine.currentEntity)
         for entity in G.pendingEntities:
-            for machine in entity.currentStation.next:
-                if any(type=='Load' for type in machine.multOperationTypeList):
-                    self.pending.append(entity)
-                    break
+            if entity.currentStation in G.QueueList or entity.currentStation in G.SourceList:
+                for machine in entity.currentStation.next:
+                    if any(type=='Load' for type in machine.multOperationTypeList):
+                        self.pending.append(entity)
+                        break
         # find out which type of entities are we dealing with, managed entities or not
         if self.pending:
             if self.pending[0].manager:
@@ -335,7 +341,8 @@ class Router(ObjectInterruption):
         #=======================================================================
 #         # testing
 #         print 'found pending entities'
-#         print [entity.id for entity in self.pending if not entity.type=='Part']
+#         print 'ROUTER PENDING',[entity.id for entity in self.pending if not entity.type=='Part']
+#         print 'GLOBAL PENDING',[entity.id for entity in G.pendingEntities if not entity.type=='Part']
         #=======================================================================
         
     #========================================================================
@@ -395,12 +402,14 @@ class Router(ObjectInterruption):
                             if not entity.order.componentsReadyForAssembly:
                                 continue
                 # for all the possible receivers of an entity check whether they can accept and then set accordingly the canProceed flag of the entity 
-                        for nextObject in [object for object in entity.currentStation.next if object.canAcceptEntity(entity)]:
-                            entity.canProceed=True
-                            entity.candidateReceivers.append(nextObject)
+                        if not entity.currentStation in self.pendingMachines:
+                            for nextObject in [object for object in entity.currentStation.next if object.canAcceptEntity(entity)]:
+                                entity.canProceed=True
+                                entity.candidateReceivers.append(nextObject)
                     # if the entity is in a machines who's broker waits for operator then
                         if entity.currentStation in self.pendingMachines:
                             entity.canProceed=True
+                            entity.candidateReceivers.append(entity.currentStation)
                 # if the entity can proceed, add its manager to the candidateOperators list
                         if entity.canProceed and not entity.manager in self.candidateOperators:
                             self.candidateOperators.append(entity.manager)
@@ -691,7 +700,6 @@ class Router(ObjectInterruption):
                         operator.candidateEntity.candidateReceiver=operator.candidateEntity.currentStation
                     else:
                         operator.candidateEntity.candidateReceiver=findCandidateReceiver()
-             
             # find the resources that are 'competing' for the same station
             if not self.sorting:
                 # if there are entities that have conflicting receivers

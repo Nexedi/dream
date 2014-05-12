@@ -92,6 +92,12 @@ class ObjectInterruption(Process):
         return self.victim.getActiveObjectQueue()
     
     #===========================================================================
+    # check if the victim's internal queue is empty
+    #===========================================================================
+    def victimQueueIsEmpty(self):
+        return len(self.getVictimQueue())==0
+    
+    #===========================================================================
     # actions to be performed after the end of the simulation
     #===========================================================================
     def postProcessing(self):

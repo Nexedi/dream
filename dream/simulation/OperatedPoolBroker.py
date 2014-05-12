@@ -49,7 +49,7 @@ class Broker(ObjectInterruption):
         self.timeWaitForOperatorStarted=0
         # Broker events
         self.isCalled=SimEvent('brokerIsCalled')
-        self.victimQueueIsEmpty=SimEvent('victimQueueIsEmpty')
+#         self.victimQueueIsEmpty=SimEvent('victimQueueIsEmpty')
         self.resourceAvailable=SimEvent('resourceAvailable')
         self.waitForOperator=False
         
@@ -78,25 +78,61 @@ class Broker(ObjectInterruption):
                         for type in self.victim.multOperationTypeList):
 #                 print now(), self.victim.id, 'broker is invoked'
                 # update the time that the station is waiting for the operator
-                self.timeWaitForOperatorStarted=now()                
-                # if the resource is not available wait until a rousourceAvailable event
-                if not self.victim.operatorPool.checkIfResourceIsAvailable():
+                self.timeWaitForOperatorStarted=now()
+                
+                
+                
+                
+                #===============================================================
+                # if the victim already holds an entity that means that the machine's operation type
+                #     is no Load or setup, in that case the router is already invoked and the machine is already assigned an operator
+                from Globals import G
+                if not self.victimQueueIsEmpty():
+                    # add the currentEntity to the pendingEntities
+                    if not self.victim.currentEntity in G.pendingEntities:
+                        G.pendingEntities.append(self.victim.currentEntity)
+                    if not G.RoutersList[0].invoked:
+                        #===========================================================
+                        # testing
+#                         print now(), self.victim.id, 'broker', ' '*50, 'signalling router'
+                        #===========================================================
+                        G.RoutersList[0].invoked=True
+                        G.RoutersList[0].isCalled.signal(now())
+                       
                     self.waitForOperator=True
 #                     print now(), self.victim.id, 'broker waits till resource is available1'
                     yield waitevent, self, self.resourceAvailable
+                    # remove the currentEntity from the pendingEntities
+                    if self.victim.currentEntity in G.pendingEntities:
+                        G.pendingEntities.remove(self.victim.currentEntity)
                     self.waitForOperator=False
 #                     print self.victim.id, 'received resourceAvailable event'
-                # if there are machines waiting for the same resources (broker.waitForOperator==True) check if they wait for longer
-                #     and if yes then wait also for the same event
-                else:
-                    from Globals import G
-                    for machine in [station for station in G.MachineList if station.operatorPool is self.victim.operatorPool]:
-                        if machine.broker.waitForOperator:
-                            self.waitForOperator=True
-#                             print now(), self.victim.id, 'broker waits till resource is available2'
-                            yield waitevent, self, self.resourceAvailable
-                            self.waitForOperator=False
-#                             print self.victim.id, 'received resourceAvailable event'
+                #===============================================================
+                
+                
+                
+                
+                
+#                 # if the resource is not available wait until a rousourceAvailable event
+#                 if not self.victim.operatorPool.checkIfResourceIsAvailable():
+#                     self.waitForOperator=True
+# #                     print now(), self.victim.id, 'broker waits till resource is available1'
+#                     print now(), self.victim.id, 'NO OPERATOR AVAILABLE NOW, FROM BROKER',' .'*8
+#                     yield waitevent, self, self.resourceAvailable
+#                     self.waitForOperator=False
+# #                     print self.victim.id, 'received resourceAvailable event'
+#                 # if there are machines waiting for the same resources (broker.waitForOperator==True) check if they wait for longer
+#                 #     and if yes then wait also for the same event
+#                 else:
+#                     from Globals import G
+#                     for machine in [station for station in G.MachineList if station.operatorPool is self.victim.operatorPool]:
+#                         if machine.broker.waitForOperator:
+#                             self.waitForOperator=True
+#                             print now(), self.victim.id, 'MANY MACHINES WAITING FOR THE SAME OPERATOR, FROM BROKER',' .'*8
+# #                             print now(), self.victim.id, 'broker waits till resource is available2'
+#                             yield waitevent, self, self.resourceAvailable
+#                             self.waitForOperator=False
+# #                             print self.victim.id, 'received resourceAvailable event'
                 assert self.victim.operatorPool.checkIfResourceIsAvailable(), 'there is no available operator to request'
                 # set the available resource as the currentOperator
                 self.victim.currentOperator=self.victim.operatorPool.findAvailableOperator()

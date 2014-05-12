@@ -229,7 +229,7 @@ class MachineJobShop(Machine):
     def preempt(self):
         #=======================================================================
         # testing 
-        print now(), self.id, 'preempting', ' .'*7
+#         print now(), self.id, 'preempting', ' .'*7
         #=======================================================================
         activeObject=self.getActiveObject()
         activeEntity=self.getActiveObjectQueue()[0] #get the active Entity
