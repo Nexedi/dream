@@ -227,6 +227,10 @@ class MachineJobShop(Machine):
     # method to execute preemption
     # =======================================================================    
     def preempt(self):
+        #=======================================================================
+        # testing 
+        print now(), self.id, 'preempting', ' .'*7
+        #=======================================================================
         activeObject=self.getActiveObject()
         activeEntity=self.getActiveObjectQueue()[0] #get the active Entity
         #calculate the remaining processing time

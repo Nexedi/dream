@@ -248,29 +248,6 @@ class Machine(CoreObject):
                     if self.signalGiver():
                         break
             # TODO: maybe here have to assigneExit of the giver and add self to operator activeCallers list
-#===============================================================================
-#             # reset the canProceedWithGetEntity flag
-#             self.canProceedWithGetEntity=False
-#              
-#             #===================================================================
-# #             # TESTING
-# #             print now(), self.id, 'is in position to get'
-#             #===================================================================
-#              
-#             # if the machine must be operated for the loading then the operators must be picked wisely for every machine
-#             if (self.operatorPool!="None")\
-#                     and any(type=="Load" for type in self.multOperationTypeList):
-#                 # the machine informs the router that it can receive from a requesting object
-#                 self.requestRouter()
-#                 self.router.startCycle.signal(self.id)
-#                 # the machine must wait until the router has decided which machine will operated by which operator
-# #                 yield waitevent, self, self.routerCycleOver
-#                 yield waituntil, self, self.router.isSet
-#                 self.router.victim=None
-#                 # if the machine is not picked by the router the it should wait again 
-#                 if not self.canProceedWithGetEntity:
-#                     continue 
-#===============================================================================
                 
             # here or in the getEntity (apart from the loadTimeCurrentEntity)
             # in case they are placed inside the getEntity then the initialize of
@@ -562,6 +539,10 @@ class Machine(CoreObject):
         activeObject=self.getActiveObject()
         activeObjectQueue=activeObject.getActiveObjectQueue()
         activeEntity=activeObjectQueue[0]
+        #=======================================================================
+        # testing
+        print self.getActiveObjectQueue()[0].name, "Interrupted at ",self.objName, '. '*5
+        #=======================================================================
         # if the interrupt occured while processing an entity
         if not activeObject.waitToDispose:
             # output to trace that the Machine (self.objName) got interrupted           
