@@ -742,13 +742,6 @@ class Machine(CoreObject):
         if activeObject.canAccept():
 #             print self.id, now(), 'will try signalling a giver from removeEntity'
             activeObject.signalGiver()
-#         # if the Machine is operated then signal Broker that the internal queue is now empty
-#         if activeObject.currentOperator:
-#             #===================================================================
-# #             # TESTING
-# #             print now(), self.id, 'signalling broker that removed entity'
-#             #===================================================================
-#             activeObject.broker.victimQueueIsEmpty.signal(now())
         return activeEntity
     
     # ======================================================================= 

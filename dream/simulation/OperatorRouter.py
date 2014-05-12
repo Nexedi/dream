@@ -315,9 +315,9 @@ class Router(ObjectInterruption):
         self.pendingObjects=self.pendingQueues+self.pendingMachines
         #=======================================================================
 #         # testing
-#         print 'router found pending objects', [object.id for object in self.pendingObjects]
-#         print 'pendingMachines', [object.id for object in self.pendingMachines]
-#         print 'pendingQueues', [object.id for object in self.pendingQueues]
+#         print 'router found pending objects', '-'*6,'>', [str(object.id) for object in self.pendingObjects]
+#         print 'pendingMachines', '-'*19,'>', [str(object.id) for object in self.pendingMachines]
+#         print 'pendingQueues', '-'*21,'>', [str(object.id) for object in self.pendingQueues]
         #=======================================================================
     
     #===========================================================================
@@ -340,9 +340,7 @@ class Router(ObjectInterruption):
                 self.managed=True
         #=======================================================================
 #         # testing
-#         print 'found pending entities'
-#         print 'ROUTER PENDING',[entity.id for entity in self.pending if not entity.type=='Part']
-#         print 'GLOBAL PENDING',[entity.id for entity in G.pendingEntities if not entity.type=='Part']
+#         print 'found pending entities', '-'*12,'>', [str(entity.id) for entity in self.pending if not entity.type=='Part']
         #=======================================================================
         
     #========================================================================
@@ -361,15 +359,20 @@ class Router(ObjectInterruption):
         if not self.managed:
             # if there are pendingEntities
             if self.pendingObjects:
+            # for each pendingObject 
                 for object in self.pendingObjects:
+                # if it is a machine
                     if object in self.pendingMachines:
-                        if object.operatorPool.checkIfResourceIsAvailable():
-                            candidateOperator=object.operatorPool.findAvailableOperator()
-                            # TODO: this way no sorting is performed
-                            if not candidateOperator in self.candidateOperators:
-                                self.candidateOperators.append(candidateOperator)
-                            candidateOperator.candidateStations.append(object)
+                    # find an available operator
+                        candidateOperator=object.operatorPool.findAvailableOperator()
+                        # TODO: this way no sorting is performed
+                        if not candidateOperator in self.candidateOperators:
+                            self.candidateOperators.append(candidateOperator)
+                        # for each operator append the station into its candidateStations
+                        candidateOperator.candidateStations.append(object)
+                # if it is a queue
                     elif object in self.pendingQueues:
+                    # find available operator for then machines that follow
                         for nextobject in object.next:
                             if nextobject.canAccept(object):
                                 candidateOperator=nextobject.operatorPool.findAvailableOperator()

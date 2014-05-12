@@ -79,10 +79,6 @@ class Broker(ObjectInterruption):
 #                 print now(), self.victim.id, 'broker is invoked'
                 # update the time that the station is waiting for the operator
                 self.timeWaitForOperatorStarted=now()
-                
-                
-                
-                
                 #===============================================================
                 # if the victim already holds an entity that means that the machine's operation type
                 #     is no Load or setup, in that case the router is already invoked and the machine is already assigned an operator
@@ -108,31 +104,6 @@ class Broker(ObjectInterruption):
                     self.waitForOperator=False
 #                     print self.victim.id, 'received resourceAvailable event'
                 #===============================================================
-                
-                
-                
-                
-                
-#                 # if the resource is not available wait until a rousourceAvailable event
-#                 if not self.victim.operatorPool.checkIfResourceIsAvailable():
-#                     self.waitForOperator=True
-# #                     print now(), self.victim.id, 'broker waits till resource is available1'
-#                     print now(), self.victim.id, 'NO OPERATOR AVAILABLE NOW, FROM BROKER',' .'*8
-#                     yield waitevent, self, self.resourceAvailable
-#                     self.waitForOperator=False
-# #                     print self.victim.id, 'received resourceAvailable event'
-#                 # if there are machines waiting for the same resources (broker.waitForOperator==True) check if they wait for longer
-#                 #     and if yes then wait also for the same event
-#                 else:
-#                     from Globals import G
-#                     for machine in [station for station in G.MachineList if station.operatorPool is self.victim.operatorPool]:
-#                         if machine.broker.waitForOperator:
-#                             self.waitForOperator=True
-#                             print now(), self.victim.id, 'MANY MACHINES WAITING FOR THE SAME OPERATOR, FROM BROKER',' .'*8
-# #                             print now(), self.victim.id, 'broker waits till resource is available2'
-#                             yield waitevent, self, self.resourceAvailable
-#                             self.waitForOperator=False
-# #                             print self.victim.id, 'received resourceAvailable event'
                 assert self.victim.operatorPool.checkIfResourceIsAvailable(), 'there is no available operator to request'
                 # set the available resource as the currentOperator
                 self.victim.currentOperator=self.victim.operatorPool.findAvailableOperator()
@@ -150,19 +121,7 @@ class Broker(ObjectInterruption):
     # ======= release a resource        
             elif not self.victim.isOperated():
                 self.victim.currentOperator.totalWorkingTime+=now()-self.victim.currentOperator.timeLastOperationStarted                
-                # TODO: cannot be implemented at the moment as the Machine first releases the operator and then 
-                #       signals the receiver when the removeEntity signals the victimQueueIsEmpty
-                # if the victim releasing the operator has receiver
-#                 if self.victim.receiver:
-#                     # if the following object is not of type Machine
-#                     if self.victim.receiver.type!='Machine':
-#                         # if the processingType is 'Processing' and not only 'Load' or 'Setup'
-#                         if any(type=='Processing' for type in self.victim.multOperationTypeList):
-#                             # wait until the victim has released the entity it was processing
-#                             # TODO: add new event, to be signalled from the Machine removeEntity
-#                             yield waitevent, self, self.victimQueueIsEmpty
-#                             assert self.victimQueueIsEmpty.signalparam==now(), 'the broker should be granted control instantly'
-                #self.victim.outputTrace(self.victim.currentOperator.objName, "left "+ self.victim.objName)
+                self.victim.outputTrace(self.victim.currentOperator.objName, "left "+ self.victim.objName)
                 yield release,self,self.victim.operatorPool.getResource(self.victim.currentOperator)
                 # signal the other brokers waiting for the same operators that they are now free
                 # also signal the stations that were not requested to receive because the operator was occupied
@@ -191,73 +150,4 @@ class Broker(ObjectInterruption):
                 pass
             # TODO: the victim must have a new event brokerIsSet
             self.victim.brokerIsSet.signal(now())
-            
-#     #===========================================================================
-#     # signal stations that wait for load operators
-#     #===========================================================================
-#     def signalLoadStations(self):
-#         # signal the other brokers waiting for the same operators that they are now free
-#         # also signal the stations that were not requested to receive because the operator was occupied
-#         #     but now must have the option to proceed
-#         from Globals import G
-#         candidateMachines=[]
-#         loadPendingMachines=[]
-# #         print '        have to signal machines that are waiting for operator', self.victim.id, 'broker'
-#         # run through the operatorPools
-#         # TODO: MachineManagedJob operatorPool is not in the global OperatorPoolsList
-#         for operatorpool in G.OperatorPoolsList:
-# #             print operatorpool.id
-#             # and find the machines the share the currentOperator with the Broker.victim
-#             if self.victim.currentOperator in operatorpool.operators:
-# #                 print '                current operator in other operatorPools', operatorpool.id
-# #                 print '                            ', [str(x.id) for x in operatorpool.coreObjects]
-#                 for machine in operatorpool.coreObjects:
-#                     # if the machine waits to get an operator add it to the candidateMachines local list
-#                     if machine.broker.waitForOperator:
-#                         candidateMachines.append(machine)
-#                     # cause an loadOperatorAvailable event if any of this machines can accept and has Load operation type defined
-#                     if machine.canAccept() and any(type=='Load' for type in machine.multOperationTypeList):
-#                         loadPendingMachines.append(machine)
-#                         #===============================================
-# #                         # TESTING
-#                         print now(), self.victim.id, 'broker signalling', machine.id, 'loadOperatorAvailable1'
-#                         #===============================================
-#                         machine.loadOperatorAvailable.signal(now())
-#                         
-#         # if the machines are MachineManagedJobs their OperatorPool is empty while their canAcceptAndIsRequested has not returned True
-#         #     In order to signal them that the loadOperator is free, find the entities that have that operator, search for the possible receivers that 
-#         #     can accept signal them
-#         for machine in G.MachineManagedJobList:
-#             if self.victim.currentOperator in machine.operatorPool.operators:
-#                 if machine.broker.waitForOperator:
-#                     candidateMachines.append(machine)
-#             for entity in G.pendingEntities:
-#                 if machine.canAcceptEntity(entity) and any(type=='Load' for type in machine.multOperationTypeList):
-#                     loadPendingMachines.append(machine)
-#                     #===============================================
-# #                     # TESTING
-#                     print now(), self.victim.id, 'broker signalling                                ', machine.id, 'loadOperatorAvailable2'
-#                     #===============================================
-#                     machine.loadOperatorAvailable.signal(now())
-#                         
-# #         print 'machines waitingForLoadOperator',[str(x.id) for x in loadPendingMachines]
-# #         print 'machines waitingForOperator',[str(x.id) for x in candidateMachines]
-#         
-#                 
-#         # for the candidateMachines
-#         if candidateMachines:
-#             maxTimeWaiting=0
-#             receiver=None
-#         # choose the one that waits the most time and give it the chance to grasp the resource
-#             for machine in candidateMachines:
-#                 timeWaiting=now()-machine.broker.timeWaitForOperatorStarted
-#                 if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
-#                     maxTimeWaiting=timeWaiting
-#                     receiver=machine
-#             #===========================================================
-# #             # TESTING
-# #             print now(), self.victim.id, 'broker signalling', machine.id, 'resourceAvailable'
-#             #===========================================================
-#             # finally signal the machine to receive the operator
-#             receiver.broker.resourceAvailable.signal(now())
             
