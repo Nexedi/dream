@@ -319,37 +319,35 @@ class CoreObject(Process):
             self.wipStatList.append([now(), len(activeObjectQueue)])
         return activeEntity
     
+    #===========================================================================
+    # find possible receivers
+    #===========================================================================
+    def findReceivers(self):
+        activeObject=self.getActiveObject()
+        receivers=[]
+        for object in [x for x in self.next if x.canAccept(activeObject)]:
+            receivers.append(object)
+        return receivers
+    
     # =======================================================================
     # signal the successor that the object can dispose an entity 
     # =======================================================================
     def signalReceiver(self):
 #         print now(), self.id, 'trying to signal receiver'
         activeObject=self.getActiveObject()
-        possibleReceivers=[]
-        for object in [x for x in self.next if x.canAccept(activeObject)]:
-            possibleReceivers.append(object)
-#         print now(), self.id,'possibleReceivers',[str(x.id) for x in possibleReceivers]
+        possibleReceivers=activeObject.findReceivers()
         if possibleReceivers:
             receiver=activeObject.selectReceiver(possibleReceivers)
-#             activeObject.receiver=activeObject.selectReceiver(possibleReceivers)
             receiversGiver=activeObject
-#             activeObject.receiver.giver=activeObject
             # perform the checks that canAcceptAndIsRequested used to perform and update activeCallersList or assignExit and operatorPool
             while not receiver.canAcceptAndIsRequested(receiversGiver):
-#             while not activeObject.receiver.canAcceptAndIsRequested():
                 possibleReceivers.remove(receiver)
-#                 possibleReceivers.remove(activeObject.receiver)
                 if not possibleReceivers:
-#                     print self.id, 'reseting receiver'
                     receiversGiver=None
                     receiver=None
-#                     activeObject.receiver.giver=None
-#                     activeObject.receiver=None
                     return False
                 receiver=activeObject.selectReceiver(possibleReceivers)
-#                 activeObject.receiver=activeObject.selectReceiver(possibleReceivers)
                 receiversGiver=activeObject
-#                 activeObject.receiver.giver=activeObject
 
             #------------------------------------------------------------------------------ 
             # if an operator is not assigned to the receiver then do not signal the receiver but the Router
@@ -397,33 +395,34 @@ class CoreObject(Process):
                 receiver=object                                 # set the receiver as the longest waiting possible receiver
         return receiver
     
+    #===========================================================================
+    # find possible givers
+    #===========================================================================
+    def findGivers(self):
+        activeObject=self.getActiveObject()
+        givers=[]
+        for object in [x for x in activeObject.previous if(not x is activeObject)]:
+            if object.haveToDispose(activeObject): 
+                givers.append(object)
+        return givers
+    
     # =======================================================================
     # signal the giver that the entity is removed from its internalQueue
     # =======================================================================
     def signalGiver(self):
 #         print now(), self.id, 'trying to signal giver'
         activeObject=self.getActiveObject()
-        possibleGivers=[]
-        for object in [x for x in activeObject.previous if(not x is activeObject)]:
-            if object.haveToDispose(activeObject): 
-                possibleGivers.append(object)
-#         print 'possibleGivers:', [str(x.id) for x in possibleGivers]
+        possibleGivers=activeObject.findGivers()
         if possibleGivers:
             giver=activeObject.selectGiver(possibleGivers)
-#             activeObject.giver=activeObject.selectGiver(possibleGivers)
             giversReceiver=activeObject
-#             activeObject.giver.receiver=activeObject
             # perform the checks that canAcceptAndIsRequested used to perform and update activeCallersList or assignExit and operatorPool
             while not activeObject.canAcceptAndIsRequested(giver):
-#             while not activeObject.canAcceptAndIsRequested():
                 possibleGivers.remove(giver)
-#                 possibleGivers.remove(activeObject.giver)
                 if not possibleGivers:
                     return False
                 giver=activeObject.selectGiver(possibleGivers)
-#                 activeObject.giver=activeObject.selectGiver(possibleGivers)
                 giversReceiver=activeObject
-#                 activeObject.giver.receiver=activeObject
             activeObject.giver=giver
             activeObject.giver.receiver=activeObject
             #===================================================================
