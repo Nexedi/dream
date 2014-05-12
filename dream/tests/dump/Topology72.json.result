@@ -9,7 +9,7 @@
    "_class": "Dream.Job", 
    "id": "C1O1", 
    "results": {
-    "completionTime": 21.200000000000003, 
+    "completionTime": 19.900000000000002, 
     "schedule": [
      {
       "entranceTime": 1.0, 
@@ -32,7 +32,7 @@
       "stationId": "MILL2"
      }, 
      {
-      "entranceTime": 6.4, 
+      "entranceTime": 6.7, 
       "stationId": "QEDM"
      }, 
      {
@@ -44,7 +44,7 @@
       "stationId": "AB1"
      }, 
      {
-      "entranceTime": 21.200000000000003, 
+      "entranceTime": 19.900000000000002, 
       "stationId": "MA2"
      }
     ]
@@ -54,7 +54,7 @@
    "_class": "Dream.Job", 
    "id": "C1O2", 
    "results": {
-    "completionTime": 23.900000000000002, 
+    "completionTime": 22.6, 
     "schedule": [
      {
       "entranceTime": 2.4, 
@@ -65,11 +65,11 @@
       "stationId": "QCAM"
      }, 
      {
-      "entranceTime": 6.4, 
-      "stationId": "CAM1"
+      "entranceTime": 4.4, 
+      "stationId": "CAM2"
      }, 
      {
-      "entranceTime": 6.7, 
+      "entranceTime": 4.7, 
       "stationId": "QMILL"
      }, 
      {
@@ -81,15 +81,15 @@
       "stationId": "QEDM"
      }, 
      {
-      "entranceTime": 17.200000000000003, 
+      "entranceTime": 13.200000000000001, 
       "stationId": "EDM"
      }, 
      {
-      "entranceTime": 18.400000000000002, 
+      "entranceTime": 14.400000000000002, 
       "stationId": "AB1"
      }, 
      {
-      "entranceTime": 23.900000000000002, 
+      "entranceTime": 22.6, 
       "stationId": "MA3"
      }
     ]
@@ -144,7 +144,7 @@
    "_class": "Dream.Job", 
    "id": "C2O1", 
    "results": {
-    "completionTime": 21.200000000000003, 
+    "completionTime": 19.900000000000002, 
     "schedule": [
      {
       "entranceTime": 1.0, 
@@ -167,19 +167,19 @@
       "stationId": "MILL1"
      }, 
      {
-      "entranceTime": 17.200000000000003, 
+      "entranceTime": 17.5, 
       "stationId": "QEDM"
      }, 
      {
-      "entranceTime": 19.6, 
+      "entranceTime": 18.3, 
       "stationId": "EDM"
      }, 
      {
-      "entranceTime": 21.200000000000003, 
+      "entranceTime": 19.900000000000002, 
       "stationId": "AB1"
      }, 
      {
-      "entranceTime": 21.200000000000003, 
+      "entranceTime": 19.900000000000002, 
       "stationId": "MA2"
      }
     ]
@@ -189,7 +189,7 @@
    "_class": "Dream.Job", 
    "id": "C2O2", 
    "results": {
-    "completionTime": 23.900000000000002, 
+    "completionTime": 22.6, 
     "schedule": [
      {
       "entranceTime": 2.4, 
@@ -200,31 +200,31 @@
       "stationId": "QCAM"
      }, 
      {
-      "entranceTime": 18.400000000000002, 
+      "entranceTime": 17.5, 
       "stationId": "CAM2"
      }, 
      {
-      "entranceTime": 19.200000000000003, 
+      "entranceTime": 18.3, 
       "stationId": "QMILL"
      }, 
      {
-      "entranceTime": 19.200000000000003, 
+      "entranceTime": 18.3, 
       "stationId": "MILL2"
      }, 
      {
-      "entranceTime": 19.6, 
+      "entranceTime": 19.3, 
       "stationId": "QEDM"
      }, 
      {
-      "entranceTime": 22.200000000000003, 
+      "entranceTime": 20.900000000000002, 
       "stationId": "EDM"
      }, 
      {
-      "entranceTime": 23.900000000000002, 
+      "entranceTime": 22.6, 
       "stationId": "AB1"
      }, 
      {
-      "entranceTime": 23.900000000000002, 
+      "entranceTime": 22.6, 
       "stationId": "MA3"
      }
     ]
@@ -246,7 +246,7 @@
      }, 
      {
       "entranceTime": 6.4, 
-      "stationId": "CAM2"
+      "stationId": "CAM1"
      }, 
      {
       "entranceTime": 6.6000000000000005, 
@@ -257,7 +257,7 @@
       "stationId": "MILL1"
      }, 
      {
-      "entranceTime": 7.4, 
+      "entranceTime": 7.800000000000001, 
       "stationId": "QEDM"
      }, 
      {
@@ -290,11 +290,11 @@
       "stationId": "QCAM"
      }, 
      {
-      "entranceTime": 7.4, 
+      "entranceTime": 6.6000000000000005, 
       "stationId": "CAM2"
      }, 
      {
-      "entranceTime": 7.800000000000001, 
+      "entranceTime": 7.000000000000001, 
       "stationId": "QMILL"
      }, 
      {
@@ -327,8 +327,8 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "waiting_ratio": 91.0112359550562, 
-    "working_ratio": 8.988764044943819
+    "waiting_ratio": 90.55118110236222, 
+    "working_ratio": 9.448818897637794
    }
   }, 
   {
@@ -338,8 +338,8 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "waiting_ratio": 91.0112359550562, 
-    "working_ratio": 8.988764044943819
+    "waiting_ratio": 90.55118110236222, 
+    "working_ratio": 9.448818897637794
    }
   }, 
   {
@@ -349,8 +349,8 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "waiting_ratio": 87.64044943820224, 
-    "working_ratio": 12.359550561797752
+    "waiting_ratio": 87.40157480314961, 
+    "working_ratio": 12.598425196850393
    }
   }, 
   {
@@ -360,16 +360,16 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "waiting_ratio": 91.76029962546818, 
-    "working_ratio": 8.239700374531836
+    "waiting_ratio": 90.94488188976378, 
+    "working_ratio": 9.055118110236219
    }
   }, 
   {
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 22.600000000000005, 
-    "takt_time": 8.9, 
+    "lifespan": 21.733333333333334, 
+    "takt_time": 8.466666666666667, 
     "throughput": 3
    }
   }, 
@@ -380,9 +380,9 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "setup_ratio": 13.483146067415744, 
-    "waiting_ratio": 61.423220973782755, 
-    "working_ratio": 25.093632958801493
+    "setup_ratio": 14.173228346456707, 
+    "waiting_ratio": 59.44881889763778, 
+    "working_ratio": 26.377952755905504
    }
   }, 
   {
@@ -392,31 +392,31 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "setup_ratio": 2.9962546816479425, 
-    "waiting_ratio": 85.76779026217227, 
-    "working_ratio": 11.235955056179774
+    "setup_ratio": 3.149606299212601, 
+    "waiting_ratio": 85.03937007874015, 
+    "working_ratio": 11.811023622047243
    }
   }, 
   {
    "_class": "Dream.Job", 
    "id": "M1O1", 
    "results": {
-    "completionTime": 25.000000000000004, 
+    "completionTime": 23.700000000000003, 
     "schedule": [
      {
-      "entranceTime": 21.200000000000003, 
+      "entranceTime": 19.900000000000002, 
       "stationId": "MA2"
      }, 
      {
-      "entranceTime": 22.200000000000003, 
+      "entranceTime": 20.900000000000002, 
       "stationId": "QIM"
      }, 
      {
-      "entranceTime": 22.500000000000004, 
+      "entranceTime": 21.200000000000003, 
       "stationId": "IM"
      }, 
      {
-      "entranceTime": 25.000000000000004, 
+      "entranceTime": 23.700000000000003, 
       "stationId": "E1"
      }
     ]
@@ -426,22 +426,22 @@
    "_class": "Dream.Job", 
    "id": "M1O2", 
    "results": {
-    "completionTime": 26.700000000000003, 
+    "completionTime": 25.400000000000002, 
     "schedule": [
      {
-      "entranceTime": 23.900000000000002, 
+      "entranceTime": 22.6, 
       "stationId": "MA3"
      }, 
      {
-      "entranceTime": 25.900000000000002, 
+      "entranceTime": 24.6, 
       "stationId": "QIM"
      }, 
      {
-      "entranceTime": 25.900000000000002, 
+      "entranceTime": 24.6, 
       "stationId": "IM"
      }, 
      {
-      "entranceTime": 26.700000000000003, 
+      "entranceTime": 25.400000000000002, 
       "stationId": "E1"
      }
     ]
@@ -479,8 +479,8 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "waiting_ratio": 88.76404494382024, 
-    "working_ratio": 11.235955056179774
+    "waiting_ratio": 88.18897637795276, 
+    "working_ratio": 11.811023622047243
    }
   }, 
   {
@@ -490,8 +490,8 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "waiting_ratio": 96.25468164794007, 
-    "working_ratio": 3.745318352059925
+    "waiting_ratio": 96.06299212598424, 
+    "working_ratio": 3.9370078740157477
    }
   }, 
   {
@@ -501,8 +501,8 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "waiting_ratio": 92.50936329588016, 
-    "working_ratio": 7.49063670411985
+    "waiting_ratio": 92.12598425196849, 
+    "working_ratio": 7.874015748031495
    }
   }, 
   {
@@ -511,8 +511,8 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 73.78277153558052, 
-    "working_ratio": 26.217228464419474
+    "waiting_ratio": 72.44094488188976, 
+    "working_ratio": 27.559055118110233
    }
   }, 
   {
@@ -521,8 +521,8 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 79.77528089887642, 
-    "working_ratio": 20.224719101123593
+    "waiting_ratio": 78.74015748031495, 
+    "working_ratio": 21.259842519685037
    }
   }, 
   {
@@ -592,16 +592,16 @@
    "_class": "Dream.Operator", 
    "id": "OP1", 
    "results": {
-    "waiting_ratio": 20.59925093632957, 
-    "working_ratio": 79.40074906367042
+    "waiting_ratio": 16.53543307086615, 
+    "working_ratio": 83.46456692913385
    }
   }, 
   {
    "_class": "Dream.Operator", 
    "id": "OP2", 
    "results": {
-    "waiting_ratio": 55.430711610486895, 
-    "working_ratio": 44.569288389513105
+    "waiting_ratio": 53.1496062992126, 
+    "working_ratio": 46.8503937007874
    }
   }, 
   {
