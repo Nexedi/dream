@@ -357,31 +357,23 @@ class Router(ObjectInterruption):
         # if we are not dealing with managed entities
         #------------------------------------------------------------------------------ 
         if not self.managed:
-            # if there are pendingEntities
-            if self.pendingObjects:
-            # for each pendingObject 
-                # for each pendingMachine
-                for object in self.pendingMachines:
-#                     if object in self.pendingMachines:
-                    # find an available operator
-                    candidateOperator=object.operatorPool.findAvailableOperator()
-                    # TODO: this way no sorting is performed
+            # for each pendingMachine
+            for object in self.pendingMachines:
+                # find candidateOperators for each object operator
+                candidateOperator=object.findCandidateOperator()
+                # TODO: this way no sorting is performed
+                if not candidateOperator in self.candidateOperators:
+                    self.candidateOperators.append(candidateOperator)
+            # for each pendingQueue
+            for object in self.pendingQueues:
+                # find available operator for then machines that follow
+                for nextobject in object.findReceivers():
+                    candidateOperator=nextobject.findCandidateOperator()
                     if not candidateOperator in self.candidateOperators:
                         self.candidateOperators.append(candidateOperator)
-                    # for each operator append the station into its candidateStations
-                    candidateOperator.candidateStations.append(object)
-                # for each pendingQueue
-                for object in self.pendingQueues:
-#                     elif object in self.pendingQueues:
-                    # find available operator for then machines that follow
-                    for nextobject in object.findReceivers():
-                        candidateOperator=nextobject.operatorPool.findAvailableOperator()
-                        if not candidateOperator in self.candidateOperators:
-                            self.candidateOperators.append(candidateOperator)
-                        candidateOperator.candidateStations.append(nextobject)
-                # update the schedulingRule/multipleCriterionList of the Router
-                if self.sorting:
-                    self.updateSchedulingRule()
+            # update the schedulingRule/multipleCriterionList of the Router
+            if self.sorting:
+                self.updateSchedulingRule()
         # in case the router deals with managed entities
         #------------------------------------------------------------------------------ 
         else:

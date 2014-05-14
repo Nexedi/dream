@@ -778,6 +778,18 @@ class Machine(CoreObject):
         self.inPositionToGet=True
         if not self.router.isCalled():
             self.router.invoke()
+            
+    #===========================================================================
+    # find candidate operators within the free operators
+    #===========================================================================
+    def findCandidateOperator(self):
+        activeObject=self.getActiveObject()
+        # TODO: this way no sorting is performed
+        # find an available operator
+        candidateOperator=activeObject.operatorPool.findAvailableOperator()
+        # append the station into its candidateStations
+        candidateOperator.candidateStations.append(activeObject)
+        return candidateOperator
     
     # =======================================================================
     #                   prepare the machine to be operated
