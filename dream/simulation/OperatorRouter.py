@@ -656,22 +656,13 @@ class Router(ObjectInterruption):
              
             #local method that finds a receiver for a candidate entity
             def findCandidateReceiver():
-                # find the receiver that waits the most
-                def chooseReceiverFrom(list):
-                    maxTimeWaiting=0
-                    for object in list:
-                        timeWaiting=now()-object.timeLastEntityLeft
-                        if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):
-                            maxTimeWaiting=timeWaiting
-                            receiver=object
-                    return receiver
                 # initiate the local list variable available receivers
                 availableReceivers=[x for x in operator.candidateEntity.candidateReceivers\
                                                 if not x in occupiedReceivers]
                 # and pick the object that is waiting for the most time
                 if availableReceivers:
                     # TODO: must find the receiver that waits the most
-                    availableReceiver=chooseReceiverFrom(availableReceivers)
+                    availableReceiver=operator.candidateEntity.currentStation.selectReceiver(availableReceivers)
                     occupiedReceivers.append(availableReceiver)
                 # if there is no available receiver add the entity to the entitiesWithOccupiedReceivers list
                 else:
