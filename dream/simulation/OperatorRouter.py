@@ -105,7 +105,7 @@ class Router(ObjectInterruption):
             # wait until the router is called
             yield waitevent, self, self.isCalled
 #             print '=-'*15
-#             print 'router received event'
+#             print now(), 'router received event'
             # wait till there are no more events, the machines must be blocked
             while 1:
 #                 print Simulation.allEventNotices(sim)
@@ -191,18 +191,19 @@ class Router(ObjectInterruption):
                             self.toBeSignalled.append(operator.candidateStation)
                 #------------------------------------------------------------------------------
                 else:
-                    # and if the priorityObject is indeed pending
-                    if (operator.candidateEntity.currentStation in self.pendingObjects)\
-                        and (not operator in self.conflictingOperators)\
-                        and operator.candidateEntity.candidateReceiver:
-                        # assign an operator to the priorityObject
-                        #=======================================================
-#                         # testing
-#                         print 'router will assign', operator.id, 'to', operator.candidateEntity.candidateReceiver.id
-                        #=======================================================
-                        operator.assignTo(operator.candidateEntity.candidateReceiver)
-                        if not operator.candidateEntity.currentStation in self.toBeSignalled:
-                            self.toBeSignalled.append(operator.candidateEntity.currentStation)
+                    if operator.candidateEntity:
+                        # and if the priorityObject is indeed pending
+                        if (operator.candidateEntity.currentStation in self.pendingObjects)\
+                            and (not operator in self.conflictingOperators)\
+                            and operator.candidateEntity.candidateReceiver:
+                            # assign an operator to the priorityObject
+                            #=======================================================
+#                             # testing
+#                             print 'router will assign', operator.id, 'to', operator.candidateEntity.candidateReceiver.id
+                            #=======================================================
+                            operator.assignTo(operator.candidateEntity.candidateReceiver)
+                            if not operator.candidateEntity.currentStation in self.toBeSignalled:
+                                self.toBeSignalled.append(operator.candidateEntity.currentStation)
         #===================================================================
 #         # testing
 #         print 'router found objects to be signalled'
@@ -582,9 +583,9 @@ class Router(ObjectInterruption):
                 return candidateStation
              
                  
-            # TODO: sorting again after choosing candidateEntity
-            if self.sorting:
-                self.sortOperators()
+#             # TODO: sorting again after choosing candidateEntity
+#             if self.sorting:
+#                 self.sortOperators()
              
             # for the candidateOperators that do have candidateEntities pick a candidateEntity
             for operator in [x for x in self.candidateOperators if x.candidateStations]:
@@ -682,9 +683,9 @@ class Router(ObjectInterruption):
                 return availableReceiver
              
                  
-            # TODO: sorting again after choosing candidateEntity
-            if self.sorting:
-                self.sortOperators()
+#             # TODO: sorting again after choosing candidateEntity
+#             if self.sorting:
+#                 self.sortOperators()
              
             # for the candidateOperators that do have candidateEntities pick a candidateEntity
             for operator in [x for x in self.candidateOperators if x.candidateEntities]:
