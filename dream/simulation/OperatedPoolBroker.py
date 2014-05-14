@@ -121,7 +121,7 @@ class Broker(ObjectInterruption):
     # ======= release a resource        
             elif not self.victim.isOperated():
                 self.victim.currentOperator.totalWorkingTime+=now()-self.victim.currentOperator.timeLastOperationStarted                
-                self.victim.outputTrace(self.victim.currentOperator.objName, "left "+ self.victim.objName)
+#                 self.victim.outputTrace(self.victim.currentOperator.objName, "left "+ self.victim.objName)
                 yield release,self,self.victim.operatorPool.getResource(self.victim.currentOperator)
                 # signal the other brokers waiting for the same operators that they are now free
                 # also signal the stations that were not requested to receive because the operator was occupied
