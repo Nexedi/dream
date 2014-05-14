@@ -3,16 +3,13 @@ from dream.simulation.imports import simulate, activate, initialize, infinity
 
 #the custom queue
 class SelectiveQueue(Queue):
-    def haveToDispose(self,callerObject=None):
-        caller=callerObject
-        # if the caller is M1 then return true if there is an Entity to give
-        if caller.id=='M1':
-            return len(self.getActiveObjectQueue())>0
-        # else return true only if M1 cannot accept the Entity
-        if caller.id=='M2':
-            # find M1
-            M1=Globals.findObjectById('M1') # global method to obtain an object from the id
-            return len(self.getActiveObjectQueue())>0 and (not (M1.canAccept()))
+    # override so that it first chooses M1 and then M2
+    def selectReceiver(self,possibleReceivers=[]):
+        if M1.canAccept():
+            return M1
+        elif M2.canAccept():
+            return M2
+        return None
 
 #the custom machine
 class Milling(Machine):
