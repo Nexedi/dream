@@ -100,68 +100,31 @@ class QueueManagedJob(QueueJobShop):
 #         return len(activeObjectQueue)>0\
 #                 and (thecaller in activeObject.next)\
 #                 and thecaller.isInRoute(activeObject)
-
-
+    
     #===========================================================================
-    # signalReceiver Method
+    #  signalRouter method
     #===========================================================================
-    def signalReceiver(self):
-#         print now(), self.id, 'trying to signal receiver'
-        activeObject=self.getActiveObject()
-        possibleReceivers=[]
-        for object in [x for x in self.next if x.canAccept(activeObject)]:
-            possibleReceivers.append(object)
-        if possibleReceivers:
-            receiver=activeObject.selectReceiver(possibleReceivers)
-            receiversGiver=activeObject
-            # perform the checks that canAcceptAndIsRequested used to perform and update assignExit and operatorPool
-            while not receiver.canAcceptAndIsRequested(receiversGiver):
-#                 print 'removing receiver from possibleReceivrs', receiver.id
-                possibleReceivers.remove(receiver)
-                if not possibleReceivers:
-                    receiversGiver=None
-                    receiver=None
-                    return False
-                receiver=activeObject.selectReceiver(possibleReceivers)
-                receiversGiver=activeObject
-            #------------------------------------------------------------------------------ 
-            # TODO: if the receiver is already assigned an operator then the giver should sort for that manager
-            from Globals import G
-            for operator in G.OperatorsList:
-                if operator.isAssignedTo()==receiver:
-                    activeObject.sortEntitiesForOperator(operator)
-                    break
-            #------------------------------------------------------------------------------ 
-            # if an operator is not assigned to the receiver then do not signal the receiver but the Router
-            # TODO: identifyEntityToGet needs giver defined but here is not yet defined for Machines and machineJobShops 
-            try:
-                if receiver.identifyEntityToGet().manager:
-                    if any(type=='Load' or type=='Setup' for type in receiver.multOperationTypeList):
-                        if receiver.identifyEntityToGet().manager.isAssignedTo()!=receiver:
-                            from Globals import G
-                            if not G.Router.invoked:
-                                #===================================================================
-    #                             # TESTING
-#                                 print now(), self.id,' '*50, 'signalling router'
-                                #===================================================================
-                                G.Router.invoked=True
-                                G.Router.isCalled.signal(now())
-                            return False
-            except:
-                pass
-            activeObject.receiver=receiver
-            activeObject.receiver.giver=activeObject
-            #===================================================================
-# #             # TESTING
-#             print now(), self.id,' '*50, 'signalling receiver', self.receiver.id
-            #===================================================================
-            # assign the entry of the receiver
-            activeObject.receiver.assignEntryTo()
-            activeObject.receiver.isRequested.signal(activeObject)
-            return True
-        return False
+    def signalRouter(self, receiver=None):
+        # if an operator is not assigned to the receiver then do not signal the receiver but the Router
+        # TODO: identifyEntityToGet needs giver defined but here is not yet defined for Machines and machineJobShops 
+        try:
+            if receiver.identifyEntityToGet().manager:
+                if receiver.isLoadRequested():
+                    if receiver.identifyEntityToGet().manager.isAssignedTo()!=receiver:
+                        from Globals import G
+                        if not G.Router.invoked:
+                            #===================================================================
+#                             # TESTING
+#                             print now(), self.id,' '*50, 'signalling router'
+                            #===================================================================
+                            G.Router.invoked=True
+                            G.Router.isCalled.signal(now())
+                        return True
+            else:
+                return False
+        except:
+            return False
         
-
     # =======================================================================
     # override the default method so that Entities 
     # that have the manager available go in front
@@ -196,3 +159,15 @@ class QueueManagedJob(QueueJobShop):
         else:
             # added for testing
             print 'there must be a caller defined for this kind of Queue sorting'
+    
+    #===========================================================================
+    # sort the entities of the queue for the receiver
+    #===========================================================================
+    def sortEntitiesForReceiver(self, receiver=None):
+        # TODO: if the receiver is already assigned an operator then the giver should sort for that manager
+        activeObject=self.getActiveObject()
+        from Globals import G
+        for operator in G.OperatorsList:
+            if operator.isAssignedTo()==receiver:
+                activeObject.sortEntitiesForOperator(operator)
+                break

@@ -689,6 +689,13 @@ class Machine(CoreObject):
                     return False
                 return True
     
+    #===========================================================================
+    # return whether Load or setup Requested
+    #===========================================================================
+    def isLoadRequested(self):
+        activeObject=self.getActiveObject()
+        return any(type=='Load' or type=='Setup' for type in activeObject.multOperationTypeList)
+    
     # =======================================================================
     # to be called by canAcceptAndIsRequested and check for the operator
     # =======================================================================    

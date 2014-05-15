@@ -348,24 +348,11 @@ class CoreObject(Process):
                     return False
                 receiver=activeObject.selectReceiver(possibleReceivers)
                 receiversGiver=activeObject
-
-            #------------------------------------------------------------------------------ 
-            # if an operator is not assigned to the receiver then do not signal the receiver but the Router
-            try:
-                if not receiver.assignedOperator:
-                    if any(type=='Load' or type=='Setup' for type in receiver.multOperationTypeList):
-                        from Globals import G
-                        if not G.Router.invoked:
-                            #===================================================================
-#                             # TESTING
-#                             print now(), self.id,' '*50, 'signalling router'
-                            #===================================================================
-                            G.Router.invoked=True
-                            G.Router.isCalled.signal(now())
-                        return False
-            except:
-                pass
-            #------------------------------------------------------------------------------ 
+            # sorting the entities of the object for the receiver
+            activeObject.sortEntitiesForReceiver(receiver)
+            # signalling the Router if the receiver is operated and not assigned an operator
+            if activeObject.signalRouter(receiver):
+                return False
 
             activeObject.receiver=receiver
             activeObject.receiver.giver=activeObject
@@ -394,6 +381,34 @@ class CoreObject(Process):
                 maxTimeWaiting=timeWaiting
                 receiver=object                                 # set the receiver as the longest waiting possible receiver
         return receiver
+    
+    #===========================================================================
+    #  signalRouter method
+    #===========================================================================
+    def signalRouter(self, receiver=None):
+        # if an operator is not assigned to the receiver then do not signal the receiver but the Router
+        try:
+            if not receiver.assignedOperator:
+                if receiver.isLoadRequested():
+                    from Globals import G
+                    if not G.Router.invoked:
+                        #===================================================================
+#                         # TESTING
+#                         print now(), self.id,' '*50, 'signalling router'
+                        #===================================================================
+                        G.Router.invoked=True
+                        G.Router.isCalled.signal(now())
+                    return True
+            else:
+                return False
+        except:
+            return False
+    
+    #===========================================================================
+    # sort the entities of the queue for the receiver
+    #===========================================================================
+    def sortEntitiesForReceiver(self, receiver=None):
+        pass
     
     #===========================================================================
     # find possible givers
