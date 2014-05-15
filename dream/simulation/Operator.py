@@ -95,6 +95,12 @@ class Operator(ObjectResource):
     def isAssignedTo(self):
         return self.operatorAssignedTo
     
+    #===========================================================================
+    # check whether the operator has only one candidateStation to work for
+    #===========================================================================
+    def hasOneOption(self):
+        return len(self.candidateStations)==1
+    
     # =======================================================================
     #    sorts the candidateEntities of the Operator according to the scheduling rule
     # TODO: find a way to sort machines or candidate entities for machines, 

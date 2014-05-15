@@ -86,6 +86,27 @@ class OperatorManagedJob(Operator):
 #     def isAssignedTo(self):
 #         return self.operatorAssignedTo
         
+    #=======================================================================
+    # findCandidateEntities method finding the candidateEntities of the operator  
+    #=======================================================================
+    def findCandidateEntities(self):
+#         print 'trying to import G'
+        from Globals import G
+        router=G.Router
+        if router.pending:
+            print now(), self.id
+            for entity in [x for x in router.pending if x.canProceed and x.manager==self]:
+                self.candidateEntities.append(entity)
+            print '    ', [x.id for x in self.candidateEntities]
+        
+    #===========================================================================
+    # check if the operator has only one station as candidate option
+    #===========================================================================
+    def hasOneOption(self):
+        if len(self.candidateEntities)==1:
+            # if the candidate entity has only one receiver then return True
+            return len(self.candidateEntities[0].candidateReceivers)==1
+    
     # =======================================================================
     #    sorts the candidateEntities of the Operator according to the scheduling rule
     #     TODO: maybe the argument is not needed. the candidate entities is a variable of the object

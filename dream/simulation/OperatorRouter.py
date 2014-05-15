@@ -130,7 +130,7 @@ class Router(ObjectInterruption):
             if self.sorting:
                 self.sortPendingEntities()
             # find the operators candidateEntities
-            self.findCandidateEntities()
+            self.sortCandidateEntities()
             # find the entity that will occupy the resource, and the station that will receive it (if any available)
             #  entities that are already in stations have already a receiver
             self.findCandidateReceivers()
@@ -354,7 +354,7 @@ class Router(ObjectInterruption):
     #========================================================================
     def findCandidateOperators(self):
         #TODO: here check the case of no managed entities (normal machines)
-        from Globals import G
+#         from Globals import G
         # if we are not dealing with managed entities
         #------------------------------------------------------------------------------ 
         if not self.managed:
@@ -412,6 +412,8 @@ class Router(ObjectInterruption):
                 # update the schedulingRule/multipleCriterionList of the Router
                 if self.sorting:
                     self.updateSchedulingRule()
+                    
+                self.findCandidateEntities()
         #=======================================================================
 #         # testing
 #         print 'router found candidate operators'
@@ -420,6 +422,19 @@ class Router(ObjectInterruption):
 #         else:
 #             print [(operator.id, [station.id for station in operator.candidateStations]) for operator in self.candidateOperators]
         #=======================================================================
+    
+    #===========================================================================
+    # find the candidate entities for each candidateOperator
+    #===========================================================================
+    def findCandidateEntities(self):
+        for operator in self.candidateOperators:
+#             print now(), operator.id
+            # find which pendingEntities that can move to machines is the operator managing
+#             operator.findCandidateEntities()
+            for entity in [x for x in self.pending if x.canProceed and x.manager==operator]:
+                operator.candidateEntities.append(entity)
+#             print '    ', [x.id for x in operator.candidateEntities]
+            
     
     #=======================================================================
     # find the schedulingRules of the candidateOperators
@@ -446,76 +461,38 @@ class Router(ObjectInterruption):
     #     to the scheduling rules of the operator and choose an entity that will be served
     #     and by which machines
     #=======================================================================
-    def findCandidateEntities(self):
+    def sortCandidateEntities(self):
         from Globals import G
-        # if the moving entities are not managed
-        #------------------------------------------------------------------------------ 
-        if not self.managed:
-            # TODO: the operator finds no entities in this case
-            # initialise operatorsWithOneCandidateStation lists
-            operatorsWithOneCandidateStation=[]
-            # for all the candidateOperators
-            for operator in self.candidateOperators:
-            # sort the candidate operators so that those who have only one option be served first
-                if len(operator.candidateStations)==1:
-                    operatorsWithOneCandidateStation.append(operator)
-             
-            # TODO: the operator here actually chooses entity. This may pose a problem as two entities may be equivalent
-            #       and as the operators chooses the sorting of the queue (if they do reside in the same queue is not taken into account)
-            # sort the candidateEntities list of each operator according to its schedulingRule
-            # TODO: rename the sorting method, the simple operator is not sorting entities but candidateStations
-            for operator in [x for x in self.candidateOperators if x.candidateStations]:
-                operator.sortCandidateEntities()
-                 
-            # if there operators that have only one option then sort the candidateOperators according to the first one of these
-            # TODO: find out what happens if there are many operators with one option
-            # TODO: incorporate that to 
-            # self.sortOperators() 
-             
-            if self.sorting:
-                # sort the operators according to their waiting time
-                self.candidateOperators.sort(key=lambda x: x.totalWorkingTime)
-                # sort according to the number of options
-                if operatorsWithOneCandidateStation:
-                    self.candidateOperators.sort(key=lambda x: x in operatorsWithOneCandidateStation, reverse=True)
-        # if the entities are managed
-        #------------------------------------------------------------------------------
-        else:
-            # TODO: sort according to the number of pending Jobs
-            # TODO Have to sort again according to the priority used by the operators
-             
-            # initialise the operatorsWithOneOption and operatorsWithOneCandidateEntity lists
-            operatorsWithOneOption=[]
-            operatorsWithOneCandidateEntity=[]
-            # for all the candidateOperators
-            for operator in self.candidateOperators:
-                # find which pendingEntities that can move to machines is the operator managing
-                for entity in [x for x in self.pending if x.canProceed and x.manager==operator]:
-                    operator.candidateEntities.append(entity)
-            # sort the candidate operators so that those who have only one option be served first
-                if len(operator.candidateEntities)==1:
-                    operatorsWithOneCandidateEntity.append(operator)
-                    # if the candidate entity has only one receiver then append the operator to operatorsWithOneOption list
-                    if len(operator.candidateEntities[0].candidateReceivers)==1:
-                        operatorsWithOneOption.append(operator)
-             
-            # TODO: the operator here actually chooses entity. This may pose a problem as two entities may be equivalent
-            #       and as the operators chooses the sorting of the queue (if they do reside in the same queue is not taken into account)
-            # sort the candidateEntities list of each operator according to its schedulingRule
-            for operator in [x for x in self.candidateOperators if x.candidateEntities]:
-                operator.sortCandidateEntities()
-                 
-            # if there operators that have only one option then sort the candidateOperators according to the first one of these
-            # TODO: find out what happens if there are many operators with one option
-            # TODO: incorporate that to 
-            # self.sortOperators() 
-             
-            if self.sorting:
-                # sort the operators according to their waiting time
-                self.candidateOperators.sort(key=lambda x: x.totalWorkingTime)
-                # sort according to the number of options
-                if operatorsWithOneOption:
-                    self.candidateOperators.sort(key=lambda x: x in operatorsWithOneOption, reverse=True)
+        # TODO: sort according to the number of pending Jobs
+        # TODO Have to sort again according to the priority used by the operators
+        
+        # initialise the operatorsWithOneOption and operatorsWithOneCandidateEntity lists
+        operatorsWithOneOption=[]
+        # for all the candidateOperators
+        for operator in self.candidateOperators:
+        # sort the candidate operators so that those who have only one option be served first
+        # if the candidate entity has only one receiver then append the operator to operatorsWithOneOption list
+            if operator.hasOneOption():
+                operatorsWithOneOption.append(operator)
+        
+        # TODO: the operator here actually chooses entity. This may pose a problem as two entities may be equivalent
+        #       and as the operators chooses the sorting of the queue (if they do reside in the same queue is not taken into account)
+        # sort the candidateEntities list of each operator according to its schedulingRule
+        for operator in [x for x in self.candidateOperators if x.candidateEntities]:
+            operator.sortCandidateEntities()
+            
+        # if there operators that have only one option then sort the candidateOperators according to the first one of these
+        # TODO: find out what happens if there are many operators with one option
+        # TODO: incorporate that to 
+        # self.sortOperators() 
+        
+        if self.sorting:
+            # sort the operators according to their waiting time
+            self.candidateOperators.sort(key=lambda x: x.totalWorkingTime)
+            # sort according to the number of options
+            if operatorsWithOneOption:
+                self.candidateOperators.sort(key=lambda x: x in operatorsWithOneOption, reverse=True)
+        
         #=======================================================================
 #         # testing
 #         if self.managed:
