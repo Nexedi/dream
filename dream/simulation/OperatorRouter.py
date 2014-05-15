@@ -428,13 +428,11 @@ class Router(ObjectInterruption):
     #===========================================================================
     def findCandidateEntities(self):
         for operator in self.candidateOperators:
-#             print now(), operator.id
             # find which pendingEntities that can move to machines is the operator managing
-#             operator.findCandidateEntities()
+#             operator.pickCandidateEntitiesFrom(self.pending)
             for entity in [x for x in self.pending if x.canProceed and x.manager==operator]:
                 operator.candidateEntities.append(entity)
 #             print '    ', [x.id for x in operator.candidateEntities]
-            
     
     #=======================================================================
     # find the schedulingRules of the candidateOperators
