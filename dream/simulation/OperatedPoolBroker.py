@@ -87,13 +87,13 @@ class Broker(ObjectInterruption):
                     # add the currentEntity to the pendingEntities
                     if not self.victim.currentEntity in G.pendingEntities:
                         G.pendingEntities.append(self.victim.currentEntity)
-                    if not G.RoutersList[0].invoked:
+                    if not G.Router.invoked:
                         #===========================================================
                         # testing
 #                         print now(), self.victim.id, 'broker', ' '*50, 'signalling router'
                         #===========================================================
-                        G.RoutersList[0].invoked=True
-                        G.RoutersList[0].isCalled.signal(now())
+                        G.Router.invoked=True
+                        G.Router.isCalled.signal(now())
                        
                     self.waitForOperator=True
 #                     print now(), self.victim.id, 'broker waits till resource is available1'

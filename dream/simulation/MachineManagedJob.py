@@ -58,13 +58,13 @@ class MachineManagedJob(MachineJobShop):
         #create a Router
         # TODO: this is already performed in __init__ of Machine
         from Globals import G
-        if len(G.RoutersList)==0:
+        if not G.Router:
             self.router=Router()
             activate(self.router,self.router.run())
-            G.RoutersList.append(self.router)
+            G.Router=self.router
         # otherwise set the already existing router as the machines Router
         else:
-            self.router=G.RoutersList[0]
+            self.router=G.Router
         # holds the Entity that is to be obtained and will be updated by canAcceptAndIsRequested
         self.entityToGet=None
 

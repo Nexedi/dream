@@ -355,13 +355,13 @@ class CoreObject(Process):
                 if not receiver.assignedOperator:
                     if any(type=='Load' or type=='Setup' for type in receiver.multOperationTypeList):
                         from Globals import G
-                        if not G.RoutersList[0].invoked:
+                        if not G.Router.invoked:
                             #===================================================================
 #                             # TESTING
 #                             print now(), self.id,' '*50, 'signalling router'
                             #===================================================================
-                            G.RoutersList[0].invoked=True
-                            G.RoutersList[0].isCalled.signal(now())
+                            G.Router.invoked=True
+                            G.Router.isCalled.signal(now())
                         return False
             except:
                 pass

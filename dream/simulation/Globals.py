@@ -73,6 +73,10 @@ class G:
     
     numberOfEntities = 0
     
+    #object that routes the operators in the model
+    #------------------------------------------------------------------------
+    Router=None 
+    
     # -----------------------------------------------------------------------
     #                define the lists of each object type
     # -----------------------------------------------------------------------
@@ -96,7 +100,6 @@ class G:
     OperatorManagedJobsList = []
     OperatorPoolsList = []
     BrokersList = []
-    RoutersList = []
     OperatedMachineList = []
     BatchScrapMachineList=[]
     OrderDecompositionList=[]

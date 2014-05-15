@@ -134,13 +134,13 @@ class Machine(CoreObject):
         if (self.operatorPool!='None'):
             self.broker=Broker(self)
             from Globals import G
-            # if there is no router in G.RouterList
-            if len(G.RoutersList)==0:
+            # if there is no router
+            if not G.Router:
                 self.router=Router()
-                G.RoutersList.append(self.router)
+                G.Router=self.router
             # otherwise set the already existing router as the machines Router
             else:
-                self.router=G.RoutersList[0]
+                self.router=G.Router
         #     lists to hold statistics of multiple runs
         self.WaitingForOperator=[]
         self.WaitingForLoadOperator=[]
