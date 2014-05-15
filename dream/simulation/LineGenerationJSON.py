@@ -156,7 +156,7 @@ def createObjects():
     G.OperatorManagedJobsList = []
     G.OperatorPoolsList = []
     G.BrokersList = []
-    G.RoutersList = []
+    G.Router = None
     G.OperatedMachineList = []
     G.BatchScrapMachineList=[]
     G.OrderDecompositionList=[]

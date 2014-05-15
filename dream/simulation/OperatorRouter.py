@@ -429,9 +429,9 @@ class Router(ObjectInterruption):
     def findCandidateEntities(self):
         for operator in self.candidateOperators:
             # find which pendingEntities that can move to machines is the operator managing
-#             operator.pickCandidateEntitiesFrom(self.pending)
-            for entity in [x for x in self.pending if x.canProceed and x.manager==operator]:
-                operator.candidateEntities.append(entity)
+            operator.pickCandidateEntitiesFrom(self.pending)
+#             for entity in [x for x in self.pending if x.canProceed and x.manager==operator]:
+#                 operator.candidateEntities.append(entity)
 #             print '    ', [x.id for x in operator.candidateEntities]
     
     #=======================================================================
