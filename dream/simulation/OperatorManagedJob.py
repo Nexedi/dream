@@ -86,20 +86,6 @@ class OperatorManagedJob(Operator):
 #     def isAssignedTo(self):
 #         return self.operatorAssignedTo
         
-    #=======================================================================
-    # findCandidateEntities method finding the candidateEntities of the operator  
-    #=======================================================================
-    def pickCandidateEntitiesFrom(self, pendingEntities=[]):
-#         print 'trying to import G'
-#         from Globals import G
-#         router=G.Router
-#         if router.pending:
-        if pendingEntities:
-#             print now(), self.id
-            for entity in [x for x in pendingEntities if x.canProceed and x.manager==self]:
-                self.candidateEntities.append(entity)
-#             print '    ', [x.id for x in self.candidateEntities]
-        
     #===========================================================================
     # check if the operator has only one station as candidate option
     #===========================================================================

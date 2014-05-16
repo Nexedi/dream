@@ -101,6 +101,14 @@ class Operator(ObjectResource):
     def hasOneOption(self):
         return len(self.candidateStations)==1
     
+    #=======================================================================
+    # findCandidateEntities method finding the candidateEntities of the operator  
+    #=======================================================================
+    def pickCandidateEntitiesFrom(self, pendingEntities=[]):
+        if pendingEntities:
+            for entity in [x for x in pendingEntities if x.canProceed and x.manager==self]:
+                self.candidateEntities.append(entity)
+    
     # =======================================================================
     #    sorts the candidateEntities of the Operator according to the scheduling rule
     # TODO: find a way to sort machines or candidate entities for machines, 
