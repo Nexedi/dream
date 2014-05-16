@@ -340,9 +340,6 @@ class Router(ObjectInterruption):
                     candidateOperator=nextobject.findCandidateOperator()
                     if not candidateOperator in self.candidateOperators:
                         self.candidateOperators.append(candidateOperator)
-            # update the schedulingRule/multipleCriterionList of the Router
-            if self.sorting:
-                self.updateSchedulingRule()
         # in case the router deals with managed entities
         #------------------------------------------------------------------------------ 
         else:
@@ -356,40 +353,11 @@ class Router(ObjectInterruption):
                         if entity.currentStation.canEntityProceed(entity)\
                             and not entity.manager in self.candidateOperators:
                             self.candidateOperators.append(entity.manager)
-                        
-                        
-#                     # for entities of type OrderComponent, if they reside at a conditionalBuffer, 
-#                     #     they must wait till their basicsEnded flag is raised
-#                         if entity.type=='OrderComponent':
-#                             from ConditionalBuffer import ConditionalBuffer
-#                             if (entity.componentType=='Secondary'\
-#                                 and type(entity.currentStation) is ConditionalBuffer\
-#                                 and entity.order.basicsEnded==False):
-#                                 continue
-#                     # unassembled components of a mould must wait at a MouldAssemblyBuffer till the componentsReadyForAssembly flag is raised 
-#                         from MouldAssemblyBuffer import MouldAssemblyBuffer
-#                         if type(entity.currentStation) is MouldAssemblyBuffer:
-#                             if not entity.order.componentsReadyForAssembly:
-#                                 continue
-#                 # for all the possible receivers of an entity check whether they can accept and then set accordingly the canProceed flag of the entity 
-#                         if not entity.currentStation in self.pendingMachines:
-#                             for nextObject in [object for object in entity.currentStation.next if object.canAcceptEntity(entity)]:
-#                                 entity.canProceed=True
-#                                 entity.candidateReceivers.append(nextObject)
-#                     # if the entity is in a machines who's broker waits for operator then
-#                         if entity.currentStation in self.pendingMachines:
-#                             entity.canProceed=True
-#                             entity.candidateReceivers.append(entity.currentStation)
-#                              
-#                 # if the entity can proceed, add its manager to the candidateOperators list
-#                         if entity.canProceed and not entity.manager in self.candidateOperators:
-#                             self.candidateOperators.append(entity.manager)
-                            
-                # update the schedulingRule/multipleCriterionList of the Router
-                if self.sorting:
-                    self.updateSchedulingRule()
                 # find the candidateEntities for each operator
-                self.findCandidateEntities()
+                self.findCandidateEntities()      
+         # update the schedulingRule/multipleCriterionList of the Router
+        if self.sorting:
+            self.updateSchedulingRule()  
         if self.managed:
             self.printTrace('router found candidate operators'+' '*3,[operator.id for operator in self.candidateOperators])
         else:
@@ -481,10 +449,7 @@ class Router(ObjectInterruption):
             from Globals import G
             candidateList=self.pending
             self.activeQSorter(criterion=self.schedulingRule,candList=candidateList)
-        #=======================================================================
-#         # testing
-#         self.printTrace('router', ' sorted pending entities')
-        #=======================================================================
+        self.printTrace('router', ' sorted pending entities')
          
     #=======================================================================
     #                             Sort candidateOperators
