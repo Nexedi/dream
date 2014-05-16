@@ -803,8 +803,7 @@ class Machine(CoreObject):
     #===========================================================================
     def canEntityProceed(self, entity=None):
         activeObject=self.getActiveObject()
-        activeObjectQueue=activeObject.getActiveObjectQueue()
-        assert entity in activeObjectQueue, entity.id +' not in the internalQueue of'+ activeObject.id
+        assert activeObject.isInActiveQueue(entity), entity.id +' not in the internalQueue of'+ activeObject.id
         activeEntity=entity
         
         from Globals import G

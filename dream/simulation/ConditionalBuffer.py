@@ -162,8 +162,7 @@ class ConditionalBuffer(QueueManagedJob):
     #===========================================================================
     def canEntityProceed(self, entity=None):
         activeObject=self.getActiveObject()
-        activeObjectQueue=activeObject.getActiveObjectQueue()
-        assert entity in activeObjectQueue, entity.id +' not in the internalQueue of'+ activeObject.id
+        assert activeObject.isInActiveQueue(entity), entity.id +' not in the internalQueue of'+ activeObject.id
         activeEntity=entity
         
         # for entities of type OrderComponent, if they reside at a conditionalBuffer, 
