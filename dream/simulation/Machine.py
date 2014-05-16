@@ -226,12 +226,12 @@ class Machine(CoreObject):
         while 1:
             # waitEvent isRequested /interruptionEnd/loadOperatorAvailable
             while 1:
-#                 print now(), self.id, 'will wait for event'
+#                 self.printTrace(self.id, 'will wait for event')
                 yield waitevent, self, [self.isRequested, self.interruptionEnd, self.loadOperatorAvailable]
-#                 print now(), self.id, 'received an event'
+#                 self.printTrace(self.id, 'received an event')
                 # if the machine can accept an entity and one predecessor requests it continue with receiving the entity
                 if self.isRequested.signalparam:
-#                     print now(), self.id, 'received an isRequested event from', self.isRequested.signalparam.id
+#                     self.printTrace(self.id, 'received an isRequested event from'+self.isRequested.signalparam.id)
                     assert self.isRequested.signalparam==self.giver, 'the giver is not the requestingObject'
                     assert self.giver.receiver==self, 'the receiver of the signalling object in not the station'
                     # reset the signalparam of the isRequested event
@@ -241,9 +241,9 @@ class Machine(CoreObject):
                 # if an operator was rendered available while it was needed by the machine to proceed with getEntity
                 if self.interruptionEnd.signalparam==now() or self.loadOperatorAvailable.signalparam==now():
 #                     if self.interruptionEnd.signalparam==now():
-#                         print self.id, 'received an interruptionEnd event sent at ', self.interruptionEnd.signalparam
+#                         self.printTrace(self.id, 'received an interruptionEnd event sent at '+self.interruptionEnd.signalparam)
 #                     elif self.loadOperatorAvailable.signalparam==now():
-#                         print now(), self.id, 'received an loadOperatorAvailable event sent at ', self.loadOperatorAvailable.signalparam
+#                         self.printTrace(self.id, 'received an loadOperatorAvailable event sent at '+self.loadOperatorAvailable.signalparam)
                     # try to signal the Giver, otherwise wait until it is requested
                     if self.signalGiver():
                         break
@@ -481,10 +481,7 @@ class Machine(CoreObject):
         activeObject=self.getActiveObject()
         activeObjectQueue=activeObject.getActiveObjectQueue()
         activeEntity=activeObjectQueue[0]
-        #=======================================================================
-#         # TESTING
-#         print activeObject.getActiveObjectQueue()[0].name,"ended processing in "+activeObject.objName
-        #=======================================================================
+        self.printTrace(activeObject.getActiveObjectQueue()[0].name,"ended processing in "+activeObject.objName)
         # reset the variables used to handle the interruptions timing 
         self.timeRestartingProcessing=0
         self.breakTime=0
@@ -539,10 +536,7 @@ class Machine(CoreObject):
         activeObject=self.getActiveObject()
         activeObjectQueue=activeObject.getActiveObjectQueue()
         activeEntity=activeObjectQueue[0]
-        #=======================================================================
-        # testing
-#         print self.getActiveObjectQueue()[0].name, "Interrupted at ",self.objName, '. '*5
-        #=======================================================================
+        self.printTrace(self.getActiveObjectQueue()[0].name, "Interrupted at "+self.objName+'. '*5)
         # if the interrupt occured while processing an entity
         if not activeObject.waitToDispose:
             # output to trace that the Machine (self.objName) got interrupted           
@@ -747,7 +741,7 @@ class Machine(CoreObject):
         activeObject.waitToDispose=False                            # update the waitToDispose flag
         # if the Machine canAccept then signal a giver
         if activeObject.canAccept():
-#             print self.id, now(), 'will try signalling a giver from removeEntity'
+#             self.printTrace(self.id, 'will try signalling a giver from removeEntity')
             activeObject.signalGiver()
         return activeEntity
     

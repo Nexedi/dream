@@ -104,18 +104,17 @@ class Router(ObjectInterruption):
         while 1:
             # wait until the router is called
             yield waitevent, self, self.isCalled
-#             print '=-'*15
-#             print now(), 'router received event'
+            self.printTrace('','=-'*15)
+            self.printTrace('','router received event')
             # wait till there are no more events, the machines must be blocked
             while 1:
-#                 print Simulation.allEventNotices(sim)
                 if now() in Simulation.allEventTimes(sim):
-#                     print 'there are MORE events for now'
+                    self.printTrace('', 'there are MORE events for now')
                     yield hold, self, 0
                 else:
-#                     print 'there are NO more events for now'
+                    self.printTrace('','there are NO more events for now')
                     break
-#             print '=-'*15
+            self.printTrace('','=-'*15)
             # after the events are over, assign the operators to machines for loading or simple processing
             # read the pendingEntities currentStations, these are the stations (queues) that may be signalled
             # the activeCallers list is updated each time the canAcceptAndIsRequested returns true even if the machine is not signalled
@@ -160,11 +159,8 @@ class Router(ObjectInterruption):
                     object.unAssignExit()
             # signal the stations that ought to be signalled
             self.signalOperatedStations()
-            #===================================================================
-#             # testing
-#             print 'router exiting'
-#             print '=-'*20
-            #===================================================================
+            self.printTrace('', 'router exiting')
+            self.printTrace('','=-'*20)
             self.exit()
      
     #===========================================================================
@@ -182,10 +178,7 @@ class Router(ObjectInterruption):
                     # if the operator is not conflicting
                     if not operator in self.conflictingOperators:
                         # assign an operator to the priorityObject
-                        #=======================================================
-#                         # testing
-#                         print 'router will assign', operator.id, 'to', operator.candidateStation.id
-                        #=======================================================
+                        self.printTrace('router', ' will assign'+operator.id+'to'+operator.candidateStation.id)
                         operator.assignTo(operator.candidateStation)
                         if not operator.candidateStation in self.toBeSignalled:
                             self.toBeSignalled.append(operator.candidateStation)
@@ -197,18 +190,11 @@ class Router(ObjectInterruption):
                             and (not operator in self.conflictingOperators)\
                             and operator.candidateEntity.candidateReceiver:
                             # assign an operator to the priorityObject
-                            #=======================================================
-#                             # testing
-#                             print 'router will assign', operator.id, 'to', operator.candidateEntity.candidateReceiver.id
-                            #=======================================================
+                            self.printTrace('router', 'will assign '+operator.id+' to -->  '+operator.candidateEntity.candidateReceiver.id)
                             operator.assignTo(operator.candidateEntity.candidateReceiver)
                             if not operator.candidateEntity.currentStation in self.toBeSignalled:
                                 self.toBeSignalled.append(operator.candidateEntity.currentStation)
-        #===================================================================
-#         # testing
-#         print 'router found objects to be signalled'
-#         print [str(object.id) for object in self.toBeSignalled] 
-        #===================================================================
+        self.printTrace('objects to be signalled:'+' '*11, [str(object.id) for object in self.toBeSignalled])
     
     # =======================================================================
     #                 return control to the Machine.run
@@ -251,29 +237,20 @@ class Router(ObjectInterruption):
                     assert station in self.toBeSignalled, 'the station must be in toBeSignalled list'
                     if station.broker.waitForOperator:
                         # signal this station's broker that the resource is available
-                        #===========================================================
-#                         # testing
-#                         print now(), 'router signalling broker of                            ', operator.isAssignedTo().id
-                        #===========================================================
+                        self.printTrace('router', 'signalling broker of'+' '*50+operator.isAssignedTo().id)
                         station.broker.resourceAvailable.signal(now())
                     else:
                         # signal the queue proceeding the station
                         if station.canAccept()\
                              and any(type=='Load' for type in station.multOperationTypeList):
-                            #=======================================================
-#                             # testing
-#                             print now(), 'router signalling                                    ', operator.isAssignedTo().id
-                            #=======================================================
+                            self.printTrace('router', 'signalling'+' '*50+operator.isAssignedTo().id)
                             station.loadOperatorAvailable.signal(now())
                 # in case the router deals with managed entities
                 #------------------------------------------------------------------------------ 
                 else:
                     if station in self.pendingMachines and station in self.toBeSignalled:
                         # signal this station's broker that the resource is available
-                        #===========================================================
-#                         # testing
-#                         print now(), 'router signalling broker of', operator.isAssignedTo().id
-                        #===========================================================
+                        self.printTrace('router','signalling broker of'+' '*50+operator.isAssignedTo().id)
                         operator.isAssignedTo().broker.resourceAvailable.signal(now())
                     elif (not station in self.pendingMachines) or (not station in self.toBeSignalled):
                         # signal the queue proceeding the station
@@ -281,10 +258,7 @@ class Router(ObjectInterruption):
                         assert operator.candidateEntity.currentStation in G.QueueList, 'the candidateEntity currentStation to receive signal from Router is not a queue'
                         if operator.candidateEntity.candidateReceiver.canAccept()\
                              and any(type=='Load' for type in operator.candidateEntity.candidateReceiver.multOperationTypeList):
-                            #=======================================================
-#                             # testing
-#                             print now(), 'router signalling queue', operator.candidateEntity.currentStation.id
-                            #=======================================================
+                            self.printTrace('router','signalling queue'+' '*50+operator.candidateEntity.currentStation.id)
                             operator.candidateEntity.currentStation.loadOperatorAvailable.signal(now())
     
     #===========================================================================
@@ -314,12 +288,9 @@ class Router(ObjectInterruption):
                         break
 #         self.pendingMachines=[machine for machine in G.MachineList if machine.broker.waitForOperator]
         self.pendingObjects=self.pendingQueues+self.pendingMachines
-        #=======================================================================
-#         # testing
-#         print 'router found pending objects', '-'*6,'>', [str(object.id) for object in self.pendingObjects]
-#         print 'pendingMachines', '-'*19,'>', [str(object.id) for object in self.pendingMachines]
-#         print 'pendingQueues', '-'*21,'>', [str(object.id) for object in self.pendingQueues]
-        #=======================================================================
+        self.printTrace('router found pending objects'+'-'*6+'>', [str(object.id) for object in self.pendingObjects])
+        self.printTrace('pendingMachines'+'-'*19+'>', [str(object.id) for object in self.pendingMachines])
+        self.printTrace('pendingQueues'+'-'*21+'>', [str(object.id) for object in self.pendingQueues])
     
     #===========================================================================
     # finding the entities that require manager now
@@ -339,10 +310,7 @@ class Router(ObjectInterruption):
         if self.pending:
             if self.pending[0].manager:
                 self.managed=True
-        #=======================================================================
-#         # testing
-#         print 'found pending entities', '-'*12,'>', [str(entity.id) for entity in self.pending if not entity.type=='Part']
-        #=======================================================================
+        self.printTrace('found pending entities'+'-'*12+'>', [str(entity.id) for entity in self.pending if not entity.type=='Part'])
         
     #========================================================================
     # Find candidate Operators
@@ -422,14 +390,11 @@ class Router(ObjectInterruption):
                     self.updateSchedulingRule()
                 # find the candidateEntities for each operator
                 self.findCandidateEntities()
-        #=======================================================================
-#         # testing
-#         print 'router found candidate operators'
-#         if self.managed:
-#             print [operator.id for operator in self.candidateOperators]
-#         else:
-#             print [(operator.id, [station.id for station in operator.candidateStations]) for operator in self.candidateOperators]
-        #=======================================================================
+        if self.managed:
+            self.printTrace('router found candidate operators'+' '*3,[operator.id for operator in self.candidateOperators])
+        else:
+            self.printTrace('router found candidate operators'+' '*3,
+                            [(operator.id, [station.id for station in operator.candidateStations]) for operator in self.candidateOperators])
     
     #===========================================================================
     # find the candidate entities for each candidateOperator
@@ -496,14 +461,10 @@ class Router(ObjectInterruption):
             if operatorsWithOneOption:
                 self.candidateOperators.sort(key=lambda x: x in operatorsWithOneOption, reverse=True)
         
-        #=======================================================================
-#         # testing
-#         if self.managed:
-#             print 'router found the candidate entities for each operator'
-#             print [(str(operator.id),\
-#                      [str(x.id) for x in operator.candidateEntities])
-#                      for operator in self.candidateOperators]
-        #=======================================================================
+        if self.managed:
+            self.printTrace('candidateEntities for each operator', [(str(operator.id),\
+                                                                                       [str(x.id) for x in operator.candidateEntities])
+                                                                                      for operator in self.candidateOperators])
 
     #=======================================================================
     #                          Sort pendingEntities
@@ -522,7 +483,7 @@ class Router(ObjectInterruption):
             self.activeQSorter(criterion=self.schedulingRule,candList=candidateList)
         #=======================================================================
 #         # testing
-#         print 'router sorted pending entities'
+#         self.printTrace('router', ' sorted pending entities')
         #=======================================================================
          
     #=======================================================================
@@ -698,14 +659,10 @@ class Router(ObjectInterruption):
                         self.candidateOperators.remove(operator)
                         self.calledOperators.remove(operator)
             
-        #=======================================================================
-#         # testing
-#         if self.managed:
-#             print 'router found candidate receivers for each entity'
-#             print [(str(entity.id),\
-#                      str(entity.candidateReceiver.id))
-#                      for entity in self.pending if entity.candidateReceiver]
-        #=======================================================================     
+        if self.managed:
+            self.printTrace('candidateReceivers for each entity ',[(str(entity.id),\
+                                                                                 str(entity.candidateReceiver.id))
+                                                                                for entity in self.pending if entity.candidateReceiver])     
          
     # =======================================================================
     #    sorts the Operators of the Queue according to the scheduling rule

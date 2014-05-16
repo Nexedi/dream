@@ -266,10 +266,7 @@ class CoreObject(Process):
                     #if the receiver does not hold an Entity that is also critical
                     if not self.receiver.getActiveObjectQueue()[0].isCritical:
                         self.receiver.shouldPreempt=True
-                        #=======================================================
-                        # testing
-#                         print now(), self.id, 'preempting receiver', self.receiver.id,'.. '*6
-                        #=======================================================
+                        self.printTrace(self.id, 'preempting receiver'+self.receiver.id+'.. '*6)
                         self.receiver.preempt()
                         self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
         
@@ -310,10 +307,7 @@ class CoreObject(Process):
             # the hot flag should not be raised
             if successorsAreMachines:
                 activeEntity.hot = True
-        #=======================================================================
-#         # TESTING
-#         print now(), activeEntity.name, "got into "+self.id
-        #=======================================================================
+        self.printTrace(activeEntity.name, "got into "+self.id)
         # update wipStatList
         if self.gatherWipStat:
             self.wipStatList.append([now(), len(activeObjectQueue)])
@@ -333,7 +327,7 @@ class CoreObject(Process):
     # signal the successor that the object can dispose an entity 
     # =======================================================================
     def signalReceiver(self):
-#         print now(), self.id, 'trying to signal receiver'
+#         self.printTrace(self.id, 'trying to signal receiver')
         activeObject=self.getActiveObject()
         possibleReceivers=activeObject.findReceivers()
         if possibleReceivers:
@@ -356,10 +350,7 @@ class CoreObject(Process):
 
             activeObject.receiver=receiver
             activeObject.receiver.giver=activeObject
-            #===================================================================
-#             # TESTING
-#             print now(), self.id,' '*50, 'signalling receiver', self.receiver.id
-            #===================================================================
+            self.printTrace(self.id, ' '*50+'signalling receiver '+self.receiver.id)
             # assign the entry of the receiver
             activeObject.receiver.assignEntryTo()
             activeObject.receiver.isRequested.signal(activeObject)
@@ -392,10 +383,7 @@ class CoreObject(Process):
                 if receiver.isLoadRequested():
                     from Globals import G
                     if not G.Router.invoked:
-                        #===================================================================
-#                         # TESTING
-#                         print now(), self.id,' '*50, 'signalling router'
-                        #===================================================================
+                        self.printTrace(self.id, ' '*50+'signalling router')
                         G.Router.invoked=True
                         G.Router.isCalled.signal(now())
                     return True
@@ -425,7 +413,7 @@ class CoreObject(Process):
     # signal the giver that the entity is removed from its internalQueue
     # =======================================================================
     def signalGiver(self):
-#         print now(), self.id, 'trying to signal giver'
+#         self.printTrace(self.id, 'trying to signal giver')
         activeObject=self.getActiveObject()
         possibleGivers=activeObject.findGivers()
         if possibleGivers:
@@ -440,10 +428,7 @@ class CoreObject(Process):
                 giversReceiver=activeObject
             activeObject.giver=giver
             activeObject.giver.receiver=activeObject
-            #===================================================================
-#             # TESTING
-#             print now(), self.id,' '*50, 'signalling giver', self.giver.id
-            #===================================================================
+            self.printTrace(self.id, ' '*50+'signalling giver '+self.giver.id)
             activeObject.giver.canDispose.signal(activeObject)
             return True
         return False
@@ -497,8 +482,17 @@ class CoreObject(Process):
             if(G.traceIndex==65536):
                 G.traceIndex=0
                 G.sheetIndex+=1
-                G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)    
+                G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)
     
+    #===========================================================================
+    # prints message to the console
+    #===========================================================================
+    #print message in the console. Format is (Simulation Time | Entity or Frame Name | message)
+    def printTrace(self, entityName, message):
+        from Globals import G
+        if(G.console=="Yes"):         #output only if the user has selected to
+            print now(), entityName, message
+            
     # =======================================================================
     # outputs data to "output.xls" 
     # =======================================================================
@@ -604,15 +598,14 @@ class CoreObject(Process):
     # assign Exit of the object
     # =======================================================================
     def assignExitTo(self, callerObject=None):
-#         print self.id, 'assignExit'
-#         self.exitAssignedToReceiver = self.receiver
+#         self.printTrace(self.id, 'assignExit')
         self.exitAssignedToReceiver=callerObject
         
     # =======================================================================
     # unblock the object
     # =======================================================================
     def unAssignExit(self):
-#         print now(),self.id, 'unassignExit'
+#         self.printTrace(self.id, 'unassignExit')
         self.exitAssignedToReceiver = None
         
     # =======================================================================

@@ -103,6 +103,7 @@ def readGeneralInput():
     G.numberOfReplications=int(general.get('numberOfReplications', '1'))    # read the number of replications / default 1
     G.maxSimTime=float(general.get('maxSimTime', '100'))                    # get the maxSimTime / default 100
     G.trace=general.get('trace', 'No')                                      # get trace in order to check if trace is requested
+    G.console=general.get('console', 'No')                                  # get console flag in order to check if console print is requested
     G.confidenceLevel=float(general.get('confidenceLevel', '0.95'))         # get the confidence level
     G.seed = general.get('seed')
 

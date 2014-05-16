@@ -138,3 +138,11 @@ class ObjectInterruption(Process):
                 G.sheetIndex+=1
                 G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)
         
+    #===========================================================================
+    # prints message to the console
+    #===========================================================================
+    #print message in the console. Format is (Simulation Time | Entity or Frame Name | message)
+    def printTrace(self, entityName, message):
+        from Globals import G
+        if(G.console=="Yes"):         #output only if the user has selected to
+            print now(), entityName, message

@@ -50,6 +50,10 @@ class G:
     Base=1                          #the Base time unit. Default =1 minute
     maxSimTime=0                    #the total simulation time
     
+    # flag for printing in console
+    # -----------------------------------------------------------------------
+    console=""
+    
     # data for the trace output in excel
     # -----------------------------------------------------------------------
     trace=""                        #this is written from input. If it is "Yes" then you write to trace, else we do not
