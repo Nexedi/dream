@@ -197,6 +197,23 @@ class Queue(CoreObject):
     def getEntity(self):
         activeEntity=CoreObject.getEntity(self)  #run the default behavior 
         return activeEntity
+    
+    #===========================================================================
+    # checks whether the entity can proceed to a successor object
+    #===========================================================================
+    def canEntityProceed(self, entity=None):
+        activeObject=self.getActiveObject()
+        activeObjectQueue=activeObject.getActiveObjectQueue()
+        assert entity in activeObjectQueue, entity.id +' not in the internalQueue of'+ activeObject.id
+        activeEntity=entity
+        
+        mayProceed=False
+        # for all the possible receivers of an entity check whether they can accept and then set accordingly the canProceed flag of the entity 
+        for nextObject in [object for object in activeObject.next if object.canAcceptEntity(activeEntity)]:
+            activeEntity.canProceed=True
+            activeEntity.candidateReceivers.append(nextObject)
+            mayProceed=True
+        return mayProceed
             
     # =======================================================================
     #    sorts the Entities of the Queue according to the scheduling rule

@@ -384,35 +384,43 @@ class Router(ObjectInterruption):
                 for entity in [x for x in self.pending if x.manager]:
             # if the entity is ready to move to a machine and its manager is available
                     if entity.manager.checkIfResourceIsAvailable():
-                    # for entities of type OrderComponent, if they reside at a conditionalBuffer, 
-                    #     they must wait till their basicsEnded flag is raised
-                        if entity.type=='OrderComponent':
-                            from ConditionalBuffer import ConditionalBuffer
-                            if (entity.componentType=='Secondary'\
-                                and type(entity.currentStation) is ConditionalBuffer\
-                                and entity.order.basicsEnded==False):
-                                continue
-                    # unassembled components of a mould must wait at a MouldAssemblyBuffer till the componentsReadyForAssembly flag is raised 
-                        from MouldAssemblyBuffer import MouldAssemblyBuffer
-                        if type(entity.currentStation) is MouldAssemblyBuffer:
-                            if not entity.order.componentsReadyForAssembly:
-                                continue
-                # for all the possible receivers of an entity check whether they can accept and then set accordingly the canProceed flag of the entity 
-                        if not entity.currentStation in self.pendingMachines:
-                            for nextObject in [object for object in entity.currentStation.next if object.canAcceptEntity(entity)]:
-                                entity.canProceed=True
-                                entity.candidateReceivers.append(nextObject)
-                    # if the entity is in a machines who's broker waits for operator then
-                        if entity.currentStation in self.pendingMachines:
-                            entity.canProceed=True
-                            entity.candidateReceivers.append(entity.currentStation)
-                # if the entity can proceed, add its manager to the candidateOperators list
-                        if entity.canProceed and not entity.manager in self.candidateOperators:
+                        # check whether the entity canProceed and update the its candidateReceivers
+                        if entity.currentStation.canEntityProceed(entity)\
+                            and not entity.manager in self.candidateOperators:
                             self.candidateOperators.append(entity.manager)
+                        
+                        
+#                     # for entities of type OrderComponent, if they reside at a conditionalBuffer, 
+#                     #     they must wait till their basicsEnded flag is raised
+#                         if entity.type=='OrderComponent':
+#                             from ConditionalBuffer import ConditionalBuffer
+#                             if (entity.componentType=='Secondary'\
+#                                 and type(entity.currentStation) is ConditionalBuffer\
+#                                 and entity.order.basicsEnded==False):
+#                                 continue
+#                     # unassembled components of a mould must wait at a MouldAssemblyBuffer till the componentsReadyForAssembly flag is raised 
+#                         from MouldAssemblyBuffer import MouldAssemblyBuffer
+#                         if type(entity.currentStation) is MouldAssemblyBuffer:
+#                             if not entity.order.componentsReadyForAssembly:
+#                                 continue
+#                 # for all the possible receivers of an entity check whether they can accept and then set accordingly the canProceed flag of the entity 
+#                         if not entity.currentStation in self.pendingMachines:
+#                             for nextObject in [object for object in entity.currentStation.next if object.canAcceptEntity(entity)]:
+#                                 entity.canProceed=True
+#                                 entity.candidateReceivers.append(nextObject)
+#                     # if the entity is in a machines who's broker waits for operator then
+#                         if entity.currentStation in self.pendingMachines:
+#                             entity.canProceed=True
+#                             entity.candidateReceivers.append(entity.currentStation)
+#                              
+#                 # if the entity can proceed, add its manager to the candidateOperators list
+#                         if entity.canProceed and not entity.manager in self.candidateOperators:
+#                             self.candidateOperators.append(entity.manager)
+                            
                 # update the schedulingRule/multipleCriterionList of the Router
                 if self.sorting:
                     self.updateSchedulingRule()
-                    
+                # find the candidateEntities for each operator
                 self.findCandidateEntities()
         #=======================================================================
 #         # testing
@@ -430,9 +438,6 @@ class Router(ObjectInterruption):
         for operator in self.candidateOperators:
             # find which pendingEntities that can move to machines is the operator managing
             operator.pickCandidateEntitiesFrom(self.pending)
-#             for entity in [x for x in self.pending if x.canProceed and x.manager==operator]:
-#                 operator.candidateEntities.append(entity)
-#             print '    ', [x.id for x in operator.candidateEntities]
     
     #=======================================================================
     # find the schedulingRules of the candidateOperators

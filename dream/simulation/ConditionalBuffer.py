@@ -156,3 +156,27 @@ class ConditionalBuffer(QueueManagedJob):
                                                  and\
                                                  x.order.basicsEnded),reverse=True)
 #         activeObjectQueue.sort(key=lambda x: x.managerAvailable, reverse=True)
+
+    #===========================================================================
+    # checks whether the entity can proceed to a successor object
+    #===========================================================================
+    def canEntityProceed(self, entity=None):
+        activeObject=self.getActiveObject()
+        activeObjectQueue=activeObject.getActiveObjectQueue()
+        assert entity in activeObjectQueue, entity.id +' not in the internalQueue of'+ activeObject.id
+        activeEntity=entity
+        
+        # for entities of type OrderComponent, if they reside at a conditionalBuffer, 
+        #     they must wait till their basicsEnded flag is raised
+        if activeEntity.type=='OrderComponent':
+            if (activeEntity.componentType=='Secondary'\
+                and activeEntity.order.basicsEnded==False):
+                return False
+        
+        mayProceed=False
+        # for all the possible receivers of an entity check whether they can accept and then set accordingly the canProceed flag of the entity 
+        for nextObject in [object for object in activeObject.next if object.canAcceptEntity(activeEntity)]:
+            activeEntity.canProceed=True
+            activeEntity.candidateReceivers.append(nextObject)
+            mayProceed=True
+        return mayProceed

@@ -469,6 +469,12 @@ class CoreObject(Process):
                 maxTimeWaiting=timeWaiting    
         return giver
     
+    #===========================================================================
+    # checks whether the entity can proceed to a successor object
+    #===========================================================================
+    def canEntityProceed(self):
+        pass
+    
     # =======================================================================
     # actions to be taken after the simulation ends 
     # =======================================================================

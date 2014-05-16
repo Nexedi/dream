@@ -798,6 +798,24 @@ class Machine(CoreObject):
         candidateOperator.candidateStations.append(activeObject)
         return candidateOperator
     
+    #===========================================================================
+    # checks whether the entity can proceed to a successor object
+    #===========================================================================
+    def canEntityProceed(self, entity=None):
+        activeObject=self.getActiveObject()
+        activeObjectQueue=activeObject.getActiveObjectQueue()
+        assert entity in activeObjectQueue, entity.id +' not in the internalQueue of'+ activeObject.id
+        activeEntity=entity
+        
+        from Globals import G
+        router = G.Router
+        # if the entity is in a machines who's broker waits for operator then
+        if activeObject in router.pendingMachines:
+            activeEntity.canProceed=True
+            activeEntity.candidateReceivers.append(activeObject)
+            return True
+        return False
+    
     # =======================================================================
     #                   prepare the machine to be operated
     # =======================================================================

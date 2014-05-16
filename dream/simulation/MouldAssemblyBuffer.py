@@ -180,3 +180,23 @@ class MouldAssemblyBuffer(QueueManagedJob):
             return thecaller.isInRoute(activeObject)\
                     and thecaller.getActiveObjectQueue()[0].order is activeEntity.order\
                     and activeEntity.order.componentsReadyForAssembly
+                    
+    #===========================================================================
+    # checks whether the entity can proceed to a successor object
+    #===========================================================================
+    def canEntityProceed(self, entity=None):
+        activeObject=self.getActiveObject()
+        activeObjectQueue=activeObject.getActiveObjectQueue()
+        assert entity in activeObjectQueue, entity.id +' not in the internalQueue of'+ activeObject.id
+        activeEntity=entity
+        
+        # unassembled components of a mould must wait at a MouldAssemblyBuffer till the componentsReadyForAssembly flag is raised 
+        if not activeEntity.order.componentsReadyForAssembly:
+            return False
+        mayProceed=False
+        # for all the possible receivers of an entity check whether they can accept and then set accordingly the canProceed flag of the entity 
+        for nextObject in [object for object in activeObject.next if object.canAcceptEntity(activeEntity)]:
+            activeEntity.canProceed=True
+            activeEntity.candidateReceivers.append(nextObject)
+            mayProceed=True
+        return mayProceed
