@@ -119,21 +119,27 @@ class MachineJobShop(Machine):
         setupTime=activeEntity.remainingRoute[0].get('setupTime',{})
         self.distType=setupTime.get('distributionType','Fixed')
         self.setupTime=float(setupTime.get('mean', 0))
-        
+        removedStep = activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
+        return activeEntity
+    
+    #===========================================================================
+    # update the next list of the object based on the activeEentity
+    #===========================================================================
+    def updateNext(self,entity=None):
+        activeObject = self.getActiveObject()
+        activeEntity=entity
+        # read the possible receivers - update the next list
         import Globals
-        # read the list of next stations
         nextObjectIds=activeEntity.remainingRoute[1].get('stationIdsList',[])
         nextObjects = []
         for nextObjectId in nextObjectIds:
-            nextObject=Globals.findObjectById(nextObjectId)
+            nextObject = Globals.findObjectById(nextObjectId)
             nextObjects.append(nextObject)
         # update the next list of the object
         for nextObject in nextObjects:
             # append only if not already in the list
             if nextObject not in activeObject.next:
                 activeObject.next.append(nextObject)
-        removedStep = activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
-        return activeEntity  
                                                                              
     # =======================================================================  
     # calculates the processing time

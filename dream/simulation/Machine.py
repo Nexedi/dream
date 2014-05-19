@@ -704,11 +704,11 @@ class Machine(CoreObject):
         else:
             return True
     
-    # =======================================================================
-    # checks if the machine down or it can dispose the object
-    # =======================================================================
-    def ifCanDisposeOrHaveFailure(self):
-        return self.Up==False or self.getReceiverObject().canAccept(self) or len(self.getActiveObjectQueue())==0
+#     # =======================================================================
+#     # checks if the machine down or it can dispose the object
+#     # =======================================================================
+#     def ifCanDisposeOrHaveFailure(self):
+#         return self.Up==False or self.getReceiverObject().canAccept(self) or len(self.getActiveObjectQueue())==0
     
     # =======================================================================
     # get an entity from the giver

@@ -241,6 +241,9 @@ class CoreObject(Process):
         self.nameLastEntityEntered=activeEntity.name      # this holds the name of the last entity that got into Machine      
         self.downTimeProcessingCurrentEntity=0
         
+        # update the next list of the object
+        activeObject.updateNext(activeEntity)
+        
         # local variable to inform if the receiver is operated for Loading
         receiverOperated=False
         # perform preemption when required
@@ -278,6 +281,12 @@ class CoreObject(Process):
         if self.gatherWipStat:
             self.wipStatList.append([now(), len(activeObjectQueue)])
         return activeEntity
+    
+    #===========================================================================
+    # updates the next list of the object
+    #===========================================================================
+    def updateNext(self, entity=None):
+        pass
     
     #===========================================================================
     # find possible receivers
