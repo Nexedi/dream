@@ -71,6 +71,32 @@ class Entity(object):
         # variables used to avoid signalling the same object twice before it receives an entity
         self.receiver=None
         self.timeOfAssignement=0
+        
+    #===========================================================================
+    # method that finds a receiver for a candidate entity
+    #===========================================================================
+    def findCandidateReceiver(self):
+        from Globals import G
+        router=G.Router
+        # initiate the local list variable available receivers
+        availableReceivers=[x for x in self.candidateReceivers\
+                                        if not x in router.occupiedReceivers]
+        # and pick the object that is waiting for the most time
+        if availableReceivers:
+            # find the receiver that waits the most
+            availableReceiver=self.currentStation.selectReceiver(availableReceivers)
+            router.occupiedReceivers.append(availableReceiver)
+        # if there is no available receiver add the entity to the entitiesWithOccupiedReceivers list
+        else:
+            router.entitiesWithOccupiedReceivers.append(self)
+            availableReceiver=None
+        # if the sorting flag is not set then the sorting of each queue must prevail in case of operators conflict
+        if not router.sorting and not availableReceiver and bool(availableReceivers):
+            availableReceiver=self.currentStation.selectReceiver(self.candidateReceivers)
+            if not self in router.conflictingEntities:
+                router.conflictingEntities.append(self)
+        return availableReceiver
+            
     #===========================================================================
     # assign the entity to a station
     #===========================================================================
