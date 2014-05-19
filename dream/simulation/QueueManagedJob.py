@@ -113,10 +113,7 @@ class QueueManagedJob(QueueJobShop):
                     if receiver.identifyEntityToGet().manager.isAssignedTo()!=receiver:
                         from Globals import G
                         if not G.Router.invoked:
-                            #===================================================================
-#                             # TESTING
-#                             print now(), self.id,' '*50, 'signalling router'
-                            #===================================================================
+                            self.printTrace(self.id,' '*50+'signalling router')
                             G.Router.invoked=True
                             G.Router.isCalled.signal(now())
                         return True

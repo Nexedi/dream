@@ -229,44 +229,64 @@ class CoreObject(Process):
 #         #get the entity from the previous object and put it in front of the activeQ 
 #         activeObjectQueue.append(activeEntity)
         
-        
         #append the time to schedule so that it can be read in the result
         #remember that every entity has it's schedule which is supposed to be updated every time 
         # he entity enters a new object
         activeEntity.schedule.append([activeObject,now()])
-        
         #update variables
         activeEntity.currentStation=self
         self.timeLastEntityEntered=now()
         self.nameLastEntityEntered=activeEntity.name      # this holds the name of the last entity that got into Machine      
         self.downTimeProcessingCurrentEntity=0
-        
         # update the next list of the object
         activeObject.updateNext(activeEntity)
-        
-        # local variable to inform if the receiver is operated for Loading
-        receiverOperated=False
-        # perform preemption when required
-        # if the object is not Exit
-        # TODO this has to be performed after updating the next list
-        # TODO: create a method that should check if preemption should be performed
-        #     this should be done after the update of the next list
-        if activeObject.receiver:
-            # if the receiver has an operatorPool and its operationType is Load
-            try:
-                if activeObject.receiver.operatorPool\
-                     and (activeObject.receiver.type=='MachineJobShop'\
-                       or activeObject.receiver.type=='MachineManagedJob'):
-                    # and the operationType list contains Load, the receiver is operated
-                    if (activeObject.receiver.operatorPool!="None")\
-                        and any(type=="Load" for type in activeObject.receiver.multOperationTypeList):
-                        receiverOperated=True
-            except:
-                pass
+        self.outputTrace(activeEntity.name, "got into "+self.objName)
+        self.printTrace(activeEntity.name, "got into "+self.id)
+        return activeEntity
+    
+    #===========================================================================
+    # updates the next list of the object
+    #===========================================================================
+    def updateNext(self, entity=None):
+        pass
+    
+    #===========================================================================
+    # check whether there is a critical entity to be disposed
+    # and if preemption is required
+    #===========================================================================
+    def preemptReceiver(self):
+        self.printTrace(self.id, 'trying to preempt a receiver')
+        activeObject=self.getActiveObject()
+        activeObjectQueue=self.getActiveObjectQueue()
+    
+        # find a critical order if any
+        critical=False
+        for entity in activeObjectQueue:
+            if entity.isCritical:
+                activeEntity=entity
+                critical=True
+                break
+        if critical:
+            # pick a receiver
+            receiver=next(object for object in activeObject.next if object.isPreemptive and object.checkIfActive())
+            # if there is any receiver that can be preempted check if it is operated
+            if receiver:
+                receiverOperated=False          # local variable to inform if the receiver is operated for Loading
+                try:
+                    # TODO: implement preemption for simple machines
+                    if receiver.operatorPool\
+                        and (type(receiver) is MachineJobShop\
+                             or type(receiver) is MachineManagedJob):
+                        # and the operationType list contains Load, the receiver is operated
+                        if (receiver.operatorPool!="None")\
+                            and any(type=="Load" for type in receiver.multOperationTypeList):
+                            receiverOperated=True
+                except:
+                    pass
             # if the obtained Entity is critical and the receiver is preemptive and not operated
             #     in the case that the receiver is operated the preemption is performed by the operators
             #     if the receiver is not Up then no preemption will be performed
-            if activeEntity.isCritical and activeObject.receiver.isPreemptive and activeObject.receiver.Up and not receiverOperated:
+            if not receiverOperated:
                 #if the receiver is not empty
                 if len(self.receiver.getActiveObjectQueue())>0:
                     #if the receiver does not hold an Entity that is also critical
@@ -275,18 +295,11 @@ class CoreObject(Process):
                         self.printTrace(self.id, 'preempting receiver'+self.receiver.id+'.. '*6)
                         self.receiver.preempt()
                         self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
-        self.outputTrace(activeEntity.name, "got into "+self.objName)
-        self.printTrace(activeEntity.name, "got into "+self.id)
+                        # TODO: sort so that the critical entity is placed in front
+                        activeObjectQueue.sort(key=lambda x: x==activeEntity, reverse=True)
         # update wipStatList
         if self.gatherWipStat:
             self.wipStatList.append([now(), len(activeObjectQueue)])
-        return activeEntity
-    
-    #===========================================================================
-    # updates the next list of the object
-    #===========================================================================
-    def updateNext(self, entity=None):
-        pass
     
     #===========================================================================
     # find possible receivers
@@ -302,7 +315,7 @@ class CoreObject(Process):
     # signal the successor that the object can dispose an entity 
     # =======================================================================
     def signalReceiver(self):
-#         self.printTrace(self.id, 'trying to signal receiver')
+        self.printTrace(self.id, 'trying to signal receiver')
         activeObject=self.getActiveObject()
         possibleReceivers=activeObject.findReceivers()
         if possibleReceivers:
@@ -314,6 +327,8 @@ class CoreObject(Process):
                 if not possibleReceivers:
                     receiversGiver=None
                     receiver=None
+                    # if no receiver can accept then try to preempt a receive if the stations holds a critical order
+                    self.preemptReceiver()
                     return False
                 receiver=activeObject.selectReceiver(possibleReceivers)
                 receiversGiver=activeObject
@@ -330,6 +345,8 @@ class CoreObject(Process):
             activeObject.receiver.assignEntryTo()
             activeObject.receiver.isRequested.signal(activeObject)
             return True
+        # if no receiver can accept then try to preempt a receive if the stations holds a critical order
+        self.preemptReceiver()
         return False
     
     # =======================================================================
