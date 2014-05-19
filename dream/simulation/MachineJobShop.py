@@ -227,10 +227,7 @@ class MachineJobShop(Machine):
     # method to execute preemption
     # =======================================================================    
     def preempt(self):
-        #=======================================================================
-        # testing 
-#         print now(), self.id, 'preempting', ' .'*7
-        #=======================================================================
+        self.printTrace(self.id,'preempting'+' .'*7)
         activeObject=self.getActiveObject()
         activeEntity=self.getActiveObjectQueue()[0] #get the active Entity
         #calculate the remaining processing time
@@ -246,12 +243,10 @@ class MachineJobShop(Machine):
                                                'processingTime':\
                                                     {'distributionType':'Fixed',\
                                                      'mean':str(remainingProcessingTime)}})
-#         activeEntity.remainingRoute.insert(0, [self.id, remainingProcessingTime])
         activeEntity.remainingRoute.insert(0, {'stationIdsList':[str(self.lastGiver.id)],\
                                                'processingTime':\
                                                     {'distributionType':'Fixed',\
-                                                     'mean':'0'}})
-#         activeEntity.remainingRoute.insert(0, [self.lastGiver.id, 0])        
+                                                     'mean':'0'}})   
         #set the receiver  as the object where the active entity was preempted from 
         self.receiver=self.lastGiver
         self.next=[self.receiver]

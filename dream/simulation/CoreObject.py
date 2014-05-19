@@ -245,6 +245,9 @@ class CoreObject(Process):
         receiverOperated=False
         # perform preemption when required
         # if the object is not Exit
+        # TODO this has to be performed after updating the next list
+        # TODO: create a method that should check if preemption should be performed
+        #     this should be done after the update of the next list
         if activeObject.receiver:
             # if the receiver has an operatorPool and its operationType is Load
             try:
@@ -269,44 +272,7 @@ class CoreObject(Process):
                         self.printTrace(self.id, 'preempting receiver'+self.receiver.id+'.. '*6)
                         self.receiver.preempt()
                         self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
-        
-        # TODO have to clear the activeCallersList of the operator to start working in the machine
-        #     consider the case where the operator is already released after loading, the getEntity is invoked after that
-        # if the object receiving an entity has an OperatorPool
-        try:
-            if self.operatorPool!='None' and any(type=='Load' for type in self.multOperationTypeList):
-                if self.currentOperator:
-                    self.currentOperator.activeCallersList=[]
-        except:
-            pass
-            
-        
-#         # activeCallersList of an operator holds the CoreObjects that have called him
-#         # when an Entity is obtained that has the operator as manager we need to reset this list 
-#         if activeEntity.manager and (self.type=='MachineManagedJob' or self.type=='MFStation'):
-#             if activeEntity.manager.activeCallersList:
-#                 activeEntity.manager.activeCallersList=[]
-                
         self.outputTrace(activeEntity.name, "got into "+self.objName)
-        # TODO: if the successor of the object is a machine that is operated with operationType 'Load'
-        #     then the flag hot of the activeEntity must be set to True 
-        #     to signalize that the entity has reached its final destination before the next Machine
-        # if the entity is not of type Job
-        if activeEntity.family=='Entity':
-            from Globals import G
-            successorsAreMachines=True
-            # for all the objects in the next list
-            for object in activeObject.next:
-            # if the object is not in the MachineList
-            # TODO: We must consider also the case that entities can be blocked before they can reach 
-            #     the heating point. In such a case they must be removed from the G.pendingEntities list
-            #     and added again after they are unblocked
-                if not object in G.MachineList:
-                    successorsAreMachines=False
-                    break
-            # the hot flag should not be raised
-            if successorsAreMachines:
-                activeEntity.hot = True
         self.printTrace(activeEntity.name, "got into "+self.id)
         # update wipStatList
         if self.gatherWipStat:

@@ -334,18 +334,8 @@ class Machine(CoreObject):
             #     but setupTime is given for the entity to be processed
 #             try:
 #                 if self.setupTime and not any(type=="Setup" for type in self.multOperationTypeList):
-#                     #===============================================================
-#                     # testing
-#                     if self.id=='MILL1' or self.id=='MILL2':
-#                         print '    ', now(), self.id, 'auto-setup'
-#                     #===============================================================
 #                     self.timeSetupStarted = now()
 #                     yield hold,self,self.calculateSetupTime()
-#                     #===========================================================
-#                     # testing
-#                     if self.id=='MILL1' or self.id=='MILL2':
-#                         print '    ', now()
-#                     #===========================================================
 #                     # TODO: if self.interrupted(): There is the issue of failure during the setup
 #                     self.timeSetupEnded = now()
 #                     self.setupTimeCurrentEntity = self.timeSetupEnded-self.timeSetupStarted
