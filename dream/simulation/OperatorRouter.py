@@ -64,6 +64,7 @@ class Router(ObjectInterruption):
         
         self.conflictingOperators=[]                 # list with the operators that have candidateEntity with conflicting candidateReceivers
         self.conflictingEntities=[]                  # entities with conflictingReceivers
+        self.conflictingStations=[]                  # stations with conflicting operators
         self.occupiedReceivers=[]                    # occupied candidateReceivers of a candidateEntity
         self.entitiesWithOccupiedReceivers=[]        # list of entities that have no available receivers
         
@@ -90,6 +91,7 @@ class Router(ObjectInterruption):
         self.toBeSignalled=[]
         self.conflictingOperators=[]
         self.conflictingEntities=[]
+        self.conflictingStations=[]
         self.occupiedReceivers=[]
         self.entitiesWithOccupiedReceivers=[]
         
@@ -97,10 +99,8 @@ class Router(ObjectInterruption):
     #                          the run method
     # =======================================================================
     '''
-    all the pendingEntities that are hot should be examined if they can proceed to the next
-    step of their route as they may not be first in the activeQueue of their currentStations (QueueManagedJob).
-    If they can be disposed to the next object then the router should wait again till the machine to receive them
-    returns canAcceptAndIsRequested (inPositionToGet is True)
+    after the events are over, assign the operators to machines for loading or simple processing
+    read the pendingEntities currentStations, these are the stations (queues) that may be signalled
     '''
     def run(self):
         from Globals import G
@@ -124,9 +124,7 @@ class Router(ObjectInterruption):
                     self.printTrace('','there are NO more events for now')
                     break
             self.printTrace('','=-'*15)
-            # after the events are over, assign the operators to machines for loading or simple processing
-            # read the pendingEntities currentStations, these are the stations (queues) that may be signalled
-            # the activeCallers list is updated each time the canAcceptAndIsRequested returns true even if the machine is not signalled
+            
             
             # find the pending objects
             self.findPendingObjects()
@@ -227,7 +225,7 @@ class Router(ObjectInterruption):
         del self.toBeSignalled[:]
         del self.multipleCriterionList[:]
         del self.conflictingOperators[:]
-        del self.conflictingOperators[:]
+        del self.conflictingStations[:]
         del self.conflictingEntities[:]
         del self.occupiedReceivers[:]
         del self.entitiesWithOccupiedReceivers[:]
@@ -478,53 +476,38 @@ class Router(ObjectInterruption):
     # TODO: have to sort again after choosing candidateEntity
     #=======================================================================
     def findCandidateReceivers(self):
+        # finally we have to sort before giving the entities to the operators
+        # If there is an entity which must have priority then it should be assigned first
+        # TODO: sorting after choosing candidateEntity
         if not self.managed:
-            # initialise local variables occupiedReceivers and entitiesWithOccupiedReceivers
-            conflictingStations=[]                 # list with the operators that have candidateEntity with conflicting candidateReceivers
-            conflictingOperators=[]
-             
-            # finally we have to sort before giving the entities to the operators
-            # If there is an entity which must have priority then it should be assigned first
-#             # TODO: sorting after choosing candidateEntity
-             
             # for the candidateOperators that do have candidateEntities pick a candidateEntity
             for operator in [x for x in self.candidateOperators if x.candidateStations]:
                 # find the first available entity that has no occupied receivers
-                operator.candidateStation, conflictingStations = operator.findCandidateStation(conflictingStations)
+                operator.candidateStation = operator.findCandidateStation()
              
             # find the resources that are 'competing' for the same station
             if not self.sorting:
                 # if there are entities that have conflicting receivers
-                if len(conflictingStations):
-                    for operator in self.candidateOperators:
-                        if operator.candidateStation in conflictingStations:
-                            conflictingOperators.append(operator)
-                self.conflictingOperators=conflictingOperators
-            # keep the sorting provided by the queues if there is conflict between operators
-            conflictingGroup=[]                     # list that holds the operators that have the same recipient
-            if not self.sorting and self.conflictingOperators:
-                # for each of the candidateReceivers
-                for station in conflictingStations:
-                    # find the group of operators that compete for this station
-                    conflictingGroup=[operator for operator in self.conflictingOperators if operator.candidateStation==station]
-                    # the operator that can proceed is the manager of the entity as sorted by the queue that holds them
-                    conflictingGroup.sort()
-                # the operators that are not first in the list cannot proceed
-                for operator in conflitingGroup:
-                    if conflictingGroup.index(operator)!=0:
-                        self.candidateOperators.remove(operator)
-                        self.calledOperators.remove(operator)
+                if len(self.conflictingStations):
+                    self.conflictingOperators=[operator for operator in self.candidateOperators\
+                                               if operator.candidateStation in self.conflictingStations]
+                # keep the sorting provided by the queues if there is conflict between operators
+                conflictingGroup=[]                     # list that holds the operators that have the same recipient
+                if self.conflictingOperators:
+                    # for each of the candidateReceivers
+                    for station in self.conflictingStations:
+                        # find the group of operators that compete for this station
+                        conflictingGroup=[operator for operator in self.conflictingOperators if operator.candidateStation==station]
+                        # the operator that can proceed is the manager of the entity as sorted by the queue that holds them
+                        conflictingGroup.sort()
+                        # the operators that are not first in the list cannot proceed
+                        for operator in conflitingGroup:
+                            if conflictingGroup.index(operator)!=0:
+                                self.candidateOperators.remove(operator)
         
         # if the moving entities are managed
         #------------------------------------------------------------------------------
         else:
-            # initialise local variable conflictingOperators
-            conflictingOperators=[]                 # list with the operators that have candidateEntity with conflicting candidateReceivers
-
-#             # finally we have to sort before giving the entities to the operators
-#             # If there is an entity which must have priority then it should be assigned first
-#             # TODO: sorting after choosing candidateEntity
-             
             # for the candidateOperators that do have candidateEntities pick a candidateEntity
             for operator in [x for x in self.candidateOperators if x.candidateEntities]:
                 # find the first available entity that has no occupied receivers
@@ -534,36 +517,34 @@ class Router(ObjectInterruption):
                         operator.candidateEntity.candidateReceiver=operator.candidateEntity.currentStation
                     else:
                         operator.candidateEntity.candidateReceiver=operator.candidateEntity.findCandidateReceiver()
+                        
             # find the resources that are 'competing' for the same station
             if not self.sorting:
                 # if there are entities that have conflicting receivers
                 if len(self.conflictingEntities):
-                    for operator in self.candidateOperators:
-                        if operator.candidateEntity in self.conflictingEntities:
-                            conflictingOperators.append(operator)
-                        elif operator.candidateEntity.candidateReceiver in [x.candidateReceiver for x in self.conflictingEntities]:
-                            conflictingOperators.append(operator)
-                self.conflictingOperators=conflictingOperators
-            # keep the sorting provided by the queues if there is conflict between operators
-            conflictingGroup=[]                     # list that holds the operators that have the same recipient
-            if not self.sorting and self.conflictingOperators:
-                # for each of the candidateReceivers
-                for receiver in [x.candidateEntity.candidateReceiver for x in self.conflictingOperators]:
-                    # find the group of operators that compete for this station
-                    conflictingGroup=[operator for operator in self.conflictingOperators if operator.candidateEntity.candidateReceiver==receiver]
-                    assert len([station for station in [x.candidateEntity.currentStation for x in conflictingGroup]]),\
-                                'the conflicting entities must reside in the same queue'
-                    # for each of the competing for the same station operators 
-                    for operator in conflictingGroup:
-                    #     find the index of entities to be operated by them in the queue that holds them
-                        operator.ind=operator.candidateEntity.currentStation.getActiveObjectQueue().index(operator.candidateEntity)
-                    # the operator that can proceed is the manager of the entity as sorted by the queue that holds them
-                    conflictingGroup.sort(key=lambda x: x.ind)
-                # the operators that are not first in the list cannot proceed
-                for operator in conflictingGroup:
-                    if conflictingGroup.index(operator)!=0:
-                        self.candidateOperators.remove(operator)
-                        self.calledOperators.remove(operator)
+                    # find the conflictingOperators
+                    self.conflictingOperators=[operator for operator in self.candidateOperators\
+                                                if operator.candidateEntity in self.conflictingEntities or\
+                                                   operator.candidateEntity.candidateReceiver in [x.candidateReceiver for x in self.conflictingEntities]]
+                    # keep the sorting provided by the queues if there is conflict between operators
+                    conflictingGroup=[]                     # list that holds the operators that have the same recipient
+                if len(self.conflictingOperators):
+                    # for each of the candidateReceivers
+                    for receiver in [x.candidateEntity.candidateReceiver for x in self.conflictingOperators]:
+                        # find the group of operators that compete for this station
+                        conflictingGroup=[operator for operator in self.conflictingOperators if operator.candidateEntity.candidateReceiver==receiver]
+                        assert len([station for station in [x.candidateEntity.currentStation for x in conflictingGroup]]),\
+                                    'the conflicting entities must reside in the same queue'
+                        # for each of the competing for the same station operators 
+                        for operator in conflictingGroup:
+                        #     find the index of entities to be operated by them in the queue that holds them
+                            operator.ind=operator.candidateEntity.currentStation.getActiveObjectQueue().index(operator.candidateEntity)
+                        # the operator that can proceed is the manager of the entity as sorted by the queue that holds them
+                        conflictingGroup.sort(key=lambda x: x.ind)
+                        # the operators that are not first in the list cannot proceed
+                        for operator in conflictingGroup:
+                            if conflictingGroup.index(operator)!=0:
+                                self.candidateOperators.remove(operator)
             
         if self.managed:
             self.printTrace('candidateReceivers for each entity ',[(str(entity.id),\

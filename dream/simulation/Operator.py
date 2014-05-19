@@ -112,15 +112,15 @@ class Operator(ObjectResource):
     #===========================================================================
     # method that finds a candidate entity for an operator 
     #===========================================================================
-    def findCandidateStation(self, conflictingStations=[]):
-        conflicting=conflictingStations
+    def findCandidateStation(self):
         from Globals import G
-        candidateStation=next(x for x in self.candidateStations if not x in conflicting)
-        if not G.Router.sorting:
+        router=G.Router
+        candidateStation=next(x for x in self.candidateStations if not x in router.conflictingStations)
+        if not router.sorting:
             if not candidateStation:
                 candidateStation=next(x for x in self.candidateStations)
-                conflicting.append(candidateStation)
-        return candidateStation, conflictingStations
+                router.conflictingStations.append(candidateStation)
+        return candidateStation
     
     #===========================================================================
     # recursive method that searches for entities with available receivers
