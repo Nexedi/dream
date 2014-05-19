@@ -104,11 +104,60 @@ class Operator(ObjectResource):
     #=======================================================================
     # findCandidateEntities method finding the candidateEntities of the operator  
     #=======================================================================
-    def pickCandidateEntitiesFrom(self, pendingEntities=[]):
+    def findCandidateEntities(self, pendingEntities=[]):
         if pendingEntities:
             for entity in [x for x in pendingEntities if x.canProceed and x.manager==self]:
                 self.candidateEntities.append(entity)
     
+    #===========================================================================
+    # method that finds a candidate entity for an operator 
+    #===========================================================================
+    def findCandidateStation(self, conflictingStations=[]):
+        conflicting=conflictingStations
+        from Globals import G
+        candidateStation=next(x for x in self.candidateStations if not x in conflicting)
+        if not G.Router.sorting:
+            if not candidateStation:
+                candidateStation=next(x for x in self.candidateStations)
+                conflicting.append(candidateStation)
+        return candidateStation, conflictingStations
+    
+    #===========================================================================
+    # recursive method that searches for entities with available receivers
+    #===========================================================================
+    def findAvailableEntity(self):
+        from Globals import G
+        router=G.Router
+        # if the candidateEntities and the entitiesWithOccupiedReceivers lists are identical then return None 
+        if len(set(self.candidateEntities).intersection(router.entitiesWithOccupiedReceivers))==len(self.candidateEntities):
+            return None
+        availableEntity=next(x for x in self.candidateEntities if not x in router.entitiesWithOccupiedReceivers)
+        receiverAvailability=False
+        if availableEntity:
+            for receiver in availableEntity.candidateReceivers:
+                if not receiver in router.occupiedReceivers:
+                    receiverAvailability=True
+                    break
+            # if there are no available receivers for the entity
+            if not receiverAvailability:
+                router.entitiesWithOccupiedReceivers.append(availableEntity)
+                return self.findAvailableEntity()
+        return availableEntity
+    
+    #===========================================================================
+    # method that finds a candidate entity for an operator
+    #===========================================================================
+    def findCandidateEntity(self):
+        from Globals import G
+        router=G.Router
+        # pick a candidateEntity
+        candidateEntity=self.findAvailableEntity()
+        if not router.sorting:
+            if not candidateEntity:
+                candidateEntity=next(x for x in self.candidateEntities)
+                router.conflictingEntities.append(candidateEntity)
+        return candidateEntity
+        
     # =======================================================================
     #    sorts the candidateEntities of the Operator according to the scheduling rule
     # TODO: find a way to sort machines or candidate entities for machines, 
