@@ -59,28 +59,6 @@ class ConditionalBuffer(QueueManagedJob):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         
-#         # TODO: when the callerObject is not defined will receive error ass the checkIfResourceIsAvailable requests a caller
-#         
-#         #search if for one or more of the Entities the operator is available
-#         haveEntityWithAvailableManager=False
-#         for entity in [x for x in activeObjectQueue if x.manager]:
-#             if entity.manager.checkIfResourceIsAvailable(thecaller):
-#                 haveEntityWithAvailableManager=True
-#                 break
-#         #if none of the Entities has an available manager return False
-#         if not haveEntityWithAvailableManager:
-#             return False
-#         #sort the internal queue so that the Entities that have an available manager go in the front
-#         activeObject.sortEntities()
-#         #if we have only one possible receiver just check if the Queue holds one or more entities
-#         if(callerObject==None):
-#             return len(activeObjectQueue)>0
-#         
-#         #return True if the Queue has Entities and the caller is in the self.next list
-#         return len(activeObjectQueue)>0\
-#                 and (thecaller in activeObject.next)\
-#                 and thecaller.isInRoute(activeObject)
-        
         # and then perform the default behaviour
         if QueueManagedJob.haveToDispose(self,callerObject):
             return activeObject.checkCondition()

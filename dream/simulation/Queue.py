@@ -70,8 +70,6 @@ class Queue(CoreObject):
         self.wip_stat_list = []
         # event used by router
         self.loadOperatorAvailable=SimEvent('loadOperatorAvailable')
-        # flag used by router to check whether the 
-        self.canProceedWithGetEntity=False
 
     @staticmethod
     def getSupportedSchedulingRules():

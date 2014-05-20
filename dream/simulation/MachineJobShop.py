@@ -49,10 +49,7 @@ class MachineJobShop(Machine):
         activeObject=self.getActiveObject()
         activeObjectQueue=activeObject.getActiveObjectQueue()
         activeEntity=activeObjectQueue[0]
-        #=======================================================================
-#         # TESTING
-#         print activeObject.getActiveObjectQueue()[0].name,"ended processing in "+activeObject.objName
-        #=======================================================================
+        self.printTrace(activeObject.getActiveObjectQueue()[0].name,"ended processing in "+activeObject.objName)
         # reset the variables used to handle the interruptions timing 
         self.timeRestartingProcessing=0
         self.breakTime=0

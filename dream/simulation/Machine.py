@@ -203,11 +203,6 @@ class Machine(CoreObject):
         self.setupTimeCurrentEntity = 0             # holds the time to setup the machine before processing the current entity
         # TODO: check whether the requestingEntity variable can be used in OperatorPreemptive
         self.requestingEntity=None
-        # flag that shows if the station is ready to proceed with the getEntity
-        #    the router must set the flag to false if the station must not proceed with getEntity
-        #    he must also assign the operator to the station that will proceed (operatorAssignedTo)
-        self.canProceedWithGetEntity=False
-        self.inPositionToGet=False
         # variables used for interruptions
         self.tinM=0
         self.timeRestartingProcessing=0
@@ -746,7 +741,6 @@ class Machine(CoreObject):
     #                   prepare the machine to be operated
     # =======================================================================
     def requestRouter(self):
-        self.inPositionToGet=True
         if not self.router.isCalled():
             self.router.invoke()
             
