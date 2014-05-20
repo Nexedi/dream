@@ -132,10 +132,6 @@ class MachineManagedJob(MachineJobShop):
                         giverObject.assignExitTo(activeObject)
                     elif giverObject.exitIsAssignedTo()!=activeObject:
                         return False
-                    # if the activeObject is not in manager's activeCallersList of the entityToGet
-                    if activeObject not in giverObjectQueue[0].manager.activeCallersList:
-                        # append it to the activeCallerList of the manager of the entity to be received
-                        giverObjectQueue[0].manager.activeCallersList.append(self)
                     # update entityToGet
                     activeObject.entityToGet=giverObjectQueue[0]
                     #make the operators List so that it holds only the manager of the current order

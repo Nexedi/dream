@@ -49,7 +49,7 @@ class Operator(ObjectResource):
         self.Working=[]             # holds the percentage of working time 
     
         # the following attributes are not used by the Repairman
-        self.activeCallersList=[]               # the list of object that request the operator
+#         self.activeCallersList=[]               # the list of object that request the operator
         self.schedulingRule=schedulingRule      #the scheduling rule that the Queue follows
         self.multipleCriterionList=[]           #list with the criteria used to sort the Entities in the Queue
         SRlist = [schedulingRule]
@@ -164,16 +164,28 @@ class Operator(ObjectResource):
     #       now picks the machine that waits the most
     # =======================================================================
     def sortCandidateEntities(self):
+        from Globals import G
+        router=G.Router
         candidateMachines=self.candidateStations
         # for the candidateMachines
         if candidateMachines:
             # choose the one that waits the most time and give it the chance to grasp the resource
             for machine in candidateMachines:
+                machine.critical=False
                 if machine.broker.waitForOperator:
                     machine.timeWaiting=now()-machine.broker.timeWaitForOperatorStarted
                 else:
                     machine.timeWaiting=now()-machine.timeLastEntityLeft
+                # find the stations that hold critical entities
+                if self in router.preemptiveOperators:
+                    for entity in station.getActiveObjectQueue():
+                        if entity.isCritical:
+                            machine.critical=True
+                            break
+        # sort the stations according their timeWaiting
         self.candidateStations.sort(key= lambda x: x.timeWaiting, reverse=True)
+        # sort the stations if they hold critical entities
+        self.candidateStations.sort(key=lambda x: x.critical, reverse=False)
 #         # TODO: have to consider what happens in case of a critical order
 #         #if we have sorting according to multiple criteria we have to call the sorter many times
 #         if self.schedulingRule=="MC":
