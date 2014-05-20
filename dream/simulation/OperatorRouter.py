@@ -235,7 +235,7 @@ class Router(ObjectInterruption):
             operator.candidateStation=None
             operator.candidateEntity=None
         for entity in G.pendingEntities:
-            entity.canProceed=False
+            entity.proceed=False
             entity.candidateReceivers=[]
             entity.candidateReceiver=None    
         del self.candidateOperators[:]
@@ -424,8 +424,7 @@ class Router(ObjectInterruption):
             # if the entity is ready to move to a machine and its manager is available
                     if entity.manager.checkIfResourceIsAvailable():
                         # check whether the entity canProceed and update the its candidateReceivers
-#                         if entity.canEntityProceed()\
-                        if entity.currentStation.canEntityProceed(entity)\
+                        if entity.canProceed()\
                             and not entity.manager in self.candidateOperators:
                             self.candidateOperators.append(entity.manager)
             # TODO: check if preemption can be implemented for the managed case

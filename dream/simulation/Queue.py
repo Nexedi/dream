@@ -201,7 +201,7 @@ class Queue(CoreObject):
     #===========================================================================
     # checks whether the entity can proceed to a successor object
     #===========================================================================
-    def canEntityProceed(self, entity=None):
+    def canDeliver(self, entity=None):
         activeObject=self.getActiveObject()
         assert activeObject.isInActiveQueue(entity), entity.id +' not in the internalQueue of'+ activeObject.id
         activeEntity=entity
@@ -209,7 +209,7 @@ class Queue(CoreObject):
         mayProceed=False
         # for all the possible receivers of an entity check whether they can accept and then set accordingly the canProceed flag of the entity 
         for nextObject in [object for object in activeObject.next if object.canAcceptEntity(activeEntity)]:
-            activeEntity.canProceed=True
+            activeEntity.proceed=True
             activeEntity.candidateReceivers.append(nextObject)
             mayProceed=True
         return mayProceed

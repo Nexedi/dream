@@ -64,7 +64,7 @@ class Entity(object):
         self.family='Entity'
         
         # variables to be used by OperatorRouter
-        self.canProceed=False               # boolean that is used to check weather the entity can proceed to the candidateReceiver
+        self.proceed=False               # boolean that is used to check weather the entity can proceed to the candidateReceiver
         self.candidateReceivers=[]          # list of candidateReceivers of the entity (those stations that can receive the entity
         self.candidateReceiver=None         # the station that is finaly chosen to receive the entity
         
@@ -72,6 +72,13 @@ class Entity(object):
         self.receiver=None
         self.timeOfAssignement=0
         
+    #===========================================================================
+    # check if the entity can proceed to an operated machine, for use by Router
+    #===========================================================================
+    def canProceed(self):
+        activeObject=self.currentStation
+        return activeObject.canDeliver(self)
+    
     #===========================================================================
     # method that finds a receiver for a candidate entity
     #===========================================================================
