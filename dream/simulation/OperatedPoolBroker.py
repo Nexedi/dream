@@ -114,7 +114,6 @@ class Broker(ObjectInterruption):
     # ======= release a resource        
             elif not self.victim.isOperated():
                 self.victim.currentOperator.totalWorkingTime+=now()-self.victim.currentOperator.timeLastOperationStarted                
-#                 self.victim.outputTrace(self.victim.currentOperator.objName, "left "+ self.victim.objName)
                 yield release,self,self.victim.operatorPool.getResource(self.victim.currentOperator)
                 # signal the other brokers waiting for the same operators that they are now free
                 # also signal the stations that were not requested to receive because the operator was occupied
@@ -128,7 +127,6 @@ class Broker(ObjectInterruption):
                 # TODO: signalling the router will give the chance to it to take the control, but when will it eventually receive it. 
                 #     after signalling the broker will signal it's victim that it has finished it's processes 
                 # TODO: this wont work for the moment. The actions that follow must be performed by all operated brokers. 
-#                 self.signalLoadStations()
                 
                 self.printTrace(self.victim.currentOperator.objName, 'released '+self.victim.id)
                 # the victim current operator must be cleared after the operator is released

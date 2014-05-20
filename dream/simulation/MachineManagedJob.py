@@ -117,15 +117,6 @@ class MachineManagedJob(MachineJobShop):
         if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
                                                 or any(type=='Setup' for type in activeObject.multOperationTypeList))):
             if giverObject.haveToDispose(activeObject):
-                #===============================================================
-                # # TODO:  check whether this entity is the one to be hand in
-                # #     to be used in operatorPreemptive
-                # activeObject.requestingEntity=activeObject.giver.getActiveObjectQueue()[0]
-                # # TODO:  update the object requesting the operator
-                # activeObject.operatorPool.requestingObject=activeObject.giver
-                # # TODO:  update the last object calling the operatorPool
-                # activeObject.operatorPool.receivingObject=activeObject
-                #===============================================================
                 if activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity\
                     and activeObject.checkOperator(giverObject):
                     if not giverObject.exitIsAssignedTo():
@@ -144,33 +135,12 @@ class MachineManagedJob(MachineJobShop):
         # if the multOperationTypeList contains only Processing
         elif (activeObject.operatorPool!='None' and any(type=='Processing' for type in activeObject.multOperationTypeList)):
             if giverObject.haveToDispose(activeObject):
-                #===============================================================
-                # # TODO:  check whether this entity is the one to be hand in
-                # #     to be used in operatorPreemptive
-                # activeObject.requestingEntity=activeObject.giver.getActiveObjectQueue()[0]
-                # # TODO:  update the object requesting the operator
-                # activeObject.operatorPool.requestingObject=activeObject.giver
-                # # TODO:  update the last object calling the operatorPool
-                # activeObject.operatorPool.receivingObject=activeObject
-                #===============================================================
-                
-                # TODO: the operator must not be available for the object to receive the entity
+                # the operator must not be available for the object to receive the entity
                 #     the exit of the giver should not be assigned
                 #     the manager must not be available for the entity to be delivered
-                #     the machine can be appended to the activeCallersList of the manager
-                #        there may be a problem with the activeCallersList as the Router may assign 
                 #        the operator to the machine while he is not needed for receiving the entity
-                #     the entityToGet should be updated
-                if activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity:#\
-#                     and self.checkOperator()\
-#                     and not activeObject.giver.exitIsAssignedTo():
-#                     activeObject.giver.assignExitTo()
-#                     # if the activeObject is not in manager's activeCallersList of the entityToGet
-#                     if self not in activeObject.giver.getActiveObjectQueue()[0].manager.activeCallersList:
-#                         # append it to the activeCallerList of the manager of the entity to be received
-#                         activeObject.giver.getActiveObjectQueue()[0].manager.activeCallersList.append(self)
-#                         # update entityToGet
-#                         self.entityToGet=activeObject.giver.getActiveObjectQueue()[0]
+                if activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity:
+                    # the entityToGet should be updated
                     activeObject.entityToGet=giverObjectQueue[0]
                     #make the operators List so that it holds only the manager of the current order
                     activeObject.operatorPool.operators=[giverObjectQueue[0].manager]

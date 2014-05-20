@@ -638,15 +638,6 @@ class Machine(CoreObject):
         # has to block the predecessor giverObject to avoid conflicts with other competing machines
         if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList))):
             if giverObject.haveToDispose(activeObject):
-                #===============================================================
-                # # TODO: check whether this entity is the one to be hand in
-                # #     to be used in operatorPreemptive
-                # activeObject.requestingEntity=giverObject.getActiveObjectQueue()[0]
-                # # TODO: update the objects requesting the operator
-                # activeObject.operatorPool.requestingObject=activeObject.giver
-                # # TODOD: update the last object calling the operatorPool
-                # activeObject.operatorPool.receivingObject=activeObject
-                #===============================================================
                 if activeObject.checkOperator()\
                     and activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity:
                     if not giverObject.exitIsAssignedTo():
@@ -698,12 +689,6 @@ class Machine(CoreObject):
             return mayProceed or self.assignedOperator
         else:
             return True
-    
-#     # =======================================================================
-#     # checks if the machine down or it can dispose the object
-#     # =======================================================================
-#     def ifCanDisposeOrHaveFailure(self):
-#         return self.Up==False or self.getReceiverObject().canAccept(self) or len(self.getActiveObjectQueue())==0
     
     # =======================================================================
     # get an entity from the giver

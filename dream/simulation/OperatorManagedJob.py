@@ -67,25 +67,6 @@ class OperatorManagedJob(Operator):
 #                 return False
             return len(self.Res.activeQ)<self.capacity
         
-#     #===========================================================================
-#     # assign an operator
-#     #===========================================================================
-#     def assignTo(self, callerObject=None):
-#         assert callerObject!=None, 'the operator cannot be assigned to None'
-#         self.operatorAssignedTo=callerObject
-#     
-#     #===========================================================================
-#     # un-assign an operator
-#     #===========================================================================
-#     def unAssign(self):
-#         self.operatorAssignedTo=None
-#     
-#     #===========================================================================
-#     # check whether the operator is assigned
-#     #===========================================================================
-#     def isAssignedTo(self):
-#         return self.operatorAssignedTo
-        
     #===========================================================================
     # check if the operator has only one station as candidate option
     #===========================================================================
