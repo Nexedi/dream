@@ -163,23 +163,30 @@ class CoreObject(Process):
     def removeEntity(self, entity=None):
         self.addBlockage()
         
-        activeObjectQueue=self.getActiveObjectQueue()  
+        activeObjectQueue=self.getActiveObjectQueue()
         activeObjectQueue.remove(entity)       #remove the Entity from the queue
         if self.receiver:
-            receiverObject=self.getReceiverObject()
-            receiverObjectQueue=receiverObject.getActiveObjectQueue()
-            receiverObjectQueue.append(entity)
+            self.receiver.appendEntity(entity)
         
-        self.failureTimeInCurrentEntity=0 
+        self.failureTimeInCurrentEntity=0
         self.downTimeInTryingToReleaseCurrentEntity=0
         self.offShiftTimeTryingToReleaseCurrentEntity=0
         
         self.timeLastEntityLeft=now()
-        self.outputTrace(entity.name, "released "+self.objName) 
+        self.outputTrace(entity.name, "released "+self.objName)
         # update wipStatList
         if self.gatherWipStat:
             self.wipStatList.append([now(), len(activeObjectQueue)])
-        return entity     
+        return entity
+    
+    #===========================================================================
+    # appends entity to the receiver object. to be called by the removeEntity of the giver
+    # this method is created to be overridden by the Assembly class in its getEntity where Frames are loaded
+    #===========================================================================
+    def appendEntity(self,entity=None):
+        activeObject=self.getActiveObject()
+        activeObjectQueue=self.getActiveObjectQueue()
+        activeObjectQueue.append(entity)
     
     # =======================================================================
     #             called be getEntity it identifies the Entity 
