@@ -27,15 +27,19 @@ it gathers frames and parts which are loaded to the frames
 '''
 
 from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import waituntil, now, hold
+from SimPy.Simulation import waitevent, now, hold
 import xlwt
 from RandomNumberGenerator import RandomNumberGenerator
 from CoreObject import CoreObject
 
-#the Assembly object
+#===============================================================================
+# the Assembly object
+#===============================================================================
 class Assembly(CoreObject):
     class_name = 'Dream.Assembly'
-    #initialize the object      
+    #===========================================================================
+    # initialize the object      
+    #===========================================================================
     def __init__(self, id, name, processingTime=None):
         if not processingTime:
           processingTime = {'distributionType': 'Fixed',
@@ -71,7 +75,10 @@ class Assembly(CoreObject):
                                                         # when the entities have to be loaded to operatedMachines
                                                         # then the giverObjects have to be blocked for the time
                                                         # that the machine is being loaded 
-
+    
+    #===========================================================================
+    # initialize method
+    #===========================================================================
     def initialize(self):
         Process.__init__(self)
         CoreObject.initialize(self)
@@ -108,110 +115,194 @@ class Assembly(CoreObject):
         self.Res.activeQ=[]  
         self.Res.waitQ=[]  
             
-    
+    #===========================================================================
+    # class generator
+    #===========================================================================
     def run(self):
+        activeObjectQueue=self.getActiveObjectQueue()
+        # check if there is WIP and signal receiver
+        self.initialSignalReceiver()
         while 1:
-            yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Assembly can accept a frame
-                                                                    #and one "frame" giver requests it 
-            self.getEntity("Frame")                                 #get the Frame
-                                                                    
-            for i in range(self.getActiveObjectQueue()[0].capacity):         #this loop will be carried until the Frame is full with the parts
-                yield waituntil, self, self.isRequestedFromPart     #wait until a part is requesting for the assembly
-                self.getEntity("Part")
-               
-            self.outputTrace(self.getActiveObjectQueue()[0].name, "is now full in "+ self.objName)               
-            
-            self.timeLastFrameWasFull=now()
-            self.nameLastFrameWasFull=self.getActiveObjectQueue()[0].name    
+            self.printTrace(self.id, 'will wait for frame event')
+            # wait until the Queue can accept an entity and one predecessor requests it
+            yield waitevent, self, self.isRequested     #[self.isRequested,self.canDispose, self.loadOperatorAvailable]
+#             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Assembly can accept a frame
+#                                                                     #and one "frame" giver requests it 
+            if self.isRequested.signalparam:
+                self.printTrace(self.id, 'received a isRequested event from '+self.isRequested.signalparam.id)
+                # reset the isRequested signal parameter
+                self.isRequested.signalparam=None
                 
-            startWorkingTime=now()
-            self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()   
-            yield hold,self,self.totalProcessingTimeInCurrentEntity   #hold for the time the assembly operation is carried    
-            self.totalWorkingTime+=now()-startWorkingTime
+                self.getEntity("Frame")                                 #get the Frame
+                                                                    
+                for i in range(self.getActiveObjectQueue()[0].capacity):         #this loop will be carried until the Frame is full with the parts
+                    self.printTrace(self.id, 'will wait for part event')
+                    yield waitevent, self, self.isRequested
+                    if self.isRequested.signalparam:
+                        self.printTrace(self.id, 'received a isRequested event from '+self.isRequested.signalparam.id)
+                        # reset the isRequested signal parameter
+                        self.isRequested.signalparam=None
+#                         yield waituntil, self, self.isRequestedFromPart     #wait until a part is requesting for the assembly
+                        # TODO: fix the getEntity 'Part' case
+                        self.getEntity("Part")
+               
+                self.outputTrace(self.getActiveObjectQueue()[0].name, "is now full in "+ self.objName)
             
-            self.outputTrace(self.getActiveObjectQueue()[0].name, "ended processing in " + self.objName)
-            self.timeLastEntityEnded=now()
-            self.nameLastEntityEnded=self.getActiveObjectQueue()[0].name
+                self.timeLastFrameWasFull=now()
+                self.nameLastFrameWasFull=self.getActiveObjectQueue()[0].name
+                
+                startWorkingTime=now()
+                self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()
+                yield hold,self,self.totalProcessingTimeInCurrentEntity   #hold for the time the assembly operation is carried
+                self.totalWorkingTime+=now()-startWorkingTime
             
-            startBlockageTime=now()
-            self.completedJobs+=1                       #Assembly completed a job            
-            self.waitToDispose=True                     #since all the frame is full
-            while 1:
-                yield waituntil, self, self.next[0].canAccept       #wait until the next object is free
-                if self.next[0].getGiverObject()==self:                         #if the free object can accept from this Assembly
-                                                                                #break. Else continue
-                    break
+                self.outputTrace(self.getActiveObjectQueue()[0].name, "ended processing in " + self.objName)
+                self.timeLastEntityEnded=now()
+                self.nameLastEntityEnded=self.getActiveObjectQueue()[0].name
+            
+                startBlockageTime=now()
+                self.completedJobs+=1                       #Assembly completed a job
+                self.waitToDispose=True                     #since all the frame is full
+            
+            self.printTrace(self.id, 'will try to signal a receiver from generator')
+            # signal the receiver that the activeObject has something to dispose of
+            if not self.signalReceiver():
+            # if there was no available receiver, get into blocking control
+                while 1:
+                    # wait the event canDispose, this means that the station can deliver the item to successor
+                    event=yield waitevent, self, self.canDispose            #[self.canDispose, self.interruptionStart]
+                    # try to signal a receiver, if successful then proceed to get an other entity
+                    if self.signalReceiver():
+                        break
+                    # TODO: router most probably should signal givers and not receivers in order to avoid this hold,self,0
+                    #       As the receiver (e.g.) a machine that follows the machine receives an loadOperatorAvailable event,
+                    #       signals the preceding station (e.g. self.machine) and immediately after that gets the entity.
+                    #       the preceding machine gets the canDispose signal which is actually useless, is emptied by the following station
+                    #       and then cannot exit an infinite loop.
+                    yield hold, self, 0
+                    # if while waiting (for a canDispose event) became free as the machines that follows emptied it, then proceed
+                    if not self.haveToDispose():
+                        break
             #self.totalBlockageTime+=now()-startBlockageTime     #add the blockage time
             
   
-    #checks if the Assembly can accept an entity 
+    #===========================================================================
+    # checks if the Assembly can accept an entity 
+    #===========================================================================
     def canAccept(self, callerObject=None):
-        return len(self.getActiveObjectQueue())==0  
+        # get active and giver objects
+        activeObject=self.getActiveObject()
+        activeObjectQueue=self.getActiveObjectQueue()
+        #if there is no caller then perform the default 
+        if(callerObject==None):
+            return len(activeObjectQueue)==0
+        thecaller=callerObject
+        # if the object holds nothing then return true
+        if len(self.getActiveObjectQueue())==0:
+            return not activeObject.entryIsAssignedTo()
+        # if it holds already a frame then return true only for parts and if the frame has still space
+        if len(activeObjectQueue[0].getFrameQueue())<activeObjectQueue[0].capacity:
+            if callerObject.getActiveObjectQueue()[0].type=='Part':
+                return not activeObject.entryIsAssignedTo()
+        return False
             
-    #checks if the Assembly can accept an entity and there is a Frame waiting for it
-    def canAcceptAndIsRequested(self):
+    #===========================================================================
+    # checks if the Assembly can accept a part or a Frame
+    #===========================================================================
+    def canAcceptAndIsRequested(self, callerObject=None):
+        # get the active and the giver objects
+        activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
+#         giverObject=self.getGiverObject()
+        giverObject=callerObject
+        assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
+        if(len(giverObject.getActiveObjectQueue())>0):
+            #activate only if the caller carries Frame
+            if(giverObject.getActiveObjectQueue()[0].type=='Frame'):
+                return len(activeObjectQueue)==0 and giverObject.haveToDispose(activeObject)
+            #activate only if the caller carries Part
+            if(giverObject.getActiveObjectQueue()[0].type=='Part'):
+                return len(activeObjectQueue)==1 and giverObject.haveToDispose(activeObject)
+        return False
 
-        #loop through the possible givers
-        for object in self.previous:
-            #activate only if the possible giver is not empty
-            if(len(object.getActiveObjectQueue())>0):
-                #activate only if the caller carries Frame
-                if(object.getActiveObjectQueue()[0].type=='Frame'):
-                    #update the giver
-                    self.giver=object
-                    return len(activeObjectQueue)==0 and object.haveToDispose(self)
-        return False    
-    
-    #checks if the Assembly can accept an entity and there is a Frame waiting for it
-    def isRequestedFromPart(self):
-        activeObjectQueue=self.getActiveObjectQueue()
-
-        #loop through the possible givers
-        for object in self.previous:
-            #activate only if the possible giver is not empty
-            if(len(object.getActiveObjectQueue())>0):
-                #activate only if the caller carries Part
-                if(object.getActiveObjectQueue()[0].type=='Part'):
-                    #update giver
-                    self.giver=object
-                    return len(activeObjectQueue)==1 and object.haveToDispose(self)
-        return False 
-
-    #checks if the Assembly can dispose an entity to the following object     
-    def haveToDispose(self, callerObject=None): 
-        return len(self.getActiveObjectQueue())>0 and self.waitToDispose                                  
+    #===========================================================================
+    # checks if the Assembly can dispose an entity to the following object     
+    #===========================================================================
+    def haveToDispose(self, callerObject=None):
+        # get active object and its queue
+        activeObject=self.getActiveObject()
+        activeObjectQueue=self.getActiveObjectQueue()     
+        
+        #if we have only one possible receiver just check if the Queue holds one or more entities
+        if(callerObject==None):
+            return len(activeObjectQueue)>0 
+         
+        thecaller=callerObject
+        return len(activeObjectQueue)>0 and (thecaller in activeObject.next) and activeObject.waitToDispose
                                                
-    #removes an entity from the Assembly
+    #===========================================================================
+    # removes an entity from the Assembly
+    #===========================================================================
     def removeEntity(self, entity=None):
-        activeEntity=CoreObject.removeEntity(self, entity)               #run the default method     
-        self.waitToDispose=False  
-        return activeEntity                                              #the object does not wait to dispose now
+        activeObject=self.getActiveObject()
+        activeEntity=CoreObject.removeEntity(self, entity)               #run the default method
+        self.waitToDispose=False
+        if self.canAccept():
+            self.printTrace(self.id, 'will try signalling a giver from removeEntity')
+            self.signalGiver()
+        return activeEntity
     
-    #gets an entity from the giver   
-    #it may handle both Parts and Frames  
+    #===========================================================================
+    # gets an entity from the giver   
+    # it may handle both Parts and Frames  
+    #===========================================================================
     def getEntity(self, type):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         giverObject=self.getGiverObject()
         giverObject.sortEntities()      #sort the Entities of the giver according to the scheduling rule if applied
         giverObjectQueue=self.getGiverObjectQueue()
-        activeEntity=giverObjectQueue[0]
+        # if the giverObject is blocked then unBlock it
+        if giverObject.exitIsAssignedTo():
+            giverObject.unAssignExit()
+        # if the activeObject entry is blocked then unBlock it
+        if activeObject.entryIsAssignedTo():
+            activeObject.unAssignEntry()
         
-        if(type=="Part"):
-            activeObjectQueue[0].getFrameQueue().append(activeEntity)    #get the part from the giver and append it to the frame!
-            giverObject.removeEntity(activeEntity)     #remove the part from the previews object
-            self.outputTrace(activeEntity.name, "got into "+ self.objName)                       
-        elif(type=="Frame"):
-            activeObjectQueue.append(giverObjectQueue[0])    #get the frame from the giver
-            giverObject.removeEntity(activeEntity)   #remove the frame from the previews object
-            self.outputTrace(activeEntity.name, "got into "+ self.objName)
-            self.nameLastEntityEntered=activeEntity.name  
+        activeEntity=self.identifyEntityToGet()
+        assert activeEntity.type==type, 'the type of the entity to get must be of type '+type+' while it is '+activeEntity.type
+        #remove the entity from the previews object
+        giverObject.removeEntity(activeEntity)     
+        self.printTrace(activeEntity.name, "got into "+self.id)
+        self.outputTrace(activeEntity.name, "got into "+ self.objName)
+        # if the type is Frame 
+        if(activeEntity.type=="Frame"):
+            self.nameLastEntityEntered=activeEntity.name
             self.timeLastEntityEntered=now()
         activeEntity.currentStation=self
-        return activeEntity   
-      
-    #actions to be taken after the simulation ends
+        
+        # if the frame is not fully loaded then signal a giver
+        if len(activeObjectQueue[0].getFrameQueue())<activeObjectQueue[0].capacity:
+            self.printTrace(self.id, 'will try signalling a giver from getEntity')
+            self.signalGiver()
+        return activeEntity
+    
+    #===========================================================================
+    # appends entity to the receiver object. to be called by the removeEntity of the giver
+    # this method is created to be overridden by the Assembly class in its getEntity where Frames are loaded
+    #===========================================================================
+    def appendEntity(self,entity=None):
+        activeObject=self.getActiveObject()
+        activeObjectQueue=self.getActiveObjectQueue()
+        assert entity, 'the entity to be appended cannot be None'
+        if entity.type=='Part':
+            activeObjectQueue[0].getFrameQueue().append(entity)       #get the part from the giver and append it to the frame!
+        elif entity.type=='Frame':
+            activeObjectQueue.append(entity)                                #get the frame and append it to the internal queue
+    
+    #===========================================================================
+    # actions to be taken after the simulation ends
+    #===========================================================================
     def postProcessing(self, MaxSimtime=None):
         
         if MaxSimtime==None:
@@ -241,7 +332,9 @@ class Assembly(CoreObject):
         self.Working.append(100*self.totalWorkingTime/MaxSimtime)
         self.Blockage.append(100*self.totalBlockageTime/MaxSimtime)
     
-    #outputs data to "output.xls"
+    #===========================================================================
+    # outputs data to "output.xls"
+    #===========================================================================
     def outputResultsXL(self, MaxSimtime=None):
         from Globals import G
         from Globals import getConfidenceIntervals
@@ -280,7 +373,9 @@ class Assembly(CoreObject):
             G.outputIndex+=1
         G.outputIndex+=1 
         
-    #outputs results to JSON File
+    #===========================================================================
+    # outputs results to JSON File
+    #===========================================================================
     def outputResultsJSON(self):
         from Globals import G
         from Globals import getConfidenceIntervals

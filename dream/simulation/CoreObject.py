@@ -262,7 +262,7 @@ class CoreObject(Process):
     # and if preemption is required
     #===========================================================================
     def preemptReceiver(self):
-        self.printTrace(self.id, 'trying to preempt a receiver')
+#         self.printTrace(self.id, 'trying to preempt a receiver')
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
     
