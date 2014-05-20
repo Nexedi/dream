@@ -418,9 +418,9 @@ class Machine(CoreObject):
             
             # carry on actions that have to take place when an Entity ends its processing
             self.endProcessingActions()
-            
     # =============== release resource after the end of processing
             if (self.operatorPool!='None')\
+                and self.isOperated()\
                 and any(type=="Processing" for type in self.multOperationTypeList)\
                 and not self.interruption: 
                 self.releaseOperator()
@@ -653,11 +653,6 @@ class Machine(CoreObject):
                         giverObject.assignExitTo(activeObject)
                     elif giverObject.exitIsAssignedTo()!=activeObject:
                         return False
-                    # if the activeObject is not in operators' activeCallersList
-                    if activeObject not in activeObject.operatorPool.operators[0].activeCallersList:
-                        # append it to the activeCallerList of the operatorPool operators list
-                        for operator in activeObject.operatorPool.operators:
-                            operator.activeCallersList.append(activeObject)
                     return True
             else:
                 return False
@@ -812,14 +807,7 @@ class Machine(CoreObject):
     def releaseOperator(self):
         self.outputTrace(self.currentOperator.objName, "released from "+ self.objName)
         # set the flag operatorAssignedTo to None
-        self.currentOperator.operatorAssignedTo=None
-        # if the operationType is just Load and not Setup or Processing
-        #     then clear the activeCallersList of the currentOperator
-        if any(type=='Load' for type in self.multOperationTypeList)\
-            and not (any(type=='Setup' for type in self.multOperationTypeList)\
-                     or any(type=='Processing' for type in self.multOperationTypeList)):
-            self.currentOperator.activeCallersList=[]
-            
+        self.currentOperator.operatorAssignedTo=None            
         self.broker.invoke()
         self.toBeOperated = False
         
