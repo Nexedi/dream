@@ -139,7 +139,7 @@
             ]
         },
         "O1": {
-            "_class": "Dream.OperatorPreemptive",
+            "_class": "Dream.Operator",
             "capacity": 1,
             "name": "Operator1"
         }
