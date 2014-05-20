@@ -62,6 +62,9 @@ class Router(ObjectInterruption):
         # flag to notify whether the router is dealing with managed or simple entities
         self.managed=False
         
+        self.criticalPending=[]                      # list of critical entities that are pending
+        self.preemptiveOperators=[]                  # list of preemptiveOperators that should preempt their machines
+        
         self.conflictingOperators=[]                 # list with the operators that have candidateEntity with conflicting candidateReceivers
         self.conflictingEntities=[]                  # entities with conflictingReceivers
         self.conflictingStations=[]                  # stations with conflicting operators
@@ -87,6 +90,9 @@ class Router(ObjectInterruption):
         
         self.invoked=False
         self.managed=False
+        
+        self.criticalPending=[]
+        self.preemptiveOperators=[]
         
         self.toBeSignalled=[]
         self.conflictingOperators=[]
@@ -178,6 +184,7 @@ class Router(ObjectInterruption):
         # for all the operators that are requested
         for operator in self.candidateOperators:
             # check if the candidateOperators are available, if the are requested and reside in the pendingObjects list
+            #------------------------------------------------------------------------------
             if operator.checkIfResourceIsAvailable():
                 # if the router deals with managed entities
                 #------------------------------------------------------------------------------ 
@@ -189,6 +196,7 @@ class Router(ObjectInterruption):
                         operator.assignTo(operator.candidateStation)
                         if not operator.candidateStation in self.toBeSignalled:
                             self.toBeSignalled.append(operator.candidateStation)
+                # if the router deals not with managed entities
                 #------------------------------------------------------------------------------
                 else:
                     if operator.candidateEntity:
@@ -201,6 +209,18 @@ class Router(ObjectInterruption):
                             operator.assignTo(operator.candidateEntity.candidateReceiver)
                             if not operator.candidateEntity.currentStation in self.toBeSignalled:
                                 self.toBeSignalled.append(operator.candidateEntity.currentStation)
+            # if there must be preemption performed
+            #------------------------------------------------------------------------------
+            elif operator in self.preemptiveOperators and not operator in self.conflictingOperators:
+                if not self.managed:
+                    # if the operator is not currently working on the candidateStation then the entity he is
+                    #     currently working on must be preempted, and he must be unassigned and assigned to the new station
+                    if operator.getResourceQueue()[0].victim!=operator.candidateStation:
+                        operator.unAssign()
+                        self.printTrace('router', ' will assign'+operator.id+'to'+operator.candidateStation.id)
+                        operator.assignTo(operator.candidateStation)
+                    if not operator.candidateStation in self.toBeSignalled:
+                        self.toBeSignalled.append(operator.candidateStation)
         self.printTrace('objects to be signalled:'+' '*11, [str(object.id) for object in self.toBeSignalled])
     
     # =======================================================================
@@ -219,6 +239,8 @@ class Router(ObjectInterruption):
             entity.candidateReceivers=[]
             entity.candidateReceiver=None    
         del self.candidateOperators[:]
+        del self.criticalPending[:]
+        del self.preemptiveOperators[:]
         del self.pendingObjects[:]
         del self.pendingMachines[:]
         del self.pendingQueues[:]
@@ -246,7 +268,21 @@ class Router(ObjectInterruption):
                 #------------------------------------------------------------------------------ 
                 if not self.managed:
                     assert station in self.toBeSignalled, 'the station must be in toBeSignalled list'
-                    if station.broker.waitForOperator:
+                    # if the operator is preemptive
+                    #------------------------------------------------------------------------------
+                    if operator in self.preemptiveOperators:
+                        # if not assigned to the station currently working on, then preempt both stations
+                        if station!=operator.getResourceQueue()[0].victim:
+                            # preempt operators currentStation
+                            operator.getResourceQueue()[0].victim.shouldPreempt=True
+                            self.printTrace('router', 'preempting '+operator.getResourceQueue()[0].victim.id+'.. '*6)
+                            operator.getResourceQueue()[0].victim.preempt()
+                            operator.getResourceQueue()[0].victim.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
+                        station.shouldPreempt=True
+                        self.printTrace('router', 'preempting receiver '+station.id+'.. '*6)
+                        station.preempt()
+                        station.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
+                    elif station.broker.waitForOperator:
                         # signal this station's broker that the resource is available
                         self.printTrace('router', 'signalling broker of'+' '*50+operator.isAssignedTo().id)
                         station.broker.resourceAvailable.signal(now())
@@ -275,7 +311,7 @@ class Router(ObjectInterruption):
     #===========================================================================
     # clear the pending lists of the router
     #===========================================================================
-    def clearPending(self):
+    def clearPendingObjects(self):
         self.pendingQueues=[]
         self.pendingMachines=[]
         self.pendingObjects=[]
@@ -286,7 +322,7 @@ class Router(ObjectInterruption):
     #===========================================================================
     def findPendingObjects(self):
         from Globals import G
-        self.clearPending()
+        self.clearPendingObjects()
         for entity in G.pendingEntities:
             if entity.currentStation in G.MachineList:
                 if entity.currentStation.broker.waitForOperator:
@@ -316,12 +352,17 @@ class Router(ObjectInterruption):
                 for machine in entity.currentStation.next:
                     if any(type=='Load' for type in machine.multOperationTypeList):
                         self.pending.append(entity)
+                        # if the entity is critical add it to the criticalPending List
+                        if entity.isCritical and not entity in self.criticalPending:
+                            self.criticalPending.append(entity)
                         break
         # find out which type of entities are we dealing with, managed entities or not
         if self.pending:
             if self.pending[0].manager:
                 self.managed=True
         self.printTrace('found pending entities'+'-'*12+'>', [str(entity.id) for entity in self.pending if not entity.type=='Part'])
+        if self.criticalPending:
+            self.printTrace('found pending critical'+'-'*12+'>', [str(entity.id) for entity in self.criticalPending if not entity.type=='Part'])
         
     #========================================================================
     # Find candidate Operators
@@ -332,8 +373,6 @@ class Router(ObjectInterruption):
     #     .    the candidate receivers of the entities (the stations the operators will be working at)
     #========================================================================
     def findCandidateOperators(self):
-        #TODO: here check the case of no managed entities (normal machines)
-#         from Globals import G
         # if we are not dealing with managed entities
         #------------------------------------------------------------------------------ 
         if not self.managed:
@@ -351,6 +390,30 @@ class Router(ObjectInterruption):
                     candidateOperator=nextobject.findCandidateOperator()
                     if not candidateOperator in self.candidateOperators:
                         self.candidateOperators.append(candidateOperator)
+                # check the option of preemption if there are critical entities and no available operators
+                #------------------------------------------------------------------------------ 
+                if not object.findReceivers() and\
+                    any(entity for entity in object.getActiveObjectQueue() if entity.isCritical):
+                    # for each of the following objects
+                    for nextObject in object.next:
+                        # if an operator is occupied by a critical entity then that operator can preempt
+                        # This way the first operator that is not currently on a critical entity is invoked
+                        # TODO: consider picking an operator more wisely by sorting
+                        for operator in nextObject.operatorPool.operators:
+                            currentStation=operator.getResourceQueue()[0].victim
+                            if not currentStation.getActiveObjectQueue()[0].isCritical:
+                                preemptiveOperator=operator
+                                preemptiveOperator.candidateStations.append(nextObject)
+                                if not preemptiveOperator in self.candidateOperators:
+                                    self.candidateOperators.append(preemptiveOperator)
+                                    self.preemptiveOperators.append(preemptiveOperator)
+                                break
+#                         preemptiveOperator=next(operator for operator in nextObject.operatorPool.operators)
+#                         preemptiveOperator.candidateStations.append(nextObject)
+#                         if not preemptiveOperator in self.candidateOperators:
+#                             self.candidateOperators.append(preemptiveOperator)
+#                             self.preemptiveOperators.append(preemptiveOperator)
+
         # in case the router deals with managed entities
         #------------------------------------------------------------------------------ 
         else:
@@ -361,9 +424,11 @@ class Router(ObjectInterruption):
             # if the entity is ready to move to a machine and its manager is available
                     if entity.manager.checkIfResourceIsAvailable():
                         # check whether the entity canProceed and update the its candidateReceivers
+#                         if entity.canEntityProceed()\
                         if entity.currentStation.canEntityProceed(entity)\
                             and not entity.manager in self.candidateOperators:
                             self.candidateOperators.append(entity.manager)
+            # TODO: check if preemption can be implemented for the managed case
                 # find the candidateEntities for each operator
                 self.findCandidateEntities()      
          # update the schedulingRule/multipleCriterionList of the Router
