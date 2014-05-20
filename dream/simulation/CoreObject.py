@@ -273,10 +273,12 @@ class CoreObject(Process):
             if receiver:
                 receiverOperated=False          # local variable to inform if the receiver is operated for Loading
                 try:
+                    from MachineJobShop import MachineJobShop
+                    from MachineManagedJob import MachineManagedJob
                     # TODO: implement preemption for simple machines
                     if receiver.operatorPool\
-                        and (type(receiver) is MachineJobShop\
-                             or type(receiver) is MachineManagedJob):
+                        and isinstance(receiver, MachineJobShop) or\
+                            isinstance(receiver, MachineManagedJob):
                         # and the operationType list contains Load, the receiver is operated
                         if (receiver.operatorPool!="None")\
                             and any(type=="Load" for type in receiver.multOperationTypeList):
@@ -286,17 +288,19 @@ class CoreObject(Process):
             # if the obtained Entity is critical and the receiver is preemptive and not operated
             #     in the case that the receiver is operated the preemption is performed by the operators
             #     if the receiver is not Up then no preemption will be performed
-            if not receiverOperated:
-                #if the receiver is not empty
-                if len(self.receiver.getActiveObjectQueue())>0:
-                    #if the receiver does not hold an Entity that is also critical
-                    if not self.receiver.getActiveObjectQueue()[0].isCritical:
-                        self.receiver.shouldPreempt=True
-                        self.printTrace(self.id, 'preempting receiver'+self.receiver.id+'.. '*6)
-                        self.receiver.preempt()
-                        self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
-                        # TODO: sort so that the critical entity is placed in front
-                        activeObjectQueue.sort(key=lambda x: x==activeEntity, reverse=True)
+            if not receiverOperated and len(receiver.getActiveObjectQueue())>0:
+                #if the receiver does not hold an Entity that is also critical
+                if not receiver.getActiveObjectQueue()[0].isCritical:
+                    receiver.shouldPreempt=True
+                    activeObject.printTrace(self.id, 'preempting receiver '+receiver.id+'.. '*6)
+                    receiver.preempt()
+                    receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
+                    # sort so that the critical entity is placed in front
+                    activeObjectQueue.sort(key=lambda x: x==activeEntity, reverse=True)
+            # if there is a critical entity and the possible receivers are operated then signal the Router
+            elif receiverOperated:
+                activeObject.signalRouter(receiver)
+                activeObjectQueue.sort(key=lambda x: x==activeEntity, reverse=True)
         # update wipStatList
         if self.gatherWipStat:
             self.wipStatList.append([now(), len(activeObjectQueue)])
@@ -371,7 +375,8 @@ class CoreObject(Process):
     def signalRouter(self, receiver=None):
         # if an operator is not assigned to the receiver then do not signal the receiver but the Router
         try:
-            if not receiver.assignedOperator:
+            if not receiver.assignedOperator or\
+                   (receiver.isPreemptive and len(receiver.getActiveObjectQueue())>0):
                 if receiver.isLoadRequested():
                     from Globals import G
                     if not G.Router.invoked:
