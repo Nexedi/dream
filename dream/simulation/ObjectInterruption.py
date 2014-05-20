@@ -59,26 +59,6 @@ class ObjectInterruption(Process):
     def invoke(self):
         self.isCalled.signal(now())
     
-#     # =======================================================================
-#     #                 return control to the Machine.run
-#     # =======================================================================
-#     def exit(self):
-#         self.call=False
-    
-#     # =======================================================================
-#     #                        call the objectInterruption 
-#     #        filter for object interruption - yield waituntil isCalled
-#     # =======================================================================
-#     def isCalled(self):
-#         return self.call
-    
-#     # =======================================================================
-#     #        the objectIterruption returns control to machine.Run
-#     #        filter for Machine - yield request/release operator
-#     # =======================================================================
-#     def isSet(self):
-#         return not self.call
-    
     #===========================================================================
     # outputs data to "output.xls"
     #===========================================================================
@@ -119,7 +99,6 @@ class ObjectInterruption(Process):
     #===========================================================================
     def reactivateVictim(self):
         self.victim.interruptionEnd.signal(now())
-#         reactivate(self.victim)  
         
     #===========================================================================
     # outputs message to the trace.xls. Format is (Simulation Time | Victim Name | message)            

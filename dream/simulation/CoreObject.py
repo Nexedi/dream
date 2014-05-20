@@ -649,14 +649,6 @@ class CoreObject(Process):
     #===========================================================================
     def activeQueueIsEmpty(self):
         return len(self.Res.activeQ)==0
-    
-#     # =======================================================================
-#     # checks if the object is ready to receive an Entity
-#     # =======================================================================    
-#     def isReadyToGet(self):
-#         return True     # set to true since this control was not needed until now. 
-#                         # to return canAcceptAndIsRequested() would be more logical, but also computationally expensive
-#         #return self.canAcceptAndIsRequested()
         
     # =======================================================================
     # actions to be carried out when the processing of an Entity ends

@@ -455,9 +455,6 @@ class Machine(CoreObject):
                     # if while waiting (for a canDispose event) became free as the machines that follows emptied it, then proceed
                     if not self.haveToDispose():
                         break
-            # TODO: in operated Machine, sometimes the giver is not signalled from the removeEntity method because there
-            #       there was no operator available. In this case, by the time the operator is available again the Machine
-            #       must receive the entity from the predecessor and thus the 
     
     # =======================================================================
     # actions to be carried out when the processing of an Entity ends
@@ -475,13 +472,8 @@ class Machine(CoreObject):
             activeObject.outputTrace(activeObject.getActiveObjectQueue()[0].name,"ended processing in "+activeObject.objName)
         except IndexError:
             pass
-        # the entity that just got processed is cold again it will get 
-        # hot again by the time it reaches the giver of the next machine
         # TODO: Not only Machines require time to process entities
         #     entities such as batchReassembly/Decomposition require time to process entities
-        # TODO: We must consider also the case that entities can be blocked before they can reach 
-        #     the heating point. In such a case they must be removed from the G.pendingEntities list
-        #     and added again after they are unblocked
         if activeEntity.family=='Entity':
             successorsAreMachines=True
             from Globals import G
