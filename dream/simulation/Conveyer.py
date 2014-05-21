@@ -26,28 +26,26 @@ Models a conveyer object
 it gathers entities and transfers them with a certain speed
 '''
 
-from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import waituntil, now, hold, infinity, activate
+from SimPy.Simulation import Process, Resource, SimEvent
+from SimPy.Simulation import waitevent, now, hold, infinity, activate
 import xlwt
 from CoreObject import CoreObject
 
-#The conveyer object
+#===============================================================================
+# The conveyer object
+#===============================================================================
 class Conveyer(CoreObject):    
     class_name = 'Dream.Conveyer'
+    #===========================================================================
+    # the conveyer __init__ method
+    #===========================================================================
     def __init__(self, id, name, length, speed):
         CoreObject.__init__(self, id, name)
         self.type="Conveyer"
         self.speed=speed    #the speed of the conveyer in m/sec
         self.length=length  #the length of the conveyer in meters
-        self.previous=[]    #list with the previous objects in the flow
-        self.next=[]    #list with the next objects in the flow
-        self.nextIds=[]     #list with the ids of the next objects in the flow. For the exit it is always empty!
-        self.previousIds=[]     #list with the ids of the previous objects in the flow
-
-        #lists to hold statistics of multiple runs
-        self.Waiting=[]
-        self.Working=[]
-        self.Blockage=[]
+        # counting the total number of units to be moved through the whole simulation time
+        self.numberOfMoves=0
         
         self.predecessorIndex=0     #holds the index of the predecessor from which the Conveyer will take an entity next
         self.successorIndex=0       #holds the index of the successor where the Queue Conveyer dispose an entity next
@@ -56,36 +54,16 @@ class Conveyer(CoreObject):
                                                         # when the entities have to be loaded to operatedMachines
                                                         # then the giverObjects have to be blocked for the time
                                                         # that the machine is being loaded 
+        self.moveEnd=SimEvent('moveEnd')
         
+    #===========================================================================
+    # the initialize method
+    #===========================================================================
     def initialize(self):
         Process.__init__(self)
         CoreObject.initialize(self)
         self.Res=Resource(capacity=infinity)         
-        
-        self.Up=True                    #Boolean that shows if the object is in failure ("Down") or not ("up")
-        self.currentEntity=None      
-          
-        self.totalBlockageTime=0        #holds the total blockage time
-        self.totalFailureTime=0         #holds the total failure time
-        self.totalWaitingTime=0         #holds the total waiting time
-        self.totalWorkingTime=0         #holds the total working time
-        self.completedJobs=0            #holds the number of completed jobs 
-        
-        self.timeLastEntityEnded=0      #holds the last time that an entity ended processing in the object
-        self.nameLastEntityEnded=""     #holds the name of the last entity that ended processing in the object
-        self.timeLastEntityEntered=0    #holds the last time that an entity entered in the object
-        self.nameLastEntityEntered=""   #holds the name of the last entity that entered in the object
-        self.timeLastFailure=0          #holds the time that the last failure of the object started
-        self.timeLastFailureEnded=0          #holds the time that the last failure of the object Ended
-        self.downTimeProcessingCurrentEntity=0  #holds the time that the object was down while processing the current entity
-        self.downTimeInTryingToReleaseCurrentEntity=0 #holds the time that the object was down while trying 
-                                                      #to release the current entity  
-        self.downTimeInCurrentEntity=0                  #holds the total time that the object was down while holding current entity
-        self.timeLastEntityLeft=0        #holds the last time that an entity left the object
-                                                
-        self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                   
-                                                      
-        self.waitToDispose=False    #shows if the object waits to dispose an entity  
+
         self.position=[]            #list that shows the position of the corresponding element in the conveyer
         self.timeLastMoveHappened=0   #holds the last time that the move was performed (in reality it is 
                                         #continued, in simulation we have to handle it as discrete)
@@ -97,46 +75,96 @@ class Conveyer(CoreObject):
         self.conveyerMover=ConveyerMover(self)      #process that is triggered at the times when an entity reached the end or
                                                     #a place is freed. It performs the move at this point, 
                                                     #so if there are actions to be carried they will
-        self.call=False                             #flag that shows if the ConveyerMover should be triggered
         self.entityLastReachedEnd=None              #the entity that last reached the end of the conveyer
         self.timeBlockageStarted=now()              #the time that the conveyer reached the blocked state
                                                     #plant considers the conveyer blocked even if it can accept just one entity
-                                                    #I think this is false 
+                                                    #I think this is false
         self.wasFull=False                          #flag that shows if the conveyer was full. So when an entity is disposed
                                                     #if this is true we count the blockage time and set it to false
         self.currentRequestedLength=0               #the length of the entity that last requested the conveyer
         self.currentAvailableLength=self.length     #the available length in the end of the conveyer
         
         self.predecessorIndex=0     #holds the index of the predecessor from which the Conveyer will take an entity next
-        self.successorIndex=0       #holds the index of the successor where the Queue Conveyer dispose an entity next       
-        
-        
+        self.successorIndex=0       #holds the index of the successor where the Queue Conveyer dispose an entity next
+    
+    #===========================================================================
+    # conveyer generator
+    #===========================================================================
     def run(self):
         #these are just for the first Entity
         activate(self.conveyerMover,self.conveyerMover.run())
-        yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity                                                             #and one predecessor requests it  
-        self.getEntity()                                        #get the entity 
-        self.timeLastMoveHappened=now()                         
-         
+        # check if there is WIP and signal receiver
+        self.initialSignalReceiver()
         while 1:
             #calculate the time to reach end. If this is greater than 0 (we did not already have an entity at the end)
             #set it as the timeToWait of the conveyerMover and raise call=true so that it will be triggered 
             self.timeToReachEnd=0
-            if(len(self.position)>0 and (not self.length-self.position[0]<0.000001)):
-                self.timeToReachEnd=((self.length-self.position[0])/float(self.speed))/60                       
-            if self.timeToReachEnd>0:
-                self.conveyerMover.timeToWait=self.timeToReachEnd
-                self.call=True
+            if self.position:
+                if (not self.length-self.position[0]<0.000001):
+                    self.timeToReachEnd=((self.length-self.position[0])/float(self.speed))/60                       
+                if self.timeToReachEnd>0:
+                    self.conveyerMover.timeToWait=self.timeToReachEnd
+                    self.conveyerMover.canMove.signal(now())
             
-            #wait until the conveyer is in state to receive or dispose one entity
-            yield waituntil, self, self.canAcceptAndIsRequestedORwaitToDispose     #wait for an important event in order to move the items
-            if self.canAcceptAndIsRequested():
-                self.getEntity()              
-            if self.waitToDispose:
-                pass
+            self.printTrace(self.id, 'will wait for event')
+            yield waitevent, self, [self.isRequested,self.canDispose, self.moveEnd] # , self.loadOperatorAvailable]
+            # if the event that activated the thread is isRequested then getEntity
+            if self.isRequested.signalparam:
+                self.printTrace(self.id, 'received an is requested event')
+                # reset the isRequested signal parameter
+                self.isRequested.signalparam=None
+                # get the entity
+                self.getEntity()
+                # this should be performed only the first time
+                if not self.numberOfMoves:
+                    self.timeLastMoveHappened=now()
+#             # if the queue received an loadOperatorIsAvailable (from Router) with signalparam time
+#             if self.loadOperatorAvailable.signalparam:
+#                 self.loadOperatorAvailable.signalparam=None
+            # if the queue received an canDispose with signalparam time, this means that the signals was sent from a MouldAssemblyBuffer
+            if self.canDispose.signalparam:
+                self.printTrace(self.id, 'received a canDispose event')
+                self.canDispose.signalparam=None
+            # if the object received a moveEnd signal from the ConveyerMover
+            if self.moveEnd.signalparam:
+                self.printTrace(self.id, 'received a moveEnd event')
+                self.moveEnd.signalparam=None
+            
+#             # if there is an entity that finished its motion
+#             if self.entityReachedEnd():
+            # if the event that activated the thread is canDispose then signalReceiver
+            if self.haveToDispose():
+#                 self.printTrace(self.id, 'will try to signal a receiver from generator')
+                if self.receiver:
+                    if not self.receiver.entryIsAssignedTo():
+                        self.printTrace(self.id, 'will try to signal receiver from generator1')
+                        self.signalReceiver()
+                    continue
+                self.printTrace(self.id, 'will try to signal receiver from generator2')
+                self.signalReceiver()
+    
+    #===========================================================================
+    # checks if there is any entity at the exit
+    #===========================================================================
+    def entityAtExit(self):
+        pass
+    
+    #===========================================================================
+    # checks whether an entity has reached the end
+    #===========================================================================
+    def entityReachedEnd(self):
+        if(len(self.position)>0):           
+            if(self.length-self.position[0]<0.000001) and (not self.entityLastReachedEnd==self.getActiveObjectQueue()[0]):
+                self.waitToDispose=True
+                self.entityLastReachedEnd=self.getActiveObjectQueue()[0]
+                self.printTrace(self.getActiveObjectQueue()[0].name, 'has reached the end'+'  !!  .  !!  .'*7)
+                return True
+        return False
 
-    #moves the entities in the line    
-    #also counts the time the move required to assign it as working time
+    #===========================================================================
+    # moves the entities in the line
+    # also counts the time the move required to assign it as working time
+    #===========================================================================
     def moveEntities(self):
         interval=now()-self.timeLastMoveHappened
         interval=(float(interval))*60.0     #the simulation time that passed since the last move was taken care
@@ -156,8 +184,7 @@ class Conveyer(CoreObject):
                     self.entityLastReachedEnd=self.getActiveObjectQueue()[0]
                     self.timeLastEntityReachedEnd=now()
                     self.timeLastEntityEnded=now()
-                    
-        #for the other entities        
+        #for the other entities
         for i in range(1,len(self.getActiveObjectQueue())):
             #if it does not reach the preceding entity move it according to speed
             if self.position[i]+interval*self.speed<self.position[i-1]-self.getActiveObjectQueue()[i].length:
@@ -169,112 +196,169 @@ class Conveyer(CoreObject):
                 if mTime>moveTime2:
                     moveTime2=mTime
                 self.position[i]=self.position[i-1]-self.getActiveObjectQueue()[i-1].length
-        self.timeLastMoveHappened=now()     #assign this time as the time of last move
-        self.totalWorkingTime+=max(moveTime1/60.0, moveTime2/60.0)  #all the time of moving (the max since things move in parallel)
-                                                                    #is considered as working time
+        #assign this time as the time of last move
+        self.timeLastMoveHappened=now()
+        #all the time of moving (the max since things move in parallel) is considered as working time
+        self.totalWorkingTime+=max(moveTime1/60.0, moveTime2/60.0)
+        # check again if there is any entity that has reached the exit of the conveyer
+        self.entityReachedEnd()
 
-    #checks if the Conveyer can accept an entity 
+    #===========================================================================
+    # checks if the Conveyer can accept an entity
+    #===========================================================================
     def canAccept(self, callerObject=None):
+        # get active and giver objects
+        activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        giverObject=self.getGiverObject()
-        giverObjectQueue=self.getGiverObjectQueue()
-
-        
-        
-        #if there is no object in the predecessor just return false and set the current requested length to zero
-        if len(giverObjectQueue)==0:
-            self.currentRequestedLength=0
+        #move the entities so that the available length can be calculated
+        activeObject.moveEntities()
+        # calculate available length
+        availableLength=activeObject.calculateAvailableLength()
+        # if the callerObject is not defined then return true if the available length is not zero
+        if(callerObject==None):
+            return availableLength>0
+        # if there is a caller then check if there is enough space and if it is in the previous list 
+        thecaller=callerObject
+        if self.enoughSpaceFor(thecaller):
+            return (thecaller in activeObject.previous)
+        else:
             return False
- 
-        activeEntity=giverObjectQueue[0]
-        
-        requestedLength=activeEntity.length      #read what length the entity has
-        self.moveEntities()                                         #move the entities so that the available length can be calculated
-        #in plant an entity can be accepted even if the available length is exactly zero
-        #eg if the conveyer has 8m length and the entities 1m length it can have up to 9 entities.
-        #i do not know if this is good but I kept is
+    
+    #===========================================================================
+    # calculate available length
+    #===========================================================================
+    def calculateAvailableLength(self):
+        activeObjectQueue=self.getActiveObjectQueue()
         if len(activeObjectQueue)==0:
             availableLength=self.length
         else:
             availableLength=self.position[-1]
-            
         self.currentAvailableLength=availableLength
-        self.currentRequestedLength=requestedLength    
-        if availableLength-requestedLength>-0.00000001:
-            return True
-        else:       
+        return availableLength
+    
+    #===========================================================================
+    # check if there is space for the callerObject
+    #===========================================================================
+    def enoughSpaceFor(self, callerObject=None):
+        # get the active and the giver objects
+        activeObject=self.getActiveObject()
+        activeObjectQueue=self.getActiveObjectQueue()
+        assert callerObject, 'there must be a caller for enoughSpaceFor'
+        thecaller=callerObject
+        thecallerQueue=thecaller.getActiveObjectQueue()
+        #if there is no object in the predecessor just return false and set the current requested length to zero
+        if len(thecallerQueue)==0:
+            self.currentRequestedLength=0
             return False
+        activeEntity=thecallerQueue[0]
+        requestedLength=activeEntity.length      #read what length the entity has
+        self.currentRequestedLength=requestedLength
+        availableLength=self.currentAvailableLength
+        #in plant an entity can be accepted even if the available length is exactly zero
+        #eg if the conveyer has 8m length and the entities 1m length it can have up to 9 entities.
+        #i do not know if this is good but I kept it
+        return availableLength-requestedLength>-0.00000001
         
-    #checks if the Conveyer can accept an entity and there is a Frame waiting for it
-    def canAcceptAndIsRequested(self):
-        return self.canAccept(self) and self.getGiverObject().haveToDispose(self)
+    #===========================================================================
+    # checks if the Conveyer can accept an entity and there is a Frame waiting for it
+    #===========================================================================
+    def canAcceptAndIsRequested(self,callerObject=None):
+        # get the active and the giver objects
+        activeObject=self.getActiveObject()
+        activeObjectQueue=self.getActiveObjectQueue()
+        giverObject=callerObject
+        assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
+        self.calculateAvailableLength()
+        return self.enoughSpaceFor(giverObject)and\
+                 giverObject.haveToDispose(activeObject) and\
+                 giverObject in activeObject.previous
 
-    #gets an entity from the predecessor     
+    #===========================================================================
+    # gets an entity from the predecessor
+    #===========================================================================
     def getEntity(self):       
         activeEntity=CoreObject.getEntity(self) 
-        self.position.append(0)           #the entity is placed in the start of the conveyer
+        #the entity is placed in the start of the conveyer
+        self.position.append(0)
+        # counting the total number of units to be moved through the whole simulation time
+        self.numberOfMoves+=1
         #check if the conveyer became full to start counting blockage 
         if self.isFull():
             self.timeBlockageStarted=now()
             self.wasFull=True
         return activeEntity
-
-
-    #removes an entity from the Conveyer
+    
+    #===========================================================================
+    # removes an entity from the Conveyer
+    #===========================================================================
     def removeEntity(self, entity=None):
         activeEntity=CoreObject.removeEntity(self, entity)      #run the default method  
-   
+        # remove the entity from the position list
         self.position.pop(0)
-        
+        # the object doesn't wait to dispose any more
         self.waitToDispose=False  
         #if the conveyer was full, it means that it also was blocked
         #we count this blockage time 
         if self.wasFull:
-            #self.totalBlockageTime+=now()-self.timeBlockageStarted
+#             self.totalBlockageTime+=now()-self.timeBlockageStarted
             self.wasFull=False
             #calculate the time that the conveyer will become available again and trigger the conveyerMover
             self.timeToBecomeAvailable=((self.position[-1]+self.currentRequestedLength)/float(self.speed))/60 
             self.conveyerMover.timeToWait=self.timeToBecomeAvailable
-            self.call=True
+            self.conveyerMover.canMove.signal(now())
+        # if the available length is not zero then try to signal a giver
+        if self.canAccept():
+            self.printTrace(self.id, 'will try to signal Giver from removeEntity')
+            self.signalGiver()
+        # if there is anything to dispose of then signaa a receiver
+        if self.haveToDispose():
+            self.printTrace(self.id, 'will try to signal a receiver from removeEntity')
+            self.signalReceiver()
         return activeEntity
     
+    #===========================================================================
+    # adds the blockage time to totalBlockageTime 
+    # each time an Entity is removed
+    #===========================================================================
     def addBlockage(self):
         if self.wasFull:
             self.totalBlockageTime+=now()-self.timeBlockageStarted
     
-    #checks if the Conveyer can dispose an entity to the following object     
+    #===========================================================================
+    # checks if the Conveyer can dispose an entity to the following object     
+    #===========================================================================
     def haveToDispose(self, callerObject=None): 
+        # get active object and its queue
+        activeObject=self.getActiveObject()
+        activeObjectQueue=self.getActiveObjectQueue()
+        # if there is no caller defined no need to check if the caller is in previous
+        callerInPrevious=False
+        if(callerObject==None):
+            callerInPrevious=True
+        else:
+            callerInPrevious=(callerObject in activeObject.next)
         #it has meaning only if there are one or more entities in the conveyer
         if len(self.position)>0:
-            return len(self.getActiveObjectQueue())>0 and self.length-self.position[0]<0.000001    #the conveyer can dispose an object                                                                                         #only when an entity is at the end of it         
+            #the conveyer can dispose an object only when an entity is at the end of it
+            return len(self.getActiveObjectQueue())>0 and\
+                     self.length-self.position[0]<0.000001 and\
+                     callerInPrevious
         else:
             return False
 
-    #checks if the conveyer is full to count the blockage. for some reason Plant regards 
-    #the conveyer full even when it has one place    
+    #===========================================================================
+    # checks if the conveyer is full to count the blockage. for some reason Plant regards 
+    # the conveyer full even when it has one place
+    #===========================================================================
     def isFull(self):
         totalLength=0  
         for entity in self.getActiveObjectQueue():
             totalLength+=entity.length
         return self.length<totalLength
     
-    #checks if the Mover should be called so that the move is performed
-    def callMover(self):
-        return self.call  
-      
-    #checks if the conveyer is ready to receive or dispose an entity  
-    def canAcceptAndIsRequestedORwaitToDispose(self):
-        if(len(self.position)>0):           
-            if(self.length-self.position[0]<0.000001) and (not self.entityLastReachedEnd==self.getActiveObjectQueue()[0]):
-                self.waitToDispose=True
-                self.entityLastReachedEnd=self.getActiveObjectQueue()[0]
-                return True
-            else:
-                return self.canAcceptAndIsRequested()
-        else:
-            return self.canAcceptAndIsRequested()
-    
-    #actions to be taken after the simulation ends
+    #===========================================================================
+    # actions to be taken after the simulation ends
+    #===========================================================================
     def postProcessing(self, MaxSimtime=None):              
         if MaxSimtime==None:
             from Globals import G
@@ -292,7 +376,9 @@ class Conveyer(CoreObject):
         self.Working.append(100*self.totalWorkingTime/MaxSimtime)
         self.Blockage.append(100*self.totalBlockageTime/MaxSimtime)
 
-    #outputs data to "output.xls"
+    #===========================================================================
+    # outputs data to "output.xls"
+    #===========================================================================
     def outputResultsXL(self, MaxSimtime=None):
         from Globals import G
         from Globals import getConfidenceIntervals
@@ -335,7 +421,9 @@ class Conveyer(CoreObject):
             G.outputIndex+=1
         G.outputIndex+=1
 
-    #outputs results to JSON File
+    #===========================================================================
+    # outputs results to JSON File
+    #===========================================================================
     def outputResultsJSON(self):
         from Globals import G
         from Globals import getConfidenceIntervals
@@ -355,20 +443,31 @@ class Conveyer(CoreObject):
         G.outputJSON['elementList'].append(json)
 
 
-#Process that handles the moves of the conveyer
+#===============================================================================
+# Process that handles the moves of the conveyer
+#===============================================================================
 class ConveyerMover(Process):
+    #===========================================================================
+    # ConveyerMover init method
+    #===========================================================================
     def __init__(self, conveyer):
         Process.__init__(self)
         self.conveyer=conveyer      #the conveyer that owns the mover
         self.timeToWait=0           #the time to wait every time. This is calculated by the conveyer and corresponds
                                     #either to the time that one entity reaches the end or the time that one space is freed
+        self.canMove=SimEvent('canMove')
     
+    #===========================================================================
+    # ConveyerMover generator
+    #===========================================================================
     def run(self):
         while 1:
-            yield waituntil,self,self.conveyer.callMover    #wait until the conveyer triggers the mover
+            yield waitevent,self,self.canMove      #wait until the conveyer triggers the mover
+#             yield waituntil,self,self.conveyer.callMover    #wait until the conveyer triggers the mover
             yield hold,self,self.timeToWait                 #wait for the time that the conveyer calculated
             self.conveyer.moveEntities()                    #move the entities of the conveyer
-            self.conveyer.call=False                        #reset call so it will be triggered only when it is needed again
+#             self.conveyer.call=False                        #reset call so it will be triggered only when it is needed again
+            self.conveyer.moveEnd.signal(now())
             
 
     
