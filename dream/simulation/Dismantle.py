@@ -28,19 +28,19 @@ it gathers frames that have parts loaded, unloads the parts and sends the frame 
 '''
 
 from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import waituntil, now, hold, infinity
+from SimPy.Simulation import waitevent, now, hold, infinity
 import xlwt
 from RandomNumberGenerator import RandomNumberGenerator
 from CoreObject import CoreObject
 
-# ===========================================================================
+#===============================================================================
 # the Dismantle object
-# ===========================================================================
+#===============================================================================
 class Dismantle(CoreObject):
     class_name = 'Dream.Dismantle'
-    # =======================================================================
+    #===========================================================================
     # initialize the object
-    # =======================================================================
+    #===========================================================================
     def __init__(self, id, name, distribution='Fixed', mean=1, stdev=0.1, min=0, max=5):
         CoreObject.__init__(self, id, name)
         self.type="Dismantle"   #String that shows the type of object
@@ -69,10 +69,10 @@ class Dismantle(CoreObject):
                                                         # when the entities have to be loaded to operatedMachines
                                                         # then the giverObjects have to be blocked for the time
                                                         # that the machine is being loaded 
-
-    # =======================================================================
+        
+    #===========================================================================
     # the initialize method
-    # =======================================================================  
+    #===========================================================================
     def initialize(self):
         Process.__init__(self)
         CoreObject.initialize(self)
@@ -109,84 +109,136 @@ class Dismantle(CoreObject):
         self.Res.activeQ=[]  
         self.Res.waitQ=[]  
         
-    # =======================================================================
+    #===========================================================================
     # the run method
-    # =======================================================================
+    #===========================================================================
     def run(self):
+        activeObjectQueue=self.getActiveObjectQueue()
+        # check if there is WIP and signal receiver
+        self.initialSignalReceiver()
         while 1:
-            yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Assembly can accept a frame
-                                                                    #and one "frame" giver requests it   
-            self.getEntity()                                 #get the Frame with the parts 
-            self.timeLastEntityEntered=now()
-                        
-            startWorkingTime=now()   
+            self.printTrace(self.id, 'will wait for frame event')
+            # wait until the Queue can accept an entity and one predecessor requests it
+            yield waitevent, self, self.isRequested     #[self.isRequested,self.canDispose, self.loadOperatorAvailable]
             
-            self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()   
-            yield hold,self,self.totalProcessingTimeInCurrentEntity   #hold for the time the assembly operation is carried    
-
-            self.totalWorkingTime+=now()-startWorkingTime
+            if self.isRequested.signalparam:
+                self.printTrace(self.id, 'received a isRequested event from '+self.isRequested.signalparam.id)
+                # reset the isRequested signal parameter
+                self.isRequested.signalparam=None
             
-            self.timeLastEntityEnded=now()
-                      
-            startBlockageTime=now()          
-            self.waitToDisposePart=True     #Dismantle is in state to dispose a part
-            yield waituntil, self, self.frameIsEmpty       #wait until all the parts are disposed
-            self.waitToDisposePart=False     #Dismantle has no parts now
-            self.waitToDisposeFrame=True     #Dismantle is in state to dispose a part
-            yield waituntil, self, self.isEmpty       #wait until all the frame is disposed            
-                        
-            self.completedJobs+=1                       #Dismantle completed a job            
-            self.waitToDisposeFrame=False                     #the Dismantle has no Frame to dispose now
-            #self.totalBlockageTime+=now()-startBlockageTime     #add the blockage time
             
-    # =======================================================================
+                self.getEntity()                                 #get the Frame with the parts 
+                self.timeLastEntityEntered=now()
+                startWorkingTime=now()
+                self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()
+                #hold for the time the assembly operation is carried
+                yield hold,self,self.totalProcessingTimeInCurrentEntity
+                self.totalWorkingTime+=now()-startWorkingTime
+                self.timeLastEntityEnded=now()
+                startBlockageTime=now()
+                
+                self.waitToDispose=True
+                self.waitToDisposePart=True     #Dismantle is in state to dispose a part
+                # while the object still holds the frame
+                while not self.isEmpty():
+                    # try and signal the receiver
+                    if not self.signalReceiver():
+                        # if not possible, then wait till a receiver is available
+                        yield waitevent, self, self.canDispose
+                        # and signal it again
+                        if not self.signalReceiver():
+                            continue
+                    # if the receiver was not responsive, release the control to let him remove the entity
+                    yield hold, self, 0
+                    # if all the parts are removed but not the frame, then set the flag waitToDisposeFrame
+                    if self.frameIsEmpty() and not self.waitToDisposeFrame:
+                        self.waitToDisposePart=False
+                        self.waitToDisposeFrame=True
+                    # if the internal queue is empty then update the corresponding flags and proceed with getting a new entity
+                    if self.isEmpty():
+                        self.completedJobs+=1                       #Dismantle completed a job
+                        self.waitToDisposeFrame=False                     #the Dismantle has no Frame to dispose now
+                        break
+        
+    #===========================================================================
     #    checks if the Dismantle can accept an entity and there is a Frame 
     #                             waiting for it
-    # =======================================================================
-    def canAcceptAndIsRequested(self):
-        return len(self.getActiveObjectQueue())==0 and self.getGiverObject().haveToDispose(self)  
+    #===========================================================================
+    def canAcceptAndIsRequested(self,callerObject=None):
+        # get the active and the giver objects
+        activeObject=self.getActiveObject()
+        activeObjectQueue=self.getActiveObjectQueue()
+        giverObject=callerObject
+        assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
+        return len(activeObjectQueue)==0 and giverObject.haveToDispose(activeObject) 
     
-    # =======================================================================
+    #===========================================================================
     # checks if the Dismantle can accept an entity 
-    # =======================================================================
+    #===========================================================================
     def canAccept(self, callerObject=None):
-        return len(self.getActiveObjectQueue())==0  
+        thecaller=callerObject
+        # if there is no caller return True only when the internal queue is empty
+        if not thecaller:
+            return len(self.getActiveObjectQueue())==0
+        # otherrwise check additionally if the caller is in the previous list
+        return len(self.getActiveObjectQueue())==0 and (callerObject in self.previous)
     
-    # =======================================================================
+    #===========================================================================
     # defines where parts and frames go after they leave the object
-    # =======================================================================               
+    #===========================================================================               
     def definePartFrameRouting(self, successorPartList=[], successorFrameList=[]):
         self.nextPart=successorPartList
-        self.nextFrame=successorFrameList              
+        self.nextFrame=successorFrameList
     
-    # =======================================================================
+    #===========================================================================
     # checks if the caller waits for a part or a frame and if the Dismantle 
     # is in the state of disposing one it returnse true
-    # =======================================================================     
+    #===========================================================================     
     def haveToDispose(self, callerObject=None): 
-
+        activeObject=self.getActiveObject()
+        activeObjectQueue=self.getActiveObjectQueue()     
+        
         thecaller=callerObject
+        #if we have only one possible receiver just check if the Queue holds one or more entities
+        if(thecaller==None):
+            return len(activeObjectQueue)>0 
         
         #according to the caller return true or false
         if thecaller in self.nextPart:
             if len(self.getActiveObjectQueue())>1 and self.waitToDisposePart:
-                self.receiver=thecaller
                 return True
         elif thecaller in self.nextFrame:
             if len(self.getActiveObjectQueue())==1 and self.waitToDisposeFrame:
-                self.receiver=thecaller
                 return True
         return False
     
-    # =======================================================================
+    #===========================================================================
+    # find possible receivers
+    #===========================================================================
+    def findReceivers(self):
+        activeObject=self.getActiveObject()
+        next=[]
+        receivers=[]
+        # if the parts are not yet disposed
+        if not activeObject.frameIsEmpty():
+            # search for receivers within the nextPart list
+            next=activeObject.nextPart
+        else:
+            # otherwise search within the nextFrame list
+            next=activeObject.nextFrame
+        for object in [x for x in next if x.canAccept(activeObject)]:
+            receivers.append(object)
+        return receivers
+    
+    #===========================================================================
     # checks if the frame is emptied
-    # =======================================================================
+    #===========================================================================
     def frameIsEmpty(self):
         return len(self.getActiveObjectQueue())==1
     
-    # =======================================================================
+    #===========================================================================
     # checks if Dismantle is emptied
-    # =======================================================================
+    #===========================================================================
     def isEmpty(self):
         return len(self.getActiveObjectQueue())==0
     
@@ -207,24 +259,29 @@ class Dismantle(CoreObject):
         activeObjectQueue.pop(0)        
         return activeEntity
     
-    # =======================================================================
+    #===========================================================================
     # removes an entity from the Dismantle
-    # =======================================================================
+    #===========================================================================
     def removeEntity(self, entity=None):
-        activeObjectQueue=self.getActiveObjectQueue()
-        activeEntity=CoreObject.removeEntity(self, entity)  #run the default method 
-        
+        activeObject=self.getActiveObject()
+        activeObjectQueue=activeObject.getActiveObjectQueue()
+        #run the default method 
+        activeEntity=CoreObject.removeEntity(self, entity)  
         #update the flags
         if(len(activeObjectQueue)==0):  
-            self.waitToDisposeFrame=False
+            activeObject.waitToDisposeFrame=False
         else:
             if(len(activeObjectQueue)==1):   
-               self.waitToDisposePart=False
+               activeObject.waitToDisposePart=False
+        # if the internal queue is empty then try to signal the giver that the object can now receive
+        if activeObject.canAccept():
+            activeObject.printTrace(self.id, 'will try signalling a giver from removeEntity')
+            activeObject.signalGiver()
         return activeEntity
     
-    # =======================================================================
+    #===========================================================================
     # add the blockage only if the very last Entity (Frame) is to depart
-    # =======================================================================
+    #===========================================================================
     def addBlockage(self):
         if len(self.getActiveObjectQueue())==1:
             self.totalTimeInCurrentEntity=now()-self.timeLastEntityEntered
@@ -232,9 +289,9 @@ class Dismantle(CoreObject):
             blockage=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)       
             self.totalBlockageTime+=blockage
         
-    # =======================================================================
+    #===========================================================================
     # actions to be taken after the simulation ends
-    # =======================================================================
+    #===========================================================================
     def postProcessing(self, MaxSimtime=None):
         if MaxSimtime==None:
             from Globals import G
@@ -256,11 +313,11 @@ class Dismantle(CoreObject):
         self.Waiting.append(100*self.totalWaitingTime/MaxSimtime)
         self.Working.append(100*self.totalWorkingTime/MaxSimtime)
         self.Blockage.append(100*self.totalBlockageTime/MaxSimtime)
-
-    # =======================================================================
+        
+    #===========================================================================
     #                  outputs message to the trace.xls. 
     #       Format is (Simulation Time | Entity or Frame Name | message)
-    # =======================================================================
+    #===========================================================================
     def outputTrace(self, name, message):
         from Globals import G
         if(G.trace=="Yes"):         #output only if the user has selected to
@@ -274,10 +331,10 @@ class Dismantle(CoreObject):
                 G.traceIndex=0
                 G.sheetIndex+=1
                 G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)  
-
-    # =======================================================================
+        
+    #===========================================================================
     # outputs data to "output.xls"
-    # =======================================================================
+    #===========================================================================
     def outputResultsXL(self, MaxSimtime=None):
         from Globals import G
         from Globals import getConfidenceIntervals
@@ -315,10 +372,10 @@ class Dismantle(CoreObject):
             G.outputSheet.write(G.outputIndex, 3, waiting_ci['max'])
             G.outputIndex+=1
         G.outputIndex+=1
-
-    # =======================================================================
+        
+    #===========================================================================
     # outputs results to JSON File
-    # =======================================================================
+    #===========================================================================
     def outputResultsJSON(self):
         from Globals import G
         from Globals import getConfidenceIntervals

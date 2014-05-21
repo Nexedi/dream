@@ -126,8 +126,7 @@ class Assembly(CoreObject):
             self.printTrace(self.id, 'will wait for frame event')
             # wait until the Queue can accept an entity and one predecessor requests it
             yield waitevent, self, self.isRequested     #[self.isRequested,self.canDispose, self.loadOperatorAvailable]
-#             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Assembly can accept a frame
-#                                                                     #and one "frame" giver requests it 
+            
             if self.isRequested.signalparam:
                 self.printTrace(self.id, 'received a isRequested event from '+self.isRequested.signalparam.id)
                 # reset the isRequested signal parameter
@@ -142,7 +141,6 @@ class Assembly(CoreObject):
                         self.printTrace(self.id, 'received a isRequested event from '+self.isRequested.signalparam.id)
                         # reset the isRequested signal parameter
                         self.isRequested.signalparam=None
-#                         yield waituntil, self, self.isRequestedFromPart     #wait until a part is requesting for the assembly
                         # TODO: fix the getEntity 'Part' case
                         self.getEntity("Part")
                
@@ -213,7 +211,6 @@ class Assembly(CoreObject):
         # get the active and the giver objects
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-#         giverObject=self.getGiverObject()
         giverObject=callerObject
         assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
         if(len(giverObject.getActiveObjectQueue())>0):
