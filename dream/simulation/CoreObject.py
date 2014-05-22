@@ -326,7 +326,7 @@ class CoreObject(Process):
     # signal the successor that the object can dispose an entity 
     # =======================================================================
     def signalReceiver(self):
-        self.printTrace(self.id, 'trying to signal receiver')
+#         self.printTrace(self.id, 'trying to signal receiver')
         activeObject=self.getActiveObject()
         possibleReceivers=activeObject.findReceivers()
         if possibleReceivers:

@@ -177,6 +177,7 @@ class Source(CoreObject):
     #                          creates an Entity
     #============================================================================
     def createEntity(self):
+        self.printTrace(self.id, 'created an entity')
         return self.item(id = self.item.type+str(G.numberOfEntities), name = self.item.type+str(self.numberOfArrivals)) #return the newly created Entity
     #============================================================================
     #                    calculates the processing time

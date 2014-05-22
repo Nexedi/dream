@@ -286,6 +286,7 @@ class Conveyer(CoreObject):
         if self.isFull():
             self.timeBlockageStarted=now()
             self.wasFull=True
+            self.printTrace(self.id, 'is now Full '+str(len(self.getActiveObjectQueue()))+' (*) '*20)
         return activeEntity
     
     #===========================================================================
