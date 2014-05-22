@@ -98,13 +98,16 @@ class Conveyer(CoreObject):
         while 1:
             #calculate the time to reach end. If this is greater than 0 (we did not already have an entity at the end)
             #set it as the timeToWait of the conveyerMover and raise call=true so that it will be triggered 
-            self.timeToReachEnd=0
-            if self.position:
-                if (not self.length-self.position[0]<0.000001):
-                    self.timeToReachEnd=((self.length-self.position[0])/float(self.speed))/60                       
-                if self.timeToReachEnd>0:
-                    self.conveyerMover.timeToWait=self.timeToReachEnd
-                    self.conveyerMover.canMove.signal(now())
+#             self.timeToReachEnd=0
+#             if self.position:
+#                 if (not self.length-self.position[0]<0.000001):
+#                     self.timeToReachEnd=((self.length-self.position[0])/float(self.speed))/60                       
+#                 if self.timeToReachEnd>0:
+#                     self.conveyerMover.timeToWait=self.timeToReachEnd
+#                     self.conveyerMover.canMove.signal(now())
+            if self.updateMoveTime():
+#                 print self.id, 'time to move', self.conveyerMover.timeToWait
+                self.conveyerMover.canMove.signal(now())
             
             self.printTrace(self.id, 'will wait for event')
             yield waitevent, self, [self.isRequested,self.canDispose, self.moveEnd] # , self.loadOperatorAvailable]
@@ -148,9 +151,35 @@ class Conveyer(CoreObject):
                 self.signalReceiver()
     
     #===========================================================================
-    # checks if there is any entity at the exit
+    # calculate move time
     #===========================================================================
-    def entityAtExit(self):
+    def updateMoveTime(self):
+        # calculate time to reach end
+        timeToReachEnd=0
+        if self.position:
+            if (not self.length-self.position[0]<0.000001):
+                timeToReachEnd=((self.length-self.position[0])/float(self.speed))/60
+        # calculate time to become available
+        timeToBecomeAvailable=0
+        if self.position:
+            if self.currentRequestedLength>self.position[-1]:
+                timeToBecomeAvailable=((self.currentRequestedLength-self.position[-1])/float(self.speed))/60
+        # pick the smallest but not zero
+        timeToWait=0
+        if timeToReachEnd>0:
+            timeToWait=timeToReachEnd
+        if timeToBecomeAvailable>0:
+            if timeToBecomeAvailable<timeToWait:
+                timeToWait=timeToBecomeAvailable
+        self.conveyerMover.timeToWait=timeToWait
+        if timeToWait>0.000001:
+            return True
+        return False
+    
+    #===========================================================================
+    # calculate the requested length
+    #===========================================================================
+    def requestedLength(self):
         pass
     
     #===========================================================================
@@ -280,9 +309,14 @@ class Conveyer(CoreObject):
         giverObject=callerObject
         assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
         self.calculateAvailableLength()
-        return self.enoughSpaceFor(giverObject)and\
+        if self.enoughSpaceFor(giverObject)and\
                  giverObject.haveToDispose(activeObject) and\
-                 giverObject in activeObject.previous
+                 giverObject in activeObject.previous:
+            # if the conveyer can accept an entity is not blocked and thus the requested length has to be reset
+#             print 'reseting requested length'
+            self.currentRequestedLength=0
+            return True
+        return False
 
     #===========================================================================
     # gets an entity from the predecessor
@@ -314,15 +348,14 @@ class Conveyer(CoreObject):
         if self.wasFull:
 #             self.totalBlockageTime+=now()-self.timeBlockageStarted
             self.wasFull=False
-            #calculate the time that the conveyer will become available again and trigger the conveyerMover
-            self.timeToBecomeAvailable=((self.position[-1]+self.currentRequestedLength)/float(self.speed))/60
-#             print self.id, 'time to become available', self.timeToBecomeAvailable
-            self.conveyerMover.timeToWait=self.timeToBecomeAvailable
+#             #calculate the time that the conveyer will become available again and trigger the conveyerMover
+#             self.timeToBecomeAvailable=((self.position[-1]+self.currentRequestedLength)/float(self.speed))/60
+# #             print self.id, 'time to become available', self.timeToBecomeAvailable
+#             self.conveyerMover.timeToWait=self.timeToBecomeAvailable
+#             self.conveyerMover.canMove.signal(now())
+        if self.updateMoveTime():
+#             print self.id, 'time to move', self.conveyerMover.timeToWait
             self.conveyerMover.canMove.signal(now())
-#         # if the available length is not zero then try to signal a giver
-#         if self.canAccept():
-#             self.printTrace(self.id, 'will try to signal Giver from removeEntity')
-#             self.signalGiver()
         # if there is anything to dispose of then signal a receiver
         if self.haveToDispose():
             self.printTrace(self.id, 'will try to signal a receiver from removeEntity')
@@ -378,7 +411,7 @@ class Conveyer(CoreObject):
     def postProcessing(self, MaxSimtime=None):              
         if MaxSimtime==None:
             from Globals import G
-            MaxSimtime=G.maxSimTime        
+            MaxSimtime=G.maxSimTime
         self.moveEntities()     #move the entities to count the working time
         #if the conveyer is full count the blockage time
         if self.isFull():
@@ -386,7 +419,7 @@ class Conveyer(CoreObject):
 
         #when the conveyer was nor working or blocked it was waiting
         self.totalWaitingTime=MaxSimtime-self.totalWorkingTime-self.totalBlockageTime 
-
+        
         #update the lists to hold data for multiple runs
         self.Waiting.append(100*self.totalWaitingTime/MaxSimtime)
         self.Working.append(100*self.totalWorkingTime/MaxSimtime)
