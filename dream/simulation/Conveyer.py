@@ -129,6 +129,10 @@ class Conveyer(CoreObject):
             if self.moveEnd.signalparam:
                 self.printTrace(self.id, 'received a moveEnd event')
                 self.moveEnd.signalparam=None
+                # check if there is a possibility to accept and signal a giver
+                if self.canAccept():
+                    self.printTrace(self.id, 'will try to signal Giver from removeEntity')
+                    self.signalGiver()
             
 #             # if there is an entity that finished its motion
 #             if self.entityReachedEnd():
@@ -170,6 +174,7 @@ class Conveyer(CoreObject):
         interval=(float(interval))*60.0     #the simulation time that passed since the last move was taken care
         moveTime1=0
         moveTime2=0
+#         print [x for x in self.position]
         #for the first entity
         if len(self.position)>0:
             if self.position[0]!=self.length:
@@ -196,6 +201,7 @@ class Conveyer(CoreObject):
                 if mTime>moveTime2:
                     moveTime2=mTime
                 self.position[i]=self.position[i-1]-self.getActiveObjectQueue()[i-1].length
+#         print [x for x in self.position]
         #assign this time as the time of last move
         self.timeLastMoveHappened=now()
         #all the time of moving (the max since things move in parallel) is considered as working time
@@ -211,9 +217,13 @@ class Conveyer(CoreObject):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         #move the entities so that the available length can be calculated
+#         print self.id, 'moving entities from canAccept'
         activeObject.moveEntities()
         # calculate available length
         availableLength=activeObject.calculateAvailableLength()
+#         print 'available length', availableLength
+#         print [x for x in self.position]
+#         print [x.name for x in self.getActiveObjectQueue()]
         # if the callerObject is not defined then return true if the available length is not zero
         if(callerObject==None):
             return availableLength>0
@@ -252,6 +262,7 @@ class Conveyer(CoreObject):
             return False
         activeEntity=thecallerQueue[0]
         requestedLength=activeEntity.length      #read what length the entity has
+#         print self.id, 'requested length', requestedLength
         self.currentRequestedLength=requestedLength
         availableLength=self.currentAvailableLength
         #in plant an entity can be accepted even if the available length is exactly zero
@@ -304,14 +315,15 @@ class Conveyer(CoreObject):
 #             self.totalBlockageTime+=now()-self.timeBlockageStarted
             self.wasFull=False
             #calculate the time that the conveyer will become available again and trigger the conveyerMover
-            self.timeToBecomeAvailable=((self.position[-1]+self.currentRequestedLength)/float(self.speed))/60 
+            self.timeToBecomeAvailable=((self.position[-1]+self.currentRequestedLength)/float(self.speed))/60
+#             print self.id, 'time to become available', self.timeToBecomeAvailable
             self.conveyerMover.timeToWait=self.timeToBecomeAvailable
             self.conveyerMover.canMove.signal(now())
-        # if the available length is not zero then try to signal a giver
-        if self.canAccept():
-            self.printTrace(self.id, 'will try to signal Giver from removeEntity')
-            self.signalGiver()
-        # if there is anything to dispose of then signaa a receiver
+#         # if the available length is not zero then try to signal a giver
+#         if self.canAccept():
+#             self.printTrace(self.id, 'will try to signal Giver from removeEntity')
+#             self.signalGiver()
+        # if there is anything to dispose of then signal a receiver
         if self.haveToDispose():
             self.printTrace(self.id, 'will try to signal a receiver from removeEntity')
             self.signalReceiver()
@@ -335,15 +347,18 @@ class Conveyer(CoreObject):
         # if there is no caller defined no need to check if the caller is in previous
         callerInPrevious=False
         if(callerObject==None):
-            callerInPrevious=True
+            callerInNext=True
         else:
-            callerInPrevious=(callerObject in activeObject.next)
+            #move the entities so that the new position of the first entity can be calculated
+#             print self.id, 'moving entities from haveToDispose'
+            activeObject.moveEntities()
+            callerInNext=(callerObject in activeObject.next)
         #it has meaning only if there are one or more entities in the conveyer
         if len(self.position)>0:
             #the conveyer can dispose an object only when an entity is at the end of it
             return len(self.getActiveObjectQueue())>0 and\
                      self.length-self.position[0]<0.000001 and\
-                     callerInPrevious
+                     callerInNext
         else:
             return False
 
@@ -463,9 +478,14 @@ class ConveyerMover(Process):
     #===========================================================================
     def run(self):
         while 1:
+            self.conveyer.printTrace(self.conveyer.id, 'mover will wait for canMove event')
             yield waitevent,self,self.canMove      #wait until the conveyer triggers the mover
-#             yield waituntil,self,self.conveyer.callMover    #wait until the conveyer triggers the mover
+            self.conveyer.printTrace(self.conveyer.id, 'mover received canMove event')
+            
             yield hold,self,self.timeToWait                 #wait for the time that the conveyer calculated
+#             print '. .'*40
+#             print 'conveyer moving entities'
+            #     continue if interrupted
             self.conveyer.moveEntities()                    #move the entities of the conveyer
 #             self.conveyer.call=False                        #reset call so it will be triggered only when it is needed again
             self.conveyer.moveEnd.signal(now())
