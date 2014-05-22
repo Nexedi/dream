@@ -148,11 +148,13 @@ class Conveyer(CoreObject):
         if self.position:
             if (not self.length-self.position[0]<0.000001):
                 timeToReachEnd=((self.length-self.position[0])/float(self.speed))/60
+        # find the requested length
+        requestedLength=self.findRequestedLength()
         # calculate time to become available
         timeToBecomeAvailable=0
         if self.position:
-            if self.currentRequestedLength>self.position[-1]:
-                timeToBecomeAvailable=((self.currentRequestedLength-self.position[-1])/float(self.speed))/60
+            if requestedLength>self.position[-1]:
+                timeToBecomeAvailable=((requestedLength-self.position[-1])/float(self.speed))/60
         # pick the smallest but not zero
         timeToWait=0
         if timeToReachEnd>0:
@@ -168,17 +170,21 @@ class Conveyer(CoreObject):
     #===========================================================================
     # calculate the requested length
     #===========================================================================
-    def requestedLength(self):
+    def findRequestedLength(self):
         minRequestedLength=0
-        for object in [x for x in self.previous if x.getActiveObjectQueue()]:
+        requestedLength=0
+        # search ammong the predecessors that have something to give
+        for object in [x for x in self.previous if x.haveToDispose()]:
+            #update the requested Length
             requestedLength=object.getActiveObjectQueue()[0].length
+            # if the min requested length is not zero check if the current requested is smaller
             if minRequestedLength:
                 if requestedLength<minRequestedLength and requestedLength!=0:
                     minRequestedLength=requestedLength
+            # otherwise check if current requested length is not zero
             else:
                 if requestedLength>0:
                     minRequestedLength=requestedLength
-        print 'requested length', requestedLength
         return minRequestedLength
     
     #===========================================================================
@@ -289,10 +295,6 @@ class Conveyer(CoreObject):
             return False
         activeEntity=thecallerQueue[0]
         requestedLength=activeEntity.length      #read what length the entity has
-        # append entity to the requestingEntities list
-        self.requestingEntities.append(activeEntity)
-#         print self.id, 'requested length', requestedLength
-        self.currentRequestedLength=requestedLength
         availableLength=self.currentAvailableLength
         #in plant an entity can be accepted even if the available length is exactly zero
         #eg if the conveyer has 8m length and the entities 1m length it can have up to 9 entities.
