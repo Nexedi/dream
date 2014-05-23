@@ -49,14 +49,13 @@ class EntityGenerator(Process):
     # initialize method of the EntityGenerator
     #===========================================================================
     def initialize(self):
-        pass
-        #Process.initialize(self)                             
+        Process.__init__(self)                           
         
     #===========================================================================
     # the generator of the EntitiesGenerator
     #===========================================================================
-    def run(self):     
-#         print 'entity generator starts'   
+    def run(self): 
+        print '1'
         while 1:
             entity=self.victim.createEntity()                       # create the Entity object and assign its name
             entity.creationTime=now()                               # assign the current simulation time as the Entity's creation time 
@@ -104,6 +103,7 @@ class Source(CoreObject):
         self.entityCreated=SimEvent('an entity is created')
         # event used by router
         self.loadOperatorAvailable=SimEvent('loadOperatorAvailable')
+        
     
     #===========================================================================
     # The initialize method of the Source class
@@ -111,15 +111,17 @@ class Source(CoreObject):
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__
         CoreObject.initialize(self)
-         
+        
         # initialize the internal Queue (type Resource) of the Source 
         self.Res=Resource(capacity=infinity)
         self.Res.activeQ=[]                                 
         self.Res.waitQ=[]   
-        
+        self.numberOfArrivals = 0 
         self.entityGenerator.initialize()                                
         activate(self.entityGenerator,self.entityGenerator.run())
-        
+        self.entityCreated=SimEvent('an entity is created')
+        # event used by router
+        self.loadOperatorAvailable=SimEvent('loadOperatorAvailable')
     
     #===========================================================================
     # the generator of the Source class 
@@ -128,7 +130,6 @@ class Source(CoreObject):
         # get active object and its queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        
         while 1:
             # wait for any event (entity creation or request for disposal of entity)
             yield waitevent, self, [self.entityCreated, self.canDispose, self.loadOperatorAvailable]
