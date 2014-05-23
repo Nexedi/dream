@@ -68,6 +68,7 @@ class EntityGenerator(Process):
             self.victim.numberOfArrivals+=1                              # we have one new arrival
             G.numberOfEntities+=1
             # if there is only one entity in the Source send entityCreated signal
+            self.victim.appendEntity(entity)
             if len(self.victim.getActiveObjectQueue())==1: 
                 self.victim.entityCreated.signal(entity)
             yield hold,self,self.victim.calculateInterarrivalTime() # wait until the next arrival
@@ -101,6 +102,8 @@ class Source(CoreObject):
         self.entityGenerator=EntityGenerator(victim=self)     # the EntityGenerator of the Source
         
         self.entityCreated=SimEvent('an entity is created')
+        # event used by router
+        self.loadOperatorAvailable=SimEvent('loadOperatorAvailable')
     
     #===========================================================================
     # The initialize method of the Source class
@@ -128,16 +131,16 @@ class Source(CoreObject):
         
         while 1:
             # wait for any event (entity creation or request for disposal of entity)
-            yield waitevent, self, [self.entityCreated, self.canDispose]
+            yield waitevent, self, [self.entityCreated, self.canDispose, self.loadOperatorAvailable]
             # if an entity is created try to signal the receiver and continue
             if self.entityCreated.signalparam:
-                self.appendEntity(self.entityCreated.signalparam)
                 self.entityCreated.signalparam=None
                 if self.signalReceiver():
                     continue
             # otherwise, if the receiver requests availability then try to signal him if there is anything to dispose of
-            if self.canDispose.signalparam:
+            if self.canDispose.signalparam or self.loadOperatorAvailable.signalparam:
                 self.canDispose.signalparam=None
+                self.loadOperatorAvailable.signalparam=None
                 if self.haveToDispose():
                     if self.signalReceiver():
                         continue
