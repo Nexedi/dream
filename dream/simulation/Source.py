@@ -131,8 +131,11 @@ class Source(CoreObject):
             if self.entityCreated.signalparam:
                 self.appendEntity(self.entityCreated.signalparam)
                 self.entityCreated.signalparam=None
-                if self.signalReceiver():
-                    continue
+#                 if self.signalReceiver():
+#                         continue
+                if len(self.getActiveObjectQueue())==1:
+                    if self.signalReceiver():
+                        continue
             # otherwise, if the receiver requests availability then try to signal him if there is anything to dispose of
             if self.canDispose.signalparam:
                 self.canDispose.signalparam=None
