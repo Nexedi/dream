@@ -356,7 +356,7 @@ def createObjects():
             for repairman in G.RepairmanList:                   # check which repairman in the G.RepairmanList
                 if(id in repairman.coreObjectIds):              # (if any) is assigned to repair 
                     r=repairman                                 # the machine with ID equal to id
-                    
+                  
             M=BatchScrapMachine(id, name, 1, processingTime, failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, repairman=r,
                                                     scrMean=scrMean,
@@ -376,7 +376,7 @@ def createObjects():
             scrMean=int(scrapQuantity.get('mean') or 0)
             scrStdev=float(scrapQuantity.get('stdev') or 0)
             scrMin=int(scrapQuantity.get('min') or 0)
-            scrMax=int(scrapQuantity.get('max') or mean+5*stdev)
+            scrMax=int(scrapQuantity.get('max') or scrMean+5*scrStdev)
             failures=element.get('failures', {})  
             failureDistribution=failures.get('distributionType', 'not found')
             MTTF=float(failures.get('MTTF') or 0)
@@ -386,10 +386,11 @@ def createObjects():
             for repairman in G.RepairmanList:                   # check which repairman in the G.RepairmanList
                 if(id in repairman.coreObjectIds):              # (if any) is assigned to repair 
                     r=repairman                                 # the machine with ID equal to id
-                    
-            M=M3(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
+            
+            print id, processingTime
+            M=M3(id, name, 1, processingTime, failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, repairman=r,
-                                                    mean=mean,stdev=stdev,min=min,max=max, scrMean=scrMean, 
+                                                    scrMean=scrMean,
                                                     scrStdev=scrStdev,scrMin=scrMin,scrMax=scrMax)
             M.nextIds=getSuccessorList(id)                      # update the nextIDs list of the machine
             G.MachineList.append(M)                             # add machine to global MachineList
