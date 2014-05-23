@@ -130,7 +130,7 @@ class Conveyer(CoreObject):
                 # check if there is a possibility to accept and signal a giver
                 if self.canAccept():
 #                     self.printTrace(self.id, 'will try to signal Giver from removeEntity')
-                    self.printTrace(self.id, attemptSignalGiver='(removeEntity)')
+                    self.printTrace1(self.id, attemptSignalGiver='(removeEntity)')
                     self.signalGiver()
             
             # if the event that activated the thread is canDispose then signalReceiver
