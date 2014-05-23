@@ -93,13 +93,16 @@ class Queue(CoreObject):
         # check if there is WIP and signal receiver
         self.initialSignalReceiver()
         while 1:
-            self.printTrace(self.id, 'will wait for event')
+#             self.printTrace(self.id, 'will wait for event')
+            self.printTrace1(self.id, waitEvent='')
             # wait until the Queue can accept an entity and one predecessor requests it
             yield waitevent, self, [self.isRequested,self.canDispose, self.loadOperatorAvailable]
-            self.printTrace(self.id, 'just received an event')
+#             self.printTrace(self.id, 'just received an event')
+            self.printTrace1(self.id, received='')
             # if the event that activated the thread is isRequested then getEntity
             if self.isRequested.signalparam:
-                self.printTrace(self.id, 'received a isRequested event from'+self.isRequested.signalparam.id)
+#                 self.printTrace(self.id, 'received a isRequested event from'+self.isRequested.signalparam.id)
+                self.printTrace1(self.id, isRequested=self.isRequested.signalparam.id)
                 # reset the isRequested signal parameter
                 self.isRequested.signalparam=None
                 self.getEntity()
@@ -109,14 +112,17 @@ class Queue(CoreObject):
             # if the queue received an loadOperatorIsAvailable (from Router) with signalparam time
             if self.loadOperatorAvailable.signalparam:
 #                 self.printTrace(self.id, 'received a loadOperatorAvailable event')
+#                 self.printTrace1(self.id, loadOperatorAvailable=str(self.loadOperatorAvailable.signalparam))
                 self.loadOperatorAvailable.signalparam=None
             # if the queue received an canDispose with signalparam time, this means that the signals was sent from a MouldAssemblyBuffer
             if self.canDispose.signalparam:
-                self.printTrace(self.id, 'received a canDispose event')
+#                 self.printTrace(self.id, 'received a canDispose event')
+                self.printTrace1(self.id, canDispose='')
                 self.canDispose.signalparam=None
             # if the event that activated the thread is canDispose then signalReceiver
             if self.haveToDispose():
-                self.printTrace(self.id, 'will try to signal a receiver from generator')
+#                 self.printTrace(self.id, 'will try to signal a receiver from generator')
+                self.printTrace1(self.id, attemptSignalReceiver='(generator)')
                 if self.receiver:
                     if not self.receiver.entryIsAssignedTo():
                         self.signalReceiver()
@@ -170,6 +176,7 @@ class Queue(CoreObject):
         if not self.__class__.__name__=='MouldAssemblyBuffer':
             if self.haveToDispose():
                 self.printTrace(self.id, 'will try to signal a receiver from removeEntity')
+                self.printTrace1(self.id, attemptSignalReceiver='(removeEntity)')
                 self.signalReceiver()
         return activeEntity
     

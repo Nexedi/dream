@@ -117,12 +117,14 @@ class Dismantle(CoreObject):
         # check if there is WIP and signal receiver
         self.initialSignalReceiver()
         while 1:
-            self.printTrace(self.id, 'will wait for frame event')
+#             self.printTrace(self.id, 'will wait for frame event')
+            self.printTrace1(self.id, waitEvent='(frame)')
             # wait until the Queue can accept an entity and one predecessor requests it
             yield waitevent, self, self.isRequested     #[self.isRequested,self.canDispose, self.loadOperatorAvailable]
             
             if self.isRequested.signalparam:
-                self.printTrace(self.id, 'received a isRequested event from '+self.isRequested.signalparam.id)
+#                 self.printTrace(self.id, 'received a isRequested event from '+self.isRequested.signalparam.id)
+                self.printTrace1(self.id, isRequested=self.isRequested.signalparam.id)
                 # reset the isRequested signal parameter
                 self.isRequested.signalparam=None
             
@@ -275,7 +277,8 @@ class Dismantle(CoreObject):
                activeObject.waitToDisposePart=False
         # if the internal queue is empty then try to signal the giver that the object can now receive
         if activeObject.canAccept():
-            activeObject.printTrace(self.id, 'will try signalling a giver from removeEntity')
+#             activeObject.printTrace(self.id, 'will try signalling a giver from removeEntity')
+            activeObject.printTrace1(self.id, attemptSingalGiver='(removeEntity)')
             activeObject.signalGiver()
         return activeEntity
     

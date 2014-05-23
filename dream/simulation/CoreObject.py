@@ -248,7 +248,8 @@ class CoreObject(Process):
         # update the next list of the object
         activeObject.updateNext(activeEntity)
         self.outputTrace(activeEntity.name, "got into "+self.objName)
-        self.printTrace(activeEntity.name, "got into "+self.id)
+#         self.printTrace(activeEntity.name, "got into "+self.id)
+        self.printTrace1(activeEntity.name, enter=self.id)
         return activeEntity
     
     #===========================================================================
@@ -299,7 +300,8 @@ class CoreObject(Process):
                 #if the receiver does not hold an Entity that is also critical
                 if not receiver.getActiveObjectQueue()[0].isCritical:
                     receiver.shouldPreempt=True
-                    activeObject.printTrace(self.id, 'preempting receiver '+receiver.id+'.. '*6)
+#                     activeObject.printTrace(self.id, 'preempting receiver '+receiver.id+'.. '*6)
+                    self.printTrace1(self.id, preempt=receiver.id)
                     receiver.preempt()
                     receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
                     # sort so that the critical entity is placed in front
@@ -351,7 +353,8 @@ class CoreObject(Process):
 
             activeObject.receiver=receiver
             activeObject.receiver.giver=activeObject
-            self.printTrace(self.id, ' '*50+'signalling receiver '+self.receiver.id)
+#             self.printTrace(self.id, ' '*50+'signalling receiver '+self.receiver.id)
+            self.printTrace1(self.id, signalReceiver=self.receiver.id)
             # assign the entry of the receiver
             activeObject.receiver.assignEntryTo()
             activeObject.receiver.isRequested.signal(activeObject)
@@ -387,7 +390,8 @@ class CoreObject(Process):
                 if receiver.isLoadRequested():
                     from Globals import G
                     if not G.Router.invoked:
-                        self.printTrace(self.id, ' '*50+'signalling router')
+#                         self.printTrace(self.id, ' '*50+'signalling router')
+                        self.printTrace1(self.id, signal='router')
                         G.Router.invoked=True
                         G.Router.isCalled.signal(now())
                     return True
@@ -432,7 +436,8 @@ class CoreObject(Process):
                 giversReceiver=activeObject
             activeObject.giver=giver
             activeObject.giver.receiver=activeObject
-            self.printTrace(self.id, ' '*50+'signalling giver '+self.giver.id)
+#             self.printTrace(self.id, ' '*50+'signalling giver '+self.giver.id)
+            self.printTrace1(self.id, signalGiver=self.giver.id)
             activeObject.giver.canDispose.signal(activeObject)
             return True
         return False
@@ -496,6 +501,67 @@ class CoreObject(Process):
         from Globals import G
         if(G.console=="Yes"):         #output only if the user has selected to
             print now(), entityName, message
+    
+    def printTrace1(self,entity='', **kw):
+        assert len(kw)==1, 'only one phrase per printTrace supported for the moment'
+        from Globals import G
+        time=now()
+        charLimit=60
+        remainingChar=charLimit-len(entity)-len(str(time))
+        if(G.console=='Yes'):
+            print time,entity,
+            for key in kw:
+                if key not in self.getSupportedPrintKwrds():
+                    raise ValueError("Unsupported phrase %s for %s" % (key, self.id))
+                element=self.getPhrase()[key]
+                phrase=element['phrase']
+                prefix=element.get('prefix',None)
+                suffix=element.get('suffix',None)
+                arg=kw[key]
+                if prefix:
+                    print prefix*remainingChar,phrase,arg
+                elif suffix:
+                    remainingChar-=len(phrase)+len(arg)
+                    suffix*=remainingChar
+                    if key=='enter':
+                        suffix=suffix+'>'
+                    print phrase,arg,suffix
+                else:
+                    print phrase,arg
+    @staticmethod
+    def getSupportedPrintKwrds():
+        return ("signal", "signalReceiver", "signalGiver","attemptSignal", 
+                "attemptSignalGiver", "attemptSignalReceiver",
+                "preempt", "preempted","startWork", "finishWork", "processEnd", "interrupted",
+                "enter", "waitEvent", "received", 
+                "isRequested","canDispose","interruptionEnd", "loadOperatorAvailable", 'resourceAvailable',
+                'conveyerEnd', 'conveyerFull','moveEnd')
+    @staticmethod
+    def getPhrase():
+        printKwrds={'signal':{'phrase':'signalling'},
+                    'signalGiver':{'phrase':'signalling giver', 'prefix':'_'},
+                    'signalReceiver':{'phrase':'signalling receiver','prefix':'_'}, 
+                    'attemptSignal':{'phrase':'will try to signal'},
+                    'attemptSignalGiver':{'phrase':'will try to signal a giver'}, 
+                    'attemptSignalReceiver':{'phrase':'will try to signal a receiver'}, 
+                    'preempt': {'phrase':'preempts','suffix':' .'}, 
+                    'preempted': {'phrase':'is being preempted','suffix':'. '},
+                    'startWork':{'phrase':'started working in'},
+                    'finishWork':{'phrase':'finished working in'},
+                    'processEnd':{'phrase':'ended processing in'},
+                    'interrupted':{'phrase':'interrupted at','suffix':' .'},
+                    'enter':{'phrase':'got into','suffix':'='}, 
+                    'waitEvent':{'phrase':'will wait for event'},
+                    'received':{'phrase':'received event'},
+                    'isRequested':{'phrase':'received an isRequested event from'},
+                    'canDispose':{'phrase':'received an canDispose event'},
+                    'interruptionEnd':{'phrase':'received an interruptionEnd event at'},
+                    "loadOperatorAvailable":{'phrase':'received a loadOperatorAvailable event at'},
+                    "resourceAvailable":{'phrase':'received a resourceAvailable event'},
+                    'moveEnd':{'phrase':'received a moveEnd event'},
+                    "conveyerEnd":{'phrase':'has reached conveyer End', 'suffix':'.!'},
+                    'conveyerFull':{'phrase':'is now Full, No of units:', 'suffix':'(*)'}}
+        return printKwrds
             
     # =======================================================================
     # outputs data to "output.xls" 

@@ -100,11 +100,13 @@ class Conveyer(CoreObject):
 #                 print self.id, 'time to move', self.conveyerMover.timeToWait
                 self.conveyerMover.canMove.signal(now())
             
-            self.printTrace(self.id, 'will wait for event')
+#             self.printTrace(self.id, 'will wait for event')
+            self.printTrace1(self.id, waitEvent='')
             yield waitevent, self, [self.isRequested,self.canDispose, self.moveEnd] # , self.loadOperatorAvailable]
             # if the event that activated the thread is isRequested then getEntity
             if self.isRequested.signalparam:
-                self.printTrace(self.id, 'received an is requested event')
+#                 self.printTrace(self.id, 'received an is requested event')
+                self.printTrace1(self.id, isRequested='')
                 # reset the isRequested signal parameter
                 self.isRequested.signalparam=None
                 # get the entity
@@ -117,26 +119,32 @@ class Conveyer(CoreObject):
 #                 self.loadOperatorAvailable.signalparam=None
             # if the queue received an canDispose with signalparam time, this means that the signals was sent from a MouldAssemblyBuffer
             if self.canDispose.signalparam:
-                self.printTrace(self.id, 'received a canDispose event')
+#                 self.printTrace(self.id, 'received a canDispose event')
+                self.printTrace1(self.id, canDispose='')
                 self.canDispose.signalparam=None
             # if the object received a moveEnd signal from the ConveyerMover
             if self.moveEnd.signalparam:
-                self.printTrace(self.id, 'received a moveEnd event')
+#                 self.printTrace(self.id, 'received a moveEnd event')
+                self.printTrace1(self.id, moveEnd='')
                 self.moveEnd.signalparam=None
                 # check if there is a possibility to accept and signal a giver
                 if self.canAccept():
-                    self.printTrace(self.id, 'will try to signal Giver from removeEntity')
+#                     self.printTrace(self.id, 'will try to signal Giver from removeEntity')
+                    self.printTrace(self.id, attemptSignalGiver='(removeEntity)')
                     self.signalGiver()
             
             # if the event that activated the thread is canDispose then signalReceiver
             if self.haveToDispose():
 #                 self.printTrace(self.id, 'will try to signal a receiver from generator')
+                self.printTrace1(self.id, attemptSignalReceiver='(generator)')
                 if self.receiver:
                     if not self.receiver.entryIsAssignedTo():
-                        self.printTrace(self.id, 'will try to signal receiver from generator1')
+#                         self.printTrace(self.id, 'will try to signal receiver from generator1')
+                        self.printTrace1(self.id, attemptSignalReceiver='(generator1)')
                         self.signalReceiver()
                     continue
-                self.printTrace(self.id, 'will try to signal receiver from generator2')
+#                 self.printTrace(self.id, 'will try to signal receiver from generator2')
+                self.printTrace1(self.id, attemptSignalReceiver='(generator2)')
                 self.signalReceiver()
     
     #===========================================================================
@@ -195,7 +203,8 @@ class Conveyer(CoreObject):
             if(self.length-self.position[0]<0.000001) and (not self.entityLastReachedEnd==self.getActiveObjectQueue()[0]):
                 self.waitToDispose=True
                 self.entityLastReachedEnd=self.getActiveObjectQueue()[0]
-                self.printTrace(self.getActiveObjectQueue()[0].name, 'has reached the end'+'  !!  .  !!  .'*7)
+#                 self.printTrace(self.getActiveObjectQueue()[0].name, 'has reached the end'+'  !!  .  !!  .'*7)
+                self.printTrace1(self.getActiveObjectQueue()[0].name, conveyerEnd='')
                 return True
         return False
 
@@ -334,7 +343,8 @@ class Conveyer(CoreObject):
         if self.isFull():
             self.timeBlockageStarted=now()
             self.wasFull=True
-            self.printTrace(self.id, 'is now Full '+str(len(self.getActiveObjectQueue()))+' (*) '*20)
+#             self.printTrace(self.id, 'is now Full '+str(len(self.getActiveObjectQueue()))+' (*) '*20)
+            self.printTrace1(self.id, conveyerFull=str(len(self.getActiveObjectQueue())))
         return activeEntity
     
     #===========================================================================
@@ -357,7 +367,8 @@ class Conveyer(CoreObject):
             self.conveyerMover.canMove.signal(now())
         # if there is anything to dispose of then signal a receiver
         if self.haveToDispose():
-            self.printTrace(self.id, 'will try to signal a receiver from removeEntity')
+#             self.printTrace(self.id, 'will try to signal a receiver from removeEntity')
+            self.printTrace1(self.id, attemptSingalReceiver='(removeEntity)')
             self.signalReceiver()
         return activeEntity
     
@@ -510,9 +521,11 @@ class ConveyerMover(Process):
     #===========================================================================
     def run(self):
         while 1:
-            self.conveyer.printTrace(self.conveyer.id, 'mover will wait for canMove event')
+#             self.conveyer.printTrace(self.conveyer.id, 'mover will wait for canMove event')
+            self.conveyer.printTrace1(self.conveyer.id, waitEvent='(canMove)')
             yield waitevent,self,self.canMove      #wait until the conveyer triggers the mover
-            self.conveyer.printTrace(self.conveyer.id, 'mover received canMove event')
+#             self.conveyer.printTrace(self.conveyer.id, 'mover received canMove event')
+            self.conveyer.printTrace1(self.conveyer.id, received='(canMove)')
             
             yield hold,self,self.timeToWait                 #wait for the time that the conveyer calculated
 #             print '. .'*40

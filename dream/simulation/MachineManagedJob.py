@@ -105,7 +105,6 @@ class MachineManagedJob(MachineJobShop):
     # also updates the giver to the one that is to be taken
     # =======================================================================
     def canAcceptAndIsRequested(self,callerObject=None):
-#         print self.id, 'CAAIR'
         # get active and giver objects
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
@@ -190,16 +189,4 @@ class MachineManagedJob(MachineJobShop):
         # maybe we should work this way in all CoreObjects???
         return self.entityToGet
         
-
-#     # =======================================================================
-#     #                   prepare the machine to be released
-#     # =======================================================================
-#     def releaseOperator(self):
-#         self.outputTrace(self.currentOperator.objName, "released from "+ self.objName)
-# #         # TESTING
-# #         print now(), self.id, 'will release operator', self.operatorPool.operators[0].objName
-#         # set the flag operatorAssignedTo to None
-#         self.currentOperator.operatorAssignedTo=None
-#         self.broker.invokeBroker()
-#         self.toBeOperated = False
 
