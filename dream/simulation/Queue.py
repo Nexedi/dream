@@ -84,6 +84,9 @@ class Queue(CoreObject):
         CoreObject.initialize(self)
         # initialise the internal Queue (type Resource) of the Queue object 
         self.Res=Resource(self.capacity)   
+        # event used by router
+        self.loadOperatorAvailable=SimEvent('loadOperatorAvailable')
+
     
     #===========================================================================
     # run method of the queue

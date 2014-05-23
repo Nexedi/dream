@@ -132,6 +132,11 @@ class CoreObject(Process):
         # TODO, think what to do in multiple runs
         # TODO, this should be also updated in Globals.setWIP (in case we have initial wip)
         self.wipStatList=[[0,0]]
+        # signalizing an event that activates the generator
+        self.isRequested=SimEvent('isRequested')
+        self.canDispose=SimEvent('canDispose')
+        self.interruptionEnd=SimEvent('interruptionEnd')
+        self.interruptionStart=SimEvent('interruptionStart')
 
     # =======================================================================
     #                the main process of the core object 

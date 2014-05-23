@@ -55,7 +55,6 @@ class EntityGenerator(Process):
     # the generator of the EntitiesGenerator
     #===========================================================================
     def run(self): 
-        print '1'
         while 1:
             entity=self.victim.createEntity()                       # create the Entity object and assign its name
             entity.creationTime=now()                               # assign the current simulation time as the Entity's creation time 
