@@ -348,47 +348,20 @@ class Operator(ObjectResource):
             G.outputIndex+=1
         G.outputIndex+=1
 
-    # =======================================================================
+       # =======================================================================
     #                    outputs results to JSON File
     # =======================================================================
     def outputResultsJSON(self):
         from Globals import G
-        # if we had just one replication output the results to JSON
-        if(G.numberOfReplications==1): 
-            json={}
-            json['_class'] = 'Dream.'+self.type;
-            json['id'] = str(self.id)
-            json['results'] = {}
+        from Globals import getConfidenceIntervals
+        json = {'_class': self.class_name,
+                'id': self.id,
+                'results': {}}
+        if(G.numberOfReplications==1):
             json['results']['working_ratio']=100*self.totalWorkingTime/G.maxSimTime
             json['results']['waiting_ratio']=100*self.totalWaitingTime/G.maxSimTime
-        #if we had multiple replications we output confidence intervals to excel
-            # for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
-            # so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
-            # so for each output value we check if there was difference in the runs' results
-            # if yes we output the Confidence Intervals. if not we output just the fix value  
-        else:          
-            json={}
-            json['_class'] = 'Dream.Repairman';
-            json['id'] = str(self.id)
-            json['results'] = {}
-            json['results']['working_ratio']={}
-            if self.checkIfArrayHasDifValues(self.Working):
-                json['results']['working_ratio']['min']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][0]
-                json['results']['working_ratio']['avg']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][0]
-                json['results']['working_ratio']['max']=stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][1]
-            else:
-                json['results']['working_ratio']['min']=self.Working[0]
-                json['results']['working_ratio']['avg']=self.Working[0]
-                json['results']['working_ratio']['max']=self.Working[0]                
-            json['results']['waiting_ratio']={}
-            if self.checkIfArrayHasDifValues(self.Waiting):
-                json['results']['waiting_ratio']['min']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][0]
-                json['results']['waiting_ratio']['avg']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][0]
-                json['results']['waiting_ratio']['max']=stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][1]
-            else:
-                json['results']['waiting_ratio']['min']=self.Waiting[0]
-                json['results']['waiting_ratio']['avg']=self.Waiting[0]
-                json['results']['waiting_ratio']['max']=self.Waiting[0] 
-                
+        else:
+            json['results']['working_ratio'] = getConfidenceIntervals(self.Working)
+            json['results']['waiting_ratio'] = getConfidenceIntervals(self.Waiting)
         G.outputJSON['elementList'].append(json)
         
