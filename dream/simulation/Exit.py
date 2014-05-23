@@ -110,6 +110,8 @@ class Exit(CoreObject):
         self.totalNumberOfUnitsExited+=activeEntity.numberOfUnits   # add the number of units that xited
         self.totalTaktTime+=now()-self.timeLastEntityLeft           # add the takt time
         self.timeLastEntityLeft=now()                               # update the time that the last entity left from the Exit
+        activeObjectQueue=self.getActiveObjectQueue()
+        del activeObjectQueue[:]
         return activeEntity
     
     #===========================================================================
