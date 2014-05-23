@@ -387,7 +387,6 @@ def createObjects():
                 if(id in repairman.coreObjectIds):              # (if any) is assigned to repair 
                     r=repairman                                 # the machine with ID equal to id
             
-            print id, processingTime
             M=M3(id, name, 1, processingTime, failureDistribution=failureDistribution,
                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, repairman=r,
                                                     scrMean=scrMean,
