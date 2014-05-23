@@ -222,6 +222,7 @@ class Machine(CoreObject):
     # the main process of the machine
     # =======================================================================
     def run(self):
+        # check if there is WIP and signal receiver
         self.initialSignalReceiver()
         # execute all through simulation time
         while 1:
