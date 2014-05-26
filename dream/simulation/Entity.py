@@ -57,9 +57,6 @@ class Entity(object):
         self.isCritical=isCritical          # flag to inform weather the entity is critical -> preemption
         self.manager=None                   # default value
         self.numberOfUnits=1                # default value
-        #        flag that signalizes that an entity is ready to enter a machine
-        #        gets cold by the time it has finished its processing
-        self.hot=False
         # variable used to differentiate entities with and entities without routes
         self.family='Entity'
         
@@ -78,7 +75,7 @@ class Entity(object):
     def canProceed(self):
         activeObject=self.currentStation
         return activeObject.canDeliver(self)
-    
+     
     #===========================================================================
     # method that finds a receiver for a candidate entity
     #===========================================================================
@@ -103,26 +100,7 @@ class Entity(object):
             if not self in router.conflictingEntities:
                 router.conflictingEntities.append(self)
         return availableReceiver
-            
-    #===========================================================================
-    # assign the entity to a station
-    #===========================================================================
-    def assignTo(self, object=None):
-        self.receiver=object
-        self.timeOfAssignement=now()
-        
-    #===========================================================================
-    # unassign the entity from the object it is currently assigned to
-    #===========================================================================
-    def unassign(self):
-        self.receiver=None
-        self.timeOfAssignement=0
-        
-    #===========================================================================
-    # returns the object the entity is currently assigned to
-    #===========================================================================
-    def isAssignedTo(self):
-        return self.receiver
+    
     # =======================================================================
     # outputs results to JSON File 
     # =======================================================================

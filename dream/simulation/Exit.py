@@ -91,7 +91,6 @@ class Exit(CoreObject):
         # get the active object and its internal queue
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-#         giverObject=activeObject.getGiverObject()
         giverObject=callerObject
         assert giverObject, 'there must be a caller for canAcceptAndIsRequested' 
         return giverObject.haveToDispose(self)
@@ -105,13 +104,15 @@ class Exit(CoreObject):
         from Globals import G
         if activeEntity in G.pendingEntities:
             G.pendingEntities.remove(activeEntity)
+        if activeEntity in G.EntityList:
+            G.EntityList.remove(activeEntity)
         self.totalLifespan+=now()-activeEntity.startTime    #Add the entity's lifespan to the total one. 
         self.numOfExits+=1                                          # increase the exits by one
         self.totalNumberOfUnitsExited+=activeEntity.numberOfUnits   # add the number of units that xited
         self.totalTaktTime+=now()-self.timeLastEntityLeft           # add the takt time
         self.timeLastEntityLeft=now()                               # update the time that the last entity left from the Exit
         activeObjectQueue=self.getActiveObjectQueue()
-        del activeObjectQueue[:]
+        del self.Res.activeQ[:]
         return activeEntity
     
     #===========================================================================

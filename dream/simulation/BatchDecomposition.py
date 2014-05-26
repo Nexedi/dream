@@ -179,8 +179,6 @@ class BatchDecomposition(CoreObject):
             activeObjectQueue.append(subBatch)                          #append the sub-batch to the active object Queue
             activeEntity.subBatchList.append(subBatch)
             subBatch.currentStation=self
-            # if the activeEntity is hot then the subBatches should be also hot
-            subBatch.hot=activeEntity.hot
             # if the activeEntity is in the pendingEntities list then place the subBatches there
             if activeEntity in G.pendingEntities:
                 G.pendingEntities.append(subBatch)

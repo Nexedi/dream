@@ -161,24 +161,6 @@ class Source(CoreObject):
         activeEntity=entity
         # at the newly created entity to the pendingEntities
         G.pendingEntities.append(activeEntity)
-        # TODO: if the successor of the object is a machine that is operated with operationType 'Load'
-        #     then the flag hot of the activeEntity must be set to True 
-        #     to signalize that the entity has reached its final destination before the next Machine
-        # if the entity is not of type Job
-        if activeEntity.family=='Entity':
-            successorsAreMachines=True
-            # for all the objects in the next list
-            for object in self.next:
-            # if the object is not in the MachineList
-            # TODO: We must consider also the case that entities can be blocked before they can reach 
-            #     the heating point. In such a case they must be removed from the G.pendingEntities list
-            #     and added again after they are unblocked
-                if not object in G.MachineList:
-                    successorsAreMachines=False
-                    break
-            # the hot flag should not be raised
-            if successorsAreMachines:
-                activeEntity.hot = True
 
     #============================================================================
     #            sets the routing out element for the Source
