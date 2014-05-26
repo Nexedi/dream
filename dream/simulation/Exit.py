@@ -102,10 +102,11 @@ class Exit(CoreObject):
         activeEntity = CoreObject.getEntity(self)           #run the default method
         # if the entity is in the G.pendingEntities list then remove it from there
         from Globals import G
-        if activeEntity in G.pendingEntities:
-            G.pendingEntities.remove(activeEntity)
-        if activeEntity in G.EntityList:
-            G.EntityList.remove(activeEntity)
+#         if activeEntity in G.pendingEntities:
+#             G.pendingEntities.remove(activeEntity)
+#         if activeEntity in G.EntityList:
+#             G.EntityList.remove(activeEntity)
+        self.clear(activeEntity)
         self.totalLifespan+=now()-activeEntity.startTime    #Add the entity's lifespan to the total one. 
         self.numOfExits+=1                                          # increase the exits by one
         self.totalNumberOfUnitsExited+=activeEntity.numberOfUnits   # add the number of units that xited
@@ -114,6 +115,19 @@ class Exit(CoreObject):
         activeObjectQueue=self.getActiveObjectQueue()
         del self.Res.activeQ[:]
         return activeEntity
+    
+    @staticmethod
+    def clear(entity):
+        from Globals import G
+        def deleteEntityfromlist(entity, list):
+            if entity in list:
+                list.remove(entity)
+        lists=(G.EntityList, G.PartList, G.pendingEntities, G.WipList)
+#         lists=(G.EntityList, G.PartList, G.BatchList, G.SubBatchList,
+#                G.JobList, G.OrderList, G.OrderComponentList, G.MouldList,
+#                G.pendingEntities, G.WipList)
+        for list in lists:
+            deleteEntityfromlist(entity,list)
     
     #===========================================================================
     # haveToDispose of an exit must always return False
