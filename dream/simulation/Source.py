@@ -56,19 +56,24 @@ class EntityGenerator(Process):
     #===========================================================================
     def run(self): 
         while 1:
-            entity=self.victim.createEntity()                       # create the Entity object and assign its name
-            entity.creationTime=now()                               # assign the current simulation time as the Entity's creation time 
-            entity.startTime=now()                                  # assign the current simulation time as the Entity's start time 
-            entity.currentStation=self.victim                            # update the current station of the Entity
-            G.EntityList.append(entity)
-            self.victim.outputTrace(entity.name, "generated")       # output the trace
-            self.victim.getActiveObjectQueue().append(entity)            # append the entity to the resource 
-            self.victim.numberOfArrivals+=1                              # we have one new arrival
-            G.numberOfEntities+=1
-            # if there is only one entity in the Source send entityCreated signal
-            self.victim.appendEntity(entity)
-            if len(self.victim.getActiveObjectQueue())==1: 
+            # if the Source is empty create the Entity
+            if len(self.victim.getActiveObjectQueue())==0:
+                entity=self.victim.createEntity()                       # create the Entity object and assign its name
+                entity.creationTime=now()                               # assign the current simulation time as the Entity's creation time 
+                entity.startTime=now()                                  # assign the current simulation time as the Entity's start time 
+                entity.currentStation=self.victim                            # update the current station of the Entity
+                G.EntityList.append(entity)
+                self.victim.outputTrace(entity.name, "generated")       # output the trace
+                self.victim.getActiveObjectQueue().append(entity)            # append the entity to the resource 
+                self.victim.numberOfArrivals+=1                              # we have one new arrival
+                G.numberOfEntities+=1
+                self.victim.appendEntity(entity) 
                 self.victim.entityCreated.signal(entity)
+            # else put it on the time list for scheduled Entities
+            else:
+                #print now(), 'appending to the list'
+                self.victim.scheduledEntities.append(now())
+                self.victim.outputTrace(entity.name, "generated")       # output the trace
             yield hold,self,self.victim.calculateInterarrivalTime() # wait until the next arrival
 
 #============================================================================
@@ -102,6 +107,7 @@ class Source(CoreObject):
         self.entityCreated=SimEvent('an entity is created')
         # event used by router
         self.loadOperatorAvailable=SimEvent('loadOperatorAvailable')
+        self.scheduledEntities=[]       # list of creations that are scheduled
         
     
     #===========================================================================
@@ -121,6 +127,7 @@ class Source(CoreObject):
         self.entityCreated=SimEvent('an entity is created')
         # event used by router
         self.loadOperatorAvailable=SimEvent('loadOperatorAvailable')
+        self.scheduledEntities=[]       # list of creations that are scheduled
     
     #===========================================================================
     # the generator of the Source class 
@@ -189,4 +196,23 @@ class Source(CoreObject):
     #============================================================================
     def calculateInterarrivalTime(self):
         return self.rng.generateNumber()    #this is if we have a default interarrival  time for all the entities
-
+    
+    # =======================================================================
+    # removes an entity from the Source
+    # =======================================================================
+    def removeEntity(self, entity=None):
+        if len(self.getActiveObjectQueue())==1 and len(self.scheduledEntities):
+            newEntity=self.createEntity()                       # create the Entity object and assign its name
+            newEntity.creationTime=self.scheduledEntities.pop(0)                             # assign the current simulation time as the Entity's creation time 
+            newEntity.startTime=newEntity.creationTime                                # assign the current simulation time as the Entity's start time
+            #print now(), 'getting from the list. StartTime=',newEntity.startTime
+            newEntity.currentStation=self                            # update the current station of the Entity
+            G.EntityList.append(newEntity)
+            self.getActiveObjectQueue().append(newEntity)            # append the entity to the resource 
+            self.numberOfArrivals+=1                              # we have one new arrival
+            G.numberOfEntities+=1
+            self.appendEntity(newEntity)  
+        activeEntity=CoreObject.removeEntity(self, entity)          # run the default method  
+        if len(self.getActiveObjectQueue())==1:
+            self.entityCreated.signal(newEntity)
+        return activeEntity
