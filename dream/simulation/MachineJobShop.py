@@ -49,8 +49,7 @@ class MachineJobShop(Machine):
         activeObject=self.getActiveObject()
         activeObjectQueue=activeObject.getActiveObjectQueue()
         activeEntity=activeObjectQueue[0]
-#         self.printTrace(activeObject.getActiveObjectQueue()[0].name,"ended processing in "+activeObject.objName)
-        self.printTrace1(activeObject.getActiveObjectQueue()[0].name,processEnd=activeObject.objName)
+        self.printTrace(activeObject.getActiveObjectQueue()[0].name,processEnd=activeObject.objName)
         # reset the variables used to handle the interruptions timing 
         self.timeRestartingProcessing=0
         self.breakTime=0
@@ -231,8 +230,7 @@ class MachineJobShop(Machine):
     # method to execute preemption
     # =======================================================================    
     def preempt(self):
-#         self.printTrace(self.id,'preempting'+' .'*7)
-        self.printTrace1(self.id,preempted='')
+        self.printTrace(self.id,preempted='')
         activeObject=self.getActiveObject()
         activeEntity=self.getActiveObjectQueue()[0] #get the active Entity
         #calculate the remaining processing time

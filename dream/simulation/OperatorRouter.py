@@ -386,13 +386,13 @@ class Router(ObjectInterruption):
             # for each pendingQueue
             for object in self.pendingQueues:
                 # find available operator for then machines that follow
-                for nextobject in object.findReceivers():
+                for nextobject in object.findReceiversFor(object):
                     candidateOperator=nextobject.findCandidateOperator()
                     if not candidateOperator in self.candidateOperators:
                         self.candidateOperators.append(candidateOperator)
                 # check the option of preemption if there are critical entities and no available operators
                 #------------------------------------------------------------------------------ 
-                if not object.findReceivers() and\
+                if not object.findReceiversFor(object) and\
                     any(entity for entity in object.getActiveObjectQueue() if entity.isCritical):
                     # for each of the following objects
                     for nextObject in object.next:
@@ -533,6 +533,25 @@ class Router(ObjectInterruption):
             candidateList=self.candidateOperators
             self.activeQSorter(criterion=self.schedulingRule,candList=candidateList)
 
+    def findCandidateReceiverFor(self, entity):
+        # initiate the local list variable available receivers
+        availableReceivers=[x for x in entity.candidateReceivers\
+                                        if not x in self.occupiedReceivers]
+        # and pick the object that is waiting for the most time
+        if availableReceivers:
+            # find the receiver that waits the most
+            availableReceiver=entity.currentStation.selectReceiver(availableReceivers)
+            self.occupiedReceivers.append(availableReceiver)
+        # if there is no available receiver add the entity to the entitiesWithOccupiedReceivers list
+        else:
+            self.entitiesWithOccupiedReceivers.append(entity)
+            availableReceiver=None
+        # if the sorting flag is not set then the sorting of each queue must prevail in case of operators conflict
+        if not self.sorting and not availableReceiver and bool(availableReceivers):
+            availableReceiver=entity.currentStation.selectReceiver(self.candidateReceivers)
+            if not entity in self.conflictingEntities:
+                self.conflictingEntities.append(entity)
+        return availableReceiver
          
     #=======================================================================
     # Find candidate entities and their receivers

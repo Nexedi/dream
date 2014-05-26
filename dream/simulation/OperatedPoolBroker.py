@@ -71,7 +71,7 @@ class Broker(ObjectInterruption):
             # TODO: add new broker event - brokerIsCalled
             yield waitevent, self, self.isCalled
             assert self.isCalled.signalparam==now(), 'the broker should be granted control instantly'
-            self.victim.printTrace1(self.victim.id, received='(broker)')
+            self.victim.printTrace(self.victim.id, received='(broker)')
     # ======= request a resource
             if self.victim.isOperated()\
                 and any(type=='Load' or type=='Setup' or type=='Processing'\
@@ -87,28 +87,24 @@ class Broker(ObjectInterruption):
                     if not self.victim.currentEntity in G.pendingEntities:
                         G.pendingEntities.append(self.victim.currentEntity)
                     if not G.Router.invoked:
-#                         self.printTrace(self.victim.id, 'broker'+' '*50+'signalling router')
-                        self.victim.printTrace1(self.victim.id, signal='router (broker)')
+                        self.victim.printTrace(self.victim.id, signal='router (broker)')
                         G.Router.invoked=True
                         G.Router.isCalled.signal(now())
                        
                     self.waitForOperator=True
-#                     self.printTrace(self.victim.id, 'broker waits till resource is available1')
-                    self.victim.printTrace1(self.victim.id, waitEvent='(resourceIsAvailable broker)')
+                    self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')
                     yield waitevent, self, self.resourceAvailable
                     # remove the currentEntity from the pendingEntities
                     if self.victim.currentEntity in G.pendingEntities:
                         G.pendingEntities.remove(self.victim.currentEntity)
                     self.waitForOperator=False
-#                     self.printTrace(self.victim.id, 'received resourceAvailable event')
-                    self.victim.printTrace1(self.victim.id, resourceAvailable='(broker)')
+                    self.victim.printTrace(self.victim.id, resourceAvailable='(broker)')
                 #===============================================================
                 assert self.victim.operatorPool.checkIfResourceIsAvailable(), 'there is no available operator to request'
                 # set the available resource as the currentOperator
                 self.victim.currentOperator=self.victim.operatorPool.findAvailableOperator()
                 yield request, self, self.victim.operatorPool.getResource(self.victim.currentOperator)
-#                 self.printTrace(self.victim.currentOperator.objName, 'started work in '+self.victim.id)
-                self.victim.printTrace1(self.victim.currentOperator.objName, startWork=self.victim.id)
+                self.victim.printTrace(self.victim.currentOperator.objName, startWork=self.victim.id)
                 # clear the timeWaitForOperatorStarted variable
                 self.timeWaitForOperatorStarted = 0
                 # update the time that the operation started
@@ -125,16 +121,14 @@ class Broker(ObjectInterruption):
                 # TODO: signalling the router must be done more elegantly, router must be set as global variable
                 # if the router is already invoked then do not signal it again
                 if not self.victim.router.invoked:
-#                     self.printTrace(self.victim.id, 'broker'+' '*50+'signalling ROUTER')
-                    self.victim.printTrace1(self.victim.id, signal='router (broker)')
+                    self.victim.printTrace(self.victim.id, signal='router (broker)')
                     self.victim.router.invoked=True
                     self.victim.router.isCalled.signal(now())
                 # TODO: signalling the router will give the chance to it to take the control, but when will it eventually receive it. 
                 #     after signalling the broker will signal it's victim that it has finished it's processes 
                 # TODO: this wont work for the moment. The actions that follow must be performed by all operated brokers. 
                 
-                self.printTrace(self.victim.currentOperator.objName, 'released '+self.victim.id)
-                self.victim.printTrace1(self.victim.currentOperator.objName, finishWork=self.victim.id)
+                self.victim.printTrace(self.victim.currentOperator.objName, finishWork=self.victim.id)
                 # the victim current operator must be cleared after the operator is released
                 self.timeLastOperationEnded = now()
                 self.victim.currentOperator = None

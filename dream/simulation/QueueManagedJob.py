@@ -104,7 +104,8 @@ class QueueManagedJob(QueueJobShop):
     #===========================================================================
     #  signalRouter method
     #===========================================================================
-    def signalRouter(self, receiver=None):
+    @staticmethod
+    def signalRouter(receiver=None):
         # if an operator is not assigned to the receiver then do not signal the receiver but the Router
         # TODO: identifyEntityToGet needs giver defined but here is not yet defined for Machines and machineJobShops 
         try:
@@ -113,8 +114,7 @@ class QueueManagedJob(QueueJobShop):
                     if receiver.identifyEntityToGet().manager.isAssignedTo()!=receiver:
                         from Globals import G
                         if not G.Router.invoked:
-#                             self.printTrace(self.id,' '*50+'signalling router')
-                            self.printTrace1(self.id, signal='router')
+#                             self.printTrace(self.id, signal='router')
                             G.Router.invoked=True
                             G.Router.isCalled.signal(now())
                         return True

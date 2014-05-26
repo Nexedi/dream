@@ -278,4 +278,79 @@ def getConfidenceIntervals(value_list):
     return {'lb': lb,
             'ub': ub,
             'avg': numpy.mean(value_list) }
+    
+# #===========================================================================
+# # printTrace
+# #===========================================================================
+# def printTrace(entity='',station='', **kw):
+#     assert len(kw)==1, 'only one phrase per printTrace supported for the moment'
+#     from Globals import G
+#     time=now()
+#     charLimit=60
+#     remainingChar=charLimit-len(entity)-len(str(time))
+#     if(G.console=='Yes'):
+#         print time,entity,
+#         for key in kw:
+#             if key not in getSupportedPrintKwrds():
+#                 raise ValueError("Unsupported phrase %s for %s" % (key, station.id))
+#             element=getPhrase()[key]
+#             phrase=element['phrase']
+#             prefix=element.get('prefix',None)
+#             suffix=element.get('suffix',None)
+#             arg=kw[key]
+#             if prefix:
+#                 print prefix*remainingChar,phrase,arg
+#             elif suffix:
+#                 remainingChar-=len(phrase)+len(arg)
+#                 suffix*=remainingChar
+#                 if key=='enter':
+#                     suffix=suffix+'>'
+#                 print phrase,arg,suffix
+#             else:
+#                 print phrase,arg
+    
+#===========================================================================
+# get the supported print Keywords
+#===========================================================================
+def getSupportedPrintKwrds():
+    return ("create",
+            "signal", "signalReceiver", "signalGiver",
+            "attemptSignal","attemptSignalGiver", "attemptSignalReceiver",
+            "preempt", "preempted",
+            "startWork", "finishWork", 
+            "processEnd", "interrupted",
+            "enter", 
+            "waitEvent", "received", "isRequested","canDispose",
+            "interruptionEnd", "loadOperatorAvailable", 'resourceAvailable',
+            'conveyerEnd', 'conveyerFull','moveEnd')
+        
+#===========================================================================
+# get the phrase to print from the keyword
+#===========================================================================
+def getPhrase():
+    printKwrds={'create':{'phrase':'created an entity'},
+                'signal':{'phrase':'signalling'},
+                'signalGiver':{'phrase':'signalling giver', 'prefix':'_'},
+                'signalReceiver':{'phrase':'signalling receiver','prefix':'_'}, 
+                'attemptSignal':{'phrase':'will try to signal'},
+                'attemptSignalGiver':{'phrase':'will try to signal a giver'}, 
+                'attemptSignalReceiver':{'phrase':'will try to signal a receiver'}, 
+                'preempt': {'phrase':'preempts','suffix':' .'}, 
+                'preempted': {'phrase':'is being preempted','suffix':'. '},
+                'startWork':{'phrase':'started working in'},
+                'finishWork':{'phrase':'finished working in'},
+                'processEnd':{'phrase':'ended processing in'},
+                'interrupted':{'phrase':'interrupted at','suffix':' .'},
+                'enter':{'phrase':'got into','suffix':'='}, 
+                'waitEvent':{'phrase':'will wait for event'},
+                'received':{'phrase':'received event'},
+                'isRequested':{'phrase':'received an isRequested event from'},
+                'canDispose':{'phrase':'received an canDispose event'},
+                'interruptionEnd':{'phrase':'received an interruptionEnd event at'},
+                "loadOperatorAvailable":{'phrase':'received a loadOperatorAvailable event at'},
+                "resourceAvailable":{'phrase':'received a resourceAvailable event'},
+                'moveEnd':{'phrase':'received a moveEnd event'},
+                "conveyerEnd":{'phrase':'has reached conveyer End', 'suffix':'.!'},
+                'conveyerFull':{'phrase':'is now Full, No of units:', 'suffix':'(*)'}}
+    return printKwrds
 

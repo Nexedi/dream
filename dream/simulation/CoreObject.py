@@ -253,8 +253,7 @@ class CoreObject(Process):
         # update the next list of the object
         activeObject.updateNext(activeEntity)
         self.outputTrace(activeEntity.name, "got into "+self.objName)
-#         self.printTrace(activeEntity.name, "got into "+self.id)
-        self.printTrace1(activeEntity.name, enter=self.id)
+        self.printTrace(activeEntity.name, enter=self.id)
         return activeEntity
     
     #===========================================================================
@@ -268,7 +267,6 @@ class CoreObject(Process):
     # and if preemption is required
     #===========================================================================
     def preemptReceiver(self):
-#         self.printTrace(self.id, 'trying to preempt a receiver')
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
     
@@ -305,8 +303,7 @@ class CoreObject(Process):
                 #if the receiver does not hold an Entity that is also critical
                 if not receiver.getActiveObjectQueue()[0].isCritical:
                     receiver.shouldPreempt=True
-#                     activeObject.printTrace(self.id, 'preempting receiver '+receiver.id+'.. '*6)
-                    self.printTrace1(self.id, preempt=receiver.id)
+                    self.printTrace(self.id, preempt=receiver.id)
                     receiver.preempt()
                     receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
                     # sort so that the critical entity is placed in front
@@ -319,23 +316,33 @@ class CoreObject(Process):
         if self.gatherWipStat:
             self.wipStatList.append([now(), len(activeObjectQueue)])
     
+    
     #===========================================================================
     # find possible receivers
     #===========================================================================
-    def findReceivers(self):
-        activeObject=self.getActiveObject()
+    @staticmethod
+    def findReceiversFor(activeObject):
         receivers=[]
-        for object in [x for x in self.next if x.canAccept(activeObject)]:
+        for object in [x for x in activeObject.next if x.canAccept(activeObject)]:
             receivers.append(object)
         return receivers
+    
+#     #===========================================================================
+#     # find possible receivers
+#     #===========================================================================
+#     def findReceivers(self):
+#         activeObject=self.getActiveObject()
+#         receivers=[]
+#         for object in [x for x in self.next if x.canAccept(activeObject)]:
+#             receivers.append(object)
+#         return receivers
     
     # =======================================================================
     # signal the successor that the object can dispose an entity 
     # =======================================================================
     def signalReceiver(self):
-#         self.printTrace(self.id, 'trying to signal receiver')
         activeObject=self.getActiveObject()
-        possibleReceivers=activeObject.findReceivers()
+        possibleReceivers=self.findReceiversFor(activeObject)
         if possibleReceivers:
             receiver=activeObject.selectReceiver(possibleReceivers)
             receiversGiver=activeObject
@@ -358,8 +365,7 @@ class CoreObject(Process):
 
             activeObject.receiver=receiver
             activeObject.receiver.giver=activeObject
-#             self.printTrace(self.id, ' '*50+'signalling receiver '+self.receiver.id)
-            self.printTrace1(self.id, signalReceiver=self.receiver.id)
+            self.printTrace(self.id, signalReceiver=self.receiver.id)
             # assign the entry of the receiver
             activeObject.receiver.assignEntryTo()
             activeObject.receiver.isRequested.signal(activeObject)
@@ -371,8 +377,8 @@ class CoreObject(Process):
     # =======================================================================
     # select a receiver Object
     # =======================================================================
-    def selectReceiver(self,possibleReceivers=[]):
-        activeObject=self.getActiveObject()
+    @staticmethod
+    def selectReceiver(possibleReceivers=[]):
         candidates=possibleReceivers
         # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
         maxTimeWaiting=0                                            # dummy variable counting the time a successor is waiting
@@ -387,7 +393,8 @@ class CoreObject(Process):
     #===========================================================================
     #  signalRouter method
     #===========================================================================
-    def signalRouter(self, receiver=None):
+    @staticmethod
+    def signalRouter(receiver=None):
         # if an operator is not assigned to the receiver then do not signal the receiver but the Router
         try:
             if not receiver.assignedOperator or\
@@ -395,8 +402,7 @@ class CoreObject(Process):
                 if receiver.isLoadRequested():
                     from Globals import G
                     if not G.Router.invoked:
-#                         self.printTrace(self.id, ' '*50+'signalling router')
-                        self.printTrace1(self.id, signal='router')
+#                         self.printTrace(self.id, signal='router')
                         G.Router.invoked=True
                         G.Router.isCalled.signal(now())
                     return True
@@ -414,21 +420,32 @@ class CoreObject(Process):
     #===========================================================================
     # find possible givers
     #===========================================================================
-    def findGivers(self):
-        activeObject=self.getActiveObject()
+    @staticmethod
+    def findGiversFor(activeObject):
         givers=[]
         for object in [x for x in activeObject.previous if(not x is activeObject)]:
             if object.haveToDispose(activeObject): 
                 givers.append(object)
         return givers
     
+    
+#     #===========================================================================
+#     # find possible givers
+#     #===========================================================================
+#     def findGivers(self):
+#         activeObject=self.getActiveObject()
+#         givers=[]
+#         for object in [x for x in activeObject.previous if(not x is activeObject)]:
+#             if object.haveToDispose(activeObject): 
+#                 givers.append(object)
+#         return givers
+    
     # =======================================================================
     # signal the giver that the entity is removed from its internalQueue
     # =======================================================================
     def signalGiver(self):
-#         self.printTrace(self.id, 'trying to signal giver')
         activeObject=self.getActiveObject()
-        possibleGivers=activeObject.findGivers()
+        possibleGivers=self.findGiversFor(activeObject)
         if possibleGivers:
             giver=activeObject.selectGiver(possibleGivers)
             giversReceiver=activeObject
@@ -441,8 +458,7 @@ class CoreObject(Process):
                 giversReceiver=activeObject
             activeObject.giver=giver
             activeObject.giver.receiver=activeObject
-#             self.printTrace(self.id, ' '*50+'signalling giver '+self.giver.id)
-            self.printTrace1(self.id, signalGiver=self.giver.id)
+            self.printTrace(self.id, signalGiver=self.giver.id)
             activeObject.giver.canDispose.signal(activeObject)
             return True
         return False
@@ -450,8 +466,8 @@ class CoreObject(Process):
     # =======================================================================
     # select a giver Object
     # =======================================================================
-    def selectGiver(self,possibleGivers=[]):
-        activeObject=self.getActiveObject()
+    @staticmethod
+    def selectGiver(possibleGivers=[]):
         candidates=possibleGivers
         # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
         maxTimeWaiting=0                                            # dummy variable counting the time a predecessor is blocked
@@ -498,27 +514,21 @@ class CoreObject(Process):
                 G.sheetIndex+=1
                 G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)
     
-    #===========================================================================
-    # prints message to the console
-    #===========================================================================
-    #print message in the console. Format is (Simulation Time | Entity or Frame Name | message)
-    def printTrace(self, entityName, message):
-        from Globals import G
-        if(G.console=="Yes"):         #output only if the user has selected to
-            print now(), entityName, message
     
-    def printTrace1(self,entity='', **kw):
+    @staticmethod
+    def printTrace(entity='', **kw):
         assert len(kw)==1, 'only one phrase per printTrace supported for the moment'
         from Globals import G
+        import Globals
         time=now()
         charLimit=60
         remainingChar=charLimit-len(entity)-len(str(time))
         if(G.console=='Yes'):
             print time,entity,
             for key in kw:
-                if key not in self.getSupportedPrintKwrds():
-                    raise ValueError("Unsupported phrase %s for %s" % (key, self.id))
-                element=self.getPhrase()[key]
+                if key not in Globals.getSupportedPrintKwrds():
+                    raise ValueError("Unsupported phrase %s for %s" % (key, entity.name))
+                element=Globals.getPhrase()[key]
                 phrase=element['phrase']
                 prefix=element.get('prefix',None)
                 suffix=element.get('suffix',None)
@@ -533,40 +543,6 @@ class CoreObject(Process):
                     print phrase,arg,suffix
                 else:
                     print phrase,arg
-    @staticmethod
-    def getSupportedPrintKwrds():
-        return ("signal", "signalReceiver", "signalGiver","attemptSignal", 
-                "attemptSignalGiver", "attemptSignalReceiver",
-                "preempt", "preempted","startWork", "finishWork", "processEnd", "interrupted",
-                "enter", "waitEvent", "received", 
-                "isRequested","canDispose","interruptionEnd", "loadOperatorAvailable", 'resourceAvailable',
-                'conveyerEnd', 'conveyerFull','moveEnd')
-    @staticmethod
-    def getPhrase():
-        printKwrds={'signal':{'phrase':'signalling'},
-                    'signalGiver':{'phrase':'signalling giver', 'prefix':'_'},
-                    'signalReceiver':{'phrase':'signalling receiver','prefix':'_'}, 
-                    'attemptSignal':{'phrase':'will try to signal'},
-                    'attemptSignalGiver':{'phrase':'will try to signal a giver'}, 
-                    'attemptSignalReceiver':{'phrase':'will try to signal a receiver'}, 
-                    'preempt': {'phrase':'preempts','suffix':' .'}, 
-                    'preempted': {'phrase':'is being preempted','suffix':'. '},
-                    'startWork':{'phrase':'started working in'},
-                    'finishWork':{'phrase':'finished working in'},
-                    'processEnd':{'phrase':'ended processing in'},
-                    'interrupted':{'phrase':'interrupted at','suffix':' .'},
-                    'enter':{'phrase':'got into','suffix':'='}, 
-                    'waitEvent':{'phrase':'will wait for event'},
-                    'received':{'phrase':'received event'},
-                    'isRequested':{'phrase':'received an isRequested event from'},
-                    'canDispose':{'phrase':'received an canDispose event'},
-                    'interruptionEnd':{'phrase':'received an interruptionEnd event at'},
-                    "loadOperatorAvailable":{'phrase':'received a loadOperatorAvailable event at'},
-                    "resourceAvailable":{'phrase':'received a resourceAvailable event'},
-                    'moveEnd':{'phrase':'received a moveEnd event'},
-                    "conveyerEnd":{'phrase':'has reached conveyer End', 'suffix':'.!'},
-                    'conveyerFull':{'phrase':'is now Full, No of units:', 'suffix':'(*)'}}
-        return printKwrds
             
     # =======================================================================
     # outputs data to "output.xls" 
@@ -587,15 +563,6 @@ class CoreObject(Process):
         activeObjectQueue=self.getActiveObjectQueue()    
         return len(activeObjectQueue)>0
     
-    #========================================================================
-    # checks if the object can dispose an entity 
-    #     and returns the entity that it will dispose
-    # To be used as self.canAcceptEntity(giver.haveToDisposeEntity(self))
-    #========================================================================
-    def haveToDisposeEntity(self, callerObject=None):
-        activeObjectQueue=self.getActiveObjectQueue()
-        if self.haveToDispose(callerObject):
-            return activeObjectQueue[0]
     # =======================================================================
     #    checks if the Object can accept an entity and there is an entity 
     #                in some possible giver waiting for it
@@ -608,12 +575,6 @@ class CoreObject(Process):
     # =======================================================================
     def canAccept(self, callerObject=None): 
         pass
-    
-    # =======================================================================
-    # checks if the object can accept an specific Entity       
-    # ======================================================================= 
-    def canAcceptEntity(self, callerEntity=None):
-        return True
     
     # =======================================================================
     # sorts the Entities in the activeQ of the objects 
@@ -673,14 +634,12 @@ class CoreObject(Process):
     # assign Exit of the object
     # =======================================================================
     def assignExitTo(self, callerObject=None):
-#         self.printTrace(self.id, 'assignExit')
         self.exitAssignedToReceiver=callerObject
         
     # =======================================================================
     # unblock the object
     # =======================================================================
     def unAssignExit(self):
-#         self.printTrace(self.id, 'unassignExit')
         self.exitAssignedToReceiver = None
         
     # =======================================================================

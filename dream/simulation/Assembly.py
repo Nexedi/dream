@@ -123,26 +123,22 @@ class Assembly(CoreObject):
         # check if there is WIP and signal receiver
         self.initialSignalReceiver()
         while 1:
-#             self.printTrace(self.id, 'will wait for frame event')
-            self.printTrace1(self.id, waitEvent='')
+            self.printTrace(self.id, waitEvent='')
             # wait until the Queue can accept an entity and one predecessor requests it
             yield waitevent, self, self.isRequested     #[self.isRequested,self.canDispose, self.loadOperatorAvailable]
             
             if self.isRequested.signalparam:
-#                 self.printTrace(self.id, 'received a isRequested event from '+self.isRequested.signalparam.id)
-                self.printTrace1(self.id, isRequested=self.isRequested.signalparam.id)
+                self.printTrace(self.id, isRequested=self.isRequested.signalparam.id)
                 # reset the isRequested signal parameter
                 self.isRequested.signalparam=None
                 
                 self.getEntity("Frame")                                 #get the Frame
                                                                     
                 for i in range(self.getActiveObjectQueue()[0].capacity):         #this loop will be carried until the Frame is full with the parts
-                    self.printTrace1(self.id, waitEvent='(to load parts)')
-#                     self.printTrace(self.id, 'will wait for part event')
+                    self.printTrace(self.id, waitEvent='(to load parts)')
                     yield waitevent, self, self.isRequested
                     if self.isRequested.signalparam:
-#                         self.printTrace(self.id, 'received a isRequested event from '+self.isRequested.signalparam.id)
-                        self.printTrace1(self.id, isRequested=self.isRequested.signalparam.id)
+                        self.printTrace(self.id, isRequested=self.isRequested.signalparam.id)
                         # reset the isRequested signal parameter
                         self.isRequested.signalparam=None
                         # TODO: fix the getEntity 'Part' case
@@ -166,8 +162,7 @@ class Assembly(CoreObject):
                 self.completedJobs+=1                       #Assembly completed a job
                 self.waitToDispose=True                     #since all the frame is full
             
-#             self.printTrace(self.id, 'will try to signal a receiver from generator')
-            self.printTrace1(self.id, attemptSignalReceiver='(generator')
+            self.printTrace(self.id, attemptSignalReceiver='(generator')
             # signal the receiver that the activeObject has something to dispose of
             if not self.signalReceiver():
             # if there was no available receiver, get into blocking control
@@ -250,8 +245,7 @@ class Assembly(CoreObject):
         activeEntity=CoreObject.removeEntity(self, entity)               #run the default method
         self.waitToDispose=False
         if self.canAccept():
-#             self.printTrace(self.id, 'will try signalling a giver from removeEntity')
-            self.printTrace1(self.id, attemptSignalGiver='(removeEntity)')
+            self.printTrace(self.id, attemptSignalGiver='(removeEntity)')
             self.signalGiver()
         return activeEntity
     
@@ -276,8 +270,7 @@ class Assembly(CoreObject):
         assert activeEntity.type==type, 'the type of the entity to get must be of type '+type+' while it is '+activeEntity.type
         #remove the entity from the previews object
         giverObject.removeEntity(activeEntity)     
-#         self.printTrace(activeEntity.name, "got into "+self.id)
-        self.printTrace1(activeEntity.name, enter=self.id)
+        self.printTrace(activeEntity.name, enter=self.id)
         self.outputTrace(activeEntity.name, "got into "+ self.objName)
         # if the type is Frame 
         if(activeEntity.type=="Frame"):
@@ -287,8 +280,7 @@ class Assembly(CoreObject):
         
         # if the frame is not fully loaded then signal a giver
         if len(activeObjectQueue[0].getFrameQueue())<activeObjectQueue[0].capacity:
-#             self.printTrace(self.id, 'will try signalling a giver from getEntity')
-            self.printTrace1(self.id, attemptSignalGiver='(getEntity)')
+            self.printTrace(self.id, attemptSignalGiver='(getEntity)')
             self.signalGiver()
         return activeEntity
     
