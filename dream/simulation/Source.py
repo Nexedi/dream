@@ -159,8 +159,9 @@ class Source(CoreObject):
         from Globals import G
         assert entity, 'cannot append None entity'
         activeEntity=entity
-        # at the newly created entity to the pendingEntities
-        G.pendingEntities.append(activeEntity)
+        if G.Router:
+            # at the newly created entity to the pendingEntities
+            G.pendingEntities.append(activeEntity)
 
     #============================================================================
     #            sets the routing out element for the Source
