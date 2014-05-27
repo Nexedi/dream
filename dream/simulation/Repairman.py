@@ -26,7 +26,8 @@ Created on 14 Nov 2012
 models a repairman that can fix a machine when it gets failures
 '''
 
-from SimPy.Simulation import Resource, now
+# from SimPy.Simulation import Resource, now
+import simpy
 from Operator import Operator
 
 # ===========================================================================

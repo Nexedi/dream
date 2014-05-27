@@ -24,7 +24,8 @@ Created on 18 Aug 2013
 '''
 Class that acts as an abstract. It should have no instances. All the Resources should inherit from it
 '''
-from SimPy.Simulation import Resource
+# from SimPy.Simulation import Resource
+import simpy
 
 # ===========================================================================
 #                    the resource that repairs the machines
@@ -32,13 +33,15 @@ from SimPy.Simulation import Resource
 class ObjectResource(object):
     
     def __init__(self):
+        from Globals import G
+        self.env=G.env
         self.initialized = False
         
     def initialize(self):
         self.totalWorkingTime=0         #holds the total working time
         self.totalWaitingTime=0         #holds the total waiting time
         self.timeLastOperationStarted=0    #holds the time that the last repair was started        
-        self.Res=Resource(self.capacity)
+        self.Res=simpy.Resource(self.env, capacity=self.capacity)
         # variable that checks whether the resource is already initialized
         self.initialized = True
         # list with the coreObjects IDs that the resource services
@@ -50,7 +53,7 @@ class ObjectResource(object):
     #                    checks if the worker is available
     # =======================================================================       
     def checkIfResourceIsAvailable(self,callerObject=None): 
-        return len(self.Res.activeQ)<self.capacity   
+        return len(self.Res.users)<self.capacity   
     
     # =======================================================================
     #              actions to be taken after the simulation ends
@@ -86,7 +89,7 @@ class ObjectResource(object):
     #               returns the active queue of the resource
     # =======================================================================
     def getResourceQueue(self):
-        return self.Res.activeQ
+        return self.Res.users
     
     # =======================================================================
     # check if the resource is already initialized

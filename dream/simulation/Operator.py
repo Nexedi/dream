@@ -26,7 +26,8 @@ Created on 22 Nov 2012
 models an operator that operates a machine
 '''
 
-from SimPy.Simulation import Resource, now
+# from SimPy.Simulation import Resource, now
+import simpy
 import xlwt
 import scipy.stats as stat
 from ObjectResource import ObjectResource
@@ -49,7 +50,6 @@ class Operator(ObjectResource):
         self.Working=[]             # holds the percentage of working time 
     
         # the following attributes are not used by the Repairman
-#         self.activeCallersList=[]               # the list of object that request the operator
         self.schedulingRule=schedulingRule      #the scheduling rule that the Queue follows
         self.multipleCriterionList=[]           #list with the criteria used to sort the Entities in the Queue
         SRlist = [schedulingRule]
@@ -173,9 +173,9 @@ class Operator(ObjectResource):
             for machine in candidateMachines:
                 machine.critical=False
                 if machine.broker.waitForOperator:
-                    machine.timeWaiting=now()-machine.broker.timeWaitForOperatorStarted
+                    machine.timeWaiting=self.env.now-machine.broker.timeWaitForOperatorStarted
                 else:
-                    machine.timeWaiting=now()-machine.timeLastEntityLeft
+                    machine.timeWaiting=self.env.now-machine.timeLastEntityLeft
                 # find the stations that hold critical entities
                 if self in router.preemptiveOperators:
                     for entity in station.getActiveObjectQueue():
@@ -297,7 +297,7 @@ class Operator(ObjectResource):
         # if the repairman is currently working we have to count the time of this work    
 #         if len(self.getResourceQueue())>0:
         if not self.checkIfResourceIsAvailable():
-            self.totalWorkingTime+=now()-self.timeLastOperationStarted
+            self.totalWorkingTime+=self.env.now-self.timeLastOperationStarted
                 
         # Repairman was idle when he was not in any other state
         self.totalWaitingTime=MaxSimtime-self.totalWorkingTime   

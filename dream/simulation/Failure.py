@@ -96,19 +96,40 @@ class Failure(ObjectInterruption):
             failTime=self.env.now            
             if(self.repairman and self.repairman!="None"):     #if the failure needs a resource to be fixed, the machine waits until the 
                                             #resource is available
-                yield self.repairman.getResource().request()
-                # update the time that the repair started
-                timeOperationStarted=self.env.now
-                self.repairman.timeLastOperationStarted=self.env.now
+#                 print self.env.now, self.repairman.id, 'will be requested by', self.victim.id
+#                 yield self.repairman.getResource().request()
+#                 print self.repairman.Res.users
+#                 # update the time that the repair started
+#                 timeOperationStarted=self.env.now
+#                 self.repairman.timeLastOperationStarted=self.env.now
+                
+                
+                with self.repairman.getResource().request() as request:
+                    yield request
+                    # update the time that the repair started
+                    timeOperationStarted=self.env.now
+                    self.repairman.timeLastOperationStarted=self.env.now
+                    
+                    yield self.env.timeout(self.rngTTR.generateNumber())    # wait until the repairing process is over
+                    self.victim.totalFailureTime+=self.env.now-failTime    
+                    self.reactivateVictim()                     # since repairing is over, the Machine is reactivated
+                    self.victim.Up=True              
+                    self.outputTrace("is up")
+                    self.repairman.totalWorkingTime+=self.env.now-timeOperationStarted   
+                continue
+                
+                
                                 
             yield self.env.timeout(self.rngTTR.generateNumber())    # wait until the repairing process is over
             self.victim.totalFailureTime+=self.env.now-failTime    
             self.reactivateVictim()                     # since repairing is over, the Machine is reactivated
             self.victim.Up=True              
             self.outputTrace("is up")
-            if(self.repairman and self.repairman!="None"): #if a resource was used, it is now released
-                self.repairman.getResource().release() 
-                self.repairman.totalWorkingTime+=self.env.now-timeOperationStarted                                
+#             if(self.repairman and self.repairman!="None"): #if a resource was used, it is now released
+#                 print self.repairman.Res.users
+#                 print self.env.now, self.repairman.id, 'about to be release from', self.victim.id
+#                 self.repairman.Res.release()
+#                 self.repairman.totalWorkingTime+=self.env.now-timeOperationStarted                                
     
 #     #===========================================================================
 #     # interrupts the victim
