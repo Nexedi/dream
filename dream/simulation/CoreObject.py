@@ -483,7 +483,7 @@ class CoreObject(object):
         # loop through the possible givers to see which have to dispose and which is the one blocked for longer
         for object in candidates:
             if(object.downTimeInTryingToReleaseCurrentEntity>0):# and the predecessor has been down while trying to give away the Entity
-                timeWaiting=self.env.now-object.timeLastFailureEnded   # the timeWaiting dummy variable counts the time end of the last failure of the giver object
+                timeWaiting=G.env.now-object.timeLastFailureEnded   # the timeWaiting dummy variable counts the time end of the last failure of the giver object
             else:
                 timeWaiting=G.env.now-object.timeLastEntityEnded    # in any other case, it holds the time since the end of the Entity processing
             #if more than one predecessor have to dispose take the part from the one that is blocked longer

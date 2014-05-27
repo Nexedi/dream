@@ -26,7 +26,8 @@ Created on 9 Nov 2012
 models the failures that servers can have
 '''
 
-from SimPy.Simulation import now, Process, hold, request, release
+# from SimPy.Simulation import now, Process, hold, request, release
+import simpy
 import math
 from RandomNumberGenerator import RandomNumberGenerator
 from ObjectInterruption import ObjectInterruption
@@ -86,28 +87,28 @@ class Failure(ObjectInterruption):
     # =======================================================================
     def run(self):           
         while 1:
-            yield hold,self,self.rngTTF.generateNumber()    # wait until a failure happens                  
+            yield self.env.timeout(self.rngTTF.generateNumber())    # wait until a failure happens                  
             self.interruptVictim()                      # interrupt the victim
             self.victim.Up=False
-            self.victim.timeLastFailure=now()           
+            self.victim.timeLastFailure=self.env.now           
             self.outputTrace("is down")
             # update the failure time
-            failTime=now()            
+            failTime=self.env.now            
             if(self.repairman and self.repairman!="None"):     #if the failure needs a resource to be fixed, the machine waits until the 
                                             #resource is available
-                yield request,self,self.repairman.getResource()
+                yield self.repairman.getResource().request()
                 # update the time that the repair started
-                timeOperationStarted=now()
-                self.repairman.timeLastOperationStarted=now()
+                timeOperationStarted=self.env.now
+                self.repairman.timeLastOperationStarted=self.env.now
                                 
-            yield hold,self,self.rngTTR.generateNumber()    # wait until the repairing process is over
-            self.victim.totalFailureTime+=now()-failTime    
+            yield self.env.timeout(self.rngTTR.generateNumber())    # wait until the repairing process is over
+            self.victim.totalFailureTime+=self.env.now-failTime    
             self.reactivateVictim()                     # since repairing is over, the Machine is reactivated
             self.victim.Up=True              
             self.outputTrace("is up")
             if(self.repairman and self.repairman!="None"): #if a resource was used, it is now released
-                yield release,self,self.repairman.getResource() 
-                self.repairman.totalWorkingTime+=now()-timeOperationStarted                                
+                self.repairman.getResource().release() 
+                self.repairman.totalWorkingTime+=self.env.now-timeOperationStarted                                
     
 #     #===========================================================================
 #     # interrupts the victim

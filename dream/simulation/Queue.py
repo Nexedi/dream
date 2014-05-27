@@ -26,8 +26,9 @@ Models a FIFO queue where entities can wait in order to get into a server
 '''
 
 
-from SimPy.Simulation import Process, Resource, SimEvent
-from SimPy.Simulation import waituntil, now, infinity, waitevent
+# from SimPy.Simulation import Process, Resource, SimEvent
+# from SimPy.Simulation import waituntil, now, infinity, waitevent
+import simpy
 from CoreObject import CoreObject
 # ===========================================================================
 #                            the Queue object
@@ -69,7 +70,7 @@ class Queue(CoreObject):
         # Will be populated by an event generator
         self.wip_stat_list = []
         # event used by router
-        self.loadOperatorAvailable=SimEvent('loadOperatorAvailable')
+        self.loadOperatorAvailable=self.env.event()
 
     @staticmethod
     def getSupportedSchedulingRules():
@@ -83,40 +84,40 @@ class Queue(CoreObject):
         # using the Process __init__ and not the CoreObject __init__
         CoreObject.initialize(self)
         # initialise the internal Queue (type Resource) of the Queue object 
-        self.Res=Resource(self.capacity)   
+        self.Res=simpy.Resource(self.env, self.capacity)
         # event used by router
-        self.loadOperatorAvailable=SimEvent('loadOperatorAvailable')
+        self.loadOperatorAvailable=self.env.event()
 
     
     #===========================================================================
     # run method of the queue
     #===========================================================================
     def run(self):  
-        activeObjectQueue=self.Res.activeQ
+        activeObjectQueue=self.Res.users
         # check if there is WIP and signal receiver
         self.initialSignalReceiver()
         while 1:
 #             self.printTrace(self.id, waitEvent='')
             # wait until the Queue can accept an entity and one predecessor requests it
-            yield waitevent, self, [self.isRequested,self.canDispose, self.loadOperatorAvailable]
+            receivedEvent=yield self.isRequested | self.canDispose | self.loadOperatorAvailable
 #             self.printTrace(self.id, received='')
             # if the event that activated the thread is isRequested then getEntity
-            if self.isRequested.signalparam:
+            if self.isRequested in receivedEvent:
 #                 self.printTrace(self.id, isRequested=self.isRequested.signalparam.id)
                 # reset the isRequested signal parameter
-                self.isRequested.signalparam=None
+                self.isRequested=self.env.event()
                 self.getEntity()
                 #if entity just got to the dummyQ set its startTime as the current time
                 if self.isDummy:
-                    activeObjectQueue[0].startTime=now()
+                    activeObjectQueue[0].startTime=self.env.now
             # if the queue received an loadOperatorIsAvailable (from Router) with signalparam time
-            if self.loadOperatorAvailable.signalparam:
+            if self.loadOperatorAvailable:
 #                 self.printTrace(self.id, loadOperatorAvailable=str(self.loadOperatorAvailable.signalparam))
-                self.loadOperatorAvailable.signalparam=None
+                self.loadOperatorAvailable=self.env.event()
             # if the queue received an canDispose with signalparam time, this means that the signals was sent from a MouldAssemblyBuffer
-            if self.canDispose.signalparam:
+            if self.canDispose in receivedEvent:
 #                 self.printTrace(self.id, canDispose='')
-                self.canDispose.signalparam=None
+                self.canDispose=self.env.event()
             # if the event that activated the thread is canDispose then signalReceiver
             if self.haveToDispose():
 #                 self.printTrace(self.id, attemptSignalReceiver='(generator)')
@@ -132,7 +133,7 @@ class Queue(CoreObject):
     #            only to the predecessor that will give the entity.
     # =======================================================================  
     def canAccept(self, callerObject=None): 
-        activeObjectQueue=self.Res.activeQ
+        activeObjectQueue=self.Res.users
         #if we have only one predecessor just check if there is a place available
         # this is done to achieve better (cpu) processing time 
         # then we can also use it as a filter for a yield method
@@ -148,7 +149,7 @@ class Queue(CoreObject):
     #              this is kind of slow I think got to check   
     # =======================================================================
     def haveToDispose(self, callerObject=None): 
-        activeObjectQueue=self.Res.activeQ     
+        activeObjectQueue=self.Res.users     
         #if we have only one possible receiver just check if the Queue holds one or more entities
         if(callerObject==None):
             return len(activeObjectQueue)>0 
@@ -175,7 +176,7 @@ class Queue(CoreObject):
     #   also updates the predecessorIndex to the one that is to be taken
     # =======================================================================
     def canAcceptAndIsRequested(self,callerObject=None):
-        activeObjectQueue=self.Res.activeQ
+        activeObjectQueue=self.Res.users
         giverObject=callerObject
         assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
         return len(activeObjectQueue)<self.capacity and giverObject.haveToDispose(self) 
@@ -219,7 +220,7 @@ class Queue(CoreObject):
     #    sorts the Entities of the Queue according to the scheduling rule
     # =======================================================================
     def activeQSorter(self, criterion=None):
-        activeObjectQ=self.Res.activeQ
+        activeObjectQ=self.Res.users
         if criterion==None:
             criterion=self.schedulingRule           
         #if the schedulingRule is first in first out
@@ -284,7 +285,7 @@ class Queue(CoreObject):
                 for obj in G.ObjList:
                     if obj.id in nextObjIds:
                         nextObject=obj
-                entity.nextQueueLength=len(nextObject.Res.activeQ)           
+                entity.nextQueueLength=len(nextObject.Res.users)           
             activeObjectQ.sort(key=lambda x: x.nextQueueLength)
         else:
             assert False, "Unknown scheduling criterion %r" % (criterion, )

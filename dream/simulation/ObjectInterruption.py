@@ -26,15 +26,18 @@ Created on 18 Aug 2013
 Class that acts as an abstract. It should have no instances. All object interruptions (eg failures, breaks) should inherit from it
 '''
 
-from SimPy.Simulation import Process, Resource, reactivate, now
+# from SimPy.Simulation import Process, Resource, reactivate, now
+import simpy
 
 #===============================================================================
 # The ObjectInterruption process
 #===============================================================================
-class ObjectInterruption(Process):
+class ObjectInterruption(object):
     
     def __init__(self, victim=None):
-        Process.__init__(self)
+        from Globals import G
+        self.env=G.env
+#         Process.__init__(self)
         self.victim=victim
         # variable used to hand in control to the objectInterruption
         self.call=False
@@ -57,7 +60,7 @@ class ObjectInterruption(Process):
     #     signalling can be done via Machine request/releaseOperator
     # =======================================================================    
     def invoke(self):
-        self.isCalled.signal(now())
+        self.isCalled.succeed(self.env.now)
     
     #===========================================================================
     # outputs data to "output.xls"
@@ -87,18 +90,21 @@ class ObjectInterruption(Process):
     # interrupts the victim
     #===========================================================================
     def interruptVictim(self):
-        # if the victim is not in position to dispose an entity, then interrupt the processing
-        if not self.victim.waitToDispose and self.victim.getActiveObjectQueue():
-            self.interrupt(self.victim)
+#         # if the victim is not in position to dispose an entity, then interrupt the processing
+#         if not self.victim.waitToDispose and self.victim.getActiveObjectQueue():
+#             self.interrupt(self.victim)
         # otherwise it waits for an interruption event
-        else:
-            self.victim.interruptionStart.signal(now()) 
+#         else:
+#             self.victim.interruptionStart.signal(now())
+        self.victim.interruptionStart.succeed(self.env.now)
     
     #===========================================================================
     # reactivate the victim
     #===========================================================================
     def reactivateVictim(self):
-        self.victim.interruptionEnd.signal(now())
+        self.victim.interruptionEnd.succeed(self.env.now)
+        #reset the interruptionStart event of the victim
+        self.victim.interruptionStart=self.env.event()
         
     #===========================================================================
     # outputs message to the trace.xls. Format is (Simulation Time | Victim Name | message)            
@@ -107,7 +113,7 @@ class ObjectInterruption(Process):
         from Globals import G  
         if(G.trace=="Yes"):     #output only if the user has selected to
             #handle the 3 columns
-            G.traceSheet.write(G.traceIndex,0,str(now()))
+            G.traceSheet.write(G.traceIndex,0,str(self.env.now))
             G.traceSheet.write(G.traceIndex,1, self.victim.objName)
             G.traceSheet.write(G.traceIndex,2,message)          
             G.traceIndex+=1      #increment the row
@@ -124,4 +130,4 @@ class ObjectInterruption(Process):
     def printTrace(self, entityName, message):
         from Globals import G
         if(G.console=="Yes"):         #output only if the user has selected to
-            print now(), entityName, message
+            print self.env.now, entityName, message
