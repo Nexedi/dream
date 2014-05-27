@@ -228,12 +228,12 @@ class Machine(CoreObject):
         while 1:
             # waitEvent isRequested /interruptionEnd/loadOperatorAvailable
             while 1:
-                self.printTrace(self.id, waitEvent='')
+#                 self.printTrace(self.id, waitEvent='')
                 yield waitevent, self, [self.isRequested, self.interruptionEnd, self.loadOperatorAvailable]
-                self.printTrace(self.id, received='')
+#                 self.printTrace(self.id, received='')
                 # if the machine can accept an entity and one predecessor requests it continue with receiving the entity
                 if self.isRequested.signalparam:
-                    self.printTrace(self.id, isRequested=self.isRequested.signalparam.id)
+#                     self.printTrace(self.id, isRequested=self.isRequested.signalparam.id)
                     assert self.isRequested.signalparam==self.giver, 'the giver is not the requestingObject'
                     assert self.giver.receiver==self, 'the receiver of the signalling object in not the station'
                     # reset the signalparam of the isRequested event
@@ -242,10 +242,10 @@ class Machine(CoreObject):
                 # if an interruption caused the control to be taken by the machine or
                 # if an operator was rendered available while it was needed by the machine to proceed with getEntity
                 if self.interruptionEnd.signalparam==now() or self.loadOperatorAvailable.signalparam==now():
-                    if self.interruptionEnd.signalparam==now():
-                        self.printTrace(self.id, interruptionEnd=str(self.interruptionEnd.signalparam))
-                    elif self.loadOperatorAvailable.signalparam==now():
-                        self.printTrace(self.id,loadOperatorAvailable=str(self.loadOperatorAvailable.signalparam))
+#                     if self.interruptionEnd.signalparam==now():
+#                         self.printTrace(self.id, interruptionEnd=str(self.interruptionEnd.signalparam))
+#                     elif self.loadOperatorAvailable.signalparam==now():
+#                         self.printTrace(self.id,loadOperatorAvailable=str(self.loadOperatorAvailable.signalparam))
                     # try to signal the Giver, otherwise wait until it is requested
                     if self.signalGiver():
                         break
@@ -467,16 +467,15 @@ class Machine(CoreObject):
     # actions to be carried out when the processing of an Entity ends
     # =======================================================================    
     def endProcessingActions(self):
-        activeObject=self.getActiveObject()
-        activeObjectQueue=activeObject.getActiveObjectQueue()
+        activeObjectQueue=self.Res.activeQ
         activeEntity=activeObjectQueue[0]
-        self.printTrace(activeObject.getActiveObjectQueue()[0].name, processEnd=activeObject.objName)
+#         self.printTrace(activeObject.getActiveObjectQueue()[0].name, processEnd=activeObject.objName)
         # reset the variables used to handle the interruptions timing 
         self.timeRestartingProcessing=0
         self.breakTime=0
         # output to trace that the processing in the Machine self.objName ended 
         try:
-            activeObject.outputTrace(activeObject.getActiveObjectQueue()[0].name,"ended processing in "+activeObject.objName)
+            self.outputTrace(activeObjectQueue[0].name,"ended processing in "+self.objName)
         except IndexError:
             pass
         # TODO: Not only Machines require time to process entities
@@ -484,32 +483,33 @@ class Machine(CoreObject):
         if activeEntity.family=='Entity':
             successorsAreMachines=True
             from Globals import G
-            for object in activeObject.next:
+            for object in self.next:
                 if not object in G.MachineList:
                     successorsAreMachines=False
                     break
             if not successorsAreMachines:
                 activeObjectQueue[0].hot = False
         from Globals import G
-        # the just processed entity is added to the list of entities 
-        # pending for the next processing
-        G.pendingEntities.append(activeObjectQueue[0])
+        if G.Router:
+            # the just processed entity is added to the list of entities 
+            # pending for the next processing
+            G.pendingEntities.append(activeObjectQueue[0])
         # set the variable that flags an Entity is ready to be disposed 
-        activeObject.waitToDispose=True
+        self.waitToDispose=True
         #do this so that if it is overtime working it is not counted as off-shift time
-        if not activeObject.onShift:
-            activeObject.timeLastShiftEnded=now()
+        if not self.onShift:
+            self.timeLastShiftEnded=now()
         # update the total working time 
         # the total processing time for this entity is what the distribution initially gave
         if not self.shouldPreempt:
-            activeObject.totalWorkingTime+=activeObject.totalProcessingTimeInCurrentEntity
+            self.totalWorkingTime+=self.totalProcessingTimeInCurrentEntity
         # if the station was preemptied for a critical order then calculate the total working time accorindingly
         else:
-            activeObject.totalWorkingTime+=now()-(self.timeLastEntityEntered)
+            self.totalWorkingTime+=now()-(self.timeLastEntityEntered)
         # update the variables keeping track of Entity related attributes of the machine    
-        activeObject.timeLastEntityEnded=now()                          # this holds the time that the last entity ended processing in Machine 
-        activeObject.nameLastEntityEnded=activeObject.currentEntity.name        # this holds the name of the last entity that ended processing in Machine
-        activeObject.completedJobs+=1                                   # Machine completed one more Job
+        self.timeLastEntityEnded=now()                          # this holds the time that the last entity ended processing in Machine 
+        self.nameLastEntityEnded=self.currentEntity.name        # this holds the name of the last entity that ended processing in Machine
+        self.completedJobs+=1                                   # Machine completed one more Job
         # reseting the shouldPreempt flag
         self.shouldPreempt=False 
     
@@ -517,15 +517,14 @@ class Machine(CoreObject):
     # actions to be carried out when the processing of an Entity ends
     # =======================================================================    
     def interruptionActions(self):
-        activeObject=self.getActiveObject()
-        activeObjectQueue=activeObject.getActiveObjectQueue()
+        activeObjectQueue=self.Res.activeQ
         activeEntity=activeObjectQueue[0]
-        self.printTrace(self.getActiveObjectQueue()[0].name, interrupted=self.objName)
+#         self.printTrace(activeEntity.name, interrupted=self.objName)
         # if the interrupt occured while processing an entity
-        if not activeObject.waitToDispose:
+        if not self.waitToDispose:
             # output to trace that the Machine (self.objName) got interrupted           
             try:                                                       
-                self.outputTrace(self.getActiveObjectQueue()[0].name, "Interrupted at "+self.objName)
+                self.outputTrace(activeObjectQueue[0].name, "Interrupted at "+self.objName)
             except IndexError:
                 pass
             # recalculate the processing time left tinM
@@ -542,18 +541,17 @@ class Machine(CoreObject):
     # actions to be carried out when the processing of an Entity ends
     # =======================================================================    
     def postInterruptionActions(self):
-        activeObject=self.getActiveObject()
-        activeObjectQueue=activeObject.getActiveObjectQueue()
+        activeObjectQueue=self.Res.activeQ
         activeEntity=activeObjectQueue[0]
         # if the machine returns from an failure while processing an entity
-        if not activeObject.waitToDispose:
+        if not self.waitToDispose:
             # use the timers to count the time that Machine is down and related 
             self.downTimeProcessingCurrentEntity+=now()-self.breakTime      # count the time that Machine is down while processing this Entity
             self.downTimeInCurrentEntity+=now()-self.breakTime              # count the time that Machine is down while on currentEntity
             self.timeLastFailureEnded=now()                                 # set the timeLastFailureEnded
             self.failureTimeInCurrentEntity+=now()-self.breakTime           # dummy variable keeping track of the failure time 
             # output to trace that the Machine self.objName was passivated for the current failure time
-            self.outputTrace(self.getActiveObjectQueue()[0].name, "passivated in "+self.objName+" for "+str(now()-self.breakTime))
+            self.outputTrace(activeObjectQueue[0].name, "passivated in "+self.objName+" for "+str(now()-self.breakTime))
         # when a machine returns from failure while trying to deliver an entity
         else:
             # count the failure while on current entity time with failureTime variable
@@ -579,41 +577,37 @@ class Machine(CoreObject):
     # that will give the entity.
     # =======================================================================  
     def canAccept(self, callerObject=None):
-        # get active and giver objects
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()
-        
+        activeObjectQueue=self.Res.activeQ
         # if we have only one predecessor just check if there is a place and the machine is up
         # this is done to achieve better (cpu) processing time 
         # then we can also use it as a filter for a yield method
         if(callerObject==None):
-            if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
-                                                    or any(type=='Setup' for type in activeObject.multOperationTypeList))):
-                return activeObject.operatorPool.checkIfResourceIsAvailable()\
-                        and activeObject.checkIfMachineIsUp()\
-                        and len(activeObjectQueue)<activeObject.capacity\
-                        and not activeObject.entryIsAssignedTo()
+            if (self.operatorPool!='None' and (any(type=='Load' for type in self.multOperationTypeList)\
+                                                    or any(type=='Setup' for type in self.multOperationTypeList))):
+                return self.operatorPool.checkIfResourceIsAvailable()\
+                        and self.checkIfMachineIsUp()\
+                        and len(activeObjectQueue)<self.capacity\
+                        and not self.entryIsAssignedTo()
             else:
-                return activeObject.checkIfMachineIsUp()\
-                        and len(activeObjectQueue)<activeObject.capacity\
-                        and not activeObject.entryIsAssignedTo()
-                      
+                return self.checkIfMachineIsUp()\
+                        and len(activeObjectQueue)<self.capacity\
+                        and not self.entryIsAssignedTo()
         thecaller=callerObject
         # return True ONLY if the length of the activeOjbectQue is smaller than
         # the object capacity, and the callerObject is not None but the giverObject
-        if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList)\
-                                                or any(type=='Setup' for type in activeObject.multOperationTypeList))):
-            return activeObject.operatorPool.checkIfResourceIsAvailable()\
-                and activeObject.checkIfMachineIsUp()\
-                and len(activeObjectQueue)<activeObject.capacity\
-                and not activeObject.entryIsAssignedTo()
+        if (self.operatorPool!='None' and (any(type=='Load' for type in self.multOperationTypeList)\
+                                                or any(type=='Setup' for type in self.multOperationTypeList))):
+            return self.operatorPool.checkIfResourceIsAvailable()\
+                and self.checkIfMachineIsUp()\
+                and len(activeObjectQueue)<self.capacity\
+                and not self.entryIsAssignedTo()
         else:
             # the operator doesn't have to be present for the loading of the machine as the load operation
             # is not assigned to operators
-            return activeObject.checkIfMachineIsUp()\
-                and len(activeObjectQueue)<activeObject.capacity\
-                and (thecaller in activeObject.previous)\
-                and not activeObject.entryIsAssignedTo()
+            return self.checkIfMachineIsUp()\
+                and len(activeObjectQueue)<self.capacity\
+                and (thecaller in self.previous)\
+                and not self.entryIsAssignedTo()
     
     # =======================================================================
     # checks if the Machine can accept an entity and there is an entity in 
@@ -621,22 +615,19 @@ class Machine(CoreObject):
     # also updates the giver to the one that is to be taken
     # =======================================================================
     def canAcceptAndIsRequested(self,callerObject=None):
-        # get active and giver objects
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()
-#         giverObject=self.getGiverObject()
+        activeObjectQueue=self.Res.activeQ
         giverObject=callerObject
         assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
         # check if there is a place, the machine is up and the predecessor has an entity to dispose. if the machine has to compete 
         # for an Operator that loads the entities onto it check if the predecessor if blocked by an other Machine. if not then the machine 
         # has to block the predecessor giverObject to avoid conflicts with other competing machines
-        if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList))):
-            if giverObject.haveToDispose(activeObject):
-                if activeObject.checkOperator()\
-                    and activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity:
+        if (self.operatorPool!='None' and (any(type=='Load' for type in self.multOperationTypeList))):
+            if giverObject.haveToDispose(self):
+                if self.checkOperator()\
+                    and self.checkIfActive() and len(activeObjectQueue)<self.capacity:
                     if not giverObject.exitIsAssignedTo():
-                        giverObject.assignExitTo(activeObject)
-                    elif giverObject.exitIsAssignedTo()!=activeObject:
+                        giverObject.assignExitTo(self)
+                    elif giverObject.exitIsAssignedTo()!=self:
                         return False
                     return True
             else:
@@ -645,11 +636,11 @@ class Machine(CoreObject):
             # the operator performs no load and the entity is received by the machine while there is 
             # no need for operators presence. The operator needs to be present only where the load Type 
             # operation is assigned
-            if activeObject.checkIfActive() and len(activeObjectQueue)<activeObject.capacity\
-                    and giverObject.haveToDispose(activeObject):
+            if self.checkIfActive() and len(activeObjectQueue)<self.capacity\
+                    and giverObject.haveToDispose(self):
                 if not giverObject.exitIsAssignedTo():
-                    giverObject.assignExitTo(activeObject)
-                elif giverObject.exitIsAssignedTo()!=activeObject:
+                    giverObject.assignExitTo(self)
+                elif giverObject.exitIsAssignedTo()!=self:
                     return False
                 return True
     
@@ -657,27 +648,25 @@ class Machine(CoreObject):
     # return whether Load or setup Requested
     #===========================================================================
     def isLoadRequested(self):
-        activeObject=self.getActiveObject()
-        return any(type=='Load' or type=='Setup' for type in activeObject.multOperationTypeList)
+        return any(type=='Load' or type=='Setup' for type in self.multOperationTypeList)
     
     # =======================================================================
     # to be called by canAcceptAndIsRequested and check for the operator
     # =======================================================================    
     def checkOperator(self,callerObject=None):
-        activeObject=self.getActiveObject()
         mayProceed=False
-        if activeObject.operatorPool.operators:
+        if self.operatorPool.operators:
             # flag notifying that there is operator assigned to the actievObject
             self.assignedOperator=False
             # the operators operating the station
-            operators=activeObject.operatorPool.operators
-            if activeObject.operatorPool.checkIfResourceIsAvailable():
+            operators=self.operatorPool.operators
+            if self.operatorPool.checkIfResourceIsAvailable():
                 for operator in [x for x in operators if x.checkIfResourceIsAvailable()]:
                     # if there are operators available not assigned to the station then the station may proceed signalling the Router
                     if not operator.isAssignedTo():
                         mayProceed=True
                     # if there are operators assigned to the station then proceed without invoking the Router
-                    elif operator.isAssignedTo()==activeObject:
+                    elif operator.isAssignedTo()==self:
                         self.assignedOperator=True
                         break
             return mayProceed or self.assignedOperator
@@ -688,41 +677,38 @@ class Machine(CoreObject):
     # get an entity from the giver
     # =======================================================================
     def getEntity(self):
-        activeObject=self.getActiveObject()
         activeEntity=CoreObject.getEntity(self)          # run the default method   
         # after the machine receives an entity, it must be removed from the pendingEntities list
         from Globals import G
-        if activeEntity in G.pendingEntities:
-            G.pendingEntities.remove(activeEntity)  
+        if G.Router:
+            if activeEntity in G.pendingEntities:
+                G.pendingEntities.remove(activeEntity)
         return activeEntity
   
     # =======================================================================
     # removes an entity from the Machine
     # =======================================================================
     def removeEntity(self, entity=None):
-        activeObject=self.getActiveObject()
         activeEntity=CoreObject.removeEntity(self, entity)          # run the default method     
-        activeObject.waitToDispose=False                            # update the waitToDispose flag
+        self.waitToDispose=False                            # update the waitToDispose flag
         # if the Machine canAccept then signal a giver
-        if activeObject.canAccept():
-            self.printTrace(self.id, attemptSignalGiver='(removeEntity)')
-            activeObject.signalGiver()
+        if self.canAccept():
+#             self.printTrace(self.id, attemptSignalGiver='(removeEntity)')
+            self.signalGiver()
         return activeEntity
     
     # ======================================================================= 
     # checks if the Machine can dispose an entity to the following object
     # =======================================================================
     def haveToDispose(self, callerObject=None):
-        # get active and the receiver object
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()
+        activeObjectQueue=self.Res.activeQ
         #if we have only one successor just check if machine waits to dispose and also is up
         # this is done to achieve better (cpu) processing time        
-        if(len(activeObject.next)==1 or callerObject==None):
-            return len(activeObjectQueue)>0 and activeObject.waitToDispose and activeObject.checkIfActive()
+        if(len(self.next)==1 or callerObject==None):
+            return len(activeObjectQueue)>0 and self.waitToDispose and self.checkIfActive()
         thecaller=callerObject
-        return len(activeObjectQueue)>0 and activeObject.waitToDispose\
-             and activeObject.checkIfActive() and (thecaller in activeObject.next)
+        return len(activeObjectQueue)>0 and self.waitToDispose\
+             and self.checkIfActive() and (thecaller in self.next)
     
     # =======================================================================
     #                       calculates the setup time
@@ -741,28 +727,26 @@ class Machine(CoreObject):
     # find candidate operators within the free operators
     #===========================================================================
     def findCandidateOperator(self):
-        activeObject=self.getActiveObject()
         # TODO: this way no sorting is performed
         # find an available operator
-        candidateOperator=activeObject.operatorPool.findAvailableOperator()
+        candidateOperator=self.operatorPool.findAvailableOperator()
         # append the station into its candidateStations
-        candidateOperator.candidateStations.append(activeObject)
+        candidateOperator.candidateStations.append(self)
         return candidateOperator
     
     #===========================================================================
     # checks whether the entity can proceed to a successor object
     #===========================================================================
     def canDeliver(self, entity=None):
-        activeObject=self.getActiveObject()
-        assert activeObject.isInActiveQueue(entity), entity.id +' not in the internalQueue of'+ activeObject.id
+        assert self.isInActiveQueue(entity), entity.id +' not in the internalQueue of'+ self.id
         activeEntity=entity
         
         from Globals import G
         router = G.Router
         # if the entity is in a machines who's broker waits for operator then
-        if activeObject in router.pendingMachines:
+        if self in router.pendingMachines:
             activeEntity.proceed=True
-            activeEntity.candidateReceivers.append(activeObject)
+            activeEntity.candidateReceivers.append(self)
             return True
         return False
     
