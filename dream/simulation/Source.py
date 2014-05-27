@@ -122,7 +122,7 @@ class Source(CoreObject):
         
         # initialize the internal Queue (type Resource) of the Source 
         # self.Res=Resource(capacity=infinity)
-        self.Res=simpy.Resource(self.env, capacity=10000)
+        self.Res=simpy.Resource(self.env, capacity=float('inf'))
         self.Res.users=[]                                 
 #         self.Res.waitQ=[]
         self.numberOfArrivals = 0 

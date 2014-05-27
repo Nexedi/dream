@@ -55,7 +55,7 @@ class Exit(CoreObject):
         CoreObject.initialize(self)
         
         # initialize the internal Queue (type Resource) of the Exit 
-        self.Res=simpy.Resource(self.env, capacity=10000)         
+        self.Res=simpy.Resource(self.env, capacity=float('inf'))         
         # The number of resource that exited through this exit.
         # XXX bug: cannot output as json when nothing has exited.
         self.numOfExits=0

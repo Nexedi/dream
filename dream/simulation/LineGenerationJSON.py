@@ -801,7 +801,7 @@ def createObjects():
             stop = float(element.get('stop') or -1)
                                                                     # infinity (had to be done to make it as float)
             if stop<0:
-                stop=infinity            
+                stop=float('inf')            
             interval = float(element.get('interval') or 1)
             duration = float(element.get('duration') or 0)
             method = (element.get('method', None))                    # get the method to be run / default None
@@ -1286,7 +1286,7 @@ def main(argv=[], input_data=None):
         # if the simulation is ran until no more events are scheduled, 
         # then we have to find the end time as the time the last entity ended.
         if G.maxSimTime==-1:
-            G.env.run(until=infinity)
+            G.env.run(until=float('inf'))
 #             simulate(until=infinity)    # simulate until there are no more events. 
 #                                         # If someone does it for a model that has always events, then it will run forever!
 #             # identify from the exits what is the time that the last entity has ended. 
