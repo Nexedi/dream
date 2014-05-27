@@ -157,7 +157,6 @@ class CoreObject(Process):
     # and sends an event to initialize the simulation
     # =======================================================================
     def initialSignalReceiver(self):
-        activeObject=self.getActiveObject()
         if self.haveToDispose():
             self.signalReceiver()
     
@@ -168,7 +167,7 @@ class CoreObject(Process):
     def removeEntity(self, entity=None):
         self.addBlockage()
         
-        activeObjectQueue=self.getActiveObjectQueue()
+        activeObjectQueue=self.Res.activeQ
         activeObjectQueue.remove(entity)       #remove the Entity from the queue
         if self.receiver:
             self.receiver.appendEntity(entity)
@@ -189,8 +188,7 @@ class CoreObject(Process):
     # this method is created to be overridden by the Assembly class in its getEntity where Frames are loaded
     #===========================================================================
     def appendEntity(self,entity=None):
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()
+        activeObjectQueue=self.Res.activeQ
         activeObjectQueue.append(entity)
     
     # =======================================================================
@@ -199,7 +197,7 @@ class CoreObject(Process):
     #            getEntity gives it to removeEntity as argument
     # =======================================================================    
     def identifyEntityToGet(self):
-        giverObjectQueue=self.giver.getActiveObjectQueue() 
+        giverObjectQueue=self.getGiverObjectQueue()
         return giverObjectQueue[0]
     
     # =======================================================================
@@ -220,19 +218,19 @@ class CoreObject(Process):
     def getEntity(self):
         # get active object and its queue, as well as the active (to be) entity 
         #(after the sorting of the entities in the queue of the giver object)
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()
+#         activeObject=self.getActiveObject()
+        activeObjectQueue=self.Res.activeQ
         # get giver object, its queue, and sort the entities according to this object priorities
-        giverObject=self.getGiverObject()
+        giverObject=self.giver
         giverObject.sortEntities()                      #sort the Entities of the giver 
                                                         #according to the scheduling rule if applied
-        giverObjectQueue=self.getGiverObjectQueue()
+        giverObjectQueue=giverObject.Res.activeQ
         # if the giverObject is blocked then unBlock it
         if giverObject.exitIsAssignedTo():
             giverObject.unAssignExit()
         # if the activeObject entry is blocked then unBlock it
-        if activeObject.entryIsAssignedTo():
-            activeObject.unAssignEntry()
+        if self.entryIsAssignedTo():
+            self.unAssignEntry()
             
         # remove entity from the giver
         activeEntity = giverObject.removeEntity(entity=self.identifyEntityToGet())
@@ -244,16 +242,16 @@ class CoreObject(Process):
         #append the time to schedule so that it can be read in the result
         #remember that every entity has it's schedule which is supposed to be updated every time 
         # he entity enters a new object
-        activeEntity.schedule.append([activeObject,now()])
+        activeEntity.schedule.append([self,now()])
         #update variables
         activeEntity.currentStation=self
         self.timeLastEntityEntered=now()
         self.nameLastEntityEntered=activeEntity.name      # this holds the name of the last entity that got into Machine      
         self.downTimeProcessingCurrentEntity=0
         # update the next list of the object
-        activeObject.updateNext(activeEntity)
+        self.updateNext(activeEntity)
         self.outputTrace(activeEntity.name, "got into "+self.objName)
-        self.printTrace(activeEntity.name, enter=self.id)
+#         self.printTrace(activeEntity.name, enter=self.id)
         return activeEntity
     
     #===========================================================================
@@ -267,8 +265,7 @@ class CoreObject(Process):
     # and if preemption is required
     #===========================================================================
     def preemptReceiver(self):
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()
+        activeObjectQueue=self.Res.activeQ
     
         # find a critical order if any
         critical=False
@@ -279,7 +276,7 @@ class CoreObject(Process):
                 break
         if critical:
             # pick a receiver
-            receiver=next(object for object in activeObject.next if object.isPreemptive and object.checkIfActive())
+            receiver=next(object for object in self.next if object.isPreemptive and object.checkIfActive())
             # if there is any receiver that can be preempted check if it is operated
             if receiver:
                 receiverOperated=False          # local variable to inform if the receiver is operated for Loading
@@ -299,18 +296,18 @@ class CoreObject(Process):
             # if the obtained Entity is critical and the receiver is preemptive and not operated
             #     in the case that the receiver is operated the preemption is performed by the operators
             #     if the receiver is not Up then no preemption will be performed
-            if not receiverOperated and len(receiver.getActiveObjectQueue())>0:
+            if not receiverOperated and len(receiver.Res.activeQ)>0:
                 #if the receiver does not hold an Entity that is also critical
-                if not receiver.getActiveObjectQueue()[0].isCritical:
+                if not receiver.Res.activeQ[0].isCritical:
                     receiver.shouldPreempt=True
-                    self.printTrace(self.id, preempt=receiver.id)
+#                     self.printTrace(self.id, preempt=receiver.id)
                     receiver.preempt()
                     receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
                     # sort so that the critical entity is placed in front
                     activeObjectQueue.sort(key=lambda x: x==activeEntity, reverse=True)
             # if there is a critical entity and the possible receivers are operated then signal the Router
             elif receiverOperated:
-                activeObject.signalRouter(receiver)
+                self.signalRouter(receiver)
                 activeObjectQueue.sort(key=lambda x: x==activeEntity, reverse=True)
         # update wipStatList
         if self.gatherWipStat:
@@ -341,11 +338,10 @@ class CoreObject(Process):
     # signal the successor that the object can dispose an entity 
     # =======================================================================
     def signalReceiver(self):
-        activeObject=self.getActiveObject()
-        possibleReceivers=self.findReceiversFor(activeObject)
+        possibleReceivers=self.findReceiversFor(self)
         if possibleReceivers:
-            receiver=activeObject.selectReceiver(possibleReceivers)
-            receiversGiver=activeObject
+            receiver=self.selectReceiver(possibleReceivers)
+            receiversGiver=self
             # perform the checks that canAcceptAndIsRequested used to perform and update activeCallersList or assignExit and operatorPool
             while not receiver.canAcceptAndIsRequested(receiversGiver):
                 possibleReceivers.remove(receiver)
@@ -355,20 +351,20 @@ class CoreObject(Process):
                     # if no receiver can accept then try to preempt a receive if the stations holds a critical order
                     self.preemptReceiver()
                     return False
-                receiver=activeObject.selectReceiver(possibleReceivers)
-                receiversGiver=activeObject
+                receiver=self.selectReceiver(possibleReceivers)
+                receiversGiver=self
             # sorting the entities of the object for the receiver
-            activeObject.sortEntitiesForReceiver(receiver)
+            self.sortEntitiesForReceiver(receiver)
             # signalling the Router if the receiver is operated and not assigned an operator
-            if activeObject.signalRouter(receiver):
+            if self.signalRouter(receiver):
                 return False
 
-            activeObject.receiver=receiver
-            activeObject.receiver.giver=activeObject
-            self.printTrace(self.id, signalReceiver=self.receiver.id)
+            self.receiver=receiver
+            self.receiver.giver=self
+#             self.printTrace(self.id, signalReceiver=self.receiver.id)
             # assign the entry of the receiver
-            activeObject.receiver.assignEntryTo()
-            activeObject.receiver.isRequested.signal(activeObject)
+            self.receiver.assignEntryTo()
+            self.receiver.isRequested.signal(self)
             return True
         # if no receiver can accept then try to preempt a receive if the stations holds a critical order
         self.preemptReceiver()
@@ -398,7 +394,7 @@ class CoreObject(Process):
         # if an operator is not assigned to the receiver then do not signal the receiver but the Router
         try:
             if not receiver.assignedOperator or\
-                   (receiver.isPreemptive and len(receiver.getActiveObjectQueue())>0):
+                   (receiver.isPreemptive and len(receiver.Res.activeQ)>0):
                 if receiver.isLoadRequested():
                     from Globals import G
                     if not G.Router.invoked:
@@ -444,22 +440,21 @@ class CoreObject(Process):
     # signal the giver that the entity is removed from its internalQueue
     # =======================================================================
     def signalGiver(self):
-        activeObject=self.getActiveObject()
-        possibleGivers=self.findGiversFor(activeObject)
+        possibleGivers=self.findGiversFor(self)
         if possibleGivers:
-            giver=activeObject.selectGiver(possibleGivers)
-            giversReceiver=activeObject
+            giver=self.selectGiver(possibleGivers)
+            giversReceiver=self
             # perform the checks that canAcceptAndIsRequested used to perform and update activeCallersList or assignExit and operatorPool
-            while not activeObject.canAcceptAndIsRequested(giver):
+            while not self.canAcceptAndIsRequested(giver):
                 possibleGivers.remove(giver)
                 if not possibleGivers:
                     return False
-                giver=activeObject.selectGiver(possibleGivers)
-                giversReceiver=activeObject
-            activeObject.giver=giver
-            activeObject.giver.receiver=activeObject
-            self.printTrace(self.id, signalGiver=self.giver.id)
-            activeObject.giver.canDispose.signal(activeObject)
+                giver=self.selectGiver(possibleGivers)
+                giversReceiver=self
+            self.giver=giver
+            self.giver.receiver=self
+#             self.printTrace(self.id, signalGiver=self.giver.id)
+            self.giver.canDispose.signal(self)
             return True
         return False
     
@@ -554,7 +549,7 @@ class CoreObject(Process):
     # checks if the Object can dispose an entity to the following object 
     # =======================================================================
     def haveToDispose(self, callerObject=None): 
-        activeObjectQueue=self.getActiveObjectQueue()    
+        activeObjectQueue=self.Res.activeQ
         return len(activeObjectQueue)>0
     
     # =======================================================================
@@ -598,7 +593,7 @@ class CoreObject(Process):
     # get the giver object queue in a getEntity transaction. 
     # =======================================================================    
     def getGiverObjectQueue(self):
-        return self.getGiverObject().getActiveObjectQueue()
+        return self.giver.Res.activeQ
     
     # =======================================================================
     # get the receiver object in a removeEntity transaction.
@@ -610,7 +605,7 @@ class CoreObject(Process):
     # get the receiver object queue in a removeEntity transaction. 
     # =======================================================================    
     def getReceiverObjectQueue(self):
-        return self.getReceiverObject().getActiveObjectQueue()
+        return self.receiver.Res.activeQ
 	
     # =======================================================================
     # calculates the processing time
@@ -691,5 +686,5 @@ class CoreObject(Process):
     # check if an entity is in the internal Queue of the object
     #===========================================================================
     def isInActiveQueue(self, entity=None):
-        activeObjectQueue = self.getActiveObjectQueue()
+        activeObjectQueue = self.Res.activeQ
         return any(x==entity for x in activeObjectQueue)
