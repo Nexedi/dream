@@ -93,7 +93,7 @@ import sys
 import os.path
 import Globals
 import ast
-
+import cProfile
 
 # ===========================================================================
 #                       reads general simulation inputs
@@ -1336,5 +1336,6 @@ def main(argv=[], input_data=None):
       return outputJSONString
     
 if __name__ == '__main__':
+#     cProfile.run('main()')
     main()
 
