@@ -25,15 +25,18 @@ Created on 12 Jul 2012
 Class that acts as an abstract. It should have no instances. All the core-objects should inherit from it
 '''
 
-from SimPy.Simulation import Process, Resource, now, SimEvent, waitevent
+# from SimPy.Simulation import Process, Resource, now, SimEvent, waitevent
+import simpy
 
 # ===========================================================================
 # the core object
 # ===========================================================================
-class CoreObject(Process):
+class CoreObject(object):
     
     def __init__(self, id, name, **kw):
-        Process.__init__(self) 
+        from Globals import G
+        self.env=G.env
+#         Process.__init__(self) 
         self.id = id
         self.objName = name
         #     lists that hold the previous and next objects in the flow
@@ -54,14 +57,18 @@ class CoreObject(Process):
         self.interruptCause=None
         self.gatherWipStat=False
         # signalizing an event that activates the generator
-        self.isRequested=SimEvent('isRequested')
-        self.canDispose=SimEvent('canDispose')
-        self.interruptionEnd=SimEvent('interruptionEnd')
-        self.interruptionStart=SimEvent('interruptionStart')
+#         self.isRequested=SimEvent('isRequested')
+        self.isRequested=self.env.event()
+#         self.canDispose=SimEvent('canDispose')
+        self.canDispose=self.env.event()
+#         self.interruptionEnd=SimEvent('interruptionEnd')
+        self.interruptionEnd=self.env.event()
+#         self.interruptionStart=SimEvent('interruptionStart')
+        self.interruptionStart=self.env.event()
     
     def initialize(self):
         # XXX why call super.__init__ outside of __init__ ?
-        Process.__init__(self) 
+#         Process.__init__(self) 
         self.Up=True                                    #Boolean that shows if the machine is in failure ("Down") or not ("up")
         self.onShift=True
         self.currentEntity=None      
@@ -133,10 +140,14 @@ class CoreObject(Process):
         # TODO, this should be also updated in Globals.setWIP (in case we have initial wip)
         self.wipStatList=[[0,0]]
         # signalizing an event that activates the generator
-        self.isRequested=SimEvent('isRequested')
-        self.canDispose=SimEvent('canDispose')
-        self.interruptionEnd=SimEvent('interruptionEnd')
-        self.interruptionStart=SimEvent('interruptionStart')
+#         self.isRequested=SimEvent('isRequested')
+        self.isRequested=self.env.event()
+#         self.canDispose=SimEvent('canDispose')
+        self.canDispose=self.env.event()
+#         self.interruptionEnd=SimEvent('interruptionEnd')
+        self.interruptionEnd=self.env.event()
+#         self.interruptionStart=SimEvent('interruptionStart')
+        self.interruptionStart=self.env.event()
 
     # =======================================================================
     #                the main process of the core object 
@@ -167,7 +178,7 @@ class CoreObject(Process):
     def removeEntity(self, entity=None):
         self.addBlockage()
         
-        activeObjectQueue=self.Res.activeQ
+        activeObjectQueue=self.Res.users
         activeObjectQueue.remove(entity)       #remove the Entity from the queue
         if self.receiver:
             self.receiver.appendEntity(entity)
@@ -176,11 +187,11 @@ class CoreObject(Process):
         self.downTimeInTryingToReleaseCurrentEntity=0
         self.offShiftTimeTryingToReleaseCurrentEntity=0
         
-        self.timeLastEntityLeft=now()
+        self.timeLastEntityLeft=self.env.now
         self.outputTrace(entity.name, "released "+self.objName)
         # update wipStatList
         if self.gatherWipStat:
-            self.wipStatList.append([now(), len(activeObjectQueue)])
+            self.wipStatList.append([self.env.now, len(activeObjectQueue)])
         return entity
     
     #===========================================================================
@@ -188,7 +199,7 @@ class CoreObject(Process):
     # this method is created to be overridden by the Assembly class in its getEntity where Frames are loaded
     #===========================================================================
     def appendEntity(self,entity=None):
-        activeObjectQueue=self.Res.activeQ
+        activeObjectQueue=self.Res.users
         activeObjectQueue.append(entity)
     
     # =======================================================================
@@ -205,11 +216,11 @@ class CoreObject(Process):
     #                    each time an Entity is removed
     # =======================================================================
     def addBlockage(self): 
-        self.totalTimeInCurrentEntity=now()-self.timeLastEntityEntered
+        self.totalTimeInCurrentEntity=self.env.now-self.timeLastEntityEntered
         self.totalTimeWaitingForOperator += self.operatorWaitTimeCurrentEntity
         if self.timeLastEntityEnded<self.timeLastShiftStarted:      
             self.offShiftTimeTryingToReleaseCurrentEntity=self.timeLastShiftStarted-self.timeLastShiftEnded
-        blockage=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity+self.offShiftTimeTryingToReleaseCurrentEntity)       
+        blockage=self.env.now-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity+self.offShiftTimeTryingToReleaseCurrentEntity)       
         self.totalBlockageTime+=blockage     
     
     # =======================================================================
@@ -219,12 +230,12 @@ class CoreObject(Process):
         # get active object and its queue, as well as the active (to be) entity 
         #(after the sorting of the entities in the queue of the giver object)
 #         activeObject=self.getActiveObject()
-        activeObjectQueue=self.Res.activeQ
+        activeObjectQueue=self.Res.users
         # get giver object, its queue, and sort the entities according to this object priorities
         giverObject=self.giver
         giverObject.sortEntities()                      #sort the Entities of the giver 
                                                         #according to the scheduling rule if applied
-        giverObjectQueue=giverObject.Res.activeQ
+        giverObjectQueue=giverObject.Res.users
         # if the giverObject is blocked then unBlock it
         if giverObject.exitIsAssignedTo():
             giverObject.unAssignExit()
@@ -242,10 +253,10 @@ class CoreObject(Process):
         #append the time to schedule so that it can be read in the result
         #remember that every entity has it's schedule which is supposed to be updated every time 
         # he entity enters a new object
-        activeEntity.schedule.append([self,now()])
+        activeEntity.schedule.append([self,self.env.now])
         #update variables
         activeEntity.currentStation=self
-        self.timeLastEntityEntered=now()
+        self.timeLastEntityEntered=self.env.now
         self.nameLastEntityEntered=activeEntity.name      # this holds the name of the last entity that got into Machine      
         self.downTimeProcessingCurrentEntity=0
         # update the next list of the object
@@ -265,7 +276,7 @@ class CoreObject(Process):
     # and if preemption is required
     #===========================================================================
     def preemptReceiver(self):
-        activeObjectQueue=self.Res.activeQ
+        activeObjectQueue=self.Res.users
     
         # find a critical order if any
         critical=False
@@ -296,13 +307,13 @@ class CoreObject(Process):
             # if the obtained Entity is critical and the receiver is preemptive and not operated
             #     in the case that the receiver is operated the preemption is performed by the operators
             #     if the receiver is not Up then no preemption will be performed
-            if not receiverOperated and len(receiver.Res.activeQ)>0:
+            if not receiverOperated and len(receiver.Res.users)>0:
                 #if the receiver does not hold an Entity that is also critical
-                if not receiver.Res.activeQ[0].isCritical:
+                if not receiver.Res.users[0].isCritical:
                     receiver.shouldPreempt=True
 #                     self.printTrace(self.id, preempt=receiver.id)
                     receiver.preempt()
-                    receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
+                    receiver.timeLastEntityEnded=self.env.now     #required to count blockage correctly in the preemptied station
                     # sort so that the critical entity is placed in front
                     activeObjectQueue.sort(key=lambda x: x==activeEntity, reverse=True)
             # if there is a critical entity and the possible receivers are operated then signal the Router
@@ -311,7 +322,7 @@ class CoreObject(Process):
                 activeObjectQueue.sort(key=lambda x: x==activeEntity, reverse=True)
         # update wipStatList
         if self.gatherWipStat:
-            self.wipStatList.append([now(), len(activeObjectQueue)])
+            self.wipStatList.append([self.env.now, len(activeObjectQueue)])
     
     
     #===========================================================================
@@ -364,7 +375,7 @@ class CoreObject(Process):
 #             self.printTrace(self.id, signalReceiver=self.receiver.id)
             # assign the entry of the receiver
             self.receiver.assignEntryTo()
-            self.receiver.isRequested.signal(self)
+            self.receiver.isRequested.succeed(self)
             return True
         # if no receiver can accept then try to preempt a receive if the stations holds a critical order
         self.preemptReceiver()
@@ -379,8 +390,9 @@ class CoreObject(Process):
         # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
         maxTimeWaiting=0                                            # dummy variable counting the time a successor is waiting
         receiver=None
+        from Globals import G
         for object in candidates:
-            timeWaiting=now()-object.timeLastEntityLeft         # the time it has been waiting is updated and stored in dummy variable timeWaiting
+            timeWaiting=G.env.now-object.timeLastEntityLeft         # the time it has been waiting is updated and stored in dummy variable timeWaiting
             if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# if the timeWaiting is the maximum among the ones of the successors 
                 maxTimeWaiting=timeWaiting
                 receiver=object                                 # set the receiver as the longest waiting possible receiver
@@ -394,13 +406,13 @@ class CoreObject(Process):
         # if an operator is not assigned to the receiver then do not signal the receiver but the Router
         try:
             if not receiver.assignedOperator or\
-                   (receiver.isPreemptive and len(receiver.Res.activeQ)>0):
+                   (receiver.isPreemptive and len(receiver.Res.users)>0):
                 if receiver.isLoadRequested():
                     from Globals import G
                     if not G.Router.invoked:
 #                         self.printTrace(self.id, signal='router')
                         G.Router.invoked=True
-                        G.Router.isCalled.signal(now())
+                        G.Router.isCalled.succeed(self.env.now)
                     return True
             else:
                 return False
@@ -454,7 +466,7 @@ class CoreObject(Process):
             self.giver=giver
             self.giver.receiver=self
 #             self.printTrace(self.id, signalGiver=self.giver.id)
-            self.giver.canDispose.signal(self)
+            self.giver.canDispose.succeed(self)
             return True
         return False
     
@@ -467,12 +479,13 @@ class CoreObject(Process):
         # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
         maxTimeWaiting=0                                            # dummy variable counting the time a predecessor is blocked
         giver=None
+        from Globals import G
         # loop through the possible givers to see which have to dispose and which is the one blocked for longer
         for object in candidates:
             if(object.downTimeInTryingToReleaseCurrentEntity>0):# and the predecessor has been down while trying to give away the Entity
-                timeWaiting=now()-object.timeLastFailureEnded   # the timeWaiting dummy variable counts the time end of the last failure of the giver object
+                timeWaiting=self.env.now-object.timeLastFailureEnded   # the timeWaiting dummy variable counts the time end of the last failure of the giver object
             else:
-                timeWaiting=now()-object.timeLastEntityEnded    # in any other case, it holds the time since the end of the Entity processing
+                timeWaiting=G.env.now-object.timeLastEntityEnded    # in any other case, it holds the time since the end of the Entity processing
             #if more than one predecessor have to dispose take the part from the one that is blocked longer
             if(timeWaiting>=maxTimeWaiting): 
                 giver=object                 # the object to deliver the Entity to the activeObject is set to the ith member of the previous list
@@ -493,7 +506,7 @@ class CoreObject(Process):
         from Globals import G
         if(G.trace=="Yes"):         #output only if the user has selected to
             #handle the 3 columns
-            G.traceSheet.write(G.traceIndex,0,str(now()))
+            G.traceSheet.write(G.traceIndex,0,str(self.env.now))
             G.traceSheet.write(G.traceIndex,1,entityName)
             G.traceSheet.write(G.traceIndex,2,message)          
             G.traceIndex+=1       #increment the row
@@ -509,7 +522,7 @@ class CoreObject(Process):
         assert len(kw)==1, 'only one phrase per printTrace supported for the moment'
         from Globals import G
         import Globals
-        time=now()
+        time=self.env.now
         charLimit=60
         remainingChar=charLimit-len(entity)-len(str(time))
         if(G.console=='Yes'):
@@ -549,7 +562,7 @@ class CoreObject(Process):
     # checks if the Object can dispose an entity to the following object 
     # =======================================================================
     def haveToDispose(self, callerObject=None): 
-        activeObjectQueue=self.Res.activeQ
+        activeObjectQueue=self.Res.users
         return len(activeObjectQueue)>0
     
     # =======================================================================
@@ -581,7 +594,7 @@ class CoreObject(Process):
     # get the activeQ of the active object. 
     # =======================================================================
     def getActiveObjectQueue(self):
-        return self.Res.activeQ
+        return self.Res.users
     
     # =======================================================================
     # get the giver object in a getEntity transaction.
@@ -593,7 +606,7 @@ class CoreObject(Process):
     # get the giver object queue in a getEntity transaction. 
     # =======================================================================    
     def getGiverObjectQueue(self):
-        return self.giver.Res.activeQ
+        return self.giver.Res.users
     
     # =======================================================================
     # get the receiver object in a removeEntity transaction.
@@ -605,7 +618,7 @@ class CoreObject(Process):
     # get the receiver object queue in a removeEntity transaction. 
     # =======================================================================    
     def getReceiverObjectQueue(self):
-        return self.receiver.Res.activeQ
+        return self.receiver.Res.users
 	
     # =======================================================================
     # calculates the processing time
@@ -674,7 +687,7 @@ class CoreObject(Process):
     #     false if object holds entities in its queue
     #===========================================================================
     def activeQueueIsEmpty(self):
-        return len(self.Res.activeQ)==0
+        return len(self.Res.users)==0
         
     # =======================================================================
     # actions to be carried out when the processing of an Entity ends
@@ -686,5 +699,5 @@ class CoreObject(Process):
     # check if an entity is in the internal Queue of the object
     #===========================================================================
     def isInActiveQueue(self, entity=None):
-        activeObjectQueue = self.Res.activeQ
+        activeObjectQueue = self.Res.users
         return any(x==entity for x in activeObjectQueue)

@@ -40,7 +40,8 @@ import numpy
 numpy.seterr(all='raise')
 
 
-from SimPy.Simulation import activate, initialize, simulate, now, infinity
+# from SimPy.Simulation import activate, initialize, simulate, now, infinity
+import simpy
 from Globals import G 
 from Source import Source
 from Machine import Machine
@@ -885,11 +886,14 @@ def initializeObjects():
 # ===========================================================================
 def activateObjects():
     for element in G.ObjList:
-        activate(element, element.run())
+#         activate(element, element.run())
+        G.env.process(element.run())
     for ev in G.EventGeneratorList:
-        activate(ev, ev.run())
+#         activate(ev, ev.run())
+        G.env.process(ev.run())
     for oi in G.ObjectInterruptionList:
-        activate(oi, oi.run())
+#         activate(oi, oi.run())
+        G.env.process(oi.run())
 
 # ===========================================================================
 #                reads the WIP of the stations
@@ -1261,6 +1265,7 @@ def main(argv=[], input_data=None):
     #read the input from the JSON file and create the line
     G.JSONData=json.loads(G.InputData)              # create the dictionary JSONData
     readGeneralInput()
+    G.env=simpy.Environment()                       # initialize the environment
     createObjects()
     createObjectInterruptions()
     setTopology()
@@ -1272,7 +1277,7 @@ def main(argv=[], input_data=None):
           G.Rnd=Random('%s%s' % (G.seed, i))
         else:
           G.Rnd=Random()
-        initialize()                        #initialize the simulation 
+#         initialize()                        #initialize the simulation
         createWIP()
         initializeObjects()
         Globals.setWIP(G.EntityList)        
@@ -1281,22 +1286,24 @@ def main(argv=[], input_data=None):
         # if the simulation is ran until no more events are scheduled, 
         # then we have to find the end time as the time the last entity ended.
         if G.maxSimTime==-1:
-            simulate(until=infinity)    # simulate until there are no more events. 
-                                        # If someone does it for a model that has always events, then it will run forever!
+            G.env.run(until=infinity)
+#             simulate(until=infinity)    # simulate until there are no more events. 
+#                                         # If someone does it for a model that has always events, then it will run forever!
 #             # identify from the exits what is the time that the last entity has ended. 
 #             endList=[]
 #             for exit in G.ExitList:
 #                 endList.append(exit.timeLastEntityLeft)
 #             G.maxSimTime=float(max(endList))    
             # identify the time of the last event
-            if now()!=0:    #do not let G.maxSimTime=0 so that there will be no crash
-                G.maxSimTime=now()
+            if G.env.now!=0:    #do not let G.maxSimTime=0 so that there will be no crash
+                G.maxSimTime=env.now
             else:
                 print "simulation ran for 0 time, something may have gone wrong"
                 logger.info("simulation ran for 0 time, something may have gone wrong")
         #else we simulate until the given maxSimTime
-        else:            
-            simulate(until=G.maxSimTime)      #simulate until the given maxSimTime
+        else:
+            G.env.run(until=G.maxSimTime)
+#             simulate(until=G.maxSimTime)      #simulate until the given maxSimTime
         
         #carry on the post processing operations for every object in the topology       
         for element in G.ObjList:

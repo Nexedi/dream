@@ -25,7 +25,8 @@ Created on 6 Feb 2013
 models the exit of the model
 '''
 
-from SimPy.Simulation import now, Process, Resource, infinity, waituntil, waitevent
+# from SimPy.Simulation import now, Process, Resource, infinity, waituntil, waitevent
+import simpy
 import xlwt
 from CoreObject import CoreObject
 
@@ -54,7 +55,7 @@ class Exit(CoreObject):
         CoreObject.initialize(self)
         
         # initialize the internal Queue (type Resource) of the Exit 
-        self.Res=Resource(capacity=infinity)         
+        self.Res=simpy.Resource(self.env, capacity=10000)         
         # The number of resource that exited through this exit.
         # XXX bug: cannot output as json when nothing has exited.
         self.numOfExits=0
@@ -68,7 +69,8 @@ class Exit(CoreObject):
     def run(self):
         while 1:
             # wait until the Queue can accept an entity and one predecessor requests it
-            yield waitevent, self, self.isRequested
+            yield self.isRequested
+            self.isRequested=self.env.event()
             # TODO: insert extra controls to check whether the self.giver attribute is correctly updated
             self.getEntity()
 
@@ -109,13 +111,13 @@ class Exit(CoreObject):
 #         if activeEntity in G.EntityList:
 #             G.EntityList.remove(activeEntity)
 #         self.clear(activeEntity)
-        self.totalLifespan+=now()-activeEntity.startTime    #Add the entity's lifespan to the total one. 
+        self.totalLifespan+=self.env.now-activeEntity.startTime    #Add the entity's lifespan to the total one. 
         self.numOfExits+=1                                          # increase the exits by one
         self.totalNumberOfUnitsExited+=activeEntity.numberOfUnits   # add the number of units that xited
-        self.totalTaktTime+=now()-self.timeLastEntityLeft           # add the takt time
-        self.timeLastEntityLeft=now()                               # update the time that the last entity left from the Exit
+        self.totalTaktTime+=self.env.now-self.timeLastEntityLeft           # add the takt time
+        self.timeLastEntityLeft=self.env.now                               # update the time that the last entity left from the Exit
         activeObjectQueue=self.getActiveObjectQueue()
-        del self.Res.activeQ[:]
+        del self.Res.users[:]
         return activeEntity
     
     @staticmethod
