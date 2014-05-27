@@ -92,17 +92,17 @@ class Queue(CoreObject):
     # run method of the queue
     #===========================================================================
     def run(self):  
-        activeObjectQueue=self.getActiveObjectQueue()
+        activeObjectQueue=self.Res.activeQ
         # check if there is WIP and signal receiver
         self.initialSignalReceiver()
         while 1:
-            self.printTrace(self.id, waitEvent='')
+#             self.printTrace(self.id, waitEvent='')
             # wait until the Queue can accept an entity and one predecessor requests it
             yield waitevent, self, [self.isRequested,self.canDispose, self.loadOperatorAvailable]
-            self.printTrace(self.id, received='')
+#             self.printTrace(self.id, received='')
             # if the event that activated the thread is isRequested then getEntity
             if self.isRequested.signalparam:
-                self.printTrace(self.id, isRequested=self.isRequested.signalparam.id)
+#                 self.printTrace(self.id, isRequested=self.isRequested.signalparam.id)
                 # reset the isRequested signal parameter
                 self.isRequested.signalparam=None
                 self.getEntity()
@@ -115,11 +115,11 @@ class Queue(CoreObject):
                 self.loadOperatorAvailable.signalparam=None
             # if the queue received an canDispose with signalparam time, this means that the signals was sent from a MouldAssemblyBuffer
             if self.canDispose.signalparam:
-                self.printTrace(self.id, canDispose='')
+#                 self.printTrace(self.id, canDispose='')
                 self.canDispose.signalparam=None
             # if the event that activated the thread is canDispose then signalReceiver
             if self.haveToDispose():
-                self.printTrace(self.id, attemptSignalReceiver='(generator)')
+#                 self.printTrace(self.id, attemptSignalReceiver='(generator)')
                 if self.receiver:
                     if not self.receiver.entryIsAssignedTo():
                         self.signalReceiver()
@@ -132,16 +132,14 @@ class Queue(CoreObject):
     #            only to the predecessor that will give the entity.
     # =======================================================================  
     def canAccept(self, callerObject=None): 
-        # get active and giver objects
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()
+        activeObjectQueue=self.Res.activeQ
         #if we have only one predecessor just check if there is a place available
         # this is done to achieve better (cpu) processing time 
         # then we can also use it as a filter for a yield method
         if(callerObject==None):
-            return len(activeObjectQueue)<activeObject.capacity
+            return len(activeObjectQueue)<self.capacity
         thecaller=callerObject
-        return len(activeObjectQueue)<activeObject.capacity and (thecaller in activeObject.previous)
+        return len(activeObjectQueue)<self.capacity and (thecaller in self.previous)
     
     # =======================================================================
     #    checks if the Queue can dispose an entity to the following object
@@ -150,29 +148,24 @@ class Queue(CoreObject):
     #              this is kind of slow I think got to check   
     # =======================================================================
     def haveToDispose(self, callerObject=None): 
-        # get active object and its queue
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()     
-        
+        activeObjectQueue=self.Res.activeQ     
         #if we have only one possible receiver just check if the Queue holds one or more entities
         if(callerObject==None):
             return len(activeObjectQueue)>0 
-         
         thecaller=callerObject
-        return len(activeObjectQueue)>0 and (thecaller in activeObject.next)
+        return len(activeObjectQueue)>0 and (thecaller in self.next)
     
     # =======================================================================
     #                    removes an entity from the Object
     # =======================================================================
     def removeEntity(self, entity=None):
-        activeObject=self.getActiveObject()
         activeEntity=CoreObject.removeEntity(self, entity)                  #run the default method
         if self.canAccept():
             self.signalGiver()
         # TODO: disable that for the mouldAssemblyBuffer
         if not self.__class__.__name__=='MouldAssemblyBuffer':
             if self.haveToDispose():
-                self.printTrace(self.id, attemptSignalReceiver='(removeEntity)')
+#                 self.printTrace(self.id, attemptSignalReceiver='(removeEntity)')
                 self.signalReceiver()
         return activeEntity
     
@@ -182,14 +175,10 @@ class Queue(CoreObject):
     #   also updates the predecessorIndex to the one that is to be taken
     # =======================================================================
     def canAcceptAndIsRequested(self,callerObject=None):
-        # get the active and the giver objects
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()
-#         giverObject=self.getGiverObject()
+        activeObjectQueue=self.Res.activeQ
         giverObject=callerObject
         assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
-        return len(activeObjectQueue)<activeObject.capacity and giverObject.haveToDispose(activeObject) 
-    
+        return len(activeObjectQueue)<self.capacity and giverObject.haveToDispose(self) 
     
     # =======================================================================
     #            gets an entity from the predecessor that 
@@ -203,13 +192,12 @@ class Queue(CoreObject):
     # checks whether the entity can proceed to a successor object
     #===========================================================================
     def canDeliver(self, entity=None):
-        activeObject=self.getActiveObject()
-        assert activeObject.isInActiveQueue(entity), entity.id +' not in the internalQueue of'+ activeObject.id
+        assert self.isInActiveQueue(entity), entity.id +' not in the internalQueue of'+ self.id
         activeEntity=entity
         
         mayProceed=False
         # for all the possible receivers of an entity check whether they can accept and then set accordingly the canProceed flag of the entity 
-        for nextObject in [object for object in activeObject.next if object.canAcceptEntity(activeEntity)]:
+        for nextObject in [object for object in self.next if object.canAcceptEntity(activeEntity)]:
             activeEntity.proceed=True
             activeEntity.candidateReceivers.append(nextObject)
             mayProceed=True
@@ -296,7 +284,7 @@ class Queue(CoreObject):
                 for obj in G.ObjList:
                     if obj.id in nextObjIds:
                         nextObject=obj
-                entity.nextQueueLength=len(nextObject.getActiveObjectQueue())           
+                entity.nextQueueLength=len(nextObject.Res.activeQ)           
             activeObjectQ.sort(key=lambda x: x.nextQueueLength)
         else:
             assert False, "Unknown scheduling criterion %r" % (criterion, )

@@ -49,32 +49,30 @@ class QueueJobShop(Queue):
     # and returns true only if the active object is the next station
     # ======================================================================= 
     def canAccept(self, callerObject=None):
-        activeObject=self.getActiveObject()
-        activeObjectQueue=activeObject.getActiveObjectQueue()
+        activeObjectQueue=self.Res.activeQ
         thecaller=callerObject
         #return according to the state of the Queue
         #check it the caller object holds an Entity that requests for current object
-        return len(self.getActiveObjectQueue())<activeObject.capacity\
-                and activeObject.isInRoute(callerObject)
+        return len(self.Res.activeQ)<self.capacity\
+                and self.isInRoute(callerObject)
     
     #===========================================================================
     # method used to check whether the station is in the entity-to-be-received route
     # TODO: consider giving the activeEntity as attribute
     #===========================================================================
     def isInRoute(self, callerObject=None):
-        activeObject=self.getActiveObject()
-        activeObjectQueue=activeObject.getActiveObjectQueue()
+        activeObjectQueue=self.Res.activeQ
         thecaller=callerObject
         # if the caller is not defined then return True. We are only interested in checking whether 
         # the station can accept whatever entity from whichever giver
         if not thecaller:
             return True
         #check it the caller object holds an Entity that requests for current object
-        if len(thecaller.getActiveObjectQueue())>0:
+        if len(thecaller.Res.activeQ)>0:
             # TODO: make sure that the first entity of the callerObject is to be disposed
-            activeEntity=thecaller.getActiveObjectQueue()[0]
+            activeEntity=thecaller.Res.activeQ[0]
             # if the machine's Id is in the list of the entity's next stations
-            if activeObject.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
+            if self.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
                 return True
         return False
     
@@ -83,9 +81,7 @@ class QueueJobShop(Queue):
     # Returns True only to the potential receiver
     # =======================================================================     
     def haveToDispose(self, callerObject=None):
-        # get active object and its queue
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()
+        activeObjectQueue=self.Res.activeQ
         thecaller = callerObject
         #if we have only one possible receiver just check if the Queue holds one or more entities
         if(callerObject==None):
@@ -93,26 +89,23 @@ class QueueJobShop(Queue):
         
         #return True if the Queue has Entities and the caller is in the self.next list
         return len(activeObjectQueue)>0\
-                and (thecaller in activeObject.next)\
-                and thecaller.isInRoute(activeObject)
+                and (thecaller in self.next)\
+                and thecaller.isInRoute(self)
     
     #===========================================================================
     # extend the default behaviour to check if whether the station 
     #     is in the route of the entity to be received
     #===========================================================================
     def canAcceptAndIsRequested(self,callerObject=None):
-        activeObject=self.getActiveObject()
-#         giverObject=activeObject.getGiverObject()
         giverObject=callerObject
         assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
-        if activeObject.isInRoute(giverObject):
+        if self.isInRoute(giverObject):
             return Queue.canAcceptAndIsRequested(self,giverObject)
 
     # =======================================================================
     # gets an entity from the predecessor that the predecessor index points to
     # =======================================================================     
     def getEntity(self):
-        activeObject = self.getActiveObject()
         activeEntity=Queue.getEntity(self)
         activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
         return activeEntity
@@ -121,7 +114,6 @@ class QueueJobShop(Queue):
     # update the next list of the object after reading the remaining list of the activeEntity
     #===========================================================================
     def updateNext(self,entity=None):
-        activeObject = self.getActiveObject()
         activeEntity=entity
         # read the possible receivers - update the next list
         import Globals
@@ -133,27 +125,26 @@ class QueueJobShop(Queue):
         # update the next list of the object
         for nextObject in nextObjects:
             # append only if not already in the list
-            if nextObject not in activeObject.next:
-                activeObject.next.append(nextObject)
+            if nextObject not in self.next:
+                self.next.append(nextObject)
     
     # =======================================================================
     # removes an entity from the Queue
     # extension to remove possible receivers accordingly
     # =======================================================================
     def removeEntity(self, entity=None):
-        activeObject=self.getActiveObject()
-        receiverObject=activeObject.getReceiverObject()
+        receiverObject=self.getReceiverObject()
         #run the default method
         activeEntity=Queue.removeEntity(self, entity)
         removeReceiver=True 
         # search in the internalQ. If an entity has the same receiver do not remove
-        for ent in self.getActiveObjectQueue():
+        for ent in self.Res.activeQ:
             nextObjectIds=ent.remainingRoute[0].get('stationIdsList',[])
             if receiverObject.id in nextObjectIds:
                 removeReceiver=False      
         # if not entity had the same receiver then the receiver will be removed 
         if removeReceiver:
-            activeObject.next.remove(receiverObject)
+            self.next.remove(receiverObject)
         return activeEntity
 
         
