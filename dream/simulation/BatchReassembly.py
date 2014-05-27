@@ -155,8 +155,9 @@ class BatchReassembly(CoreObject):
         # if the activeEntity is in the pendingEntities list then place the subBatches there
         if activeObjectQueue[0] in G.pendingEntities:
             G.pendingEntities.append(batchToBeReassembled)
-            for entity in activeObjectQueue:
-                G.pendingEntities.remove(entity)
+            if G.Router:
+                for entity in activeObjectQueue:
+                    G.pendingEntities.remove(entity)
         
         del activeObjectQueue[:]
         batchToBeReassembled.numberOfSubBatches = 1
