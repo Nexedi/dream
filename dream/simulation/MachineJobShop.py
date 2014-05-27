@@ -47,15 +47,15 @@ class MachineJobShop(Machine):
     # =======================================================================    
     def endProcessingActions(self):
         activeObject=self.getActiveObject()
-        activeObjectQueue=activeObject.getActiveObjectQueue()
+        activeObjectQueue=activeObject.Res.activeQ
         activeEntity=activeObjectQueue[0]
-        self.printTrace(activeObject.getActiveObjectQueue()[0].name,processEnd=activeObject.objName)
+#         self.printTrace(activeEntity.name,processEnd=activeObject.objName)
         # reset the variables used to handle the interruptions timing 
         self.timeRestartingProcessing=0
         self.breakTime=0
         # output to trace that the processing in the Machine self.objName ended 
         try:
-            activeObject.outputTrace(activeObject.getActiveObjectQueue()[0].name,"ended processing in "+activeObject.objName)
+            activeObject.outputTrace(activeEntity.name,"ended processing in "+activeObject.objName)
         except IndexError:
             pass
         
@@ -162,22 +162,21 @@ class MachineJobShop(Machine):
     # and returns true only if the active object is the next station
     # ======================================================================= 
     def canAccept(self, callerObject=None):
-        activeObject=self.getActiveObject()
-        activeObjectQueue=activeObject.getActiveObjectQueue()
+        activeObjectQueue=self.Res.activeQ
         thecaller=callerObject
         #return according to the state of the Queue
         # also check if (if the machine is to be operated) there are available operators
-        if (activeObject.operatorPool!='None' and (any(type=='Load' for type in activeObject.multOperationTypeList))):
-            return activeObject.operatorPool.checkIfResourceIsAvailable()\
-                    and len(activeObject.getActiveObjectQueue())<activeObject.capacity\
-                    and activeObject.checkIfMachineIsUp()\
-                    and activeObject.isInRoute(thecaller)\
-                    and not activeObject.entryIsAssignedTo()
+        if (self.operatorPool!='None' and (any(type=='Load' for type in self.multOperationTypeList))):
+            return self.operatorPool.checkIfResourceIsAvailable()\
+                    and len(activeObjectQueue)<self.capacity\
+                    and self.checkIfMachineIsUp()\
+                    and self.isInRoute(thecaller)\
+                    and not self.entryIsAssignedTo()
         else:
-            return len(activeObject.getActiveObjectQueue())<activeObject.capacity\
-                    and activeObject.checkIfMachineIsUp()\
-                    and activeObject.isInRoute(thecaller)\
-                    and not activeObject.entryIsAssignedTo()
+            return len(activeObjectQueue)<self.capacity\
+                    and self.checkIfMachineIsUp()\
+                    and self.isInRoute(thecaller)\
+                    and not self.entryIsAssignedTo()
                         
     #===========================================================================
     # method used to check whether the station is in the entity-to-be-received route
@@ -186,19 +185,18 @@ class MachineJobShop(Machine):
     #         postProcessing calls canAccept on next members with no arguments
     #===========================================================================
     def isInRoute(self, callerObject=None):
-        activeObject=self.getActiveObject()
-        activeObjectQueue=activeObject.getActiveObjectQueue()
+        activeObjectQueue=self.Res.activeQ
         thecaller=callerObject
         # if the caller is not defined then return True. We are only interested in checking whether 
         # the station can accept whatever entity from whichever giver
         if not thecaller:
             return True
         #check it the caller object holds an Entity that requests for current object
-        if len(thecaller.getActiveObjectQueue())>0:
+        if len(thecaller.Res.activeQ)>0:
             # TODO: make sure that the first entity of the callerObject is to be disposed
-            activeEntity=thecaller.getActiveObjectQueue()[0]
+            activeEntity=thecaller.Res.activeQ[0]
             # if the machine's Id is in the list of the entity's next stations
-            if activeObject.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
+            if self.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
                 return True
         return False
     
@@ -207,32 +205,27 @@ class MachineJobShop(Machine):
     # Returns True only to the potential receiver
     # =======================================================================     
     def haveToDispose(self, callerObject=None):
-        # get active object and its queue
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()
+        activeObjectQueue=self.Res.activeQ
         thecaller=callerObject
-        
         #if we have only one successor just check if machine waits to dispose and also is up
         # this is done to achieve better (cpu) processing time
         if(callerObject==None):
             return len(activeObjectQueue)>0\
-                 and activeObject.waitToDispose\
-                 and activeObject.checkIfActive()\
-        
+                 and self.waitToDispose\
+                 and self.checkIfActive()\
         #return True if the Machine in the state of disposing and the caller is the receiver
         return len(activeObjectQueue)>0\
-             and activeObject.waitToDispose\
-             and activeObject.checkIfActive()\
-             and (thecaller in activeObject.next)\
-             and thecaller.isInRoute(activeObject)
+             and self.waitToDispose\
+             and self.checkIfActive()\
+             and (thecaller in self.next)\
+             and thecaller.isInRoute(self)
 
     # =======================================================================
     # method to execute preemption
     # =======================================================================    
     def preempt(self):
-        self.printTrace(self.id,preempted='')
-        activeObject=self.getActiveObject()
-        activeEntity=self.getActiveObjectQueue()[0] #get the active Entity
+#         self.printTrace(self.id,preempted='')
+        activeEntity=self.Res.activeQ[0] #get the active Entity
         #calculate the remaining processing time
         #if it is reset then set it as the original processing time
         if self.resetOnPreemption:
@@ -265,13 +258,11 @@ class MachineJobShop(Machine):
     #     is in the route of the entity to be received
     #===========================================================================
     def canAcceptAndIsRequested(self,callerObject):
-        activeObject=self.getActiveObject()
-#         giverObject=activeObject.getGiverObject()
         giverObject=callerObject
         assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
-        if activeObject.isInRoute(giverObject):
+        if self.isInRoute(giverObject):
             if Machine.canAcceptAndIsRequested(self,giverObject):
-                activeObject.readLoadTime(giverObject)
+                self.readLoadTime(giverObject)
                 return True
         return False
 
@@ -281,31 +272,29 @@ class MachineJobShop(Machine):
     #===========================================================================
     def readLoadTime(self,callerObject=None):
         assert callerObject!=None, 'the caller of readLoadTime cannot be None'
-        activeObject=self.getActiveObject()
         thecaller=callerObject
         thecaller.sortEntities()
-        activeEntity=thecaller.getActiveObjectQueue()[0]
+        activeEntity=thecaller.Res.activeQ[0]
         loadTime=activeEntity.remainingRoute[0].get('loadTime',{})
-        activeObject.distType=loadTime.get('distributionType','Fixed')
-        activeObject.loadTime=float(loadTime.get('mean', 0))
+        self.distType=loadTime.get('distributionType','Fixed')
+        self.loadTime=float(loadTime.get('mean', 0))
         
     # =======================================================================
     # removes an entity from the Machine
     # extension to remove possible receivers accordingly
     # =======================================================================
     def removeEntity(self, entity=None):
-        activeObject=self.getActiveObject()
         receiverObject=self.receiver  
         activeEntity=Machine.removeEntity(self, entity)         #run the default method  
         removeReceiver=True 
         # search in the internalQ. If an entity has the same receiver do not remove
-        for ent in self.getActiveObjectQueue():
+        for ent in self.Res.activeQ:
             nextObjectIds=ent.remainingRoute[0].get('stationIdsList',[])
             if receiverObject.id in nextObjectIds:
                 removeReceiver=False      
         # if not entity had the same receiver then the receiver will be removed    
         if removeReceiver:
-            activeObject.next.remove(receiverObject)
+            self.next.remove(receiverObject)
         return activeEntity
 
         
