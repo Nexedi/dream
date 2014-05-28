@@ -32,7 +32,7 @@ from Repairman import Repairman
 import xlwt
 import xlrd
 from random import Random, expovariate, gammavariate, normalvariate
-from SimPy.Simulation import now
+import simpy
 
 # ===========================================================================
 # globals
@@ -126,6 +126,7 @@ class G:
     # entities that just finished processing in a station 
     # and have to enter the next machine 
     pendingEntities=[]
+    env=simpy.Environment()
 
     
 # =======================================================================
@@ -192,7 +193,7 @@ def setWIP(entityList):
         if entity.type=='Part' or entity.type=='Batch' or entity.type=='SubBatch':
             object=entity.currentStation                        #identify the object
             object.getActiveObjectQueue().append(entity)        #append the entity to its Queue
-            entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
+            entity.schedule.append([object,G.env.now])              #append the time to schedule so that it can be read in the result
             
         
         # if the entity is of type Job/OrderComponent/Order/Mould
@@ -225,7 +226,7 @@ def setWIP(entityList):
                     object.next.append(nextObject)
             
             entity.remainingRoute.pop(0)                        # remove data from the remaining route.   
-            entity.schedule.append([object,now()])              #append the time to schedule so that it can be read in the result
+            entity.schedule.append([object,G.env.now])              #append the time to schedule so that it can be read in the result
             entity.currentStation=object                        # update the current station of the entity 
         # if the currentStation of the entity is of type Machine then the entity 
         #     must be processed first and then added to the pendingEntities list
@@ -259,7 +260,7 @@ from Queue import Queue
 def countQueueMetrics(argumentDict={}):
     for obj in G.ObjList:
         if isinstance(obj, Queue):
-            obj.wip_stat_list.append((now(), len(obj.Res.activeQ)))
+            obj.wip_stat_list.append((G.env.now, len(obj.Res.activeQ)))
 
 
 # =======================================================================
@@ -285,7 +286,7 @@ def getConfidenceIntervals(value_list):
 # def printTrace(entity='',station='', **kw):
 #     assert len(kw)==1, 'only one phrase per printTrace supported for the moment'
 #     from Globals import G
-#     time=now()
+#     time=G.env.now
 #     charLimit=60
 #     remainingChar=charLimit-len(entity)-len(str(time))
 #     if(G.console=='Yes'):
