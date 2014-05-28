@@ -65,6 +65,8 @@ class CoreObject(object):
         self.interruptionEnd=self.env.event()
 #         self.interruptionStart=SimEvent('interruptionStart')
         self.interruptionStart=self.env.event()
+        
+        self.entityRemoved=self.env.event()
     
     def initialize(self):
         # XXX why call super.__init__ outside of __init__ ?
@@ -148,6 +150,8 @@ class CoreObject(object):
         self.interruptionEnd=self.env.event()
 #         self.interruptionStart=SimEvent('interruptionStart')
         self.interruptionStart=self.env.event()
+        
+        self.entityRemoved=self.env.event()
 
     # =======================================================================
     #                the main process of the core object 
@@ -192,6 +196,10 @@ class CoreObject(object):
         # update wipStatList
         if self.gatherWipStat:
             self.wipStatList.append([self.env.now, len(activeObjectQueue)])
+            
+        if not self.entityRemoved.triggered:
+            self.printTrace(self.id, signal='(removedEntity)')
+            self.entityRemoved.succeed(self.env.now)
         return entity
     
     #===========================================================================
@@ -431,7 +439,7 @@ class CoreObject(object):
     @staticmethod
     def findGiversFor(activeObject):
         givers=[]
-        for object in [x for x in activeObject.previous if(not x is activeObject)]:# and not x.canDispose.triggered]:
+        for object in [x for x in activeObject.previous if(not x is activeObject) and not x.canDispose.triggered]:
             if object.haveToDispose(activeObject): 
                 givers.append(object)
         return givers

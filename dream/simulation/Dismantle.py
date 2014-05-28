@@ -121,12 +121,12 @@ class Dismantle(CoreObject):
         # check if there is WIP and signal receiver
         self.initialSignalReceiver()
         while 1:
-            self.printTrace(self.id, waitEvent='(frame)')
+#             self.printTrace(self.id, waitEvent='(frame)')
             # wait until the Queue can accept an entity and one predecessor requests it
             yield self.isRequested     #[self.isRequested,self.canDispose, self.loadOperatorAvailable]
             
             if self.isRequested.value:
-                self.printTrace(self.id, isRequested=self.isRequested.value.id)
+#                 self.printTrace(self.id, isRequested=self.isRequested.value.id)
                 # reset the isRequested signal parameter
                 self.isRequested=self.env.event()
             
@@ -144,6 +144,7 @@ class Dismantle(CoreObject):
                 self.waitToDispose=True
                 self.waitToDisposePart=True     #Dismantle is in state to dispose a part
                 # while the object still holds the frame
+                flag=False
                 while not self.isEmpty():
                     # try and signal the receiver
                     if not self.signalReceiver():
@@ -154,8 +155,10 @@ class Dismantle(CoreObject):
                         if not self.signalReceiver():
                             continue
                     # if the receiver was not responsive, release the control to let him remove the entity
-                    yield self.env.timeout(0)
-                    # if all the parts are removed but not the frame, then set the flag waitToDisposeFrame
+                    yield self.entityRemoved
+                    self.entityRemoved=self.env.event()
+#                     yield self.env.timeout(0)#(0.000000000000005)
+
                     if self.frameIsEmpty() and not self.waitToDisposeFrame:
                         self.waitToDisposePart=False
                         self.waitToDisposeFrame=True
@@ -220,8 +223,9 @@ class Dismantle(CoreObject):
     #===========================================================================
     # find possible receivers
     #===========================================================================
-    def findReceivers(self):
-        activeObject=self.getActiveObject()
+    @staticmethod
+    def findReceiversFor(activeObject):
+#         activeObject=self.getActiveObject()
         next=[]
         receivers=[]
         # if the parts are not yet disposed
