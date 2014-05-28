@@ -26,8 +26,6 @@ Models a FIFO queue where entities can wait in order to get into a server
 '''
 
 
-# from SimPy.Simulation import Process, Resource, SimEvent
-# from SimPy.Simulation import waituntil, now, infinity, waitevent
 import simpy
 from CoreObject import CoreObject
 # ===========================================================================
@@ -48,7 +46,7 @@ class Queue(CoreObject):
         if capacity>0:
             self.capacity=capacity
         else:
-            self.capacity=infinity
+            self.capacity=float("inf")
 
         #     No failures are considered for the Queue        
 
