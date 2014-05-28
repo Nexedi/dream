@@ -234,13 +234,13 @@ class Machine(CoreObject):
         while 1:
             # waitEvent isRequested /interruptionEnd/loadOperatorAvailable
             while 1:
-#                 self.printTrace(self.id, waitEvent='')
+                self.printTrace(self.id, waitEvent='')
 #                 yield waitevent, self, [self.isRequested, self.interruptionEnd, self.loadOperatorAvailable]
                 receivedEvent = yield self.isRequested | self.interruptionEnd | self.loadOperatorAvailable
-#                 self.printTrace(self.id, received='')
+                self.printTrace(self.id, received='')
                 # if the machine can accept an entity and one predecessor requests it continue with receiving the entity
                 if self.isRequested in receivedEvent:
-#                     self.printTrace(self.id, isRequested=self.isRequested.value.id)
+                    self.printTrace(self.id, isRequested=self.isRequested.value.id)
                     assert self.isRequested.value==self.giver, 'the giver is not the requestingObject'
                     assert self.giver.receiver==self, 'the receiver of the signalling object in not the station'
                     # reset the signalparam of the isRequested event
@@ -490,7 +490,7 @@ class Machine(CoreObject):
     def endProcessingActions(self):
         activeObjectQueue=self.Res.users
         activeEntity=activeObjectQueue[0]
-#         self.printTrace(activeObject.getActiveObjectQueue()[0].name, processEnd=activeObject.objName)
+        self.printTrace(self.getActiveObjectQueue()[0].name, processEnd=self.objName)
         # reset the variables used to handle the interruptions timing 
         self.timeRestartingProcessing=0
         self.breakTime=0
@@ -714,7 +714,7 @@ class Machine(CoreObject):
         self.waitToDispose=False                            # update the waitToDispose flag
         # if the Machine canAccept then signal a giver
         if self.canAccept():
-#             self.printTrace(self.id, attemptSignalGiver='(removeEntity)')
+            self.printTrace(self.id, attemptSignalGiver='(removeEntity)')
             self.signalGiver()
         return activeEntity
     

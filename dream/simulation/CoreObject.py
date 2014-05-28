@@ -331,7 +331,7 @@ class CoreObject(object):
     @staticmethod
     def findReceiversFor(activeObject):
         receivers=[]
-        for object in [x for x in activeObject.next if x.canAccept(activeObject)]:
+        for object in [x for x in activeObject.next if x.canAccept(activeObject) and not x.isRequested.triggered]:
             receivers.append(object)
         return receivers
     
@@ -372,7 +372,7 @@ class CoreObject(object):
 
             self.receiver=receiver
             self.receiver.giver=self
-#             self.printTrace(self.id, signalReceiver=self.receiver.id)
+            self.printTrace(self.id, signalReceiver=self.receiver.id)
             # assign the entry of the receiver
             self.receiver.assignEntryTo()
             self.receiver.isRequested.succeed(self)
@@ -431,7 +431,7 @@ class CoreObject(object):
     @staticmethod
     def findGiversFor(activeObject):
         givers=[]
-        for object in [x for x in activeObject.previous if(not x is activeObject)]:
+        for object in [x for x in activeObject.previous if(not x is activeObject)]:# and not x.canDispose.triggered]:
             if object.haveToDispose(activeObject): 
                 givers.append(object)
         return givers
@@ -465,7 +465,7 @@ class CoreObject(object):
                 giversReceiver=self
             self.giver=giver
             self.giver.receiver=self
-#             self.printTrace(self.id, signalGiver=self.giver.id)
+            self.printTrace(self.id, signalGiver=self.giver.id)
             self.giver.canDispose.succeed(self)
             return True
         return False

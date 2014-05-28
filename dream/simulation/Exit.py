@@ -73,6 +73,7 @@ class Exit(CoreObject):
             self.isRequested=self.env.event()
             # TODO: insert extra controls to check whether the self.giver attribute is correctly updated
             self.getEntity()
+            self.signalGiver()
 
     # =======================================================================
     #                sets the routing in element for the Exit

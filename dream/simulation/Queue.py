@@ -97,13 +97,13 @@ class Queue(CoreObject):
         # check if there is WIP and signal receiver
         self.initialSignalReceiver()
         while 1:
-#             self.printTrace(self.id, waitEvent='')
+            self.printTrace(self.id, waitEvent='')
             # wait until the Queue can accept an entity and one predecessor requests it
             receivedEvent=yield self.isRequested | self.canDispose | self.loadOperatorAvailable
-#             self.printTrace(self.id, received='')
+            self.printTrace(self.id, received='')
             # if the event that activated the thread is isRequested then getEntity
             if self.isRequested in receivedEvent:
-#                 self.printTrace(self.id, isRequested=self.isRequested.signalparam.id)
+                self.printTrace(self.id, isRequested=self.isRequested.value.id)
                 # reset the isRequested signal parameter
                 self.isRequested=self.env.event()
                 self.getEntity()
@@ -116,7 +116,7 @@ class Queue(CoreObject):
                 self.loadOperatorAvailable=self.env.event()
             # if the queue received an canDispose with signalparam time, this means that the signals was sent from a MouldAssemblyBuffer
             if self.canDispose in receivedEvent:
-#                 self.printTrace(self.id, canDispose='')
+                self.printTrace(self.id, canDispose='')
                 self.canDispose=self.env.event()
             # if the event that activated the thread is canDispose then signalReceiver
             if self.haveToDispose():
