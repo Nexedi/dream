@@ -1265,7 +1265,7 @@ def main(argv=[], input_data=None):
     #read the input from the JSON file and create the line
     G.JSONData=json.loads(G.InputData)              # create the dictionary JSONData
     readGeneralInput()
-    G.env=simpy.Environment()                       # initialize the environment
+    #G.env=simpy.Environment()                       # initialize the environment
     createObjects()
     createObjectInterruptions()
     setTopology()
@@ -1286,17 +1286,17 @@ def main(argv=[], input_data=None):
         # if the simulation is ran until no more events are scheduled, 
         # then we have to find the end time as the time the last entity ended.
         if G.maxSimTime==-1:
+            # If someone does it for a model that has always events, then it will run forever!
             G.env.run(until=float('inf'))
-#             simulate(until=infinity)    # simulate until there are no more events. 
-#                                         # If someone does it for a model that has always events, then it will run forever!
-#             # identify from the exits what is the time that the last entity has ended. 
-#             endList=[]
-#             for exit in G.ExitList:
-#                 endList.append(exit.timeLastEntityLeft)
-#             G.maxSimTime=float(max(endList))    
+                                         
+            # identify from the exits what is the time that the last entity has ended. 
+            endList=[]
+            for exit in G.ExitList:
+                endList.append(exit.timeLastEntityLeft)
+  
             # identify the time of the last event
-            if G.env.now!=0:    #do not let G.maxSimTime=0 so that there will be no crash
-                G.maxSimTime=env.now
+            if G.env.now!=0 and G.env.now==float('inf'):    #do not let G.maxSimTime=0 so that there will be no crash
+                G.maxSimTime=float(max(endList))
             else:
                 print "simulation ran for 0 time, something may have gone wrong"
                 logger.info("simulation ran for 0 time, something may have gone wrong")
