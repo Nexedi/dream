@@ -25,9 +25,7 @@ Created on 1 oct 2012
 extends the Queue object so that it can act as a jobshop station. Preceding station is read from the Entity
 '''
 
-from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import activate, passivate, waituntil, now, hold
-
+import simpy
 from Queue import Queue
 
 # ===========================================================================
@@ -49,11 +47,11 @@ class QueueJobShop(Queue):
     # and returns true only if the active object is the next station
     # ======================================================================= 
     def canAccept(self, callerObject=None):
-        activeObjectQueue=self.Res.activeQ
+        activeObjectQueue=self.Res.users
         thecaller=callerObject
         #return according to the state of the Queue
         #check it the caller object holds an Entity that requests for current object
-        return len(self.Res.activeQ)<self.capacity\
+        return len(self.Res.users)<self.capacity\
                 and self.isInRoute(callerObject)
     
     #===========================================================================
@@ -61,16 +59,16 @@ class QueueJobShop(Queue):
     # TODO: consider giving the activeEntity as attribute
     #===========================================================================
     def isInRoute(self, callerObject=None):
-        activeObjectQueue=self.Res.activeQ
+        activeObjectQueue=self.Res.users
         thecaller=callerObject
         # if the caller is not defined then return True. We are only interested in checking whether 
         # the station can accept whatever entity from whichever giver
         if not thecaller:
             return True
         #check it the caller object holds an Entity that requests for current object
-        if len(thecaller.Res.activeQ)>0:
+        if len(thecaller.Res.users)>0:
             # TODO: make sure that the first entity of the callerObject is to be disposed
-            activeEntity=thecaller.Res.activeQ[0]
+            activeEntity=thecaller.Res.users[0]
             # if the machine's Id is in the list of the entity's next stations
             if self.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
                 return True
@@ -81,7 +79,7 @@ class QueueJobShop(Queue):
     # Returns True only to the potential receiver
     # =======================================================================     
     def haveToDispose(self, callerObject=None):
-        activeObjectQueue=self.Res.activeQ
+        activeObjectQueue=self.Res.users
         thecaller = callerObject
         #if we have only one possible receiver just check if the Queue holds one or more entities
         if(callerObject==None):
@@ -138,7 +136,7 @@ class QueueJobShop(Queue):
         activeEntity=Queue.removeEntity(self, entity)
         removeReceiver=True 
         # search in the internalQ. If an entity has the same receiver do not remove
-        for ent in self.Res.activeQ:
+        for ent in self.Res.users:
             nextObjectIds=ent.remainingRoute[0].get('stationIdsList',[])
             if receiverObject.id in nextObjectIds:
                 removeReceiver=False      

@@ -25,9 +25,7 @@ Created on 1 oct 2012
 extends the machine object so that it can act as a jobshop station. It reads the processing time and the successive station from the Entity
 '''
 
-from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import activate, passivate, waituntil, now, hold, reactivate
-
+import simpy
 from Machine import Machine
 # ===========================================================================
 # the MachineJobShop object
@@ -47,7 +45,7 @@ class MachineJobShop(Machine):
     # =======================================================================    
     def endProcessingActions(self):
         activeObject=self.getActiveObject()
-        activeObjectQueue=activeObject.Res.activeQ
+        activeObjectQueue=activeObject.Res.users
         activeEntity=activeObjectQueue[0]
 #         self.printTrace(activeEntity.name,processEnd=activeObject.objName)
         # reset the variables used to handle the interruptions timing 
@@ -85,14 +83,14 @@ class MachineJobShop(Machine):
         activeObject.waitToDispose=True
         #do this so that if it is overtime working it is not counted as off-shift time
         if not activeObject.onShift:
-            activeObject.timeLastShiftEnded=now()
+            activeObject.timeLastShiftEnded=self.env.now
         # update the total working time # the total processing time for this entity is what the distribution initially gave
         if not self.shouldPreempt:
             activeObject.totalWorkingTime+=activeObject.totalProcessingTimeInCurrentEntity
         else:
-            activeObject.totalWorkingTime+=now()-(self.timeLastEntityEntered)
+            activeObject.totalWorkingTime+=self.env.now-(self.timeLastEntityEntered)
         # update the variables keeping track of Entity related attributes of the machine
-        activeObject.timeLastEntityEnded=now()                              # this holds the time that the last entity ended processing in Machine 
+        activeObject.timeLastEntityEnded=self.env.now                              # this holds the time that the last entity ended processing in Machine 
         activeObject.nameLastEntityEnded=activeObject.currentEntity.name    # this holds the name of the last entity that ended processing in Machine
         activeObject.completedJobs+=1                                       # Machine completed one more Job
         # reseting the preemption flag
@@ -162,7 +160,7 @@ class MachineJobShop(Machine):
     # and returns true only if the active object is the next station
     # ======================================================================= 
     def canAccept(self, callerObject=None):
-        activeObjectQueue=self.Res.activeQ
+        activeObjectQueue=self.Res.users
         thecaller=callerObject
         #return according to the state of the Queue
         # also check if (if the machine is to be operated) there are available operators
@@ -185,16 +183,16 @@ class MachineJobShop(Machine):
     #         postProcessing calls canAccept on next members with no arguments
     #===========================================================================
     def isInRoute(self, callerObject=None):
-        activeObjectQueue=self.Res.activeQ
+        activeObjectQueue=self.Res.users
         thecaller=callerObject
         # if the caller is not defined then return True. We are only interested in checking whether 
         # the station can accept whatever entity from whichever giver
         if not thecaller:
             return True
         #check it the caller object holds an Entity that requests for current object
-        if len(thecaller.Res.activeQ)>0:
+        if len(thecaller.Res.users)>0:
             # TODO: make sure that the first entity of the callerObject is to be disposed
-            activeEntity=thecaller.Res.activeQ[0]
+            activeEntity=thecaller.Res.users[0]
             # if the machine's Id is in the list of the entity's next stations
             if self.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
                 return True
@@ -205,7 +203,7 @@ class MachineJobShop(Machine):
     # Returns True only to the potential receiver
     # =======================================================================     
     def haveToDispose(self, callerObject=None):
-        activeObjectQueue=self.Res.activeQ
+        activeObjectQueue=self.Res.users
         thecaller=callerObject
         #if we have only one successor just check if machine waits to dispose and also is up
         # this is done to achieve better (cpu) processing time
@@ -225,7 +223,7 @@ class MachineJobShop(Machine):
     # =======================================================================    
     def preempt(self):
 #         self.printTrace(self.id,preempted='')
-        activeEntity=self.Res.activeQ[0] #get the active Entity
+        activeEntity=self.Res.users[0] #get the active Entity
         #calculate the remaining processing time
         #if it is reset then set it as the original processing time
         if self.resetOnPreemption:
@@ -233,7 +231,7 @@ class MachineJobShop(Machine):
         #else subtract the time that passed since the entity entered
         #(may need also failure time if there was. TO BE MELIORATED)
         else:
-            remainingProcessingTime=self.procTime-(now()-self.timeLastEntityEntered)
+            remainingProcessingTime=self.procTime-(self.env.now-self.timeLastEntityEntered)
         #update the remaining route of activeEntity
         activeEntity.remainingRoute.insert(0, {'stationIdsList':[str(self.id)],\
                                                'processingTime':\
@@ -247,7 +245,7 @@ class MachineJobShop(Machine):
         self.receiver=self.lastGiver
         self.next=[self.receiver]
         self.waitToDispose=True                     #set that I have to dispose
-        self.receiver.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
+        self.receiver.timeLastEntityEnded=self.env.now     #required to count blockage correctly in the preemptied station
         # TODO: use a signal and wait for it, reactivation is not recognised as interruption
         reactivate(self)
         # TODO: consider the case when a failure has the Station down. The event preempt will not be received now()
@@ -274,7 +272,7 @@ class MachineJobShop(Machine):
         assert callerObject!=None, 'the caller of readLoadTime cannot be None'
         thecaller=callerObject
         thecaller.sortEntities()
-        activeEntity=thecaller.Res.activeQ[0]
+        activeEntity=thecaller.Res.users[0]
         loadTime=activeEntity.remainingRoute[0].get('loadTime',{})
         self.distType=loadTime.get('distributionType','Fixed')
         self.loadTime=float(loadTime.get('mean', 0))
@@ -288,7 +286,7 @@ class MachineJobShop(Machine):
         activeEntity=Machine.removeEntity(self, entity)         #run the default method  
         removeReceiver=True 
         # search in the internalQ. If an entity has the same receiver do not remove
-        for ent in self.Res.activeQ:
+        for ent in self.Res.users:
             nextObjectIds=ent.remainingRoute[0].get('stationIdsList',[])
             if receiverObject.id in nextObjectIds:
                 removeReceiver=False      
