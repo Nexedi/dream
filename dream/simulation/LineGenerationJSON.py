@@ -1265,7 +1265,7 @@ def main(argv=[], input_data=None):
     #read the input from the JSON file and create the line
     G.JSONData=json.loads(G.InputData)              # create the dictionary JSONData
     readGeneralInput()
-    #G.env=simpy.Environment()                       # initialize the environment
+    G.env=simpy.Environment()                       # initialize the environment
     createObjects()
     createObjectInterruptions()
     setTopology()
