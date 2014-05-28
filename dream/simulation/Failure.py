@@ -115,6 +115,7 @@ class Failure(ObjectInterruption):
                     self.reactivateVictim()                     # since repairing is over, the Machine is reactivated
                     self.victim.Up=True              
                     self.outputTrace("is up")
+                    
                     self.repairman.totalWorkingTime+=self.env.now-timeOperationStarted   
                 continue
                 
@@ -125,6 +126,7 @@ class Failure(ObjectInterruption):
             self.reactivateVictim()                     # since repairing is over, the Machine is reactivated
             self.victim.Up=True              
             self.outputTrace("is up")
+            
 #             if(self.repairman and self.repairman!="None"): #if a resource was used, it is now released
 #                 print self.repairman.Res.users
 #                 print self.env.now, self.repairman.id, 'about to be release from', self.victim.id

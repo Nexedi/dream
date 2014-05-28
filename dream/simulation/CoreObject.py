@@ -262,7 +262,7 @@ class CoreObject(object):
         # update the next list of the object
         self.updateNext(activeEntity)
         self.outputTrace(activeEntity.name, "got into "+self.objName)
-#         self.printTrace(activeEntity.name, enter=self.id)
+        self.printTrace(activeEntity.name, enter=self.id)
         return activeEntity
     
     #===========================================================================
@@ -522,14 +522,14 @@ class CoreObject(object):
         assert len(kw)==1, 'only one phrase per printTrace supported for the moment'
         from Globals import G
         import Globals
-        time=self.env.now
+        time=G.env.now
         charLimit=60
         remainingChar=charLimit-len(entity)-len(str(time))
         if(G.console=='Yes'):
             print time,entity,
             for key in kw:
                 if key not in Globals.getSupportedPrintKwrds():
-                    raise ValueError("Unsupported phrase %s for %s" % (key, entity.name))
+                    raise ValueError("Unsupported phrase %s for %s" % (key, entity))
                 element=Globals.getPhrase()[key]
                 phrase=element['phrase']
                 prefix=element.get('prefix',None)

@@ -26,8 +26,9 @@ Models an assembly object
 it gathers frames and parts which are loaded to the frames
 '''
 
-from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import waitevent, now, hold
+# from SimPy.Simulation import Process, Resource
+# from SimPy.Simulation import waitevent, now, hold
+import simpy
 import xlwt
 from RandomNumberGenerator import RandomNumberGenerator
 from CoreObject import CoreObject
@@ -41,6 +42,8 @@ class Assembly(CoreObject):
     # initialize the object      
     #===========================================================================
     def __init__(self, id, name, processingTime=None):
+        from Globals import G
+        self.env=G.env
         if not processingTime:
           processingTime = {'distributionType': 'Fixed',
                             'mean': 0,
@@ -80,7 +83,7 @@ class Assembly(CoreObject):
     # initialize method
     #===========================================================================
     def initialize(self):
-        Process.__init__(self)
+#         Process.__init__(self)
         CoreObject.initialize(self)
         self.waitToDispose=False    #flag that shows if the object waits to dispose an entity    
         
@@ -97,8 +100,6 @@ class Assembly(CoreObject):
         self.timeLastEntityLeft=0        #holds the last time that an entity left the object
                                                 
         self.processingTimeOfCurrentEntity=0        #holds the total processing time that the current entity required                                               
-                                                      
-
         
         self.totalBlockageTime=0        #holds the total blockage time
         self.totalWaitingTime=0         #holds the total waiting time
@@ -111,9 +112,9 @@ class Assembly(CoreObject):
         self.nameLastFrameWasFull=""    #holds the name of the last frame that was full, ie that assembly process started
         self.nameLastEntityEntered=""   #holds the name of the last frame that entered processing in the object
         self.nameLastEntityEnded=""     #holds the name of the last frame that ended processing in the object            
-        self.Res=Resource(1)    
-        self.Res.activeQ=[]  
-        self.Res.waitQ=[]  
+        self.Res=simpy.Resource(self.env, 1)
+        self.Res.users=[]  
+#         self.Res.waitQ=[]
             
     #===========================================================================
     # class generator
@@ -125,50 +126,50 @@ class Assembly(CoreObject):
         while 1:
             self.printTrace(self.id, waitEvent='')
             # wait until the Queue can accept an entity and one predecessor requests it
-            yield waitevent, self, self.isRequested     #[self.isRequested,self.canDispose, self.loadOperatorAvailable]
-            
-            if self.isRequested.signalparam:
-                self.printTrace(self.id, isRequested=self.isRequested.signalparam.id)
+            yield self.isRequested     #[self.isRequested,self.canDispose, self.loadOperatorAvailable]
+            if self.isRequested.value:
+                self.printTrace(self.id, isRequested=self.isRequested.value.id)
                 # reset the isRequested signal parameter
-                self.isRequested.signalparam=None
+                self.isRequested=self.env.event()
                 
                 self.getEntity("Frame")                                 #get the Frame
                                                                     
                 for i in range(self.getActiveObjectQueue()[0].capacity):         #this loop will be carried until the Frame is full with the parts
                     self.printTrace(self.id, waitEvent='(to load parts)')
-                    yield waitevent, self, self.isRequested
-                    if self.isRequested.signalparam:
-                        self.printTrace(self.id, isRequested=self.isRequested.signalparam.id)
+                    yield self.isRequested
+                    if self.isRequested.value:
+                        self.printTrace(self.id, isRequested=self.isRequested.value.id)
                         # reset the isRequested signal parameter
-                        self.isRequested.signalparam=None
+                        self.isRequested=self.env.event()
                         # TODO: fix the getEntity 'Part' case
                         self.getEntity("Part")
                
                 self.outputTrace(self.getActiveObjectQueue()[0].name, "is now full in "+ self.objName)
             
-                self.timeLastFrameWasFull=now()
+                self.timeLastFrameWasFull=self.env.now
                 self.nameLastFrameWasFull=self.getActiveObjectQueue()[0].name
                 
-                startWorkingTime=now()
+                startWorkingTime=self.env.now
                 self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()
-                yield hold,self,self.totalProcessingTimeInCurrentEntity   #hold for the time the assembly operation is carried
-                self.totalWorkingTime+=now()-startWorkingTime
+                yield self.env.timeout(self.totalProcessingTimeInCurrentEntity)   #hold for the time the assembly operation is carried
+                self.totalWorkingTime+=self.env.now-startWorkingTime
             
                 self.outputTrace(self.getActiveObjectQueue()[0].name, "ended processing in " + self.objName)
-                self.timeLastEntityEnded=now()
+                self.timeLastEntityEnded=self.env.now
                 self.nameLastEntityEnded=self.getActiveObjectQueue()[0].name
             
-                startBlockageTime=now()
+                startBlockageTime=self.env.now
                 self.completedJobs+=1                       #Assembly completed a job
                 self.waitToDispose=True                     #since all the frame is full
             
-            self.printTrace(self.id, attemptSignalReceiver='(generator')
+            self.printTrace(self.id, attemptSignalReceiver='(generator)')
             # signal the receiver that the activeObject has something to dispose of
             if not self.signalReceiver():
             # if there was no available receiver, get into blocking control
                 while 1:
                     # wait the event canDispose, this means that the station can deliver the item to successor
-                    event=yield waitevent, self, self.canDispose            #[self.canDispose, self.interruptionStart]
+                    receivedEvent=yield self.canDispose            #[self.canDispose, self.interruptionStart]
+                    self.canDispose=self.env.event()
                     # try to signal a receiver, if successful then proceed to get an other entity
                     if self.signalReceiver():
                         break
@@ -177,11 +178,11 @@ class Assembly(CoreObject):
                     #       signals the preceding station (e.g. self.machine) and immediately after that gets the entity.
                     #       the preceding machine gets the canDispose signal which is actually useless, is emptied by the following station
                     #       and then cannot exit an infinite loop.
-                    yield hold, self, 0
+                    yield self.env.timeout(0)
                     # if while waiting (for a canDispose event) became free as the machines that follows emptied it, then proceed
                     if not self.haveToDispose():
                         break
-            #self.totalBlockageTime+=now()-startBlockageTime     #add the blockage time
+            #self.totalBlockageTime+=self.env.now-startBlockageTime     #add the blockage time
             
   
     #===========================================================================
@@ -275,7 +276,7 @@ class Assembly(CoreObject):
         # if the type is Frame 
         if(activeEntity.type=="Frame"):
             self.nameLastEntityEntered=activeEntity.name
-            self.timeLastEntityEntered=now()
+            self.timeLastEntityEntered=self.env.now
         activeEntity.currentStation=self
         
         # if the frame is not fully loaded then signal a giver
@@ -317,11 +318,11 @@ class Assembly(CoreObject):
         #the following Object
         #till the end of simulation, we have to add this blockage to the percentage of blockage in Assembly
         if (mightBeBlocked) and ((self.nameLastEntityEntered == self.nameLastEntityEnded)):              
-            self.totalBlockageTime+=now()-self.timeLastEntityEnded       
+            self.totalBlockageTime+=self.env.now-self.timeLastEntityEnded       
 
         #if Assembly is currently processing an entity we should count this working time    
         if(len(activeObjectQueue)>0) and (not (self.nameLastEntityEnded==self.nameLastFrameWasFull)):              
-            self.totalWorkingTime+=now()-self.timeLastFrameWasFull
+            self.totalWorkingTime+=self.env.now-self.timeLastFrameWasFull
         
         self.totalWaitingTime=MaxSimtime-self.totalWorkingTime-self.totalBlockageTime 
         

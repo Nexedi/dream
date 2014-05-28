@@ -27,8 +27,9 @@ Models a dicmantle object
 it gathers frames that have parts loaded, unloads the parts and sends the frame to one destination and the parts to another
 '''
 
-from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import waitevent, now, hold, infinity
+# from SimPy.Simulation import Process, Resource
+# from SimPy.Simulation import waitevent, now, hold, infinity
+import simpy
 import xlwt
 from RandomNumberGenerator import RandomNumberGenerator
 from CoreObject import CoreObject
@@ -43,6 +44,9 @@ class Dismantle(CoreObject):
     #===========================================================================
     def __init__(self, id, name, distribution='Fixed', mean=1, stdev=0.1, min=0, max=5):
         CoreObject.__init__(self, id, name)
+        from Globals import G
+        self.env=G.env
+        
         self.type="Dismantle"   #String that shows the type of object
         self.distType=distribution          #the distribution that the procTime follows  
         self.rng=RandomNumberGenerator(self, self.distType)
@@ -74,7 +78,7 @@ class Dismantle(CoreObject):
     # the initialize method
     #===========================================================================
     def initialize(self):
-        Process.__init__(self)
+#         Process.__init__(self)
         CoreObject.initialize(self)
         self.waitToDispose=False    #flag that shows if the object waits to dispose an entity    
         self.waitToDisposePart=False    #flag that shows if the object waits to dispose a part   
@@ -105,9 +109,9 @@ class Dismantle(CoreObject):
         self.nameLastFrameWasFull=""    #holds the name of the last frame that was full, ie that assembly process started
         self.nameLastEntityEntered=""   #holds the name of the last frame that entered processing in the object
         self.nameLastEntityEnded=""     #holds the name of the last frame that ended processing in the object            
-        self.Res=Resource(capacity=infinity)    
-        self.Res.activeQ=[]  
-        self.Res.waitQ=[]  
+        self.Res=simpy.Resource(self.env, capacity='inf')    
+        self.Res.users=[]  
+#         self.Res.waitQ=[]
         
     #===========================================================================
     # the run method
@@ -119,23 +123,23 @@ class Dismantle(CoreObject):
         while 1:
             self.printTrace(self.id, waitEvent='(frame)')
             # wait until the Queue can accept an entity and one predecessor requests it
-            yield waitevent, self, self.isRequested     #[self.isRequested,self.canDispose, self.loadOperatorAvailable]
+            yield self.isRequested     #[self.isRequested,self.canDispose, self.loadOperatorAvailable]
             
-            if self.isRequested.signalparam:
-                self.printTrace(self.id, isRequested=self.isRequested.signalparam.id)
+            if self.isRequested.value:
+                self.printTrace(self.id, isRequested=self.isRequested.value.id)
                 # reset the isRequested signal parameter
-                self.isRequested.signalparam=None
+                self.isRequested=self.env.event()
             
             
                 self.getEntity()                                 #get the Frame with the parts 
-                self.timeLastEntityEntered=now()
-                startWorkingTime=now()
+                self.timeLastEntityEntered=self.env.now
+                startWorkingTime=self.env.now
                 self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()
                 #hold for the time the assembly operation is carried
-                yield hold,self,self.totalProcessingTimeInCurrentEntity
-                self.totalWorkingTime+=now()-startWorkingTime
-                self.timeLastEntityEnded=now()
-                startBlockageTime=now()
+                yield self.env.timeout(self.totalProcessingTimeInCurrentEntity)
+                self.totalWorkingTime+=self.env.now-startWorkingTime
+                self.timeLastEntityEnded=self.env.now
+                startBlockageTime=self.env.now
                 
                 self.waitToDispose=True
                 self.waitToDisposePart=True     #Dismantle is in state to dispose a part
@@ -144,12 +148,13 @@ class Dismantle(CoreObject):
                     # try and signal the receiver
                     if not self.signalReceiver():
                         # if not possible, then wait till a receiver is available
-                        yield waitevent, self, self.canDispose
+                        yield self.canDispose
+                        self.canDispose=self.env.event()
                         # and signal it again
                         if not self.signalReceiver():
                             continue
                     # if the receiver was not responsive, release the control to let him remove the entity
-                    yield hold, self, 0
+                    yield self.env.timeout(0)
                     # if all the parts are removed but not the frame, then set the flag waitToDisposeFrame
                     if self.frameIsEmpty() and not self.waitToDisposeFrame:
                         self.waitToDisposePart=False
@@ -275,7 +280,7 @@ class Dismantle(CoreObject):
                activeObject.waitToDisposePart=False
         # if the internal queue is empty then try to signal the giver that the object can now receive
         if activeObject.canAccept():
-            activeObject.printTrace(self.id, attemptSingalGiver='(removeEntity)')
+            activeObject.printTrace(self.id, attemptSignalGiver='(removeEntity)')
             activeObject.signalGiver()
         return activeEntity
     
@@ -284,9 +289,9 @@ class Dismantle(CoreObject):
     #===========================================================================
     def addBlockage(self):
         if len(self.getActiveObjectQueue())==1:
-            self.totalTimeInCurrentEntity=now()-self.timeLastEntityEntered
+            self.totalTimeInCurrentEntity=self.env.now-self.timeLastEntityEntered
             self.totalTimeWaitingForOperator += self.operatorWaitTimeCurrentEntity 
-            blockage=now()-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)       
+            blockage=self.env.now-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)       
             self.totalBlockageTime+=blockage
         
     #===========================================================================
@@ -300,12 +305,12 @@ class Dismantle(CoreObject):
         #if there is an entity that finished processing in Dismantle but did not get to reach 
         #the following Object
         #till the end of simulation, we have to add this blockage to the percentage of blockage in Dismantle
-        if (len(self.Res.activeQ)>0) and (self.waitToDisposeFrame) or (self.waitToDisposePart):         
-            self.totalBlockageTime+=now()-self.timeLastEntityEnded       
+        if (len(self.Res.users)>0) and (self.waitToDisposeFrame) or (self.waitToDisposePart):         
+            self.totalBlockageTime+=self.env.now-self.timeLastEntityEnded       
         
         #if Dismantle is currently processing an entity we should count this working time    
-        if(len(self.Res.activeQ)>0) and (not ((self.waitToDisposeFrame) or (self.waitToDisposePart))):       
-            self.totalWorkingTime+=now()-self.timeLastEntityEntered
+        if(len(self.Res.users)>0) and (not ((self.waitToDisposeFrame) or (self.waitToDisposePart))):       
+            self.totalWorkingTime+=self.env.now-self.timeLastEntityEntered
         
         self.totalWaitingTime=MaxSimtime-self.totalWorkingTime-self.totalBlockageTime 
 
@@ -322,7 +327,7 @@ class Dismantle(CoreObject):
         from Globals import G
         if(G.trace=="Yes"):         #output only if the user has selected to
             #handle the 3 columns
-            G.traceSheet.write(G.traceIndex,0,str(now()))
+            G.traceSheet.write(G.traceIndex,0,str(self.env.now))
             G.traceSheet.write(G.traceIndex,1,name)  
             G.traceSheet.write(G.traceIndex,2,message)          
             G.traceIndex+=1       #increment the row
