@@ -25,9 +25,9 @@ Created on 29 Oct 2013
 BatchReassembly is a Core Object that takes a number of subBatches and reassembles them to the parent Batch
 '''
 
-from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import activate, waituntil, now, hold, waitevent
-
+# from SimPy.Simulation import Process, Resource
+# from SimPy.Simulation import activate, waituntil, now, hold, waitevent
+import simpy
 
 from Globals import G
 from RandomNumberGenerator import RandomNumberGenerator
@@ -66,7 +66,7 @@ class BatchReassembly(CoreObject):
     # =======================================================================
     def initialize(self):
         CoreObject.initialize(self)                 # using the default CoreObject Functionality
-        self.Res=Resource(self.numberOfSubBatches)  # initialize the Internal resource (Queue) functionality
+        self.Res=simpy.Resource(self.env, self.numberOfSubBatches)  # initialize the Internal resource (Queue) functionality
             
     # =======================================================================
     #     the main method of the object
@@ -77,44 +77,42 @@ class BatchReassembly(CoreObject):
         self.initialSignalReceiver()
         while 1:
             while 1:
-                yield waitevent, self, [self.isRequested, self.interruptionStart]
-                if self.interruptionStart.signalparam==now():
-                    yield waitevent, self, self.interruptionEnd
-                    assert self==self.interruptionEnd.signalparam, 'the victim of the failure is not the object that received the interruptionEnd event'
+                receivedEvent=yield self.isRequested | self.interruptionStart
+                if self.interruptionStart in receivedEvent:
+                    assert self.interruptionStart.value==self.env.now, 'the interruptionStart received by BatchReassembly later than created'
+                    self.interruptionStart=self.env.event()
+                    yield self.interruptionEnd
+                    assert self==self.interruptionEnd.value, 'the victim of the failure is not the object that received the interruptionEnd event'
+                    self.interruptionEnd=self.env.event()
                     if self.signalGiver():
                         break
                 else:
                     break
-            requestingObject=self.isRequested.signalparam
+            requestingObject=self.isRequested.value
             assert requestingObject==self.giver, 'the giver is not the requestingObject'
+            self.isRequested=self.env.event()
             
-#             self.operatorWaitTimeCurrentEntity = 0
-#             self.loadOperatorWaitTimeCurrentEntity = 0
-#             self.loadTimeCurrentEntity = 0
-#             self.setupTimeCurrentEntity = 0
-            
-#             yield waituntil, self, self.canAcceptAndIsRequested     #wait until the Queue can accept an entity
-#                                                                     #and one predecessor requests it
             self.currentEntity=self.getEntity()
             
-            # self.outputTrace("got into "+self.objName)
-            
-            # set the currentEntity as the Entity just received and initialize the timer timeLastEntityEntered
-#             self.currentEntity=self.getActiveObjectQueue()[0]       # entity is the current entity processed in object
-            self.nameLastEntityEntered=self.currentEntity.name      # this holds the name of the last entity that got into Machine                   
-            self.timeLastEntityEntered=now()                        #this holds the last time that an entity got into Machine  
+            # initialize the timer timeLastEntityEntered
+            self.nameLastEntityEntered=self.currentEntity.name              # this holds the name of the last entity that got into Machine                   
+            self.timeLastEntityEntered=self.env.now                         #this holds the last time that an entity got into Machine  
             
 #             self.tinM=self.totalProcessingTimeInCurrentEntity                                          # timer to hold the processing time left
             
             if len(self.getActiveObjectQueue())==self.numberOfSubBatches and self.currentEntity.type!='Batch':
-                yield hold,self,self.calculateProcessingTime()
+                yield self.env.timeout(self.calculateProcessingTime())
                 self.reassemble()
                 if not self.signalReceiver():
                     while 1:
-                        event=yield waitevent, self, [self.canDispose, self.interruptionStart]
-                        if self.interruptionStart.signalparam==now():
-                            yield waitevent, self, self.interruptionEnd
-                            assert self==self.interruptionEnd.signalparam
+                        receivedEvent=yield self.canDispose | self.interruptionStart
+                        if self.canDispose in receivedEvent:
+                            self.canDispose=self.env.event()
+                        if self.interruptionStart in receivedEvent:
+                            self.interruptionStart.value==self.env.now, 'the interruptionStart event received by BatchReassembly later than created'
+                            self.interruptionStart=self.env.event()
+                            yield self.interruptionEnd
+                            assert self==self.interruptionEnd.value, 'interruptionEnd event received by BatchReassembly other than the one intended'
                         if self.signalReceiver():
                             break
     
@@ -150,8 +148,8 @@ class BatchReassembly(CoreObject):
             numberOfUnits+=subBatch.numberOfUnits
         # the batch to be reassembled
         batchToBeReassembled = activeObjectQueue[0].parentBatch
-        # if the activeEntity is hot then the subBatches should be also hot
-        batchToBeReassembled.hot=activeObjectQueue[0].hot
+#         # if the activeEntity is hot then the subBatches should be also hot
+#         batchToBeReassembled.hot=activeObjectQueue[0].hot
         # if the activeEntity is in the pendingEntities list then place the subBatches there
         if activeObjectQueue[0] in G.pendingEntities:
             G.pendingEntities.append(batchToBeReassembled)
@@ -164,7 +162,7 @@ class BatchReassembly(CoreObject):
         batchToBeReassembled.numberOfUnits=numberOfUnits
         activeObjectQueue.append(batchToBeReassembled)
         batchToBeReassembled.currentStation=self
-        self.timeLastEntityEnded=now()
+        self.timeLastEntityEnded=self.env.now
         self.outputTrace(batchToBeReassembled.name, 'was reassembled')
         
     # =======================================================================
