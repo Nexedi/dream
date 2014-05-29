@@ -247,7 +247,8 @@ class MachineJobShop(Machine):
         self.waitToDispose=True                     #set that I have to dispose
         self.receiver.timeLastEntityEnded=self.env.now     #required to count blockage correctly in the preemptied station
         # TODO: use a signal and wait for it, reactivation is not recognised as interruption
-        reactivate(self)
+#         reactivate(self)
+        self.preemptQueue.succeed(self.env.now)
         # TODO: consider the case when a failure has the Station down. The event preempt will not be received now()
         #     but at a later simulation time. 
             

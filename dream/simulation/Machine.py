@@ -151,14 +151,14 @@ class Machine(CoreObject):
         self.isPreemptive=isPreemptive
         self.resetOnPreemption=resetOnPreemption
         # events used by the broker
-#         self.brokerIsSet=SimEvent('brokerIsSet')
         self.brokerIsSet=self.env.event()
         # this event is generated every time an operator is requested by machine for Load operation type.
         #     if the machine has not succeeded in getting an entity due to the resource absence 
         #     and waits for the next event to get the entity, 
         #     then it must be signalled that the operator is now available
-#         self.loadOperatorAvailable=SimEvent('loadOperatorAvailable')
         self.loadOperatorAvailable=self.env.event()
+        # signal used for preemption
+        self.preemptQueue=self.env.event()
         # flag notifying that there is operator assigned to the actievObject
         self.assignedOperator=True
     
@@ -222,6 +222,8 @@ class Machine(CoreObject):
         #     and waits for the next event to get the entity, 
         #     then it must be signalled that the operator is now available
         self.loadOperatorAvailable=self.env.event()
+        # signal used for preemption
+        self.preemptQueue=self.env.event()
     
     # =======================================================================
     # the main process of the machine
@@ -388,7 +390,7 @@ class Machine(CoreObject):
                 #     else (if interrupted()) set interruption flag to true (only if tinM==0), 
                 #     and recalculate the processing time left tinM, passivate while waiting for repair.
                 # if a preemption has occurred then react accordingly (proceed with getting the critical entity)
-                receivedEvent=yield self.env.timeout(self.tinM) | self.interruptionStart                         # getting processed for remaining processing time tinM
+                receivedEvent=yield self.env.timeout(self.tinM) | self.interruptionStart | self.preemptQueue        # getting processed for remaining processing time tinM
                 if self.interruptionStart in receivedEvent:                              # if a failure occurs while processing the machine is interrupted.
                     assert self.interruptionStart.value==self.env.now, 'the interruption has not been processed on the time of activation'
                     self.interruptionStart=self.env.event()
@@ -422,8 +424,11 @@ class Machine(CoreObject):
                         self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
                 # if the station is reactivated by the preempt method
                 elif(self.shouldPreempt):
+                    if (self.preemptQueue in receivedEvent):
+                        assert self.preemptQueue.value==self.env.now, 'the preemption must be performed on the time of request'
+                        self.preemptQueue=self.env.event()
                     self.interruptionActions()                      # execute interruption actions
-                     
+                         
     # =============== release the operator if there is interruption 
                     if (self.operatorPool!="None")\
                         and self.isOperated()\
