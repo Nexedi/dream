@@ -27,7 +27,8 @@ Only if all the mould (order) components are present, will it be able to dispose
 '''
 
 from QueueManagedJob import QueueManagedJob
-from SimPy.Simulation import now
+# from SimPy.Simulation import now
+import simpy
 
 # ===========================================================================
 # Error in the setting up of the WIP
@@ -109,7 +110,7 @@ class MouldAssemblyBuffer(QueueManagedJob):
                 for secondary in [x for x in activeEntity.order.secondaryComponentsList if activeEntity.order.basicsEnded]:
                     if secondary.currentStation.__class__.__name__=='ConditionalBuffer':
 #                         print now(), self.id, '                                                    signalling conditional buffer'
-                        secondary.currentStation.canDispose.signal(now())
+                        secondary.currentStation.canDispose.succeed(self.env.now)
                         break
             # for all the components that have the same parent Order as the activeEntity
             activeEntity.order.componentsReadyForAssembly = 1

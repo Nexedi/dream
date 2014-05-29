@@ -25,7 +25,8 @@ Created on 4 Feb 2014
 inherits from QueueJobShop. The difference is that it reads the operator from the Entity and
 checks if he is available before it disposed it
 '''
-from SimPy.Simulation import now
+# from SimPy.Simulation import now
+import simpy
 from QueueJobShop import QueueJobShop
 
 # ===========================================================================
@@ -116,7 +117,7 @@ class QueueManagedJob(QueueJobShop):
                         if not G.Router.invoked:
 #                             self.printTrace(self.id, signal='router')
                             G.Router.invoked=True
-                            G.Router.isCalled.signal(now())
+                            G.Router.isCalled.succeed(self.env.now)
                         return True
             else:
                 return False
