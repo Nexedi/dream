@@ -167,7 +167,8 @@ class Machine(CoreObject):
     # =======================================================================        
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__
-        CoreObject.initialize(self)        
+        CoreObject.initialize(self)
+        
         # initialize the internal Queue (type Resource) of the Machine 
         #self.Res=Resource(self.capacity)
         self.Res=simpy.Resource(self.env, capacity=1)
@@ -176,11 +177,11 @@ class Machine(CoreObject):
         if (self.operatorPool!="None"):
             self.operatorPool.initialize()
             self.broker.initialize()
-            activate(self.broker,self.broker.run())
+            self.env.process(self.broker.run())
             # initialise the router only once
             if not self.router.isInitialized:
                 self.router.initialize()
-                activate(self.router,self.router.run())
+                self.env.process(self.router.run())
             for operator in self.operatorPool.operators:
                 operator.coreObjectIds.append(self.id)
                 operator.coreObjects.append(self)
@@ -215,13 +216,11 @@ class Machine(CoreObject):
         # flag notifying that there is operator assigned to the actievObject
         self.assignedOperator=True
         
-#         self.brokerIsSet=SimEvent('brokerIsSet')
         self.brokerIsSet=self.env.event()
         # this event is generated every time an operator is requested by machine for Load operation type.
         #     if the machine has not succeeded in getting an entity due to the resource absence 
         #     and waits for the next event to get the entity, 
         #     then it must be signalled that the operator is now available
-#         self.loadOperatorAvailable=SimEvent('loadOperatorAvailable')
         self.loadOperatorAvailable=self.env.event()
     
     # =======================================================================
@@ -251,13 +250,13 @@ class Machine(CoreObject):
                 # if an operator was rendered available while it was needed by the machine to proceed with getEntity
                 if self.interruptionEnd.value==self.env.now or self.loadOperatorAvailable.value==self.env.now:
                     if self.interruptionEnd in receivedEvent:
+                        if self.interruptionEnd.value==self.env.now:
+                            self.printTrace(self.id, interruptionEnd=str(self.interruptionEnd.value))
                         self.interruptionEnd=self.env.event()
                     if self.loadOperatorAvailable in receivedEvent:
+                        if self.loadOperatorAvailable.value==self.env.now:
+                            self.printTrace(self.id,loadOperatorAvailable=str(self.loadOperatorAvailable.value))
                         self.loadOperatorAvailable=self.env.event()
-#                     if self.interruptionEnd.value==self.env.now:
-#                         self.printTrace(self.id, interruptionEnd=str(self.interruptionEnd.value))
-#                     elif self.loadOperatorAvailable.value==self.env.now:
-#                         self.printTrace(self.id,loadOperatorAvailable=str(self.loadOperatorAvailable.value))
                     # try to signal the Giver, otherwise wait until it is requested
                     if self.signalGiver():
                         break
