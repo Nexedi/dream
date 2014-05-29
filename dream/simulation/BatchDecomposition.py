@@ -26,8 +26,9 @@ BatchDecomposition is a Core Object that takes a batch and decomposes to sub-bat
 '''
 
 
-from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import waituntil, now, hold, waitevent
+# from SimPy.Simulation import Process, Resource
+# from SimPy.Simulation import waituntil, now, hold, waitevent
+import simpy
 
 from Globals import G
 from CoreObject import CoreObject
@@ -67,9 +68,9 @@ class BatchDecomposition(CoreObject):
     # =======================================================================
     def initialize(self):
         from Globals import G
-        G.BatchWaitingList = []                     # batches waiting to be reassembled
-        CoreObject.initialize(self)                 # using the default CoreObject Functionality
-        self.Res=Resource(self.numberOfSubBatches)  # initialize the Internal resource (Queue) functionality
+        G.BatchWaitingList = []                                     # batches waiting to be reassembled
+        CoreObject.initialize(self)                                 # using the default CoreObject Functionality
+        self.Res=simpy.Resource(self.env, self.numberOfSubBatches)  # initialize the Internal resource (Queue) functionality
             
     # =======================================================================
     #     the run method of the BatchDecomposition
@@ -80,28 +81,32 @@ class BatchDecomposition(CoreObject):
         while 1:
             # wait for an event or an interruption
             while 1:
-                yield waitevent, self, [self.isRequested, self.interruptionStart]
+                receivedEvent=yield self.isRequested | self.interruptionStart
                 # if an interruption has occurred 
-                if self.interruptionStart.signalparam==now():
+                if self.interruptionStart in receivedEvent:
+                    assert self.interruptionStart.value==self.env.now, 'the interruption received by batchDecomposition was created earlier'
+                    self.interruptionStart=self.env.event()
                     # wait till it is over
-                    yield waitevent, self, self.interruptionEnd
-                    assert self==self.interruptionEnd.signalparam, 'the victim of the failure is not the object that received the interruptionEnd event'
+                    yield self.interruptionEnd
+                    assert self==self.interruptionEnd.value, 'the victim of the failure is not the object that received the interruptionEnd event'
+                    self.interruptionEnd=self.env.event()
                     if self.signalGiver():
                         break
                 # otherwise proceed with getEntity
                 else:
                     break
-            requestingObject=self.isRequested.signalparam
+            requestingObject=self.isRequested.value
             assert requestingObject==self.giver, 'the giver is not the requestingObject'
+            self.isRequested=self.env.event()
                                                               
             self.currentEntity=self.getEntity()
             # set the currentEntity as the Entity just received and initialize the timer timeLastEntityEntered
             self.nameLastEntityEntered=self.currentEntity.name      # this holds the name of the last entity that got into Machine                   
-            self.timeLastEntityEntered=now()                        #this holds the last time that an entity got into Machine  
+            self.timeLastEntityEntered=self.env.now                        #this holds the last time that an entity got into Machine  
             
             self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()
             
-            yield hold,self,self.totalProcessingTimeInCurrentEntity
+            yield self.env.timeout(self.totalProcessingTimeInCurrentEntity)
             self.decompose()
             
             # TODO: add failure control
@@ -117,7 +122,8 @@ class BatchDecomposition(CoreObject):
                     if not signaling:
                         # if there was no success wait till the receiver is available
                         while 1:
-                            yield waitevent, self, self.canDispose
+                            yield self.canDispose
+                            self.canDispose=self.env.event()
                             # signal the receiver again and break
                             if self.signalReceiver():
                                 break
@@ -125,7 +131,8 @@ class BatchDecomposition(CoreObject):
                 #     we know that the receiver is occupied with the previous sub-batch
                 else:
                     while 1:
-                        yield waitevent,self,self.canDispose
+                        yield self.canDispose
+                        self.canDispose=self.env.event()
                         signaling=self.signalReceiver()
                         if signaling:
                             break
@@ -173,7 +180,7 @@ class BatchDecomposition(CoreObject):
             self.outputTrace(subBatch.name,'was created from '+ activeEntity.name)
             #===================================================================
             # TESTING
-#             print now(), subBatch.name,'was created from '+ activeEntity.name
+#             print self.env.now, subBatch.name,'was created from '+ activeEntity.name
             #===================================================================
             G.EntityList.append(subBatch)
             activeObjectQueue.append(subBatch)                          #append the sub-batch to the active object Queue
@@ -184,7 +191,7 @@ class BatchDecomposition(CoreObject):
                 G.pendingEntities.append(subBatch)
                 G.pendingEntities.remove(activeEntity)
         activeEntity.numberOfSubBatches=self.numberOfSubBatches
-        self.timeLastEntityEnded=now()
+        self.timeLastEntityEnded=self.env.now
 
     # =======================================================================
     #     canAccept logic
@@ -192,7 +199,6 @@ class BatchDecomposition(CoreObject):
     def canAccept(self,callerObject=None):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-#         giverObject=self.getGiverObject()
         if(len(activeObject.previous)==1 or callerObject==None):      
             return activeObject.Up and len(activeObjectQueue)==0
         thecaller=callerObject
@@ -223,7 +229,6 @@ class BatchDecomposition(CoreObject):
         # get the active and the giver objects
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-#         giverObject=self.getGiverObject()
         giverObject=callerObject
         assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
         return activeObject.Up and len(activeObjectQueue)==0 and giverObject.haveToDispose(activeObject)

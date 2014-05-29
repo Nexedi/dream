@@ -26,7 +26,8 @@ models the source object that generates the Batches Entities
 '''
 from Source import Source
 from Globals import G
-from SimPy.Simulation import Process
+# from SimPy.Simulation import Process
+import simpy
 from RandomNumberGenerator import RandomNumberGenerator
 
 class BatchSource(Source):
