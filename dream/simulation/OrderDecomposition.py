@@ -26,8 +26,9 @@ OrderDecomposition is a Core Object that takes an order after design and decompo
 dummy object: infinite capacity no processing time
 '''
 
-from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import waituntil, now, hold, infinity, waitevent
+# from SimPy.Simulation import Process, Resource
+# from SimPy.Simulation import waituntil, now, hold, infinity, waitevent
+import simpy
 
 from Globals import G
 from CoreObject import CoreObject
@@ -57,7 +58,7 @@ class OrderDecomposition(CoreObject):
         self.previous=G.ObjList
         self.next=[]
         CoreObject.initialize(self)                 # using the default CoreObject Functionality
-        self.Res=Resource(infinity)                 # initialize the Internal resource (Queue) functionality. This is a dummy object so 
+        self.Res=simpy.Resource(self.env, 'inf')    # initialize the Internal resource (Queue) functionality. This is a dummy object so 
                                                     # infinite capacity is assumed
         self.newlyCreatedComponents=[]              # a list to hold components just after decomposition
         self.orderToBeDecomposed=None
@@ -70,13 +71,16 @@ class OrderDecomposition(CoreObject):
         self.initialSignalReceiver()
         while 1:  
             #wait until the Queue can accept an entity and one predecessor requests it
-            yield waitevent, self, [self.isRequested,self.canDispose]
+            receivedEvent=yield self.isRequested | self.canDispose
             # if the event that activated the thread is isRequested then getEntity
-            if self.isRequested.signalparam:
+            if self.isRequested in receivedEvent:
+                self.isRequested=self.env.event()
                 # reset the isRequested signal parameter
                 self.isRequested.signalparam=None
                 self.getEntity()
                 self.decompose()
+            if self.canDispose in receivedEvent:
+                self.canDispose=self.env.event()
             # if the event that activated the thread is canDispose then signalReceiver
             if self.haveToDispose():
 #                 print now(), self.id, 'will try to signal a receiver from generator'
