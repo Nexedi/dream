@@ -26,8 +26,9 @@ Models a machine that processes a (Sub)Batch and can scrap a number of units in 
 depends on the number of units of the (Sub)Batch
 '''
 
-from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import activate, passivate, waituntil, now, hold
+# from SimPy.Simulation import Process, Resource
+# from SimPy.Simulation import activate, passivate, waituntil, now, hold
+import simpy
 from RandomNumberGenerator import RandomNumberGenerator
 
 from Machine import Machine

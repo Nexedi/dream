@@ -26,7 +26,8 @@ Created on 4 Dec 2013
 models a generator that runs a method at specified intervals
 '''
 
-from SimPy.Simulation import now, hold, Process
+# from SimPy.Simulation import now, hold, Process
+import simpy
 from ObjectInterruption import ObjectInterruption
 
 class EventGenerator(ObjectInterruption):
@@ -43,15 +44,15 @@ class EventGenerator(ObjectInterruption):
         self.argumentDict=argumentDict  #the arguments of the method given in a dict
         
     def run(self):
-        yield hold,self,self.start      #wait until the start time
+        yield self.env.timeout(self.start)              #wait until the start time
         #loop until the end of the simulation
         while 1:
             #if the stop time is exceeded then break the loop
             if self.stop:
-                if now()>self.stop:
+                if self.env.now>self.stop:
                     break
-            self.method(self.argumentDict)      #call the method
-            yield hold,self,self.interval       #wait for the predetermined interval
+            self.method(self.argumentDict)              #call the method
+            yield self.env.timeout(self.interval)       #wait for the predetermined interval
         
     
     
