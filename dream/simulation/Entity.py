@@ -25,7 +25,8 @@ Created on 18 Aug 2013
 Class that acts as an abstract. It should have no instances. All the Entities should inherit from it
 '''
 
-from SimPy.Simulation import now
+# from SimPy.Simulation import now
+import simpy
 
 # ===========================================================================
 # The entity object 
