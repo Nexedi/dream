@@ -25,9 +25,11 @@ Created on 19 Feb 2013
 '''
 Models an Interruption that schedules the operation of the machines by different managers
 '''
-from SimPy.Globals import sim
-from SimPy.Simulation import Simulation
-from SimPy.Simulation import Process, Resource, SimEvent
+# from SimPy.Globals import sim
+# from SimPy.Simulation import Simulation
+# from SimPy.Simulation import Process, Resource, SimEvent
+import simpy
+
 from ObjectInterruption import ObjectInterruption
 from SimPy.Simulation import waituntil, now, hold, request, release, waitevent
 
@@ -48,7 +50,7 @@ class Router(ObjectInterruption):
         ObjectInterruption.__init__(self)
         self.type = "Router"
         # signal used to initiate the generator of the Router
-        self.isCalled=SimEvent('RouterIsCalled')
+        self.isCalled=self.env.event()
         self.isInitialized=False
         self.candidateOperators=[]
         self.multipleCriterionList=[]
@@ -118,14 +120,15 @@ class Router(ObjectInterruption):
                     break
         while 1:
             # wait until the router is called
-            yield waitevent, self, self.isCalled
+            yield self.isCalled
+            self.isCalled=self.env.event()
             self.printTrace('','=-'*15)
             self.printTrace('','router received event')
             # wait till there are no more events, the machines must be blocked
             while 1:
-                if now() in Simulation.allEventTimes(sim):
+                if self.env.now==self.env.peek():
                     self.printTrace('', 'there are MORE events for now')
-                    yield hold, self, 0
+                    yield self.env.timeout(0)
                 else:
                     self.printTrace('','there are NO more events for now')
                     break
@@ -277,28 +280,28 @@ class Router(ObjectInterruption):
                             operator.getResourceQueue()[0].victim.shouldPreempt=True
                             self.printTrace('router', 'preempting '+operator.getResourceQueue()[0].victim.id+'.. '*6)
                             operator.getResourceQueue()[0].victim.preempt()
-                            operator.getResourceQueue()[0].victim.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
+                            operator.getResourceQueue()[0].victim.timeLastEntityEnded=self.env.now     #required to count blockage correctly in the preemptied station
                         station.shouldPreempt=True
                         self.printTrace('router', 'preempting receiver '+station.id+'.. '*6)
                         station.preempt()
-                        station.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
+                        station.timeLastEntityEnded=self.env.now     #required to count blockage correctly in the preemptied station
                     elif station.broker.waitForOperator:
                         # signal this station's broker that the resource is available
                         self.printTrace('router', 'signalling broker of'+' '*50+operator.isAssignedTo().id)
-                        station.broker.resourceAvailable.signal(now())
+                        station.broker.resourceAvailable.succeed(self.env.now)
                     else:
                         # signal the queue proceeding the station
                         if station.canAccept()\
                              and any(type=='Load' for type in station.multOperationTypeList):
                             self.printTrace('router', 'signalling'+' '*50+operator.isAssignedTo().id)
-                            station.loadOperatorAvailable.signal(now())
+                            station.loadOperatorAvailable.succeed(self.env.now)
                 # in case the router deals with managed entities
                 #------------------------------------------------------------------------------ 
                 else:
                     if station in self.pendingMachines and station in self.toBeSignalled:
                         # signal this station's broker that the resource is available
                         self.printTrace('router','signalling broker of'+' '*50+operator.isAssignedTo().id)
-                        operator.isAssignedTo().broker.resourceAvailable.signal(now())
+                        operator.isAssignedTo().broker.resourceAvailable.succeed(self.env.now)
                     elif (not station in self.pendingMachines) or (not station in self.toBeSignalled):
                         # signal the queue proceeding the station
                         assert operator.candidateEntity.currentStation in self.toBeSignalled, 'the candidateEntity currentStation is not picked by the Router'
@@ -306,7 +309,7 @@ class Router(ObjectInterruption):
                         if operator.candidateEntity.candidateReceiver.canAccept()\
                              and any(type=='Load' for type in operator.candidateEntity.candidateReceiver.multOperationTypeList):
                             self.printTrace('router','signalling queue'+' '*50+operator.candidateEntity.currentStation.id)
-                            operator.candidateEntity.currentStation.loadOperatorAvailable.signal(now())
+                            operator.candidateEntity.currentStation.loadOperatorAvailable.succeed(self.env.now)
     
     #===========================================================================
     # clear the pending lists of the router
