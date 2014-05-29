@@ -62,7 +62,8 @@ There is no need to assign an exit, exit is assigned automatically by the create
 TODOs: check the case when a mould is already in the WIP by the beginning of the simulation
 '''
 from MachineManagedJob import MachineManagedJob
-from SimPy.Simulation import Resource, reactivate, now
+# from SimPy.Simulation import Resource, reactivate, now
+import simpy
 from Globals import G
 
 # =======================================================================
@@ -151,7 +152,7 @@ class MouldAssembly(MachineManagedJob):
     def updateCapacity(self,capacity):
         activeObject = self.getActiveObject()
         self.capacity = capacity
-        self.Res=Resource(self.capacity)
+        self.Res=simpy.Resource(self.env, self.capacity)
     
     # =======================================================================
     #     assemble method that assembles the components together to a mould (order
@@ -271,6 +272,6 @@ class MouldAssembly(MachineManagedJob):
             M.initialize()
         except:
             # added for testing
-            print 'the mould to be created', component.get('name', 'not found'), 'cannot be created', 'time', now()
+            print 'the mould to be created', component.get('name', 'not found'), 'cannot be created', 'time', self.env.now
             raise
         

@@ -26,7 +26,8 @@ inherits from MachineJobShop. The difference is that it reads the operator from 
 checks if he is available before it takes it
 '''
 
-from SimPy.Simulation import Process, Resource, activate, now
+# from SimPy.Simulation import Process, Resource, activate, now
+import simpy
 
 from OperatedPoolBroker import Broker
 from OperatorPool import OperatorPool
@@ -54,13 +55,15 @@ class MachineManagedJob(MachineJobShop):
         self.operatorPool.operators=[]
         #create a Broker
         self.broker = Broker(self)
-        activate(self.broker,self.broker.run())
+        self.env.process(self.broker.run())
+#         activate(self.broker,self.broker.run())
         #create a Router
         # TODO: this is already performed in __init__ of Machine
         from Globals import G
         if not G.Router:
             self.router=Router()
-            activate(self.router,self.router.run())
+            self.env.process(self.router.run())
+#             activate(self.router,self.router.run())
             G.Router=self.router
         # otherwise set the already existing router as the machines Router
         else:
@@ -188,5 +191,4 @@ class MachineManagedJob(MachineJobShop):
         # ToDecide
         # maybe we should work this way in all CoreObjects???
         return self.entityToGet
-        
 

@@ -319,7 +319,7 @@ class CoreObject(object):
                 #if the receiver does not hold an Entity that is also critical
                 if not receiver.Res.users[0].isCritical:
                     receiver.shouldPreempt=True
-#                     self.printTrace(self.id, preempt=receiver.id)
+                    self.printTrace(self.id, preempt=receiver.id)
                     receiver.preempt()
                     receiver.timeLastEntityEnded=self.env.now     #required to count blockage correctly in the preemptied station
                     # sort so that the critical entity is placed in front
