@@ -26,7 +26,8 @@ Created on 22 Nov 2012
 models a Broker that organizes the dispatch of operators/repairmen
 '''
 
-from SimPy.Simulation import Resource, now
+# from SimPy.Simulation import Resource, now
+import simpy
 import xlwt
 from ObjectResource import ObjectResource
 from Operator import Operator
@@ -50,11 +51,6 @@ class OperatorPool(ObjectResource):
         self.coreObjects=[]
         # holds the object/Machine that currently handles the operator pool
         self.currentObject='None'
-        # TODO: variables to be used by OperatorPreemptive
-        # TODO: the object requesting the OperatorPreemptive
-        self.requestingObject=None
-        # TODO: the last object calling the OperatorPool
-        self.receivingObject=None
         # if operatorsList is of type list and of length 0
         #     then no operators will be created, they may be 
         #     populated earlier on by the logic of the Stations
