@@ -873,7 +873,8 @@ def initializeObjects():
     for element in G.ObjList:
         element.initialize()
     for repairman in G.ModelResourceList:
-        repairman.initialize()
+        if not repairman.isInitialized():
+            repairman.initialize()
     for entity in G.EntityList:
         entity.initialize()
     for ev in G.EventGeneratorList:
