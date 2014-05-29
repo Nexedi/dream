@@ -26,7 +26,8 @@ Created on 3 Jan 2014
 models an one time scheduled maintenance. It happens and stops at fixed times and it is also deterministic
 '''
 
-from SimPy.Simulation import now, Process, hold, request, release, infinity
+# from SimPy.Simulation import now, Process, hold, request, release, infinity
+import simpy
 from RandomNumberGenerator import RandomNumberGenerator
 from ObjectInterruption import ObjectInterruption
 
@@ -41,24 +42,24 @@ class ScheduledMaintenance(ObjectInterruption):
         ObjectInterruption.__init__(self,victim)
         self.start=start
         self.duration=duration
-        
+    
     # =======================================================================
     # the run method
     # holds till the defined start time, interrupts the victim,
     # holds for the maintenance duration, and finally reactivates the victim
     # =======================================================================
     def run(self):
-        yield hold,self,self.start                      #wait until the start time
+        yield self.env.timeout(self.start)              #wait until the start time
         try:
             if(len(self.getVictimQueue())>0):           # when a Machine gets failure
                 self.interruptVictim()                  # while in process it is interrupted
             self.victim.Up=False
-            self.victim.timeLastFailure=now()           
+            self.victim.timeLastFailure=self.env.now
             self.outputTrace("is down")
         except AttributeError:
             print "AttributeError1"
             
-        yield hold,self,self.duration                   # wait for the defined duration of the interruption 
+        yield self.env.timeout(self.duration)           # wait for the defined duration of the interruption 
         self.victim.totalFailureTime+=self.duration
         
         try:
