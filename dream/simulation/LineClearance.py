@@ -27,7 +27,8 @@ only if all its contents are from the same Batch
 '''
 
 from Queue import Queue
-from SimPy.Simulation import now
+# from SimPy.Simulation import now
+import simpy
 
 # ===========================================================================
 #                        the LineClearance object
@@ -89,40 +90,12 @@ class LineClearance(Queue):
         assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
         giverObjectQueue = giverObject.getActiveObjectQueue()
         
-        #if we have only one potential giver just check if there is a place available and the potential giver has an entity to dispose
-        if(len(activeObject.previous)==1):
-            if len(activeObjectQueue)==0:
-                return giverObject.haveToDispose(activeObject) and\
-                       giverObjectQueue[0].type == 'SubBatch'
-            else:
-                return len(activeObjectQueue)<self.capacity and \
-                       giverObject.haveToDispose(activeObject) and \
-                       giverObjectQueue[0].type == 'SubBatch' and \
-                       giverObjectQueue[0].batchId==activeObjectQueue[0].batchId
-            
-        isRequested=False               # dummy boolean variable to check if any potential giver has something to hand in
-        maxTimeWaiting=0                # dummy timer to check which potential giver has been waiting the most
-        
-        #loop through the potential givers to see which have to dispose and which is the one blocked for longer
-        for object in activeObject.previous:
-            if(object.haveToDispose(activeObject)):                 # if they have something to dispose off
-                isRequested=True                                    # then the Queue is requested to handle the entity
-                if(object.downTimeInTryingToReleaseCurrentEntity>0):# if the predecessor has failed wile waiting 
-                    timeWaiting=now()-object.timeLastFailureEnded   # then update according the timeWaiting to be compared with the ones
-                else:                                               # of the other machines
-                    timeWaiting=now()-object.timeLastEntityEnded
-                
-                #if more than one potential giver have to dispose take the part from the one that is blocked longer
-                if(timeWaiting>=maxTimeWaiting):                    
-                    activeObject.giver=object
-                    maxTimeWaiting=timeWaiting                   
-                                                                    # true when the Queue is not fully occupied and 
-                                                                    # a predecessor is requesting it
+        # check if there is a place available and the potential giver has an entity to dispose
         if len(activeObjectQueue)==0:
-            return isRequested and\
-                    activeObject.getGiverObjectQueue()[0].type == 'SubBatch'
+            return giverObject.haveToDispose(activeObject) and\
+                    giverObjectQueue[0].type == 'SubBatch'
         else:
-            return len(activeObjectQueue)<self.capacity and\
-                    isRequested and \
-                    activeObject.getGiverObjectQueue()[0].type == 'SubBatch' and\
-                    activeObject.getGiverObjectQueue()[0].batchId == activeObjectQueue[0].batchId
+            return len(activeObjectQueue)<self.capacity and \
+                    giverObject.haveToDispose(activeObject) and \
+                    giverObjectQueue[0].type == 'SubBatch' and \
+                    giverObjectQueue[0].batchId==activeObjectQueue[0].batchId
