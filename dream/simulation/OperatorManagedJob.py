@@ -26,7 +26,8 @@ Created on 13 Feb 2013
 models a entity/job assigned operator (manager)
 '''
 
-from SimPy.Simulation import Resource, now
+# from SimPy.Simulation import Resource, now
+import simpy
 from Operator import Operator
 
 # ===========================================================================
@@ -45,6 +46,7 @@ class OperatorManagedJob(Operator):
     # =======================================================================       
     def checkIfResourceIsAvailable(self,callerObject=None):
         activeResourceQueue = self.getResourceQueue()
+        workingOn=self.workingStation
         # in case the operator has the flag operatorAssigned raised 
         #    (meaning the operator will explicitly be assigned to a machine)
         #    return false even if he is free
@@ -57,15 +59,16 @@ class OperatorManagedJob(Operator):
             #     object the operator is assigned to
             else:
                 if len(activeResourceQueue):
-                    if self.operatorAssignedTo==activeResourceQueue[0].victim:
+#                     if self.operatorAssignedTo==activeResourceQueue[0].victim:
+                    if self.operatorAssignedTo==workingOn:
                         return self.operatorAssignedTo==callerObject
-                return (self.operatorAssignedTo==callerObject) and len(self.Res.activeQ)<self.capacity
+                return (self.operatorAssignedTo==callerObject) and len(activeResourceQueue)<self.capacity
         # otherwise, (if the callerObject is None) check if the operator is assigned and if yes
         #     then perform the default behaviour
         else:
 #             if self.operatorAssignedTo==None:
 #                 return False
-            return len(self.Res.activeQ)<self.capacity
+            return len(activeResourceQueue)<self.capacity
         
     #===========================================================================
     # check if the operator has only one station as candidate option

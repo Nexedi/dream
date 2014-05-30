@@ -112,6 +112,8 @@ class Broker(ObjectInterruption):
                 
                 with self.victim.operatorPool.getResource(self.victim.currentOperator).request() as request:
                     yield request
+                    # update the operator workingStation
+                    self.victim.currentOperator.workingStation=self.victim
                     self.victim.printTrace(self.victim.currentOperator.objName, startWork=self.victim.id)
                     # clear the timeWaitForOperatorStarted variable
                     self.timeWaitForOperatorStarted = 0
@@ -148,6 +150,7 @@ class Broker(ObjectInterruption):
                     self.victim.printTrace(self.victim.currentOperator.objName, finishWork=self.victim.id)
                     # the victim current operator must be cleared after the operator is released
                     self.timeLastOperationEnded = self.env.now
+                    self.victim.currentOperator.workingStation=None
                     self.victim.currentOperator = None
                 else:
                     pass

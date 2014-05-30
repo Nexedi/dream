@@ -65,6 +65,8 @@ class Operator(ObjectResource):
         
         # the station that the operator is assigned to
         self.operatorAssignedTo=None
+        # the station the operator currently operating
+        self.workingStation=None
         
         # variables to be used by OperatorRouter
         self.candidateEntities=[]               # list of the entities requesting the operator at a certain simulation Time
