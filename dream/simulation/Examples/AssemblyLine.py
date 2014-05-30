@@ -1,5 +1,8 @@
 from dream.simulation.imports import Machine, Source, Exit, Part, Frame, Assembly, Failure, G 
-from dream.simulation.imports import simulate, activate, initialize
+from dream.simulation.imports import simpy
+
+G.env=simpy.Environment()   # define a simpy environment
+                            # this is where all the simulation object 'live'
 
 #define the objects of the model
 Frame.capacity=4 
@@ -23,8 +26,8 @@ M.defineRouting([A],[E])
 E.defineRouting([M])
 
 def main():
-    initialize()                        #initialize the simulation (SimPy method)
-        
+    
+    #initialize all the objects          
     for object in G.ObjList:
         object.initialize()
         
@@ -33,14 +36,14 @@ def main():
     
     #activate all the objects 
     for object in G.ObjList:
-        activate(object, object.run())
+        G.env.process(object.run())
     
     for objectInterruption in G.ObjectInterruptionList:
-        activate(objectInterruption, objectInterruption.run())
+        G.env.process(objectInterruption.run())
     
     G.maxSimTime=1440.0     #set G.maxSimTime 1440.0 minutes (1 day)
         
-    simulate(until=G.maxSimTime)    #run the simulation
+    G.env.run(until=G.maxSimTime)    #run the simulation
     
     #carry on the post processing operations for every object in the topology       
     for object in G.ObjList:

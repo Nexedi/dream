@@ -1,6 +1,8 @@
 from dream.simulation.imports import Machine, BatchSource, Exit, Batch, BatchDecomposition, BatchReassembly, Queue, G 
-from dream.simulation.imports import simulate, activate, initialize
+from dream.simulation.imports import simpy
 
+G.env=simpy.Environment()   # define a simpy environment
+                            # this is where all the simulation object 'live'
 # define the objects of the model
 S=BatchSource('S','Source',interarrivalTime={'distributionType':'Fixed','mean':1.5}, entity='Dream.Batch', batchNumberOfUnits=100)
 Q=Queue('Q','StartQueue',capacity=100000)
@@ -25,18 +27,18 @@ M3.defineRouting([BRA],[E])
 E.defineRouting([M3])
 
 def main():
-    # initialize the simulation (SimPy method)
-    initialize()
     # initialize all the objects
     for object in G.ObjList:
         object.initialize()
-    # activate all the objects
+
+    #activate all the objects 
     for object in G.ObjList:
-        activate(object,object.run())
+        G.env.process(object.run()) 
+
     # set G.maxSimTime 1440.0 minutes (1 day)
     G.maxSimTime=1440.0
     # run the simulation
-    simulate(until=G.maxSimTime)
+    G.env.run(until=G.maxSimTime)
     # carry on the post processing operations for every object in the topology
     for object in G.ObjList:
         object.postProcessing()

@@ -1,5 +1,9 @@
 from dream.simulation.imports import Machine, Source, Exit, Part, Queue, G, Globals, Failure 
-from dream.simulation.imports import simulate, activate, initialize, infinity
+from dream.simulation.imports import simpy
+
+G.env=simpy.Environment()   # define a simpy environment
+                            # this is where all the simulation object 'live'
+
 
 #the custom queue
 class SelectiveQueue(Queue):
@@ -32,7 +36,7 @@ class CountingExit(Exit):
         
 #define the objects of the model
 S=Source('S','Source', interarrivalTime={'distributionType':'Fixed','mean':0.5}, entity='Dream.Part')
-Q=SelectiveQueue('Q','Queue', capacity=infinity)
+Q=SelectiveQueue('Q','Queue', capacity=float("inf"))
 M1=Milling('M1','Milling1', processingTime={'distributionType':'Fixed','mean':0.25})
 M2=Milling('M2','Milling2', processingTime={'distributionType':'Fixed','mean':0.25})
 E=CountingExit('E1','Exit')  
@@ -55,8 +59,8 @@ M2.defineRouting([Q],[E])
 E.defineRouting([M1,M2])
 
 def main():
-    initialize()                        #initialize the simulation (SimPy method)
-        
+
+    #initialize all the objects            
     for object in G.ObjList:
         object.initialize()
         
@@ -65,14 +69,14 @@ def main():
     
     #activate all the objects 
     for object in G.ObjList:
-        activate(object, object.run())
+        G.env.process(object.run())
     
     for objectInterruption in G.ObjectInterruptionList:
-        activate(objectInterruption, objectInterruption.run())
+        G.env.process(objectInterruption.run())
     
     G.maxSimTime=1440.0     #set G.maxSimTime 1440.0 minutes (1 day)
         
-    simulate(until=G.maxSimTime)    #run the simulation
+    G.env.run(until=G.maxSimTime)    #run the simulation
     
     #carry on the post processing operations for every object in the topology       
     for object in G.ObjList:
