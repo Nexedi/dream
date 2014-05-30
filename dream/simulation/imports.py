@@ -26,7 +26,7 @@ auxiliary script to help the import of ManPy modules
 '''
 
 #SimPy
-from SimPy.Simulation import *
+import simpy
 
 #generic
 from dream.simulation.CoreObject import CoreObject
