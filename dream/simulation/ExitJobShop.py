@@ -25,9 +25,9 @@ Created on 2 oct 2012
 extends the Exit object so that it can act as a jobshop station. Preceding station is read from the Entity
 '''
 
-from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import activate, passivate, waituntil, now, hold
-
+# from SimPy.Simulation import Process, Resource
+# from SimPy.Simulation import activate, passivate, waituntil, now, hold
+import simpy
 from Exit import Exit
 
 # ===========================================================================
