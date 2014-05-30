@@ -262,7 +262,6 @@ class Router(ObjectInterruption):
     # signal stations that wait for load operators
     #===========================================================================
     def signalOperatedStations(self):
-#         print 'router trying to signal pendingObjects'
         from Globals import G
         for operator in self.candidateOperators:
             station=operator.isAssignedTo()
@@ -308,8 +307,10 @@ class Router(ObjectInterruption):
                         assert operator.candidateEntity.currentStation in G.QueueList, 'the candidateEntity currentStation to receive signal from Router is not a queue'
                         if operator.candidateEntity.candidateReceiver.canAccept()\
                              and any(type=='Load' for type in operator.candidateEntity.candidateReceiver.multOperationTypeList):
-                            self.printTrace('router','signalling queue'+' '*50+operator.candidateEntity.currentStation.id)
-                            operator.candidateEntity.currentStation.loadOperatorAvailable.succeed(self.env.now)
+                            # if the station is already is already signalled then do not send event
+                            if not operator.candidateEntity.currentStation.loadOperatorAvailable.triggered:
+                                self.printTrace('router','signalling queue'+' '*50+operator.candidateEntity.currentStation.id)
+                                operator.candidateEntity.currentStation.loadOperatorAvailable.succeed(self.env.now)
     
     #===========================================================================
     # clear the pending lists of the router
