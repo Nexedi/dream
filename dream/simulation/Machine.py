@@ -542,8 +542,8 @@ class Machine(CoreObject):
     def interruptionActions(self):
         activeObjectQueue=self.Res.users
         activeEntity=activeObjectQueue[0]
-#         self.printTrace(activeEntity.name, interrupted=self.objName)
-        # if the interrupt occured while processing an entity
+        self.printTrace(activeEntity.name, interrupted=self.objName)
+        # if the interrupt occurred while processing an entity
         if not self.waitToDispose:
             # output to trace that the Machine (self.objName) got interrupted           
             try:                                                       
@@ -817,8 +817,8 @@ class Machine(CoreObject):
         
         #calculate the offShift time for current entity
         offShiftTimeInCurrentEntity=0
-        if self.interruptCause:
-            if self.onShift==False and self.interruptCause.type=='ShiftScheduler':
+        if self.interruptedBy:
+            if self.onShift==False and self.interruptedBy=='ShiftScheduler':
                 offShiftTimeInCurrentEntity=self.env.now-activeObject.timeLastShiftEnded
 
         # if there is an entity that finished processing in a Machine but did not get to reach 
@@ -870,8 +870,8 @@ class Machine(CoreObject):
         # we also need to add the last blocking time to total blockage time  
         if activeObject.onShift==False:
             #add the time only if the object is interrupted because of off-shift
-            if self.interruptCause:
-                if self.interruptCause.type=='ShiftScheduler':
+            if self.interruptedBy:
+                if self.interruptedBy=='ShiftScheduler':
                     self.totalOffShiftTime+=self.env.now-self.timeLastShiftEnded 
             elif len(self.getActiveObjectQueue())==0 or self.waitToDispose:
                 self.totalOffShiftTime+=self.env.now-self.timeLastShiftEnded 

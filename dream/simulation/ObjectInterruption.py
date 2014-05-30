@@ -37,13 +37,11 @@ class ObjectInterruption(object):
     def __init__(self, victim=None):
         from Globals import G
         self.env=G.env
-#         Process.__init__(self)
         self.victim=victim
         # variable used to hand in control to the objectInterruption
         self.call=False
     
     def initialize(self):
-#         Process.__init__(self)
         self.call=False
     
     #===========================================================================
@@ -90,12 +88,9 @@ class ObjectInterruption(object):
     # interrupts the victim
     #===========================================================================
     def interruptVictim(self):
-#         # if the victim is not in position to dispose an entity, then interrupt the processing
-#         if not self.victim.waitToDispose and self.victim.getActiveObjectQueue():
-#             self.interrupt(self.victim)
-        # otherwise it waits for an interruption event
-#         else:
-#             self.victim.interruptionStart.signal(now())
+        # inform the victim by whom will it be interrupted
+        # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously
+        self.victim.interruptedBy=self.type
         self.victim.interruptionStart.succeed(self.env.now)
     
     #===========================================================================
@@ -105,6 +100,8 @@ class ObjectInterruption(object):
         self.victim.interruptionEnd.succeed(self.env.now)
         #reset the interruptionStart event of the victim
         self.victim.interruptionStart=self.env.event()
+        # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously
+        self.victim.interruptedBy=None
         
     #===========================================================================
     # outputs message to the trace.xls. Format is (Simulation Time | Victim Name | message)            

@@ -26,7 +26,8 @@ Created on 3 Jan 2014
 schedules the availability of an object according to its shift pattern
 '''
 
-from SimPy.Simulation import now, Process, hold, request, release, infinity
+# from SimPy.Simulation import now, Process, hold, request, release, infinity
+import simpy
 from RandomNumberGenerator import RandomNumberGenerator
 from ObjectInterruption import ObjectInterruption
 
@@ -58,26 +59,26 @@ class ShiftScheduler(ObjectInterruption):
     # =======================================================================
     def run(self):    
         self.victim.totalOffShiftTime=0
-        self.victim.timeLastShiftEnded=now()
+        self.victim.timeLastShiftEnded=self.env.now
         self.victim.onShift=False
         while 1:
-            yield hold,self,float(self.remainingShiftPattern[0][0]-now())    # wait for the onShift                  
-            if(len(self.getVictimQueue())>0 and self.victim.interruptCause and not(self.endUnfinished)):
+            yield self.env.timeout(float(self.remainingShiftPattern[0][0]-self.env.now))    # wait for the onShift
+            if(len(self.getVictimQueue())>0 and self.victim.interruptedBy==self.type and not(self.endUnfinished)):
                 self.reactivateVictim()                 # re-activate the victim in case it was interrupted
             
-            self.victim.totalOffShiftTime+=now()-self.victim.timeLastShiftEnded
+            self.victim.totalOffShiftTime+=self.env.now-self.victim.timeLastShiftEnded
             self.victim.onShift=True
-            self.victim.timeLastShiftStarted=now()           
+            self.victim.timeLastShiftStarted=self.env.now
             self.outputTrace("is on shift")
-            startShift=now()            
+            startShift=self.env.now
             
-            yield hold,self,float(self.remainingShiftPattern[0][1]-now())    # wait until the shift is over
-        
-            if(len(self.getVictimQueue())>0 and not(self.endUnfinished)):            
+            yield self.env.timeout(float(self.remainingShiftPattern[0][1]-self.env.now))    # wait until the shift is over
+            
+            if(len(self.getVictimQueue())>0 and not(self.endUnfinished)):
                 self.interruptVictim()                  # interrupt processing operations if any
             self.victim.onShift=False                        # get the victim off-shift
-            self.victim.timeLastShiftEnded=now()              
-            self.outputTrace("is off shift")              
+            self.victim.timeLastShiftEnded=self.env.now
+            self.outputTrace("is off shift")
             
             self.remainingShiftPattern.pop(0)
             if len(self.remainingShiftPattern)==0:
