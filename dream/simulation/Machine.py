@@ -236,7 +236,6 @@ class Machine(CoreObject):
             # waitEvent isRequested /interruptionEnd/loadOperatorAvailable
             while 1:
                 self.printTrace(self.id, waitEvent='')
-#                 yield waitevent, self, [self.isRequested, self.interruptionEnd, self.loadOperatorAvailable]
                 receivedEvent = yield self.isRequested | self.interruptionEnd | self.loadOperatorAvailable
                 self.printTrace(self.id, received='')
                 # if the machine can accept an entity and one predecessor requests it continue with receiving the entity
@@ -245,19 +244,18 @@ class Machine(CoreObject):
                     assert self.isRequested.value==self.giver, 'the giver is not the requestingObject'
                     assert self.giver.receiver==self, 'the receiver of the signalling object in not the station'
                     # reset the signalparam of the isRequested event
-#                     self.isRequested.value=None
                     self.isRequested=self.env.event()
                     break
                 # if an interruption caused the control to be taken by the machine or
                 # if an operator was rendered available while it was needed by the machine to proceed with getEntity
-                if self.interruptionEnd.value==self.env.now or self.loadOperatorAvailable.value==self.env.now:
+                if self.interruptionEnd in receivedEvent or self.loadOperatorAvailable in receivedEvent:
                     if self.interruptionEnd in receivedEvent:
-                        if self.interruptionEnd.value==self.env.now:
-                            self.printTrace(self.id, interruptionEnd=str(self.interruptionEnd.value))
+                        assert self.interruptionEnd.value==self.env.now, 'interruptionEnd received later than created'
+                        self.printTrace(self.id, interruptionEnd=str(self.interruptionEnd.value))
                         self.interruptionEnd=self.env.event()
                     if self.loadOperatorAvailable in receivedEvent:
-                        if self.loadOperatorAvailable.value==self.env.now:
-                            self.printTrace(self.id,loadOperatorAvailable=str(self.loadOperatorAvailable.value))
+                        assert self.loadOperatorAvailable.value==self.env.now,'loadOperatorAvailable received later than created'
+                        self.printTrace(self.id,loadOperatorAvailable=str(self.loadOperatorAvailable.value))
                         self.loadOperatorAvailable=self.env.event()
                     # try to signal the Giver, otherwise wait until it is requested
                     if self.signalGiver():
@@ -454,7 +452,6 @@ class Machine(CoreObject):
                 self.releaseOperator()
                 yield self.brokerIsSet
                 self.brokerIsSet=self.env.event()
-            
             # signal the receiver that the activeObject has something to dispose of
             if not self.signalReceiver():
             # if there was no available receiver, get into blocking control
@@ -483,7 +480,8 @@ class Machine(CoreObject):
                     #       signals the preceding station (e.g. self.machine) and immediately after that gets the entity.
                     #       the preceding machine gets the canDispose signal which is actually useless, is emptied by the following station
                     #       and then cannot exit an infinite loop.
-                    yield self.env.timeout(0)
+                    yield self.entityRemoved #env.timeout(0)
+                    self.entityRemoved=self.env.event()
                     # if while waiting (for a canDispose event) became free as the machines that follows emptied it, then proceed
                     if not self.haveToDispose():
                         break

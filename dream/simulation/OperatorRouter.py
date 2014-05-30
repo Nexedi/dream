@@ -195,7 +195,7 @@ class Router(ObjectInterruption):
                     # if the operator is not conflicting
                     if not operator in self.conflictingOperators:
                         # assign an operator to the priorityObject
-                        self.printTrace('router', ' will assign'+operator.id+'to'+operator.candidateStation.id)
+                        self.printTrace('router', 'will assign '+operator.id+' to '+operator.candidateStation.id)
                         operator.assignTo(operator.candidateStation)
                         if not operator.candidateStation in self.toBeSignalled:
                             self.toBeSignalled.append(operator.candidateStation)
