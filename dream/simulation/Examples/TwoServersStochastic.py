@@ -1,5 +1,8 @@
 from dream.simulation.imports import Machine, Source, Exit, Part, G, Repairman, Queue, Failure 
-from dream.simulation.imports import simulate, activate, initialize
+from dream.simulation.imports import simpy
+
+G.env=simpy.Environment()   # define a simpy environment
+                            # this is where all the simulation object 'live'
 
 #define the objects of the model
 R=Repairman('R1', 'Bob') 
@@ -14,7 +17,7 @@ F1=Failure(victim=M1, distribution={'distributionType':'Fixed','MTTF':60,'MTTR':
 F2=Failure(victim=M2, distribution={'distributionType':'Fixed','MTTF':40,'MTTR':10}, repairman=R)
 
 G.ObjList=[S,M1,M2,E,Q]   #add all the objects in G.ObjList so that they can be easier accessed later
-
+G.ObjectResourceList=[R]
 G.ObjectInterruptionList=[F1,F2]     #add all the objects in G.ObjList so that they can be easier accessed later
 
 #define predecessors and successors for the objects    
@@ -32,29 +35,31 @@ G.confidenceLevel=0.99      #set the confidence level. 0.99=99%
 for i in range(G.numberOfReplications):
     G.seed+=1       #increment the seed so that we get different random numbers in each run.
     
-    initialize()                        #initialize the simulation (SimPy method)
-        
-    #initialize all the objects    
-    R.initialize()
+    #initialize all the objects
     for object in G.ObjList:
         object.initialize()
-        
+
     for objectInterruption in G.ObjectInterruptionList:
         objectInterruption.initialize()
-    
-    #activate all the objects 
-    for object in G.ObjList:
-        activate(object, object.run())
-    
-    for objectInterruption in G.ObjectInterruptionList:
-        activate(objectInterruption, objectInterruption.run())
-    
-    simulate(until=G.maxSimTime)    #run the simulation
+        
+    for objectResource in G.ObjectResourceList:
+        objectResource.initialize()
 
-    #carry on the post processing operations for every object in the topology       
+    #activate all the objects
+    for object in G.ObjList:
+        G.env.process(object.run())
+
+    for objectInterruption in G.ObjectInterruptionList:
+        G.env.process(objectInterruption.run())
+    
+    G.env.run(until=G.maxSimTime)    #run the simulation
+
+    #carry on the post processing operations for every object in the topology
     for object in G.ObjList:
         object.postProcessing()
-    R.postProcessing()
+    
+    for objectResource in G.ObjectResourceList:
+        objectResource.postProcessing()
                
 #output data to excel for every object        
 for object in G.ObjList:

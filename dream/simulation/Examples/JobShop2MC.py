@@ -1,10 +1,13 @@
 from dream.simulation.imports import MachineJobShop, QueueJobShop, ExitJobShop, Globals, Job, G 
-from dream.simulation.imports import simulate, activate, initialize, infinity
+from dream.simulation.imports import simpy
+
+G.env=simpy.Environment()   # define a simpy environment
+                            # this is where all the simulation object 'live'
 
 #define the objects of the model
-Q1=QueueJobShop('Q1','Queue1', capacity=infinity, schedulingRule="MC-Priority-EDD")
-Q2=QueueJobShop('Q2','Queue2', capacity=infinity)
-Q3=QueueJobShop('Q3','Queue3', capacity=infinity)
+Q1=QueueJobShop('Q1','Queue1', capacity=float("inf"), schedulingRule="MC-Priority-EDD")
+Q2=QueueJobShop('Q2','Queue2', capacity=float("inf"))
+Q3=QueueJobShop('Q3','Queue3', capacity=float("inf"))
 M1=MachineJobShop('M1','Machine1')
 M2=MachineJobShop('M2','Machine2')
 M3=MachineJobShop('M3','Machine3')
@@ -45,13 +48,12 @@ J3Route=[{"stationIdsList": ["Q1"]},
 J1=Job('J1','Job1',route=J1Route, priority=1, dueDate=100)
 J2=Job('J2','Job2',route=J2Route, priority=1, dueDate=90)
 J3=Job('J3','Job3',route=J3Route, priority=0, dueDate=110)
-G.JobList=[J1,J2,J3]        #a list to hold all the jobs
+G.EntityList=[J1,J2,J3]        #a list to hold all the jobs
 
 G.maxSimTime=1440.0     #set G.maxSimTime 1440.0 minutes (1 day)
 
 def main():
-    initialize()            #initialize the simulation (SimPy method)
-            
+           
     #initialize all the objects    
     for object in G.ObjList:
         object.initialize()
@@ -59,19 +61,25 @@ def main():
     #initialize all the jobs
     for job in G.JobList: 
         job.initialize()
-    
-    #set the WIP for all the jobs
-    Globals.setWIP(G.JobList)
-        
+
+    #set the WIP
+    Globals.setWIP(G.EntityList)
+
     #activate all the objects 
     for object in G.ObjList:
-        activate(object, object.run())
+        G.env.process(object.run())   
+              
+    G.env.run(until=float("inf"))    #run the simulation until there are no more events
+
+    G.maxSimTime=E.timeLastEntityLeft   #calculate the maxSimTime as the time that the last Job left
     
-    simulate(until=G.maxSimTime)    #run the simulation
+    #carry on the post processing operations for every object in the topology       
+    for object in G.ObjList:
+        object.postProcessing()
     
     #output the schedule of every job
     returnSchedule=[]     # dummy variable used just for returning values and testing
-    for job in G.JobList: 
+    for job in G.EntityList: 
         #loop in the schedule to print the results
         for record in job.schedule:
             #schedule holds ids of objects. The following loop will identify the name of the CoreObject with the given id
