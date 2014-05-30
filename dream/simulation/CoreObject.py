@@ -416,12 +416,15 @@ class CoreObject(object):
             if not receiver.assignedOperator or\
                    (receiver.isPreemptive and len(receiver.Res.users)>0):
                 if receiver.isLoadRequested():
-                    from Globals import G
-                    if not G.Router.invoked:
-#                         self.printTrace(self.id, signal='router')
-                        G.Router.invoked=True
-                        G.Router.isCalled.succeed(self.env.now)
-                    return True
+                    try:
+                        from Globals import G
+                        if not G.Router.invoked:
+#                             self.printTrace(self.id, signal='router')
+                            G.Router.invoked=True
+                            G.Router.isCalled.succeed(G.env.now)
+                        return True
+                    except:
+                        return False
             else:
                 return False
         except:
