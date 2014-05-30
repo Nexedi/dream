@@ -218,7 +218,7 @@ class Router(ObjectInterruption):
                 if not self.managed:
                     # if the operator is not currently working on the candidateStation then the entity he is
                     #     currently working on must be preempted, and he must be unassigned and assigned to the new station
-                    if operator.getResourceQueue()[0].victim!=operator.candidateStation:
+                    if operator.workingStation!=operator.candidateStation:
                         operator.unAssign()
                         self.printTrace('router', ' will assign'+operator.id+'to'+operator.candidateStation.id)
                         operator.assignTo(operator.candidateStation)
@@ -274,12 +274,12 @@ class Router(ObjectInterruption):
                     #------------------------------------------------------------------------------
                     if operator in self.preemptiveOperators:
                         # if not assigned to the station currently working on, then preempt both stations
-                        if station!=operator.getResourceQueue()[0].victim:
+                        if station!=operator.workingStation:
                             # preempt operators currentStation
-                            operator.getResourceQueue()[0].victim.shouldPreempt=True
-                            self.printTrace('router', 'preempting '+operator.getResourceQueue()[0].victim.id+'.. '*6)
-                            operator.getResourceQueue()[0].victim.preempt()
-                            operator.getResourceQueue()[0].victim.timeLastEntityEnded=self.env.now     #required to count blockage correctly in the preemptied station
+                            operator.workingStation.shouldPreempt=True
+                            self.printTrace('router', 'preempting '+operator.workingStation.id+'.. '*6)
+                            operator.workingStation.preempt()
+                            operator.workingStation.timeLastEntityEnded=self.env.now     #required to count blockage correctly in the preemptied station
                         station.shouldPreempt=True
                         self.printTrace('router', 'preempting receiver '+station.id+'.. '*6)
                         station.preempt()
@@ -404,7 +404,7 @@ class Router(ObjectInterruption):
                         # This way the first operator that is not currently on a critical entity is invoked
                         # TODO: consider picking an operator more wisely by sorting
                         for operator in nextObject.operatorPool.operators:
-                            currentStation=operator.getResourceQueue()[0].victim
+                            currentStation=operator.workingStation
                             if not currentStation.getActiveObjectQueue()[0].isCritical:
                                 preemptiveOperator=operator
                                 preemptiveOperator.candidateStations.append(nextObject)
