@@ -65,6 +65,8 @@ class CoreObject(object):
         self.interruptionEnd=self.env.event()
 #         self.interruptionStart=SimEvent('interruptionStart')
         self.interruptionStart=self.env.event()
+        # variable that holds the the type of interruption interrupting the station
+        self.interruptedBy=None
         
         self.entityRemoved=self.env.event()
     
