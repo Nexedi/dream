@@ -273,6 +273,9 @@ class CoreObject(object):
         self.updateNext(activeEntity)
         self.outputTrace(activeEntity.name, "got into "+self.objName)
         self.printTrace(activeEntity.name, enter=self.id)
+        # if the object (eg Queue) canAccept then signal the Giver
+        if self.canAccept():
+            self.signalGiver()
         return activeEntity
     
     #===========================================================================
