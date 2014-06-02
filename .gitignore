@@ -8,5 +8,5 @@ develop-eggs/**
 dream.egg-info/**
 eggs/**
 parts/**
-dream/simulation/outputJSON.json
 outputJSON.json
+trace*.xls
