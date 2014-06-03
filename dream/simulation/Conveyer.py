@@ -327,9 +327,9 @@ class Conveyer(CoreObject):
     # gets an entity from the predecessor
     #===========================================================================
     def getEntity(self):       
-        activeEntity=CoreObject.getEntity(self) 
         #the entity is placed in the start of the conveyer
         self.position.append(0)
+        activeEntity=CoreObject.getEntity(self) 
         # counting the total number of units to be moved through the whole simulation time
         self.numberOfMoves+=1
         #check if the conveyer became full to start counting blockage 
