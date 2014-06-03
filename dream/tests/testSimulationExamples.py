@@ -64,7 +64,7 @@ class SimulationExamples(TestCase):
   def testDecompositionOfBatches(self):
     from dream.simulation.Examples.DecompositionOfBatches import main
     result = main()
-    self.assertEquals(result['subbatches'], 2303)
+    self.assertEquals(result['subbatches'], 2302)
     self.assertTrue(79.96 < result["working_ratio"] < 79.97)
     self.assertEquals(result["blockage_ratio"] , 0.0)
     self.assertTrue(20.03 < result["waiting_ratio"] < 20.04)

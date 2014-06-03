@@ -9,9 +9,9 @@
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 5.993741307371349, 
-    "takt_time": 1.0013908205841446, 
-    "throughput": 1438
+    "lifespan": 5.993736951983299, 
+    "takt_time": 1.001739735560195, 
+    "throughput": 1437
    }
   }, 
   {

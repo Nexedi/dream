@@ -5,7 +5,7 @@
    "_class": "Dream.Job", 
    "id": "C1", 
    "results": {
-    "completionTime": 3.0, 
+    "completionTime": 2.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -24,7 +24,7 @@
       "stationId": "M2"
      }, 
      {
-      "entranceTime": 3.0, 
+      "entranceTime": 2.0, 
       "stationId": "E1"
      }
     ]
@@ -34,7 +34,7 @@
    "_class": "Dream.Job", 
    "id": "C2", 
    "results": {
-    "completionTime": 2.0, 
+    "completionTime": 3.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -53,7 +53,7 @@
       "stationId": "M4"
      }, 
      {
-      "entranceTime": 2.0, 
+      "entranceTime": 3.0, 
       "stationId": "E1"
      }
     ]

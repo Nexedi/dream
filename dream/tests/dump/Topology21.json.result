@@ -5,10 +5,10 @@
    "_class": "Dream.Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 720.687581415545, 
-    "takt_time": 0.6252713851498046, 
-    "throughput": 2303, 
-    "unitsThroughput": 46060
+    "lifespan": 720.3751086012163, 
+    "takt_time": 0.6253258036490009, 
+    "throughput": 2302, 
+    "unitsThroughput": 46040
    }
   }, 
   {

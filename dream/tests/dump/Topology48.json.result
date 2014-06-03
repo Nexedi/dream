@@ -7,7 +7,6 @@
    "results": {
     "intervalThroughputList": [
      9520, 
-     9600, 
      9600
     ], 
     "lifespan": 454.0, 
