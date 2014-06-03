@@ -872,9 +872,8 @@ def setTopology():
 def initializeObjects():
     for element in G.ObjList:
         element.initialize()
-    for repairman in G.ModelResourceList:
-        if not repairman.isInitialized():
-            repairman.initialize()
+    for modelResource in G.ModelResourceList:
+        modelResource.initialize()
     for entity in G.EntityList:
         entity.initialize()
     for ev in G.EventGeneratorList:
