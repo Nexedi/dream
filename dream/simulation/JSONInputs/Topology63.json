@@ -17,7 +17,7 @@
     "maxSimTime": 50, 
     "numberOfReplications": 4, 
     "processTimeout": 10, 
-    "trace": "Yes",
+    "trace": "No",
 	"seed": 1450
   }, 
   "nodes": {
