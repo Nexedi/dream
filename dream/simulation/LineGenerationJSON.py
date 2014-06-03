@@ -1272,6 +1272,8 @@ def main(argv=[], input_data=None):
     #run the experiment (replications)          
     for i in xrange(G.numberOfReplications):
         G.env=simpy.Environment()                       # initialize the environment
+        G.maxSimTime=float(G.JSONData['general'].get('maxSimTime', '100'))     # read the maxSimTime in each replication 
+                                                                               # since it may be changed for infinite ones
 
         if G.seed:
           G.Rnd=Random('%s%s' % (G.seed, i))
@@ -1302,7 +1304,6 @@ def main(argv=[], input_data=None):
         #else we simulate until the given maxSimTime
         else:
             G.env.run(until=G.maxSimTime)
-#             simulate(until=G.maxSimTime)      #simulate until the given maxSimTime
         
         #carry on the post processing operations for every object in the topology       
         for element in G.ObjList:
