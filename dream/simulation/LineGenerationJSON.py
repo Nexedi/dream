@@ -1266,19 +1266,18 @@ def main(argv=[], input_data=None):
     #read the input from the JSON file and create the line
     G.JSONData=json.loads(G.InputData)              # create the dictionary JSONData
     readGeneralInput()
-    G.env=simpy.Environment()                       # initialize the environment
     createObjects()
     createObjectInterruptions()
     setTopology()
 
     #run the experiment (replications)          
     for i in xrange(G.numberOfReplications):
-        #logger.info("start run number "+str(i+1)) 
+        G.env=simpy.Environment()                       # initialize the environment
+
         if G.seed:
           G.Rnd=Random('%s%s' % (G.seed, i))
         else:
           G.Rnd=Random()
-#         initialize()                        #initialize the simulation
         createWIP()
         initializeObjects()
         Globals.setWIP(G.EntityList)        
