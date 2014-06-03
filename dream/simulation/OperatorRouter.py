@@ -49,8 +49,6 @@ class Router(ObjectInterruption):
     def __init__(self,sorting=False):
         ObjectInterruption.__init__(self)
         self.type = "Router"
-        # signal used to initiate the generator of the Router
-        self.isCalled=self.env.event()
         self.isInitialized=False
         self.candidateOperators=[]
         self.multipleCriterionList=[]
@@ -78,6 +76,8 @@ class Router(ObjectInterruption):
     #===========================================================================
     def initialize(self):
         ObjectInterruption.initialize(self)
+        # signal used to initiate the generator of the Router
+        self.isCalled=self.env.event()
         # list that holds all the objects that can receive
         self.pendingObjects=[]
         self.calledOperator=[]

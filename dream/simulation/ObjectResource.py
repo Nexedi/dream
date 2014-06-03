@@ -33,11 +33,11 @@ import simpy
 class ObjectResource(object):
     
     def __init__(self):
-        from Globals import G
-        self.env=G.env
         self.initialized = False
         
     def initialize(self):
+        from Globals import G
+        self.env=G.env
         self.totalWorkingTime=0         #holds the total working time
         self.totalWaitingTime=0         #holds the total waiting time
         self.timeLastOperationStarted=0    #holds the time that the last repair was started        

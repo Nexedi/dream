@@ -55,8 +55,7 @@ class Conveyer(CoreObject):
                                                         # when the entities have to be loaded to operatedMachines
                                                         # then the giverObjects have to be blocked for the time
                                                         # that the machine is being loaded 
-        self.moveEnd=self.env.event()
-        
+       
     #===========================================================================
     # the initialize method
     #===========================================================================
@@ -85,6 +84,8 @@ class Conveyer(CoreObject):
         self.successorIndex=0       #holds the index of the successor where the Queue Conveyer dispose an entity next
         
         self.requestingEntities=[]                  # list of the entities requesting space on the conveyer
+        # signal that notifies the conveyer that its move is completed
+        self.moveEnd=self.env.event()
     
     #===========================================================================
     # conveyer generator
@@ -521,8 +522,8 @@ class ConveyerMover(object):
             
             yield self.env.timeout(self.timeToWait)                 #wait for the time that the conveyer calculated
             #     continue if interrupted
-            self.conveyer.moveEntities()                    #move the entities of the conveyer
-            self.conveyer.moveEnd.succeed(self.env.now)
+            self.conveyer.moveEntities()                    # move the entities of the conveyer
+            self.conveyer.moveEnd.succeed(self.env.now)     # send a signal to the conveyer that the move has ended
             
 
     

@@ -34,9 +34,6 @@ import simpy
 class CoreObject(object):
     
     def __init__(self, id, name, **kw):
-        from Globals import G
-        self.env=G.env
-#         Process.__init__(self) 
         self.id = id
         self.objName = name
         #     lists that hold the previous and next objects in the flow
@@ -56,23 +53,10 @@ class CoreObject(object):
         self.resetOnPreemption=False
         self.interruptCause=None
         self.gatherWipStat=False
-        # signalizing an event that activates the generator
-#         self.isRequested=SimEvent('isRequested')
-        self.isRequested=self.env.event()
-#         self.canDispose=SimEvent('canDispose')
-        self.canDispose=self.env.event()
-#         self.interruptionEnd=SimEvent('interruptionEnd')
-        self.interruptionEnd=self.env.event()
-#         self.interruptionStart=SimEvent('interruptionStart')
-        self.interruptionStart=self.env.event()
-        # variable that holds the the type of interruption interrupting the station
-        self.interruptedBy=None
-        
-        self.entityRemoved=self.env.event()
     
     def initialize(self):
-        # XXX why call super.__init__ outside of __init__ ?
-#         Process.__init__(self) 
+        from Globals import G
+        self.env=G.env
         self.Up=True                                    #Boolean that shows if the machine is in failure ("Down") or not ("up")
         self.onShift=True
         self.currentEntity=None      
@@ -143,16 +127,12 @@ class CoreObject(object):
         # TODO, think what to do in multiple runs
         # TODO, this should be also updated in Globals.setWIP (in case we have initial wip)
         self.wipStatList=[[0,0]]
-        # signalizing an event that activates the generator
-#         self.isRequested=SimEvent('isRequested')
+
         self.isRequested=self.env.event()
-#         self.canDispose=SimEvent('canDispose')
         self.canDispose=self.env.event()
-#         self.interruptionEnd=SimEvent('interruptionEnd')
         self.interruptionEnd=self.env.event()
-#         self.interruptionStart=SimEvent('interruptionStart')
         self.interruptionStart=self.env.event()
-        
+        self.interruptedBy=None      
         self.entityRemoved=self.env.event()
 
     # =======================================================================

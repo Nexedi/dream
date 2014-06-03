@@ -150,15 +150,6 @@ class Machine(CoreObject):
         # flags used for preemption purposes
         self.isPreemptive=isPreemptive
         self.resetOnPreemption=resetOnPreemption
-        # events used by the broker
-        self.brokerIsSet=self.env.event()
-        # this event is generated every time an operator is requested by machine for Load operation type.
-        #     if the machine has not succeeded in getting an entity due to the resource absence 
-        #     and waits for the next event to get the entity, 
-        #     then it must be signalled that the operator is now available
-        self.loadOperatorAvailable=self.env.event()
-        # signal used for preemption
-        self.preemptQueue=self.env.event()
         # flag notifying that there is operator assigned to the actievObject
         self.assignedOperator=True
     

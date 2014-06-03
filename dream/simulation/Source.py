@@ -102,14 +102,7 @@ class Source(CoreObject):
         self.rng = RandomNumberGenerator(self, **interarrivalTime)
 
         self.item=Globals.getClassFromName(entity)      #the type of object that the Source will generate
-        
-        self.entityGenerator=EntityGenerator(victim=self)     # the EntityGenerator of the Source
-        
-#         self.entityCreated=SimEvent('an entity is created')
-        self.entityCreated=self.env.event()
-        # event used by router
-#         self.loadOperatorAvailable=SimEvent('loadOperatorAvailable')
-        self.loadOperatorAvailable=self.env.event()
+               
         self.scheduledEntities=[]       # list of creations that are scheduled
         
     
@@ -124,7 +117,8 @@ class Source(CoreObject):
         # self.Res=Resource(capacity=infinity)
         self.Res=simpy.Resource(self.env, capacity=float('inf'))
         self.Res.users=[]                                 
-#         self.Res.waitQ=[]
+        self.entityGenerator=EntityGenerator(victim=self)     # the EntityGenerator of the Source
+
         self.numberOfArrivals = 0 
 #         self.entityGenerator.initialize()
         # activate(self.entityGenerator,self.entityGenerator.run())

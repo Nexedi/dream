@@ -67,8 +67,6 @@ class Queue(CoreObject):
         self.gatherWipStat=gatherWipStat
         # Will be populated by an event generator
         self.wip_stat_list = []
-        # event used by router
-        self.loadOperatorAvailable=self.env.event()
 
     @staticmethod
     def getSupportedSchedulingRules():

@@ -55,6 +55,7 @@ class MachineManagedJob(MachineJobShop):
         self.operatorPool.operators=[]
         #create a Broker
         self.broker = Broker(self)
+        self.broker.initialize()
         self.env.process(self.broker.run())
 #         activate(self.broker,self.broker.run())
         #create a Router
@@ -62,6 +63,7 @@ class MachineManagedJob(MachineJobShop):
         from Globals import G
         if not G.Router:
             self.router=Router()
+            self.router.initialize()
             self.env.process(self.router.run())
 #             activate(self.router,self.router.run())
             G.Router=self.router

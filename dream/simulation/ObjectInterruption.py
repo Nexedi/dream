@@ -35,13 +35,13 @@ import simpy
 class ObjectInterruption(object):
     
     def __init__(self, victim=None):
-        from Globals import G
-        self.env=G.env
         self.victim=victim
         # variable used to hand in control to the objectInterruption
         self.call=False
     
     def initialize(self):
+        from Globals import G
+        self.env=G.env
         self.call=False
     
     #===========================================================================

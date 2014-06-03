@@ -48,9 +48,6 @@ class Broker(ObjectInterruption):
         self.timeOperationStarted = 0
         self.timeLastOperationEnded = 0
         self.timeWaitForOperatorStarted=0
-        # Broker events
-        self.isCalled=self.env.event()#SimEvent('brokerIsCalled')
-        self.resourceAvailable=self.env.event()#SimEvent('resourceAvailable')
         self.waitForOperator=False
         
     #===========================================================================
@@ -62,6 +59,10 @@ class Broker(ObjectInterruption):
         self.timeOperationStarted=0
         self.timeWaitForOperatorStarted=0
         self.waitForOperator=False
+        # Broker events
+        self.isCalled=self.env.event()
+        self.resourceAvailable=self.env.event()
+
         
     # =======================================================================
     #                          the run method
