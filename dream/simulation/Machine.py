@@ -142,7 +142,7 @@ class Machine(CoreObject):
             # otherwise set the already existing router as the machines Router
             else:
                 self.router=G.Router
-        #     lists to hold statistics of multiple runs
+        #lists to hold statistics of multiple runs
         self.WaitingForOperator=[]
         self.WaitingForLoadOperator=[]
         self.Loading = []
@@ -172,7 +172,9 @@ class Machine(CoreObject):
             # initialise the router only once
             if not self.router.isInitialized:
                 self.router.initialize()
+            if not self.router.isActivated:
                 self.env.process(self.router.run())
+                self.router.isActivated=True
             for operator in self.operatorPool.operators:
                 operator.coreObjectIds.append(self.id)
                 operator.coreObjects.append(self)

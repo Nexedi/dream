@@ -50,6 +50,7 @@ class Router(ObjectInterruption):
         ObjectInterruption.__init__(self)
         self.type = "Router"
         self.isInitialized=False
+        self.isActivated=False
         self.candidateOperators=[]
         self.multipleCriterionList=[]
         self.schedulingRule='WT'

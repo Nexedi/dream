@@ -64,12 +64,13 @@ class MachineManagedJob(MachineJobShop):
         if not G.Router:
             self.router=Router()
             self.router.initialize()
-            self.env.process(self.router.run())
-#             activate(self.router,self.router.run())
-            G.Router=self.router
+            G.Router=self.router          
         # otherwise set the already existing router as the machines Router
         else:
             self.router=G.Router
+        if not self.router.isActivated:
+            self.env.process(self.router.run())
+            self.router.isActivated=True
         # holds the Entity that is to be obtained and will be updated by canAcceptAndIsRequested
         self.entityToGet=None
 

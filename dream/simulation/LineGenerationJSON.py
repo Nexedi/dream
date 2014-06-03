@@ -1274,7 +1274,10 @@ def main(argv=[], input_data=None):
         G.env=simpy.Environment()                       # initialize the environment
         G.maxSimTime=float(G.JSONData['general'].get('maxSimTime', '100'))     # read the maxSimTime in each replication 
                                                                                # since it may be changed for infinite ones
-
+        if G.Router:
+            G.Router.isActivated=False
+            G.Router.isInitialized=False
+        
         if G.seed:
           G.Rnd=Random('%s%s' % (G.seed, i))
         else:
