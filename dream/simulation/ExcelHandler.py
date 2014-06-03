@@ -58,3 +58,11 @@ def outputLog(fileName='Log', entityList=G.EntityList):
                     logSheet=logFile.add_sheet('sheet '+str(sheetIndex), cell_overwrite_ok=True)
                     
     logFile.save(str(fileName)+'.xls')  
+    
+def resetTrace():
+    # data for the trace output in excel
+    # -----------------------------------------------------------------------
+    G.traceIndex=0                    #index that shows in what row we are
+    G.sheetIndex=1                    #index that shows in what sheet we are
+    G.traceFile = xlwt.Workbook()     #create excel file
+    G.traceSheet = G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)  #create excel sheet  
