@@ -274,11 +274,12 @@ def getConfidenceIntervals(value_list):
                  'ub': value_list[0],
                  'avg': value_list[0], }
     from dream.KnowledgeExtraction.ConfidenceIntervals import Intervals
-    import numpy
+    from dream.KnowledgeExtraction.StatisticalMeasures import BasicStatisticalMeasures
+    BSM=BasicStatisticalMeasures()
     lb, ub = Intervals().ConfidIntervals(value_list, G.confidenceLevel)
     return {'lb': lb,
             'ub': ub,
-            'avg': numpy.mean(value_list) }
+            'avg': BSM.mean(value_list) }
     
 # #===========================================================================
 # # printTrace
