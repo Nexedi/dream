@@ -248,7 +248,6 @@ class Queue(CoreObject):
         elif criterion=="LPT":
             for entity in activeObjectQ:
                 processingTime = entity.remainingRoute[0].get('processingTime',None)
-                entity.processingTimeInNextStation=float(processingTime.get('mean',0))
                 if processingTime:
                     entity.processingTimeInNextStation=float(processingTime.get('mean',0))
                 else:
