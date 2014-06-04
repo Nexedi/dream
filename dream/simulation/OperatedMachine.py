@@ -25,8 +25,8 @@ Created on 22 Nov 2012
 Models a machine that can also have failures
 '''
 
-from SimPy.Simulation import Process, Resource
-from SimPy.Simulation import activate, passivate, waituntil, now, hold, request, release
+# XXX
+#from SimPy.Simulation import activate, passivate, waituntil, hold, request, release
 
 from Failure import Failure
 # from CoreObject import CoreObject
@@ -157,19 +157,19 @@ class OperatedMachine(Machine):
                 # when it's ready to accept (canAcceptAndIsRequested) then inform the broker
                 # machines waits to be operated (waits for the operator)
                 self.requestOperator()
-                self.timeWaitForLoadOperatorStarted = now()
+                self.timeWaitForLoadOperatorStarted = self.env.now
                 # wait until the Broker has waited times equal to loadTime (if any)
                 yield waituntil, self, self.broker.brokerIsSet
-                self.timeWaitForLoadOperatorEnded = now()
+                self.timeWaitForLoadOperatorEnded = self.env.now
                 self.loadOperatorWaitTimeCurrentEntity += self.timeWaitForLoadOperatorEnded-self.timeWaitForLoadOperatorStarted
                 self.totalTimeWaitingForLoadOperator += self.loadOperatorWaitTimeCurrentEntity 
                 
     # ======= Load the machine if the Load is defined as one of the Operators' operation types
             if any(type=="Load" for type in self.multOperationTypeList) and self.isOperated():
-                self.timeLoadStarted = now()
+                self.timeLoadStarted = self.env.now
                 yield hold,self,self.calculateLoadTime()
                 # if self.interrupted(): There is the issue of failure during the Loading
-                self.timeLoadEnded = now()
+                self.timeLoadEnded = self.env.now
                 self.loadTimeCurrentEntity = self.timeLoadEnded-self.timeLoadStarted 
                 self.totalLoadTime += self.loadTimeCurrentEntity
                 
@@ -192,10 +192,10 @@ class OperatedMachine(Machine):
             
             # set the currentEntity as the Entity just received and initialize the timer timeLastEntityEntered
             self.nameLastEntityEntered=self.currentEntity.name      # this holds the name of the last entity that got into Machine                   
-            self.timeLastEntityEntered=now()                        #this holds the last time that an entity got into Machine  
+            self.timeLastEntityEntered=self.env.now                        #this holds the last time that an entity got into Machine  
             # variables dedicated to hold the processing times, the time when the Entity entered, 
             # and the processing time left 
-            timeEntered=now()                                       # timeEntered dummy Timer that holds the time the last Entity Entered
+            timeEntered=self.env.now                                    # timeEntered dummy Timer that holds the time the last Entity Entered
             
     # ======= request a resource if it is not already assigned an Operator
             if(self.operatorPool!="None")\
@@ -204,10 +204,10 @@ class OperatedMachine(Machine):
                 # when it's ready to accept (canAcceptAndIsRequested) then inform the broker
                 # machines waits to be operated (waits for the operator)
                 self.requestOperator()
-                self.timeWaitForOperatorStarted = now()
+                self.timeWaitForOperatorStarted = self.env.now
                 # wait until the Broker has waited times equal to loadTime (if any)
                 yield waituntil, self, self.broker.brokerIsSet
-                self.timeWaitForOperatorEnded = now()
+                self.timeWaitForOperatorEnded = self.env.now
                 self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
             
             
@@ -217,10 +217,10 @@ class OperatedMachine(Machine):
     # ======= setup the machine if the Setup is defined as one of the Operators' operation types
             # in plantSim the setup is performed when the machine has to process a new type of Entity and only once
             if any(type=="Setup" for type in self.multOperationTypeList) and self.isOperated():
-                self.timeSetupStarted = now()
+                self.timeSetupStarted = self.env.now
                 yield hold,self,self.calculateSetupTime()
                 # if self.interrupted(): There is the issue of failure during the setup
-                self.timeSetupEnded = now()
+                self.timeSetupEnded = self.env.now
                 self.setupTimeCurrentEntity = self.timeSetupEnded-self.timeSetupStarted
                 self.totalSetupTime += self.setupTimeCurrentEntity
             
@@ -232,7 +232,7 @@ class OperatedMachine(Machine):
                 # after getting the entity release the operator
                 # machine has to release the operator
                 self.releaseOperator()
-#                 print self.objName, 'operator released', now()
+#                 print self.objName, 'operator released', self.env.now
                 # wait until the Broker has finished processing
                 yield waituntil, self, self.broker.brokerIsSet
             
@@ -249,7 +249,7 @@ class OperatedMachine(Machine):
             while processingEndedFlag:
                 # tBefore : dummy variable to keep track of the time that the processing starts after 
                 #           every interruption                        
-                tBefore=now()
+                tBefore=self.env.now
                 # wait for the processing time left tinM, if no interruption occurs then change the 
                 # processingEndedFlag and exit loop,
                 # else (if interrupted()) set interruption flag to true (only if tinM==0),
@@ -260,7 +260,7 @@ class OperatedMachine(Machine):
                     # output to trace that the Machine (self.objName) got interrupted                                                                  
                     self.outputTrace(self.getActiveObjectQueue()[0].name, "Interrupted at "+self.objName)
                     # recalculate the processing time left tinM
-                    tinM=tinM-(now()-tBefore)
+                    tinM=tinM-(self.env.now-tBefore)
                     if(tinM==0):            # sometimes the failure may happen exactly at the time that the processing would finish
                                             # this may produce disagreement with the simul8 because in both SimPy and Simul8
                                             # it seems to be random which happens 1st
@@ -268,34 +268,35 @@ class OperatedMachine(Machine):
                         interruption=True
                     # passivate the Machine for as long as there is no repair
                     # start counting the down time at breatTime dummy variable
-                    breakTime=now()                                 # dummy variable that the interruption happened
+                    breakTime=self.env.now                                 # dummy variable that the interruption happened
                     
     # =============== release the operator if there is failure
                     if (self.operatorPool!="None")\
                         and self.isOperated()\
                         and any(type=="Processing" for type in self.multOperationTypeList):
                         self.releaseOperator()
-#                         print self.objName, 'operator released due to failure', now()
+#                         print self.objName, 'operator released due to failure', self.env.now
                         yield waituntil,self,self.broker.brokerIsSet 
                     
                     # if there is a failure in the machine it is passivated
                     yield passivate,self
                     # use the timers to count the time that Machine is down and related 
-                    self.downTimeProcessingCurrentEntity+=now()-breakTime       # count the time that Machine is down while processing this Entity
-                    self.downTimeInCurrentEntity+=now()-breakTime               # count the time that Machine is down while on currentEntity
-                    self.timeLastFailureEnded=now()                             # set the timeLastFailureEnded
-                    failureTime+=now()-breakTime                                # dummy variable keeping track of the failure time 
+                    self.downTimeProcessingCurrentEntity+=self.env.now-breakTime       # count the time that Machine is down while processing this Entity
+                    self.downTimeInCurrentEntity+=self.env.now-breakTime               # count the time that Machine is down while on currentEntity
+                    self.timeLastFailureEnded=self.env.now                             # set the timeLastFailureEnded
+                    failureTime+=self.env.now-breakTime                                # dummy variable keeping track of the failure time 
                     # output to trace that the Machine self.objName was passivated for the current failure time
-                    self.outputTrace(self.getActiveObjectQueue()[0].name, "passivated in "+self.objName+" for "+str(now()-breakTime))
+                    self.outputTrace(self.getActiveObjectQueue()[0].name,
+                    "passivated in "+self.objName+" for "+str(self.env.now-breakTime))
                     
     # =============== request a resource after the repair
                     if (self.operatorPool!="None")\
                         and any(type=="Processing" for type in self.multOperationTypeList)\
                         and not interruption:
-                        self.timeWaitForOperatorStarted = now()
+                        self.timeWaitForOperatorStarted = self.env.now
                         self.requestOperator()
                         yield waituntil,self,self.broker.brokerIsSet
-                        self.timeWaitForOperatorEnded = now() 
+                        self.timeWaitForOperatorEnded = self.env.now
                         self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
                 
                 # if no interruption occurred the processing in M1 is ended 
@@ -319,7 +320,7 @@ class OperatedMachine(Machine):
                                                                     # is what the distribution initially gave
             
             # update the variables keeping track of Entity related attributes of the machine    
-            self.timeLastEntityEnded=now()                          # this holds the time that the last entity ended processing in Machine 
+            self.timeLastEntityEnded=self.env.now                          # this holds the time that the last entity ended processing in Machine 
             self.nameLastEntityEnded=self.currentEntity.name        # this holds the name of the last entity that ended processing in Machine
             self.completedJobs+=1                                   # Machine completed one more Job
             # re-initialize the downTimeProcessingCurrentEntity.
@@ -327,7 +328,7 @@ class OperatedMachine(Machine):
             self.downTimeProcessingCurrentEntity=0
                
             # dummy variable requests the successor object now
-            reqTime=now()                                           # entity has ended processing in Machine and requests for the next object 
+            reqTime=self.env.now                                           # entity has ended processing in Machine and requests for the next object 
             # initialize the timer downTimeInTryingToReleaseCurrentEntity, we have to count how much time 
             # the Entity will wait for the next successor to be able to accept (canAccept)
             self.downTimeInTryingToReleaseCurrentEntity=0
@@ -341,21 +342,21 @@ class OperatedMachine(Machine):
                     break
                 # if M1 had failure, we want to wait until it is fixed and also count the failure time. 
                 else:
-                    failTime=now()                                  # dummy variable holding the time failure happened
+                    failTime=self.env.now                                  # dummy variable holding the time failure happened
                     # passivate until machine is up
                     yield waituntil, self, self.checkIfMachineIsUp  
-                    failureTime+=now()-failTime                     # count the failure while on current entity time with failureTime variable
+                    failureTime+=self.env.now-failTime                     # count the failure while on current entity time with failureTime variable
                     # calculate the time the Machine was down while trying to dispose the current Entity, 
                     # and the total down time while on current Entity
-                    self.downTimeInTryingToReleaseCurrentEntity+=now()-failTime         
-                    self.downTimeInCurrentEntity+=now()-failTime    # already updated from failures during processing
+                    self.downTimeInTryingToReleaseCurrentEntity+=self.env.now-failTime         
+                    self.downTimeInCurrentEntity+=self.env.now-failTime    # already updated from failures during processing
                     # update the timeLastFailureEnded   
-                    self.timeLastFailureEnded=now()
+                    self.timeLastFailureEnded=self.env.now
             
             # dummy variable holding the total time the Entity spent in the Machine
             # count the time the Machine was blocked subtracting the failureTime 
             #    and the processing time from the totalTime spent in the Machine
-            self.totalTimeInCurrentEntity=now()-timeEntered
+            self.totalTimeInCurrentEntity=self.env.now-timeEntered
     
     # =======================================================================
     # checks if the Machine can accept an entity
@@ -443,9 +444,9 @@ class OperatedMachine(Machine):
             if(object.haveToDispose(activeObject)):# and not object.exitIsAssigned()):
                 isRequested=True                                    # if the possible giver has entities to dispose of
                 if(object.downTimeInTryingToReleaseCurrentEntity>0):# and the possible giver has been down while trying to give away the Entity
-                    timeWaiting=now()-object.timeLastFailureEnded   # the timeWaiting dummy variable counts the time end of the last failure of the giver object
+                    timeWaiting=self.env.now-object.timeLastFailureEnded   # the timeWaiting dummy variable counts the time end of the last failure of the giver object
                 else:
-                    timeWaiting=now()-object.timeLastEntityEnded    # in any other case, it holds the time since the end of the Entity processing
+                    timeWaiting=self.env.now-object.timeLastEntityEnded    # in any other case, it holds the time since the end of the Entity processing
                 
                 #if more than one possible givers have to dispose take the part from the one that is blocked longer
                 if(timeWaiting>=maxTimeWaiting): 
@@ -540,9 +541,9 @@ class OperatedMachine(Machine):
         if (len(activeObjectQueue)>0) and (mightBeBlocked)\
              and ((activeObject.nameLastEntityEntered == activeObject.nameLastEntityEnded)):
             # be careful here, might have to reconsider
-            activeObject.totalBlockageTime+=now()-(activeObject.timeLastEntityEnded+activeObject.downTimeInTryingToReleaseCurrentEntity)
+            activeObject.totalBlockageTime+=self.env.now-(activeObject.timeLastEntityEnded+activeObject.downTimeInTryingToReleaseCurrentEntity)
             if activeObject.Up==False:
-                activeObject.totalBlockageTime-=now()-activeObject.timeLastFailure
+                activeObject.totalBlockageTime-=self.env.now-activeObject.timeLastFailure
                 alreadyAdded=True
 
         #if Machine is currently processing an entity we should count this working time  
@@ -552,8 +553,8 @@ class OperatedMachine(Machine):
             #if Machine is down we should add this last failure time to the time that it has been down in current entity 
             if self.Up==False:
 #             if(len(activeObjectQueue)>0) and (self.Up==False):
-                activeObject.downTimeProcessingCurrentEntity+=now()-activeObject.timeLastFailure             
-            activeObject.totalWorkingTime+=now()-activeObject.timeLastEntityEntered\
+                activeObject.downTimeProcessingCurrentEntity+=self.env.now-activeObject.timeLastFailure             
+            activeObject.totalWorkingTime+=self.env.now-activeObject.timeLastEntityEntered\
                                                 -activeObject.downTimeProcessingCurrentEntity\
                                                 -activeObject.operatorWaitTimeCurrentEntity\
                                                 -activeObject.setupTimeCurrentEntity
@@ -563,18 +564,18 @@ class OperatedMachine(Machine):
             and (activeObject.currentOperator==None):
             # needs further research as the time of failure while waiting for operator is not counted yet
             if self.Up==False:
-                activeObject.downTimeProcessingCurrentEntity+=now()-activeObject.timeLastFailure
-            activeObject.totalTimeWaitingForOperator+=now()-activeObject.timeWaitForOperatorStarted\
+                activeObject.downTimeProcessingCurrentEntity+=self.env.now-activeObject.timeLastFailure
+            activeObject.totalTimeWaitingForOperator+=self.env.now-activeObject.timeWaitForOperatorStarted\
                                                            -activeObject.downTimeProcessingCurrentEntity
 
         # if Machine is down we have to add this failure time to its total failure time
         # we also need to add the last blocking time to total blockage time     
         if(activeObject.Up==False):
-            activeObject.totalFailureTime+=now()-activeObject.timeLastFailure
+            activeObject.totalFailureTime+=self.env.now-activeObject.timeLastFailure
             # we add the value only if it hasn't already been added
             #if((len(self.next[0].Res.activeQ)>0) and (self.nameLastEntityEnded==self.nameLastEntityEntered) and (not alreadyAdded)):
             if((mightBeBlocked) and (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered) and (not alreadyAdded)):        
-                activeObject.totalBlockageTime+=(now()-activeObject.timeLastEntityEnded)-(now()-activeObject.timeLastFailure)-activeObject.downTimeInTryingToReleaseCurrentEntity 
+                activeObject.totalBlockageTime+=(self.env.now-activeObject.timeLastEntityEnded)-(self.env.now-activeObject.timeLastFailure)-activeObject.downTimeInTryingToReleaseCurrentEntity 
         
         #Machine was idle when it was not in any other state    
         activeObject.totalWaitingTime=MaxSimtime-activeObject.totalWorkingTime-activeObject.totalBlockageTime-activeObject.totalFailureTime

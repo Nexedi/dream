@@ -26,7 +26,7 @@ Created on 18 Feb 2013
 models a frame entity. This can flow through the system and carry parts
 '''
 
-from SimPy.Simulation import Resource
+from simpy import Resource
 from Globals import G
 from Entity import Entity
 
@@ -45,4 +45,4 @@ class Frame(Entity):
         self.lenght=2.0        
         
     def getFrameQueue(self):
-        return self.Res.activeQ
+        return self.Res.users

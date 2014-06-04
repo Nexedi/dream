@@ -31,7 +31,7 @@ Models an Interruption that schedules the operation of the machines by different
 import simpy
 
 from ObjectInterruption import ObjectInterruption
-from SimPy.Simulation import waituntil, now, hold, request, release, waitevent
+#from SimPy.Simulation import waituntil, now, hold, request, release, waitevent
 
 
 # ===========================================================================

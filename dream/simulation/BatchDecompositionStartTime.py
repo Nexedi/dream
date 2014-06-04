@@ -27,7 +27,6 @@ Custom object. Maybe we should have a generic method that the objects can call i
 '''
 
 from BatchDecomposition import BatchDecomposition
-from SimPy.Simulation import now
 
 class BatchDecompositionStartTime(BatchDecomposition):
     
@@ -35,7 +34,7 @@ class BatchDecompositionStartTime(BatchDecomposition):
     #gets an entity from the predecessor     
     def getEntity(self):
         activeEntity=BatchDecomposition.getEntity(self)
-        activeEntity.startTime=now()
+        activeEntity.startTime=self.env.now
         return activeEntity
     '''
     
@@ -45,6 +44,6 @@ class BatchDecompositionStartTime(BatchDecomposition):
         # assign it as the batch start time
         if len(self.getActiveObjectQueue())==self.numberOfSubBatches:
             batch=self.getActiveObjectQueue()[0].parentBatch
-            batch.startTime=now()
+            batch.startTime=self.env.now
         activeEntity=BatchDecomposition.removeEntity(self, entity)
         return activeEntity

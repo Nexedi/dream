@@ -28,7 +28,6 @@ BatchScrapMachine->BatchDecomposition
 '''
 
 from BatchScrapMachine import BatchScrapMachine
-from SimPy.Simulation import now
 
 class M3(BatchScrapMachine):
     

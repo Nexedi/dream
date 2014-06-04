@@ -26,7 +26,6 @@ Inherits from QueueManagedJob. Checks the condition of (a) component(s) before i
 '''
 
 from QueueManagedJob import QueueManagedJob
-from SimPy.Simulation import now
 
 # ===========================================================================
 # Error in the setting up of the WIP

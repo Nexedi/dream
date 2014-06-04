@@ -28,7 +28,6 @@ he checks if the operation that calls him is of higher priority than the one
 that he is currently in. 
 '''
 
-from SimPy.Simulation import Resource, now
 from Operator import Operator
 
 # ===========================================================================
@@ -94,7 +93,7 @@ class OperatorPreemptive(Operator):
                         # then the receiver must be preemptied before it can receive any entities from the calerObject
                         victim.shouldPreempt=True
                         victim.preempt()
-                        victim.timeLastEntityEnded=now()     #required to count blockage correctly in the preemptied station
+                        victim.timeLastEntityEnded=self.env.now     #required to count blockage correctly in the preemptied station
                         return True
             # if the entity has no isCritical property then ran the default behaviour
             except:
