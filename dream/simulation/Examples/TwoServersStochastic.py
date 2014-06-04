@@ -1,9 +1,6 @@
 from dream.simulation.imports import Machine, Source, Exit, Part, G, Repairman, Queue, Failure 
 from dream.simulation.imports import simpy
 
-G.env=simpy.Environment()   # define a simpy environment
-                            # this is where all the simulation object 'live'
-
 #define the objects of the model
 R=Repairman('R1', 'Bob') 
 S=Source('S1','Source', interarrivalTime={'distributionType':'Exp','mean':0.5}, entity='Dream.Part')
@@ -31,40 +28,57 @@ G.maxSimTime=1440.0     #set G.maxSimTime 1440.0 minutes (1 day)
 G.numberOfReplications=10   #set 10 replications
 G.confidenceLevel=0.99      #set the confidence level. 0.99=99%
 
-#run the replications
-for i in range(G.numberOfReplications):
-    G.seed+=1       #increment the seed so that we get different random numbers in each run.
-    
-    #initialize all the objects
-    for object in G.ObjList:
-        object.initialize()
+def main():
+    throughputList=[]   # a list to hold the throughput of each replication
 
-    for objectInterruption in G.ObjectInterruptionList:
-        objectInterruption.initialize()
+    #run the replications
+    for i in range(G.numberOfReplications):
+        G.seed+=1       #increment the seed so that we get different random numbers in each run.
         
-    for objectResource in G.ObjectResourceList:
-        objectResource.initialize()
-
-    #activate all the objects
-    for object in G.ObjList:
-        G.env.process(object.run())
-
-    for objectInterruption in G.ObjectInterruptionList:
-        G.env.process(objectInterruption.run())
+        G.env=simpy.Environment()   # define a simpy environment
+                                    # this is where all the simulation object 'live'
+        
+        #initialize all the objects
+        for object in G.ObjList:
+            object.initialize()
     
-    G.env.run(until=G.maxSimTime)    #run the simulation
-
-    #carry on the post processing operations for every object in the topology
-    for object in G.ObjList:
-        object.postProcessing()
+        for objectInterruption in G.ObjectInterruptionList:
+            objectInterruption.initialize()
+            
+        for objectResource in G.ObjectResourceList:
+            objectResource.initialize()
     
-    for objectResource in G.ObjectResourceList:
-        objectResource.postProcessing()
-               
-#output data to excel for every object        
-for object in G.ObjList:
-    object.outputResultsXL()      
-R.outputResultsXL()        
+        #activate all the objects
+        for object in G.ObjList:
+            G.env.process(object.run())
+    
+        for objectInterruption in G.ObjectInterruptionList:
+            G.env.process(objectInterruption.run())
+        
+        G.env.run(until=G.maxSimTime)    #run the simulation
+    
+        #carry on the post processing operations for every object in the topology
+        for object in G.ObjList:
+            object.postProcessing()
+        
+        for objectResource in G.ObjectResourceList:
+            objectResource.postProcessing()
 
-G.outputFile.save("output.xls")      
+        # append the numbe of exits in the throughputList
+        throughputList.append(E.numOfExits)
+        
+    print 'The exit of each replication is:'
+    print throughputList
+    
+    # calculate confidence interval using the Knowledge Extraction tool
+    from dream.KnowledgeExtraction.ConfidenceIntervals import Intervals
+    from dream.KnowledgeExtraction.StatisticalMeasures import BasicStatisticalMeasures
+    BSM=BasicStatisticalMeasures()
+    lb, ub = Intervals().ConfidIntervals(throughputList, 0.95)
+    print 'the 95% confidence interval for the throughput is:'
+    print 'lower bound:', lb 
+    print 'mean:', BSM.mean(throughputList)
+    print 'upper bound:', ub       
 
+if __name__ == '__main__':
+    main()
