@@ -44,21 +44,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 @app.route("/")
 def front_page():
-  return redirect(url_for('static', filename='index.html'))
-
-@app.route("/postJSONData", methods=["POST", "OPTIONS"])
-def postJSONData():
-  """Returns posted JSON data as it is for Export button"""
-  data = json.loads(request.form.get('data'))
-  response = jsonify(data)
-  response.headers['Content-Disposition'] = 'attachment; filename=dream.json'
-  return response
-
-@app.route("/postJSONFile", methods=["POST", "OPTIONS"])
-def postJSONFile():
-  """Returns posted JSON file as it is for Import button"""
-  data = json.load(request.files['file'])
-  return jsonify(data)
+  return redirect(url_for('static', filename='dream/index.html'))
 
 @app.route("/positionGraph", methods=["POST", "OPTIONS"])
 def positionGraph():
@@ -134,7 +120,7 @@ def _runWithTimeout(queue, func, args, kw):
 
 @app.route("/runSimulation", methods=["POST", "OPTIONS"])
 def runSimulation():
-  parameter_dict = request.json['json']
+  parameter_dict = request.json
   try:
     timeout = int(parameter_dict['general']['processTimeout'])
   except (KeyError, ValueError, TypeError):

@@ -863,24 +863,6 @@
       that.setGeneralProperties(properties);
     }
 
-    /** Runs the simulation, and call the callback with results once the
-     * simulation is finished.
-     */
-    that.runSimulation = function (callback) {
-      that.readGeneralPropertiesDialog()
-      $.ajax(
-          '../runSimulation', {
-          data: JSON.stringify({
-            json: that.getData()
-          }),
-          contentType: 'application/json',
-          type: 'POST',
-          success: function (data, textStatus, jqXHR) {
-            callback(data);
-          }
-        });
-    };
-
     /** Runs the knowledge extraction, and call the callback with results once the
      * KE is finished.
      */

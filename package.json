@@ -1,0 +1,31 @@
+{
+  "name": "dream",
+  "title": "Dream",
+  "version": "0.0.1",
+  "description": "The Dream Project",
+  "dependencies": {
+    "handlebars": "^2.0.0-alpha.4",
+    "jio": "git+http://git.erp5.org/repos/jio.git",
+    "renderjs": "git+http://git.erp5.org/repos/renderjs.git",
+    "rsvp": "git+http://git.erp5.org/repos/rsvp.js.git",
+    "uritemplate": "git+http://git.erp5.org/repos/uritemplate-js.git"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.11",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-less": "~0.9.0",
+    "grunt-contrib-uglify": "~0.2.x",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-curl": "~1.2.1",
+    "grunt-jslint": "~1.1.x",
+    "grunt-zip": "~0.13.0",
+    "qunitjs": "^1.14.0"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/grunt test",
+    "lint": "./node_modules/.bin/grunt lint",
+    "prepublish": "./node_modules/.bin/grunt build"
+  }
+}

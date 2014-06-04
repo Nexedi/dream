@@ -21,18 +21,6 @@
   "use strict";
   jsPlumb.bind("ready", function () {
     var dream_instance, jio;
-    jio = new jIO.newJio({
-      type: "local",
-      username: "dream",
-      applicationname: "dream"
-    });
-
-    var configuration = { };
-
-    $.ajax(
-        '../getConfigurationDict', {
-       success: function (data) {
-         configuration = $.extend(configuration, data);
 
     dream_instance = Dream(configuration);
     dream_instance.start();
@@ -190,21 +178,21 @@
             });
       });
 
-    // Enable "Run Simulation" button
-    $("#run_simulation").button().click(
-      function (e) {
-        $("#loading_spinner").show();
-        $("#run_simulation").button('disable');
-        dream_instance.runSimulation(
-          function (data) {
-            $("#loading_spinner").hide();
-            $("#run_simulation").button('enable');
-            $("#reports").show();
-            $("#result_zone").show();
-            $('#result_list').empty();
-            $('#error').empty();
-            if (data['success']) {
-
+//     // Enable "Run Simulation" button
+//     $("#run_simulation").button().click(
+//       function (e) {
+//         $("#loading_spinner").show();
+//         $("#run_simulation").button('disable');
+//         dream_instance.runSimulation(
+//           function (data) {
+//             $("#loading_spinner").hide();
+//             $("#run_simulation").button('enable');
+//             $("#reports").show();
+//             $("#result_zone").show();
+//             $('#result_list').empty();
+//             $('#error').empty();
+//             if (data['success']) {
+// 
               $.each(data.data, function (idx, result) {
                 $('#result_list').append('<li class="result"></li>');
                 $('#result_list').children().last().text(idx + ' : ' + result['score'] + ' ' + result['key']).click(
@@ -214,15 +202,15 @@
                 );
               });
               dream_instance.displayResult(0, data.data[0]);
-            } else {
-              $("#reports").hide();
-              $("#error").text(data["error"]).show().effect('shake', 50);
-              console.error(data['error'])
-            }
-          });
-        e.preventDefault();
-        return false;
-      });
+//             } else {
+//               $("#reports").hide();
+//               $("#error").text(data["error"]).show().effect('shake', 50);
+//               console.error(data['error'])
+//             }
+//           });
+//         e.preventDefault();
+//         return false;
+//       });
 
     // Enable "Layout Graph" button
     $("#layout_graph").button().click(
@@ -252,39 +240,30 @@
         dream_instance.zoom_out();
       });
 
-    // Enable "Export" button
-    $("#export").button().click(
-      function (e) {
-        dream_instance.readGeneralPropertiesDialog();
-        $('#export_json').val(JSON.stringify(dream_instance.getData()));
-        $('#export_form').submit();
-        return false;
-      });
-
-    // Enable "Import" button
-    $("#import").button().click(
-      function (e) {
-        $('#import_file').click();
-      });
-    $("#import_file").change(function () {
-      var form = $(this).parent('form')[0];
-      var form_data = new FormData(form);
-      $.ajax('../postJSONFile', {
-        type: 'POST',
-        contentType: false,
-        processData: false,
-        data: form_data,
-        dataType: 'json',
-        error: function () {
-          console.error('error');
-        },
-        success: function (data, textStatus, jqXHR) {
-          form.reset();
+//     // Enable "Import" button
+//     $("#import").button().click(
+//       function (e) {
+//         $('#import_file').click();
+//       });
+//     $("#import_file").change(function () {
+//       var form = $(this).parent('form')[0];
+//       var form_data = new FormData(form);
+//       $.ajax('../postJSONFile', {
+//         type: 'POST',
+//         contentType: false,
+//         processData: false,
+//         data: form_data,
+//         dataType: 'json',
+//         error: function () {
+//           console.error('error');
+//         },
+//         success: function (data, textStatus, jqXHR) {
+//           form.reset();
           loadData(data);
-        }
-      });
-      return false;
-    });
+//         }
+//       });
+//       return false;
+//     });
 
     // Redraw if the graph area or the window is resized
     $('#main').resizable().resize(function () {

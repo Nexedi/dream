@@ -1,0 +1,227 @@
+/*global require */
+module.exports = function (grunt) {
+  "use strict";
+
+
+  var global_config = {
+      src: "dream/platform/src2/",
+      lib: "dream/platform/vendor/",
+//       tmp: "tmp",
+      dest: "dream/platform/static/"
+    };
+
+  grunt.loadNpmTasks("grunt-jslint");
+  grunt.loadNpmTasks("grunt-contrib-uglify");
+  grunt.loadNpmTasks('grunt-contrib-watch');
+//   grunt.loadNpmTasks('grunt-contrib-qunit');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-curl');
+  grunt.loadNpmTasks('grunt-contrib-less');
+
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+
+    global_config: global_config,
+
+    jslint: {
+      config: {
+        src: ['package.json', 'Gruntfile.js'],
+        directives: {
+          maxlen: 120,
+          indent: 2,
+          maxerr: 3,
+          predef: [
+            'module'
+          ]
+        }
+      },
+      gadget: {
+        src: ["<%= global_config.src %>/**/*.js"],
+        directives: {
+          maxlen: 79,
+          indent: 2,
+          maxerr: 3,
+          unparam: true,
+          predef: [
+            'window',
+            'document'
+          ]
+        },
+        exclude: '<%= global_config.src %>/webodf_editor/**/*.*'
+      }
+    },
+
+    less: {
+      production: {
+        options: {
+          paths: ["<%= global_config.src %>/"],
+          cleancss: true,
+          syncImports: true,
+          strictMath: true,
+          strictUnits: true,
+          syncImport: true
+        },
+        files: {
+          "<%= global_config.dest %>/dream/index.css":
+            "<%= global_config.src %>/dream/index.less"
+        }
+      }
+    },
+
+    concat: {
+      options: {
+        separator: ';'
+      },
+      jio: {
+        src: [
+          'node_modules/jio/src/sha1.amd.js',
+          'node_modules/jio/src/sha2.amd.js',
+          'node_modules/jio/src/sha256.amd.js',
+          'node_modules/jio/jio.js',
+          'node_modules/jio/complex_queries.js',
+          'node_modules/jio/src/jio.storage/localstorage.js'
+        ],
+        relative_dest: "lib/jio.js",
+        dest: "<%= global_config.dest %>/<%= concat.jio.relative_dest %>"
+      }
+    },
+
+    uglify: {
+      gadget: {
+        // XXX Dev options
+        options: {
+          report: false,
+          mangle: false,
+          compress: false,
+          beautify: true,
+          preserveComments: "all"
+        },
+        files: [{
+          expand: true,
+          cwd: "<%= global_config.src %>/",
+          src: '**/*.js',
+          dest: "<%= global_config.dest %>/"
+        }]
+      }
+    },
+
+    copy: {
+      images: {
+        expand: true,
+        cwd: "<%= global_config.src %>/",
+        src: "**/images/*.*",
+        dest: "<%= global_config.dest %>/"
+      },
+      rsvp: {
+        src: "node_modules/rsvp/dist/rsvp-2.0.4.min.js",
+        relative_dest: "lib/rsvp.min.js",
+        dest: "<%= global_config.dest %>/<%= copy.rsvp.relative_dest %>"
+      },
+      uritemplate: {
+        src: "node_modules/uritemplate/bin/uritemplate-min.js",
+        relative_dest: "lib/uritemplate.min.js",
+        dest: "<%= global_config.dest %>/<%= copy.uritemplate.relative_dest %>"
+      },
+      renderjs: {
+        src: "node_modules/renderjs/dist/renderjs-latest.js",
+        relative_dest: "lib/renderjs.min.js",
+        dest: "<%= global_config.dest %>/<%= copy.renderjs.relative_dest %>"
+      },
+      uri: {
+        src: "<%= global_config.lib %>/URI.js",
+        relative_dest: "lib/URI.js",
+        dest: "<%= global_config.dest %>/<%= copy.uri.relative_dest %>"
+      },
+      handlebars: {
+        src: 'node_modules/handlebars/dist/handlebars.min.js',
+        relative_dest: 'lib/handlebars.min.js',
+        dest: "<%= global_config.dest %>/<%= copy.handlebars.relative_dest %>"
+      },
+      qunitjs: {
+        src: 'node_modules/qunitjs/qunit/qunit.js',
+        relative_dest: 'lib/qunit.js',
+        dest: "<%= global_config.dest %>/<%= copy.qunitjs.relative_dest %>"
+      },
+      qunitcss: {
+        src: 'node_modules/qunitjs/qunit/qunit.css',
+        relative_dest: 'lib/qunit.css',
+        dest: "<%= global_config.dest %>/<%= copy.qunitcss.relative_dest %>"
+      },
+      gadget: {
+        expand: true,
+        cwd: "<%= global_config.src %>/",
+        src: "**/*.html",
+        dest: "<%= global_config.dest %>/",
+        nonull: true,
+        options: {
+          process: function (content) {
+            return grunt.template.process(content);
+          }
+        }
+      }
+    },
+
+    watch: {
+      src: {
+        files: [
+          '<%= global_config.src %>/**',
+          '<%= jslint.config.src %>'
+        ],
+        tasks: ['default']
+      }
+    },
+
+    curl: {
+      jquery: {
+        src: 'http://code.jquery.com/jquery-2.0.3.js',
+        relative_dest: 'lib/jquery.js',
+        dest: '<%= global_config.dest %>/<%= curl.jquery.relative_dest %>'
+      },
+      jquerymobilejs: {
+        url_base: 'http://code.jquery.com/mobile/1.4.0-alpha.2/',
+        src_base: '<%= curl.jquerymobilejs.url_base %>jquery.mobile-1.4.0-alpha.2',
+        src: '<%= curl.jquerymobilejs.src_base %>.js',
+        relative_dest: 'lib/jquerymobile.js',
+        dest: '<%= global_config.dest %>/<%= curl.jquerymobilejs.relative_dest %>'
+      },
+      jquerymobileloader: {
+        src: '<%= curl.jquerymobilejs.url_base %>images/ajax-loader.gif',
+        relative_dest: 'lib/images/ajax-loader.gif',
+        dest: '<%= global_config.dest %>/<%= curl.jquerymobileloader.relative_dest %>'
+      },
+      jquerymobilecss: {
+        src: '<%= curl.jquerymobilejs.src_base %>.css',
+        relative_dest: 'lib/jquerymobile.css',
+        dest: '<%= global_config.dest %>/<%= curl.jquerymobilecss.relative_dest %>'
+//       },
+//       jqueryuijs: {
+//         src: 'https://code.jquery.com/ui/1.10.4/jquery-ui.js',
+//         relative_dest: 'lib/jquery-ui.js',
+//         dest: '<%= global_config.dest %>/<%= curl.jqueryuijs.relative_dest %>'
+//       },
+//       jqueryuicss: {
+//         src: 'https://code.jquery.com/ui/1.11.0-beta.1/themes/base/jquery-ui.css',
+//         relative_dest: 'lib/jquery-ui.css',
+//         dest: '<%= global_config.dest %>/<%= curl.jqueryuicss.relative_dest %>'
+//       },
+//       beautifyhtml: {
+//         src: 'https://raw.githubusercontent.com/einars/js-beautify/master/js/lib/beautify-html.js',
+//         relative_dest: 'lib/beautify-html.js',
+//         dest: '<%= global_config.dest %>/<%= curl.beautifyhtml.relative_dest %>'
+      }
+      //     qunit: {
+//       all: ['test/index.html']
+    }
+
+  });
+
+  grunt.registerTask('default', ['all']);
+  grunt.registerTask('all', ['lint', 'build']);
+  grunt.registerTask('lint', ['jslint']);
+  grunt.registerTask('dep', ['curl']);
+//   grunt.registerTask('test', ['qunit']);
+  grunt.registerTask('build', ['concat', 'copy', 'uglify', 'less']);
+
+};

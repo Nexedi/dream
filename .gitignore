@@ -1,5 +1,5 @@
 *.pyc
-*.xls
+*.swp
 *.project
 *.pydevproject
 .installed.cfg
@@ -10,3 +10,6 @@ eggs/**
 parts/**
 outputJSON.json
 trace*.xls
+npm-debug.log
+node_modules/
+dream/platform/static/
