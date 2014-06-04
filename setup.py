@@ -9,7 +9,7 @@ setup(
     package_dir={'': '.', 'simulation': 'simulation'},
     install_requires=[
         'flask',
-        'SimPy>=2,<3',
+        'SimPy>=3',
         'xlrd',
         'xlwt',
         'pyparsing==1.5.7',
