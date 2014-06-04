@@ -28,12 +28,12 @@ holds methods for generations of numbers from different distributions
 class RandomNumberGenerator(object):
     def __init__(self, obj, distributionType, mean=0, stdev=0, min=0, max=0, alpha=0, beta=0):
         self.distributionType = distributionType
-        self.mean = float(mean)
-        self.stdev = float(stdev)
-        self.min = float(min)
-        self.max = float(max)
-        self.alpha = float(alpha)
-        self.beta = float(beta)
+        self.mean = float(mean or 0)
+        self.stdev = float(stdev or 0)
+        self.min = float(min or 0)
+        self.max = float(max or 0)
+        self.alpha = float(alpha or 0)
+        self.beta = float(beta or 0)
         self.obj = obj
 
     def generateNumber(self):
