@@ -375,6 +375,9 @@ class Simulation(object):
             "start": 1,
             "stop": -1
         }
+      for node in data["nodes"].values():
+        if node['_class'] in ('Dream.Queue', ):
+          node['gatherWipStat'] = 1
     return data
 
   def run(self, data):

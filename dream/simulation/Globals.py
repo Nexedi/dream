@@ -260,7 +260,7 @@ from Queue import Queue
 def countQueueMetrics(argumentDict={}):
     for obj in G.ObjList:
         if isinstance(obj, Queue):
-            obj.wip_stat_list.append((G.env.now, len(obj.Res.activeQ)))
+            obj.wipStatList.append((G.env.now, len(obj.Res.users)))
 
 
 # =======================================================================
