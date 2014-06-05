@@ -49,8 +49,9 @@
         .push(function (result_list) {
           gadget.props.element.querySelector(".json_input").textContent =
             result_list[0];
+          // XXX Hardcoded result
           gadget.props.element.querySelector(".json_output").textContent =
-            result_list[1];
+            JSON.stringify(JSON.parse(result_list[1])[0].result);
         });
 
     });
