@@ -165,8 +165,6 @@
         return gadget.aq_pleasePublishMyState({page: "document_list"})
           .push(gadget.pleaseRedirectMyHash.bind(gadget));
       }
-      // Clear the previous rendering
-      element.innerHTML = "";
       return gadget.declareGadget(options.page + ".html")
         .push(function (g) {
           page_gadget = g;
@@ -191,16 +189,23 @@
 
           gadget.props.element.querySelector("header h1").textContent =
             title;
-          // Append in the DOM at the end to reduce flickering and reduce DOM
-          // modifications
-          element.appendChild(page_element);
 
+          while (panel.firstChild) {
+            panel.removeChild(panel.firstChild);
+          }
           panel.innerHTML =
             navigation_template({navigationlist: navigation_list});
-
           // XXX JQuery mobile
-          $(element).trigger('create');
           $(panel).trigger("create");
+
+          // Append in the DOM at the end to reduce flickering and reduce DOM
+          // modifications
+          // Clear the previous rendering
+          while (element.firstChild) {
+            element.removeChild(element.firstChild);
+          }
+          element.appendChild(page_element);
+          $(element).trigger('create');
 
           // XXX RenderJS hack to start sub gadget services
           // Only work if this gadget has no parent.
