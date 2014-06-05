@@ -40,8 +40,20 @@ class CapacityStation(Queue):
     #===========================================================================
     def __init__(self, id, name, capacity=float("inf"), intervalCapacity=[], schedulingRule="FIFO", gatherWipStat=False):
         Queue.__init__(self, id, name, capacity, schedulingRule, gatherWipStat)
+        # a list that holds the capacity (manhours) that is available in each interval
         self.intervalCapacity=intervalCapacity
-        self.dailyIntervalCapacity=list(intervalCapacity)
+        # a list that holds the capacity (manhours) that is available in each interval for the remaining time
+        self.dailyIntervalCapacity=list(self.intervalCapacity)
+        # blocks the entry of the capacity station, so that it can be manipulated to accept only in certain moments of simulation time
+        self.isBlocked=True
         
+    def initialize(self):
+        self.dailyIntervalCapacity=list(self.intervalCapacity)
+        self.isBlocked=True
+
+    def canAccept(self):
+        if self.isBlocked:
+            return False
+        return Queue.canAccept()
         
         
