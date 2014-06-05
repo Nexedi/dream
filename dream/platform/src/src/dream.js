@@ -23,6 +23,7 @@
   "use strict";
 
 
+
   function capacity_utilisation_graph_widget(input_data, output_data) {
     var available_capacity_by_station = {},
         capacity_usage_by_station = {};
@@ -90,21 +91,6 @@
       $.plot(graph, series, options);
     }
   };
-
-  function queue_stat_widget(input_data, output_data) {
-    /* FIXME: does not support more than one replic.
-     * + see george email to integrate without the need of an EG
-     */
-    var queue_stat = $("#queue_stat");
-    var series = [];
-    $.each(output_data.elementList, function(idx, el){
-      if (el._class == 'Dream.Queue'){
-        series.push({label: el.name || el.id,
-                     data: el.wip_stat_list})
-      }
-    })
-    $.plot("#queue_stat_graph", series);
-  }
 
   function exit_stat_widget(input_data, output_data) {
     var exit_stat = $("#exit_stat").find('div').empty();

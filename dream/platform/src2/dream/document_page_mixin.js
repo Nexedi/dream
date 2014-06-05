@@ -21,6 +21,10 @@
                 "station_utilisation_graph",
                 key
               ),
+              gadget.whoWantToDisplayThisDocumentPage(
+                "queue_stat_graph",
+                key
+              ),
               gadget.whoWantToDisplayThisDocumentPage("debug_json", key)
             ]);
           })
@@ -30,7 +34,8 @@
               {link: result_list[1], title: "Run simulation"},
               {link: result_list[2], title: "Manage document"},
               {link: result_list[3], title: "Stations Utilization"},
-              {link: result_list[4], title: "Debug JSON"}
+              {link: result_list[4], title: "Queues Statistics"},
+              {link: result_list[5], title: "Debug JSON"}
             ];
           });
       });
