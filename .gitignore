@@ -12,4 +12,3 @@ outputJSON.json
 trace*.xls
 npm-debug.log
 node_modules/
-dream/platform/static/

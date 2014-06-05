@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dream Simulation</title>
+
+    <link rel="stylesheet" href="../lib/jquerymobile.css">
+    <link rel="stylesheet" href="index.css" />
+    <script src="../lib/rsvp.min.js" type="text/javascript"></script>
+    <script src="../lib/renderjs.min.js" type="text/javascript"></script>
+    <script src="../lib/handlebars.min.js" type="text/javascript"></script>
+    <script src="../lib/jquery.js" type="text/javascript"></script>
+    <script src="../lib/jquerymobile.js" type="text/javascript"></script>
+    <script src="index.js" type="text/javascript"></script>
+
+    <script id="navigation-template" type="text/x-handlebars-template">
+      <ul data-role="listview">
+        <li data-icon="delete" class="close-entry"><a href="#" data-rel="close">Close menu</a></li>
+        {{#navigationlist}}
+          <li><a href="{{link}}">{{title}}</a></li>
+        {{/navigationlist}}
+      </ul>
+    </script>
+  </head>
+  <body>
+
+    <!-- ID are bad, but required for JQM panel -->
+    <div class="jqm-navmenu-panel"
+         data-role="panel"
+         id="leftpanel"
+         data-display="overlay"
+         data-position="left"
+         data-theme="b">
+    </div>
+
+    <header data-role="header">
+      <a href="#leftpanel" class="menu_link">Menu</a>
+      <h1>Dream Simulation</h1>
+      <a class="home_link ui-btn ui-icon-home ui-btn-icon-left" data-icon="home">Home</a>
+    </header>
+
+    <article class="gadget_container"></article>
+
+    <aside>
+      <section data-gadget-url="../jio_bridge/index.html"
+               data-gadget-scope="jio"
+               data-gadget-sandbox="public"></section>
+    </aside>
+  </body>
+</html>
