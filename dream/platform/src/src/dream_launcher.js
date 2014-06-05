@@ -75,12 +75,12 @@
       }
 
       try {
-        // spreadsheets
-        var shift_spreadsheet_data = data.shift_spreadsheet;
-        if (shift_spreadsheet_data !== undefined) {
-          var spreadsheet = $('#shift_spreadsheet');
-          spreadsheet.handsontable('populateFromArray', 0, 0, shift_spreadsheet_data);
-        }
+//         // spreadsheets
+//         var shift_spreadsheet_data = data.shift_spreadsheet;
+//         if (shift_spreadsheet_data !== undefined) {
+//           var spreadsheet = $('#shift_spreadsheet');
+//           spreadsheet.handsontable('populateFromArray', 0, 0, shift_spreadsheet_data);
+//         }
         var wip_part_spreadsheet_data = data.wip_part_spreadsheet;
         if (wip_part_spreadsheet_data !== undefined) {
           var spreadsheet = $('#wip_part_spreadsheet');

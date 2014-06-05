@@ -198,13 +198,13 @@ module.exports = function (grunt) {
       },
       handsontablejs: {
         src: 'https://raw.githubusercontent.com/warpech/' +
-          'jquery-handsontable/v0.10.5/dist/jquery.handsontable.js',
+          'jquery-handsontable/v0.10.5/dist/jquery.handsontable.full.js',
         relative_dest: 'lib/handsontable.js',
         dest: '<%= global_config.dest %>/<%= curl.handsontablejs.relative_dest %>'
       },
       handsontablecss: {
         src: 'https://raw.githubusercontent.com/warpech/' +
-          'jquery-handsontable/v0.10.5/dist/jquery.handsontable.css',
+          'jquery-handsontable/v0.10.5/dist/jquery.handsontable.full.css',
         relative_dest: 'lib/handsontable.css',
         dest: '<%= global_config.dest %>/<%= curl.handsontablecss.relative_dest %>'
 //       },
