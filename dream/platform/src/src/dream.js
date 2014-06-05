@@ -498,11 +498,6 @@
           });
   }
 
-  function debug_json_widget(input_data, output_data) {
-    $("#json_output").val(JSON.stringify(input_data, undefined, " "));
-    $("#json_result").val(JSON.stringify(output_data, undefined, " "));
-  }
-
   scope.Dream = function (configuration) {
     var that = jsonPlumb(),
       priv = {};
