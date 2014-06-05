@@ -115,7 +115,8 @@ module.exports = function (grunt) {
         dest: "<%= global_config.dest %>/"
       },
       rsvp: {
-        src: "node_modules/rsvp/dist/rsvp-2.0.4.min.js",
+//         src: "node_modules/rsvp/dist/rsvp-2.0.4.min.js",
+        src: "<%= global_config.lib %>/rsvp.js",
         relative_dest: "lib/rsvp.min.js",
         dest: "<%= global_config.dest %>/<%= copy.rsvp.relative_dest %>"
       },
@@ -125,7 +126,8 @@ module.exports = function (grunt) {
         dest: "<%= global_config.dest %>/<%= copy.uritemplate.relative_dest %>"
       },
       renderjs: {
-        src: "node_modules/renderjs/dist/renderjs-latest.js",
+//         src: "node_modules/renderjs/dist/renderjs-latest.js",
+        src: "<%= global_config.lib %>/renderjs.js",
         relative_dest: "lib/renderjs.min.js",
         dest: "<%= global_config.dest %>/<%= copy.renderjs.relative_dest %>"
       },
