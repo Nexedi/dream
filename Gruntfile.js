@@ -198,6 +198,18 @@ module.exports = function (grunt) {
         relative_dest: 'lib/jquerymobile.css',
         dest: '<%= global_config.dest %>/<%= curl.jquerymobilecss.relative_dest %>'
       },
+      jqueryflot: {
+        url_base: 'https://raw.githubusercontent.com/flot/flot/' +
+          '453b017cc5acfd75e252b93e8635f57f4196d45d/',
+        src: '<%= curl.jqueryflot.url_base%>jquery.flot.js',
+        relative_dest: 'lib/jquery.flot.js',
+        dest: '<%= global_config.dest %>/<%= curl.jqueryflot.relative_dest %>'
+      },
+      jqueryflotstack: {
+        src: '<%= curl.jqueryflot.url_base%>jquery.flot.stack.js',
+        relative_dest: 'lib/jquery.flot.stack.js',
+        dest: '<%= global_config.dest %>/<%= curl.jqueryflotstack.relative_dest %>'
+      },
       handsontablejs: {
         src: 'https://raw.githubusercontent.com/warpech/' +
           'jquery-handsontable/v0.10.5/dist/jquery.handsontable.full.js',
