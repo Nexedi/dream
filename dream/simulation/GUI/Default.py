@@ -364,17 +364,6 @@ class Simulation(object):
     """
     # by default we add an event generator if using queue stats
     if self.getConfigurationDict()["Dream-Configuration"]["gui"]["queue_stat"]:
-      if not "__queue_stat" in data["nodes"]:
-        data["nodes"]["__queue_stat"] = {
-            "_class": "Dream.EventGenerator",
-            "argumentDict": "{}",
-            "duration": 10,
-            "interval": 10,
-            "method": "Globals.countQueueMetrics",
-            "name": "Queue Statistics",
-            "start": 1,
-            "stop": -1
-        }
       for node in data["nodes"].values():
         if node['_class'] in ('Dream.Queue', ):
           node['gatherWipStat'] = 1

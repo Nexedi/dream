@@ -379,17 +379,6 @@
       "name": "StartQueue", 
       "schedulingRule": "FIFO"
     }, 
-    "Queues": {
-      "_class": "Dream.EventGenerator", 
-      "argumentDict": "{}", 
-      "duration": 10, 
-      "element_id": "DreamNode_27", 
-      "interval": 10, 
-      "method": "Globals.countQueueMetrics", 
-      "name": "Queues", 
-      "start": 1, 
-      "stop": -1
-    }, 
     "S1": {
       "_class": "Dream.BatchSource", 
       "batchNumberOfUnits": 100, 

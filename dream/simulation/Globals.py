@@ -256,13 +256,6 @@ def countIntervalThroughput(argumentDict={}):
             obj.intervalThroughPutList.append(currentExited)
 
 
-from Queue import Queue
-def countQueueMetrics(argumentDict={}):
-    for obj in G.ObjList:
-        if isinstance(obj, Queue):
-            obj.wipStatList.append((G.env.now, len(obj.Res.users)))
-
-
 # =======================================================================
 # Helper function to calculate the confidence intervals of a serie.
 # =======================================================================
