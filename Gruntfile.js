@@ -195,6 +195,18 @@ module.exports = function (grunt) {
         src: '<%= curl.jquerymobilejs.src_base %>.css',
         relative_dest: 'lib/jquerymobile.css',
         dest: '<%= global_config.dest %>/<%= curl.jquerymobilecss.relative_dest %>'
+      },
+      handsontablejs: {
+        src: 'https://raw.githubusercontent.com/warpech/' +
+          'jquery-handsontable/v0.10.5/dist/jquery.handsontable.js',
+        relative_dest: 'lib/handsontable.js',
+        dest: '<%= global_config.dest %>/<%= curl.handsontablejs.relative_dest %>'
+      },
+      handsontablecss: {
+        src: 'https://raw.githubusercontent.com/warpech/' +
+          'jquery-handsontable/v0.10.5/dist/jquery.handsontable.css',
+        relative_dest: 'lib/handsontable.css',
+        dest: '<%= global_config.dest %>/<%= curl.handsontablecss.relative_dest %>'
 //       },
 //       jqueryuijs: {
 //         src: 'https://code.jquery.com/ui/1.10.4/jquery-ui.js',
