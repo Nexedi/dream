@@ -75,6 +75,7 @@ class EntityGenerator(object):
                 #print self.env.now, 'appending to the list'
                 self.victim.scheduledEntities.append(self.env.now)
                 self.victim.outputTrace(entity.name, "generated")       # output the trace
+                G.numberOfEntities+=1
             yield self.env.timeout(self.victim.calculateInterarrivalTime()) # wait until the next arrival
 
 #============================================================================
