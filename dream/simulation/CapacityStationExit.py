@@ -18,43 +18,35 @@
 # ===========================================================================
 
 '''
-Created on 5 June 2013
+Created on 6 June 2013
 
 @author: George
 '''
 '''
-a station that can process a specified capacity in every time period
+the exit of the capacity station. Only change from buffer that it can be blocked.
 '''
 
-from Queue import Queue
+from Exit import Exit
 
 import simpy
 
 # ===========================================================================
-#                            the CapacityStation object
+#                            the CapacityStationExit object
 # ===========================================================================
-class CapacityStation(Queue):
+class CapacityStationExit(Exit):
     
     #===========================================================================
-    # the __init__ method of the CapacityStation
+    # the __init__ method of the CapacityStationExit
     #===========================================================================
-    def __init__(self, id, name, capacity=float("inf"), intervalCapacity=[], schedulingRule="FIFO", gatherWipStat=False):
-        Queue.__init__(self, id, name, capacity, schedulingRule, gatherWipStat)
-        # a list that holds the capacity (manhours) that is available in each interval
-        self.intervalCapacity=intervalCapacity
-        # a list that holds the capacity (manhours) that is available in each interval for the remaining time
-        self.dailyIntervalCapacity=list(self.intervalCapacity)
-        # blocks the entry of the capacity station, so that it can be manipulated to accept only in certain moments of simulation time
+    def __init__(self, id, name=None):
+        Exit.__init__(self, id, name)
         self.isBlocked=True
         
     def initialize(self):
-        Queue.initialize(self)
-        self.dailyIntervalCapacity=list(self.intervalCapacity)
+        Exit.initialize(self)
         self.isBlocked=True
 
     def canAccept(self):
         if self.isBlocked:
             return False
-        return Queue.canAccept()
-        
-        
+        return Exit.canAccept()
