@@ -61,17 +61,13 @@ class ShiftScheduler(ObjectInterruption):
     def run(self):    
         self.victim.totalOffShiftTime=0
         self.victim.timeLastShiftEnded=self.env.now
-        # if in the beginning the victim is offShift
+        # if in the beginning the victim is offShift set it as such
         if float(self.remainingShiftPattern[0][0])!=self.env.now:
             self.victim.onShift=False
-            yield self.env.timeout(float(self.remainingShiftPattern[0][1]-self.env.now))    # wait until the shift is over
-                
             self.interruptVictim()                  # interrupt processing operations if any
-            self.victim.onShift=False                        # get the victim off-shift
             self.victim.timeLastShiftEnded=self.env.now
             self.outputTrace("is off shift")
-                
-            self.remainingShiftPattern.pop(0)
+
         while 1:
             if not self.victim.onShift:
                 yield self.env.timeout(float(self.remainingShiftPattern[0][0]-self.env.now))    # wait for the onShift
