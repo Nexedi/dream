@@ -48,3 +48,15 @@ class CapacityStationBuffer(Queue):
         if self.isLocked:
             return False
         return Queue.canAccept(self)
+
+    def haveToDispose(self, callerObject=None):
+        activeObjectQ=self.getActiveObjectQueue()
+        if len(activeObjectQ)==0:
+            return False
+        if not activeObjectQ[0].shouldMove:
+            return False
+
+    # put the entities that should move in front
+    def sortEntities(self):
+        activeObjectQ=self.getActiveObjectQueue()
+        activeObjectQ.sort(key=lambda x: x.shouldMove, reverse=True) 
