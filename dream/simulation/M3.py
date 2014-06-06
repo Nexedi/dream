@@ -36,7 +36,7 @@ class M3(BatchScrapMachine):
     # We consider that since this is in essence one station, the BatchScrapMachine
     # should be blocked if the BatchDecomposition is blocked
     # =======================================================================
-    def canAcceptAndIsRequested(self):
+    def canAcceptAndIsRequested(self, callerObject=None):
         # get active and giver objects
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
