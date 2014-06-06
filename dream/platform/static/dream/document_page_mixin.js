@@ -6,7 +6,7 @@
             var key = this.props.jio_key, gadget = this;
             return new RSVP.Queue().push(function() {
                 // XXX Conditional simulation menu
-                return RSVP.all([ gadget.whoWantToDisplayThisDocumentPage("edit_table", key), gadget.whoWantToDisplayThisDocumentPage("run_simulation", key), gadget.whoWantToDisplayThisDocumentPage("manage_document", key), gadget.whoWantToDisplayThisDocumentPage("station_utilisation_graph", key), gadget.whoWantToDisplayThisDocumentPage("queue_stat_graph", key), gadget.whoWantToDisplayThisDocumentPage("debug_json", key) ]);
+                return RSVP.all([ gadget.whoWantToDisplayThisDocumentPage("edit_table", key), gadget.whoWantToDisplayThisDocumentPage("run_simulation", key), gadget.whoWantToDisplayThisDocumentPage("manage_document", key), gadget.whoWantToDisplayThisDocumentPage("station_utilisation_graph", key), gadget.whoWantToDisplayThisDocumentPage("queue_stat_graph", key), gadget.whoWantToDisplayThisDocumentPage("exit_stat", key), gadget.whoWantToDisplayThisDocumentPage("debug_json", key) ]);
             }).push(function(result_list) {
                 return [ {
                     link: result_list[0],
@@ -25,6 +25,9 @@
                     title: "Queues Statistics"
                 }, {
                     link: result_list[5],
+                    title: "Exit Statistics"
+                }, {
+                    link: result_list[6],
                     title: "Debug JSON"
                 } ];
             });
