@@ -373,7 +373,7 @@
     }, 
     "QStart": {
       "_class": "Dream.Queue", 
-      "capacity": -1, 
+      "capacity": 1, 
       "element_id": "DreamNode_25", 
       "isDummy": "0", 
       "name": "StartQueue", 
