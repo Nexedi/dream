@@ -36,12 +36,12 @@
                                 if (interval_value > throughputTarget) {
                                     interval_list.push({
                                         interval: interval_value,
-                                        icon: "fa-smile-o"
+                                        icon: "check"
                                     });
                                 } else {
                                     interval_list.push({
                                         interval: interval_value,
-                                        icon: "fa-frown-o"
+                                        icon: "delete"
                                     });
                                 }
                             }
