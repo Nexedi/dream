@@ -86,6 +86,13 @@ from MachineManagedJob import MachineManagedJob
 from QueueManagedJob import QueueManagedJob
 from ShiftScheduler import ShiftScheduler
 
+from CapacityStation import CapacityStation
+from CapacityStationExit import CapacityStationExit
+from CapacityStationBuffer import CapacityStationBuffer
+from CapacityStationController import CapacityStationController
+from CapacityEntity import CapacityEntity
+from CapacityProject import CapacityProject
+
 import ExcelHandler
 import time
 import json
@@ -168,6 +175,10 @@ def createObjects():
     G.MachineManagedJobList=[]
     G.QueueManagedJobList=[]
     G.ModelResourceList=[]
+    G.CapacityStationBufferList=[]
+    G.CapacityStationList=[]
+    G.CapacityStationExitList=[]
+    CapacityStationContollerList=[]
 
     # -----------------------------------------------------------------------
     #                loop through all the model resources 
@@ -782,6 +793,29 @@ def createObjects():
                 G.OperatedMachineList.append(MA)                 # add the machine to the operatedMachines List
             G.ObjList.append(MA)
             
+        elif objClass=='Dream.CapacityStation':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            intervalCapacity=element.get('intervalCapacity', [])
+            CS=CapacityStation(id,name,intervalCapacity=intervalCapacity)
+            G.CapacityStationList.append(CS)
+            G.ObjList.append(CS)
+            
+        elif objClass=='Dream.CapacityStationBuffer':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            CB=CapacityStation(id,name)
+            G.CapacityStationBufferList.append(CB)
+            G.ObjList.append(CB)
+            
+        elif objClass=='Dream.CapacityStationExit':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            nextCapacityStationBufferId=element.get('nextCapacityStationBufferId', None)
+            CE=CapacityStationExit(id,name,nextCapacityStationBufferId=nextCapacityStationBufferId)
+            G.CapacityStationList.append(CE)
+            G.ObjList.append(CE)
+             
     # -----------------------------------------------------------------------
     #                loop through all the nodes to  
     #            search for Event Generator and create them
@@ -908,6 +942,8 @@ def createWIP():
     G.MouldList=[]
     G.BatchList=[]
     G.SubBatchList=[]
+    G.CapacityEntityList=[]
+    G.CapacityProjectList=[]
     # entities that just finished processing in a station 
     # and have to enter the next machine 
     G.pendingEntities=[]
@@ -1181,7 +1217,26 @@ def createWIP():
                 G.OrderList.append(O)   
                 G.WipList.append(O)  
                 G.EntityList.append(O)
-                G.JobList.append(O)                     
+                G.JobList.append(O)                
+            
+            if entityClass=='Dream.CapacityProject':
+                id=entity.get('id', 'not found')  
+                name=entity.get('name', 'not found') 
+                capacityRequirementDict=entity.get('capacityRequirementDict', {})
+                CP=CapacityProject(id=id, name=name, capacityRequirementDict=capacityRequirementDict) 
+                G.EntityList.append(CP)     
+                G.CapacityProjectList.append(CP)
+                         
+            if entityClass=='Dream.CapacityEntity':
+                id=entity.get('id', 'not found')  
+                name=entity.get('name', 'not found') 
+                requiredCapacity=entity.get('requiredCapacity', 10)
+                capacityProjectId=entity.get('capacityProjectId', None)
+                CE=CapacityEntity(id=id, name=name, requiredCapacity=requiredCapacity, capacityProjectId=capacityProjectId) 
+                G.CapacityEntityList.append(CE)     
+                G.EntityList.append(CE)    
+                object=Globals.findObjectById(element['id'])
+                CE.currentStation=object
                 
 # ===========================================================================
 #                reads the interruptions of the stations
