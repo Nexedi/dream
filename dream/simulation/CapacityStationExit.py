@@ -48,7 +48,7 @@ class CapacityStationExit(Exit):
         Exit.initialize(self)
         self.isLocked=True
 
-    def canAccept(self):
+    def canAccept(self, callerObject=None):
         if self.isLocked:
             return False
-        return Exit.canAccept()
+        return Exit.canAccept(self)

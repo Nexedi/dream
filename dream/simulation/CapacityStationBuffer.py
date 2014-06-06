@@ -44,7 +44,7 @@ class CapacityStationBuffer(Queue):
         Queue.initialize(self)
         self.isLocked=True
 
-    def canAccept(self):
+    def canAccept(self, callerObject=None):
         if self.isLocked:
             return False
-        return Queue.canAccept()
+        return Queue.canAccept(self)

@@ -42,6 +42,7 @@ class CapacityStation(Queue):
         Queue.__init__(self, id, name, capacity=capacity)
         # a list that holds the capacity (manhours) that is available in each interval
         self.intervalCapacity=intervalCapacity
+        print self.id, intervalCapacity
         # a list that holds the capacity (manhours) that is available in each interval for the remaining time
         self.remainingIntervalCapacity=list(self.intervalCapacity)
         # blocks the entry of the capacity station, so that it can be manipulated to accept only in certain moments of simulation time
@@ -52,9 +53,9 @@ class CapacityStation(Queue):
         self.remainingIntervalCapacity=list(self.intervalCapacity)
         self.isLocked=True
 
-    def canAccept(self):
+    def canAccept(self, callerObject=None):
         if self.isLocked:
             return False
-        return Queue.canAccept()
+        return Queue.canAccept(self)
         
         
