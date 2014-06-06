@@ -92,6 +92,7 @@ from CapacityStationBuffer import CapacityStationBuffer
 from CapacityStationController import CapacityStationController
 from CapacityEntity import CapacityEntity
 from CapacityProject import CapacityProject
+from CapacityStationController import CapacityStationController
 
 import ExcelHandler
 import time
@@ -178,7 +179,7 @@ def createObjects():
     G.CapacityStationBufferList=[]
     G.CapacityStationList=[]
     G.CapacityStationExitList=[]
-    CapacityStationContollerList=[]
+    G.CapacityStationControllerList=[]
 
     # -----------------------------------------------------------------------
     #                loop through all the model resources 
@@ -813,7 +814,7 @@ def createObjects():
             name=element.get('name', 'not found')
             nextCapacityStationBufferId=element.get('nextCapacityStationBufferId', None)
             CE=CapacityStationExit(id,name,nextCapacityStationBufferId=nextCapacityStationBufferId)
-            G.CapacityStationList.append(CE)
+            G.CapacityStationExitList.append(CE)
             G.ObjList.append(CE)
              
     # -----------------------------------------------------------------------
@@ -847,6 +848,24 @@ def createObjects():
                                 duration=duration, method=method, argumentDict=argumentDict)       # create the EventGenerator object
                                                                     # calling the getSuccessorList() method on the repairman
             G.EventGeneratorList.append(EV)                               # add the Event Generator to the RepairmanList
+            
+        elif elementClass=='Dream.CapacityStationController':                    # check the object type
+            id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
+            name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
+            start = float(element.get('start') or 0)
+            stop = float(element.get('stop') or -1)
+                                                                    # infinity (had to be done to make it as float)
+            if stop<0:
+                stop=float('inf')            
+            interval = float(element.get('interval') or 1)
+            duration = float(element.get('duration') or 0)
+            argumentDict=(element.get('argumentDict', {}))      # get the arguments of the method as a dict / default {}
+               
+            CSC = CapacityStationController(id, name, start=start, stop=stop, interval=interval, 
+                                duration=duration, argumentDict=argumentDict)       # create the EventGenerator object
+                                                                    # calling the getSuccessorList() method on the repairman
+            G.EventGeneratorList.append(CSC)                               # add the Event Generator to the RepairmanList
+            G.CapacityStationControllerList.append(CSC)
             
     # -----------------------------------------------------------------------
     #                    loop through all the core objects    
