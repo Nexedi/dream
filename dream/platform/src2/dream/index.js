@@ -160,6 +160,7 @@
         page_gadget,
         element = gadget.props.element
                         .getElementsByClassName("gadget_container")[0];
+      options.configuration_dict = gadget.props.configuration_dict;
       if (options.page === undefined) {
         // Redirect to the about page
         return gadget.aq_pleasePublishMyState({page: "document_list"})
