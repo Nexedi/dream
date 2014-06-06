@@ -799,13 +799,15 @@ def createObjects():
             name=element.get('name', 'not found')
             intervalCapacity=element.get('intervalCapacity', [])
             CS=CapacityStation(id,name,intervalCapacity=intervalCapacity)
+            CS.nextIds=getSuccessorList(id)
             G.CapacityStationList.append(CS)
             G.ObjList.append(CS)
             
         elif objClass=='Dream.CapacityStationBuffer':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            CB=CapacityStation(id,name)
+            CB=CapacityStationBuffer(id,name)
+            CB.nextIds=getSuccessorList(id)
             G.CapacityStationBufferList.append(CB)
             G.ObjList.append(CB)
             
