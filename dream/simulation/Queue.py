@@ -247,20 +247,24 @@ class Queue(CoreObject):
         #if the schedulingRule is to sort Entities according to longest processing time first in the next station
         elif criterion=="LPT":
             for entity in activeObjectQ:
-                processingTime = entity.remainingRoute[0].get('processingTime',None)
-                if processingTime:
-                    entity.processingTimeInNextStation=float(processingTime.get('mean',0))
-                else:
-                    entity.processingTimeInNextStation=0
+                entity.processingTimeInNextStation=None
+                # search in the remaining route until there is an object with processing time
+                for stop in entity.remainingRoute:
+                    processingTime = stop.get('processingTime',None)
+                    if processingTime:
+                        entity.processingTimeInNextStation=float(processingTime.get('mean',0))
+                        break
             activeObjectQ.sort(key=lambda x: x.processingTimeInNextStation, reverse=True)             
         #if the schedulingRule is to sort Entities according to shortest processing time first in the next station
         elif criterion=="SPT":
             for entity in activeObjectQ:
-                processingTime = entity.remainingRoute[0].get('processingTime',None)
-                if processingTime:
-                    entity.processingTimeInNextStation=float(processingTime.get('mean',0))
-                else:
-                    entity.processingTimeInNextStation=0
+                entity.processingTimeInNextStation=None
+                # search in the remaining route until there is an object with processing time
+                for stop in entity.remainingRoute:
+                    processingTime = stop.get('processingTime',None)
+                    if processingTime:
+                        entity.processingTimeInNextStation=float(processingTime.get('mean',0))
+                        break
             activeObjectQ.sort(key=lambda x: x.processingTimeInNextStation) 
         #if the schedulingRule is to sort Entities based on the minimum slackness
         elif criterion=="MS":
