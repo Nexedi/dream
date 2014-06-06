@@ -190,7 +190,7 @@ def setWIP(entityList):
     # for all the entities in the entityList
     for entity in entityList:
         # if the entity is of type Part
-        if entity.type=='Part' or entity.type=='Batch' or entity.type=='SubBatch':
+        if entity.type=='Part' or entity.type=='Batch' or entity.type=='SubBatch' or entity.type=='CapacityEntity': 
             object=entity.currentStation                        #identify the object
             object.getActiveObjectQueue().append(entity)        #append the entity to its Queue
             entity.schedule.append([object,G.env.now])              #append the time to schedule so that it can be read in the result
@@ -230,8 +230,10 @@ def setWIP(entityList):
             entity.currentStation=object                        # update the current station of the entity 
         # if the currentStation of the entity is of type Machine then the entity 
         #     must be processed first and then added to the pendingEntities list
-        #     Its hot flag is not raised
-        if not (entity.currentStation in G.MachineList):    
+        #     Its hot flag is not raised        
+        # the following to be performed only if there is a current station. Orders, Projects e.t.c do not have
+        # TODO, maybe we should loop in wiplist here
+        if (not (entity.currentStation in G.MachineList)) and entity.currentStation:    
             # variable to inform whether the successors are machines or not
             successorsAreMachines=True
             for nextObject in entity.currentStation.next:
