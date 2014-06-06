@@ -84,7 +84,7 @@ class CoreObject(object):
         self.downTimeProcessingCurrentEntity=0          #holds the time that the machine was down while 
                                                         #processing the current entity
         self.downTimeInTryingToReleaseCurrentEntity=0   #holds the time that the object was down while trying 
-                                                        #to release the current entity                                                          
+                                                        #to release the current entity . This might be due to failure, off-shift, etc                                                         
         self.downTimeInCurrentEntity=0                  #holds the total time that the 
                                                         #object was down while holding current entity
         self.timeLastEntityLeft=0                       #holds the last time that an entity left the object
@@ -211,9 +211,7 @@ class CoreObject(object):
     def addBlockage(self): 
         self.totalTimeInCurrentEntity=self.env.now-self.timeLastEntityEntered
         self.totalTimeWaitingForOperator += self.operatorWaitTimeCurrentEntity
-        if self.timeLastEntityEnded<self.timeLastShiftStarted:      
-            self.offShiftTimeTryingToReleaseCurrentEntity=self.timeLastShiftStarted-self.timeLastShiftEnded
-        blockage=self.env.now-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity+self.offShiftTimeTryingToReleaseCurrentEntity)       
+        blockage=self.env.now-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)       
         self.totalBlockageTime+=blockage     
     
     # =======================================================================

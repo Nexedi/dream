@@ -881,8 +881,8 @@ class Machine(CoreObject):
             elif len(self.getActiveObjectQueue())==0 or self.waitToDispose:
                 self.totalOffShiftTime+=self.env.now-self.timeLastShiftEnded 
             # we add the value only if it hasn't already been added
-            if((mightBeBlocked) and (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered) and (not alreadyAdded)):        
-                activeObject.totalBlockageTime+=(self.env.now-activeObject.timeLastEntityEnded)-(self.env.now-activeObject.timeLastShiftEnded)-offShiftTimeInCurrentEntity 
+            if((mightBeBlocked) and (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered) and (not alreadyAdded)):   
+                activeObject.totalBlockageTime+=(self.env.now-activeObject.timeLastEntityEnded)-offShiftTimeInCurrentEntity 
                 
         #Machine was idle when it was not in any other state    
         activeObject.totalWaitingTime=MaxSimtime-activeObject.totalWorkingTime-activeObject.totalBlockageTime-activeObject.totalFailureTime-activeObject.totalLoadTime-activeObject.totalSetupTime-self.totalOffShiftTime
