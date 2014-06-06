@@ -39,6 +39,7 @@ class CapacityEntity(Entity):
         self.capacityProjectId=capacityProjectId    # the project id hat the capacity Entity is part of
         self.capacityProject=None                   # the project that the capacity Entity is part of. It is defined in initialize
         self.requiredCapacity=requiredCapacity  # the capacity that the capacity entity requires from the following station
+        self.shouldMove=False
 
     def initialize(self):
         Entity.initialize(self)
