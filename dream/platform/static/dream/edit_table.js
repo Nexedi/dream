@@ -18,7 +18,7 @@
                 _attachment: "body.json"
             }), gadget.getDeclaredGadget("tableeditor") ]);
         }).push(function(result_list) {
-            return result_list[1].render(JSON.stringify(JSON.parse(result_list[0]).shift_spreadsheet));
+            return result_list[1].render(JSON.stringify(JSON.parse(result_list[0]).wip_part_spreadsheet));
         });
     }).declareMethod("startService", function() {
         return this.getDeclaredGadget("tableeditor").push(function(tableeditor) {
