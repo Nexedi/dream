@@ -57,11 +57,10 @@ class CapacityStationController(EventGenerator):
         print 1
         # unlock all the capacity station exits
         for exit in G.CapacityStationExitList:
-            exit.isLocked==False
+            exit.isLocked=False
         # Send canDispose to all the Stations  
         print 2
         for station in G.CapacityStationList:
-            print station.id
             station.canDispose.succeed()
         # give control until all the Stations become empty
         print 3
@@ -70,7 +69,7 @@ class CapacityStationController(EventGenerator):
         print 4
         # Lock all StationExits canAccept
         for exit in G.CapacityStationExitList:
-            exit.isLocked==True
+            exit.isLocked=True
         # Calculate from the last moves in Station->StationExits 
         # what should be created in StationBuffers and create it
         print 5
@@ -91,6 +90,10 @@ class CapacityStationController(EventGenerator):
         print 9
         while not self.checkIfBuffersFinished():
             yield self.env.timeout(0)   
+        print 10
+        # for every station update the remaining interval capacity so that it is ready for next loop
+        for station in G.CapacityStationList:
+            station.remainingIntervalCapacity.pop(0)                       
         self.stepsAreComplete.succeed()    
     
     def checkIfStationsEmpty(self):
@@ -103,7 +106,17 @@ class CapacityStationController(EventGenerator):
         pass
 
     def calculateWhatIsToBeProcessed(self):
-        pass
+        # loop through the capacity station buffers
+        for buffer in G.CapacityStationBufferList:
+            totalRequestedCapacity=0
+            print buffer.next
+            totalAvailableCapacity=buffer.next[0].remainingIntervalCapacity[0]
+            for entity in buffer.getActiveObjectQueue():
+                totalRequestedCapacity+=entity.requiredCapacity
+            if totalRequestedCapacity<=totalAvailableCapacity:
+                for entity in buffer.getActiveObjectQueue():
+                    pass
+                    #entity.shouldMove=True              
     
     def checkIfBuffersFinished(self):
         for buffer in G.CapacityStationBufferList:
