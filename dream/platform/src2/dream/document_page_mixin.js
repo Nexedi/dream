@@ -25,6 +25,7 @@
                 "queue_stat_graph",
                 key
               ),
+              gadget.whoWantToDisplayThisDocumentPage("exit_stat", key),
               gadget.whoWantToDisplayThisDocumentPage("debug_json", key)
             ]);
           })
@@ -35,7 +36,8 @@
               {link: result_list[2], title: "Manage document"},
               {link: result_list[3], title: "Stations Utilization"},
               {link: result_list[4], title: "Queues Statistics"},
-              {link: result_list[5], title: "Debug JSON"}
+              {link: result_list[5], title: "Exit Statistics"},
+              {link: result_list[6], title: "Debug JSON"}
             ];
           });
       });

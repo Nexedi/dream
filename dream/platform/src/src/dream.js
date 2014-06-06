@@ -22,8 +22,6 @@
 (function (scope, $, jsPlumb, console) {
   "use strict";
 
-
-
   function capacity_utilisation_graph_widget(input_data, output_data) {
     var available_capacity_by_station = {},
         capacity_usage_by_station = {};
