@@ -29,7 +29,6 @@ models an operator that operates a machine
 # from SimPy.Simulation import Resource, now
 import simpy
 import xlwt
-import scipy.stats as stat
 from ObjectResource import ObjectResource
 
 # ===========================================================================
