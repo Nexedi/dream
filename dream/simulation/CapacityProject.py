@@ -23,29 +23,19 @@ Created on 5 June 2013
 @author: George
 '''
 '''
-entity that requires specific capacity from a station
+a project that requires specific capacity from each station
 '''
 
 from Entity import Entity
 
 # ===========================================================================
-# The CapacityEntity object 
+# The CapacityEntityProject object 
 # ===========================================================================
-class CapacityEntity(Entity):
-    type="CapacityEntity"
+class CapacityProject(Entity):
+    type="CapacityProject"
     
-    def __init__(self, id=None, name=None, capacityProjectId=None, requiredCapacity=10, priority=0, dueDate=None, orderDate=None, isCritical=False):
-        Entity.__init__(self, id, name, priority, dueDate, orderDate, isCritical)
-        self.capacityProjectId=capacityProjectId    # the project id hat the capacity Entity is part of
-        self.capacityProject=None                   # the project that the capacity Entity is part of. It is defined in initialize
-        self.requiredCapacity=requiredCapacity  # the capacity that the capacity entity requires from the following station
-
-    def initialize(self):
-        Entity.initialize(self)
-        from Globals import G
-        # find the project that the capacity entity is part of
-        for project in G.CapacityProjectList:
-            if project.id==self.capacityProjectId:
-                self.capacityProject=project
-                break
-        
+    def __init__(self, id=None, name=None, capacityRequirementDict={}):
+        Entity.__init__(self, id, name)
+        # a dict that shows the required capacity from every station
+        self.capacityRequirementDict=capacityRequirementDict
+        self.id=id
