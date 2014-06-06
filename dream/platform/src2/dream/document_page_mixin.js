@@ -27,6 +27,10 @@
               ),
               gadget.whoWantToDisplayThisDocumentPage("exit_stat", key),
               gadget.whoWantToDisplayThisDocumentPage("job_gantt", key),
+              gadget.whoWantToDisplayThisDocumentPage(
+                "job_schedule_spreadsheet",
+                key
+              ),
               gadget.whoWantToDisplayThisDocumentPage("debug_json", key)
             ]);
           })
@@ -39,7 +43,8 @@
               {link: result_list[4], title: "Queues Statistics"},
               {link: result_list[5], title: "Exit Statistics"},
               {link: result_list[6], title: "Job Gantt"},
-              {link: result_list[7], title: "Debug JSON"}
+              {link: result_list[7], title: "Job Schedule"},
+              {link: result_list[8], title: "Debug JSON"}
             ];
           });
       });

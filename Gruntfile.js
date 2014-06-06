@@ -227,6 +227,12 @@ module.exports = function (grunt) {
         src: 'http://dhtmlx.com/x/download/regular/dhtmlxGantt.zip',
         dest: '<%= global_config.tmp %>/dhtmlxGantt.zip'
       },
+      momentjs: {
+        src: 'https://raw.githubusercontent.com/moment/moment/2.5.1/min/' +
+          'moment-with-langs.min.js',
+        relative_dest: 'lib/moment.js',
+        dest: '<%= global_config.dest %>/<%= curl.momentjs.relative_dest %>'
+      },
       handsontablejs: {
         src: 'https://raw.githubusercontent.com/warpech/' +
           'jquery-handsontable/v0.10.5/dist/jquery.handsontable.full.js',
