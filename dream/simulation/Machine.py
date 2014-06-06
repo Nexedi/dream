@@ -527,7 +527,15 @@ class Machine(CoreObject):
         self.nameLastEntityEnded=self.currentEntity.name        # this holds the name of the last entity that ended processing in Machine
         self.completedJobs+=1                                   # Machine completed one more Job
         # reseting the shouldPreempt flag
-        self.shouldPreempt=False 
+        self.shouldPreempt=False
+        if self.isWorkingOnTheLastBeforeOffShift:
+            mySS=None
+            for SS in G.ShiftSchedulerList:
+                if SS.victim==self:
+                    mySS=SS
+                    break
+            mySS.victimEndedLastProcessing.succeed()
+            self.isWorkingOnTheLastBeforeOffShift=False
     
     # =======================================================================
     # actions to be carried out when the processing of an Entity ends

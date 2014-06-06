@@ -92,6 +92,8 @@ class CoreObject(object):
         self.processingTimeOfCurrentEntity=0            #holds the total processing time that the current entity required                                               
         # ============================== waiting flag ==============================================                                      
         self.waitToDispose=False                        #shows if the object waits to dispose an entity   
+        
+        self.isWorkingOnTheLastBeforeOffShift=False     #shows if the object is performing the last processing before it goes offShift
 
         # ============================== the below are currently used in Jobshop =======================   
         self.giver=None                                 #the CoreObject that the activeObject will take an Entity from
@@ -119,7 +121,7 @@ class CoreObject(object):
         self.totalProcessingTimeInCurrentEntity=0
         self.failureTimeInCurrentEntity=0
         self.setupTimeCurrentEntity=0
- 
+        
         self.shouldPreempt=False    #flag that shows that the machine should preempt or not
         
         self.lastGiver=None         # variable that holds the last giver of the object, used by machine in case of preemption    
@@ -134,6 +136,7 @@ class CoreObject(object):
         self.interruptionStart=self.env.event()
         self.interruptedBy=None      
         self.entityRemoved=self.env.event()
+        
 
     # =======================================================================
     #                the main process of the core object 
