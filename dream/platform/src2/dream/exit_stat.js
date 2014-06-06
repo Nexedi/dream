@@ -52,7 +52,7 @@
     for (i = 0; i < elementList.length; i += 1) {
       element = elementList[i];
       if (element._class === 'Dream.Exit') {
-        result += "<table>";
+        result += '<table>';
 
         result += header_template({name: element.name || element.id});
 
@@ -70,12 +70,12 @@
                 if (interval_value > throughputTarget) {
                   interval_list.push({
                     interval: interval_value,
-                    icon: "fa-smile-o"
+                    icon: "check"
                   });
                 } else {
                   interval_list.push({
                     interval: interval_value,
-                    icon: "fa-frown-o"
+                    icon: "delete"
                   });
                 }
               }
