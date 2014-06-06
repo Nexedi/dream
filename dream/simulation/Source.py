@@ -45,13 +45,7 @@ class EntityGenerator(object):
         self.env=G.env
         self.type="EntityGenerator"                       #String that shows the type of object
         self.victim=victim
-    
-#     #===========================================================================
-#     # initialize method of the EntityGenerator
-#     #===========================================================================
-#     def initialize(self):
-#         Process.__init__(self)
-        
+            
     #===========================================================================
     # the generator of the EntitiesGenerator
     #===========================================================================
@@ -72,10 +66,9 @@ class EntityGenerator(object):
                 self.victim.entityCreated.succeed(entity)
             # else put it on the time list for scheduled Entities
             else:
-                #print self.env.now, 'appending to the list'
+                entityCounter=G.numberOfEntities+len(self.victim.scheduledEntities) # this is used just ot output the trace correctly
                 self.victim.scheduledEntities.append(self.env.now)
-                self.victim.outputTrace(entity.name, "generated")       # output the trace
-                G.numberOfEntities+=1
+                self.victim.outputTrace(self.victim.item.type+str(entityCounter), "generated")       # output the trace
             yield self.env.timeout(self.victim.calculateInterarrivalTime()) # wait until the next arrival
 
 #============================================================================
@@ -104,8 +97,7 @@ class Source(CoreObject):
 
         self.item=Globals.getClassFromName(entity)      #the type of object that the Source will generate
                
-        self.scheduledEntities=[]       # list of creations that are scheduled
-        
+        self.scheduledEntities=[]       # list of creations that are scheduled. pattern is [timeOfCreation, EntityCounter]       
     
     #===========================================================================
     # The initialize method of the Source class
@@ -189,7 +181,7 @@ class Source(CoreObject):
     def removeEntity(self, entity=None):
         if len(self.getActiveObjectQueue())==1 and len(self.scheduledEntities):
             newEntity=self.createEntity()                       # create the Entity object and assign its name
-            newEntity.creationTime=self.scheduledEntities.pop(0)                             # assign the current simulation time as the Entity's creation time 
+            newEntity.creationTime=self.scheduledEntities.pop(0)                      # assign the current simulation time as the Entity's creation time 
             newEntity.startTime=newEntity.creationTime                                # assign the current simulation time as the Entity's start time
             #print self.env.now, 'getting from the list. StartTime=',newEntity.startTime
             newEntity.currentStation=self                            # update the current station of the Entity
