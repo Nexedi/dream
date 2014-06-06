@@ -6,7 +6,7 @@ module.exports = function (grunt) {
   var global_config = {
       src: "dream/platform/src2/",
       lib: "dream/platform/vendor/",
-//       tmp: "tmp",
+      tmp: "tmp",
       dest: "dream/platform/static/"
     };
 
@@ -19,6 +19,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-curl');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-zip');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -146,6 +147,18 @@ module.exports = function (grunt) {
         relative_dest: 'lib/qunit.js',
         dest: "<%= global_config.dest %>/<%= copy.qunitjs.relative_dest %>"
       },
+      dhtmlxganttjs: {
+        src: "<%= global_config.lib %>/dhtmlxgantt.js",
+//         src: "<%= unzip.dhtmlxgantt.dest %>/codebase/dhtmlxgantt.js",
+        relative_dest: 'lib/dhtmlxgantt.js',
+        dest: "<%= global_config.dest %>/<%= copy.dhtmlxganttjs.relative_dest %>"
+      },
+      dhtmlxganttcss: {
+        src: "<%= global_config.lib %>/dhtmlxgantt.css",
+//         src: "<%= unzip.dhtmlxgantt.dest %>/codebase/dhtmlxgantt.css",
+        relative_dest: 'lib/dhtmlxgantt.css',
+        dest: "<%= global_config.dest %>/<%= copy.dhtmlxganttcss.relative_dest %>"
+      },
       qunitcss: {
         src: 'node_modules/qunitjs/qunit/qunit.css',
         relative_dest: 'lib/qunit.css',
@@ -210,6 +223,10 @@ module.exports = function (grunt) {
         relative_dest: 'lib/jquery.flot.stack.js',
         dest: '<%= global_config.dest %>/<%= curl.jqueryflotstack.relative_dest %>'
       },
+      dhtmlxgantt: {
+        src: 'http://dhtmlx.com/x/download/regular/dhtmlxGantt.zip',
+        dest: '<%= global_config.tmp %>/dhtmlxGantt.zip'
+      },
       handsontablejs: {
         src: 'https://raw.githubusercontent.com/warpech/' +
           'jquery-handsontable/v0.10.5/dist/jquery.handsontable.full.js',
@@ -239,6 +256,13 @@ module.exports = function (grunt) {
       }
       //     qunit: {
 //       all: ['test/index.html']
+    },
+
+    unzip: {
+      dhtmlxgantt: {
+        src: '<%= curl.dhtmlxgantt.dest %>',
+        dest: '<%= global_config.tmp %>/dhtmlxGantt/'
+      }
     }
 
   });
@@ -246,7 +270,7 @@ module.exports = function (grunt) {
   grunt.registerTask('default', ['all']);
   grunt.registerTask('all', ['lint', 'build']);
   grunt.registerTask('lint', ['jslint']);
-  grunt.registerTask('dep', ['curl']);
+  grunt.registerTask('dep', ['curl', 'unzip']);
 //   grunt.registerTask('test', ['qunit']);
   grunt.registerTask('build', ['concat', 'copy', 'uglify', 'less']);
 
