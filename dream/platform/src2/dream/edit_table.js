@@ -46,7 +46,7 @@
         })
         .push(function (result_list) {
           return result_list[1].render(
-            JSON.stringify(JSON.parse(result_list[0]).shift_spreadsheet)
+            JSON.stringify(JSON.parse(result_list[0]).wip_part_spreadsheet)
           );
         });
     })
