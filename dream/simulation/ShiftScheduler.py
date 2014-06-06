@@ -84,6 +84,8 @@ class ShiftScheduler(ObjectInterruption):
                 startShift=self.env.now
             else:
                 yield self.env.timeout(float(self.remainingShiftPattern[0][1]-self.env.now))    # wait until the shift is over
+                # if the mode is to end current work before going off-shift and there is current work, wait for victimEndedLastProcessing
+                # signal before going off-shift
                 if self.endUnfinished and len(self.victim.getActiveObjectQueue())==1 and (not self.victim.waitToDispose):
                     self.victim.isWorkingOnTheLastBeforeOffShift=True
                     yield self.victimEndedLastProcessing   
