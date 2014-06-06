@@ -38,15 +38,17 @@ class CapacityStationExit(Exit):
     #===========================================================================
     # the __init__ method of the CapacityStationExit
     #===========================================================================
-    def __init__(self, id, name=None):
+    def __init__(self, id, name=None, nextCapacityStationBufferId=None):
         Exit.__init__(self, id, name)
-        self.isBlocked=True
+        self.isLocked=True
+        self.nextCapacityStationBufferId=nextCapacityStationBufferId    # the id of the next station. If it is None it 
+                                                                        # means it is the end of the system.
         
     def initialize(self):
         Exit.initialize(self)
-        self.isBlocked=True
+        self.isLocked=True
 
     def canAccept(self):
-        if self.isBlocked:
+        if self.isLocked:
             return False
         return Exit.canAccept()

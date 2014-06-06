@@ -36,15 +36,15 @@ class CapacityStationBuffer(Queue):
     # the __init__ method of the CapacityStationBuffer
     #===========================================================================
     def __init__(self, id, name, capacity=float("inf"), isDummy=False, schedulingRule="FIFO", gatherWipStat=False):
-        Queue.__init__(self, id, name, capacity, isDummy, schedulingRule, gatherWipStat)
-        self.isBlocked=True
+        Queue.__init__(self, id, name, capacity=capacity)
+        self.isLocked=True
 
 
     def initialize(self):
         Queue.initialize(self)
-        self.isBlocked=True
+        self.isLocked=True
 
     def canAccept(self):
-        if self.isBlocked:
+        if self.isLocked:
             return False
         return Queue.canAccept()
