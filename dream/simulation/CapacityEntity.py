@@ -43,6 +43,7 @@ class CapacityEntity(Entity):
 
     def initialize(self):
         Entity.initialize(self)
+        self.shouldMove=False
         from Globals import G
         # find the project that the capacity entity is part of
         for project in G.CapacityProjectList:

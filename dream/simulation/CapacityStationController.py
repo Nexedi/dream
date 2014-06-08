@@ -28,6 +28,7 @@ event generator that controls the capacity station objects
 
 import simpy
 from EventGenerator import EventGenerator
+from CapacityEntity import CapacityEntity
 from Globals import G
 
 class CapacityStationController(EventGenerator):
@@ -61,7 +62,8 @@ class CapacityStationController(EventGenerator):
         # Send canDispose to all the Stations  
         print 2
         for station in G.CapacityStationList:
-            station.canDispose.succeed()
+            if len(station.getActiveObjectQueue())>0:
+                station.canDispose.succeed()
         # give control until all the Stations become empty
         print 3
         while not self.checkIfStationsEmpty():
@@ -82,14 +84,26 @@ class CapacityStationController(EventGenerator):
         print 7
         for station in G.CapacityStationList:
             station.isLocked=False
-        # Send canDispose to all the StationBuffers  
-        print 8
-        for buffer in G.CapacityStationBufferList:
-            buffer.canDispose.succeed()        
-        # give control until all StationBuffers hold only Entities that are not to be given
-        print 9
-        while not self.checkIfBuffersFinished():
-            yield self.env.timeout(0)   
+    
+        print 8, 9
+        # loop through the stations
+        for station in G.CapacityStationList:
+            buffer=station.previous[0]  # take the buffer
+            buffer.sortEntities()       # sort the entities of the buffer so the ones to move go in front
+            # loop though the entities
+            entitiesToCheck=list(buffer.getActiveObjectQueue())
+            for entity in entitiesToCheck:
+                print entity.name, entity.shouldMove             
+                if not entity.shouldMove:   # when the first entity that should not move is reached break
+                    break
+                station.isRequested.succeed(buffer)         # send is requested to station
+                # wait until the entity is removed
+                yield buffer.entityRemoved
+                buffer.entityRemoved=self.env.event()
+                
+                
+                
+    
         print 10
         # for every station update the remaining interval capacity so that it is ready for next loop
         for station in G.CapacityStationList:
@@ -108,20 +122,49 @@ class CapacityStationController(EventGenerator):
     def calculateWhatIsToBeProcessed(self):
         # loop through the capacity station buffers
         for buffer in G.CapacityStationBufferList:
-            totalRequestedCapacity=0
-            print buffer.next
-            totalAvailableCapacity=buffer.next[0].remainingIntervalCapacity[0]
+            station=buffer.next[0]  # get the station
+            totalAvailableCapacity=station.remainingIntervalCapacity[0]     # get the available capacity of the station
+                                                                            # for this interval            
+            # if there is no capacity continue with the next buffer
+            if totalAvailableCapacity<=0:
+                continue
+            # calculate the total capacity that is requested
+            totalRequestedCapacity=0    
             for entity in buffer.getActiveObjectQueue():
                 totalRequestedCapacity+=entity.requiredCapacity
+            # if there is enough capacity for all the entities set them that they all should move
             if totalRequestedCapacity<=totalAvailableCapacity:
                 for entity in buffer.getActiveObjectQueue():
-                    pass
-                    #entity.shouldMove=True              
-    
-    def checkIfBuffersFinished(self):
-        for buffer in G.CapacityStationBufferList:
-            for entity in buffer.getActiveObjectQueue():
-                if entity.shouldMove:
-                    return False
+                    entity.shouldMove=True              
+            # else calculate the capacity for every entity and create the entities
+            else:
+                entitiesInBuffer=list(buffer.getActiveObjectQueue())
+                # loop through the entities
+                for entity in entitiesInBuffer:
+                    # calculate what is the capacity that should proceed and what that should remain
+                    capacityToMove=totalAvailableCapacity*(entity.requiredCapacity)/float(totalRequestedCapacity)
+                    capacityToStay=entity.requiredCapacity-capacityToMove
+                    # remove the capacity entity by the buffer so that the broken ones are created
+                    buffer.getActiveObjectQueue().remove(entity)
+                    entityToMoveName=entity.capacityProjectId+'_'+station.objName+'_'+str(capacityToMove)
+                    entityToMove=CapacityEntity(name=entityToMoveName, capacityProjectId=entity.capacityProjectId, requiredCapacity=capacityToMove)
+                    entityToMove.initialize()
+                    entityToMove.currentStation=buffer
+                    entityToMove.shouldMove=True
+                    entityToStayName=entity.capacityProjectId+'_'+station.objName+'_'+str(capacityToStay)
+                    entityToStay=CapacityEntity(name=entityToStayName, capacityProjectId=entity.capacityProjectId, requiredCapacity=capacityToStay)
+                    entityToStay.initialize()
+                    entityToStay.currentStation=buffer
+                    import Globals
+                    Globals.setWIP([entityToMove,entityToStay])     #set the new components as wip
+                    buffer.sortEntities()
+                print '-'
+                for entity in buffer.getActiveObjectQueue():
+                    print entity.name, entity.shouldMove
+                print '-' 
+                    
+    def checkIfBufferFinished(self, buffer):
+        if buffer.getActiveObjectQueue():
+            return False
         return True               
      
