@@ -1,0 +1,46 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "id": "CB1"
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "id": "CB2"
+  }, 
+  {
+   "_class": "Dream.Exit", 
+   "id": "CE1", 
+   "results": {
+    "lifespan": 1.5, 
+    "takt_time": 0.5, 
+    "throughput": 4
+   }
+  }, 
+  {
+   "_class": "Dream.Exit", 
+   "id": "CE2", 
+   "results": {
+    "lifespan": 2.0, 
+    "takt_time": 1.0, 
+    "throughput": 2
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "id": "CS1"
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "id": "CS2"
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "id": "QD"
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}

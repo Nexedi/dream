@@ -77,7 +77,6 @@
         },
         "CE2": {
             "_class": "Dream.CapacityStationExit",
-            "nextCapacityStationBufferId": "CB2",
             "name": "WELDExit"
         },
         "QD": {
