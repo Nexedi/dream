@@ -1,39 +1,13 @@
 import simpy
 from Globals import G 
-from Source import Source
-from Machine import Machine
-from Exit import Exit
-from Queue import Queue
-from QueueLIFO import QueueLIFO
-from Repairman import Repairman
-from Part import Part
-from Frame import Frame
-from Assembly import Assembly
-from Dismantle import Dismantle
-from Conveyer import Conveyer
-from Job import Job
-from MachineJobShop import MachineJobShop
-from QueueJobShop import QueueJobShop
-from ExitJobShop import ExitJobShop
-from Batch import Batch
-from SubBatch import SubBatch
-from BatchSource import BatchSource
-from BatchDecomposition import BatchDecomposition
-from BatchReassembly import BatchReassembly
-from BatchScrapMachine import BatchScrapMachine
-from LineClearance import LineClearance
-from EventGenerator import EventGenerator
+
 from Operator import Operator
-from OperatorPreemptive import OperatorPreemptive
 from OperatorManagedJob import OperatorManagedJob
 from OperatorPool import OperatorPool
 from OperatedPoolBroker import Broker
-from OperatedMachine import OperatedMachine
-from BatchDecompositionStartTime import BatchDecompositionStartTime
-from M3 import M3
+
+from Job import Job
 from OrderComponent import OrderComponent
-from ScheduledMaintenance import ScheduledMaintenance
-from Failure import Failure
 from Order import Order
 from OrderDesign import OrderDesign
 from Mould import Mould
@@ -42,7 +16,11 @@ from ConditionalBuffer import ConditionalBuffer
 from MouldAssemblyBuffer import MouldAssemblyBuffer
 from MachineManagedJob import MachineManagedJob
 from QueueManagedJob import QueueManagedJob
-from ShiftScheduler import ShiftScheduler
+from MachineJobShop import MachineJobShop
+from QueueJobShop import QueueJobShop
+from ExitJobShop import ExitJobShop
+from Machine import Machine
+from Queue import Queue
 
 import ExcelHandler
 import time
@@ -307,19 +285,19 @@ def getRouteList(steps_list):
         #                     append successors if needed
         #=======================================================================
         # treat the case of design (add order DECOMPOSITION)
-        if "CAD" in sequence_step and j==len(technology_list):
+        if "CAD" in sequence_step and j==len(technology_list)-1:
             for successor_step in getNotMachineNodeSuccessorList(sequence_step):
                 successor_set.add(successor_step)
                 route = {"stationIdsList": [successor_step],}
                 route_list.append(route)
         # treat the case of mould (add EXIT)
-        elif sequence_step=="INJM" or sequence_step=='INJM-MAN' and j==len(technology_list):
+        elif sequence_step=="INJM" or sequence_step=='INJM-MAN' and j==len(technology_list)-1:
             for successor_step in getNotMachineNodeSuccessorList(sequence_step):
                 successor_set.add(successor_step)
                 route = {"stationIdsList": [successor_step],}
                 route_list.append(route)
         # treat the case of normal components (add ASSM buffer and ASSM after MAN operations 
-        elif j==len(technology_list):
+        elif j==len(technology_list)-1:
             for successor_step in getNotMachineNodeSuccessorList(sequence_step):
                 # first add the ASSEMBLY BUFFER
                 successor_set.add(successor_step)
@@ -482,75 +460,315 @@ def getWipID():
     WIP = json_data['WIP']                                    # read from the dictionary the dict with key 'WIP'
     for work_id in WIP.iterkeys():
         G.WipIDList.append(work_id)
-
-def getStartWip():
-    ''' XXX find the current station from the WIP,
-        if not in a station, then place the entity in a queue
-        XXX then remove the previous stations from the remaining_route
+        
+def difference(list1,list2):
+    ''' get the difference between two lists
     '''
+    templist1=set(list1).union(set(list2))
+    templist2=set(list1).intersection(set(list2))
+    return list(templist1-templist2)
+
+def setStartWip():
+    ''' find the current station from the WIP, if not in a station, then place the entity in a queue
+        then remove the previous stations from the remaining_route
+    '''
+    '''
+        XXX if an entity is not in the WIP list then it is not created yet, or is in the starting Queue
+        *    XXX OrderDesign, if not in the WIP then in the startingQueue (QCAM or QENG)
+                 if their last station is CAM and probably already decomposed
+                 if the components then should be placed in the QCAM if not already in the WIP
+        *    XXX OrderComponent, if not in the WIP then they are not created yet, do nothing
+                 if their last station is MAN or XXX the last station of their route, then are already processed and should not be placed in the WIP
+        *    xxx Mould, if not in the WIP -> not created yet
+                 if their last station is INJM-MAN or INJM then they are already processed
+    '''
+    from Globals import SetWipTypeError, SetWip
     json_data = G.wip_Data
     #Read the json data
     WIP = json_data['WIP']                                    # read from the dictionary the dict with key 'WIP'
-    for (work_id, work) in WIP.iteritems():
-        work['id']=work_id
-        entity=findEntityById(work_id)
-        # find the entity by its id
-        step=work.get('station','')
-        assert step!='', 'there must be a stationID given to set the WIP'
-        from Globals import findObjectById
-        station=Globals.findObjectById(step)
-        # find the station by its id, if there is no station then place it 
-        # in the starting queue (QCAD), ()
-        entry_time=float(work.get('entry','0'))
-        exit_time=float(work.get('exit','0'))
-    #------------------------------------------------------------------------------ 
+    #===========================================================================
+    # OrderDesign type
+    #===========================================================================
     # for all the entities in the entityList
-    for entity in entityList:
-        # if the entity is of type Job/OrderComponent/Order/Mould
-        if entity.type=='Job' or entity.type=='OrderComponent' or entity.type=='Order' or entity.type=='Mould':
-            # find the list of starting station of the entity
-            currentObjectIds=entity.remainingRoute[0].get('stationIdsList',[])
-            # if the list of starting stations has length greater than one then there is a starting WIP definition error 
+    for entity in G.DesignList:
+        # if the entity is not in the WIP dict then move it to the starting station.
+        if not entity.id in WIP.keys():
+            # perform the default action
+            SetWip([entity])
+        # if the entity is in the WIP dict then move it to the station defined.
+        elif entity.id in WIP.keys():
+            objectID=WIP[entity.id]["station"]
+            assert objectID!='', 'there must be a stationID given to set the WIP'
+            from Globals import findObjectById
+            object=Globals.findObjectById(objectID)
+            assert station!=None, 'the station defined in the WIP is not a valid Station'
+            # find the station by its id, if there is no station then place it 
+            # in the starting queue (QCAD), (QENG)
+            entry_time=float(WIP[entity.id]["entry"])
+            exit_time=float(WIP[entity.id]["exit"])
+            # XXX  alreadyProcessedFor=currentTime-entry_time
+            # XXX if the exit time is no grater than the entry then raise an exception as for machines is not yet implemented
             try:
-                if len(currentObjectIds)==1:
-                    objectId=currentObjectIds[0]
-                else:
-                    raise SetWipTypeError('The starting station of the the entity is not defined uniquely')
+                if not exit_time>entry_time:
+                    raise SetWipTypeError('WIP for machines is not implemented yet')
             except SetWipTypeError as setWipError:
                 print 'WIP definition error: {0}'.format(setWipError)
-            # get the starting station of the entity and load it with it
-            object = findObjectById(objectId)
-            object.getActiveObjectQueue().append(entity)        # append the entity to its Queue
+            # find which step of the route is the current station-object and update the remainingRoute
+            # removing the previous stations from the remaining_route
+            for j,step in enumerate(entity.remainingRoute):
+                if object.id in step["stationIdsList"]:
+                    # XXX the station (object.id) must be removed from the remainingRoute as the entity has already exited (Reconsider) 
+                    entity.remainingRoute=entity.remainingRoute[j+1:]
+            # find the stations that come after the machine that the entity last exited
+            currentObjectIds=entity.remainingRoute[0].get('stationIdsList',[])
+            # pick one at random
+            currentObjectId=next(currentObjectIds)
+            currentObject=Globals.findObjectById(currentObjectId)
+            # then break down the OrderDesing and design the OrderComponents
+            if currentObject.type=='OrderDecomposition':
+                if len(Order.auxiliaryComponentsList+Order.secondaryComponentsList+Order.basicComponentsList)==0:
+                    breakOrderDesing(entity)
+                # if the orderDesign is already broken down do not break it down again
+                else:
+                    break
+            # if the current station is not of type orderDecomposition
+            else:
+                # append the entity to its internal queue
+                currentObject.getActiveObjectQueue().append(entity)        # append the entity to its Queue
+                # read the IDs of the possible successors of the object
+                nextObjectIds=entity.remainingRoute[1].get('stationIdsList',[])
+                # for each objectId in the nextObjects find the corresponding object and populate the object's next list
+                nextObjects=[]
+                for nextObjectId in nextObjectIds:
+                    nextObject=Globals.findObjectById(nextObjectId)
+                    nextObjects.append(nextObject)
+                # update the next list of the object
+                for nextObject in nextObjects:
+                    # append only if not already in the list
+                    if nextObject not in currentObject.next:
+                        currentObject.next.append(nextObject)
+                entity.remainingRoute.pop(0)                        # remove data from the remaining route.
+                entity.schedule.append([currentObject,G.env.now])   #append the time to schedule so that it can be read in the result
+                entity.currentStation=currentObject                 # update the current station of the entity
             
+                # if the currentStation of the entity is of type Machine then the entity must be processed first and then added to the pendingEntities list
+                if not (entity.currentStation in G.MachineList):    
+                    # add the entity to the pendingEntities list
+                    G.pendingEntities.append(entity)
+    #===========================================================================
+    # OrderComponent type
+    #===========================================================================
+    # for all the entities of Type orderComponent
+    for entity in list(G.OrderComponentList-G.DesignList-G.MouldList):
+        # XXX if there are already Mould parts in the WIP then the components are already assembled, do not set the entity
+        assembled=False
+        for mould in G.MouldList:
+            if mould.order.id==entity.order.id:
+                assembled=True
+        # if already assembled then break to the next OrderComponent
+        if assembled:
+            break
+        # if the entity is not in the WIP dict then they should be set by OrderDecomposition or they have already been set by createOrderComponent.
+        if not entity.id in WIP.keys():
+            pass
+        # if the entity is in the WIP dict then move it to the station defined.
+        elif entity.id in WIP.keys():
+            objectID=WIP[entity.id]["station"]
+            assert objectID!='', 'there must be a stationID given to set the WIP'
+            from Globals import findObjectById
+            object=Globals.findObjectById(objectID)
+            assert station!=None, 'the station defined in the WIP is not a valid Station'
+            # find the station by its id, if there is no station then place it 
+            # in the starting queue (QCAD), (QENG)
+            entry_time=float(WIP[entity.id]["entry"])
+            exit_time=float(WIP[entity.id]["exit"])
+            # XXX  alreadyProcessedFor=currentTime-entry_time
+            # XXX if the exit time is no grater than the entry then raise an exception as for machines is not yet implemented
+            try:
+                if not exit_time>entry_time:
+                    raise SetWipTypeError('WIP for machines is not implemented yet')
+            except SetWipTypeError as setWipError:
+                print 'WIP definition error: {0}'.format(setWipError)
+            # find which step of the route is the current station-object and update the remainingRoute
+            # removing the previous stations from the remaining_route
+            for j,step in enumerate(entity.remainingRoute):
+                if object.id in step["stationIdsList"]:
+                    # XXX the station (object.id) must be removed from the remainingRoute as the entity has already exited (Reconsider) 
+                    entity.remainingRoute=entity.remainingRoute[j+1:]
+            # find the stations that come after the machine that the entity last exited
+            currentObjectIds=entity.remainingRoute[0].get('stationIdsList',[])
+            # pick one at random
+            currentObjectId=next(currentObjectIds)
+            currentObject=Globals.findObjectById(currentObjectId)
+            # append the entity to its internal queue
+            currentObject.getActiveObjectQueue().append(entity)        # append the entity to its Queue
             # read the IDs of the possible successors of the object
             nextObjectIds=entity.remainingRoute[1].get('stationIdsList',[])
             # for each objectId in the nextObjects find the corresponding object and populate the object's next list
             nextObjects=[]
             for nextObjectId in nextObjectIds:
-                nextObject=findObjectById(nextObjectId)
-                nextObjects.append(nextObject)  
+                nextObject=Globals.findObjectById(nextObjectId)
+                nextObjects.append(nextObject)
             # update the next list of the object
             for nextObject in nextObjects:
                 # append only if not already in the list
-                if nextObject not in object.next:
-                    object.next.append(nextObject)
+                if nextObject not in currentObject.next:
+                    currentObject.next.append(nextObject)
+            entity.remainingRoute.pop(0)                        # remove data from the remaining route.
+            entity.schedule.append([currentObject,G.env.now])   #append the time to schedule so that it can be read in the result
+            entity.currentStation=currentObject                 # update the current station of the entity
             
-            entity.remainingRoute.pop(0)                        # remove data from the remaining route.   
-            entity.schedule.append([object,G.env.now])              #append the time to schedule so that it can be read in the result
-            entity.currentStation=object                        # update the current station of the entity 
-        # if the currentStation of the entity is of type Machine then the entity 
-        #     must be processed first and then added to the pendingEntities list
-        #     Its hot flag is not raised
-        if not (entity.currentStation in G.MachineList):    
-            # variable to inform whether the successors are machines or not
-            successorsAreMachines=True
-            for nextObject in entity.currentStation.next:
-                if not nextObject in G.MachineList:
-                    successorsAreMachines=False
-                    break
-            if not successorsAreMachines:
-                entity.hot = False
-            else:
-                entity.hot = True
-            # add the entity to the pendingEntities list
-            G.pendingEntities.append(entity)
+            # if the currentStation of the entity is of type Machine then the entity must be processed first and then added to the pendingEntities list
+            if not (entity.currentStation in G.MachineList):    
+                # add the entity to the pendingEntities list
+                G.pendingEntities.append(entity)
+    #===========================================================================
+    # Mould type
+    #===========================================================================
+    # for all the entities in the entityList
+    for entity in G.MouldList:
+        # if the entity is not in the WIP dict then it will be set by MouldAssembly on time.
+        if not entity.id in WIP.keys():
+            break
+        # if the entity is in the WIP dict then move it to the station defined.
+        elif entity.id in WIP.keys():
+            objectID=WIP[entity.id]["station"]
+            assert objectID!='', 'there must be a stationID given to set the WIP'
+            from Globals import findObjectById
+            object=Globals.findObjectById(objectID)
+            assert station!=None, 'the station defined in the WIP is not a valid Station'
+            # find the station by its id, if there is no station then place it 
+            # in the starting queue (QCAD), (QENG)
+            entry_time=float(WIP[entity.id]["entry"])
+            exit_time=float(WIP[entity.id]["exit"])
+            # XXX  alreadyProcessedFor=currentTime-entry_time
+            # XXX if the exit time is no grater than the entry then raise an exception as for machines is not yet implemented
+            try:
+                if not exit_time>entry_time:
+                    raise SetWipTypeError('WIP for machines is not implemented yet')
+            except SetWipTypeError as setWipError:
+                print 'WIP definition error: {0}'.format(setWipError)
+            # find which step of the route is the current station-object and update the remainingRoute
+            # removing the previous stations from the remaining_route
+            for j,step in enumerate(entity.remainingRoute):
+                if object.id in step["stationIdsList"]:
+                    # XXX the station (object.id) must be removed from the remainingRoute as the entity has already exited (Reconsider) 
+                    entity.remainingRoute=entity.remainingRoute[j+1:]
+            # find the stations that come after the machine that the entity last exited
+            currentObjectIds=entity.remainingRoute[0].get('stationIdsList',[])
+            # pick one at random
+            currentObjectId=next(currentObjectIds)
+            currentObject=Globals.findObjectById(currentObjectId)
+            # XXX consider reconfiguring the controls by using the length of the route
+            #     or just avoid using it as the entity will be placed in the Exit
+            # if the entity has already exited the Injection molding station then break, the entity should not be set 
+            if currentObject.id.startswith('INJM'):
+                break
+            # append the entity to its internal queue
+            currentObject.getActiveObjectQueue().append(entity)        # append the entity to its Queue
+            # read the IDs of the possible successors of the object
+            nextObjectIds=entity.remainingRoute[1].get('stationIdsList',[])
+            # for each objectId in the nextObjects find the corresponding object and populate the object's next list
+            nextObjects=[]
+            for nextObjectId in nextObjectIds:
+                nextObject=Globals.findObjectById(nextObjectId)
+                nextObjects.append(nextObject)
+            # update the next list of the object
+            for nextObject in nextObjects:
+                # append only if not already in the list
+                if nextObject not in currentObject.next:
+                    currentObject.next.append(nextObject)
+            entity.remainingRoute.pop(0)                        # remove data from the remaining route.
+            entity.schedule.append([currentObject,G.env.now])   #append the time to schedule so that it can be read in the result
+            entity.currentStation=currentObject                 # update the current station of the entity
+            
+            # if the currentStation of the entity is of type Machine then the entity must be processed first and then added to the pendingEntities list
+            if not (entity.currentStation in G.MachineList):    
+                # add the entity to the pendingEntities list
+                G.pendingEntities.append(entity)
+            
+def breakOrderDesing(orderDesign):
+    '''break down the orderDesign into OrderComponents
+    '''
+    G.newlyCreatedComponents=[]
+    G.orderToBeDecomposed=None
+    #loop in the internal Queue. Decompose only if an Entity is of type order
+    # XXX now instead of Order we have OrderDesign
+    assert orderDesign.type=='OrderDesign', 'cannot break down entity other than OrderDesign'
+    G.orderToBeDecomposed=orderDesign.order
+    #append the components in the internal queue
+    for component in G.orderToBeDecomposed.componentsList:
+        createOrderComponent(component)
+    # after the creation of the order's components update each components auxiliary list
+    # if there are auxiliary components
+    if len(G.orderToBeDecomposed.auxiliaryComponentsList):
+        # for every auxiliary component
+        for auxComponent in G.orderToBeDecomposed.auxiliaryComponentsList:
+            # run through the componentsList of the order
+            for reqComponent in G.orderToBeDecomposed.componentsList:
+                # to find the requestingComponent of the auxiliary component
+                if auxComponent.requestingComponent==reqComponent.id:
+                    # and add the auxiliary to the requestingComponent auxiliaryList
+                    reqComponent.auxiliaryList.append(auxComponent)
+    #if there is an order for decomposition
+    if G.orderToBeDecomposed:
+        from Globals import setWip
+        setWIP(G.newlyCreatedComponents)     #set the new components as wip
+        # TODO: consider signalling the receivers if any WIP is set now
+        #reset attributes
+        G.orderToBeDecomposed=None
+        G.newlyCreatedComponents=[]
+
+
+def createOrderComponent(component):
+    '''create each OrderComponent of the componentsList of the Order
+    '''
+    #read attributes from the json or from the orderToBeDecomposed
+    id=component.get('id', 'not found')
+    name=component.get('name', 'not found')
+    try:
+        # there is the case were the component of the componentsList of the parent Order
+        # is of type Mould and therefore has no argument componentType
+        # in this case no Mould object should be initiated
+        if component.get('_class', 'not found')=='Dream.Mould':
+            raise MouldComponentException('there is a mould in the componentList')
+        # variable that holds the componentType which can be Basic/Secondary/Auxiliary
+        componentType=component.get('componentType', 'Basic') 
+        # the component that needs the auxiliary (if the componentType is "Auxiliary") during its processing
+        requestingComponent = component.get('requestingComponent', 'not found') 
+        # dummy variable that holds the routes of the jobs the route from the JSON file is a sequence of dictionaries
+        JSONRoute=component.get('route', [])
+        # variable that holds the argument used in the Job initiation hold None for each entry in the 'route' list
+        route = [x for x in JSONRoute]
+        # keep a reference of all extra properties passed to the job
+        extraPropertyDict = {}
+        for key, value in component.items():
+            if key not in ('_class', 'id'):
+                extraPropertyDict[key] = value
+        
+        # initiate the OrderComponent
+        OC=OrderComponent(id, name, route, \
+                            priority=G.orderToBeDecomposed.priority, \
+                            dueDate=G.orderToBeDecomposed.dueDate, \
+                            componentType=componentType,\
+                            requestingComponent = requestingComponent, \
+                            order=G.orderToBeDecomposed,\
+                            orderDate=G.orderToBeDecomposed.orderDate, \
+                            extraPropertyDict=extraPropertyDict,\
+                            isCritical=G.orderToBeDecomposed.isCritical)
+            
+        # check the componentType of the component and accordingly add to the corresponding list of the parent order
+        if OC.componentType == 'Basic':
+            G.orderToBeDecomposed.basicComponentsList.append(OC)
+        elif OC.componentType == 'Secondary':
+            G.orderToBeDecomposed.secondaryComponentsList.append(OC)
+        else:
+            G.orderToBeDecomposed.auxiliaryComponentsList.append(OC)
+                
+        G.OrderComponentList.append(OC)
+        G.JobList.append(OC)   
+        G.WipList.append(OC)  
+        G.EntityList.append(OC)
+        G.newlyCreatedComponents.append(OC)              #keep these to pass them to setWIP
+    except MouldComponentException as mouldException:
+        pass
