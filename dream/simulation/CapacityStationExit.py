@@ -43,10 +43,22 @@ class CapacityStationExit(Exit):
         self.isLocked=True
         self.nextCapacityStationBufferId=nextCapacityStationBufferId    # the id of the next station. If it is None it 
                                                                         # means it is the end of the system.
-        
+        self.nextCapacityStationBuffer=None                             # the next buffer. If it is None it
+                                                                        # means it is the end of the system.
     def initialize(self):
         Exit.initialize(self)
         self.isLocked=True
+        # list that contains the entities that are just obtained so that they can be 
+        # moved to the next buffer
+        self.currentlyObtainedEntities=[]
+        # find the next buffer
+        if self.nextCapacityStationBufferId:
+            from Globals import G
+            # find the project that the capacity entity is part of
+            for capacityStationBuffer in G.CapacityStationBufferList:
+                if capacityStationBuffer.id==self.nextCapacityStationBufferId:
+                    self.nextCapacityStationBuffer=capacityStationBuffer
+                    break
 
     def canAccept(self, callerObject=None):
         if self.isLocked:
