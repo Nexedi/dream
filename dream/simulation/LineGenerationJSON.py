@@ -78,6 +78,7 @@ from OrderComponent import OrderComponent
 from ScheduledMaintenance import ScheduledMaintenance
 from Failure import Failure
 from Order import Order
+from OrderDesign import OrderDesign
 from Mould import Mould
 from OrderDecomposition import OrderDecomposition
 from ConditionalBuffer import ConditionalBuffer
@@ -961,6 +962,7 @@ def createWIP():
     G.EntityList=[]  
     G.PartList=[]
     G.OrderComponentList=[]
+    G.DesignList=[]     # list of the OrderDesigns in the system
     G.OrderList=[]
     G.MouldList=[]
     G.BatchList=[]
@@ -1233,14 +1235,23 @@ def createWIP():
                                       'processingTime':\
                                             {'distributionType':'Fixed',\
                                              'mean':'0'}})
-                # initiate the Order
-                O=Order(id, name, route, priority=priority, dueDate=dueDate,orderDate=orderDate,
+                # XXX durty way to implement new approach were the order is abstract and does not run through the system 
+                # but the OrderDesign does
+                # XXX initiate the Order and the OrderDesign
+                O=Order('G'+id, 'general '+name, route=[], priority=priority, dueDate=dueDate,orderDate=orderDate,
                         isCritical=isCritical, basicsEnded=basicsEnded, manager=manager, componentsList=componentsList,
                         componentsReadyForAssembly=componentsReadyForAssembly, extraPropertyDict=extraPropertyDict)
-                G.OrderList.append(O)   
-                G.WipList.append(O)  
-                G.EntityList.append(O)
-                G.JobList.append(O)                
+                # create the OrderDesign
+                OD=OrderDesign(id, name, route, priority=priority, dueDate=dueDate,orderDate=orderDate,
+                        isCritical=isCritical, order=O, extraPropertyDict=extraPropertyDict)
+                # add the order to the OrderList
+                G.OrderList.append(O)
+                # add the OrderDesign to the DesignList and the OrderComponentList
+                G.OrderComponentList.append(OD)
+                G.DesignList.append(OD)
+                G.WipList.append(OD)  
+                G.EntityList.append(OD)
+                G.JobList.append(OD)
             
             if entityClass=='Dream.CapacityProject':
                 id=entity.get('id', 'not found')  

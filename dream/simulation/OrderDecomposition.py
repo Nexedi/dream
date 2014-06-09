@@ -36,6 +36,7 @@ from RandomNumberGenerator import RandomNumberGenerator
 from Entity import Entity
 
 from Order import Order
+from OrderDesign import OrderDesign
 from OrderComponent import OrderComponent
 
 # ===========================================================================
@@ -178,23 +179,24 @@ class OrderDecomposition(CoreObject):
     def decompose(self):
         activeObjectQueue=self.getActiveObjectQueue()
         #loop in the internal Queue. Decompose only if an Entity is of type order
+        # XXX now instead of Order we have OrderDesign
         for entity in activeObjectQueue:
-            if entity.type=='Order':
-                self.orderToBeDecomposed=entity
+            if entity.type=='OrderDesign':
+                self.orderToBeDecomposed=entity.order
                 activeObjectQueue.remove(entity)            #remove the order from the internal Queue
                 # if the entity is in G.pendingEntities list remove it from there
                 if entity in G.pendingEntities:
                     G.pendingEntities.remove(entity)
                 #append the components in the internal queue
-                for component in entity.componentsList:
+                for component in entity.order.componentsList:
                     self.createOrderComponent(component)
                 # after the creation of the order's components update each components auxiliary list
                 # if there are auxiliary components
-                if len(entity.auxiliaryComponentsList):
+                if len(entity.order.auxiliaryComponentsList):
                     # for every auxiliary component
-                    for auxComponent in entity.auxiliaryComponentsList:
+                    for auxComponent in entity.order.auxiliaryComponentsList:
                         # run through the componentsList of the order
-                        for reqComponent in entity.componentsList:
+                        for reqComponent in entity.order.componentsList:
                             # to find the requestingComponent of the auxiliary component
                             if auxComponent.requestingComponent==reqComponent.id:
                                 # and add the auxiliary to the requestingComponent auxiliaryList
@@ -241,7 +243,6 @@ class OrderDecomposition(CoreObject):
             #have to talk about it with NEX
             exitAssigned=False
             for element in route:
-    #             elementId=element[0]
                 elementIds = element.get('stationIdsList',[])
                 for obj in G.ObjList:
                     for elementId in elementIds:
@@ -267,7 +268,6 @@ class OrderDecomposition(CoreObject):
                         exitId=obj.id
                         break
                 if exitId:
-    #                 route.append([exitId, 0])
                     route.append({'stationIdsList':[str(exitId)],\
                                   'processingTime':{}})
             

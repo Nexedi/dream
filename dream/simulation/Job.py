@@ -69,7 +69,8 @@ class Job(Entity):                                  # inherits from the Entity c
                 completionTime=self.schedule[-1][1]  
             # TODO
             # if the entity is of type Mould and the last object holding it is orderDecomposition
-            elif self.type=='Order' and self.schedule[-1][0].type=='OrderDecomposition': #
+            # XXX now Orders do not run through the system but OrderDesigns do
+            elif self.type=='OrderDesign' and self.schedule[-1][0].type=='OrderDecomposition': #
                 json['results']['completionTime']=self.schedule[-1][1]  
                 completionTime=self.schedule[-1][1]  
             # TODO : check if there is a need for setting a different 'type' for the MouldAssembly than 'Machine'
