@@ -35,6 +35,7 @@ from OrderComponent import OrderComponent
 from ScheduledMaintenance import ScheduledMaintenance
 from Failure import Failure
 from Order import Order
+from OrderDesign import OrderDesign
 from Mould import Mould
 from OrderDecomposition import OrderDecomposition
 from ConditionalBuffer import ConditionalBuffer
@@ -405,7 +406,7 @@ def getComponets(orderDict,Order):
                 # initiate the job
                 OC=OrderComponent(id, name, route_list, priority=Order.priority, dueDate=Order.dueDate,orderDate=Order.orderDate,
                                   componentType=componentType, order=Order, readyForAssembly=readyForAssembly,
-                                  extraPropertyDict=extraPropertyDict)
+                                  isCritical=Order.isCritical, extraPropertyDict=extraPropertyDict)
                 G.OrderComponentList.append(OC)
                 G.JobList.append(OC)   
                 G.WipList.append(OC)  
@@ -427,7 +428,7 @@ def getComponets(orderDict,Order):
             if id in G.WipIDList:
                 # initiate the job
                 M=Mould(id, name, route_list, priority=Order.priority, dueDate=Order.dueDate,orderDate=Order.orderDate,
-                                    extraPropertyDict=extraPropertyDict, order=Order)
+                                    isCritical=Order.isCritical, extraPropertyDict=extraPropertyDict, order=Order)
                 G.MouldList.append(M)
                 G.JobList.append(M)
                 G.WipList.append(M)
@@ -447,8 +448,8 @@ def getComponets(orderDict,Order):
             if (id in G.WipIDList) or\
                 (not id in G.WipIDList and len(Order.auxiliaryComponentsList+Order.secondaryComponentsList+Order.basicComponentsList)==0):
                 # initiate the job
-                OD=Design(id, name,route_list,priority=Order.priority,dueDate=Order.dueDate,orderDate=Order.orderDate,
-                                  order=Order,extraPropertyDict=extraPropertyDict)
+                OD=OrderDesign(id, name,route_list,priority=Order.priority,dueDate=Order.dueDate,orderDate=Order.orderDate,
+                                  isCritical=Order.isCritical, order=Order,extraPropertyDict=extraPropertyDict)
                 G.OrderComponentList.append(OD)
                 G.DesignList.append(OD)
                 G.JobList.append(OD)

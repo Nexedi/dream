@@ -197,7 +197,8 @@ def setWIP(entityList):
             
         
         # if the entity is of type Job/OrderComponent/Order/Mould
-        elif entity.type=='Job' or entity.type=='OrderComponent' or entity.type=='Order' or entity.type=='Mould':
+        # XXX Orders do no more run in the system, instead we have OrderDesigns
+        elif entity.type=='Job' or entity.type=='OrderComponent' or entity.type=='Order' or entity.type=='OrderDesign' or entity.type=='Mould':
             # find the list of starting station of the entity
             currentObjectIds=entity.remainingRoute[0].get('stationIdsList',[])
             # if the list of starting stations has length greater than one then there is a starting WIP definition error 
@@ -231,6 +232,7 @@ def setWIP(entityList):
         # if the currentStation of the entity is of type Machine then the entity 
         #     must be processed first and then added to the pendingEntities list
         #     Its hot flag is not raised
+        # XXX hot variable not used any more
         if not (entity.currentStation in G.MachineList):    
             # variable to inform whether the successors are machines or not
             successorsAreMachines=True
