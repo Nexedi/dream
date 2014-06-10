@@ -1,0 +1,133 @@
+{
+  "capacity_by_project_spreadsheet": [
+    [
+      "Project Name", 
+      "Sequence", 
+      "Capacity Requirements"
+    ], 
+    [
+      "Project 1", 
+      "SMF-WELD", 
+      "100-50"
+    ], 
+    [
+      "Project 2", 
+      "SMF-WELD", 
+      "50-100"
+    ], 
+    [
+      null, 
+      null, 
+      null
+    ]
+  ], 
+  "capacity_by_station_spreadsheet": [
+    [
+      "Machine", 
+      "Day 0", 
+      "Day 1", 
+      "Day 2", 
+      "Day 3"
+    ], 
+    [
+      "SMF", 
+      "100", 
+      "200", 
+      "300", 
+      ""
+    ], 
+    [
+      "WELD", 
+      "150", 
+      "60", 
+      "350", 
+      null
+    ], 
+    [
+      null, 
+      "", 
+      null, 
+      null, 
+      null
+    ]
+  ], 
+  "edges": {
+    "con_5": [
+      "SMF", 
+      "WELD", 
+      {}
+    ]
+  }, 
+  "general": {
+    "confidenceLevel": 0.95, 
+    "currentDate": "2014/06/10", 
+    "ke_url": "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
+    "maxSimTime": 100, 
+    "numberOfReplications": 1, 
+    "processTimeout": 10, 
+    "seed": "", 
+    "trace": "No"
+  }, 
+  "nodes": {
+    "SMF": {
+      "_class": "Dream.AbstractCapacityStation", 
+      "element_id": "DreamNode_1", 
+      "name": "Sheet Metal Forming"
+    }, 
+    "WELD": {
+      "_class": "Dream.AbstractCapacityStation", 
+      "element_id": "DreamNode_2", 
+      "name": "Welding"
+    }
+  }, 
+  "preference": {
+    "coordinates": {
+      "SMF": {
+        "left": 0.4130617646942778, 
+        "top": 0.2412871745526389
+      }, 
+      "WELD": {
+        "left": 0.4327592775008428, 
+        "top": 0.5894300167835629
+      }
+    }
+  }, 
+  "shift_spreadsheet": [
+    [
+      "Day", 
+      "Machines", 
+      "Start", 
+      "End"
+    ], 
+    [
+      null, 
+      null, 
+      null, 
+      null
+    ]
+  ], 
+  "wip_part_spreadsheet": [
+    [
+      "Order ID", 
+      "Due Date", 
+      "Priority", 
+      "Project Manager", 
+      "Part", 
+      "Part Type", 
+      "Sequence", 
+      "Processing Times", 
+      "Prerequisites Parts"
+    ], 
+    [
+      null, 
+      null, 
+      null, 
+      null, 
+      null, 
+      null, 
+      null, 
+      null, 
+      null
+    ]
+  ]
+}
