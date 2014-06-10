@@ -70,12 +70,20 @@
 
       $('#shift_spreadsheet').hide();
       $("#wip_part_spreadsheet").hide();
+      $('#capacity_by_project_spreadsheet').hide();
+      $('#capacity_by_station_spreadsheet').hide();
 
       if (configuration['Dream-Configuration'].gui.wip_part_spreadsheet){
         $("#wip_part_spreadsheet").show();
       }
       if (configuration['Dream-Configuration'].gui.shift_spreadsheet){
         $("#shift_spreadsheet").show();
+      }
+      if (configuration['Dream-Configuration'].gui.capacity_by_project_spreadsheet){
+        $("#capacity_by_project_spreadsheet").show();
+      }
+      if (configuration['Dream-Configuration'].gui.capacity_by_station_spreadsheet){
+        $("#capacity_by_station_spreadsheet").show();
       }
 
       try {
@@ -89,6 +97,16 @@
         if (wip_part_spreadsheet_data !== undefined) {
           var spreadsheet = $('#wip_part_spreadsheet');
           spreadsheet.handsontable('populateFromArray', 0, 0, wip_part_spreadsheet_data);
+        }
+        var capacity_by_project_spreadsheet_data = data.capacity_by_project_spreadsheet;
+        if (capacity_by_project_spreadsheet_data !== undefined) {
+          var spreadsheet = $('#capacity_by_project_spreadsheet');
+          spreadsheet.handsontable('populateFromArray', 0, 0, capacity_by_project_spreadsheet_data);
+        }
+        var capacity_by_station_spreadsheet_data = data.capacity_by_station_spreadsheet;
+        if (capacity_by_station_spreadsheet_data !== undefined) {
+          var spreadsheet = $('#capacity_by_station_spreadsheet');
+          spreadsheet.handsontable('populateFromArray', 0, 0, capacity_by_station_spreadsheet_data);
         }
 
         var preference = data.preference !== undefined ?
@@ -274,6 +292,8 @@
     });
     $("#job_schedule_spreadsheet").hide();
     $("#shift_spreadsheet").hide();
+    $("#capacity_by_project_spreadsheet").hide();
+    $("#capacity_by_station_spreadsheet").hide();
        }
     });
   });

@@ -164,6 +164,52 @@
         }
       });
 
+      var capacity_by_project_spreadsheet = $('#capacity_by_project_spreadsheet');
+      var data = [
+        [
+          "Project Name",
+          "Sequence",
+          "Capacity Requirements"
+        ]
+      ];
+      capacity_by_project_spreadsheet.handsontable({
+        data: data,
+        minSpareRows: 1,
+        stretchH: 'all',
+        width: function () {
+            return $(window).width() -
+                  capacity_by_project_spreadsheet.offset().left +
+                  $(window).scrollLeft();
+        },
+        afterChange: function () {
+          priv.onDataChange();
+        }
+      });
+
+      var capacity_by_station_spreadsheet = $('#capacity_by_station_spreadsheet');
+      var data = [
+        [
+          "Machine",
+          "Day 0",
+          "Day 1",
+          "Day 2",
+          "Day 3",
+        ]
+      ];
+      capacity_by_station_spreadsheet.handsontable({
+        data: data,
+        minSpareRows: 1,
+        stretchH: 'all',
+        width: function () {
+            return $(window).width() -
+                  capacity_by_station_spreadsheet.offset().left +
+                  $(window).scrollLeft();
+        },
+        afterChange: function () {
+          priv.onDataChange();
+        }
+      });
+
     };
 
     priv.updateElementCoordinate = function (node_id, coordinate) {
@@ -336,6 +382,14 @@
       var shift_spreadsheet = $('#shift_spreadsheet');
       if (shift_spreadsheet.length > 0) {
         data['shift_spreadsheet'] = shift_spreadsheet.handsontable('getData');
+      }
+      var capacity_by_project_spreadsheet = $('#capacity_by_project_spreadsheet');
+      if (capacity_by_project_spreadsheet.length > 0) {
+        data['capacity_by_project_spreadsheet'] = capacity_by_project_spreadsheet.handsontable('getData');
+      }
+      var capacity_by_station_spreadsheet = $('#capacity_by_station_spreadsheet');
+      if (capacity_by_station_spreadsheet.length > 0) {
+        data['capacity_by_station_spreadsheet'] = capacity_by_station_spreadsheet.handsontable('getData');
       }
       return data;
     };
