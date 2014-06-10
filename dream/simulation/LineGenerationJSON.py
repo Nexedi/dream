@@ -1415,6 +1415,9 @@ def main(argv=[], input_data=None):
         
     for job in G.JobList:
         job.outputResultsJSON()
+        
+    for capacityProject in G.CapacityProjectList:
+        capacityProject.outputResultsJSON()
          
     outputJSONString=json.dumps(G.outputJSON, indent=True)
     G.outputJSONFile.write(outputJSONString)

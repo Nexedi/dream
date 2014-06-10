@@ -71,6 +71,10 @@ class CapacityStationController(EventGenerator):
                 yield station.entityRemoved
                 exit.currentlyObtainedEntities.append(entity)
                 station.entityRemoved=self.env.event()
+                project=entity.capacityProject
+                for entry in project.projectSchedule:
+                    if entry['station']==station.id:
+                        entry['finish']=self.env.now
             # lock the exit again
             exit.isLocked=True
         
@@ -110,8 +114,11 @@ class CapacityStationController(EventGenerator):
                 # wait until the entity is removed
                 yield buffer.entityRemoved
                 buffer.entityRemoved=self.env.event()
-                periodDict[entity.capacityProject.id]=entity.requiredCapacity
+                project=entity.capacityProject
+                periodDict[project.id]=entity.requiredCapacity
                 capacityAllocated+=entity.requiredCapacity
+                if self.checkIfProjectJustStartsInStation(project, station):
+                    project.projectSchedule.append({"station": station.id,"start": self.env.now})                    
             # lock the station
             station.isLocked=True
             periodDict['utilization']=capacityAllocated/float(capacityAvailable)
@@ -229,6 +236,13 @@ class CapacityStationController(EventGenerator):
     def checkIfSystemEmpty(self):
         for object in G.CapacityStationList+G.CapacityStationBufferList+G.CapacityStationExitList:
             if len(object.getActiveObjectQueue()):
+                return False
+        return True
+    
+    # checks if a project is just starting in station
+    def checkIfProjectJustStartsInStation(self, project, station):
+        for entry in project.projectSchedule:
+            if entry['station']==station.id:
                 return False
         return True
         

@@ -33,8 +33,25 @@ from Entity import Entity
 # ===========================================================================
 class CapacityProject(Entity):
     type="CapacityProject"
+    class_name = 'Dream.CapacityProject'
     
     def __init__(self, id=None, name=None, capacityRequirementDict={}):
         Entity.__init__(self, id, name)
         # a dict that shows the required capacity from every station
         self.capacityRequirementDict=capacityRequirementDict
+        
+    def initialize(self):
+        self.projectSchedule=[]     # a list of dicts to keep the schedule
+        
+    # =======================================================================    
+    # outputs results to JSON File
+    # =======================================================================
+    def outputResultsJSON(self):
+        from Globals import G
+        json = {'_class': self.class_name,
+                'id': self.id,
+                'results': {}}
+        if (G.numberOfReplications == 1):
+            # if we had just one replication output the results as numbers
+            json['results']['schedule']=self.projectSchedule
+        G.outputJSON['elementList'].append(json)
