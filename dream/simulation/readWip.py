@@ -55,36 +55,17 @@ class WIPreadError(Exception):
 def findFile(seekName, path, implicitExt=''):
     """ Given a pathsep-delimited path string, find seekName. 
     Returns path to seekName if found, otherwise None.
-    Also allows for files with implicit extensions (eg, .exe), but 
-    always returning seekName as was provided
     >>> findFile('ls', '/usr/bin:/bin', implicit='.exe')
-    'bin/ls'
+    'bin/ls.exe'
     """
-    if (os.path.isfile(seekName) or implicitExt and os.path.isfile(seekName+implicitExt)):
-        # alrady absolut path.
-        return seekname
-    for p in path.split(os.pathsep):
-        candidate=os.path.join(p, seekName)
-        if (os.path.isfile(candidate) or implicitExt and os.path.isfile(candidate+implicitExt)):
-            return candidate
+#     for file in os.listdir("c:/Users/papagiannis/workspace/DreamGit/dream/dream/simulation/"):
+    for file in os.listdir(path):
+        if file.endswith(os.extsep+implicitExt) and file.startswith(seekName):
+            if os.path.isfile(file):
+                full_path=os.path.join(path,file)
+                return full_path
     return None
 
-def SearchPath(name, path=None, exts=('',)):
-    """Search PATH for a binary.
-    Args:
-        name: the filename to search for
-        path: the optional path string (default: os.environ['PATH')
-        exts: optional list/tuple of extensions to try (default: ('',))
-    Returns:
-        The abspath to the binary or None if not found.
-    """
-    path = path or os.environ['PATH']
-    for dir in path.split(os.pathsep):
-        for ext in exts:
-            binpath = os.path.join(dir, name) + os.extsep + ext
-            if os.path.exists(binpath):
-                return os.abspath(binpath)
-    return None
 
 def GetOSPath():
     immediate = os.curdir + os.pathsep + os.pardir + os.pathsep
@@ -92,12 +73,16 @@ def GetOSPath():
     path = immediate + ospath
     return path.split(os.pathsep)
 
-def requestJSON():
-    file=findFile('testJSON','usr/workspace/DreamGit/dream/dream/simulation', 'json' )
-    print file
+def requestWIP():
+    file=findFile('testJSON',"c:/Users/papagiannis/workspace/DreamGit/dream/dream/simulation/", 'json' )
     return file
 
-def getOrders():
+# def requestJSON():
+#     file=findFile('testJSON','usr/workspace/DreamGit/dream/dream/simulation', 'json' )
+#     print file
+#     return file
+
+def getOrders(input_data):
     ''' run the method from KEtool to read the orders'''
     ''' dict={
             'orders':[{ 'orderName':'name1',
@@ -165,15 +150,21 @@ def getOrders():
     PANOS I WILL INFORMATION ON THEIR CURRENT STATE
     '''   
     # request the WIP json file
-    input_data=requestJSON()
+#     input_data=requestJSON()
+    G.MouldList=[]
+    G.OrderComponentList=[]
+    G.DesignList=[]
+    G.WipList=[]
+    G.EntityList=[]
+    G.JobList=[]    
     
+    G.inputWIP=''
     if input_data is None:
         raise WIPreadError('There are no Orders to be read')# pass the contents of the input file to the global var InputData
     else:
-      G.inputWIP = input_data
-
+        G.inputWIP = input_data
     #read the input from the JSON file and create the line
-    G.wip_Data=json.loads(G.inputWIP)              # create the dictionary wip_Data
+    G.wip_Data=json.loads(open(G.inputWIP).read())              # create the dictionary wip_Data
     
     G.OrderList=[]
     
@@ -222,7 +213,8 @@ def getMachineNameSet(technology):
     """
     from Globals import G
     machine_name_set = set()
-    for machine_name in G.MachineList:
+    for machine in G.MachineList:
+        machine_name=machine.id
         if machine_name.startswith(technology):
             machine_name_set.add(machine_name)
     return machine_name_set
@@ -235,13 +227,12 @@ def getNotMachineNodePredecessorList(technology):
     """
     predecessor_list = []
     machine_name_set = getMachineNameSet(technology)
-    from Globals import G
-    for edge in G.JSONdata["edges"].values():
+    for edge in G.JSONData["edges"].values():
         if edge[1] in machine_name_set:
             predecessor_step = edge[0]
             if predecessor_step in predecessor_list:
                 continue
-            if not G.JSONdata["nodes"][predecessor_step]["_class"] in MACHINE_TYPE_SET:
+            if not G.JSONData["nodes"][predecessor_step]["_class"] in MACHINE_TYPE_SET:
                 predecessor_list = [predecessor_step] + predecessor_list
                 predecessor_list = [x for x in getNotMachineNodePredecessorList(predecessor_step) \
                                     if x not in predecessor_list] + predecessor_list
@@ -255,37 +246,38 @@ def getNotMachineNodeSuccessorList(technology):
     """
     successor_list = []
     machine_name_set = getMachineNameSet(technology)
-    from Globals import G
-    for edge in G.JSONdata["edges"].values():
+    for edge in G.JSONData["edges"].values():
         if edge[0] in machine_name_set:
             successor_step = edge[1]
             if successor_step in successor_list:
                 continue
-            if not G.JSONdata["nodes"][successor_step]["_class"] in MACHINE_TYPE_SET:
+            if not G.JSONData["nodes"][successor_step]["_class"] in MACHINE_TYPE_SET:
                 successor_list = [successor_step] + successor_list
-                successor_list = [x for x in getNotMachineNodePredecessorList(successor_step) \
+                successor_list = [x for x in getNotMachineNodeSuccessorList(successor_step) \
                                     if x not in successor_list] + successor_list
     return successor_list
         
 def getRouteList(steps_list):
-    # step_list is a list of tuples (technology, sequence, processing_time, parts_needed)
-    # use to record which predecessor has been already done, used to avoid doing
-    # two times Decomposition
+    ''' step_list is a list of tuples (technology, sequence, processing_time, parts_needed)
+        use to record which predecessor has been already done, used to avoid doing
+        two times Decomposition
+    '''
     technology_list=[]
     step_sequence_list=[]
     processing_time_list=[]
     prerequisite_list=[]
     for step in steps_list:
-        technology_list.append(steps_list[step][0])
-        step_sequence_list.append(steps_list[step][1])
-        processing_time_list.append(steps_list[step][2])
-        prerequisite_list.append(steps_list[step][3])
+        technology_list.append(step[0])
+        step_sequence_list.append(step[1])
+        processing_time_list.append(step[2])
+        prerequisite_list.append(step[3])
     predecessor_set = set()
     successor_set = set()
     route_list = []
     setup_step=None             # a step that is of type SETUP
     next_step=None        # the next step of the last SETUP step
     for j, sequence_step in enumerate(technology_list):
+        print j, sequence_step
         #=======================================================================
         #             check whether the current step is SETUP-step
         #=======================================================================
@@ -298,6 +290,9 @@ def getRouteList(steps_list):
         #                         append the predecessors
         #=======================================================================
         for predecessor_step in getNotMachineNodePredecessorList(sequence_step):
+            # do no attempt to add AssemblyBuffers in the route of moulds
+            if sequence_step.startswith('ASSM'):
+                break
             # before the QCAM must an order decomposition come
             if predecessor_step=='QCAM': #XXX hard coded logic to add DECOMPOSITION in the route of components
                 for pre_predecessor_step in getNotMachineNodePredecessorList(predecessor_step):
@@ -313,15 +308,18 @@ def getRouteList(steps_list):
         # if there is a pending step (SETUP-setup_step) for this step (next_step), 
         # add the processing time as setup_time to the current step
         setup_time=0
+        setup_distribution='Fixed'
         if step_sequence_list[j]==next_step:
-            setup_time=float(setup_step[2])
+            setup_time=setup_step[2]
+            setup_distribution=setup_step[2]['distributionType']
+            setup_time=float(setup_step[2]['mean'])
             #reset the dummy variables
             setup_step=None
             next_step=None
         route = {"stationIdsList": list(getMachineNameSet(sequence_step)),
-                 "processingTime": {"distributionType": "Fixed",
-                                    "mean": float(processing_time_list[j])},
-                 "setupTime": {"distributionType": "Fixed",
+                 "processingTime": {"distributionType": processing_time_list[j]['distributionType'],
+                                    "mean": float(processing_time_list[j]['mean'])},
+                 "setupTime": {"distributionType": setup_distribution,
                                "mean": setup_time}, # XXX hard-coded value
                  "stepNumber": str(step_sequence_list[j]),
                  }
@@ -350,12 +348,31 @@ def getRouteList(steps_list):
                 successor_set.add(successor_step)
                 route = {"stationIdsList": [successor_step],}
                 route_list.append(route)
-                # the add the ASSEMBLY
-                for second_successor_step in getNotMachineNodeSuccessorList(successor_step):
-                    successor_set.add(second_successor_step)
-                    route = {"stationIdsList": [second_successor_step],}
-                    route_list.append(route)
+                # then add the ASSEMBLY
+                last_step_list=route['stationIdsList']
+                successor_list=[]
+                import re
+                for station_id in last_step_list:
+                    name_parts=re.split(r'q(\d+)', station_id)
+                    # if the technology (station name in the case of assembly buffer
+                    # XXX hard coded only for the case of assembly buffer (=technology)
+                    for name_part in name_parts:
+                        if name_part in ASSEMBLY_ROUTE_STEPS_SET:
+                            machine_name_set=set([station_id])
+                            for edge in G.JSONData["edges"].values():
+                                if edge[0] in machine_name_set:
+                                    grand_successor_step=edge[1]
+                                    if grand_successor_step in successor_list:
+                                        continue
+                                    successor_list=[grand_successor_step]+successor_list
+                            # XXX for now it works only with one assembly buffer
+                            break
+                route = {"stationIdsList": [successor_list],}
+                route_list.append(route)
         # XXX INJM-MAN/INJM+INJM-SET must be set as one step of the route, the same stands for the other ***-SET steps
+    print '='*90
+    print route_list
+    print '='*90
     return route_list
         
 def getListFromString(self, my_string):
@@ -366,16 +383,11 @@ def getListFromString(self, my_string):
 
 ROUTE_STEPS_SET=set(["ENG", "CAD","CAM","MILL", "MILL-SET","TURN", "DRILL", "QUAL","EDM", "EDM-SET","ASSM", "MAN","INJM", "INJM-MAN", "INJM-SET"])
 DESIGN_ROUTE_STEPS_SET=set(["ENG", "CAD"])
+ASSEMBLY_ROUTE_STEPS_SET=set(["QASSM"])
 MOULD_ROUTE_STEPS_SET=set(["ASSM","INJM","INJM-MAN","INJM-SET"])
 def getComponets(orderDict,Order):
     """ get the components of each order, and construct them.
     """
-    G.MouldList=[]
-    G.OrderComponentList=[]
-    G.DesignList=[]
-    G.WipList=[]
-    G.EntityList=[]
-    G.JobList=[]
     isCritical=Order.isCritical                        # XXX have to figure out the isCritical flag
     
     # get the componentsList
@@ -384,11 +396,16 @@ def getComponets(orderDict,Order):
     for component in components:
         id=component.get('componentID','')
         name=component.get('componentName','')
+        #=======================================================================
+        print '* '*50
+        print name, '- '*45
+        print '* '*50
+        #=======================================================================
         dictRoute=component.get('route',[])
         route = [x for x in dictRoute]       #    copy dictRoute
         # keep a reference of all extra properties passed to the job
         extraPropertyDict = {}
-        for key, value in entity.items():
+        for key, value in component.items():
             if key not in ('_class', 'id'):
                 extraPropertyDict[key] = value
         
@@ -423,6 +440,9 @@ def getComponets(orderDict,Order):
         
         # find the new route of the component if it is no design or mould
         if not mould_step_list and not design_step_list:
+            #===================================================================
+            print 'normal component'
+            #===================================================================
             route_list=getRouteList(step_list)
             componentType='Basic'               # XXX have to figure out the component type
             readyForAssembly=0                  # XXX have to figure out the readyForAssembly flag
@@ -432,6 +452,7 @@ def getComponets(orderDict,Order):
                 OC=OrderComponent(id, name, route_list, priority=Order.priority, dueDate=Order.dueDate,orderDate=Order.orderDate,
                                   componentType=componentType, order=Order, readyForAssembly=readyForAssembly,
                                   isCritical=Order.isCritical, extraPropertyDict=extraPropertyDict)
+                print '_'*90,'>', OC.id, 'created'
                 G.OrderComponentList.append(OC)
                 G.JobList.append(OC)   
                 G.WipList.append(OC)  
@@ -447,13 +468,17 @@ def getComponets(orderDict,Order):
             continue
         # create to different routes for the design and for the mould (and different entities)
         if mould_step_list:
+            #===================================================================
+            print 'mould'
+            #===================================================================
             route_list=getRouteList(mould_step_list)
             # XXX if the component is not in the WipIDList then do not create it but append it the componentsList of the Order O
             # XXX it may be that the order is already processed so there is nothing in the WIP from that order
             if id in G.WipIDList:
                 # initiate the job
-                M=Mould(id, name, route_list, priority=Order.priority, dueDate=Order.dueDate,orderDate=Order.orderDate,
+                M=Mould('M'+id, 'mould'+name, route_list, priority=Order.priority, dueDate=Order.dueDate,orderDate=Order.orderDate,
                                     isCritical=Order.isCritical, extraPropertyDict=extraPropertyDict, order=Order)
+                print '_'*90,'>', M.id, 'created'
                 G.MouldList.append(M)
                 G.JobList.append(M)
                 G.WipList.append(M)
@@ -466,6 +491,9 @@ def getComponets(orderDict,Order):
                                }
                 Order.componentsList.append(componentDict)
         if design_step_list:
+            #===================================================================
+            print 'design'
+            #===================================================================
             route_list=getRouteList(design_step_list)
             # XXX if the design is not in the WipIDList then do create if the Order is not being processed at the moment
             #     if the Order is being processed there may be a need to create the design if the design is in the WIP
@@ -475,6 +503,7 @@ def getComponets(orderDict,Order):
                 # initiate the job
                 OD=OrderDesign(id, name,route_list,priority=Order.priority,dueDate=Order.dueDate,orderDate=Order.orderDate,
                                   isCritical=Order.isCritical, order=Order,extraPropertyDict=extraPropertyDict)
+                print '_'*90,'>', OD.id, 'created'
                 G.OrderComponentList.append(OD)
                 G.DesignList.append(OD)
                 G.JobList.append(OD)
@@ -529,7 +558,7 @@ def setStartWip():
         *    xxx Mould, if not in the WIP -> not created yet
                  if their last station is INJM-MAN or INJM then they are already processed
     '''
-    from Globals import SetWipTypeError, SetWip
+    from Globals import SetWipTypeError, setWIP
     json_data = G.wip_Data
     #Read the json data
     WIP = json_data['WIP']                                    # read from the dictionary the dict with key 'WIP'
@@ -541,7 +570,7 @@ def setStartWip():
         # if the entity is not in the WIP dict then move it to the starting station.
         if not entity.id in WIP.keys():
             # perform the default action
-            SetWip([entity])
+            setWIP([entity])
         # if the entity is in the WIP dict then move it to the station defined.
         elif entity.id in WIP.keys():
             objectID=WIP[entity.id]["station"]
@@ -606,7 +635,7 @@ def setStartWip():
     # OrderComponent type
     #===========================================================================
     # for all the entities of Type orderComponent
-    for entity in list(G.OrderComponentList-G.DesignList-G.MouldList):
+    for entity in [x for x in G.OrderComponentList if not x in (G.DesignList+G.MouldList)]:
         # XXX if there are already Mould parts in the WIP then the components are already assembled, do not set the entity
         assembled=False
         for mould in G.MouldList:
