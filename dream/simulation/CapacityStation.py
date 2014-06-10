@@ -34,6 +34,7 @@ import simpy
 #                            the CapacityStation object
 # ===========================================================================
 class CapacityStation(Queue):
+    class_name = 'Dream.CapacityStation'
     
     #===========================================================================
     # the __init__ method of the CapacityStation
@@ -51,10 +52,27 @@ class CapacityStation(Queue):
         Queue.initialize(self)
         self.remainingIntervalCapacity=list(self.intervalCapacity)
         self.isLocked=True
+        self.utilisationDict=[]     # a list of dicts for the results
 
     def canAccept(self, callerObject=None):
         if self.isLocked:
             return False
         return Queue.canAccept(self)
-        
+    
+    # =======================================================================    
+    # outputs results to JSON File
+    # =======================================================================
+    def outputResultsJSON(self):
+        from Globals import G
+        json = {'_class': self.class_name,
+                'id': self.id,
+                'results': {}}
+        if (G.numberOfReplications == 1):
+            # if we had just one replication output the results as numbers
+            json['results']['capacityUsed']=self.utilisationDict
+            meanUtilization=0
+            for entry in self.utilisationDict:
+                meanUtilization+=entry['utilization']/float(len(self.utilisationDict))
+            json['results']['meanUtilization']=meanUtilization
+        G.outputJSON['elementList'].append(json)
         

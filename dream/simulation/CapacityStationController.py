@@ -97,8 +97,12 @@ class CapacityStationController(EventGenerator):
             station.isLocked=False      # unlock the station
             buffer=station.previous[0]  # take the buffer
             buffer.sortEntities()       # sort the entities of the buffer so the ones to move go in front
+            periodDict={}
+            periodDict['period']=self.env.now
             # loop though the entities
             entitiesToCheck=list(buffer.getActiveObjectQueue())
+            capacityAvailable=station.remainingIntervalCapacity[0]
+            capacityAllocated=0
             for entity in entitiesToCheck:
                 if not entity.shouldMove:   # when the first entity that should not move is reached break
                     break
@@ -106,8 +110,12 @@ class CapacityStationController(EventGenerator):
                 # wait until the entity is removed
                 yield buffer.entityRemoved
                 buffer.entityRemoved=self.env.event()
+                periodDict[entity.capacityProject.id]=entity.requiredCapacity
+                capacityAllocated+=entity.requiredCapacity
             # lock the station
-            station.isLocked=True             
+            station.isLocked=True
+            periodDict['utilization']=capacityAllocated/float(capacityAvailable)
+            station.utilisationDict.append(periodDict)             
 
         # for every station update the remaining interval capacity so that it is ready for next loop
         for station in G.CapacityStationList:
