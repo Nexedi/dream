@@ -13,6 +13,7 @@
           .push(function () {
             // XXX Conditional simulation menu
             return RSVP.all([
+              gadget.whoWantToDisplayThisDocumentPage("production_line", key),
               gadget.whoWantToDisplayThisDocumentPage("edit_table", key),
               gadget.whoWantToDisplayThisDocumentPage("run_simulation", key),
               gadget.whoWantToDisplayThisDocumentPage("manage_document", key),
@@ -36,15 +37,16 @@
           })
           .push(function (result_list) {
             return [
-              {link: result_list[0], title: "Edit table"},
-              {link: result_list[1], title: "Run simulation"},
-              {link: result_list[2], title: "Manage document"},
-              {link: result_list[3], title: "Stations Utilization"},
-              {link: result_list[4], title: "Queues Statistics"},
-              {link: result_list[5], title: "Exit Statistics"},
-              {link: result_list[6], title: "Job Gantt"},
-              {link: result_list[7], title: "Job Schedule"},
-              {link: result_list[8], title: "Debug JSON"}
+              {link: result_list[0], title: "Production line"},
+              {link: result_list[1], title: "Edit table"},
+              {link: result_list[2], title: "Run simulation"},
+              {link: result_list[3], title: "Manage document"},
+              {link: result_list[4], title: "Stations Utilization"},
+              {link: result_list[5], title: "Queues Statistics"},
+              {link: result_list[6], title: "Exit Statistics"},
+              {link: result_list[7], title: "Job Gantt"},
+              {link: result_list[8], title: "Job Schedule"},
+              {link: result_list[9], title: "Debug JSON"}
             ];
           });
       });

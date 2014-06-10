@@ -244,16 +244,23 @@ module.exports = function (grunt) {
           'jquery-handsontable/v0.10.5/dist/jquery.handsontable.full.css',
         relative_dest: 'lib/handsontable.css',
         dest: '<%= global_config.dest %>/<%= curl.handsontablecss.relative_dest %>'
-//       },
-//       jqueryuijs: {
-//         src: 'https://code.jquery.com/ui/1.10.4/jquery-ui.js',
-//         relative_dest: 'lib/jquery-ui.js',
-//         dest: '<%= global_config.dest %>/<%= curl.jqueryuijs.relative_dest %>'
-//       },
-//       jqueryuicss: {
-//         src: 'https://code.jquery.com/ui/1.11.0-beta.1/themes/base/jquery-ui.css',
-//         relative_dest: 'lib/jquery-ui.css',
-//         dest: '<%= global_config.dest %>/<%= curl.jqueryuicss.relative_dest %>'
+      },
+      jqueryuijs: {
+        src: 'https://code.jquery.com/ui/1.10.4/jquery-ui.js',
+        relative_dest: 'lib/jquery-ui.js',
+        dest: '<%= global_config.dest %>/<%= curl.jqueryuijs.relative_dest %>'
+      },
+      jqueryuicss: {
+        src: 'https://code.jquery.com/ui/1.11.0-beta.1/themes/base/jquery-ui.css',
+        relative_dest: 'lib/jquery-ui.css',
+        dest: '<%= global_config.dest %>/<%= curl.jqueryuicss.relative_dest %>'
+      },
+      jsplumbjs: {
+        src: "https://github.com/sporritt/jsPlumb/raw/" +
+        "master/dist/js/jquery.jsPlumb-1.6.2-min.js",
+        relative_dest: 'lib/jquery.jsplumb.min.js',
+        dest: '<%= global_config.dest %>/<%= curl.jsplumbjs.relative_dest %>'
+      }
 //       },
 //       beautifyhtml: {
 //         src: 'https://raw.githubusercontent.com/einars/js-beautify/master/js/lib/beautify-html.js',
