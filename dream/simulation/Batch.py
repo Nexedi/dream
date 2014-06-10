@@ -34,7 +34,6 @@ class Batch(Entity):
 
     def __init__(self, id, name, numberOfUnits=1):
         Entity.__init__(self, name=name)
-        self.id=id  
         self.numberOfUnits=numberOfUnits
         self.numberOfSubBatches=1       #integer that shows in how many sub batches is the batch broken
         self.subBatchList=[]            #list that contains the sub-batches that this batch has been broken into

@@ -38,4 +38,3 @@ class CapacityProject(Entity):
         Entity.__init__(self, id, name)
         # a dict that shows the required capacity from every station
         self.capacityRequirementDict=capacityRequirementDict
-        self.id=id

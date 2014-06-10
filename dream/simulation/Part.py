@@ -32,9 +32,6 @@ from Entity import Entity
 
 
 #The part object
-class Part(Entity):    
+class Part(Entity):
     type="Part"
-          
-    def __init__(self, id = None, name = None):
-        Entity.__init__(self, id = id, name = name)
-   
+

@@ -36,6 +36,7 @@ class Entity(object):
 
     def __init__(self, id=None, name=None, priority=0, dueDate=None, orderDate=None, isCritical=False):
         self.name=name
+        self.id=id
         #         information on the object holding the entity
         #         initialized as None and updated every time an entity enters a new object
         #         information on the lifespan of the entity  

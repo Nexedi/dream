@@ -38,7 +38,6 @@ class Job(Entity):                                  # inherits from the Entity c
     def __init__(self, id=None, name=None, route=[], priority=0, dueDate=None, orderDate=None, extraPropertyDict=None,isCritical=False):
         Entity.__init__(self, id=id,name=name, priority=priority, dueDate=dueDate, orderDate=orderDate, isCritical=isCritical)
         # instance specific attributes 
-        self.id=id                                  # id
         # information on the routing and the stops of the entity
         self.route=route                            # the route that the job follows, 
                                                     # also contains the processing times in each station
