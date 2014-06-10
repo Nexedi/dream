@@ -40,7 +40,8 @@ def checkWIP():
     nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
     for (element_id, element) in nodes.iteritems():
         wip=element.get('wip', [])
-        totalWip.append(wip)
+        if wip:
+            totalWip.append(wip)
     return len(totalWip)>0
 
 
@@ -48,7 +49,53 @@ class WIPreadError(Exception):
     """Exception raised for errors in the WIP.
     """
     def __init__(self, msg):
-        Exception.__init__(self, msg) 
+        Exception.__init__(self, msg)
+        
+        
+def findFile(seekName, path, implicitExt=''):
+    """ Given a pathsep-delimited path string, find seekName. 
+    Returns path to seekName if found, otherwise None.
+    Also allows for files with implicit extensions (eg, .exe), but 
+    always returning seekName as was provided
+    >>> findFile('ls', '/usr/bin:/bin', implicit='.exe')
+    'bin/ls'
+    """
+    if (os.path.isfile(seekName) or implicitExt and os.path.isfile(seekName+implicitExt)):
+        # alrady absolut path.
+        return seekname
+    for p in path.split(os.pathsep):
+        candidate=os.path.join(p, seekName)
+        if (os.path.isfile(candidate) or implicitExt and os.path.isfile(candidate+implicitExt)):
+            return candidate
+    return None
+
+def SearchPath(name, path=None, exts=('',)):
+    """Search PATH for a binary.
+    Args:
+        name: the filename to search for
+        path: the optional path string (default: os.environ['PATH')
+        exts: optional list/tuple of extensions to try (default: ('',))
+    Returns:
+        The abspath to the binary or None if not found.
+    """
+    path = path or os.environ['PATH']
+    for dir in path.split(os.pathsep):
+        for ext in exts:
+            binpath = os.path.join(dir, name) + os.extsep + ext
+            if os.path.exists(binpath):
+                return os.abspath(binpath)
+    return None
+
+def GetOSPath():
+    immediate = os.curdir + os.pathsep + os.pardir + os.pathsep
+    ospath = os.getenv('PATH', os.defpath)
+    path = immediate + ospath
+    return path.split(os.pathsep)
+
+def requestJSON():
+    file=findFile('testJSON','usr/workspace/DreamGit/dream/dream/simulation', 'json' )
+    print file
+    return file
 
 def getOrders():
     ''' run the method from KEtool to read the orders'''
