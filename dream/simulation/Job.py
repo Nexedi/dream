@@ -62,40 +62,41 @@ class Job(Entity):                                  # inherits from the Entity c
             json['id'] = str(self.id)
             json['results'] = {}
             #json['extraPropertyDict'] = self.extraPropertyDict
-            
-            #if the Job has reached an exit, input completion time in the results
-            if self.schedule[-1][0].type=='Exit':
-                json['results']['completionTime']=self.schedule[-1][1]  
-                completionTime=self.schedule[-1][1]  
-            # TODO
-            # if the entity is of type Mould and the last object holding it is orderDecomposition
-            # XXX now Orders do not run through the system but OrderDesigns do
-            elif self.type=='OrderDesign' and self.schedule[-1][0].type=='OrderDecomposition': #
-                json['results']['completionTime']=self.schedule[-1][1]  
-                completionTime=self.schedule[-1][1]  
-            # TODO : check if there is a need for setting a different 'type' for the MouldAssembly than 'Machine'
-            #    ask Georgios if the method __class__.__name__ of finding the class type of the last step is correct
-            # if the entity is of type orderComponent and the last step in it's schedule is Assembly
-            elif self.type=='OrderComponent' and self.schedule[-1][0].__class__.__name__=='MouldAssembly':
-                json['results']['completionTime']=self.schedule[-1][1]  
-                completionTime=self.schedule[-1][1]  
-            #else input "still in progress"
-            else:
-                json['results']['completionTime']="still in progress"  
-                completionTime=None
-            
-            if completionTime and self.dueDate:
-                delay=completionTime-self.dueDate
-                json['results']['delay']=delay
+            # if there is schedule
+            if self.schedule:
+                #if the Job has reached an exit, input completion time in the results
+                if self.schedule[-1][0].type=='Exit':
+                    json['results']['completionTime']=self.schedule[-1][1]  
+                    completionTime=self.schedule[-1][1]  
+                # TODO
+                # if the entity is of type Mould and the last object holding it is orderDecomposition
+                # XXX now Orders do not run through the system but OrderDesigns do
+                elif self.type=='OrderDesign' and self.schedule[-1][0].type=='OrderDecomposition': #
+                    json['results']['completionTime']=self.schedule[-1][1]  
+                    completionTime=self.schedule[-1][1]  
+                # TODO : check if there is a need for setting a different 'type' for the MouldAssembly than 'Machine'
+                #    ask Georgios if the method __class__.__name__ of finding the class type of the last step is correct
+                # if the entity is of type orderComponent and the last step in it's schedule is Assembly
+                elif self.type=='OrderComponent' and self.schedule[-1][0].__class__.__name__=='MouldAssembly':
+                    json['results']['completionTime']=self.schedule[-1][1]  
+                    completionTime=self.schedule[-1][1]  
+                #else input "still in progress"
+                else:
+                    json['results']['completionTime']="still in progress"  
+                    completionTime=None
                 
-            json['results']['schedule']=[]
-            i=0
-            for record in self.schedule:               
-                json['results']['schedule'].append({})                              # dictionary holding time and 
-                json['results']['schedule'][i]['stationId']=record[0].id            # id of the Object
-                json['results']['schedule'][i]['entranceTime']=record[1]            # time entering the Object
-                i+=1             
-            G.outputJSON['elementList'].append(json)
+                if completionTime and self.dueDate:
+                    delay=completionTime-self.dueDate
+                    json['results']['delay']=delay
+                    
+                json['results']['schedule']=[]
+                i=0
+                for record in self.schedule:               
+                    json['results']['schedule'].append({})                              # dictionary holding time and 
+                    json['results']['schedule'][i]['stationId']=record[0].id            # id of the Object
+                    json['results']['schedule'][i]['entranceTime']=record[1]            # time entering the Object
+                    i+=1             
+                G.outputJSON['elementList'].append(json)
     
     # =======================================================================
     # initializes all the Entity for a new simulation replication 
