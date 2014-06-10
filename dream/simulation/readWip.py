@@ -366,8 +366,9 @@ def getRouteList(steps_list):
                                     successor_list=[grand_successor_step]+successor_list
                             # XXX for now it works only with one assembly buffer
                             break
-                route = {"stationIdsList": [successor_list],}
-                route_list.append(route)
+                if successor_list:
+                    route = {"stationIdsList": successor_list,}
+                    route_list.append(route)
         # XXX INJM-MAN/INJM+INJM-SET must be set as one step of the route, the same stands for the other ***-SET steps
     print '='*90
     print route_list
