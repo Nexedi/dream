@@ -72,6 +72,7 @@ class CapacityStationController(EventGenerator):
                 exit.currentlyObtainedEntities.append(entity)
                 station.entityRemoved=self.env.event()
                 project=entity.capacityProject
+                # output the finish time of the project. This will updated every time, so in the end it should be correct
                 for entry in project.projectSchedule:
                     if entry['station']==station.id:
                         entry['finish']=self.env.now
@@ -115,7 +116,8 @@ class CapacityStationController(EventGenerator):
                 yield buffer.entityRemoved
                 buffer.entityRemoved=self.env.event()
                 project=entity.capacityProject
-                periodDict[project.id]=entity.requiredCapacity
+                periodDict[project.id]=entity.requiredCapacity  # dict to be appended in the utilization list
+                # append the move in the detailedWorkPlan of the station
                 station.detailedWorkPlan.append({'time':self.env.now,
                                                 'operation':station.id,
                                                 'project':project.id,
@@ -125,7 +127,9 @@ class CapacityStationController(EventGenerator):
                     project.projectSchedule.append({"station": station.id,"start": self.env.now})                    
             # lock the station
             station.isLocked=True
+            # calculate the utilization
             periodDict['utilization']=capacityAllocated/float(capacityAvailable)
+            # update the utilisationDict of the station
             station.utilisationDict.append(periodDict)             
 
         # for every station update the remaining interval capacity so that it is ready for next loop
