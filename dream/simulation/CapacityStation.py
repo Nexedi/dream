@@ -52,7 +52,8 @@ class CapacityStation(Queue):
         Queue.initialize(self)
         self.remainingIntervalCapacity=list(self.intervalCapacity)
         self.isLocked=True
-        self.utilisationDict=[]     # a list of dicts for the results
+        self.utilisationDict=[]     # a list of dicts for the utilization results
+        self.detailedWorkPlan=[]    # a list of dicts to keep detailed data
 
     def canAccept(self, callerObject=None):
         if self.isLocked:
@@ -74,5 +75,6 @@ class CapacityStation(Queue):
             for entry in self.utilisationDict:
                 meanUtilization+=entry['utilization']/float(len(self.utilisationDict))
             json['results']['meanUtilization']=meanUtilization
+            json['results']['detailedWorkPlan']=self.detailedWorkPlan
         G.outputJSON['elementList'].append(json)
         

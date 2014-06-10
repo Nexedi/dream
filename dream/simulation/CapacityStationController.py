@@ -116,6 +116,10 @@ class CapacityStationController(EventGenerator):
                 buffer.entityRemoved=self.env.event()
                 project=entity.capacityProject
                 periodDict[project.id]=entity.requiredCapacity
+                station.detailedWorkPlan.append({'time':self.env.now,
+                                                'operation':station.id,
+                                                'project':project.id,
+                                                'allocation':entity.requiredCapacity})
                 capacityAllocated+=entity.requiredCapacity
                 if self.checkIfProjectJustStartsInStation(project, station):
                     project.projectSchedule.append({"station": station.id,"start": self.env.now})                    
