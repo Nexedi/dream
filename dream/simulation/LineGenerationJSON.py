@@ -817,6 +817,7 @@ def createObjects():
             nextCapacityStationBufferId=element.get('nextCapacityStationBufferId', None)
             CE=CapacityStationExit(id,name,nextCapacityStationBufferId=nextCapacityStationBufferId)
             G.CapacityStationExitList.append(CE)
+            G.ExitList.append(CE)
             G.ObjList.append(CE)
              
     # -----------------------------------------------------------------------

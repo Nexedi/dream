@@ -49,13 +49,15 @@ class CapacityStationController(EventGenerator):
             if self.stop:
                 if self.env.now>self.stop:
                     break
+            # activate the main loop
             self.env.process(self.steps())
+            # wait until the main loop is completed
             yield self.stepsAreComplete
             self.stepsAreComplete=self.env.event()
             yield self.env.timeout(self.interval)       #wait for the predetermined interval
-  
-    def steps(self):
 
+    # the main loop that is carried in every interval  
+    def steps(self):
         # loop through the stations
         for station in G.CapacityStationList:
             exit=station.next[0]  # take the exit
@@ -72,6 +74,11 @@ class CapacityStationController(EventGenerator):
             # lock the exit again
             exit.isLocked=True
         
+        # if the last exits led to an empty system then the simulation must be stopped
+        # step returns and the generator never yields the stepsAreComplete signal
+        if self.checkIfSystemEmpty():
+            return
+        
         # create the entities in the following stations
         self.createInCapacityStationBuffers()
         # if there is need to merge entities in a buffer
@@ -84,6 +91,7 @@ class CapacityStationController(EventGenerator):
         # and set the flags to the entities of StationBuffers 
         self.calculateWhatIsToBeProcessed()
     
+        # move the entities into the stations
         # loop through the stations
         for station in G.CapacityStationList:
             station.isLocked=False      # unlock the station
@@ -104,13 +112,9 @@ class CapacityStationController(EventGenerator):
         # for every station update the remaining interval capacity so that it is ready for next loop
         for station in G.CapacityStationList:
             station.remainingIntervalCapacity.pop(0)                       
-        self.stepsAreComplete.succeed()    
-    
-    def checkIfStationsEmpty(self):
-        for station in G.CapacityStationList:
-            if len(station.getActiveObjectQueue()):
-                return False
-        return True        
+            
+        # send message that the main loop is completed    
+        self.stepsAreComplete.succeed()         
 
     # invoked after entities have exited one station to create 
     # the corresponding entities to the following buffer     
@@ -211,11 +215,12 @@ class CapacityStationController(EventGenerator):
                 entityToCreate.currentStation=buffer
                 entityToCreate.initialize()
                 import Globals
-                Globals.setWIP([entityToCreate])     #set the new components as wip                                   
-                    
-                    
-    def checkIfBufferFinished(self, buffer):
-        if buffer.getActiveObjectQueue():
-            return False
-        return True               
-     
+                Globals.setWIP([entityToCreate])     #set the new components as wip                                            
+    
+    # checks if the system is empty so that the simulation can be stopped
+    def checkIfSystemEmpty(self):
+        for object in G.CapacityStationList+G.CapacityStationBufferList+G.CapacityStationExitList:
+            if len(object.getActiveObjectQueue()):
+                return False
+        return True
+        
