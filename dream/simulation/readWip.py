@@ -31,19 +31,27 @@ import os.path
 import Globals
 import ast
 
-
+SOURCE_TYPE_SET=set(['Dream.Source', 'Dream.BatchSource'])
 def checkWIP():
     '''checks if there is WIP given, if there is no WIP given returns False'''
+    # XXX have to check whether it is a JOBSHOP that must have WIP or something else
+    # if there is source in the model then return true
     json_data = G.JSONData
     totalWip=[]
     #Read the json data
     nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
+    sourcePresent=False
     for (element_id, element) in nodes.iteritems():
+        
+        type=element.get('_class')
+        if type in SOURCE_TYPE_SET:
+            sourcePresent=True
         wip=element.get('wip', [])
         if wip:
             totalWip.append(wip)
-    return len(totalWip)>0
-
+    if not sourcePresent:
+        return len(totalWip)>0
+    return True
 
 class WIPreadError(Exception):
     """Exception raised for errors in the WIP.
@@ -276,7 +284,7 @@ def getRouteList(steps_list):
     setup_step=None             # a step that is of type SETUP
     next_step=None        # the next step of the last SETUP step
     for j, sequence_step in enumerate(technology_list):
-        print j, sequence_step
+#         print j, sequence_step
         #=======================================================================
         #             check whether the current step is SETUP-step
         #=======================================================================
@@ -370,9 +378,9 @@ def getRouteList(steps_list):
                     route = {"stationIdsList": successor_list,}
                     route_list.append(route)
         # XXX INJM-MAN/INJM+INJM-SET must be set as one step of the route, the same stands for the other ***-SET steps
-    print '='*90
-    print route_list
-    print '='*90
+#     print '='*90
+#     print route_list
+#     print '='*90
     return route_list
         
 def getListFromString(self, my_string):
@@ -401,9 +409,9 @@ def getComponets(orderDict,Order):
         id=component.get('componentID','')
         name=component.get('componentName','')
         #=======================================================================
-        print '* '*50
-        print name, '- '*45
-        print '* '*50
+#         print '* '*50
+#         print name, '- '*45
+#         print '* '*50
         #=======================================================================
         dictRoute=component.get('route',[])
         route = [x for x in dictRoute]       #    copy dictRoute
@@ -445,8 +453,8 @@ def getComponets(orderDict,Order):
         # find the new route of the component if it is no design or mould
         if not mould_step_list and not design_step_list:
             #===================================================================
-            print '/^\\'*30
-            print 'normal component'
+#             print '/^\\'*30
+#             print 'normal component'
             #===================================================================
             route_list=getRouteList(step_list)
             componentType='Basic'               # XXX have to figure out the component type
@@ -457,7 +465,7 @@ def getComponets(orderDict,Order):
                 OC=OrderComponent(id, name, route_list, priority=Order.priority, dueDate=Order.dueDate,orderDate=Order.orderDate,
                                   componentType=componentType, order=Order, readyForAssembly=readyForAssembly,
                                   isCritical=Order.isCritical, extraPropertyDict=extraPropertyDict)
-                print '_'*90,'>', OC.id, 'created'
+#                 print '_'*90,'>', OC.id, 'created'
                 G.OrderComponentList.append(OC)
                 G.JobList.append(OC)   
                 G.WipList.append(OC)  
@@ -474,8 +482,8 @@ def getComponets(orderDict,Order):
         # create to different routes for the design and for the mould (and different entities)
         if mould_step_list:
             #===================================================================
-            print '/^\\'*30
-            print 'mould'
+#             print '/^\\'*30
+#             print 'mould'
             #===================================================================
             route_list=getRouteList(mould_step_list)
             # XXX if the component is not in the WipIDList then do not create it but append it the componentsList of the Order O
@@ -495,7 +503,7 @@ def getComponets(orderDict,Order):
                 # initiate the job
                 M=Mould('M'+id, 'mould'+name, route_list, priority=Order.priority, dueDate=Order.dueDate,orderDate=Order.orderDate,
                                     isCritical=Order.isCritical, extraPropertyDict=extraPropertyDict, order=Order)
-                print '_'*90,'>', M.id, 'created'
+#                 print '_'*90,'>', M.id, 'created'
                 G.MouldList.append(M)
                 G.JobList.append(M)
                 G.WipList.append(M)
@@ -509,8 +517,8 @@ def getComponets(orderDict,Order):
                 Order.componentsList.append(componentDict)
         if design_step_list:
             #===================================================================
-            print '/^\\'*30
-            print 'design'
+#             print '/^\\'*30
+#             print 'design'
             #===================================================================
             route_list=getRouteList(design_step_list)
             # XXX if the design is not in the WipIDList then do create if the Order is not being processed at the moment
@@ -521,7 +529,7 @@ def getComponets(orderDict,Order):
                 # initiate the job
                 OD=OrderDesign(id, name,route_list,priority=Order.priority,dueDate=Order.dueDate,orderDate=Order.orderDate,
                                   isCritical=Order.isCritical, order=Order,extraPropertyDict=extraPropertyDict)
-                print '_'*90,'>', OD.id, 'created'
+#                 print '_'*90,'>', OD.id, 'created'
                 G.OrderComponentList.append(OD)
                 G.DesignList.append(OD)
                 G.JobList.append(OD)
@@ -580,16 +588,16 @@ def setStartWip():
     json_data = G.wip_Data
     #Read the json data
     WIP = json_data['WIP']                                    # read from the dictionary the dict with key 'WIP'
-    print '/'*200
-    print 'SETTING THE WIP'
-    print '\\'*200
+#     print '/'*200
+#     print 'SETTING THE WIP'
+#     print '\\'*200
     #===========================================================================
     # OrderDesign type
-    print 'setting desings as wip'
+#     print 'setting desings as wip'
     #===========================================================================
     # for all the entities in the entityList
     for entity in G.DesignList:
-        print entity.id
+#         print entity.id
         # if the entity is not in the WIP dict then move it to the starting station.
         if not entity.id in WIP.keys():
             # perform the default action
@@ -597,7 +605,7 @@ def setStartWip():
         # if the entity is in the WIP dict then move it to the station defined.
         elif entity.id in WIP.keys():
             objectID=WIP[entity.id]["station"]
-            print objectID
+#             print objectID
             assert objectID!='', 'there must be a stationID given to set the WIP'
             from Globals import findObjectById
             object=Globals.findObjectById(objectID)
@@ -658,7 +666,7 @@ def setStartWip():
                     G.pendingEntities.append(entity)
     #===========================================================================
     # OrderComponent type
-    print 'setting normal components as wip'
+#     print 'setting normal components as wip'
     #===========================================================================
     # for all the entities of Type orderComponent
     for entity in [x for x in G.OrderComponentList if not x in (G.DesignList+G.MouldList)]:
@@ -726,7 +734,7 @@ def setStartWip():
                 G.pendingEntities.append(entity)
     #===========================================================================
     # Mould type
-    print 'setting mould as wip'
+#     print 'setting mould as wip'
     #===========================================================================
     # for all the entities in the entityList
     for entity in G.MouldList:
@@ -793,7 +801,7 @@ def setStartWip():
 def breakOrderDesing(orderDesign):
     '''break down the orderDesign into OrderComponents
     '''
-    print 'breaking down'
+#     print 'breaking down'
     G.newlyCreatedComponents=[]
     G.orderToBeDecomposed=None
     #loop in the internal Queue. Decompose only if an Entity is of type order
