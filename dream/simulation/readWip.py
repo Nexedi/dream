@@ -204,7 +204,9 @@ def getOrders(input_data):
         G.OrderList.append(O)
         # call the method that finds the components of each order and initiates them 
         getComponets(orderDict,O)
-
+        print 
+        print len(G.EntityList)
+        print 
         
 def getMachineNameSet(technology):
     """
@@ -562,8 +564,12 @@ def setStartWip():
     json_data = G.wip_Data
     #Read the json data
     WIP = json_data['WIP']                                    # read from the dictionary the dict with key 'WIP'
+    print '/'*200
+    print 'SETTING THE WIP'
+    print '\\'*200
     #===========================================================================
     # OrderDesign type
+    print 'setting desings as wip'
     #===========================================================================
     # for all the entities in the entityList
     for entity in G.DesignList:
@@ -574,10 +580,11 @@ def setStartWip():
         # if the entity is in the WIP dict then move it to the station defined.
         elif entity.id in WIP.keys():
             objectID=WIP[entity.id]["station"]
+            print objectID
             assert objectID!='', 'there must be a stationID given to set the WIP'
             from Globals import findObjectById
             object=Globals.findObjectById(objectID)
-            assert station!=None, 'the station defined in the WIP is not a valid Station'
+            assert object!=None, 'the station defined in the WIP is not a valid Station'
             # find the station by its id, if there is no station then place it 
             # in the starting queue (QCAD), (QENG)
             entry_time=float(WIP[entity.id]["entry"])
@@ -598,11 +605,12 @@ def setStartWip():
             # find the stations that come after the machine that the entity last exited
             currentObjectIds=entity.remainingRoute[0].get('stationIdsList',[])
             # pick one at random
-            currentObjectId=next(currentObjectIds)
+            currentObjectId=next(id for id in currentObjectIds)
             currentObject=Globals.findObjectById(currentObjectId)
             # then break down the OrderDesing and design the OrderComponents
             if currentObject.type=='OrderDecomposition':
-                if len(Order.auxiliaryComponentsList+Order.secondaryComponentsList+Order.basicComponentsList)==0:
+                orderToDecompose=entity.order
+                if len(orderToDecompose.auxiliaryComponentsList+orderToDecompose.secondaryComponentsList+orderToDecompose.basicComponentsList)==0:
                     breakOrderDesing(entity)
                 # if the orderDesign is already broken down do not break it down again
                 else:
@@ -788,7 +796,7 @@ def breakOrderDesing(orderDesign):
                     reqComponent.auxiliaryList.append(auxComponent)
     #if there is an order for decomposition
     if G.orderToBeDecomposed:
-        from Globals import setWip
+        from Globals import setWIP
         setWIP(G.newlyCreatedComponents)     #set the new components as wip
         # TODO: consider signalling the receivers if any WIP is set now
         #reset attributes
