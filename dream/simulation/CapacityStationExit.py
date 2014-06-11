@@ -44,7 +44,7 @@ class CapacityStationExit(Exit):
         self.nextCapacityStationBufferId=nextCapacityStationBufferId    # the id of the next station. If it is None it 
                                                                         # means it is the end of the system.
         self.nextCapacityStationBuffer=None                             # the next buffer. If it is None it
-                                                                        # means it is the end of the system.
+                                                                        # means it is the end of the system.        
     def initialize(self):
         Exit.initialize(self)
         self.isLocked=True
@@ -64,3 +64,12 @@ class CapacityStationExit(Exit):
         if self.isLocked:
             return False
         return Exit.canAccept(self)
+    
+    # =======================================================================    
+    # outputs results to JSON File
+    # =======================================================================
+    def outputResultsJSON(self):
+        # output results only for the last exit
+        if not self.nextCapacityStationBuffer:
+            Exit.outputResultsJSON(self)
+        
