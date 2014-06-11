@@ -31,6 +31,18 @@ import os.path
 import Globals
 import ast
 
+class WIPreadError(Exception):
+    """Exception raised for errors in the WIP.
+    """
+    def __init__(self, msg):
+        Exception.__init__(self, msg)
+        
+class EntityIDError(Exception):
+    """Exception raised for errors in entities' ids.
+    """
+    def __init__(self, msg):
+        Exception.__init__(self, msg) 
+
 SOURCE_TYPE_SET=set(['Dream.Source', 'Dream.BatchSource'])
 def checkWIP():
     '''checks if there is WIP given, if there is no WIP given returns False'''
@@ -52,13 +64,6 @@ def checkWIP():
     if not sourcePresent:
         return len(totalWip)>0
     return True
-
-class WIPreadError(Exception):
-    """Exception raised for errors in the WIP.
-    """
-    def __init__(self, msg):
-        Exception.__init__(self, msg)
-        
         
 def findFile(seekName, path, implicitExt=''):
     """ Given a pathsep-delimited path string, find seekName. 
@@ -66,7 +71,6 @@ def findFile(seekName, path, implicitExt=''):
     >>> findFile('ls', '/usr/bin:/bin', implicit='.exe')
     'bin/ls.exe'
     """
-#     for file in os.listdir("c:/Users/papagiannis/workspace/DreamGit/dream/dream/simulation/"):
     for file in os.listdir(path):
         if file.endswith(os.extsep+implicitExt) and file.startswith(seekName):
             if os.path.isfile(file):
@@ -84,11 +88,6 @@ def GetOSPath():
 def requestWIP():
     file=findFile('testJSON',"c:/Users/papagiannis/workspace/DreamGit/dream/dream/simulation/", 'json' )
     return file
-
-# def requestJSON():
-#     file=findFile('testJSON','usr/workspace/DreamGit/dream/dream/simulation', 'json' )
-#     print file
-#     return file
 
 def getOrders(input_data):
     ''' run the method from KEtool to read the orders'''
@@ -168,7 +167,7 @@ def getOrders(input_data):
     
     G.inputWIP=''
     if input_data is None:
-        raise WIPreadError('There are no Orders to be read')# pass the contents of the input file to the global var InputData
+        raise WIPreadError('There are no Orders to be read')
     else:
         G.inputWIP = input_data
     #read the input from the JSON file and create the line
@@ -184,8 +183,8 @@ def getOrders(input_data):
     orders = json_data['orders']                                    # read from the dictionary the list with key 'orders'
     # each order is a dictionary
     for orderDict in orders:
-        id=orderDict.get('id', 'not found')
-        name=orderDict.get('name', 'not found')
+        id=orderDict.get('orderID', 'not found')
+        name=orderDict.get('orderName', 'not found')
         priority=int(orderDict.get('priority', '0'))
         dueDate=float(orderDict.get('dueDate', '0'))
         orderDate=float(orderDict.get('orderDate', '0'))
@@ -209,6 +208,7 @@ def getOrders(input_data):
         O=Order(id, name, priority=priority, dueDate=dueDate,orderDate=orderDate,
                 isCritical=isCritical, basicsEnded=basicsEnded, manager=manager, componentsList=[],
                 componentsReadyForAssembly=componentsReadyForAssembly, extraPropertyDict=extraPropertyDict)
+#         print 'created ORDER', ' >'*20, O.id
         G.OrderList.append(O)
         # call the method that finds the components of each order and initiates them 
         getComponets(orderDict,O)
@@ -470,6 +470,13 @@ def getComponets(orderDict,Order):
                 G.JobList.append(OC)   
                 G.WipList.append(OC)  
                 G.EntityList.append(OC)
+                # check the componentType of the component and accordingly add to the corresponding list of the parent order
+                if OC.componentType == 'Basic':
+                    Order.basicComponentsList.append(OC)
+                elif OC.componentType == 'Secondary':
+                    Order.secondaryComponentsList.append(OC)
+                else:
+                    Order.auxiliaryComponentsList.append(OC)
             else:
                 componentDict={"_class": "Dream.OrderComponent",
                                "id": id,
@@ -535,13 +542,7 @@ def getComponets(orderDict,Order):
                 G.JobList.append(OD)
                 G.WipList.append(OD)
                 G.EntityList.append(OD)
-            
 
-class EntityIDError(Exception):
-    """Exception raised for errors in entities' ids.
-    """
-    def __init__(self, msg):
-        Exception.__init__(self, msg) 
 def findEntityById(entityID):
     for entity in G.EntityList:
         try:
@@ -550,7 +551,7 @@ def findEntityById(entityID):
             else:
                 return None
         except:
-            raise WIPreadError('There is no Entity to be found')# pass the contents of the input file to the global var InputData
+            raise EntityIDError('There is no Entity to be found')# pass the contents of the input file to the global var InputData
 
 def getWipID():
     ''' create a list with the ids of the entities in the WIP
@@ -639,7 +640,7 @@ def setStartWip():
                     breakOrderDesing(entity)
                 # if the orderDesign is already broken down do not break it down again
                 else:
-                    break
+                    continue
             # if the current station is not of type orderDecomposition
             else:
                 # append the entity to its internal queue
@@ -670,6 +671,7 @@ def setStartWip():
     #===========================================================================
     # for all the entities of Type orderComponent
     for entity in [x for x in G.OrderComponentList if not x in (G.DesignList+G.MouldList)]:
+#         print entity.id
         # XXX if there are already Mould parts in the WIP then the components are already assembled, do not set the entity
         assembled=False
         for mould in G.MouldList:
@@ -687,7 +689,7 @@ def setStartWip():
             assert objectID!='', 'there must be a stationID given to set the WIP'
             from Globals import findObjectById
             object=Globals.findObjectById(objectID)
-            assert station!=None, 'the station defined in the WIP is not a valid Station'
+            assert object!=None, 'the station defined in the WIP is not a valid Station'
             # find the station by its id, if there is no station then place it 
             # in the starting queue (QCAD), (QENG)
             entry_time=float(WIP[entity.id]["entry"])
@@ -708,7 +710,7 @@ def setStartWip():
             # find the stations that come after the machine that the entity last exited
             currentObjectIds=entity.remainingRoute[0].get('stationIdsList',[])
             # pick one at random
-            currentObjectId=next(currentObjectIds)
+            currentObjectId=next(id for id in currentObjectIds)
             currentObject=Globals.findObjectById(currentObjectId)
             # append the entity to its internal queue
             currentObject.getActiveObjectQueue().append(entity)        # append the entity to its Queue
@@ -738,6 +740,7 @@ def setStartWip():
     #===========================================================================
     # for all the entities in the entityList
     for entity in G.MouldList:
+#         print entity.id
         # if the entity is not in the WIP dict then it will be set by MouldAssembly on time.
         if not entity.id in WIP.keys():
             break
@@ -747,7 +750,7 @@ def setStartWip():
             assert objectID!='', 'there must be a stationID given to set the WIP'
             from Globals import findObjectById
             object=Globals.findObjectById(objectID)
-            assert station!=None, 'the station defined in the WIP is not a valid Station'
+            assert object!=None, 'the station defined in the WIP is not a valid Station'
             # find the station by its id, if there is no station then place it 
             # in the starting queue (QCAD), (QENG)
             entry_time=float(WIP[entity.id]["entry"])
@@ -768,7 +771,7 @@ def setStartWip():
             # find the stations that come after the machine that the entity last exited
             currentObjectIds=entity.remainingRoute[0].get('stationIdsList',[])
             # pick one at random
-            currentObjectId=next(currentObjectIds)
+            currentObjectId=next(id for id in currentObjectIds)
             currentObject=Globals.findObjectById(currentObjectId)
             # XXX consider reconfiguring the controls by using the length of the route
             #     or just avoid using it as the entity will be placed in the Exit
@@ -801,7 +804,7 @@ def setStartWip():
 def breakOrderDesing(orderDesign):
     '''break down the orderDesign into OrderComponents
     '''
-#     print 'breaking down'
+#     print 'breaking down','< '*20, orderDesign.id
     G.newlyCreatedComponents=[]
     G.orderToBeDecomposed=None
     #loop in the internal Queue. Decompose only if an Entity is of type order
@@ -871,6 +874,7 @@ def createOrderComponent(component):
                             orderDate=G.orderToBeDecomposed.orderDate, \
                             extraPropertyDict=extraPropertyDict,\
                             isCritical=G.orderToBeDecomposed.isCritical)
+#         print 'created component', '< '*10, OC.id
             
         # check the componentType of the component and accordingly add to the corresponding list of the parent order
         if OC.componentType == 'Basic':
