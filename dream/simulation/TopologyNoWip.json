@@ -1,0 +1,255 @@
+{
+    "_class": "Dream.Simulation",
+    "edges": {
+		"0": [
+            "Q0",
+            "CAD1",
+            {}
+        ],
+        "1": [
+            "Q0",
+            "CAD2",
+            {}
+        ],
+		"2": [
+            "CAD1",
+            "OD0",
+            {}
+        ],
+        "3": [
+            "CAD2",
+            "OD0",
+            {}
+        ],
+		"4": [
+            "OD0",
+            "QCAM",
+            {}
+        ],
+        "5": [
+            "QCAM",
+            "CAM1",
+            {}
+        ],
+		"6": [
+            "QCAM",
+            "CAM2",
+            {}
+        ],
+        "7": [
+            "CAM1",
+            "QMILL",
+            {}
+        ],
+		"8": [
+            "CAM2",
+            "QMILL",
+            {}
+        ],
+		"9": [
+            "QMILL",
+            "MILL1",
+            {}
+        ],
+		"10": [
+            "QMILL",
+            "MILL2",
+            {}
+        ],
+		"11": [
+            "MILL1",
+            "QEDM",
+            {}
+        ],
+		"12": [
+            "MILL2",
+            "QEDM",
+            {}
+        ],
+		"13": [
+            "QEDM",
+            "EDM",
+            {}
+        ],
+		"14": [
+            "EDM",
+            "QASSM",
+            {}
+        ],
+		"15": [
+            "QASSM",
+            "ASSM1",
+            {}
+        ],
+		"16": [
+            "QASSM",
+            "ASSM2",
+            {}
+        ],
+		"17": [
+            "QASSM",
+            "ASSM3",
+            {}
+        ],
+		"18": [
+            "ASSM1",
+            "QIM",
+            {}
+        ],
+		"19": [
+            "ASSM2",
+            "QIM",
+            {}
+        ],
+		"20": [
+            "ASSM3",
+            "QIM",
+            {}
+        ],
+		"21": [
+            "QIM",
+            "INJM",
+            {}
+        ],
+		"22": [
+            "INJM",
+            "E1",
+            {}
+        ]
+	},
+    "general": {
+        "_class": "Dream.Configuration",
+        "numberOfReplications": "1",
+        "maxSimTime": "-1",
+        "trace": "Yes",
+		"console": "No",
+        "confidenceLevel": "0.95"
+    },
+    "nodes": {
+        "Q0": {
+            "_class": "Dream.QueueManagedJob",
+            "name": "StartQueue",
+            "isDummy": "0",
+			"schedulingRule": "Priority",
+            "capacity": "-1"
+        },
+        "CAD1": {
+            "_class": "Dream.MachineManagedJob",
+            "name": "CAD Design 1",
+			"operationType": "MT-Load-Setup-Processing"
+        },
+        "CAD2": {
+            "_class": "Dream.MachineManagedJob",
+            "name": "CAD Design 2",
+			"operationType": "MT-Load-Setup-Processing"
+        },
+        "OD0": {
+            "_class": "Dream.OrderDecomposition",
+            "name": "Order Decomposition"
+        },
+        "QCAM": {
+            "_class": "Dream.ConditionalBuffer",
+            "name": "Queue CAM",
+            "isDummy": "0",
+			"schedulingRule": "Priority",
+            "capacity": "-1"
+        },
+        "CAM1": {
+            "_class": "Dream.MachineManagedJob",
+            "name": "CAM Design 1",
+			"operationType": "MT-Load-Setup-Processing"
+        },
+        "CAM2": {
+            "_class": "Dream.MachineManagedJob",
+            "name": "CAM Design 2",
+			"operationType": "MT-Load-Setup-Processing"
+        },
+        "QMILL": {
+            "_class": "Dream.QueueManagedJob",
+            "name": "Queue Milling",
+            "isDummy": "0",
+            "capacity": "-1"
+        },
+        "MILL1": {
+            "_class": "Dream.MachineManagedJob",
+            "name": "Milling 1",
+			"operationType": "MT-Load-Setup-Processing"
+        },
+        "MILL2": {
+            "_class": "Dream.MachineManagedJob",
+            "name": "Milling 2",
+			"operationType": "MT-Load-Setup-Processing"
+        },
+        "QEDM": {
+            "_class": "Dream.QueueManagedJob",
+            "name": "Queue EDM",
+            "isDummy": "0",
+			"schedulingRule": "Priority",
+            "capacity": "-1"
+        },
+        "EDM": {
+            "_class": "Dream.MachineManagedJob",
+            "name": "EDM",
+			"operationType": "MT-Load-Setup-Processing"
+        },
+        "QASSM": {
+            "_class": "Dream.MouldAssemblyBuffer",
+            "id": "QASSM",
+            "name": "Assembly Buffer",
+			"schedulingRule": "Priority",
+            "isDummy": "0",
+            "capacity": "-1"
+        },
+        "ASSM1": {
+            "_class": "Dream.MouldAssembly",
+            "id": "ASSM1",
+            "name": "Assembly 1",
+			"operationType": "MT-Load-Setup-Processing"
+        },
+        "ASSM2": {
+            "_class": "Dream.MouldAssembly",
+            "id": "ASSM2",
+            "name": "Assembly 2",
+			"operationType": "MT-Load-Setup-Processing"
+        },
+        "ASSM3": {
+            "_class": "Dream.MouldAssembly",
+            "id": "ASSM3",
+            "name": "Assembly 3",
+			"operationType": "MT-Load-Setup-Processing"
+        },
+        "QIM": {
+            "_class": "Dream.QueueManagedJob",
+            "name": "Queue Mould Injection",
+            "isDummy": "0",
+			"schedulingRule": "Priority",
+            "capacity": "-1"
+        },
+        "INJM": {
+            "_class": "Dream.MachineManagedJob",
+            "name": "Mould Injection",
+			"operationType": "MT-Load-Setup-Processing"
+        },
+        "E1": {
+            "_class": "Dream.ExitJobShop",
+            "name": "Exit"
+        },
+        "OP1": {
+            "_class": "Dream.OperatorManagedJob",
+            "capacity": "1",
+            "name": "Operator1"
+        },
+        "OP2": {
+            "_class": "Dream.OperatorManagedJob",
+            "capacity": "1",
+            "name": "Operator2",
+			"schedulingRule": "Priority"
+        },
+        "OP3": {
+            "_class": "Dream.OperatorManagedJob",
+            "capacity": "1",
+            "name": "Operator3",
+			"schedulingRule": "Priority"
+        }
+    }
+}
