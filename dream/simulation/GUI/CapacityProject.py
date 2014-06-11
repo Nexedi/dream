@@ -87,8 +87,7 @@ class Simulation(DefaultSimulation):
         _class='Dream.CapacityStationController',
         name='CSC',
         start=0,
-        interval=1,
-        method='Dream.None')
+        interval=1, )
 
     # "expand" abstract stations
     for node_id, node_data in data['nodes'].items():
