@@ -121,27 +121,6 @@
       });
     };
 
-    that.prepareDialogForGeneralProperties = function () {
-      var fieldset = $("#general-fieldset"),
-        previous_data = that.getData()['general'],
-        previous_value = "",
-        prefix = "General-";
-      fieldset.children().remove();
-      $.each(configuration['Dream-Configuration']['property_list'],
-        function (idx, property) {
-          if (property._class === "Dream.Property") {
-            previous_value = previous_data[property.id] || "";
-            if (previous_value.length > 0 || typeof previous_value == "number") {
-              previous_value = ' value="' + previous_value + '"';
-            }
-            fieldset.append("<label>" + (property.name || property.id) + "</label>" +
-              '<input title="' +  (property.description || '') + '" type="text" name="' + prefix + property.id + '"' +
-              previous_value + ' id="' + prefix + property.id + '"' +
-              ' class="text ui-widget-content ui-corner-all"/>');
-          }
-        });
-    };
-
     priv.prepareDialogForElement = function (title, element_id) {
       // code to allow changing values on connections. For now we assume
       // that it is throughput. But we will need more generic code
@@ -317,6 +296,7 @@
 
     priv.super_start = that.start;
     that.start = function () {
+      // XXX Migrate this part now!
       priv.super_start();
       priv.displayTool();
       priv.initDialog();

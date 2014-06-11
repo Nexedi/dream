@@ -6,13 +6,22 @@
     <title>Run Simulation</title>
     <script src="../<%= copy.rsvp.relative_dest %>" type="text/javascript"></script>
     <script src="../<%= copy.renderjs.relative_dest %>" type="text/javascript"></script>
+    <script src="../<%= copy.handlebars.relative_dest %>" type="text/javascript"></script>
     <script src="../<%= curl.jquery.relative_dest %>" type="text/javascript"></script>
     <script src="../<%= curl.jquerymobilejs.relative_dest %>" type="text/javascript"></script>
+
+    <script id="label-template" type="text/x-handlebars-template">
+      <label>{{label}}</label>
+    </script>
 
     <script src="document_page_mixin.js" type="text/javascript"></script>
     <script src="run_simulation.js" type="text/javascript"></script>
   </head>
   <body>
+    <form>
+      <fieldset class="simulation_parameters">
+      </fieldset>
+    </form>
     <form class="run_form">
       <button type="submit" class="ui-btn ui-btn-b ui-btn-inline
         ui-icon-refresh ui-btn-icon-right">Run Simulation</button>
