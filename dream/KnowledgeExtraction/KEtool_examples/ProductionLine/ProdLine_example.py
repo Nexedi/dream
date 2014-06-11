@@ -1,9 +1,32 @@
+'''
+Created on 19 Feb 2014
+
+@author: Panos
+'''
+# ===========================================================================
+# Copyright 2013 University of Limerick
+#
+# This file is part of DREAM.
+#
+# DREAM is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# DREAM is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
+# ===========================================================================
 
 from StatisticalMeasures import BasicStatisticalMeasures
 from DataManipulation import DataManagement
 from DistributionFitting import DistFittest
-from Example_CMSD import CMSD_example
-from Example_JSON import JSON_example
+from CMSD_Output import CMSD_example
+from JSON_Output import JSON_example
 from ExcelOutput import Output
 from ReplaceMissingValues import HandleMissingValues
 from ImportExceldata import Import_Excel
@@ -91,4 +114,4 @@ D.PrintDistributionFit(P2_Proc,"DistributionFittingResults_P2Proc.xls")
 D.PrintStatisticalMeasures(P2_Proc, "StatisticalMeasuresResults_P2Proc.xls")
 
 CMSD_example(dictProc,dictScrap)    #Print the CMSD document, calling the CMSD_example method with arguments the dictProc and dictScrap dictionaries
-JSON_example(dictProc,dictScrap)
+JSON_example(dictProc,dictScrap)    #Print the JSON file, calling the JSON_example method
