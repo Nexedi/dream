@@ -120,11 +120,11 @@ def createObjects():
     edges = json_data['edges']                      # read from the dictionary the dicts with key 'edges'
 
 
-    # -----------------------------------------------------------------------
-    #                getSuccesorList method to get the successor 
-    #                       list of object with ID = id
-    #                         XXX slow implementation
-    # -----------------------------------------------------------------------
+    '''
+    getSuccesorList method to get the successor 
+    list of object with ID = id
+    XXX slow implementation
+    '''
     def getSuccessorList(node_id, predicate=lambda source, destination, edge_data: True):
       successor_list = []                           # dummy variable that holds the list to be returned
       for source, destination, edge_data in edges.values(): # for all the values in the dictionary edges
@@ -135,9 +135,9 @@ def createObjects():
       # prevents Topology10 to work if this sort is not used.
       successor_list.sort()
       return successor_list
-    # -----------------------------------------------------------------------
-    #                define the lists of each object type
-    # -----------------------------------------------------------------------
+    '''
+    define the lists of each object type
+    '''
     G.SourceList=[]
     G.MachineList=[]
     G.ExitList=[]
@@ -170,11 +170,11 @@ def createObjects():
     G.QueueManagedJobList=[]
     G.ModelResourceList=[]
 
-    # -----------------------------------------------------------------------
-    #                loop through all the model resources 
-    #      search for repairmen and operators in order to create them
-    #                   read the data and create them
-    # -----------------------------------------------------------------------
+    '''
+    loop through all the model resources 
+    search for repairmen and operators in order to create them
+    read the data and create them
+    '''
 
     for (element_id, element) in nodes.iteritems():                 # use an iterator to go through all the nodes
         element['id'] = element_id                                  # create a new entry for the element (dictionary)
@@ -182,7 +182,7 @@ def createObjects():
         for k in ('element_id', 'top', 'left'):
           element.pop(k, None)
                                                                     # with key 'id' and value the the element_id
-        resourceClass = element.pop('_class')          # get the class type of the element
+        resourceClass = element.pop('_class')                       # get the class type of the element
         if resourceClass=='Dream.Repairman':                        # check the object type
             id = element.get('id', 'not found')                     # get the id of the element
             name = element.get('name', id)                          # get the name of the element / default 'not_found'
@@ -230,11 +230,11 @@ def createObjects():
             G.OperatorsList.append(O)                               # add the operator to the RepairmanList
             G.OperatorManagedJobsList.append(O)
             G.ModelResourceList.append(O) 
-    # -----------------------------------------------------------------------
-    #                loop through all the model resources 
-    #          search for operatorPools in order to create them
-    #                   read the data and create them
-    # -----------------------------------------------------------------------
+    '''
+    loop through all the model resources 
+    search for operatorPools in order to create them
+    read the data and create them
+    '''
     for (element_id, element) in nodes.iteritems():                 # use an iterator to go through all the nodes
                                                                     # the key is the element_id and the second is the 
                                                                     # element itself 
@@ -243,7 +243,7 @@ def createObjects():
         for k in ('element_id', 'top', 'left'):
           element.pop(k, None)
                                                                     # with key 'id' and value the the element_id
-        resourceClass = element.pop('_class')          # get the class type of the element
+        resourceClass = element.pop('_class')                       # get the class type of the element
         if resourceClass=='Dream.OperatorPool':
             id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
             name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
@@ -261,10 +261,10 @@ def createObjects():
             for operator in operatorsList:
                 operator.coreObjectIds=OP.coreObjectIds        		# update the list of objects that the operators operate
             G.OperatorPoolsList.append(OP)                          # add the operatorPool to the RepairmanList
-    # -----------------------------------------------------------------------
-    #                    loop through all the elements    
-    #                    read the data and create them
-    # -----------------------------------------------------------------------
+    '''
+    loop through all the elements    
+    read the data and create them
+    '''
     for (element_id, element) in nodes.iteritems():
         element = element.copy()
         element['id'] = element_id
@@ -783,12 +783,12 @@ def createObjects():
                 G.OperatedMachineList.append(MA)                 # add the machine to the operatedMachines List
             G.ObjList.append(MA)
             
-    # -----------------------------------------------------------------------
-    #                loop through all the nodes to  
-    #            search for Event Generator and create them
-    #                   this is put last, since the EventGenerator 
-    #                may take other objects as argument
-    # -----------------------------------------------------------------------
+    '''
+    loop through all the nodes to  
+    search for Event Generator and create them
+    this is put last, since the EventGenerator 
+    may take other objects as argument
+    '''
     for (element_id, element) in nodes.iteritems():                 # use an iterator to go through all the nodes
                                                                     # the key is the element_id and the second is the 
                                                                     # element itself 
@@ -815,10 +815,10 @@ def createObjects():
                                                                     # calling the getSuccessorList() method on the repairman
             G.EventGeneratorList.append(EV)                               # add the Event Generator to the RepairmanList
             
-    # -----------------------------------------------------------------------
-    #                    loop through all the core objects    
-    #                         to read predecessors
-    # -----------------------------------------------------------------------
+    '''
+    loop through all the core objects    
+    to read predecessors
+    '''
     for element in G.ObjList:
         #loop through all the nextIds of the object
         for nextId in element.nextIds:
@@ -1294,9 +1294,23 @@ def main(argv=[], input_data=None):
           G.Rnd=Random('%s%s' % (G.seed, i))
         else:
           G.Rnd=Random()
-        createWIP()
-        initializeObjects()
-        Globals.setWIP(G.EntityList)        
+        from readWip import checkWIP
+        if not checkWIP():
+            try:
+                from readWip import requestWIP, WIPreadError
+                input_Wip=requestWIP()
+                if not input_Wip:
+                    raise WIPreadError('The WIP could not be read from the external source')
+            except WIPreadError as wiperror:
+                print 'WIP definition error: {0}'.format(wiperror)
+            from readWip import getOrders, setStartWip
+            getOrders(input_Wip)
+            initializeObjects()
+            setStartWip()
+        else:
+            createWIP()
+            initializeObjects()
+            Globals.setWIP(G.EntityList)     
         activateObjects()
         
         # if the simulation is ran until no more events are scheduled, 
