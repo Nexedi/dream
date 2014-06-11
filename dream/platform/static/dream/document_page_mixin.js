@@ -6,34 +6,37 @@
             var key = this.props.jio_key, gadget = this;
             return new RSVP.Queue().push(function() {
                 // XXX Conditional simulation menu
-                return RSVP.all([ gadget.whoWantToDisplayThisDocumentPage("edit_table", key), gadget.whoWantToDisplayThisDocumentPage("run_simulation", key), gadget.whoWantToDisplayThisDocumentPage("manage_document", key), gadget.whoWantToDisplayThisDocumentPage("station_utilisation_graph", key), gadget.whoWantToDisplayThisDocumentPage("queue_stat_graph", key), gadget.whoWantToDisplayThisDocumentPage("exit_stat", key), gadget.whoWantToDisplayThisDocumentPage("job_gantt", key), gadget.whoWantToDisplayThisDocumentPage("job_schedule_spreadsheet", key), gadget.whoWantToDisplayThisDocumentPage("debug_json", key) ]);
+                return RSVP.all([ gadget.whoWantToDisplayThisDocumentPage("production_line", key), gadget.whoWantToDisplayThisDocumentPage("edit_table", key), gadget.whoWantToDisplayThisDocumentPage("run_simulation", key), gadget.whoWantToDisplayThisDocumentPage("manage_document", key), gadget.whoWantToDisplayThisDocumentPage("station_utilisation_graph", key), gadget.whoWantToDisplayThisDocumentPage("queue_stat_graph", key), gadget.whoWantToDisplayThisDocumentPage("exit_stat", key), gadget.whoWantToDisplayThisDocumentPage("job_gantt", key), gadget.whoWantToDisplayThisDocumentPage("job_schedule_spreadsheet", key), gadget.whoWantToDisplayThisDocumentPage("debug_json", key) ]);
             }).push(function(result_list) {
                 return [ {
                     link: result_list[0],
-                    title: "Edit table"
+                    title: "Production line"
                 }, {
                     link: result_list[1],
-                    title: "Run simulation"
+                    title: "Edit table"
                 }, {
                     link: result_list[2],
-                    title: "Manage document"
+                    title: "Run simulation"
                 }, {
                     link: result_list[3],
-                    title: "Stations Utilization"
+                    title: "Manage document"
                 }, {
                     link: result_list[4],
-                    title: "Queues Statistics"
+                    title: "Stations Utilization"
                 }, {
                     link: result_list[5],
-                    title: "Exit Statistics"
+                    title: "Queues Statistics"
                 }, {
                     link: result_list[6],
-                    title: "Job Gantt"
+                    title: "Exit Statistics"
                 }, {
                     link: result_list[7],
-                    title: "Job Schedule"
+                    title: "Job Gantt"
                 }, {
                     link: result_list[8],
+                    title: "Job Schedule"
+                }, {
+                    link: result_list[9],
                     title: "Debug JSON"
                 } ];
             });
