@@ -257,7 +257,7 @@ module.exports = function (grunt) {
       },
       jsplumbjs: {
         src: "https://github.com/sporritt/jsPlumb/raw/" +
-        "master/dist/js/jquery.jsPlumb-1.6.2-min.js",
+          "master/dist/js/jquery.jsPlumb-1.6.2-min.js",
         relative_dest: 'lib/jquery.jsplumb.min.js',
         dest: '<%= global_config.dest %>/<%= curl.jsplumbjs.relative_dest %>'
       }
@@ -266,7 +266,7 @@ module.exports = function (grunt) {
 //         src: 'https://raw.githubusercontent.com/einars/js-beautify/master/js/lib/beautify-html.js',
 //         relative_dest: 'lib/beautify-html.js',
 //         dest: '<%= global_config.dest %>/<%= curl.beautifyhtml.relative_dest %>'
-      }
+//       }
       //     qunit: {
 //       all: ['test/index.html']
     },
