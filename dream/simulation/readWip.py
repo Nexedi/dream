@@ -350,32 +350,28 @@ def getRouteList(steps_list):
                 route_list.append(route)
         # treat the case of normal components (add ASSM buffer and ASSM after MAN operations 
         elif j==len(technology_list)-1:
-            for successor_step in getNotMachineNodeSuccessorList(sequence_step):
-                # first add the ASSEMBLY BUFFER
-                successor_set.add(successor_step)
-                route = {"stationIdsList": [successor_step],}
-                route_list.append(route)
-                # then add the ASSEMBLY
-                last_step_list=route['stationIdsList']
-                successor_list=[]
-                import re
-                for station_id in last_step_list:
-                    name_parts=re.split(r'(\d+)', station_id)
-                    # if the technology (station name in the case of assembly buffer
-                    # XXX hard coded only for the case of assembly buffer (=technology)
-                    for name_part in name_parts:
-                        if name_part in ASSEMBLY_ROUTE_STEPS_SET:
-                            machine_name_set=set([station_id])
-                            for edge in G.JSONData["edges"].values():
-                                if edge[0] in machine_name_set:
-                                    grand_successor_step=edge[1]
-                                    if grand_successor_step in successor_list:
-                                        continue
-                                    successor_list=[grand_successor_step]+successor_list
-                            # XXX for now it works only with one assembly buffer
-                            break
-                if successor_list:
-                    route = {"stationIdsList": successor_list,}
+            #Below it is to assign an exit if it was not assigned in JSON
+            #have to talk about it with NEX
+            exitAssigned=False
+            for elementId in list(getMachineNameSet(sequence_step)):
+                for obj in G.ObjList:
+                    type=obj.__class__.__name__
+                    if obj.id==elementId and (type=='MouldAssembly' or type=='MouldAssemblyBuffer'):
+                        exitAssigned=True
+            # Below it is to assign assemblers if there are any in the corresponding Global list
+            if not exitAssigned:                    
+                if len(G.MouldAssemblyList)!=0:
+                    # append the assembly buffers
+                    bufferIDlist = []
+                    for assemblyBuffer in G.MouldAssemblyBufferList:
+                        bufferIDlist.append(str(assemblyBuffer.id))
+                    route = {"stationIdsList": bufferIDlist,}
+                    route_list.append(route)
+                    # append the assemblers
+                    assemblerIDlist = []
+                    for assembler in G.MouldAssemblyList:
+                        assemblerIDlist.append(str(assembler.id))
+                    route = {"stationIdsList": assemblerIDlist,}
                     route_list.append(route)
         # XXX INJM-MAN/INJM+INJM-SET must be set as one step of the route, the same stands for the other ***-SET steps
 #     print '='*90
@@ -384,6 +380,7 @@ def getRouteList(steps_list):
     return route_list
         
 def getListFromString(self, my_string):
+    """ turn a string with delimiters '-' into a list"""
     my_list = []
     if not my_string in (None, ''):
       my_list = my_string.split('-')
@@ -404,7 +401,7 @@ def getComponets(orderDict,Order):
     
     # get the componentsList
     components=orderDict.get('componentsList',[])
-    
+    # for all the components in the componentsList of the Order
     for component in components:
         id=component.get('componentID','')
         name=component.get('componentName','')
@@ -424,7 +421,6 @@ def getComponets(orderDict,Order):
         # if there is an exit assigned to the component
         #    update the corresponding local flag
         # TODO: have to talk about it with NEX
-        technology_list=[]  # list of the technologies per step of the part's route
         mould_step_list=[]  # list of all the info needed for the each step of the part's route if it is mould
         design_step_list=[] # list of all the info needed for the each step of the part's route if it is design
         step_list=[]        # list of all the info needed for the each step of the part's route
@@ -441,7 +437,6 @@ def getComponets(orderDict,Order):
             # if the technology step is in the MOULD_ROUTE_STEPS_SET
             elif stepTechnology in MOULD_ROUTE_STEPS_SET:
                 mould_step_list.append((stepTechnology,stepSequence,processingTime,parts_needed))
-            technology_list.append(stepTechnology)
             step_list.append((stepTechnology,stepSequence,processingTime,parts_needed))
             
             # XXX componentType needed
@@ -479,11 +474,7 @@ def getComponets(orderDict,Order):
                     Order.auxiliaryComponentsList.append(OC)
             else:
                 componentDict={"_class": "Dream.OrderComponent",
-                               "id": id,
-                               "name": name,
-                               "componentType": componentType,
-                               "route": route_list,
-                               }
+                               "id": id,"name": name,"componentType": componentType,"route": route_list,}
                 Order.componentsList.append(componentDict)
             continue
         # create to different routes for the design and for the mould (and different entities)
@@ -517,10 +508,7 @@ def getComponets(orderDict,Order):
                 G.EntityList.append(M)
             else:
                 componentDict={"_class": "Dream.Mould",
-                               "id": id,
-                               "name": name,
-                               "route": route_list,
-                               }
+                               "id": id, "name": name, "route": route_list,}
                 Order.componentsList.append(componentDict)
         if design_step_list:
             #===================================================================
