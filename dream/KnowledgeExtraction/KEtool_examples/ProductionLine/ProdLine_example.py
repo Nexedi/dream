@@ -24,7 +24,7 @@ Created on 19 Feb 2014
 
 from StatisticalMeasures import BasicStatisticalMeasures
 from DataManipulation import DataManagement
-from DistributionFitting import DistFittest
+from DistributionFitting import Distributions
 from CMSD_Output import CMSD_example
 from JSON_Output import JSON_example
 from ExcelOutput import Output
@@ -93,20 +93,20 @@ dictScrap['P11']= listScrap[10]
 #Create a tuple with the Processing times data lists of the different stations
 a=(P1_Proc,P2_Proc,P3_Proc,P1_Proc,P2_Proc,P3_Proc,P7_Proc,P8_Proc,P8_Proc,P9_Proc,P9_Proc)
 
-E=DistFittest()      #Call the DistFittest object
+E=Distributions()      #Call the DistFittest object
 
 dictProc={}
-dictProc['P1']= E.ks_test(P1_Proc)
-dictProc['P2']= E.ks_test(P1_Proc)
-dictProc['P3']= E.ks_test(P1_Proc)
-dictProc['P4']= E.ks_test(P1_Proc)
-dictProc['P5']= E.ks_test(P1_Proc)
-dictProc['P6']= E.ks_test(P1_Proc)
-dictProc['P7']= E.ks_test(P1_Proc)
-dictProc['P8']= E.ks_test(P1_Proc)
-dictProc['P9']= E.ks_test(P1_Proc)
-dictProc['P10']= E.ks_test(P1_Proc)
-dictProc['P11']= E.ks_test(P1_Proc)
+dictProc['P1']= E.Normal_distrfit(P1_Proc)
+dictProc['P2']= E.Normal_distrfit(P2_Proc)
+dictProc['P3']= E.Normal_distrfit(P3_Proc)
+dictProc['P4']= E.Normal_distrfit(P1_Proc)
+dictProc['P5']= E.Normal_distrfit(P2_Proc)
+dictProc['P6']= E.Normal_distrfit(P3_Proc)
+dictProc['P7']= E.Normal_distrfit(P7_Proc)
+dictProc['P8']= E.Normal_distrfit(P8_Proc)
+dictProc['P9']= E.Normal_distrfit(P8_Proc)
+dictProc['P10']= E.Normal_distrfit(P9_Proc)
+dictProc['P11']= E.Normal_distrfit(P9_Proc)
 
 
 D=Output()
