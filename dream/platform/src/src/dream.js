@@ -322,24 +322,6 @@
       that.setGeneralProperties(properties);
     }
 
-    /** Runs the knowledge extraction, and call the callback with results once the
-     * KE is finished.
-     */
-    that.runKnowledgeExtraction = function (callback) {
-      that.readGeneralPropertiesDialog()
-      $.ajax(
-          '../runKnowledgeExtraction', {
-          data: JSON.stringify({
-            json: that.getData()
-          }),
-          contentType: 'application/json',
-          type: 'POST',
-          success: function (data, textStatus, jqXHR) {
-            callback(data);
-          }
-        });
-    };
-
     that.displayResult = function (idx, result) {
       // the list of available widgets, in the same order that in html
       var available_widget_list = [

@@ -1,5 +1,5 @@
-/*global console, rJS, RSVP, initDocumentPageMixin */
-(function (window, rJS, RSVP, initDocumentPageMixin) {
+/*global console, rJS, RSVP, initDocumentPageMixin, jQuery */
+(function (window, rJS, RSVP, initDocumentPageMixin, $) {
   "use strict";
 
   function datatouri(data, mime_type) {
@@ -35,6 +35,96 @@
     return new RSVP.Promise(resolver, canceller);
   }
 
+  function disableAllButtons(gadget) {
+    // Prevent double click
+    var i,
+      button_list = gadget.props.element.getElementsByClassName("ui-btn");
+
+    for (i = 0; i < button_list.length; i += 1) {
+      button_list[i].disabled = true;
+    }
+  }
+
+  function waitForKnowledgeExtraction(gadget) {
+    return new RSVP.Queue()
+      .push(function () {
+        return promiseEventListener(
+          gadget.props.element.getElementsByClassName("knowledge_form")[0],
+          'submit',
+          false
+        );
+      })
+      .push(function () {
+        disableAllButtons(gadget);
+
+        return gadget.aq_getAttachment({
+          "_id": gadget.props.jio_key,
+          "_attachment": "body.json"
+        });
+      })
+      .push(function (body_json) {
+        $.mobile.loading('show');
+        // XXX Hardcoded relative URL
+        return gadget.aq_ajax({
+          url: "../../runKnowledgeExtraction",
+          type: "POST",
+          data: body_json,
+          headers: {
+            "Content-Type": 'application/json'
+          }
+        });
+      })
+      .push(undefined, function (error) {
+        // Always drop the loader
+        $.mobile.loading('hide');
+        throw error;
+      })
+      .push(function (evt) {
+        $.mobile.loading('hide');
+        var json_data = JSON.parse(evt.target.responseText);
+        if (json_data.success !== true) {
+          throw new Error(json_data.error);
+        }
+        return gadget.aq_putAttachment({
+          "_id": gadget.props.jio_key,
+          "_attachment": "body.json",
+          "_data": JSON.stringify(json_data.data, null, 2),
+          "_mimetype": "application/json"
+        });
+      })
+      .push(function () {
+        return gadget.whoWantToDisplayThisDocument(gadget.props.jio_key);
+      })
+      .push(function (url) {
+        return gadget.pleaseRedirectMyHash(url);
+      });
+  }
+
+  function waitForDeletion(gadget) {
+    return new RSVP.Queue()
+      .push(function () {
+        return promiseEventListener(
+          gadget.props.element.getElementsByClassName("delete_form")[0],
+          'submit',
+          false
+        );
+      })
+      .push(function () {
+        disableAllButtons(gadget);
+
+        // Delete jIO document
+        return gadget.aq_remove({
+          "_id": gadget.props.jio_key
+        });
+      })
+      .push(function (result) {
+        return gadget.whoWantToDisplayHome();
+      })
+      .push(function (url) {
+        return gadget.pleaseRedirectMyHash(url);
+      });
+  }
+
   var gadget_klass = rJS(window);
   initDocumentPageMixin(gadget_klass);
   gadget_klass
@@ -59,8 +149,12 @@
     /////////////////////////////////////////////////////////////////
     .declareAcquiredMethod("aq_remove", "jio_remove")
     .declareAcquiredMethod("aq_getAttachment", "jio_getAttachment")
+    .declareAcquiredMethod("aq_putAttachment", "jio_putAttachment")
     .declareAcquiredMethod("aq_get", "jio_get")
+    .declareAcquiredMethod("aq_ajax", "jio_ajax")
     .declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash")
+    .declareAcquiredMethod("whoWantToDisplayThisDocument",
+                           "whoWantToDisplayThisDocument")
     .declareAcquiredMethod("whoWantToDisplayHome",
                            "whoWantToDisplayHome")
 
@@ -92,30 +186,9 @@
     })
 
     .declareMethod("startService", function () {
-      var gadget = this;
-      return new RSVP.Queue()
-        .push(function () {
-          return promiseEventListener(
-            gadget.props.element.getElementsByClassName("delete_form")[0],
-            'submit',
-            false
-          );
-        })
-        .push(function () {
-          // Prevent double click
-          gadget.props.element
-            .getElementsByClassName("ui-btn")[0].disabled = true;
-
-          // Delete jIO document
-          return gadget.aq_remove({
-            "_id": gadget.props.jio_key
-          });
-        })
-        .push(function (result) {
-          return gadget.whoWantToDisplayHome();
-        })
-        .push(function (url) {
-          return gadget.pleaseRedirectMyHash(url);
-        });
+      return RSVP.all([
+        waitForDeletion(this),
+        waitForKnowledgeExtraction(this)
+      ]);
     });
-}(window, rJS, RSVP, initDocumentPageMixin));
+}(window, rJS, RSVP, initDocumentPageMixin, jQuery));

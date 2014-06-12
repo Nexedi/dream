@@ -152,7 +152,7 @@ def getConfigurationDict():
 
 @app.route("/runKnowledgeExtraction", methods=["POST", "OPTIONS"])
 def runKnowledgeExtraction():
-  parameter_dict = request.json['json']
+  parameter_dict = request.json
   try:
     timeout = int(parameter_dict['general']['processTimeout'])
   except (KeyError, ValueError, TypeError):

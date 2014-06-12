@@ -159,25 +159,6 @@
       });
     });
 
-    // Enable "Run Knowledge Extraction" button
-    $("#run_knowledge_extraction").button().click(
-      function (e) {
-        $("#ke_loading_spinner").show();
-        $("#run_knowledge_extraction").button('disable');
-        $('#error').empty();
-        dream_instance.runKnowledgeExtraction(
-          function(data) {
-              $("#ke_loading_spinner").hide();
-              $("#run_knowledge_extraction").button('enable');
-              if (data['success']) {
-                loadData(data.data);
-              } else {
-                $("#error").text(data["error"]).show().effect('shake', 50);
-                console.error(data['error'])
-              }
-            });
-      });
-
 //     // Enable "Run Simulation" button
 //     $("#run_simulation").button().click(
 //       function (e) {
