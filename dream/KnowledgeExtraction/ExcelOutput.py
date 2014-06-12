@@ -49,7 +49,7 @@ class Output(BasicStatisticalMeasures,DistFittest):
         sheet1.write(4,5,('3rd Qu.'))
         sheet1.write(4,6,('Max'))
         
-        sheet1.write(7,0,('Data points'))
+        sheet1.write(0,9,('Data points'))
         
         sheet1.write(10,0,('Quantile'))
         sheet1.write(10,1,('0%'))
@@ -78,7 +78,7 @@ class Output(BasicStatisticalMeasures,DistFittest):
         ###Dataset###
         i=0
         while (i<self.length(data)):
-            sheet1.write(7,i+1,((data[i])))
+            sheet1.write(i+1,9,((data[i])))
             i=i+1
                
         ###Quantselfles###
@@ -178,7 +178,7 @@ class Output(BasicStatisticalMeasures,DistFittest):
         ###Dataset###
         i=0
         while (i<robjects.r['length'](data)[0]):
-            sheet2.write(1,i+1,((data[i])))
+            sheet2.write(i+2,0,((data[i])))
             i=i+1
 
         ###Poisson###
