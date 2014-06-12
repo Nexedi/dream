@@ -179,7 +179,9 @@ def getOrders(input_data):
         G.wip_Data=G.inputWIP
     else:
         G.wip_Data=json.loads(open(G.inputWIP).read())              # create the dictionary wip_Data
-    print G.wip_Data
+    #===========================================================================
+    # print G.wip_Data
+    #===========================================================================
     G.OrderList=[]
     
     json_data = G.wip_Data
@@ -301,6 +303,15 @@ def getRouteList(steps_list):
             next_step=step_sequence_list[j+1]
             continue
         #=======================================================================
+        #        check whether the operation defined must be manual or not
+        #=======================================================================
+        # XXX e.g. MILL-MAN and MILL are the same technology, the difference is that the first requires manual operation while the latter is automatic
+        # the machine should be able to read the operationType from the entity just received and accordingly request an operator or not (manual or automatic)
+        operation_type='automatic'              # variable that can take two values, automatic and manual
+        if sequence_step.endswith('MAN'):
+            operation_type='manual'
+            sequence_step=sequence_step.split('-')[0]
+        #=======================================================================
         #                         append the predecessors
         #=======================================================================
         for predecessor_step in getNotMachineNodePredecessorList(sequence_step):
@@ -330,11 +341,13 @@ def getRouteList(steps_list):
             #reset the dummy variables
             setup_step=None
             next_step=None
+        # XXX somehow the machines must be informed if the processing is manual or automatic (INJM-MAN or INJM (automatic)
         route = {"stationIdsList": list(getMachineNameSet(sequence_step)),
                  "processingTime": {"distributionType": processing_time_list[j]['distributionType'],
-                                    "mean": float(processing_time_list[j]['mean'])},
+                                    "mean": float(processing_time_list[j]['mean']),
+                                    "operationType":operation_type},# XXX key that can take two values, automatic or manual
                  "setupTime": {"distributionType": setup_distribution,
-                               "mean": setup_time}, # XXX hard-coded value
+                               "mean": setup_time},
                  "stepNumber": str(step_sequence_list[j]),
                  }
         if prerequisite_list:
@@ -381,9 +394,11 @@ def getRouteList(steps_list):
                     route = {"stationIdsList": assemblerIDlist,}
                     route_list.append(route)
         # XXX INJM-MAN/INJM+INJM-SET must be set as one step of the route, the same stands for the other ***-SET steps
-#     print '='*90
-#     print route_list
-#     print '='*90
+    #===========================================================================
+    # print '='*90
+    # print route_list
+    # print '='*90
+    #===========================================================================
     return route_list
         
 def getListFromString(self, my_string):
@@ -413,9 +428,9 @@ def getComponets(orderDict,Order):
         id=component.get('componentID','')
         name=component.get('componentName','')
         #=======================================================================
-#         print '* '*50
-#         print name, '- '*45
-#         print '* '*50
+        # print '* '*50
+        # print name, '- '*45
+        # print '* '*50
         #=======================================================================
         dictRoute=component.get('route',[])
         route = [x for x in dictRoute]       #    copy dictRoute
@@ -455,8 +470,8 @@ def getComponets(orderDict,Order):
         # find the new route of the component if it is no design or mould
         if not mould_step_list and not design_step_list:
             #===================================================================
-#             print '/^\\'*30
-#             print 'normal component'
+            # print '/^\\'*30
+            # print 'normal component'
             #===================================================================
             route_list=getRouteList(step_list)
             componentType='Basic'               # XXX have to figure out the component type
@@ -467,7 +482,9 @@ def getComponets(orderDict,Order):
                 OC=OrderComponent(id, name, route_list, priority=Order.priority, dueDate=Order.dueDate,orderDate=Order.orderDate,
                                   componentType=componentType, order=Order, readyForAssembly=readyForAssembly,
                                   isCritical=Order.isCritical, extraPropertyDict=extraPropertyDict)
-#                 print '_'*90,'>', OC.id, 'created'
+                #===============================================================
+                # print '_'*90,'>', OC.id, 'created'
+                #===============================================================
                 G.OrderComponentList.append(OC)
                 G.JobList.append(OC)   
                 G.WipList.append(OC)  
@@ -487,8 +504,8 @@ def getComponets(orderDict,Order):
         # create to different routes for the design and for the mould (and different entities)
         if mould_step_list:
             #===================================================================
-#             print '/^\\'*30
-#             print 'mould'
+            # print '/^\\'*30
+            # print 'mould'
             #===================================================================
             route_list=getRouteList(mould_step_list)
             # XXX if the component is not in the WipIDList then do not create it but append it the componentsList of the Order O
@@ -508,7 +525,9 @@ def getComponets(orderDict,Order):
                 # initiate the job
                 M=Mould('M'+id, 'mould'+name, route_list, priority=Order.priority, dueDate=Order.dueDate,orderDate=Order.orderDate,
                                     isCritical=Order.isCritical, extraPropertyDict=extraPropertyDict, order=Order)
-#                 print '_'*90,'>', M.id, 'created'
+                #===============================================================
+                # print '_'*90,'>', M.id, 'created'
+                #===============================================================
                 G.MouldList.append(M)
                 G.JobList.append(M)
                 G.WipList.append(M)
@@ -519,8 +538,8 @@ def getComponets(orderDict,Order):
                 Order.componentsList.append(componentDict)
         if design_step_list:
             #===================================================================
-#             print '/^\\'*30
-#             print 'design'
+            # print '/^\\'*30
+            # print 'design'
             #===================================================================
             route_list=getRouteList(design_step_list)
             # XXX if the design is not in the WipIDList then do create if the Order is not being processed at the moment
@@ -531,7 +550,9 @@ def getComponets(orderDict,Order):
                 # initiate the job
                 OD=OrderDesign(id, name,route_list,priority=Order.priority,dueDate=Order.dueDate,orderDate=Order.orderDate,
                                   isCritical=Order.isCritical, order=Order,extraPropertyDict=extraPropertyDict)
-#                 print '_'*90,'>', OD.id, 'created'
+                #===============================================================
+                # print '_'*90,'>', OD.id, 'created'
+                #===============================================================
                 G.OrderComponentList.append(OD)
                 G.DesignList.append(OD)
                 G.JobList.append(OD)
@@ -681,7 +702,9 @@ def setStartWip():
         # if the entity is in the WIP dict then move it to the station defined.
         elif entity.id in WIP.keys():
             objectID=WIP[entity.id]["station"]
-            print objectID, '((0))    '*10
+            #===================================================================
+            # print objectID, '((0))    '*10
+            #===================================================================
             assert objectID!='', 'there must be a stationID given to set the WIP'
             from Globals import findObjectById
             object=Globals.findObjectById(objectID)
