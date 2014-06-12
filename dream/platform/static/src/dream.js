@@ -132,6 +132,72 @@
     $.plot("#graph", series, options);
   };
 
+  function capacity_utilisation_graph_widget(input_data, output_data) {
+    var available_capacity_by_station = {},
+        capacity_usage_by_station = {};
+
+    $("#capacity_graphs").empty();
+
+    // Compute availability by station
+    $.each(input_data.nodes, function(idx, obj){
+      var available_capacity = [];
+      if (obj.intervalCapacity !== undefined) {
+        $.each(obj.intervalCapacity, function(i, capacity){
+          available_capacity.push([i, capacity]);
+        });
+        available_capacity_by_station[obj.id] = available_capacity;
+      }
+    });
+    
+    // Compute used capacity by station
+    $.each(output_data.elementList.sort(
+            function(a,b) {return a.id < b.id ? -1 : 1}),
+      function (idx, obj) {
+      if (obj.results !== undefined && obj.results.capacityUsed !== undefined) {
+        var capacity_usage = [];
+
+        $.each(obj.results.capacityUsed, function(i, step){
+          var period = 0, usage = 0;
+          $.each(step, function(k, v){
+            if (k === 'period') {
+               period = v;
+            }
+            if (k !== 'utilization'){
+              usage += v;
+            }
+          });
+          capacity_usage.push([period, usage]) 
+        });
+        capacity_usage_by_station[obj.id] = capacity_usage;
+      }
+    });
+
+    for (var station_id in available_capacity_by_station) {
+      var series = [{
+        label: "Capacity",
+        data: available_capacity_by_station[station_id],
+        color: "green",
+      }, {
+        label: "Utilisation",
+        data: capacity_usage_by_station[station_id],
+        color: "red",
+      }];
+
+      var options = {
+        series: {
+          lines: {
+            show: true,
+            fill: true
+          }
+        }
+      };
+      var h2 = $("<h2>").html(input_data.nodes[station_id].name || station_id);
+      var graph = $("<div class='capacity_graph'></div>");
+      $("#capacity_graphs").append(h2).append(graph);
+      $.plot(graph, series, options);
+    }
+  };
+
   function queue_stat_widget(input_data, output_data) {
     /* FIXME: does not support more than one replic.
      * + see george email to integrate without the need of an EG
@@ -821,6 +887,7 @@
       var available_widget_list = [
         'debug_json',
         'station_utilisation_graph',
+        'capacity_utilisation_graph',
         'job_schedule_spreadsheet',
         'job_gantt',
         'exit_stat',
@@ -842,6 +909,9 @@
       // display each of the enabled widget
       if (configuration['Dream-Configuration'].gui.station_utilisation_graph){
         station_utilisation_graph_widget(input, result);
+      }
+      if (configuration['Dream-Configuration'].gui.capacity_utilisation_graph){
+        capacity_utilisation_graph_widget(input, result);
       }
       if (configuration['Dream-Configuration'].gui.queue_stat){
         queue_stat_widget(input, result);

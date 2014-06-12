@@ -264,6 +264,16 @@ path, ._jsPlumb_endpoint {
   margin-top:0px;
 }
 
+.capacity_graph {
+  width: 70%;
+  height: 250px;
+  text-align: center;
+  margin-left:auto;
+  margin-right:auto;
+  padding-top:2px;
+  margin-top:0px;
+}
+
 #queue_stat_graph {
   width: 70%;
   height: 250px;
