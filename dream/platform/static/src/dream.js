@@ -875,24 +875,36 @@
     };
 
     that.displayResult = function (idx, result) {
-      var active_tab = $("#reports").data("ui-tabs") ?
-        $("#reports").tabs("option", "active") : 0; // XXX should not be 0, but the first enabled one
+      // the list of available widgets, in the same order that in html
+      var available_widget_list = [
+        'station_utilisation_graph',
+        'capacity_utilisation_graph',
+        'exit_stat',
+        'queue_stat',
+        'job_schedule_spreadsheet',
+        'job_gantt',
+        'debug_json',
+      ];
+
+      // The active tab is the one that is selected or the first one that is
+      // enabled
+      var active_tab;
+      if ($("#reports").data("ui-tabs")) {
+        active_tab = $("#reports").tabs("option", "active");
+      } else {
+        for (var i in available_widget_list) {
+          if (configuration['Dream-Configuration'].gui[available_widget_list[i]]) {
+            active_tab = i;
+            break;
+          }
+        }
+      }
 
       $('li.result').removeClass('active');
       $($('li.result')[idx]).addClass('active');
       if ($("#reports").data("ui-tabs")) {
         $("#reports").tabs("destroy"); 
       }
-
-      var available_widget_list = [
-        'debug_json',
-        'station_utilisation_graph',
-        'capacity_utilisation_graph',
-        'job_schedule_spreadsheet',
-        'job_gantt',
-        'exit_stat',
-        'queue_stat',
-      ];
 
       for (var i in available_widget_list) {
         var widget_name = available_widget_list[i];
