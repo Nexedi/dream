@@ -115,6 +115,12 @@ module.exports = function (grunt) {
         src: "**/images/*.*",
         dest: "<%= global_config.dest %>/"
       },
+      favicon: {
+        expand: true,
+        cwd: "<%= global_config.src %>/",
+        src: "**/*.ico",
+        dest: "<%= global_config.dest %>/"
+      },
       rsvp: {
 //         src: "node_modules/rsvp/dist/rsvp-2.0.4.min.js",
         src: "<%= global_config.lib %>/rsvp.js",
