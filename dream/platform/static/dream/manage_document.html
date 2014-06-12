@@ -6,12 +6,17 @@
     <title>Manage document</title>
     <script src="../lib/rsvp.min.js" type="text/javascript"></script>
     <script src="../lib/renderjs.min.js" type="text/javascript"></script>
+    <script src="../lib/jquery.js" type="text/javascript"></script>
+    <script src="../lib/jquerymobile.js" type="text/javascript"></script>
 
     <script src="document_page_mixin.js" type="text/javascript"></script>
     <script src="manage_document.js" type="text/javascript"></script>
   </head>
   <body>
     <a class="export_link ui-btn ui-btn-inline ui-icon-action ui-btn-icon-right">Export</a>
+    <form class="knowledge_form">
+      <button type="submit" class="ui-btn ui-btn-b ui-btn-inline ui-icon-refresh ui-btn-icon-right">Run Knowledge Extraction</button>
+    </form>
     <form class="delete_form">
       <button type="submit" class="ui-btn ui-btn-b ui-btn-inline ui-icon-delete ui-btn-icon-right">Delete</button>
     </form>
