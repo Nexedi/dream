@@ -1,0 +1,124 @@
+{
+    "_class": "Dream.Simulation",
+    "edges": {
+        "0": [
+            "S1",
+            "A1",
+            {
+                "entity": "Part"
+            }
+        ],
+        "1": [
+            "S2",
+            "A1",
+            {
+                "entity": "Frame"
+            }
+        ],
+        "2": [
+            "A1",
+            "M1",
+            {}
+        ],
+        "3": [
+            "M1",
+            "D1",
+            {}
+        ],
+        "4": [
+            "D1",
+            "E1",
+            {
+                "entity": "Frame"
+            }
+        ],
+        "5": [
+            "D1",
+            "E2",
+            {
+                "entity": "Part"
+            }
+        ]
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "confidenceLevel": "0.95",
+        "maxSimTime": "1440",
+        "numberOfReplications": "1",
+        "trace": "No"
+    },
+    "nodes": {
+        "A1": {
+            "_class": "Dream.Assembly",
+            "left": 0.5,
+            "name": "Assembly",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 2.0
+            },
+            "top": 0.2784431137724551
+        },
+        "D1": {
+            "_class": "Dream.Dismantle",
+            "left": 0.5,
+            "name": "Dismantle",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 1.0
+            },
+            "top": 0.721556886227545
+        },
+        "E1": {
+            "_class": "Dream.Exit",
+            "left": 0.7857142857142857,
+            "name": "Parts Stock",
+            "top": 0.9431137724550899
+        },
+        "E2": {
+            "_class": "Dream.Exit",
+            "left": 0.2142857142857143,
+            "name": "Frames Stock",
+            "top": 0.9431137724550899
+        },
+        "M1": {
+            "_class": "Dream.Machine",
+            "failures": {
+                "MTTF": {
+                
+                },
+                "MTTR": {
+                
+                } ,
+                "repairman": "None"
+            },
+            "left": 0.5,
+            "name": "Moulding",
+            "processingTime": {
+                
+            },
+            "top": 0.5
+        },
+        "S1": {
+            "_class": "Dream.Source",
+            "entity": "Dream.Part",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": 0.5
+            },
+            "left": 0.2142857142857143,
+            "name": "Parts",
+            "top": 0.05688622754491013
+        },
+        "S2": {
+            "_class": "Dream.Source",
+            "entity": "Dream.Frame",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": 2.0
+            },
+            "left": 0.7857142857142857,
+            "name": "Frames",
+            "top": 0.05688622754491013
+        }
+    }
+}
