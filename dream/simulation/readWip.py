@@ -86,7 +86,11 @@ def GetOSPath():
     return path.split(os.pathsep)
 
 def requestWIP():
-    file=findFile('testJSON',"c:/Users/papagiannis/workspace/DreamGit/dream/dream/simulation/", 'json' )
+    from routeQuery import connectDB
+    file=connectDB()
+    if not file:
+        # added for testing purposes
+        file=findFile('testJSON',"c:/Users/papagiannis/workspace/DreamGit/dream/dream/simulation/", 'json' )
     return file
 
 def getOrders(input_data):
@@ -171,8 +175,11 @@ def getOrders(input_data):
     else:
         G.inputWIP = input_data
     #read the input from the JSON file and create the line
-    G.wip_Data=json.loads(open(G.inputWIP).read())              # create the dictionary wip_Data
-    
+    if type(G.inputWIP) is dict:
+        G.wip_Data=G.inputWIP
+    else:
+        G.wip_Data=json.loads(open(G.inputWIP).read())              # create the dictionary wip_Data
+    print G.wip_Data
     G.OrderList=[]
     
     json_data = G.wip_Data
@@ -674,6 +681,7 @@ def setStartWip():
         # if the entity is in the WIP dict then move it to the station defined.
         elif entity.id in WIP.keys():
             objectID=WIP[entity.id]["station"]
+            print objectID, '((0))    '*10
             assert objectID!='', 'there must be a stationID given to set the WIP'
             from Globals import findObjectById
             object=Globals.findObjectById(objectID)
