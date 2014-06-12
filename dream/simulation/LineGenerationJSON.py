@@ -806,7 +806,8 @@ def createObjects():
         elif objClass=='Dream.CapacityStationBuffer':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            CB=CapacityStationBuffer(id,name)
+            isAssembly=bool(element.get('isAssembly', 0))
+            CB=CapacityStationBuffer(id,name,isAssembly=isAssembly)
             CB.nextIds=getSuccessorList(id)
             G.CapacityStationBufferList.append(CB)
             G.ObjList.append(CB)
