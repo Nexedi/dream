@@ -47,7 +47,6 @@ class HandleMissingValues(BasicStatisticalMeasures):
     def ReplaceWithMean(self,mylist):          #Replace in the given list the missing values with the mean value  
         list1=self.DeleteMissingValue(mylist)  #Create a new list, which is the given list deleting the missing values (calling the DeleteMissingValue method)
         mean=sum(list1)/float(len(list1))      #Calculate the mean value of the new list
-        print mean
         i=0
         for value in mylist:
             if value is '' :
