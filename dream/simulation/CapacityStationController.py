@@ -180,39 +180,77 @@ class CapacityStationController(EventGenerator):
         for buffer in G.CapacityStationBufferList:
             station=buffer.next[0]  # get the station
             totalAvailableCapacity=station.remainingIntervalCapacity[0]     # get the available capacity of the station
-                                                                            # for this interval            
+                                                                                # for this interval            
             # if there is no capacity continue with the next buffer
             if totalAvailableCapacity<=0:
                 continue
-            # calculate the total capacity that is requested
-            totalRequestedCapacity=0    
-            for entity in buffer.getActiveObjectQueue():
-                totalRequestedCapacity+=entity.requiredCapacity
-            # if there is enough capacity for all the entities set them that they all should move
-            if totalRequestedCapacity<=totalAvailableCapacity:
+            # if the buffer is not assembly
+            if not buffer.isAssembly:
+                # calculate the total capacity that is requested
+                totalRequestedCapacity=0    
                 for entity in buffer.getActiveObjectQueue():
-                    entity.shouldMove=True              
-            # else calculate the capacity for every entity and create the entities
+                    totalRequestedCapacity+=entity.requiredCapacity
+                # if there is enough capacity for all the entities set them that they all should move
+                if totalRequestedCapacity<=totalAvailableCapacity:
+                    for entity in buffer.getActiveObjectQueue():
+                        entity.shouldMove=True              
+                # else calculate the capacity for every entity and create the entities
+                else:
+                    entitiesInBuffer=list(buffer.getActiveObjectQueue())
+                    # loop through the entities
+                    for entity in entitiesInBuffer:
+                        # calculate what is the capacity that should proceed and what that should remain
+                        capacityToMove=totalAvailableCapacity*(entity.requiredCapacity)/float(totalRequestedCapacity)
+                        capacityToStay=entity.requiredCapacity-capacityToMove
+                        # remove the capacity entity by the buffer so that the broken ones are created
+                        buffer.getActiveObjectQueue().remove(entity)
+                        entityToMoveName=entity.capacityProjectId+'_'+station.objName+'_'+str(capacityToMove)
+                        entityToMove=CapacityEntity(name=entityToMoveName, capacityProjectId=entity.capacityProjectId, requiredCapacity=capacityToMove)
+                        entityToMove.initialize()
+                        entityToMove.currentStation=buffer
+                        entityToMove.shouldMove=True
+                        entityToStayName=entity.capacityProjectId+'_'+station.objName+'_'+str(capacityToStay)
+                        entityToStay=CapacityEntity(name=entityToStayName, capacityProjectId=entity.capacityProjectId, requiredCapacity=capacityToStay)
+                        entityToStay.initialize()
+                        entityToStay.currentStation=buffer
+                        import Globals
+                        Globals.setWIP([entityToMove,entityToStay])     #set the new components as wip
+            # if the buffer is assembly there are different calculations
             else:
-                entitiesInBuffer=list(buffer.getActiveObjectQueue())
-                # loop through the entities
-                for entity in entitiesInBuffer:
-                    # calculate what is the capacity that should proceed and what that should remain
-                    capacityToMove=totalAvailableCapacity*(entity.requiredCapacity)/float(totalRequestedCapacity)
-                    capacityToStay=entity.requiredCapacity-capacityToMove
-                    # remove the capacity entity by the buffer so that the broken ones are created
-                    buffer.getActiveObjectQueue().remove(entity)
-                    entityToMoveName=entity.capacityProjectId+'_'+station.objName+'_'+str(capacityToMove)
-                    entityToMove=CapacityEntity(name=entityToMoveName, capacityProjectId=entity.capacityProjectId, requiredCapacity=capacityToMove)
-                    entityToMove.initialize()
-                    entityToMove.currentStation=buffer
-                    entityToMove.shouldMove=True
-                    entityToStayName=entity.capacityProjectId+'_'+station.objName+'_'+str(capacityToStay)
-                    entityToStay=CapacityEntity(name=entityToStayName, capacityProjectId=entity.capacityProjectId, requiredCapacity=capacityToStay)
-                    entityToStay.initialize()
-                    entityToStay.currentStation=buffer
-                    import Globals
-                    Globals.setWIP([entityToMove,entityToStay])     #set the new components as wip
+                # calculate the total capacity that is requested
+                # note that only the assembled projects do request capacity
+                totalRequestedCapacity=0    
+                for entity in buffer.getActiveObjectQueue():
+                    if self.checkIfProjectAssembledInBuffer(entity.capacityProject, buffer):
+                        totalRequestedCapacity+=entity.requiredCapacity
+                # if there is enough capacity for all the assembled entities set them that they all should move
+                if totalRequestedCapacity<=totalAvailableCapacity:
+                    for entity in buffer.getActiveObjectQueue():
+                        if self.checkIfProjectAssembledInBuffer(entity.capacityProject, buffer):
+                            entity.shouldMove=True              
+                # else calculate the capacity for every entity and create the entities
+                else:
+                    entitiesInBuffer=list(buffer.getActiveObjectQueue())
+                    # loop through the entities
+                    for entity in entitiesInBuffer:
+                        # break only the assembled projects
+                        if self.checkIfProjectAssembledInBuffer(entity.capacityProject, buffer):
+                            # calculate what is the capacity that should proceed and what that should remain
+                            capacityToMove=totalAvailableCapacity*(entity.requiredCapacity)/float(totalRequestedCapacity)
+                            capacityToStay=entity.requiredCapacity-capacityToMove
+                            # remove the capacity entity by the buffer so that the broken ones are created
+                            buffer.getActiveObjectQueue().remove(entity)
+                            entityToMoveName=entity.capacityProjectId+'_'+station.objName+'_'+str(capacityToMove)
+                            entityToMove=CapacityEntity(name=entityToMoveName, capacityProjectId=entity.capacityProjectId, requiredCapacity=capacityToMove)
+                            entityToMove.initialize()
+                            entityToMove.currentStation=buffer
+                            entityToMove.shouldMove=True
+                            entityToStayName=entity.capacityProjectId+'_'+station.objName+'_'+str(capacityToStay)
+                            entityToStay=CapacityEntity(name=entityToStayName, capacityProjectId=entity.capacityProjectId, requiredCapacity=capacityToStay)
+                            entityToStay.initialize()
+                            entityToStay.currentStation=buffer
+                            import Globals
+                            Globals.setWIP([entityToMove,entityToStay])     #set the new components as wip
 
     # merges the capacity entities if they belong to the same project
     def mergeEntities(self):
@@ -256,4 +294,19 @@ class CapacityStationController(EventGenerator):
             if entry['stationId']==station.id:
                 return False
         return True
+    
+    # checks if the given project is all in the buffer
+    def checkIfProjectAssembledInBuffer(self, project, buffer):
+        # loop through all the stations of the system
+        for object in G.CapacityStationList+G.CapacityStationBufferList+G.CapacityStationExitList:
+            # skip the given buffer
+            if object is buffer:
+                continue
+            # if there is one entity from the same project which we check somewhere else return false
+            for entity in object.getActiveObjectQueue():
+                if entity.capacityProject==project:
+                    return False
+        # if nothing was found return true
+        return True 
+                
         

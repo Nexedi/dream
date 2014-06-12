@@ -35,9 +35,10 @@ class CapacityStationBuffer(Queue):
     #===========================================================================
     # the __init__ method of the CapacityStationBuffer
     #===========================================================================
-    def __init__(self, id, name, capacity=float("inf"), isDummy=False, schedulingRule="FIFO", gatherWipStat=False):
+    def __init__(self, id, name, capacity=float("inf"), isDummy=False, schedulingRule="FIFO", gatherWipStat=False, isAssembly=False):
         Queue.__init__(self, id, name, capacity=capacity)
         self.isLocked=True
+        self.isAssembly=isAssembly      # flag that shows if here the whole project is assembled
 
 
     def initialize(self):
