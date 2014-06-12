@@ -36,7 +36,7 @@ import json
 #In the following example the operation times of the topology's two machines are given in an Excel document. 
 #Import_Excel object imports data from the Excel document to the tool and DistFittest object fits the data to a statistical distribution using Kolmogorov-Smirnov test
    
-workbook = xlrd.open_workbook('inputsKEtool.xls')      #Using xlrd library opens the Excel document with the input data 
+workbook = xlrd.open_workbook('inputsTwoServers.xls')      #Using xlrd library opens the Excel document with the input data 
 worksheets = workbook.sheet_names()
 worksheet_OperationTime = worksheets[0]             #It creates a variable that holds the first Excel worksheet 
  
@@ -59,7 +59,7 @@ M2=Dict.get('M2')
 
 #==================================== Output preparation: output the updated values in the CMSD information model of Topology10 ====================================================#
 
-datafile=('CMSD_Topology10.xml')       #It defines the name or the directory of the XML file that is manually written the CMSD information model
+datafile=('CMSD_TwoServers.xml')       #It defines the name or the directory of the XML file that is manually written the CMSD information model
 tree = et.parse(datafile)                                               #This file will be parsed using the XML.ETREE Python library
 
 M1Parameters=[]
@@ -118,10 +118,10 @@ for process in process:
         Value.text=str(M2ParameterValue[1]) 
     else:
         continue
-    tree.write('CMSD_Topology10_Output.xml',encoding="utf8")                         #It writes the element tree to a specified file, using the 'utf8' output encoding
+    tree.write('CMSD_TwoServers_Output.xml',encoding="utf8")                         #It writes the element tree to a specified file, using the 'utf8' output encoding
 
 #================================= Output preparation: output the updated values in the JSON file of Topology10 =========================================================#
-jsonFile= open('JSON_Topology10.json','r')      #It opens the Topology10 JSON file 
+jsonFile= open('JSON_TwoServers.json','r')      #It opens the Topology10 JSON file 
 data = json.load(jsonFile)                                                              #It loads the file
 jsonFile.close()
 nodes=data.get('coreObject',[])                                                         #It creates a variable that holds the 'coreObject' list
@@ -137,7 +137,7 @@ for element in nodes:
     else:
         continue                            
         
-    jsonFile = open('JSON_Topology10_Output.json',"w")     #It opens the JSON file
+    jsonFile = open('JSON_TwoServers_Output.json',"w")     #It opens the JSON file
     jsonFile.write(json.dumps(data, indent=True))                                           #It writes the updated data to the JSON file 
     jsonFile.close()                                                                        #It closes the file
         
