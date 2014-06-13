@@ -16,7 +16,7 @@ setup(
         'pyparsing==1.5.7', # latest python2 compatible version
         'pydot',
         'numpy',
-        'rpy2==2.3.6', # 2.4.1 does not work for me -Jérome
+        'rpy2>=2.3,<2.4', # 2.4.1 does not work for me
     ],
     entry_points=("""
     [console_scripts]
