@@ -636,14 +636,16 @@ def setStartWip():
     #===========================================================================
     # for all the entities in the entityList
     for entity in G.DesignList:
-#         print entity.id
         # if the entity is not in the WIP dict then move it to the starting station.
-        if not entity.id in WIP.keys():
+#         print entity.id
+        # the id of the entity without the -D ending added when creating the orderDesign
+        simple_id=entity.id.split('-')[0]
+        if not simple_id in WIP.keys():
             # perform the default action
             setWIP([entity])
         # if the entity is in the WIP dict then move it to the station defined.
-        elif entity.id in WIP.keys():
-            objectID=WIP[entity.id]["station"]
+        elif simple_id in WIP.keys():
+            objectID=WIP[simple_id]["station"]
 #             print objectID
             assert objectID!='', 'there must be a stationID given to set the WIP'
             from Globals import findObjectById
@@ -651,8 +653,8 @@ def setStartWip():
             assert object!=None, 'the station defined in the WIP is not a valid Station'
             # find the station by its id, if there is no station then place it 
             # in the starting queue (QCAD), (QENG)
-            entry_time=float(WIP[entity.id]["entry"])
-            exit_time=float(WIP[entity.id]["exit"])
+            entry_time=float(WIP[simple_id]["entry"])
+            exit_time=float(WIP[simple_id]["exit"])
             # XXX  alreadyProcessedFor=currentTime-entry_time
             # XXX if the exit time is no grater than the entry then raise an exception as for machines is not yet implemented
             try:
@@ -725,7 +727,7 @@ def setStartWip():
         elif entity.id in WIP.keys():
             objectID=WIP[entity.id]["station"]
             #===================================================================
-            # print objectID, '((0))    '*10
+#             print objectID, '((0))    '*10
             #===================================================================
             assert objectID!='', 'there must be a stationID given to set the WIP'
             from Globals import findObjectById
