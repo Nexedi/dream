@@ -66,7 +66,9 @@ module.exports = function (grunt) {
         },
         files: {
           "<%= global_config.dest %>/dream/index.css":
-            "<%= global_config.src %>/dream/index.less"
+            "<%= global_config.src %>/dream/index.less",
+          "<%= global_config.dest %>/jsplumb/jsplumb.css":
+            "<%= global_config.src %>/jsplumb/jsplumb.css"
         }
       }
     },
