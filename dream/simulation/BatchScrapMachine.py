@@ -75,7 +75,7 @@ class BatchScrapMachine(Machine):
     def removeEntity(self, entity=None):
         activeEntity = Machine.removeEntity(self, entity)
         scrapQuantity=self.scrapRng.generateNumber()        
-        activeEntity.numberOfUnits-=scrapQuantity
+        activeEntity.numberOfUnits-=int(scrapQuantity)  # the scrapQuantity should be integer at whatever case
         if activeEntity.numberOfUnits<0:
             activeEntity.numberOfUnits==0
         return activeEntity
