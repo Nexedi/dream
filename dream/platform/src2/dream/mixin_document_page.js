@@ -1,5 +1,5 @@
-/*global console, rJS, RSVP */
-(function (window, rJS, RSVP) {
+/*global console, RSVP */
+(function (window, RSVP) {
   "use strict";
   window.initDocumentPageMixin = function (gadget_klass) {
 
@@ -52,4 +52,4 @@
       });
   };
 
-}(window, rJS, RSVP));
+}(window, RSVP));
