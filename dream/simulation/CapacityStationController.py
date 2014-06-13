@@ -74,8 +74,8 @@ class CapacityStationController(EventGenerator):
                 project=entity.capacityProject
                 # output the finish time of the project. This will updated every time, so in the end it should be correct
                 for entry in project.projectSchedule:
-                    if entry['station']==station.id:
-                        entry['finish']=self.env.now
+                    if entry['stationId']==station.id:
+                        entry['exitTime']=self.env.now
             # lock the exit again
             exit.isLocked=True
         
@@ -124,7 +124,10 @@ class CapacityStationController(EventGenerator):
                                                 'allocation':entity.requiredCapacity})
                 capacityAllocated+=entity.requiredCapacity
                 if self.checkIfProjectJustStartsInStation(project, station):
-                    project.projectSchedule.append({"station": station.id,"start": self.env.now})                    
+                    project.projectSchedule.append({
+                      "stationId": station.id,
+                      "entranceTime": self.env.now})
+
             # lock the station
             station.isLocked=True
             # calculate the utilization
@@ -250,7 +253,7 @@ class CapacityStationController(EventGenerator):
     # checks if a project is just starting in station
     def checkIfProjectJustStartsInStation(self, project, station):
         for entry in project.projectSchedule:
-            if entry['station']==station.id:
+            if entry['stationId']==station.id:
                 return False
         return True
         
