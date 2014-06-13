@@ -1,5 +1,6 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, jQuery */
-(function (window, rJS, RSVP, initDocumentPageMixin, $) {
+/*global console, rJS, RSVP, initDocumentPageMixin, jQuery,
+ promiseEventListener */
+(function (window, rJS, RSVP, initDocumentPageMixin, $, promiseEventListener) {
   "use strict";
 
   function datatouri(data, mime_type) {
@@ -8,31 +9,6 @@
       result += mime_type;
     }
     return result + ";base64," + window.btoa(data);
-  }
-
-  function promiseEventListener(target, type, useCapture) {
-    //////////////////////////
-    // Resolve the promise as soon as the event is triggered
-    // eventListener is removed when promise is cancelled/resolved/rejected
-    //////////////////////////
-    var handle_event_callback;
-
-    function canceller() {
-      target.removeEventListener(type, handle_event_callback, useCapture);
-    }
-
-    function resolver(resolve) {
-      handle_event_callback = function (evt) {
-        canceller();
-        evt.stopPropagation();
-        evt.preventDefault();
-        resolve(evt);
-        return false;
-      };
-
-      target.addEventListener(type, handle_event_callback, useCapture);
-    }
-    return new RSVP.Promise(resolver, canceller);
   }
 
   function disableAllButtons(gadget) {
@@ -191,4 +167,4 @@
         waitForKnowledgeExtraction(this)
       ]);
     });
-}(window, rJS, RSVP, initDocumentPageMixin, jQuery));
+}(window, rJS, RSVP, initDocumentPageMixin, jQuery, promiseEventListener));

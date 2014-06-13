@@ -1,32 +1,9 @@
-/*global rJS, RSVP, initDocumentPageMixin, jQuery, Handlebars */
-/*jslint nomen: true, maxlen: 200 */
-(function (window, rJS, RSVP, initDocumentPageMixin, $, Handlebars) {
+/*global rJS, RSVP, initDocumentPageMixin, jQuery, Handlebars,
+  promiseEventListener */
+/*jslint nomen: true */
+(function (window, rJS, RSVP, initDocumentPageMixin, $, Handlebars,
+           promiseEventListener) {
   "use strict";
-
-  function promiseEventListener(target, type, useCapture) {
-    //////////////////////////
-    // Resolve the promise as soon as the event is triggered
-    // eventListener is removed when promise is cancelled/resolved/rejected
-    //////////////////////////
-    var handle_event_callback;
-
-    function canceller() {
-      target.removeEventListener(type, handle_event_callback, useCapture);
-    }
-
-    function resolver(resolve) {
-      handle_event_callback = function (evt) {
-        canceller();
-        evt.stopPropagation();
-        evt.preventDefault();
-        resolve(evt);
-        return false;
-      };
-
-      target.addEventListener(type, handle_event_callback, useCapture);
-    }
-    return new RSVP.Promise(resolver, canceller);
-  }
 
   /////////////////////////////////////////////////////////////////
   // Handlebars
@@ -189,4 +166,5 @@
           return gadget.pleaseRedirectMyHash(url);
         });
     });
-}(window, rJS, RSVP, initDocumentPageMixin, jQuery, Handlebars));
+}(window, rJS, RSVP, initDocumentPageMixin, jQuery, Handlebars,
+  promiseEventListener));

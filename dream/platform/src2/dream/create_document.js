@@ -1,44 +1,6 @@
-/*global console, rJS, RSVP, FileReader */
-(function (window, rJS, RSVP, FileReader) {
+/*global console, rJS, RSVP, promiseEventListener, promiseReadAsText */
+(function (window, rJS, RSVP, promiseEventListener, promiseReadAsText) {
   "use strict";
-
-  function promiseEventListener(target, type, useCapture) {
-    //////////////////////////
-    // Resolve the promise as soon as the event is triggered
-    // eventListener is removed when promise is cancelled/resolved/rejected
-    //////////////////////////
-    var handle_event_callback;
-
-    function canceller() {
-      target.removeEventListener(type, handle_event_callback, useCapture);
-    }
-
-    function resolver(resolve) {
-      handle_event_callback = function (evt) {
-        canceller();
-        evt.stopPropagation();
-        evt.preventDefault();
-        resolve(evt);
-        return false;
-      };
-
-      target.addEventListener(type, handle_event_callback, useCapture);
-    }
-    return new RSVP.Promise(resolver, canceller);
-  }
-
-  function promiseReadAsText(file) {
-    return new RSVP.Promise(function (resolve, reject) {
-      var reader = new FileReader();
-      reader.onload = function (evt) {
-        resolve(evt.target.result);
-      };
-      reader.onerror = function (evt) {
-        reject(evt);
-      };
-      reader.readAsText(file);
-    });
-  }
 
   rJS(window)
     /////////////////////////////////////////////////////////////////
@@ -121,4 +83,4 @@
         });
     });
 
-}(window, rJS, RSVP, FileReader));
+}(window, rJS, RSVP, promiseEventListener, promiseReadAsText));
