@@ -202,7 +202,7 @@ def getOrders(input_data):
     else:
         G.wip_Data=json.loads(open(G.inputWIP).read())              # create the dictionary wip_Data
     #===========================================================================
-    # print G.wip_Data
+#     print G.wip_Data
     #===========================================================================
     G.OrderList=[]
     
@@ -239,7 +239,9 @@ def getOrders(input_data):
         O=Order(id, name, priority=priority, dueDate=dueDate,orderDate=orderDate,
                 isCritical=isCritical, basicsEnded=basicsEnded, manager=manager, componentsList=[],
                 componentsReadyForAssembly=componentsReadyForAssembly, extraPropertyDict=extraPropertyDict)
-#         print 'created ORDER', ' >'*20, O.id
+        #=======================================================================
+        # print 'created ORDER', ' >'*20, O.id
+        #=======================================================================
         G.OrderList.append(O)
         # call the method that finds the components of each order and initiates them 
         getComponets(orderDict,O)
@@ -499,7 +501,18 @@ def getComponets(orderDict,Order):
             componentType='Basic'               # XXX have to figure out the component type
             readyForAssembly=0                  # XXX have to figure out the readyForAssembly flag
             # XXX if the component is not in the WipIDList then do not create it but append it the componentsList of the Order O
-            if id in G.WipIDList:
+            # XXX if an other normal component of the same order is in the WIP (but not a mould) then create it 
+            # check whether the mould of the order is created
+            assembled=False
+            for entity in G.MouldList:
+                if entity.order==Order:
+                    assembled=True
+                    break
+            # check if at list one of the Order's normal components is created
+            decomposed=False
+            if len(Order.basicComponentsList+Order.secondaryComponentsList+Order.auxiliaryComponentsList)>0:
+                decomposed=True
+            if ((id in G.WipIDList) or decomposed) and not assembled:
                 # initiate the job
                 OC=OrderComponent(id, name, route_list, priority=Order.priority, dueDate=Order.dueDate,orderDate=Order.orderDate,
                                   componentType=componentType, order=Order, readyForAssembly=readyForAssembly,
@@ -627,9 +640,11 @@ def setStartWip():
     json_data = G.wip_Data
     #Read the json data
     WIP = json_data['WIP']                                    # read from the dictionary the dict with key 'WIP'
-#     print '/'*200
-#     print 'SETTING THE WIP'
-#     print '\\'*200
+    #===========================================================================
+    # print '/'*200
+    # print 'SETTING THE WIP'
+    # print '\\'*200
+    #===========================================================================
     #===========================================================================
     # OrderDesign type
 #     print 'setting desings as wip'
@@ -637,7 +652,9 @@ def setStartWip():
     # for all the entities in the entityList
     for entity in G.DesignList:
         # if the entity is not in the WIP dict then move it to the starting station.
-#         print entity.id
+        #=======================================================================
+        # print entity.id
+        #=======================================================================
         # the id of the entity without the -D ending added when creating the orderDesign
         simple_id=entity.id.split('-')[0]
         if not simple_id in WIP.keys():
@@ -646,7 +663,9 @@ def setStartWip():
         # if the entity is in the WIP dict then move it to the station defined.
         elif simple_id in WIP.keys():
             objectID=WIP[simple_id]["station"]
-#             print objectID
+            #===================================================================
+            # print objectID
+            #===================================================================
             assert objectID!='', 'there must be a stationID given to set the WIP'
             from Globals import findObjectById
             object=Globals.findObjectById(objectID)
@@ -711,20 +730,31 @@ def setStartWip():
     #===========================================================================
     # for all the entities of Type orderComponent
     for entity in [x for x in G.OrderComponentList if not x in (G.DesignList+G.MouldList)]:
-#         print entity.id
+        #=======================================================================
+        # print entity.id
+        #=======================================================================
         # XXX if there are already Mould parts in the WIP then the components are already assembled, do not set the entity
+        # check whether the mould of the same order is created
         assembled=False
         for mould in G.MouldList:
             if mould.order.id==entity.order.id:
                 assembled=True
+        # check whether there are other normal components from the same order in the WIP, thus the component must be created
+        decomposed=False
+        if len(entity.order.basicComponentsList+entity.order.secondaryComponentsList+entity.order.auxiliaryComponentsList)>0:
+            decomposed=True
         # if already assembled then break to the next OrderComponent
         if assembled:
             break
         # if the entity is not in the WIP dict then they should be set by OrderDecomposition or they have already been set by createOrderComponent.
-        if not entity.id in WIP.keys():
+        # XXX if they are not in the WIP the it is possible that the must be set because only an other part of the same order is in the WIP (but no mould)
+        if not entity.id in WIP.keys() and not decomposed:
             pass
+        if not entity.id in WIP.keys() and decomposed:
+            # perform the default action
+            setWIP([entity])
         # if the entity is in the WIP dict then move it to the station defined.
-        elif entity.id in WIP.keys():
+        elif entity.id in WIP.keys() :
             objectID=WIP[entity.id]["station"]
             #===================================================================
 #             print objectID, '((0))    '*10
@@ -783,7 +813,9 @@ def setStartWip():
     #===========================================================================
     # for all the entities in the entityList
     for entity in G.MouldList:
-#         print entity.id
+        #=======================================================================
+        # print entity.id
+        #=======================================================================
         # if the entity is not in the WIP dict then it will be set by MouldAssembly on time.
         if not entity.id in WIP.keys():
             break
@@ -847,7 +879,9 @@ def setStartWip():
 def breakOrderDesing(orderDesign):
     '''break down the orderDesign into OrderComponents
     '''
-#     print 'breaking down','< '*20, orderDesign.id
+    #===========================================================================
+    # print 'breaking down','< '*20, orderDesign.id
+    #===========================================================================
     G.newlyCreatedComponents=[]
     G.orderToBeDecomposed=None
     #loop in the internal Queue. Decompose only if an Entity is of type order
@@ -917,7 +951,9 @@ def createOrderComponent(component):
                             orderDate=G.orderToBeDecomposed.orderDate, \
                             extraPropertyDict=extraPropertyDict,\
                             isCritical=G.orderToBeDecomposed.isCritical)
-#         print 'created component', '< '*10, OC.id
+        #=======================================================================
+        # print 'created component', '< '*10, OC.id
+        #=======================================================================
             
         # check the componentType of the component and accordingly add to the corresponding list of the parent order
         if OC.componentType == 'Basic':
