@@ -87,28 +87,8 @@ class Machine(CoreObject):
         self.MTTF=MTTF
         self.MTTR=MTTR
         self.availability=availability
-        ''' sets the operator resource of the Machine
-             check if the operatorPool is a List or a OperatorPool type Object
-             if it is a list then initiate a OperatorPool type object containing
-             the list of operators provided
-            if the  list is empty create operator pool with empty list
-        '''
-        # XXX operatorPool is not None ?
-        if (type(operatorPool) is list) and len(operatorPool)>0:
-            id = id+'_OP'
-            name=self.objName+'_operatorPool'
-            self.operatorPool=OperatorPool(id, name, operatorsList=operatorPool)
-            from Globals import G
-            G.OperatorPoolsList.append(self.operatorPool)
-        elif(type(operatorPool) is OperatorPool):
-            self.operatorPool=operatorPool         
-        else:
-            self.operatorPool='None'
-            #self.operatorPool=operatorPool
-        # update the operatorPool coreObjects list
-        if self.operatorPool!='None':
-             self.operatorPool.coreObjectIds.append(self.id)
-             self.operatorPool.coreObjects.append(self)
+        # create an operatorPool if needed
+        self.createOperatorPool(operatorPool)
         # holds the Operator currently processing the Machine
         self.currentOperator=None
         # define if load/setup/removal/processing are performed by the operator 
@@ -131,17 +111,6 @@ class Machine(CoreObject):
             self.multOperationTypeList = OTlist
         else:
             self.multOperationTypeList.append(self.operationType)
-        # initiate the Broker and the router
-        if (self.operatorPool!='None'):
-            self.broker=Broker(self)
-            from Globals import G
-            # if there is no router
-            if not G.Router:
-                self.router=Router()
-                G.Router=self.router
-            # otherwise set the already existing router as the machines Router
-            else:
-                self.router=G.Router
         #lists to hold statistics of multiple runs
         self.WaitingForOperator=[]
         self.WaitingForLoadOperator=[]
@@ -161,23 +130,17 @@ class Machine(CoreObject):
         CoreObject.initialize(self)
         
         # initialize the internal Queue (type Resource) of the Machine 
-        #self.Res=Resource(self.capacity)
         self.Res=simpy.Resource(self.env, capacity=1)
-        # initiate the Broker responsible to control the request/release
+        # initiate the Broker and the router
+        self.createBroker()
+        self.createRouter()
         # initialize the operator pool if any
-        if (self.operatorPool!="None"):
-            self.operatorPool.initialize()
-            self.broker.initialize()
-            self.env.process(self.broker.run())
-            # initialise the router only once
-            if not self.router.isInitialized:
-                self.router.initialize()
-            if not self.router.isActivated:
-                self.env.process(self.router.run())
-                self.router.isActivated=True
-            for operator in self.operatorPool.operators:
-                operator.coreObjectIds.append(self.id)
-                operator.coreObjects.append(self)
+        self.initializeOperatorPool()
+        # initiate the Broker responsible to control the request/release
+        self.initializeBroker()
+        # initialise the router if not initialized already
+        self.initializeRouter()
+        
         # the time that the machine started/ended its wait for the operator
         self.timeWaitForOperatorStarted=0
         self.timeWaitForOperatorEnded=0
@@ -218,6 +181,86 @@ class Machine(CoreObject):
         # signal used for preemption
         self.preemptQueue=self.env.event()
     
+    #===========================================================================
+    # create an operatorPool if needed
+    #===========================================================================
+    def createOperatorPool(self,operatorPool):
+        ''' sets the operator resource of the Machine
+             check if the operatorPool is a List or a OperatorPool type Object
+             if it is a list then initiate a OperatorPool type object containing
+             the list of operators provided
+            if the  list is empty create operator pool with empty list
+        '''
+        # XXX operatorPool is not None ?
+        if (type(operatorPool) is list) and len(operatorPool)>0:
+            id = self.id+'_OP'
+            name=self.objName+'_operatorPool'
+            self.operatorPool=OperatorPool(id, name, operatorsList=operatorPool)
+            from Globals import G
+            G.OperatorPoolsList.append(self.operatorPool)
+        elif(type(operatorPool) is OperatorPool):
+            self.operatorPool=operatorPool         
+        else:
+            self.operatorPool='None'
+        # update the operatorPool coreObjects list
+        if self.operatorPool!='None':
+             self.operatorPool.coreObjectIds.append(self.id)
+             self.operatorPool.coreObjects.append(self)
+    
+    #===========================================================================
+    # create broker if needed
+    #===========================================================================
+    def createBroker(self):
+        # initiate the Broker and the router
+        if (self.operatorPool!='None'):
+            self.broker=Broker(self)
+    
+    #===========================================================================
+    # create router if needed
+    #===========================================================================
+    def createRouter(self):
+        # initiate the Broker and the router
+        if (self.operatorPool!='None'):
+            from Globals import G
+            # if there is no router
+            if not G.Router:
+                self.router=Router()
+                G.Router=self.router
+            # otherwise set the already existing router as the machines Router
+            else:
+                self.router=G.Router
+    #===========================================================================
+    # initialize broker if needed
+    #===========================================================================
+    def initializeOperatorPool(self):
+        # initialize the operator pool if any
+        if (self.operatorPool!="None"):
+            self.operatorPool.initialize()
+            for operator in self.operatorPool.operators:
+                operator.coreObjectIds.append(self.id)
+                operator.coreObjects.append(self)
+    
+    #===========================================================================
+    # initialize broker if needed
+    #===========================================================================
+    def initializeBroker(self):
+        # initiate the Broker responsible to control the request/release
+        if (self.operatorPool!="None"):
+            self.broker.initialize()
+            self.env.process(self.broker.run())
+                
+    #===========================================================================
+    # initialize router if needed
+    #===========================================================================
+    def initializeRouter(self):
+        if (self.operatorPool!="None"):
+            # initialise the router only once
+            if not self.router.isInitialized:
+                self.router.initialize()
+            if not self.router.isActivated:
+                self.env.process(self.router.run())
+                self.router.isActivated=True
+                
     # =======================================================================
     # the main process of the machine
     # =======================================================================
