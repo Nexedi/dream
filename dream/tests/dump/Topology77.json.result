@@ -209,15 +209,15 @@
       "utilization": 0.0
      }, 
      {
-      "P1": 75.0, 
+      "P1": 100.0, 
       "P2": 100.0, 
       "period": 3.0, 
-      "utilization": 0.35
+      "utilization": 0.4
      }
     ], 
     "detailedWorkPlan": [
      {
-      "allocation": 75.0, 
+      "allocation": 100.0, 
       "operation": "CS4", 
       "project": "P1", 
       "time": 3.0
@@ -229,7 +229,7 @@
       "time": 3.0
      }
     ], 
-    "meanUtilization": 0.0875
+    "meanUtilization": 0.1
    }
   }, 
   {

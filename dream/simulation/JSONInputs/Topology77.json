@@ -120,7 +120,7 @@
                     "capacityRequirementDict": {
                         "CS1": 100,
                         "CS2": 50,
-                        "CS3": 100,
+                        "CS3": 50,
                         "CS4": 50
                     }
                 },
@@ -144,13 +144,13 @@
                 {
                     "_class": "Dream.CapacityEntity",
                     "capacityProjectId": "P1",
-					"name": "P1_CNC_100",
+					"name": "P1_CNC_50",
                     "requiredCapacity": 50
                 },
                 {
                     "_class": "Dream.CapacityEntity",
                     "capacityProjectId": "P2",
-					"name": "P2_CNC_50",
+					"name": "P2_CNC_100",
                     "requiredCapacity": 100
                 }
             ]
