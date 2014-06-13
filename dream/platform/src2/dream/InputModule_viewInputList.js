@@ -34,7 +34,7 @@
       return gadget.aq_allDocs({"select_list": ["title", "modified"]})
         .push(function (document_list) {
           var result_list = [gadget.whoWantToDisplayThisPage(
-              "create_document"
+              "InputModule_viewAddDocumentDialog"
             )],
             doc,
             i;
@@ -75,7 +75,7 @@
     })
 
     .declareMethod("getNavigationList", function () {
-      return this.whoWantToDisplayThisPage("create_document")
+      return this.whoWantToDisplayThisPage("InputModule_viewAddDocumentDialog")
         .push(function (url) {
           return [{title: "New Document", link: url}];
         });

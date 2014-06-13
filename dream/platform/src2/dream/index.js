@@ -79,7 +79,7 @@
                             function (param_list) {
         // Hey, I want to display some jIO document
         return this.aq_pleasePublishMyState({
-          page: "edit_table",
+          page: "Input_viewTable",
           id: param_list[0]
         });
       })
@@ -151,7 +151,9 @@
       options.configuration_dict = gadget.props.configuration_dict;
       if (options.page === undefined) {
         // Redirect to the about page
-        return gadget.aq_pleasePublishMyState({page: "document_list"})
+        return gadget.aq_pleasePublishMyState({
+          page: "InputModule_viewInputList"
+        })
           .push(gadget.pleaseRedirectMyHash.bind(gadget));
       }
       return gadget.declareGadget(options.page + ".html")

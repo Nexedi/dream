@@ -143,7 +143,7 @@
         })
         .push(function (result) {
           return gadget.whoWantToDisplayThisDocumentPage(
-            "debug_json",
+            "Output_viewDebugJson",
             gadget.props.jio_key
           );
         })

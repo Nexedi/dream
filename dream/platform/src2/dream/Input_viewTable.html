@@ -3,17 +3,16 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Debug JSON</title>
+    <title>Edit table</title>
     <script src="../<%= copy.rsvp.relative_dest %>" type="text/javascript"></script>
     <script src="../<%= copy.renderjs.relative_dest %>" type="text/javascript"></script>
+
     <script src="mixin_gadget.js" type="text/javascript"></script>
     <script src="mixin_document_page.js" type="text/javascript"></script>
-    <script src="debug_json.js" type="text/javascript"></script>
+    <script src="Input_viewTable.js" type="text/javascript"></script>
   </head>
   <body>
-    <label for="json_input">Input</label>
-    <textarea spellcheck="false" rows="20" name="json_input" class="json_input"></textarea>
-    <label for="json_output">Output</label>
-    <textarea spellcheck="false" rows="20" name="json_output" class="json_output"></textarea>
+    <div data-gadget-url="../handsontable/index.html"
+         data-gadget-scope="tableeditor"></div>
   </body>
 </html>

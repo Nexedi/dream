@@ -13,26 +13,44 @@
           .push(function () {
             // XXX Conditional simulation menu
             return RSVP.all([
-              gadget.whoWantToDisplayThisDocumentPage("production_line", key),
-              gadget.whoWantToDisplayThisDocumentPage("edit_table", key),
-              gadget.whoWantToDisplayThisDocumentPage("run_simulation", key),
-              gadget.whoWantToDisplayThisDocumentPage("manage_document", key),
+              gadget.whoWantToDisplayThisDocumentPage(
+                "Input_viewProductionLine",
+                key
+              ),
+              gadget.whoWantToDisplayThisDocumentPage("Input_viewTable", key),
+              gadget.whoWantToDisplayThisDocumentPage(
+                "Input_viewSimulation",
+                key
+              ),
+              gadget.whoWantToDisplayThisDocumentPage(
+                "Input_viewDocumentManagement",
+                key
+              ),
 
               gadget.whoWantToDisplayThisDocumentPage(
-                "station_utilisation_graph",
+                "Output_viewStationUtilisationGraph",
                 key
               ),
               gadget.whoWantToDisplayThisDocumentPage(
-                "queue_stat_graph",
+                "Output_viewQueueStatGraph",
                 key
               ),
-              gadget.whoWantToDisplayThisDocumentPage("exit_stat", key),
-              gadget.whoWantToDisplayThisDocumentPage("job_gantt", key),
               gadget.whoWantToDisplayThisDocumentPage(
-                "job_schedule_spreadsheet",
+                "Output_viewExitStatistics",
                 key
               ),
-              gadget.whoWantToDisplayThisDocumentPage("debug_json", key)
+              gadget.whoWantToDisplayThisDocumentPage(
+                "Output_viewJobGantt",
+                key
+              ),
+              gadget.whoWantToDisplayThisDocumentPage(
+                "Output_viewJobScheduleSpreadsheet",
+                key
+              ),
+              gadget.whoWantToDisplayThisDocumentPage(
+                "Output_viewDebugJson",
+                key
+              )
             ]);
           })
           .push(function (result_list) {
