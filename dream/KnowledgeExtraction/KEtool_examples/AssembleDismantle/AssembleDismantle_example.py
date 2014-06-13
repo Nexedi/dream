@@ -27,8 +27,6 @@ from ReplaceMissingValues import HandleMissingValues
 from DistributionFitting import Distributions
 from DistributionFitting import DistFittest
 from ExcelOutput import Output
-import dream.simulation.LineGenerationJSON as ManPyMain 
-#import ManPy main JSON script
 import xlrd
 import json
 
@@ -91,12 +89,3 @@ C.PrintStatisticalMeasures(MTTR,'MTTR_StatResults.xls')
 C.PrintStatisticalMeasures(MTTF,'MTTF_StatResults.xls')   
 C.PrintDistributionFit(ProcTime,'ProcTime_DistFitResults.xls')
 C.PrintDistributionFit(MTTR,'MTTR_DistFitResults.xls')
-
-
-# calls ManPy main script with the input
-simulationOutput=ManPyMain.main(input_data=json.dumps(data))
-
-# save the simulation output
-jsonFile = open('ManPyOutput.json',"w")     #It opens the JSON file
-jsonFile.write(simulationOutput)                                           #It writes the updated data to the JSON file 
-jsonFile.close()                                                                        #It closes the file
