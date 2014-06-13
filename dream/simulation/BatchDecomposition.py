@@ -54,7 +54,7 @@ class BatchDecomposition(CoreObject):
                              'mean': 1, }
         if processingTime['distributionType'] == 'Normal' and\
               processingTime.get('max', None) is None:
-          processingTime['max'] = processingTime['mean'] + 5 * processingTime['stdev']
+          processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
         
         # holds the capacity of the object 
         self.numberOfSubBatches=numberOfSubBatches

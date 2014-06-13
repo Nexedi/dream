@@ -52,7 +52,7 @@ class Assembly(CoreObject):
                             }
         if processingTime['distributionType'] == 'Normal' and\
               processingTime.get('max', None) is None:
-          processingTime['max'] = processingTime['mean'] + 5 * processingTime['stdev']
+          processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
 
         CoreObject.__init__(self, id, name)
         self.type="Assembly"   #String that shows the type of object

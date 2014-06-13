@@ -60,21 +60,21 @@ class Machine(CoreObject):
                              'mean': 1, }
         if processingTime['distributionType'] == 'Normal' and\
               processingTime.get('max', None) is None:
-          processingTime['max'] = processingTime['mean'] + 5 * processingTime['stdev']
+          processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
 
         if not setupTime:
           setupTime = { 'distributionType': 'Fixed',
                         'mean': 1, }
         if setupTime['distributionType'] == 'Normal' and\
               setupTime.get('max', None) is None:
-          setupTime['max'] = setupTime['mean'] + 5 * setupTime['stdev']
+          setupTime['max'] = float(setupTime['mean']) + 5 * float(setupTime['stdev'])
 
         if not loadTime:
           loadTime = { 'distributionType': 'Fixed',
                         'mean': 1, }
         if loadTime['distributionType'] == 'Normal' and\
               loadTime.get('max', None) is None:
-          loadTime['max'] = loadTime['mean'] + 5 * loadTime['stdev']
+          loadTime['max'] = float(loadTime['mean']) + 5 * float(loadTime['stdev'])
 
         #     holds the capacity of the machine 
         self.capacity=capacity
