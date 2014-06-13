@@ -545,7 +545,7 @@ def getComponets(orderDict,Order):
                         break
             if doCreate:
                 # initiate the job
-                M=Mould('M'+id, 'mould'+name, route_list, priority=Order.priority, dueDate=Order.dueDate,orderDate=Order.orderDate,
+                M=Mould(id, name, route_list, priority=Order.priority, dueDate=Order.dueDate,orderDate=Order.orderDate,
                                     isCritical=Order.isCritical, extraPropertyDict=extraPropertyDict, order=Order)
                 #===============================================================
 #                 print '_'*90,'>', M.id, 'created'
@@ -570,7 +570,7 @@ def getComponets(orderDict,Order):
             if (id in G.WipIDList) or\
                 (not id in G.WipIDList and len(Order.auxiliaryComponentsList+Order.secondaryComponentsList+Order.basicComponentsList)==0):
                 # initiate the job
-                OD=OrderDesign(id, name,route_list,priority=Order.priority,dueDate=Order.dueDate,orderDate=Order.orderDate,
+                OD=OrderDesign(id+'-D', name+' design',route_list,priority=Order.priority,dueDate=Order.dueDate,orderDate=Order.orderDate,
                                   isCritical=Order.isCritical, order=Order,extraPropertyDict=extraPropertyDict)
                 #===============================================================
 #                 print '_'*90,'>', OD.id, 'created'
