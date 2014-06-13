@@ -31,6 +31,9 @@ from ExcelOutput import Output
 from ReplaceMissingValues import HandleMissingValues
 from ImportExceldata import Import_Excel
 import xlrd
+import json
+#import ManPy main JSON script
+import dream.simulation.LineGenerationJSON as ManPyMain 
 #================= Main script of KE tool  =====================================#
 
 #Read from the given directory the Excel document with the input data
@@ -115,3 +118,12 @@ D.PrintStatisticalMeasures(P2_Proc, "StatisticalMeasuresResults_P2Proc.xls")
 
 CMSD_example(dictProc,dictScrap)    #Print the CMSD document, calling the CMSD_example method with arguments the dictProc and dictScrap dictionaries
 JSON_example(dictProc,dictScrap)    #Print the JSON file, calling the JSON_example method
+
+
+#calls ManPy main script with the input
+
+simulationOutput=ManPyMain.main(input_data=str((JSON_example(dictProc,dictScrap))))
+# save the simulation output
+jsonFile = open('ManPyOutput.json',"w")     #It opens the JSON file
+jsonFile.write(simulationOutput)                                           #It writes the updated data to the JSON file 
+jsonFile.close()                                                                        #It closes the file

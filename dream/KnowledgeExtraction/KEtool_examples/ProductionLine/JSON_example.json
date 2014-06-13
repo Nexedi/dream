@@ -43,10 +43,10 @@
   "S1": {
    "name": "Source", 
    "top": 0.9545454545454546, 
-   "entity": "Batch", 
+   "entity": "Dream.Batch", 
    "interarrivalTime": {
     "distributionType": "Fixed", 
-    "mean": "0.5"
+    "mean": 0.5
    }, 
    "batchNumberOfUnits": 100, 
    "_class": "Dream.BatchSource", 
@@ -82,7 +82,7 @@
   "QStart": {
    "top": 0.7727272727272727, 
    "_class": "Dream.Queue", 
-   "capacity": "-1", 
+   "capacity": "1", 
    "name": "StartQueue", 
    "left": 0.6968085106382979
   }, 

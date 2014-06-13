@@ -98,7 +98,7 @@ def JSON_example(list1,list2):
         jsonFile = open('JSON_exampleOutput.json',"w")
         jsonFile.write(json.dumps(data, indent=True))
         jsonFile.close()
-
+    return json.dumps(data, indent=True)
 
 
 
