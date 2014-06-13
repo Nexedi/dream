@@ -1,5 +1,5 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, jQuery */
-(function(window, rJS, RSVP, initDocumentPageMixin, $) {
+/*global console, rJS, RSVP, initDocumentPageMixin, jQuery, initGadgetMixin */
+(function(window, rJS, RSVP, initDocumentPageMixin, $, initGadgetMixin) {
     "use strict";
     function station_utilisation_graph_widget(output_data) {
         var blockage_data = [], waiting_data = [], failure_data = [], working_data = [], ticks = [], counter = 1, series, options;
@@ -96,14 +96,9 @@
         return [ series, options ];
     }
     var gadget_klass = rJS(window);
+    initGadgetMixin(gadget_klass);
     initDocumentPageMixin(gadget_klass);
-    gadget_klass.ready(function(g) {
-        g.props = {};
-    }).ready(function(g) {
-        return g.getElement().push(function(element) {
-            g.props.element = element;
-        });
-    }).declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareMethod("render", function(options) {
+    gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareMethod("render", function(options) {
         var jio_key = options.id, gadget = this;
         gadget.props.jio_key = jio_key;
         return gadget.aq_getAttachment({
@@ -117,4 +112,4 @@
         // XXX Manually calculate width and height when resizing
         $.plot(this.props.element.querySelector(".graph_container"), this.props.result_list[0], this.props.result_list[1]);
     });
-})(window, rJS, RSVP, initDocumentPageMixin, jQuery);
+})(window, rJS, RSVP, initDocumentPageMixin, jQuery, initGadgetMixin);

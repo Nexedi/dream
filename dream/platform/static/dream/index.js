@@ -1,6 +1,6 @@
-/*global console, jQuery, rJS, RSVP, alert, Handlebars */
+/*global console, jQuery, rJS, RSVP, alert, Handlebars, initGadgetMixin */
 /*jslint nomen: true */
-(function(window, $, rJS, RSVP, Handlebars) {
+(function(window, $, rJS, RSVP, Handlebars, initGadgetMixin) {
     "use strict";
     /////////////////////////////////////////////////////////////////
     // Desactivate jQuery Mobile URL management
@@ -9,8 +9,9 @@
     $.mobile.linkBindingEnabled = false;
     $.mobile.hashListeningEnabled = false;
     $.mobile.pushStateEnabled = false;
-    var navigation_template;
-    rJS(window).declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").allowPublicAcquisition("allDocs", function(param_list) {
+    var navigation_template, gadget_klass = rJS(window);
+    initGadgetMixin(gadget_klass);
+    gadget_klass.declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").allowPublicAcquisition("allDocs", function(param_list) {
         return this.getDeclaredGadget("jio").push(function(jio_gadget) {
             return jio_gadget.allDocs.apply(jio_gadget, param_list);
         });
@@ -49,7 +50,7 @@
     }).allowPublicAcquisition("whoWantToDisplayThisDocument", function(param_list) {
         // Hey, I want to display some jIO document
         return this.aq_pleasePublishMyState({
-            page: "edit_table",
+            page: "Input_viewTable",
             id: param_list[0]
         });
     }).allowPublicAcquisition("whoWantToDisplayThisDocumentPage", function(param_list) {
@@ -57,12 +58,6 @@
         return this.aq_pleasePublishMyState({
             page: param_list[0],
             id: param_list[1]
-        });
-    }).ready(function(g) {
-        g.props = {};
-    }).ready(function(g) {
-        return g.getElement().push(function(element) {
-            g.props.element = element;
         });
     }).ready(function(g) {
         return g.aq_pleasePublishMyState({}).push(function(link) {
@@ -97,7 +92,7 @@
         if (options.page === undefined) {
             // Redirect to the about page
             return gadget.aq_pleasePublishMyState({
-                page: "document_list"
+                page: "InputModule_viewInputList"
             }).push(gadget.pleaseRedirectMyHash.bind(gadget));
         }
         return gadget.declareGadget(options.page + ".html").push(function(g) {
@@ -137,4 +132,4 @@
             }
         });
     });
-})(window, jQuery, rJS, RSVP, Handlebars);
+})(window, jQuery, rJS, RSVP, Handlebars, initGadgetMixin);

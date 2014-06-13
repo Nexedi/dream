@@ -1,24 +1,19 @@
-/*global console, rJS, RSVP, Handlebars */
+/*global console, rJS, RSVP, Handlebars, initGadgetMixin */
 /*jslint nomen: true */
-(function(window, rJS, RSVP, Handlebars) {
+(function(window, rJS, RSVP, Handlebars, initGadgetMixin) {
     "use strict";
     /////////////////////////////////////////////////////////////////
     // Handlebars
     /////////////////////////////////////////////////////////////////
     // Precompile the templates while loading the first gadget instance
     var gadget_klass = rJS(window), source = gadget_klass.__template_element.getElementById("table-template").innerHTML, table_template = Handlebars.compile(source);
-    gadget_klass.ready(function(g) {
-        g.props = {};
-    }).ready(function(g) {
-        return g.getElement().push(function(element) {
-            g.props.element = element;
-        });
-    }).declareAcquiredMethod("aq_allDocs", "allDocs").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantToDisplayThisPage", "whoWantToDisplayThisPage").declareAcquiredMethod("whoWantToDisplayThisDocument", "whoWantToDisplayThisDocument").declareMethod("render", function(options) {
+    initGadgetMixin(gadget_klass);
+    gadget_klass.declareAcquiredMethod("aq_allDocs", "allDocs").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantToDisplayThisPage", "whoWantToDisplayThisPage").declareAcquiredMethod("whoWantToDisplayThisDocument", "whoWantToDisplayThisDocument").declareMethod("render", function(options) {
         var gadget = this;
         return gadget.aq_allDocs({
             select_list: [ "title", "modified" ]
         }).push(function(document_list) {
-            var result_list = [ gadget.whoWantToDisplayThisPage("create_document") ], doc, i;
+            var result_list = [ gadget.whoWantToDisplayThisPage("InputModule_viewAddDocumentDialog") ], doc, i;
             for (i = 0; i < document_list.data.total_rows; i += 1) {
                 doc = document_list.data.rows[i];
                 result_list.push(RSVP.all([ gadget.whoWantToDisplayThisDocument(doc.id), doc.value.title, doc.value.modified ]));
@@ -43,11 +38,11 @@
             });
         });
     }).declareMethod("getNavigationList", function() {
-        return this.whoWantToDisplayThisPage("create_document").push(function(url) {
+        return this.whoWantToDisplayThisPage("InputModule_viewAddDocumentDialog").push(function(url) {
             return [ {
                 title: "New Document",
                 link: url
             } ];
         });
     });
-})(window, rJS, RSVP, Handlebars);
+})(window, rJS, RSVP, Handlebars, initGadgetMixin);

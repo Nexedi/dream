@@ -1,6 +1,7 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, Handlebars */
+/*global console, rJS, RSVP, initDocumentPageMixin, Handlebars,
+         initGadgetMixin */
 /*jslint nomen: true */
-(function(window, rJS, RSVP, initDocumentPageMixin, Handlebars) {
+(function(window, rJS, RSVP, initDocumentPageMixin, Handlebars, initGadgetMixin) {
     "use strict";
     /////////////////////////////////////////////////////////////////
     // Handlebars
@@ -83,14 +84,9 @@
         }
         return result;
     }
+    initGadgetMixin(gadget_klass);
     initDocumentPageMixin(gadget_klass);
-    gadget_klass.ready(function(g) {
-        g.props = {};
-    }).ready(function(g) {
-        return g.getElement().push(function(element) {
-            g.props.element = element;
-        });
-    }).declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareMethod("render", function(options) {
+    gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareMethod("render", function(options) {
         var jio_key = options.id, gadget = this;
         gadget.props.jio_key = jio_key;
         return gadget.aq_getAttachment({
@@ -102,4 +98,4 @@
             gadget.props.element.innerHTML = result;
         });
     });
-})(window, rJS, RSVP, initDocumentPageMixin, Handlebars);
+})(window, rJS, RSVP, initDocumentPageMixin, Handlebars, initGadgetMixin);

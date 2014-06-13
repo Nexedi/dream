@@ -1,6 +1,7 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, jQuery, gantt */
+/*global console, rJS, RSVP, initDocumentPageMixin, jQuery, gantt,
+         initGadgetMixin */
 /*jslint nomen: true */
-(function(window, rJS, RSVP, initDocumentPageMixin, $, gantt) {
+(function(window, rJS, RSVP, initDocumentPageMixin, $, gantt, initGadgetMixin) {
     "use strict";
     gantt.templates.task_class = function(start, end, obj) {
         return obj.parent ? "sub_task" : "";
@@ -159,14 +160,9 @@
         return gantt_data;
     }
     var gadget_klass = rJS(window);
+    initGadgetMixin(gadget_klass);
     initDocumentPageMixin(gadget_klass);
-    gadget_klass.ready(function(g) {
-        g.props = {};
-    }).ready(function(g) {
-        return g.getElement().push(function(element) {
-            g.props.element = element;
-        });
-    }).declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareMethod("render", function(options) {
+    gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareMethod("render", function(options) {
         var jio_key = options.id, gadget = this;
         gadget.props.jio_key = jio_key;
         return gadget.aq_getAttachment({
@@ -204,4 +200,4 @@
             throw error;
         });
     });
-})(window, rJS, RSVP, initDocumentPageMixin, jQuery, gantt);
+})(window, rJS, RSVP, initDocumentPageMixin, jQuery, gantt, initGadgetMixin);

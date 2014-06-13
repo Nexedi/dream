@@ -1,15 +1,10 @@
-/*global console, rJS, RSVP, initDocumentPageMixin */
-(function(window, rJS, RSVP, initDocumentPageMixin) {
+/*global console, rJS, RSVP, initDocumentPageMixin, initGadgetMixin */
+(function(window, rJS, RSVP, initDocumentPageMixin, initGadgetMixin) {
     "use strict";
     var gadget_klass = rJS(window);
     initDocumentPageMixin(gadget_klass);
-    gadget_klass.ready(function(g) {
-        g.props = {};
-    }).ready(function(g) {
-        return g.getElement().push(function(element) {
-            g.props.element = element;
-        });
-    }).declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareMethod("render", function(options) {
+    initGadgetMixin(gadget_klass);
+    gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareMethod("render", function(options) {
         var jio_key = options.id, gadget = this;
         gadget.props.jio_key = jio_key;
         return new RSVP.Queue().push(function() {
@@ -25,4 +20,4 @@
             return tableeditor.startService();
         });
     });
-})(window, rJS, RSVP, initDocumentPageMixin);
+})(window, rJS, RSVP, initDocumentPageMixin, initGadgetMixin);

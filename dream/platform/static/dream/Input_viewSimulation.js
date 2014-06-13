@@ -1,41 +1,16 @@
-/*global rJS, RSVP, initDocumentPageMixin, jQuery, Handlebars */
-/*jslint nomen: true, maxlen: 200 */
-(function(window, rJS, RSVP, initDocumentPageMixin, $, Handlebars) {
+/*global rJS, RSVP, initDocumentPageMixin, jQuery, Handlebars,
+  promiseEventListener, initGadgetMixin */
+/*jslint nomen: true */
+(function(window, rJS, RSVP, initDocumentPageMixin, $, Handlebars, promiseEventListener, initGadgetMixin) {
     "use strict";
-    function promiseEventListener(target, type, useCapture) {
-        //////////////////////////
-        // Resolve the promise as soon as the event is triggered
-        // eventListener is removed when promise is cancelled/resolved/rejected
-        //////////////////////////
-        var handle_event_callback;
-        function canceller() {
-            target.removeEventListener(type, handle_event_callback, useCapture);
-        }
-        function resolver(resolve) {
-            handle_event_callback = function(evt) {
-                canceller();
-                evt.stopPropagation();
-                evt.preventDefault();
-                resolve(evt);
-                return false;
-            };
-            target.addEventListener(type, handle_event_callback, useCapture);
-        }
-        return new RSVP.Promise(resolver, canceller);
-    }
     /////////////////////////////////////////////////////////////////
     // Handlebars
     /////////////////////////////////////////////////////////////////
     // Precompile the templates while loading the first gadget instance
     var gadget_klass = rJS(window), source = gadget_klass.__template_element.getElementById("label-template").innerHTML, label_template = Handlebars.compile(source);
+    initGadgetMixin(gadget_klass);
     initDocumentPageMixin(gadget_klass);
-    gadget_klass.ready(function(g) {
-        g.props = {};
-    }).ready(function(g) {
-        return g.getElement().push(function(element) {
-            g.props.element = element;
-        });
-    }).declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareAcquiredMethod("aq_putAttachment", "jio_putAttachment").declareAcquiredMethod("aq_ajax", "jio_ajax").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantToDisplayThisDocumentPage", "whoWantToDisplayThisDocumentPage").declareMethod("render", function(options) {
+    gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareAcquiredMethod("aq_putAttachment", "jio_putAttachment").declareAcquiredMethod("aq_ajax", "jio_ajax").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantToDisplayThisDocumentPage", "whoWantToDisplayThisDocumentPage").declareMethod("render", function(options) {
         var i, gadget = this, property, parent_element = gadget.props.element.querySelector(".simulation_parameters"), value, queue, data, property_list = options.configuration_dict["Dream-Configuration"].property_list;
         this.props.jio_key = options.id;
         queue = gadget.aq_getAttachment({
@@ -114,9 +89,9 @@
                 _mimetype: "application/json"
             });
         }).push(function(result) {
-            return gadget.whoWantToDisplayThisDocumentPage("debug_json", gadget.props.jio_key);
+            return gadget.whoWantToDisplayThisDocumentPage("Output_viewDebugJson", gadget.props.jio_key);
         }).push(function(url) {
             return gadget.pleaseRedirectMyHash(url);
         });
     });
-})(window, rJS, RSVP, initDocumentPageMixin, jQuery, Handlebars);
+})(window, rJS, RSVP, initDocumentPageMixin, jQuery, Handlebars, promiseEventListener, initGadgetMixin);

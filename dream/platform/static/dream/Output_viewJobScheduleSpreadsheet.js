@@ -1,6 +1,6 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, moment */
+/*global console, rJS, RSVP, initDocumentPageMixin, moment, initGadgetMixin */
 /*jslint nomen: true */
-(function(window, rJS, RSVP, initDocumentPageMixin, moment) {
+(function(window, rJS, RSVP, initDocumentPageMixin, moment, initGadgetMixin) {
     "use strict";
     function job_schedule_spreadsheet_widget(all_data) {
         var now = new Date(), input_data = all_data.input, output_data = all_data.result, spreadsheet_data = [], spreadsheet_header = [ [ "Jobs", "ID", "Project Manager", "Due Date", "Priority", "Entrance Time", "Processing Time", "Station ID", "Step No." ] ], simulation_start_date = new Date(input_data.general.currentDate || now.getTime()), i, j, k, obj, node, component, order, node_id, due_date, entrance_date, duration, schedule, input_job = null, input_order = null;
@@ -89,14 +89,9 @@
         return spreadsheet_header.concat(spreadsheet_data);
     }
     var gadget_klass = rJS(window);
+    initGadgetMixin(gadget_klass);
     initDocumentPageMixin(gadget_klass);
-    gadget_klass.ready(function(g) {
-        g.props = {};
-    }).ready(function(g) {
-        return g.getElement().push(function(element) {
-            g.props.element = element;
-        });
-    }).declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareMethod("render", function(options) {
+    gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareMethod("render", function(options) {
         var jio_key = options.id, gadget = this;
         gadget.props.jio_key = jio_key;
         return new RSVP.Queue().push(function() {
@@ -113,4 +108,4 @@
             return tableeditor.startService();
         });
     });
-})(window, rJS, RSVP, initDocumentPageMixin, moment);
+})(window, rJS, RSVP, initDocumentPageMixin, moment, initGadgetMixin);

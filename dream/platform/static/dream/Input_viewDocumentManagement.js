@@ -1,5 +1,6 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, jQuery */
-(function(window, rJS, RSVP, initDocumentPageMixin, $) {
+/*global console, rJS, RSVP, initDocumentPageMixin, jQuery,
+ promiseEventListener, initGadgetMixin */
+(function(window, rJS, RSVP, initDocumentPageMixin, $, promiseEventListener, initGadgetMixin) {
     "use strict";
     function datatouri(data, mime_type) {
         var result = "data:";
@@ -7,27 +8,6 @@
             result += mime_type;
         }
         return result + ";base64," + window.btoa(data);
-    }
-    function promiseEventListener(target, type, useCapture) {
-        //////////////////////////
-        // Resolve the promise as soon as the event is triggered
-        // eventListener is removed when promise is cancelled/resolved/rejected
-        //////////////////////////
-        var handle_event_callback;
-        function canceller() {
-            target.removeEventListener(type, handle_event_callback, useCapture);
-        }
-        function resolver(resolve) {
-            handle_event_callback = function(evt) {
-                canceller();
-                evt.stopPropagation();
-                evt.preventDefault();
-                resolve(evt);
-                return false;
-            };
-            target.addEventListener(type, handle_event_callback, useCapture);
-        }
-        return new RSVP.Promise(resolver, canceller);
     }
     function disableAllButtons(gadget) {
         // Prevent double click
@@ -94,14 +74,9 @@
         });
     }
     var gadget_klass = rJS(window);
+    initGadgetMixin(gadget_klass);
     initDocumentPageMixin(gadget_klass);
-    gadget_klass.ready(function(g) {
-        g.props = {};
-    }).ready(function(g) {
-        return g.getElement().push(function(element) {
-            g.props.element = element;
-        });
-    }).declareAcquiredMethod("aq_remove", "jio_remove").declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareAcquiredMethod("aq_putAttachment", "jio_putAttachment").declareAcquiredMethod("aq_get", "jio_get").declareAcquiredMethod("aq_ajax", "jio_ajax").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantToDisplayThisDocument", "whoWantToDisplayThisDocument").declareAcquiredMethod("whoWantToDisplayHome", "whoWantToDisplayHome").declareMethod("render", function(options) {
+    gadget_klass.declareAcquiredMethod("aq_remove", "jio_remove").declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareAcquiredMethod("aq_putAttachment", "jio_putAttachment").declareAcquiredMethod("aq_get", "jio_get").declareAcquiredMethod("aq_ajax", "jio_ajax").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantToDisplayThisDocument", "whoWantToDisplayThisDocument").declareAcquiredMethod("whoWantToDisplayHome", "whoWantToDisplayHome").declareMethod("render", function(options) {
         this.props.jio_key = options.id;
         var gadget = this;
         return new RSVP.Queue().push(function() {
@@ -119,4 +94,4 @@
     }).declareMethod("startService", function() {
         return RSVP.all([ waitForDeletion(this), waitForKnowledgeExtraction(this) ]);
     });
-})(window, rJS, RSVP, initDocumentPageMixin, jQuery);
+})(window, rJS, RSVP, initDocumentPageMixin, jQuery, promiseEventListener, initGadgetMixin);
