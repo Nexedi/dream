@@ -20,7 +20,28 @@
             "CS2",
             "CE2",
             {}
+        ],
+        "4": [
+            "CB3",
+            "CS3",
+            {}
+        ],
+        "5": [
+            "CS3",
+            "CE3",
+            {}
+        ],
+        "6": [
+            "CB4",
+            "CS4",
+            {}
+        ],
+        "7": [
+            "CS4",
+            "CE4",
+            {}
         ]
+
     },
     "general": {
         "_class": "Dream.Configuration",
@@ -54,6 +75,9 @@
             "intervalCapacity": [
                 100,
                 200,
+                300,
+                100,
+                200,
                 300
             ]
         },
@@ -70,6 +94,9 @@
             "_class": "Dream.CapacityStation",
             "name": "WELD",
             "intervalCapacity": [
+                150,
+                60,
+                350,
                 150,
                 60,
                 350
@@ -92,7 +119,9 @@
                     "name": "P1",
                     "capacityRequirementDict": {
                         "CS1": 100,
-                        "CS2": 50
+                        "CS2": 50,
+                        "CS3": 100,
+                        "CS4": 50
                     }
                 },
                 {
@@ -101,7 +130,9 @@
                     "name": "P2",
                     "capacityRequirementDict": {
                         "CS1": 50,
-                        "CS2": 100
+                        "CS2": 100,
+                        "CS3": 100,
+                        "CS4": 50
                     }
                 }
             ]
@@ -130,6 +161,9 @@
             "intervalCapacity": [
                 50,
                 100,
+                150,
+                100,
+                100,
                 150
             ]
         },
@@ -150,7 +184,10 @@
             "intervalCapacity": [
                 50,
                 100,
-                150
+                150,
+                500,
+                300,
+                350
             ]
         },
         "CE4": {
