@@ -1,6 +1,6 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, jQuery */
+/*global console, rJS, RSVP, initDocumentPageMixin, jQuery, initGadgetMixin */
 /*jslint nomen: true */
-(function (window, rJS, RSVP, initDocumentPageMixin, $) {
+(function (window, rJS, RSVP, initDocumentPageMixin, $, initGadgetMixin) {
   "use strict";
 
   function queue_stat_widget(output_data) {
@@ -18,24 +18,9 @@
   }
 
   var gadget_klass = rJS(window);
+  initGadgetMixin(gadget_klass);
   initDocumentPageMixin(gadget_klass);
   gadget_klass
-    /////////////////////////////////////////////////////////////////
-    // ready
-    /////////////////////////////////////////////////////////////////
-    // Init local properties
-    .ready(function (g) {
-      g.props = {};
-    })
-
-    // Assign the element to a variable
-    .ready(function (g) {
-      return g.getElement()
-        .push(function (element) {
-          g.props.element = element;
-        });
-    })
-
     /////////////////////////////////////////////////////////////////
     // Acquired methods
     /////////////////////////////////////////////////////////////////
@@ -68,4 +53,4 @@
         this.props.series
       );
     });
-}(window, rJS, RSVP, initDocumentPageMixin, jQuery));
+}(window, rJS, RSVP, initDocumentPageMixin, jQuery, initGadgetMixin));

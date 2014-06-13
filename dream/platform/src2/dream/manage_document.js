@@ -1,6 +1,7 @@
 /*global console, rJS, RSVP, initDocumentPageMixin, jQuery,
- promiseEventListener */
-(function (window, rJS, RSVP, initDocumentPageMixin, $, promiseEventListener) {
+ promiseEventListener, initGadgetMixin */
+(function (window, rJS, RSVP, initDocumentPageMixin, $, promiseEventListener,
+           initGadgetMixin) {
   "use strict";
 
   function datatouri(data, mime_type) {
@@ -102,24 +103,9 @@
   }
 
   var gadget_klass = rJS(window);
+  initGadgetMixin(gadget_klass);
   initDocumentPageMixin(gadget_klass);
   gadget_klass
-    /////////////////////////////////////////////////////////////////
-    // ready
-    /////////////////////////////////////////////////////////////////
-    // Init local properties
-    .ready(function (g) {
-      g.props = {};
-    })
-
-    // Assign the element to a variable
-    .ready(function (g) {
-      return g.getElement()
-        .push(function (element) {
-          g.props.element = element;
-        });
-    })
-
     /////////////////////////////////////////////////////////////////
     // Acquired methods
     /////////////////////////////////////////////////////////////////
@@ -167,4 +153,5 @@
         waitForKnowledgeExtraction(this)
       ]);
     });
-}(window, rJS, RSVP, initDocumentPageMixin, jQuery, promiseEventListener));
+}(window, rJS, RSVP, initDocumentPageMixin, jQuery, promiseEventListener,
+  initGadgetMixin));

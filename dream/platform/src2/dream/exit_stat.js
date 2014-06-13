@@ -1,6 +1,8 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, Handlebars */
+/*global console, rJS, RSVP, initDocumentPageMixin, Handlebars,
+         initGadgetMixin */
 /*jslint nomen: true */
-(function (window, rJS, RSVP, initDocumentPageMixin, Handlebars) {
+(function (window, rJS, RSVP, initDocumentPageMixin, Handlebars,
+           initGadgetMixin) {
   "use strict";
 
   /////////////////////////////////////////////////////////////////
@@ -122,24 +124,9 @@
     return result;
   }
 
+  initGadgetMixin(gadget_klass);
   initDocumentPageMixin(gadget_klass);
   gadget_klass
-    /////////////////////////////////////////////////////////////////
-    // ready
-    /////////////////////////////////////////////////////////////////
-    // Init local properties
-    .ready(function (g) {
-      g.props = {};
-    })
-
-    // Assign the element to a variable
-    .ready(function (g) {
-      return g.getElement()
-        .push(function (element) {
-          g.props.element = element;
-        });
-    })
-
     /////////////////////////////////////////////////////////////////
     // Acquired methods
     /////////////////////////////////////////////////////////////////
@@ -165,4 +152,4 @@
           gadget.props.element.innerHTML = result;
         });
     });
-}(window, rJS, RSVP, initDocumentPageMixin, Handlebars));
+}(window, rJS, RSVP, initDocumentPageMixin, Handlebars, initGadgetMixin));

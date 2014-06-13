@@ -1,6 +1,6 @@
-/*global console, rJS, RSVP, Handlebars */
+/*global console, rJS, RSVP, Handlebars, initGadgetMixin */
 /*jslint nomen: true */
-(function (window, rJS, RSVP, Handlebars) {
+(function (window, rJS, RSVP, Handlebars, initGadgetMixin) {
   "use strict";
 
   /////////////////////////////////////////////////////////////////
@@ -13,23 +13,8 @@
                          .innerHTML,
     table_template = Handlebars.compile(source);
 
+  initGadgetMixin(gadget_klass);
   gadget_klass
-
-    /////////////////////////////////////////////////////////////////
-    // ready
-    /////////////////////////////////////////////////////////////////
-    // Init local properties
-    .ready(function (g) {
-      g.props = {};
-    })
-
-    // Assign the element to a variable
-    .ready(function (g) {
-      return g.getElement()
-        .push(function (element) {
-          g.props.element = element;
-        });
-    })
 
     /////////////////////////////////////////////////////////////////
     // Acquired methods
@@ -95,4 +80,4 @@
           return [{title: "New Document", link: url}];
         });
     });
-}(window, rJS, RSVP, Handlebars));
+}(window, rJS, RSVP, Handlebars, initGadgetMixin));

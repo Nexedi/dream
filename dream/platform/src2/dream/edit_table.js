@@ -1,26 +1,11 @@
-/*global console, rJS, RSVP, initDocumentPageMixin */
-(function (window, rJS, RSVP, initDocumentPageMixin) {
+/*global console, rJS, RSVP, initDocumentPageMixin, initGadgetMixin */
+(function (window, rJS, RSVP, initDocumentPageMixin, initGadgetMixin) {
   "use strict";
 
   var gadget_klass = rJS(window);
   initDocumentPageMixin(gadget_klass);
+  initGadgetMixin(gadget_klass);
   gadget_klass
-    /////////////////////////////////////////////////////////////////
-    // ready
-    /////////////////////////////////////////////////////////////////
-    // Init local properties
-    .ready(function (g) {
-      g.props = {};
-    })
-
-    // Assign the element to a variable
-    .ready(function (g) {
-      return g.getElement()
-        .push(function (element) {
-          g.props.element = element;
-        });
-    })
-
     /////////////////////////////////////////////////////////////////
     // Acquired methods
     /////////////////////////////////////////////////////////////////
@@ -57,4 +42,4 @@
           return tableeditor.startService();
         });
     });
-}(window, rJS, RSVP, initDocumentPageMixin));
+}(window, rJS, RSVP, initDocumentPageMixin, initGadgetMixin));

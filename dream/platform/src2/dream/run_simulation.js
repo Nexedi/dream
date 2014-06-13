@@ -1,8 +1,8 @@
 /*global rJS, RSVP, initDocumentPageMixin, jQuery, Handlebars,
-  promiseEventListener */
+  promiseEventListener, initGadgetMixin */
 /*jslint nomen: true */
 (function (window, rJS, RSVP, initDocumentPageMixin, $, Handlebars,
-           promiseEventListener) {
+           promiseEventListener, initGadgetMixin) {
   "use strict";
 
   /////////////////////////////////////////////////////////////////
@@ -15,24 +15,9 @@
                          .innerHTML,
     label_template = Handlebars.compile(source);
 
+  initGadgetMixin(gadget_klass);
   initDocumentPageMixin(gadget_klass);
   gadget_klass
-    /////////////////////////////////////////////////////////////////
-    // ready
-    /////////////////////////////////////////////////////////////////
-    // Init local properties
-    .ready(function (g) {
-      g.props = {};
-    })
-
-    // Assign the element to a variable
-    .ready(function (g) {
-      return g.getElement()
-        .push(function (element) {
-          g.props.element = element;
-        });
-    })
-
     /////////////////////////////////////////////////////////////////
     // Acquired methods
     /////////////////////////////////////////////////////////////////
@@ -167,4 +152,4 @@
         });
     });
 }(window, rJS, RSVP, initDocumentPageMixin, jQuery, Handlebars,
-  promiseEventListener));
+  promiseEventListener, initGadgetMixin));

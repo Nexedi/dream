@@ -1,6 +1,6 @@
-/*global console, jQuery, rJS, RSVP, alert, Handlebars */
+/*global console, jQuery, rJS, RSVP, alert, Handlebars, initGadgetMixin */
 /*jslint nomen: true */
-(function (window, $, rJS, RSVP, Handlebars) {
+(function (window, $, rJS, RSVP, Handlebars, initGadgetMixin) {
   "use strict";
 
   /////////////////////////////////////////////////////////////////
@@ -11,9 +11,10 @@
   $.mobile.hashListeningEnabled = false;
   $.mobile.pushStateEnabled = false;
 
-  var navigation_template;
-
-  rJS(window)
+  var navigation_template,
+    gadget_klass = rJS(window);
+  initGadgetMixin(gadget_klass);
+  gadget_klass
     /////////////////////////////////////////////////////////////////
     // Acquired methods
     /////////////////////////////////////////////////////////////////
@@ -94,19 +95,6 @@
     /////////////////////////////////////////////////////////////////
     // ready
     /////////////////////////////////////////////////////////////////
-    // Init local properties
-    .ready(function (g) {
-      g.props = {};
-    })
-
-    // Assign the element to a variable
-    .ready(function (g) {
-      return g.getElement()
-        .push(function (element) {
-          g.props.element = element;
-        });
-    })
-
     // Create some link on the page
     .ready(function (g) {
       return g.aq_pleasePublishMyState({})
@@ -215,4 +203,4 @@
           }
         });
     });
-}(window, jQuery, rJS, RSVP, Handlebars));
+}(window, jQuery, rJS, RSVP, Handlebars, initGadgetMixin));

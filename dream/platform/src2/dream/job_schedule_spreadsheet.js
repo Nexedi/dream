@@ -1,6 +1,6 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, moment */
+/*global console, rJS, RSVP, initDocumentPageMixin, moment, initGadgetMixin */
 /*jslint nomen: true */
-(function (window, rJS, RSVP, initDocumentPageMixin, moment) {
+(function (window, rJS, RSVP, initDocumentPageMixin, moment, initGadgetMixin) {
   "use strict";
 
   function job_schedule_spreadsheet_widget(all_data) {
@@ -149,23 +149,9 @@
   }
 
   var gadget_klass = rJS(window);
+  initGadgetMixin(gadget_klass);
   initDocumentPageMixin(gadget_klass);
   gadget_klass
-    /////////////////////////////////////////////////////////////////
-    // ready
-    /////////////////////////////////////////////////////////////////
-    // Init local properties
-    .ready(function (g) {
-      g.props = {};
-    })
-
-    // Assign the element to a variable
-    .ready(function (g) {
-      return g.getElement()
-        .push(function (element) {
-          g.props.element = element;
-        });
-    })
 
     /////////////////////////////////////////////////////////////////
     // Acquired methods
@@ -220,4 +206,4 @@
           return tableeditor.startService();
         });
     });
-}(window, rJS, RSVP, initDocumentPageMixin, moment));
+}(window, rJS, RSVP, initDocumentPageMixin, moment, initGadgetMixin));

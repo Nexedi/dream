@@ -1,8 +1,12 @@
-/*global console, rJS, RSVP, promiseEventListener, promiseReadAsText */
-(function (window, rJS, RSVP, promiseEventListener, promiseReadAsText) {
+/*global rJS, RSVP, promiseEventListener, promiseReadAsText,
+         initGadgetMixin */
+(function (window, rJS, RSVP, promiseEventListener, promiseReadAsText,
+           initGadgetMixin) {
   "use strict";
 
-  rJS(window)
+  var gadget_klass = rJS(window);
+  initGadgetMixin(gadget_klass);
+  gadget_klass
     /////////////////////////////////////////////////////////////////
     // Acquired methods
     /////////////////////////////////////////////////////////////////
@@ -11,22 +15,6 @@
     .declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash")
     .declareAcquiredMethod("whoWantToDisplayThisDocument",
                            "whoWantToDisplayThisDocument")
-
-    /////////////////////////////////////////////////////////////////
-    // ready
-    /////////////////////////////////////////////////////////////////
-    // Init local properties
-    .ready(function (g) {
-      g.props = {};
-    })
-
-    // Assign the element to a variable
-    .ready(function (g) {
-      return g.getElement()
-        .push(function (element) {
-          g.props.element = element;
-        });
-    })
 
     /////////////////////////////////////////////////////////////////
     // declared methods
@@ -83,4 +71,5 @@
         });
     });
 
-}(window, rJS, RSVP, promiseEventListener, promiseReadAsText));
+}(window, rJS, RSVP, promiseEventListener, promiseReadAsText,
+  initGadgetMixin));
