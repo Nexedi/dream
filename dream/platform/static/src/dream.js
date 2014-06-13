@@ -295,10 +295,11 @@
       //       versa.
 
       $.each(output_data.elementList, function(idx, obj) {
-        if (obj._class === 'Dream.Job') {
+        if (obj._class === 'Dream.Job' || obj._class === 'Dream.CapacityProject') {
           var input_job = null, input_order = null;
           
           // find the input order and order component for this job
+          // XXX this has no real meaning with capacity project
           for (var node_id in input_data.nodes) {
             var node = input_data.nodes[node_id];
             if (node.wip) {
@@ -307,7 +308,7 @@
                 if (order.id == obj.id) {
                   input_job = input_order = order;
                 }
-                if (input_job === null) {
+                if (input_job === null && order.componentsList) {
                   for (var j=0; j<order.componentsList.length; j++){
                     var component = order.componentsList[j];
                     if (component.id == obj.id){
@@ -320,6 +321,7 @@
             }
           }
 
+          // XXX does not make sense in the case of capacity project
           var due_date = new Date(simulation_start_date.getTime() +
                                   input_order.dueDate * 1000 * 3600);
           $.each(obj['results']['schedule'], function (i, schedule) {
@@ -327,19 +329,29 @@
                                           // TODO: time unit
                                          schedule['entranceTime'] * 1000 * 3600);
             var duration = 0;
-            // Duration is calculated by difference of entranceTime of this
-            // step and entranceTime of the next step, or completionTime when
-            // this is the last step
-            if (i+1 == obj['results']['schedule'].length) {
-              duration = obj['results']['completionTime'] - schedule['entranceTime'];
+            if (schedule['exitTime']) {
+              duration = (schedule['exitTime'] - schedule['entranceTime']);
             } else {
-              duration = obj['results']['schedule'][i+1]['entranceTime'] - schedule['entranceTime'];
+              // When duration is not returned by ManPy, it is calculated by
+              // difference of entranceTime of this step and entranceTime of the
+              // next step, or completionTime when this is the last step
+              if (i+1 == obj['results']['schedule'].length) {
+                duration = obj['results']['completionTime'] - schedule['entranceTime'];
+              } else {
+                duration = obj['results']['schedule'][i+1]['entranceTime'] - schedule['entranceTime'];
+              }
             }
 
+            var name = "";
+            if (obj._class == 'Dream.CapacityProject') {
+              name = input_order.name + '-' + schedule['stationId'];
+            } else {
+              name = input_order.name + "-" + input_job.name;
+            }
             spreadsheet_data.push([
               // XXX this label is incorrect for design step, during design
               // phase we still have an order and not an order component.
-              input_order.name + "-" + input_job.name,
+              name,
               obj['id'],
               input_order.manager,
               moment(due_date).format("YYYY/MM/DD"),
