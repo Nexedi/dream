@@ -27,7 +27,7 @@ class Simulation(DefaultSimulation):
     conf["Dream-Configuration"]["gui"]["station_utilisation_graph"] = 0
     conf["Dream-Configuration"]["gui"]["capacity_utilisation_graph"] = 1
     conf["Dream-Configuration"]["gui"]["job_schedule_spreadsheet"] = 1
-    conf["Dream-Configuration"]["gui"]["job_gantt"] = 0 # XXX does not work
+    conf["Dream-Configuration"]["gui"]["job_gantt"] = 1 # XXX does not work
     conf["Dream-Configuration"]["gui"]["queue_stat"] = 0
 
     conf["Dream-Configuration"]["gui"]["debug_json"] = 1

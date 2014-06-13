@@ -453,10 +453,13 @@
           // we should be able to define in the backend which station is visible
           return input_data.nodes[station]._class != "Dream.QueueManagedJob" &&
                  input_data.nodes[station]._class != "Dream.OperatorManagedJob" &&
-                 input_data.nodes[station]._class != "Dream.ExitJobShop"
+                 input_data.nodes[station]._class != "Dream.ExitJobShop" && 
+                 input_data.nodes[station]._class != "Dream.CapacityStationBuffer" && 
+                 input_data.nodes[station]._class != "Dream.CapacityStationExit"  &&
+                 input_data.nodes[station]._class != "Dream.Queue" 
         };
 
-        if (obj._class === 'Dream.Job') {
+        if (obj._class === 'Dream.Job' || obj._class === 'Dream.CapacityProject') {
           // find the corresponding input
           var input_job = null, input_order = null;
           // find the input order and order component for this job
@@ -468,7 +471,7 @@
                 if (order.id == obj.id) {
                   input_job = input_order = order;
                 }
-                if (input_job === null) {
+                if (input_job === null && order.componentsList) {
                   for (var j=0; j<order.componentsList.length; j++){
                     var component = order.componentsList[j];
                     if (component.id == obj.id){
@@ -498,10 +501,14 @@
             if (isVisibleStation(schedule['stationId'])) {
               var entrance_date = new Date(start_date.getTime());
               entrance_date.setTime(entrance_date.getTime() + schedule['entranceTime']*1000*3600);
-              if (obj['results']['schedule'][i + 1]) {
-                duration = obj['results']['schedule'][i + 1]['entranceTime'] - schedule['entranceTime'];
+              if (schedule['exitTime']) {
+                duration = (schedule['exitTime'] - schedule['entranceTime']);
               } else {
-                duration = obj['results'].completionTime - schedule['entranceTime'];
+                if (obj['results']['schedule'][i + 1]) {
+                  duration = obj['results']['schedule'][i + 1]['entranceTime'] - schedule['entranceTime'];
+                } else {
+                  duration = obj['results'].completionTime - schedule['entranceTime'];
+                }
               }
               if (duration > 0.0) {
                 var task_start_date = new Date(start_date.getTime());
