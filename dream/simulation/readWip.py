@@ -78,7 +78,6 @@ def findFile(seekName, path, implicitExt=''):
                 return full_path
     return None
 
-
 def GetOSPath():
     immediate = os.curdir + os.pathsep + os.pardir + os.pathsep
     ospath = os.getenv('PATH', os.defpath)
@@ -86,6 +85,9 @@ def GetOSPath():
     return path.split(os.pathsep)
 
 def requestWIP():
+    ''' connects to the DB and gets the dictionary of the WIP
+        if the database is not accessible then fetch the WIP data from a mock-up json file
+    '''
     from routeQuery import connectDB
     file=connectDB()
     if not file:
@@ -96,72 +98,92 @@ def requestWIP():
 def getOrders(input_data):
     ''' run the method from KEtool to read the orders'''
     ''' dict={
-            'orders':[{ 'orderName':'name1',
-                        'orderID':'ID1',
-                        'manager':'manager1',
-                        'orderDate':'orderDate1',
-                        'dueDate':'dueDate1',
-                        'componentsList':[  {'componentName':'componenet1order1',
-                                             'componentID':'C1O1',
-                                             'route':[{'technology':'CAD',
-                                                       'sequence':'1',
-                                                       'processingTime':{'distribution':'Fixed',
-                                                                         'mean':'1'}
-                                                       },
-                                                      {'technology':'MOULDINJECTION',
-                                                       'sequence':'?',
-                                                       'numberOfParts':'200',
-                                                       'processingTime':{'distribution':'Fixed',
-                                                                         'mean':'2'}
-                                                       }
-                                                     ]
-                                            },
-                                            {'componentName':'component2order1',
-                                             'componentID':'C2O1',
-                                             'route':[{'technology':'CAM',
-                                                       'sequence':'1',
-                                                       'processingTime':{'distribution':'Fixed',
-                                                                         'mean':'1'}
-                                                       },
-                                                      {'technology':'MILL',
-                                                       'sequence':'2',
-                                                       'processingTime':{'distribution':'Fixed',
-                                                                         'mean':'1'}
-                                                       }
-                                                     ]
-                                            }
-                                         ]
-                       },
-                      { 'orderName':'name2',
-                        'ordeerID':'ID1',
-                        'manager':'manager1',
-                        'orderDate':'orderDate2':
-                        'dueDate':'dueDate2',
-                        'componentsList':[  {'componentName':'component1order2',
-                                             'componentID':'C1O2',
-                                             'route':[]},
-                                            {'componentName':'component1order2',
-                                             'componentID':'C1O2',
-                                             'route':[]}
-                                         ]
-                       }
+                'orders':
+                    [
+                        {
+                            'orderName':'name1',
+                            'orderID':'ID1',
+                            'manager':'manager1',
+                            'orderDate':'orderDate1',
+                            'dueDate':'dueDate1',
+                            'componentsList':
+                                [
+                                    {
+                                        'componentName':'componenet1order1',
+                                        'componentID':'C1O1',
+                                        'route':
+                                            [
+                                                {
+                                                    'technology':'CAD',
+                                                    'sequence':'1',
+                                                    'processingTime':{'distribution':'Fixed','mean':'1'}
+                                                },
+                                                {
+                                                    'technology':'INJM',
+                                                    'sequence':'3',
+                                                    'numberOfParts':'200',
+                                                    'processingTime':{'distribution':'Fixed','mean':'2'}
+                                                }
+                                            ]
+                                    },
+                                    {
+                                        'componentName':'component2order1',
+                                        'componentID':'C2O1',
+                                        'route':
+                                            [
+                                                {
+                                                    'technology':'CAM',
+                                                    'sequence':'1',
+                                                    'processingTime':{'distribution':'Fixed','mean':'1'}
+                                                },
+                                                {
+                                                    'technology':'MILL',
+                                                    'sequence':'2',
+                                                    'processingTime':{'distribution':'Fixed','mean':'1'}
+                                                }
+                                            ]
+                                    }
+                                ]
+                        },
+                        { 
+                            'orderName':'name2',
+                            'ordeerID':'ID1',
+                            'manager':'manager1',
+                            'orderDate':'orderDate2':
+                            'dueDate':'dueDate2',
+                            'componentsList':
+                                [
+                                    {
+                                        'componentName':'component1order2',
+                                        'componentID':'C1O2',
+                                        'route':[]
+                                    },
+                                    {
+                                        'componentName':'component1order2',
+                                        'componentID':'C1O2',
+                                        'route':[]
+                                    }
+                                ]
+                        }
                     ],
-            'WIP':{'CAM1':[C102],
-                   'CAM2':[],
-                   'EDM':[C103],
-                   'MILL1':[C203],
-                   'MILL2':[],
-                   'ASS1':[],
-                   'ASS2':[],
-                   'ASS3':[],
-                   'IM':[]
-                   }
-            }
-    WHAT HAPPENS WITH STATIONS THAT ARE IN WIP BUT NOT IN STATIONS BUT QUEUED,
-    PANOS I WILL INFORMATION ON THEIR CURRENT STATE
+                'WIP':
+                    {
+                        'C2O1':
+                            {
+                                'station':'MILL1',
+                                'entry':1234,
+                                'exit':1235
+                            },
+                        'C3O6':
+                            {
+                                'station':'EDM1',
+                                'entry':235,
+                                'exit':259
+                            }
+                    }
+             }
     '''   
-    # request the WIP json file
-#     input_data=requestJSON()
+
     G.MouldList=[]
     G.OrderComponentList=[]
     G.DesignList=[]
@@ -351,7 +373,7 @@ def getRouteList(steps_list):
                  "stepNumber": str(step_sequence_list[j]),
                  }
         if prerequisite_list:
-            route["prerequisites"] = prerequisite_list
+            route["prerequisites"] = prerequisite_list[j]
         route_list.append(route)
         #=======================================================================
         #                     append successors if needed
@@ -395,9 +417,9 @@ def getRouteList(steps_list):
                     route_list.append(route)
         # XXX INJM-MAN/INJM+INJM-SET must be set as one step of the route, the same stands for the other ***-SET steps
     #===========================================================================
-    # print '='*90
-    # print route_list
-    # print '='*90
+#     print '='*90
+#     print route_list
+#     print '='*90
     #===========================================================================
     return route_list
         
@@ -428,9 +450,9 @@ def getComponets(orderDict,Order):
         id=component.get('componentID','')
         name=component.get('componentName','')
         #=======================================================================
-        # print '* '*50
-        # print name, '- '*45
-        # print '* '*50
+#         print '* '*50
+#         print name, '- '*45
+#         print '* '*50
         #=======================================================================
         dictRoute=component.get('route',[])
         route = [x for x in dictRoute]       #    copy dictRoute
@@ -470,8 +492,8 @@ def getComponets(orderDict,Order):
         # find the new route of the component if it is no design or mould
         if not mould_step_list and not design_step_list:
             #===================================================================
-            # print '/^\\'*30
-            # print 'normal component'
+#             print '/^\\'*30
+#             print 'normal component'
             #===================================================================
             route_list=getRouteList(step_list)
             componentType='Basic'               # XXX have to figure out the component type
@@ -483,7 +505,7 @@ def getComponets(orderDict,Order):
                                   componentType=componentType, order=Order, readyForAssembly=readyForAssembly,
                                   isCritical=Order.isCritical, extraPropertyDict=extraPropertyDict)
                 #===============================================================
-                # print '_'*90,'>', OC.id, 'created'
+#                 print '_'*90,'>', OC.id, 'created'
                 #===============================================================
                 G.OrderComponentList.append(OC)
                 G.JobList.append(OC)   
@@ -504,8 +526,8 @@ def getComponets(orderDict,Order):
         # create to different routes for the design and for the mould (and different entities)
         if mould_step_list:
             #===================================================================
-            # print '/^\\'*30
-            # print 'mould'
+#             print '/^\\'*30
+#             print 'mould'
             #===================================================================
             route_list=getRouteList(mould_step_list)
             # XXX if the component is not in the WipIDList then do not create it but append it the componentsList of the Order O
@@ -526,7 +548,7 @@ def getComponets(orderDict,Order):
                 M=Mould('M'+id, 'mould'+name, route_list, priority=Order.priority, dueDate=Order.dueDate,orderDate=Order.orderDate,
                                     isCritical=Order.isCritical, extraPropertyDict=extraPropertyDict, order=Order)
                 #===============================================================
-                # print '_'*90,'>', M.id, 'created'
+#                 print '_'*90,'>', M.id, 'created'
                 #===============================================================
                 G.MouldList.append(M)
                 G.JobList.append(M)
@@ -538,8 +560,8 @@ def getComponets(orderDict,Order):
                 Order.componentsList.append(componentDict)
         if design_step_list:
             #===================================================================
-            # print '/^\\'*30
-            # print 'design'
+#             print '/^\\'*30
+#             print 'design'
             #===================================================================
             route_list=getRouteList(design_step_list)
             # XXX if the design is not in the WipIDList then do create if the Order is not being processed at the moment
@@ -551,7 +573,7 @@ def getComponets(orderDict,Order):
                 OD=OrderDesign(id, name,route_list,priority=Order.priority,dueDate=Order.dueDate,orderDate=Order.orderDate,
                                   isCritical=Order.isCritical, order=Order,extraPropertyDict=extraPropertyDict)
                 #===============================================================
-                # print '_'*90,'>', OD.id, 'created'
+#                 print '_'*90,'>', OD.id, 'created'
                 #===============================================================
                 G.OrderComponentList.append(OD)
                 G.DesignList.append(OD)
