@@ -275,7 +275,12 @@ class CapacityStationController(EventGenerator):
                 # if the buffer acts as assembly there is no need to calculate the total capacity requirement, 
                 # it will be the one that the project has as a total for this station
                 if buffer.requireFullProject:
-                    totalCapacityRequirement=project.capacityRequirementDict[nextStation.id]
+                    # find what has been already processed
+                    alreadyProcessed=0     
+                    for record in nextStation.detailedWorkPlan:
+                        if record['project']==project.id:
+                            alreadyProcessed+=float(record['allocation'])
+                    totalCapacityRequirement=project.capacityRequirementDict[nextStation.id]-alreadyProcessed
                 # else calculate the total capacity requirement by adding the one each entity requires
                 else:
                     for entity in entitiesToBeMerged:
