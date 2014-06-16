@@ -499,8 +499,6 @@
           $.each(obj['results']['schedule'], function (i, schedule) {
             // Filter intermediate steps in part job shop
             if (isVisibleStation(schedule['stationId'])) {
-              var entrance_date = new Date(start_date.getTime());
-              entrance_date.setTime(entrance_date.getTime() + schedule['entranceTime']*1000*3600);
               if (schedule['exitTime']) {
                 duration = 24 * (schedule['exitTime'] - schedule['entranceTime']);
               } else {
