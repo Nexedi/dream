@@ -31,7 +31,6 @@ from ExcelOutput import Output
 from ReplaceMissingValues import HandleMissingValues
 from ImportExceldata import Import_Excel
 import xlrd
-import json
 #import ManPy main JSON script
 import dream.simulation.LineGenerationJSON as ManPyMain 
 #================= Main script of KE tool  =====================================#
