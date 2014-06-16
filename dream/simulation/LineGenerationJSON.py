@@ -87,6 +87,7 @@ from MachineManagedJob import MachineManagedJob
 from QueueManagedJob import QueueManagedJob
 from ShiftScheduler import ShiftScheduler
 
+import PrintRoute
 import ExcelHandler
 import time
 import json
@@ -1340,7 +1341,10 @@ def main(argv=[], input_data=None):
             
         #carry on the post processing operations for every model resource in the topology       
         for model_resource in G.ModelResourceList:
-            model_resource.postProcessing()       
+            model_resource.postProcessing()
+            
+        # added for debugging, print the Route of the Jobs on the same G.traceFile
+        PrintRoute.outputRoute()
             
         #output trace to excel      
         if(G.trace=="Yes"):
