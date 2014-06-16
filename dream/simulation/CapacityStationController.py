@@ -262,7 +262,7 @@ class CapacityStationController(EventGenerator):
         for buffer in G.CapacityStationBufferList:
             nextStation=buffer.next[0]
             projectList=[]
-            # loop through the entities
+            # loop through the entities to see what projects lie in the buffer
             for entity in buffer.getActiveObjectQueue():
                 if entity.capacityProject not in projectList:
                     projectList.append(entity.capacityProject)
@@ -271,12 +271,19 @@ class CapacityStationController(EventGenerator):
                 for entity in buffer.getActiveObjectQueue():
                     if entity.capacityProject==project:
                         entitiesToBeMerged.append(entity)
-                if len(entitiesToBeMerged)<2:
-                    continue
                 totalCapacityRequirement=0
+                # if the buffer acts as assembly there is no need to calculate the total capacity requirement, 
+                # it will be the one that the project has as a total for this station
+                if buffer.isAssembly:
+                    totalCapacityRequirement=project.capacityRequirementDict[nextStation.id]
+                # else calculate the total capacity requirement by adding the one each entity requires
+                else:
+                    for entity in entitiesToBeMerged:
+                        totalCapacityRequirement+=entity.requiredCapacity
+                # erase the Entities to create the merged one
                 for entity in entitiesToBeMerged:
-                    totalCapacityRequirement+=entity.requiredCapacity
                     buffer.getActiveObjectQueue().remove(entity)
+                # create the merged entity
                 entityToCreateName=entity.capacityProjectId+'_'+nextStation.objName+'_'+str(totalCapacityRequirement)
                 entityToCreate=CapacityEntity(name=entityToCreateName, capacityProjectId=project.id, 
                                               requiredCapacity=totalCapacityRequirement)
