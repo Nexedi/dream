@@ -33,6 +33,24 @@ class BasicTransformations:
         rsum = robjects.r['sum']           #Call sum function-R function
         return rsum(data)[0]
     
+    def subtraction(self, data1, data2):
+        data1=robjects.FloatVector(data1)
+        data2=robjects.FloatVector(data2)
+        rsubtraction = data1.ro - data2
+        return list(rsubtraction)
+    
+    def multiplication(self, data1, data2):
+        data1=robjects.FloatVector(data1)
+        data2=robjects.FloatVector(data2)
+        rmultiplication = data1.ro * data2
+        return list(rmultiplication)
+    
+    def division(self, data1, data2):
+        data1=robjects.FloatVector(data1)
+        data2=robjects.FloatVector(data2)
+        rdivision = data1.ro / data2
+        return list(rdivision)
+    
     def scale(self, data):                    #centers around the mean and scales by the standard deviation (sd) 
         data=robjects.FloatVector(data)
         rscale = robjects.r['scale']        #Call scale - R function
