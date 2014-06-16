@@ -25,14 +25,9 @@ Created on 19 Feb 2013
 '''
 Models an Interruption that schedules the operation of the machines by different managers
 '''
-# from SimPy.Globals import sim
-# from SimPy.Simulation import Simulation
-# from SimPy.Simulation import Process, Resource, SimEvent
 import simpy
 
 from ObjectInterruption import ObjectInterruption
-#from SimPy.Simulation import waituntil, now, hold, request, release, waitevent
-
 
 # ===========================================================================
 #               Class that handles the Operator Behavior
@@ -60,8 +55,6 @@ class Router(ObjectInterruption):
         self.toBeSignalled=[]
         # flag to notify whether the router is already invoked
         self.invoked=False
-        # flag to notify whether the router is dealing with managed or simple entities
-        self.managed=False
         
         self.criticalPending=[]                      # list of critical entities that are pending
         self.preemptiveOperators=[]                  # list of preemptiveOperators that should preempt their machines
@@ -92,7 +85,6 @@ class Router(ObjectInterruption):
         self.isInitialized=True
         
         self.invoked=False
-        self.managed=False
         
         self.criticalPending=[]
         self.preemptiveOperators=[]
@@ -112,13 +104,6 @@ class Router(ObjectInterruption):
     read the pendingEntities currentStations, these are the stations (queues) that may be signalled
     '''
     def run(self):
-        from Globals import G
-        # find out whether we are dealing with managed entities
-        if G.EntityList:
-            for entity in G.EntityList:
-                if entity.manager:
-                    self.managed=True
-                    break
         while 1:
             # wait until the router is called
             yield self.isCalled
@@ -153,23 +138,11 @@ class Router(ObjectInterruption):
             # assign operators to stations
             self.assignOperators()
 
-            
-            # if an exit of an object is assigned to one station, while the operator to operate 
-            #     the moving entity is assigned to a different, unAssign the exit
-            #------------------------------------------------------------------------------
-            if not self.managed:
-                for operator in [x for x in self.candidateOperators if x.isAssignedTo()]:
-                    if not operator.isAssignedTo() in self.pendingObjects:
-                        for object in [x for x in operator.isAssignedTo().previous if x.exitIsAssignedTo()]:
-                            if object.exitIsAssignedTo()!=operator.isAssignedTo():
-                                object.unAssignExit()
-            #------------------------------------------------------------------------------
-            else: 
-                for operator in [x for x in self.candidateOperators if x.isAssignedTo()]:
-                    if not operator.isAssignedTo() in self.pendingObjects:
-                        if operator.candidateEntity.currentStation.exitIsAssignedTo():
-                            if operator.isAssignedTo()!=operator.candidateEntity.currentStation.exitIsAssignedTo():
-                                operator.candidateEntity.currentStation.unAssignExit()
+            for operator in [x for x in self.candidateOperators if x.isAssignedTo()]:
+                if not operator.isAssignedTo() in self.pendingObjects:
+                    for object in [x for x in operator.isAssignedTo().previous if x.exitIsAssignedTo()]:
+                        if object.exitIsAssignedTo()!=operator.isAssignedTo():
+                            object.unAssignExit()
             # if an object cannot proceed with getEntity, unAssign the exit of its giver
             for object in self.pendingQueues:
                 if not object in self.toBeSignalled:
@@ -188,43 +161,24 @@ class Router(ObjectInterruption):
         # for all the operators that are requested
         for operator in self.candidateOperators:
             # check if the candidateOperators are available, if the are requested and reside in the pendingObjects list
-            #------------------------------------------------------------------------------
             if operator.checkIfResourceIsAvailable():
-                # if the router deals with managed entities
-                #------------------------------------------------------------------------------ 
-                if not self.managed:
-                    # if the operator is not conflicting
-                    if not operator in self.conflictingOperators:
-                        # assign an operator to the priorityObject
-                        self.printTrace('router', 'will assign '+operator.id+' to '+operator.candidateStation.id)
-                        operator.assignTo(operator.candidateStation)
-                        if not operator.candidateStation in self.toBeSignalled:
-                            self.toBeSignalled.append(operator.candidateStation)
-                # if the router deals not with managed entities
-                #------------------------------------------------------------------------------
-                else:
-                    if operator.candidateEntity:
-                        # and if the priorityObject is indeed pending
-                        if (operator.candidateEntity.currentStation in self.pendingObjects)\
-                            and (not operator in self.conflictingOperators)\
-                            and operator.candidateEntity.candidateReceiver:
-                            # assign an operator to the priorityObject
-                            self.printTrace('router', 'will assign '+operator.id+' to -->  '+operator.candidateEntity.candidateReceiver.id)
-                            operator.assignTo(operator.candidateEntity.candidateReceiver)
-                            if not operator.candidateEntity.currentStation in self.toBeSignalled:
-                                self.toBeSignalled.append(operator.candidateEntity.currentStation)
-            # if there must be preemption performed
-            #------------------------------------------------------------------------------
-            elif operator in self.preemptiveOperators and not operator in self.conflictingOperators:
-                if not self.managed:
-                    # if the operator is not currently working on the candidateStation then the entity he is
-                    #     currently working on must be preempted, and he must be unassigned and assigned to the new station
-                    if operator.workingStation!=operator.candidateStation:
-                        operator.unAssign()
-                        self.printTrace('router', ' will assign'+operator.id+'to'+operator.candidateStation.id)
-                        operator.assignTo(operator.candidateStation)
+                # if the operator is not conflicting
+                if not operator in self.conflictingOperators:
+                    # assign an operator to the priorityObject
+                    self.printTrace('router', 'will assign '+operator.id+' to '+operator.candidateStation.id)
+                    operator.assignTo(operator.candidateStation)
                     if not operator.candidateStation in self.toBeSignalled:
                         self.toBeSignalled.append(operator.candidateStation)
+            # if there must be preemption performed
+            elif operator in self.preemptiveOperators and not operator in self.conflictingOperators:
+                # if the operator is not currently working on the candidateStation then the entity he is
+                #     currently working on must be preempted, and he must be unassigned and assigned to the new station
+                if operator.workingStation!=operator.candidateStation:
+                    operator.unAssign()
+                    self.printTrace('router', ' will assign'+operator.id+'to'+operator.candidateStation.id)
+                    operator.assignTo(operator.candidateStation)
+                if not operator.candidateStation in self.toBeSignalled:
+                    self.toBeSignalled.append(operator.candidateStation)
         self.printTrace('objects to be signalled:'+' '*11, [str(object.id) for object in self.toBeSignalled])
     
     # =======================================================================
@@ -267,51 +221,30 @@ class Router(ObjectInterruption):
         for operator in self.candidateOperators:
             station=operator.isAssignedTo()
             if station:
-                # if the router deals with simple entities
-                #------------------------------------------------------------------------------ 
-                if not self.managed:
-                    assert station in self.toBeSignalled, 'the station must be in toBeSignalled list'
-                    # if the operator is preemptive
-                    #------------------------------------------------------------------------------
-                    if operator in self.preemptiveOperators:
-                        # if not assigned to the station currently working on, then preempt both stations
-                        if station!=operator.workingStation:
-                            # preempt operators currentStation
-                            operator.workingStation.shouldPreempt=True
-                            self.printTrace('router', 'preempting '+operator.workingStation.id+'.. '*6)
-                            operator.workingStation.preempt()
-                            operator.workingStation.timeLastEntityEnded=self.env.now     #required to count blockage correctly in the preemptied station
-                        station.shouldPreempt=True
-                        self.printTrace('router', 'preempting receiver '+station.id+'.. '*6)
-                        station.preempt()
-                        station.timeLastEntityEnded=self.env.now     #required to count blockage correctly in the preemptied station
-                    elif station.broker.waitForOperator:
-                        # signal this station's broker that the resource is available
-                        self.printTrace('router', 'signalling broker of'+' '*50+operator.isAssignedTo().id)
-                        station.broker.resourceAvailable.succeed(self.env.now)
-                    else:
-                        # signal the queue proceeding the station
-                        if station.canAccept()\
-                             and any(type=='Load' for type in station.multOperationTypeList):
-                            self.printTrace('router', 'signalling'+' '*50+operator.isAssignedTo().id)
-                            station.loadOperatorAvailable.succeed(self.env.now)
-                # in case the router deals with managed entities
-                #------------------------------------------------------------------------------ 
+                assert station in self.toBeSignalled, 'the station must be in toBeSignalled list'
+                # if the operator is preemptive
+                if operator in self.preemptiveOperators:
+                    # if not assigned to the station currently working on, then preempt both stations
+                    if station!=operator.workingStation:
+                        # preempt operators currentStation
+                        operator.workingStation.shouldPreempt=True
+                        self.printTrace('router', 'preempting '+operator.workingStation.id+'.. '*6)
+                        operator.workingStation.preempt()
+                        operator.workingStation.timeLastEntityEnded=self.env.now     #required to count blockage correctly in the preemptied station
+                    station.shouldPreempt=True
+                    self.printTrace('router', 'preempting receiver '+station.id+'.. '*6)
+                    station.preempt()
+                    station.timeLastEntityEnded=self.env.now     #required to count blockage correctly in the preemptied station
+                elif station.broker.waitForOperator:
+                    # signal this station's broker that the resource is available
+                    self.printTrace('router', 'signalling broker of'+' '*50+operator.isAssignedTo().id)
+                    station.broker.resourceAvailable.succeed(self.env.now)
                 else:
-                    if station in self.pendingMachines and station in self.toBeSignalled:
-                        # signal this station's broker that the resource is available
-                        self.printTrace('router','signalling broker of'+' '*50+operator.isAssignedTo().id)
-                        operator.isAssignedTo().broker.resourceAvailable.succeed(self.env.now)
-                    elif (not station in self.pendingMachines) or (not station in self.toBeSignalled):
-                        # signal the queue proceeding the station
-                        assert operator.candidateEntity.currentStation in self.toBeSignalled, 'the candidateEntity currentStation is not picked by the Router'
-                        assert operator.candidateEntity.currentStation in G.QueueList, 'the candidateEntity currentStation to receive signal from Router is not a queue'
-                        if operator.candidateEntity.candidateReceiver.canAccept()\
-                             and any(type=='Load' for type in operator.candidateEntity.candidateReceiver.multOperationTypeList):
-                            # if the station is already is already signalled then do not send event
-                            if not operator.candidateEntity.currentStation.loadOperatorAvailable.triggered:
-                                self.printTrace('router','signalling queue'+' '*50+operator.candidateEntity.currentStation.id)
-                                operator.candidateEntity.currentStation.loadOperatorAvailable.succeed(self.env.now)
+                    # signal the queue proceeding the station
+                    if station.canAccept()\
+                            and any(type=='Load' for type in station.multOperationTypeList):
+                        self.printTrace('router', 'signalling'+' '*50+operator.isAssignedTo().id)
+                        station.loadOperatorAvailable.succeed(self.env.now)
     
     #===========================================================================
     # clear the pending lists of the router
@@ -320,7 +253,6 @@ class Router(ObjectInterruption):
         self.pendingQueues=[]
         self.pendingMachines=[]
         self.pendingObjects=[]
-    
     
     #===========================================================================
     # find the stations that can be signalled by the router
@@ -361,10 +293,6 @@ class Router(ObjectInterruption):
                         if entity.isCritical and not entity in self.criticalPending:
                             self.criticalPending.append(entity)
                         break
-        # find out which type of entities are we dealing with, managed entities or not
-        if self.pending:
-            if self.pending[0].manager:
-                self.managed=True
         self.printTrace('found pending entities'+'-'*12+'>', [str(entity.id) for entity in self.pending if not entity.type=='Part'])
         if self.criticalPending:
             self.printTrace('found pending critical'+'-'*12+'>', [str(entity.id) for entity in self.criticalPending if not entity.type=='Part'])
@@ -378,71 +306,48 @@ class Router(ObjectInterruption):
     #     .    the candidate receivers of the entities (the stations the operators will be working at)
     #========================================================================
     def findCandidateOperators(self):
-        # if we are not dealing with managed entities
-        #------------------------------------------------------------------------------ 
-        if not self.managed:
-            # for each pendingMachine
-            for object in self.pendingMachines:
-                # find candidateOperators for each object operator
-                candidateOperator=object.findCandidateOperator()
-                # TODO: this way no sorting is performed
+        # for each pendingMachine
+        for object in self.pendingMachines:
+            # find candidateOperators for each object operator
+            candidateOperator=object.findCandidateOperator()
+            # TODO: this way no sorting is performed
+            if not candidateOperator in self.candidateOperators:
+                self.candidateOperators.append(candidateOperator)
+        # for each pendingQueue
+        for object in self.pendingQueues:
+            # find available operator for then machines that follow
+            for nextobject in object.findReceiversFor(object):
+                candidateOperator=nextobject.findCandidateOperator()
                 if not candidateOperator in self.candidateOperators:
                     self.candidateOperators.append(candidateOperator)
-            # for each pendingQueue
-            for object in self.pendingQueues:
-                # find available operator for then machines that follow
-                for nextobject in object.findReceiversFor(object):
-                    candidateOperator=nextobject.findCandidateOperator()
-                    if not candidateOperator in self.candidateOperators:
-                        self.candidateOperators.append(candidateOperator)
-                # check the option of preemption if there are critical entities and no available operators
-                #------------------------------------------------------------------------------ 
-                if not object.findReceiversFor(object) and\
-                    any(entity for entity in object.getActiveObjectQueue() if entity.isCritical):
-                    # for each of the following objects
-                    for nextObject in object.next:
-                        # if an operator is occupied by a critical entity then that operator can preempt
-                        # This way the first operator that is not currently on a critical entity is invoked
-                        # TODO: consider picking an operator more wisely by sorting
-                        for operator in nextObject.operatorPool.operators:
-                            currentStation=operator.workingStation
-                            if not currentStation.getActiveObjectQueue()[0].isCritical:
-                                preemptiveOperator=operator
-                                preemptiveOperator.candidateStations.append(nextObject)
-                                if not preemptiveOperator in self.candidateOperators:
-                                    self.candidateOperators.append(preemptiveOperator)
-                                    self.preemptiveOperators.append(preemptiveOperator)
-                                break
+            # check the option of preemption if there are critical entities and no available operators
+            if not object.findReceiversFor(object) and\
+                any(entity for entity in object.getActiveObjectQueue() if entity.isCritical):
+                # for each of the following objects
+                for nextObject in object.next:
+                    # if an operator is occupied by a critical entity then that operator can preempt
+                    # This way the first operator that is not currently on a critical entity is invoked
+                    # TODO: consider picking an operator more wisely by sorting
+                    for operator in nextObject.operatorPool.operators:
+                        currentStation=operator.workingStation
+                        if not currentStation.getActiveObjectQueue()[0].isCritical:
+                            preemptiveOperator=operator
+                            preemptiveOperator.candidateStations.append(nextObject)
+                            if not preemptiveOperator in self.candidateOperators:
+                                self.candidateOperators.append(preemptiveOperator)
+                                self.preemptiveOperators.append(preemptiveOperator)
+                            break
 #                         preemptiveOperator=next(operator for operator in nextObject.operatorPool.operators)
 #                         preemptiveOperator.candidateStations.append(nextObject)
 #                         if not preemptiveOperator in self.candidateOperators:
 #                             self.candidateOperators.append(preemptiveOperator)
 #                             self.preemptiveOperators.append(preemptiveOperator)
 
-        # in case the router deals with managed entities
-        #------------------------------------------------------------------------------ 
-        else:
-            # if there are pendingEntities
-            if len(self.pending):
-            # for those pending entities that require a manager (MachineManagedJob case)
-                for entity in [x for x in self.pending if x.manager]:
-            # if the entity is ready to move to a machine and its manager is available
-                    if entity.manager.checkIfResourceIsAvailable():
-                        # check whether the entity canProceed and update the its candidateReceivers
-                        if entity.canProceed()\
-                            and not entity.manager in self.candidateOperators:
-                            self.candidateOperators.append(entity.manager)
-            # TODO: check if preemption can be implemented for the managed case
-                # find the candidateEntities for each operator
-                self.findCandidateEntities()      
          # update the schedulingRule/multipleCriterionList of the Router
         if self.sorting:
             self.updateSchedulingRule()  
-        if self.managed:
-            self.printTrace('router found candidate operators'+' '*3,[operator.id for operator in self.candidateOperators])
-        else:
-            self.printTrace('router found candidate operators'+' '*3,
-                            [(operator.id, [station.id for station in operator.candidateStations]) for operator in self.candidateOperators])
+        self.printTrace('router found candidate operators'+' '*3,
+                        [(operator.id, [station.id for station in operator.candidateStations]) for operator in self.candidateOperators])
     
     #===========================================================================
     # find the candidate entities for each candidateOperator
@@ -508,11 +413,6 @@ class Router(ObjectInterruption):
             # sort according to the number of options
             if operatorsWithOneOption:
                 self.candidateOperators.sort(key=lambda x: x in operatorsWithOneOption, reverse=True)
-        
-        if self.managed:
-            self.printTrace('candidateEntities for each operator',\
-                             [(str(operator.id),[str(x.id) for x in operator.candidateEntities])
-                              for operator in self.candidateOperators])
 
     #=======================================================================
     #                          Sort pendingEntities
@@ -547,77 +447,30 @@ class Router(ObjectInterruption):
         # finally we have to sort before giving the entities to the operators
         # If there is an entity which must have priority then it should be assigned first
         # TODO: sorting after choosing candidateEntity
-        if not self.managed:
-            # for the candidateOperators that do have candidateEntities pick a candidateEntity
-            for operator in [x for x in self.candidateOperators if x.candidateStations]:
-                # find the first available entity that has no occupied receivers
-                operator.candidateStation = operator.findCandidateStation()
-             
-            # find the resources that are 'competing' for the same station
-            if not self.sorting:
-                # if there are entities that have conflicting receivers
-                if len(self.conflictingStations):
-                    self.conflictingOperators=[operator for operator in self.candidateOperators\
-                                               if operator.candidateStation in self.conflictingStations]
-                # keep the sorting provided by the queues if there is conflict between operators
-                conflictingGroup=[]                     # list that holds the operators that have the same recipient
-                if self.conflictingOperators:
-                    # for each of the candidateReceivers
-                    for station in self.conflictingStations:
-                        # find the group of operators that compete for this station
-                        conflictingGroup=[operator for operator in self.conflictingOperators if operator.candidateStation==station]
-                        # the operator that can proceed is the manager of the entity as sorted by the queue that holds them
-                        conflictingGroup.sort()
-                        # the operators that are not first in the list cannot proceed
-                        for operator in conflitingGroup:
-                            if conflictingGroup.index(operator)!=0:
-                                self.candidateOperators.remove(operator)
-        
-        # if the moving entities are managed
-        #------------------------------------------------------------------------------
-        else:
-            # for the candidateOperators that do have candidateEntities pick a candidateEntity
-            for operator in [x for x in self.candidateOperators if x.candidateEntities]:
-                # find the first available entity that has no occupied receivers
-                operator.candidateEntity=operator.findCandidateEntity()
-                if operator.candidateEntity:
-                    if operator.candidateEntity.currentStation in self.pendingMachines:
-                        operator.candidateEntity.candidateReceiver=operator.candidateEntity.currentStation
-                    else:
-                        operator.candidateEntity.candidateReceiver=operator.candidateEntity.findCandidateReceiver()
-                        
-            # find the resources that are 'competing' for the same station
-            if not self.sorting:
-                # if there are entities that have conflicting receivers
-                if len(self.conflictingEntities):
-                    # find the conflictingOperators
-                    self.conflictingOperators=[operator for operator in self.candidateOperators\
-                                                if operator.candidateEntity in self.conflictingEntities or\
-                                                   operator.candidateEntity.candidateReceiver in [x.candidateReceiver for x in self.conflictingEntities]]
-                    # keep the sorting provided by the queues if there is conflict between operators
-                    conflictingGroup=[]                     # list that holds the operators that have the same recipient
-                if len(self.conflictingOperators):
-                    # for each of the candidateReceivers
-                    for receiver in [x.candidateEntity.candidateReceiver for x in self.conflictingOperators]:
-                        # find the group of operators that compete for this station
-                        conflictingGroup=[operator for operator in self.conflictingOperators if operator.candidateEntity.candidateReceiver==receiver]
-                        assert len([station for station in [x.candidateEntity.currentStation for x in conflictingGroup]]),\
-                                    'the conflicting entities must reside in the same queue'
-                        # for each of the competing for the same station operators 
-                        for operator in conflictingGroup:
-                        #     find the index of entities to be operated by them in the queue that holds them
-                            operator.ind=operator.candidateEntity.currentStation.getActiveObjectQueue().index(operator.candidateEntity)
-                        # the operator that can proceed is the manager of the entity as sorted by the queue that holds them
-                        conflictingGroup.sort(key=lambda x: x.ind)
-                        # the operators that are not first in the list cannot proceed
-                        for operator in conflictingGroup:
-                            if conflictingGroup.index(operator)!=0:
-                                self.candidateOperators.remove(operator)
+        # for the candidateOperators that do have candidateEntities pick a candidateEntity
+        for operator in [x for x in self.candidateOperators if x.candidateStations]:
+            # find the first available entity that has no occupied receivers
+            operator.candidateStation = operator.findCandidateStation()
             
-        if self.managed:
-            self.printTrace('candidateReceivers for each entity ',[(str(entity.id),\
-                                                                                 str(entity.candidateReceiver.id))
-                                                                                for entity in self.pending if entity.candidateReceiver])     
+        # find the resources that are 'competing' for the same station
+        if not self.sorting:
+            # if there are entities that have conflicting receivers
+            if len(self.conflictingStations):
+                self.conflictingOperators=[operator for operator in self.candidateOperators\
+                                            if operator.candidateStation in self.conflictingStations]
+            # keep the sorting provided by the queues if there is conflict between operators
+            conflictingGroup=[]                     # list that holds the operators that have the same recipient
+            if self.conflictingOperators:
+                # for each of the candidateReceivers
+                for station in self.conflictingStations:
+                    # find the group of operators that compete for this station
+                    conflictingGroup=[operator for operator in self.conflictingOperators if operator.candidateStation==station]
+                    # the operator that can proceed is the manager of the entity as sorted by the queue that holds them
+                    conflictingGroup.sort()
+                    # the operators that are not first in the list cannot proceed
+                    for operator in conflitingGroup:
+                        if conflictingGroup.index(operator)!=0:
+                            self.candidateOperators.remove(operator)       
          
     # =======================================================================
     #    sorts the Operators of the Queue according to the scheduling rule
