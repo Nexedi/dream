@@ -15,6 +15,14 @@ class Simulation(DefaultSimulation):
 
     conf["Dream-AbstractCapacityStation"] = {
         "property_list": [
+          {
+            "id": "isAssembly",
+            "name": "Is an assembly station ?",
+            "description": "Is this station an assembly ? Yes: 1, No: 0",
+            "type": "number",
+            "_class": "Dream.Property",
+            "_default": 0
+          },
         ],
         "_class": 'Dream.AbstractCapacityStation',
         "name": 'Station',
@@ -132,6 +140,7 @@ class Simulation(DefaultSimulation):
             id="%s_Buffer" % node_id,
             name=node_data['name'],
             wip=wip,
+            isAssembly=node_data['isAssembly']
         )
 
         new_data['nodes']["%s_Station" % node_id] = dict(
