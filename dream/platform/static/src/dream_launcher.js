@@ -106,7 +106,10 @@
         var capacity_by_station_spreadsheet_data = data.capacity_by_station_spreadsheet;
         if (capacity_by_station_spreadsheet_data !== undefined) {
           var spreadsheet = $('#capacity_by_station_spreadsheet');
-          spreadsheet.handsontable('populateFromArray', 0, 0, capacity_by_station_spreadsheet_data);
+          var hot = spreadsheet.handsontable('getInstance');
+          hot.updateSettings({
+            minCols: Math.min(capacity_by_station_spreadsheet_data.length, 3) })
+          hot.populateFromArray(0, 0, capacity_by_station_spreadsheet_data);
         }
 
         var preference = data.preference !== undefined ?

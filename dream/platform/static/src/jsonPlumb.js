@@ -189,16 +189,15 @@
       var capacity_by_station_spreadsheet = $('#capacity_by_station_spreadsheet');
       var data = [
         [
-          "Machine",
-          "Day 0",
-          "Day 1",
-          "Day 2",
-          "Day 3",
+          "Day",
+          "CS1",
+          "CS2"
         ]
       ];
       capacity_by_station_spreadsheet.handsontable({
         data: data,
         minSpareRows: 1,
+        minSpareCols: 1, // Allow adding columns
         stretchH: 'all',
         width: function () {
             return $(window).width() -

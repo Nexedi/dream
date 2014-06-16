@@ -24,30 +24,30 @@
   "capacity_by_station_spreadsheet": [
     [
       "Machine", 
-      "Day 0", 
-      "Day 1", 
-      "Day 2", 
-      "Day 3"
-    ], 
-    [
       "SMF", 
-      "100", 
-      "200", 
-      "300", 
-      ""
+      "WELD"
     ], 
     [
-      "WELD", 
+      "Day 0", 
+      "100", 
       "150", 
+      null
+    ], 
+    [
+      "Day 1", 
+      "200", 
       "60", 
+      null
+    ],
+    [
+      "Day 2", 
+      "300", 
       "350", 
       null
     ], 
     [
       null, 
-      "", 
-      null, 
-      null, 
+      null,  
       null
     ]
   ], 

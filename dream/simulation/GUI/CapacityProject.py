@@ -4,6 +4,7 @@ import time
 import random
 import operator
 from datetime import datetime
+from collections import defaultdict
 
 from dream.simulation.GUI.Default import Simulation as DefaultSimulation
 from dream.simulation.GUI.Default import schema
@@ -58,9 +59,14 @@ class Simulation(DefaultSimulation):
 
     # read the spreadsheets
     # a mapping station id -> list of interval capacity
-    available_capacity_by_station = dict()
-    for line in data.pop('capacity_by_station_spreadsheet')[1:]:
-      available_capacity_by_station[line[0]] = [float(x) for x in line[1:] if x]
+    available_capacity_by_station = defaultdict(list)
+    capacity_by_station_spreadsheet = data.pop('capacity_by_station_spreadsheet')
+    station_id_list = copy([x for x in capacity_by_station_spreadsheet[0][1:] if x])
+    for line in capacity_by_station_spreadsheet[1:]:
+      for station_id, capacity in zip(station_id_list, line[1:]):
+        available_capacity_by_station[station_id].append(float(capacity or 0))
+
+    assert set(station_id_list) == set(data['nodes'].keys()), "Check stations ids in capacity spreadsheet"
 
     # a mapping project id -> mapping station_id -> required capacity
     required_capacity_by_project = dict()
