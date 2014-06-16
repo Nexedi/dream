@@ -174,9 +174,13 @@ class MouldAssembly(MachineManagedJob):
         # assert that there is a parent order
         assert self.mouldParent.type=='Order', 'the type of the assembled to be mould\' s parent is not correct'
         # delete the contents of the internal queue
-        for element in activeObjectQueue:
+        temp_activeObjectQueue=list(activeObjectQueue)
+        for element in temp_activeObjectQueue:
+            # update their schedule
+            element.schedule[-1].append(self.env.now)
+            # remove the elements
             activeObjectQueue.remove(element)
-#         del activeObjectQueue[:]
+        del temp_activeObjectQueue[:]
         # after assembling reset the capacity
         activeObject.updateCapacity(1)
         #if there is a mould to be assembled
