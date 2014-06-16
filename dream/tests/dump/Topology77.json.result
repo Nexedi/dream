@@ -238,24 +238,24 @@
    "results": {
     "schedule": [
      {
-      "finish": 2.0, 
-      "start": 0.0, 
-      "station": "CS1"
+      "entranceTime": 0.0, 
+      "exitTime": 2.0, 
+      "stationId": "CS1"
      }, 
      {
-      "finish": 2.0, 
-      "start": 0.0, 
-      "station": "CS3"
+      "entranceTime": 0.0, 
+      "exitTime": 2.0, 
+      "stationId": "CS3"
      }, 
      {
-      "finish": 3.0, 
-      "start": 1.0, 
-      "station": "CS2"
+      "entranceTime": 1.0, 
+      "exitTime": 3.0, 
+      "stationId": "CS2"
      }, 
      {
-      "finish": 4.0, 
-      "start": 3.0, 
-      "station": "CS4"
+      "entranceTime": 3.0, 
+      "exitTime": 4.0, 
+      "stationId": "CS4"
      }
     ]
    }
@@ -266,24 +266,24 @@
    "results": {
     "schedule": [
      {
-      "finish": 2.0, 
-      "start": 0.0, 
-      "station": "CS1"
+      "entranceTime": 0.0, 
+      "exitTime": 2.0, 
+      "stationId": "CS1"
      }, 
      {
-      "finish": 2.0, 
-      "start": 0.0, 
-      "station": "CS3"
+      "entranceTime": 0.0, 
+      "exitTime": 2.0, 
+      "stationId": "CS3"
      }, 
      {
-      "finish": 3.0, 
-      "start": 1.0, 
-      "station": "CS2"
+      "entranceTime": 1.0, 
+      "exitTime": 3.0, 
+      "stationId": "CS2"
      }, 
      {
-      "finish": 4.0, 
-      "start": 3.0, 
-      "station": "CS4"
+      "entranceTime": 3.0, 
+      "exitTime": 4.0, 
+      "stationId": "CS4"
      }
     ]
    }
