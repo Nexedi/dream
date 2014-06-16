@@ -10,7 +10,17 @@
     <script src="../<%= copy.rsvp.relative_dest %>"></script>
     <script src="../<%= copy.renderjs.relative_dest %>"></script>
     <script src="../<%= curl.jsplumbjs.relative_dest %>"></script>
-
+    <script src="../<%= copy.handlebars.relative_dest %>"></script>
+    
+    <script id="node-template" type="text/x-handlebars-template">
+      <div class="window {{class}}"
+           id="{{element_id}}"
+           title="{{title}}">
+        {{id}}
+        <div class="ep"></div>
+      </div>
+    </script>
+    
     <script src="jsplumb.js"></script>
   </head>
   <body>

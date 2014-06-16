@@ -17,9 +17,15 @@
  * along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
  * ==========================================================================*/
 
-/*global RSVP, rJS, $, jsPlumb, confirm*/
-(function (RSVP, rJS, $, jsPlumb, confirm) {
+/*global RSVP, rJS, $, jsPlumb, Handlebars*/
+(function (RSVP, rJS, $, jsPlumb, Handlebars) {
   "use strict";
+
+  /*jslint nomen: true*/
+  var gadget_klass = rJS(window),
+    node_template_source = gadget_klass.__template_element
+      .getElementById('node-template').innerHTML,
+    node_template = Handlebars.compile(node_template_source);
 
   function getNodeId(node_container, element_id) {
     var node_id;
@@ -176,23 +182,23 @@
 
     // listen for clicks on connections,
     // and offer to change values on click.
-    jsplumb_instance.bind("click", function (conn) {
-      jsplumb_instance.detach(conn);
-    });
+    // jsplumb_instance.bind("click", function (conn) {
+    //   jsplumb_instance.detach(conn);
+    // });
 
-    jsplumb_instance.bind("beforeDetach", function (conn) {
-      return confirm("Delete connection?");
-    });
+    // jsplumb_instance.bind("beforeDetach", function (conn) {
+    //   return confirm("Delete connection?");
+    // });
 
-    jsplumb_instance
-      .bind("connectionDrag", function (connection) {
-        return undefined;
-      });
+    // jsplumb_instance
+    //   .bind("connectionDrag", function (connection) {
+    //     return undefined;
+    //   });
 
-    jsplumb_instance
-      .bind("connectionDragStop", function (connection) {
-        return undefined;
-      });
+    // jsplumb_instance
+    //   .bind("connectionDragStop", function (connection) {
+    //     return undefined;
+    //   });
     // split in 2 methods ? one for events one for manip
     gadget.private.updateConnectionData
       = function (connection, remove, edge_data) {
@@ -210,14 +216,14 @@
 
     // bind to connection/connectionDetached events,
     // and update the list of connections on screen.
-    jsplumb_instance
-      .bind("connection", function (info, originalEvent) {
-        gadget.private.updateConnectionData(info.connection);
-      });
-    jsplumb_instance
-      .bind("connectionDetached", function (info, originalEvent) {
-        gadget.private.updateConnectionData(info.connection, true);
-      });
+    // jsplumb_instance
+    //   .bind("connection", function (info, originalEvent) {
+    //     gadget.private.updateConnectionData(info.connection);
+    //   });
+    // jsplumb_instance
+    //   .bind("connectionDetached", function (info, originalEvent) {
+    //     gadget.private.updateConnectionData(info.connection, true);
+    //   });
     onDataChange();
     draggable(gadget);
   }
@@ -428,12 +434,12 @@
       );
     }
     /*jslint nomen: true*/
-    render_element.append('<div class="window ' + element._class
-                          .replace('.', '-') + '" id="' +
-                          element.element_id + '" title="' +
-                          (element.name || element.id) + '">' +
-                          element.id +
-                          '<div class="ep"></div></div>');
+    render_element.append(node_template({
+      "class": element._class.replace('.', '-'),
+      "element_id": element.element_id,
+      "title": element.name || element.id,
+      "id": element.id
+    }));
     box = $(gadget.private.element).find("#" + element.element_id);
     absolute_position = convertToAbsolutePosition(
       gadget,
@@ -447,13 +453,12 @@
     onDataChange();
   }
 
-  rJS(window)
+  gadget_klass
     .ready(function (g) {
       g.private = {
         node_container: {},
         edge_container: {},
         preference_container: {},
-        general_container: {},
         style_attr_list: ['width', 'height', 'padding-top', 'line-height']
       };
     })
@@ -464,28 +469,11 @@
     })
 
     .declareMethod('getData', function () {
-      var data = {
+      return JSON.stringify({
         "nodes": this.private.node_container,
         "edges": this.private.edge_container,
-        "preference": this.private.preference_container,
-        "general": this.private.general_container
-      },
-        wip_spreadsheet = $(this.private.element).find('#wip_spreadsheet'),
-        wip_part_spreadsheet = $(this.private.element)
-        .find('#wip_part_spreadsheet'),
-        shift_spreadsheet = $(this.private.element)
-        .find('#shift_spreadsheet');
-      if (wip_spreadsheet.length > 0) {
-        data.wip_spreadsheet = wip_spreadsheet.handsontable('getData');
-      }
-      if (wip_part_spreadsheet.length > 0) {
-        data.wip_part_spreadsheet = wip_part_spreadsheet
-          .handsontable('getData');
-      }
-      if (shift_spreadsheet.length > 0) {
-        data.shift_spreadsheet = shift_spreadsheet.handsontable('getData');
-      }
-      return JSON.stringify(data);
+        "preference": this.private.preference_container
+      });
     })
 
     .declareMethod('startService', function () {
@@ -494,7 +482,7 @@
             gadget.private.data.preference : {},
         coordinates = preference.coordinates;
       return gadget.getElement()
-        .push(function (el) {
+        .then(function (el) {
           gadget.private.element = el;
           initJsPlumb(gadget);
           $.each(gadget.private.data.nodes, function (key, value) {
@@ -518,15 +506,6 @@
             addEdge(gadget, key, value);
           });
           redraw(gadget);
-        })
-
-        .push(function () {
-          // Infinite wait, until cancelled
-          return new RSVP.defer().promise;
-        })
-        .push(undefined, function (error) {
-          $(gadget.private.element).find("#main").html("");
-          throw error;
         });
     });
-}(RSVP, rJS, $, jsPlumb, confirm));
+}(RSVP, rJS, $, jsPlumb, Handlebars));
