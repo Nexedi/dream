@@ -17,8 +17,8 @@
  * along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
  * ==========================================================================*/
 
-/*global RSVP, rJS, $, jsPlumb, console, confirm*/
-(function ($, jsPlumb, console) {
+/*global RSVP, rJS, $, jsPlumb, confirm*/
+(function (RSVP, rJS, $, jsPlumb, confirm) {
   "use strict";
 
   rJS(window)
@@ -153,7 +153,6 @@
               1.1111,
             element = $(g.private.element).find("#" + element_id),
             new_value;
-          console.log(g.private.element);
           $.each(g.private.style_attr_list, function (i, j) {
             new_value = $(g.private.element).find('.dummy_window').css(j)
               .replace('px', '') * zoom_level + 'px';
@@ -531,4 +530,4 @@
           throw error;
         });
     });
-}($, jsPlumb, console));
+}(RSVP, rJS, $, jsPlumb, confirm));

@@ -1,4 +1,4 @@
-/*global console, rJS, RSVP, initDocumentPageMixin */
+/*global window, rJS, RSVP, initDocumentPageMixin */
 (function (window, rJS, RSVP, initDocumentPageMixin) {
   "use strict";
   var gadget_klass = rJS(window);
@@ -31,11 +31,6 @@
             }), gadget.getDeclaredGadget("productionline") ]);
         })
         .push(function (result_list) {
-          console.log(result_list);
-          console.log(result_list[0]);
-          console.log(result_list[1]);
-          console.log(result_list.length);
-          window.r = result_list[1];
           return result_list[1].render(result_list[0]);
         });
     })
