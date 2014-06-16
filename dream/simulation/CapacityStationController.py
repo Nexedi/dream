@@ -189,7 +189,7 @@ class CapacityStationController(EventGenerator):
             if totalAvailableCapacity<=0:
                 continue
             # if the buffer is not assembly
-            if not buffer.isAssembly:
+            if not buffer.requireFullProject:
                 # calculate the total capacity that is requested
                 totalRequestedCapacity=0    
                 for entity in buffer.getActiveObjectQueue():
@@ -274,7 +274,7 @@ class CapacityStationController(EventGenerator):
                 totalCapacityRequirement=0
                 # if the buffer acts as assembly there is no need to calculate the total capacity requirement, 
                 # it will be the one that the project has as a total for this station
-                if buffer.isAssembly:
+                if buffer.requireFullProject:
                     totalCapacityRequirement=project.capacityRequirementDict[nextStation.id]
                 # else calculate the total capacity requirement by adding the one each entity requires
                 else:

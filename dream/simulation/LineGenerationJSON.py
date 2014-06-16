@@ -812,8 +812,8 @@ def createObjects():
         elif objClass=='Dream.CapacityStationBuffer':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
-            isAssembly=bool(element.get('isAssembly', 0))
-            CB=CapacityStationBuffer(id,name,isAssembly=isAssembly)
+            requireFullProject=bool(element.get('requireFullProject', 0))
+            CB=CapacityStationBuffer(id,name,requireFullProject=requireFullProject)
             CB.nextIds=getSuccessorList(id)
             G.CapacityStationBufferList.append(CB)
             G.ObjList.append(CB)
