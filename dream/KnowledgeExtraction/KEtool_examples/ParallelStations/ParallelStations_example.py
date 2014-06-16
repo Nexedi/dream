@@ -28,14 +28,21 @@ from DistributionFitting import Distributions
 from ExcelOutput import Output
 import pyodbc
 import json
+import ConnectToDatabase
 
 #================================= Extract data from the database ==========================================#
-cnxn =pyodbc.connect("Driver={MySQL ODBC 3.51 Driver};SERVER=localhost; PORT=3306;DATABASE=test_database;UID=root; PASSWORD=Pitheos10; ")
-cursor1 = cnxn.cursor()
-cursor2 = cnxn.cursor()
-cursor3 = cnxn.cursor()
+# cnxn =pyodbc.connect("Driver={MySQL ODBC 3.51 Driver};SERVER=localhost; PORT=3306;DATABASE=test_database;UID=root; PASSWORD=Pitheos10;")
+# cursor1 = cnxn.cursor()
+# cursors[1] = cnxn.cursor()
+# cursor3 = cnxn.cursor()
 
-a = cursor1.execute("""
+cnxn=ConnectToDatabase.ConnectionData(seekName='ServerData', implicitExt='txt', number_of_cursors=3)
+
+cursors=cnxn.getCursors()
+print cursors
+
+
+a = cursors[0].execute("""
         select prod_code, stat_code,emp_no, TIMEIN, TIMEOUT
         from production_status
                 """)
@@ -77,12 +84,12 @@ for elem in MILL2:
     procTime_MILL2.append(dt[0])
 
 
-b = cursor2.execute("""
+b = cursors[1].execute("""
         select stat_code, MTTF_hour
         from failures
                 """)
 
-c = cursor3.execute("""
+c = cursors[2].execute("""
         select stat_code, MTTR_hour
         from repairs
                 """)         
