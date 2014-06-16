@@ -244,31 +244,6 @@
     node_container[element.id] = element_data;
   }
 
-  // function getData(gadget) {
-  //   var data = {
-  //     "nodes": gadget.private.node_container,
-  //     "edges": gadget.private.edge_container,
-  //     "preference": gadget.private.preference_container,
-  //     "general": gadget.private.general_container
-  //   },
-  //     wip_spreadsheet = $(gadget.private.element).find('#wip_spreadsheet'),
-  //     wip_part_spreadsheet = $(gadget.private.element)
-  //     .find('#wip_part_spreadsheet'),
-  //     shift_spreadsheet = $(gadget.private.element)
-  //     .find('#shift_spreadsheet');
-  //   if (wip_spreadsheet.length > 0) {
-  //     data.wip_spreadsheet = wip_spreadsheet.handsontable('getData');
-  //   }
-  //   if (wip_part_spreadsheet.length > 0) {
-  //     data.wip_part_spreadsheet = wip_part_spreadsheet
-  //       .handsontable('getData');
-  //   }
-  //   if (shift_spreadsheet.length > 0) {
-  //     data.shift_spreadsheet = shift_spreadsheet.handsontable('getData');
-  //   }
-  //   return data;
-  // }
-
   function redraw(gadget) {
     var coordinates = gadget.private.preference_container.coordinates || {},
       absolute_position,
@@ -488,12 +463,36 @@
       this.private.jsplumb_instance = jsPlumb.getInstance();
     })
 
+    .declareMethod('getData', function () {
+      var data = {
+        "nodes": this.private.node_container,
+        "edges": this.private.edge_container,
+        "preference": this.private.preference_container,
+        "general": this.private.general_container
+      },
+        wip_spreadsheet = $(this.private.element).find('#wip_spreadsheet'),
+        wip_part_spreadsheet = $(this.private.element)
+        .find('#wip_part_spreadsheet'),
+        shift_spreadsheet = $(this.private.element)
+        .find('#shift_spreadsheet');
+      if (wip_spreadsheet.length > 0) {
+        data.wip_spreadsheet = wip_spreadsheet.handsontable('getData');
+      }
+      if (wip_part_spreadsheet.length > 0) {
+        data.wip_part_spreadsheet = wip_part_spreadsheet
+          .handsontable('getData');
+      }
+      if (shift_spreadsheet.length > 0) {
+        data.shift_spreadsheet = shift_spreadsheet.handsontable('getData');
+      }
+      return JSON.stringify(data);
+    })
+
     .declareMethod('startService', function () {
       var gadget = this,
         preference = gadget.private.data.preference !== undefined ?
             gadget.private.data.preference : {},
         coordinates = preference.coordinates;
-
       return gadget.getElement()
         .push(function (el) {
           gadget.private.element = el;
