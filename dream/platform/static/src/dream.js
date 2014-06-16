@@ -162,7 +162,9 @@
             if (k === 'period') {
                period = v;
             }
-            if (k !== 'utilization'){
+          });
+          $.each(step, function(k, v){
+            if (k !== 'utilization' && k !== 'period'){
               usage += v;
             }
           });
