@@ -1,11 +1,12 @@
 
 # import os.path
 from readWip import findFile
+import os, sys
 
 ''' choose the file where we have the info related to the database we are about to connect to'''
 # insert the path to the file containing the data of the connection, for info see bellow within getConnectionInfo method#
 # XXXX update the arguments with the server data stored on your computer, ADDED FOR TESTING
-filename=findFile('ServerData',"c:/Users/papagiannis/workspace/DreamGit/dream/dream/simulation/", 'txt' )
+filename=findFile('ServerData',os.path.dirname(os.path.abspath(sys.argv[0])), 'txt' )
 # choose a delimiter for the file to be read
 seperator='='
 
@@ -21,7 +22,6 @@ def getConnectionInfo():
         pass_word='<user password>' 
     '''
     fileIN=open(filename,'r')
-    print 321
     line=fileIN.readline()
     while line:
         sout=line.split(seperator)

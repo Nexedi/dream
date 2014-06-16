@@ -93,7 +93,7 @@ def requestWIP():
     if not file:
         # added for testing purposes
         # XXXXX change that to a test file containing the wip, ADDED FOR TESTING
-        file=findFile('testJSON',"c:/Users/papagiannis/workspace/DreamGit/dream/dream/simulation/", 'json' )
+        file=findFile('testJSON',os.path.dirname(os.path.abspath(sys.argv[0])), 'json' )
     return file
 
 def getOrders(input_data):
