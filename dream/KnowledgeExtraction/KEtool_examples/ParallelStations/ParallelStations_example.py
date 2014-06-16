@@ -26,21 +26,13 @@ from Transformations import BasicTransformations
 from DistributionFitting import DistFittest
 from DistributionFitting import Distributions
 from ExcelOutput import Output
-import pyodbc
-import json
 import ConnectToDatabase
+import json
 
 #================================= Extract data from the database ==========================================#
-# cnxn =pyodbc.connect("Driver={MySQL ODBC 3.51 Driver};SERVER=localhost; PORT=3306;DATABASE=test_database;UID=root; PASSWORD=Pitheos10;")
-# cursor1 = cnxn.cursor()
-# cursors[1] = cnxn.cursor()
-# cursor3 = cnxn.cursor()
 
 cnxn=ConnectToDatabase.ConnectionData(seekName='ServerData', implicitExt='txt', number_of_cursors=3)
-
 cursors=cnxn.getCursors()
-print cursors
-
 
 a = cursors[0].execute("""
         select prod_code, stat_code,emp_no, TIMEIN, TIMEOUT
