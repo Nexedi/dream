@@ -73,8 +73,8 @@ def findFile(seekName, path, implicitExt=''):
     """
     for file in os.listdir(path):
         if file.endswith(os.extsep+implicitExt) and file.startswith(seekName):
-            if os.path.isfile(file):
-                full_path=os.path.join(path,file)
+            full_path=os.path.join(path,file)
+            if os.path.isfile(full_path):
                 return full_path
     return None
 
@@ -637,6 +637,7 @@ def setStartWip():
                  if their last station is INJM-MAN or INJM then they are already processed
     '''
     from Globals import SetWipTypeError, setWIP
+    from Globals import findObjectById
     json_data = G.wip_Data
     #Read the json data
     WIP = json_data['WIP']                                    # read from the dictionary the dict with key 'WIP'
@@ -667,7 +668,6 @@ def setStartWip():
             # print objectID
             #===================================================================
             assert objectID!='', 'there must be a stationID given to set the WIP'
-            from Globals import findObjectById
             object=Globals.findObjectById(objectID)
             assert object!=None, 'the station defined in the WIP is not a valid Station'
             # find the station by its id, if there is no station then place it 
@@ -760,7 +760,6 @@ def setStartWip():
 #             print objectID, '((0))    '*10
             #===================================================================
             assert objectID!='', 'there must be a stationID given to set the WIP'
-            from Globals import findObjectById
             object=Globals.findObjectById(objectID)
             assert object!=None, 'the station defined in the WIP is not a valid Station'
             # find the station by its id, if there is no station then place it 
@@ -823,7 +822,6 @@ def setStartWip():
         elif entity.id in WIP.keys():
             objectID=WIP[entity.id]["station"]
             assert objectID!='', 'there must be a stationID given to set the WIP'
-            from Globals import findObjectById
             object=Globals.findObjectById(objectID)
             assert object!=None, 'the station defined in the WIP is not a valid Station'
             # find the station by its id, if there is no station then place it 
