@@ -174,13 +174,13 @@
         },
         "CB4": {
             "_class": "Dream.CapacityStationBuffer",
-            "name": "CNCBuffer",
+            "name": "AssemblyBuffer",
 			"isAssembly":1,
             "wip": []
         },
         "CS4": {
             "_class": "Dream.CapacityStation",
-            "name": "CNC",
+            "name": "Assembly",
             "intervalCapacity": [
                 50,
                 100,
@@ -192,7 +192,7 @@
         },
         "CE4": {
             "_class": "Dream.CapacityStationExit",
-            "name": "CNCExit"
+            "name": "AssemblyExit"
         },
         "CSC": {
             "_class": "Dream.CapacityStationController",
