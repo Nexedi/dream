@@ -175,7 +175,7 @@
         "CB4": {
             "_class": "Dream.CapacityStationBuffer",
             "name": "AssemblyBuffer",
-			"isAssembly":1,
+			"requireFullProject":1,
             "wip": []
         },
         "CS4": {
