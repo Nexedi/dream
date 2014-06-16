@@ -65,6 +65,13 @@ class Simulation(DefaultSimulation):
           required_capacity_by_project[project_id][capacity_station] = \
                 float(requirement_sequence.split('-')[idx])
 
+    # a mapping project id -> first station
+    first_station_by_project = dict()
+    for project_id, station_sequence, requirement_sequence \
+                    in data['capacity_by_project_spreadsheet'][1:]:
+      if station_sequence:
+        first_station_by_project[project_id] = station_sequence.split('-')[0]
+
     # implicitly add a Queue for wip
     assert 'Qstart' not in new_data['nodes'], "reserved ID used"
     wip = []
@@ -107,15 +114,18 @@ class Simulation(DefaultSimulation):
             del new_data['edges'][edge_id]
 
         wip = []
+        # set as wip all projects that have to be processed in this station
+        # firts
         for project, requirement_dict in required_capacity_by_project.items():
-          requirement = requirement_dict['%s_Station' % node_id]
-          name = '%s_%s_%s' % (project, node_id, requirement)
-          wip.append(
-                dict(_class='Dream.CapacityEntity',
-                     id=name,
-                     name=name,
-                     capacityProjectId=project,
-                     requiredCapacity=requirement))
+          if first_station_by_project[project] == node_id:
+            requirement = requirement_dict['%s_Station' % node_id]
+            name = '%s_%s_%s' % (project, node_id, requirement)
+            wip.append(
+                  dict(_class='Dream.CapacityEntity',
+                       id=name,
+                       name=name,
+                       capacityProjectId=project,
+                       requiredCapacity=requirement))
 
         new_data['nodes']["%s_Buffer" % node_id] = dict(
             _class='Dream.CapacityStationBuffer',
