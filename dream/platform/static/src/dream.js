@@ -330,7 +330,7 @@
                                          schedule['entranceTime'] * 1000 * 3600);
             var duration = 0;
             if (schedule['exitTime']) {
-              duration = (schedule['exitTime'] - schedule['entranceTime']);
+              duration = (schedule['exitTime'] - schedule['entranceTime']) * 24;
             } else {
               // When duration is not returned by ManPy, it is calculated by
               // difference of entranceTime of this step and entranceTime of the
@@ -409,7 +409,13 @@
   }
 
   function job_gantt_widget(input_data, output_data) {
+      // TODO: make this a general parameter
+      // multiplier to get a day from a time unit
+      var time_multiplier = 24;
 
+      // TODO: use dhx_gantt zoom level feature (
+      // http://dhtmlx.com/docs/products/dhtmlxGantt/02_features.html )
+      
       // temporary hack
       var now = new Date();
       now.setHours(0);
@@ -511,9 +517,9 @@
               if (duration > 0.0) {
                 var task_start_date = new Date(start_date.getTime());
                 // for simulation time unit as days
-                // task_start_date.setDate(task_start_date.getDate() + schedule['entranceTime']);
-                // for simulation time unit as days hours
-                task_start_date.setTime(task_start_date.getTime() + schedule['entranceTime']*1000*3600);
+                task_start_date.setTime(task_start_date.getTime() + schedule['entranceTime']*1000*3600*24);
+                // for simulation time unit as hours
+          //      task_start_date.setTime(task_start_date.getTime() + schedule['entranceTime']*1000*3600);
 
                 var job_full_id = input_job.id + "." + input_order.id;
                 if (seen_parts[job_full_id] === undefined){
