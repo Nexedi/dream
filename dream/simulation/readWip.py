@@ -92,6 +92,7 @@ def requestWIP():
     file=connectDB()
     if not file:
         # added for testing purposes
+        # XXXXX change that to a test file containing the wip, ADDED FOR TESTING
         file=findFile('testJSON',"c:/Users/papagiannis/workspace/DreamGit/dream/dream/simulation/", 'json' )
     return file
 
