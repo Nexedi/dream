@@ -106,6 +106,63 @@
             return navigation_template(kw);
         });
     }
+    function getNextLink(gadget, portal_type, options) {
+        var forward_kw = {
+            action: options.action || "view"
+        }, queue = new RSVP.Queue();
+        if (portal_type === "Input") {
+            forward_kw.id = options.id;
+        } else if (portal_type === "Output") {
+            forward_kw.id = options.id;
+            queue.push(function() {
+                return gadget.getDeclaredGadget("jio");
+            }).push(function(jio_gadget) {
+                return jio_gadget.getAttachment({
+                    _id: options.id,
+                    _attachment: "simulation.json"
+                });
+            }).push(function(sim_json) {
+                var document_list = JSON.parse(sim_json), current = parseInt(options.result, 10);
+                if (current === document_list.length - 1) {
+                    forward_kw.result = 0;
+                } else {
+                    forward_kw.result = current + 1;
+                }
+            });
+        } else if (portal_type !== "Input Module") {
+            throw new Error("Unknown portal type: " + portal_type);
+        }
+        return queue.push(function() {
+            return gadget.aq_pleasePublishMyState(forward_kw);
+        });
+    }
+    function getTitle(gadget, portal_type, options) {
+        var title;
+        if (portal_type === "Input Module") {
+            title = "Documents";
+        } else if (portal_type === "Input") {
+            title = gadget.getDeclaredGadget("jio").push(function(jio_gadget) {
+                return jio_gadget.get({
+                    _id: options.id
+                });
+            }).push(function(jio_doc) {
+                return jio_doc.data.title + " (" + jio_doc.data.modified + ")";
+            });
+        } else if (portal_type === "Output") {
+            title = gadget.getDeclaredGadget("jio").push(function(jio_gadget) {
+                return jio_gadget.getAttachment({
+                    _id: options.id,
+                    _attachment: "simulation.json"
+                });
+            }).push(function(sim_json) {
+                var document_list = JSON.parse(sim_json);
+                return document_list[options.result].score + " " + document_list[options.result].key;
+            });
+        } else {
+            throw new Error("Unknown portal type: " + portal_type);
+        }
+        return title;
+    }
     function calculateNavigationHTML(gadget, portal_type, options) {
         var nav_html, action;
         if (portal_types[portal_type][options.action].type === "object_view") {
@@ -221,7 +278,9 @@
             g.props.configuration_dict = JSON.parse(evt.target.responseText);
         });
     }).declareMethod("render", function(options) {
-        var gadget = this, page_gadget, portal_type = "Input Module", nav_element = gadget.props.element.getElementsByClassName("nav_container")[0], element = gadget.props.element.getElementsByClassName("gadget_container")[0];
+        var gadget = this, back_kw = {
+            action: "view"
+        }, page_gadget, portal_type = "Input Module", nav_element = gadget.props.element.getElementsByClassName("nav_container")[0], element = gadget.props.element.getElementsByClassName("gadget_container")[0];
         if (options.action === undefined) {
             // Redirect to the view action
             options.action = "view";
@@ -233,6 +292,8 @@
                 portal_type = "Input";
             } else {
                 portal_type = "Output";
+                back_kw.action = "view_result";
+                back_kw.id = options.id;
             }
         }
         // Get the action informations
@@ -242,11 +303,17 @@
                 return page_gadget.render(options);
             }
         }).push(function() {
-            return RSVP.all([ page_gadget.getElement(), calculateNavigationHTML(gadget, portal_type, options) ]);
+            return RSVP.all([ page_gadget.getElement(), calculateNavigationHTML(gadget, portal_type, options), gadget.aq_pleasePublishMyState(back_kw), getTitle(gadget, portal_type, options), getNextLink(gadget, portal_type, options) ]);
         }).push(function(result_list) {
             var nav_html = result_list[1], page_element = result_list[0];
             // Update title
-            gadget.props.element.querySelector("header h1").textContent = portal_type;
+            gadget.props.element.querySelector("header h1").textContent = result_list[3];
+            // XXX Hide the back button in case of module display?
+            // Update back link
+            gadget.props.element.getElementsByClassName("back_link")[0].href = result_list[2];
+            // XXX Hide the forward button in case of non result?
+            // Update forward link
+            gadget.props.element.getElementsByClassName("next_link")[0].href = result_list[4];
             // Update the navigation panel
             // Clear the previous rendering
             while (nav_element.firstChild) {

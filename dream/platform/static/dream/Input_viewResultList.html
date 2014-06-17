@@ -10,9 +10,11 @@
 
     <script id="table-template" type="text/x-handlebars-template">
       <ul data-role="listview" data-inset="true" class="document-listview">
-        {{#documentlist}}
+        {{#each documentlist}}
           <li><a href="{{link}}">{{title}}</a></li>
-        {{/documentlist}}
+        {{else}}
+          <p>No result yet.</p>
+        {{/each}}
       </ul>
     </script>
 

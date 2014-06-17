@@ -47,10 +47,21 @@
     </div>
 
     <header data-role="header">
-      <a href="#leftpanel"
-         data-icon="bars"
-         class="menu_link ui-btn ui-icon-bars ui-btn-icon-left">Menu</a>
+
+      <div data-role="controlgroup" data-type="horizontal" class="ui-btn-left">
+        <a href="#leftpanel"
+           data-icon="bars"
+           class="menu_link ui-btn ui-icon-bars ui-btn-icon-left">Menu</a>
+        <a data-icon="back"
+           class="back_link ui-btn ui-icon-back ui-btn-icon-right">Back</a>
+      </div>
       <h1>Dream Simulation</h1>
+
+      <div data-role="controlgroup" data-type="horizontal" class="ui-btn-right">
+        <a data-icon="forward"
+           class="next_link ui-btn ui-icon-forward ui-btn-icon-right">Next</a>
+      </div>
+
     </header>
 
     <div class="nav_container"></div>
