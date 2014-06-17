@@ -118,6 +118,37 @@
       });
   }
 
+  function getTitle(gadget, portal_type, options) {
+    var title;
+    if (portal_type === "Input Module") {
+      title = "Documents";
+    } else if (portal_type === "Input") {
+      title = gadget.getDeclaredGadget("jio")
+        .push(function (jio_gadget) {
+          return jio_gadget.get({_id: options.id});
+        })
+        .push(function (jio_doc) {
+          return jio_doc.data.title + " (" + jio_doc.data.modified + ")";
+        });
+    } else if (portal_type === "Output") {
+      title = gadget.getDeclaredGadget("jio")
+        .push(function (jio_gadget) {
+          return jio_gadget.getAttachment({
+            _id: options.id,
+            "_attachment": "simulation.json"
+          });
+        })
+        .push(function (sim_json) {
+          var document_list = JSON.parse(sim_json);
+          return document_list[options.result].score + " " +
+            document_list[options.result].key;
+        });
+    } else {
+      throw new Error("Unknown portal type: " + portal_type);
+    }
+    return title;
+  }
+
   function calculateNavigationHTML(gadget, portal_type, options) {
     var nav_html,
       action;
@@ -344,7 +375,8 @@
           return RSVP.all([
             page_gadget.getElement(),
             calculateNavigationHTML(gadget, portal_type, options),
-            gadget.aq_pleasePublishMyState(back_kw)
+            gadget.aq_pleasePublishMyState(back_kw),
+            getTitle(gadget, portal_type, options)
           ]);
         }).push(function (result_list) {
           var nav_html = result_list[1],
@@ -352,7 +384,7 @@
 
           // Update title
           gadget.props.element.querySelector("header h1").textContent =
-            portal_type;
+            result_list[3];
 
           // XXX Hide the back button in case of module display?
           // Update back link
