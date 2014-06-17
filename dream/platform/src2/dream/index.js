@@ -118,6 +118,40 @@
       });
   }
 
+  function getNextLink(gadget, portal_type, options) {
+    var forward_kw = {action: options.action || "view"},
+      queue = new RSVP.Queue();
+    if (portal_type === "Input") {
+      forward_kw.id = options.id;
+    } else if (portal_type === "Output") {
+      forward_kw.id = options.id;
+      queue
+        .push(function () {
+          return gadget.getDeclaredGadget("jio");
+        })
+        .push(function (jio_gadget) {
+          return jio_gadget.getAttachment({
+            _id: options.id,
+            "_attachment": "simulation.json"
+          });
+        })
+        .push(function (sim_json) {
+          var document_list = JSON.parse(sim_json),
+            current = parseInt(options.result, 10);
+          if (current === (document_list.length - 1)) {
+            forward_kw.result = 0;
+          } else {
+            forward_kw.result = current + 1;
+          }
+        });
+    } else if (portal_type !== "Input Module") {
+      throw new Error("Unknown portal type: " + portal_type);
+    }
+    return queue.push(function () {
+      return gadget.aq_pleasePublishMyState(forward_kw);
+    });
+  }
+
   function getTitle(gadget, portal_type, options) {
     var title;
     if (portal_type === "Input Module") {
@@ -377,7 +411,8 @@
             page_gadget.getElement(),
             calculateNavigationHTML(gadget, portal_type, options),
             gadget.aq_pleasePublishMyState(back_kw),
-            getTitle(gadget, portal_type, options)
+            getTitle(gadget, portal_type, options),
+            getNextLink(gadget, portal_type, options)
           ]);
         }).push(function (result_list) {
           var nav_html = result_list[1],
@@ -391,6 +426,10 @@
           // Update back link
           gadget.props.element
             .getElementsByClassName("back_link")[0].href = result_list[2];
+          // XXX Hide the forward button in case of non result?
+          // Update forward link
+          gadget.props.element
+            .getElementsByClassName("next_link")[0].href = result_list[4];
 
           // Update the navigation panel
           // Clear the previous rendering
