@@ -358,6 +358,7 @@
           portal_type = "Input";
         } else {
           portal_type = "Output";
+          back_kw.action = "view_result";
           back_kw.id = options.id;
         }
       }
