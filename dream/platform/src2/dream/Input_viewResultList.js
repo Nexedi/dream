@@ -34,6 +34,13 @@
         "_id": gadget.props.jio_key,
         "_attachment": "simulation.json"
       })
+        .push(undefined, function (error) {
+          if (error.status === 404) {
+            // Simulation not yet generated
+            return JSON.stringify([]);
+          }
+          throw error;
+        })
         .push(function (sim_json) {
           var document_list = JSON.parse(sim_json),
             result_list = [],
