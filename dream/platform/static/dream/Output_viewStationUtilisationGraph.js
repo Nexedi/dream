@@ -1,5 +1,5 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, jQuery, initGadgetMixin */
-(function(window, rJS, RSVP, initDocumentPageMixin, $, initGadgetMixin) {
+/*global console, rJS, RSVP, jQuery, initGadgetMixin */
+(function(window, rJS, RSVP, $, initGadgetMixin) {
     "use strict";
     function station_utilisation_graph_widget(output_data) {
         var blockage_data = [], waiting_data = [], failure_data = [], working_data = [], ticks = [], counter = 1, series, options;
@@ -97,19 +97,18 @@
     }
     var gadget_klass = rJS(window);
     initGadgetMixin(gadget_klass);
-    initDocumentPageMixin(gadget_klass);
     gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareMethod("render", function(options) {
         var jio_key = options.id, gadget = this;
         gadget.props.jio_key = jio_key;
+        gadget.props.result = options.result;
         return gadget.aq_getAttachment({
             _id: gadget.props.jio_key,
             _attachment: "simulation.json"
         }).push(function(simulation_json) {
-            gadget.props.result_list = station_utilisation_graph_widget(// XXX Hardcoded result
-            JSON.parse(simulation_json)[0].result);
+            gadget.props.result_list = station_utilisation_graph_widget(JSON.parse(simulation_json)[gadget.props.result].result);
         });
     }).declareMethod("startService", function() {
         // XXX Manually calculate width and height when resizing
         $.plot(this.props.element.querySelector(".graph_container"), this.props.result_list[0], this.props.result_list[1]);
     });
-})(window, rJS, RSVP, initDocumentPageMixin, jQuery, initGadgetMixin);
+})(window, rJS, RSVP, jQuery, initGadgetMixin);

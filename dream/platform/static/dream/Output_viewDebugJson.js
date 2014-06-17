@@ -1,24 +1,19 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, initGadgetMixin */
-(function(window, rJS, RSVP, initDocumentPageMixin, initGadgetMixin) {
+/*global console, rJS, RSVP, initGadgetMixin */
+(function(window, rJS, RSVP, initGadgetMixin) {
     "use strict";
     var gadget_klass = rJS(window);
     initGadgetMixin(gadget_klass);
-    initDocumentPageMixin(gadget_klass);
     gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareMethod("render", function(options) {
         var gadget = this;
         this.props.jio_key = options.id;
-        return new RSVP.Queue().push(function() {
-            return RSVP.all([ gadget.aq_getAttachment({
-                _id: gadget.props.jio_key,
-                _attachment: "body.json"
-            }), gadget.aq_getAttachment({
-                _id: gadget.props.jio_key,
-                _attachment: "simulation.json"
-            }) ]);
-        }).push(function(result_list) {
-            gadget.props.element.querySelector(".json_input").textContent = result_list[0];
-            // XXX Hardcoded result
-            gadget.props.element.querySelector(".json_output").textContent = JSON.stringify(JSON.parse(result_list[1])[0].result);
+        this.props.result = options.result;
+        return gadget.aq_getAttachment({
+            _id: gadget.props.jio_key,
+            _attachment: "simulation.json"
+        }).push(function(result_json) {
+            var result = JSON.parse(result_json);
+            gadget.props.element.querySelector(".json_input").textContent = JSON.stringify(result[gadget.props.result].input);
+            gadget.props.element.querySelector(".json_output").textContent = JSON.stringify(result[gadget.props.result].result);
         });
     });
-})(window, rJS, RSVP, initDocumentPageMixin, initGadgetMixin);
+})(window, rJS, RSVP, initGadgetMixin);

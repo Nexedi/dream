@@ -1,8 +1,7 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, initGadgetMixin */
-(function(window, rJS, RSVP, initDocumentPageMixin, initGadgetMixin) {
+/*global console, rJS, RSVP, initGadgetMixin */
+(function(window, rJS, RSVP, initGadgetMixin) {
     "use strict";
     var gadget_klass = rJS(window);
-    initDocumentPageMixin(gadget_klass);
     initGadgetMixin(gadget_klass);
     gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareMethod("render", function(options) {
         var jio_key = options.id, gadget = this;
@@ -20,4 +19,4 @@
             return tableeditor.startService();
         });
     });
-})(window, rJS, RSVP, initDocumentPageMixin, initGadgetMixin);
+})(window, rJS, RSVP, initGadgetMixin);

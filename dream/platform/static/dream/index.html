@@ -16,13 +16,24 @@
     <script src="mixin_gadget.js" type="text/javascript"></script>
     <script src="index.js" type="text/javascript"></script>
 
-    <script id="navigation-template" type="text/x-handlebars-template">
+    <script id="panel-template" type="text/x-handlebars-template">
       <ul data-role="listview">
+        <li><a class="home_link ui-btn ui-icon-home ui-btn-icon-left" data-icon="home">Documents</a></li>
+        <li><a class="fast_input_link ui-btn ui-icon-plus ui-btn-icon-left" data-icon="plus">New Document</a></li>
         {{#navigationlist}}
           <li><a href="{{link}}">{{title}}</a></li>
         {{/navigationlist}}
       </ul>
     </script>
+
+    <script id="active-navigation-template" type="text/x-handlebars-template">
+      <li><a class="ui-btn-active ui-state-persist" href="{{link}}">{{title}}</a></li>
+    </script>
+
+    <script id="navigation-template" type="text/x-handlebars-template">
+      <li><a href="{{link}}">{{title}}</a></li>
+    </script>
+
   </head>
   <body>
 
@@ -36,10 +47,13 @@
     </div>
 
     <header data-role="header">
-      <a href="#leftpanel" class="menu_link">Menu</a>
+      <a href="#leftpanel"
+         data-icon="bars"
+         class="menu_link ui-btn ui-icon-bars ui-btn-icon-left">Menu</a>
       <h1>Dream Simulation</h1>
-      <a class="home_link ui-btn ui-icon-home ui-btn-icon-left" data-icon="home">Home</a>
     </header>
+
+    <div class="nav_container"></div>
 
     <article class="gadget_container"></article>
 

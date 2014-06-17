@@ -1,6 +1,6 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, moment, initGadgetMixin */
+/*global console, rJS, RSVP, moment, initGadgetMixin */
 /*jslint nomen: true */
-(function(window, rJS, RSVP, initDocumentPageMixin, moment, initGadgetMixin) {
+(function(window, rJS, RSVP, moment, initGadgetMixin) {
     "use strict";
     function job_schedule_spreadsheet_widget(all_data) {
         var now = new Date(), input_data = all_data.input, output_data = all_data.result, spreadsheet_data = [], spreadsheet_header = [ [ "Jobs", "ID", "Project Manager", "Due Date", "Priority", "Entrance Time", "Processing Time", "Station ID", "Step No." ] ], simulation_start_date = new Date(input_data.general.currentDate || now.getTime()), i, j, k, obj, node, component, order, node_id, due_date, entrance_date, duration, schedule, input_job = null, input_order = null;
@@ -90,22 +90,21 @@
     }
     var gadget_klass = rJS(window);
     initGadgetMixin(gadget_klass);
-    initDocumentPageMixin(gadget_klass);
     gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareMethod("render", function(options) {
         var jio_key = options.id, gadget = this;
         gadget.props.jio_key = jio_key;
+        gadget.props.result = options.result;
         return new RSVP.Queue().push(function() {
             return RSVP.all([ gadget.aq_getAttachment({
                 _id: jio_key,
                 _attachment: "simulation.json"
             }), gadget.getDeclaredGadget("tableeditor") ]);
         }).push(function(result_list) {
-            // XXX Hardcoded result
-            return result_list[1].render(JSON.stringify(job_schedule_spreadsheet_widget(JSON.parse(result_list[0])[0])));
+            return result_list[1].render(JSON.stringify(job_schedule_spreadsheet_widget(JSON.parse(result_list[0])[gadget.props.result])));
         });
     }).declareMethod("startService", function() {
         return this.getDeclaredGadget("tableeditor").push(function(tableeditor) {
             return tableeditor.startService();
         });
     });
-})(window, rJS, RSVP, initDocumentPageMixin, moment, initGadgetMixin);
+})(window, rJS, RSVP, moment, initGadgetMixin);

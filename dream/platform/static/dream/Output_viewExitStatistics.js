@@ -1,7 +1,7 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, Handlebars,
+/*global console, rJS, RSVP, Handlebars,
          initGadgetMixin */
 /*jslint nomen: true */
-(function(window, rJS, RSVP, initDocumentPageMixin, Handlebars, initGadgetMixin) {
+(function(window, rJS, RSVP, Handlebars, initGadgetMixin) {
     "use strict";
     /////////////////////////////////////////////////////////////////
     // Handlebars
@@ -85,17 +85,16 @@
         return result;
     }
     initGadgetMixin(gadget_klass);
-    initDocumentPageMixin(gadget_klass);
     gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareMethod("render", function(options) {
         var jio_key = options.id, gadget = this;
         gadget.props.jio_key = jio_key;
+        gadget.props.result = options.result;
         return gadget.aq_getAttachment({
             _id: gadget.props.jio_key,
             _attachment: "simulation.json"
         }).push(function(simulation_json) {
-            var result = calculate_exit_stat(// XXX Hardcoded result
-            JSON.parse(simulation_json)[0].result);
+            var result = calculate_exit_stat(JSON.parse(simulation_json)[gadget.props.result].result);
             gadget.props.element.innerHTML = result;
         });
     });
-})(window, rJS, RSVP, initDocumentPageMixin, Handlebars, initGadgetMixin);
+})(window, rJS, RSVP, Handlebars, initGadgetMixin);

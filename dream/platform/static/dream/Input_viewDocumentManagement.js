@@ -1,6 +1,6 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, jQuery,
+/*global console, rJS, RSVP, jQuery,
  promiseEventListener, initGadgetMixin */
-(function(window, rJS, RSVP, initDocumentPageMixin, $, promiseEventListener, initGadgetMixin) {
+(function(window, rJS, RSVP, $, promiseEventListener, initGadgetMixin) {
     "use strict";
     function datatouri(data, mime_type) {
         var result = "data:";
@@ -75,7 +75,6 @@
     }
     var gadget_klass = rJS(window);
     initGadgetMixin(gadget_klass);
-    initDocumentPageMixin(gadget_klass);
     gadget_klass.declareAcquiredMethod("aq_remove", "jio_remove").declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareAcquiredMethod("aq_putAttachment", "jio_putAttachment").declareAcquiredMethod("aq_get", "jio_get").declareAcquiredMethod("aq_ajax", "jio_ajax").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantToDisplayThisDocument", "whoWantToDisplayThisDocument").declareAcquiredMethod("whoWantToDisplayHome", "whoWantToDisplayHome").declareMethod("render", function(options) {
         this.props.jio_key = options.id;
         var gadget = this;
@@ -94,4 +93,4 @@
     }).declareMethod("startService", function() {
         return RSVP.all([ waitForDeletion(this), waitForKnowledgeExtraction(this) ]);
     });
-})(window, rJS, RSVP, initDocumentPageMixin, jQuery, promiseEventListener, initGadgetMixin);
+})(window, rJS, RSVP, jQuery, promiseEventListener, initGadgetMixin);

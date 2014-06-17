@@ -1,9 +1,7 @@
-/*global window, rJS, RSVP, initDocumentPageMixin */
-/*jslint nomen: true */
-(function(window, rJS, RSVP, initDocumentPageMixin) {
+/*global window, rJS, RSVP */
+(function(window, rJS, RSVP) {
     "use strict";
     var gadget_klass = rJS(window);
-    initDocumentPageMixin(gadget_klass);
     gadget_klass.ready(function(g) {
         g.props = {};
     }).ready(function(g) {
@@ -14,6 +12,7 @@
         var jio_key = options.id, gadget = this;
         gadget.props.jio_key = jio_key;
         return new RSVP.Queue().push(function() {
+            /*jslint nomen: true*/
             return RSVP.all([ gadget.aq_getAttachment({
                 _id: jio_key,
                 _attachment: "body.json"
@@ -26,4 +25,4 @@
             return productionline.startService();
         });
     });
-})(window, rJS, RSVP, initDocumentPageMixin);
+})(window, rJS, RSVP);
