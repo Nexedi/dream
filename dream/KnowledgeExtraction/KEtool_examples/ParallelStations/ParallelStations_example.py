@@ -26,12 +26,12 @@ from Transformations import BasicTransformations
 from DistributionFitting import DistFittest
 from DistributionFitting import Distributions
 from ExcelOutput import Output
-import ConnectToDatabase
+import ImportDatabase
 import json
 
 #================================= Extract data from the database ==========================================#
 
-cnxn=ConnectToDatabase.ConnectionData(seekName='ServerData', implicitExt='txt', number_of_cursors=3)
+cnxn=ImportDatabase.ConnectionData(seekName='ServerData', implicitExt='txt', number_of_cursors=3)
 cursors=cnxn.getCursors()
 
 a = cursors[0].execute("""
