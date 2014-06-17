@@ -306,6 +306,7 @@
     // Render the page
     .declareMethod("render", function (options) {
       var gadget = this,
+        back_kw = {action: "view"},
         page_gadget,
         portal_type = "Input Module",
         nav_element = gadget.props.element
@@ -326,6 +327,7 @@
           portal_type = "Input";
         } else {
           portal_type = "Output";
+          back_kw.id = options.id;
         }
       }
 
@@ -341,7 +343,8 @@
         }).push(function () {
           return RSVP.all([
             page_gadget.getElement(),
-            calculateNavigationHTML(gadget, portal_type, options)
+            calculateNavigationHTML(gadget, portal_type, options),
+            gadget.aq_pleasePublishMyState(back_kw)
           ]);
         }).push(function (result_list) {
           var nav_html = result_list[1],
@@ -350,6 +353,11 @@
           // Update title
           gadget.props.element.querySelector("header h1").textContent =
             portal_type;
+
+          // XXX Hide the back button in case of module display?
+          // Update back link
+          gadget.props.element
+            .getElementsByClassName("back_link")[0].href = result_list[2];
 
           // Update the navigation panel
           // Clear the previous rendering
