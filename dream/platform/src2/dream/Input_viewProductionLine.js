@@ -27,7 +27,7 @@
             gadget.aq_getAttachment({
               _id: jio_key,
               _attachment: "body.json"
-            }), gadget.getDeclaredGadget("productionline") ]);
+            }), gadget.getDeclaredGadget("productionline_graph") ]);
         })
         .push(function (result_list) {
           return result_list[1].render(result_list[0]);
@@ -35,9 +35,16 @@
     })
 
     .declareMethod("startService", function () {
-      return this.getDeclaredGadget("productionline")
-        .push(function (productionline) {
-          return productionline.startService();
+      var g = this;
+      return g.getDeclaredGadget("productionline_graph")
+        .push(function (graph) {
+          return graph.startService();
+        })
+        .push(function () {
+          return g.getDeclaredGadget("productionline_toolbox");
+        })
+        .push(function (toolbox) {
+          return toolbox.startService();
         });
     });
 }(window, rJS, RSVP));
