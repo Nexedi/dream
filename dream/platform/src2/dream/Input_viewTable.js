@@ -1,9 +1,8 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, initGadgetMixin */
-(function (window, rJS, RSVP, initDocumentPageMixin, initGadgetMixin) {
+/*global console, rJS, RSVP, initGadgetMixin */
+(function (window, rJS, RSVP, initGadgetMixin) {
   "use strict";
 
   var gadget_klass = rJS(window);
-  initDocumentPageMixin(gadget_klass);
   initGadgetMixin(gadget_klass);
   gadget_klass
     /////////////////////////////////////////////////////////////////
@@ -42,4 +41,4 @@
           return tableeditor.startService();
         });
     });
-}(window, rJS, RSVP, initDocumentPageMixin, initGadgetMixin));
+}(window, rJS, RSVP, initGadgetMixin));

@@ -1,7 +1,7 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, jQuery, gantt,
+/*global console, rJS, RSVP, jQuery, gantt,
          initGadgetMixin */
 /*jslint nomen: true */
-(function (window, rJS, RSVP, initDocumentPageMixin, $, gantt,
+(function (window, rJS, RSVP, $, gantt,
            initGadgetMixin) {
   "use strict";
 
@@ -203,7 +203,6 @@
 
   var gadget_klass = rJS(window);
   initGadgetMixin(gadget_klass);
-  initDocumentPageMixin(gadget_klass);
   gadget_klass
     /////////////////////////////////////////////////////////////////
     // Acquired methods
@@ -217,6 +216,7 @@
       var jio_key = options.id,
         gadget = this;
       gadget.props.jio_key = jio_key;
+      gadget.props.result = options.result;
 
       return gadget.aq_getAttachment({
         "_id": gadget.props.jio_key,
@@ -224,8 +224,7 @@
       })
         .push(function (simulation_json) {
           gadget.props.result = job_gantt_widget(
-            // XXX Hardcoded result
-            JSON.parse(simulation_json)[0]
+            JSON.parse(simulation_json)[gadget.props.result]
           );
         });
     })
@@ -258,4 +257,4 @@
           throw error;
         });
     });
-}(window, rJS, RSVP, initDocumentPageMixin, jQuery, gantt, initGadgetMixin));
+}(window, rJS, RSVP, jQuery, gantt, initGadgetMixin));

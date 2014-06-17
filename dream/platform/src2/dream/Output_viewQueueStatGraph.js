@@ -1,6 +1,6 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, jQuery, initGadgetMixin */
+/*global console, rJS, RSVP, jQuery, initGadgetMixin */
 /*jslint nomen: true */
-(function (window, rJS, RSVP, initDocumentPageMixin, $, initGadgetMixin) {
+(function (window, rJS, RSVP, $, initGadgetMixin) {
   "use strict";
 
   function queue_stat_widget(output_data) {
@@ -19,7 +19,6 @@
 
   var gadget_klass = rJS(window);
   initGadgetMixin(gadget_klass);
-  initDocumentPageMixin(gadget_klass);
   gadget_klass
     /////////////////////////////////////////////////////////////////
     // Acquired methods
@@ -33,6 +32,7 @@
       var jio_key = options.id,
         gadget = this;
       gadget.props.jio_key = jio_key;
+      gadget.props.result = options.result;
 
       return gadget.aq_getAttachment({
         "_id": gadget.props.jio_key,
@@ -40,8 +40,7 @@
       })
         .push(function (simulation_json) {
           gadget.props.series = queue_stat_widget(
-            // XXX Hardcoded result
-            JSON.parse(simulation_json)[0].result
+            JSON.parse(simulation_json)[gadget.props.result].result
           );
         });
     })
@@ -53,4 +52,4 @@
         this.props.series
       );
     });
-}(window, rJS, RSVP, initDocumentPageMixin, jQuery, initGadgetMixin));
+}(window, rJS, RSVP, jQuery, initGadgetMixin));

@@ -1,6 +1,6 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, jQuery,
+/*global console, rJS, RSVP, jQuery,
  promiseEventListener, initGadgetMixin */
-(function (window, rJS, RSVP, initDocumentPageMixin, $, promiseEventListener,
+(function (window, rJS, RSVP, $, promiseEventListener,
            initGadgetMixin) {
   "use strict";
 
@@ -104,7 +104,6 @@
 
   var gadget_klass = rJS(window);
   initGadgetMixin(gadget_klass);
-  initDocumentPageMixin(gadget_klass);
   gadget_klass
     /////////////////////////////////////////////////////////////////
     // Acquired methods
@@ -153,5 +152,5 @@
         waitForKnowledgeExtraction(this)
       ]);
     });
-}(window, rJS, RSVP, initDocumentPageMixin, jQuery, promiseEventListener,
+}(window, rJS, RSVP, jQuery, promiseEventListener,
   initGadgetMixin));

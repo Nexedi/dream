@@ -1,8 +1,7 @@
-/*global window, rJS, RSVP, initDocumentPageMixin */
-(function (window, rJS, RSVP, initDocumentPageMixin) {
+/*global window, rJS, RSVP */
+(function (window, rJS, RSVP) {
   "use strict";
   var gadget_klass = rJS(window);
-  initDocumentPageMixin(gadget_klass);
   gadget_klass
 
     .ready(function (g) {
@@ -41,4 +40,4 @@
           return productionline.startService();
         });
     });
-}(window, rJS, RSVP, initDocumentPageMixin));
+}(window, rJS, RSVP));

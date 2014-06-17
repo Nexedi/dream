@@ -1,6 +1,6 @@
-/*global console, rJS, RSVP, initDocumentPageMixin, moment, initGadgetMixin */
+/*global console, rJS, RSVP, moment, initGadgetMixin */
 /*jslint nomen: true */
-(function (window, rJS, RSVP, initDocumentPageMixin, moment, initGadgetMixin) {
+(function (window, rJS, RSVP, moment, initGadgetMixin) {
   "use strict";
 
   function job_schedule_spreadsheet_widget(all_data) {
@@ -150,7 +150,6 @@
 
   var gadget_klass = rJS(window);
   initGadgetMixin(gadget_klass);
-  initDocumentPageMixin(gadget_klass);
   gadget_klass
 
     /////////////////////////////////////////////////////////////////
@@ -165,6 +164,7 @@
       var jio_key = options.id,
         gadget = this;
       gadget.props.jio_key = jio_key;
+      gadget.props.result = options.result;
 
       return new RSVP.Queue()
         .push(function () {
@@ -180,8 +180,7 @@
           return result_list[1].render(
             JSON.stringify(
               job_schedule_spreadsheet_widget(
-                // XXX Hardcoded result
-                JSON.parse(result_list[0])[0]
+                JSON.parse(result_list[0])[gadget.props.result]
               )
             )
           );
@@ -206,4 +205,4 @@
           return tableeditor.startService();
         });
     });
-}(window, rJS, RSVP, initDocumentPageMixin, moment, initGadgetMixin));
+}(window, rJS, RSVP, moment, initGadgetMixin));

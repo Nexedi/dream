@@ -11,8 +11,149 @@
   $.mobile.hashListeningEnabled = false;
   $.mobile.pushStateEnabled = false;
 
-  var navigation_template,
+  /////////////////////////////////////////////////////////////////
+  // Minimalistic ERP5's like portal type configuration
+  /////////////////////////////////////////////////////////////////
+  var portal_types = {
+    "Input Module": {
+      "view": {
+        "gadget": "InputModule_viewInputList",
+        "type": "object_list",
+        "title": "Document List"
+      },
+      "view_fast_input": {
+        "gadget": "InputModule_viewAddDocumentDialog",
+        "type": "object_fast_input",
+        "title": "Create Document"
+      }
+    },
+    "Input": {
+      "view": {
+        "gadget": "Input_viewProductionLine",
+        "type": "object_view",
+        "title": "Production Line"
+      },
+      "view_table": {
+        "gadget": "Input_viewTable",
+        "type": "object_view",
+        "title": "Edit table"
+      },
+      "view_simu": {
+        "gadget": "Input_viewSimulation",
+        "type": "object_view",
+        "title": "Run simulation"
+      },
+      "view_management": {
+        "gadget": "Input_viewDocumentManagement",
+        "type": "object_view",
+        "title": "Manage document"
+      },
+      "view_result": {
+        "gadget": "Input_viewResultList",
+        "type": "object_view",
+        "title": "Results"
+      }
+    },
+    "Output": {
+      "view": {
+        "gadget": "Output_viewStationUtilisationGraph",
+        "type": "object_view",
+        "title": "Stations Utilization"
+      },
+      "view_queue_stat": {
+        "gadget": "Output_viewQueueStatGraph",
+        "type": "object_view",
+        "title": "Queues Statistics"
+      },
+      "view_exit_stat": {
+        "gadget": "Output_viewExitStatistics",
+        "type": "object_view",
+        "title": "Exit Statistics"
+      },
+      "view_gantt": {
+        "gadget": "Output_viewJobGantt",
+        "type": "object_view",
+        "title": "Job Gantt"
+      },
+      "view_schedule": {
+        "gadget": "Output_viewJobScheduleSpreadsheet",
+        "type": "object_view",
+        "title": "Job Schedule"
+      },
+      "view_debug": {
+        "gadget": "Output_viewDebugJson",
+        "type": "object_view",
+        "title": "Debug JSON"
+      }
+    }
+  },
+    panel_template,
+    navigation_template,
+    active_navigation_template,
     gadget_klass = rJS(window);
+
+  function calculateTabHTML(gadget, options, key, title, active) {
+    return new RSVP.Queue()
+      .push(function () {
+        var kw = {
+          action: key,
+          id: options.id
+        };
+        if (options.result !== undefined) {
+          kw.result = options.result;
+        }
+        return gadget.aq_pleasePublishMyState(kw);
+      })
+      .push(function (url) {
+        var kw = {
+          title: title,
+          link: url
+        };
+        if (active === true) {
+          return active_navigation_template(kw);
+        }
+
+        return navigation_template(kw);
+
+      });
+  }
+
+  function calculateNavigationHTML(gadget, portal_type, options) {
+    var nav_html,
+      action;
+    if (portal_types[portal_type][options.action].type ===
+        "object_view") {
+      return new RSVP.Queue()
+        .push(function () {
+          var url_list = [],
+            key2;
+          for (key2 in portal_types[portal_type]) {
+            if (portal_types[portal_type].hasOwnProperty(key2)) {
+              action = portal_types[portal_type][key2];
+              if (action.type === "object_view") {
+                url_list.push(
+                  calculateTabHTML(gadget, options, key2, action.title,
+                                   (key2 === options.action))
+                );
+              }
+
+            }
+          }
+          return RSVP.all(url_list);
+        })
+        .push(function (entry_list) {
+          var i;
+          nav_html =
+            '<nav data-role="navbar" data-collapsible="true"><ul>';
+          for (i = 0; i < entry_list.length; i += 1) {
+            nav_html += entry_list[i];
+          }
+          nav_html += '</ul></nav>';
+          return nav_html;
+        });
+    }
+  }
+
   initGadgetMixin(gadget_klass);
   gadget_klass
     /////////////////////////////////////////////////////////////////
@@ -71,35 +212,68 @@
       // Hey, I want to display some URL
       return this.aq_pleasePublishMyState({});
     })
-    .allowPublicAcquisition("whoWantToDisplayThisPage", function (param_list) {
-      // Hey, I want to display some URL
-      return this.aq_pleasePublishMyState({page: param_list[0]});
-    })
     .allowPublicAcquisition("whoWantToDisplayThisDocument",
                             function (param_list) {
         // Hey, I want to display some jIO document
-        return this.aq_pleasePublishMyState({
-          page: "Input_viewTable",
-          id: param_list[0]
-        });
+        var kw = {
+          action: param_list[1] || "view"
+        };
+        if (param_list[0] !== undefined) {
+          kw.id = param_list[0];
+        }
+        return this.aq_pleasePublishMyState(kw);
       })
-    .allowPublicAcquisition("whoWantToDisplayThisDocumentPage",
+    .allowPublicAcquisition("whoWantToDisplayThisResult",
                             function (param_list) {
         // Hey, I want to display some jIO document
         return this.aq_pleasePublishMyState({
-          page: param_list[0],
-          id: param_list[1]
+          action: "view",
+          id: param_list[0],
+          result: param_list[1]
         });
       })
+    .allowPublicAcquisition("getConfigurationDict", function (param_list) {
+      return this.props.configuration_dict;
+    })
 
     /////////////////////////////////////////////////////////////////
     // ready
     /////////////////////////////////////////////////////////////////
+    // Precompile the templates while loading the first gadget instance
+    .ready(function (g) {
+      if (panel_template === undefined) {
+        // XXX Only works as root gadget
+        panel_template = Handlebars.compile(
+          document.getElementById("panel-template").innerHTML
+        );
+        navigation_template = Handlebars.compile(
+          document.getElementById("navigation-template").innerHTML
+        );
+        active_navigation_template = Handlebars.compile(
+          document.getElementById("active-navigation-template").innerHTML
+        );
+      }
+    })
+
     // Create some link on the page
     .ready(function (g) {
-      return g.aq_pleasePublishMyState({})
-        .push(function (link) {
-          g.props.element.getElementsByClassName("home_link")[0].href = link;
+      return new RSVP.Queue()
+        .push(function () {
+          return RSVP.all([
+            g.aq_pleasePublishMyState({}),
+            g.aq_pleasePublishMyState({action: "view_fast_input"})
+          ]);
+        })
+        .push(function (link_list) {
+          var panel = g.props.element.querySelector("#leftpanel");
+
+          panel.innerHTML =
+            panel_template({navigationlist: []});
+          panel.getElementsByClassName("home_link")[0].href = link_list[0];
+          panel.getElementsByClassName("fast_input_link")[0].href =
+            link_list[1];
+          // XXX JQuery mobile
+          $(panel).trigger("create");
         });
     })
 
@@ -125,19 +299,6 @@
         });
     })
 
-    /////////////////////////////////////////////////////////////////
-    // Handlebars
-    /////////////////////////////////////////////////////////////////
-    // Precompile the templates while loading the first gadget instance
-    .ready(function (g) {
-      if (navigation_template === undefined) {
-        // XXX Only works as root gadget
-        var source = document.getElementById("navigation-template")
-                             .innerHTML;
-        navigation_template = Handlebars.compile(source);
-      }
-    })
-
 
     /////////////////////////////////////////////////////////////////
     // declared methods
@@ -146,48 +307,59 @@
     .declareMethod("render", function (options) {
       var gadget = this,
         page_gadget,
+        portal_type = "Input Module",
+        nav_element = gadget.props.element
+                            .getElementsByClassName("nav_container")[0],
         element = gadget.props.element
                         .getElementsByClassName("gadget_container")[0];
-      options.configuration_dict = gadget.props.configuration_dict;
-      if (options.page === undefined) {
-        // Redirect to the about page
-        return gadget.aq_pleasePublishMyState({
-          page: "InputModule_viewInputList"
-        })
+
+      if (options.action === undefined) {
+        // Redirect to the view action
+        options.action = "view";
+        return gadget.aq_pleasePublishMyState(options)
           .push(gadget.pleaseRedirectMyHash.bind(gadget));
       }
-      return gadget.declareGadget(options.page + ".html")
+
+      // Detect what is the kind of document displayed
+      if (options.id !== undefined) {
+        if (options.result === undefined) {
+          portal_type = "Input";
+        } else {
+          portal_type = "Output";
+        }
+      }
+
+      // Get the action informations
+      return gadget.declareGadget(
+        portal_types[portal_type][options.action].gadget + ".html"
+      )
         .push(function (g) {
           page_gadget = g;
           if (page_gadget.render !== undefined) {
             return page_gadget.render(options);
           }
         }).push(function () {
-          var navigation_list = [];
-          if (page_gadget.getNavigationList !== undefined) {
-            navigation_list = page_gadget.getNavigationList();
-          }
           return RSVP.all([
-            page_gadget.getTitle(),
             page_gadget.getElement(),
-            navigation_list
+            calculateNavigationHTML(gadget, portal_type, options)
           ]);
         }).push(function (result_list) {
-          var title = result_list[0],
-            page_element = result_list[1],
-            navigation_list = result_list[2],
-            panel = gadget.props.element.querySelector("#leftpanel");
+          var nav_html = result_list[1],
+            page_element = result_list[0];
 
+          // Update title
           gadget.props.element.querySelector("header h1").textContent =
-            title;
+            portal_type;
 
-          while (panel.firstChild) {
-            panel.removeChild(panel.firstChild);
+          // Update the navigation panel
+          // Clear the previous rendering
+          while (nav_element.firstChild) {
+            nav_element.removeChild(nav_element.firstChild);
           }
-          panel.innerHTML =
-            navigation_template({navigationlist: navigation_list});
-          // XXX JQuery mobile
-          $(panel).trigger("create");
+          if (nav_html !== undefined) {
+            nav_element.innerHTML = nav_html;
+            $(nav_element).trigger("create");
+          }
 
           // Append in the DOM at the end to reduce flickering and reduce DOM
           // modifications
