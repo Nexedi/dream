@@ -33,10 +33,23 @@
         "type": "object_view",
         "title": "Production Line"
       },
-      "view_table": {
-        "gadget": "Input_viewTable",
+      "view_wip_part_spreadsheet": {
+        "gadget": "Input_viewWipPartSpreadsheet",
         "type": "object_view",
-        "title": "Edit table"
+        "title": "WIP Part Spreadsheet",
+        "condition": function (gadget) {
+          return (gadget.props.configuration_dict['Dream-Configuration']
+                        .gui.wip_part_spreadsheet);
+        }
+      },
+      "view_shift_spreadsheet": {
+        "gadget": "Input_viewShiftSpreadsheet",
+        "type": "object_view",
+        "title": "Shift Spreadsheet",
+        "condition": function (gadget) {
+          return (gadget.props.configuration_dict['Dream-Configuration']
+                        .gui.shift_spreadsheet);
+        }
       },
       "view_simu": {
         "gadget": "Input_viewSimulation",
@@ -58,32 +71,56 @@
       "view": {
         "gadget": "Output_viewStationUtilisationGraph",
         "type": "object_view",
-        "title": "Stations Utilization"
+        "title": "Stations Utilization",
+        "condition": function (gadget) {
+          return (gadget.props.configuration_dict['Dream-Configuration']
+                        .gui.station_utilisation_graph);
+        }
       },
       "view_queue_stat": {
         "gadget": "Output_viewQueueStatGraph",
         "type": "object_view",
-        "title": "Queues Statistics"
+        "title": "Queues Statistics",
+        "condition": function (gadget) {
+          return (gadget.props.configuration_dict['Dream-Configuration']
+                        .gui.queue_stat);
+        }
       },
       "view_exit_stat": {
         "gadget": "Output_viewExitStatistics",
         "type": "object_view",
-        "title": "Exit Statistics"
+        "title": "Exit Statistics",
+        "condition": function (gadget) {
+          return (gadget.props.configuration_dict['Dream-Configuration']
+                        .gui.exit_stat);
+        }
       },
       "view_gantt": {
         "gadget": "Output_viewJobGantt",
         "type": "object_view",
-        "title": "Job Gantt"
+        "title": "Job Gantt",
+        "condition": function (gadget) {
+          return (gadget.props.configuration_dict['Dream-Configuration']
+                        .gui.job_gantt);
+        }
       },
       "view_schedule": {
         "gadget": "Output_viewJobScheduleSpreadsheet",
         "type": "object_view",
-        "title": "Job Schedule"
+        "title": "Job Schedule",
+        "condition": function (gadget) {
+          return (gadget.props.configuration_dict['Dream-Configuration']
+                        .gui.job_schedule_spreadsheet);
+        }
       },
       "view_debug": {
         "gadget": "Output_viewDebugJson",
         "type": "object_view",
-        "title": "Debug JSON"
+        "title": "Debug JSON",
+        "condition": function (gadget) {
+          return (gadget.props.configuration_dict['Dream-Configuration']
+                        .gui.debug_json);
+        }
       }
     }
   },
@@ -196,10 +233,13 @@
             if (portal_types[portal_type].hasOwnProperty(key2)) {
               action = portal_types[portal_type][key2];
               if (action.type === "object_view") {
-                url_list.push(
-                  calculateTabHTML(gadget, options, key2, action.title,
-                                   (key2 === options.action))
-                );
+                if ((action.condition === undefined) ||
+                    (action.condition(gadget))) {
+                  url_list.push(
+                    calculateTabHTML(gadget, options, key2, action.title,
+                                     (key2 === options.action))
+                  );
+                }
               }
 
             }
