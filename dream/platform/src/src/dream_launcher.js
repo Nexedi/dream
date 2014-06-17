@@ -61,9 +61,6 @@
       $('#capacity_by_project_spreadsheet').hide();
       $('#capacity_by_station_spreadsheet').hide();
 
-      if (configuration['Dream-Configuration'].gui.wip_part_spreadsheet){
-        $("#wip_part_spreadsheet").show();
-      }
       if (configuration['Dream-Configuration'].gui.shift_spreadsheet){
         $("#shift_spreadsheet").show();
       }

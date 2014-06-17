@@ -22,7 +22,6 @@
 (function (scope, $, jsPlumb, console) {
   "use strict";
 
-<<<<<<< HEAD
   function capacity_utilisation_graph_widget(input_data, output_data) {
     var available_capacity_by_station = {},
         capacity_usage_by_station = {};
@@ -347,7 +346,6 @@
           }
         }
       }
-
       $('li.result').removeClass('active');
       $($('li.result')[idx]).addClass('active');
       if ($("#reports").data("ui-tabs")) {
@@ -362,33 +360,6 @@
           $("li > a[href='#" + widget_name  + "']").parent().hide();
         }
       }
-
-      var input = result.input;
-      result = result.result;
-
-      // display each of the enabled widget
-      if (configuration['Dream-Configuration'].gui.station_utilisation_graph){
-        station_utilisation_graph_widget(input, result);
-      }
-      if (configuration['Dream-Configuration'].gui.capacity_utilisation_graph){
-        capacity_utilisation_graph_widget(input, result);
-      }
-      if (configuration['Dream-Configuration'].gui.queue_stat){
-        queue_stat_widget(input, result);
-      }
-      if (configuration['Dream-Configuration'].gui.exit_stat){
-        exit_stat_widget(input, result);
-      }
-      if (configuration['Dream-Configuration'].gui.job_schedule_spreadsheet){
-        job_schedule_spreadsheet_widget(input, result);
-      }
-      if (configuration['Dream-Configuration'].gui.job_gantt){
-        job_gantt_widget(input, result);
-      }
-      if (configuration['Dream-Configuration'].gui.debug_json){
-        debug_json_widget(input, result);
-      }
-
       // hack: make the tabs full width
       $("#reports li").width((100/$("#reports li:visible").length) - 1 +'%');
       $("#reports li a").width('100%').css({'text-align': 'left'});
