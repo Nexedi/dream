@@ -9,12 +9,19 @@
     <script src="../<%= curl.jqueryuijs.relative_dest %>"></script>
     <script src="../<%= copy.rsvp.relative_dest %>"></script>
     <script src="../<%= copy.renderjs.relative_dest %>"></script>
+    <script src="../<%= copy.handlebars.relative_dest%>"></script>
+
+    <script id="tool-template" type="text/x-handlebars-template">
+      <div id="{{key}}"
+           class="tool {{key}}">
+        {{name}}
+        <ul/>
+      </div>
+    </script>
     
     <script src="toolbox.js"></script>
   </head>
   <body>
-    <div id="tools">
-      <div id="tools-container"></div>
-    </div>
+    <div class="tools"></div>
   </body>
 </html>
