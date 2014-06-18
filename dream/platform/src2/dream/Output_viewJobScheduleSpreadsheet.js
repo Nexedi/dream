@@ -1,4 +1,4 @@
-/*global console, rJS, RSVP, moment, initGadgetMixin */
+/*global rJS, RSVP, moment, initGadgetMixin */
 /*jslint nomen: true */
 (function (window, rJS, RSVP, moment, initGadgetMixin) {
   "use strict";

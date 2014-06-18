@@ -1,4 +1,4 @@
-/*global console, rJS, RSVP, initGadgetMixin */
+/*global rJS, RSVP, initGadgetMixin */
 (function (window, rJS, RSVP, initGadgetMixin) {
   "use strict";
 

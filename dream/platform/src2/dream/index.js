@@ -1,4 +1,4 @@
-/*global console, jQuery, rJS, RSVP, alert, Handlebars, initGadgetMixin */
+/*global jQuery, rJS, RSVP, alert, Handlebars, initGadgetMixin */
 /*jslint nomen: true */
 (function (window, $, rJS, RSVP, Handlebars, initGadgetMixin) {
   "use strict";
@@ -313,7 +313,7 @@
         });
     })
 
-    .allowPublicAcquisition("whoWantToDisplayHome", function (param_list) {
+    .allowPublicAcquisition("whoWantToDisplayHome", function () {
       // Hey, I want to display some URL
       return this.aq_pleasePublishMyState({});
     })
@@ -337,7 +337,7 @@
           result: param_list[1]
         });
       })
-    .allowPublicAcquisition("getConfigurationDict", function (param_list) {
+    .allowPublicAcquisition("getConfigurationDict", function () {
       return this.props.configuration_dict;
     })
 
@@ -345,7 +345,7 @@
     // ready
     /////////////////////////////////////////////////////////////////
     // Precompile the templates while loading the first gadget instance
-    .ready(function (g) {
+    .ready(function () {
       if (panel_template === undefined) {
         // XXX Only works as root gadget
         panel_template = Handlebars.compile(

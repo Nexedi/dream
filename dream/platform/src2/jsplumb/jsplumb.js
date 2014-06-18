@@ -18,6 +18,7 @@
  * ==========================================================================*/
 
 /*global RSVP, rJS, $, jsPlumb, Handlebars*/
+/*jslint unparam: true */
 (function (RSVP, rJS, $, jsPlumb, Handlebars) {
   "use strict";
 

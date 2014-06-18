@@ -1,5 +1,6 @@
-/*global console, rJS, RSVP, jQuery, initGadgetMixin */
-(function (window, rJS, RSVP, $, initGadgetMixin) {
+/*global rJS, jQuery, initGadgetMixin */
+/*jslint unparam: true */
+(function (window, rJS, $, initGadgetMixin) {
   "use strict";
 
   function station_utilisation_graph_widget(output_data) {
@@ -158,4 +159,4 @@
         this.props.result_list[1]
       );
     });
-}(window, rJS, RSVP, jQuery, initGadgetMixin));
+}(window, rJS, jQuery, initGadgetMixin));

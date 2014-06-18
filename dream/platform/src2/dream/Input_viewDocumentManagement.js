@@ -1,4 +1,4 @@
-/*global console, rJS, RSVP, jQuery,
+/*global rJS, RSVP, jQuery,
  promiseEventListener, initGadgetMixin */
 (function (window, rJS, RSVP, $, promiseEventListener,
            initGadgetMixin) {
@@ -94,7 +94,7 @@
           "_id": gadget.props.jio_key
         });
       })
-      .push(function (result) {
+      .push(function () {
         return gadget.whoWantToDisplayHome();
       })
       .push(function (url) {

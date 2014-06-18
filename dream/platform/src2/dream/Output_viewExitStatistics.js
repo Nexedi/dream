@@ -1,7 +1,7 @@
-/*global console, rJS, RSVP, Handlebars,
+/*global rJS, Handlebars,
          initGadgetMixin */
 /*jslint nomen: true */
-(function (window, rJS, RSVP, Handlebars,
+(function (window, rJS, Handlebars,
            initGadgetMixin) {
   "use strict";
 
@@ -151,4 +151,4 @@
           gadget.props.element.innerHTML = result;
         });
     });
-}(window, rJS, RSVP, Handlebars, initGadgetMixin));
+}(window, rJS, Handlebars, initGadgetMixin));

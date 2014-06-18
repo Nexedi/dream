@@ -44,13 +44,11 @@ module.exports = function (grunt) {
           maxlen: 79,
           indent: 2,
           maxerr: 3,
-          unparam: true,
           predef: [
             'window',
             'document'
           ]
-        },
-        exclude: '<%= global_config.src %>/webodf_editor/**/*.*'
+        }
       }
     },
 

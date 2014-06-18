@@ -1,6 +1,6 @@
-/*global asyncTest, rJS, JSON, QUnit, jQuery*/
+/*global rJS, JSON, QUnit, jQuery*/
 
-(function (asyncTest, rJS, JSON, QUnit, $) {
+(function (rJS, JSON, QUnit, $) {
   "use strict";
   var start = QUnit.start,
     stop = QUnit.stop,
@@ -56,4 +56,4 @@
     });
   });
 
-}(asyncTest, rJS, JSON, QUnit, jQuery));
+}(rJS, JSON, QUnit, jQuery));

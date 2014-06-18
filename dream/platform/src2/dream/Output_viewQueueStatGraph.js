@@ -1,6 +1,6 @@
-/*global console, rJS, RSVP, jQuery, initGadgetMixin */
-/*jslint nomen: true */
-(function (window, rJS, RSVP, $, initGadgetMixin) {
+/*global rJS, jQuery, initGadgetMixin */
+/*jslint nomen: true, unparam: true */
+(function (window, rJS, $, initGadgetMixin) {
   "use strict";
 
   function queue_stat_widget(output_data) {
@@ -52,4 +52,4 @@
         this.props.series
       );
     });
-}(window, rJS, RSVP, jQuery, initGadgetMixin));
+}(window, rJS, jQuery, initGadgetMixin));

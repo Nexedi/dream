@@ -1,5 +1,5 @@
-/*global window, rJS, RSVP */
-(function (window, rJS, RSVP) {
+/*global window, rJS */
+(function (window, rJS) {
   "use strict";
 
   rJS(window)
@@ -24,4 +24,4 @@
       return result;
     });
 
-}(window, rJS, RSVP));
+}(window, rJS));

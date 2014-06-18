@@ -1,4 +1,4 @@
-/*global console, rJS, RSVP, Handlebars, initGadgetMixin */
+/*global rJS, RSVP, Handlebars, initGadgetMixin */
 /*jslint nomen: true */
 (function (window, rJS, RSVP, Handlebars, initGadgetMixin) {
   "use strict";
@@ -27,7 +27,7 @@
     /////////////////////////////////////////////////////////////////
     // declared methods
     /////////////////////////////////////////////////////////////////
-    .declareMethod("render", function (options) {
+    .declareMethod("render", function () {
       var gadget = this;
       return gadget.aq_allDocs({"select_list": ["title", "modified"]})
         .push(function (document_list) {

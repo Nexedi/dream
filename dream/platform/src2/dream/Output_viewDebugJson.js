@@ -1,5 +1,5 @@
-/*global console, rJS, RSVP, initGadgetMixin */
-(function (window, rJS, RSVP, initGadgetMixin) {
+/*global rJS, initGadgetMixin */
+(function (window, rJS, initGadgetMixin) {
   "use strict";
 
   var gadget_klass = rJS(window);
@@ -32,4 +32,4 @@
 
     });
 
-}(window, rJS, RSVP, initGadgetMixin));
+}(window, rJS, initGadgetMixin));

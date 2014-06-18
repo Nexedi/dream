@@ -143,7 +143,7 @@
             "_mimetype": "application/json"
           });
         })
-        .push(function (result) {
+        .push(function () {
           return gadget.whoWantToDisplayThisDocument(
             gadget.props.jio_key,
             "view_result"
