@@ -72,6 +72,8 @@ class Operator(ObjectResource):
         self.candidateEntity=None               # the entity that will be chosen for processing
         self.candidateStations=[]               # list of candidateStations of the stations (those stations that can receive an entity)
         
+        self.schedule=[]                        # the working schedule of the resource, the objects the resource was occupied by and the corresponding times
+        
     @staticmethod
     def getSupportedSchedulingRules():
         return ("FIFO", "Priority", "WT", "EDD", "EOD",

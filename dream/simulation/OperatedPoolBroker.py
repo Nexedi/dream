@@ -119,11 +119,13 @@ class Broker(ObjectInterruption):
                     # clear the timeWaitForOperatorStarted variable
                     self.timeWaitForOperatorStarted = 0
                     # update the time that the operation started
-                    self.timeOperationStarted = self.env.now#()
+                    self.timeOperationStarted = self.env.now
                     self.victim.outputTrace(self.victim.currentOperator.objName, "started work in "+ self.victim.objName)
                     self.victim.currentOperator.timeLastOperationStarted=self.env.now#()
                     # signal the machine that an operator is reserved
                     self.victim.brokerIsSet.succeed(self.env.now)
+                    # update the schedule of the operator
+                    self.victim.currentOperator.schedule.append([self.victim, self.env.now])
                     
                     # wait till the processing is over
                     yield self.isCalled
@@ -149,6 +151,8 @@ class Broker(ObjectInterruption):
                     # TODO: this wont work for the moment. The actions that follow must be performed by all operated brokers. 
                     
                     self.victim.printTrace(self.victim.currentOperator.objName, finishWork=self.victim.id)
+                    # update the schedule of the operator
+                    self.victim.currentOperator.schedule[-1].append(self.env.now)
                     # the victim current operator must be cleared after the operator is released
                     self.timeLastOperationEnded = self.env.now
                     self.victim.currentOperator.workingStation=None
