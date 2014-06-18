@@ -1,5 +1,5 @@
-/*global console, rJS, RSVP, initGadgetMixin */
-(function(window, rJS, RSVP, initGadgetMixin) {
+/*global rJS, initGadgetMixin */
+(function(window, rJS, initGadgetMixin) {
     "use strict";
     var gadget_klass = rJS(window);
     initGadgetMixin(gadget_klass);
@@ -16,4 +16,4 @@
             gadget.props.element.querySelector(".json_output").textContent = JSON.stringify(result[gadget.props.result].result);
         });
     });
-})(window, rJS, RSVP, initGadgetMixin);
+})(window, rJS, initGadgetMixin);

@@ -1,5 +1,6 @@
-/*global console, rJS, RSVP, jQuery, initGadgetMixin */
-(function(window, rJS, RSVP, $, initGadgetMixin) {
+/*global rJS, jQuery, initGadgetMixin */
+/*jslint unparam: true */
+(function(window, rJS, $, initGadgetMixin) {
     "use strict";
     function station_utilisation_graph_widget(output_data) {
         var blockage_data = [], waiting_data = [], failure_data = [], working_data = [], ticks = [], counter = 1, series, options;
@@ -111,4 +112,4 @@
         // XXX Manually calculate width and height when resizing
         $.plot(this.props.element.querySelector(".graph_container"), this.props.result_list[0], this.props.result_list[1]);
     });
-})(window, rJS, RSVP, jQuery, initGadgetMixin);
+})(window, rJS, jQuery, initGadgetMixin);

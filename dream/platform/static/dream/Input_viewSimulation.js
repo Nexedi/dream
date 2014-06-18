@@ -90,7 +90,7 @@
                 _data: JSON.stringify(json_data.data, null, 2),
                 _mimetype: "application/json"
             });
-        }).push(function(result) {
+        }).push(function() {
             return gadget.whoWantToDisplayThisDocument(gadget.props.jio_key, "view_result");
         }).push(function(url) {
             return gadget.pleaseRedirectMyHash(url);

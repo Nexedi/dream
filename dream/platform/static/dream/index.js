@@ -1,4 +1,4 @@
-/*global console, jQuery, rJS, RSVP, alert, Handlebars, initGadgetMixin */
+/*global jQuery, rJS, RSVP, alert, Handlebars, initGadgetMixin */
 /*jslint nomen: true */
 (function(window, $, rJS, RSVP, Handlebars, initGadgetMixin) {
     "use strict";
@@ -248,7 +248,7 @@
         return this.getDeclaredGadget("jio").push(function(jio_gadget) {
             return jio_gadget.getAttachment.apply(jio_gadget, param_list);
         });
-    }).allowPublicAcquisition("whoWantToDisplayHome", function(param_list) {
+    }).allowPublicAcquisition("whoWantToDisplayHome", function() {
         // Hey, I want to display some URL
         return this.aq_pleasePublishMyState({});
     }).allowPublicAcquisition("whoWantToDisplayThisDocument", function(param_list) {
@@ -267,9 +267,9 @@
             id: param_list[0],
             result: param_list[1]
         });
-    }).allowPublicAcquisition("getConfigurationDict", function(param_list) {
+    }).allowPublicAcquisition("getConfigurationDict", function() {
         return this.props.configuration_dict;
-    }).ready(function(g) {
+    }).ready(function() {
         if (panel_template === undefined) {
             // XXX Only works as root gadget
             panel_template = Handlebars.compile(document.getElementById("panel-template").innerHTML);

@@ -1,4 +1,4 @@
-/*global rJS, jIO, console */
+/*global rJS, jIO */
 (function(rJS, jIO) {
     "use strict";
     rJS(window).ready(function(gadget) {

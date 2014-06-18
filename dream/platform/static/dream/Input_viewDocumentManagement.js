@@ -1,4 +1,4 @@
-/*global console, rJS, RSVP, jQuery,
+/*global rJS, RSVP, jQuery,
  promiseEventListener, initGadgetMixin */
 (function(window, rJS, RSVP, $, promiseEventListener, initGadgetMixin) {
     "use strict";
@@ -67,7 +67,7 @@
             return gadget.aq_remove({
                 _id: gadget.props.jio_key
             });
-        }).push(function(result) {
+        }).push(function() {
             return gadget.whoWantToDisplayHome();
         }).push(function(url) {
             return gadget.pleaseRedirectMyHash(url);

@@ -1,6 +1,6 @@
-/*global console, rJS, RSVP, jQuery, initGadgetMixin */
-/*jslint nomen: true */
-(function(window, rJS, RSVP, $, initGadgetMixin) {
+/*global rJS, jQuery, initGadgetMixin */
+/*jslint nomen: true, unparam: true */
+(function(window, rJS, $, initGadgetMixin) {
     "use strict";
     function queue_stat_widget(output_data) {
         /* FIXME: does not support more than one replic.
@@ -33,4 +33,4 @@
         // XXX Manually calculate width and height when resizing
         $.plot(this.props.element.querySelector(".graph_container"), this.props.series);
     });
-})(window, rJS, RSVP, jQuery, initGadgetMixin);
+})(window, rJS, jQuery, initGadgetMixin);

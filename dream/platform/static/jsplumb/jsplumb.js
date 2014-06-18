@@ -17,6 +17,7 @@
  * along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
  * ==========================================================================*/
 /*global RSVP, rJS, $, jsPlumb, Handlebars*/
+/*jslint unparam: true */
 (function(RSVP, rJS, $, jsPlumb, Handlebars) {
     "use strict";
     /*jslint nomen: true*/

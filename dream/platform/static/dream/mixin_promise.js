@@ -1,4 +1,4 @@
-/*global console, RSVP, FileReader */
+/*global RSVP, FileReader */
 (function(window, RSVP, FileReader) {
     "use strict";
     window.promiseEventListener = function(target, type, useCapture) {

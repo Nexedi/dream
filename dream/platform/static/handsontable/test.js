@@ -1,5 +1,5 @@
-/*global asyncTest, rJS, JSON, QUnit, jQuery*/
-(function(asyncTest, rJS, JSON, QUnit, $) {
+/*global rJS, JSON, QUnit, jQuery*/
+(function(rJS, JSON, QUnit, $) {
     "use strict";
     var start = QUnit.start, stop = QUnit.stop, test = QUnit.test, equal = QUnit.equal, sample = JSON.stringify([ [ "row1", "data11", "data12", "data13" ], [ "row2", "data21", "data22", "data23" ], [ "row3", "data31", "data32", "data33" ] ]);
     QUnit.config.testTimeout = 5e3;
@@ -34,4 +34,4 @@
             }).always(start);
         });
     });
-})(asyncTest, rJS, JSON, QUnit, jQuery);
+})(rJS, JSON, QUnit, jQuery);

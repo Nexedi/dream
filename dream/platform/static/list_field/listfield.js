@@ -1,6 +1,6 @@
-/*global window, rJS, console, RSVP, Handlebars */
+/*global window, rJS, Handlebars */
 /*jslint nomen: true */
-(function(window, rJS, console, RSVP, Handlebars) {
+(function(window, rJS, Handlebars) {
     "use strict";
     /////////////////////////////////////////////////////////////////
     // Handlebars
@@ -27,4 +27,4 @@
         }
         select.innerHTML += tmp;
     });
-})(window, rJS, console, RSVP, Handlebars);
+})(window, rJS, Handlebars);

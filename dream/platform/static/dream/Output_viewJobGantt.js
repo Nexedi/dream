@@ -1,6 +1,6 @@
-/*global console, rJS, RSVP, jQuery, gantt,
+/*global rJS, RSVP, jQuery, gantt,
          initGadgetMixin */
-/*jslint nomen: true */
+/*jslint nomen: true, unparam: true */
 (function(window, rJS, RSVP, $, gantt, initGadgetMixin) {
     "use strict";
     gantt.templates.task_class = function(start, end, obj) {

@@ -1,4 +1,4 @@
-/*global console, rJS, RSVP, Handlebars, initGadgetMixin */
+/*global rJS, RSVP, Handlebars, initGadgetMixin */
 /*jslint nomen: true */
 (function(window, rJS, RSVP, Handlebars, initGadgetMixin) {
     "use strict";
@@ -8,7 +8,7 @@
     // Precompile the templates while loading the first gadget instance
     var gadget_klass = rJS(window), source = gadget_klass.__template_element.getElementById("table-template").innerHTML, table_template = Handlebars.compile(source);
     initGadgetMixin(gadget_klass);
-    gadget_klass.declareAcquiredMethod("aq_allDocs", "allDocs").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantToDisplayThisDocument", "whoWantToDisplayThisDocument").declareMethod("render", function(options) {
+    gadget_klass.declareAcquiredMethod("aq_allDocs", "allDocs").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantToDisplayThisDocument", "whoWantToDisplayThisDocument").declareMethod("render", function() {
         var gadget = this;
         return gadget.aq_allDocs({
             select_list: [ "title", "modified" ]

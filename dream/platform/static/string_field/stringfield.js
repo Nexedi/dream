@@ -1,5 +1,5 @@
-/*global window, rJS, RSVP */
-(function(window, rJS, RSVP) {
+/*global window, rJS */
+(function(window, rJS) {
     "use strict";
     rJS(window).ready(function(gadget) {
         return gadget.getElement().push(function(element) {
@@ -15,4 +15,4 @@
         result[input.getAttribute("name")] = input.value;
         return result;
     });
-})(window, rJS, RSVP);
+})(window, rJS);
