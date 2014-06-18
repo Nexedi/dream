@@ -51,6 +51,9 @@
               'beforeend',
               label_template({label: (property.name || property.id)})
             );
+            if (property.type === "number") {
+              return gadget.declareGadget("../number_field/index.html");
+            }
             return gadget.declareGadget("../string_field/index.html");
           })
           .push(function (gg) {
