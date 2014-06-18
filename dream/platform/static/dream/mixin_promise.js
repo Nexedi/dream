@@ -1,6 +1,42 @@
 /*global RSVP, FileReader */
+/*jslint unparam: true */
 (function(window, RSVP, FileReader) {
     "use strict";
+    window.loopEventListener = function(target, type, useCapture, callback) {
+        //////////////////////////
+        // Infinite event listener (promise is never resolved)
+        // eventListener is removed when promise is cancelled/rejected
+        //////////////////////////
+        var handle_event_callback, callback_promise;
+        function cancelResolver() {
+            if (callback_promise !== undefined && typeof callback_promise.cancel === "function") {
+                callback_promise.cancel();
+            }
+        }
+        function canceller() {
+            if (handle_event_callback !== undefined) {
+                target.removeEventListener(type, handle_event_callback, useCapture);
+            }
+            cancelResolver();
+        }
+        function itsANonResolvableTrap(resolve, reject) {
+            handle_event_callback = function(evt) {
+                evt.stopPropagation();
+                evt.preventDefault();
+                cancelResolver();
+                callback_promise = new RSVP.Queue().push(function() {
+                    return callback(evt);
+                }).push(undefined, function(error) {
+                    if (!(error instanceof RSVP.CancellationError)) {
+                        canceller();
+                        reject(error);
+                    }
+                });
+            };
+            target.addEventListener(type, handle_event_callback, useCapture);
+        }
+        return new RSVP.Promise(itsANonResolvableTrap, canceller);
+    };
     window.promiseEventListener = function(target, type, useCapture) {
         //////////////////////////
         // Resolve the promise as soon as the event is triggered

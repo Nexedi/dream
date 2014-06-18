@@ -19,6 +19,10 @@
             }), gadget.getDeclaredGadget("productionline_graph") ]);
         }).push(function(result_list) {
             return result_list[1].render(result_list[0]);
+        }).push(function() {
+            return gadget.getDeclaredGadget("productionline_toolbox");
+        }).push(function(toolbox_gadget) {
+            toolbox_gadget.render();
         });
     }).declareMethod("startService", function() {
         var g = this;

@@ -9,12 +9,19 @@
     <script src="../lib/jquery-ui.js"></script>
     <script src="../lib/rsvp.min.js"></script>
     <script src="../lib/renderjs.min.js"></script>
+    <script src="../lib/handlebars.min.js"></script>
+
+    <script id="tool-template" type="text/x-handlebars-template">
+      <div id="{{key}}"
+           class="tool {{key}}">
+        {{name}}
+        <ul/>
+      </div>
+    </script>
     
     <script src="toolbox.js"></script>
   </head>
   <body>
-    <div id="tools">
-      <div id="tools-container"></div>
-    </div>
+    <div class="tools"></div>
   </body>
 </html>
