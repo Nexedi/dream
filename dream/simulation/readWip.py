@@ -751,7 +751,7 @@ def setStartWip():
         # XXX if they are not in the WIP the it is possible that the must be set because only an other part of the same order is in the WIP (but no mould)
         if not entity.id in WIP.keys() and not decomposed:
             pass
-        if not entity.id in WIP.keys() and decomposed:
+        if not entity.id in WIP.keys() and decomposed and not entity.order.decomposed:
             # perform the default action
             setWIP([entity])
         # if the entity is in the WIP dict then move it to the station defined.
@@ -908,6 +908,7 @@ def breakOrderDesing(orderDesign):
     if G.orderToBeDecomposed:
         from Globals import setWIP
         setWIP(G.newlyCreatedComponents)     #set the new components as wip
+        G.orderToBeDecomposed.decomposed=True
         # TODO: consider signalling the receivers if any WIP is set now
         #reset attributes
         G.orderToBeDecomposed=None
