@@ -56,3 +56,6 @@ class OrderDesign(Job):                                  # inherits from the Job
         # the requestingComponent is the component that needs the auxiliary component during its processing
         # the auxiliary component should then be added to the requestingComponent's auxiliaryList
         self.requestingComponent = requestingComponent  # the id of the requesting component
+        # used by printRoute
+        if self.order:
+            self.alias=self.order.alias+'C'+str(len(G.OrderComponentList))

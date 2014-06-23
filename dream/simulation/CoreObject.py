@@ -53,6 +53,9 @@ class CoreObject(object):
         self.resetOnPreemption=False
         self.interruptCause=None
         self.gatherWipStat=False
+        # attributes/indices used for printing the route, hold the cols corresponding to the machine (entities route and operators route) 
+        self.station_col_inds=[]
+        self.op_col_indx=None
     
     def initialize(self):
         from Globals import G
@@ -136,6 +139,9 @@ class CoreObject(object):
         self.interruptionStart=self.env.event()
         self.interruptedBy=None      
         self.entityRemoved=self.env.event()
+        # attributes/indices used for printing the route, hold the cols corresponding to the machine (entities route and operators route) 
+        self.station_col_inds=[]
+        self.op_col_indx=None
         
 
     # =======================================================================

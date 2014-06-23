@@ -59,6 +59,6 @@ class Order(Job):
         self.componentsReadyForAssembly = componentsReadyForAssembly
         
         self.decomposed=False
-
-
+        # used by printRoute
+        self.alias='O'+str(len(G.OrderList))
 
