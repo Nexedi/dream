@@ -17,9 +17,9 @@
  * along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
  * ==========================================================================*/
 
-/*global RSVP, rJS, $, jsPlumb, Handlebars*/
+/*global RSVP, rJS, $, jsPlumb, Handlebars, DOMParser, initGadgetMixin*/
 /*jslint unparam: true */
-(function (RSVP, rJS, $, jsPlumb, Handlebars) {
+(function (RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin) {
   "use strict";
 
   /*jslint nomen: true*/
@@ -67,13 +67,13 @@
   }
 
   function convertToAbsolutePosition(gadget, x, y) {
-    var zoom_level = (gadget.private.preference_container.zoom_level || 1.0) *
+    var zoom_level = (gadget.props.preference_container.zoom_level || 1.0) *
         1.1111,
-      canvas_size_x = $(gadget.private.element).find('#main').width(),
-      canvas_size_y = $(gadget.private.element).find('#main').height(),
-      size_x = $(gadget.private.element).find('.dummy_window').width() *
+      canvas_size_x = $(gadget.props.element).find('#main').width(),
+      canvas_size_y = $(gadget.props.element).find('#main').height(),
+      size_x = $(gadget.props.element).find('.dummy_window').width() *
         zoom_level,
-      size_y = $(gadget.private.element).find('.dummy_window').height() *
+      size_y = $(gadget.props.element).find('.dummy_window').height() *
         zoom_level,
       top = Math.floor(y * (canvas_size_y - size_y)) + "px",
       left = Math.floor(x * (canvas_size_x - size_x)) + "px";
@@ -81,13 +81,13 @@
   }
 
   function convertToRelativePosition(gadget, x, y) {
-    var zoom_level = (gadget.private.preference_container.zoom_level || 1.0) *
+    var zoom_level = (gadget.props.preference_container.zoom_level || 1.0) *
         1.1111,
-      canvas_size_x = $(gadget.private.element).find('#main').width(),
-      canvas_size_y = $(gadget.private.element).find('#main').height(),
-      size_x = $(gadget.private.element).find('.dummy_window').width() *
+      canvas_size_x = $(gadget.props.element).find('#main').width(),
+      canvas_size_y = $(gadget.props.element).find('#main').height(),
+      size_x = $(gadget.props.element).find('.dummy_window').width() *
         zoom_level,
-      size_y = $(gadget.private.element).find('.dummy_window').height() *
+      size_y = $(gadget.props.element).find('.dummy_window').height() *
         zoom_level,
       top = Math.max(Math.min(y.replace('px', '') /
                               (canvas_size_y - size_y), 1), 0),
@@ -97,13 +97,13 @@
   }
 
   function updateElementCoordinate(gadget, node_id, coordinate) {
-    var element_id = gadget.private.node_container[node_id].element_id,
-      coordinates = gadget.private.preference_container.coordinates || {},
+    var element_id = gadget.props.node_container[node_id].element_id,
+      coordinates = gadget.props.preference_container.coordinates || {},
       element,
       relative_position;
     if (coordinate === undefined) {
       coordinate = {};
-      element = $(gadget.private.element).find("#" + element_id);
+      element = $(gadget.props.element).find("#" + element_id);
       relative_position = convertToRelativePosition(
         gadget,
         element.css('left'),
@@ -113,16 +113,16 @@
       coordinate.left = relative_position[0];
     }
     coordinates[node_id] = coordinate;
-    gadget.private.preference_container.coordinates = coordinates;
+    gadget.props.preference_container.coordinates = coordinates;
     onDataChange();
     return coordinate;
   }
 
   function draggable(gadget) {
-    var jsplumb_instance = gadget.private.jsplumb_instance,
+    var jsplumb_instance = gadget.props.jsplumb_instance,
       stop = function (element) {
         updateElementCoordinate(gadget, getNodeId(
-          gadget.private.node_container,
+          gadget.props.node_container,
           element.target.id
         ));
       };
@@ -159,7 +159,7 @@
   }
 
   function initJsPlumb(gadget) {
-    var jsplumb_instance = gadget.private.jsplumb_instance;
+    var jsplumb_instance = gadget.props.jsplumb_instance;
 
     jsplumb_instance.setRenderMode(jsplumb_instance.SVG);
     jsplumb_instance.importDefaults({
@@ -201,14 +201,14 @@
     //     return undefined;
     //   });
     // split in 2 methods ? one for events one for manip
-    gadget.private.updateConnectionData
+    gadget.props.updateConnectionData
       = function (connection, remove, edge_data) {
         if (remove) {
-          delete gadget.private.edge_container[connection.id];
+          delete gadget.props.edge_container[connection.id];
         } else {
-          gadget.private.edge_container[connection.id] = [
-            getNodeId(gadget.private.node_container, connection.sourceId),
-            getNodeId(gadget.private.node_container, connection.targetId),
+          gadget.props.edge_container[connection.id] = [
+            getNodeId(gadget.props.node_container, connection.sourceId),
+            getNodeId(gadget.props.node_container, connection.targetId),
             edge_data || {}
           ];
         }
@@ -219,23 +219,23 @@
     // and update the list of connections on screen.
     // jsplumb_instance
     //   .bind("connection", function (info, originalEvent) {
-    //     gadget.private.updateConnectionData(info.connection);
+    //     gadget.props.updateConnectionData(info.connection);
     //   });
     // jsplumb_instance
     //   .bind("connectionDetached", function (info, originalEvent) {
-    //     gadget.private.updateConnectionData(info.connection, true);
+    //     gadget.props.updateConnectionData(info.connection, true);
     //   });
     onDataChange();
     draggable(gadget);
   }
 
   function updateNodeStyle(gadget, element_id) {
-    var zoom_level = (gadget.private.preference_container.zoom_level || 1.0) *
+    var zoom_level = (gadget.props.preference_container.zoom_level || 1.0) *
         1.1111,
-      element = $(gadget.private.element).find("#" + element_id),
+      element = $(gadget.props.element).find("#" + element_id),
       new_value;
-    $.each(gadget.private.style_attr_list, function (i, j) {
-      new_value = $(gadget.private.element).find('.dummy_window').css(j)
+    $.each(gadget.props.style_attr_list, function (i, j) {
+      new_value = $(gadget.props.element).find('.dummy_window').css(j)
         .replace('px', '') * zoom_level + 'px';
       element.css(j, new_value);
     });
@@ -296,63 +296,63 @@
   // }
 
   // function setZoom(gadget, zoom_level) {
-  //   $.each(gadget.private.style_attr_list, function (i, j) {
-  //     var new_value = $(gadget.private.element).find('.dummy_window')
+  //   $.each(gadget.props.style_attr_list, function (i, j) {
+  //     var new_value = $(gadget.props.element).find('.dummy_window')
   //       .css(j).replace('px', '') * zoom_level + 'px';
-  //     $(gadget.private.element).find('.window').css(j, new_value);
+  //     $(gadget.props.element).find('.window').css(j, new_value);
   //   });
   // }
 
   // function zoom_in(gadget) {
-  // var zoom_level = (gadget.private.preference_container.zoom_level || 1.0) *
+  // var zoom_level = (gadget.props.preference_container.zoom_level || 1.0) *
   //       1.1111;
   //   setZoom(gadget, zoom_level);
-  //   gadget.private.preference_container.zoom_level = zoom_level;
+  //   gadget.props.preference_container.zoom_level = zoom_level;
   //   onDataChange();
   //   redraw(gadget);
   // }
 
   // function zoom_out(gadget) {
-  // var zoom_level = (gadget.private.preference_container.zoom_level || 1.0) *
+  // var zoom_level = (gadget.props.preference_container.zoom_level || 1.0) *
   //     0.9;
   //   setZoom(gadget, zoom_level);
-  //   gadget.private.preference_container.zoom_level = zoom_level;
+  //   gadget.props.preference_container.zoom_level = zoom_level;
   //   onDataChange();
   //   redraw(gadget);
   // }
 
 
   // function removeElement(gadget, node_id) {
-  //   var element_id = gadget.private.node_container[node_id].element_id;
-  //   gadget.private.jsplumb_instance.removeAllEndpoints(
-  //     $(gadget.private.element).find("#" + element_id)
+  //   var element_id = gadget.props.node_container[node_id].element_id;
+  //   gadget.props.jsplumb_instance.removeAllEndpoints(
+  //     $(gadget.props.element).find("#" + element_id)
   //   );
-  //   $(gadget.private.element).find("#" + element_id).remove();
-  //   delete gadget.private.node_container[node_id];
-  //   delete gadget.private.preference_container.coordinates[node_id];
-  //   $.each(gadget.private.edge_container, function (k, v) {
+  //   $(gadget.props.element).find("#" + element_id).remove();
+  //   delete gadget.props.node_container[node_id];
+  //   delete gadget.props.preference_container.coordinates[node_id];
+  //   $.each(gadget.props.edge_container, function (k, v) {
   //     if (node_id === v[0] || node_id === v[1]) {
-  //       delete gadget.private.edge_container[k];
+  //       delete gadget.props.edge_container[k];
   //     }
   //   });
   //   onDataChange();
   // }
 
   function updateElementData(gadget, node_id, data) {
-    var element_id = gadget.private.node_container[node_id].element_id,
+    var element_id = gadget.props.node_container[node_id].element_id,
       new_id = data.id;
     if (data.name) {
-      $(gadget.private.element).find("#" + element_id).text(data.name)
+      $(gadget.props.element).find("#" + element_id).text(data.name)
         .append('<div class="ep"></div></div>');
-      gadget.private.node_container[node_id].name = data.name;
+      gadget.props.node_container[node_id].name = data.name;
     }
     delete data.id;
-    $.extend(gadget.private.node_container[node_id], data.data);
+    $.extend(gadget.props.node_container[node_id], data.data);
     if (new_id && new_id !== node_id) {
-      gadget.private.node_container[new_id]
-        = gadget.private.node_container[node_id];
-      delete gadget.private.node_container[node_id];
-      $.each(gadget.private.edge_container, function (k, v) {
+      gadget.props.node_container[new_id]
+        = gadget.props.node_container[node_id];
+      delete gadget.props.node_container[node_id];
+      $.each(gadget.props.edge_container, function (k, v) {
         if (v[0] === node_id) {
           v[0] = new_id;
         }
@@ -360,25 +360,25 @@
           v[1] = new_id;
         }
       });
-      gadget.private.preference_container.coordinates[new_id]
-        = gadget.private.preference_container.coordinates[node_id];
-      delete gadget.private.preference_container.coordinates[node_id];
+      gadget.props.preference_container.coordinates[new_id]
+        = gadget.props.preference_container.coordinates[node_id];
+      delete gadget.props.preference_container.coordinates[node_id];
     }
     onDataChange();
   }
 
   // function clearAll(gadget) {
-  //   $.each(gadget.private.node_container, function (node_id) {
+  //   $.each(gadget.props.node_container, function (node_id) {
   //     removeElement(gadget, node_id);
   //   });
   //   // delete anything if still remains
-  //   $(gadget.private.element).find("#main").children().remove();
-  //   gadget.private.node_container = {};
-  //   gadget.private.edge_container = {};
-  //   gadget.private.preference_container = {};
-  //   gadget.private.general_container = {};
-  //   gadget.private.initGeneralProperties();
-  //   gadget.private.prepareDialogForGeneralProperties();
+  //   $(gadget.props.element).find("#main").children().remove();
+  //   gadget.props.node_container = {};
+  //   gadget.props.edge_container = {};
+  //   gadget.props.preference_container = {};
+  //   gadget.props.general_container = {};
+  //   gadget.props.initGeneralProperties();
+  //   gadget.props.prepareDialogForGeneralProperties();
   // }
 
   function addEdge(gadget, edge_id, edge_data) {
@@ -393,37 +393,37 @@
         label: data.title
       }]];
     }
-    connection = gadget.private.jsplumb_instance.connect({
-      source: getElementId(gadget.private.node_container, source_id),
-      target: getElementId(gadget.private.node_container, target_id),
+    connection = gadget.props.jsplumb_instance.connect({
+      source: getElementId(gadget.props.node_container, source_id),
+      target: getElementId(gadget.props.node_container, target_id),
       Connector: [ "Bezier", {curviness: 75} ],
       overlays: overlays
     });
     // call again updateConnectionData to set the connection data that
     // was not passed to the connection hook
-    gadget.private.updateConnectionData(connection, 0, data);
+    gadget.props.updateConnectionData(connection, 0, data);
   }
 
   // function setPreferences(gadget, preferences) {
-  //   gadget.private.preference_container = preferences;
-  //   var zoom_level = gadget.private.preference_container.zoom_level || 1.0;
+  //   gadget.props.preference_container = preferences;
+  //   var zoom_level = gadget.props.preference_container.zoom_level || 1.0;
   //   setZoom(gadget, zoom_level);
   // }
 
   // function setGeneralProperties(gadget, properties) {
-  //   gadget.private.general_container = properties;
+  //   gadget.props.general_container = properties;
   //   onDataChange();
   // }
 
   // function updateGeneralProperties(gadget, properties) {
-  //   $.extend(gadget.private.general_container, properties);
+  //   $.extend(gadget.props.general_container, properties);
   //   onDataChange();
   // }
 
   function newElement(gadget, element, option) {
     element.name = element.name || option.name;
-    addElementToContainer(gadget.private.node_container, element);
-    var render_element = $(gadget.private.element).find("#main"),
+    addElementToContainer(gadget.props.node_container, element);
+    var render_element = $(gadget.props.element).find("#main"),
       coordinate = element.coordinate,
       box,
       absolute_position;
@@ -441,7 +441,7 @@
       "title": element.name || element.id,
       "id": element.id
     }));
-    box = $(gadget.private.element).find("#" + element.element_id);
+    box = $(gadget.props.element).find("#" + element.element_id);
     absolute_position = convertToAbsolutePosition(
       gadget,
       coordinate.left,
@@ -456,57 +456,52 @@
 
   gadget_klass
     .ready(function (g) {
-      g.private = {
-        node_container: {},
-        edge_container: {},
-        preference_container: {},
-        style_attr_list: ['width', 'height', 'padding-top', 'line-height']
-      };
+      g.props.node_container = {};
+      g.props.edge_container = {};
+      g.props.preference_container = {};
+      g.props.style_attr_list = [
+        'width',
+        'height',
+        'padding-top',
+        'line-height'
+      ];
     })
 
     .declareMethod('render', function (data) {
-      this.private.data = JSON.parse(data);
-      this.private.jsplumb_instance = jsPlumb.getInstance();
+      this.props.data = JSON.parse(data);
+      this.props.jsplumb_instance = jsPlumb.getInstance();
     })
 
     .declareMethod('getData', function () {
       return JSON.stringify({
-        "nodes": this.private.node_container,
-        "edges": this.private.edge_container,
-        "preference": this.private.preference_container
+        "nodes": this.props.node_container,
+        "edges": this.props.edge_container,
+        "preference": this.props.preference_container
       });
     })
 
     .declareMethod('startService', function () {
-      var gadget = this,
-        preference = gadget.private.data.preference !== undefined ?
-            gadget.private.data.preference : {},
+      var g = this,
+        preference = g.props.data.preference !== undefined ?
+            g.props.data.preference : {},
         coordinates = preference.coordinates;
-      return gadget.getElement()
-        .then(function (el) {
-          gadget.private.element = el;
-          initJsPlumb(gadget);
-          $.each(gadget.private.data.nodes, function (key, value) {
-            if (coordinates === undefined || coordinates[key] === undefined) {
-              value.coordinate = {
-                'top': 0.0,
-                'left': 0.0
-              };
-            } else {
-              value.coordinate = coordinates[key];
-            }
-            value.id = key;
-            newElement(gadget, value);
-            if (value.data) { // backward compatibility
-              updateElementData(gadget, key, {
-                data: value.data
-              });
-            }
+
+      g.props.main = g.props.element.querySelector('#main');
+      initJsPlumb(g);
+      $.each(g.props.data.nodes, function (key, value) {
+        if (coordinates === undefined || coordinates[key] === undefined) {
+          value.coordinate = {
+            'top': 0.0,
+            'left': 0.0
+          };
+        } else {
+          value.coordinate = coordinates[key];
+        }
+        value.id = key;
+        newElement(g, value);
+        if (value.data) { // backward compatibility
+          updateElementData(g, key, {
+            data: value.data
           });
-          $.each(gadget.private.data.edges, function (key, value) {
-            addEdge(gadget, key, value);
-          });
-          redraw(gadget);
-        });
     });
-}(RSVP, rJS, $, jsPlumb, Handlebars));
+}(RSVP, rJS, $, jsPlumb, Handlebars, DOMParser, initGadgetMixin));
