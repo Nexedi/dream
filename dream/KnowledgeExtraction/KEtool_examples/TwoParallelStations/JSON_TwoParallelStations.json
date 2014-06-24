@@ -58,13 +58,11 @@
   }, 
   "general": {
     "confidenceLevel": 0.95, 
-    "currentDate": "2014/06/16", 
-    "ke_url": "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
-    "maxSimTime": 100, 
-    "numberOfReplications": 10, 
+    "currentDate": "2014/06/16",  
+    "maxSimTime": 1000, 
+    "numberOfReplications": 5, 
     "processTimeout": 10, 
-    "seed": "", 
-    "throughputTarget": 10, 
+    "seed": "",  
     "trace": "No"
   }, 
   "nodes": {
