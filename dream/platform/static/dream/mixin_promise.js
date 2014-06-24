@@ -2,7 +2,7 @@
 /*jslint unparam: true */
 (function(window, RSVP, FileReader) {
     "use strict";
-    window.loopEventListener = function(target, type, useCapture, callback) {
+    window.loopEventListener = function(target, type, useCapture, callback, allowDefault) {
         //////////////////////////
         // Infinite event listener (promise is never resolved)
         // eventListener is removed when promise is cancelled/rejected
@@ -22,7 +22,9 @@
         function itsANonResolvableTrap(resolve, reject) {
             handle_event_callback = function(evt) {
                 evt.stopPropagation();
-                evt.preventDefault();
+                if (allowDefault !== true) {
+                    evt.preventDefault();
+                }
                 cancelResolver();
                 callback_promise = new RSVP.Queue().push(function() {
                     return callback(evt);

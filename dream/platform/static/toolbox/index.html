@@ -13,12 +13,16 @@
 
     <script id="tool-template" type="text/x-handlebars-template">
       <div id="{{key}}"
-           class="tool {{key}}">
+           class="tool {{key}}"
+           draggable="true">
         {{name}}
         <ul/>
       </div>
     </script>
-    
+
+    <script src="../dream/mixin_gadget.js"></script>
+    <script src="../dream/mixin_promise.js"></script>
+
     <script src="toolbox.js"></script>
   </head>
   <body>
