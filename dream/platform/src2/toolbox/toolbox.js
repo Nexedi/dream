@@ -1,5 +1,5 @@
-/*global window, document, RSVP, rJS, Handlebars*/
-(function (window, document, RSVP, rJS, Handlebars) {
+/*global window, document, RSVP, rJS, Handlebars, initGadgetMixin*/
+(function (window, document, RSVP, rJS, Handlebars, initGadgetMixin) {
   "use strict";
   /*jslint nomen: true*/
   var gadget_klass = rJS(window),
@@ -7,38 +7,50 @@
       .getElementById('tool-template').innerHTML,
     tool_template = Handlebars.compile(tool_template_source);
 
+  function waitForDragstart(tool) {
+    /*jslint unparam: true*/
+    var callback = function (evt) {
+      evt.dataTransfer.setData('text/html', tool.outerHTML);
+    };
 
+    return new RSVP.Promise(function (resolve, reject) {
+      tool.addEventListener('dragstart', callback, false);
+    }, function () {
+      tool.removeEventListener('dragstart', callback, false);
+    });
+  }
+
+  initGadgetMixin(gadget_klass);
   gadget_klass
 
     .declareAcquiredMethod("getConfigurationDict", "getConfigurationDict")
 
     .declareMethod("render", function () {
       var g = this;
-      return new RSVP.Queue()
-        .push(function () {
-          return g.getConfigurationDict();
-        })
-        .push(function (config) {
-          g.tools_container = document.createElement('div');
-          g.tools_container.className = 'tools-container';
-          Object.keys(config).forEach(function (key) {
-            var name = config[key].name || key.split('-')[1];
+      return g.getConfigurationDict()
+        .push(function (config_dict) {
+          var tools_container = document.createElement('div');
+          tools_container.className = 'tools-container';
+          Object.keys(config_dict).forEach(function (key) {
+            var name = config_dict[key].name || key.split('-')[1];
             if (key !== 'Dream-Configuration') {
-              g.tools_container.innerHTML += tool_template({
+              tools_container.innerHTML += tool_template({
                 key: key,
                 name: name
               });
             }
           });
+          g.props.element.querySelector('.tools')
+            .appendChild(tools_container);
         });
     })
 
     .declareMethod('startService', function () {
-      var g = this;
-      return g.getElement().then(function (element) {
-        element.querySelector('.tools')
-          .appendChild(g.tools_container);
-      });
+      var promiseArray = [];
+      [].forEach
+        .call(this.props.element.querySelectorAll('.tool'), function (tool) {
+          promiseArray.push(waitForDragstart(tool));
+        });
+      return RSVP.all(promiseArray);
     });
-
-}(window, document, RSVP, rJS, Handlebars));
+}(window, document, RSVP, rJS, Handlebars, initGadgetMixin));

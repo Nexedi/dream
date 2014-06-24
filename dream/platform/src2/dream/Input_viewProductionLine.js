@@ -41,16 +41,18 @@
     })
 
     .declareMethod("startService", function () {
-      var g = this;
+      var g = this,
+        graph;
       return g.getDeclaredGadget("productionline_graph")
-        .push(function (graph) {
-          return graph.startService();
-        })
-        .push(function () {
-          return g.getDeclaredGadget("productionline_toolbox");
+        .push(function (graph_gadget) {
+          graph = graph_gadget;
+          return g.getDeclaredGadget('productionline_toolbox');
         })
         .push(function (toolbox) {
-          return toolbox.startService();
+          return RSVP.all([
+            graph.startService(),
+            toolbox.startService()
+          ]);
         });
     });
 }(window, rJS, RSVP));

@@ -28,6 +28,7 @@
   border-radius: 5px;
   text-align: center;
   padding-top: 1.3em;
+  cursor: move;
 }
 
 .Dream-Source, .Dream-BatchSource {

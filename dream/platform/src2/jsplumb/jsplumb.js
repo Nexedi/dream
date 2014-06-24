@@ -17,16 +17,19 @@
  * along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
  * ==========================================================================*/
 
-/*global RSVP, rJS, $, jsPlumb, Handlebars, DOMParser, initGadgetMixin*/
+/*global RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
+  loopEventListener, DOMParser*/
 /*jslint unparam: true */
-(function (RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin) {
+(function (RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
+           loopEventListener, DOMParser) {
   "use strict";
 
   /*jslint nomen: true*/
   var gadget_klass = rJS(window),
     node_template_source = gadget_klass.__template_element
       .getElementById('node-template').innerHTML,
-    node_template = Handlebars.compile(node_template_source);
+    node_template = Handlebars.compile(node_template_source),
+    domParser = new DOMParser();
 
   function getNodeId(node_container, element_id) {
     var node_id;
@@ -53,13 +56,13 @@
   //   return (option.short_id || element_type) + n;
   // }
 
-  // function generateElementId(gadget_element) {
-  //   var n = 1;
-  //   while ($(gadget_element).find('#DreamNode_' + n).length > 0) {
-  //     n += 1;
-  //   }
-  //   return 'DreamNode_' + n;
-  // }
+  function generateElementId(gadget_element) {
+    var n = 1;
+    while ($(gadget_element).find('#DreamNode_' + n).length > 0) {
+      n += 1;
+    }
+    return 'DreamNode_' + n;
+  }
 
   function onDataChange() {
     //$.publish("Dream.Gui.onDataChange", g.private.getData());
@@ -251,24 +254,24 @@
     node_container[element.id] = element_data;
   }
 
-  function redraw(gadget) {
-    var coordinates = gadget.private.preference_container.coordinates || {},
-      absolute_position,
-      element;
-    $.each(coordinates, function (node_id, v) {
-      absolute_position = convertToAbsolutePosition(
-        gadget,
-        v.left,
-        v.top
-      );
-      element = $(gadget.private.element).find(
-        '#' + getElementId(gadget.private.node_container, node_id)
-      );
-      element.css('top', absolute_position[1]);
-      element.css('left', absolute_position[0]);
-      gadget.private.jsplumb_instance.repaint(element);
-    });
-  }
+  // function redraw(gadget) {
+  //   var coordinates = gadget.props.preference_container.coordinates || {},
+  //     absolute_position,
+  //     element;
+  //   $.each(coordinates, function (node_id, v) {
+  //     absolute_position = convertToAbsolutePosition(
+  //       gadget,
+  //       v.left,
+  //       v.top
+  //     );
+  //     element = $(gadget.props.element).find(
+  //       '#' + getElementId(gadget.props.node_container, node_id)
+  //     );
+  //     element.css('top', absolute_position[1]);
+  //     element.css('left', absolute_position[0]);
+  //     gadget.props.jsplumb_instance.repaint(element);
+  //   });
+  // }
 
   // function positionGraph(gadget) {
   //   $.ajax(
@@ -434,6 +437,9 @@
         coordinate
       );
     }
+    if (element.element_id === undefined) {
+      element.element_id = generateElementId(gadget.props.element);
+    }
     /*jslint nomen: true*/
     render_element.append(node_template({
       "class": element._class.replace('.', '-'),
@@ -454,6 +460,60 @@
     onDataChange();
   }
 
+  function waitForDragover(gadget) {
+    return loopEventListener(
+      gadget.props.main,
+      'dragover',
+      false,
+      function () {return undefined; }
+    );
+  }
+
+  function waitForDrop(gadget) {
+
+    var target = gadget.props.element
+      .querySelector('#main'),
+      callback;
+
+    function canceller() {
+      if (callback !== undefined) {
+        target.removeEventListener('drop', callback, false);
+      }
+    }
+
+    function nonResolvableTrap(resolve, reject) {
+
+      callback = function (evt) {
+        var element = domParser.parseFromString(
+          evt.dataTransfer.getData('text/html'),
+          'text/html'
+        ).querySelector(".tool"),
+          offset = $(gadget.props.main).offset(),
+          box_top = evt.clientY - offset.top + "px",
+          box_left = evt.clientX - offset.left + "px",
+          element_class = element.id.replace('-', '.'),
+          relative_position = convertToRelativePosition(
+            gadget,
+            box_left,
+            box_top
+          );
+        newElement(gadget, {
+          coordinate: {
+            left: relative_position[0],
+            top: relative_position[1]
+          },
+          "_class": element_class,
+          "name": element_class
+        });
+      };
+
+      target.addEventListener('drop', callback, false);
+    }
+
+    return new RSVP.Promise(nonResolvableTrap, canceller);
+  }
+
+  initGadgetMixin(gadget_klass);
   gadget_klass
     .ready(function (g) {
       g.props.node_container = {};
@@ -503,5 +563,15 @@
           updateElementData(g, key, {
             data: value.data
           });
+        }
+      });
+      $.each(g.props.data.edges, function (key, value) {
+        addEdge(g, key, value);
+      });
+      return RSVP.all([
+        waitForDragover(g),
+        waitForDrop(g)
+      ]);
     });
-}(RSVP, rJS, $, jsPlumb, Handlebars, DOMParser, initGadgetMixin));
+}(RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
+  loopEventListener, DOMParser));
