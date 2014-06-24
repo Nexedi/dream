@@ -35,10 +35,11 @@ expanded and validated through the industrial pilot cases of DREAM. Nevertheless
 launch the project in order to attract the interest of simulation modellers and software 
 developers.  
 
-Note that ManPy currently uses SimPy2 (http://simpy.sourceforge.net/old/). Soon it will be upgraded to the newest version SimPy3 (http://simpy.readthedocs.org/en/latest/).
-
 How to get started
 ========================
+
+Note: This section does not apply if DREAM is installed with python setup.py or
+if you use buildout.
 
 To be able to run the documentation examples just copy the dream/simulation to your Python folder. Then you can import ManPy objects as it is written in the examples, e.g.:
  + *from simulation.Queue import Queue* or
@@ -50,11 +51,12 @@ Dependencies
 =================
 
 ManPy uses the following Python libraries:
- + SimPy2
+ + SimPy
  + NumPy
  + SciPy
  + xlrd
  + xlwt
+ + rpy2
 
 =================
 Documentation
