@@ -12,8 +12,8 @@
             _attachment: "simulation.json"
         }).push(function(result_json) {
             var result = JSON.parse(result_json);
-            gadget.props.element.querySelector(".json_input").textContent = JSON.stringify(result[gadget.props.result].input);
-            gadget.props.element.querySelector(".json_output").textContent = JSON.stringify(result[gadget.props.result].result);
+            gadget.props.element.querySelector(".json_input").textContent = JSON.stringify(result[gadget.props.result].input, undefined, " ");
+            gadget.props.element.querySelector(".json_output").textContent = JSON.stringify(result[gadget.props.result].result, undefined, " ");
         });
     });
 })(window, rJS, initGadgetMixin);

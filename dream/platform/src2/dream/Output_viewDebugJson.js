@@ -25,9 +25,9 @@
         .push(function (result_json) {
           var result = JSON.parse(result_json);
           gadget.props.element.querySelector(".json_input").textContent =
-            JSON.stringify(result[gadget.props.result].input);
+            JSON.stringify(result[gadget.props.result].input, undefined, " ");
           gadget.props.element.querySelector(".json_output").textContent =
-            JSON.stringify(result[gadget.props.result].result);
+            JSON.stringify(result[gadget.props.result].result, undefined, " ");
         });
 
     });
