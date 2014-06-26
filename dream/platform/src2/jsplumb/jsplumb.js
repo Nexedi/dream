@@ -31,6 +31,51 @@
     node_template = Handlebars.compile(node_template_source),
     domParser = new DOMParser();
 
+  function loopJsplumbBind(gadget, type, callback) {
+    //////////////////////////
+    // Infinite event listener (promise is never resolved)
+    // eventListener is removed when promise is cancelled/rejected
+    //////////////////////////
+    var handle_event_callback,
+      callback_promise,
+      jsplumb_instance = gadget.props.jsplumb_instance;
+
+    function cancelResolver() {
+      if ((callback_promise !== undefined) &&
+          (typeof callback_promise.cancel === "function")) {
+        callback_promise.cancel();
+      }
+    }
+
+    function canceller() {
+      if (handle_event_callback !== undefined) {
+        jsplumb_instance.unbind(type);
+      }
+      cancelResolver();
+    }
+    function itsANonResolvableTrap(resolve, reject) {
+
+      handle_event_callback = function () {
+        var args = arguments;
+        cancelResolver();
+        callback_promise = new RSVP.Queue()
+          .push(function () {
+            return callback.apply(jsplumb_instance, args);
+          })
+          .push(undefined, function (error) {
+            if (!(error instanceof RSVP.CancellationError)) {
+              canceller();
+              reject(error);
+            }
+          });
+      };
+
+      jsplumb_instance.bind(type, handle_event_callback);
+    }
+    return new RSVP.Promise(itsANonResolvableTrap, canceller);
+  }
+
+
   function getNodeId(node_container, element_id) {
     var node_id;
     $.each(node_container, function (k, v) {
@@ -46,15 +91,15 @@
     return node_container[node_id].element_id;
   }
 
-  // function generateNodeId(node_container, element_type, option) {
-  //   var n = 1;
-  //   while (node_container[
-  //       ((option.short_id || element_type) + n)
-  //     ] !== undefined) {
-  //     n += 1;
-  //   }
-  //   return (option.short_id || element_type) + n;
-  // }
+  function generateNodeId(gadget, element_type, option) {
+    var n = 1;
+    while (gadget.props.node_container[
+        ((option.short_id || element_type) + n)
+      ] !== undefined) {
+      n += 1;
+    }
+    return (option.short_id || element_type) + n;
+  }
 
   function generateElementId(gadget_element) {
     var n = 1;
@@ -67,6 +112,36 @@
   function onDataChange() {
     //$.publish("Dream.Gui.onDataChange", g.private.getData());
     return undefined;
+  }
+
+  function updateConnectionData(gadget, connection, remove, edge_data) {
+    if (remove) {
+      delete gadget.props.edge_container[connection.id];
+    } else {
+      gadget.props.edge_container[connection.id] = [
+        getNodeId(gadget.props.node_container, connection.sourceId),
+        getNodeId(gadget.props.node_container, connection.targetId),
+        edge_data || {}
+      ];
+    }
+    onDataChange();
+  }
+
+  // bind to connection/connectionDetached events,
+  // and update the list of connections on screen.
+
+  function waitForConnection(gadget) {
+    loopJsplumbBind(gadget, 'connection',
+                    function (info, originalEvent) {
+        updateConnectionData(gadget, info.connection);
+      });
+  }
+
+  function waitForConnectionDetached(gadget) {
+    loopJsplumbBind(gadget, 'connectionDetached',
+                    function (info, originalEvent) {
+        updateConnectionData(gadget, info.connection, true);
+      });
   }
 
   function convertToAbsolutePosition(gadget, x, y) {
@@ -204,30 +279,7 @@
     //     return undefined;
     //   });
     // split in 2 methods ? one for events one for manip
-    gadget.props.updateConnectionData
-      = function (connection, remove, edge_data) {
-        if (remove) {
-          delete gadget.props.edge_container[connection.id];
-        } else {
-          gadget.props.edge_container[connection.id] = [
-            getNodeId(gadget.props.node_container, connection.sourceId),
-            getNodeId(gadget.props.node_container, connection.targetId),
-            edge_data || {}
-          ];
-        }
-        onDataChange();
-      };
 
-    // bind to connection/connectionDetached events,
-    // and update the list of connections on screen.
-    // jsplumb_instance
-    //   .bind("connection", function (info, originalEvent) {
-    //     gadget.props.updateConnectionData(info.connection);
-    //   });
-    // jsplumb_instance
-    //   .bind("connectionDetached", function (info, originalEvent) {
-    //     gadget.props.updateConnectionData(info.connection, true);
-    //   });
     onDataChange();
     draggable(gadget);
   }
@@ -423,13 +475,19 @@
   //   onDataChange();
   // }
 
-  function newElement(gadget, element, option) {
-    element.name = element.name || option.name;
-    addElementToContainer(gadget.props.node_container, element);
-    var render_element = $(gadget.props.element).find("#main"),
+  function newElement(gadget, element, configuration) {
+    var element_type = element._class.replace('.', '-'),
+      option = configuration[element_type],
+      render_element = $(gadget.props.element).find("#main"),
       coordinate = element.coordinate,
       box,
       absolute_position;
+    element.element_id = generateElementId(gadget.props.element);
+    if (!element.id) {
+      element.id = generateNodeId(gadget, element_type, option);
+    }
+    addElementToContainer(gadget.props.node_container, element);
+    element.name = element.name || option.name;
     if (coordinate !== undefined) {
       coordinate = updateElementCoordinate(
         gadget,
@@ -469,7 +527,7 @@
     );
   }
 
-  function waitForDrop(gadget) {
+  function waitForDrop(gadget, config) {
 
     var target = gadget.props.element
       .querySelector('#main'),
@@ -504,7 +562,8 @@
           },
           "_class": element_class,
           "name": element_class
-        });
+        },
+           config);
       };
 
       target.addEventListener('drop', callback, false);
@@ -515,6 +574,9 @@
 
   initGadgetMixin(gadget_klass);
   gadget_klass
+
+    .declareAcquiredMethod('getConfigurationDict', 'getConfigurationDict')
+
     .ready(function (g) {
       g.props.node_container = {};
       g.props.edge_container = {};
@@ -544,34 +606,42 @@
       var g = this,
         preference = g.props.data.preference !== undefined ?
             g.props.data.preference : {},
-        coordinates = preference.coordinates;
-
-      g.props.main = g.props.element.querySelector('#main');
-      initJsPlumb(g);
-      $.each(g.props.data.nodes, function (key, value) {
-        if (coordinates === undefined || coordinates[key] === undefined) {
-          value.coordinate = {
-            'top': 0.0,
-            'left': 0.0
-          };
-        } else {
-          value.coordinate = coordinates[key];
-        }
-        value.id = key;
-        newElement(g, value);
-        if (value.data) { // backward compatibility
-          updateElementData(g, key, {
-            data: value.data
+        coordinates = preference.coordinates,
+        config;
+      return g.getConfigurationDict()
+        .push(function (config_dict) {
+          config = config_dict;
+          g.props.main = g.props.element.querySelector('#main');
+          initJsPlumb(g);
+          $.each(g.props.data.nodes, function (key, value) {
+            if (coordinates === undefined || coordinates[key] === undefined) {
+              value.coordinate = {
+                'top': 0.0,
+                'left': 0.0
+              };
+            } else {
+              value.coordinate = coordinates[key];
+            }
+            value.id = key;
+            newElement(g, value, config);
+            if (value.data) { // backward compatibility
+              updateElementData(g, key, {
+                data: value.data
+              });
+            }
           });
-        }
-      });
-      $.each(g.props.data.edges, function (key, value) {
-        addEdge(g, key, value);
-      });
-      return RSVP.all([
-        waitForDragover(g),
-        waitForDrop(g)
-      ]);
+          $.each(g.props.data.edges, function (key, value) {
+            addEdge(g, key, value);
+          });
+        })
+        .push(function () {
+          return RSVP.all([
+            waitForDragover(g),
+            waitForDrop(g, config),
+            waitForConnection(g),
+            waitForConnectionDetached(g)
+          ]);
+        });
     });
 }(RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
   loopEventListener, DOMParser));

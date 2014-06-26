@@ -7,6 +7,8 @@
     <script src="../<%= copy.rsvp.relative_dest %>" type="text/javascript"></script>
     <script src="../<%= copy.renderjs.relative_dest %>" type="text/javascript"></script>
 
+    <script src="mixin_promise.js" type="text/javascript"></script>
+
     <script src="Input_viewProductionLine.js" type="text/javascript"></script>
   </head>
   <body>
@@ -14,5 +16,9 @@
          data-gadget-scope="productionline_toolbox"></div>
     <div data-gadget-url="../jsplumb/index.html"
          data-gadget-scope="productionline_graph"></div>
+    <form class="save_form">
+      <button type="submit" class="ui-btn ui-btn-b ui-btn-inline
+              ui-icon-edit ui-btn-icon-right">Save</button>
+    </form>
   </body>
 </html>
