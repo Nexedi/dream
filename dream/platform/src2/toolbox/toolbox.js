@@ -8,16 +8,27 @@
     tool_template = Handlebars.compile(tool_template_source);
 
   function waitForDragstart(tool) {
-    /*jslint unparam: true*/
-    var callback = function (evt) {
-      evt.dataTransfer.setData('text/html', tool.outerHTML);
-    };
+    var callback;
 
-    return new RSVP.Promise(function (resolve, reject) {
+    function canceller() {
+      if (callback !== undefined) {
+        tool.removeEventListener('dragstart', callback, false);
+      }
+    }
+    /*jslint unparam: true*/
+    function itsANonResolvableTrap(resolve, reject) {
+
+      callback = function (evt) {
+        try {
+          evt.dataTransfer.setData('text/html', tool.outerHTML);
+        } catch (e) {
+          reject(e);
+        }
+      };
+
       tool.addEventListener('dragstart', callback, false);
-    }, function () {
-      tool.removeEventListener('dragstart', callback, false);
-    });
+    }
+    return new RSVP.Promise(itsANonResolvableTrap, canceller);
   }
 
   initGadgetMixin(gadget_klass);

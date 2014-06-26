@@ -528,48 +528,51 @@
   }
 
   function waitForDrop(gadget, config) {
-
-    var target = gadget.props.element
-      .querySelector('#main'),
-      callback;
+    var callback;
 
     function canceller() {
       if (callback !== undefined) {
-        target.removeEventListener('drop', callback, false);
+        gadget.props.main.removeEventListener('drop', callback, false);
       }
     }
 
-    function nonResolvableTrap(resolve, reject) {
+    /*jslint unparam: true*/
+    function itsANonResolvableTrap(resolve, reject) {
 
       callback = function (evt) {
-        var element = domParser.parseFromString(
-          evt.dataTransfer.getData('text/html'),
-          'text/html'
-        ).querySelector(".tool"),
-          offset = $(gadget.props.main).offset(),
-          box_top = evt.clientY - offset.top + "px",
-          box_left = evt.clientX - offset.left + "px",
-          element_class = element.id.replace('-', '.'),
-          relative_position = convertToRelativePosition(
-            gadget,
-            box_left,
-            box_top
-          );
-        newElement(gadget, {
-          coordinate: {
-            left: relative_position[0],
-            top: relative_position[1]
+        try {
+          var element = domParser.parseFromString(
+            evt.dataTransfer.getData('text/html'),
+            'text/html'
+          ).querySelector(".tool"),
+            offset = $(gadget.props.main).offset(),
+            box_top = evt.clientY - offset.top + "px",
+            box_left = evt.clientX - offset.left + "px",
+            element_class = element.id.replace('-', '.'),
+            relative_position = convertToRelativePosition(
+              gadget,
+              box_left,
+              box_top
+            );
+          newElement(gadget, {
+            coordinate: {
+              left: relative_position[0],
+              top: relative_position[1]
+            },
+            "_class": element_class,
+            "name": element_class
           },
-          "_class": element_class,
-          "name": element_class
-        },
-           config);
+            config);
+
+        } catch (e) {
+          reject(e);
+        }
       };
 
-      target.addEventListener('drop', callback, false);
+      gadget.props.main.addEventListener('drop', callback, false);
     }
 
-    return new RSVP.Promise(nonResolvableTrap, canceller);
+    return new RSVP.Promise(itsANonResolvableTrap, canceller);
   }
 
   initGadgetMixin(gadget_klass);
