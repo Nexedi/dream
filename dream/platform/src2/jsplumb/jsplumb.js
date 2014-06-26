@@ -456,7 +456,7 @@
     });
     // call again updateConnectionData to set the connection data that
     // was not passed to the connection hook
-    gadget.props.updateConnectionData(connection, 0, data);
+    updateConnectionData(gadget, connection, 0, data);
   }
 
   // function setPreferences(gadget, preferences) {
