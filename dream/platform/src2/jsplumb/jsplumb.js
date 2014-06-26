@@ -18,7 +18,7 @@
  * ==========================================================================*/
 
 /*global RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
-  loopEventListener, DOMParser*/
+  loopEventListener, DOMParser, confirm*/
 /*jslint unparam: true */
 (function (RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
            loopEventListener, DOMParser) {
@@ -144,6 +144,14 @@
       });
   }
 
+  function waitForConnectionClick(gadget) {
+    loopJsplumbBind(gadget, 'click', function (connection) {
+      if (confirm("Delete connection ?")) {
+        gadget.props.jsplumb_instance.detach(connection);
+      }
+    });
+  }
+
   function convertToAbsolutePosition(gadget, x, y) {
     var zoom_level = (gadget.props.preference_container.zoom_level || 1.0) *
         1.1111,
@@ -261,13 +269,6 @@
 
     // listen for clicks on connections,
     // and offer to change values on click.
-    // jsplumb_instance.bind("click", function (conn) {
-    //   jsplumb_instance.detach(conn);
-    // });
-
-    // jsplumb_instance.bind("beforeDetach", function (conn) {
-    //   return confirm("Delete connection?");
-    // });
 
     // jsplumb_instance
     //   .bind("connectionDrag", function (connection) {
@@ -642,7 +643,8 @@
             waitForDragover(g),
             waitForDrop(g, config),
             waitForConnection(g),
-            waitForConnectionDetached(g)
+            waitForConnectionDetached(g),
+            waitForConnectionClick(g)
           ]);
         });
     });
