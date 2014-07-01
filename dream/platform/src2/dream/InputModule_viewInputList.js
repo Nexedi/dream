@@ -19,7 +19,7 @@
     /////////////////////////////////////////////////////////////////
     // Acquired methods
     /////////////////////////////////////////////////////////////////
-    .declareAcquiredMethod("aq_allDocs", "allDocs")
+    .declareAcquiredMethod("aq_allDocs", "jio_allDocs")
     .declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash")
     .declareAcquiredMethod("whoWantToDisplayThisDocument",
                            "whoWantToDisplayThisDocument")

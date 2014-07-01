@@ -270,7 +270,7 @@
     // Handle acquisition
     /////////////////////////////////////////////////////////////////
     // Bridge to jio gadget
-    .allowPublicAcquisition("allDocs", function (param_list) {
+    .allowPublicAcquisition("jio_allDocs", function (param_list) {
       return this.getDeclaredGadget("jio")
         .push(function (jio_gadget) {
           return jio_gadget.allDocs.apply(jio_gadget, param_list);
