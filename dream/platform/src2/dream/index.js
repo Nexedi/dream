@@ -51,6 +51,24 @@
                         .gui.shift_spreadsheet);
         }
       },
+      "view_available_capacity_spreadsheet": {
+        "gadget": "Input_viewAvailableCapacitySpreadsheet",
+        "type": "object_view",
+        "title": "Available Capacity Spreadsheet",
+        "condition": function (gadget) {
+          return (gadget.props.configuration_dict['Dream-Configuration']
+                        .gui.capacity_by_project_spreadsheet);
+        }
+      },
+      "view_required_capacity_spreadsheet": {
+        "gadget": "Input_viewRequiredCapacitySpreadsheet",
+        "type": "object_view",
+        "title": "Required Capacity Spreadsheet",
+        "condition": function (gadget) {
+          return (gadget.props.configuration_dict['Dream-Configuration']
+                        .gui.capacity_by_station_spreadsheet);
+        }
+      },
       "view_simu": {
         "gadget": "Input_viewSimulation",
         "type": "object_view",
@@ -75,6 +93,15 @@
         "condition": function (gadget) {
           return (gadget.props.configuration_dict['Dream-Configuration']
                         .gui.station_utilisation_graph);
+        }
+      },
+      "view_capacity_utilization": {
+        "gadget": "Output_viewCapacityUtilisationGraph",
+        "type": "object_view",
+        "title": "Capacity Utilization",
+        "condition": function (gadget) {
+          return (gadget.props.configuration_dict['Dream-Configuration']
+                        .gui.capacity_utilisation_graph);
         }
       },
       "view_queue_stat": {

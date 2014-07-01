@@ -44,7 +44,9 @@
             general: {},
             wip_part_spreadsheet: [ [ "Order ID", "Due Date", "Priority", "Project Manager", "Part", "Part Type", "Sequence", "Processing Times", "Prerequisites Parts" ] ],
             shift_spreadsheet: [ [ "Day", "Machines", // XXX more generic name ?
-            "Start", "End" ] ]
+            "Start", "End" ] ],
+            capacity_by_project_spreadsheet: [ [ "Project Name", "Sequence", "Capacity Requirements" ] ],
+            capacity_by_station_spreadsheet: [ [ "Day", "CS1" ] ]
         }, name = "FromScratch";
         return new RSVP.Queue().push(function() {
             return promiseEventListener(gadget.props.element.getElementsByClassName("new_form")[0], "submit", false);

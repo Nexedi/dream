@@ -75,6 +75,15 @@
         "Machines", // XXX more generic name ?
         "Start",
         "End"
+      ]],
+      capacity_by_project_spreadsheet: [[
+        "Project Name",
+        "Sequence",
+        "Capacity Requirements"
+      ]],
+      capacity_by_station_spreadsheet: [[
+        "Day",
+        "CS1"
       ]]
     },
       name = "FromScratch";
