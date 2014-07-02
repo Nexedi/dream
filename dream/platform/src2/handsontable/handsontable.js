@@ -4,15 +4,15 @@
   "use strict";
 
   rJS(window)
-    .declareMethod('render', function (content) {
+    .declareMethod('render', function (content, options) {
       var data = JSON.parse(content);
       return this.getElement()
         .push(function (element) {
           $(element).find('.table-container')
-                    .handsontable({
+                    .handsontable($.extend({
               data: data,
               stretchH: 'all'
-            });
+            }, options || {}));
         });
     })
 
