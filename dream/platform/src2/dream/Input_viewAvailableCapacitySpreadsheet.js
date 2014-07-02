@@ -79,7 +79,8 @@
         .push(function (result_list) {
           return result_list[1].render(
             JSON.stringify(JSON.parse(result_list[0])
-              .capacity_by_project_spreadsheet)
+              .capacity_by_project_spreadsheet),
+            {minSpareRows: 1}
           );
         });
     })

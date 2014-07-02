@@ -80,7 +80,8 @@
           return result_list[1].render(
             JSON.stringify(JSON.parse(result_list[0])
               .capacity_by_station_spreadsheet),
-            {minSpareCols: 1}
+            { minSpareCols: 1,
+              minSpareRows: 1 }
           );
         });
     })
