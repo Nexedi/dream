@@ -464,7 +464,7 @@
         }
       }
 
-      // Get the action informations
+      // Get the action information
       return gadget.declareGadget(
         portal_types[portal_type][options.action].gadget + ".html"
       )
