@@ -11,11 +11,7 @@
           $(element).find('.table-container')
                     .handsontable({
               data: data,
-              minSpareRows: 1,
               stretchH: 'all'
-//         afterChange: function () {
-//           priv.onDataChange();
-//         }
             });
         });
     })
