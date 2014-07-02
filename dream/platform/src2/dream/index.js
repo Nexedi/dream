@@ -358,8 +358,21 @@
     .allowPublicAcquisition("whoWantsToDisplayThisResult",
                             function (param_list) {
         // Hey, I want to display some jIO document
+
+        // We'll display the result using the first enabled action
+        var action = "view", action_info, action_id;
+        for (action_id in portal_types.Output) {
+          if (portal_types.Output.hasOwnProperty(action_id)) {
+            action_info = portal_types.Output[action_id];
+            if ((action_info.condition === undefined) ||
+                (action_info.condition(this))) {
+              action = action_id;
+              break;
+            }
+          }
+        }
         return this.aq_pleasePublishMyState({
-          action: "view",
+          action: action,
           id: param_list[0],
           result: param_list[1]
         });
