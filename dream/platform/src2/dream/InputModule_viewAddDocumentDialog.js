@@ -122,8 +122,8 @@
     .declareAcquiredMethod("aq_post", "jio_post")
     .declareAcquiredMethod("aq_putAttachment", "jio_putAttachment")
     .declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash")
-    .declareAcquiredMethod("whoWantToDisplayThisDocument",
-                           "whoWantToDisplayThisDocument")
+    .declareAcquiredMethod("whoWantsToDisplayThisDocument",
+                           "whoWantsToDisplayThisDocument")
 
     /////////////////////////////////////////////////////////////////
     // declared methods
@@ -139,7 +139,7 @@
           ]);
         })
         .push(function (result) {
-          return gadget.whoWantToDisplayThisDocument(result.id);
+          return gadget.whoWantsToDisplayThisDocument(result.id);
         })
         .push(function (url) {
           return gadget.pleaseRedirectMyHash(url);

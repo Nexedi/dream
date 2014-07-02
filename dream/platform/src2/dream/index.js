@@ -340,11 +340,11 @@
         });
     })
 
-    .allowPublicAcquisition("whoWantToDisplayHome", function () {
+    .allowPublicAcquisition("whoWantsToDisplayHome", function () {
       // Hey, I want to display some URL
       return this.aq_pleasePublishMyState({});
     })
-    .allowPublicAcquisition("whoWantToDisplayThisDocument",
+    .allowPublicAcquisition("whoWantsToDisplayThisDocument",
                             function (param_list) {
         // Hey, I want to display some jIO document
         var kw = {
@@ -355,7 +355,7 @@
         }
         return this.aq_pleasePublishMyState(kw);
       })
-    .allowPublicAcquisition("whoWantToDisplayThisResult",
+    .allowPublicAcquisition("whoWantsToDisplayThisResult",
                             function (param_list) {
         // Hey, I want to display some jIO document
         return this.aq_pleasePublishMyState({

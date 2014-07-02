@@ -70,7 +70,7 @@
         });
       })
       .push(function () {
-        return gadget.whoWantToDisplayThisDocument(gadget.props.jio_key);
+        return gadget.whoWantsToDisplayThisDocument(gadget.props.jio_key);
       })
       .push(function (url) {
         return gadget.pleaseRedirectMyHash(url);
@@ -95,7 +95,7 @@
         });
       })
       .push(function () {
-        return gadget.whoWantToDisplayHome();
+        return gadget.whoWantsToDisplayHome();
       })
       .push(function (url) {
         return gadget.pleaseRedirectMyHash(url);
@@ -114,10 +114,10 @@
     .declareAcquiredMethod("aq_get", "jio_get")
     .declareAcquiredMethod("aq_ajax", "jio_ajax")
     .declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash")
-    .declareAcquiredMethod("whoWantToDisplayThisDocument",
-                           "whoWantToDisplayThisDocument")
-    .declareAcquiredMethod("whoWantToDisplayHome",
-                           "whoWantToDisplayHome")
+    .declareAcquiredMethod("whoWantsToDisplayThisDocument",
+                           "whoWantsToDisplayThisDocument")
+    .declareAcquiredMethod("whoWantsToDisplayHome",
+                           "whoWantsToDisplayHome")
 
     /////////////////////////////////////////////////////////////////
     // declared methods

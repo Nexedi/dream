@@ -20,8 +20,8 @@
     // Acquired methods
     /////////////////////////////////////////////////////////////////
     .declareAcquiredMethod("aq_getAttachment", "jio_getAttachment")
-    .declareAcquiredMethod("whoWantToDisplayThisResult",
-                           "whoWantToDisplayThisResult")
+    .declareAcquiredMethod("whoWantsToDisplayThisResult",
+                           "whoWantsToDisplayThisResult")
 
     /////////////////////////////////////////////////////////////////
     // declared methods
@@ -47,7 +47,7 @@
             i;
           for (i = 0; i < document_list.length; i += 1) {
             result_list.push(RSVP.all([
-              gadget.whoWantToDisplayThisResult(gadget.props.jio_key, i),
+              gadget.whoWantsToDisplayThisResult(gadget.props.jio_key, i),
               document_list[i].score,
               document_list[i].key
             ]));

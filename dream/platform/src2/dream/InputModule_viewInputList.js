@@ -21,8 +21,8 @@
     /////////////////////////////////////////////////////////////////
     .declareAcquiredMethod("aq_allDocs", "jio_allDocs")
     .declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash")
-    .declareAcquiredMethod("whoWantToDisplayThisDocument",
-                           "whoWantToDisplayThisDocument")
+    .declareAcquiredMethod("whoWantsToDisplayThisDocument",
+                           "whoWantsToDisplayThisDocument")
 
     /////////////////////////////////////////////////////////////////
     // declared methods
@@ -37,7 +37,7 @@
           for (i = 0; i < document_list.data.total_rows; i += 1) {
             doc = document_list.data.rows[i];
             result_list.push(RSVP.all([
-              gadget.whoWantToDisplayThisDocument(doc.id),
+              gadget.whoWantsToDisplayThisDocument(doc.id),
               doc.value.title,
               doc.value.modified
             ]));
@@ -48,7 +48,7 @@
           // Create new doc if nothing exists
           if (document_list.length === 0) {
             return gadget
-              .whoWantToDisplayThisDocument(
+              .whoWantsToDisplayThisDocument(
                 undefined,
                 "view_fast_input"
               )

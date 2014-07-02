@@ -87,7 +87,7 @@
         });
       })
       .push(function () {
-        return gadget.whoWantToDisplayThisDocument(
+        return gadget.whoWantsToDisplayThisDocument(
           gadget.props.jio_key,
           "view_result"
         );
@@ -143,8 +143,8 @@
     .declareAcquiredMethod("aq_ajax", "jio_ajax")
     .declareAcquiredMethod("aq_getConfigurationDict", "getConfigurationDict")
     .declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash")
-    .declareAcquiredMethod("whoWantToDisplayThisDocument",
-                           "whoWantToDisplayThisDocument")
+    .declareAcquiredMethod("whoWantsToDisplayThisDocument",
+                           "whoWantsToDisplayThisDocument")
 
     /////////////////////////////////////////////////////////////////
     // declared methods
