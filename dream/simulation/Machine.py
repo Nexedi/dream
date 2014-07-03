@@ -544,29 +544,18 @@ class Machine(CoreObject):
         self.completedJobs+=1                                   # Machine completed one more Job
         # reseting the shouldPreempt flag
         self.shouldPreempt=False
-        # in case Machine just performed the last work before end of shift it should signal the ShiftScheduler
-        if self.isWorkingOnTheLastBeforeOffShift:
-            # find the ShiftSchedulerList
-            mySS=None
-            for SS in G.ShiftSchedulerList:
-                if SS.victim==self:
-                    mySS=SS
-                    break
-            # set the signal
-            mySS.victimEndedLastProcessing.succeed()
-            # reset the flag
-            self.isWorkingOnTheLastBeforeOffShift=False
-        # in case Machine just performed the last work before the maintenance it should signal the ShiftScheduler
-        if self.isWorkingOnTheLastBeforeMaintenance:
-            # find the scheduledMaintenanceList
-            mySM=None
-            for SM in G.ScheduledMaintenanceList:
-                if SM.victim==self:
-                    mySM=SM
-            # set the signal
-            mySM.victimEndedLastProcessing.succeed(self.env.now)
-            # reset the flag
-            self.isWorkingOnTheLastBeforeMaintenance=False
+        
+        # in case Machine just performed the last work before the scheduled maintenance signal the corresponding object
+        if self.isWorkingOnTheLast:
+            # for the scheduled Object interruptions
+            for interruption in (G.ShiftSchedulerList+G.ScheduledMaintenanceList):
+                # if the objectInterruption is waiting for a a signal
+                if interruption.victim==self and interruption.waitingSignal:
+                    # signal it and reset the flags
+                    interruption.victimEndedLastProcessing.succeed(self.env.now)
+                    interruption.waitinSignal=False
+                    self.isWorkingOnTheLast=False
+            
     
     # =======================================================================
     # actions to be carried out when the processing of an Entity ends

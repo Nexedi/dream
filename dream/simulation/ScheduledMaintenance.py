@@ -56,8 +56,9 @@ class ScheduledMaintenance(ObjectInterruption):
     def initialize(self):
         ObjectInterruption.initialize(self) 
         self.victimEndedLastProcessing=self.env.event()
+        self.waitingSignal=False
         # not used yet
-        self.victimIsEmpty=self.env.now
+        self.victimIsEmptyBeforeMaintenance=self.env.event()
     
     # =======================================================================
     # the run method
@@ -77,7 +78,8 @@ class ScheduledMaintenance(ObjectInterruption):
                     self.interruptVictim()                  # while in process it is interrupted
                 elif self.endstatus=='loaded':
                     waitStartTime=self.env.now
-                    self.victim.isWorkingOnTheLastBeforeMaintenance=True
+                    self.victim.isWorkingOnTheLast=True
+                    self.waitingSignal=True
                     # TODO: signal to be triggered by postProcessingActions of Machines
                     yield self.victimEndedLastProcessing                # there is no signal yet that signals the change of such state (an object getting empty)
                     assert self.victimEndedLastProcessing.value==self.env.now, 'the processing end signal is not received by maintenance on time'
@@ -86,10 +88,11 @@ class ScheduledMaintenance(ObjectInterruption):
                     self.interruptVictim()
                 elif self.endStatus=='emptied':
                     waitStartTime=self.env.now
+                    self.waitingSignal=True
                     # TODO: signal to be triggered by removeEntity of Machines
-                    yield self.victimIsEmpty                # there is no signal yet that signals the change of such state (an object getting empty)
-                    assert self.victimIsEmpty.value==self.env.now, 'the processing end signal is not received by maintenance on time'
-                    self.victimIsEmpty=self.env.event()
+                    yield self.victimIsEmptyBeforeMaintenance                # there is no signal yet that signals the change of such state (an object getting empty)
+                    assert self.victimIsEmptyBeforeMaintenance.value==self.env.now, 'the processing end signal is not received by maintenance on time'
+                    self.victimIsEmptyBeforeMaintenance=self.env.event()
                     waitTime=self.env.now-waitStartTime
             self.victim.Up=False
             self.victim.timeLastFailure=self.env.now

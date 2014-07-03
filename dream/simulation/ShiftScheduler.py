@@ -54,11 +54,13 @@ class ShiftScheduler(ObjectInterruption):
         ObjectInterruption.initialize(self)
         self.remainingShiftPattern=list(self.shiftPattern) 
         self.victimEndedLastProcessing=self.env.event()
+        self.waitingSignal=False
         
     # =======================================================================
     #    The run method for the failure which has to served by a repairman
     # =======================================================================
-    def run(self):    
+    def run(self):
+        # the victim should not be interrupted but the scheduler should wait for the processing to finish before the stations turns to off-shift mode
         self.victim.totalOffShiftTime=0
         self.victim.timeLastShiftEnded=self.env.now
         # if in the beginning the victim is offShift set it as such
@@ -83,7 +85,8 @@ class ShiftScheduler(ObjectInterruption):
                 # if the mode is to end current work before going off-shift and there is current work, wait for victimEndedLastProcessing
                 # signal before going off-shift
                 if self.endUnfinished and len(self.victim.getActiveObjectQueue())==1 and (not self.victim.waitToDispose):
-                    self.victim.isWorkingOnTheLastBeforeOffShift=True
+                    self.victim.isWorkingOnTheLast=True
+                    self.waitingSignal=True
                     yield self.victimEndedLastProcessing   
                     self.victimEndedLastProcessing=self.env.event()                
                 
