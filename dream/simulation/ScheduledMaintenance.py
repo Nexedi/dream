@@ -38,10 +38,26 @@ class ScheduledMaintenance(ObjectInterruption):
     # =======================================================================
     # the __init__() method of the class
     # =======================================================================
-    def __init__(self, victim=None, start=0, duration=1):
+    def __init__(self, victim=None, start=0, duration=1, endStatus='interrupt'):
+        '''
+            interrupted    : the maintenance starts immediately
+            loaded         : the maintenance starts as soon as the victim has ended processing
+            emptied        : the maintenance starts as soon as the victim is empty
+        '''
         ObjectInterruption.__init__(self,victim)
         self.start=start
         self.duration=duration
+        # the victim can be 'interrupted', 'loaded' or 'emptied' when the maintenance interruption happens
+        self.endStatus=endStatus
+    
+    # =======================================================================
+    # initialize for every replications
+    # =======================================================================
+    def initialize(self):
+        ObjectInterruption.initialize(self) 
+        self.victimEndedLastProcessing=self.env.event()
+        # not used yet
+        self.victimIsEmpty=self.env.now
     
     # =======================================================================
     # the run method
@@ -51,8 +67,30 @@ class ScheduledMaintenance(ObjectInterruption):
     def run(self):
         yield self.env.timeout(self.start)              #wait until the start time
         try:
+            # if the station is occupied then it should not be interrupted but the maintenance must wait until the station is clear, 
+            # the maintenance should be performed then (the victim is not interrupted)
+            waitTime=0
+            # TODO: should be implemented by signals or else there is no way to control when to stop the maintenance
             if(len(self.getVictimQueue())>0):           # when a Machine gets failure
-                self.interruptVictim()                  # while in process it is interrupted
+                # TODO: boolean flags canInterruptProc, canInterruptBlock to be used when the desired behaviour is required
+                if self.endStatus=='interrupted':
+                    self.interruptVictim()                  # while in process it is interrupted
+                elif self.endstatus=='loaded':
+                    waitStartTime=self.env.now
+                    self.victim.isWorkingOnTheLastBeforeMaintenance=True
+                    # TODO: signal to be triggered by postProcessingActions of Machines
+                    yield self.victimEndedLastProcessing                # there is no signal yet that signals the change of such state (an object getting empty)
+                    assert self.victimEndedLastProcessing.value==self.env.now, 'the processing end signal is not received by maintenance on time'
+                    self.victimEndedLastProcessing=self.env.event()
+                    waitTime=self.env.now-waitStartTime
+                    self.interruptVictim()
+                elif self.endStatus=='emptied':
+                    waitStartTime=self.env.now
+                    # TODO: signal to be triggered by removeEntity of Machines
+                    yield self.victimIsEmpty                # there is no signal yet that signals the change of such state (an object getting empty)
+                    assert self.victimIsEmpty.value==self.env.now, 'the processing end signal is not received by maintenance on time'
+                    self.victimIsEmpty=self.env.event()
+                    waitTime=self.env.now-waitStartTime
             self.victim.Up=False
             self.victim.timeLastFailure=self.env.now
             self.outputTrace("is down")
@@ -60,10 +98,10 @@ class ScheduledMaintenance(ObjectInterruption):
             print "AttributeError1"
             
         yield self.env.timeout(self.duration)           # wait for the defined duration of the interruption 
-        self.victim.totalFailureTime+=self.duration
+        self.victim.totalFailureTime+=self.duration-waitTime
         
         try:
-            if(len(self.getVictimQueue())>0):                
+            if(len(self.getVictimQueue())>0):
                 self.reactivateVictim()                 # since the maintenance is over, the victim is reactivated
             self.victim.Up=True              
             self.outputTrace("is up")                                           

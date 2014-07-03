@@ -556,6 +556,17 @@ class Machine(CoreObject):
             mySS.victimEndedLastProcessing.succeed()
             # reset the flag
             self.isWorkingOnTheLastBeforeOffShift=False
+        # in case Machine just performed the last work before the maintenance it should signal the ShiftScheduler
+        if self.isWorkingOnTheLastBeforeMaintenance:
+            # find the scheduledMaintenanceList
+            mySM=None
+            for SM in G.ScheduledMaintenanceList:
+                if SM.victim==self:
+                    mySM=SM
+            # set the signal
+            mySM.victimEndedLastProcessing.succeed(self.env.now)
+            # reset the flag
+            self.isWorkingOnTheLastBeforeMaintenance=False
     
     # =======================================================================
     # actions to be carried out when the processing of an Entity ends

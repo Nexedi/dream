@@ -96,6 +96,8 @@ class CoreObject(object):
         self.waitToDispose=False                        #shows if the object waits to dispose an entity   
         
         self.isWorkingOnTheLastBeforeOffShift=False     #shows if the object is performing the last processing before it goes offShift
+        
+        self.isWorkingOnTheLastBeforeMaintenance=False  #shows if the object is performing the last processing before maintenance
 
         # ============================== the below are currently used in Jobshop =======================   
         self.giver=None                                 #the CoreObject that the activeObject will take an Entity from
