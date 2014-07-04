@@ -14,6 +14,7 @@
   /////////////////////////////////////////////////////////////////
   // Minimalistic ERP5's like portal type configuration
   /////////////////////////////////////////////////////////////////
+  // XXX we should use lists instead to keep ordering
   var portal_types = {
     "Input Module": {
       "view": {
@@ -347,6 +348,7 @@
     .allowPublicAcquisition("whoWantsToDisplayThisDocument",
                             function (param_list) {
         // Hey, I want to display some jIO document
+        // XXX should be merged with whoWantsToDisplayThisResult
         var kw = {
           action: param_list[1] || "view"
         };
