@@ -90,6 +90,7 @@ class QueueManagedJob(QueueJobShop):
         # the sortEntities method needs a receiver defined to sort the entities according to the availability of the manager
         #     so if there is a caller define him ass receiver and after the sorting set the receiver again to None
         activeObject.sortEntities()
+        activeObject.sortEntitiesForReceiver(activeObject.objectSortingFor)
         
         # and then perform the default behaviour
         return QueueJobShop.haveToDispose(self,thecaller)
