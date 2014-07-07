@@ -17,7 +17,7 @@
  * along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
  * ==========================================================================*/
 /*global RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
-  loopEventListener, promiseEventListener, DOMParser, confirm*/
+  loopEventListener, promiseEventListener, DOMParser, confirm */
 /*jslint unparam: true */
 (function(RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin, loopEventListener, promiseEventListener, DOMParser) {
     "use strict";
@@ -214,6 +214,11 @@
             name: element.name,
             element_id: element.element_id
         };
+        Object.keys(element).forEach(function(k) {
+            if (k !== "_class" && k !== "name" && k !== "element_id") {
+                element_data[k] = element[k];
+            }
+        });
         node_container[element.id] = element_data;
     }
     // function redraw(gadget) {
@@ -390,7 +395,7 @@
             property_list.unshift({
                 _class: "Dream.Property",
                 id: "name",
-                name: "name",
+                name: "Name",
                 type: "string"
             });
             property_list.unshift({
@@ -425,7 +430,7 @@
         });
     }
     function waitForNodeClick(gadget, node, config_dict) {
-        gadget.props.nodes_click_monitor.monitor(loopEventListener(node, "click", false, openNodeDialog.bind(null, gadget, node, config_dict)));
+        gadget.props.nodes_click_monitor.monitor(loopEventListener(node, "dblclick", false, openNodeDialog.bind(null, gadget, node, config_dict)));
     }
     function newElement(gadget, element, configuration) {
         var element_type = element._class.replace(".", "-"), option = configuration[element_type], render_element = $(gadget.props.element).find("#main"), coordinate = element.coordinate, box, absolute_position, domElement;
@@ -492,12 +497,12 @@
     }
     initGadgetMixin(gadget_klass);
     gadget_klass.declareAcquiredMethod("getConfigurationDict", "getConfigurationDict").ready(function(g) {
-        g.props.node_container = {};
         g.props.edge_container = {};
         g.props.preference_container = {};
         g.props.style_attr_list = [ "width", "height", "padding-top", "line-height" ];
     }).declareMethod("render", function(data) {
         this.props.data = JSON.parse(data);
+        this.props.node_container = this.props.data.nodes;
         this.props.jsplumb_instance = jsPlumb.getInstance();
     }).declareMethod("getData", function() {
         return JSON.stringify({

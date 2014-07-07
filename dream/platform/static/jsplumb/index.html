@@ -22,8 +22,13 @@
     </script>
 
     <template id="popup-edit-template">
-      <div id="node-edit-popup">
-        <form>
+      <div id="node-edit-popup" data-position-to="origin">
+        <div data-role="header" data-theme="a">
+          <h1>Node edition</h1>
+          <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+        </div>
+        <br/>
+        <form class="ui-content">
           <fieldset></fieldset>
           <input type="button" value="Delete">
           <input type="submit" value="Validate">
