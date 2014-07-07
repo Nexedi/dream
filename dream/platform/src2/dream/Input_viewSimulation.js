@@ -1,18 +1,23 @@
-/*global rJS, RSVP, jQuery, Handlebars,
-  promiseEventListener, initGadgetMixin */
+/*global rJS, RSVP, jQuery, promiseEventListener, initGadgetMixin */
 /*jslint nomen: true */
-(function (window, rJS, RSVP, $, Handlebars,
-           promiseEventListener, initGadgetMixin) {
+(function (window, rJS, RSVP, $, promiseEventListener, initGadgetMixin) {
   "use strict";
 
   function saveForm(gadget) {
-    var general = {};
-    return new RSVP.Queue()
+    var general = {},
+      field_gadget_list;
+    return gadget.getDeclaredGadget('fieldset')
+      .push(function (fieldset_gadget) {
+        return fieldset_gadget.getFieldGadgetList();
+      })
+      .push(function (field_gadgets) {
+        field_gadget_list = field_gadgets;
+      })
       .push(function () {
         var i,
           promise_list = [];
-        for (i = 0; i < gadget.props.gadget_list.length; i += 1) {
-          promise_list.push(gadget.props.gadget_list[i].getContent());
+        for (i = 0; i < field_gadget_list.length; i += 1) {
+          promise_list.push(field_gadget_list[i].getContent());
         }
         return RSVP.all(promise_list);
       })
@@ -127,12 +132,7 @@
   // Handlebars
   /////////////////////////////////////////////////////////////////
   // Precompile the templates while loading the first gadget instance
-  var gadget_klass = rJS(window),
-    source = gadget_klass.__template_element
-                         .getElementById("label-template")
-                         .innerHTML,
-    label_template = Handlebars.compile(source);
-
+  var gadget_klass = rJS(window);
   initGadgetMixin(gadget_klass);
   gadget_klass
     /////////////////////////////////////////////////////////////////
@@ -150,49 +150,13 @@
     // declared methods
     /////////////////////////////////////////////////////////////////
     .declareMethod("render", function (options) {
-      var i,
-        gadget = this,
-        property,
-        parent_element = gadget.props.element
-          .querySelector(".simulation_parameters"),
-        value,
-        queue,
+      var gadget = this,
+        property_list,
         data;
 
       this.props.jio_key = options.id;
 
-      function addField(property, value) {
-        var sub_gadget;
-        queue
-          .push(function () {
-            parent_element.insertAdjacentHTML(
-              'beforeend',
-              label_template({label: (property.name || property.id)})
-            );
-            if (property.type === "number") {
-              return gadget.declareGadget("../number_field/index.html");
-            }
-            return gadget.declareGadget("../string_field/index.html");
-          })
-          .push(function (gg) {
-            sub_gadget = gg;
-            value = data[property.id] || value;
-            return sub_gadget.render({field_json: {
-              title: (property.description || ''),
-              key: property.id,
-              value: value
-            }});
-          })
-          .push(function () {
-            return sub_gadget.getElement();
-          })
-          .push(function (sub_element) {
-            parent_element.appendChild(sub_element);
-            gadget.props.gadget_list.push(sub_gadget);
-          });
-      }
-
-      queue = gadget.aq_getAttachment({
+      return gadget.aq_getAttachment({
         "_id": gadget.props.jio_key,
         "_attachment": "body.json"
       })
@@ -201,23 +165,16 @@
           return gadget.aq_getConfigurationDict();
         })
         .push(function (configuration_dict) {
-          var property_list =
+          property_list =
             configuration_dict['Dream-Configuration'].property_list;
-          gadget.props.gadget_list = [];
-          for (i = 0; i < property_list.length; i += 1) {
-            property = property_list[i];
-            if (property._class === "Dream.Property") {
-              value = property._default || "";
-              addField(property, value);
-            }
-          }
+          return gadget.getDeclaredGadget('fieldset');
+        })
+        .push(function (fieldset_gadget) {
+          return fieldset_gadget.render(property_list, data);
         });
-
-      return queue;
     })
 
     .declareMethod("startService", function () {
       return waitForRunSimulation(this);
     });
-}(window, rJS, RSVP, jQuery, Handlebars,
-  promiseEventListener, initGadgetMixin));
+}(window, rJS, RSVP, jQuery, promiseEventListener, initGadgetMixin));
