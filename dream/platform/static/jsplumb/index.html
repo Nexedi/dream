@@ -16,10 +16,20 @@
       <div class="window {{class}}"
            id="{{element_id}}"
            title="{{title}}">
-        {{id}}
+        {{name}}
         <div class="ep"></div>
       </div>
     </script>
+
+    <template id="popup-edit-template">
+      <div id="node-edit-popup">
+        <form>
+          <fieldset></fieldset>
+          <input type="button" value="Delete">
+          <input type="submit" value="Validate">
+        </form>
+      </div>
+    </template>
 
     <script src="../dream/mixin_gadget.js"></script>
     <script src="../dream/mixin_promise.js"></script>

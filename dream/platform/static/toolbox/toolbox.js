@@ -4,15 +4,24 @@
     /*jslint nomen: true*/
     var gadget_klass = rJS(window), tool_template_source = gadget_klass.__template_element.getElementById("tool-template").innerHTML, tool_template = Handlebars.compile(tool_template_source);
     function waitForDragstart(tool) {
+        var callback;
+        function canceller() {
+            if (callback !== undefined) {
+                tool.removeEventListener("dragstart", callback, false);
+            }
+        }
         /*jslint unparam: true*/
-        var callback = function(evt) {
-            evt.dataTransfer.setData("text/html", tool.outerHTML);
-        };
-        return new RSVP.Promise(function(resolve, reject) {
+        function itsANonResolvableTrap(resolve, reject) {
+            callback = function(evt) {
+                try {
+                    evt.dataTransfer.setData("text/html", tool.outerHTML);
+                } catch (e) {
+                    reject(e);
+                }
+            };
             tool.addEventListener("dragstart", callback, false);
-        }, function() {
-            tool.removeEventListener("dragstart", callback, false);
-        });
+        }
+        return new RSVP.Promise(itsANonResolvableTrap, canceller);
     }
     initGadgetMixin(gadget_klass);
     gadget_klass.declareAcquiredMethod("getConfigurationDict", "getConfigurationDict").declareMethod("render", function() {

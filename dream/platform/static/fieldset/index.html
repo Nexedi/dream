@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Run Simulation</title>
+    <title>Fieldset</title>
     <script src="../lib/rsvp.min.js" type="text/javascript"></script>
     <script src="../lib/renderjs.min.js" type="text/javascript"></script>
     <script src="../lib/handlebars.min.js" type="text/javascript"></script>
@@ -11,21 +11,12 @@
     <script src="../lib/jquerymobile.js" type="text/javascript"></script>
 
     <script id="label-template" type="text/x-handlebars-template">
-      <label>{{label}}</label>
+      <label for="{{for}}">{{name}}</label>
     </script>
 
-    <script src="mixin_gadget.js" type="text/javascript"></script>
-    <script src="mixin_promise.js" type="text/javascript"></script>
-    <script src="Input_viewSimulation.js" type="text/javascript"></script>
+    <script src="../dream/mixin_gadget.js" type="text/javascript"></script>
+    <script src="fieldset.js" type="text/javascript"></script>
   </head>
   <body>
-    <form class="save_form">
-      <fieldset>
-        <div data-gadget-url="../fieldset/index.html"
-             data-gadget-scope="fieldset"></div>
-      </fieldset>
-      <button type="submit" class="ui-btn ui-btn-b ui-btn-inline
-              ui-icon-refresh ui-btn-icon-right">Run Simulation</button>
-    </form>
   </body>
 </html>
