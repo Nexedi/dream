@@ -18,7 +18,7 @@
  * ==========================================================================*/
 
 /*global RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
-  loopEventListener, promiseEventListener, DOMParser, confirm*/
+  loopEventListener, promiseEventListener, DOMParser, confirm */
 /*jslint unparam: true */
 (function (RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
            loopEventListener, promiseEventListener, DOMParser) {
@@ -307,6 +307,11 @@
       name: element.name,
       element_id: element.element_id
     };
+    Object.keys(element).forEach(function (k) {
+      if (k !== '_class' && k !== 'name' && k !== 'element_id') {
+        element_data[k] = element[k];
+      }
+    });
     node_container[element.id] = element_data;
   }
 
@@ -519,7 +524,7 @@
       property_list.unshift({
         "_class": "Dream.Property",
         "id": "name",
-        "name": "name",
+        "name": "Name",
         "type": "string"
       });
 
@@ -581,7 +586,7 @@
     gadget.props.nodes_click_monitor
       .monitor(loopEventListener(
         node,
-        'click',
+        'dblclick',
         false,
         openNodeDialog.bind(null, gadget, node, config_dict)
       ));
@@ -595,6 +600,7 @@
       box,
       absolute_position,
       domElement;
+
     element.element_id = generateElementId(gadget.props.element);
     if (!element.id) {
       element.id = generateNodeId(gadget, element_type, option);
@@ -698,7 +704,6 @@
     .declareAcquiredMethod('getConfigurationDict', 'getConfigurationDict')
 
     .ready(function (g) {
-      g.props.node_container = {};
       g.props.edge_container = {};
       g.props.preference_container = {};
       g.props.style_attr_list = [
@@ -711,6 +716,7 @@
 
     .declareMethod('render', function (data) {
       this.props.data = JSON.parse(data);
+      this.props.node_container = this.props.data.nodes;
       this.props.jsplumb_instance = jsPlumb.getInstance();
     })
 

@@ -13,7 +13,7 @@
                       .innerHTML,
     option_template = Handlebars.compile(option_source),
     selected_option_source = gadget_klass.__template_element
-                               .getElementById("option-template")
+                               .getElementById("selected-option-template")
                                .innerHTML,
     selected_option_template = Handlebars.compile(selected_option_source);
 
@@ -32,8 +32,7 @@
         tmp = '';
       select.setAttribute('name', field_json.key);
       for (i = 0; i < field_json.items.length; i += 1) {
-
-        if (field_json.items[i][1] === field_json.default[0]) {
+        if (field_json.items[i][1] === field_json.value) {
           template = selected_option_template;
         } else {
           template = option_template;
