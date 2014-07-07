@@ -18,10 +18,10 @@
  * ==========================================================================*/
 
 /*global RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
-  loopEventListener, DOMParser, confirm*/
+  loopEventListener, promiseEventListener, DOMParser, confirm*/
 /*jslint unparam: true */
 (function (RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
-           loopEventListener, DOMParser) {
+           loopEventListener, promiseEventListener, DOMParser) {
   "use strict";
 
   /*jslint nomen: true*/
@@ -29,6 +29,8 @@
     node_template_source = gadget_klass.__template_element
       .getElementById('node-template').innerHTML,
     node_template = Handlebars.compile(node_template_source),
+    popup_edit_template = gadget_klass.__template_element
+       .getElementById('popup-edit-template'),
     domParser = new DOMParser();
 
   function loopJsplumbBind(gadget, type, callback) {
@@ -302,6 +304,7 @@
     /*jslint nomen: true*/
     var element_data = {
       _class: element._class,
+      name: element.name,
       element_id: element.element_id
     };
     node_container[element.id] = element_data;
@@ -378,21 +381,21 @@
   // }
 
 
-  // function removeElement(gadget, node_id) {
-  //   var element_id = gadget.props.node_container[node_id].element_id;
-  //   gadget.props.jsplumb_instance.removeAllEndpoints(
-  //     $(gadget.props.element).find("#" + element_id)
-  //   );
-  //   $(gadget.props.element).find("#" + element_id).remove();
-  //   delete gadget.props.node_container[node_id];
-  //   delete gadget.props.preference_container.coordinates[node_id];
-  //   $.each(gadget.props.edge_container, function (k, v) {
-  //     if (node_id === v[0] || node_id === v[1]) {
-  //       delete gadget.props.edge_container[k];
-  //     }
-  //   });
-  //   onDataChange();
-  // }
+  function removeElement(gadget, node_id) {
+    var element_id = gadget.props.node_container[node_id].element_id;
+    gadget.props.jsplumb_instance.removeAllEndpoints(
+      $(gadget.props.element).find("#" + element_id)
+    );
+    $(gadget.props.element).find("#" + element_id).remove();
+    delete gadget.props.node_container[node_id];
+    delete gadget.props.preference_container.coordinates[node_id];
+    $.each(gadget.props.edge_container, function (k, v) {
+      if (node_id === v[0] || node_id === v[1]) {
+        delete gadget.props.edge_container[k];
+      }
+    });
+    onDataChange();
+  }
 
   function updateElementData(gadget, node_id, data) {
     var element_id = gadget.props.node_container[node_id].element_id,
@@ -408,6 +411,7 @@
       gadget.props.node_container[new_id]
         = gadget.props.node_container[node_id];
       delete gadget.props.node_container[node_id];
+      delete gadget.props.node_container[new_id].id;
       $.each(gadget.props.edge_container, function (k, v) {
         if (v[0] === node_id) {
           v[0] = new_id;
@@ -476,19 +480,127 @@
   //   onDataChange();
   // }
 
+  function saveNode(evt, gadget, node_id) {
+    var i,
+      data = {
+        "id": $(evt.target[1]).val(),
+        "name": $(evt.target[2]).val()
+      };
+    data.data = {};
+    for (i = 3; i < evt.target.length - 1; i += 1) {
+      data.data[evt.target[i].name] = $(evt.target[i]).val();
+    }
+    updateElementData(gadget, node_id, data);
+  }
+
+  function openNodeDialog(gadget, element, config_dict) {
+    var node_id = getNodeId(gadget.props.node_container, element.id),
+      node_data = gadget.props.node_container[node_id],
+      element_type = node_data._class.replace('.', '-'),
+      property_list = config_dict[element_type].property_list || [],
+      node_edit_popup = $(gadget.props.element).find('#popup-edit-template'),
+      fieldset_element,
+      save_promise,
+      delete_promise;
+
+    if (node_edit_popup.length !== 0) {
+      node_edit_popup.remove();
+    }
+
+    gadget.props.element.appendChild(
+      document.importNode(popup_edit_template.content, true).children[0]
+    );
+    node_edit_popup = $(gadget.props.element).find('#node-edit-popup');
+    fieldset_element = node_edit_popup.find('fieldset')[0];
+    node_edit_popup.popup();
+
+    node_data.id = node_id;
+    if (property_list.length === 0 || property_list[0].id !== "id") {
+      property_list.unshift({
+        "_class": "Dream.Property",
+        "id": "name",
+        "name": "name",
+        "type": "string"
+      });
+
+      property_list.unshift({
+        "_class": "Dream.Property",
+        "id": 'id',
+        "name": "ID",
+        "type": "string"
+      });
+    }
+
+    save_promise = new RSVP.Queue()
+      .push(function () {
+        return promiseEventListener(
+          node_edit_popup.find("form")[0],
+          'submit',
+          false
+        );
+      })
+      .push(function (evt) {
+        return saveNode(evt, gadget, node_id);
+      });
+
+    delete_promise = new RSVP.Queue()
+      .push(function () {
+        return promiseEventListener(
+          node_edit_popup.find("form [type='button']")[0],
+          'click',
+          false
+        );
+      })
+      .push(function () {
+        return removeElement(gadget, node_id);
+      });
+
+    return gadget.declareGadget("../fieldset/index.html", {
+      element: fieldset_element,
+      scope: 'fieldset'
+    })
+      .push(function (fieldset_gadget) {
+        return fieldset_gadget.render(property_list, node_data);
+      })
+      .push(function () {
+        node_edit_popup.enhanceWithin();
+        node_edit_popup.popup('open');
+      })
+      .push(function () {
+        return RSVP.any([
+          save_promise,
+          delete_promise
+        ]);
+      })
+      .push(function () {
+        node_edit_popup.popup('close');
+      });
+  }
+
+  function waitForNodeClick(gadget, node, config_dict) {
+    gadget.props.nodes_click_monitor
+      .monitor(loopEventListener(
+        node,
+        'click',
+        false,
+        openNodeDialog.bind(null, gadget, node, config_dict)
+      ));
+  }
+
   function newElement(gadget, element, configuration) {
     var element_type = element._class.replace('.', '-'),
       option = configuration[element_type],
       render_element = $(gadget.props.element).find("#main"),
       coordinate = element.coordinate,
       box,
-      absolute_position;
+      absolute_position,
+      domElement;
     element.element_id = generateElementId(gadget.props.element);
     if (!element.id) {
       element.id = generateNodeId(gadget, element_type, option);
     }
-    addElementToContainer(gadget.props.node_container, element);
     element.name = element.name || option.name;
+    addElementToContainer(gadget.props.node_container, element);
     if (coordinate !== undefined) {
       coordinate = updateElementCoordinate(
         gadget,
@@ -500,12 +612,17 @@
       element.element_id = generateElementId(gadget.props.element);
     }
     /*jslint nomen: true*/
-    render_element.append(node_template({
-      "class": element._class.replace('.', '-'),
-      "element_id": element.element_id,
-      "title": element.name || element.id,
-      "id": element.id
-    }));
+    domElement = domParser.parseFromString(
+      node_template({
+        "class": element._class.replace('.', '-'),
+        "element_id": element.element_id,
+        "title": element.name || element.id,
+        "name": element.name
+      }),
+      "text/html"
+    ).querySelector('.window');
+    render_element.append(domElement);
+    waitForNodeClick(gadget, domElement, configuration);
     box = $(gadget.props.element).find("#" + element.element_id);
     absolute_position = convertToAbsolutePosition(
       gadget,
@@ -560,8 +677,7 @@
               left: relative_position[0],
               top: relative_position[1]
             },
-            "_class": element_class,
-            "name": element_class
+            "_class": element_class
           },
             config);
 
@@ -617,6 +733,7 @@
           config = config_dict;
           g.props.main = g.props.element.querySelector('#main');
           initJsPlumb(g);
+          g.props.nodes_click_monitor = RSVP.Monitor();
           $.each(g.props.data.nodes, function (key, value) {
             if (coordinates === undefined || coordinates[key] === undefined) {
               value.coordinate = {
@@ -644,9 +761,10 @@
             waitForDrop(g, config),
             waitForConnection(g),
             waitForConnectionDetached(g),
-            waitForConnectionClick(g)
+            waitForConnectionClick(g),
+            g.props.nodes_click_monitor
           ]);
         });
     });
 }(RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
-  loopEventListener, DOMParser));
+  loopEventListener, promiseEventListener, DOMParser));
