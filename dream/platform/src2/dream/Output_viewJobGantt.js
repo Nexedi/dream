@@ -127,7 +127,7 @@
               entrance_date.setTime(entrance_date.getTime() +
                                     schedule.entranceTime * 1000 * 3600);
               if (schedule.exitTime) {
-                duration = (schedule.exitTime - schedule.entranceTime);
+                duration = 24 * (schedule.exitTime - schedule.entranceTime);
               } else {
                 if (obj.results.schedule[i + 1]) {
                   duration = obj.results.schedule[i + 1].entranceTime -
