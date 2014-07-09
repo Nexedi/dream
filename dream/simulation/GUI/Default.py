@@ -51,6 +51,15 @@ schema = {
     "name": "Maximum Value",
     "_class": "Dream.Property",
   },
+  "timeUnitPerDay": {
+    "id": "timeUnitPerDay",
+    "type": "number",
+    "name": "Number of time units per day",
+    "description": "Used for input and reporting widgets."
+    " For example, 24 means that simulation clock time unit is one hour.",
+    "_class": "Dream.Property",
+    "_default": 24
+  },
   "failureDistribution": {
     "id": "failureDistribution",
     "type": "string",
@@ -333,6 +342,7 @@ class Simulation(object):
            schema["confidenceLevel"],
            schema["processTimeout"],
            schema["currentDate"],
+           schema["timeUnitPerDay"],
            schema["trace"],
            schema["seed"],
            schema["ke_url"],
