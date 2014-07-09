@@ -10,6 +10,8 @@
   };
 
   function job_gantt_widget(all_data) {
+  // XXX: use dhx_gantt zoom level feature (
+  // http://dhtmlx.com/docs/products/dhtmlxGantt/02_features.html )
 
     var now = new Date(),
       start_date,
@@ -140,7 +142,7 @@
                 //   schedule['entranceTime']);
                 // for simulation time unit as days hours
                 task_start_date.setTime(task_start_date.getTime() +
-                                        schedule.entranceTime * 1000 * 3600);
+                                    schedule.entranceTime * 1000 * 3600 * 24);
 
                 job_full_id = input_job.id + "." + input_order.id;
                 if (seen_parts[job_full_id] === undefined) {

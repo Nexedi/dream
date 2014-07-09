@@ -90,7 +90,7 @@
                                    schedule.entranceTime * 1000 * 3600);
           duration = 0;
           if (schedule.exitTime) {
-            duration = (schedule.exitTime - schedule.entranceTime);
+            duration = (schedule.exitTime - schedule.entranceTime * 24);
           } else {
             // When duration is not returned by ManPy, it is calculated by
             // difference of entranceTime of this step and entranceTime of the
