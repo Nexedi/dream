@@ -58,6 +58,17 @@ ManPy uses the following Python libraries:
  + xlwt
  + rpy2
 
+The HTML5 graphical user interface uses the following javascript libraries:
+ + `DHTMLX Gantt <http://dhtmlx.com/docs/products/dhtmlxGantt/>`_
+ + `Flot <http://www.flotcharts.org/>`_
+ + `Handsontable <http://handsontable.com/>`_
+ + `jIO <http://j-io.org>`_
+ + `JQuery <http://jquery.com/>`_
+ + `JQuery Mobile <http://jquerymobile.com/>`_
+ + `JSPlumb <http://jsplumbtoolkit.com/>`_
+ + `RenderJS <http://www.renderjs.org/>`_
+ + `RSVP.js <https://github.com/tildeio/rsvp.js>`_
+
 =================
 Documentation
 =================
