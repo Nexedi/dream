@@ -72,11 +72,13 @@
     "SMF": {
       "_class": "Dream.AbstractCapacityStation", 
       "element_id": "DreamNode_1", 
+      "isAssembly": 0,
       "name": "Sheet Metal Forming"
     }, 
     "WELD": {
       "_class": "Dream.AbstractCapacityStation", 
       "element_id": "DreamNode_2", 
+      "isAssembly": 0,
       "name": "Welding"
     }
   }, 
