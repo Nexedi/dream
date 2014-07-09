@@ -4,7 +4,7 @@ module.exports = function (grunt) {
 
 
   var global_config = {
-      src: "dream/platform/src2/",
+      src: "dream/platform/src/",
       lib: "dream/platform/vendor/",
       tmp: "tmp",
       dest: "dream/platform/static/"
