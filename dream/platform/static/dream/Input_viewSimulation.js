@@ -71,7 +71,7 @@
                 _mimetype: "application/json"
             });
         }).push(function() {
-            return gadget.whoWantToDisplayThisDocument(gadget.props.jio_key, "view_result");
+            return gadget.whoWantsToDisplayThisDocument(gadget.props.jio_key, "view_result");
         }).push(function(url) {
             return gadget.pleaseRedirectMyHash(url);
         });
@@ -103,7 +103,7 @@
     // Precompile the templates while loading the first gadget instance
     var gadget_klass = rJS(window);
     initGadgetMixin(gadget_klass);
-    gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareAcquiredMethod("aq_putAttachment", "jio_putAttachment").declareAcquiredMethod("aq_ajax", "jio_ajax").declareAcquiredMethod("aq_getConfigurationDict", "getConfigurationDict").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantToDisplayThisDocument", "whoWantToDisplayThisDocument").declareMethod("render", function(options) {
+    gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareAcquiredMethod("aq_putAttachment", "jio_putAttachment").declareAcquiredMethod("aq_ajax", "jio_ajax").declareAcquiredMethod("aq_getConfigurationDict", "getConfigurationDict").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantsToDisplayThisDocument", "whoWantsToDisplayThisDocument").declareMethod("render", function(options) {
         var gadget = this, property_list, data;
         this.props.jio_key = options.id;
         return gadget.aq_getAttachment({

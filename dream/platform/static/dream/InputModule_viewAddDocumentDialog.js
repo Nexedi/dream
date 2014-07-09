@@ -47,7 +47,7 @@
             "Start", "End" ] ],
             capacity_by_project_spreadsheet: [ [ "Project Name", "Sequence", "Capacity Requirements" ] ],
             capacity_by_station_spreadsheet: [ [ "Day", "CS1" ] ]
-        }, name = "FromScratch";
+        }, name = "Untitled";
         return new RSVP.Queue().push(function() {
             return promiseEventListener(gadget.props.element.getElementsByClassName("new_form")[0], "submit", false);
         }).push(function(evt) {
@@ -66,12 +66,12 @@
     }
     var gadget_klass = rJS(window);
     initGadgetMixin(gadget_klass);
-    gadget_klass.declareAcquiredMethod("aq_post", "jio_post").declareAcquiredMethod("aq_putAttachment", "jio_putAttachment").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantToDisplayThisDocument", "whoWantToDisplayThisDocument").declareMethod("startService", function() {
+    gadget_klass.declareAcquiredMethod("aq_post", "jio_post").declareAcquiredMethod("aq_putAttachment", "jio_putAttachment").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantsToDisplayThisDocument", "whoWantsToDisplayThisDocument").declareMethod("startService", function() {
         var gadget = this;
         return new RSVP.Queue().push(function() {
             return RSVP.any([ waitForImport(gadget), waitForNew(gadget) ]);
         }).push(function(result) {
-            return gadget.whoWantToDisplayThisDocument(result.id);
+            return gadget.whoWantsToDisplayThisDocument(result.id);
         }).push(function(url) {
             return gadget.pleaseRedirectMyHash(url);
         });

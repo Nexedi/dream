@@ -53,7 +53,7 @@
                 _mimetype: "application/json"
             });
         }).push(function() {
-            return gadget.whoWantToDisplayThisDocument(gadget.props.jio_key);
+            return gadget.whoWantsToDisplayThisDocument(gadget.props.jio_key);
         }).push(function(url) {
             return gadget.pleaseRedirectMyHash(url);
         });
@@ -68,14 +68,14 @@
                 _id: gadget.props.jio_key
             });
         }).push(function() {
-            return gadget.whoWantToDisplayHome();
+            return gadget.whoWantsToDisplayHome();
         }).push(function(url) {
             return gadget.pleaseRedirectMyHash(url);
         });
     }
     var gadget_klass = rJS(window);
     initGadgetMixin(gadget_klass);
-    gadget_klass.declareAcquiredMethod("aq_remove", "jio_remove").declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareAcquiredMethod("aq_putAttachment", "jio_putAttachment").declareAcquiredMethod("aq_get", "jio_get").declareAcquiredMethod("aq_ajax", "jio_ajax").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantToDisplayThisDocument", "whoWantToDisplayThisDocument").declareAcquiredMethod("whoWantToDisplayHome", "whoWantToDisplayHome").declareMethod("render", function(options) {
+    gadget_klass.declareAcquiredMethod("aq_remove", "jio_remove").declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareAcquiredMethod("aq_putAttachment", "jio_putAttachment").declareAcquiredMethod("aq_get", "jio_get").declareAcquiredMethod("aq_ajax", "jio_ajax").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantsToDisplayThisDocument", "whoWantsToDisplayThisDocument").declareAcquiredMethod("whoWantsToDisplayHome", "whoWantsToDisplayHome").declareMethod("render", function(options) {
         this.props.jio_key = options.id;
         var gadget = this;
         return new RSVP.Queue().push(function() {

@@ -7,6 +7,8 @@
         return obj.parent ? "sub_task" : "";
     };
     function job_gantt_widget(all_data) {
+        // XXX: use dhx_gantt zoom level feature (
+        // http://dhtmlx.com/docs/products/dhtmlxGantt/02_features.html )
         var now = new Date(), start_date, gantt_data = {
             data: [ {
                 id: "by_order",
@@ -38,13 +40,13 @@
         function isVisibleStation(station) {
             // we should be able to define in the backend which
             // station is visible
-            return input_data.nodes[station]._class !== "Dream.QueueManagedJob" && input_data.nodes[station]._class !== "Dream.OperatorManagedJob" && input_data.nodes[station]._class !== "Dream.ExitJobShop";
+            return input_data.nodes[station]._class !== "Dream.QueueManagedJob" && input_data.nodes[station]._class !== "Dream.OperatorManagedJob" && input_data.nodes[station]._class !== "Dream.ExitJobShop" && input_data.nodes[station]._class !== "Dream.CapacityStationBuffer" && input_data.nodes[station]._class !== "Dream.CapacityStationExit" && input_data.nodes[station]._class !== "Dream.Queue";
         }
         $.each(output_data.elementList.sort(function(a, b) {
             return a.id < b.id ? -1 : 1;
         }), function(idx, obj) {
             var input_job = null, input_order = null, i, j, node, node_key, order, component, duration, seen_parts = {};
-            if (obj._class === "Dream.Job") {
+            if (obj._class === "Dream.Job" || obj._class === "Dream.CapacityProject") {
                 // find the corresponding input
                 // find the input order and order component for this job
                 for (node_key in input_data.nodes) {
@@ -56,7 +58,7 @@
                                 if (order.id === obj.id) {
                                     input_job = input_order = order;
                                 }
-                                if (input_job === null) {
+                                if (input_job === null && order.componentsList) {
                                     for (j = 0; j < order.componentsList.length; j += 1) {
                                         component = order.componentsList[j];
                                         if (component.id === obj.id) {
@@ -82,15 +84,17 @@
                 }
                 seen_parts = {};
                 $.each(obj.results.schedule, function(i, schedule) {
-                    var entrance_date, task_start_date, job_full_id;
+                    var task_start_date, job_full_id;
                     // Filter intermediate steps in part job shop
                     if (isVisibleStation(schedule.stationId)) {
-                        entrance_date = new Date(start_date.getTime());
-                        entrance_date.setTime(entrance_date.getTime() + schedule.entranceTime * 1e3 * 3600);
-                        if (obj.results.schedule[i + 1]) {
-                            duration = obj.results.schedule[i + 1].entranceTime - schedule.entranceTime;
+                        if (schedule.exitTime) {
+                            duration = 24 * (schedule.exitTime - schedule.entranceTime);
                         } else {
-                            duration = obj.results.completionTime - schedule.entranceTime;
+                            if (obj.results.schedule[i + 1]) {
+                                duration = obj.results.schedule[i + 1].entranceTime - schedule.entranceTime;
+                            } else {
+                                duration = obj.results.completionTime - schedule.entranceTime;
+                            }
                         }
                         if (duration > 0) {
                             task_start_date = new Date(start_date.getTime());
@@ -98,7 +102,7 @@
                             // task_start_date.setDate(task_start_date.getDate() +
                             //   schedule['entranceTime']);
                             // for simulation time unit as days hours
-                            task_start_date.setTime(task_start_date.getTime() + schedule.entranceTime * 1e3 * 3600);
+                            task_start_date.setTime(task_start_date.getTime() + schedule.entranceTime * 1e3 * 3600 * 24);
                             job_full_id = input_job.id + "." + input_order.id;
                             if (seen_parts[job_full_id] === undefined) {
                                 gantt_data.data.push({

@@ -1,14 +1,13 @@
 /*global jQuery, rJS, window, JSON, RSVP */
 (function(window, $, rJS, JSON, RSVP) {
     "use strict";
-    rJS(window).declareMethod("render", function(content) {
+    rJS(window).declareMethod("render", function(content, options) {
         var data = JSON.parse(content);
         return this.getElement().push(function(element) {
-            $(element).find(".table-container").handsontable({
+            $(element).find(".table-container").handsontable($.extend({
                 data: data,
-                minSpareRows: 1,
                 stretchH: "all"
-            });
+            }, options || {}));
         });
     }).declareMethod("getData", function() {
         return this.getElement().push(function(element) {

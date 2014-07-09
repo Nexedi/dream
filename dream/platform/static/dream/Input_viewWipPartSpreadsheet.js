@@ -44,7 +44,9 @@
                 _attachment: "body.json"
             }), gadget.getDeclaredGadget("tableeditor") ]);
         }).push(function(result_list) {
-            return result_list[1].render(JSON.stringify(JSON.parse(result_list[0]).wip_part_spreadsheet));
+            return result_list[1].render(JSON.stringify(JSON.parse(result_list[0]).wip_part_spreadsheet), {
+                minSpareRows: 1
+            });
         });
     }).declareMethod("startService", function() {
         var gadget = this;

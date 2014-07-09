@@ -12,6 +12,7 @@
     /////////////////////////////////////////////////////////////////
     // Minimalistic ERP5's like portal type configuration
     /////////////////////////////////////////////////////////////////
+    // XXX we should use lists instead to keep ordering
     var portal_types = {
         "Input Module": {
             view: {
@@ -244,7 +245,7 @@
         }
     }
     initGadgetMixin(gadget_klass);
-    gadget_klass.declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").allowPublicAcquisition("allDocs", function(param_list) {
+    gadget_klass.declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").allowPublicAcquisition("jio_allDocs", function(param_list) {
         return this.getDeclaredGadget("jio").push(function(jio_gadget) {
             return jio_gadget.allDocs.apply(jio_gadget, param_list);
         });
@@ -272,11 +273,12 @@
         return this.getDeclaredGadget("jio").push(function(jio_gadget) {
             return jio_gadget.getAttachment.apply(jio_gadget, param_list);
         });
-    }).allowPublicAcquisition("whoWantToDisplayHome", function() {
+    }).allowPublicAcquisition("whoWantsToDisplayHome", function() {
         // Hey, I want to display some URL
         return this.aq_pleasePublishMyState({});
-    }).allowPublicAcquisition("whoWantToDisplayThisDocument", function(param_list) {
+    }).allowPublicAcquisition("whoWantsToDisplayThisDocument", function(param_list) {
         // Hey, I want to display some jIO document
+        // XXX should be merged with whoWantsToDisplayThisResult
         var kw = {
             action: param_list[1] || "view"
         };
@@ -284,10 +286,21 @@
             kw.id = param_list[0];
         }
         return this.aq_pleasePublishMyState(kw);
-    }).allowPublicAcquisition("whoWantToDisplayThisResult", function(param_list) {
+    }).allowPublicAcquisition("whoWantsToDisplayThisResult", function(param_list) {
         // Hey, I want to display some jIO document
+        // We'll display the result using the first enabled action
+        var action = "view", action_info, action_id;
+        for (action_id in portal_types.Output) {
+            if (portal_types.Output.hasOwnProperty(action_id)) {
+                action_info = portal_types.Output[action_id];
+                if (action_info.condition === undefined || action_info.condition(this)) {
+                    action = action_id;
+                    break;
+                }
+            }
+        }
         return this.aq_pleasePublishMyState({
-            action: "view",
+            action: action,
             id: param_list[0],
             result: param_list[1]
         });
@@ -351,7 +364,7 @@
                 back_kw.id = options.id;
             }
         }
-        // Get the action informations
+        // Get the action information
         return gadget.declareGadget(portal_types[portal_type][options.action].gadget + ".html").push(function(g) {
             page_gadget = g;
             if (page_gadget.render !== undefined) {

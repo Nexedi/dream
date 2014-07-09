@@ -3,7 +3,7 @@
 (function(window, rJS, RSVP, moment, initGadgetMixin) {
     "use strict";
     function job_schedule_spreadsheet_widget(all_data) {
-        var now = new Date(), input_data = all_data.input, output_data = all_data.result, spreadsheet_data = [], spreadsheet_header = [ [ "Jobs", "ID", "Project Manager", "Due Date", "Priority", "Entrance Time", "Processing Time", "Station ID", "Step No." ] ], simulation_start_date = new Date(input_data.general.currentDate || now.getTime()), i, j, k, obj, node, component, order, node_id, due_date, entrance_date, duration, schedule, input_job = null, input_order = null;
+        var now = new Date(), name, input_data = all_data.input, output_data = all_data.result, spreadsheet_data = [], spreadsheet_header = [ [ "Jobs", "ID", "Project Manager", "Due Date", "Priority", "Entrance Time", "Processing Time", "Station ID", "Step No." ] ], simulation_start_date = new Date(input_data.general.currentDate || now.getTime()), i, j, k, obj, node, component, order, node_id, due_date, entrance_date, duration, schedule, input_job = null, input_order = null;
         // XXX why ?
         now.setHours(0);
         now.setMinutes(0);
@@ -13,10 +13,11 @@
         //      versa.
         for (i = 0; i < output_data.elementList.length; i += 1) {
             obj = output_data.elementList[i];
-            if (obj._class === "Dream.Job") {
+            if (obj._class === "Dream.Job" || obj._class === "Dream.CapacityProject") {
                 input_job = null;
                 input_order = null;
                 // find the input order and order component for this job
+                // XXX this has no real meaning with capacity project
                 for (node_id in input_data.nodes) {
                     if (input_data.nodes.hasOwnProperty(node_id)) {
                         node = input_data.nodes[node_id];
@@ -26,7 +27,7 @@
                                 if (order.id === obj.id) {
                                     input_job = input_order = order;
                                 }
-                                if (input_job === null) {
+                                if (input_job === null && order.componentsList) {
                                     for (k = 0; k < order.componentsList.length; k += 1) {
                                         component = order.componentsList[k];
                                         if (component.id === obj.id) {
@@ -39,12 +40,31 @@
                         }
                     }
                 }
+                // XXX does not make sense in the case of capacity project
                 due_date = new Date(simulation_start_date.getTime() + input_order.dueDate * 1e3 * 3600);
                 for (j = 0; j < obj.results.schedule.length; j += 1) {
                     schedule = obj.results.schedule[j];
                     entrance_date = new Date(simulation_start_date.getTime() + // XXX: time unit
                     schedule.entranceTime * 1e3 * 3600);
                     duration = 0;
+                    if (schedule.exitTime) {
+                        duration = schedule.exitTime - schedule.entranceTime * 24;
+                    } else {
+                        // When duration is not returned by ManPy, it is calculated by
+                        // difference of entranceTime of this step and entranceTime of the
+                        // next step, or completionTime when this is the last step
+                        if (i + 1 === obj.results.schedule.length) {
+                            duration = obj.results.completionTime - schedule.entranceTime;
+                        } else {
+                            duration = obj.results.schedule[i + 1].entranceTime - schedule.entranceTime;
+                        }
+                    }
+                    name = "";
+                    if (obj._class === "Dream.CapacityProject") {
+                        name = input_order.name + "-" + schedule.stationId;
+                    } else {
+                        name = input_order.name + "-" + input_job.name;
+                    }
                     // Duration is calculated by difference of entranceTime of this
                     // step and entranceTime of the next step, or completionTime when
                     // this is the last step
@@ -55,7 +75,7 @@
                     }
                     spreadsheet_data.push([ // XXX this label is incorrect for design step, during design
                     // phase we still have an order and not an order component.
-                    input_order.name + "-" + input_job.name, obj.id, input_order.manager, moment(due_date).format("YYYY/MM/DD"), input_order.priority, moment(entrance_date).format("MMM/DD HH:mm"), duration, schedule.stationId, j ]);
+                    name, obj.id, input_order.manager, moment(due_date).format("YYYY/MM/DD"), input_order.priority, moment(entrance_date).format("MMM/DD HH:mm"), duration, schedule.stationId, j ]);
                 }
             }
         }
