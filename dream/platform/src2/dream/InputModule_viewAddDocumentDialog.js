@@ -86,7 +86,7 @@
         "CS1"
       ]]
     },
-      name = "FromScratch";
+      name = "Untitled";
 
     return new RSVP.Queue()
       .push(function () {
