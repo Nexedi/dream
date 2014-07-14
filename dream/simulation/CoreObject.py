@@ -55,6 +55,9 @@ class CoreObject(object):
         self.gatherWipStat=False
         # flag used to signal that the station waits for removeEntity event
         self.waitEntityRemoval=False
+        # attributes/indices used for printing the route, hold the cols corresponding to the machine (entities route and operators route) 
+        self.station_col_inds=[]
+        self.op_col_indx=None
     
     def initialize(self):
         from Globals import G
@@ -140,6 +143,9 @@ class CoreObject(object):
         self.entityRemoved=self.env.event()
         # flag used to signal that the station waits for removeEntity event
         self.waitEntityRemoval=False
+        # attributes/indices used for printing the route, hold the cols corresponding to the machine (entities route and operators route) 
+        self.station_col_inds=[]
+        self.op_col_indx=None
 
     # =======================================================================
     #                the main process of the core object 

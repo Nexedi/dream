@@ -55,3 +55,6 @@ class Mould(Job):                                  # inherits from the Job class
         self.hot=False
         # TODO: isCritical argument is deprecated
 #         self.isCritical=isCritical  # this should be self.order.isCritical. Added now for testing
+        # used by printRoute
+        if self.order:
+            self.alias=self.order.alias+'C'+str(len(G.OrderComponentList))

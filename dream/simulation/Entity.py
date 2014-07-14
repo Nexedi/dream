@@ -66,6 +66,8 @@ class Entity(object):
         self.proceed=False               # boolean that is used to check weather the entity can proceed to the candidateReceiver
         self.candidateReceivers=[]          # list of candidateReceivers of the entity (those stations that can receive the entity
         self.candidateReceiver=None         # the station that is finaly chosen to receive the entity
+        # alias used for printing the Route
+        self.alias=None
     
     # =======================================================================
     # outputs results to JSON File 
@@ -78,3 +80,10 @@ class Entity(object):
     # =======================================================================
     def initialize(self):
         pass
+    
+    #===========================================================================
+    # print the route (the different stations the entity moved through)
+    #===========================================================================
+    def printRoute(self):
+        pass
+    

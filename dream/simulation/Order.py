@@ -57,6 +57,8 @@ class Order(Job):
         self.basicsEnded=basicsEnded        # flag that informs that the basic components of the order are finished
         # flag that informs weather the components needed for the assembly are present in the Assembly Buffer
         self.componentsReadyForAssembly = componentsReadyForAssembly
-
-
+        
+        self.decomposed=False
+        # used by printRoute
+        self.alias='O'+str(len(G.OrderList))
 

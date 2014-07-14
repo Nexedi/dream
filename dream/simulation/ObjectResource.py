@@ -34,6 +34,8 @@ class ObjectResource(object):
     
     def __init__(self):
         self.initialized = False
+        # alias used for printing the trace
+        self.alias=None
         
     def initialize(self):
         from Globals import G
@@ -97,3 +99,8 @@ class ObjectResource(object):
     def isInitialized(self):
         return self.initialized
     
+    #===========================================================================
+    # print the route (the different stations the resource was occupied by)
+    #===========================================================================
+    def printRoute(self):
+        pass

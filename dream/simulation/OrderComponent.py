@@ -63,4 +63,7 @@ class OrderComponent(Job):                                  # inherits from the 
         self.requestingComponent = requestingComponent  # the id of the requesting component
         self.readyForAssembly = readyForAssembly        # flag informing weather the component was received
                                                         #     by the MouldAssembleBuffer
+        # used by printRoute
+        if self.order:
+            self.alias=self.order.alias+'C'+str(len(G.OrderComponentList))
         
