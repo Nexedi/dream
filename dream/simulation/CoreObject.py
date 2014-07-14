@@ -181,6 +181,13 @@ class CoreObject(object):
         
         self.timeLastEntityLeft=self.env.now
         self.outputTrace(entity.name, "released "+self.objName)
+        
+        #append the time to schedule so that it can be read in the result
+        #remember that every entity has it's schedule which is supposed to be updated every time 
+        # he entity enters a new object
+        if entity.schedule:
+            entity.schedule[-1].append(self.env.now)
+        
         # update wipStatList
         if self.gatherWipStat:
             self.wipStatList.append([self.env.now, len(activeObjectQueue)])
