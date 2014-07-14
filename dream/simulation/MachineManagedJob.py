@@ -45,36 +45,64 @@ class MachineManagedJob(MachineJobShop):
     def initialize(self):
         MachineJobShop.initialize(self)
         self.type="MachineManagedJob"
+        # holds the Entity that is to be obtained and will be updated by canAcceptAndIsRequested
+        self.entityToGet=None
+    
+    #===========================================================================
+    # create an operatorPool if needed
+    #===========================================================================
+    def createOperatorPool(self,operatorPool):
         #create an empty Operator Pool. This will be updated by canAcceptAndIsRequested
         id = self.id+'_OP'
         name=self.objName+'_operatorPool'
         self.operatorPool=OperatorPool(id, name, operatorsList=[])
         from Globals import G
         G.OperatorPoolsList.append(self.operatorPool)
-        self.operatorPool.initialize()
-        self.operatorPool.operators=[]
+    
+    #===========================================================================
+    # create broker if needed
+    #===========================================================================
+    def createBroker(self):
         #create a Broker
         self.broker = Broker(self)
-        self.broker.initialize()
-        self.env.process(self.broker.run())
-#         activate(self.broker,self.broker.run())
+    
+    #===========================================================================
+    # create router if needed
+    #===========================================================================
+    def createRouter(self):
         #create a Router
-        # TODO: this is already performed in __init__ of Machine
         from Globals import G
         if not G.Router:
             self.router=Router()
-            self.router.initialize()
             G.Router=self.router          
         # otherwise set the already existing router as the machines Router
         else:
             self.router=G.Router
+            
+    #===========================================================================
+    # initialize broker if needed
+    #===========================================================================
+    def initializeOperatorPool(self):
+        self.operatorPool.initialize()
+        self.operatorPool.operators=[]
+    
+    #===========================================================================
+    # initialize broker if needed
+    #===========================================================================
+    def initializeBroker(self):
+        self.broker.initialize()
+        self.env.process(self.broker.run())
+                
+    #===========================================================================
+    # initialize router if needed
+    #===========================================================================
+    def initializeRouter(self):
+        if not self.router.isInitialized:
+            self.router.initialize()
         if not self.router.isActivated:
             self.env.process(self.router.run())
             self.router.isActivated=True
-        # holds the Entity that is to be obtained and will be updated by canAcceptAndIsRequested
-        self.entityToGet=None
-
-        
+    
     # =======================================================================
     # checks if the Queue can accept an entity       
     # TODO: cannot check here if the station in the route of the entity that will be received (if any)
