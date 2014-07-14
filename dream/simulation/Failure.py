@@ -34,7 +34,7 @@ from ObjectInterruption import ObjectInterruption
 
 class Failure(ObjectInterruption):
     
-    def __init__(self, victim=None, distribution=None, index=0, repairman=None):
+    def __init__(self, victim=None, distribution=None, index=0, repairman=None, offshift=False):
         #Process.__init__(self)
         ObjectInterruption.__init__(self,victim)
         if distribution:
@@ -81,13 +81,37 @@ class Failure(ObjectInterruption):
             self.rngTTF.mean=self.MTTF
             self.rngTTR=RandomNumberGenerator(self, self.distType)
             self.rngTTR.mean=self.MTTR
+        # flag used to identify if the time between failures should be counted while the victim is off-shift
+        self.offshift=offshift
 
     # =======================================================================
     #    The run method for the failure which has to served by a repairman
     # =======================================================================
     def run(self):           
         while 1:
-            yield self.env.timeout(self.rngTTF.generateNumber())    # wait until a failure happens                  
+            # if the time that the victim is off-shift should not be counted
+            if self.offshift:
+                timeToFailure=self.rngTTF.generateNumber()
+                remainingTimeToFailure=timeToFailure
+                failureNotTriggered=True
+                
+                while failureNotTriggered:
+                    timeRestartedCounting=self.env.now
+                    # TODO: can also wait for interruptionStart signal of the victim and check whether the interruption is caused by a shiftScheduler
+                    receivedEvent=yield self.env.timeout(remainingTimeToFailure) | self.victim.interruptionStart #offShift
+                    # the failure should receive a signal if there is a shift-off triggered
+                    if self.victim.interruptionStart in receivedEvent:
+                        # TODO: the signal interruptionStart is reset by the time it is received by the victim. not sure if will be still triggered when it is checked here 
+                        assert self.victim.onShift==False, 'shiftFailure cannot recalculate TTF if the victim is onShift'
+                        remainingTimeToFailure=remainingTimeToFailure-(self.env.now-timeRestartedCounting)
+                        # wait for the shift to start again
+                        yield self.victim.interruptionEnd
+                        assert self.victim.onShift==True, 'the victim of shiftFailure must be onShift to continue counting the TTF'
+                        # TODO: the signal interruptionStart is reset by the time it is received by the victim. not sure if will be still triggered when it is checked here
+                    else:
+                        failureNotTriggered=False
+            else:
+                yield self.env.timeout(self.rngTTF.generateNumber())    # wait until a failure happens                  
             self.interruptVictim()                      # interrupt the victim
             self.victim.Up=False
             self.victim.timeLastFailure=self.env.now           
