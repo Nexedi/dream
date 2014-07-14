@@ -125,16 +125,19 @@ class MachineJobShop(Machine):
         activeEntity=entity
         # read the possible receivers - update the next list
         import Globals
-        nextObjectIds=activeEntity.remainingRoute[1].get('stationIdsList',[])
-        nextObjects = []
-        for nextObjectId in nextObjectIds:
-            nextObject = Globals.findObjectById(nextObjectId)
-            nextObjects.append(nextObject)
-        # update the next list of the object
-        for nextObject in nextObjects:
-            # append only if not already in the list
-            if nextObject not in activeObject.next:
-                activeObject.next.append(nextObject)
+        # XXX: in the case of MouldAssembler there is no next defined in the route of the entities that are received
+        # the position activeEntity.remainingRoute[1] is out of bound. the next should be updated by the remaining route of the entity to be assembled
+        if len(activeEntity.remainingRoute)>1:
+            nextObjectIds=activeEntity.remainingRoute[1].get('stationIdsList',[])
+            nextObjects = []
+            for nextObjectId in nextObjectIds:
+                nextObject = Globals.findObjectById(nextObjectId)
+                nextObjects.append(nextObject)
+            # update the next list of the object
+            for nextObject in nextObjects:
+                # append only if not already in the list
+                if nextObject not in activeObject.next:
+                    activeObject.next.append(nextObject)
                                                                              
     # =======================================================================  
     # calculates the processing time
