@@ -317,7 +317,7 @@ def getSupportedPrintKwrds():
             "preempt", "preempted",
             "startWork", "finishWork", 
             "processEnd", "interrupted",
-            "enter", 
+            "enter", "destroy",
             "waitEvent", "received", "isRequested","canDispose",
             "interruptionEnd", "loadOperatorAvailable", 'resourceAvailable',
             'conveyerEnd', 'conveyerFull','moveEnd')
@@ -327,6 +327,7 @@ def getSupportedPrintKwrds():
 #===========================================================================
 def getPhrase():
     printKwrds={'create':{'phrase':'created an entity'},
+                "destroy":{'phrase':'destroyed at', 'suffix':' * '},
                 'signal':{'phrase':'signalling'},
                 'signalGiver':{'phrase':'signalling giver', 'prefix':'_'},
                 'signalReceiver':{'phrase':'signalling receiver','prefix':'_'}, 

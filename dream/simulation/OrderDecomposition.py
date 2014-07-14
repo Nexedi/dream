@@ -184,6 +184,7 @@ class OrderDecomposition(CoreObject):
             if entity.type=='OrderDesign':
                 self.orderToBeDecomposed=entity.order
                 activeObjectQueue.remove(entity)            #remove the order from the internal Queue
+                self.printTrace(entity.id, destroy=self.id)
                 # if the entity is in G.pendingEntities list remove it from there
                 if entity in G.pendingEntities:
                     G.pendingEntities.remove(entity)
@@ -209,7 +210,6 @@ class OrderDecomposition(CoreObject):
             #reset attributes
             self.orderToBeDecomposed=None
             self.newlyCreatedComponents=[]
-            
     
     # =======================================================================
     # creates the components
