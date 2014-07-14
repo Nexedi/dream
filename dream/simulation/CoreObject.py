@@ -284,7 +284,6 @@ class CoreObject(object):
     #===========================================================================
     def preemptReceiver(self):
         activeObjectQueue=self.Res.users
-    
         # find a critical order if any
         critical=False
         for entity in activeObjectQueue:
@@ -294,7 +293,9 @@ class CoreObject(object):
                 break
         if critical:
             # pick a receiver
-            receiver=next(object for object in self.next if object.isPreemptive and object.checkIfActive())
+            receiver=None
+            if any(object for object in self.next if object.isPreemptive and object.checkIfActive()):
+                receiver=next(object for object in self.next if object.isPreemptive and object.checkIfActive())
             # if there is any receiver that can be preempted check if it is operated
             if receiver:
                 receiverOperated=False          # local variable to inform if the receiver is operated for Loading
@@ -311,22 +312,22 @@ class CoreObject(object):
                             receiverOperated=True
                 except:
                     pass
-            # if the obtained Entity is critical and the receiver is preemptive and not operated
-            #     in the case that the receiver is operated the preemption is performed by the operators
-            #     if the receiver is not Up then no preemption will be performed
-            if not receiverOperated and len(receiver.Res.users)>0:
-                #if the receiver does not hold an Entity that is also critical
-                if not receiver.Res.users[0].isCritical:
-                    receiver.shouldPreempt=True
-                    self.printTrace(self.id, preempt=receiver.id)
-                    receiver.preempt()
-                    receiver.timeLastEntityEnded=self.env.now     #required to count blockage correctly in the preemptied station
-                    # sort so that the critical entity is placed in front
+                # if the obtained Entity is critical and the receiver is preemptive and not operated
+                #     in the case that the receiver is operated the preemption is performed by the operators
+                #     if the receiver is not Up then no preemption will be performed
+                if not receiverOperated and len(receiver.Res.users)>0:
+                    #if the receiver does not hold an Entity that is also critical
+                    if not receiver.Res.users[0].isCritical:
+                        receiver.shouldPreempt=True
+                        self.printTrace(self.id, preempt=receiver.id)
+                        receiver.preempt()
+                        receiver.timeLastEntityEnded=self.env.now     #required to count blockage correctly in the preemptied station
+                        # sort so that the critical entity is placed in front
+                        activeObjectQueue.sort(key=lambda x: x==activeEntity, reverse=True)
+                # if there is a critical entity and the possible receivers are operated then signal the Router
+                elif receiverOperated:
+                    self.signalRouter(receiver)
                     activeObjectQueue.sort(key=lambda x: x==activeEntity, reverse=True)
-            # if there is a critical entity and the possible receivers are operated then signal the Router
-            elif receiverOperated:
-                self.signalRouter(receiver)
-                activeObjectQueue.sort(key=lambda x: x==activeEntity, reverse=True)
         # update wipStatList
         if self.gatherWipStat:
             self.wipStatList.append([self.env.now, len(activeObjectQueue)])
@@ -356,7 +357,7 @@ class CoreObject(object):
     # signal the successor that the object can dispose an entity 
     # =======================================================================
     def signalReceiver(self):
-        possibleReceivers=self.findReceiversFor(self)
+        possibleReceivers=self.findReceiversFor(self) 
         if possibleReceivers:
             receiver=self.selectReceiver(possibleReceivers)
             receiversGiver=self
