@@ -37,6 +37,6 @@ class Batch(Entity):
         self.numberOfUnits=numberOfUnits
         self.numberOfSubBatches=1       #integer that shows in how many sub batches is the batch broken
         self.subBatchList=[]            #list that contains the sub-batches that this batch has been broken into
-
+        self.routing=[]                 # list that holds the route a child entity has picked in case the other children have to follow the same routing  
     
     
