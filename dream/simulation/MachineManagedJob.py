@@ -31,7 +31,7 @@ import simpy
 
 from OperatedPoolBroker import Broker
 from OperatorPool import OperatorPool
-from OperatorRouter import Router
+from OperatorRouterManaged import RouterManaged
 from MachineJobShop import MachineJobShop
 
 # ===========================================================================
@@ -73,7 +73,7 @@ class MachineManagedJob(MachineJobShop):
         #create a Router
         from Globals import G
         if not G.Router:
-            self.router=Router()
+            self.router=RouterManaged()
             G.Router=self.router          
         # otherwise set the already existing router as the machines Router
         else:
