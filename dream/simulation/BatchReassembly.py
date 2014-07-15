@@ -173,8 +173,6 @@ class BatchReassembly(CoreObject):
     def canAccept(self,callerObject=None):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        if len(activeObject.previous)!=1:
-            assert callerObject!=None, 'the callerObject cannot be None for canAccept of BatchReassembly'
         # if there is only one predecessor
         if(len(activeObject.previous)==1):
             # find the predecessor object and its queue
@@ -189,11 +187,20 @@ class BatchReassembly(CoreObject):
                      and activeObjectQueue[0].type!='Batch'\
                      and len(activeObjectQueue)<self.numberOfSubBatches\
                      and predecessorQueue[0].batchId==activeObjectQueue[0].batchId
+        # if there is no caller defined - self.canAccept from getEntity         
+        if not callerObject:
+            return activeObject.Up\
+                and len(activeObjectQueue)<self.numberOfSubBatches
         
         thecaller=callerObject
         # return True ONLY if the length of the activeOjbectQueue is smaller than
         # the object capacity, and the callerObject is not None but the giverObject
-        return len(activeObjectQueue)<self.numberOfSubBatches\
+        if len(activeObjectQueue)==0:
+            return activeObject.Up\
+                and (thecaller in activeObject.previous)
+        else:
+            return activeObject.Up\
+                and len(activeObjectQueue)<self.numberOfSubBatches\
                 and (thecaller in activeObject.previous)\
                 and activeObjectQueue[0].type != 'Batch'\
                 and thecaller.getActiveObjectQueue()[0].batchId==activeObjectQueue[0].batchId
