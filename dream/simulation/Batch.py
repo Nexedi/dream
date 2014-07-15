@@ -28,7 +28,9 @@ Batch is an Entity that contains a number of units
 from Entity import Entity
 from SubBatch import SubBatch
 
-#The batch object
+#===============================================================================
+# The batch object
+#===============================================================================
 class Batch(Entity):
     type="Batch"
 
@@ -37,6 +39,14 @@ class Batch(Entity):
         self.numberOfUnits=numberOfUnits
         self.numberOfSubBatches=1       #integer that shows in how many sub batches is the batch broken
         self.subBatchList=[]            #list that contains the sub-batches that this batch has been broken into
-        self.routing=[]                 # list that holds the route a child entity has picked in case the other children have to follow the same routing  
     
-    
+    #===========================================================================
+    # finds the schedule of each child and returns the combined route 
+    # (it should be the same for every sub-batch)
+    #===========================================================================
+    def routing(self):
+        route=[]
+        for child in self.subBatchList:
+            route.append([step for step,time in child.schedule])
+            route=list(set(route))
+        return route
