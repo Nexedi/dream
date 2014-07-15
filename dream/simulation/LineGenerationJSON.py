@@ -63,6 +63,7 @@ from SubBatch import SubBatch
 from BatchSource import BatchSource
 from BatchDecomposition import BatchDecomposition
 from BatchReassembly import BatchReassembly
+from RoutingQueue import RoutingQueue
 from BatchScrapMachine import BatchScrapMachine
 from LineClearance import LineClearance
 from EventGenerator import EventGenerator
@@ -160,6 +161,7 @@ def createObjects():
     G.BatchDecompositionList=[]
     G.BatchSourceList=[]
     G.BatchReassemblyList=[]
+    G.RoutingQueueList=[]
     G.LineClearanceList=[]
     G.EventGeneratorList=[]
     G.OperatorsList = []
@@ -526,6 +528,20 @@ def createObjects():
             Q=Queue(id, name, capacity, isDummy, schedulingRule=schedulingRule, gatherWipStat=gatherWipStat)
             Q.nextIds=getSuccessorList(id)
             G.QueueList.append(Q)
+            G.ObjList.append(Q)
+        
+        elif objClass=='Dream.RoutingQueue':
+            id=element.get('id', 'not found')
+            name=element.get('name', 'not found')
+            capacity=int(element.get('capacity') or 1)
+            isDummy=bool(int(element.get('isDummy') or 0))
+            schedulingRule=element.get('schedulingRule', 'FIFO')
+            gatherWipStat=bool(int(element.get('gatherWipStat', 0)))
+            level=int(element.get('level') or 1)
+            Q=RoutingQueue(id, name, capacity, isDummy, schedulingRule=schedulingRule, gatherWipStat=gatherWipStat, level=level)
+            Q.nextIds=getSuccessorList(id)
+            G.QueueList.append(Q)
+            G.RoutingQueueList.append(Q)
             G.ObjList.append(Q)
             
         elif objClass=='Dream.QueueJobShop':
