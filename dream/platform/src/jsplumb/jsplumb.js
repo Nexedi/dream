@@ -405,10 +405,10 @@
   function updateElementData(gadget, node_id, data) {
     var element_id = gadget.props.node_container[node_id].element_id,
       new_id = data.id;
-    if (data.name) {
-      $(gadget.props.element).find("#" + element_id).text(data.name)
+    if (data.data.name) {
+      $(gadget.props.element).find("#" + element_id).text(data.data.name)
         .append('<div class="ep"></div></div>');
-      gadget.props.node_container[node_id].name = data.name;
+      gadget.props.node_container[node_id].name = data.data.name;
     }
     delete data.id;
     $.extend(gadget.props.node_container[node_id], data.data);
@@ -485,19 +485,6 @@
   //   onDataChange();
   // }
 
-  function saveNode(evt, gadget, node_id) {
-    var i,
-      data = {
-        "id": $(evt.target[1]).val(),
-        "name": $(evt.target[2]).val()
-      };
-    data.data = {};
-    for (i = 3; i < evt.target.length - 1; i += 1) {
-      data.data[evt.target[i].name] = $(evt.target[i]).val();
-    }
-    updateElementData(gadget, node_id, data);
-  }
-
   function openNodeDialog(gadget, element, config_dict) {
     var node_id = getNodeId(gadget.props.node_container, element.id),
       node_data = gadget.props.node_container[node_id],
@@ -505,7 +492,6 @@
       property_list = config_dict[element_type].property_list || [],
       node_edit_popup = $(gadget.props.element).find('#popup-edit-template'),
       fieldset_element,
-      save_promise,
       delete_promise;
 
     if (node_edit_popup.length !== 0) {
@@ -521,6 +507,7 @@
 
     node_data.id = node_id;
     if (property_list.length === 0 || property_list[0].id !== "id") {
+     // XXX name & id should not be handled differently in form.
       property_list.unshift({
         "_class": "Dream.Property",
         "id": "name",
@@ -536,17 +523,27 @@
       });
     }
 
-    save_promise = new RSVP.Queue()
-      .push(function () {
-        return promiseEventListener(
-          node_edit_popup.find("form")[0],
-          'submit',
-          false
-        );
-      })
-      .push(function (evt) {
-        return saveNode(evt, gadget, node_id);
-      });
+    function save_promise(fieldset_gadget, node_id) {
+      return RSVP.Queue()
+        .push(function () {
+          return promiseEventListener(
+            node_edit_popup.find("form")[0],
+            'submit',
+            false
+          );
+        })
+        .push(function (evt) {
+          var data = {
+              // XXX id should not be handled differently ...
+              "id": $(evt.target[1]).val(),
+              "data": {}
+            };
+          return fieldset_gadget.getContent().then(function (r) {
+            $.extend(data.data, r);
+            updateElementData(gadget, node_id, data);
+          });
+        });
+    }
 
     delete_promise = new RSVP.Queue()
       .push(function () {
@@ -565,15 +562,17 @@
       scope: 'fieldset'
     })
       .push(function (fieldset_gadget) {
-        return fieldset_gadget.render(property_list, node_data);
+        return RSVP.all([fieldset_gadget,
+                fieldset_gadget.render(property_list, node_data)]);
       })
-      .push(function () {
+      .push(function (fieldset_gadget) {
         node_edit_popup.enhanceWithin();
         node_edit_popup.popup('open');
+        return fieldset_gadget[0];
       })
-      .push(function () {
+      .push(function (fieldset_gadget) {
         return RSVP.any([
-          save_promise,
+          save_promise(fieldset_gadget, node_id),
           delete_promise
         ]);
       })

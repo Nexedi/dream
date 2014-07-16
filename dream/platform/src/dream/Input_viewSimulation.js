@@ -4,39 +4,13 @@
   "use strict";
 
   function saveForm(gadget) {
-    var general = {},
-      field_gadget_list;
+    var general;
     return gadget.getDeclaredGadget('fieldset')
       .push(function (fieldset_gadget) {
-        return fieldset_gadget.getFieldGadgetList();
+        return fieldset_gadget.getContent();
       })
-      .push(function (field_gadgets) {
-        field_gadget_list = field_gadgets;
-      })
-      .push(function () {
-        var i,
-          promise_list = [];
-        for (i = 0; i < field_gadget_list.length; i += 1) {
-          promise_list.push(field_gadget_list[i].getContent());
-        }
-        return RSVP.all(promise_list);
-      })
-      .push(function (result_list) {
-        var i,
-          result,
-          key;
-
-        for (i = 0; i < result_list.length; i += 1) {
-          result = result_list[i];
-          for (key in result) {
-            if (result.hasOwnProperty(key)) {
-              // Drop empty
-              if (result[key]) {
-                general[key] = result[key];
-              }
-            }
-          }
-        }
+      .push(function (content) {
+        general = content;
         // Always get a fresh version, to prevent deleting spreadsheet & co
         return gadget.aq_getAttachment({
           "_id": gadget.props.jio_key,
