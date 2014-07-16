@@ -53,7 +53,7 @@ class RoutingQueue(Queue):
         activeObjectQueue=self.Res.users     
         #if we have only one possible receiver just check if the Queue holds one or more entities
         if(callerObject==None):
-            return len(activeObjectQueue)>0 
+            return len(activeObjectQueue)>0
         thecaller=callerObject
         # local flag to control whether the callerObject can receive any of the entities in the buffers internal queue 
         isInRouting=False
@@ -89,12 +89,15 @@ class RoutingQueue(Queue):
     def removeEntity(self, entity=None):
         activeEntity=Queue.removeEntity(self, entity)                  #run the default method
         # check if the queue is empty, if yes then try to signal the router, operators may need reallocation
-        if self.level:
-            if not len(self.getActiveObjectQueue()):
-                from Globals import G
-                if not G.Router.invoked:
-                    G.Router.invoked=True
-                    G.Router.isCalled.succeed(G.env.now)
+        try:
+            if self.level:
+                if not len(self.getActiveObjectQueue()):
+                    from Globals import G
+                    if not G.Router.invoked:
+                        G.Router.invoked=True
+                        G.Router.isCalled.succeed(G.env.now)
+        except:
+            pass
         return activeEntity
     
     # =======================================================================
@@ -104,22 +107,26 @@ class RoutingQueue(Queue):
     def getEntity(self):
         activeEntity=Queue.getEntity(self)  #run the default behavior
         # update the receiver object of the entity just received according to the routing of the parent batch
+        route = activeEntity.parentBatch.routing()
         activeEntity.receiver=None
         try:
             for nextObj in self.next:
-                if nextObj in entity.parentBatch.routing():
-                    entity.receiver=nextObj
+                if nextObj in activeEntity.parentBatch.routing():
+                    activeEntity.receiver=nextObj
                     break
         # if none of the siblings (same parentBatch) has gone through the buffer then the receiver should remain None 
         except:
             pass
         # if the level is reached then try to signal the Router to reallocate the operators
-        if self.level:
-            if len(self.getActiveObjectQueue())==self.level:
-                from Globals import G
-                if not G.Router.invoked:
-                    G.Router.invoked=True
-                    G.Router.isCalled.succeed(G.env.now)
+        try:
+            if self.level:
+                if len(self.getActiveObjectQueue())==self.level:
+                    from Globals import G
+                    if not G.Router.invoked:
+                        G.Router.invoked=True
+                        G.Router.isCalled.succeed(G.env.now)
+        except:
+            pass
         return activeEntity
     
     # =======================================================================
@@ -137,4 +144,7 @@ class RoutingQueue(Queue):
             self.activeQSorter()
         # sort again according to the existence or not of receiver attribute of the entities
         activeObjectQueue=self.getActiveObjectQueue()
-        activeObjectQueue.sort(key=lambda x: x.receiver, reverse=True)
+        # if no entity.receiver, then show preference to these entities
+        activeObjectQueue.sort(key=lambda x: x.receiver==None, reverse=True)
+        # if there is entity.receiver then check if it is the same as the self.receiver of the queue (if any)
+        activeObjectQueue.sort(key=lambda x: x.receiver==self.receiver, reverse=True)
