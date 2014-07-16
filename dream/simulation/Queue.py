@@ -37,7 +37,7 @@ class Queue(CoreObject):
     #===========================================================================
     # the __init__ method of the Queue
     #===========================================================================
-    def __init__(self, id, name, capacity=1, isDummy=False, schedulingRule="FIFO", gatherWipStat=False):
+    def __init__(self, id, name, capacity=1, isDummy=False, schedulingRule="FIFO", level=None, gatherWipStat=False):
         CoreObject.__init__(self, id, name)
 #         Process.__init__(self)
         # used for the routing of the entities
@@ -69,6 +69,10 @@ class Queue(CoreObject):
         self.gatherWipStat=gatherWipStat
         # Will be populated by an event generator
         self.wip_stat_list = []
+        # trigger level for the reallocation of operators
+        if level:
+            assert level<=self.capacity, "the level cannot be bigger than the capacity of the queue"
+        self.level=level
 
     @staticmethod
     def getSupportedSchedulingRules():
@@ -166,6 +170,16 @@ class Queue(CoreObject):
             if self.haveToDispose():
 #                 self.printTrace(self.id, attemptSignalReceiver='(removeEntity)')
                 self.signalReceiver()
+        # check if the queue is empty, if yes then try to signal the router, operators may need reallocation
+        try:
+            if self.level:
+                if not len(self.getActiveObjectQueue()):
+                    from Globals import G
+                    if not G.Router.invoked:
+                        G.Router.invoked=True
+                        G.Router.isCalled.succeed(G.env.now)
+        except:
+            pass
         return activeEntity
     
     # =======================================================================
@@ -185,6 +199,16 @@ class Queue(CoreObject):
     # =======================================================================     
     def getEntity(self):
         activeEntity=CoreObject.getEntity(self)  #run the default behavior 
+        # if the level is reached then try to signal the Router to reallocate the operators
+        try:
+            if self.level:
+                if len(self.getActiveObjectQueue())==self.level:
+                    from Globals import G
+                    if not G.Router.invoked:
+                        G.Router.invoked=True
+                        G.Router.isCalled.succeed(G.env.now)
+        except:
+            pass
         return activeEntity
     
     #===========================================================================

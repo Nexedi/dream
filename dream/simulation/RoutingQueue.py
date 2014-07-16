@@ -33,14 +33,14 @@ from Queue import Queue
 #                            the Queue object
 # ===========================================================================
 class RoutingQueue(Queue):
-    #===========================================================================
-    # the __init__ method of the Queue
-    #===========================================================================
-    def __init__(self, id, name, capacity=1, isDummy=False, schedulingRule="FIFO", gatherWipStat=False,level=None):
-        Queue.__init__(self, id, name,capacity,isDummy,schedulingRule,gatherWipStat)
-        if level:
-            assert level<=self.capacity, "the level cannot be bigger than the capacity of the queue"
-        self.level=level
+#     #===========================================================================
+#     # the __init__ method of the Queue
+#     #===========================================================================
+#     def __init__(self, id, name, capacity=1, isDummy=False, schedulingRule="FIFO", gatherWipStat=False,level=None):
+#         Queue.__init__(self, id, name,capacity,isDummy,schedulingRule,gatherWipStat)
+#         if level:
+#             assert level<=self.capacity, "the level cannot be bigger than the capacity of the queue"
+#         self.level=level
     
     # =======================================================================
     #    checks if the Queue can dispose an entity to the following object
@@ -83,22 +83,22 @@ class RoutingQueue(Queue):
                 entity.receiver=receiver
         activeObjectQueue.sort(key=lambda x: x.receiver==receiver, reverse=True)
     
-    # =======================================================================
-    #                    removes an entity from the Object
-    # =======================================================================
-    def removeEntity(self, entity=None):
-        activeEntity=Queue.removeEntity(self, entity)                  #run the default method
-        # check if the queue is empty, if yes then try to signal the router, operators may need reallocation
-        try:
-            if self.level:
-                if not len(self.getActiveObjectQueue()):
-                    from Globals import G
-                    if not G.Router.invoked:
-                        G.Router.invoked=True
-                        G.Router.isCalled.succeed(G.env.now)
-        except:
-            pass
-        return activeEntity
+#     # =======================================================================
+#     #                    removes an entity from the Object
+#     # =======================================================================
+#     def removeEntity(self, entity=None):
+#         activeEntity=Queue.removeEntity(self, entity)                  #run the default method
+#         # check if the queue is empty, if yes then try to signal the router, operators may need reallocation
+#         try:
+#             if self.level:
+#                 if not len(self.getActiveObjectQueue()):
+#                     from Globals import G
+#                     if not G.Router.invoked:
+#                         G.Router.invoked=True
+#                         G.Router.isCalled.succeed(G.env.now)
+#         except:
+#             pass
+#         return activeEntity
     
     # =======================================================================
     #            gets an entity from the predecessor that 
@@ -117,16 +117,16 @@ class RoutingQueue(Queue):
         # if none of the siblings (same parentBatch) has gone through the buffer then the receiver should remain None 
         except:
             pass
-        # if the level is reached then try to signal the Router to reallocate the operators
-        try:
-            if self.level:
-                if len(self.getActiveObjectQueue())==self.level:
-                    from Globals import G
-                    if not G.Router.invoked:
-                        G.Router.invoked=True
-                        G.Router.isCalled.succeed(G.env.now)
-        except:
-            pass
+#         # if the level is reached then try to signal the Router to reallocate the operators
+#         try:
+#             if self.level:
+#                 if len(self.getActiveObjectQueue())==self.level:
+#                     from Globals import G
+#                     if not G.Router.invoked:
+#                         G.Router.invoked=True
+#                         G.Router.isCalled.succeed(G.env.now)
+#         except:
+#             pass
         return activeEntity
     
     # =======================================================================
