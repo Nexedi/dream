@@ -47,6 +47,7 @@ class Batch(Entity):
     def routing(self):
         route=[]
         for child in self.subBatchList:
-            route.append([step for step,time in child.schedule])
-            route=list(set(route))
+            for step in child.schedule:
+                route.append(step[0])
+        route=list(set(route))
         return route
