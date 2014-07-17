@@ -37,7 +37,7 @@ from ObjectResource import ObjectResource
 class Operator(ObjectResource):
     family='Operator'  
     
-    def __init__(self, id, name, capacity=1, schedulingRule='FIFO'):
+    def __init__(self, id, name, capacity=1, schedulingRule='FIFO', skills=[]):
         ObjectResource.__init__(self)
         self.id=id
         self.objName=name
@@ -74,6 +74,8 @@ class Operator(ObjectResource):
         self.schedule=[]                        # the working schedule of the resource, the objects the resource was occupied by and the corresponding times
         # alias used by printRoute
         self.alias=self.id
+        # list attribute that describes the skills of the operator in terms of stations he can operate
+        self.skillList=skills
         
     @staticmethod
     def getSupportedSchedulingRules():
