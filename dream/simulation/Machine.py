@@ -192,17 +192,33 @@ class Machine(CoreObject):
              the list of operators provided
             if the  list is empty create operator pool with empty list
         '''
+        from Globals import G
+        self.skilledOperators=False
         # XXX operatorPool is not None ?
+        # if a list of operators is provided as argument
         if (type(operatorPool) is list) and len(operatorPool)>0:
             id = self.id+'_OP'
             name=self.objName+'_operatorPool'
             self.operatorPool=OperatorPool(id, name, operatorsList=operatorPool)
-            from Globals import G
             G.OperatorPoolsList.append(self.operatorPool)
+        # if an operatorPool object is connected to the machine
         elif(type(operatorPool) is OperatorPool):
-            self.operatorPool=operatorPool         
+            self.operatorPool=operatorPool
+        # otherwise
         else:
-            self.operatorPool='None'
+            # find out whether the operators are provided a list of skills
+            for operator in G.OperatorsList:
+                # in that case create an empty operatorPool
+                if operator.skillsList:
+                    id = self.id+'_OP'
+                    name=self.objName+'_operatorPool'
+                    self.operatorPool=OperatorPool(id,name,operatorsList=[])
+                    G.OperatorPoolsList.append(self.operatorPool)
+                    # and update the flag skilledOperators so whenever the OperatorPool is re-initialised to reset the operators list of the Pool
+                    self.skilledOperators=True
+                    break
+            if not self.skilledOperators:
+                self.operatorPool='None'
         # update the operatorPool coreObjects list
         if self.operatorPool!='None':
              self.operatorPool.coreObjectIds.append(self.id)
@@ -231,18 +247,23 @@ class Machine(CoreObject):
             else:
                 self.router=G.Router
     #===========================================================================
-    # initialize broker if needed
+    # initialise broker if needed
     #===========================================================================
     def initializeOperatorPool(self):
-        # initialize the operator pool if any
+        # initialise the operator pool if any
         if (self.operatorPool!="None"):
             self.operatorPool.initialize()
-            for operator in self.operatorPool.operators:
-                operator.coreObjectIds.append(self.id)
-                operator.coreObjects.append(self)
+            # if the flag skilledOperators is true then reset/empty the operators list of the pool
+            if self.skilledOperators:
+                self.operatorPool.operators=[]
+            # otherwise update the coreObjectIds/coreObjects list of the operators
+            else:
+                for operator in self.operatorPool.operators:
+                    operator.coreObjectIds.append(self.id)
+                    operator.coreObjects.append(self)
     
     #===========================================================================
-    # initialize broker if needed
+    # initialise broker if needed
     #===========================================================================
     def initializeBroker(self):
         # initiate the Broker responsible to control the request/release
@@ -251,7 +272,7 @@ class Machine(CoreObject):
             self.env.process(self.broker.run())
                 
     #===========================================================================
-    # initialize router if needed
+    # initialise router if needed
     #===========================================================================
     def initializeRouter(self):
         if (self.operatorPool!="None"):
