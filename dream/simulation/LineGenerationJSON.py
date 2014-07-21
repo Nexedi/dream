@@ -212,7 +212,8 @@ def createObjects():
             schedulingRule=element.get('schedulingRule', 'FIFO')    # get the scheduling rule of the el. (how to choose which 
                                                                     # station to serve first) / default 'FIFO' i.e. the one that 
                                                                     # called first
-            O = Operator(element_id, name, capacity,schedulingRule)                # create an operator object
+            skills=element.get('skills',[])                         # list of stations that the operator can attend to
+            O = Operator(element_id, name, capacity,schedulingRule,skills)                # create an operator object
             O.coreObjectIds=getSuccessorList(id)                	# update the list of objects that the operator operates
 																	# calling the getSuccesorList() method on the operator
             G.OperatorsList.append(O)                               # add the operator to the RepairmanList
