@@ -55,7 +55,7 @@ class ScheduledMaintenance(ObjectInterruption):
     # =======================================================================
     def initialize(self):
         ObjectInterruption.initialize(self) 
-        self.victimEndedLastProcessing=self.env.event()
+#         self.victimEndedLastProcessing=self.env.event()
         self.waitingSignal=False
         # not used yet
         self.victimIsEmptyBeforeMaintenance=self.env.event()
@@ -81,11 +81,12 @@ class ScheduledMaintenance(ObjectInterruption):
                     self.victim.isWorkingOnTheLast=True
                     self.waitingSignal=True
                     # TODO: signal to be triggered by postProcessingActions of Machines
-                    yield self.victimEndedLastProcessing                # there is no signal yet that signals the change of such state (an object getting empty)
-                    assert self.victimEndedLastProcessing.value==self.env.now, 'the processing end signal is not received by maintenance on time'
-                    self.victimEndedLastProcessing=self.env.event()
+                    yield self.victim.endedLastProcessing                # there is no signal yet that signals the change of such state (an object getting empty)
+                    assert self.victim.endedLastProcessing.value==self.env.now, 'the processing end signal is not received by maintenance on time'
+                    self.victim.endedLastProcessing=self.env.event()
                     waitTime=self.env.now-waitStartTime
                     self.interruptVictim()
+                # XXX not yet used
                 elif self.endStatus=='emptied':
                     waitStartTime=self.env.now
                     self.waitingSignal=True

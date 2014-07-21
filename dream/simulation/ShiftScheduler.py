@@ -53,7 +53,7 @@ class ShiftScheduler(ObjectInterruption):
     def initialize(self):
         ObjectInterruption.initialize(self)
         self.remainingShiftPattern=list(self.shiftPattern) 
-        self.victimEndedLastProcessing=self.env.event()
+#         self.victimEndedLastProcessing=self.env.event()
         self.waitingSignal=False
         
     # =======================================================================
@@ -87,8 +87,8 @@ class ShiftScheduler(ObjectInterruption):
                 if self.endUnfinished and len(self.victim.getActiveObjectQueue())==1 and (not self.victim.waitToDispose):
                     self.victim.isWorkingOnTheLast=True
                     self.waitingSignal=True
-                    yield self.victimEndedLastProcessing   
-                    self.victimEndedLastProcessing=self.env.event()                
+                    yield self.victim.endedLastProcessing   
+                    self.victim.endedLastProcessing=self.env.event()                
                 
                 self.interruptVictim()                  # interrupt processing operations if any
                 self.victim.onShift=False                        # get the victim off-shift
