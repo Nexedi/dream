@@ -33,6 +33,7 @@ from Failure import Failure
 from CoreObject import CoreObject
 
 from OperatorRouter import Router
+from SkilledOperatorRouter import SkilledRouter
 
 from OperatedPoolBroker import Broker
 from OperatorPool import OperatorPool
@@ -181,6 +182,12 @@ class Machine(CoreObject):
         self.loadOperatorAvailable=self.env.event()
         # signal used for preemption
         self.preemptQueue=self.env.event()
+        # signal used for informing objectInterruption objects that the current entity processed has finished processnig
+        self.endedLastProcessing=self.env.event()
+        # flag used to inform if the operators assigned to the station are skilled (skillsList)
+        self.skilledOperators=False
+        
+        
     
     #===========================================================================
     # create an operatorPool if needed
@@ -192,8 +199,9 @@ class Machine(CoreObject):
              the list of operators provided
             if the  list is empty create operator pool with empty list
         '''
-        from Globals import G
+        # flag used to inform if the operators assigned to the station are skilled (skillsList)
         self.skilledOperators=False
+        from Globals import G
         # XXX operatorPool is not None ?
         # if a list of operators is provided as argument
         if (type(operatorPool) is list) and len(operatorPool)>0:
@@ -241,7 +249,11 @@ class Machine(CoreObject):
             from Globals import G
             # if there is no router
             if not G.Router:
-                self.router=Router()
+                # TODO if the skilledOperators flag is raised then create a SkilledRouter (temp)
+                if self.skilledOperators:
+                    self.router=SkilledRouter()
+                else:
+                    self.router=Router()
                 G.Router=self.router
             # otherwise set the already existing router as the machines Router
             else:
@@ -599,7 +611,7 @@ class Machine(CoreObject):
         # the total processing time for this entity is what the distribution initially gave
         if not self.shouldPreempt:
             self.totalWorkingTime+=self.totalProcessingTimeInCurrentEntity
-        # if the station was preemptied for a critical order then calculate the total working time accorindingly
+        # if the station was preemptied for a critical order then calculate the total working time accordingly
         else:
             self.totalWorkingTime+=self.env.now-(self.timeLastEntityEntered)
         # update the variables keeping track of Entity related attributes of the machine    
@@ -616,7 +628,8 @@ class Machine(CoreObject):
                 # if the objectInterruption is waiting for a a signal
                 if interruption.victim==self and interruption.waitingSignal:
                     # signal it and reset the flags
-                    interruption.victimEndedLastProcessing.succeed(self.env.now)
+#                     interruption.victimEndedLastProcessing.succeed(self.env.now)
+                    self.endedLastProcessing.succeed(self.env.now)
                     interruption.waitinSignal=False
                     self.isWorkingOnTheLast=False
             
