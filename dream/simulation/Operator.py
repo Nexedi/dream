@@ -75,7 +75,7 @@ class Operator(ObjectResource):
         # alias used by printRoute
         self.alias=self.id
         # list attribute that describes the skills of the operator in terms of stations he can operate
-        self.skillList=skills
+        self.skillsList=skills
         
     @staticmethod
     def getSupportedSchedulingRules():
