@@ -37,7 +37,7 @@ from ObjectResource import ObjectResource
 class Operator(ObjectResource):
     family='Operator'  
     
-    def __init__(self, id, name, capacity=1, schedulingRule='FIFO', skills=[]):
+    def __init__(self, id, name, capacity=1, schedulingRule='FIFO', skills=[], available=True):
         ObjectResource.__init__(self)
         self.id=id
         self.objName=name
@@ -76,6 +76,8 @@ class Operator(ObjectResource):
         self.alias=self.id
         # list attribute that describes the skills of the operator in terms of stations he can operate
         self.skillsList=skills
+        # flag to show if the resource is available at the start of simulation
+        self.available=available
         
     @staticmethod
     def getSupportedSchedulingRules():
