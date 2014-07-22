@@ -86,7 +86,7 @@ class ScheduledMaintenance(ObjectInterruption):
                     self.victim.endedLastProcessing=self.env.event()
                     waitTime=self.env.now-waitStartTime
                     self.interruptVictim()
-                # XXX not yet used
+                # XXX not yet implemented
                 elif self.endStatus=='emptied':
                     waitStartTime=self.env.now
                     self.waitingSignal=True
