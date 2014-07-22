@@ -139,9 +139,7 @@ class Source(CoreObject):
                 self.entityCreated=self.env.event()
             # otherwise, if the receiver requests availability then try to signal him if there is anything to dispose of
             if self.canDispose in receivedEvent or self.loadOperatorAvailable in receivedEvent:
-#                 self.canDispose.signalparam=None
                 self.canDispose=self.env.event()
-#                 self.loadOperatorAvailable.signalparam=None
                 self.loadOperatorAvailable=self.env.event()
             if self.haveToDispose():
                 if self.signalReceiver():
