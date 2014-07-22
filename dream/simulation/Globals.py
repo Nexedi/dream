@@ -319,7 +319,7 @@ def getSupportedPrintKwrds():
             "processEnd", "interrupted",
             "enter", "destroy",
             "waitEvent", "received", "isRequested","canDispose",
-            "interruptionEnd", "loadOperatorAvailable", 'resourceAvailable',
+            "interruptionEnd", "loadOperatorAvailable", "resourceAvailable","entityRemoved",
             'conveyerEnd', 'conveyerFull','moveEnd')
         
 #===========================================================================
@@ -348,6 +348,7 @@ def getPhrase():
                 'interruptionEnd':{'phrase':'received an interruptionEnd event at'},
                 "loadOperatorAvailable":{'phrase':'received a loadOperatorAvailable event at'},
                 "resourceAvailable":{'phrase':'received a resourceAvailable event'},
+                "entityRemoved":{'phrase':'received an entityRemoved event from'},
                 'moveEnd':{'phrase':'received a moveEnd event'},
                 "conveyerEnd":{'phrase':'has reached conveyer End', 'suffix':'.!'},
                 'conveyerFull':{'phrase':'is now Full, No of units:', 'suffix':'(*)'}}
