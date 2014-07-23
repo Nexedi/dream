@@ -155,7 +155,9 @@ class Dismantle(CoreObject):
                         if not self.signalReceiver():
                             continue
                     # if the receiver was not responsive, release the control to let him remove the entity
+                    self.waitEntityRemoval=True
                     yield self.entityRemoved
+                    self.waitEntityRemoval=False
                     self.entityRemoved=self.env.event()
 #                     yield self.env.timeout(0)#(0.000000000000005)
 

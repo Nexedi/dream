@@ -450,6 +450,7 @@ class Machine(CoreObject):
             # if there was no available receiver, get into blocking control
                 while 1:
                     # wait the event canDispose, this means that the station can deliver the item to successor
+                    self.printTrace(self.id, waitEvent='(canDispose or interruption start)')
                     receivedEvent=yield self.canDispose | self.interruptionStart
                     # if there was interruption
                     #if self.interrupted():
@@ -463,17 +464,31 @@ class Machine(CoreObject):
                         assert self.env.now==self.interruptionEnd.value, 'the victim of the failure is not the object that received it'
                         self.interruptionEnd=self.env.event()
                         self.postInterruptionActions()
+                        if self.signalReceiver():
+                            break
+                        else:
+                            continue
                     if self.canDispose in receivedEvent:
+                        if self.canDispose.value!=self.env.now:
+                            self.canDispose=self.env.event()
+                            continue
+                        assert self.canDispose.value==self.env.now,'canDispose signal is late'
                         self.canDispose=self.env.event()
-                    # try to signal a receiver, if successful then proceed to get an other entity
-                    if self.signalReceiver():
-                        break
+                        # try to signal a receiver, if successful then proceed to get an other entity
+                        if self.signalReceiver():
+                            break
                     # TODO: router most probably should signal givers and not receivers in order to avoid this hold,self,0
                     #       As the receiver (e.g.) a machine that follows the machine receives an loadOperatorAvailable event,
                     #       signals the preceding station (e.g. self.machine) and immediately after that gets the entity.
                     #       the preceding machine gets the canDispose signal which is actually useless, is emptied by the following station
                     #       and then cannot exit an infinite loop.
-                    yield self.entityRemoved #env.timeout(0)
+                    # notify that the station waits the entity to be removed
+                    self.waitEntityRemoval=True
+                    self.printTrace(self.id, waitEvent='(entityRemoved)')
+                    yield self.entityRemoved
+                    self.printTrace(self.id, entityRemoved=self.entityRemoved.value)
+                    assert self.entityRemoved.value==self.env.now,'entityRemoved event activated earlier than received'
+                    self.waitEntityRemoval=False
                     self.entityRemoved=self.env.event()
                     # if while waiting (for a canDispose event) became free as the machines that follows emptied it, then proceed
                     if not self.haveToDispose():

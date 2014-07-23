@@ -68,7 +68,9 @@ class CapacityStationController(EventGenerator):
                 if not exit.isRequested.triggered:            # this is needed because the signal can be triggered also by the buffer
                     exit.isRequested.succeed(station)         # send is requested to station
                 # wait until the entity is removed
+                station.waitEntityRemoval=True
                 yield station.entityRemoved
+                station.waitEntityRemoval=False
                 exit.currentlyObtainedEntities.append(entity)
                 station.entityRemoved=self.env.event()
                 project=entity.capacityProject
@@ -113,7 +115,9 @@ class CapacityStationController(EventGenerator):
                     break
                 station.isRequested.succeed(buffer)         # send is requested to station
                 # wait until the entity is removed
+                buffer.waitEntityRemoval=True
                 yield buffer.entityRemoved
+                buffer.waitEntityRemoval=False
                 buffer.entityRemoved=self.env.event()
                 project=entity.capacityProject
                 periodDict[project.id]=entity.requiredCapacity  # dict to be appended in the utilization list

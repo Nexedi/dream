@@ -53,6 +53,8 @@ class CoreObject(object):
         self.resetOnPreemption=False
         self.interruptCause=None
         self.gatherWipStat=False
+        # flag used to signal that the station waits for removeEntity event
+        self.waitEntityRemoval=False
     
     def initialize(self):
         from Globals import G
@@ -136,7 +138,8 @@ class CoreObject(object):
         self.interruptionStart=self.env.event()
         self.interruptedBy=None      
         self.entityRemoved=self.env.event()
-        
+        # flag used to signal that the station waits for removeEntity event
+        self.waitEntityRemoval=False
 
     # =======================================================================
     #                the main process of the core object 
@@ -181,10 +184,20 @@ class CoreObject(object):
         # update wipStatList
         if self.gatherWipStat:
             self.wipStatList.append([self.env.now, len(activeObjectQueue)])
-            
-        if not self.entityRemoved.triggered:
+        
+        if self.entityRemoved.triggered:
+            if self.entityRemoved.value!=self.env.now and self.waitEntityRemoval:
+#                 print self.id,'triggered and waiting'
+                self.entityRemoved=self.env.event()
+                self.printTrace(self.id, signal='(removedEntity)')
+                self.entityRemoved.succeed(self.env.now)
+        elif self.waitEntityRemoval:
+#             print self.id,'not triggered and waiting'
             self.printTrace(self.id, signal='(removedEntity)')
             self.entityRemoved.succeed(self.env.now)
+        elif not self.waitEntityRemoval:
+#             print self.id,'not triggered but not waiting'
+            pass
         return entity
     
     #===========================================================================
@@ -463,7 +476,7 @@ class CoreObject(object):
             self.giver=giver
             self.giver.receiver=self
             self.printTrace(self.id, signalGiver=self.giver.id)
-            self.giver.canDispose.succeed(self)
+            self.giver.canDispose.succeed(self.env.now)
             return True
         return False
     
