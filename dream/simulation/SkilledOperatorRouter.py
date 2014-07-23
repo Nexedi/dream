@@ -149,21 +149,27 @@ class SkilledRouter(Router):
                 # # XXX calculate the WIP of each station
                 #===================================================================
                 for station in self.availableStations:
-                    station.wip=0
+#                     station.wip=0
+                    station.wip=1+(len(station.getActiveObjectQueue())/station.capacity)
                     for predecessor in station.previous:
-                        predecessor.remainingWip=0
-                        if len(predecessor.next)>1:
-                            nextNo=len(predecessor.next)
-                            for obj in predecessor.next:
-                                if not obj in self.availableStations:
-                                    nextNo-=1
-                            station.wip=int(round(len(predecessor.getActiveObjectQueue())/nextNo))
-                            predecessor.remainingWip=len(predecessor.getActiveObjectQueue()) % nextNo
-                for buffer in G.QueueList:
-                    if buffer.remainingWip:
-                        nextObj=next(x for x in buffer.next if x in self.availableStations) # pick the first of the list available
-                        nextObj.wip+=buffer.remainingWip
-                        buffer.remainingWip=0
+#                         predecessor.remainingWip=0
+#                         if len(predecessor.next)>1:
+#                             nextNo=len(predecessor.next)
+#                             for obj in predecessor.next:
+#                                 if not obj in self.availableStations:
+#                                     nextNo-=1
+                        try:
+                            station.wip+=float(len(predecessor.getActiveObjectQueue())/predecessor.capacity)
+                        except:
+                            # XXX what happens in the case of sources or infinite-capacity-queues
+                            pass
+                    print station.id, station.wip
+#                             predecessor.remainingWip=len(predecessor.getActiveObjectQueue()) % nextNo
+#                 for buffer in G.QueueList:
+#                     if buffer.remainingWip:
+#                         nextObj=next(x for x in buffer.next if x in self.availableStations) # pick the first of the list available
+#                         nextObj.wip+=buffer.remainingWip
+#                         buffer.remainingWip=0
                 #===================================================================
                 # # stations of the line and their corresponding WIP
                 # TODO: the WIP of the stations must be normalised to the max WIP possible on that station
@@ -195,6 +201,7 @@ class SkilledRouter(Router):
                 # XXX assign the operators to operatorPools
                 # pendingStations/ available stations not yet given operator
                 self.pendingStations=[]
+                from Globals import findObjectById
                 for operator in solution.keys():
                     for resource in G.OperatorsList:
                         if resource.id==operator:
@@ -202,7 +209,12 @@ class SkilledRouter(Router):
                             station.operatorPool.operators=[resource]
                             resource.assignTo(station)
                             self.toBeSignalled.append(station)
-                            self.availableOperatorList.pop(resource)
+                            i=0
+                            for op in self.availableOperatorList:
+                                if op==resource.id:
+                                    self.availableOperatorList.pop(i)
+                                    break
+                                i+=1
                             break
                 if len(solution)!=len(self.availableStations):
                     from Globals import findObjectById
