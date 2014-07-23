@@ -90,7 +90,7 @@ class Machine(CoreObject):
         self.MTTR=MTTR
         self.availability=availability
         # check whether the operators are provided with a skills set
-        self.skilledOperators=self.checkForSkilledOpertors()
+        self.skilledOperators=self.checkForSkilledOperators()
         # create an operatorPool if needed
         self.createOperatorPool(operatorPool)
         # holds the Operator currently processing the Machine
@@ -876,7 +876,8 @@ class Machine(CoreObject):
         self.outputTrace(self.currentOperator.objName, "released from "+ self.objName)
         # set the flag operatorAssignedTo to None
         # XXX in case of skilled operators which stay at the same station should that change
-        self.currentOperator.operatorAssignedTo=None            
+        if not self.checkForSkilledOperators():
+            self.currentOperator.unAssign()            
         self.broker.invoke()
         self.toBeOperated = False
         
