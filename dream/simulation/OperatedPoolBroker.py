@@ -80,29 +80,30 @@ class Broker(ObjectInterruption):
                 and any(type=='Load' or type=='Setup' or type=='Processing'\
                         for type in self.victim.multOperationTypeList):
                 # update the time that the station is waiting for the operator
-                self.timeWaitForOperatorStarted=self.env.now#()
+                self.timeWaitForOperatorStarted=self.env.now
                 #===============================================================
                 # if the victim already holds an entity that means that the machine's operation type
                 #     is no Load or setup, in that case the router is already invoked and the machine is already assigned an operator
                 from Globals import G
-                if not self.victimQueueIsEmpty():
-                    # add the currentEntity to the pendingEntities
-                    if not self.victim.currentEntity in G.pendingEntities:
-                        G.pendingEntities.append(self.victim.currentEntity)
-                    if not G.Router.invoked:
-                        self.victim.printTrace(self.victim.id, signal='router (broker)')
-                        G.Router.invoked=True
-                        G.Router.isCalled.succeed(self.env.now)
-                       
-                    self.waitForOperator=True
-                    self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')
-                    yield self.resourceAvailable
-                    self.resourceAvailable=self.env.event()
-                    # remove the currentEntity from the pendingEntities
-                    if self.victim.currentEntity in G.pendingEntities:
-                        G.pendingEntities.remove(self.victim.currentEntity)
-                    self.waitForOperator=False
-                    self.victim.printTrace(self.victim.id, resourceAvailable='(broker)')
+                if not self.victim.checkForSkilledOperators():
+                    if not self.victimQueueIsEmpty():
+                        # add the currentEntity to the pendingEntities
+                        if not self.victim.currentEntity in G.pendingEntities:
+                            G.pendingEntities.append(self.victim.currentEntity)
+                        if not G.Router.invoked:
+                            self.victim.printTrace(self.victim.id, signal='router (broker)')
+                            G.Router.invoked=True
+                            G.Router.isCalled.succeed(self.env.now)
+                           
+                        self.waitForOperator=True
+                        self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')
+                        yield self.resourceAvailable
+                        self.resourceAvailable=self.env.event()
+                        # remove the currentEntity from the pendingEntities
+                        if self.victim.currentEntity in G.pendingEntities:
+                            G.pendingEntities.remove(self.victim.currentEntity)
+                        self.waitForOperator=False
+                        self.victim.printTrace(self.victim.id, resourceAvailable='(broker)')
                 #===============================================================
                 
                 
@@ -132,33 +133,32 @@ class Broker(ObjectInterruption):
                     assert self.isCalled.value==self.env.now, 'the broker should be granted control instantly'
                     self.isCalled=self.env.event()
                 
-                # The operator is released
-                    
-                if not self.victim.isOperated():
-                    self.victim.currentOperator.totalWorkingTime+=self.env.now-self.victim.currentOperator.timeLastOperationStarted                
-                    # signal the other brokers waiting for the same operators that they are now free
-                    # also signal the stations that were not requested to receive because the operator was occupied
-                    
-                    # TODO: signalling the router must be done more elegantly, router must be set as global variable
-                    # if the router is already invoked then do not signal it again
-                    if not self.victim.router.invoked:
-                        self.victim.printTrace(self.victim.id, signal='router (broker)')
-                        self.victim.router.invoked=True
-#                         self.victim.router.isCalled.signal(now())
-                        self.victim.router.isCalled.succeed(self.env.now)
-                    # TODO: signalling the router will give the chance to it to take the control, but when will it eventually receive it. 
-                    #     after signalling the broker will signal it's victim that it has finished it's processes 
-                    # TODO: this wont work for the moment. The actions that follow must be performed by all operated brokers. 
-                    
-                    self.victim.printTrace(self.victim.currentOperator.objName, finishWork=self.victim.id)
-                    # update the schedule of the operator
-                    self.victim.currentOperator.schedule[-1].append(self.env.now)
-                    # the victim current operator must be cleared after the operator is released
-                    self.timeLastOperationEnded = self.env.now
-                    self.victim.currentOperator.workingStation=None
-                    self.victim.currentOperator = None
-                else:
-                    pass
+                # The operator is released (the router is not called in the case of skilled ops that work constantly on the same machine)
+                if not self.victim.checkForSkilledOperators():
+                    if not self.victim.isOperated():
+                        self.victim.currentOperator.totalWorkingTime+=self.env.now-self.victim.currentOperator.timeLastOperationStarted                
+                        # signal the other brokers waiting for the same operators that they are now free
+                        # also signal the stations that were not requested to receive because the operator was occupied
+                        
+                        # TODO: signalling the router must be done more elegantly, router must be set as global variable
+                        # if the router is already invoked then do not signal it again
+                        if not self.victim.router.invoked:
+                            self.victim.printTrace(self.victim.id, signal='router (broker)')
+                            self.victim.router.invoked=True
+                            self.victim.router.isCalled.succeed(self.env.now)
+                        # TODO: signalling the router will give the chance to it to take the control, but when will it eventually receive it. 
+                        #     after signalling the broker will signal it's victim that it has finished it's processes 
+                        # TODO: this wont work for the moment. The actions that follow must be performed by all operated brokers. 
+                        
+                        self.victim.printTrace(self.victim.currentOperator.objName, finishWork=self.victim.id)
+                        # update the schedule of the operator
+                        self.victim.currentOperator.schedule[-1].append(self.env.now)
+                        # the victim current operator must be cleared after the operator is released
+                        self.timeLastOperationEnded = self.env.now
+                        self.victim.currentOperator.workingStation=None
+                        self.victim.currentOperator = None
+                    else:
+                        pass
                 # return the control to the victim
                 self.victim.brokerIsSet.succeed(self.env.now)
                 
