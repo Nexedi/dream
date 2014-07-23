@@ -411,6 +411,7 @@ class CoreObject(object):
         # if no receiver can accept then try to preempt a receive if the stations holds a critical order
         self.preemptReceiver()
         # TODO if the station is operated, and the operators have skills defined then the SkilledOperatorRouter should be signalled
+        # XXX: there may be a case where one machine is not assigned an operator, in that case we do not want to invoke the allocation routine
         if self.checkForSkilledOpertors():
             allocationNeeded=False
             for nextObj in self.next:
@@ -419,7 +420,7 @@ class CoreObject(object):
                         allocationNeeded=True
                         break
             if allocationNeeded:
-                self.signalRouter()
+                self.requestAllocation()
         return False
     
     # =======================================================================
@@ -444,17 +445,13 @@ class CoreObject(object):
     #===========================================================================
     @staticmethod
     def requestAllocation():
-        try:
-            # TODO: signal the Router, skilled operators must be assigned to operatorPools
-            from Globals import G
-            G.Router.allocation=True
-            G.Router.waitEndProcess=False
-            if not G.Router.invoked:
-                G.Router.invoked=True
-                G.Router.isCalled.succeed(G.env.now)
-            return True
-        except:
-            return False
+        # TODO: signal the Router, skilled operators must be assigned to operatorPools
+        from Globals import G
+        G.Router.allocation=True
+        G.Router.waitEndProcess=False
+        if not G.Router.invoked:
+            G.Router.invoked=True
+            G.Router.isCalled.succeed(G.env.now)
         
     #===========================================================================
     #  signalRouter method
@@ -463,15 +460,6 @@ class CoreObject(object):
     def signalRouter(receiver=None):
         # if an operator is not assigned to the receiver then do not signal the receiver but the Router
         try:
-            # TODO: if the receiver is not defined then directly signal the Router, skilled operators must be assigned to operatorPools
-            if not receiver:
-                from Globals import G
-                G.Router.allocation=True
-                G.Router.waitEndProcess=False
-                if not G.Router.invoked:
-                    G.Router.invoked=True
-                    G.Router.isCalled.succeed(G.env.now)
-                return True
             # XXX in the case of skilledOperators assignedOperators must be always True in order to avoid invoking the Router
             if not receiver.assignedOperator or\
                    (receiver.isPreemptive and len(receiver.Res.users)>0):

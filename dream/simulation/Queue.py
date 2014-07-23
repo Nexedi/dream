@@ -174,12 +174,7 @@ class Queue(CoreObject):
         try:
             if self.level:
                 if not len(self.getActiveObjectQueue()):
-                    from Globals import G
-                    G.Router.allocation=True
-                    G.Router.waitEndProcess=True
-                    if not G.Router.invoked:
-                        G.Router.invoked=True
-                        G.Router.isCalled.succeed(G.env.now)
+                    self.requestAllocation()
         except:
             pass
         return activeEntity
@@ -205,12 +200,7 @@ class Queue(CoreObject):
         try:
             if self.level:
                 if len(self.getActiveObjectQueue())==self.level:
-                    from Globals import G
-                    G.Router.allocation=True
-                    G.Router.waitEndProcess=True
-                    if not G.Router.invoked:
-                        G.Router.invoked=True
-                        G.Router.isCalled.succeed(G.env.now)
+                    self.requestAllocation()
         except:
             pass
         return activeEntity
