@@ -89,6 +89,8 @@ class Machine(CoreObject):
         self.MTTF=MTTF
         self.MTTR=MTTR
         self.availability=availability
+        # check whether the operators are provided with a skills set
+        self.skilledOperators=self.checkForSkilledOpertors()
         # create an operatorPool if needed
         self.createOperatorPool(operatorPool)
         # holds the Operator currently processing the Machine
@@ -184,10 +186,6 @@ class Machine(CoreObject):
         self.preemptQueue=self.env.event()
         # signal used for informing objectInterruption objects that the current entity processed has finished processnig
         self.endedLastProcessing=self.env.event()
-        # flag used to inform if the operators assigned to the station are skilled (skillsList)
-        self.skilledOperators=False
-        
-        
     
     #===========================================================================
     # create an operatorPool if needed
@@ -199,8 +197,6 @@ class Machine(CoreObject):
              the list of operators provided
             if the  list is empty create operator pool with empty list
         '''
-        # flag used to inform if the operators assigned to the station are skilled (skillsList)
-        self.skilledOperators=False
         from Globals import G
         # XXX operatorPool is not None ?
         # if a list of operators is provided as argument
@@ -214,18 +210,14 @@ class Machine(CoreObject):
             self.operatorPool=operatorPool
         # otherwise
         else:
-            # find out whether the operators are provided a list of skills
-            for operator in G.OperatorsList:
-                # in that case create an empty operatorPool
-                if operator.skillsList:
-                    id = self.id+'_OP'
-                    name=self.objName+'_operatorPool'
-                    self.operatorPool=OperatorPool(id,name,operatorsList=[])
-                    G.OperatorPoolsList.append(self.operatorPool)
-                    # and update the flag skilledOperators so whenever the OperatorPool is re-initialised to reset the operators list of the Pool
-                    self.skilledOperators=True
-                    break
-            if not self.skilledOperators:
+            # if there are operators with skillList
+            if self.skilledOperators:
+                id = self.id+'_OP'
+                name=self.objName+'_operatorPool'
+                self.operatorPool=OperatorPool(id,name,operatorsList=[])
+                G.OperatorPoolsList.append(self.operatorPool)
+            # otherwise create no operatorPool
+            else:
                 self.operatorPool='None'
         # update the operatorPool coreObjects list
         if self.operatorPool!='None':
@@ -624,15 +616,14 @@ class Machine(CoreObject):
         # in case Machine just performed the last work before the scheduled maintenance signal the corresponding object
         if self.isWorkingOnTheLast:
             # for the scheduled Object interruptions
+            # XXX add the SkilledOperatorRouter to this list and perform the signalling only once
             for interruption in (G.ShiftSchedulerList+G.ScheduledMaintenanceList):
                 # if the objectInterruption is waiting for a a signal
                 if interruption.victim==self and interruption.waitingSignal:
                     # signal it and reset the flags
-#                     interruption.victimEndedLastProcessing.succeed(self.env.now)
                     self.endedLastProcessing.succeed(self.env.now)
                     interruption.waitinSignal=False
                     self.isWorkingOnTheLast=False
-            
     
     # =======================================================================
     # actions to be carried out when the processing of an Entity ends
@@ -884,6 +875,7 @@ class Machine(CoreObject):
     def releaseOperator(self):
         self.outputTrace(self.currentOperator.objName, "released from "+ self.objName)
         # set the flag operatorAssignedTo to None
+        # XXX in case of skilled operators which stay at the same station should that change
         self.currentOperator.operatorAssignedTo=None            
         self.broker.invoke()
         self.toBeOperated = False
