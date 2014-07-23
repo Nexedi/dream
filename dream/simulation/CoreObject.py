@@ -366,11 +366,21 @@ class CoreObject(object):
 #             receivers.append(object)
 #         return receivers
     
+    #===========================================================================
+    # check if the any of the operators are skilled (having a list of skills regarding the machines)
+    #===========================================================================
+    @staticmethod
+    def checkForSkilledOpertors():
+        from Globals import G
+        # XXX this can also be global
+        # flag used to inform if the operators assigned to the station are skilled (skillsList)
+        return any(operator.skillsList for operator in G.OperatorsList)
+        
     # =======================================================================
     # signal the successor that the object can dispose an entity 
     # =======================================================================
     def signalReceiver(self):
-        possibleReceivers=self.findReceiversFor(self) 
+        possibleReceivers=self.findReceiversFor(self)
         if possibleReceivers:
             receiver=self.selectReceiver(possibleReceivers)
             receiversGiver=self
@@ -400,6 +410,16 @@ class CoreObject(object):
             return True
         # if no receiver can accept then try to preempt a receive if the stations holds a critical order
         self.preemptReceiver()
+        # TODO if the station is operated, and the operators have skills defined then the SkilledOperatorRouter should be signalled
+        if self.checkForSkilledOpertors():
+            allocationNeeded=False
+            for nextObj in self.next:
+                if nextObj.operatorPool!='None':
+                    if not nextObj.operatorPool.operators:
+                        allocationNeeded=True
+                        break
+            if allocationNeeded:
+                self.signalRouter()
         return False
     
     # =======================================================================
@@ -420,12 +440,39 @@ class CoreObject(object):
         return receiver
     
     #===========================================================================
+    #  method used to request allocation from the Router
+    #===========================================================================
+    @staticmethod
+    def requestAllocation():
+        try:
+            # TODO: signal the Router, skilled operators must be assigned to operatorPools
+            from Globals import G
+            G.Router.allocation=True
+            G.Router.waitEndProcess=False
+            if not G.Router.invoked:
+                G.Router.invoked=True
+                G.Router.isCalled.succeed(G.env.now)
+            return True
+        except:
+            return False
+        
+    #===========================================================================
     #  signalRouter method
     #===========================================================================
     @staticmethod
     def signalRouter(receiver=None):
         # if an operator is not assigned to the receiver then do not signal the receiver but the Router
         try:
+            # TODO: if the receiver is not defined then directly signal the Router, skilled operators must be assigned to operatorPools
+            if not receiver:
+                from Globals import G
+                G.Router.allocation=True
+                G.Router.waitEndProcess=False
+                if not G.Router.invoked:
+                    G.Router.invoked=True
+                    G.Router.isCalled.succeed(G.env.now)
+                return True
+            # XXX in the case of skilledOperators assignedOperators must be always True in order to avoid invoking the Router
             if not receiver.assignedOperator or\
                    (receiver.isPreemptive and len(receiver.Res.users)>0):
                 if receiver.isLoadRequested():
