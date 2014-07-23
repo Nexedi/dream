@@ -1,0 +1,86 @@
+{
+    "_class": "Dream.Simulation",
+    "edges": {
+        "1": [
+            "S1",
+            "M1",
+            {}
+        ],
+        "2": [
+            "M1",
+            "M2",
+            {}
+        ],
+        "3": [
+            "M2",
+            "E1",
+            {}
+        ]
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "confidenceLevel": "0.95",
+        "maxSimTime": "155",
+        "numberOfReplications": "1",
+        "trace": "No",
+		"console": "Yes"
+    },
+    "nodes": {
+        "E1": {
+            "_class": "Dream.Exit",
+            "name": "Exit"
+        },
+        "M1": {
+            "_class": "Dream.Machine",
+            "loadTime": {
+                "distributionType": "Fixed",
+                "mean": 0.0
+            },
+            "name": "Machine1",
+            "operationType": "MT-Load-Processing",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 17.0
+            }
+        },
+        "M2": {
+            "_class": "Dream.Machine",
+            "failures": {},
+            "loadTime": {
+                "distributionType": "Fixed",
+                "mean": 0.0
+            },
+            "name": "Machine2",
+            "operationType": "MT-Load-Setup-Processing",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 2.0
+            },
+            "setupTime": {
+                "distributionType": "Fixed",
+                "mean": 0.25
+            }
+        },
+        "O1": {
+            "_class": "Dream.Operator",
+            "capacity": 1,
+            "name": "Operator1",
+			"skills":["M1"]
+        },
+		"O2": {
+            "_class": "Dream.Operator",
+            "capacity": 1,
+            "name": "Operator2",
+			"skills":["M2"]
+        },
+        "S1": {
+            "_class": "Dream.Source",
+            "entity": "Dream.Part",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": 6.0
+            },
+            "name": "Source"
+        }
+    }
+}

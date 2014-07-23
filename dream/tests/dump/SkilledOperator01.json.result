@@ -1,0 +1,56 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.Exit", 
+   "id": "E1", 
+   "results": {
+    "lifespan": 57.75, 
+    "takt_time": 17.28125, 
+    "throughput": 8
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "M1", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "waiting_ratio": 0.0, 
+    "working_ratio": 100.0
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "M2", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "setup_ratio": 1.4516129032258065, 
+    "waiting_ratio": 87.09677419354838, 
+    "working_ratio": 11.451612903225806
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "id": "O1", 
+   "results": {
+    "waiting_ratio": 98.70967741935483, 
+    "working_ratio": 1.2903225806451613
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "id": "O2", 
+   "results": {
+    "waiting_ratio": 98.70967741935483, 
+    "working_ratio": 1.2903225806451613
+   }
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}
