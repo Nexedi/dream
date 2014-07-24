@@ -163,7 +163,6 @@ class SkilledRouter(Router):
                         except:
                             # XXX what happens in the case of sources or infinite-capacity-queues
                             pass
-                    print station.id, station.wip
 #                             predecessor.remainingWip=len(predecessor.getActiveObjectQueue()) % nextNo
 #                 for buffer in G.QueueList:
 #                     if buffer.remainingWip:

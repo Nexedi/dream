@@ -53,7 +53,8 @@ class Machine(CoreObject):
                   failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None',\
                   operatorPool='None',operationType='None',\
                   setupTime=None, loadTime=None,
-                  isPreemptive=False, resetOnPreemption=False):
+                  isPreemptive=False, resetOnPreemption=False,
+                  canDeliverOnInterruption=False):
 
         CoreObject.__init__(self, id, name)
         self.type="Machine"                         #String that shows the type of object
@@ -125,6 +126,8 @@ class Machine(CoreObject):
         self.resetOnPreemption=resetOnPreemption
         # flag notifying that there is operator assigned to the actievObject
         self.assignedOperator=True
+        # flag notifying the the station can deliver entities that ended their processing while interrupted
+        self.canDeliverOnInterruption=canDeliverOnInterruption
     
     # =======================================================================
     # initialize the machine
@@ -816,11 +819,13 @@ class Machine(CoreObject):
         activeObjectQueue=self.Res.users
         #if we have only one successor just check if machine waits to dispose and also is up
         # this is done to achieve better (cpu) processing time        
-        if(len(self.next)==1 or callerObject==None):
-            return len(activeObjectQueue)>0 and self.waitToDispose and self.checkIfActive()
+        if(callerObject==None):
+            return len(activeObjectQueue)>0 and self.waitToDispose and (self.canDeliverOnInterruption or self.checkIfActive())
         thecaller=callerObject
-        return len(activeObjectQueue)>0 and self.waitToDispose\
-             and self.checkIfActive() and (thecaller in self.next)
+        return len(activeObjectQueue)>0\
+             and self.waitToDispose\
+             and (thecaller in self.next)\
+             and (self.canDeliverOnInterruption or self.checkIfActive())
     
     # =======================================================================
     #                       calculates the setup time

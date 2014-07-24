@@ -293,6 +293,7 @@ def createObjects():
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
             processingTime=element.get('processingTime',{})
+            canDeliverOnInterruption=bool(element.get('canDeliverOnInterruption') or 0)
             failures=element.get('failures', {})  
             failureDistribution=failures.get('failureDistribution', 'not found')
             MTTF=float(failures.get('MTTF') or 0)
@@ -333,7 +334,8 @@ def createObjects():
                                                     operatorPool=machineOperatorPoolList, operationType=operationType,
                                                     setupTime=setupTime,
                                                     loadTime=loadTime,
-                                                    repairman=r, isPreemptive=isPreemptive, resetOnPreemption=resetOnPreemption)
+                                                    repairman=r, isPreemptive=isPreemptive, resetOnPreemption=resetOnPreemption,
+                                                    canDeliverOnInterruption=canDeliverOnInterruption)
             M.nextIds=getSuccessorList(id)                      # update the nextIDs list of the machine
             G.MachineList.append(M)                             # add machine to global MachineList
             if M.operatorPool!="None":
