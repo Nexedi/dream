@@ -173,7 +173,7 @@ class Queue(CoreObject):
         # check if the queue is empty, if yes then try to signal the router, operators may need reallocation
         try:
             if self.level:
-                if not len(self.getActiveObjectQueue()):
+                if not len(self.getActiveObjectQueue()) and self.checkForDedicatedOperators():
                     self.requestAllocation()
         except:
             pass
@@ -199,7 +199,7 @@ class Queue(CoreObject):
         # if the level is reached then try to signal the Router to reallocate the operators
         try:
             if self.level:
-                if len(self.getActiveObjectQueue())==self.level:
+                if len(self.getActiveObjectQueue())==self.level and self.checkForDedicatedOperators():
                     self.requestAllocation()
         except:
             pass
