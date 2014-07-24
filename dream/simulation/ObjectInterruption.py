@@ -92,6 +92,10 @@ class ObjectInterruption(object):
         # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously
         self.victim.interruptedBy=self.type
         self.victim.interruptionStart.succeed(self.env.now)
+        # if the machines are operated by dedicated operators
+        if self.victim.dedicatedOperator:
+            # request allocation
+            self.victim.requestAllocation()
     
     #===========================================================================
     # reactivate the victim
@@ -102,6 +106,10 @@ class ObjectInterruption(object):
         self.victim.interruptionStart=self.env.event()
         # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously
         self.victim.interruptedBy=None
+        # if the machines are operated by dedicated operators
+        if self.victim.dedicatedOperator:
+            # request allocation
+            self.victim.requestAllocation()
         
     #===========================================================================
     # outputs message to the trace.xls. Format is (Simulation Time | Victim Name | message)            

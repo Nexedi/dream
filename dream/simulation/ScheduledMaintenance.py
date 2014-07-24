@@ -95,6 +95,7 @@ class ScheduledMaintenance(ObjectInterruption):
                     assert self.victimIsEmptyBeforeMaintenance.value==self.env.now, 'the processing end signal is not received by maintenance on time'
                     self.victimIsEmptyBeforeMaintenance=self.env.event()
                     waitTime=self.env.now-waitStartTime
+                    self.interruptVictim()
             self.victim.Up=False
             self.victim.timeLastFailure=self.env.now
             self.outputTrace("is down")
