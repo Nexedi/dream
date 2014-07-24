@@ -90,7 +90,7 @@ class Machine(CoreObject):
         self.MTTR=MTTR
         self.availability=availability
         # check whether the operators are provided with a skills set
-        self.skilledOperators=self.checkForSkilledOperators()
+        self.dedicatedOperator=self.checkForDedicatedOperators()
         # create an operatorPool if needed
         self.createOperatorPool(operatorPool)
         # holds the Operator currently processing the Machine
@@ -211,7 +211,7 @@ class Machine(CoreObject):
         # otherwise
         else:
             # if there are operators with skillList
-            if self.skilledOperators:
+            if self.dedicatedOperator:
                 id = self.id+'_OP'
                 name=self.objName+'_operatorPool'
                 self.operatorPool=OperatorPool(id,name,operatorsList=[])
@@ -241,8 +241,8 @@ class Machine(CoreObject):
             from Globals import G
             # if there is no router
             if not G.Router:
-                # TODO if the skilledOperators flag is raised then create a SkilledRouter (temp)
-                if self.skilledOperators:
+                # TODO if the dedicatedOperator flag is raised then create a SkilledRouter (temp)
+                if self.dedicatedOperator:
                     self.router=SkilledRouter()
                 else:
                     self.router=Router()
@@ -257,8 +257,8 @@ class Machine(CoreObject):
         # initialise the operator pool if any
         if (self.operatorPool!="None"):
             self.operatorPool.initialize()
-            # if the flag skilledOperators is true then reset/empty the operators list of the pool
-            if self.skilledOperators:
+            # if the flag dedicatedOperator is true then reset/empty the operators list of the pool
+            if self.dedicatedOperator:
                 self.operatorPool.operators=[]
             # otherwise update the coreObjectIds/coreObjects list of the operators
             else:
@@ -876,7 +876,7 @@ class Machine(CoreObject):
         self.outputTrace(self.currentOperator.objName, "released from "+ self.objName)
         # set the flag operatorAssignedTo to None
         # XXX in case of skilled operators which stay at the same station should that change
-        if not self.checkForSkilledOperators():
+        if not self.checkForDedicatedOperators():
             self.currentOperator.unAssign()            
         self.broker.invoke()
         self.toBeOperated = False

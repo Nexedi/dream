@@ -370,7 +370,7 @@ class CoreObject(object):
     # check if the any of the operators are skilled (having a list of skills regarding the machines)
     #===========================================================================
     @staticmethod
-    def checkForSkilledOperators():
+    def checkForDedicatedOperators():
         from Globals import G
         # XXX this can also be global
         # flag used to inform if the operators assigned to the station are skilled (skillsList)
@@ -412,7 +412,7 @@ class CoreObject(object):
         self.preemptReceiver()
         # TODO if the station is operated, and the operators have skills defined then the SkilledOperatorRouter should be signalled
         # XXX: there may be a case where one machine is not assigned an operator, in that case we do not want to invoke the allocation routine
-        if self.checkForSkilledOperators():
+        if self.checkForDedicatedOperators():
             allocationNeeded=False
             for nextObj in self.next:
                 if nextObj.operatorPool!='None':
@@ -460,7 +460,7 @@ class CoreObject(object):
     def signalRouter(receiver=None):
         # if an operator is not assigned to the receiver then do not signal the receiver but the Router
         try:
-            # XXX in the case of skilledOperators assignedOperators must be always True in order to avoid invoking the Router
+            # XXX in the case of dedicatedOperator assignedOperators must be always True in order to avoid invoking the Router
             if not receiver.assignedOperator or\
                    (receiver.isPreemptive and len(receiver.Res.users)>0):
                 if receiver.isLoadRequested():
