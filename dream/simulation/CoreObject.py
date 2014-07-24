@@ -168,6 +168,20 @@ class CoreObject(object):
     def initialSignalReceiver(self):
         if self.haveToDispose():
             self.signalReceiver()
+        # TODO if the station is operated, and the operators have skills defined then the SkilledOperatorRouter should be signalled
+        # XXX: there may be a case where one machine is not assigned an operator, in that case we do not want to invoke the allocation routine
+        if self.checkForDedicatedOperators():
+            allocationNeeded=False
+            from Globals import G
+            for obj in G.MachineList:
+                if obj.operatorPool!='None':
+                    if obj.operatorPool.operators:
+                        allocationNeeded=False
+                        break
+                    else:
+                        allocationNeeded=True
+            if allocationNeeded:
+                self.requestAllocation()
     
     # =======================================================================
     # removes an Entity from the Object the Entity to be removed is passed
@@ -410,17 +424,6 @@ class CoreObject(object):
             return True
         # if no receiver can accept then try to preempt a receive if the stations holds a critical order
         self.preemptReceiver()
-        # TODO if the station is operated, and the operators have skills defined then the SkilledOperatorRouter should be signalled
-        # XXX: there may be a case where one machine is not assigned an operator, in that case we do not want to invoke the allocation routine
-        if self.checkForDedicatedOperators():
-            allocationNeeded=False
-            for nextObj in self.next:
-                if nextObj.operatorPool!='None':
-                    if not nextObj.operatorPool.operators:
-                        allocationNeeded=True
-                        break
-            if allocationNeeded:
-                self.requestAllocation()
         return False
     
     # =======================================================================
