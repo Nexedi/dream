@@ -82,10 +82,11 @@ class Broker(ObjectInterruption):
                 # update the time that the station is waiting for the operator
                 self.timeWaitForOperatorStarted=self.env.now
                 #===============================================================
-                # if the victim already holds an entity that means that the machine's operation type
-                #     is no Load or setup, in that case the router is already invoked and the machine is already assigned an operator
                 from Globals import G
+                # if the victim does not have a dedicated operator
                 if not self.victim.checkForDedicatedOperators():
+                    # if the victim already holds an entity that means that the machine's operation type
+                    #     is no Load or setup, in that case the router is already invoked and the machine is already assigned an operator
                     if not self.victimQueueIsEmpty():
                         # add the currentEntity to the pendingEntities
                         if not self.victim.currentEntity in G.pendingEntities:
@@ -104,6 +105,13 @@ class Broker(ObjectInterruption):
                             G.pendingEntities.remove(self.victim.currentEntity)
                         self.waitForOperator=False
                         self.victim.printTrace(self.victim.id, resourceAvailable='(broker)')
+                # else if the Router is already invoked for allocating purposes wait until a resource is allocated to the victim's operatorPool
+                elif G.Router.invoked and G.Router.allocation:
+                    self.waitForOperator=True
+                    self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')
+                    yield self.resourceAvailable
+                    self.resourceAvailable=self.env.event()
+                    self.waitForOperator=False
                 #===============================================================
                 
                 
