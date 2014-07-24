@@ -126,9 +126,10 @@ class BatchDecomposition(CoreObject):
                             self.canDispose=self.env.event()
                             # signal the receiver again and break
                             if self.signalReceiver():
-                                break
-                            if self.entityRemoved.triggered:
-                                break
+                                self.waitEntityRemoval=True
+                                yield self.entityRemoved
+                                self.waitEntityRemoval=False
+                                break                           
                             
                 # for the consecutive times wait till the receiver is available and then signalReceiver
                 #     we know that the receiver is occupied with the previous sub-batch
@@ -138,9 +139,11 @@ class BatchDecomposition(CoreObject):
                         self.canDispose=self.env.event()
                         signaling=self.signalReceiver()
                         if signaling:
+                            self.waitEntityRemoval=True
+                            yield self.entityRemoved
+                            self.waitEntityRemoval=False
                             break
-                        if self.entityRemoved.triggered:
-                            break
+
                 self.entityRemoved=self.env.event()
 
     # =======================================================================
