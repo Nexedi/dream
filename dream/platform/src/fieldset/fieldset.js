@@ -47,7 +47,8 @@
             var choice = property.choice || [],
               default_opt = choice[0] ? [choice[0][1]] : [""];
             sub_gadget = gg;
-            value = data[property.id] || value;
+            value = (data[property.id] === undefined ?
+                      value : data[property.id]);
             return sub_gadget.render({field_json: {
               title: (property.description || ''),
               key: property.id,
