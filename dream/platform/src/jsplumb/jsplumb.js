@@ -111,11 +111,6 @@
     return 'DreamNode_' + n;
   }
 
-  function onDataChange() {
-    //$.publish("Dream.Gui.onDataChange", g.private.getData());
-    return undefined;
-  }
-
   function updateConnectionData(gadget, connection, remove, edge_data) {
     if (remove) {
       delete gadget.props.edge_container[connection.id];
@@ -126,7 +121,6 @@
         edge_data || {}
       ];
     }
-    onDataChange();
   }
 
   // bind to connection/connectionDetached events,
@@ -202,7 +196,6 @@
     }
     coordinates[node_id] = coordinate;
     gadget.props.preference_container.coordinates = coordinates;
-    onDataChange();
     return coordinate;
   }
 
@@ -283,7 +276,6 @@
     //   });
     // split in 2 methods ? one for events one for manip
 
-    onDataChange();
     draggable(gadget);
   }
 
@@ -372,7 +364,6 @@
   //       1.1111;
   //   setZoom(gadget, zoom_level);
   //   gadget.props.preference_container.zoom_level = zoom_level;
-  //   onDataChange();
   //   redraw(gadget);
   // }
 
@@ -381,7 +372,6 @@
   //     0.9;
   //   setZoom(gadget, zoom_level);
   //   gadget.props.preference_container.zoom_level = zoom_level;
-  //   onDataChange();
   //   redraw(gadget);
   // }
 
@@ -399,7 +389,6 @@
         delete gadget.props.edge_container[k];
       }
     });
-    onDataChange();
   }
 
   function updateElementData(gadget, node_id, data) {
@@ -429,7 +418,6 @@
         = gadget.props.preference_container.coordinates[node_id];
       delete gadget.props.preference_container.coordinates[node_id];
     }
-    onDataChange();
   }
 
   // function clearAll(gadget) {
@@ -477,12 +465,10 @@
 
   // function setGeneralProperties(gadget, properties) {
   //   gadget.props.general_container = properties;
-  //   onDataChange();
   // }
 
   // function updateGeneralProperties(gadget, properties) {
   //   $.extend(gadget.props.general_container, properties);
-  //   onDataChange();
   // }
 
   function openNodeDialog(gadget, element, config_dict) {
@@ -639,7 +625,6 @@
     box.css("left", absolute_position[0]);
     updateNodeStyle(gadget, element.element_id);
     draggable(gadget);
-    onDataChange();
   }
 
   function waitForDragover(gadget) {
