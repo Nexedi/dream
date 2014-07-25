@@ -84,17 +84,12 @@
         }
         return "DreamNode_" + n;
     }
-    function onDataChange() {
-        //$.publish("Dream.Gui.onDataChange", g.private.getData());
-        return undefined;
-    }
     function updateConnectionData(gadget, connection, remove, edge_data) {
         if (remove) {
             delete gadget.props.edge_container[connection.id];
         } else {
             gadget.props.edge_container[connection.id] = [ getNodeId(gadget.props.node_container, connection.sourceId), getNodeId(gadget.props.node_container, connection.targetId), edge_data || {} ];
         }
-        onDataChange();
     }
     // bind to connection/connectionDetached events,
     // and update the list of connections on screen.
@@ -134,7 +129,6 @@
         }
         coordinates[node_id] = coordinate;
         gadget.props.preference_container.coordinates = coordinates;
-        onDataChange();
         return coordinate;
     }
     function draggable(gadget) {
@@ -196,7 +190,6 @@
         //     return undefined;
         //   });
         // split in 2 methods ? one for events one for manip
-        onDataChange();
         draggable(gadget);
     }
     function updateNodeStyle(gadget, element_id) {
@@ -275,7 +268,6 @@
     //       1.1111;
     //   setZoom(gadget, zoom_level);
     //   gadget.props.preference_container.zoom_level = zoom_level;
-    //   onDataChange();
     //   redraw(gadget);
     // }
     // function zoom_out(gadget) {
@@ -283,7 +275,6 @@
     //     0.9;
     //   setZoom(gadget, zoom_level);
     //   gadget.props.preference_container.zoom_level = zoom_level;
-    //   onDataChange();
     //   redraw(gadget);
     // }
     function removeElement(gadget, node_id) {
@@ -297,13 +288,12 @@
                 delete gadget.props.edge_container[k];
             }
         });
-        onDataChange();
     }
     function updateElementData(gadget, node_id, data) {
         var element_id = gadget.props.node_container[node_id].element_id, new_id = data.id;
-        if (data.name) {
-            $(gadget.props.element).find("#" + element_id).text(data.name).append('<div class="ep"></div></div>');
-            gadget.props.node_container[node_id].name = data.name;
+        if (data.data.name) {
+            $(gadget.props.element).find("#" + element_id).text(data.data.name).append('<div class="ep"></div></div>');
+            gadget.props.node_container[node_id].name = data.data.name;
         }
         delete data.id;
         $.extend(gadget.props.node_container[node_id], data.data);
@@ -322,7 +312,6 @@
             gadget.props.preference_container.coordinates[new_id] = gadget.props.preference_container.coordinates[node_id];
             delete gadget.props.preference_container.coordinates[node_id];
         }
-        onDataChange();
     }
     // function clearAll(gadget) {
     //   $.each(gadget.props.node_container, function (node_id) {
@@ -364,25 +353,12 @@
     // }
     // function setGeneralProperties(gadget, properties) {
     //   gadget.props.general_container = properties;
-    //   onDataChange();
     // }
     // function updateGeneralProperties(gadget, properties) {
     //   $.extend(gadget.props.general_container, properties);
-    //   onDataChange();
     // }
-    function saveNode(evt, gadget, node_id) {
-        var i, data = {
-            id: $(evt.target[1]).val(),
-            name: $(evt.target[2]).val()
-        };
-        data.data = {};
-        for (i = 3; i < evt.target.length - 1; i += 1) {
-            data.data[evt.target[i].name] = $(evt.target[i]).val();
-        }
-        updateElementData(gadget, node_id, data);
-    }
     function openNodeDialog(gadget, element, config_dict) {
-        var node_id = getNodeId(gadget.props.node_container, element.id), node_data = gadget.props.node_container[node_id], element_type = node_data._class.replace(".", "-"), property_list = config_dict[element_type].property_list || [], node_edit_popup = $(gadget.props.element).find("#popup-edit-template"), fieldset_element, save_promise, delete_promise;
+        var node_id = getNodeId(gadget.props.node_container, element.id), node_data = gadget.props.node_container[node_id], element_type = node_data._class.replace(".", "-"), property_list = config_dict[element_type].property_list || [], node_edit_popup = $(gadget.props.element).find("#popup-edit-template"), fieldset_element, delete_promise;
         if (node_edit_popup.length !== 0) {
             node_edit_popup.remove();
         }
@@ -392,6 +368,7 @@
         node_edit_popup.popup();
         node_data.id = node_id;
         if (property_list.length === 0 || property_list[0].id !== "id") {
+            // XXX name & id should not be handled differently in form.
             property_list.unshift({
                 _class: "Dream.Property",
                 id: "name",
@@ -405,11 +382,21 @@
                 type: "string"
             });
         }
-        save_promise = new RSVP.Queue().push(function() {
-            return promiseEventListener(node_edit_popup.find("form")[0], "submit", false);
-        }).push(function(evt) {
-            return saveNode(evt, gadget, node_id);
-        });
+        function save_promise(fieldset_gadget, node_id) {
+            return RSVP.Queue().push(function() {
+                return promiseEventListener(node_edit_popup.find("form")[0], "submit", false);
+            }).push(function(evt) {
+                var data = {
+                    // XXX id should not be handled differently ...
+                    id: $(evt.target[1]).val(),
+                    data: {}
+                };
+                return fieldset_gadget.getContent().then(function(r) {
+                    $.extend(data.data, r);
+                    updateElementData(gadget, node_id, data);
+                });
+            });
+        }
         delete_promise = new RSVP.Queue().push(function() {
             return promiseEventListener(node_edit_popup.find("form [type='button']")[0], "click", false);
         }).push(function() {
@@ -419,12 +406,14 @@
             element: fieldset_element,
             scope: "fieldset"
         }).push(function(fieldset_gadget) {
-            return fieldset_gadget.render(property_list, node_data);
-        }).push(function() {
+            // XXX those promises can probably be merged
+            return RSVP.all([ fieldset_gadget, fieldset_gadget.render(property_list, node_data) ]);
+        }).push(function(fieldset_gadget) {
             node_edit_popup.enhanceWithin();
             node_edit_popup.popup("open");
-        }).push(function() {
-            return RSVP.any([ save_promise, delete_promise ]);
+            return fieldset_gadget[0];
+        }).push(function(fieldset_gadget) {
+            return RSVP.any([ save_promise(fieldset_gadget, node_id), delete_promise ]);
         }).push(function() {
             node_edit_popup.popup("close");
         });
@@ -434,6 +423,8 @@
     }
     function newElement(gadget, element, configuration) {
         var element_type = element._class.replace(".", "-"), option = configuration[element_type], render_element = $(gadget.props.element).find("#main"), coordinate = element.coordinate, box, absolute_position, domElement;
+        // we don't save coordinates as properties of nodes
+        delete element.coordinate;
         element.element_id = generateElementId(gadget.props.element);
         if (!element.id) {
             element.id = generateNodeId(gadget, element_type, option);
@@ -461,7 +452,6 @@
         box.css("left", absolute_position[0]);
         updateNodeStyle(gadget, element.element_id);
         draggable(gadget);
-        onDataChange();
     }
     function waitForDragover(gadget) {
         return loopEventListener(gadget.props.main, "dragover", false, function() {

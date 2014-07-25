@@ -1,4 +1,4 @@
-/*global jQuery, rJS, RSVP, alert, Handlebars, initGadgetMixin */
+/*global console, jQuery, rJS, RSVP, alert, Handlebars, initGadgetMixin */
 /*jslint nomen: true */
 (function(window, $, rJS, RSVP, Handlebars, initGadgetMixin) {
     "use strict";
@@ -138,7 +138,7 @@
                 }
             }
         }
-    }, panel_template, navigation_template, active_navigation_template, gadget_klass = rJS(window);
+    }, panel_template, navigation_template, active_navigation_template, error_template, gadget_klass = rJS(window);
     function calculateTabHTML(gadget, options, key, title, active) {
         return new RSVP.Queue().push(function() {
             var kw = {
@@ -312,6 +312,7 @@
             panel_template = Handlebars.compile(document.getElementById("panel-template").innerHTML);
             navigation_template = Handlebars.compile(document.getElementById("navigation-template").innerHTML);
             active_navigation_template = Handlebars.compile(document.getElementById("active-navigation-template").innerHTML);
+            error_template = Handlebars.compile(document.getElementById("error-template").innerHTML);
         }
     }).ready(function(g) {
         return new RSVP.Queue().push(function() {
@@ -404,6 +405,14 @@
             if (page_gadget.startService !== undefined) {
                 return page_gadget.startService();
             }
+        }).push(undefined, function(error) {
+            if (error instanceof RSVP.CancellationError) {
+                throw error;
+            }
+            console.error(error);
+            document.querySelector("article[class='gadget_container']").innerHTML = error_template({
+                error: error
+            });
         });
     });
 })(window, jQuery, rJS, RSVP, Handlebars, initGadgetMixin);
