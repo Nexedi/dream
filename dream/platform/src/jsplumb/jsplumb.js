@@ -586,7 +586,8 @@
       box,
       absolute_position,
       domElement;
-
+    // we don't save coordinates as properties of nodes
+    delete element.coordinate;
     element.element_id = generateElementId(gadget.props.element);
     if (!element.id) {
       element.id = generateNodeId(gadget, element_type, option);
