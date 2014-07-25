@@ -562,6 +562,7 @@
       scope: 'fieldset'
     })
       .push(function (fieldset_gadget) {
+       // XXX those promises can probably be merged
         return RSVP.all([fieldset_gadget,
                 fieldset_gadget.render(property_list, node_data)]);
       })
