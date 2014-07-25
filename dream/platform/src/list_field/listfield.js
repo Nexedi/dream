@@ -43,6 +43,12 @@
         });
       }
       select.innerHTML += tmp;
+    }).declareMethod('getContent', function () {
+      var select = this.element.getElementsByTagName('select')[0],
+        result = {};
+      result[select.getAttribute("name")] =
+        select.options[select.selectedIndex].value;
+      return result;
     });
 
 }(window, rJS, Handlebars));
