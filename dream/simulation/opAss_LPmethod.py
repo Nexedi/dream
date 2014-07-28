@@ -51,7 +51,7 @@ def opAss_LP(stationList, PBlist, PBskills):
         for oper in PBlist:
                 
             if PB_ass[(oper,mach)].varValue > 0.00001:
-                print 'PB', oper, 'assigned to machine', mach
+                # print 'PB', oper, 'assigned to machine', mach
                 solution[str(oper)]=str(mach)
     return solution
 def main():

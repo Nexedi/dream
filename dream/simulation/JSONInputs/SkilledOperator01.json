@@ -23,7 +23,7 @@
         "maxSimTime": "155",
         "numberOfReplications": "1",
         "trace": "No",
-		"console": "Yes"
+		"console": "No"
     },
     "nodes": {
         "E1": {
