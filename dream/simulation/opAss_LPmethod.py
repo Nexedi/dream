@@ -6,7 +6,6 @@ Created on 2 Jul 2014
 
 from pulp import *
 
-
 def opAss_LP(stationList, PBlist, PBskills):
     '''
     classdocs
@@ -28,7 +27,7 @@ def opAss_LP(stationList, PBlist, PBskills):
     for machine in machines:
         prob += lpSum([PB_ass[(oper,machine)] for oper in PBlist]) <= 1
         
-    # constraint 2: # machines assigned to an oeprator <= 1
+    # constraint 2: # machines assigned to an operator <= 1
     for operator in PBlist:
         prob += lpSum([PB_ass[(operator,machine)] for machine in machines]) <= 1
             
@@ -48,46 +47,12 @@ def opAss_LP(stationList, PBlist, PBskills):
     prob.solve()
     solution={}
     for mach in machines:
-        for oper in PBlist:
-                
+        for oper in PBlist:                
             if PB_ass[(oper,mach)].varValue > 0.00001:
                 # print 'PB', oper, 'assigned to machine', mach
                 solution[str(oper)]=str(mach)
     return solution
-def main():
-    
-    # dict with stations to be operated during a shift (only active stations...ID can be the same for 2 machines as it identifies the type of process
-    # WIP can be derived from the buffer upstream the station...when 2 machines operate at a step the WIP will be divided between the two machines
-    stations = {}
-    stations['M1'] = {'stationID':1, 'WIP':1}
-    stations['M2'] = {'stationID':2, 'WIP':1}
-#     stations['M3'] = {'stationID':3, 'WIP':1}
-#     stations['M4'] = {'stationID':4, 'WIP':1}
-#     stations['M5'] = {'stationID':5, 'WIP':1}
-#     stations['M6'] = {'stationID':6, 'WIP':1}
-    
-    # dict with stations' IDs on which an operator can work
-    PBskills = {}
-    PBskills['PB1'] = [1, 2]#, 3]
-    PBskills['PB2'] = [1, 2]#, 3]
-#     PBskills['PB3'] = [4, 5]
-#     PBskills['PB4'] = [2, 4]
-#     PBskills['PB5'] = [1, 2]
-#     PBskills['PB6'] = [2, 3, 4]
-#     PBskills['PB7'] = [5, 6]
-#     PBskills['PB8'] = [5]
-#     PBskills['PB9'] = [6]
-    
-    # list of available PB's 
-#     PBlist = ['PB2', 'PB4', 'PB5', 'PB7']
-    PBlist = ['PB1', 'PB2']
-    
-    opAss_LP(stations, PBlist, PBskills)
 
-    
-if __name__ == '__main__':
-    main()
-    
     
         
         
