@@ -16,7 +16,7 @@ class SelectiveQueue(Queue):
         
 #define the objects of the model
 S=Source('S','Source', interarrivalTime={'distributionType':'Fixed','mean':0.5}, entity='Dream.Part')
-Q=Queue('Q','Queue', capacity=float("inf"))
+Q=SelectiveQueue('Q','Queue', capacity=float("inf"))
 M1=Machine('M1','Milling1', processingTime={'distributionType':'Fixed','mean':0.25})
 M2=Machine('M2','Milling2', processingTime={'distributionType':'Fixed','mean':0.25})
 E=Exit('E1','Exit')  
