@@ -301,7 +301,7 @@ class Machine(CoreObject):
             # waitEvent isRequested /interruptionEnd/loadOperatorAvailable
             while 1:
                 self.printTrace(self.id, waitEvent='')
-                receivedEvent = yield self.isRequested | self.interruptionEnd | self.loadOperatorAvailable
+                receivedEvent = yield self.isRequested | self.interruptionEnd | self.loadOperatorAvailable | self.initialWIP
                 self.printTrace(self.id, received='')
                 # if the machine can accept an entity and one predecessor requests it continue with receiving the entity
                 if self.isRequested in receivedEvent:
@@ -325,6 +325,12 @@ class Machine(CoreObject):
                     # try to signal the Giver, otherwise wait until it is requested
                     if self.signalGiver():
                         break
+                if self.initialWIP in receivedEvent:
+                    assert self.initialWIP.value==self.env, 'initial wip was not sent by the Environment'
+                    self.initialWIP=self.env.event()
+                    self.isProcessingInitialWIP=True
+                    break
+                    
             # TODO: maybe here have to assigneExit of the giver and add self to operator activeCallers list
                 
             # here or in the getEntity (apart from the loadTimeCurrentEntity)
@@ -376,7 +382,8 @@ class Machine(CoreObject):
                     # TODO: if there was loading time then we must solve the problem of getting an entity
                     # from an unidentified giver or not getting an entity at all as the giver 
                     # may fall in failure mode (assignExit()?)
-            self.currentEntity=self.getEntity()
+            if not self.isProcessingInitialWIP:
+                self.currentEntity=self.getEntity()
             # TODO: the Machine receive the entity  after the operator is available
             #     the canAcceptAndIsRequested method checks only in case of Load type of operation 
             
@@ -613,8 +620,9 @@ class Machine(CoreObject):
         self.timeLastEntityEnded=self.env.now                          # this holds the time that the last entity ended processing in Machine 
         self.nameLastEntityEnded=self.currentEntity.name        # this holds the name of the last entity that ended processing in Machine
         self.completedJobs+=1                                   # Machine completed one more Job
-        # reseting the shouldPreempt flag
+        # reseting flags
         self.shouldPreempt=False
+        self.isProcessingInitialWIP=False
         
         # in case Machine just performed the last work before the scheduled maintenance signal the corresponding object
         if self.isWorkingOnTheLast:

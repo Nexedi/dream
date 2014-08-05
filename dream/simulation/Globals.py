@@ -247,6 +247,12 @@ def setWIP(entityList):
                 entity.hot = True
             # add the entity to the pendingEntities list
             G.pendingEntities.append(entity)
+        # if we are in the start of the simulation the object is of Machine type then we should send initialWIP signal
+        if G.env.now==0 and entity.currentStation:
+            if entity.currentStation.class_name:
+                if entity.currentStation.class_name == 'Dream.Machine':
+                    entity.currentStation.currentEntity=entity
+                    entity.currentStation.initialWIP.succeed(G.env)
 
 from Exit import Exit
 def countIntervalThroughput(argumentDict={}):

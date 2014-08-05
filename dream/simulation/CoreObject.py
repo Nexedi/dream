@@ -32,6 +32,7 @@ import simpy
 # the core object
 # ===========================================================================
 class CoreObject(object):
+    class_name = 'Dream.CoreObject'
     
     def __init__(self, id, name, **kw):
         self.id = id
@@ -128,6 +129,7 @@ class CoreObject(object):
         self.setupTimeCurrentEntity=0
         
         self.shouldPreempt=False    #flag that shows that the machine should preempt or not
+        self.isProcessingInitialWIP=False    #flag that is used only when a Machine has initial wip
         
         self.lastGiver=None         # variable that holds the last giver of the object, used by machine in case of preemption    
         # initialize the wipStatList - 
@@ -141,6 +143,7 @@ class CoreObject(object):
         self.interruptionStart=self.env.event()
         self.interruptedBy=None      
         self.entityRemoved=self.env.event()
+        self.initialWIP=self.env.event()
         # flag used to signal that the station waits for removeEntity event
         self.waitEntityRemoval=False
         # attributes/indices used for printing the route, hold the cols corresponding to the machine (entities route and operators route) 
