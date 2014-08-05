@@ -1155,6 +1155,7 @@ def createWIP():
                 G.WipList.append(P)  
                 G.EntityList.append(P)  
                 object=Globals.findObjectById(element['id'])
+                P.remainingProcessingTime=entity.get('remainingProcessingTime', {})
                 P.currentStation=object
 
             elif entityClass=='Dream.Batch':
@@ -1166,6 +1167,7 @@ def createWIP():
                 G.WipList.append(B)  
                 G.EntityList.append(B)  
                 object=Globals.findObjectById(element['id'])
+                B.remainingProcessingTime=entity.get('remainingProcessingTime', {})
                 B.currentStation=object
                 
             elif entityClass=='Dream.SubBatch':
@@ -1177,9 +1179,9 @@ def createWIP():
             
                 # check if the parent batch is already created. If not, then create it
                 batch=None
-                for entity in G.BatchList:
-                    if entity.id==parentBatchId:
-                        batch=entity
+                for b in G.BatchList:
+                    if b.id==parentBatchId:
+                        batch=b
                 if batch:               #if the parent batch was found add the number of units of current sub-batch
                     batch.numberOfUnits+=numberOfUnits
                 else:     #if the parent batch was not found create it
@@ -1193,6 +1195,7 @@ def createWIP():
                 G.WipList.append(SB)  
                 G.EntityList.append(SB)  
                 object=Globals.findObjectById(element['id'])
+                SB.remainingProcessingTime=entity.get('remainingProcessingTime', {})
                 SB.currentStation=object
 
             if entityClass=='Dream.Order':

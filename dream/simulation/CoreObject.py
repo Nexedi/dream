@@ -689,6 +689,14 @@ class CoreObject(object):
     # calculates the processing time
     # =======================================================================
     def calculateProcessingTime(self):
+        # this is only for processing of the initial wip
+        if self.isProcessingInitialWIP:
+            activeEntity=self.getActiveObjectQueue()[0]
+            if activeEntity.remainingProcessingTime:
+                remainingProcessingTime=activeEntity.remainingProcessingTime
+                from RandomNumberGenerator import RandomNumberGenerator
+                initialWIPrng=RandomNumberGenerator(self, **remainingProcessingTime)
+                return initialWIPrng.generateNumber()
         return self.rng.generateNumber()           # this is if we have a default processing time for all the entities
     
     # =======================================================================
