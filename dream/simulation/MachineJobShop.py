@@ -93,8 +93,9 @@ class MachineJobShop(Machine):
         activeObject.timeLastEntityEnded=self.env.now                              # this holds the time that the last entity ended processing in Machine 
         activeObject.nameLastEntityEnded=activeObject.currentEntity.name    # this holds the name of the last entity that ended processing in Machine
         activeObject.completedJobs+=1                                       # Machine completed one more Job
-        # reseting the preemption flag
+        # reset flags
         self.shouldPreempt=False 
+        self.isProcessingInitialWIP=False 
         
         # TODO: collapse that to Machine
 
@@ -143,6 +144,17 @@ class MachineJobShop(Machine):
     # calculates the processing time
     # =======================================================================
     def calculateProcessingTime(self):
+        # this is only for processing of the initial wip
+        if self.isProcessingInitialWIP:
+            # read the processing/setup/load times from the first entry of the full route
+            activeEntity=self.getActiveObjectQueue()[0]
+            processingTime=activeEntity.route[0].get('processingTime',{})
+            self.distType=processingTime.get('distributionType','Fixed')
+            self.procTime=float(processingTime.get('mean', 0))
+            
+            setupTime=activeEntity.route[0].get('setupTime',{})
+            self.distType=setupTime.get('distributionType','Fixed')
+            self.setupTime=float(setupTime.get('mean', 0))
         return self.procTime    #this is the processing time for this unique entity 
     
     # =======================================================================
