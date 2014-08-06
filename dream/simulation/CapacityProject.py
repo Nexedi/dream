@@ -34,10 +34,12 @@ from Entity import Entity
 class CapacityProject(Entity):
     type="CapacityProject"
     
-    def __init__(self, id=None, name=None, capacityRequirementDict={}):
+    def __init__(self, id=None, name=None, capacityRequirementDict={}, earliestStartDict={}):
         Entity.__init__(self, id, name)
         # a dict that shows the required capacity from every station
         self.capacityRequirementDict=capacityRequirementDict
+        # a dict that shows the earliest start in every station
+        self.earliestStartDict=earliestStartDict
         
     def initialize(self):
         self.projectSchedule=[]     # a list of dicts to keep the schedule

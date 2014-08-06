@@ -1262,7 +1262,8 @@ def createWIP():
                 id=entity.get('id', 'not found')  
                 name=entity.get('name', 'not found') 
                 capacityRequirementDict=entity.get('capacityRequirementDict', {})
-                CP=CapacityProject(id=id, name=name, capacityRequirementDict=capacityRequirementDict) 
+                earliestStartDict=entity.get('earliestStartDict', {})
+                CP=CapacityProject(id=id, name=name, capacityRequirementDict=capacityRequirementDict, earliestStartDict=earliestStartDict) 
                 G.EntityList.append(CP)     
                 G.CapacityProjectList.append(CP)
                          

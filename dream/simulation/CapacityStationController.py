@@ -193,32 +193,35 @@ class CapacityStationController(EventGenerator):
                 # calculate the total capacity that is requested
                 totalRequestedCapacity=0    
                 for entity in buffer.getActiveObjectQueue():
-                    totalRequestedCapacity+=entity.requiredCapacity
+                    if self.checkIfProjectCanStartInStation(entity.capacityProject, station):
+                        totalRequestedCapacity+=entity.requiredCapacity
                 # if there is enough capacity for all the entities set them that they all should move
                 if totalRequestedCapacity<=totalAvailableCapacity:
                     for entity in buffer.getActiveObjectQueue():
-                        entity.shouldMove=True              
+                        if self.checkIfProjectCanStartInStation(entity.capacityProject, station):
+                            entity.shouldMove=True              
                 # else calculate the capacity for every entity and create the entities
                 else:
                     entitiesInBuffer=list(buffer.getActiveObjectQueue())
                     # loop through the entities
                     for entity in entitiesInBuffer:
-                        # calculate what is the capacity that should proceed and what that should remain
-                        capacityToMove=totalAvailableCapacity*(entity.requiredCapacity)/float(totalRequestedCapacity)
-                        capacityToStay=entity.requiredCapacity-capacityToMove
-                        # remove the capacity entity by the buffer so that the broken ones are created
-                        buffer.getActiveObjectQueue().remove(entity)
-                        entityToMoveName=entity.capacityProjectId+'_'+station.objName+'_'+str(capacityToMove)
-                        entityToMove=CapacityEntity(name=entityToMoveName, capacityProjectId=entity.capacityProjectId, requiredCapacity=capacityToMove)
-                        entityToMove.initialize()
-                        entityToMove.currentStation=buffer
-                        entityToMove.shouldMove=True
-                        entityToStayName=entity.capacityProjectId+'_'+station.objName+'_'+str(capacityToStay)
-                        entityToStay=CapacityEntity(name=entityToStayName, capacityProjectId=entity.capacityProjectId, requiredCapacity=capacityToStay)
-                        entityToStay.initialize()
-                        entityToStay.currentStation=buffer
-                        import Globals
-                        Globals.setWIP([entityToMove,entityToStay])     #set the new components as wip
+                        if self.checkIfProjectCanStartInStation(entity.capacityProject, station):   
+                            # calculate what is the capacity that should proceed and what that should remain
+                            capacityToMove=totalAvailableCapacity*(entity.requiredCapacity)/float(totalRequestedCapacity)
+                            capacityToStay=entity.requiredCapacity-capacityToMove
+                            # remove the capacity entity by the buffer so that the broken ones are created
+                            buffer.getActiveObjectQueue().remove(entity)
+                            entityToMoveName=entity.capacityProjectId+'_'+station.objName+'_'+str(capacityToMove)
+                            entityToMove=CapacityEntity(name=entityToMoveName, capacityProjectId=entity.capacityProjectId, requiredCapacity=capacityToMove)
+                            entityToMove.initialize()
+                            entityToMove.currentStation=buffer
+                            entityToMove.shouldMove=True
+                            entityToStayName=entity.capacityProjectId+'_'+station.objName+'_'+str(capacityToStay)
+                            entityToStay=CapacityEntity(name=entityToStayName, capacityProjectId=entity.capacityProjectId, requiredCapacity=capacityToStay)
+                            entityToStay.initialize()
+                            entityToStay.currentStation=buffer
+                            import Globals
+                            Globals.setWIP([entityToMove,entityToStay])     #set the new components as wip
             # if the buffer is assembly there are different calculations
             else:
                 # calculate the total capacity that is requested
@@ -324,5 +327,12 @@ class CapacityStationController(EventGenerator):
                     return False
         # if nothing was found return true
         return True 
-                
+
+    # checks if the given project can start in the station or not because there is an earliest start defined           
+    def checkIfProjectCanStartInStation(self, project, station):
+        earliestStartInStation=project.earliestStartDict.get(station.id, 0)
+        if self.env.now<earliestStartInStation:
+            return False
+        return True
+        
         
