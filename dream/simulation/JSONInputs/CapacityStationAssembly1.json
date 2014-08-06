@@ -1,0 +1,205 @@
+{
+    "_class": "Dream.Simulation",
+    "edges": {
+        "0": [
+            "CB1",
+            "CS1",
+            {}
+        ],
+        "1": [
+            "CS1",
+            "CE1",
+            {}
+        ],
+        "2": [
+            "CB2",
+            "CS2",
+            {}
+        ],
+        "3": [
+            "CS2",
+            "CE2",
+            {}
+        ],
+        "4": [
+            "CB3",
+            "CS3",
+            {}
+        ],
+        "5": [
+            "CS3",
+            "CE3",
+            {}
+        ],
+        "6": [
+            "CB4",
+            "CS4",
+            {}
+        ],
+        "7": [
+            "CS4",
+            "CE4",
+            {}
+        ]
+
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "confidenceLevel": "0.95",
+        "maxSimTime": "-1",
+        "numberOfReplications": "1",
+        "trace": "Yes"
+    },
+    "nodes": {
+        "CB1": {
+            "_class": "Dream.CapacityStationBuffer",
+            "name": "SMFBuffer",
+            "wip": [
+                {
+                    "_class": "Dream.CapacityEntity",
+                    "capacityProjectId": "P1",
+					"name": "P1_SMF_100",
+                    "requiredCapacity": 100
+                },
+                {
+                    "_class": "Dream.CapacityEntity",
+                    "capacityProjectId": "P2",
+					"name": "P2_SMF_50",
+                    "requiredCapacity": 50
+                }
+            ]
+        },
+        "CS1": {
+            "_class": "Dream.CapacityStation",
+            "name": "SMF",
+            "intervalCapacity": [
+                100,
+                200,
+                300,
+                100,
+                200,
+                300
+            ]
+        },
+        "CE1": {
+            "_class": "Dream.CapacityStationExit",
+            "nextCapacityStationBufferId": "CB2",
+            "name": "SMFExit"
+        },
+        "CB2": {
+            "_class": "Dream.CapacityStationBuffer",
+            "name": "WELDBuffer"
+        },
+        "CS2": {
+            "_class": "Dream.CapacityStation",
+            "name": "WELD",
+            "intervalCapacity": [
+                150,
+                60,
+                350,
+                150,
+                60,
+                350
+            ]
+        },
+        "CE2": {
+            "_class": "Dream.CapacityStationExit",
+			"nextCapacityStationBufferId": "CB4",
+            "name": "WELDExit"
+        },
+        "QD": {
+            "_class": "Dream.Queue",
+            "capacity": "-1",
+            "id": "QD",
+            "name": "DUMMY",
+            "wip": [
+                {
+                    "_class": "Dream.CapacityProject",
+                    "id": "P1",
+                    "name": "P1",
+                    "capacityRequirementDict": {
+                        "CS1": 100,
+                        "CS2": 50,
+                        "CS3": 50,
+                        "CS4": 50
+                    }
+                },
+                {
+                    "_class": "Dream.CapacityProject",
+                    "id": "P2",
+                    "name": "P2",
+                    "capacityRequirementDict": {
+                        "CS1": 50,
+                        "CS2": 100,
+                        "CS3": 100,
+                        "CS4": 50
+                    }
+                }
+            ]
+        },
+        "CB3": {
+            "_class": "Dream.CapacityStationBuffer",
+            "name": "CNCBuffer",
+            "wip": [
+                {
+                    "_class": "Dream.CapacityEntity",
+                    "capacityProjectId": "P1",
+					"name": "P1_CNC_50",
+                    "requiredCapacity": 50
+                },
+                {
+                    "_class": "Dream.CapacityEntity",
+                    "capacityProjectId": "P2",
+					"name": "P2_CNC_100",
+                    "requiredCapacity": 100
+                }
+            ]
+        },
+        "CS3": {
+            "_class": "Dream.CapacityStation",
+            "name": "CNC",
+            "intervalCapacity": [
+                50,
+                100,
+                150,
+                100,
+                100,
+                150
+            ]
+        },
+        "CE3": {
+            "_class": "Dream.CapacityStationExit",
+            "nextCapacityStationBufferId": "CB4",
+            "name": "CNCExit"
+        },
+        "CB4": {
+            "_class": "Dream.CapacityStationBuffer",
+            "name": "AssemblyBuffer",
+			"requireFullProject":1,
+            "wip": []
+        },
+        "CS4": {
+            "_class": "Dream.CapacityStation",
+            "name": "Assembly",
+            "intervalCapacity": [
+                50,
+                100,
+                150,
+                80,
+                300,
+                350
+            ]
+        },
+        "CE4": {
+            "_class": "Dream.CapacityStationExit",
+            "name": "AssemblyExit"
+        },
+        "CSC": {
+            "_class": "Dream.CapacityStationController",
+            "name": "CSC",
+			"start": "0",
+			"interval": "1",
+			"method": "Dream.None"
+        }
+    }
+}

@@ -1,0 +1,297 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "id": "CB1"
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "id": "CB2"
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "id": "CB3"
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "id": "CB4"
+  }, 
+  {
+   "_class": "Dream.Exit", 
+   "id": "CE4", 
+   "results": {
+    "lifespan": 2.5, 
+    "takt_time": 0.75, 
+    "throughput": 4
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "id": "CS1", 
+   "results": {
+    "capacityUsed": [
+     {
+      "P1": 66.66666666666667, 
+      "P2": 33.333333333333336, 
+      "period": 0.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P1": 33.33333333333333, 
+      "P2": 16.666666666666664, 
+      "period": 1.0, 
+      "utilization": 0.24999999999999997
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 66.66666666666667, 
+      "operation": "CS1", 
+      "project": "P1", 
+      "time": 0.0
+     }, 
+     {
+      "allocation": 33.333333333333336, 
+      "operation": "CS1", 
+      "project": "P2", 
+      "time": 0.0
+     }, 
+     {
+      "allocation": 33.33333333333333, 
+      "operation": "CS1", 
+      "project": "P1", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 16.666666666666664, 
+      "operation": "CS1", 
+      "project": "P2", 
+      "time": 1.0
+     }
+    ], 
+    "meanUtilization": 0.41666666666666663
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "id": "CS2", 
+   "results": {
+    "capacityUsed": [
+     {
+      "period": 0.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P1": 20.000000000000004, 
+      "P2": 40.00000000000001, 
+      "period": 1.0, 
+      "utilization": 1.0000000000000002
+     }, 
+     {
+      "P1": 29.999999999999996, 
+      "P2": 59.99999999999999, 
+      "period": 2.0, 
+      "utilization": 0.2571428571428571
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 20.000000000000004, 
+      "operation": "CS2", 
+      "project": "P1", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 40.00000000000001, 
+      "operation": "CS2", 
+      "project": "P2", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 29.999999999999996, 
+      "operation": "CS2", 
+      "project": "P1", 
+      "time": 2.0
+     }, 
+     {
+      "allocation": 59.99999999999999, 
+      "operation": "CS2", 
+      "project": "P2", 
+      "time": 2.0
+     }
+    ], 
+    "meanUtilization": 0.4190476190476191
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "id": "CS3", 
+   "results": {
+    "capacityUsed": [
+     {
+      "P1": 16.666666666666668, 
+      "P2": 33.333333333333336, 
+      "period": 0.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P1": 33.33333333333333, 
+      "P2": 66.66666666666666, 
+      "period": 1.0, 
+      "utilization": 0.9999999999999999
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 16.666666666666668, 
+      "operation": "CS3", 
+      "project": "P1", 
+      "time": 0.0
+     }, 
+     {
+      "allocation": 33.333333333333336, 
+      "operation": "CS3", 
+      "project": "P2", 
+      "time": 0.0
+     }, 
+     {
+      "allocation": 33.33333333333333, 
+      "operation": "CS3", 
+      "project": "P1", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 66.66666666666666, 
+      "operation": "CS3", 
+      "project": "P2", 
+      "time": 1.0
+     }
+    ], 
+    "meanUtilization": 0.6666666666666666
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "id": "CS4", 
+   "results": {
+    "capacityUsed": [
+     {
+      "period": 0.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P1": 16.666666666666668, 
+      "P2": 16.666666666666668, 
+      "period": 1.0, 
+      "utilization": 0.33333333333333337
+     }, 
+     {
+      "P1": 53.33333333333333, 
+      "P2": 53.33333333333333, 
+      "period": 2.0, 
+      "utilization": 0.711111111111111
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 16.666666666666668, 
+      "operation": "CS4", 
+      "project": "P1", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 16.666666666666668, 
+      "operation": "CS4", 
+      "project": "P2", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 53.33333333333333, 
+      "operation": "CS4", 
+      "project": "P1", 
+      "time": 2.0
+     }, 
+     {
+      "allocation": 53.33333333333333, 
+      "operation": "CS4", 
+      "project": "P2", 
+      "time": 2.0
+     }
+    ], 
+    "meanUtilization": 0.34814814814814815
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityProject", 
+   "id": "P1", 
+   "results": {
+    "schedule": [
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 2.0, 
+      "stationId": "CS1"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 2.0, 
+      "stationId": "CS3"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 3.0, 
+      "stationId": "CS4"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 3.0, 
+      "stationId": "CS2"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityProject", 
+   "id": "P2", 
+   "results": {
+    "schedule": [
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 2.0, 
+      "stationId": "CS1"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 2.0, 
+      "stationId": "CS3"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 3.0, 
+      "stationId": "CS4"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 3.0, 
+      "stationId": "CS2"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "id": "QD"
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}
