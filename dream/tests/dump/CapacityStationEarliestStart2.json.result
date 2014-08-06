@@ -21,8 +21,8 @@
    "_class": "Dream.Exit", 
    "id": "CE4", 
    "results": {
-    "lifespan": 4.5, 
-    "takt_time": 2.5, 
+    "lifespan": 5.5, 
+    "takt_time": 3.0, 
     "throughput": 2
    }
   }, 
@@ -52,6 +52,10 @@
      {
       "period": 4.0, 
       "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0.0
      }
     ], 
     "detailedWorkPlan": [
@@ -68,7 +72,7 @@
       "time": 2.0
      }
     ], 
-    "meanUtilization": 0.16666666666666669
+    "meanUtilization": 0.1388888888888889
    }
   }, 
   {
@@ -98,6 +102,10 @@
      {
       "period": 4.0, 
       "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0.0
      }
     ], 
     "detailedWorkPlan": [
@@ -120,7 +128,7 @@
       "time": 3.0
      }
     ], 
-    "meanUtilization": 0.2895238095238095
+    "meanUtilization": 0.24126984126984125
    }
   }, 
   {
@@ -151,6 +159,10 @@
      {
       "period": 4.0, 
       "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0.0
      }
     ], 
     "detailedWorkPlan": [
@@ -179,7 +191,7 @@
       "time": 1.0
      }
     ], 
-    "meanUtilization": 0.4
+    "meanUtilization": 0.3333333333333333
    }
   }, 
   {
@@ -200,31 +212,35 @@
       "utilization": 0.0
      }, 
      {
-      "P2": 50, 
       "period": 3.0, 
-      "utilization": 0.1
+      "utilization": 0.0
      }, 
      {
       "P1": 50, 
       "period": 4.0, 
       "utilization": 0.16666666666666666
+     }, 
+     {
+      "P2": 50, 
+      "period": 5.0, 
+      "utilization": 0.14285714285714285
      }
     ], 
     "detailedWorkPlan": [
      {
       "allocation": 50, 
       "operation": "CS4", 
-      "project": "P2", 
-      "time": 3.0
+      "project": "P1", 
+      "time": 4.0
      }, 
      {
       "allocation": 50, 
       "operation": "CS4", 
-      "project": "P1", 
-      "time": 4.0
+      "project": "P2", 
+      "time": 5.0
      }
     ], 
-    "meanUtilization": 0.05333333333333333
+    "meanUtilization": 0.051587301587301584
    }
   }, 
   {
@@ -276,8 +292,8 @@
       "stationId": "CS2"
      }, 
      {
-      "entranceTime": 3.0, 
-      "exitTime": 4.0, 
+      "entranceTime": 5.0, 
+      "exitTime": 6.0, 
       "stationId": "CS4"
      }
     ]
