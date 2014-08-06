@@ -228,12 +228,14 @@ class CapacityStationController(EventGenerator):
                 # note that only the assembled projects do request capacity
                 totalRequestedCapacity=0    
                 for entity in buffer.getActiveObjectQueue():
-                    if self.checkIfProjectAssembledInBuffer(entity.capacityProject, buffer):
+                    if self.checkIfProjectAssembledInBuffer(entity.capacityProject, buffer) and\
+                                                self.checkIfProjectCanStartInStation(entity.capacityProject, station):   
                         totalRequestedCapacity+=entity.requiredCapacity
                 # if there is enough capacity for all the assembled entities set them that they all should move
                 if totalRequestedCapacity<=totalAvailableCapacity:
                     for entity in buffer.getActiveObjectQueue():
-                        if self.checkIfProjectAssembledInBuffer(entity.capacityProject, buffer):
+                        if self.checkIfProjectAssembledInBuffer(entity.capacityProject, buffer) and\
+                                                self.checkIfProjectCanStartInStation(entity.capacityProject, station):   
                             entity.shouldMove=True              
                 # else calculate the capacity for every entity and create the entities
                 else:
@@ -241,7 +243,8 @@ class CapacityStationController(EventGenerator):
                     # loop through the entities
                     for entity in entitiesInBuffer:
                         # break only the assembled projects
-                        if self.checkIfProjectAssembledInBuffer(entity.capacityProject, buffer):
+                        if self.checkIfProjectAssembledInBuffer(entity.capacityProject, buffer) and\
+                                    self.checkIfProjectCanStartInStation(entity.capacityProject, station):   
                             # calculate what is the capacity that should proceed and what that should remain
                             capacityToMove=totalAvailableCapacity*(entity.requiredCapacity)/float(totalRequestedCapacity)
                             capacityToStay=entity.requiredCapacity-capacityToMove
