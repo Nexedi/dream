@@ -222,12 +222,15 @@ class CapacityStationController(EventGenerator):
             allCapacityConsumed=False        
                        
             # if there is enough capacity for all the entities set them that they all should move
-            if totalRequestedCapacity<totalAvailableCapacity:
+            if totalRequestedCapacity<=totalAvailableCapacity:
                 for entity in entitiesWithinThreshold:
                     if self.checkIfProjectCanStartInStation(entity.capacityProject, station) and\
                                 (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, buffer)):
                         entity.shouldMove=True   
-                                   
+                # check if all the capacity is consumed to update the flag
+                if totalRequestedCapacity==totalAvailableCapacity:
+                    allCapacityConsumed=True
+                               
             # else calculate the capacity for every entity and create the entities
             else:
                 allCapacityConsumed=True
