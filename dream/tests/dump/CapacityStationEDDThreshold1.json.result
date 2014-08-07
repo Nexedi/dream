@@ -21,9 +21,9 @@
    "_class": "Dream.Exit", 
    "id": "CE4", 
    "results": {
-    "lifespan": 4.333333333333333, 
-    "takt_time": 1.6666666666666667, 
-    "throughput": 3
+    "lifespan": 3.5, 
+    "takt_time": 2.0, 
+    "throughput": 2
    }
   }, 
   {
@@ -32,12 +32,11 @@
    "results": {
     "capacityUsed": [
      {
-      "P1": 100.0, 
+      "P1": 100, 
       "period": 0.0, 
       "utilization": 1.0
      }, 
      {
-      "P1": 0.0, 
       "P2": 50, 
       "period": 1.0, 
       "utilization": 0.25
@@ -49,15 +48,11 @@
      {
       "period": 3.0, 
       "utilization": 0.0
-     }, 
-     {
-      "period": 4.0, 
-      "utilization": 0.0
      }
     ], 
     "detailedWorkPlan": [
      {
-      "allocation": 100.0, 
+      "allocation": 100, 
       "operation": "CS1", 
       "project": "P1", 
       "time": 0.0
@@ -67,15 +62,9 @@
       "operation": "CS1", 
       "project": "P2", 
       "time": 1.0
-     }, 
-     {
-      "allocation": 0.0, 
-      "operation": "CS1", 
-      "project": "P1", 
-      "time": 1.0
      }
     ], 
-    "meanUtilization": 0.25
+    "meanUtilization": 0.3125
    }
   }, 
   {
@@ -93,17 +82,12 @@
       "utilization": 0.8333333333333334
      }, 
      {
-      "P1": 0.0, 
       "P2": 100.0, 
       "period": 2.0, 
       "utilization": 0.2857142857142857
      }, 
      {
       "period": 3.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 4.0, 
       "utilization": 0.0
      }
     ], 
@@ -119,15 +103,9 @@
       "operation": "CS2", 
       "project": "P2", 
       "time": 2.0
-     }, 
-     {
-      "allocation": 0.0, 
-      "operation": "CS2", 
-      "project": "P1", 
-      "time": 2.0
      }
     ], 
-    "meanUtilization": 0.22380952380952382
+    "meanUtilization": 0.27976190476190477
    }
   }, 
   {
@@ -136,12 +114,11 @@
    "results": {
     "capacityUsed": [
      {
-      "P1": 50.0, 
+      "P1": 50, 
       "period": 0.0, 
       "utilization": 1.0
      }, 
      {
-      "P1": 0.0, 
       "P2": 100, 
       "period": 1.0, 
       "utilization": 1.0
@@ -153,15 +130,11 @@
      {
       "period": 3.0, 
       "utilization": 0.0
-     }, 
-     {
-      "period": 4.0, 
-      "utilization": 0.0
      }
     ], 
     "detailedWorkPlan": [
      {
-      "allocation": 50.0, 
+      "allocation": 50, 
       "operation": "CS3", 
       "project": "P1", 
       "time": 0.0
@@ -171,15 +144,9 @@
       "operation": "CS3", 
       "project": "P2", 
       "time": 1.0
-     }, 
-     {
-      "allocation": 0.0, 
-      "operation": "CS3", 
-      "project": "P1", 
-      "time": 1.0
      }
     ], 
-    "meanUtilization": 0.4
+    "meanUtilization": 0.5
    }
   }, 
   {
@@ -196,19 +163,14 @@
       "utilization": 0.0
      }, 
      {
-      "period": 2.0, 
-      "utilization": 0.0
-     }, 
-     {
       "P1": 50, 
-      "P2": 30.0, 
-      "period": 3.0, 
-      "utilization": 1.0
+      "period": 2.0, 
+      "utilization": 0.3333333333333333
      }, 
      {
-      "P2": 20.0, 
-      "period": 4.0, 
-      "utilization": 0.06666666666666667
+      "P2": 50, 
+      "period": 3.0, 
+      "utilization": 0.625
      }
     ], 
     "detailedWorkPlan": [
@@ -216,22 +178,16 @@
       "allocation": 50, 
       "operation": "CS4", 
       "project": "P1", 
-      "time": 3.0
+      "time": 2.0
      }, 
      {
-      "allocation": 30.0, 
+      "allocation": 50, 
       "operation": "CS4", 
       "project": "P2", 
       "time": 3.0
-     }, 
-     {
-      "allocation": 20.0, 
-      "operation": "CS4", 
-      "project": "P2", 
-      "time": 4.0
      }
     ], 
-    "meanUtilization": 0.21333333333333335
+    "meanUtilization": 0.23958333333333331
    }
   }, 
   {
@@ -241,22 +197,22 @@
     "schedule": [
      {
       "entranceTime": 0.0, 
-      "exitTime": 2.0, 
+      "exitTime": 1.0, 
       "stationId": "CS1"
      }, 
      {
       "entranceTime": 0.0, 
-      "exitTime": 2.0, 
+      "exitTime": 1.0, 
       "stationId": "CS3"
      }, 
      {
       "entranceTime": 1.0, 
-      "exitTime": 3.0, 
+      "exitTime": 2.0, 
       "stationId": "CS2"
      }, 
      {
-      "entranceTime": 3.0, 
-      "exitTime": 4.0, 
+      "entranceTime": 2.0, 
+      "exitTime": 3.0, 
       "stationId": "CS4"
      }
     ]
@@ -284,7 +240,7 @@
      }, 
      {
       "entranceTime": 3.0, 
-      "exitTime": 5.0, 
+      "exitTime": 4.0, 
       "stationId": "CS4"
      }
     ]
