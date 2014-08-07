@@ -3,6 +3,7 @@
  "elementList": [
   {
    "_class": "Dream.ExitJobShop", 
+   "family": "Exit", 
    "id": "E1", 
    "results": {
     "lifespan": 6.0, 
@@ -12,6 +13,7 @@
   }, 
   {
    "_class": "Dream.Job", 
+   "family": "Job", 
    "id": "J1", 
    "results": {
     "completionTime": 6.0, 
@@ -49,6 +51,7 @@
   }, 
   {
    "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
    "id": "M1", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -59,6 +62,7 @@
   }, 
   {
    "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
    "id": "M2", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -69,6 +73,7 @@
   }, 
   {
    "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
    "id": "M3", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -95,15 +100,21 @@
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q1"
+   "family": "Buffer", 
+   "id": "Q1", 
+   "results": {}
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q2"
+   "family": "Buffer", 
+   "id": "Q2", 
+   "results": {}
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q3"
+   "family": "Buffer", 
+   "id": "Q3", 
+   "results": {}
   }
  ], 
  "general": {

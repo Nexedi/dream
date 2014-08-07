@@ -3,22 +3,31 @@
  "elementList": [
   {
    "_class": "Dream.CapacityStationBuffer", 
-   "id": "CB1"
+   "family": "Buffer", 
+   "id": "CB1", 
+   "results": {}
   }, 
   {
    "_class": "Dream.CapacityStationBuffer", 
-   "id": "CB2"
+   "family": "Buffer", 
+   "id": "CB2", 
+   "results": {}
   }, 
   {
    "_class": "Dream.CapacityStationBuffer", 
-   "id": "CB3"
+   "family": "Buffer", 
+   "id": "CB3", 
+   "results": {}
   }, 
   {
    "_class": "Dream.CapacityStationBuffer", 
-   "id": "CB4"
+   "family": "Buffer", 
+   "id": "CB4", 
+   "results": {}
   }, 
   {
    "_class": "Dream.CapacityStationExit", 
+   "family": "Exit", 
    "id": "CE4", 
    "results": {
     "lifespan": 4.0, 
@@ -290,7 +299,9 @@
   }, 
   {
    "_class": "Dream.Queue", 
-   "id": "QD"
+   "family": "Buffer", 
+   "id": "QD", 
+   "results": {}
   }
  ], 
  "general": {

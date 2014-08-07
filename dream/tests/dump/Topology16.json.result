@@ -12,10 +12,13 @@
   }, 
   {
    "_class": "Dream.Queue", 
-   "id": "DummyQ"
+   "family": "Buffer", 
+   "id": "DummyQ", 
+   "results": {}
   }, 
   {
    "_class": "Dream.Exit", 
+   "family": "Exit", 
    "id": "E1", 
    "results": {
     "lifespan": 45.873664122137555, 
@@ -25,6 +28,7 @@
   }, 
   {
    "_class": "Dream.Machine", 
+   "family": "Server", 
    "id": "M1", 
    "results": {
     "blockage_ratio": 83.73263888888889, 
@@ -35,6 +39,7 @@
   }, 
   {
    "_class": "Dream.Machine", 
+   "family": "Server", 
    "id": "M2", 
    "results": {
     "blockage_ratio": 39.035879629629626, 
@@ -45,6 +50,7 @@
   }, 
   {
    "_class": "Dream.Machine", 
+   "family": "Server", 
    "id": "M3", 
    "results": {
     "blockage_ratio": 0.0, 

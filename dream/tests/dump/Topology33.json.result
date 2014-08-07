@@ -3,10 +3,13 @@
  "elementList": [
   {
    "_class": "Dream.Queue", 
-   "id": "DummyQ"
+   "family": "Buffer", 
+   "id": "DummyQ", 
+   "results": {}
   }, 
   {
    "_class": "Dream.Exit", 
+   "family": "Exit", 
    "id": "E1", 
    "results": {
     "lifespan": 5.993736951983299, 
@@ -16,6 +19,7 @@
   }, 
   {
    "_class": "Dream.Machine", 
+   "family": "Server", 
    "id": "M1", 
    "results": {
     "blockage_ratio": 24.96527777777778, 
@@ -26,6 +30,7 @@
   }, 
   {
    "_class": "Dream.Machine", 
+   "family": "Server", 
    "id": "M2", 
    "results": {
     "blockage_ratio": 24.96527777777778, 
@@ -36,6 +41,7 @@
   }, 
   {
    "_class": "Dream.Machine", 
+   "family": "Server", 
    "id": "M3", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -46,6 +52,7 @@
   }, 
   {
    "_class": "Dream.Machine", 
+   "family": "Server", 
    "id": "M4", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -56,7 +63,9 @@
   }, 
   {
    "_class": "Dream.Queue", 
-   "id": "Q1"
+   "family": "Buffer", 
+   "id": "Q1", 
+   "results": {}
   }, 
   {
    "_class": "Dream.Repairman", 

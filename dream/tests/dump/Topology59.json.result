@@ -3,10 +3,13 @@
  "elementList": [
   {
    "_class": "Dream.MouldAssemblyBuffer", 
-   "id": "AB1"
+   "family": "Buffer", 
+   "id": "AB1", 
+   "results": {}
   }, 
   {
    "_class": "Dream.OrderComponent", 
+   "family": "Job", 
    "id": "C1O1", 
    "results": {
     "completionTime": 26.0, 
@@ -52,6 +55,7 @@
   }, 
   {
    "_class": "Dream.OrderComponent", 
+   "family": "Job", 
    "id": "C1O2", 
    "results": {
     "completionTime": 28.7, 
@@ -97,6 +101,7 @@
   }, 
   {
    "_class": "Dream.OrderComponent", 
+   "family": "Job", 
    "id": "C2O1", 
    "results": {
     "completionTime": 26.0, 
@@ -142,6 +147,7 @@
   }, 
   {
    "_class": "Dream.OrderComponent", 
+   "family": "Job", 
    "id": "C2O2", 
    "results": {
     "completionTime": 28.7, 
@@ -187,6 +193,7 @@
   }, 
   {
    "_class": "Dream.MachineManagedJob", 
+   "family": "Server", 
    "id": "CAD1", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -199,6 +206,7 @@
   }, 
   {
    "_class": "Dream.MachineManagedJob", 
+   "family": "Server", 
    "id": "CAD2", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -211,6 +219,7 @@
   }, 
   {
    "_class": "Dream.MachineManagedJob", 
+   "family": "Server", 
    "id": "CAM1", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -223,6 +232,7 @@
   }, 
   {
    "_class": "Dream.MachineManagedJob", 
+   "family": "Server", 
    "id": "CAM2", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -235,6 +245,7 @@
   }, 
   {
    "_class": "Dream.ExitJobShop", 
+   "family": "Exit", 
    "id": "E1", 
    "results": {
     "lifespan": 33.60000000000001, 
@@ -244,6 +255,7 @@
   }, 
   {
    "_class": "Dream.MachineManagedJob", 
+   "family": "Server", 
    "id": "EDM", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -256,6 +268,7 @@
   }, 
   {
    "_class": "Dream.MachineManagedJob", 
+   "family": "Server", 
    "id": "IM", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -268,6 +281,7 @@
   }, 
   {
    "_class": "Dream.Mould", 
+   "family": "Job", 
    "id": "M1O1", 
    "results": {
     "completionTime": 33.2, 
@@ -293,6 +307,7 @@
   }, 
   {
    "_class": "Dream.Mould", 
+   "family": "Job", 
    "id": "M1O2", 
    "results": {
     "completionTime": 34.00000000000001, 
@@ -318,6 +333,7 @@
   }, 
   {
    "_class": "Dream.MouldAssembly", 
+   "family": "Server", 
    "id": "MA1", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -330,6 +346,7 @@
   }, 
   {
    "_class": "Dream.MouldAssembly", 
+   "family": "Server", 
    "id": "MA2", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -342,6 +359,7 @@
   }, 
   {
    "_class": "Dream.MouldAssembly", 
+   "family": "Server", 
    "id": "MA3", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -354,6 +372,7 @@
   }, 
   {
    "_class": "Dream.MachineManagedJob", 
+   "family": "Server", 
    "id": "MILL1", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -366,6 +385,7 @@
   }, 
   {
    "_class": "Dream.MachineManagedJob", 
+   "family": "Server", 
    "id": "MILL2", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -378,6 +398,7 @@
   }, 
   {
    "_class": "Dream.Order", 
+   "family": "Job", 
    "id": "O1", 
    "results": {
     "completionTime": 1.5, 
@@ -399,6 +420,7 @@
   }, 
   {
    "_class": "Dream.Order", 
+   "family": "Job", 
    "id": "O2", 
    "results": {
     "completionTime": 3.6, 
@@ -428,23 +450,33 @@
   }, 
   {
    "_class": "Dream.QueueManagedJob", 
-   "id": "Q0"
+   "family": "Buffer", 
+   "id": "Q0", 
+   "results": {}
   }, 
   {
    "_class": "Dream.ConditionalBuffer", 
-   "id": "QCAM"
+   "family": "Buffer", 
+   "id": "QCAM", 
+   "results": {}
   }, 
   {
    "_class": "Dream.QueueManagedJob", 
-   "id": "QEDM"
+   "family": "Buffer", 
+   "id": "QEDM", 
+   "results": {}
   }, 
   {
    "_class": "Dream.QueueManagedJob", 
-   "id": "QIM"
+   "family": "Buffer", 
+   "id": "QIM", 
+   "results": {}
   }, 
   {
    "_class": "Dream.QueueManagedJob", 
-   "id": "QMILL"
+   "family": "Buffer", 
+   "id": "QMILL", 
+   "results": {}
   }
  ], 
  "general": {
