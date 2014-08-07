@@ -870,11 +870,13 @@ def createObjects():
             interval = float(element.get('interval') or 1)
             duration = float(element.get('duration') or 0)
             dueDateThreshold = float(element.get('dueDateThreshold') or float('inf'))
+            prioritizeIfCanFinish = bool(element.get('prioritizeIfCanFinish', 0))
             argumentDict=(element.get('argumentDict', {}))      # get the arguments of the method as a dict / default {}
                
             # create the CapacityStationController object
             CSC = CapacityStationController(id, name, start=start, stop=stop, interval=interval, 
-                                duration=duration, argumentDict=argumentDict, dueDateThreshold=dueDateThreshold)      
+                                duration=duration, argumentDict=argumentDict, dueDateThreshold=dueDateThreshold,
+                                prioritizeIfCanFinish=prioritizeIfCanFinish)      
                                                                     # calling the getSuccessorList() method on the repairman
             G.EventGeneratorList.append(CSC)                               # add the Event Generator to the RepairmanList
             G.CapacityStationControllerList.append(CSC)

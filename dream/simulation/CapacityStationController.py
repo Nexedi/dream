@@ -33,13 +33,15 @@ from Globals import G
 
 class CapacityStationController(EventGenerator):
     def __init__(self, id=id, name=None, start=None, stop=None, interval=None,
-                 duration=None, method=None, argumentDict=None, dueDateThreshold=float('inf')):
+                 duration=None, method=None, argumentDict=None, dueDateThreshold=float('inf'), prioritizeIfCanFinish=False):
         EventGenerator.__init__(self, id, name, start, stop, interval,
                  duration, method, argumentDict)
         # attribute used by optimization in calculateWhatIsToBeProcessed
         # only the projects that are within this threshold from the one with EDD in the same bufffer 
         # will be considered to move at first
         self.dueDateThreshold=dueDateThreshold
+        # attribute that shows if we prioritize entities that can finish work in this station in the next interval
+        self.prioritizeIfCanFinish=prioritizeIfCanFinish
 
     def initialize(self):
         EventGenerator.initialize(self)
@@ -187,6 +189,7 @@ class CapacityStationController(EventGenerator):
         # loop through the capacity station buffers
         for buffer in G.CapacityStationBufferList:
             activeObjectQueue=buffer.getActiveObjectQueue()
+            # sort entities according to due date
             activeObjectQueue.sort(key=lambda x: x.capacityProject.dueDate)
            
             station=buffer.next[0]  # get the station
@@ -255,9 +258,20 @@ class CapacityStationController(EventGenerator):
                     entitiesToBeBroken=list(entitiesWithinThreshold)
                     # loop through the entities
                     for entity in entitiesToBeBroken:
+                        # consider only entities that can move - not tose waiting for assembly or earliest start
                         if self.checkIfProjectCanStartInStation(entity.capacityProject, station) and\
                                         (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, buffer)):
-                            self.breakEntity(entity, buffer, station, totalAvailableCapacity, totalRequestedCapacity)
+                            # if we prioritize an entity that can completely finish then check for this
+                            if self.checkIfAProjectCanBeFinishedInStation(entity, station, totalAvailableCapacity)\
+                                 and self.prioritizeIfCanFinish:
+                                # set that the entity can move
+                                entity.shouldMove=True
+                                # update the values
+                                totalAvailableCapacity-=entity.requiredCapacity
+                                totalRequestedCapacity-=entity.requiredCapacity
+                            # else break the entity according to rule    
+                            else:
+                                self.breakEntity(entity, buffer, station, totalAvailableCapacity, totalRequestedCapacity)
                                
     # breaks an entity in the part that should move and the one that should stay
     def breakEntity(self, entity, buffer, station, totalAvailableCapacity, totalRequestedCapacity):
@@ -366,11 +380,12 @@ class CapacityStationController(EventGenerator):
         return True
     
     # checks if the whole project can be finished in one station in the next time period
-    def checkIfAProjectCanBeFinishedInStation(self, entity, station):
+    def checkIfAProjectCanBeFinishedInStation(self, entity, station, availableCapacity):
         required=entity.requiredCapacity
         alreadyWorked=entity.capacityProject.alreadyWorkedDict[station.id]
         total=entity.capacityProject.capacityRequirementDict[station.id]
-        if total-(alreadyWorked+required)<0.001:  # a small value to avoid mistakes due to rounding
+        # return true if all the work can be finished and if there is available capacity
+        if total-(alreadyWorked+required)<0.001 and availableCapacity>=required:  # a small value to avoid mistakes due to rounding
             return True
         return False
         
