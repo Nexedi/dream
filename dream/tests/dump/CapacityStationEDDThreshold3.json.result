@@ -58,27 +58,27 @@
     ], 
     "detailedWorkPlan": [
      {
-      "allocation": 66.66666666666667, 
-      "operation": "CS1", 
-      "project": "P1", 
-      "time": 0.0
-     }, 
-     {
       "allocation": 33.333333333333336, 
       "operation": "CS1", 
       "project": "P2", 
       "time": 0.0
      }, 
      {
-      "allocation": 33.33333333333333, 
+      "allocation": 66.66666666666667, 
       "operation": "CS1", 
       "project": "P1", 
-      "time": 1.0
+      "time": 0.0
      }, 
      {
       "allocation": 16.666666666666664, 
       "operation": "CS1", 
       "project": "P2", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 33.33333333333333, 
+      "operation": "CS1", 
+      "project": "P1", 
       "time": 1.0
      }
     ], 
@@ -117,27 +117,27 @@
     ], 
     "detailedWorkPlan": [
      {
-      "allocation": 20.000000000000004, 
-      "operation": "CS2", 
-      "project": "P1", 
-      "time": 1.0
-     }, 
-     {
       "allocation": 40.00000000000001, 
       "operation": "CS2", 
       "project": "P2", 
       "time": 1.0
      }, 
      {
-      "allocation": 29.999999999999996, 
+      "allocation": 20.000000000000004, 
       "operation": "CS2", 
       "project": "P1", 
-      "time": 2.0
+      "time": 1.0
      }, 
      {
       "allocation": 59.99999999999999, 
       "operation": "CS2", 
       "project": "P2", 
+      "time": 2.0
+     }, 
+     {
+      "allocation": 29.999999999999996, 
+      "operation": "CS2", 
+      "project": "P1", 
       "time": 2.0
      }
     ], 
@@ -176,27 +176,27 @@
     ], 
     "detailedWorkPlan": [
      {
-      "allocation": 16.666666666666668, 
-      "operation": "CS3", 
-      "project": "P1", 
-      "time": 0.0
-     }, 
-     {
       "allocation": 33.333333333333336, 
       "operation": "CS3", 
       "project": "P2", 
       "time": 0.0
      }, 
      {
-      "allocation": 33.33333333333333, 
+      "allocation": 16.666666666666668, 
       "operation": "CS3", 
       "project": "P1", 
-      "time": 1.0
+      "time": 0.0
      }, 
      {
       "allocation": 66.66666666666666, 
       "operation": "CS3", 
       "project": "P2", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 33.33333333333333, 
+      "operation": "CS3", 
+      "project": "P1", 
       "time": 1.0
      }
     ], 
@@ -237,25 +237,25 @@
      {
       "allocation": 40.0, 
       "operation": "CS4", 
-      "project": "P1", 
+      "project": "P2", 
       "time": 3.0
      }, 
      {
       "allocation": 40.0, 
       "operation": "CS4", 
-      "project": "P2", 
+      "project": "P1", 
       "time": 3.0
      }, 
      {
       "allocation": 10.0, 
       "operation": "CS4", 
-      "project": "P1", 
+      "project": "P2", 
       "time": 4.0
      }, 
      {
       "allocation": 10.0, 
       "operation": "CS4", 
-      "project": "P2", 
+      "project": "P1", 
       "time": 4.0
      }
     ], 

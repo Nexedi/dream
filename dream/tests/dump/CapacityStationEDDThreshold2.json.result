@@ -115,15 +115,15 @@
       "time": 1.0
      }, 
      {
-      "allocation": 50.0, 
-      "operation": "CS2", 
-      "project": "P1", 
-      "time": 2.0
-     }, 
-     {
       "allocation": 40.0, 
       "operation": "CS2", 
       "project": "P2", 
+      "time": 2.0
+     }, 
+     {
+      "allocation": 50.0, 
+      "operation": "CS2", 
+      "project": "P1", 
       "time": 2.0
      }
     ], 
@@ -167,15 +167,15 @@
       "time": 0.0
      }, 
      {
-      "allocation": 50, 
-      "operation": "CS3", 
-      "project": "P1", 
-      "time": 1.0
-     }, 
-     {
       "allocation": 50.0, 
       "operation": "CS3", 
       "project": "P2", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 50, 
+      "operation": "CS3", 
+      "project": "P1", 
       "time": 1.0
      }
     ], 
