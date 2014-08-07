@@ -190,8 +190,6 @@ class CapacityStationController(EventGenerator):
             station=buffer.next[0]  # get the station
             totalAvailableCapacity=station.remainingIntervalCapacity[0]     # get the available capacity of the station
                                                                             # for this interval
-            # list to keep entities that were already allocated
-            entitiesAlreadyConsidered=[]   
             # list to keep entities that have not been already allocated
             entitiesNotAllocated=list(activeObjectQueue)                                                                             
             
