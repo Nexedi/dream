@@ -2,7 +2,7 @@
  "_class": "Dream.Simulation", 
  "elementList": [
   {
-   "_class": "Dream.Exit", 
+   "_class": "Dream.ExitJobShop", 
    "id": "E1", 
    "results": {
     "lifespan": 2.5, 
@@ -11,7 +11,7 @@
    }
   }, 
   {
-   "_class": "Dream.Machine", 
+   "_class": "Dream.MachineManagedJob", 
    "id": "M1", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -23,7 +23,7 @@
    }
   }, 
   {
-   "_class": "Dream.Machine", 
+   "_class": "Dream.MachineManagedJob", 
    "id": "M2", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -43,7 +43,7 @@
    }
   }, 
   {
-   "_class": "Dream.Job", 
+   "_class": "Dream.Order", 
    "id": "Or1", 
    "results": {
     "completionTime": 3.0, 
@@ -72,7 +72,7 @@
    }
   }, 
   {
-   "_class": "Dream.Job", 
+   "_class": "Dream.Order", 
    "id": "Or2", 
    "results": {
     "completionTime": 2.0, 

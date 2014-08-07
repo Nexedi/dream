@@ -6,7 +6,7 @@
    "id": "AB1"
   }, 
   {
-   "_class": "Dream.Job", 
+   "_class": "Dream.OrderComponent", 
    "id": "C1", 
    "results": {
     "completionTime": 6.0, 
@@ -35,7 +35,7 @@
    }
   }, 
   {
-   "_class": "Dream.Job", 
+   "_class": "Dream.OrderComponent", 
    "id": "C2", 
    "results": {
     "completionTime": 6.0, 
@@ -64,7 +64,7 @@
    }
   }, 
   {
-   "_class": "Dream.Job", 
+   "_class": "Dream.OrderComponent", 
    "id": "C3", 
    "results": {
     "completionTime": 6.0, 
@@ -97,7 +97,7 @@
    "id": "CB1"
   }, 
   {
-   "_class": "Dream.Exit", 
+   "_class": "Dream.ExitJobShop", 
    "id": "E1", 
    "results": {
     "lifespan": 7.0, 
@@ -106,7 +106,7 @@
    }
   }, 
   {
-   "_class": "Dream.Machine", 
+   "_class": "Dream.MachineJobShop", 
    "id": "M0", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -116,7 +116,7 @@
    }
   }, 
   {
-   "_class": "Dream.Machine", 
+   "_class": "Dream.MachineJobShop", 
    "id": "M1", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -126,7 +126,7 @@
    }
   }, 
   {
-   "_class": "Dream.Job", 
+   "_class": "Dream.Mould", 
    "id": "M1", 
    "results": {
     "completionTime": 7.0, 
@@ -143,7 +143,7 @@
    }
   }, 
   {
-   "_class": "Dream.Machine", 
+   "_class": "Dream.MachineJobShop", 
    "id": "M2", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -153,7 +153,7 @@
    }
   }, 
   {
-   "_class": "Dream.Machine", 
+   "_class": "Dream.MouldAssembly", 
    "id": "MA1", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -163,7 +163,7 @@
    }
   }, 
   {
-   "_class": "Dream.Job", 
+   "_class": "Dream.Order", 
    "id": "O1", 
    "results": {
     "completionTime": 1.0, 
