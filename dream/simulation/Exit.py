@@ -218,6 +218,7 @@ class Exit(CoreObject):
         from Globals import getConfidenceIntervals
         json = { '_class': 'Dream.%s' % self.__class__.__name__,
                   'id': self.id,
+                  'family': self.family,
                   'results': {} }
         if(G.numberOfReplications==1):
             json['results']['throughput']=self.numOfExits

@@ -290,7 +290,8 @@ class Queue(CoreObject):
     def outputResultsJSON(self):
         from Globals import G
         json = {'_class': 'Dream.%s' % self.__class__.__name__,
-                'id': str(self.id), }
+                'id': str(self.id), 
+                'family': self.family}
         # XXX this have to be updated to support multiple generations
 #         if G.numberOfReplications == 1 and self.wip_stat_list:
 #           json['wip_stat_list'] = self.wip_stat_list
