@@ -34,7 +34,7 @@ import simpy
 #                            the CapacityStation object
 # ===========================================================================
 class CapacityStation(Queue):
-    class_name = 'Dream.CapacityStation'
+    family='CapacityStation'
     
     #===========================================================================
     # the __init__ method of the CapacityStation
@@ -65,8 +65,9 @@ class CapacityStation(Queue):
     # =======================================================================
     def outputResultsJSON(self):
         from Globals import G
-        json = {'_class': self.class_name,
+        json = {'_class': 'Dream.%s' % self.__class__.__name__,
                 'id': self.id,
+                'family': self.family,
                 'results': {}}
         if (G.numberOfReplications == 1):
             # if we had just one replication output the results as numbers

@@ -34,7 +34,6 @@ from Operator import Operator
 #                 the resource that repairs the machines
 # ===========================================================================
 class Repairman(Operator):
-    class_name = 'Dream.Repairman'
     def __init__(self, id, name, capacity=1):
         Operator.__init__(self,id=id, name=name, capacity=capacity)
         self.type="Repairman"
