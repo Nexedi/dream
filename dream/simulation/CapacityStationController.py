@@ -187,12 +187,15 @@ class CapacityStationController(EventGenerator):
         # loop through the capacity station buffers
         for buffer in G.CapacityStationBufferList:
             activeObjectQueue=buffer.getActiveObjectQueue()
+            activeObjectQueue.sort(key=lambda x: x.capacityProject.dueDate)
+           
             station=buffer.next[0]  # get the station
             totalAvailableCapacity=station.remainingIntervalCapacity[0]     # get the available capacity of the station
                                                                             # for this interval
             # list to keep entities that have not been already allocated
             entitiesNotAllocated=list(activeObjectQueue)                                                                             
             
+
             allCapacityConsumed=False    
             while not allCapacityConsumed:       
                 # list to keep entities that are within a threshold from the EDD
