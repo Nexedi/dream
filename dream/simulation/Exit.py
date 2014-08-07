@@ -34,7 +34,8 @@ from CoreObject import CoreObject
 #                            The exit object
 # ===========================================================================
 class Exit(CoreObject):
-    class_name = 'Dream.Exit'
+    family='Exit'
+    
     def __init__(self, id, name=None):
         if not name:
           name = id
@@ -215,7 +216,7 @@ class Exit(CoreObject):
     def outputResultsJSON(self):
         from Globals import G
         from Globals import getConfidenceIntervals
-        json = { '_class': self.class_name,
+        json = { '_class': 'Dream.%s' % self.__class__.__name__,
                   'id': self.id,
                   'results': {} }
         if(G.numberOfReplications==1):
