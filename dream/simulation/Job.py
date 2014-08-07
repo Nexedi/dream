@@ -59,6 +59,7 @@ class Job(Entity):                                  # inherits from the Entity c
         if(G.numberOfReplications==1):              #if we had just one replication output the results to excel
             json = { '_class': 'Dream.%s' % self.__class__.__name__,
                   'id': self.id,
+                  'family': self.family,
                   'results': {} }
             #json['extraPropertyDict'] = self.extraPropertyDict
             
