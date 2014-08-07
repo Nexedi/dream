@@ -33,9 +33,13 @@ from Globals import G
 
 class CapacityStationController(EventGenerator):
     def __init__(self, id=id, name=None, start=None, stop=None, interval=None,
-                 duration=None, method=None, argumentDict=None):
+                 duration=None, method=None, argumentDict=None, dueDateThreshold=float('inf')):
         EventGenerator.__init__(self, id, name, start, stop, interval,
                  duration, method, argumentDict)
+        # attribute used by optimization in calculateWhatIsToBeProcessed
+        # only the projects that are within this threshold from the one with EDD in the same bufffer 
+        # will be considered to move at first
+        self.dueDateThreshold=dueDateThreshold
 
     def initialize(self):
         EventGenerator.initialize(self)
@@ -182,34 +186,84 @@ class CapacityStationController(EventGenerator):
     def calculateWhatIsToBeProcessed(self):
         # loop through the capacity station buffers
         for buffer in G.CapacityStationBufferList:
+            activeObjectQueue=buffer.getActiveObjectQueue()
             station=buffer.next[0]  # get the station
             totalAvailableCapacity=station.remainingIntervalCapacity[0]     # get the available capacity of the station
-                                                                                # for this interval            
+                                                                            # for this interval            
             # if there is no capacity continue with the next buffer
             if totalAvailableCapacity<=0:
                 continue
+            
+            # get the EDD
+            EDD=float('inf')
+            for entity in activeObjectQueue:
+                if EDD>entity.capacityProject.dueDate:
+                    EDD=entity.capacityProject.dueDate
+            
+            # list to keep entities that are within a threshold from the EDD
+            entitiesWithinThreshold=[]
+            # list to keep entities that are outside a threshold from the EDD
+            entitiesOutsideThreshold=[]
+            # put the entities in the list
+            for entity in activeObjectQueue: 
+                if entity.capacityProject.dueDate-EDD<=self.dueDateThreshold:
+                    entitiesWithinThreshold.append(entity)
+                else:
+                    entitiesOutsideThreshold.append(entity)                    
+                
             # if the buffer is not assembly
             # calculate the total capacity that is requested
             totalRequestedCapacity=0    
-            for entity in buffer.getActiveObjectQueue():
+            for entity in entitiesWithinThreshold:
                 if self.checkIfProjectCanStartInStation(entity.capacityProject, station) and\
                                     (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, buffer)):
                     totalRequestedCapacity+=entity.requiredCapacity
+            
+            allCapacityConsumed=False        
+                       
             # if there is enough capacity for all the entities set them that they all should move
-            if totalRequestedCapacity<=totalAvailableCapacity:
-                for entity in buffer.getActiveObjectQueue():
+            if totalRequestedCapacity<totalAvailableCapacity:
+                for entity in entitiesWithinThreshold:
                     if self.checkIfProjectCanStartInStation(entity.capacityProject, station) and\
                                 (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, buffer)):
-                        entity.shouldMove=True              
+                        entity.shouldMove=True   
+                                   
             # else calculate the capacity for every entity and create the entities
             else:
-                entitiesInBuffer=list(buffer.getActiveObjectQueue())
+                allCapacityConsumed=True
+                entitiesToBeBroken=list(entitiesWithinThreshold)
                 # loop through the entities
-                for entity in entitiesInBuffer:
+                for entity in entitiesToBeBroken:
                     if self.checkIfProjectCanStartInStation(entity.capacityProject, station) and\
                                     (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, buffer)):
                         self.breakEntity(entity, buffer, station, totalAvailableCapacity, totalRequestedCapacity)
-
+                        
+            # from now on entities outside the threshold are considered
+            if not allCapacityConsumed:
+                # the remaining capacity will be decreased by the one that was originally requested
+                totalAvailableCapacity-=totalRequestedCapacity
+                totalRequestedCapacity=0
+                for entity in entitiesOutsideThreshold:
+                    if self.checkIfProjectCanStartInStation(entity.capacityProject, station) and\
+                                        (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, buffer)):
+                        totalRequestedCapacity+=entity.requiredCapacity 
+                           
+                # if there is enough capacity for all the entities set them that they all should move
+                if totalRequestedCapacity<=totalAvailableCapacity:
+                    for entity in entitiesOutsideThreshold:
+                        if self.checkIfProjectCanStartInStation(entity.capacityProject, station) and\
+                                    (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, buffer)):
+                            entity.shouldMove=True 
+                # else calculate the capacity for every entity and create the entities
+                else:
+                    allCapacityConsumed=True
+                    entitiesToBeBroken=list(entitiesOutsideThreshold)
+                    # loop through the entities
+                    for entity in entitiesToBeBroken:
+                        if self.checkIfProjectCanStartInStation(entity.capacityProject, station) and\
+                                        (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, buffer)):
+                            self.breakEntity(entity, buffer, station, totalAvailableCapacity, totalRequestedCapacity)
+            
     # breaks an entity in the part that should move and the one that should stay
     def breakEntity(self, entity, buffer, station, totalAvailableCapacity, totalRequestedCapacity):
         # calculate what is the capacity that should proceed and what that should remain

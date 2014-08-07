@@ -34,8 +34,8 @@ from Entity import Entity
 class CapacityProject(Entity):
     type="CapacityProject"
     
-    def __init__(self, id=None, name=None, capacityRequirementDict={}, earliestStartDict={}):
-        Entity.__init__(self, id, name)
+    def __init__(self, id=None, name=None, capacityRequirementDict={}, earliestStartDict={}, dueDate=0):
+        Entity.__init__(self, id, name, dueDate=dueDate)
         # a dict that shows the required capacity from every station
         self.capacityRequirementDict=capacityRequirementDict
         # a dict that shows the earliest start in every station

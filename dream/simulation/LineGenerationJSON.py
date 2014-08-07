@@ -869,10 +869,12 @@ def createObjects():
                 stop=float('inf')            
             interval = float(element.get('interval') or 1)
             duration = float(element.get('duration') or 0)
+            dueDateThreshold = float(element.get('dueDateThreshold') or float('inf'))
             argumentDict=(element.get('argumentDict', {}))      # get the arguments of the method as a dict / default {}
                
+            # create the CapacityStationController object
             CSC = CapacityStationController(id, name, start=start, stop=stop, interval=interval, 
-                                duration=duration, argumentDict=argumentDict)       # create the EventGenerator object
+                                duration=duration, argumentDict=argumentDict, dueDateThreshold=dueDateThreshold)      
                                                                     # calling the getSuccessorList() method on the repairman
             G.EventGeneratorList.append(CSC)                               # add the Event Generator to the RepairmanList
             G.CapacityStationControllerList.append(CSC)
@@ -1263,7 +1265,9 @@ def createWIP():
                 name=entity.get('name', 'not found') 
                 capacityRequirementDict=entity.get('capacityRequirementDict', {})
                 earliestStartDict=entity.get('earliestStartDict', {})
-                CP=CapacityProject(id=id, name=name, capacityRequirementDict=capacityRequirementDict, earliestStartDict=earliestStartDict) 
+                dueDate=float(entity.get('dueDate', 0))
+                CP=CapacityProject(id=id, name=name, capacityRequirementDict=capacityRequirementDict, 
+                                        earliestStartDict=earliestStartDict, dueDate=dueDate) 
                 G.EntityList.append(CP)     
                 G.CapacityProjectList.append(CP)
                          
