@@ -35,8 +35,7 @@ from ObjectResource import ObjectResource
 #                 the resource that operates the machines
 # ===========================================================================
 class Operator(ObjectResource):
-    class_name = 'Dream.Operator'
-    
+    family='Operator'  
     
     def __init__(self, id, name, capacity=1, schedulingRule='FIFO'):
         ObjectResource.__init__(self)
@@ -357,6 +356,7 @@ class Operator(ObjectResource):
         from Globals import getConfidenceIntervals
         json = {'_class': self.class_name,
                 'id': self.id,
+                'family': self.family,
                 'results': {}}
         if(G.numberOfReplications==1):
             json['results']['working_ratio']=100*self.totalWorkingTime/G.maxSimTime
