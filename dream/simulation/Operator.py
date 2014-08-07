@@ -354,7 +354,7 @@ class Operator(ObjectResource):
     def outputResultsJSON(self):
         from Globals import G
         from Globals import getConfidenceIntervals
-        json = {'_class': self.class_name,
+        json = {'_class': 'Dream.%s' % self.__class__.__name__,
                 'id': self.id,
                 'family': self.family,
                 'results': {}}
