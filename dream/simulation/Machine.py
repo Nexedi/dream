@@ -43,7 +43,6 @@ from RandomNumberGenerator import RandomNumberGenerator
 # the Machine object
 # ===========================================================================
 class Machine(CoreObject):
-    class_name = 'Dream.Machine'
     # =======================================================================
     # initialise the id the capacity, of the resource and the distribution
     # =======================================================================
@@ -982,7 +981,7 @@ class Machine(CoreObject):
     def outputResultsJSON(self):
         from Globals import G
         from Globals import getConfidenceIntervals
-        json = {'_class': self.class_name,
+        json = {'_class': 'Dream.%s' % self.__class__.__name__,
                 'id': self.id,
                 'results': {}}
         if (G.numberOfReplications == 1):
