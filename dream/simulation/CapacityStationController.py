@@ -189,49 +189,26 @@ class CapacityStationController(EventGenerator):
             if totalAvailableCapacity<=0:
                 continue
             # if the buffer is not assembly
-            if not buffer.requireFullProject:
-                # calculate the total capacity that is requested
-                totalRequestedCapacity=0    
+            # calculate the total capacity that is requested
+            totalRequestedCapacity=0    
+            for entity in buffer.getActiveObjectQueue():
+                if self.checkIfProjectCanStartInStation(entity.capacityProject, station) and\
+                                    (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, buffer)):
+                    totalRequestedCapacity+=entity.requiredCapacity
+            # if there is enough capacity for all the entities set them that they all should move
+            if totalRequestedCapacity<=totalAvailableCapacity:
                 for entity in buffer.getActiveObjectQueue():
-                    if self.checkIfProjectCanStartInStation(entity.capacityProject, station):
-                        totalRequestedCapacity+=entity.requiredCapacity
-                # if there is enough capacity for all the entities set them that they all should move
-                if totalRequestedCapacity<=totalAvailableCapacity:
-                    for entity in buffer.getActiveObjectQueue():
-                        if self.checkIfProjectCanStartInStation(entity.capacityProject, station):
-                            entity.shouldMove=True              
-                # else calculate the capacity for every entity and create the entities
-                else:
-                    entitiesInBuffer=list(buffer.getActiveObjectQueue())
-                    # loop through the entities
-                    for entity in entitiesInBuffer:
-                        if self.checkIfProjectCanStartInStation(entity.capacityProject, station):   
-                            self.breakEntity(entity, buffer, station, totalAvailableCapacity, totalRequestedCapacity)
-
-            # if the buffer is assembly there are different calculations
+                    if self.checkIfProjectCanStartInStation(entity.capacityProject, station) and\
+                                (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, buffer)):
+                        entity.shouldMove=True              
+            # else calculate the capacity for every entity and create the entities
             else:
-                # calculate the total capacity that is requested
-                # note that only the assembled projects do request capacity
-                totalRequestedCapacity=0    
-                for entity in buffer.getActiveObjectQueue():
-                    if self.checkIfProjectAssembledInBuffer(entity.capacityProject, buffer) and\
-                                                self.checkIfProjectCanStartInStation(entity.capacityProject, station):   
-                        totalRequestedCapacity+=entity.requiredCapacity
-                # if there is enough capacity for all the assembled entities set them that they all should move
-                if totalRequestedCapacity<=totalAvailableCapacity:
-                    for entity in buffer.getActiveObjectQueue():
-                        if self.checkIfProjectAssembledInBuffer(entity.capacityProject, buffer) and\
-                                                self.checkIfProjectCanStartInStation(entity.capacityProject, station):   
-                            entity.shouldMove=True              
-                # else calculate the capacity for every entity and create the entities
-                else:
-                    entitiesInBuffer=list(buffer.getActiveObjectQueue())
-                    # loop through the entities
-                    for entity in entitiesInBuffer:
-                        # break only the assembled projects
-                        if self.checkIfProjectAssembledInBuffer(entity.capacityProject, buffer) and\
-                                    self.checkIfProjectCanStartInStation(entity.capacityProject, station):   
-                            self.breakEntity(entity, buffer, station, totalAvailableCapacity, totalRequestedCapacity)
+                entitiesInBuffer=list(buffer.getActiveObjectQueue())
+                # loop through the entities
+                for entity in entitiesInBuffer:
+                    if self.checkIfProjectCanStartInStation(entity.capacityProject, station) and\
+                                    (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, buffer)):
+                        self.breakEntity(entity, buffer, station, totalAvailableCapacity, totalRequestedCapacity)
 
     # breaks an entity in the part that should move and the one that should stay
     def breakEntity(self, entity, buffer, station, totalAvailableCapacity, totalRequestedCapacity):
@@ -307,6 +284,17 @@ class CapacityStationController(EventGenerator):
                 return False
         return True
     
+    # checks if a project cannot move because it needs to be assembled first
+    def checkIfProjectNeedsToBeAssembled(self, project, buffer):
+        # if we are not in assembly return false
+        if not buffer.requireFullProject:
+            return False
+        # if project is already assembled return false
+        if self.checkIfProjectAssembledInBuffer(project, buffer):
+            return False
+        # at any other case return true
+        return True
+        
     # checks if the given project is all in the buffer
     def checkIfProjectAssembledInBuffer(self, project, buffer):
         # loop through all the stations of the system
