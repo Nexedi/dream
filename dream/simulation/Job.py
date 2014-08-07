@@ -33,7 +33,8 @@ from Entity import Entity
 # The job object 
 # =======================================================================
 class Job(Entity):                                  # inherits from the Entity class   
-    type="Job"
+    type='Job'
+    family='Job'
     
     def __init__(self, id=None, name=None, route=[], priority=0, dueDate=None, orderDate=None, extraPropertyDict=None,isCritical=False):
         Entity.__init__(self, id=id,name=name, priority=priority, dueDate=dueDate, orderDate=orderDate, isCritical=isCritical)
@@ -56,10 +57,9 @@ class Job(Entity):                                  # inherits from the Entity c
     def outputResultsJSON(self):
         from Globals import G
         if(G.numberOfReplications==1):              #if we had just one replication output the results to excel
-            json={}                                 # dictionary holding information related to the specific entity
-            json['_class'] = 'Dream.Job'
-            json['id'] = str(self.id)
-            json['results'] = {}
+            json = { '_class': 'Dream.%s' % self.__class__.__name__,
+                  'id': self.id,
+                  'results': {} }
             #json['extraPropertyDict'] = self.extraPropertyDict
             
             #if the Job has reached an exit, input completion time in the results

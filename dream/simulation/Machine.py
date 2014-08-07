@@ -43,6 +43,8 @@ from RandomNumberGenerator import RandomNumberGenerator
 # the Machine object
 # ===========================================================================
 class Machine(CoreObject):
+    family='Server'
+    
     # =======================================================================
     # initialise the id the capacity, of the resource and the distribution
     # =======================================================================
