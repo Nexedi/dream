@@ -18,7 +18,7 @@
    "id": "CB4"
   }, 
   {
-   "_class": "Dream.Exit", 
+   "_class": "Dream.CapacityStationExit", 
    "id": "CE4", 
    "results": {
     "lifespan": 4.0, 

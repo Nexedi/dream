@@ -16,7 +16,7 @@
    }
   }, 
   {
-   "_class": "Dream.Machine", 
+   "_class": "Dream.BatchScrapMachine", 
    "id": "M1", 
    "results": {
     "blockage_ratio": 69.79166666666667, 
@@ -26,7 +26,7 @@
    }
   }, 
   {
-   "_class": "Dream.Machine", 
+   "_class": "Dream.BatchScrapMachine", 
    "id": "M2", 
    "results": {
     "blockage_ratio": 0.0, 
