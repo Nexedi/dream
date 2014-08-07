@@ -620,7 +620,8 @@
    }
   }, 
   {
-   "_class": "Dream.Operator", 
+   "_class": "Dream.OperatorManagedJob", 
+   "family": "Operator", 
    "id": "OP1", 
    "results": {
     "waiting_ratio": 17.60563380281689, 
@@ -628,7 +629,8 @@
    }
   }, 
   {
-   "_class": "Dream.Operator", 
+   "_class": "Dream.OperatorManagedJob", 
+   "family": "Operator", 
    "id": "OP2", 
    "results": {
     "waiting_ratio": 48.94366197183098, 

@@ -69,6 +69,7 @@
   }, 
   {
    "_class": "Dream.Repairman", 
+   "family": "Operator", 
    "id": "W1", 
    "results": {
     "waiting_ratio": 100.0, 

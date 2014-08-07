@@ -39,6 +39,7 @@
   }, 
   {
    "_class": "Dream.Operator", 
+   "family": "Operator", 
    "id": "O1", 
    "results": {
     "waiting_ratio": 55.55555555555556, 
@@ -47,6 +48,7 @@
   }, 
   {
    "_class": "Dream.Operator", 
+   "family": "Operator", 
    "id": "O2", 
    "results": {
     "waiting_ratio": 88.88888888888889, 
