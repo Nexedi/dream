@@ -3,6 +3,7 @@
  "elementList": [
   {
    "_class": "Dream.Exit", 
+   "family": "Exit", 
    "id": "E1", 
    "results": {
     "intervalThroughputList": [
@@ -16,6 +17,7 @@
   }, 
   {
    "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
    "id": "M1A", 
    "results": {
     "blockage_ratio": 13.194444444444445, 
@@ -27,6 +29,7 @@
   }, 
   {
    "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
    "id": "M1B", 
    "results": {
     "blockage_ratio": 13.975694444444445, 
@@ -38,6 +41,7 @@
   }, 
   {
    "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
    "id": "M2A", 
    "results": {
     "blockage_ratio": 13.368055555555555, 
@@ -49,6 +53,7 @@
   }, 
   {
    "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
    "id": "M2B", 
    "results": {
     "blockage_ratio": 14.0625, 
@@ -60,6 +65,7 @@
   }, 
   {
    "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
    "id": "M3A", 
    "results": {
     "blockage_ratio": 13.45486111111111, 
@@ -71,6 +77,7 @@
   }, 
   {
    "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
    "id": "M3B", 
    "results": {
     "blockage_ratio": 14.149305555555555, 
@@ -82,6 +89,7 @@
   }, 
   {
    "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
    "id": "MM", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -93,6 +101,7 @@
   }, 
   {
    "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
    "id": "PaA", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -104,6 +113,7 @@
   }, 
   {
    "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
    "id": "PaB", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -115,6 +125,7 @@
   }, 
   {
    "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
    "id": "PrA", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -126,6 +137,7 @@
   }, 
   {
    "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
    "id": "PrB", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -137,35 +149,51 @@
   }, 
   {
    "_class": "Dream.LineClearance", 
-   "id": "Q2A"
+   "family": "Buffer", 
+   "id": "Q2A", 
+   "results": {}
   }, 
   {
    "_class": "Dream.LineClearance", 
-   "id": "Q2B"
+   "family": "Buffer", 
+   "id": "Q2B", 
+   "results": {}
   }, 
   {
    "_class": "Dream.LineClearance", 
-   "id": "Q3A"
+   "family": "Buffer", 
+   "id": "Q3A", 
+   "results": {}
   }, 
   {
    "_class": "Dream.LineClearance", 
-   "id": "Q3B"
+   "family": "Buffer", 
+   "id": "Q3B", 
+   "results": {}
   }, 
   {
    "_class": "Dream.Queue", 
-   "id": "QM"
+   "family": "Buffer", 
+   "id": "QM", 
+   "results": {}
   }, 
   {
    "_class": "Dream.Queue", 
-   "id": "QPa"
+   "family": "Buffer", 
+   "id": "QPa", 
+   "results": {}
   }, 
   {
    "_class": "Dream.Queue", 
-   "id": "QPr"
+   "family": "Buffer", 
+   "id": "QPr", 
+   "results": {}
   }, 
   {
    "_class": "Dream.Queue", 
-   "id": "QStart"
+   "family": "Buffer", 
+   "id": "QStart", 
+   "results": {}
   }
  ], 
  "general": {

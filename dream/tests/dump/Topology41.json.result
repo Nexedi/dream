@@ -3,10 +3,13 @@
  "elementList": [
   {
    "_class": "Dream.MouldAssemblyBuffer", 
-   "id": "AB1"
+   "family": "Buffer", 
+   "id": "AB1", 
+   "results": {}
   }, 
   {
    "_class": "Dream.OrderComponent", 
+   "family": "Job", 
    "id": "C1", 
    "results": {
     "completionTime": 6.0, 
@@ -36,6 +39,7 @@
   }, 
   {
    "_class": "Dream.OrderComponent", 
+   "family": "Job", 
    "id": "C2", 
    "results": {
     "completionTime": 6.0, 
@@ -65,6 +69,7 @@
   }, 
   {
    "_class": "Dream.OrderComponent", 
+   "family": "Job", 
    "id": "C3", 
    "results": {
     "completionTime": 6.0, 
@@ -94,10 +99,13 @@
   }, 
   {
    "_class": "Dream.ConditionalBuffer", 
-   "id": "CB1"
+   "family": "Buffer", 
+   "id": "CB1", 
+   "results": {}
   }, 
   {
    "_class": "Dream.ExitJobShop", 
+   "family": "Exit", 
    "id": "E1", 
    "results": {
     "lifespan": 7.0, 
@@ -107,6 +115,7 @@
   }, 
   {
    "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
    "id": "M0", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -117,6 +126,7 @@
   }, 
   {
    "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
    "id": "M1", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -127,6 +137,7 @@
   }, 
   {
    "_class": "Dream.Mould", 
+   "family": "Job", 
    "id": "M1", 
    "results": {
     "completionTime": 7.0, 
@@ -144,6 +155,7 @@
   }, 
   {
    "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
    "id": "M2", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -154,6 +166,7 @@
   }, 
   {
    "_class": "Dream.MouldAssembly", 
+   "family": "Server", 
    "id": "MA1", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -164,6 +177,7 @@
   }, 
   {
    "_class": "Dream.Order", 
+   "family": "Job", 
    "id": "O1", 
    "results": {
     "completionTime": 1.0, 
@@ -185,7 +199,9 @@
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q0"
+   "family": "Buffer", 
+   "id": "Q0", 
+   "results": {}
   }
  ], 
  "general": {

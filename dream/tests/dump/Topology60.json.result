@@ -3,6 +3,7 @@
  "elementList": [
   {
    "_class": "Dream.ExitJobShop", 
+   "family": "Exit", 
    "id": "E1", 
    "results": {
     "lifespan": 62.0, 
@@ -12,6 +13,7 @@
   }, 
   {
    "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
    "id": "EDM", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -22,6 +24,7 @@
   }, 
   {
    "_class": "Dream.Job", 
+   "family": "Job", 
    "id": "J1", 
    "results": {
     "completionTime": 100.0, 
@@ -52,6 +55,7 @@
   }, 
   {
    "_class": "Dream.Job", 
+   "family": "Job", 
    "id": "J2", 
    "results": {
     "completionTime": 70.0, 
@@ -82,6 +86,7 @@
   }, 
   {
    "_class": "Dream.Job", 
+   "family": "Job", 
    "id": "J3", 
    "results": {
     "completionTime": 30.0, 
@@ -112,6 +117,7 @@
   }, 
   {
    "_class": "Dream.Job", 
+   "family": "Job", 
    "id": "J4", 
    "results": {
     "completionTime": 50.0, 
@@ -142,6 +148,7 @@
   }, 
   {
    "_class": "Dream.Job", 
+   "family": "Job", 
    "id": "J5", 
    "results": {
     "completionTime": 60.0, 
@@ -164,6 +171,7 @@
   }, 
   {
    "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
    "id": "M1", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -174,6 +182,7 @@
   }, 
   {
    "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
    "id": "M2", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -184,15 +193,21 @@
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q1"
+   "family": "Buffer", 
+   "id": "Q1", 
+   "results": {}
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q2"
+   "family": "Buffer", 
+   "id": "Q2", 
+   "results": {}
   }, 
   {
    "_class": "Dream.QueueJobShop", 
-   "id": "Q3"
+   "family": "Buffer", 
+   "id": "Q3", 
+   "results": {}
   }
  ], 
  "general": {

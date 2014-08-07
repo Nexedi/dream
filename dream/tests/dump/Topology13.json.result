@@ -21,6 +21,7 @@
   }, 
   {
    "_class": "Dream.Exit", 
+   "family": "Exit", 
    "id": "E1", 
    "results": {
     "lifespan": 56.327560240963855, 
@@ -30,6 +31,7 @@
   }, 
   {
    "_class": "Dream.Exit", 
+   "family": "Exit", 
    "id": "E2", 
    "results": {
     "lifespan": 55.577560240963855, 
@@ -39,6 +41,7 @@
   }, 
   {
    "_class": "Dream.Machine", 
+   "family": "Server", 
    "id": "M1", 
    "results": {
     "blockage_ratio": 0.0, 
