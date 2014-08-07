@@ -1,0 +1,108 @@
+{
+    "_class": "Dream.Simulation",
+    "edges": {
+        "0": [
+            "CB1",
+            "CS1",
+            {}
+        ],
+        "1": [
+            "CS1",
+            "CE1",
+            {}
+        ]
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "confidenceLevel": "0.95",
+        "maxSimTime": "-1",
+        "numberOfReplications": "1",
+        "trace": "Yes"
+    },
+    "nodes": {
+        "CB1": {
+            "_class": "Dream.CapacityStationBuffer",
+            "name": "SMFBuffer",
+            "wip": [
+                {
+                    "_class": "Dream.CapacityEntity",
+                    "capacityProjectId": "P1",
+                    "name": "P1_SMF_50",
+                    "requiredCapacity": 50
+                },
+                {
+                    "_class": "Dream.CapacityEntity",
+                    "capacityProjectId": "P2",
+                    "name": "P2_SMF_50",
+                    "requiredCapacity": 50
+                },
+                {
+                    "_class": "Dream.CapacityEntity",
+                    "capacityProjectId": "P3",
+                    "name": "P3_SMF_50",
+                    "requiredCapacity": 50
+                }
+            ]
+        },
+        "CS1": {
+            "_class": "Dream.CapacityStation",
+            "name": "SMF",
+            "intervalCapacity": [
+                125,
+                50,
+                300,
+                100,
+                200,
+                300
+            ]
+        },
+        "CE1": {
+            "_class": "Dream.CapacityStationExit",
+            "name": "SMFExit"
+        },
+        "QD": {
+            "_class": "Dream.Queue",
+            "capacity": "-1",
+            "id": "QD",
+            "name": "DUMMY",
+            "wip": [
+                {
+                    "_class": "Dream.CapacityProject",
+                    "id": "P1",
+                    "name": "P1",
+                    "capacityRequirementDict": {
+                        "CS1": 50
+                    },
+                    "dueDate": 10
+                },
+                {
+                    "_class": "Dream.CapacityProject",
+                    "id": "P2",
+                    "name": "P2",
+                    "capacityRequirementDict": {
+                        "CS1": 50
+                    },
+                    "dueDate": 12
+                },
+                {
+                    "_class": "Dream.CapacityProject",
+                    "id": "P3",
+                    "name": "P3",
+                    "capacityRequirementDict": {
+                        "CS1": 50
+                    },
+                    "dueDate": 11
+                }
+            ]
+        },
+        "CSC": {
+            "_class": "Dream.CapacityStationController",
+            "name": "CSC",
+            "start": "0",
+            "interval": "1",
+            "method": "Dream.None",
+			"prioritizeIfCanFinish": 1,
+            "dueDateThreshold": 7
+        }
+    }
+}
