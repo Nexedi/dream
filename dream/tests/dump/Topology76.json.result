@@ -25,6 +25,7 @@
   }, 
   {
    "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
    "id": "CS1", 
    "results": {
     "capacityUsed": [
@@ -76,6 +77,7 @@
   }, 
   {
    "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
    "id": "CS2", 
    "results": {
     "capacityUsed": [
