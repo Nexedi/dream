@@ -72,4 +72,12 @@ class CapacityStationExit(Exit):
         # output results only for the last exit
         if not self.nextCapacityStationBuffer:
             Exit.outputResultsJSON(self)
+            
+    # extend so that it updates alreadyWorkedDict of the project
+    def getEntity(self):
+        activeEntity=Exit.getEntity(self)
+        alreadyWorkedDict=activeEntity.capacityProject.alreadyWorkedDict   
+        stationId=self.giver.id
+        alreadyWorkedDict[stationId]+=activeEntity.requiredCapacity
+        
         

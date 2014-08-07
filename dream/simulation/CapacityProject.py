@@ -43,6 +43,9 @@ class CapacityProject(Entity):
         
     def initialize(self):
         self.projectSchedule=[]     # a list of dicts to keep the schedule
+        self.alreadyWorkedDict={}   # a dict that hold what has been processed at every station
+        for stationId in self.capacityRequirementDict:
+            self.alreadyWorkedDict[stationId]=0
         
     # =======================================================================    
     # outputs results to JSON File

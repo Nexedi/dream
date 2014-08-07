@@ -369,5 +369,14 @@ class CapacityStationController(EventGenerator):
         if self.env.now<earliestStartInStation:
             return False
         return True
+    
+    # checks if the whole project can be finished in one station in the next time period
+    def checkIfAProjectCanBeFinishedInStation(self, entity, station):
+        required=entity.requiredCapacity
+        alreadyWorked=entity.capacityProject.alreadyWorkedDict[station.id]
+        total=entity.capacityProject.capacityRequirementDict[station.id]
+        if total-(alreadyWorked+required)<0.001:  # a small value to avoid mistakes due to rounding
+            return True
+        return False
         
         
