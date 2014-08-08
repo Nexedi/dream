@@ -174,10 +174,22 @@ class CapacityStationController(EventGenerator):
                 exit.currentlyObtainedEntities=[]
                 continue
             previousStation=exit.previous[0]  # the station the the entity just finished from
+            previousBuffer=previousStation.previous[0]  # the buffer of the station
             nextStation=buffer.next[0]        # the next processing station
             # for every entity calculate the new entity to be created in the next station and create it  
             for entity in exit.currentlyObtainedEntities:
                 project=entity.capacityProject
+                # if the entity exits from an assembly station 
+                # and not all project is finished there, then do not create anything in the next
+                if previousBuffer.requireFullProject:
+                    projectFinishedFromLast=True
+                    for e in previousBuffer.getActiveObjectQueue():
+                        if e.capacityProject==project:
+                            projectFinishedFromLast=False
+                            break
+                    if not projectFinishedFromLast:
+                        continue
+                
                 entityCapacity=entity.requiredCapacity
                 previousRequirement=float(project.capacityRequirementDict[previousStation.id])
                 nextRequirement=float(project.capacityRequirementDict[nextStation.id])
@@ -287,10 +299,13 @@ class CapacityStationController(EventGenerator):
                                 self.breakEntity(entity, buffer, station, totalAvailableCapacity, totalRequestedCapacity)
                     # the capacity will be 0 since we consumed it all
                     totalAvailableCapacity=0
-
+            # if the station shares capacity with other stations then we have to
+            # reduce in them the amount of capacity that was consumed
             if station.sharedResources:
                 self.setSharedCapacity(station, totalAvailableCapacity)
-                
+    
+    # if capacity is shared and one station consumes part of it
+    # then this method reduces the capacity from the other stations
     def setSharedCapacity(self, station, capacity):
         sharedStationsIds=station.sharedResources.get('stationIds', [])
         for capacityStation in G.CapacityStationList:
