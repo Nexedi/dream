@@ -1,0 +1,139 @@
+{
+    "_class": "Dream.Simulation",
+    "edges": {
+        "0": [
+            "CB1",
+            "CS1",
+            {}
+        ],
+        "1": [
+            "CS1",
+            "CE1",
+            {}
+        ],
+        "2": [
+            "CB2",
+            "CS2",
+            {}
+        ],
+        "3": [
+            "CS2",
+            "CE2",
+            {}
+        ]
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "confidenceLevel": "0.95",
+        "maxSimTime": "-1",
+        "numberOfReplications": "1",
+        "trace": "Yes"
+    },
+    "nodes": {
+        "CB1": {
+            "_class": "Dream.CapacityStationBuffer",
+            "name": "PPASBBuffer",
+            "wip": [
+                {
+                    "_class": "Dream.CapacityEntity",
+                    "capacityProjectId": "P1",
+                    "name": "P1_PPASB_50",
+                    "requiredCapacity": 50
+                }
+            ]
+        },
+        "CS1": {
+            "_class": "Dream.CapacityStation",
+            "name": "PPASB",
+            "intervalCapacity": [
+                80,
+                50,
+                300,
+                100,
+                200,
+                300
+            ],
+            "sharedResources": {
+                "stationIds": [
+                    "CS2"
+                ],
+                "priority": 2
+            }
+        },
+        "CE1": {
+            "_class": "Dream.CapacityStationExit",
+            "name": "PPASBExit",
+            "nextCapacityStationBufferId": "CB2"
+        },
+        "CB2": {
+            "_class": "Dream.CapacityStationBuffer",
+            "name": "ASBTSTBuffer",
+            "wip": [
+                {
+                    "_class": "Dream.CapacityEntity",
+                    "capacityProjectId": "P2",
+                    "name": "P2_ASBTST_50",
+                    "requiredCapacity": 50
+                }
+            ]
+        },
+        "CS2": {
+            "_class": "Dream.CapacityStation",
+            "name": "ASBTST",
+            "intervalCapacity": [
+                80,
+                50,
+                300,
+                100,
+                200,
+                300
+            ],
+            "sharedResources": {
+                "stationIds": [
+                    "CS1"
+                ],
+                "priority": 1
+            }
+        },
+        "CE2": {
+            "_class": "Dream.CapacityStationExit",
+            "name": "ASBTSTExit"
+        },
+        "QD": {
+            "_class": "Dream.Queue",
+            "capacity": "-1",
+            "id": "QD",
+            "name": "DUMMY",
+            "wip": [
+                {
+                    "_class": "Dream.CapacityProject",
+                    "id": "P1",
+                    "name": "P1",
+                    "capacityRequirementDict": {
+                        "CS1": 50,
+                        "CS2": 100
+                    },
+                    "dueDate": 10
+                },
+                {
+                    "_class": "Dream.CapacityProject",
+                    "id": "P2",
+                    "name": "P2",
+                    "capacityRequirementDict": {
+                        "CS2": 50
+                    },
+                    "dueDate": 10
+                }
+            ]
+        },
+        "CSC": {
+            "_class": "Dream.CapacityStationController",
+            "name": "CSC",
+            "start": "0",
+            "interval": "1",
+            "method": "Dream.None",
+            "prioritizeIfCanFinish": 1,
+            "dueDateThreshold": 7
+        }
+    }
+}
