@@ -48,6 +48,8 @@ class CapacityStationController(EventGenerator):
         self.stepsAreComplete=self.env.event()
 
     def run(self):
+        # sort the buffers so if they have shared resources the ones with highest priority will go in front
+        self.sortBuffers()
         yield self.env.timeout(self.start)              #wait until the start time
         #loop until the end of the simulation
         while 1:
@@ -87,13 +89,15 @@ class CapacityStationController(EventGenerator):
             # lock the exit again
             exit.isLocked=True
         
+        
+        # create the entities in the following stations
+        self.createInCapacityStationBuffers()
+
         # if the last exits led to an empty system then the simulation must be stopped
         # step returns and the generator never yields the stepsAreComplete signal
         if self.checkIfSystemEmpty():
             return
         
-        # create the entities in the following stations
-        self.createInCapacityStationBuffers()
         # if there is need to merge entities in a buffer
         self.mergeEntities()
 
@@ -141,7 +145,11 @@ class CapacityStationController(EventGenerator):
             # lock the station
             station.isLocked=True
             # calculate the utilization
-            periodDict['utilization']=capacityAllocated/float(capacityAvailable)
+            if capacityAvailable:
+                periodDict['utilization']=capacityAllocated/float(capacityAvailable)
+            else:
+                # TODO check how the utilization and mean utilization should be calculated if it is 0
+                periodDict['utilization']=0
             # update the utilisationDict of the station
             station.utilisationDict.append(periodDict)             
 
@@ -198,8 +206,9 @@ class CapacityStationController(EventGenerator):
             # list to keep entities that have not been already allocated
             entitiesNotAllocated=list(activeObjectQueue)                                                                             
             
-
             allCapacityConsumed=False    
+            if totalAvailableCapacity==0:
+                allCapacityConsumed=True
             while not allCapacityConsumed:       
                 # list to keep entities that are within a threshold from the EDD
                 entitiesWithinThreshold=[]
@@ -230,11 +239,13 @@ class CapacityStationController(EventGenerator):
                     for entity in entitiesWithinThreshold:
                         if self.checkIfProjectCanStartInStation(entity.capacityProject, station) and\
                                     (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, buffer)):
-                            entity.shouldMove=True   
+                            entity.shouldMove=True  
                             # remove the entity from the none allocated ones
                             entitiesNotAllocated.remove(entity)
                     # check if all the capacity is consumed to update the flag and break the loop
                     if totalRequestedCapacity==totalAvailableCapacity:
+                        # the capacity will be 0 since we consumed it all 
+                        totalAvailableCapacity=0
                         allCapacityConsumed=True
                     # if we still have available capacity   
                     else:
@@ -245,13 +256,15 @@ class CapacityStationController(EventGenerator):
                                     (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, buffer)):
                                 haveMoreEntitiesToAllocate=True
                                 break
+                            
+                        # otherwise we have to calculate the capacity for next loop
+                        # the remaining capacity will be decreased by the one that was originally requested
+                        totalAvailableCapacity-=totalRequestedCapacity           
+
                         # if we have more entities break
                         if not haveMoreEntitiesToAllocate:
                             break                          
                         
-                        # otherwise we have to calculate the capacity for next loop
-                        # the remaining capacity will be decreased by the one that was originally requested
-                        totalAvailableCapacity-=totalRequestedCapacity           
                 # else calculate the capacity for every entity and create the entities
                 else:
                     allCapacityConsumed=True
@@ -272,7 +285,20 @@ class CapacityStationController(EventGenerator):
                             # else break the entity according to rule    
                             else:
                                 self.breakEntity(entity, buffer, station, totalAvailableCapacity, totalRequestedCapacity)
-                               
+                    # the capacity will be 0 since we consumed it all
+                    totalAvailableCapacity=0
+
+            if station.sharedResources:
+                self.setSharedCapacity(station, totalAvailableCapacity)
+                
+    def setSharedCapacity(self, station, capacity):
+        sharedStationsIds=station.sharedResources.get('stationIds', [])
+        for capacityStation in G.CapacityStationList:
+            if capacityStation is station:
+                continue
+            if capacityStation.id in sharedStationsIds:
+                capacityStation.remainingIntervalCapacity[0]=capacity 
+        
     # breaks an entity in the part that should move and the one that should stay
     def breakEntity(self, entity, buffer, station, totalAvailableCapacity, totalRequestedCapacity):
         # calculate what is the capacity that should proceed and what that should remain
@@ -388,5 +414,11 @@ class CapacityStationController(EventGenerator):
         if total-(alreadyWorked+required)<0.001 and availableCapacity>=required:  # a small value to avoid mistakes due to rounding
             return True
         return False
-        
+    
+    # sorts the buffers so if they have shared resources the ones with highest priority will go in front
+    def sortBuffers(self):
+        for buffer in G.CapacityStationBufferList:
+            station=buffer.next[0]
+            buffer.sharedPriority=station.sharedResources.get('priority', -float('inf'))
+        G.CapacityStationBufferList.sort(key=lambda x: x.sharedPriority, reverse=True)      
         
