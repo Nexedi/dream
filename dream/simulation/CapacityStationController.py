@@ -42,6 +42,8 @@ class CapacityStationController(EventGenerator):
         self.dueDateThreshold=dueDateThreshold
         # attribute that shows if we prioritize entities that can finish work in this station in the next interval
         self.prioritizeIfCanFinish=prioritizeIfCanFinish
+        # the total assemblySpace in the system
+        self.assemblySpace=float(G.extraPropertyDict.get('assemblySpace', float('inf')))
 
     def initialize(self):
         EventGenerator.initialize(self)

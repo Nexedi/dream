@@ -116,7 +116,9 @@ def readGeneralInput():
     G.trace=general.get('trace', 'No')                                      # get trace in order to check if trace is requested
     G.console=general.get('console', 'No')                                  # get console flag in order to check if console print is requested
     G.confidenceLevel=float(general.get('confidenceLevel', '0.95'))         # get the confidence level
-    G.seed = general.get('seed')
+    G.seed = general.get('seed')                                            # the seed for random number generation
+    G.extraPropertyDict=general.get('extraPropertyDict', {})                # a dict to put extra properties that are 
+                                                                            # generic for the model
 
 # ===========================================================================
 #                       creates the simulation objects
@@ -1269,8 +1271,11 @@ def createWIP():
                 capacityRequirementDict=entity.get('capacityRequirementDict', {})
                 earliestStartDict=entity.get('earliestStartDict', {})
                 dueDate=float(entity.get('dueDate', 0))
+                assemblySpaceRequirement=float(entity.get('assemblySpaceRequirement', 0))
+                
                 CP=CapacityProject(id=id, name=name, capacityRequirementDict=capacityRequirementDict, 
-                                        earliestStartDict=earliestStartDict, dueDate=dueDate) 
+                                        earliestStartDict=earliestStartDict, dueDate=dueDate,
+                                        assemblySpaceRequirement=assemblySpaceRequirement) 
                 G.EntityList.append(CP)     
                 G.CapacityProjectList.append(CP)
                          

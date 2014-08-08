@@ -34,12 +34,15 @@ from Entity import Entity
 class CapacityProject(Entity):
     type="CapacityProject"
     
-    def __init__(self, id=None, name=None, capacityRequirementDict={}, earliestStartDict={}, dueDate=0):
+    def __init__(self, id=None, name=None, capacityRequirementDict={}, earliestStartDict={}, dueDate=0,
+                 assemblySpaceRequirement=0):
         Entity.__init__(self, id, name, dueDate=dueDate)
         # a dict that shows the required capacity from every station
         self.capacityRequirementDict=capacityRequirementDict
         # a dict that shows the earliest start in every station
         self.earliestStartDict=earliestStartDict
+        # the assembly space the project requires
+        self.assemblySpaceRequirement=assemblySpaceRequirement
         
     def initialize(self):
         self.projectSchedule=[]     # a list of dicts to keep the schedule
