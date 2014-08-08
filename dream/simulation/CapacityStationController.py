@@ -212,7 +212,7 @@ class CapacityStationController(EventGenerator):
         # loop through the capacity station buffers
         for buffer in G.CapacityStationBufferList:
             activeObjectQueue=buffer.getActiveObjectQueue()
-            # sort entities according to due date
+            # sort entities according to due date of the project that each belongs to
             activeObjectQueue.sort(key=lambda x: x.capacityProject.dueDate)
            
             station=buffer.next[0]  # get the station
@@ -451,10 +451,6 @@ class CapacityStationController(EventGenerator):
         if buffer.requireFullProject:
             return entity.capacityProject.assemblySpaceRequirement<=availableSpace
         return True
-    
-    def checkIfEntityCanMove(self):
-        pass
-        
             
     # sorts the buffers so if they have shared resources the ones with highest priority will go in front
     def sortBuffers(self):
