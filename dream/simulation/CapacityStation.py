@@ -39,7 +39,8 @@ class CapacityStation(Queue):
     #===========================================================================
     # the __init__ method of the CapacityStation
     #===========================================================================
-    def __init__(self, id, name, capacity=float("inf"), intervalCapacity=[], schedulingRule="FIFO", gatherWipStat=False):
+    def __init__(self, id, name, capacity=float("inf"), intervalCapacity=[], schedulingRule="FIFO", gatherWipStat=False,
+                 sharedResources={}):
         Queue.__init__(self, id, name, capacity=capacity)
         # a list that holds the capacity (manhours) that is available in each interval
         self.intervalCapacity=intervalCapacity
@@ -47,6 +48,8 @@ class CapacityStation(Queue):
         self.remainingIntervalCapacity=list(self.intervalCapacity)
         # blocks the entry of the capacity station, so that it can be manipulated to accept only in certain moments of simulation time
         self.isLocked=True
+        # dict that holds information if station shares workpower with some other station
+        self.sharedResources=sharedResources
         
     def initialize(self):
         Queue.initialize(self)
