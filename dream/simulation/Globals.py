@@ -191,9 +191,12 @@ def setWIP(entityList):
     for entity in entityList:
         # if the entity is of type Part
         if entity.type=='Part' or entity.type=='Batch' or entity.type=='SubBatch' or entity.type=='CapacityEntity': 
-            object=entity.currentStation                        #identify the object
-            object.getActiveObjectQueue().append(entity)        #append the entity to its Queue
-            entity.schedule.append([object,G.env.now])              #append the time to schedule so that it can be read in the result
+            # these entities have to have a currentStation. 
+            # TODO apply a more generic approach so that all need to have
+            if entity.currentStation:   
+                object=entity.currentStation                        #identify the object
+                object.getActiveObjectQueue().append(entity)        #append the entity to its Queue
+                entity.schedule.append([object,G.env.now])              #append the time to schedule so that it can be read in the result
             
         
         # if the entity is of type Job/OrderComponent/Order/Mould
@@ -228,7 +231,7 @@ def setWIP(entityList):
             
             entity.remainingRoute.pop(0)                        # remove data from the remaining route.   
             entity.schedule.append([object,G.env.now])              #append the time to schedule so that it can be read in the result
-            entity.currentStation=object                        # update the current station of the entity 
+
         # if the currentStation of the entity is of type Machine then the entity 
         #     must be processed first and then added to the pendingEntities list
         #     Its hot flag is not raised        

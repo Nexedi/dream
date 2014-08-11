@@ -1186,9 +1186,9 @@ def createWIP():
                     batch.numberOfUnits+=numberOfUnits
                 else:     #if the parent batch was not found create it
                     batch=Batch(parentBatchId,parentBatchName, numberOfUnits)
-                    G.BatchList.append(B)   
-                    G.WipList.append(B)  
-                    G.EntityList.append(B)               
+                    G.BatchList.append(batch)   
+                    G.WipList.append(batch)  
+                    G.EntityList.append(batch)               
                            
                 SB=SubBatch(id,name, numberOfUnits=numberOfUnits, parentBatch=batch)
                 G.SubBatchList.append(SB)   
