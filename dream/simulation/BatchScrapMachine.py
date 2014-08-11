@@ -88,6 +88,10 @@ class BatchScrapMachine(Machine):
     # =======================================================================                                                                                
     def calculateProcessingTime(self):
         activeEntity = self.getActiveObjectQueue()[0]
+        # this is only for processing of the initial wip
+        if self.isProcessingInitialWIP:
+            if activeEntity.unitsToProcess:
+                return self.rng.generateNumber()*activeEntity.unitsToProcess 
         return self.rng.generateNumber()*activeEntity.numberOfUnits        
 
                 

@@ -1167,7 +1167,7 @@ def createWIP():
                 G.WipList.append(B)  
                 G.EntityList.append(B)  
                 object=Globals.findObjectById(element['id'])
-                B.remainingProcessingTime=entity.get('remainingProcessingTime', {})
+                B.unitsToProcess=int(entity.get('unitsToProcess', numberOfUnits))
                 B.currentStation=object
                 
             elif entityClass=='Dream.SubBatch':
@@ -1195,7 +1195,7 @@ def createWIP():
                 G.WipList.append(SB)  
                 G.EntityList.append(SB)  
                 object=Globals.findObjectById(element['id'])
-                SB.remainingProcessingTime=entity.get('remainingProcessingTime', {})
+                SB.unitsToProcess=int(entity.get('unitsToProcess', numberOfUnits))
                 SB.currentStation=object
 
             if entityClass=='Dream.Order':
