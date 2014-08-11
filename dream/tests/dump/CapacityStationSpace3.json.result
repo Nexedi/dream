@@ -1,0 +1,142 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "id": "CB1"
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "id": "CB2"
+  }, 
+  {
+   "_class": "Dream.Exit", 
+   "id": "CE2", 
+   "results": {
+    "lifespan": 3.5, 
+    "takt_time": 2.0, 
+    "throughput": 2
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "id": "CS1", 
+   "results": {
+    "capacityUsed": [
+     {
+      "P1": 80.0, 
+      "period": 0.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P1": 20.0, 
+      "period": 1.0, 
+      "utilization": 0.2
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 80.0, 
+      "operation": "CS1", 
+      "project": "P1", 
+      "time": 0.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "CS1", 
+      "project": "P1", 
+      "time": 1.0
+     }
+    ], 
+    "meanUtilization": 0.3
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "id": "CS2", 
+   "results": {
+    "capacityUsed": [
+     {
+      "period": 0.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 1.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P2": 100, 
+      "period": 2.0, 
+      "utilization": 0.3333333333333333
+     }, 
+     {
+      "P1": 100, 
+      "period": 3.0, 
+      "utilization": 1.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 100, 
+      "operation": "CS2", 
+      "project": "P2", 
+      "time": 2.0
+     }, 
+     {
+      "allocation": 100, 
+      "operation": "CS2", 
+      "project": "P1", 
+      "time": 3.0
+     }
+    ], 
+    "meanUtilization": 0.3333333333333333
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityProject", 
+   "id": "P1", 
+   "results": {
+    "schedule": [
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 2.0, 
+      "stationId": "CS1"
+     }, 
+     {
+      "entranceTime": 3.0, 
+      "exitTime": 4.0, 
+      "stationId": "CS2"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityProject", 
+   "id": "P2", 
+   "results": {
+    "schedule": [
+     {
+      "entranceTime": 2.0, 
+      "exitTime": 3.0, 
+      "stationId": "CS2"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "id": "QD"
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}

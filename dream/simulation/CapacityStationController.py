@@ -214,7 +214,7 @@ class CapacityStationController(EventGenerator):
             exit.currentlyObtainedEntities=[]
 
     def calculateWhatIsToBeProcessed(self):
-        availableSpace=self.assemblySpace
+        availableSpace=self.assemblySpace-self.calculateConsumedSpace()
         # loop through the capacity station buffers
         for buffer in G.CapacityStationBufferList:
             activeObjectQueue=buffer.getActiveObjectQueue()
@@ -455,7 +455,12 @@ class CapacityStationController(EventGenerator):
     # returns true if there is enough space for the entity to move
     def checkIfThereIsEnoughSpace(self, entity, buffer, availableSpace):
         if buffer.requireFullProject:
+            # if the project already consumes assembly space then there is enough space for it
+            if self.checkIfProjectConsumesAssemblySpace(entity, buffer):
+                return True
+            # else check if there is enough space            
             return entity.capacityProject.assemblySpaceRequirement<=availableSpace
+        # if the station is not assembly then return true
         return True
             
     # sorts the buffers so if they have shared resources the ones with highest priority will go in front
@@ -464,4 +469,30 @@ class CapacityStationController(EventGenerator):
             station=buffer.next[0]
             buffer.sharedPriority=station.sharedResources.get('priority', -float('inf'))
         G.CapacityStationBufferList.sort(key=lambda x: x.sharedPriority, reverse=True)      
+    
+    # calculates the space that is already consumed before the allocation for current period    
+    def calculateConsumedSpace(self):
+        consumedSpace=0
+        # loop in the buffers and find projects that have started assembly without having been finished
+        # add what they consume
+        for buffer in G.CapacityStationBufferList:
+            station=buffer.next[0]
+            for entity in buffer.getActiveObjectQueue():
+                if self.checkIfProjectConsumesAssemblySpace(entity, buffer):
+                    consumedSpace+=entity.capacityProject.capacityRequirementDict[station.id]
+        return consumedSpace
+    
+    # checks if a project already consumes assembly space because assembly work started in a previous period 
+    # and was not completed
+    def checkIfProjectConsumesAssemblySpace(self, entity, buffer):
+        if buffer.requireFullProject:
+            station=buffer.next[0]
+            project=entity.capacityProject
+            projectRequirement=project.capacityRequirementDict[station.id]
+            if projectRequirement>entity.requiredCapacity:
+                return True
+        return False
+            
+            
+        
         
