@@ -80,14 +80,6 @@
         "CS2": {
             "_class": "Dream.CapacityStation",
             "name": "ASBTST",
-            "intervalCapacity": [
-                80,
-                50,
-                300,
-                100,
-                200,
-                300
-            ],
             "sharedResources": {
                 "stationIds": [
                     "CS1"

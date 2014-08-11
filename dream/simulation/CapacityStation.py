@@ -53,6 +53,16 @@ class CapacityStation(Queue):
         
     def initialize(self):
         Queue.initialize(self)
+        # if the station shares resources and the capacity is not defined in this
+        # then read it from some other of the sharing stations
+        if not self.intervalCapacity and self.sharedResources:
+            for stationId in self.sharedResources.get('stationIds',[]):
+                import Globals
+                station=Globals.findObjectById(stationId)
+                if station.intervalCapacity:
+                    self.intervalCapacity=station.intervalCapacity
+                    break 
+        # initialize variables               
         self.remainingIntervalCapacity=list(self.intervalCapacity)
         self.isLocked=True
         self.utilisationDict=[]     # a list of dicts for the utilization results

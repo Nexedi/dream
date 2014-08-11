@@ -45,14 +45,6 @@
         "CS1": {
             "_class": "Dream.CapacityStation",
             "name": "PPASB",
-            "intervalCapacity": [
-                80,
-                50,
-                300,
-                100,
-                200,
-                300
-            ],
             "sharedResources": {
                 "stationIds": [
                     "CS2"
