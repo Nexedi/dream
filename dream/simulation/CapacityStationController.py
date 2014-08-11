@@ -191,12 +191,18 @@ class CapacityStationController(EventGenerator):
                             break
                     if not projectFinishedFromLast:
                         continue
-                
+                    
                 entityCapacity=entity.requiredCapacity
                 previousRequirement=float(project.capacityRequirementDict[previousStation.id])
                 nextRequirement=float(project.capacityRequirementDict[nextStation.id])
-                proportion=nextRequirement/previousRequirement
-                nextStationCapacityRequirement=proportion*entityCapacity
+                # if the previous station was assembly then in the next the full project arrives
+                # so requires whatever the project requires
+                if previousBuffer.requireFullProject:
+                    nextStationCapacityRequirement=nextRequirement
+                # else calculate proportionally
+                else:
+                    proportion=nextRequirement/previousRequirement
+                    nextStationCapacityRequirement=proportion*entityCapacity
                 entityToCreateName=entity.capacityProjectId+'_'+nextStation.objName+'_'+str(nextStationCapacityRequirement)
                 entityToCreate=CapacityEntity(name=entityToCreateName, capacityProjectId=entity.capacityProjectId, 
                                               requiredCapacity=nextStationCapacityRequirement)
