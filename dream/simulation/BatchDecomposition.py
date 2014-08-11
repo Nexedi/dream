@@ -81,7 +81,7 @@ class BatchDecomposition(CoreObject):
         while 1:
             # wait for an event or an interruption
             while 1:
-                receivedEvent=yield self.isRequested | self.interruptionStart
+                receivedEvent=yield self.isRequested | self.interruptionStart | self.initialWIP
                 # if an interruption has occurred 
                 if self.interruptionStart in receivedEvent:
                     assert self.interruptionStart.value==self.env.now, 'the interruption received by batchDecomposition was created earlier'
@@ -92,26 +92,39 @@ class BatchDecomposition(CoreObject):
                     self.interruptionEnd=self.env.event()
                     if self.signalGiver():
                         break
+                # if we have initial wip
+                elif self.initialWIP in receivedEvent:
+                    assert self.initialWIP.value==self.env, 'initial wip was not sent by the Environment'
+                    self.initialWIP=self.env.event()
+                    self.isProcessingInitialWIP=True
+                    break  
                 # otherwise proceed with getEntity
-                else:
+                else:                 
+                    requestingObject=self.isRequested.value
+                    assert requestingObject==self.giver, 'the giver is not the requestingObject'
+                    self.isRequested=self.env.event()
                     break
-            requestingObject=self.isRequested.value
-            assert requestingObject==self.giver, 'the giver is not the requestingObject'
-            self.isRequested=self.env.event()
                                                               
-            self.currentEntity=self.getEntity()
+            if not self.isProcessingInitialWIP:     # if we are in the state of having initial wip no need to take an Entity
+                self.currentEntity=self.getEntity()
+                
             # set the currentEntity as the Entity just received and initialize the timer timeLastEntityEntered
             self.nameLastEntityEntered=self.currentEntity.name      # this holds the name of the last entity that got into Machine                   
-            self.timeLastEntityEntered=self.env.now                        #this holds the last time that an entity got into Machine  
+            self.timeLastEntityEntered=self.env.now                 #this holds the last time that an entity got into Machine  
             
-            self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()
+            # if we have batch in the decomposition (initial wip may be in sub-batch)
+            if self.getActiveObjectQueue()[0].__class__.__name__=='Batch':     
+                self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()
+                yield self.env.timeout(self.totalProcessingTimeInCurrentEntity)
+                self.decompose()
             
-            yield self.env.timeout(self.totalProcessingTimeInCurrentEntity)
-            self.decompose()
+            # reset the variable
+            self.isProcessingInitialWIP=False
             
             # TODO: add failure control
             # as long as there are sub-Batches in the internal Resource
-            for i in range(self.numberOfSubBatches):
+            numberOfSubBatches=int(len(self.getActiveObjectQueue()))
+            for i in range(numberOfSubBatches):
                 # added here temporarily, it is supposed to break when i==numberOfSubBatches
                 if not self.getActiveObjectQueue():
                     break
@@ -242,3 +255,4 @@ class BatchDecomposition(CoreObject):
         giverObject=callerObject
         assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
         return activeObject.Up and len(activeObjectQueue)==0 and giverObject.haveToDispose(activeObject)
+  

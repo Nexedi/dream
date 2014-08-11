@@ -378,11 +378,11 @@ class Machine(CoreObject):
              
             # TODO: reset the requestinEntity before receiving the currentEntity
             self.requestingEntity=None
-            # get the entity
+            # get the entity 
                     # TODO: if there was loading time then we must solve the problem of getting an entity
                     # from an unidentified giver or not getting an entity at all as the giver 
                     # may fall in failure mode (assignExit()?)
-            if not self.isProcessingInitialWIP:
+            if not self.isProcessingInitialWIP:     # if we are in the state of having initial wip no need to take an Entity
                 self.currentEntity=self.getEntity()
             # TODO: the Machine receive the entity  after the operator is available
             #     the canAcceptAndIsRequested method checks only in case of Load type of operation 

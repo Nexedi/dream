@@ -250,10 +250,12 @@ def setWIP(entityList):
                 entity.hot = True
             # add the entity to the pendingEntities list
             G.pendingEntities.append(entity)
-        # if we are in the start of the simulation the object is of Machine type then we should send initialWIP signal
+        # if we are in the start of the simulation the object is of server type then we should send initialWIP signal
+        # TODO, maybe use 'class_family attribute here'
         if G.env.now==0 and entity.currentStation:
             if entity.currentStation.class_name:
-                if entity.currentStation.class_name == 'Dream.Machine':
+                stationClass=entity.currentStation.__class__.__name__
+                if stationClass in ['Machine', 'BatchScrapMachine', 'MachineJobShop','BatchDecomposition']:
                     entity.currentStation.currentEntity=entity
                     entity.currentStation.initialWIP.succeed(G.env)
 
