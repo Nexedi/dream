@@ -488,6 +488,8 @@
       document.importNode(popup_edit_template.content, true).children[0]
     );
     node_edit_popup = $(gadget.props.element).find('#node-edit-popup');
+    // Set the name of the popup to the node class
+    node_edit_popup.find('.node_class').text(node_data._class);
     fieldset_element = node_edit_popup.find('fieldset')[0];
     node_edit_popup.popup();
 
