@@ -249,6 +249,7 @@ def overloaded_property(prop, overload):
 # complex schemas (Dream.PropertyList)
 schema["processingTime"] = {
   "id": "processingTime",
+  "name": "Processing Time",
   "property_list": [
     schema["distributionType"],
     overloaded_property(schema["mean"], {"_default": 0.75}),
@@ -261,6 +262,7 @@ schema["processingTime"] = {
 
 schema["interarrivalTime"] = {
   "id": "interarrivalTime",
+  "name": "Interarrival Time",
   "property_list": [
     schema["distributionType"],
     schema["mean"],
@@ -274,6 +276,7 @@ schema["interarrivalTime"] = {
 
 schema["failures"] = {
   "id": "failures",
+  "name": "Failures",
   "property_list": [
     schema["failureDistribution"],
     schema["MTTF"],
