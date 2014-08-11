@@ -190,7 +190,7 @@ def setWIP(entityList):
     # for all the entities in the entityList
     for entity in entityList:
         # if the entity is of type Part
-        if entity.type=='Part' or entity.type=='Batch' or entity.type=='SubBatch' or entity.type=='CapacityEntity': 
+        if entity.type in ['Part', 'Batch', 'SubBatch','CapacityEntity']:
             # these entities have to have a currentStation. 
             # TODO apply a more generic approach so that all need to have
             if entity.currentStation:   
@@ -201,7 +201,7 @@ def setWIP(entityList):
         
         # if the entity is of type Job/OrderComponent/Order/Mould
         # XXX Orders do no more run in the system, instead we have OrderDesigns
-        elif entity.type=='Job' or entity.type=='OrderComponent' or entity.type=='Order' or entity.type=='OrderDesign' or entity.type=='Mould':
+        elif entity.type in ['Job', 'OrderComponent', 'Order','OrderDesign', 'Mould']:
             # find the list of starting station of the entity
             currentObjectIds=entity.remainingRoute[0].get('stationIdsList',[])
             # if the list of starting stations has length greater than one then there is a starting WIP definition error 
