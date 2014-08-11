@@ -142,6 +142,12 @@ def _runSimulation(parameter_dict):
 
 def getGUIInstance():
     # XXX do not instanciate each time!
+    parser = argparse.ArgumentParser(description='Launch the DREAM simulation platform.')
+    parser.add_argument('gui_class', metavar='GUI_KLASS', nargs="?", default="Default",
+                help='The GUI klass to launch')
+    arguments = parser.parse_args()
+    global klass_name
+    klass_name = 'dream.simulation.GUI.%s' % arguments.gui_class
     klass = __import__(klass_name, globals(), {}, klass_name)
     instance = klass.Simulation(logger=app.logger)
     return instance
