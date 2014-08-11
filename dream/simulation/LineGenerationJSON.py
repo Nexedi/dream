@@ -1304,6 +1304,15 @@ def createObjectInterruptions():
         if len(shift):
             victim=Globals.findObjectById(element['id'])
             shiftPattern=list(shift.get('shiftPattern', []))
+            # patch to correct if input has end of shift at the same time of start of next shift
+            # TODO check if the backend should be able to handle this
+            for index, element in enumerate(shiftPattern):
+                if element is shiftPattern[-1]:
+                    break
+                next = shiftPattern[index + 1]
+                if element[1]==next[0]:
+                    element[1]=next[1]
+                    shiftPattern.remove(next)
             endUnfinished=bool(int(shift.get('endUnfinished', 0)))
             SS=ShiftScheduler(victim, shiftPattern, endUnfinished)
             G.ObjectInterruptionList.append(SS)
@@ -1337,7 +1346,6 @@ def main(argv=[], input_data=None):
       G.InputData=G.JSONFile.read()                 # pass the contents of the input file to the global var InputData
     else:
       G.InputData = input_data
-
     start=time.time()                               # start counting execution time 
 
     #read the input from the JSON file and create the line
