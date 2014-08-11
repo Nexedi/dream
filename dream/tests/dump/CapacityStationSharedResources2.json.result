@@ -26,11 +26,11 @@
      {
       "P1": 50, 
       "period": 0.0, 
-      "utilization": 0
+      "utilization": 0.625
      }, 
      {
       "period": 1.0, 
-      "utilization": 0
+      "utilization": 0.0
      }, 
      {
       "period": 2.0, 
@@ -45,7 +45,7 @@
       "time": 0.0
      }
     ], 
-    "meanUtilization": 0.0
+    "meanUtilization": 0.20833333333333334
    }
   }, 
   {
@@ -56,7 +56,7 @@
      {
       "P2": 30.0, 
       "period": 0.0, 
-      "utilization": 1.0
+      "utilization": 0.375
      }, 
      {
       "P1": 30.0, 
@@ -96,7 +96,7 @@
       "time": 2.0
      }
     ], 
-    "meanUtilization": 0.7444444444444445
+    "meanUtilization": 0.5361111111111111
    }
   }, 
   {

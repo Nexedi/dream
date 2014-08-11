@@ -26,7 +26,7 @@
      {
       "P1": 30.0, 
       "period": 0.0, 
-      "utilization": 1.0
+      "utilization": 0.375
      }, 
      {
       "P1": 20.0, 
@@ -52,7 +52,7 @@
       "time": 1.0
      }
     ], 
-    "meanUtilization": 0.4666666666666667
+    "meanUtilization": 0.2583333333333333
    }
   }, 
   {
@@ -63,7 +63,7 @@
      {
       "P2": 50, 
       "period": 0.0, 
-      "utilization": 0
+      "utilization": 0.625
      }, 
      {
       "period": 1.0, 
@@ -72,7 +72,7 @@
      {
       "P1": 100, 
       "period": 2.0, 
-      "utilization": 0.5
+      "utilization": 0.3333333333333333
      }
     ], 
     "detailedWorkPlan": [
@@ -89,7 +89,7 @@
       "time": 2.0
      }
     ], 
-    "meanUtilization": 0.16666666666666666
+    "meanUtilization": 0.3194444444444444
    }
   }, 
   {

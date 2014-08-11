@@ -26,16 +26,16 @@
      {
       "P1": 30.0, 
       "period": 0.0, 
-      "utilization": 1.0
+      "utilization": 0.375
      }, 
      {
       "period": 1.0, 
-      "utilization": 0
+      "utilization": 0.0
      }, 
      {
       "P1": 20.0, 
       "period": 2.0, 
-      "utilization": 0.06896551724137931
+      "utilization": 0.06666666666666667
      }, 
      {
       "period": 3.0, 
@@ -56,7 +56,7 @@
       "time": 2.0
      }
     ], 
-    "meanUtilization": 0.2672413793103448
+    "meanUtilization": 0.11041666666666666
    }
   }, 
   {
@@ -67,22 +67,22 @@
      {
       "P2": 50, 
       "period": 0.0, 
-      "utilization": 0
+      "utilization": 0.625
      }, 
      {
       "P1": 50.0, 
       "period": 1.0, 
-      "utilization": 0
+      "utilization": 1.0
      }, 
      {
       "P1": 10.0, 
       "period": 2.0, 
-      "utilization": 0.037037037037037035
+      "utilization": 0.03333333333333333
      }, 
      {
       "P1": 40.0, 
       "period": 3.0, 
-      "utilization": 0.6666666666666666
+      "utilization": 0.4
      }
     ], 
     "detailedWorkPlan": [
@@ -111,7 +111,7 @@
       "time": 3.0
      }
     ], 
-    "meanUtilization": 0.17592592592592593
+    "meanUtilization": 0.5145833333333334
    }
   }, 
   {

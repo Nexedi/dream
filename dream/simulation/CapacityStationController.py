@@ -120,7 +120,7 @@ class CapacityStationController(EventGenerator):
             periodDict['period']=self.env.now
             # loop though the entities
             entitiesToCheck=list(buffer.getActiveObjectQueue())
-            capacityAvailable=station.remainingIntervalCapacity[0]
+            capacityAvailable=station.intervalCapacity[int(self.env.now)]
             capacityAllocated=0
             for entity in entitiesToCheck:
                 if not entity.shouldMove:   # when the first entity that should not move is reached break

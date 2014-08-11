@@ -30,7 +30,7 @@
      }, 
      {
       "period": 1.0, 
-      "utilization": 0
+      "utilization": 0.0
      }, 
      {
       "P2": 50, 
@@ -71,7 +71,7 @@
      {
       "P1": 100, 
       "period": 1.0, 
-      "utilization": 0
+      "utilization": 1.0
      }, 
      {
       "period": 2.0, 
@@ -80,7 +80,7 @@
      {
       "P2": 50, 
       "period": 3.0, 
-      "utilization": 1.0
+      "utilization": 0.5
      }
     ], 
     "detailedWorkPlan": [
@@ -97,7 +97,7 @@
       "time": 3.0
      }
     ], 
-    "meanUtilization": 0.25
+    "meanUtilization": 0.375
    }
   }, 
   {
