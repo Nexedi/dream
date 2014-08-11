@@ -26,7 +26,7 @@
       })
       .push(function (body) {
         var data = JSON.parse(body);
-        data.capacity_by_station_spreadsheet = JSON.parse(editor_data);
+        data.capacity_by_project_spreadsheet = JSON.parse(editor_data);
         return gadget.aq_putAttachment({
           "_id": gadget.props.jio_key,
           "_attachment": "body.json",
@@ -79,9 +79,8 @@
         .push(function (result_list) {
           return result_list[1].render(
             JSON.stringify(JSON.parse(result_list[0])
-              .capacity_by_station_spreadsheet),
-            { minSpareCols: 1,
-              minSpareRows: 1 }
+              .capacity_by_project_spreadsheet),
+            {minSpareRows: 1}
           );
         });
     })
