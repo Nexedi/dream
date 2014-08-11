@@ -6,10 +6,10 @@
    "family": "Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 48.0, 
+    "lifespan": 32.0, 
     "takt_time": 16.0, 
-    "throughput": 5, 
-    "unitsThroughput": 400
+    "throughput": 3, 
+    "unitsThroughput": 240
    }
   }, 
   {
@@ -17,10 +17,10 @@
    "family": "Server", 
    "id": "M1", 
    "results": {
-    "blockage_ratio": 30.0, 
+    "blockage_ratio": 25.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 30.0, 
-    "working_ratio": 40.0
+    "waiting_ratio": 41.666666666666664, 
+    "working_ratio": 33.333333333333336
    }
   }, 
   {
