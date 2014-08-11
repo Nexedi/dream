@@ -610,7 +610,7 @@
         "class": element._class.replace('.', '-'),
         "element_id": element.element_id,
         "title": element.name || element.id,
-        "name": element.name
+        "name": element.name || element.id
       }),
       "text/html"
     ).querySelector('.window');
