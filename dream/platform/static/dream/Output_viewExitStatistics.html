@@ -28,32 +28,27 @@
     <script id="simple-metric-template" type="text/x-handlebars-template">
       <tr>
         <td>{{metric}}</td>
-        <td>{{value}}</td>
+        <td>{{{value}}}</td>
       </tr>
     </script>
 
     <script id="metric-object-template" type="text/x-handlebars-template">
-      <tr>
-        <td>{{metric}}</td>
-        <td>
-          <table width='100%'>
-            <tbody>
-              <tr>
-                <td>Average</td>
-                <td>{{avg}}</td>
-              </tr>
-              <tr>
-                <td>Lower Bound</td>
-                <td>{{lb}}</td>
-              </tr>
-              <tr>
-                <td>Upper Bound</td>
-                <td>{{ub}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </td>
-      </tr>
+      <table width='100%'>
+        <tbody>
+          <tr>
+            <td>Average</td>
+            <td>{{avg}}</td>
+          </tr>
+          <tr>
+            <td>Lower Bound</td>
+            <td>{{lb}}</td>
+          </tr>
+          <tr>
+            <td>Upper Bound</td>
+            <td>{{ub}}</td>
+          </tr>
+        </tbody>
+      </table>
     </script>
 
     <script id="header-template" type="text/x-handlebars-template">
