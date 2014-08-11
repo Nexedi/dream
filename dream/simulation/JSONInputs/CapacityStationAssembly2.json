@@ -1,0 +1,169 @@
+{
+    "_class": "Dream.Simulation",
+    "edges": {
+        "0": [
+            "CB1",
+            "CS1",
+            {}
+        ],
+        "1": [
+            "CS1",
+            "CE1",
+            {}
+        ],
+        "2": [
+            "CB2",
+            "CS2",
+            {}
+        ],
+        "3": [
+            "CS2",
+            "CE2",
+            {}
+        ],
+        "4": [
+            "CB3",
+            "CS3",
+            {}
+        ],
+        "5": [
+            "CS3",
+            "CE3",
+            {}
+        ]
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "confidenceLevel": "0.95",
+        "maxSimTime": "-1",
+        "numberOfReplications": "1",
+        "trace": "Yes",
+        "extraPropertyDict": {
+            "assemblySpace": 100
+        }
+    },
+    "nodes": {
+        "CB1": {
+            "_class": "Dream.CapacityStationBuffer",
+            "name": "PPASBBuffer",
+            "requireFullProject": 1,
+            "wip": [
+                {
+                    "_class": "Dream.CapacityEntity",
+                    "capacityProjectId": "P1",
+                    "name": "PPASB",
+                    "requiredCapacity": 100
+                }
+            ]
+        },
+        "CS1": {
+            "_class": "Dream.CapacityStation",
+            "name": "PPASB",
+            "intervalCapacity": [
+                80,
+                80,
+                300,
+                100,
+                200,
+                300
+            ],
+            "sharedResources": {
+                "stationIds": [
+                    "CS3"
+                ],
+                "priority": 1
+            }
+        },
+        "CE1": {
+            "_class": "Dream.CapacityStationExit",
+            "name": "PPASBExit",
+            "nextCapacityStationBufferId": "CB2"
+        },
+        "CB2": {
+            "_class": "Dream.CapacityStationBuffer",
+            "name": "PAINTBuffer",
+            "requireFullProject": 0,
+            "wip": []
+        },
+        "CS2": {
+            "_class": "Dream.CapacityStation",
+            "name": "PAINT",
+            "intervalCapacity": [
+                100,
+                100,
+                40,
+                100,
+                200,
+                300
+            ],
+            "sharedResources": {
+                "stationIds": [
+                    "CS1"
+                ],
+                "priority": 2
+            }
+        },
+        "CE2": {
+            "_class": "Dream.CapacityStationExit",
+            "name": "PAINTExit",
+            "nextCapacityStationBufferId": "CB3"
+        },
+        "CB3": {
+            "_class": "Dream.CapacityStationBuffer",
+            "name": "ASBTSTBuffer",
+            "requireFullProject": 1,
+            "wip": []
+        },
+        "CS3": {
+            "_class": "Dream.CapacityStation",
+            "name": "ASBTST",
+            "intervalCapacity": [
+                80,
+                80,
+                300,
+                100,
+                200,
+                300
+            ],
+            "sharedResources": {
+                "stationIds": [
+                    "CS1"
+                ],
+                "priority": 2
+            }
+        },
+        "CE3": {
+            "_class": "Dream.CapacityStationExit",
+            "name": "ASBTSTExit"
+        },
+        "QD": {
+            "_class": "Dream.Queue",
+            "capacity": "-1",
+            "id": "QD",
+            "name": "DUMMY",
+            "wip": [
+                {
+                    "_class": "Dream.CapacityProject",
+                    "id": "P1",
+                    "name": "P1",
+                    "capacityRequirementDict": {
+                        "CS1": 100,
+                        "CS2": 50,
+                        "CS3": 70
+                    },
+                    "dueDate": 10,
+                    "assemblySpaceRequirement": 50
+                }
+            ]
+        },
+        "CSC": {
+            "_class": "Dream.CapacityStationController",
+            "name": "CSC",
+            "start": "0",
+            "interval": "1",
+            "method": "Dream.None",
+            "prioritizeIfCanFinish": 1,
+            "dueDateThreshold": 7
+        }
+    }
+}
