@@ -1329,7 +1329,8 @@ def createObjectInterruptions():
                 pass
             else:
                 victim=Globals.findObjectById(element['id'])
-                F=Failure(victim, distribution=failure, repairman=victim.repairman)
+                deteriorationType=failure.get('deteriorationType', 'constant')
+                F=Failure(victim, distribution=failure, repairman=victim.repairman, deteriorationType=deteriorationType)
                 G.ObjectInterruptionList.append(F)
                 G.FailureList.append(F)
         # if there is a shift pattern defined 
