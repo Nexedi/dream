@@ -44,6 +44,7 @@ class ScheduledMaintenance(ObjectInterruption):
             loaded         : the maintenance starts as soon as the victim has ended processing
             emptied        : the maintenance starts as soon as the victim is empty
         '''
+        self.type="ScheduledMaintenance"
         ObjectInterruption.__init__(self,victim)
         self.start=start
         self.duration=duration
