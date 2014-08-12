@@ -255,9 +255,12 @@ def setWIP(entityList):
         if G.env.now==0 and entity.currentStation:
             if entity.currentStation.class_name:
                 stationClass=entity.currentStation.__class__.__name__
-                if stationClass in ['Machine', 'BatchScrapMachine', 'MachineJobShop','BatchDecomposition']:
+                if stationClass in ['Machine', 'BatchScrapMachine', 'MachineJobShop','BatchDecomposition', 'BatchReassembly']:
                     entity.currentStation.currentEntity=entity
-                    entity.currentStation.initialWIP.succeed(G.env)
+                    # trigger initialWIP event only if it has not been triggered. Otherwise
+                    # if we set more than one entities (e.g. in reassembly) it will crash
+                    if not (entity.currentStation.initialWIP.triggered):
+                        entity.currentStation.initialWIP.succeed(G.env)
 
 from Exit import Exit
 def countIntervalThroughput(argumentDict={}):

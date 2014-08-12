@@ -77,7 +77,7 @@ class BatchReassembly(CoreObject):
         self.initialSignalReceiver()
         while 1:
             while 1:
-                receivedEvent=yield self.isRequested | self.interruptionStart
+                receivedEvent=yield self.isRequested | self.interruptionStart | self.initialWIP
                 if self.interruptionStart in receivedEvent:
                     assert self.interruptionStart.value==self.env.now, 'the interruptionStart received by BatchReassembly later than created'
                     self.interruptionStart=self.env.event()
@@ -86,23 +86,33 @@ class BatchReassembly(CoreObject):
                     self.interruptionEnd=self.env.event()
                     if self.signalGiver():
                         break
-                else:
+                # if we have initial wip
+                elif self.initialWIP in receivedEvent:
+                    assert self.initialWIP.value==self.env, 'initial wip was not sent by the Environment'
+                    self.initialWIP=self.env.event()
+                    self.isProcessingInitialWIP=True
+                    break  
+                # otherwise proceed with getEntity
+                else:                 
+                    requestingObject=self.isRequested.value
+                    assert requestingObject==self.giver, 'the giver is not the requestingObject'
+                    self.isRequested=self.env.event()
                     break
-            requestingObject=self.isRequested.value
-            assert requestingObject==self.giver, 'the giver is not the requestingObject'
-            self.isRequested=self.env.event()
             
-            self.currentEntity=self.getEntity()
-            
+            if not self.isProcessingInitialWIP:     # if we are in the state of having initial wip no need to take an Entity
+                self.currentEntity=self.getEntity()            
+                
             # initialize the timer timeLastEntityEntered
             self.nameLastEntityEntered=self.currentEntity.name              # this holds the name of the last entity that got into Machine                   
             self.timeLastEntityEntered=self.env.now                         #this holds the last time that an entity got into Machine  
-            
-#             self.tinM=self.totalProcessingTimeInCurrentEntity                                          # timer to hold the processing time left
-            
-            if len(self.getActiveObjectQueue())==self.numberOfSubBatches and self.currentEntity.type!='Batch':
-                yield self.env.timeout(self.calculateProcessingTime())
-                self.reassemble()
+                       
+            if (len(self.getActiveObjectQueue())==self.numberOfSubBatches and self.currentEntity.type!='Batch')\
+                    or (self.isProcessingInitialWIP and self.currentEntity.type=='Batch'):  # this needed for initial 
+                                                                                            # WIP that may be batch
+                # Reassemble only if current entity is SubBatch
+                if self.currentEntity.type=='SubBatch':
+                    yield self.env.timeout(self.calculateProcessingTime())
+                    self.reassemble()
                 if not self.signalReceiver():
                     while 1:
                         receivedEvent=yield self.canDispose | self.interruptionStart
