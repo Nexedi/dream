@@ -97,6 +97,7 @@ class BatchReassembly(CoreObject):
                     requestingObject=self.isRequested.value
                     assert requestingObject==self.giver, 'the giver is not the requestingObject'
                     self.isRequested=self.env.event()
+                    self.isProcessingInitialWIP=False
                     break
             
             if not self.isProcessingInitialWIP:     # if we are in the state of having initial wip no need to take an Entity
@@ -113,6 +114,7 @@ class BatchReassembly(CoreObject):
                 if self.currentEntity.type=='SubBatch':
                     yield self.env.timeout(self.calculateProcessingTime())
                     self.reassemble()
+                self.isProcessingInitialWIP=False
                 if not self.signalReceiver():
                     while 1:
                         receivedEvent=yield self.canDispose | self.interruptionStart
