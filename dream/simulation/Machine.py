@@ -189,6 +189,7 @@ class Machine(CoreObject):
         self.preemptQueue=self.env.event()
         # signal used for informing objectInterruption objects that the current entity processed has finished processnig
         self.endedLastProcessing=self.env.event()
+        self.expectedDownTime=-1     # the time the next failure is expected 
     
     #===========================================================================
     # create an operatorPool if needed
@@ -692,7 +693,10 @@ class Machine(CoreObject):
     # checks if the machine is Up
     # =======================================================================
     def checkIfMachineIsUp(self):
-        return self.Up
+        # the second part is added for synchronisation.
+        # if Machine is to get failure at the current time but did not get it yet 
+        # return also false
+        return self.Up and not self.expectedDownTime==self.env.now
 
     # =======================================================================
     # checks if the Machine can accept an entity

@@ -87,37 +87,38 @@ class Failure(ObjectInterruption):
     # =======================================================================
     #    The run method for the failure which has to served by a repairman
     # =======================================================================
-    def run(self):           
+    def run(self):     
         while 1:
             # if the time that the victim is off-shift should not be counted
-            if self.offshift:
-                timeToFailure=self.rngTTF.generateNumber()
-                remainingTimeToFailure=timeToFailure
-                failureNotTriggered=True
-                
-                while failureNotTriggered:
-                    timeRestartedCounting=self.env.now
-                    # TODO: can also wait for interruptionStart signal of the victim and check whether the interruption is caused by a shiftScheduler
-                    receivedEvent=yield self.env.timeout(remainingTimeToFailure) | self.victim.interruptionStart #offShift
-                    # the failure should receive a signal if there is a shift-off triggered
-                    if self.victim.interruptionStart in receivedEvent:
-                        # TODO: the signal interruptionStart is reset by the time it is received by the victim. not sure if will be still triggered when it is checked here 
-                        assert self.victim.onShift==False, 'shiftFailure cannot recalculate TTF if the victim is onShift'
-                        remainingTimeToFailure=remainingTimeToFailure-(self.env.now-timeRestartedCounting)
-                        # wait for the shift to start again
-                        yield self.victim.interruptionEnd
-                        assert self.victim.onShift==True, 'the victim of shiftFailure must be onShift to continue counting the TTF'
-                        # TODO: the signal interruptionStart is reset by the time it is received by the victim. not sure if will be still triggered when it is checked here
-                    else:
-                        failureNotTriggered=False
-            else:
-                yield self.env.timeout(self.rngTTF.generateNumber())    # wait until a failure happens                  
+            timeToFailure=self.rngTTF.generateNumber()
+            remainingTimeToFailure=timeToFailure
+            self.victim.expectedDownTime=self.env.now+remainingTimeToFailure
+            failureNotTriggered=True
+            
+            while failureNotTriggered:
+                timeRestartedCounting=self.env.now
+                # TODO: can also wait for interruptionStart signal of the victim and check whether the interruption is caused by a shiftScheduler
+                receivedEvent=yield self.env.timeout(remainingTimeToFailure) | self.victim.interruptionStart #offShift
+                # the failure should receive a signal if there is a shift-off triggered
+                if self.victim.interruptionStart in receivedEvent:
+                    # TODO: the signal interruptionStart is reset by the time it is received by the victim. not sure if will be still triggered when it is checked here 
+                    assert self.victim.onShift==False, 'shiftFailure cannot recalculate TTF if the victim is onShift'
+                    remainingTimeToFailure=remainingTimeToFailure-(self.env.now-timeRestartedCounting)
+                    self.victim.expectedDownTime=self.env.now+remainingTimeToFailure
+
+                    # wait for the shift to start again
+                    yield self.victim.interruptionEnd
+                    assert self.victim.onShift==True, 'the victim of shiftFailure must be onShift to continue counting the TTF'
+                    # TODO: the signal interruptionStart is reset by the time it is received by the victim. not sure if will be still triggered when it is checked here
+                else:
+                    failureNotTriggered=False
+            
             self.interruptVictim()                      # interrupt the victim
             self.victim.Up=False
             self.victim.timeLastFailure=self.env.now           
             self.outputTrace("is down")
             # update the failure time
-            failTime=self.env.now            
+            failTime=self.env.now    
             if(self.repairman and self.repairman!="None"):     #if the failure needs a resource to be fixed, the machine waits until the 
                                             #resource is available
 #                 print self.env.now, self.repairman.id, 'will be requested by', self.victim.id
