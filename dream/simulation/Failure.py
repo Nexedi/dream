@@ -59,7 +59,7 @@ class Failure(ObjectInterruption):
         # 'onShift' counts only if the victim is onShift
         # 'working' counts only working time
         self.deteriorationType=deteriorationType
-
+        
         if(self.distType=="Availability"):      
             
             # -------------------------------------------------------------- 
@@ -91,6 +91,11 @@ class Failure(ObjectInterruption):
         # flag used to identify if the time between failures should be counted while the victim is off-shift
         self.offshift=offshift
 
+    def initialize(self):
+        ObjectInterruption.initialize(self)
+        self.victimStartsProcess=self.env.event()
+        self.victimEndsProcess=self.env.event()       
+        
     # =======================================================================
     #    The run method for the failure which has to served by a repairman
     # =======================================================================
@@ -104,7 +109,7 @@ class Failure(ObjectInterruption):
             
             if self.deteriorationType=='constant':
                 yield self.env.timeout(remainingTimeToFailure)
-            else:
+            elif self.deteriorationType=='onShift':
                 while failureNotTriggered:
                     timeRestartedCounting=self.env.now
                     # TODO: can also wait for interruptionStart signal of the victim and check whether the interruption is caused by a shiftScheduler
@@ -122,7 +127,24 @@ class Failure(ObjectInterruption):
                         # TODO: the signal interruptionStart is reset by the time it is received by the victim. not sure if will be still triggered when it is checked here
                     else:
                         failureNotTriggered=False
-            
+            elif self.deteriorationType=='working':
+                yield self.victimStartsProcess
+                self.victimStartsProcess=self.env.event()
+                while failureNotTriggered:
+                    timeRestartedCounting=self.env.now
+                    receivedEvent=yield self.env.timeout(remainingTimeToFailure) | self.victimEndsProcess 
+                    if self.victimEndsProcess in receivedEvent:
+                        #print self.env.now, 'victimEndsProcess'
+                        self.victimEndsProcess=self.env.event()
+                        remainingTimeToFailure=remainingTimeToFailure-(self.env.now-timeRestartedCounting)
+                        self.victim.expectedDownTime=self.env.now+remainingTimeToFailure
+                        yield self.victimStartsProcess
+                        self.victimStartsProcess=self.env.event()
+                        #print self.env.now, 'startsProcess'
+                    else:
+                        failureNotTriggered=False
+           
+           
             # interrupt the victim only if it was not previously interrupted
             if not self.victim.interruptionStart.triggered:
                 self.interruptVictim()                      # interrupt the victim

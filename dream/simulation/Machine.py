@@ -451,6 +451,12 @@ class Machine(CoreObject):
             # timers to follow up the failure time of the machine while on current Entity
             self.downTimeInCurrentEntity=0                          #holds the total time that the 
                                                                     #object was down while holding current entity
+                                                                    
+            for oi in self.objectInterruptions:
+                if oi.type=='Failure':
+                    if oi.deteriorationType=='working':
+                        oi.victimStartsProcess.succeed(self.env.now)
+                                                                     
             # this loop is repeated until the processing time is expired with no failure
             # check when the processingEndedFlag switched to false              
             while processingNotFinished:
@@ -624,7 +630,12 @@ class Machine(CoreObject):
         # reseting flags
         self.shouldPreempt=False
         self.isProcessingInitialWIP=False
-        
+
+        for oi in self.objectInterruptions:
+            if oi.type=='Failure':
+                if oi.deteriorationType=='working':
+                    oi.victimEndsProcess.succeed(self.env.now)
+
         # in case Machine just performed the last work before the scheduled maintenance signal the corresponding object
         if self.isWorkingOnTheLast:
             # for the scheduled Object interruptions
@@ -693,10 +704,7 @@ class Machine(CoreObject):
     # checks if the machine is Up
     # =======================================================================
     def checkIfMachineIsUp(self):
-        # the second part is added for synchronisation.
-        # if Machine is to get failure at the current time but did not get it yet 
-        # return also false
-        return self.Up and not self.expectedDownTime==self.env.now
+        return self.Up 
 
     # =======================================================================
     # checks if the Machine can accept an entity
