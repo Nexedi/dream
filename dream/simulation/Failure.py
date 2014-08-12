@@ -104,7 +104,6 @@ class Failure(ObjectInterruption):
             # if the time that the victim is off-shift should not be counted
             timeToFailure=self.rngTTF.generateNumber()
             remainingTimeToFailure=timeToFailure
-            self.victim.expectedDownTime=self.env.now+remainingTimeToFailure
             failureNotTriggered=True
             
             if self.deteriorationType=='constant':
@@ -119,7 +118,6 @@ class Failure(ObjectInterruption):
                         # TODO: the signal interruptionStart is reset by the time it is received by the victim. not sure if will be still triggered when it is checked here 
                         assert self.victim.onShift==False, 'shiftFailure cannot recalculate TTF if the victim is onShift'
                         remainingTimeToFailure=remainingTimeToFailure-(self.env.now-timeRestartedCounting)
-                        self.victim.expectedDownTime=self.env.now+remainingTimeToFailure
     
                         # wait for the shift to start again
                         yield self.victim.interruptionEnd
@@ -134,13 +132,10 @@ class Failure(ObjectInterruption):
                     timeRestartedCounting=self.env.now
                     receivedEvent=yield self.env.timeout(remainingTimeToFailure) | self.victimEndsProcess 
                     if self.victimEndsProcess in receivedEvent:
-                        #print self.env.now, 'victimEndsProcess'
                         self.victimEndsProcess=self.env.event()
                         remainingTimeToFailure=remainingTimeToFailure-(self.env.now-timeRestartedCounting)
-                        self.victim.expectedDownTime=self.env.now+remainingTimeToFailure
                         yield self.victimStartsProcess
                         self.victimStartsProcess=self.env.event()
-                        #print self.env.now, 'startsProcess'
                     else:
                         failureNotTriggered=False
            

@@ -189,7 +189,6 @@ class Machine(CoreObject):
         self.preemptQueue=self.env.event()
         # signal used for informing objectInterruption objects that the current entity processed has finished processnig
         self.endedLastProcessing=self.env.event()
-        self.expectedDownTime=-1     # the time the next failure is expected 
     
     #===========================================================================
     # create an operatorPool if needed
