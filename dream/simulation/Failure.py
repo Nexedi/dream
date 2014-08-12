@@ -106,8 +106,10 @@ class Failure(ObjectInterruption):
             remainingTimeToFailure=timeToFailure
             failureNotTriggered=True
             
+            # if time to failure counts not matter the state of the victim
             if self.deteriorationType=='constant':
                 yield self.env.timeout(remainingTimeToFailure)
+            # if time to failure counts only in onShift time
             elif self.deteriorationType=='onShift':
                 while failureNotTriggered:
                     timeRestartedCounting=self.env.now
@@ -125,16 +127,20 @@ class Failure(ObjectInterruption):
                         # TODO: the signal interruptionStart is reset by the time it is received by the victim. not sure if will be still triggered when it is checked here
                     else:
                         failureNotTriggered=False
+            # if time to failure counts only in working time
             elif self.deteriorationType=='working':
+                # wait for victim to start process
                 yield self.victimStartsProcess
                 self.victimStartsProcess=self.env.event()
                 while failureNotTriggered:
                     timeRestartedCounting=self.env.now
+                    # wait either for the failure or end of process
                     receivedEvent=yield self.env.timeout(remainingTimeToFailure) | self.victimEndsProcess 
                     if self.victimEndsProcess in receivedEvent:
                         self.victimEndsProcess=self.env.event()
                         remainingTimeToFailure=remainingTimeToFailure-(self.env.now-timeRestartedCounting)
                         yield self.victimStartsProcess
+                        # wait for victim to start again processing
                         self.victimStartsProcess=self.env.event()
                     else:
                         failureNotTriggered=False

@@ -450,7 +450,9 @@ class Machine(CoreObject):
             # timers to follow up the failure time of the machine while on current Entity
             self.downTimeInCurrentEntity=0                          #holds the total time that the 
                                                                     #object was down while holding current entity
-                                                                    
+            
+            # if there is a failure that depends on the working time of the Machine
+            # send it the victimStartsProcess signal                                            
             for oi in self.objectInterruptions:
                 if oi.type=='Failure':
                     if oi.deteriorationType=='working':
@@ -630,6 +632,8 @@ class Machine(CoreObject):
         self.shouldPreempt=False
         self.isProcessingInitialWIP=False
 
+        # if there is a failure that depends on the working time of the Machine
+        # send it the victimEndsProcess signal                                  
         for oi in self.objectInterruptions:
             if oi.type=='Failure':
                 if oi.deteriorationType=='working':
