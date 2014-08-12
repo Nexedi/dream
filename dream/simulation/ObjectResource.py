@@ -34,6 +34,8 @@ class ObjectResource(object):
     
     def __init__(self):
         self.initialized = False
+        # list that holds the objectInterruptions that have this element as victim
+        self.objectInterruptions=[]        
         # alias used for printing the trace
         self.alias=None
         

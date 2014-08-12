@@ -1318,6 +1318,7 @@ def createObjectInterruptions():
             duration=float(scheduledMaintenance.get('duration', 1))
             victim=Globals.findObjectById(element['id'])
             SM=ScheduledMaintenance(victim=victim, start=start, duration=duration)
+            victim.objectInterruptions.append(SM)
             G.ObjectInterruptionList.append(SM)
             G.ScheduledMaintenanceList.append(SM)
         failure=element.get('failures', None)
@@ -1331,6 +1332,7 @@ def createObjectInterruptions():
                 victim=Globals.findObjectById(element['id'])
                 deteriorationType=failure.get('deteriorationType', 'constant')
                 F=Failure(victim, distribution=failure, repairman=victim.repairman, deteriorationType=deteriorationType)
+                victim.objectInterruptions.append(F)
                 G.ObjectInterruptionList.append(F)
                 G.FailureList.append(F)
         # if there is a shift pattern defined 
@@ -1350,6 +1352,7 @@ def createObjectInterruptions():
                     shiftPattern.remove(next)
             endUnfinished=bool(int(shift.get('endUnfinished', 0)))
             SS=ShiftScheduler(victim, shiftPattern, endUnfinished)
+            victim.objectInterruptions.append(SS)
             G.ObjectInterruptionList.append(SS)
             G.ShiftSchedulerList.append(SS)
                 

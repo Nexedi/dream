@@ -49,6 +49,9 @@ class CoreObject(object):
         self.Waiting=[]
         self.OffShift=[]
         
+        # list that holds the objectInterruptions that have this element as victim
+        self.objectInterruptions=[]
+        
         #default attributes set so that the CoreObject has them
         self.isPreemptive=False
         self.resetOnPreemption=False
