@@ -89,8 +89,10 @@ class ShiftScheduler(ObjectInterruption):
                     self.waitingSignal=True
                     yield self.victim.endedLastProcessing   
                     self.victim.endedLastProcessing=self.env.event()                
-                
-                self.interruptVictim()                  # interrupt processing operations if any
+
+                # interrupt the victim only if it was not previously interrupted
+                if not self.victim.interruptionStart.triggered:
+                    self.interruptVictim()                      # interrupt the victim
                 self.victim.onShift=False                        # get the victim off-shift
                 self.victim.timeLastShiftEnded=self.env.now
                 self.outputTrace("is off shift")

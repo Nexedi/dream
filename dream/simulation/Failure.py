@@ -34,7 +34,8 @@ from ObjectInterruption import ObjectInterruption
 
 class Failure(ObjectInterruption):
     
-    def __init__(self, victim=None, distribution=None, index=0, repairman=None, offshift=False):
+    def __init__(self, victim=None, distribution=None, index=0, repairman=None, offshift=False,
+                 deteriorationType='constant'):
         #Process.__init__(self)
         ObjectInterruption.__init__(self,victim)
         if distribution:
@@ -52,6 +53,12 @@ class Failure(ObjectInterruption):
                                         # if now resource is needed this will be "None" 
         self.type="Failure"
         self.id=0
+
+        # shows how the time to failure is measured
+        # 'constant' means it counts not matter the state of the victim
+        # 'onShift' counts only if the victim is onShift
+        # 'working' counts only working time
+        self.deteriorationType=deteriorationType
 
         if(self.distType=="Availability"):      
             
@@ -95,25 +102,31 @@ class Failure(ObjectInterruption):
             self.victim.expectedDownTime=self.env.now+remainingTimeToFailure
             failureNotTriggered=True
             
-            while failureNotTriggered:
-                timeRestartedCounting=self.env.now
-                # TODO: can also wait for interruptionStart signal of the victim and check whether the interruption is caused by a shiftScheduler
-                receivedEvent=yield self.env.timeout(remainingTimeToFailure) | self.victim.interruptionStart #offShift
-                # the failure should receive a signal if there is a shift-off triggered
-                if self.victim.interruptionStart in receivedEvent:
-                    # TODO: the signal interruptionStart is reset by the time it is received by the victim. not sure if will be still triggered when it is checked here 
-                    assert self.victim.onShift==False, 'shiftFailure cannot recalculate TTF if the victim is onShift'
-                    remainingTimeToFailure=remainingTimeToFailure-(self.env.now-timeRestartedCounting)
-                    self.victim.expectedDownTime=self.env.now+remainingTimeToFailure
-
-                    # wait for the shift to start again
-                    yield self.victim.interruptionEnd
-                    assert self.victim.onShift==True, 'the victim of shiftFailure must be onShift to continue counting the TTF'
-                    # TODO: the signal interruptionStart is reset by the time it is received by the victim. not sure if will be still triggered when it is checked here
-                else:
-                    failureNotTriggered=False
+            if self.deteriorationType=='constant':
+                yield self.env.timeout(remainingTimeToFailure)
+            else:
+                while failureNotTriggered:
+                    timeRestartedCounting=self.env.now
+                    # TODO: can also wait for interruptionStart signal of the victim and check whether the interruption is caused by a shiftScheduler
+                    receivedEvent=yield self.env.timeout(remainingTimeToFailure) | self.victim.interruptionStart 
+                    # the failure should receive a signal if there is a shift-off triggered
+                    if self.victim.interruptionStart in receivedEvent:
+                        # TODO: the signal interruptionStart is reset by the time it is received by the victim. not sure if will be still triggered when it is checked here 
+                        assert self.victim.onShift==False, 'shiftFailure cannot recalculate TTF if the victim is onShift'
+                        remainingTimeToFailure=remainingTimeToFailure-(self.env.now-timeRestartedCounting)
+                        self.victim.expectedDownTime=self.env.now+remainingTimeToFailure
+    
+                        # wait for the shift to start again
+                        yield self.victim.interruptionEnd
+                        assert self.victim.onShift==True, 'the victim of shiftFailure must be onShift to continue counting the TTF'
+                        # TODO: the signal interruptionStart is reset by the time it is received by the victim. not sure if will be still triggered when it is checked here
+                    else:
+                        failureNotTriggered=False
             
-            self.interruptVictim()                      # interrupt the victim
+            # interrupt the victim only if it was not previously interrupted
+            if not self.victim.interruptionStart.triggered:
+                self.interruptVictim()                      # interrupt the victim
+
             self.victim.Up=False
             self.victim.timeLastFailure=self.env.now           
             self.outputTrace("is down")
@@ -147,7 +160,10 @@ class Failure(ObjectInterruption):
                 
                                 
             yield self.env.timeout(self.rngTTR.generateNumber())    # wait until the repairing process is over
-            self.victim.totalFailureTime+=self.env.now-failTime    
+            
+            # add the failure time only if the victim was interrupted by this failure
+            if self.victim.interruptedBy == 'Failure':
+                self.victim.totalFailureTime+=self.env.now-failTime    
             self.reactivateVictim()                     # since repairing is over, the Machine is reactivated
             self.victim.Up=True              
             self.outputTrace("is up")
