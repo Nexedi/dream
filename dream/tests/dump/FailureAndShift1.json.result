@@ -1,0 +1,28 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.Exit", 
+   "id": "E1", 
+   "results": {
+    "lifespan": 2.0517241379310347, 
+    "takt_time": 0.5086206896551724, 
+    "throughput": 29
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "id": "M1", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 5.0, 
+    "off_shift_ratio": 45.0, 
+    "waiting_ratio": 12.5, 
+    "working_ratio": 37.5
+   }
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}
