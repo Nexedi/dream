@@ -28,9 +28,6 @@
         },
         "M1": {
             "_class": "Dream.Machine",
-            "failures": {
-                "failureDistribution": "No"
-            },
             "left": 0.5,
             "name": "Moulding",
             "processingTime": {
