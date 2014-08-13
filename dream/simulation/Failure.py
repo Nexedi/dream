@@ -178,9 +178,20 @@ class Failure(ObjectInterruption):
                                 
             yield self.env.timeout(self.rngTTR.generateNumber())    # wait until the repairing process is over
             
-            # add the failure time only if the victim was interrupted by this failure
-            if self.victim.interruptedBy == 'Failure':
-                self.victim.totalFailureTime+=self.env.now-failTime    
+            # add the failure
+            # if victim is off shift add only the fail time before the shift ended
+            if not self.victim.onShift and failTime < self.victim.timeLastShiftEnded:
+                self.victim.totalFailureTime+=self.victim.timeLastShiftEnded-failTime
+            # if the victim was off shift since the start of the failure add nothing
+            elif not self.victim.onShift and failTime >= self.victim.timeLastShiftEnded:
+                pass
+            # if victim was off shift in the start of the fail time, add on
+            elif self.victim.onShift and failTime < self.victim.timeLastShiftStarted:
+                self.victim.totalFailureTime+=self.env.now-self.victim.timeLastShiftStarted
+                # this can happen only if deteriorationType is constant
+                assert self.deteriorationType=='constant', 'object got failure while off-shift and deterioration type not constant' 
+            else:
+                self.victim.totalFailureTime+=self.env.now-failTime   
             self.reactivateVictim()                     # since repairing is over, the Machine is reactivated
             self.victim.Up=True              
             self.outputTrace("is up")

@@ -615,7 +615,7 @@ class Machine(CoreObject):
         # set the variable that flags an Entity is ready to be disposed 
         self.waitToDispose=True
         #do this so that if it is overtime working it is not counted as off-shift time
-        if not self.onShift:
+        if not self.onShift and self.interruptedBy=='ShiftScheduler':
             self.timeLastShiftEnded=self.env.now
         # update the total working time 
         # the total processing time for this entity is what the distribution initially gave
@@ -937,7 +937,7 @@ class Machine(CoreObject):
         #calculate the offShift time for current entity
         offShiftTimeInCurrentEntity=0
         if self.interruptedBy:
-            if self.onShift==False and self.interruptedBy=='ShiftScheduler':
+            if self.onShift==False: # and self.interruptedBy=='ShiftScheduler':
                 offShiftTimeInCurrentEntity=self.env.now-activeObject.timeLastShiftEnded
 
         # if there is an entity that finished processing in a Machine but did not get to reach 
@@ -988,13 +988,7 @@ class Machine(CoreObject):
         #if the machine is off shift,add this to the off-shift time
         # we also need to add the last blocking time to total blockage time  
         if activeObject.onShift==False:
-            #add the time only if the object is interrupted because of off-shift
-            if self.interruptedBy:
-                if self.interruptedBy=='ShiftScheduler':
-                    self.totalOffShiftTime+=self.env.now-self.timeLastShiftEnded 
-            elif len(self.getActiveObjectQueue())==0 or self.waitToDispose:
-                self.totalOffShiftTime+=self.env.now-self.timeLastShiftEnded 
-            # we add the value only if it hasn't already been added
+            self.totalOffShiftTime+=self.env.now-self.timeLastShiftEnded 
             if((mightBeBlocked) and (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered) and (not alreadyAdded)):   
                 activeObject.totalBlockageTime+=(self.env.now-activeObject.timeLastEntityEnded)-offShiftTimeInCurrentEntity 
                 

@@ -74,7 +74,6 @@ class ShiftScheduler(ObjectInterruption):
             if not self.victim.onShift:
                 yield self.env.timeout(float(self.remainingShiftPattern[0][0]-self.env.now))    # wait for the onShift
                 self.reactivateVictim()                 # re-activate the victim in case it was interrupted
-                
                 self.victim.totalOffShiftTime+=self.env.now-self.victim.timeLastShiftEnded
                 self.victim.onShift=True
                 self.victim.timeLastShiftStarted=self.env.now
