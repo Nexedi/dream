@@ -155,15 +155,9 @@ class Failure(ObjectInterruption):
             self.outputTrace("is down")
             # update the failure time
             failTime=self.env.now    
-            if(self.repairman and self.repairman!="None"):     #if the failure needs a resource to be fixed, the machine waits until the 
-                                            #resource is available
-#                 print self.env.now, self.repairman.id, 'will be requested by', self.victim.id
-#                 yield self.repairman.getResource().request()
-#                 print self.repairman.Res.users
-#                 # update the time that the repair started
-#                 timeOperationStarted=self.env.now
-#                 self.repairman.timeLastOperationStarted=self.env.now
-                
+            if(self.repairman and self.repairman!="None"):     # if the failure needs a resource to be fixed, 
+                                                               # the machine waits until the 
+                                                               # resource is available
                 
                 with self.repairman.getResource().request() as request:
                     yield request
@@ -190,16 +184,3 @@ class Failure(ObjectInterruption):
             self.reactivateVictim()                     # since repairing is over, the Machine is reactivated
             self.victim.Up=True              
             self.outputTrace("is up")
-            
-#             if(self.repairman and self.repairman!="None"): #if a resource was used, it is now released
-#                 print self.repairman.Res.users
-#                 print self.env.now, self.repairman.id, 'about to be release from', self.victim.id
-#                 self.repairman.Res.release()
-#                 self.repairman.totalWorkingTime+=self.env.now-timeOperationStarted                                
-    
-#     #===========================================================================
-#     # interrupts the victim
-#     #===========================================================================
-#     def interruptVictim(self):
-#         ObjectInterruption.interrupt(self)
-#         # TODO: check whether it is a good idea to update the failure timers here
