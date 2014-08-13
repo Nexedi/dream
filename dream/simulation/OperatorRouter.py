@@ -321,6 +321,7 @@ class Router(ObjectInterruption):
         for object in self.pendingMachines:
             # find candidateOperators for each object operator
             candidateOperator=object.findCandidateOperator()
+            # if there is candidateOperator that is not already in self.candidateOperators add him
             # TODO: this way no sorting is performed
             if candidateOperator and (not candidateOperator in self.candidateOperators):
                 self.candidateOperators.append(candidateOperator)
@@ -357,6 +358,7 @@ class Router(ObjectInterruption):
          # update the schedulingRule/multipleCriterionList of the Router
         if self.sorting:
             self.updateSchedulingRule()  
+        # if there are candidate operators
         if self.candidateOperators:
             self.printTrace('router found candidate operators'+' '*3,
                             [(operator.id, [station.id for station in operator.candidateStations]) for operator in self.candidateOperators])

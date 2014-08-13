@@ -58,12 +58,14 @@ class ObjectResource(ManPyObject):
         self.coreObjectIds=[]
         # list with the coreObjects that the resource services
         self.coreObjects=[]
+        # flag that shows if the resourse is on shift
         self.onShift=True
         
     # =======================================================================
     #                    checks if the worker is available
     # =======================================================================       
     def checkIfResourceIsAvailable(self,callerObject=None): 
+        # return true if the operator is idle and on shift
         return len(self.Res.users)<self.capacity and self.onShift
     
        

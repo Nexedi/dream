@@ -67,7 +67,10 @@ class ShiftScheduler(ObjectInterruption):
         # if in the beginning the victim is offShift set it as such
         if float(self.remainingShiftPattern[0][0])!=self.env.now:
             self.victim.onShift=False
+            # if the victim is CoreObject interrupt it. Else ask the router for allocation of operators
+            # TODO more generic implementation
             if issubclass(self.victim.__class__, CoreObject): 
+                # interrupt the victim only if it was not previously interrupted
                 if not self.victim.interruptionStart.triggered:
                     self.interruptVictim()                      # interrupt the victim
             else:
@@ -79,6 +82,8 @@ class ShiftScheduler(ObjectInterruption):
         while 1:
             if not self.victim.onShift:
                 yield self.env.timeout(float(self.remainingShiftPattern[0][0]-self.env.now))    # wait for the onShift
+                # if the victim is CoreObject reactivate it. Else ask the router for allocation of operators
+                # TODO more generic implementation
                 if issubclass(self.victim.__class__, CoreObject): 
                     self.reactivateVictim()                 # re-activate the victim in case it was interrupted
                 else:
@@ -124,8 +129,10 @@ class ShiftScheduler(ObjectInterruption):
                             succeedTuple=(self, self.env.now)
                             oi.victimOffShift.succeed(succeedTuple)
 
-                # interrupt the victim only if it was not previously interrupted
+                # if the victim is CoreObject interrupt it. Else ask the router for allocation of operators
+                # TODO more generic implementation
                 if issubclass(self.victim.__class__, CoreObject): 
+                    # interrupt the victim only if it was not previously interrupted
                     if not self.victim.interruptionStart.triggered:
                         self.interruptVictim()                      # interrupt the victim
                 else:
