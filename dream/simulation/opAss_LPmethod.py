@@ -4,12 +4,11 @@ Created on 2 Jul 2014
 @author: Anna
 '''
 
-from pulp import *
-
 def opAss_LP(stationList, PBlist, PBskills):
     '''
     classdocs
     '''
+    from pulp import LpProblem, LpMaximize, LpVariable, LpBinary, lpSum
     machines = stationList.keys()
         
     # define LP problem    
