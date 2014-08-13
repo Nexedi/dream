@@ -43,6 +43,12 @@ class ObjectInterruption(object):
         from Globals import G
         self.env=G.env
         self.call=False
+        # events that are send by the ShiftScheduler to all the other interruptions that might wait for them
+        self.victimOffShift=self.env.event()
+        self.victimOnShift=self.env.event()
+        # flags that show if the interruption waits for the event
+        self.isWaitingForVictimOffShift=False
+        self.isWaitingForVictimOnShift=False
     
     #===========================================================================
     # the main process of the core object

@@ -74,6 +74,12 @@ class ShiftScheduler(ObjectInterruption):
             if not self.victim.onShift:
                 yield self.env.timeout(float(self.remainingShiftPattern[0][0]-self.env.now))    # wait for the onShift
                 self.reactivateVictim()                 # re-activate the victim in case it was interrupted
+                
+                # if the victim has interruptions that measure only the on-shift time, they have to be notified
+                for oi in self.victim.objectInterruptions:
+                    if oi.isWaitingForVictimOnShift:
+                        oi.victimOnShift.succeed()
+                        
                 self.victim.totalOffShiftTime+=self.env.now-self.victim.timeLastShiftEnded
                 self.victim.onShift=True
                 self.victim.timeLastShiftStarted=self.env.now
@@ -92,6 +98,11 @@ class ShiftScheduler(ObjectInterruption):
                     self.waitingSignal=True
                     yield self.victim.endedLastProcessing   
                     self.victim.endedLastProcessing=self.env.event()                
+
+                # if the victim has interruptions that measure only the on-shift time, they have to be notified
+                for oi in self.victim.objectInterruptions:
+                    if oi.isWaitingForVictimOffShift:
+                        oi.victimOffShift.succeed()
 
                 # interrupt the victim only if it was not previously interrupted
                 if not self.victim.interruptionStart.triggered:

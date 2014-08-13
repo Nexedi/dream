@@ -113,19 +113,21 @@ class Failure(ObjectInterruption):
             elif self.deteriorationType=='onShift':
                 while failureNotTriggered:
                     timeRestartedCounting=self.env.now
-                    # TODO: can also wait for interruptionStart signal of the victim and check whether the interruption is caused by a shiftScheduler
-                    receivedEvent=yield self.env.timeout(remainingTimeToFailure) | self.victim.interruptionStart 
+                    self.isWaitingForVictimOffShift=True                   
+                    receivedEvent=yield self.env.timeout(remainingTimeToFailure) | self.victimOffShift 
                     # the failure should receive a signal if there is a shift-off triggered
-                    if self.victim.interruptionStart in receivedEvent:
-                        # TODO: the signal interruptionStart is reset by the time it is received by the victim. not sure if will be still triggered when it is checked here 
+                    if self.victimOffShift in receivedEvent:
                         assert self.victim.onShift==False, 'shiftFailure cannot recalculate TTF if the victim is onShift'
-                        remainingTimeToFailure=remainingTimeToFailure-(self.env.now-timeRestartedCounting)
-    
+                        self.victimOffShift=self.env.event()
+                        remainingTimeToFailure=remainingTimeToFailure-(self.env.now-timeRestartedCounting)   
                         # wait for the shift to start again
+                        self.isWaitingForVictimonShift=True
                         yield self.victim.interruptionEnd
+                        self.isWaitingForVictimonShift=False
+                        self.victimOnShift=self.env.event()
                         assert self.victim.onShift==True, 'the victim of shiftFailure must be onShift to continue counting the TTF'
-                        # TODO: the signal interruptionStart is reset by the time it is received by the victim. not sure if will be still triggered when it is checked here
                     else:
+                        self.isWaitingForVictimOffShift=False
                         failureNotTriggered=False
             # if time to failure counts only in working time
             elif self.deteriorationType=='working':
