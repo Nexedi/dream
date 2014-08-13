@@ -322,7 +322,7 @@ class Router(ObjectInterruption):
             # find candidateOperators for each object operator
             candidateOperator=object.findCandidateOperator()
             # TODO: this way no sorting is performed
-            if not candidateOperator in self.candidateOperators:
+            if candidateOperator and (not candidateOperator in self.candidateOperators):
                 self.candidateOperators.append(candidateOperator)
         # for each pendingQueue
         for object in self.pendingQueues:
@@ -357,9 +357,12 @@ class Router(ObjectInterruption):
          # update the schedulingRule/multipleCriterionList of the Router
         if self.sorting:
             self.updateSchedulingRule()  
-        self.printTrace('router found candidate operators'+' '*3,
-                        [(operator.id, [station.id for station in operator.candidateStations]) for operator in self.candidateOperators])
-    
+        if self.candidateOperators:
+            self.printTrace('router found candidate operators'+' '*3,
+                            [(operator.id, [station.id for station in operator.candidateStations]) for operator in self.candidateOperators])
+        else:    
+            self.printTrace('router', 'found NO candidate operators')
+            
     #===========================================================================
     # find the candidate entities for each candidateOperator
     #===========================================================================

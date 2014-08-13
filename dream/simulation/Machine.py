@@ -1118,7 +1118,8 @@ class Machine(CoreObject):
         # find an available operator
         candidateOperator=self.operatorPool.findAvailableOperator()
         # append the station into its candidateStations
-        candidateOperator.candidateStations.append(self)
+        if candidateOperator:
+            candidateOperator.candidateStations.append(self)
         return candidateOperator
     
     #===========================================================================

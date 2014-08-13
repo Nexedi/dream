@@ -60,21 +60,30 @@ class ShiftScheduler(ObjectInterruption):
     #    The run method for the failure which has to served by a repairman
     # =======================================================================
     def run(self):
+        from CoreObject import CoreObject
         # the victim should not be interrupted but the scheduler should wait for the processing to finish before the stations turns to off-shift mode
         self.victim.totalOffShiftTime=0
         self.victim.timeLastShiftEnded=self.env.now
         # if in the beginning the victim is offShift set it as such
         if float(self.remainingShiftPattern[0][0])!=self.env.now:
             self.victim.onShift=False
-            self.interruptVictim()                  # interrupt processing operations if any
+            if issubclass(self.victim.__class__, CoreObject): 
+                if not self.victim.interruptionStart.triggered:
+                    self.interruptVictim()                      # interrupt the victim
+            else:
+                CoreObject.requestAllocation()
+
             self.victim.timeLastShiftEnded=self.env.now
             self.outputTrace(self.victim.name,"is off shift")
 
         while 1:
             if not self.victim.onShift:
                 yield self.env.timeout(float(self.remainingShiftPattern[0][0]-self.env.now))    # wait for the onShift
-                self.reactivateVictim()                 # re-activate the victim in case it was interrupted
-                
+                if issubclass(self.victim.__class__, CoreObject): 
+                    self.reactivateVictim()                 # re-activate the victim in case it was interrupted
+                else:
+                    CoreObject.requestAllocation()
+
                 # if the victim has interruptions that measure only the on-shift time, they have to be notified
                 for oi in self.victim.objectInterruptions:
                     if oi.isWaitingForVictimOnShift:
@@ -116,8 +125,12 @@ class ShiftScheduler(ObjectInterruption):
                             oi.victimOffShift.succeed(succeedTuple)
 
                 # interrupt the victim only if it was not previously interrupted
-                if not self.victim.interruptionStart.triggered:
-                    self.interruptVictim()                      # interrupt the victim
+                if issubclass(self.victim.__class__, CoreObject): 
+                    if not self.victim.interruptionStart.triggered:
+                        self.interruptVictim()                      # interrupt the victim
+                else:
+                    CoreObject.requestAllocation()
+                        
                 self.victim.onShift=False                        # get the victim off-shift
                 self.victim.timeLastShiftEnded=self.env.now
                 self.outputTrace(self.victim.name,"is off shift")
