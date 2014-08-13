@@ -167,7 +167,7 @@ def getClassFromName(dotted_name):
 # method finding objects by ID
 # =======================================================================
 def findObjectById(id):
-    for obj in G.ObjList:
+    for obj in G.ObjList + G.ModelResourceList + G.EntityList + G.ObjectInterruptionList:
         if obj.id==id:
             return obj
     return None
