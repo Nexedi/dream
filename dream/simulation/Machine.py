@@ -715,6 +715,8 @@ class Machine(CoreObject):
     # that will give the entity.
     # =======================================================================  
     def canAccept(self, callerObject=None):
+        if self.isLocked:
+            return False
         activeObjectQueue=self.Res.users
         # if we have only one predecessor just check if there is a place and the machine is up
         # this is done to achieve better (cpu) processing time 

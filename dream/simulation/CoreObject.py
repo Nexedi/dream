@@ -152,6 +152,8 @@ class CoreObject(object):
         # attributes/indices used for printing the route, hold the cols corresponding to the machine (entities route and operators route) 
         self.station_col_inds=[]
         self.op_col_indx=None
+        # flag that locks the entry of an object so that it cannot receive entities
+        self.isLocked=False
 
     # =======================================================================
     #                the main process of the core object 

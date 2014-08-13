@@ -39,13 +39,13 @@ class ShiftScheduler(ObjectInterruption):
     # =======================================================================
     # the __init__() method of the class
     # =======================================================================
-    def __init__(self, victim=None, shiftPattern=[], endUnfinished=False):
+    def __init__(self, victim=None, shiftPattern=[], endUnfinished=False, receiveBeforeEndThreshold=0.0):
         ObjectInterruption.__init__(self,victim)
         self.type='ShiftScheduler'
         self.shiftPattern=shiftPattern
         self.endUnfinished=endUnfinished    #flag that shows if half processed Jobs should end after the shift ends
-        
-    
+        # if the end of shift is below this threshold then the victim is on shift but does not accept new entities
+        self.receiveBeforeEndThreshold=receiveBeforeEndThreshold   
     
     # =======================================================================
     # initialize for every replications
@@ -80,7 +80,11 @@ class ShiftScheduler(ObjectInterruption):
                 self.outputTrace("is on shift")
                 startShift=self.env.now
             else:
-                yield self.env.timeout(float(self.remainingShiftPattern[0][1]-self.env.now))    # wait until the shift is over
+                timeToEndShift=float(self.remainingShiftPattern[0][1]-self.env.now)
+                yield self.env.timeout(timeToEndShift-self.receiveBeforeEndThreshold)   # wait until the entry threshold
+                self.victim.isLocked=True   # lock the entry of the victim
+                yield self.env.timeout(self.receiveBeforeEndThreshold)    # wait until the shift is over
+                self.victim.isLocked=False  # unlock the entry of the victim
                 # if the mode is to end current work before going off-shift and there is current work, wait for victimEndedLastProcessing
                 # signal before going off-shift
                 if self.endUnfinished and len(self.victim.getActiveObjectQueue())==1 and (not self.victim.waitToDispose):
