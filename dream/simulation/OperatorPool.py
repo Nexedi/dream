@@ -99,7 +99,6 @@ class OperatorPool(ObjectResource):
     # =======================================================================
     def findAvailableOperator(self):            # may need to implement different sorting of the operators
         # find the free operator if any
-        # freeOperator = next(x for x in self.operators if x.checkIfResourceIsAvailable())
         freeOperator = None
         for operator in self.operators:
             if operator.checkIfResourceIsAvailable():
