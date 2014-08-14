@@ -325,11 +325,12 @@ class Operator(ObjectResource):
         if not self.onShift and len(self.getResourceQueue())==0:
             self.totalOffShiftTime+=self.env.now-self.timeLastShiftEnded
                 
-        # Repairman was idle when he was not in any other state
+        # Operator was idle when he was not in any other state
         self.totalWaitingTime=MaxSimtime-self.totalWorkingTime-self.totalOffShiftTime   
         # update the waiting/working time percentages lists
         self.Waiting.append(100*self.totalWaitingTime/MaxSimtime)
         self.Working.append(100*self.totalWorkingTime/MaxSimtime)
+        self.OffShift.append(100*self.totalOffShiftTime/MaxSimtime)
     
     # =======================================================================
     #                    outputs data to "output.xls"
