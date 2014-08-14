@@ -1149,16 +1149,16 @@ class Machine(CoreObject):
     #                   prepare the machine to be released
     # =======================================================================
     def releaseOperator(self):
-        self.outputTrace(self.currentOperator.objName, "released from "+ self.objName)
-        # set the flag operatorAssignedTo to None
+        # this checks if the operator is working on the last element. 
+        # If yes the time that he was set off-shift should be updated
+        if not self.currentOperator.onShift:
+            self.currentOperator.timeLastShiftEnded=self.env.now      
+            self.currentOperator.unAssign()     # set the flag operatorAssignedTo to None     
+            self.outputTrace(self.currentOperator.objName, "released from "+ self.objName)
         # XXX in case of skilled operators which stay at the same station should that change
-        # TODO I think this control should be moved before the method is called
-        if not self.checkForDedicatedOperators():
-            self.currentOperator.unAssign()  
-            # this checks if the operator is working on the last element. 
-            # If yes the time that he was set off-shift should be updated
-            if not self.currentOperator.onShift:
-                self.currentOperator.timeLastShiftEnded=self.env.now        
+        elif not self.checkForDedicatedOperators():
+            self.currentOperator.unAssign()     # set the flag operatorAssignedTo to None
+            self.outputTrace(self.currentOperator.objName, "released from "+ self.objName)
         self.broker.invoke()
         self.toBeOperated = False
         
