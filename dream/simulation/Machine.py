@@ -486,8 +486,7 @@ class Machine(CoreObject):
                         yield self.brokerIsSet
                         self.brokerIsSet=self.env.event()
     
-                    # if there is a failure  in the machine or interruption due to preemption, it is passivated
-                    # passivate the Machine for as long as there is no repair
+                    # loop until we reach at a state that there is no interruption
                     while 1:
                         yield self.interruptionEnd         # interruptionEnd to be triggered by ObjectInterruption
                         assert self.env.now==self.interruptionEnd.value, 'the victim of the failure is not the object that received it'
@@ -543,18 +542,18 @@ class Machine(CoreObject):
             if not self.signalReceiver():
             # if there was no available receiver, get into blocking control
                 while 1:
-                    self.timeLastBlockageStarted=self.env.now
+                    self.timeLastBlockageStarted=self.env.now       # blockage is starting
                     # wait the event canDispose, this means that the station can deliver the item to successor
                     self.printTrace(self.id, waitEvent='(canDispose or interruption start)')
                     receivedEvent=yield self.env.any_of([self.canDispose , self.interruptionStart])
                     # if there was interruption
-                    #if self.interrupted():
                     # TODO not good implementation
                     if self.interruptionStart in receivedEvent:
                         assert self.interruptionStart.value==self.env.now, 'the interruption has not been processed on the time of activation'
                         self.interruptionStart=self.env.event()
                     # wait for the end of the interruption
                         self.interruptionActions()                          # execute interruption actions
+                        # loop until we reach at a state that there is no interruption
                         while 1:
                             yield self.interruptionEnd         # interruptionEnd to be triggered by ObjectInterruption
                             assert self.env.now==self.interruptionEnd.value, 'the victim of the failure is not the object that received it'
@@ -602,7 +601,10 @@ class Machine(CoreObject):
         # add working time
         self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
 
+        # blocking starts
+        self.isBlocked=True
         self.timeLastBlockageStarted=self.env.now
+        
         activeObjectQueue=self.Res.users
         activeEntity=activeObjectQueue[0]
         self.printTrace(self.getActiveObjectQueue()[0].name, processEnd=self.objName)
@@ -632,8 +634,7 @@ class Machine(CoreObject):
             G.pendingEntities.append(activeObjectQueue[0])
         # set the variable that flags an Entity is ready to be disposed 
         self.waitToDispose=True
-        # blocking starts
-        self.isBlocked=True
+
         # update the variables keeping track of Entity related attributes of the machine    
         self.timeLastEntityEnded=self.env.now                          # this holds the time that the last entity ended processing in Machine 
         self.nameLastEntityEnded=self.currentEntity.name        # this holds the name of the last entity that ended processing in Machine
@@ -668,11 +669,12 @@ class Machine(CoreObject):
     # actions to be carried out when the processing of an Entity ends
     # =======================================================================    
     def interruptionActions(self):
-        # if we are processing add the working time
+        # if object was processing add the working time
         # only if object is not preempting though
         # in case of preemption endProcessingActions will be called
         if self.isProcessing and not self.shouldPreempt:
             self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
+        # if object was blocked add the working time
         if self.isBlocked:
             self.addBlockage()
             
@@ -959,44 +961,20 @@ class Machine(CoreObject):
         
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
-        
-        alreadyAdded=False                      # a flag that shows if the blockage time has already been added
-        
-        # checks all the successors. If no one can accept an Entity then the machine might be blocked
-        mightBeBlocked=True
-        for nextObject in self.next:
-            if nextObject.canAccept():
-                mightBeBlocked=False
-        
+               
         #calculate the offShift time for current entity
         offShiftTimeInCurrentEntity=0
         if self.interruptedBy:
             if self.onShift==False: # and self.interruptedBy=='ShiftScheduler':
                 offShiftTimeInCurrentEntity=self.env.now-activeObject.timeLastShiftEnded
 
-#         # if there is an entity that finished processing in a Machine but did not get to reach 
-#         # the following Object till the end of simulation, 
-#         # we have to add this blockage to the percentage of blockage in Machine
-#         # we should exclude the failure time in current entity though!
-#         if (len(activeObjectQueue)>0) and (mightBeBlocked)\
-#              and ((activeObject.nameLastEntityEntered == activeObject.nameLastEntityEnded)) and self.onShift:
-#             # be careful here, might have to reconsider
-#             activeObject.totalBlockageTime+=self.env.now-(activeObject.timeLastEntityEnded+activeObject.downTimeInTryingToReleaseCurrentEntity)
-#             if activeObject.Up==False:
-#                 activeObject.totalBlockageTime-=self.env.now-activeObject.timeLastFailure
-#                 alreadyAdded=True
-
         if self.isBlocked:
             self.addBlockage()
 
         #if Machine is currently processing an entity we should count this working time  
-        if(self.isProcessing):
-            #if Machine is down we should add this last failure time to the time that it has been down in current entity 
-#             if self.Up==False:
-# #             if(len(activeObjectQueue)>0) and (self.Up==False):
-#                 activeObject.downTimeProcessingCurrentEntity+=self.env.now-activeObject.timeLastFailure         
+        if self.isProcessing:     
             activeObject.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
-            activeObject.totalTimeWaitingForOperator+=activeObject.operatorWaitTimeCurrentEntity
+            # activeObject.totalTimeWaitingForOperator+=activeObject.operatorWaitTimeCurrentEntity
         
         elif(len(activeObject.getActiveObjectQueue())>0)\
             and (not (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered))\
@@ -1011,17 +989,10 @@ class Machine(CoreObject):
         # we also need to add the last blocking time to total blockage time     
         if(activeObject.Up==False):
             activeObject.totalFailureTime+=self.env.now-activeObject.timeLastFailure
-#             # we add the value only if it hasn't already been added
-#             if((mightBeBlocked) and (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered) and (not alreadyAdded)):        
-#                 activeObject.totalBlockageTime+=(self.env.now-activeObject.timeLastEntityEnded)-(self.env.now-activeObject.timeLastFailure)-activeObject.downTimeInTryingToReleaseCurrentEntity 
-#                 alreadyAdded=True
         
         #if the machine is off shift,add this to the off-shift time
-        # we also need to add the last blocking time to total blockage time  
         if activeObject.onShift==False:
             self.totalOffShiftTime+=self.env.now-self.timeLastShiftEnded 
-#             if((mightBeBlocked) and (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered) and (not alreadyAdded)):   
-#                 activeObject.totalBlockageTime+=(self.env.now-activeObject.timeLastEntityEnded)-offShiftTimeInCurrentEntity 
                 
         #Machine was idle when it was not in any other state    
         activeObject.totalWaitingTime=MaxSimtime-activeObject.totalWorkingTime-activeObject.totalBlockageTime-activeObject.totalFailureTime-activeObject.totalLoadTime-activeObject.totalSetupTime-self.totalOffShiftTime

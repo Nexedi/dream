@@ -201,7 +201,10 @@ class CoreObject(object):
     # as argument by getEntity of the receiver
     # =======================================================================
     def removeEntity(self, entity=None):
+        # reset flags
         self.isBlocked=False
+        self.isProcessing=False
+        # add the blocking time
         self.addBlockage()        
         
         activeObjectQueue=self.Res.users

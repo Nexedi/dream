@@ -48,6 +48,9 @@ class MachineJobShop(Machine):
         self.isProcessing=False
         # add working time
         self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
+
+        # blocking starts
+        self.isBlocked=True
         self.timeLastBlockageStarted=self.env.now
 
         activeObject=self.getActiveObject()
@@ -97,8 +100,6 @@ class MachineJobShop(Machine):
         # reset flags
         self.shouldPreempt=False 
         self.isProcessingInitialWIP=False 
-        # blocking starts
-        self.isBlocked=True
 
         # TODO: collapse that to Machine
 
