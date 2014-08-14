@@ -45,12 +45,14 @@ class MachineJobShop(Machine):
     # =======================================================================    
     def endProcessingActions(self):
         self.isProcessing=False
+        self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
+
         activeObject=self.getActiveObject()
         activeObjectQueue=activeObject.Res.users
         activeEntity=activeObjectQueue[0]
 #         self.printTrace(activeEntity.name,processEnd=activeObject.objName)
         # reset the variables used to handle the interruptions timing 
-        self.timeRestartingProcessing=0
+        # self.timeRestartingProcessing=0
         self.breakTime=0
         # output to trace that the processing in the Machine self.objName ended 
         try:
@@ -86,10 +88,10 @@ class MachineJobShop(Machine):
         if not activeObject.onShift:
             activeObject.timeLastShiftEnded=self.env.now
         # update the total working time # the total processing time for this entity is what the distribution initially gave
-        if not self.shouldPreempt:
-            activeObject.totalWorkingTime+=activeObject.totalProcessingTimeInCurrentEntity
-        else:
-            activeObject.totalWorkingTime+=self.env.now-(self.timeLastEntityEntered)
+#         if not self.shouldPreempt:
+#             activeObject.totalWorkingTime+=activeObject.totalProcessingTimeInCurrentEntity
+#         else:
+#             activeObject.totalWorkingTime+=self.env.now-(self.timeLastEntityEntered)
         # update the variables keeping track of Entity related attributes of the machine
         activeObject.timeLastEntityEnded=self.env.now                              # this holds the time that the last entity ended processing in Machine 
         activeObject.nameLastEntityEnded=activeObject.currentEntity.name    # this holds the name of the last entity that ended processing in Machine
