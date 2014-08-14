@@ -1,0 +1,65 @@
+{
+    "_class": "Dream.Simulation",
+    "edges": {
+        "0": [
+            "S1",
+            "M1",
+            {}
+        ],
+        "1": [
+            "M1",
+            "E1",
+            {}
+        ]
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "confidenceLevel": "0.95",
+        "maxSimTime": "10",
+        "numberOfReplications": "1",
+        "trace": "Yes"
+    },
+    "nodes": {
+        "E1": {
+            "_class": "Dream.Exit",
+            "left": 0.5,
+            "name": "Stock",
+            "top": 0.10215053763440862
+        },
+        "M1": {
+            "_class": "Dream.Machine",
+            "left": 0.5,
+            "name": "Moulding",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0.25
+            },
+            "shift": {
+                "shiftPattern": [
+                    [
+                        0,
+                        5
+                    ]
+                ],
+                "endUnfinished": 0
+            },
+            "failures": {
+                "MTTF": 7,
+                "MTTR": 5,
+                "distributionType": "Fixed"
+            },
+            "top": 0.5
+        },
+        "S1": {
+            "_class": "Dream.Source",
+            "entity": "Dream.Part",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": 0.5
+            },
+            "left": 0.5,
+            "name": "Raw Material",
+            "top": 0.8978494623655914
+        }
+    }
+}
