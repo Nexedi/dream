@@ -374,7 +374,7 @@
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
     "waiting_ratio": 92.87925696594428, 
-    "working_ratio": 7.120743034055725
+    "working_ratio": 7.12074303405573
    }
   }, 
   {
@@ -396,8 +396,8 @@
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
     "setup_ratio": 11.145510835913324, 
-    "waiting_ratio": 68.11145510835912, 
-    "working_ratio": 20.74303405572755
+    "waiting_ratio": 68.11145510835914, 
+    "working_ratio": 20.74303405572754
    }
   }, 
   {
@@ -409,8 +409,8 @@
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
     "setup_ratio": 2.476780185758516, 
-    "waiting_ratio": 88.23529411764706, 
-    "working_ratio": 9.287925696594426
+    "waiting_ratio": 88.23529411764704, 
+    "working_ratio": 9.287925696594437
    }
   }, 
   {
@@ -501,7 +501,7 @@
     "load_ratio": 0.0, 
     "setup_ratio": 0.0, 
     "waiting_ratio": 90.71207430340557, 
-    "working_ratio": 9.287925696594426
+    "working_ratio": 9.287925696594431
    }
   }, 
   {
@@ -553,7 +553,7 @@
     "load_ratio": 0.0, 
     "setup_ratio": 5.572755417956661, 
     "waiting_ratio": 77.70897832817337, 
-    "working_ratio": 16.718266253869967
+    "working_ratio": 16.718266253869963
    }
   }, 
   {

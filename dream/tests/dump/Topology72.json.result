@@ -362,7 +362,7 @@
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
     "waiting_ratio": 87.40157480314961, 
-    "working_ratio": 12.598425196850393
+    "working_ratio": 12.598425196850394
    }
   }, 
   {
@@ -374,7 +374,7 @@
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
     "waiting_ratio": 90.94488188976378, 
-    "working_ratio": 9.055118110236219
+    "working_ratio": 9.055118110236224
    }
   }, 
   {
@@ -534,8 +534,8 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 72.44094488188976, 
-    "working_ratio": 27.559055118110233
+    "waiting_ratio": 72.44094488188978, 
+    "working_ratio": 27.559055118110226
    }
   }, 
   {
@@ -545,8 +545,8 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 78.74015748031495, 
-    "working_ratio": 21.259842519685037
+    "waiting_ratio": 78.74015748031498, 
+    "working_ratio": 21.25984251968503
    }
   }, 
   {
