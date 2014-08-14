@@ -46,6 +46,8 @@ class Operator(ObjectResource):
         # lists to hold statistics of multiple runs
         self.Waiting=[]             # holds the percentage of waiting time 
         self.Working=[]             # holds the percentage of working time 
+        self.OffShift=[]             # holds the percentage of working time 
+
     
         # the following attributes are not used by the Repairman
         self.schedulingRule=schedulingRule      #the scheduling rule that the Queue follows
@@ -80,6 +82,16 @@ class Operator(ObjectResource):
         self.available=available
         from Globals import G
         G.OperatorsList.append(self) 
+        
+    def initialize(self):
+        ObjectResource.initialize(self)
+        # flag that shows if the resource is on shift
+        self.onShift=True
+        self.totalWorkingTime=0         #holds the total working time
+        self.totalWaitingTime=0         #holds the total waiting time
+        self.totalOffShiftTime=0        #holds the total off-shift time
+        self.timeLastShiftStarted=0                     #holds the time that the last shift of the object started
+        self.timeLastShiftEnded=0                       #holds the time that the last shift of the object ended
         
     @staticmethod
     def getSupportedSchedulingRules():
@@ -304,13 +316,16 @@ class Operator(ObjectResource):
         if MaxSimtime==None:
             from Globals import G
             MaxSimtime=G.maxSimTime
-        # if the repairman is currently working we have to count the time of this work    
-#         if len(self.getResourceQueue())>0:
-        if not self.checkIfResourceIsAvailable():
+        # if the Operator is currently working we have to count the time of this work    
+        if len(self.getResourceQueue())>0:
             self.totalWorkingTime+=self.env.now-self.timeLastOperationStarted
+        
+        # if the Operator is currently off-shift we have to count the time of this work    
+        if not self.onShift:
+            self.totalOffShiftTime+=self.env.now-self.timeLastShiftEnded
                 
         # Repairman was idle when he was not in any other state
-        self.totalWaitingTime=MaxSimtime-self.totalWorkingTime   
+        self.totalWaitingTime=MaxSimtime-self.totalWorkingTime-self.totalOffShiftTime   
         # update the waiting/working time percentages lists
         self.Waiting.append(100*self.totalWaitingTime/MaxSimtime)
         self.Working.append(100*self.totalWorkingTime/MaxSimtime)
@@ -371,9 +386,13 @@ class Operator(ObjectResource):
         if(G.numberOfReplications==1):
             json['results']['working_ratio']=100*self.totalWorkingTime/G.maxSimTime
             json['results']['waiting_ratio']=100*self.totalWaitingTime/G.maxSimTime
+            #output the off-shift time only if there is any
+            if self.totalOffShiftTime:
+                json['results']['off_shift_ratio']=100*self.totalOffShiftTime/G.maxSimTime
         else:
             json['results']['working_ratio'] = getConfidenceIntervals(self.Working)
             json['results']['waiting_ratio'] = getConfidenceIntervals(self.Waiting)
+            json['results']['off_shift_ratio'] = getConfidenceIntervals(self.OffShift)
         G.outputJSON['elementList'].append(json)
     
     #===========================================================================
