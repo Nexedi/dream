@@ -154,7 +154,12 @@ class CoreObject(object):
         self.op_col_indx=None
         # flag that locks the entry of an object so that it cannot receive entities
         self.isLocked=False
-
+        
+        # flag that shows if the Machine is processing state at any given time
+        self.isProcessing=False
+        # flag that shows if the Machine is blocked state at any given time
+        self.isBlocked=False
+        
     # =======================================================================
     #                the main process of the core object 
     #     this is dummy, every object must have its own implementation
@@ -196,7 +201,8 @@ class CoreObject(object):
     # as argument by getEntity of the receiver
     # =======================================================================
     def removeEntity(self, entity=None):
-        self.addBlockage()
+        self.isBlocked=False
+        self.addBlockage()        
         
         activeObjectQueue=self.Res.users
         activeObjectQueue.remove(entity)       #remove the Entity from the queue

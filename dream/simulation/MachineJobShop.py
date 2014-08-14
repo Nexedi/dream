@@ -44,8 +44,11 @@ class MachineJobShop(Machine):
     # actions to be carried out when the processing of an Entity ends
     # =======================================================================    
     def endProcessingActions(self):
+        # set isProcessing to False
         self.isProcessing=False
+        # add working time
         self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
+        self.timeLastBlockageStarted=self.env.now
 
         activeObject=self.getActiveObject()
         activeObjectQueue=activeObject.Res.users
@@ -87,11 +90,6 @@ class MachineJobShop(Machine):
         #do this so that if it is overtime working it is not counted as off-shift time
         if not activeObject.onShift:
             activeObject.timeLastShiftEnded=self.env.now
-        # update the total working time # the total processing time for this entity is what the distribution initially gave
-#         if not self.shouldPreempt:
-#             activeObject.totalWorkingTime+=activeObject.totalProcessingTimeInCurrentEntity
-#         else:
-#             activeObject.totalWorkingTime+=self.env.now-(self.timeLastEntityEntered)
         # update the variables keeping track of Entity related attributes of the machine
         activeObject.timeLastEntityEnded=self.env.now                              # this holds the time that the last entity ended processing in Machine 
         activeObject.nameLastEntityEnded=activeObject.currentEntity.name    # this holds the name of the last entity that ended processing in Machine
@@ -99,7 +97,9 @@ class MachineJobShop(Machine):
         # reset flags
         self.shouldPreempt=False 
         self.isProcessingInitialWIP=False 
-        
+        # blocking starts
+        self.isBlocked=True
+
         # TODO: collapse that to Machine
 
 
