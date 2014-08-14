@@ -122,7 +122,7 @@ class Failure(ObjectInterruption):
                         remainingTimeToFailure=remainingTimeToFailure-(self.env.now-timeRestartedCounting)   
                         # wait for the shift to start again
                         self.isWaitingForVictimOnShift=True
-                        yield self.victim.interruptionEnd
+                        yield self.victimOnShift
                         self.isWaitingForVictimOnShift=False
                         self.victimOnShift=self.env.event()
                         assert self.victim.onShift==True, 'the victim of shiftFailure must be onShift to continue counting the TTF'
