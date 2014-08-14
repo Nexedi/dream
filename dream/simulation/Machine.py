@@ -985,10 +985,14 @@ class Machine(CoreObject):
             activeObject.totalTimeWaitingForOperator+=self.env.now-activeObject.timeWaitForOperatorStarted\
                                                            -activeObject.downTimeProcessingCurrentEntity\
                                                            -offShiftTimeInCurrentEntity
+        
         # if Machine is down we have to add this failure time to its total failure time
-        # we also need to add the last blocking time to total blockage time     
-        if(activeObject.Up==False):
-            activeObject.totalFailureTime+=self.env.now-activeObject.timeLastFailure
+        if self.Up==False: 
+            if self.onShift:
+                activeObject.totalFailureTime+=self.env.now-activeObject.timeLastFailure
+            # if Machine is off shift add only the fail time before the shift ended
+            if not self.onShift and self.timeLastFailure < self.timeLastShiftEnded:
+                self.victim.totalFailureTime+=self.victim.timeLastShiftEnded-failTime            
         
         #if the machine is off shift,add this to the off-shift time
         if activeObject.onShift==False:
