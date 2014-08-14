@@ -48,8 +48,6 @@ class ObjectResource(ManPyObject):
     def initialize(self):
         from Globals import G
         self.env=G.env
-        self.totalWorkingTime=0         #holds the total working time
-        self.totalWaitingTime=0         #holds the total waiting time
         self.timeLastOperationStarted=0    #holds the time that the last repair was started        
         self.Res=simpy.Resource(self.env, capacity=self.capacity)
         # variable that checks whether the resource is already initialized
@@ -58,8 +56,6 @@ class ObjectResource(ManPyObject):
         self.coreObjectIds=[]
         # list with the coreObjects that the resource services
         self.coreObjects=[]
-        # flag that shows if the resourse is on shift
-        self.onShift=True
         
     # =======================================================================
     #                    checks if the worker is available
