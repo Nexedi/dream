@@ -81,7 +81,7 @@ class BatchDecomposition(CoreObject):
         while 1:
             # wait for an event or an interruption
             while 1:
-                receivedEvent=yield self.isRequested | self.interruptionStart | self.initialWIP
+                receivedEvent=yield self.env.any_of([self.isRequested , self.interruptionStart , self.initialWIP])
                 # if an interruption has occurred 
                 if self.interruptionStart in receivedEvent:
                     assert self.interruptionStart.value==self.env.now, 'the interruption received by batchDecomposition was created earlier'

@@ -104,7 +104,7 @@ class Conveyer(CoreObject):
                 self.conveyerMover.canMove.succeed(self.env.now)
             
             self.printTrace(self.id, waitEvent='')
-            receivedEvent=yield self.isRequested | self.canDispose | self.moveEnd # , self.loadOperatorAvailable]
+            receivedEvent=yield self.env.any_of([self.isRequested , self.canDispose , self.moveEnd]) # , self.loadOperatorAvailable]
             # if the event that activated the thread is isRequested then getEntity
             if self.isRequested in receivedEvent:
                 self.printTrace(self.id, isRequested='')

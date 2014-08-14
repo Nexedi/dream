@@ -72,7 +72,7 @@ class OrderDecomposition(CoreObject):
         self.initialSignalReceiver()
         while 1:  
             #wait until the Queue can accept an entity and one predecessor requests it
-            receivedEvent=yield self.isRequested | self.canDispose
+            receivedEvent=yield self.env.any_of([self.isRequested , self.canDispose])
             # if the event that activated the thread is isRequested then getEntity
             if self.isRequested in receivedEvent:
                 self.isRequested=self.env.event()

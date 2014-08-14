@@ -77,7 +77,7 @@ class BatchReassembly(CoreObject):
         self.initialSignalReceiver()
         while 1:
             while 1:
-                receivedEvent=yield self.isRequested | self.interruptionStart | self.initialWIP
+                receivedEvent=yield self.env.any_of([self.isRequested , self.interruptionStart , self.initialWIP])
                 if self.interruptionStart in receivedEvent:
                     assert self.interruptionStart.value==self.env.now, 'the interruptionStart received by BatchReassembly later than created'
                     self.interruptionStart=self.env.event()
@@ -117,7 +117,7 @@ class BatchReassembly(CoreObject):
                 self.isProcessingInitialWIP=False
                 if not self.signalReceiver():
                     while 1:
-                        receivedEvent=yield self.canDispose | self.interruptionStart
+                        receivedEvent=yield self.env.any_of([self.canDispose , self.interruptionStart])
                         if self.canDispose in receivedEvent:
                             self.canDispose=self.env.event()
                         if self.interruptionStart in receivedEvent:
