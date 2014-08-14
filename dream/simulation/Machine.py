@@ -992,7 +992,7 @@ class Machine(CoreObject):
                 activeObject.totalFailureTime+=self.env.now-activeObject.timeLastFailure
             # if Machine is off shift add only the fail time before the shift ended
             if not self.onShift and self.timeLastFailure < self.timeLastShiftEnded:
-                self.victim.totalFailureTime+=self.victim.timeLastShiftEnded-failTime            
+                self.totalFailureTime+=self.timeLastShiftEnded-self.timeLastFailure            
         
         #if the machine is off shift,add this to the off-shift time
         if activeObject.onShift==False:
