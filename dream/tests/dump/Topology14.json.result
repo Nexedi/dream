@@ -68,8 +68,8 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 63.11458333333447, 
-    "working_ratio": 36.88541666666553
+    "waiting_ratio": 63.11458333332848, 
+    "working_ratio": 36.885416666671524
    }
   }
  ], 
