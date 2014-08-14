@@ -44,6 +44,7 @@ class MachineJobShop(Machine):
     # actions to be carried out when the processing of an Entity ends
     # =======================================================================    
     def endProcessingActions(self):
+        self.isProcessing=False
         activeObject=self.getActiveObject()
         activeObjectQueue=activeObject.Res.users
         activeEntity=activeObjectQueue[0]

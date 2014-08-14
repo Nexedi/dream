@@ -173,7 +173,7 @@ class Machine(CoreObject):
         self.requestingEntity=None
         # variables used for interruptions
         self.tinM=0
-        self.timeRestartingProcessing=0
+        self.timeLastProcessingStarted=0
         self.interruption=False
         self.breakTime=0
         # flag notifying that there is operator assigned to the actievObject
@@ -189,7 +189,10 @@ class Machine(CoreObject):
         self.preemptQueue=self.env.event()
         # signal used for informing objectInterruption objects that the current entity processed has finished processnig
         self.endedLastProcessing=self.env.event()
-            
+        
+        # flag that shows if the Machine is processing state at any given time
+        self.isProcessing=False
+        
     #===========================================================================
     # create an operatorPool if needed
     #===========================================================================
@@ -458,13 +461,14 @@ class Machine(CoreObject):
                 if oi.type=='Failure':
                     if oi.deteriorationType=='working':
                         oi.victimStartsProcess.succeed(self.env.now)
-                                                                     
+                                                 
             # this loop is repeated until the processing time is expired with no failure
             # check when the processingEndedFlag switched to false              
             while processingNotFinished:
-                # timeRestartingProcessing : dummy variable to keep track of the time that the processing starts after 
+                # timeLastProcessingStarted : dummy variable to keep track of the time that the processing starts after 
                 #           every interruption                        
-                self.timeRestartingProcessing=self.env.now
+                self.timeLastProcessingStarted=self.env.now
+                self.isProcessing=True
                 # wait for the processing time left tinM, if no interruption occurs then change the processingEndedFlag and exit loop,
                 #     else (if interrupted()) set interruption flag to true (only if tinM==0), 
                 #     and recalculate the processing time left tinM, passivate while waiting for repair.
@@ -587,11 +591,13 @@ class Machine(CoreObject):
     # actions to be carried out when the processing of an Entity ends
     # =======================================================================    
     def endProcessingActions(self):
+        self.isProcessing=False
+        self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
         activeObjectQueue=self.Res.users
         activeEntity=activeObjectQueue[0]
         self.printTrace(self.getActiveObjectQueue()[0].name, processEnd=self.objName)
         # reset the variables used to handle the interruptions timing 
-        self.timeRestartingProcessing=0
+        # self.timeLastProcessingStarted=0
         self.breakTime=0
         # output to trace that the processing in the Machine self.objName ended 
         try:
@@ -618,11 +624,11 @@ class Machine(CoreObject):
         self.waitToDispose=True
         # update the total working time 
         # the total processing time for this entity is what the distribution initially gave
-        if not self.shouldPreempt:
-            self.totalWorkingTime+=self.totalProcessingTimeInCurrentEntity
-        # if the station was preemptied for a critical order then calculate the total working time accordingly
-        else:
-            self.totalWorkingTime+=self.env.now-(self.timeLastEntityEntered)
+#         if not self.shouldPreempt:
+#             self.totalWorkingTime+=self.totalProcessingTimeInCurrentEntity
+#         # if the station was preemptied for a critical order then calculate the total working time accordingly
+#         else:
+#             self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
         # update the variables keeping track of Entity related attributes of the machine    
         self.timeLastEntityEnded=self.env.now                          # this holds the time that the last entity ended processing in Machine 
         self.nameLastEntityEnded=self.currentEntity.name        # this holds the name of the last entity that ended processing in Machine
@@ -657,6 +663,9 @@ class Machine(CoreObject):
     # actions to be carried out when the processing of an Entity ends
     # =======================================================================    
     def interruptionActions(self):
+        if self.isProcessing and not self.shouldPreempt:
+            self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
+        self.isProcessing=False
         activeObjectQueue=self.Res.users
         activeEntity=activeObjectQueue[0]
         self.printTrace(activeEntity.name, interrupted=self.objName)
@@ -668,7 +677,7 @@ class Machine(CoreObject):
             except IndexError:
                 pass
             # recalculate the processing time left tinM
-            self.tinM=self.tinM-(self.env.now-self.timeRestartingProcessing)
+            self.tinM=self.tinM-(self.env.now-self.timeLastProcessingStarted)
             if(self.tinM==0):       # sometimes the failure may happen exactly at the time that the processing would finish
                                     # this may produce disagreement with the simul8 because in both SimPy and Simul8
                                     # it seems to be random which happens 1st
@@ -957,18 +966,12 @@ class Machine(CoreObject):
                 alreadyAdded=True
 
         #if Machine is currently processing an entity we should count this working time  
-        if(len(activeObject.getActiveObjectQueue())>0)\
-            and (not (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered))\
-            and (not (activeObject.operationType=='Processing' and (activeObject.currentOperator==None))):
+        if(self.isProcessing):
             #if Machine is down we should add this last failure time to the time that it has been down in current entity 
-            if self.Up==False:
-#             if(len(activeObjectQueue)>0) and (self.Up==False):
-                activeObject.downTimeProcessingCurrentEntity+=self.env.now-activeObject.timeLastFailure         
-            activeObject.totalWorkingTime+=self.env.now-activeObject.timeLastEntityEntered\
-                                                -activeObject.downTimeProcessingCurrentEntity\
-                                                -activeObject.operatorWaitTimeCurrentEntity\
-                                                -activeObject.setupTimeCurrentEntity\
-                                                -offShiftTimeInCurrentEntity
+#             if self.Up==False:
+# #             if(len(activeObjectQueue)>0) and (self.Up==False):
+#                 activeObject.downTimeProcessingCurrentEntity+=self.env.now-activeObject.timeLastFailure         
+            activeObject.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
             activeObject.totalTimeWaitingForOperator+=activeObject.operatorWaitTimeCurrentEntity
         
         elif(len(activeObject.getActiveObjectQueue())>0)\
