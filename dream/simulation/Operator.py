@@ -316,12 +316,13 @@ class Operator(ObjectResource):
         if MaxSimtime==None:
             from Globals import G
             MaxSimtime=G.maxSimTime
+            
         # if the Operator is currently working we have to count the time of this work    
         if len(self.getResourceQueue())>0:
             self.totalWorkingTime+=self.env.now-self.timeLastOperationStarted
         
         # if the Operator is currently off-shift we have to count the time of this work    
-        if not self.onShift:
+        if not self.onShift and len(self.getResourceQueue())==0:
             self.totalOffShiftTime+=self.env.now-self.timeLastShiftEnded
                 
         # Repairman was idle when he was not in any other state
