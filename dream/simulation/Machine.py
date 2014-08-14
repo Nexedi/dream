@@ -189,7 +189,7 @@ class Machine(CoreObject):
         self.preemptQueue=self.env.event()
         # signal used for informing objectInterruption objects that the current entity processed has finished processnig
         self.endedLastProcessing=self.env.event()
-    
+            
     #===========================================================================
     # create an operatorPool if needed
     #===========================================================================
@@ -301,7 +301,8 @@ class Machine(CoreObject):
             # waitEvent isRequested /interruptionEnd/loadOperatorAvailable
             while 1:
                 self.printTrace(self.id, waitEvent='')
-                receivedEvent = yield self.isRequested | self.interruptionEnd | self.loadOperatorAvailable | self.initialWIP
+                receivedEvent = yield self.env.any_of([self.isRequested, self.interruptionEnd, 
+                                                       self.loadOperatorAvailable, self.initialWIP])
                 self.printTrace(self.id, received='')
                 # if the machine can accept an entity and one predecessor requests it continue with receiving the entity
                 if self.isRequested in receivedEvent:
@@ -468,7 +469,8 @@ class Machine(CoreObject):
                 #     else (if interrupted()) set interruption flag to true (only if tinM==0), 
                 #     and recalculate the processing time left tinM, passivate while waiting for repair.
                 # if a preemption has occurred then react accordingly (proceed with getting the critical entity)
-                receivedEvent=yield self.env.timeout(self.tinM) | self.interruptionStart | self.preemptQueue        # getting processed for remaining processing time tinM
+                # receivedEvent = yield self.env.timeout(self.tinM) | self.interruptionStart | self.preemptQueue
+                receivedEvent = yield self.env.any_of([self.interruptionStart, self.env.timeout(self.tinM) , self.preemptQueue])
                 if self.interruptionStart in receivedEvent:                              # if a failure occurs while processing the machine is interrupted.
                     assert self.interruptionStart.value==self.env.now, 'the interruption has not been processed on the time of activation'
                     self.interruptionStart=self.env.event()
@@ -538,7 +540,7 @@ class Machine(CoreObject):
                 while 1:
                     # wait the event canDispose, this means that the station can deliver the item to successor
                     self.printTrace(self.id, waitEvent='(canDispose or interruption start)')
-                    receivedEvent=yield self.canDispose | self.interruptionStart
+                    receivedEvent=yield self.env.any_of([self.canDispose , self.interruptionStart])
                     # if there was interruption
                     #if self.interrupted():
                     # TODO not good implementation
