@@ -109,9 +109,10 @@ class ShiftScheduler(ObjectInterruption):
                 self.victim.isLocked=False  # unlock the entry of the victim
                 # if the mode is to end current work before going off-shift and there is current work, wait for victimEndedLastProcessing
                 # signal before going off-shift
-                if self.endUnfinished and len(self.victim.getActiveObjectQueue())==1 and (not self.victim.waitToDispose):
-                    self.victim.isWorkingOnTheLast=True
-                    self.waitingSignal=True
+                if issubclass(self.victim.__class__, CoreObject):
+                    if self.endUnfinished and len(self.victim.getActiveObjectQueue())==1 and (not self.victim.waitToDispose):
+                        self.victim.isWorkingOnTheLast=True
+                        self.waitingSignal=True
                     
                     self.expectedSignals['endedLastProcessing']=1
                     
@@ -120,7 +121,7 @@ class ShiftScheduler(ObjectInterruption):
                     self.expectedSignals['endedLastProcessing']=0
                     
                     transmitter, eventTime=self.victim.endedLastProcessing.value
-                    self.victim.endedLastProcessing=self.env.event()                
+                        self.victim.endedLastProcessing=self.env.event()                
 
                 # if the victim has interruptions that measure only the on-shift time, they have to be notified
                 for oi in self.victim.objectInterruptions:
