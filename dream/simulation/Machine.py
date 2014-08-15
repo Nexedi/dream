@@ -615,7 +615,6 @@ class Machine(CoreObject):
                 #     else (if interrupted()) set interruption flag to true (only if tinM==0), 
                 #     and recalculate the processing time left tinM, passivate while waiting for repair.
                 # if a preemption has occurred then react accordingly (proceed with getting the critical entity)
-                # receivedEvent = yield self.env.timeout(self.tinM) | self.interruptionStart | self.preemptQueue
                 receivedEvent = yield self.env.any_of([self.interruptionStart, self.env.timeout(self.tinM) , 
                                                        self.preemptQueue, self.processOperatorUnavailable])
                 if self.interruptionStart in receivedEvent:                              # if a failure occurs while processing the machine is interrupted.
@@ -680,21 +679,22 @@ class Machine(CoreObject):
                 # if the processing operator left
                 elif self.processOperatorUnavailable in receivedEvent:
                     assert self.env.now==self.processOperatorUnavailable.value, 'the operator leaving has not been processed at \
-                                                                        the time it should'
-                    self.processOperatorUnavailable=self.env.event()
-                    # machine has to release the operator
-                    self.releaseOperator()
-                    # request for allocation
-                    self.requestAllocation()                    
-                    # wait until the Broker has finished processing
-                    yield self.brokerIsSet
-                    self.brokerIsSet=self.env.event()
+                                                                        the time it should'   
+                    self.processOperatorUnavailable=self.env.event()                
                     # carry interruption actions
                     self.interruptionActions()
-                    # wait until there is available processing operator (to be sent by Router)
-                    yield self.processOperatorAvailable         # interruptionEnd to be triggered by ObjectInterruption
-                    assert self.env.now==self.processOperatorAvailable.value, 'the operator available has not been received in time'
-                    self.processOperatorAvailable=self.env.event()
+                    # machine has to release the operator
+                    self.releaseOperator()
+                    yield self.brokerIsSet
+                    self.brokerIsSet=self.env.event()                    
+                    from Globals import G
+                    # append the entity that was stopped to the pending ones
+                    if G.Router:
+                        G.pendingEntities.append(self.currentEntity)
+                    # machine has to request again for operaror                    
+                    self.requestOperator()
+                    yield self.brokerIsSet
+                    self.brokerIsSet=self.env.event()
                     # carry post interruption actions
                     self.postInterruptionActions()                        
                 # if the station is reactivated by the preempt method
@@ -922,15 +922,11 @@ class Machine(CoreObject):
         if self.isBlocked:
             self.addBlockage()
             
-        # set isProcessing to False          
-        self.isProcessing=False
-        # set isBlocked to False          
-        self.isBlocked=False
         activeObjectQueue=self.Res.users
         activeEntity=activeObjectQueue[0]
         self.printTrace(activeEntity.name, interrupted=self.objName)
         # if the interrupt occurred while processing an entity
-        if not self.waitToDispose:
+        if self.isProcessing:
             # output to trace that the Machine (self.objName) got interrupted           
             try:                                                       
                 self.outputTrace(activeObjectQueue[0].name, "Interrupted at "+self.objName)
@@ -945,6 +941,10 @@ class Machine(CoreObject):
                 self.interruption=True
         # start counting the down time at breatTime dummy variable
         self.breakTime=self.env.now        # dummy variable that the interruption happened
+        # set isProcessing to False          
+        self.isProcessing=False
+        # set isBlocked to False          
+        self.isBlocked=False
     
     # =======================================================================
     # actions to be carried out when the processing of an Entity ends
