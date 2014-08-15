@@ -131,4 +131,27 @@ class SimulationExamples(TestCase):
     self.assertTrue(3.81 < result["working_ratio_M2"] < 3.82)
     self.assertEquals(result['NumM1'], 2660)
     self.assertEquals(result['NumM2'], 220)
+	
+  def testServerWithShift1(self):
+    from dream.simulation.Examples.ServerWithShift1 import main
+    result = main()
+    self.assertEquals(result['parts'], 3)
+    self.assertTrue(49.99 < result["working_ratio"] < 50.01)
+	
+  def testServerWithShift2(self):
+    from dream.simulation.Examples.ServerWithShift2 import main
+    result = main()
+    self.assertEquals(result['parts'], 16)
+    self.assertTrue(49.99 < result["working_ratio"] < 50.01)
+	
+  def testServerWithShift3(self):
+    from dream.simulation.Examples.ServerWithShift3 import main
+    result = main()
+    self.assertEquals(result['parts'], 4)
+    self.assertTrue(59.99 < result["working_ratio"] < 60.01)
 
+  def testServerWithShift4(self):
+    from dream.simulation.Examples.ServerWithShift4 import main
+    result = main()
+    self.assertEquals(result['parts'], 2)
+    self.assertTrue(29.99 < result["working_ratio"] < 30.01)
