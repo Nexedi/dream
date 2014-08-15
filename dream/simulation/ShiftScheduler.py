@@ -61,7 +61,7 @@ class ShiftScheduler(ObjectInterruption):
     # =======================================================================
     def run(self):
         from CoreObject import CoreObject
-        from ObjectInterruption import ObjectInterruption
+        from ObjectResource import ObjectResource
         
         # the victim should not be interrupted but the scheduler should wait for the processing to finish before the stations turns to off-shift mode
         self.victim.totalOffShiftTime=0
@@ -109,9 +109,11 @@ class ShiftScheduler(ObjectInterruption):
                 self.victim.isLocked=True   # lock the entry of the victim
                 yield self.env.timeout(self.receiveBeforeEndThreshold)    # wait until the shift is over
                 self.victim.isLocked=False  # unlock the entry of the victim
-                # if the mode is to end current work before going off-shift and there is current work, wait for victimEndedLastProcessing
-                # signal before going off-shift
+                # if the victim is station
                 if issubclass(self.victim.__class__, CoreObject):
+                    # if the mode is to end current work before going off-shift and there is current work, 
+                    # wait for victimEndedLastProcessing
+                    # signal before going off-shift
                     if self.endUnfinished and self.victim.isProcessing:
                         self.victim.isWorkingOnTheLast=True
                         self.waitingSignal=True
@@ -124,6 +126,15 @@ class ShiftScheduler(ObjectInterruption):
                     
                     transmitter, eventTime=self.victim.endedLastProcessing.value
                         self.victim.endedLastProcessing=self.env.event() 
+                # if the victim is operator
+                elif issubclass(self.victim.__class__, ObjectResource):
+                    # if the operator is working in a station and the mode is 
+                    # to stop current work in the end of shift
+                    # signal to the station that the operator has to leave
+                    station=self.victim.workingStation
+                    if station:
+                        if not self.endUnfinished and station.isProcessing:
+                            station.processOperatorUnavailable.succeed(self.env.now)
 
                 # if the victim has interruptions that measure only the on-shift time, they have to be notified
                 for oi in self.victim.objectInterruptions:

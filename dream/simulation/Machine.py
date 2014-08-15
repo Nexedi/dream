@@ -213,6 +213,11 @@ class Machine(CoreObject):
             loadTime['max'] = float(loadTime['mean']) + 5 * float(loadTime['stdev'])
         return loadTime
 
+        
+        # events about the availability of process operator
+        # TODO group those operator relate events
+        self.processOperatorAvailable=self.env.event()
+        self.processOperatorUnavailable=self.env.event()
                 
     #===========================================================================
     # create an operatorPool if needed
@@ -611,7 +616,8 @@ class Machine(CoreObject):
                 #     and recalculate the processing time left tinM, passivate while waiting for repair.
                 # if a preemption has occurred then react accordingly (proceed with getting the critical entity)
                 # receivedEvent = yield self.env.timeout(self.tinM) | self.interruptionStart | self.preemptQueue
-                receivedEvent = yield self.env.any_of([self.interruptionStart, self.env.timeout(self.tinM) , self.preemptQueue])
+                receivedEvent = yield self.env.any_of([self.interruptionStart, self.env.timeout(self.tinM) , 
+                                                       self.preemptQueue, self.processOperatorUnavailable])
                 if self.interruptionStart in receivedEvent:                              # if a failure occurs while processing the machine is interrupted.
                     transmitter, eventTime=self.interruptionStart.value
                     assert eventTime==self.env.now, 'the interruption has not been processed on the time of activation'
@@ -671,6 +677,26 @@ class Machine(CoreObject):
                         self.brokerIsSet=self.env.event()
                         self.timeWaitForOperatorEnded = self.env.now 
                         self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
+                # if the processing operator left
+                elif self.processOperatorUnavailable in receivedEvent:
+                    assert self.env.now==self.processOperatorUnavailable.value, 'the operator leaving has not been processed at \
+                                                                        the time it should'
+                    self.processOperatorUnavailable=self.env.event()
+                    # machine has to release the operator
+                    self.releaseOperator()
+                    # request for allocation
+                    self.requestAllocation()                    
+                    # wait until the Broker has finished processing
+                    yield self.brokerIsSet
+                    self.brokerIsSet=self.env.event()
+                    # carry interruption actions
+                    self.interruptionActions()
+                    # wait until there is available processing operator (to be sent by Router)
+                    yield self.processOperatorAvailable         # interruptionEnd to be triggered by ObjectInterruption
+                    assert self.env.now==self.processOperatorAvailable.value, 'the operator available has not been received in time'
+                    self.processOperatorAvailable=self.env.event()
+                    # carry post interruption actions
+                    self.postInterruptionActions()                        
                 # if the station is reactivated by the preempt method
                 elif(self.shouldPreempt):
                     if (self.preemptQueue in receivedEvent):
