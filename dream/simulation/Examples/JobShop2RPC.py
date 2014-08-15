@@ -50,17 +50,11 @@ J2=Job('J2','Job2',route=J2Route, priority=1, dueDate=90)
 J3=Job('J3','Job3',route=J3Route, priority=0, dueDate=110)
 G.EntityList=[J1,J2,J3]        #a list to hold all the jobs
 
-G.maxSimTime=1440.0     #set G.maxSimTime 1440.0 minutes (1 day)
-
 def main():
            
     #initialize all the objects    
-    for object in G.ObjList:
+    for object in G.ObjList + G.EntityList:
         object.initialize()
-    
-    #initialize all the jobs
-    for job in G.JobList: 
-        job.initialize()
 
     #set the WIP
     Globals.setWIP(G.EntityList)

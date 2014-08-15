@@ -14,9 +14,9 @@ E=Exit('E1','Exit')
 
 F=Failure(victim=M, distribution={'distributionType':'Fixed','MTTF':60,'MTTR':5})
 
-G.ObjList=[Sp,Sf,M,A,E]   #add all the objects in G.ObjList so that they can be easier accessed later
-
-G.ObjectInterruptionList=[F]     #add all the objects in G.ObjList so that they can be easier accessed later
+#add objects in lists so that they can be easier accessed later
+G.ObjList=[Sp,Sf,M,A,E]   
+G.ObjectInterruptionList=[F]
 
 #define predecessors and successors for the objects    
 Sp.defineRouting([A])
@@ -27,19 +27,13 @@ E.defineRouting([M])
 
 def main():
     
-    #initialize all the objects          
-    for object in G.ObjList:
+    #initialize all the objects
+    for object in G.ObjList + G.ObjectInterruptionList:
         object.initialize()
-        
-    for objectInterruption in G.ObjectInterruptionList:
-        objectInterruption.initialize()
     
-    #activate all the objects 
-    for object in G.ObjList:
+    #activate all the objects
+    for object in G.ObjList + G.ObjectInterruptionList:
         G.env.process(object.run())
-    
-    for objectInterruption in G.ObjectInterruptionList:
-        G.env.process(objectInterruption.run())
     
     G.maxSimTime=1440.0     #set G.maxSimTime 1440.0 minutes (1 day)
         

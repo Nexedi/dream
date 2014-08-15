@@ -25,13 +25,12 @@ J1Route=[{"stationIdsList": ["Q1"]},
          {"stationIdsList": ["E"],}]
 #define the Jobs
 J=Job('J1','Job1',route=J1Route)
-G.EntityList=[J]        #a list to hold all the jobs
+G.EntityList=[J]        #a list to hold all the entities
 
 def main():
-#initialize all the objects    
-    for object in G.ObjList:
+    #initialize all the objects    
+    for object in G.ObjList + G.EntityList:
         object.initialize()
-    J.initialize()
     
     #activate all the objects 
     for object in G.ObjList:

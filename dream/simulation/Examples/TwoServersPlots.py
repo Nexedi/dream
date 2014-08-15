@@ -19,10 +19,10 @@ E=Exit('E1','Exit')
 F1=Failure(victim=M1, distribution={'distributionType':'Fixed','MTTF':60,'MTTR':5}, repairman=R) 
 F2=Failure(victim=M2, distribution={'distributionType':'Fixed','MTTF':40,'MTTR':10}, repairman=R)
 
-G.ObjList=[S,M1,M2,E,Q]   #add all the objects in G.ObjList so that they can be easier accessed later
-G.MachineList=[M1,M2]
+#add objects in lists so that they can be easier accessed later
+G.ObjList=[S,M1,M2,E,Q]   
 G.ObjectResourceList=[R]
-G.ObjectInterruptionList=[F1,F2]     #add all the objects in G.ObjList so that they can be easier accessed later
+G.ObjectInterruptionList=[F1,F2] 
 
 #define predecessors and successors for the objects    
 S.defineRouting([M1])
@@ -35,32 +35,20 @@ E.defineRouting([M2])
 def main():
 
     #initialize all the objects
-    for object in G.ObjList:
+    for object in G.ObjList + G.ObjectInterruptionList + G.ObjectResourceList:
         object.initialize()
 
-    for objectInterruption in G.ObjectInterruptionList:
-        objectInterruption.initialize()
-        
-    for objectResource in G.ObjectResourceList:
-        objectResource.initialize()
-
     #activate all the objects
-    for object in G.ObjList:
+    for object in G.ObjList + G.ObjectInterruptionList:
         G.env.process(object.run())
-
-    for objectInterruption in G.ObjectInterruptionList:
-        G.env.process(objectInterruption.run())
 
     G.maxSimTime=1440.0     #set G.maxSimTime 1440.0 minutes (1 day)
 
     G.env.run(until=G.maxSimTime)    #run the simulation
 
     #carry on the post processing operations for every object in the topology
-    for object in G.ObjList:
+    for object in G.ObjList + G.ObjectResourceList:
         object.postProcessing()
-    
-    for objectResource in G.ObjectResourceList:
-        objectResource.postProcessing()
 
     #print the results
     print "the system produced", E.numOfExits, "parts"
