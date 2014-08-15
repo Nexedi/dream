@@ -12,7 +12,7 @@ E=Exit('E1','Exit')
 G.ObjList=[S,M,E]   #add all the objects in a list so that they can be easier accessed later
 
 #create the shift
-SS=ShiftScheduler(victim=M, shiftPattern=[[0,5],[10,15]]) 
+SS=ShiftScheduler(victim=M, shiftPattern=[[0,5],[10,15]], receiveBeforeEndThreshold=3) 
 G.ObjectInterruptionList=[SS]     #add all the interruptions in a list so that they can be easier accessed later
 
 #define predecessors and successors for the objects    

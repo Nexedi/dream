@@ -11,8 +11,16 @@ E=Exit('E1','Exit')
 
 G.ObjList=[S,M,E]   #add all the objects in a list so that they can be easier accessed later
 
+# create a repeated shift pattern
+shiftPattern=[]
+i = 0 
+while i<100:
+    shiftPattern.append([i,i+5])
+    i+=10
+print shiftPattern
+
 #create the shift
-SS=ShiftScheduler(victim=M, shiftPattern=[[0,5],[10,15]]) 
+SS=ShiftScheduler(victim=M, shiftPattern=shiftPattern) 
 G.ObjectInterruptionList=[SS]     #add all the interruptions in a list so that they can be easier accessed later
 
 #define predecessors and successors for the objects    
@@ -28,9 +36,9 @@ def main():
           
     #activate all the objects 
     for object in G.ObjList + G.ObjectInterruptionList:
-        G.env.process(object.run()) 
+        G.env.process(object.run())   
   
-    G.maxSimTime=20     #set G.maxSimTime 1440.0 minutes (1 day)
+    G.maxSimTime=100     #set G.maxSimTime 1440.0 minutes (1 day)
         
     G.env.run(G.maxSimTime)    #run the simulation
     
