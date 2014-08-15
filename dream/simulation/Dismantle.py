@@ -134,12 +134,17 @@ class Dismantle(CoreObject):
                 self.getEntity()                                 #get the Frame with the parts 
                 self.timeLastEntityEntered=self.env.now
                 startWorkingTime=self.env.now
+                self.isProcessing=True
                 self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()
                 #hold for the time the assembly operation is carried
                 yield self.env.timeout(self.totalProcessingTimeInCurrentEntity)
+                self.isProcessing=False
                 self.totalWorkingTime+=self.env.now-startWorkingTime
                 self.timeLastEntityEnded=self.env.now
-                startBlockageTime=self.env.now
+                
+                self.timeLastBlockageStarted=self.env.now
+                self.isBlocked=True
+                self.completedJobs+=1                       #Assembly completed a job
                 
                 self.waitToDispose=True
                 self.waitToDisposePart=True     #Dismantle is in state to dispose a part
@@ -159,14 +164,12 @@ class Dismantle(CoreObject):
                     yield self.entityRemoved
                     self.waitEntityRemoval=False
                     self.entityRemoved=self.env.event()
-#                     yield self.env.timeout(0)#(0.000000000000005)
 
                     if self.frameIsEmpty() and not self.waitToDisposeFrame:
                         self.waitToDisposePart=False
                         self.waitToDisposeFrame=True
                     # if the internal queue is empty then update the corresponding flags and proceed with getting a new entity
                     if self.isEmpty():
-                        self.completedJobs+=1                       #Dismantle completed a job
                         self.waitToDisposeFrame=False                     #the Dismantle has no Frame to dispose now
                         break
         
@@ -277,10 +280,13 @@ class Dismantle(CoreObject):
         activeObject=self.getActiveObject()
         activeObjectQueue=activeObject.getActiveObjectQueue()
         #run the default method 
-        activeEntity=CoreObject.removeEntity(self, entity)  
+        activeEntity=CoreObject.removeEntity(self, entity, resetFlags=False, addBlockage=False)  
         #update the flags
         if(len(activeObjectQueue)==0):  
             activeObject.waitToDisposeFrame=False
+            self.isBlocked=False
+            self.isProcessing=False
+            self.addBlockage() 
         else:
             if(len(activeObjectQueue)==1):   
                activeObject.waitToDisposePart=False
@@ -290,15 +296,12 @@ class Dismantle(CoreObject):
             activeObject.signalGiver()
         return activeEntity
     
-    #===========================================================================
-    # add the blockage only if the very last Entity (Frame) is to depart
-    #===========================================================================
-    def addBlockage(self):
-        if len(self.getActiveObjectQueue())==1:
-            self.totalTimeInCurrentEntity=self.env.now-self.timeLastEntityEntered
-            self.totalTimeWaitingForOperator += self.operatorWaitTimeCurrentEntity 
-            blockage=self.env.now-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)       
-            self.totalBlockageTime+=blockage
+    # =======================================================================
+    #              adds the blockage time to totalBlockageTime 
+    #                    each time an Entity is removed
+    # =======================================================================
+    def addBlockage(self): 
+        self.totalBlockageTime+=self.env.now-self.timeLastBlockageStarted
         
     #===========================================================================
     # actions to be taken after the simulation ends
@@ -311,12 +314,12 @@ class Dismantle(CoreObject):
         #if there is an entity that finished processing in Dismantle but did not get to reach 
         #the following Object
         #till the end of simulation, we have to add this blockage to the percentage of blockage in Dismantle
-        if (len(self.Res.users)>0) and (self.waitToDisposeFrame) or (self.waitToDisposePart):         
-            self.totalBlockageTime+=self.env.now-self.timeLastEntityEnded       
+        if self.isBlocked:         
+            self.totalBlockageTime+=self.env.now-self.timeLastBlockageStarted     
         
         #if Dismantle is currently processing an entity we should count this working time    
-        if(len(self.Res.users)>0) and (not ((self.waitToDisposeFrame) or (self.waitToDisposePart))):       
-            self.totalWorkingTime+=self.env.now-self.timeLastEntityEntered
+        if self.isProcessing:       
+            self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
         
         self.totalWaitingTime=MaxSimtime-self.totalWorkingTime-self.totalBlockageTime 
 

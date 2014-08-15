@@ -150,10 +150,10 @@ class Assembly(CoreObject):
                 self.timeLastFrameWasFull=self.env.now
                 self.nameLastFrameWasFull=self.getActiveObjectQueue()[0].name
                 
-                startWorkingTime=self.env.now
+                self.timeLastProcessingStarted=self.env.now
                 self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()
                 yield self.env.timeout(self.totalProcessingTimeInCurrentEntity)   #hold for the time the assembly operation is carried
-                self.totalWorkingTime+=self.env.now-startWorkingTime
+                self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
                 self.isProcessing=False
             
                 self.outputTrace(self.getActiveObjectQueue()[0].name, "ended processing in " + self.objName)
@@ -319,11 +319,11 @@ class Assembly(CoreObject):
                 
         # if the object is blocked add the blockage time
         if self.isBlocked:              
-            self.totalBlockageTime+=self.env.now-self.timeLastEntityEnded       
+            self.totalBlockageTime+=self.env.now-self.timeLastBlockageStarted       
 
         # if the object is processing add the working time
         if self.isProcessing:              
-            self.totalWorkingTime+=self.env.now-self.timeLastFrameWasFull
+            self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
         
         self.totalWaitingTime=MaxSimtime-self.totalWorkingTime-self.totalBlockageTime 
         

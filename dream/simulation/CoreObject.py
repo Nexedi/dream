@@ -200,12 +200,14 @@ class CoreObject(object):
     # removes an Entity from the Object the Entity to be removed is passed
     # as argument by getEntity of the receiver
     # =======================================================================
-    def removeEntity(self, entity=None):
+    def removeEntity(self, entity=None, resetFlags=True, addBlockage=True):       
         # reset flags
-        self.isBlocked=False
-        self.isProcessing=False
-        # add the blocking time
-        self.addBlockage()        
+        if resetFlags:
+            self.isBlocked=False
+            self.isProcessing=False
+        if addBlockage:    
+            # add the blocking time
+            self.addBlockage()        
         
         activeObjectQueue=self.Res.users
         activeObjectQueue.remove(entity)       #remove the Entity from the queue
