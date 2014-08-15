@@ -629,7 +629,7 @@ class Machine(CoreObject):
         if self.isWorkingOnTheLast:
             # for the scheduled Object interruptions
             # XXX add the SkilledOperatorRouter to this list and perform the signalling only once
-            for interruption in (G.ShiftSchedulerList+G.ScheduledMaintenanceList):
+            for interruption in (G.ObjectInterruptionList):
                 # if the objectInterruption is waiting for a a signal
                 if interruption.victim==self and interruption.waitingSignal:
                     # signal it and reset the flags
