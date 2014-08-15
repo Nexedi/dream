@@ -56,13 +56,15 @@ class ObjectResource(ManPyObject):
         self.coreObjectIds=[]
         # list with the coreObjects that the resource services
         self.coreObjects=[]
+        # flag that locks the resource so that it cannot get new jobs
+        self.isLocked=False
         
     # =======================================================================
     #                    checks if the worker is available
     # =======================================================================       
     def checkIfResourceIsAvailable(self,callerObject=None): 
         # return true if the operator is idle and on shift
-        return len(self.Res.users)<self.capacity and self.onShift
+        return len(self.Res.users)<self.capacity and self.onShift and (not self.isLocked)
     
        
     # =======================================================================
