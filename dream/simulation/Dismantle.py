@@ -302,32 +302,7 @@ class Dismantle(CoreObject):
     # =======================================================================
     def addBlockage(self): 
         self.totalBlockageTime+=self.env.now-self.timeLastBlockageStarted
-        
-    #===========================================================================
-    # actions to be taken after the simulation ends
-    #===========================================================================
-    def postProcessing(self, MaxSimtime=None):
-        if MaxSimtime==None:
-            from Globals import G
-            MaxSimtime=G.maxSimTime
-        
-        #if there is an entity that finished processing in Dismantle but did not get to reach 
-        #the following Object
-        #till the end of simulation, we have to add this blockage to the percentage of blockage in Dismantle
-        if self.isBlocked:         
-            self.totalBlockageTime+=self.env.now-self.timeLastBlockageStarted     
-        
-        #if Dismantle is currently processing an entity we should count this working time    
-        if self.isProcessing:       
-            self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
-        
-        self.totalWaitingTime=MaxSimtime-self.totalWorkingTime-self.totalBlockageTime 
-
-                
-        self.Waiting.append(100*self.totalWaitingTime/MaxSimtime)
-        self.Working.append(100*self.totalWorkingTime/MaxSimtime)
-        self.Blockage.append(100*self.totalBlockageTime/MaxSimtime)
-        
+               
     #===========================================================================
     #                  outputs message to the trace.xls. 
     #       Format is (Simulation Time | Entity or Frame Name | message)

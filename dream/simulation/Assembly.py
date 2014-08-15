@@ -243,7 +243,6 @@ class Assembly(CoreObject):
     # removes an entity from the Assembly
     #===========================================================================
     def removeEntity(self, entity=None):
-        activeObject=self.getActiveObject()
         activeEntity=CoreObject.removeEntity(self, entity)               #run the default method
         self.waitToDispose=False
         if self.canAccept():
@@ -306,31 +305,7 @@ class Assembly(CoreObject):
     def addBlockage(self): 
         self.totalBlockageTime+=self.env.now-self.timeLastBlockageStarted
  
-    
-    #===========================================================================
-    # actions to be taken after the simulation ends
-    #===========================================================================
-    def postProcessing(self, MaxSimtime=None):
         
-        if MaxSimtime==None:
-            from Globals import G
-            MaxSimtime=G.maxSimTime
-        activeObjectQueue=self.getActiveObjectQueue()
-                
-        # if the object is blocked add the blockage time
-        if self.isBlocked:              
-            self.totalBlockageTime+=self.env.now-self.timeLastBlockageStarted       
-
-        # if the object is processing add the working time
-        if self.isProcessing:              
-            self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
-        
-        self.totalWaitingTime=MaxSimtime-self.totalWorkingTime-self.totalBlockageTime 
-        
-        self.Waiting.append(100*self.totalWaitingTime/MaxSimtime)
-        self.Working.append(100*self.totalWorkingTime/MaxSimtime)
-        self.Blockage.append(100*self.totalBlockageTime/MaxSimtime)
-    
     #===========================================================================
     # outputs data to "output.xls"
     #===========================================================================

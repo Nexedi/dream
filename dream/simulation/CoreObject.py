@@ -42,12 +42,17 @@ class CoreObject(object):
         self.previous=[]                            #list with the previous objects in the flow
         self.nextIds=[]                             #list with the ids of the next objects in the flow
         self.previousIds=[]                         #list with the ids of the previous objects in the flow
-        
+
+        #lists to hold statistics of multiple runs       
         self.Failure=[]
         self.Working=[]
         self.Blockage=[]
         self.Waiting=[]
         self.OffShift=[]
+        self.WaitingForOperator=[]
+        self.WaitingForLoadOperator=[]
+        self.Loading = []
+        self.SettingUp =[]
         
         # list that holds the objectInterruptions that have this element as victim
         self.objectInterruptions=[]
@@ -59,14 +64,14 @@ class CoreObject(object):
         self.gatherWipStat=False
         # flag used to signal that the station waits for removeEntity event
         self.waitEntityRemoval=False
-        # attributes/indices used for printing the route, hold the cols corresponding to the machine (entities route and operators route) 
+        # attributes/indices used for printing the route, hold the cols corresponding to the object (entities route and operators route) 
         self.station_col_inds=[]
         self.op_col_indx=None
     
     def initialize(self):
         from Globals import G
         self.env=G.env
-        self.Up=True                                    #Boolean that shows if the machine is in failure ("Down") or not ("up")
+        self.Up=True                                    #Boolean that shows if the object is in failure ("Down") or not ("up")
         self.onShift=True
         self.currentEntity=None      
         # ============================== total times ===============================================
@@ -90,7 +95,7 @@ class CoreObject(object):
         # ============================== failure related times =====================================
         self.timeLastFailure=0                          #holds the time that the last failure of the object started
         self.timeLastFailureEnded=0                     #holds the time that the last failure of the object ended
-        self.downTimeProcessingCurrentEntity=0          #holds the time that the machine was down while 
+        self.downTimeProcessingCurrentEntity=0          #holds the time that the object was down while 
                                                         #processing the current entity
         self.downTimeInTryingToReleaseCurrentEntity=0   #holds the time that the object was down while trying 
                                                         #to release the current entity . This might be due to failure, off-shift, etc                                                         
@@ -111,16 +116,16 @@ class CoreObject(object):
         self.receiver=None                              #the CoreObject that the activeObject will give an Entity to
         if len(self.next)>0:
             self.receiver=self.next[0]
-        # ============================== variable that is used for the loading of machines =============
+        # ============================== variable that is used for the loading of objects =============
         self.exitAssignedToReceiver = None              # by default the objects are not blocked 
-                                                        # when the entities have to be loaded to operatedMachines
+                                                        # when the entities have to be loaded to operated objects
                                                         # then the giverObjects have to be blocked for the time
-                                                        # that the machine is being loaded 
-        # ============================== variable that is used signalling of machines ==================
+                                                        # that the object is being loaded 
+        # ============================== variable that is used signalling of objects ==================
         self.entryAssignedToGiver = None                # by default the objects are not blocked 
-                                                        # when the entities have to be received by machines
-                                                        # then the machines have to be blocked after the first signal they receive
-                                                        # in order to avoid signalling the same machine 
+                                                        # when the entities have to be received by objects
+                                                        # then the objects have to be blocked after the first signal they receive
+                                                        # in order to avoid signalling the same object 
                                                         # while it has not received the entity it has been originally signalled for
         # ============================== lists to hold statistics of multiple runs =====================
         self.totalTimeWaitingForOperator=0 
@@ -131,10 +136,31 @@ class CoreObject(object):
         self.failureTimeInCurrentEntity=0
         self.setupTimeCurrentEntity=0
         
-        self.shouldPreempt=False    #flag that shows that the machine should preempt or not
-        self.isProcessingInitialWIP=False    #flag that is used only when a Machine has initial wip
+        # the time that the object started/ended its wait for the operator
+        self.timeWaitForOperatorStarted=0
+        self.timeWaitForOperatorEnded=0
+        # the time that the object started/ended its wait for the operator
+        self.timeWaitForLoadOperatorStarted=0
+        self.timeWaitForLoadOperatorEnded=0
+        self.totalTimeWaitingForLoadOperator=0
+        # the time that the operator started/ended loading the object
+        self.timeLoadStarted=0
+        self.timeLoadEnded=0
+        self.totalLoadTime=0
+        # the time that the operator started/ended setting-up the object
+        self.timeSetupStarted=0
+        self.timeSetupEnded=0
+        self.totalSetupTime=0
+        # Current entity load/setup/loadOperatorwait/operatorWait related times 
+        self.operatorWaitTimeCurrentEntity=0        # holds the time that the object was waiting for the operator
+        self.loadOperatorWaitTimeCurrentEntity = 0  # holds the time that the object waits for operator to load the it
+        self.loadTimeCurrentEntity = 0              # holds the time to load the current entity
+        self.setupTimeCurrentEntity = 0             # holds the time to setup the object before processing the current entity
         
-        self.lastGiver=None         # variable that holds the last giver of the object, used by machine in case of preemption    
+        self.shouldPreempt=False    #flag that shows that the object should preempt or not
+        self.isProcessingInitialWIP=False    #flag that is used only when a object has initial wip
+        
+        self.lastGiver=None         # variable that holds the last giver of the object, used by object in case of preemption    
         # initialize the wipStatList - 
         # TODO, think what to do in multiple runs
         # TODO, this should be also updated in Globals.setWIP (in case we have initial wip)
@@ -149,15 +175,15 @@ class CoreObject(object):
         self.initialWIP=self.env.event()
         # flag used to signal that the station waits for removeEntity event
         self.waitEntityRemoval=False
-        # attributes/indices used for printing the route, hold the cols corresponding to the machine (entities route and operators route) 
+        # attributes/indices used for printing the route, hold the cols corresponding to the object (entities route and operators route) 
         self.station_col_inds=[]
         self.op_col_indx=None
         # flag that locks the entry of an object so that it cannot receive entities
         self.isLocked=False
         
-        # flag that shows if the Machine is processing state at any given time
+        # flag that shows if the object is processing state at any given time
         self.isProcessing=False
-        # flag that shows if the Machine is blocked state at any given time
+        # flag that shows if the object is blocked state at any given time
         self.isBlocked=False
         
     # =======================================================================
@@ -182,7 +208,7 @@ class CoreObject(object):
         if self.haveToDispose():
             self.signalReceiver()
         # TODO if the station is operated, and the operators have skills defined then the SkilledOperatorRouter should be signalled
-        # XXX: there may be a case where one machine is not assigned an operator, in that case we do not want to invoke the allocation routine
+        # XXX: there may be a case where one object is not assigned an operator, in that case we do not want to invoke the allocation routine
         if self.checkForDedicatedOperators():
             allocationNeeded=False
             from Globals import G
@@ -307,7 +333,7 @@ class CoreObject(object):
         #update variables
         activeEntity.currentStation=self
         self.timeLastEntityEntered=self.env.now
-        self.nameLastEntityEntered=activeEntity.name      # this holds the name of the last entity that got into Machine      
+        self.nameLastEntityEntered=activeEntity.name      # this holds the name of the last entity that got into object      
         self.downTimeProcessingCurrentEntity=0
         # update the next list of the object
         self.updateNext(activeEntity)
@@ -400,7 +426,7 @@ class CoreObject(object):
 #         return receivers
     
     #===========================================================================
-    # check if the any of the operators are skilled (having a list of skills regarding the machines)
+    # check if the any of the operators are skilled (having a list of skills regarding the objects)
     #===========================================================================
     @staticmethod
     def checkForDedicatedOperators():
@@ -451,7 +477,7 @@ class CoreObject(object):
     @staticmethod
     def selectReceiver(possibleReceivers=[]):
         candidates=possibleReceivers
-        # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
+        # dummy variables that help prioritize the objects requesting to give objects to the object (activeObject)
         maxTimeWaiting=0                                            # dummy variable counting the time a successor is waiting
         receiver=None
         from Globals import G
@@ -557,7 +583,7 @@ class CoreObject(object):
     @staticmethod
     def selectGiver(possibleGivers=[]):
         candidates=possibleGivers
-        # dummy variables that help prioritize the objects requesting to give objects to the Machine (activeObject)
+        # dummy variables that help prioritize the objects requesting to give objects to the object (activeObject)
         maxTimeWaiting=0                                            # dummy variable counting the time a predecessor is blocked
         giver=None
         from Globals import G
@@ -574,10 +600,60 @@ class CoreObject(object):
         return giver
     
     # =======================================================================
-    # actions to be taken after the simulation ends 
+    # actions to be taken after the simulation ends
     # =======================================================================
-    def postProcessing(self, MaxSimtime=None):
-        pass    
+    def postProcessing(self, MaxSimtime=None): 
+        if MaxSimtime==None:
+            from Globals import G
+            MaxSimtime=G.maxSimTime
+        
+        activeObject=self.getActiveObject()
+        activeObjectQueue=self.getActiveObjectQueue()
+               
+        #calculate the offShift time for current entity
+        offShiftTimeInCurrentEntity=0
+        if self.interruptedBy:
+            if self.onShift==False: # and self.interruptedBy=='ShiftScheduler':
+                offShiftTimeInCurrentEntity=self.env.now-activeObject.timeLastShiftEnded
+
+        if self.isBlocked:
+            self.addBlockage()
+
+        #if object is currently processing an entity we should count this working time  
+        if self.isProcessing:     
+            activeObject.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
+            # activeObject.totalTimeWaitingForOperator+=activeObject.operatorWaitTimeCurrentEntity
+
+        # if object is down we have to add this failure time to its total failure time
+        if self.Up==False: 
+            if self.onShift:
+                activeObject.totalFailureTime+=self.env.now-activeObject.timeLastFailure
+            # if object is off shift add only the fail time before the shift ended
+            if not self.onShift and self.timeLastFailure < self.timeLastShiftEnded:
+                self.totalFailureTime+=self.timeLastShiftEnded-self.timeLastFailure            
+        
+        #if the object is off shift,add this to the off-shift time
+        if activeObject.onShift==False:
+            self.totalOffShiftTime+=self.env.now-self.timeLastShiftEnded 
+                
+        #object was idle when it was not in any other state    
+        activeObject.totalWaitingTime=MaxSimtime-activeObject.totalWorkingTime-activeObject.totalBlockageTime-activeObject.totalFailureTime-activeObject.totalLoadTime-activeObject.totalSetupTime-self.totalOffShiftTime
+        
+        if activeObject.totalBlockageTime<0 and activeObject.totalBlockageTime>-0.00001:  #to avoid some effects of getting negative cause of rounding precision
+            self.totalBlockageTime=0  
+        
+        if activeObject.totalWaitingTime<0 and activeObject.totalWaitingTime>-0.00001:  #to avoid some effects of getting negative cause of rounding precision
+            self.totalWaitingTime=0  
+        
+        activeObject.Failure.append(100*self.totalFailureTime/MaxSimtime)    
+        activeObject.Blockage.append(100*self.totalBlockageTime/MaxSimtime)  
+        activeObject.Waiting.append(100*self.totalWaitingTime/MaxSimtime)    
+        activeObject.Working.append(100*self.totalWorkingTime/MaxSimtime)
+        activeObject.WaitingForOperator.append(100*self.totalTimeWaitingForOperator/MaxSimtime)
+        activeObject.WaitingForLoadOperator.append(100*self.totalTimeWaitingForLoadOperator/MaxSimtime)
+        activeObject.Loading.append(100*self.totalLoadTime/MaxSimtime)
+        activeObject.SettingUp.append(100*self.totalSetupTime/MaxSimtime)
+        activeObject.OffShift.append(100*self.totalOffShiftTime/MaxSimtime)
     
     # =======================================================================
     # outputs message to the trace.xls 
@@ -716,7 +792,7 @@ class CoreObject(object):
         return self.rng.generateNumber()           # this is if we have a default processing time for all the entities
     
     # =======================================================================
-    # checks if the machine is blocked
+    # checks if the object is blocked
     # =======================================================================
     def exitIsAssignedTo(self):
         return self.exitAssignedToReceiver
@@ -734,7 +810,7 @@ class CoreObject(object):
         self.exitAssignedToReceiver = None
         
     # =======================================================================
-    # checks if the machine is blocked
+    # checks if the object is blocked
     # =======================================================================
     def entryIsAssignedTo(self):
         return self.entryAssignedToGiver

@@ -116,11 +116,7 @@ class Machine(CoreObject):
             self.multOperationTypeList = OTlist
         else:
             self.multOperationTypeList.append(self.operationType)
-        #lists to hold statistics of multiple runs
-        self.WaitingForOperator=[]
-        self.WaitingForLoadOperator=[]
-        self.Loading = []
-        self.SettingUp =[]
+
         # flags used for preemption purposes
         self.isPreemptive=isPreemptive
         self.resetOnPreemption=resetOnPreemption
@@ -148,27 +144,6 @@ class Machine(CoreObject):
         # initialise the router if not initialized already
         self.initializeRouter()
         
-        # the time that the machine started/ended its wait for the operator
-        self.timeWaitForOperatorStarted=0
-        self.timeWaitForOperatorEnded=0
-        self.totalTimeWaitingForOperator=0
-        # the time that the machine started/ended its wait for the operator
-        self.timeWaitForLoadOperatorStarted=0
-        self.timeWaitForLoadOperatorEnded=0
-        self.totalTimeWaitingForLoadOperator=0
-        # the time that the operator started/ended loading the machine
-        self.timeLoadStarted=0
-        self.timeLoadEnded=0
-        self.totalLoadTime=0
-        # the time that the operator started/ended setting-up the machine
-        self.timeSetupStarted=0
-        self.timeSetupEnded=0
-        self.totalSetupTime=0
-        # Current entity load/setup/loadOperatorwait/operatorWait related times 
-        self.operatorWaitTimeCurrentEntity=0        # holds the time that the machine was waiting for the operator
-        self.loadOperatorWaitTimeCurrentEntity = 0  # holds the time that the machine waits for operator to load the it
-        self.loadTimeCurrentEntity = 0              # holds the time to load the current entity
-        self.setupTimeCurrentEntity = 0             # holds the time to setup the machine before processing the current entity
         # TODO: check whether the requestingEntity variable can be used in OperatorPreemptive
         self.requestingEntity=None
         # variables used for interruptions
@@ -955,9 +930,8 @@ class Machine(CoreObject):
     # actions to be taken after the simulation ends
     # =======================================================================
     def postProcessing(self, MaxSimtime=None): 
-        if MaxSimtime==None:
-            from Globals import G
-            MaxSimtime=G.maxSimTime
+        # ToDo code of the extension does not currently do anything. Check how we want to count waitingForOperator etc time
+        CoreObject.postProcessing(self, MaxSimtime)
         
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
@@ -968,13 +942,6 @@ class Machine(CoreObject):
             if self.onShift==False: # and self.interruptedBy=='ShiftScheduler':
                 offShiftTimeInCurrentEntity=self.env.now-activeObject.timeLastShiftEnded
 
-        if self.isBlocked:
-            self.addBlockage()
-
-        #if Machine is currently processing an entity we should count this working time  
-        if self.isProcessing:     
-            activeObject.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
-            # activeObject.totalTimeWaitingForOperator+=activeObject.operatorWaitTimeCurrentEntity
         
         elif(len(activeObject.getActiveObjectQueue())>0)\
             and (not (activeObject.nameLastEntityEnded==activeObject.nameLastEntityEntered))\
@@ -985,38 +952,6 @@ class Machine(CoreObject):
             activeObject.totalTimeWaitingForOperator+=self.env.now-activeObject.timeWaitForOperatorStarted\
                                                            -activeObject.downTimeProcessingCurrentEntity\
                                                            -offShiftTimeInCurrentEntity
-        
-        # if Machine is down we have to add this failure time to its total failure time
-        if self.Up==False: 
-            if self.onShift:
-                activeObject.totalFailureTime+=self.env.now-activeObject.timeLastFailure
-            # if Machine is off shift add only the fail time before the shift ended
-            if not self.onShift and self.timeLastFailure < self.timeLastShiftEnded:
-                self.totalFailureTime+=self.timeLastShiftEnded-self.timeLastFailure            
-        
-        #if the machine is off shift,add this to the off-shift time
-        if activeObject.onShift==False:
-            self.totalOffShiftTime+=self.env.now-self.timeLastShiftEnded 
-                
-        #Machine was idle when it was not in any other state    
-        activeObject.totalWaitingTime=MaxSimtime-activeObject.totalWorkingTime-activeObject.totalBlockageTime-activeObject.totalFailureTime-activeObject.totalLoadTime-activeObject.totalSetupTime-self.totalOffShiftTime
-        
-        if activeObject.totalBlockageTime<0 and activeObject.totalBlockageTime>-0.00001:  #to avoid some effects of getting negative cause of rounding precision
-            self.totalBlockageTime=0  
-        
-        if activeObject.totalWaitingTime<0 and activeObject.totalWaitingTime>-0.00001:  #to avoid some effects of getting negative cause of rounding precision
-            self.totalWaitingTime=0  
-        
-        activeObject.Failure.append(100*self.totalFailureTime/MaxSimtime)    
-        activeObject.Blockage.append(100*self.totalBlockageTime/MaxSimtime)  
-        activeObject.Waiting.append(100*self.totalWaitingTime/MaxSimtime)    
-        activeObject.Working.append(100*self.totalWorkingTime/MaxSimtime)
-        activeObject.WaitingForOperator.append(100*self.totalTimeWaitingForOperator/MaxSimtime)
-        activeObject.WaitingForLoadOperator.append(100*self.totalTimeWaitingForLoadOperator/MaxSimtime)
-        activeObject.Loading.append(100*self.totalLoadTime/MaxSimtime)
-        activeObject.SettingUp.append(100*self.totalSetupTime/MaxSimtime)
-        activeObject.OffShift.append(100*self.totalOffShiftTime/MaxSimtime)
-
      
     # =======================================================================
     # outputs the the "output.xls"
