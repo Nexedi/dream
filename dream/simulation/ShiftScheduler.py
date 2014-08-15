@@ -73,8 +73,7 @@ class ShiftScheduler(ObjectInterruption):
             # TODO more generic implementation
             if issubclass(self.victim.__class__, CoreObject): 
                 # interrupt the victim only if it was not previously interrupted
-                if not self.victim.interruptionStart.triggered:
-                    self.interruptVictim()                      # interrupt the victim
+                self.interruptVictim()                      # interrupt the victim
             else:
                 CoreObject.requestAllocation()
 
@@ -147,8 +146,7 @@ class ShiftScheduler(ObjectInterruption):
                 # TODO more generic implementation
                 if issubclass(self.victim.__class__, CoreObject): 
                     # interrupt the victim only if it was not previously interrupted
-                    if not self.victim.interruptionStart.triggered:
-                        self.interruptVictim()                      # interrupt the victim
+                    self.interruptVictim()                      # interrupt the victim
                 else:
                     CoreObject.requestAllocation()
                         
