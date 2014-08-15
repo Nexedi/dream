@@ -175,9 +175,8 @@ class Failure(ObjectInterruption):
                 
                 self.expectedSignals['victimEndsProcess']=0
            
-            # interrupt the victim only if it was not previously interrupted
-            if not self.victim.interruptionStart.triggered:
-                self.interruptVictim()                      # interrupt the victim
+            # interrupt the victim
+            self.interruptVictim()                      # interrupt the victim
 
             self.victim.Up=False
             self.victim.timeLastFailure=self.env.now           
