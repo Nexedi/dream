@@ -295,13 +295,6 @@ class Dismantle(CoreObject):
             activeObject.printTrace(self.id, attemptSignalGiver='(removeEntity)')
             activeObject.signalGiver()
         return activeEntity
-    
-    # =======================================================================
-    #              adds the blockage time to totalBlockageTime 
-    #                    each time an Entity is removed
-    # =======================================================================
-    def addBlockage(self): 
-        self.totalBlockageTime+=self.env.now-self.timeLastBlockageStarted
                
     #===========================================================================
     #                  outputs message to the trace.xls. 

@@ -185,6 +185,7 @@ class CoreObject(object):
         self.isProcessing=False
         # flag that shows if the object is blocked state at any given time
         self.isBlocked=False
+        self.timeLastBlockageStarted=None
         
     # =======================================================================
     #                the main process of the core object 
@@ -289,15 +290,14 @@ class CoreObject(object):
         giverObjectQueue=self.getGiverObjectQueue()
         return giverObjectQueue[0]
     
+    
     # =======================================================================
     #              adds the blockage time to totalBlockageTime 
     #                    each time an Entity is removed
     # =======================================================================
     def addBlockage(self): 
-        self.totalTimeInCurrentEntity=self.env.now-self.timeLastEntityEntered
-        self.totalTimeWaitingForOperator += self.operatorWaitTimeCurrentEntity
-        blockage=self.env.now-(self.timeLastEntityEnded+self.downTimeInTryingToReleaseCurrentEntity)       
-        self.totalBlockageTime+=blockage     
+        if self.timeLastBlockageStarted:
+            self.totalBlockageTime+=self.env.now-self.timeLastBlockageStarted  
     
     # =======================================================================
     # gets an entity from the giver 

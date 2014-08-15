@@ -853,14 +853,7 @@ class Machine(CoreObject):
              and self.waitToDispose\
              and (thecaller in self.next)\
              and (self.canDeliverOnInterruption or self.checkIfActive())
-             
-    # =======================================================================
-    #              adds the blockage time to totalBlockageTime 
-    #                    each time an Entity is removed
-    # =======================================================================
-    def addBlockage(self): 
-        self.totalBlockageTime+=self.env.now-self.timeLastBlockageStarted
-    
+                 
     # =======================================================================
     #                       calculates the setup time
     # =======================================================================

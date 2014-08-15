@@ -297,14 +297,7 @@ class Assembly(CoreObject):
             activeObjectQueue[0].getFrameQueue().append(entity)       #get the part from the giver and append it to the frame!
         elif entity.type=='Frame':
             activeObjectQueue.append(entity)                                #get the frame and append it to the internal queue
- 
-    # =======================================================================
-    #              adds the blockage time to totalBlockageTime 
-    #                    each time an Entity is removed
-    # =======================================================================
-    def addBlockage(self): 
-        self.totalBlockageTime+=self.env.now-self.timeLastBlockageStarted
- 
+  
         
     #===========================================================================
     # outputs data to "output.xls"
