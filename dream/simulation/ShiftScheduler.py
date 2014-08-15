@@ -61,6 +61,8 @@ class ShiftScheduler(ObjectInterruption):
     # =======================================================================
     def run(self):
         from CoreObject import CoreObject
+        from ObjectInterruption import ObjectInterruption
+        
         # the victim should not be interrupted but the scheduler should wait for the processing to finish before the stations turns to off-shift mode
         self.victim.totalOffShiftTime=0
         self.victim.timeLastShiftEnded=self.env.now
@@ -110,7 +112,7 @@ class ShiftScheduler(ObjectInterruption):
                 # if the mode is to end current work before going off-shift and there is current work, wait for victimEndedLastProcessing
                 # signal before going off-shift
                 if issubclass(self.victim.__class__, CoreObject):
-                    if self.endUnfinished and len(self.victim.getActiveObjectQueue())==1 and (not self.victim.waitToDispose):
+                    if self.endUnfinished and self.victim.isProcessing:
                         self.victim.isWorkingOnTheLast=True
                         self.waitingSignal=True
                     
@@ -121,7 +123,7 @@ class ShiftScheduler(ObjectInterruption):
                     self.expectedSignals['endedLastProcessing']=0
                     
                     transmitter, eventTime=self.victim.endedLastProcessing.value
-                        self.victim.endedLastProcessing=self.env.event()                
+                        self.victim.endedLastProcessing=self.env.event() 
 
                 # if the victim has interruptions that measure only the on-shift time, they have to be notified
                 for oi in self.victim.objectInterruptions:
