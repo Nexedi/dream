@@ -146,6 +146,7 @@ class Assembly(CoreObject):
                
                 self.outputTrace(self.getActiveObjectQueue()[0].name, "is now full in "+ self.objName)
             
+                self.isProcessing=True
                 self.timeLastFrameWasFull=self.env.now
                 self.nameLastFrameWasFull=self.getActiveObjectQueue()[0].name
                 
@@ -153,12 +154,14 @@ class Assembly(CoreObject):
                 self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()
                 yield self.env.timeout(self.totalProcessingTimeInCurrentEntity)   #hold for the time the assembly operation is carried
                 self.totalWorkingTime+=self.env.now-startWorkingTime
+                self.isProcessing=False
             
                 self.outputTrace(self.getActiveObjectQueue()[0].name, "ended processing in " + self.objName)
                 self.timeLastEntityEnded=self.env.now
                 self.nameLastEntityEnded=self.getActiveObjectQueue()[0].name
             
-                startBlockageTime=self.env.now
+                self.timeLastBlockageStarted=self.env.now
+                self.isBlocked=True
                 self.completedJobs+=1                       #Assembly completed a job
                 self.waitToDispose=True                     #since all the frame is full
             
@@ -181,9 +184,7 @@ class Assembly(CoreObject):
                     yield self.env.timeout(0)
                     # if while waiting (for a canDispose event) became free as the machines that follows emptied it, then proceed
                     if not self.haveToDispose():
-                        break
-            #self.totalBlockageTime+=self.env.now-startBlockageTime     #add the blockage time
-            
+                        break           
   
     #===========================================================================
     # checks if the Assembly can accept an entity 
@@ -297,6 +298,14 @@ class Assembly(CoreObject):
             activeObjectQueue[0].getFrameQueue().append(entity)       #get the part from the giver and append it to the frame!
         elif entity.type=='Frame':
             activeObjectQueue.append(entity)                                #get the frame and append it to the internal queue
+ 
+    # =======================================================================
+    #              adds the blockage time to totalBlockageTime 
+    #                    each time an Entity is removed
+    # =======================================================================
+    def addBlockage(self): 
+        self.totalBlockageTime+=self.env.now-self.timeLastBlockageStarted
+ 
     
     #===========================================================================
     # actions to be taken after the simulation ends
@@ -307,21 +316,13 @@ class Assembly(CoreObject):
             from Globals import G
             MaxSimtime=G.maxSimTime
         activeObjectQueue=self.getActiveObjectQueue()
-        
-        #checks all the successors. If no one can accept an Entity then the machine might be blocked
-        mightBeBlocked=True
-        for nextObject in self.next:
-            if nextObject.canAccept():
-                mightBeBlocked=False
-        
-        #if there is an entity that finished processing in Assembly but did not get to reach 
-        #the following Object
-        #till the end of simulation, we have to add this blockage to the percentage of blockage in Assembly
-        if (mightBeBlocked) and ((self.nameLastEntityEntered == self.nameLastEntityEnded)):              
+                
+        # if the object is blocked add the blockage time
+        if self.isBlocked:              
             self.totalBlockageTime+=self.env.now-self.timeLastEntityEnded       
 
-        #if Assembly is currently processing an entity we should count this working time    
-        if(len(activeObjectQueue)>0) and (not (self.nameLastEntityEnded==self.nameLastFrameWasFull)):              
+        # if the object is processing add the working time
+        if self.isProcessing:              
             self.totalWorkingTime+=self.env.now-self.timeLastFrameWasFull
         
         self.totalWaitingTime=MaxSimtime-self.totalWorkingTime-self.totalBlockageTime 
