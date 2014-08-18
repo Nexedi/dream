@@ -368,3 +368,73 @@ def getPhrase():
                 'conveyerFull':{'phrase':'is now Full, No of units:', 'suffix':'(*)'}}
     return printKwrds
 
+def runSimulation(objectList=[], maxSimTime=100, numberOfReplications=1, trace='No', seed=1):
+    G.numberOfReplications=numberOfReplications
+    G.trace=trace
+    G.maxSimTime=float(maxSimTime)
+    G.seed=seed
+    
+    G.ObjList=[]
+    G.ObjectInterruptionList=[]
+    G.ObjectResourceList=[]
+    from CoreObject import CoreObject
+    from ObjectInterruption import ObjectInterruption
+    from ObjectResource import ObjectResource
+    from Entity import Entity
+    for object in objectList:
+        if issubclass(object.__class__, CoreObject):
+            G.ObjList.append(object)
+        elif issubclass(object.__class__, ObjectInterruption):
+            G.ObjectInterruptionList.append(object)
+        elif issubclass(object.__class__, ObjectResource):
+            G.ObjectResourceList.append(object)  
+
+    #run the replications
+    for i in range(G.numberOfReplications):    
+        G.seed+=1       #increment the seed so that we get different random numbers in each run.
+        
+        G.env=simpy.Environment()   # define a simpy environment
+                                    # this is where all the simulation object 'live'
+
+        G.EntityList=[]
+        for object in objectList:
+            if issubclass(object.__class__, Entity):
+                G.EntityList.append(object)   
+
+        #initialize all the objects
+        for object in G.ObjList + G.ObjectInterruptionList + G.ObjectResourceList + G.EntityList:
+            object.initialize()
+    
+        #activate all the objects
+        for object in G.ObjList + G.ObjectInterruptionList:
+            G.env.process(object.run())
+
+        #set the WIP
+        setWIP(G.EntityList)
+    
+        G.env.run(until=G.maxSimTime)    #run the simulation
+
+        # identify from the exits what is the time that the last entity has ended. 
+        endList=[]
+        from Exit import Exit
+        for object in G.ObjList:
+            if issubclass(object.__class__,Exit):
+                endList.append(object.timeLastEntityLeft)
+        
+        # identify the time of the last event
+        if G.env.now==float('inf'):    
+            G.maxSimTime=float(max(endList))
+        # do not let G.maxSimTime=0 so that there will be no crash
+        if G.maxSimTime==0:
+            print "simulation ran for 0 time, something may have gone wrong"
+            import sys
+            sys.exit()         
+               
+        #carry on the post processing operations for every object in the topology
+        for object in G.ObjList + G.ObjectResourceList:
+            object.postProcessing()
+
+    
+
+
+    
