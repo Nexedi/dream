@@ -1,8 +1,5 @@
-from dream.simulation.imports import Machine, Source, Exit, Part, Frame, Assembly, Failure, G 
-from dream.simulation.imports import simpy
-
-G.env=simpy.Environment()   # define a simpy environment
-                            # this is where all the simulation object 'live'
+from dream.simulation.imports import Machine, Source, Exit, Part, Frame, Assembly, Failure
+from dream.simulation.Globals import runSimulation
 
 #define the objects of the model
 Frame.capacity=4 
@@ -14,10 +11,6 @@ E=Exit('E1','Exit')
 
 F=Failure(victim=M, distribution={'distributionType':'Fixed','MTTF':60,'MTTR':5})
 
-#add objects in lists so that they can be easier accessed later
-G.ObjList=[Sp,Sf,M,A,E]   
-G.ObjectInterruptionList=[F]
-
 #define predecessors and successors for the objects    
 Sp.defineRouting([A])
 Sf.defineRouting([A])
@@ -26,26 +19,16 @@ M.defineRouting([A],[E])
 E.defineRouting([M])
 
 def main():
-    
-    #initialize all the objects
-    for object in G.ObjList + G.ObjectInterruptionList:
-        object.initialize()
-    
-    #activate all the objects
-    for object in G.ObjList + G.ObjectInterruptionList:
-        G.env.process(object.run())
-    
-    G.maxSimTime=1440.0     #set G.maxSimTime 1440.0 minutes (1 day)
-        
-    G.env.run(until=G.maxSimTime)    #run the simulation
-    
-    #carry on the post processing operations for every object in the topology       
-    for object in G.ObjList:
-        object.postProcessing()
+    # add all the objects in a list
+    objectList=[Sp,Sf,M,A,E,F]  
+    # set the length of the experiment  
+    maxSimTime=1440.0
+    # call the runSimulation giving the objects and the length of the experiment
+    runSimulation(objectList, maxSimTime)
     
     #print the results
     print "the system produced", E.numOfExits, "frames"
-    working_ratio=(A.totalWorkingTime/G.maxSimTime)*100
+    working_ratio=(A.totalWorkingTime/maxSimTime)*100
     print "the working ratio of", A.objName,  "is", working_ratio, "%"
     return {"frames": E.numOfExits,
           "working_ratio": working_ratio}
