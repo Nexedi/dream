@@ -49,15 +49,91 @@ class Machine(CoreObject):
     # =======================================================================
     # initialise the id the capacity, of the resource and the distribution
     # =======================================================================
-    def __init__(self, id, name, capacity=1, processingTime=None,
+    def __init__(self, id='', name='', capacity=1, processingTime=None,
                   failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None',\
                   operatorPool='None',operationType='None',\
                   setupTime=None, loadTime=None,
                   isPreemptive=False, resetOnPreemption=False,
-                  canDeliverOnInterruption=False):
-
-        CoreObject.__init__(self, id, name)
+                  canDeliverOnInterruption=False, inputsDict={}):
         self.type="Machine"                         #String that shows the type of object
+        if inputsDict:
+            self.parseInputs(inputsDict)
+        else:
+            CoreObject.__init__(self, id, name)
+            if not processingTime:
+              processingTime = { 'distributionType': 'Fixed',
+                                 'mean': 1, }
+            if processingTime['distributionType'] == 'Normal' and\
+                  processingTime.get('max', None) is None:
+              processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
+    
+            if not setupTime:
+              setupTime = { 'distributionType': 'Fixed',
+                            'mean': 1, }
+            if setupTime['distributionType'] == 'Normal' and\
+                  setupTime.get('max', None) is None:
+              setupTime['max'] = float(setupTime['mean']) + 5 * float(setupTime['stdev'])
+    
+            if not loadTime:
+              loadTime = { 'distributionType': 'Fixed',
+                            'mean': 1, }
+            if loadTime['distributionType'] == 'Normal' and\
+                  loadTime.get('max', None) is None:
+              loadTime['max'] = float(loadTime['mean']) + 5 * float(loadTime['stdev'])
+    
+            #     holds the capacity of the machine 
+            self.capacity=capacity
+            #     define the distribution types of the processing and failure times respectively
+            self.failureDistType=failureDistribution    #the distribution that the failure follows   
+            #     sets the repairman resource of the Machine
+            self.repairman=repairman
+            #     Sets the attributes of the processing (and failure) time(s)
+            self.rng=RandomNumberGenerator(self, **processingTime)
+            self.MTTF=MTTF
+            self.MTTR=MTTR
+            self.availability=availability
+            # check whether the operators are provided with a skills set
+            self.dedicatedOperator=self.checkForDedicatedOperators()
+            # create an operatorPool if needed
+            self.createOperatorPool(operatorPool)
+            # holds the Operator currently processing the Machine
+            self.currentOperator=None
+            # define if load/setup/removal/processing are performed by the operator 
+            self.operationType=operationType
+            # boolean to check whether the machine is being operated
+            self.toBeOperated = False
+            # define the load times
+            self.loadRng = RandomNumberGenerator(self, **loadTime)
+            # variable that informs on the need for setup
+            self.setUp=True
+            # define the setup times
+            self.stpRng = RandomNumberGenerator(self, **setupTime)
+            # examine if there are multiple operation types performed by the operator
+            #     there can be Setup/Processing operationType
+            #     or the combination of both (MT-Load-Setup-Processing) 
+            self.multOperationTypeList=[]   
+            if self.operationType.startswith("MT"):
+                OTlist = operationType.split('-')
+                self.operationType=OTlist.pop(0)
+                self.multOperationTypeList = OTlist
+            else:
+                self.multOperationTypeList.append(self.operationType)
+    
+            # flags used for preemption purposes
+            self.isPreemptive=isPreemptive
+            self.resetOnPreemption=resetOnPreemption
+            # flag notifying that there is operator assigned to the actievObject
+            self.assignedOperator=True
+            # flag notifying the the station can deliver entities that ended their processing while interrupted
+            self.canDeliverOnInterruption=canDeliverOnInterruption
+        
+        
+    def parseInputs(self, inputsDict):
+        from Globals import G
+        id = inputsDict.get('id')
+        name = inputsDict.get('name')
+        processingTime=inputsDict.get('processingTime',{})
+        CoreObject.__init__(self, id, name)
         if not processingTime:
           processingTime = { 'distributionType': 'Fixed',
                              'mean': 1, }
@@ -65,6 +141,7 @@ class Machine(CoreObject):
               processingTime.get('max', None) is None:
           processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
 
+        setupTime=inputsDict.get('setupTime',{})
         if not setupTime:
           setupTime = { 'distributionType': 'Fixed',
                         'mean': 1, }
@@ -72,6 +149,7 @@ class Machine(CoreObject):
               setupTime.get('max', None) is None:
           setupTime['max'] = float(setupTime['mean']) + 5 * float(setupTime['stdev'])
 
+        loadTime=inputsDict.get('loadTime',{})
         if not loadTime:
           loadTime = { 'distributionType': 'Fixed',
                         'mean': 1, }
@@ -80,24 +158,34 @@ class Machine(CoreObject):
           loadTime['max'] = float(loadTime['mean']) + 5 * float(loadTime['stdev'])
 
         #     holds the capacity of the machine 
-        self.capacity=capacity
+        self.capacity=inputsDict.get('capacity',1)
         #     define the distribution types of the processing and failure times respectively
-        self.failureDistType=failureDistribution    #the distribution that the failure follows   
-        #     sets the repairman resource of the Machine
-        self.repairman=repairman
-        #     Sets the attributes of the processing (and failure) time(s)
         self.rng=RandomNumberGenerator(self, **processingTime)
-        self.MTTF=MTTF
-        self.MTTR=MTTR
-        self.availability=availability
         # check whether the operators are provided with a skills set
         self.dedicatedOperator=self.checkForDedicatedOperators()
+        if len(G.OperatorPoolsList)>0:
+            for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
+                if(id in operatorPool.coreObjectIds):                   # and add it to the machine's operatorPool
+                    machineOperatorPoolList=operatorPool                # there must only one operator pool assigned to the machine,
+                                                                        # otherwise only one of them will be taken into account
+                else:
+                    machineOperatorPoolList=[]                          # if there is no operatorPool assigned to the machine
+        else:                                                           # then machineOperatorPoolList/operatorPool is a list
+            machineOperatorPoolList=[]                                  # if there are no operatorsPool created then the 
+                                                                        # then machineOperatorPoolList/operatorPool is a list
+        if (type(machineOperatorPoolList) is list):                 # if the machineOperatorPoolList is a list
+                                                                    # find the operators assigned to it and add them to the list
+            for operator in G.OperatorsList:                        # check which operator in the G.OperatorsList
+                if(id in operator.coreObjectIds):                   # (if any) is assigned to operate
+                    machineOperatorPoolList.append(operator)        # the machine with ID equal to id
+        
+        self.operatorPool=machineOperatorPoolList
         # create an operatorPool if needed
-        self.createOperatorPool(operatorPool)
+        self.createOperatorPool(self.operatorPool)
         # holds the Operator currently processing the Machine
         self.currentOperator=None
         # define if load/setup/removal/processing are performed by the operator 
-        self.operationType=operationType
+        self.operationType=inputsDict.get('operationType', 'None')
         # boolean to check whether the machine is being operated
         self.toBeOperated = False
         # define the load times
@@ -111,19 +199,28 @@ class Machine(CoreObject):
         #     or the combination of both (MT-Load-Setup-Processing) 
         self.multOperationTypeList=[]   
         if self.operationType.startswith("MT"):
-            OTlist = operationType.split('-')
+            OTlist = self.operationType.split('-')
             self.operationType=OTlist.pop(0)
             self.multOperationTypeList = OTlist
         else:
             self.multOperationTypeList.append(self.operationType)
 
         # flags used for preemption purposes
-        self.isPreemptive=isPreemptive
-        self.resetOnPreemption=resetOnPreemption
+        preemption=inputsDict.get('preemption',{})
+        self.isPreemptive=False
+        self.resetOnPreemption=False
+        if len(preemption)>0:
+            self.isPreemptive=bool(int(preemption.get('isPreemptive') or 0))
+            self.resetOnPreemption=bool(int(preemption.get('resetOnPreemption', 0)))
         # flag notifying that there is operator assigned to the actievObject
         self.assignedOperator=True
         # flag notifying the the station can deliver entities that ended their processing while interrupted
-        self.canDeliverOnInterruption=canDeliverOnInterruption
+        self.canDeliverOnInterruption=bool(inputsDict.get('canDeliverOnInterruption') or 0)     
+
+        self.repairman='None'
+        for repairman in G.RepairmanList:                   # check which repairman in the G.RepairmanList
+            if(self.id in repairman.coreObjectIds):              # (if any) is assigned to repair 
+                self.repairman=repairman                                 # the machine with ID equal to id
     
     # =======================================================================
     # initialize the machine
