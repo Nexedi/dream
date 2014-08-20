@@ -3,7 +3,7 @@ from dream.simulation.Globals import runSimulation
 
 #the custom queue
 class SelectiveQueue(Queue):
-    #override so that it first chooses M1 and then M2
+    #override so that it chooses receiver according to priority
     def selectReceiver(self,possibleReceivers=[]):
         # sort the receivers according to their priority
         possibleReceivers.sort(key=lambda x: x.priority, reverse=True)
@@ -47,7 +47,6 @@ G.NumM2=0
 #create priority attribute in the Machines
 M1.priority=10
 M2.priority=0
-
 
 #define predecessors and successors for the objects    
 S.defineRouting([Q])
