@@ -292,7 +292,7 @@ def createObjects():
             G.ObjList.append(S)
             
         elif objClass in ['Dream.Machine', 'Dream.BatchScrapMachine', 'Dream.M3', 'Dream.MachineJobShop',
-                          'Dream.MachineManagedJob']:
+                          'Dream.MachineManagedJob', 'Dream.MouldAssembly']:
             objectType=Globals.getClassFromName(objClass)
             coreObject=objectType(inputsDict=element)
             coreObject.nextIds=getSuccessorList(element['id'])           # update the nextIDs list of the machine
@@ -448,72 +448,7 @@ def createObjects():
             LC.nextIds=getSuccessorList(id)
             G.LineClearanceList.append(LC)
             G.ObjList.append(LC)
-            
-        elif objClass=='Dream.OperatedMachine':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', {})
-            distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean') or 0)
-            stdev=float(processingTime.get('stdev') or 0)
-            min=float(processingTime.get('min') or 0)
-            max=float(processingTime.get('max') or mean+5*stdev)
-            failures=element.get('failures', {})  
-            failureDistribution=failures.get('distributionType', 'not found')
-            MTTF=float(failures.get('MTTF') or 0)
-            MTTR=float(failures.get('MTTR') or 0)
-            availability=float(failures.get('availability') or 0)
-            
-            operationType=element.get('operationType','not found')
-            setupTime = element.get('setupTime', None)
-            loadTime = element.get('loadTime', None)
-            
-            if len(G.OperatorPoolsList)>0:
-                for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
-                    if(id in operatorPool.coreObjectIds):                   # and add it to the machine's operatorPool
-                        machineOperatorPoolList=operatorPool                # there must only one operator pool assigned to the machine,
-                                                                            # otherwise only one of them will be taken into account
-                    else:
-                        machineOperatorPoolList=[]                          # if there is no operatorPool assigned to the machine
-            else:                                                           # then machineOperatorPoolList/operatorPool is a list
-                machineOperatorPoolList=[]                                  # if there are no operatorsPool created then the 
-                                                                            # then machineOperatorPoolList/operatorPool is a list
-            if (type(machineOperatorPoolList) is list):                 # if the machineOperatorPoolList is a list
-                                                                        # find the operators assigned to it and add them to the list
-                for operator in G.OperatorsList:                        # check which operator in the G.OperatorsList
-                    if(id in operator.coreObjectIds):                   # (if any) is assigned to operate
-                        machineOperatorPoolList.append(operator)        # the machine with ID equal to id
-                                                                        # if there is no operator assigned then the list will be empty
-#             try:
-#                 for operatorPool in G.operatorPoolsList:                    # find the operatorPool assigned to the machine
-#                     if(id in operatorPool.coreObjectIds):                   # and add it to the machine's operatorPool
-#                         machineOperatorPoolList=operatorPool                # there must only one operator pool assigned to the machine,
-#                                                                             # otherwise only one of them will be taken into account
-#             except:
-# #                 pass
-# #             if len(machineOperatorPoolList)==None:                      # if there is no operatorPool assigned to the machine
-#                 machineOperatorPoolList=[]                          # find the operators assigned to it and add them to a list
-#                 for operator in G.OperatorsList:                    # check which operator in the G.OperatorsList
-#                     if(id in operator.coreObjectIds):               # (if any) is assigned to operate
-#                         machineOperatorPoolList.append(operator)    # the machine with ID equal to id
-#                                                                     # if there is no operator assigned then the list will be empty
-
-            r='None'
-            for repairman in G.RepairmanList:                   # check which repairman in the G.RepairmanList
-                if(id in repairman.coreObjectIds):              # (if any) is assigned to repair 
-                    r=repairman                                 # the machine with ID equal to id
-            
-            OM=OperatedMachine(id, name, 1, distribution=distributionType,  failureDistribution=failureDistribution,
-                                                    MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
-                                                    mean=mean,stdev=stdev,min=min,max=max,
-                                                    operatorPool=machineOperatorPoolList, operationType=operationType,
-                                                    setupTime=setupTime,
-                                                    loadTime=loadTime, repairman=r)
-            OM.nextIds=getSuccessorList(id)                             # update the nextIDs list of the machine
-            G.OperatedMachineList.append(OM)                            # add the machine to the operatedMachines List
-            G.MachineList.append(OM)                                    # add machine to global MachineList
-            G.ObjList.append(OM)                                        # add machine to ObjList
-            
+                       
         elif objClass=='Dream.OrderDecomposition':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
@@ -540,57 +475,7 @@ def createObjects():
             G.QueueJobShopList.append(MAB)
             G.MouldAssemblyBufferList.append(MAB)
             G.ObjList.append(MAB)
-            
-        elif objClass=='Dream.MouldAssembly':
-            from MouldAssembly import MouldAssembly
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            failures=element.get('failures', {})  
-            failureDistribution=failures.get('distributionType', 'not found')
-            MTTF=float(failures.get('MTTF') or 0)
-            MTTR=float(failures.get('MTTR') or 0)
-            availability=float(failures.get('availability') or 0)
-            resetOnPreemption=bool(int(element.get('resetOnPreemption') or 0))
-            # type of operation and related times 
-            operationType=element.get('operationType','not found')
-            setupTime = element.get('setupTime', None)
-            loadTime = element.get('loadTime', None)
-            resetOnPreemption=bool(int(element.get('resetOnPreemption') or 0))
-            
-            if len(G.OperatorPoolsList)>0:
-                for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
-                    if(id in operatorPool.coreObjectIds):                   # and add it to the machine's operatorPool
-                        machineOperatorPoolList=operatorPool                # there must only one operator pool assigned to the machine,
-                                                                            # otherwise only one of them will be taken into account
-                    else:
-                        machineOperatorPoolList=[]                          # if there is no operatorPool assigned to the machine
-            else:                                                           # then machineOperatorPoolList/operatorPool is a list
-                machineOperatorPoolList=[]                                  # if there are no operatorsPool created then the 
-                                                                            # then machineOperatorPoolList/operatorPool is a list
-            if (type(machineOperatorPoolList) is list):                 # if the machineOperatorPoolList is a list
-                                                                        # find the operators assigned to it and add them to the list
-                for operator in G.OperatorsList:                        # check which operator in the G.OperatorsList
-                    if(id in operator.coreObjectIds):                   # (if any) is assigned to operate
-                        machineOperatorPoolList.append(operator)        # the machine with ID equal to id
-                                                                        # if there is no operator assigned then the list will be empty
-            r='None'
-            for repairman in G.RepairmanList:
-                if(id in repairman.coreObjectIds):
-                    r=repairman
-                    
-            MA=MouldAssembly(id, name, 1, failureDistribution=failureDistribution,
-                                                    MTTF=MTTF, MTTR=MTTR, availability=availability, #repairman=r,
-                                                    operatorPool=machineOperatorPoolList, operationType=operationType,
-                                                    setupTime=setupTime,
-                                                    loadTime=loadTime, repairman=r, resetOnPreemption=resetOnPreemption)
-            MA.nextIds=getSuccessorList(id)
-            G.MachineJobShopList.append(MA)
-            G.MachineList.append(MA)
-            G.MouldAssemblyList.append(MA)
-            if MA.operatorPool!="None":
-                G.OperatedMachineList.append(MA)                 # add the machine to the operatedMachines List
-            G.ObjList.append(MA)
-            
+                        
         elif objClass=='Dream.CapacityStation':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')

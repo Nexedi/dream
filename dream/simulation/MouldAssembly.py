@@ -77,6 +77,15 @@ class AssembleMouldError(Exception):
 # the MachineManagedJob object
 # ===========================================================================
 class MouldAssembly(MachineManagedJob):
+    
+    # =======================================================================
+    # parses inputs if they are given in a dictionary
+    # =======================================================================       
+    def parseInputs(self, inputsDict):
+        MachineManagedJob.parseInputs(self, inputsDict)
+        from Globals import G
+        G.MouldAssemblyList.append(self)
+
     # =======================================================================
     # the initialize method
     # =======================================================================
