@@ -31,6 +31,15 @@ from Machine import Machine
 # the MachineJobShop object
 # ===========================================================================
 class MachineJobShop(Machine):
+    
+    # =======================================================================
+    # parses inputs if they are given in a dictionary
+    # =======================================================================       
+    def parseInputs(self, inputsDict):
+        Machine.parseInputs(self, inputsDict)
+        from Globals import G
+        G.MachineJobShopList.append(self)
+        
     # =======================================================================
     # set all the objects in previous and next
     # =======================================================================
