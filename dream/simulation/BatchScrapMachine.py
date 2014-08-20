@@ -43,28 +43,50 @@ class BatchScrapMachine(Machine):
     # calls the Machine constructor, but also reads attributes for 
     # scraping distribution
     # ======================================================================= 
-    def __init__(self, id, name, capacity=1, \
+    def __init__(self, id='', name='', capacity=1, \
                  processingTime=None,
                  failureDistribution='No', MTTF=0, MTTR=0, availability=0, repairman='None',\
-                 scrapDistribution='Fixed',scrMean=1,scrStdev=0,scrMin=0,scrMax=10):
-        if not processingTime:
-          processingTime = {'distribution': 'Fixed',
-                            'mean': 1}
-        # initialize using the default method of the object 
-        Machine.__init__(self,id=id,name=name,\
-                                    capacity=capacity,\
-                                    processingTime=processingTime,
-                                    failureDistribution=failureDistribution,MTTF=MTTF,MTTR=MTTR,\
-                                    availability=availability,
-                                    repairman=repairman)
+                 scrapDistribution='Fixed',scrMean=1,scrStdev=0,scrMin=0,scrMax=10,
+                 inputsDict={}):
+        # if input is given in a dictionary
+        if inputsDict:
+            Machine.__init__(self,inputsDict=inputsDict)
+        # else read the separate ones
+        else:
+            if not processingTime:
+              processingTime = {'distribution': 'Fixed',
+                                'mean': 1}
+            # initialize using the default method of the object 
+            Machine.__init__(self,id=id,name=name,\
+                                        capacity=capacity,\
+                                        processingTime=processingTime,
+                                        failureDistribution=failureDistribution,MTTF=MTTF,MTTR=MTTR,\
+                                        availability=availability,
+                                        repairman=repairman)
+    
+            self.scrapDistType=scrapDistribution    #the distribution that the failure follows   
+            # set the attributes of the scrap quantity distribution
+            self.scrapRng=RandomNumberGenerator(self, self.scrapDistType)
+            self.scrapRng.mean=scrMean
+            self.scrapRng.stdev=scrStdev
+            self.scrapRng.min=scrMin
+            self.scrapRng.max=scrMax
 
-        self.scrapDistType=scrapDistribution    #the distribution that the failure follows   
+    # =======================================================================
+    # parses inputs if they are given in a dictionary
+    # =======================================================================       
+    def parseInputs(self, inputsDict):
+        Machine.parseInputs(self, inputsDict)
         # set the attributes of the scrap quantity distribution
+        scrapQuantity=inputsDict.get('scrapQuantity', {})
+        self.scrapDistType=scrapQuantity.get('distributionType', 'Fixed')
         self.scrapRng=RandomNumberGenerator(self, self.scrapDistType)
-        self.scrapRng.mean=scrMean
-        self.scrapRng.stdev=scrStdev
-        self.scrapRng.min=scrMin
-        self.scrapRng.max=scrMax
+        self.scrapRng.mean=float(scrapQuantity.get('mean') or 0)
+        self.scrapRng.stdev=float(scrapQuantity.get('stdev') or 0)
+        self.scrapRng.min=float(scrapQuantity.get('min') or 0)
+        self.scrapRng.max=float(scrapQuantity.get('max') or self.scrapRng.mean+5*self.scrapRng.stdev)
+        from Globals import G
+        G.BatchScrapMachineList.append(self)
 
     # =======================================================================
     # removes an Entity from the Object the Entity to be removed is passed
@@ -74,7 +96,7 @@ class BatchScrapMachine(Machine):
     # =======================================================================
     def removeEntity(self, entity=None):
         activeEntity = Machine.removeEntity(self, entity)
-        scrapQuantity=self.scrapRng.generateNumber()        
+        scrapQuantity=self.scrapRng.generateNumber()  
         activeEntity.numberOfUnits-=int(scrapQuantity)  # the scrapQuantity should be integer at whatever case
         if activeEntity.numberOfUnits<0:
             activeEntity.numberOfUnits==0

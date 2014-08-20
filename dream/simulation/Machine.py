@@ -126,8 +126,10 @@ class Machine(CoreObject):
             self.assignedOperator=True
             # flag notifying the the station can deliver entities that ended their processing while interrupted
             self.canDeliverOnInterruption=canDeliverOnInterruption
-        
-        
+
+    # =======================================================================
+    # parses inputs if they are given in a dictionary
+    # =======================================================================       
     def parseInputs(self, inputsDict):
         from Globals import G
         id = inputsDict.get('id')
@@ -221,7 +223,13 @@ class Machine(CoreObject):
         for repairman in G.RepairmanList:                   # check which repairman in the G.RepairmanList
             if(self.id in repairman.coreObjectIds):              # (if any) is assigned to repair 
                 self.repairman=repairman                                 # the machine with ID equal to id
-    
+
+        G.MachineList.append(self)                             # add machine to global MachineList
+        if self.operatorPool!="None":
+            G.OperatedMachineList.append(self)                 # add the machine to the operatedMachines List
+        G.ObjList.append(self)                                 # add machine to ObjList
+
+   
     # =======================================================================
     # initialize the machine
     # =======================================================================        
