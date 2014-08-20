@@ -122,9 +122,16 @@ class SimulationExamples(TestCase):
     self.assertTrue(23.09 < result["working_ratio_M1"] < 23.1)
     self.assertTrue(26.9 < result["working_ratio_M2"] < 26.91)
 	
-  #NOTE: testParallelServers3 is extension of testParallelServers2 so this test really tests if they both run
-  def testParallelServers3(self):
+  def testParallelServers2(self):
     from dream.simulation.Examples.ParallelServers3 import main
+    result = main()
+    self.assertEquals(result['parts'], 2880)
+    self.assertTrue(46.18 < result["working_ratio_M1"] < 46.19)
+    self.assertTrue(3.81 < result["working_ratio_M2"] < 3.82)
+	
+  #NOTE: testParallelServers4 is extension of testParallelServers4 so this test really tests if they both run
+  def testParallelServers4(self):
+    from dream.simulation.Examples.ParallelServers4 import main
     result = main()
     self.assertEquals(result['parts'], 2880)
     self.assertTrue(46.18 < result["working_ratio_M1"] < 46.19)
