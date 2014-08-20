@@ -291,41 +291,11 @@ def createObjects():
             G.SourceList.append(S)
             G.ObjList.append(S)
             
-        elif objClass in ['Dream.Machine']:
-            M=Machine(inputsDict=element)
-            M.nextIds=getSuccessorList(element['id'])           # update the nextIDs list of the machine
+        elif objClass in ['Dream.Machine', 'Dream.BatchScrapMachine']:
+            objectType=Globals.getClassFromName(objClass)
+            coreObject=objectType(inputsDict=element)
+            coreObject.nextIds=getSuccessorList(element['id'])           # update the nextIDs list of the machine
             
-        elif objClass=='Dream.BatchScrapMachine':
-#             id=element.get('id', 'not found')
-#             name=element.get('name', 'not found')
-#             processingTime=element.get('processingTime',{})
-#             scrapQuantity=element.get('scrapQuantity', {})
-#             scrapDistributionType=scrapQuantity.get('distributionType', 'not found')
-#             scrMean=float(scrapQuantity.get('mean') or 0)
-#             scrStdev=float(scrapQuantity.get('stdev') or 0)
-#             scrMin=float(scrapQuantity.get('min') or 0)
-#             scrMax=float(scrapQuantity.get('max') or scrMean+5*scrStdev)
-#             failures=element.get('failures', {})  
-#             failureDistribution=failures.get('failureDistribution', 'not found')
-#             MTTF=float(failures.get('MTTF') or 0)
-#             MTTR=float(failures.get('MTTR') or 0)
-#             availability=float(failures.get('availability') or 0)
-#             r='None'
-#             for repairman in G.RepairmanList:                   # check which repairman in the G.RepairmanList
-#                 if(id in repairman.coreObjectIds):              # (if any) is assigned to repair 
-#                     r=repairman                                 # the machine with ID equal to id
-#                   
-#             M=BatchScrapMachine(id, name, 1, processingTime, failureDistribution=failureDistribution,
-#                                                     MTTF=MTTF, MTTR=MTTR, availability=availability, repairman=r,
-#                                                     scrMean=scrMean,
-#                                                     scrStdev=scrStdev,scrMin=scrMin,scrMax=scrMax)
-#             M.nextIds=getSuccessorList(id)                      # update the nextIDs list of the machine
-#             G.MachineList.append(M)                             # add machine to global MachineList
-#             G.BatchScrapMachineList.append(M)
-#             G.ObjList.append(M)                                 # add machine to ObjList
-            M=BatchScrapMachine(inputsDict=element)
-            M.nextIds=getSuccessorList(element['id'])           # update the nextIDs list of the machine
-
         elif objClass=='Dream.M3':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')
