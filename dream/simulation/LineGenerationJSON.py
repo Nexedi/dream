@@ -297,18 +297,7 @@ def createObjects():
             objectType=Globals.getClassFromName(objClass)
             coreObject=objectType(inputsDict=element)
             coreObject.nextIds=getSuccessorList(element['id'])           # update the nextIDs list of the machine
-                                                                                                    
-        elif objClass=='Dream.QueueLIFO':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            successorList=element.get('successorList', 'not found')
-            capacity=int(element.get('capacity') or 1)
-            isDummy=bool(int(element.get('isDummy') or 0))
-            Q=QueueLIFO(id, name, capacity, isDummy)
-            Q.nextIds=successorList
-            G.QueueList.append(Q)
-            G.ObjList.append(Q)
-            
+                                                                                                                
         elif objClass=='Dream.Assembly':
             A=Assembly(**element)
             A.nextIds=getSuccessorList(element['id'])
