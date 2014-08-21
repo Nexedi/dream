@@ -39,7 +39,9 @@ class CapacityStationBuffer(Queue):
         Queue.__init__(self, id, name, capacity=capacity)
         self.isLocked=True
         self.requireFullProject=requireFullProject       # flag that shows if here the whole project is assembled
-
+        from Globals import G
+        G.CapacityStationBufferList.append(self)
+        
     def initialize(self):
         Queue.initialize(self)
         self.isLocked=True

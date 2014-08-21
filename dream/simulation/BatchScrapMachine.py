@@ -47,7 +47,7 @@ class BatchScrapMachine(Machine):
                  processingTime=None, repairman='None',\
                  scrapQuantity={}):
         if not processingTime:
-          processingTime = {'distribution': 'Fixed',
+          processingTime = {'distributionType': 'Fixed',
                             'mean': 1}
         # initialize using the default method of the object 
         Machine.__init__(self,id=id,name=name,\
@@ -56,6 +56,10 @@ class BatchScrapMachine(Machine):
                                     repairman=repairman)
 
         # set the attributes of the scrap quantity distribution
+        if not scrapQuantity:
+            scrapQuantity = {'distributionType': 'Fixed',
+                            'mean': 0}
+            
         self.scrapRng=RandomNumberGenerator(self, **scrapQuantity)
         from Globals import G
         G.BatchScrapMachineList.append(self)

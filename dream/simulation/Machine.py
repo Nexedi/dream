@@ -53,8 +53,8 @@ class Machine(CoreObject):
                   repairman='None',\
                   operatorPool='None',operationType='None',\
                   setupTime=None, loadTime=None,
-                  isPreemptive=False, resetOnPreemption=False,
-                  canDeliverOnInterruption=False, inputsDict={}, failures=None):
+                  preemption={},
+                  canDeliverOnInterruption=False):
         self.type="Machine"                         #String that shows the type of object
         CoreObject.__init__(self, id, name)
         from Globals import G
@@ -133,8 +133,11 @@ class Machine(CoreObject):
             self.multOperationTypeList.append(self.operationType)
  
         # flags used for preemption purposes
-        self.isPreemptive=isPreemptive
-        self.resetOnPreemption=resetOnPreemption
+        self.isPreemptive=False
+        self.resetOnPreemption=False
+        if len(preemption)>0:
+            self.isPreemptive=bool(int(preemption.get('isPreemptive') or 0))
+            self.resetOnPreemption=bool(int(preemption.get('resetOnPreemption', 0)))
         # flag notifying that there is operator assigned to the actievObject
         self.assignedOperator=True
         # flag notifying the the station can deliver entities that ended their processing while interrupted

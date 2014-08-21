@@ -243,8 +243,8 @@ def createObjects():
                                                                     # element itself 
         element = element.copy()
         element['id'] = element_id                                  # create a new entry for the element (dictionary)
-        for k in ('element_id', 'top', 'left'):
-          element.pop(k, None)
+#         for k in ('element_id', 'top', 'left'):
+#           element.pop(k, None)
                                                                     # with key 'id' and value the the element_id
         resourceClass = element.pop('_class')          # get the class type of the element
         if resourceClass=='Dream.OperatorPool':
@@ -283,7 +283,9 @@ def createObjects():
                           'Dream.Queue', 'Dream.RoutingQueue', 'Dream.QueueJobShop', 'Dream.QueueManagedJob',
                           'Dream.Assembly', 'Dream.Dismantle', 'Dream.Source', 'Dream.Conveyer', 
                           'Dream.BatchDecomposition', 'Dream.BatchReassembly', 'Dream.LineClearance', 
-                          'Dream.BatchSource']:
+                          'Dream.BatchSource', 'Dream.OrderDecomposition', 'Dream.MouldAssemblyBuffer',
+                          'Dream.ConditionalBuffer', 'Dream.BatchDecompositionStartTime', 'Dream.ConditionalBuffer',
+                          'Dream.CapacityStation','Dream.CapacityStationBuffer','Dream.CapacityStationExit']:
             inputDict=dict(element)
             if 'wip' in inputDict:
                 del inputDict['wip']
@@ -291,6 +293,8 @@ def createObjects():
                 del inputDict['failures']
             if 'shift' in inputDict:
                 del inputDict['shift']
+            if 'scheduledMaintenance' in inputDict:
+                del inputDict['scheduledMaintenance']
             objectType=Globals.getClassFromName(objClass)
             coreObject=objectType(**inputDict)
             # get the successorList for the 'Parts'
@@ -298,61 +302,35 @@ def createObjects():
             # get the successorList for the 'Frames'
             coreObject.nextFrameIds=getSuccessorList(element['id'], lambda source, destination, edge_data: edge_data.get('entity') == 'Frame')
             coreObject.nextIds=getSuccessorList(element['id'])           # update the nextIDs list of the object
-                                                                                                                                                                   
-        elif objClass=='Dream.OrderDecomposition':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            OD=OrderDecomposition(id, name)
-            G.OrderDecompositionList.append(OD)
-            G.ObjList.append(OD)
-            
-        elif objClass=='Dream.ConditionalBuffer':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            CB=ConditionalBuffer(id, name)
-            CB.nextIds=getSuccessorList(id)
-            G.QueueList.append(CB)
-            G.QueueJobShopList.append(CB)
-            G.ConditionalBufferList.append(CB)
-            G.ObjList.append(CB)
-            
-        elif objClass=='Dream.MouldAssemblyBuffer':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            MAB=MouldAssemblyBuffer(id, name)
-            MAB.nextIds=getSuccessorList(id)
-            G.QueueList.append(MAB)
-            G.QueueJobShopList.append(MAB)
-            G.MouldAssemblyBufferList.append(MAB)
-            G.ObjList.append(MAB)
-                        
-        elif objClass=='Dream.CapacityStation':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            intervalCapacity=element.get('intervalCapacity', [])
-            sharedResources=element.get('sharedResources', {})
-            CS=CapacityStation(id,name,intervalCapacity=intervalCapacity, sharedResources=sharedResources)
-            CS.nextIds=getSuccessorList(id)
-            G.CapacityStationList.append(CS)
-            G.ObjList.append(CS)
-            
-        elif objClass=='Dream.CapacityStationBuffer':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            requireFullProject=bool(element.get('requireFullProject', 0))
-            CB=CapacityStationBuffer(id,name,requireFullProject=requireFullProject)
-            CB.nextIds=getSuccessorList(id)
-            G.CapacityStationBufferList.append(CB)
-            G.ObjList.append(CB)
-            
-        elif objClass=='Dream.CapacityStationExit':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            nextCapacityStationBufferId=element.get('nextCapacityStationBufferId', None)
-            CE=CapacityStationExit(id,name,nextCapacityStationBufferId=nextCapacityStationBufferId)
-            G.CapacityStationExitList.append(CE)
-            G.ExitList.append(CE)
-            G.ObjList.append(CE)
+                                                                                                                                                                              
+                                   
+#         elif objClass=='Dream.CapacityStation':
+#             id=element.get('id', 'not found')
+#             name=element.get('name', 'not found')
+#             intervalCapacity=element.get('intervalCapacity', [])
+#             sharedResources=element.get('sharedResources', {})
+#             CS=CapacityStation(id,name,intervalCapacity=intervalCapacity, sharedResources=sharedResources)
+#             CS.nextIds=getSuccessorList(id)
+#             G.CapacityStationList.append(CS)
+#             G.ObjList.append(CS)
+#             
+#         elif objClass=='Dream.CapacityStationBuffer':
+#             id=element.get('id', 'not found')
+#             name=element.get('name', 'not found')
+#             requireFullProject=bool(element.get('requireFullProject', 0))
+#             CB=CapacityStationBuffer(id,name,requireFullProject=requireFullProject)
+#             CB.nextIds=getSuccessorList(id)
+#             G.CapacityStationBufferList.append(CB)
+#             G.ObjList.append(CB)
+#             
+#         elif objClass=='Dream.CapacityStationExit':
+#             id=element.get('id', 'not found')
+#             name=element.get('name', 'not found')
+#             nextCapacityStationBufferId=element.get('nextCapacityStationBufferId', None)
+#             CE=CapacityStationExit(id,name,nextCapacityStationBufferId=nextCapacityStationBufferId)
+#             G.CapacityStationExitList.append(CE)
+#             G.ExitList.append(CE)
+#             G.ObjList.append(CE)
              
     # -----------------------------------------------------------------------
     #                loop through all the nodes to  

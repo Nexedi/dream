@@ -44,7 +44,9 @@ class CapacityStationExit(Exit):
         self.nextCapacityStationBufferId=nextCapacityStationBufferId    # the id of the next station. If it is None it 
                                                                         # means it is the end of the system.
         self.nextCapacityStationBuffer=None                             # the next buffer. If it is None it
-                                                                        # means it is the end of the system.        
+        from Globals import G
+        G.CapacityStationExitList.append(self)
+                                                           # means it is the end of the system.        
     def initialize(self):
         Exit.initialize(self)
         self.isLocked=True

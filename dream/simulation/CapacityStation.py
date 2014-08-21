@@ -67,6 +67,8 @@ class CapacityStation(Queue):
         self.isLocked=True
         self.utilisationDict=[]     # a list of dicts for the utilization results
         self.detailedWorkPlan=[]    # a list of dicts to keep detailed data
+        from Globals import G
+        G.CapacityStationList.append(self)
 
     def canAccept(self, callerObject=None):
         if self.isLocked:
