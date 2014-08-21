@@ -179,7 +179,7 @@ def createObjects():
     G.MouldAssemblyList=[]
     G.MachineManagedJobList=[]
     G.QueueManagedJobList=[]
-    G.ModelResourceList=[]
+    G.ObjectResourceList=[]
     G.CapacityStationBufferList=[]
     G.CapacityStationList=[]
     G.CapacityStationExitList=[]
@@ -207,7 +207,7 @@ def createObjects():
             R.coreObjectIds=getSuccessorList(id)                    # update the list of objects that the repairman repairs
                                                                     # calling the getSuccessorList() method on the repairman
             G.RepairmanList.append(R)                               # add the repairman to the RepairmanList
-            G.ModelResourceList.append(R) 
+            G.ObjectResourceList.append(R) 
         elif resourceClass=='Dream.Operator':
             id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
             name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
@@ -220,7 +220,7 @@ def createObjects():
             O.coreObjectIds=getSuccessorList(id)                	# update the list of objects that the operator operates
 																	# calling the getSuccesorList() method on the operator
             G.OperatorsList.append(O)                               # add the operator to the RepairmanList
-            G.ModelResourceList.append(O) 
+            G.ObjectResourceList.append(O) 
         elif resourceClass=='Dream.OperatorManagedJob':
             id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
             name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
@@ -233,7 +233,7 @@ def createObjects():
                                                                     # calling the getSuccesorList() method on the operator
             G.OperatorsList.append(O)                               # add the operator to the RepairmanList
             G.OperatorManagedJobsList.append(O)
-            G.ModelResourceList.append(O) 
+            G.ObjectResourceList.append(O) 
     '''
     loop through all the model resources 
     search for operatorPools in order to create them
@@ -413,7 +413,7 @@ def setTopology():
 #            initializes all the objects that are in the topology
 # ===========================================================================
 def initializeObjects():
-    for element in G.ObjList + G.ModelResourceList + G.EntityList + G.ObjectInterruptionList:
+    for element in G.ObjList + G.ObjectResourceList + G.EntityList + G.ObjectInterruptionList:
         element.initialize()
 
 # ===========================================================================
@@ -896,7 +896,7 @@ def main(argv=[], input_data=None):
             element.postProcessing()
             
         #carry on the post processing operations for every model resource in the topology       
-        for model_resource in G.ModelResourceList:
+        for model_resource in G.ObjectResourceList:
             model_resource.postProcessing()
             
         # added for debugging, print the Route of the Jobs on the same G.traceFile
@@ -919,7 +919,7 @@ def main(argv=[], input_data=None):
         element.outputResultsJSON()
         
     #output data to JSON for every resource in the topology         
-    for model_resource in G.ModelResourceList:
+    for model_resource in G.ObjectResourceList:
         model_resource.outputResultsJSON()
         
     for job in G.JobList:
