@@ -33,6 +33,15 @@ from Queue import Queue
 #                            the Queue object
 # ===========================================================================
 class RoutingQueue(Queue):
+    
+    # =======================================================================
+    # parses inputs if they are given in a dictionary
+    # =======================================================================       
+    def parseInputs(self, inputsDict):
+        Queue.parseInputs(self, inputsDict)
+        from Globals import G
+        G.RoutingQueueList.append(self)
+
     # =======================================================================
     # checks if the Queue can dispose an entity to the following object
     # it checks also who called it and returns TRUE 

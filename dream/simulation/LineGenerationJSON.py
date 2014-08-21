@@ -292,77 +292,12 @@ def createObjects():
             G.ObjList.append(S)
             
         elif objClass in ['Dream.Machine', 'Dream.BatchScrapMachine', 'Dream.M3', 'Dream.MachineJobShop',
-                          'Dream.MachineManagedJob', 'Dream.MouldAssembly']:
+                          'Dream.MachineManagedJob', 'Dream.MouldAssembly', 'Dream.Exit', 'Dream.ExitJobShop', 
+                          'Dream.Queue', 'Dream.RoutingQueue', 'Dream.QueueJobShop', 'Dream.QueueManagedJob']:
             objectType=Globals.getClassFromName(objClass)
             coreObject=objectType(inputsDict=element)
             coreObject.nextIds=getSuccessorList(element['id'])           # update the nextIDs list of the machine
-                                   
-        elif objClass=='Dream.Exit':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            E=Exit(id, name)
-            G.ExitList.append(E)
-            G.ObjList.append(E)
-            
-        elif objClass=='Dream.ExitJobShop':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            E=ExitJobShop(id, name)
-            G.ExitJobShopList.append(E)
-            G.ExitList.append(E)
-            G.ObjList.append(E)
-            
-        elif objClass=='Dream.Queue':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            capacity=int(element.get('capacity') or 1)
-            isDummy=bool(int(element.get('isDummy') or 0))
-            schedulingRule=element.get('schedulingRule', 'FIFO')
-            gatherWipStat=bool(int(element.get('gatherWipStat', 0)))
-            Q=Queue(id, name, capacity, isDummy, schedulingRule=schedulingRule, gatherWipStat=gatherWipStat)
-            Q.nextIds=getSuccessorList(id)
-            G.QueueList.append(Q)
-            G.ObjList.append(Q)
-        
-        elif objClass=='Dream.RoutingQueue':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            capacity=int(element.get('capacity') or 1)
-            isDummy=bool(int(element.get('isDummy') or 0))
-            schedulingRule=element.get('schedulingRule', 'FIFO')
-            gatherWipStat=bool(int(element.get('gatherWipStat', 0)))
-            level=int(element.get('level') or 1)
-            Q=RoutingQueue(id, name, capacity, isDummy, schedulingRule=schedulingRule, gatherWipStat=gatherWipStat, level=level)
-            Q.nextIds=getSuccessorList(id)
-            G.QueueList.append(Q)
-            G.RoutingQueueList.append(Q)
-            G.ObjList.append(Q)
-            
-        elif objClass=='Dream.QueueJobShop':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            capacity=int(element.get('capacity') or 1)
-            isDummy=bool(int(element.get('isDummy') or 0))
-            schedulingRule=element.get('schedulingRule', 'FIFO')
-            Q=QueueJobShop(id, name, capacity, isDummy, schedulingRule=schedulingRule)
-            Q.nextIds=getSuccessorList(id)
-            G.QueueList.append(Q)
-            G.QueueJobShopList.append(Q)
-            G.ObjList.append(Q)
-            
-        elif objClass=='Dream.QueueManagedJob':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            capacity=int(element.get('capacity') or 1)
-            isDummy=bool(int(element.get('isDummy') or 0))
-            schedulingRule=element.get('schedulingRule', 'FIFO')
-            Q=QueueManagedJob(id, name, capacity, isDummy, schedulingRule=schedulingRule)
-            Q.nextIds=getSuccessorList(id)
-            G.QueueList.append(Q)
-            G.QueueManagedJobList.append(Q)
-            G.QueueJobShopList.append(Q)
-            G.ObjList.append(Q)
-                       
+                                                                                                    
         elif objClass=='Dream.QueueLIFO':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')

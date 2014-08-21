@@ -32,6 +32,15 @@ from Queue import Queue
 # the QueueJobShop object
 # ===========================================================================
 class QueueJobShop(Queue):
+    
+    # =======================================================================
+    # parses inputs if they are given in a dictionary
+    # =======================================================================       
+    def parseInputs(self, inputsDict):
+        Queue.parseInputs(self, inputsDict)
+        from Globals import G
+        G.QueueJobShopList.append(self)
+    
     # =======================================================================
     # set all the objects in previous and next
     # =======================================================================
