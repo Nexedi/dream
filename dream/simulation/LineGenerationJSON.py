@@ -302,35 +302,6 @@ def createObjects():
             # get the successorList for the 'Frames'
             coreObject.nextFrameIds=getSuccessorList(element['id'], lambda source, destination, edge_data: edge_data.get('entity') == 'Frame')
             coreObject.nextIds=getSuccessorList(element['id'])           # update the nextIDs list of the object
-                                                                                                                                                                              
-                                   
-#         elif objClass=='Dream.CapacityStation':
-#             id=element.get('id', 'not found')
-#             name=element.get('name', 'not found')
-#             intervalCapacity=element.get('intervalCapacity', [])
-#             sharedResources=element.get('sharedResources', {})
-#             CS=CapacityStation(id,name,intervalCapacity=intervalCapacity, sharedResources=sharedResources)
-#             CS.nextIds=getSuccessorList(id)
-#             G.CapacityStationList.append(CS)
-#             G.ObjList.append(CS)
-#             
-#         elif objClass=='Dream.CapacityStationBuffer':
-#             id=element.get('id', 'not found')
-#             name=element.get('name', 'not found')
-#             requireFullProject=bool(element.get('requireFullProject', 0))
-#             CB=CapacityStationBuffer(id,name,requireFullProject=requireFullProject)
-#             CB.nextIds=getSuccessorList(id)
-#             G.CapacityStationBufferList.append(CB)
-#             G.ObjList.append(CB)
-#             
-#         elif objClass=='Dream.CapacityStationExit':
-#             id=element.get('id', 'not found')
-#             name=element.get('name', 'not found')
-#             nextCapacityStationBufferId=element.get('nextCapacityStationBufferId', None)
-#             CE=CapacityStationExit(id,name,nextCapacityStationBufferId=nextCapacityStationBufferId)
-#             G.CapacityStationExitList.append(CE)
-#             G.ExitList.append(CE)
-#             G.ObjList.append(CE)
              
     # -----------------------------------------------------------------------
     #                loop through all the nodes to  

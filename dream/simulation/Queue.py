@@ -40,14 +40,11 @@ class Queue(CoreObject):
     def __init__(self, id='', name='', capacity=1, isDummy=False, schedulingRule="FIFO", level=None, gatherWipStat=False, inputsDict={}):
         self.type="Queue"           # String that shows the type of object
         CoreObject.__init__(self, id, name)
-        # used for the routing of the entities
-        #     holds the capacity of the Queue
-        if capacity>0:
-            self.capacity=capacity
-        else:
+        capacity=float(capacity)
+        if capacity<0 or capacity==float("inf"):
             self.capacity=float("inf")
-
-        #     No failures are considered for the Queue        
+        else:
+            self.capacity=int(capacity)
 
         self.isDummy=bool(int(isDummy))                    #Boolean that shows if it is the dummy first Queue
         self.schedulingRule=schedulingRule      #the scheduling rule that the Queue follows
