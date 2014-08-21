@@ -56,8 +56,10 @@ class Machine(CoreObject):
                   isPreemptive=False, resetOnPreemption=False,
                   canDeliverOnInterruption=False, inputsDict={}):
         self.type="Machine"                         #String that shows the type of object
+        # if input is given in a dictionary
         if inputsDict:
-            self.parseInputs(inputsDict)
+            CoreObject.__init__(self, inputsDict=inputsDict)
+        # else read the separate ones
         else:
             CoreObject.__init__(self, id, name)
             if not processingTime:
@@ -131,11 +133,9 @@ class Machine(CoreObject):
     # parses inputs if they are given in a dictionary
     # =======================================================================       
     def parseInputs(self, inputsDict):
+        CoreObject.parseInputs(self, inputsDict)
         from Globals import G
-        id = inputsDict.get('id')
-        name = inputsDict.get('name')
         processingTime=inputsDict.get('processingTime',{})
-        CoreObject.__init__(self, id, name)
         if not processingTime:
           processingTime = { 'distributionType': 'Fixed',
                              'mean': 1, }
@@ -167,7 +167,7 @@ class Machine(CoreObject):
         self.dedicatedOperator=self.checkForDedicatedOperators()
         if len(G.OperatorPoolsList)>0:
             for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
-                if(id in operatorPool.coreObjectIds):                   # and add it to the machine's operatorPool
+                if(self.id in operatorPool.coreObjectIds):                   # and add it to the machine's operatorPool
                     machineOperatorPoolList=operatorPool                # there must only one operator pool assigned to the machine,
                                                                         # otherwise only one of them will be taken into account
                 else:
@@ -178,7 +178,7 @@ class Machine(CoreObject):
         if (type(machineOperatorPoolList) is list):                 # if the machineOperatorPoolList is a list
                                                                     # find the operators assigned to it and add them to the list
             for operator in G.OperatorsList:                        # check which operator in the G.OperatorsList
-                if(id in operator.coreObjectIds):                   # (if any) is assigned to operate
+                if(self.id in operator.coreObjectIds):                   # (if any) is assigned to operate
                     machineOperatorPoolList.append(operator)        # the machine with ID equal to id
         
         self.operatorPool=machineOperatorPoolList

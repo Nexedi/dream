@@ -34,7 +34,7 @@ import simpy
 class CoreObject(object):
     class_name = 'Dream.CoreObject'
     
-    def __init__(self, id, name, **kw):
+    def __init__(self, id='', name='', inputsDict={}, **kw):
         self.id = id
         self.objName = name
         #     lists that hold the previous and next objects in the flow
@@ -67,6 +67,16 @@ class CoreObject(object):
         # attributes/indices used for printing the route, hold the cols corresponding to the object (entities route and operators route) 
         self.station_col_inds=[]
         self.op_col_indx=None
+        # if there is input in a dictionary parse from it
+        if inputsDict:
+            self.parseInputs(inputsDict)
+            
+    # =======================================================================
+    # parses inputs if they are given in a dictionary
+    # =======================================================================       
+    def parseInputs(self, inputsDict):
+        self.id = inputsDict.get('id')
+        self.objName = inputsDict.get('name')
     
     def initialize(self):
         from Globals import G
