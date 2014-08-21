@@ -207,14 +207,5 @@ def main(*args):
   # start the server
   app.run(debug=True, host=arguments.host, port=arguments.port)
 
-def run(*args):
-  # run with one topology input
-  args = args or sys.argv[1:]
-  input_data = json.load(open(args[0]))
-  queue = multiprocessing.Queue()
-  _runSimulation(input_data, queue)
-  output_data = queue.get()
-  print json.dumps(output_data, indent=True)
-
 if __name__ == "__main__":
   main()
