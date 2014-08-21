@@ -38,6 +38,8 @@ class ObjectResource(object):
         self.objectInterruptions=[]        
         # alias used for printing the trace
         self.alias=None
+        # list with the coreObjects IDs that the resource services
+        self.coreObjectIds=[]
         from Globals import G
         G.ObjectResourceList.append(self) 
         
