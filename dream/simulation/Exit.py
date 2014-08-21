@@ -36,20 +36,27 @@ from CoreObject import CoreObject
 class Exit(CoreObject):
     family='Exit'
     
-    def __init__(self, id, name=None):
-        if not name:
-          name = id
-        CoreObject.__init__(self, id, name)
-        self.predecessorIndex=0         # holds the index of the predecessor from which the Exit will take an entity next
-        # general properties of the Exit
+    
+    def __init__(self, id='', name='', inputsDict={}):
         self.type="Exit" # XXX needed ?
-        
         #lists to hold statistics of multiple runs
         self.Exits=[]
         self.UnitExits=[]
         self.Lifespan=[] 
-        self.TaktTime=[]                  
-
+        self.TaktTime=[]   
+        # if input is given in a dictionary
+        if inputsDict:
+            CoreObject.__init__(self, inputsDict=inputsDict)
+        else:
+            CoreObject.__init__(self, id, name)            
+            
+    # =======================================================================
+    # parses inputs if they are given in a dictionary
+    # =======================================================================       
+    def parseInputs(self, inputsDict):
+        CoreObject.parseInputs(self, inputsDict)
+        from Globals import G
+        G.ExitList.append(self)
         
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__

@@ -77,6 +77,8 @@ class CoreObject(object):
     def parseInputs(self, inputsDict):
         self.id = inputsDict.get('id')
         self.objName = inputsDict.get('name')
+        from Globals import G
+        G.ObjList.append(self)  # add object to ObjList
     
     def initialize(self):
         from Globals import G
