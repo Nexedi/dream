@@ -57,6 +57,7 @@ class Machine(CoreObject):
                   canDeliverOnInterruption=False, inputsDict={}, failures=None):
         self.type="Machine"                         #String that shows the type of object
         CoreObject.__init__(self, id, name)
+        from Globals import G
         if not processingTime:
           processingTime = { 'distributionType': 'Fixed',
                              'mean': 1, }
@@ -85,9 +86,29 @@ class Machine(CoreObject):
         #     Sets the attributes of the processing (and failure) time(s)
         self.rng=RandomNumberGenerator(self, **processingTime)
         # check whether the operators are provided with a skills set
+        # check whether the operators are provided with a skills set
+        self.dedicatedOperator=self.checkForDedicatedOperators()
+        if len(G.OperatorPoolsList)>0:
+            for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
+                if(self.id in operatorPool.coreObjectIds):                   # and add it to the machine's operatorPool
+                    machineOperatorPoolList=operatorPool                # there must only one operator pool assigned to the machine,
+                                                                        # otherwise only one of them will be taken into account
+                else:
+                    machineOperatorPoolList=[]                          # if there is no operatorPool assigned to the machine
+        else:                                                           # then machineOperatorPoolList/operatorPool is a list
+            machineOperatorPoolList=[]                                  # if there are no operatorsPool created then the 
+                                                                        # then machineOperatorPoolList/operatorPool is a list
+        if (type(machineOperatorPoolList) is list):                 # if the machineOperatorPoolList is a list
+                                                                    # find the operators assigned to it and add them to the list
+            for operator in G.OperatorsList:                        # check which operator in the G.OperatorsList
+                if(self.id in operator.coreObjectIds):                   # (if any) is assigned to operate
+                    machineOperatorPoolList.append(operator)        # the machine with ID equal to id
+        
+        self.operatorPool=machineOperatorPoolList
+        
         self.dedicatedOperator=self.checkForDedicatedOperators()
         # create an operatorPool if needed
-        self.createOperatorPool(operatorPool)
+        self.createOperatorPool(self.operatorPool)
         # holds the Operator currently processing the Machine
         self.currentOperator=None
         # define if load/setup/removal/processing are performed by the operator 
@@ -118,7 +139,6 @@ class Machine(CoreObject):
         self.assignedOperator=True
         # flag notifying the the station can deliver entities that ended their processing while interrupted
         self.canDeliverOnInterruption=canDeliverOnInterruption
-        from Globals import G
         self.repairman='None'
         for repairman in G.RepairmanList:                   # check which repairman in the G.RepairmanList
             if(self.id in repairman.coreObjectIds):              # (if any) is assigned to repair 

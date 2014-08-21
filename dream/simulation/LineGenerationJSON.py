@@ -277,18 +277,13 @@ def createObjects():
         for k in ('element_id', 'top', 'left'):
           element.pop(k, None)
         objClass = element.pop('_class')
-
-        if objClass=='Dream.BatchSource':
-            S = BatchSource(**element)
-            S.nextIds=getSuccessorList(element['id'])
-            G.BatchSourceList.append(S)
-            G.SourceList.append(S)
-            G.ObjList.append(S)
             
-        elif objClass in ['Dream.Machine', 'Dream.BatchScrapMachine', 'Dream.M3', 'Dream.MachineJobShop',
+        if objClass in ['Dream.Machine', 'Dream.BatchScrapMachine', 'Dream.M3', 'Dream.MachineJobShop',
                           'Dream.MachineManagedJob', 'Dream.MouldAssembly', 'Dream.Exit', 'Dream.ExitJobShop', 
                           'Dream.Queue', 'Dream.RoutingQueue', 'Dream.QueueJobShop', 'Dream.QueueManagedJob',
-                          'Dream.Assembly', 'Dream.Dismantle', 'Dream.Source']:
+                          'Dream.Assembly', 'Dream.Dismantle', 'Dream.Source', 'Dream.Conveyer', 
+                          'Dream.BatchDecomposition', 'Dream.BatchReassembly', 'Dream.LineClearance', 
+                          'Dream.BatchSource']:
             inputDict=dict(element)
             if 'wip' in inputDict:
                 del inputDict['wip']
@@ -303,58 +298,7 @@ def createObjects():
             # get the successorList for the 'Frames'
             coreObject.nextFrameIds=getSuccessorList(element['id'], lambda source, destination, edge_data: edge_data.get('entity') == 'Frame')
             coreObject.nextIds=getSuccessorList(element['id'])           # update the nextIDs list of the object
-                                                                                                                            
-        elif objClass=='Dream.Conveyer':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            length=float(element.get('length') or mean+5*stdev)
-            speed=float(element.get('speed') or 1)
-            C=Conveyer(id, name, length, speed)
-            C.nextIds=getSuccessorList(id)
-            G.ObjList.append(C)
-            G.ConveyerList.append(C)
-              
-        elif objClass=='Dream.BatchDecomposition':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', {})
-            numberOfSubBatches=int(element.get('numberOfSubBatches') or 0)
-            BD=BatchDecomposition(id, name, processingTime=processingTime, numberOfSubBatches=numberOfSubBatches)
-            BD.nextIds=getSuccessorList(id)
-            G.BatchDecompositionList.append(BD)
-            G.ObjList.append(BD)       
-
-        elif objClass=='Dream.BatchDecompositionStartTime':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', {})
-            numberOfSubBatches=int(element.get('numberOfSubBatches') or 0)
-            BD=BatchDecompositionStartTime(id, name, processingTime=processingTime, numberOfSubBatches=numberOfSubBatches)
-            BD.nextIds=getSuccessorList(id)
-            G.BatchDecompositionList.append(BD)
-            G.ObjList.append(BD) 
-    
-        elif objClass=='Dream.BatchReassembly':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', {})
-            numberOfSubBatches=int(element.get('numberOfSubBatches') or 0)
-            BR=BatchReassembly(id, name, processingTime=processingTime, numberOfSubBatches=numberOfSubBatches)
-            BR.nextIds=getSuccessorList(id)
-            G.BatchReassemblyList.append(BR)
-            G.ObjList.append(BR)       
-            
-        elif objClass=='Dream.LineClearance':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            capacity=int(element.get('capacity') or 1)
-            isDummy=bool(int(element.get('isDummy') or 0))
-            schedulingRule=element.get('schedulingRule', 'FIFO')
-            LC=LineClearance(id, name, capacity, isDummy, schedulingRule=schedulingRule)
-            LC.nextIds=getSuccessorList(id)
-            G.LineClearanceList.append(LC)
-            G.ObjList.append(LC)
-                       
+                                                                                                                                                                   
         elif objClass=='Dream.OrderDecomposition':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')

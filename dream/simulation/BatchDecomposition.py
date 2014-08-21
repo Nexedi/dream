@@ -57,11 +57,13 @@ class BatchDecomposition(CoreObject):
           processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
         
         # holds the capacity of the object 
-        self.numberOfSubBatches=numberOfSubBatches
+        self.numberOfSubBatches=int(numberOfSubBatches)
         # sets the operator resource of the Machine
         self.operator=operator         
         # Sets the attributes of the processing (and failure) time(s)
         self.rng=RandomNumberGenerator(self, **processingTime)
+        from Globals import G
+        G.BatchDecompositionList.append(self)
 
     # =======================================================================
     #     initialize the internal resource of the object
@@ -99,7 +101,7 @@ class BatchDecomposition(CoreObject):
                     self.isProcessingInitialWIP=True
                     break  
                 # otherwise proceed with getEntity
-                else:                 
+                else:              
                     requestingObject=self.isRequested.value
                     assert requestingObject==self.giver, 'the giver is not the requestingObject'
                     self.isRequested=self.env.event()

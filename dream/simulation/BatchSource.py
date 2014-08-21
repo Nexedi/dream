@@ -35,7 +35,9 @@ class BatchSource(Source):
                  entity='Dream.Batch', batchNumberOfUnits=1):
         Source.__init__(self, id=id, name=name,
                         interarrivalTime=interarrivalTime, entity=entity)
-        self.numberOfUnits = batchNumberOfUnits
+        self.numberOfUnits = int(batchNumberOfUnits)
+        from Globals import G
+        G.BatchSourceList.append(self)  
         
         
     def createEntity(self):

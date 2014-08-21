@@ -43,8 +43,8 @@ class Conveyer(CoreObject):
     def __init__(self, id, name, length, speed):
         CoreObject.__init__(self, id, name)
         self.type="Conveyer"
-        self.speed=speed    #the speed of the conveyer in m/sec
-        self.length=length  #the length of the conveyer in meters
+        self.speed=float(speed)    #the speed of the conveyer in m/sec
+        self.length=float(length)  #the length of the conveyer in meters
         # counting the total number of units to be moved through the whole simulation time
         self.numberOfMoves=0
         
@@ -55,6 +55,8 @@ class Conveyer(CoreObject):
                                                         # when the entities have to be loaded to operatedMachines
                                                         # then the giverObjects have to be blocked for the time
                                                         # that the machine is being loaded 
+        from Globals import G
+        G.ConveyerList.append(self)
        
     #===========================================================================
     # the initialize method

@@ -60,6 +60,8 @@ class BatchReassembly(CoreObject):
         self.operator=operator         
         # Sets the attributes of the processing (and failure) time(s)
         self.rng=RandomNumberGenerator(self, **processingTime)
+        from Globals import G
+        G.BatchReassemblyList.append(self)
 
     # =======================================================================
     #     initialize the internal resource of the object

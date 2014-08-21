@@ -80,12 +80,6 @@
                 "distributionType": "Fixed",
                 "mean": 1.0
             },
-            "successorFrameList": [
-                "M2"
-            ],
-            "successorPartList": [
-                "M3"
-            ],
             "top": 0.40931372549019607
         },
         "E1": {
