@@ -23,7 +23,7 @@ Created on 21 May 2013
 @author: George
 '''
 '''
-Models a dicmantle object 
+Models a dismantle object 
 it gathers frames that have parts loaded, unloads the parts and sends the frame to one destination and the parts to another
 '''
 
@@ -42,18 +42,9 @@ class Dismantle(CoreObject):
     #===========================================================================
     # initialize the object
     #===========================================================================
-    def __init__(self, id, name, distribution='Fixed', mean=1, stdev=0.1, min=0, max=5):
-        CoreObject.__init__(self, id, name)
-        from Globals import G
-        self.env=G.env
+    def __init__(self, id='', name='', processingTime=None, inputsDict={}):
         
-        self.type="Dismantle"   #String that shows the type of object
-        self.distType=distribution          #the distribution that the procTime follows  
-        self.rng=RandomNumberGenerator(self, self.distType)
-        self.rng.mean=mean
-        self.rng.stdev=stdev
-        self.rng.min=min
-        self.rng.max=max                    
+        self.type='Dismantle'
         self.previous=[]        #list with the previous objects in the flow
         self.previousIds=[]     #list with the ids of the previous objects in the flow
         self.nextPart=[]    #list with the next objects that receive parts
@@ -73,12 +64,47 @@ class Dismantle(CoreObject):
                                                         # when the entities have to be loaded to operatedMachines
                                                         # then the giverObjects have to be blocked for the time
                                                         # that the machine is being loaded 
+        if inputsDict:
+            CoreObject.__init__(self, inputsDict=inputsDict)
+        else:
+            CoreObject.__init__(self, id, name)
+            from Globals import G
+            if not processingTime:
+                processingTime = {'distributionType': 'Fixed',
+                                'mean': 0,
+                                'stdev': 0,
+                                'min': 0,
+                                }
+            if processingTime['distributionType'] == 'Normal' and\
+                  processingTime.get('max', None) is None:
+                processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
+    
+            self.rng=RandomNumberGenerator(self, **processingTime)   
+                            
+    # =======================================================================
+    # parses inputs if they are given in a dictionary
+    # =======================================================================       
+    def parseInputs(self, inputsDict):
+        CoreObject.parseInputs(self, inputsDict)
+        processingTime=inputsDict.get('processingTime',{})
+        from Globals import G
+        if not processingTime:
+            processingTime = {'distributionType': 'Fixed',
+                            'mean': 0,
+                            'stdev': 0,
+                            'min': 0,
+                            }
+        if processingTime['distributionType'] == 'Normal' and\
+              processingTime.get('max', None) is None:
+            processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
+        self.rng=RandomNumberGenerator(self, **processingTime)  
+        G.DismantleList.append(self)               
+
         
     #===========================================================================
     # the initialize method
     #===========================================================================
     def initialize(self):
-#         Process.__init__(self)
         CoreObject.initialize(self)
         self.waitToDispose=False    #flag that shows if the object waits to dispose an entity    
         self.waitToDisposePart=False    #flag that shows if the object waits to dispose a part   

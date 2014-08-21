@@ -293,35 +293,16 @@ def createObjects():
             
         elif objClass in ['Dream.Machine', 'Dream.BatchScrapMachine', 'Dream.M3', 'Dream.MachineJobShop',
                           'Dream.MachineManagedJob', 'Dream.MouldAssembly', 'Dream.Exit', 'Dream.ExitJobShop', 
-                          'Dream.Queue', 'Dream.RoutingQueue', 'Dream.QueueJobShop', 'Dream.QueueManagedJob']:
+                          'Dream.Queue', 'Dream.RoutingQueue', 'Dream.QueueJobShop', 'Dream.QueueManagedJob',
+                          'Dream.Assembly', 'Dream.Dismantle']:
             objectType=Globals.getClassFromName(objClass)
             coreObject=objectType(inputsDict=element)
-            coreObject.nextIds=getSuccessorList(element['id'])           # update the nextIDs list of the machine
-                                                                                                                
-        elif objClass=='Dream.Assembly':
-            A=Assembly(**element)
-            A.nextIds=getSuccessorList(element['id'])
-            G.AssemblyList.append(A)
-            G.ObjList.append(A)
-            
-        elif objClass=='Dream.Dismantle':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            processingTime=element.get('processingTime', {})
-            distributionType=processingTime.get('distributionType', 'not found')
-            mean=float(processingTime.get('mean') or 0)
-            stdev=float(processingTime.get('stdev') or 0)
-            min=float(processingTime.get('min') or 0)
-            max=float(processingTime.get('max') or mean+5*stdev)
-            D=Dismantle(id, name, distribution=distributionType, mean=mean,stdev=stdev,min=min,max=max)
             # get the successorList for the 'Parts'
-            D.nextPartIds=getSuccessorList(id, lambda source, destination, edge_data: edge_data.get('entity') == 'Part')
+            coreObject.nextPartIds=getSuccessorList(element['id'], lambda source, destination, edge_data: edge_data.get('entity') == 'Part')
             # get the successorList for the 'Frames'
-            D.nextFrameIds=getSuccessorList(id, lambda source, destination, edge_data: edge_data.get('entity') == 'Frame')
-            D.nextIds=getSuccessorList(id)
-            G.DismantleList.append(D)
-            G.ObjList.append(D)
-            
+            coreObject.nextFrameIds=getSuccessorList(element['id'], lambda source, destination, edge_data: edge_data.get('entity') == 'Frame')
+            coreObject.nextIds=getSuccessorList(element['id'])           # update the nextIDs list of the machine
+                                                                                                                            
         elif objClass=='Dream.Conveyer':
             id=element.get('id', 'not found')
             name=element.get('name', 'not found')

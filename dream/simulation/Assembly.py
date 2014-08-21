@@ -41,44 +41,70 @@ class Assembly(CoreObject):
     #===========================================================================
     # initialize the object      
     #===========================================================================
-    def __init__(self, id, name, processingTime=None):
-        from Globals import G
-        self.env=G.env
-        if not processingTime:
-          processingTime = {'distributionType': 'Fixed',
-                            'mean': 0,
-                            'stdev': 0,
-                            'min': 0,
-                            }
-        if processingTime['distributionType'] == 'Normal' and\
-              processingTime.get('max', None) is None:
-          processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
-
-        CoreObject.__init__(self, id, name)
+    def __init__(self, id='', name='', processingTime=None, inputsDict=None):
         self.type="Assembly"   #String that shows the type of object
-        self.rng=RandomNumberGenerator(self, **processingTime)
-
         self.next=[]        #list with the next objects in the flow
         self.previous=[]     #list with the previous objects in the flow
         self.previousPart=[]    #list with the previous objects that send parts
         self.previousFrame=[]    #list with the previous objects that send frames 
         self.nextIds=[]     #list with the ids of the next objects in the flow
         self.previousIds=[]   #list with the ids of the previous objects in the flow
-        # XXX previousFrameIds and previousPartIds are not used
-        self.previousPartIds=[]     #list with the ids of the previous objects in the flow that bring parts  
-        self.previousFrameIds=[]     #list with the ids of the previous objects in the flow that bring frames
         
         #lists to hold statistics of multiple runs
         self.Waiting=[]
         self.Working=[]
         self.Blockage=[]
+
+        # if input is given in a dictionary
+        if inputsDict:
+            CoreObject.__init__(self, inputsDict=inputsDict)
+        # else read the separate ones
+        else:
+            if not processingTime:
+                processingTime = {'distributionType': 'Fixed',
+                                'mean': 0,
+                                'stdev': 0,
+                                'min': 0,
+                                }
+            if processingTime['distributionType'] == 'Normal' and\
+                  processingTime.get('max', None) is None:
+                processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
+    
+            CoreObject.__init__(self, id, name)
+            self.rng=RandomNumberGenerator(self, **processingTime)
+            
+             # ============================== variable that is used for the loading of machines =============
+            self.exitAssignedToReceiver = False             # by default the objects are not blocked 
+                                                            # when the entities have to be loaded to operatedMachines
+                                                            # then the giverObjects have to be blocked for the time
+                                                            # that the machine is being loaded 
+
+    # =======================================================================
+    # parses inputs if they are given in a dictionary
+    # =======================================================================       
+    def parseInputs(self, inputsDict):
+        CoreObject.parseInputs(self, inputsDict)
+        processingTime=inputsDict.get('processingTime',{})
+        if not processingTime:
+            processingTime = {'distributionType': 'Fixed',
+                            'mean': 0,
+                            'stdev': 0,
+                            'min': 0,
+                            }
+        if processingTime['distributionType'] == 'Normal' and\
+              processingTime.get('max', None) is None:
+            processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
+
+        self.rng=RandomNumberGenerator(self, **processingTime)
         
          # ============================== variable that is used for the loading of machines =============
         self.exitAssignedToReceiver = False             # by default the objects are not blocked 
                                                         # when the entities have to be loaded to operatedMachines
                                                         # then the giverObjects have to be blocked for the time
                                                         # that the machine is being loaded 
-    
+        from Globals import G
+        G.AssemblyList.append(self)
+
     #===========================================================================
     # initialize method
     #===========================================================================

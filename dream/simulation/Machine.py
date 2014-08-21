@@ -54,7 +54,7 @@ class Machine(CoreObject):
                   operatorPool='None',operationType='None',\
                   setupTime=None, loadTime=None,
                   isPreemptive=False, resetOnPreemption=False,
-                  canDeliverOnInterruption=False, inputsDict={}):
+                  canDeliverOnInterruption=False, inputsDict={}, failures=None):
         self.type="Machine"                         #String that shows the type of object
         # if input is given in a dictionary
         if inputsDict:
