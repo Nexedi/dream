@@ -184,7 +184,6 @@ def createObjects():
     G.CapacityStationList=[]
     G.CapacityStationExitList=[]
     G.CapacityStationControllerList=[]
-    G.ObjectInterruptionList=[]
 
     '''
     loop through all the model resources 
@@ -276,62 +275,7 @@ def createObjects():
             coreObject.nextPartIds=getSuccessorList(element['id'], lambda source, destination, edge_data: edge_data.get('entity') == 'Part')
             # get the successorList for the 'Frames'
             coreObject.nextFrameIds=getSuccessorList(element['id'], lambda source, destination, edge_data: edge_data.get('entity') == 'Frame')
-             
-    # -----------------------------------------------------------------------
-    #                loop through all the nodes to  
-    #            search for Event Generator and create them
-    #                   this is put last, since the EventGenerator 
-    #                may take other objects as argument
-    # -----------------------------------------------------------------------
-    for (element_id, element) in nodes.iteritems():                 # use an iterator to go through all the nodes
-                                                                    # the key is the element_id and the second is the 
-                                                                    # element itself 
-        element['id'] = element_id                                  # create a new entry for the element (dictionary)
-                                                                    # with key 'id' and value the the element_id
-        elementClass = element.get('_class', 'not found')           # get the class type of the element
-        if elementClass=='Dream.EventGenerator':                    # check the object type
-            id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
-            name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
-            start = float(element.get('start') or 0)
-            stop = float(element.get('stop') or -1)
-                                                                    # infinity (had to be done to make it as float)
-            if stop<0:
-                stop=float('inf')            
-            interval = float(element.get('interval') or 1)
-            duration = float(element.get('duration') or 0)
-            method = (element.get('method', None))                    # get the method to be run / default None
-            method = method.split('.')                                  #the method is given as 'Path.MethodName'
-            method=getattr(str_to_class(method[0]),method[1])           #and then parsed with getattr
-            argumentDict=(element.get('argumentDict', {}))      # get the arguments of the method as a dict / default {}
-               
-            EV = EventGenerator(id, name, start=start, stop=stop, interval=interval, 
-                                duration=duration, method=method, argumentDict=argumentDict)       # create the EventGenerator object
-                                                                   
-            G.EventGeneratorList.append(EV)                              
-            G.ObjectInterruptionList.append(EV)
-            
-        elif elementClass=='Dream.CapacityStationController':                    # check the object type
-            id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
-            name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
-            start = float(element.get('start') or 0)
-            stop = float(element.get('stop') or -1)
-                                                                    # infinity (had to be done to make it as float)
-            if stop<0:
-                stop=float('inf')            
-            interval = float(element.get('interval') or 1)
-            duration = float(element.get('duration') or 0)
-            dueDateThreshold = float(element.get('dueDateThreshold') or float('inf'))
-            prioritizeIfCanFinish = bool(element.get('prioritizeIfCanFinish', 0))
-            argumentDict=(element.get('argumentDict', {}))      # get the arguments of the method as a dict / default {}
-               
-            # create the CapacityStationController object
-            CSC = CapacityStationController(id, name, start=start, stop=stop, interval=interval, 
-                                duration=duration, argumentDict=argumentDict, dueDateThreshold=dueDateThreshold,
-                                prioritizeIfCanFinish=prioritizeIfCanFinish)                                                                         
-            G.EventGeneratorList.append(CSC)                              
-            G.CapacityStationControllerList.append(CSC)
-            G.ObjectInterruptionList.append(CSC)
-            
+                         
     # -----------------------------------------------------------------------
     #                    loop through all the core objects    
     #                         to read predecessors
@@ -732,13 +676,71 @@ def createWIP():
 #                reads the interruptions of the stations
 # ===========================================================================
 def createObjectInterruptions():
+    G.ObjectInterruptionList=[]
     G.ScheduledMaintenanceList=[]
     G.FailureList=[]
     G.ShiftSchedulerList=[]
-    
+    G.EventGeneratorList=[]
+    G.CapacityStationControllerList=[]
     json_data = G.JSONData
     #Read the json data
     nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
+    
+    # -----------------------------------------------------------------------
+    #                loop through all the nodes to  
+    #            search for Event Generator and create them
+    #                   this is put last, since the EventGenerator 
+    #                may take other objects as argument
+    # -----------------------------------------------------------------------
+    for (element_id, element) in nodes.iteritems():                 # use an iterator to go through all the nodes
+                                                                    # the key is the element_id and the second is the 
+                                                                    # element itself 
+        element['id'] = element_id                                  # create a new entry for the element (dictionary)
+                                                                    # with key 'id' and value the the element_id
+        elementClass = element.get('_class', 'not found')           # get the class type of the element
+        if elementClass=='Dream.EventGenerator':                    # check the object type
+            id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
+            name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
+            start = float(element.get('start') or 0)
+            stop = float(element.get('stop') or -1)
+                                                                    # infinity (had to be done to make it as float)
+            if stop<0:
+                stop=float('inf')            
+            interval = float(element.get('interval') or 1)
+            duration = float(element.get('duration') or 0)
+            method = (element.get('method', None))                    # get the method to be run / default None
+            method = method.split('.')                                  #the method is given as 'Path.MethodName'
+            method=getattr(str_to_class(method[0]),method[1])           #and then parsed with getattr
+            argumentDict=(element.get('argumentDict', {}))      # get the arguments of the method as a dict / default {}
+               
+            EV = EventGenerator(id, name, start=start, stop=stop, interval=interval, 
+                                duration=duration, method=method, argumentDict=argumentDict)       # create the EventGenerator object
+                                                                   
+            G.EventGeneratorList.append(EV)                              
+            G.ObjectInterruptionList.append(EV)
+            
+        elif elementClass=='Dream.CapacityStationController':                    # check the object type
+            id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
+            name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
+            start = float(element.get('start') or 0)
+            stop = float(element.get('stop') or -1)
+                                                                    # infinity (had to be done to make it as float)
+            if stop<0:
+                stop=float('inf')            
+            interval = float(element.get('interval') or 1)
+            duration = float(element.get('duration') or 0)
+            dueDateThreshold = float(element.get('dueDateThreshold') or float('inf'))
+            prioritizeIfCanFinish = bool(element.get('prioritizeIfCanFinish', 0))
+            argumentDict=(element.get('argumentDict', {}))      # get the arguments of the method as a dict / default {}
+               
+            # create the CapacityStationController object
+            CSC = CapacityStationController(id, name, start=start, stop=stop, interval=interval, 
+                                duration=duration, argumentDict=argumentDict, dueDateThreshold=dueDateThreshold,
+                                prioritizeIfCanFinish=prioritizeIfCanFinish)                                                                         
+            G.EventGeneratorList.append(CSC)                              
+            G.CapacityStationControllerList.append(CSC)
+            G.ObjectInterruptionList.append(CSC)
+    
     # for the elements in the nodes dict
     for (element_id, element) in nodes.iteritems():
         element['id'] = element_id
