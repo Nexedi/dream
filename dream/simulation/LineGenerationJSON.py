@@ -277,15 +277,10 @@ def createObjects():
         for k in ('element_id', 'top', 'left'):
           element.pop(k, None)
         objClass = element.pop('_class')
-            
-        if objClass in ['Dream.Machine', 'Dream.BatchScrapMachine', 'Dream.M3', 'Dream.MachineJobShop',
-                          'Dream.MachineManagedJob', 'Dream.MouldAssembly', 'Dream.Exit', 'Dream.ExitJobShop', 
-                          'Dream.Queue', 'Dream.RoutingQueue', 'Dream.QueueJobShop', 'Dream.QueueManagedJob',
-                          'Dream.Assembly', 'Dream.Dismantle', 'Dream.Source', 'Dream.Conveyer', 
-                          'Dream.BatchDecomposition', 'Dream.BatchReassembly', 'Dream.LineClearance', 
-                          'Dream.BatchSource', 'Dream.OrderDecomposition', 'Dream.MouldAssemblyBuffer',
-                          'Dream.ConditionalBuffer', 'Dream.BatchDecompositionStartTime', 'Dream.ConditionalBuffer',
-                          'Dream.CapacityStation','Dream.CapacityStationBuffer','Dream.CapacityStationExit']:
+        objectType=Globals.getClassFromName(objClass)    
+        from CoreObject import CoreObject
+        if issubclass(objectType, CoreObject):
+            # remove data that has to do with wip or object interruption. CoreObjects do not need it
             inputDict=dict(element)
             if 'wip' in inputDict:
                 del inputDict['wip']
@@ -295,13 +290,16 @@ def createObjects():
                 del inputDict['shift']
             if 'scheduledMaintenance' in inputDict:
                 del inputDict['scheduledMaintenance']
-            objectType=Globals.getClassFromName(objClass)
+            
+            # create the CoreObject
             coreObject=objectType(**inputDict)
+            # update the nextIDs list of the object
+            coreObject.nextIds=getSuccessorList(element['id'])           
+            # (Below is only for Dismantle for now)
             # get the successorList for the 'Parts'
             coreObject.nextPartIds=getSuccessorList(element['id'], lambda source, destination, edge_data: edge_data.get('entity') == 'Part')
             # get the successorList for the 'Frames'
             coreObject.nextFrameIds=getSuccessorList(element['id'], lambda source, destination, edge_data: edge_data.get('entity') == 'Frame')
-            coreObject.nextIds=getSuccessorList(element['id'])           # update the nextIDs list of the object
              
     # -----------------------------------------------------------------------
     #                loop through all the nodes to  
