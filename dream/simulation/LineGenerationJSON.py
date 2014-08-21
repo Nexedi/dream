@@ -184,6 +184,7 @@ def createObjects():
     G.CapacityStationList=[]
     G.CapacityStationExitList=[]
     G.CapacityStationControllerList=[]
+    G.ObjectInterruptionList=[]
 
     '''
     loop through all the model resources 
@@ -330,8 +331,9 @@ def createObjects():
                
             EV = EventGenerator(id, name, start=start, stop=stop, interval=interval, 
                                 duration=duration, method=method, argumentDict=argumentDict)       # create the EventGenerator object
-                                                                    # calling the getSuccessorList() method on the repairman
-            G.EventGeneratorList.append(EV)                               # add the Event Generator to the RepairmanList
+                                                                   
+            G.EventGeneratorList.append(EV)                              
+            G.ObjectInterruptionList.append(EV)
             
         elif elementClass=='Dream.CapacityStationController':                    # check the object type
             id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
@@ -350,10 +352,10 @@ def createObjects():
             # create the CapacityStationController object
             CSC = CapacityStationController(id, name, start=start, stop=stop, interval=interval, 
                                 duration=duration, argumentDict=argumentDict, dueDateThreshold=dueDateThreshold,
-                                prioritizeIfCanFinish=prioritizeIfCanFinish)      
-                                                                    # calling the getSuccessorList() method on the repairman
-            G.EventGeneratorList.append(CSC)                               # add the Event Generator to the RepairmanList
+                                prioritizeIfCanFinish=prioritizeIfCanFinish)                                                                         
+            G.EventGeneratorList.append(CSC)                              
             G.CapacityStationControllerList.append(CSC)
+            G.ObjectInterruptionList.append(CSC)
             
     # -----------------------------------------------------------------------
     #                    loop through all the core objects    
@@ -411,30 +413,15 @@ def setTopology():
 #            initializes all the objects that are in the topology
 # ===========================================================================
 def initializeObjects():
-    for element in G.ObjList:
+    for element in G.ObjList + G.ModelResourceList + G.EntityList + G.ObjectInterruptionList:
         element.initialize()
-    for modelResource in G.ModelResourceList:
-        modelResource.initialize()
-    for entity in G.EntityList:
-        entity.initialize()
-    for ev in G.EventGeneratorList:
-        ev.initialize()
-    for oi in G.ObjectInterruptionList:
-        oi.initialize()
 
 # ===========================================================================
 #                        activates all the objects
 # ===========================================================================
 def activateObjects():
-    for element in G.ObjList:
-#         activate(element, element.run())
+    for element in G.ObjList + G.ObjectInterruptionList:
         G.env.process(element.run())
-    for ev in G.EventGeneratorList:
-#         activate(ev, ev.run())
-        G.env.process(ev.run())
-    for oi in G.ObjectInterruptionList:
-#         activate(oi, oi.run())
-        G.env.process(oi.run())
 
 # ===========================================================================
 #                reads the WIP of the stations
@@ -770,7 +757,6 @@ def createWIP():
 #                reads the interruptions of the stations
 # ===========================================================================
 def createObjectInterruptions():
-    G.ObjectInterruptionList=[]
     G.ScheduledMaintenanceList=[]
     G.FailureList=[]
     G.ShiftSchedulerList=[]
