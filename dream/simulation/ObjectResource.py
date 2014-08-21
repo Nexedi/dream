@@ -38,6 +38,8 @@ class ObjectResource(object):
         self.objectInterruptions=[]        
         # alias used for printing the trace
         self.alias=None
+        from Globals import G
+        G.ObjectResourceList.append(self) 
         
     def initialize(self):
         from Globals import G

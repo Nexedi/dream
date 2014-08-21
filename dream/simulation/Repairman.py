@@ -37,4 +37,6 @@ class Repairman(Operator):
     def __init__(self, id, name, capacity=1):
         Operator.__init__(self,id=id, name=name, capacity=capacity)
         self.type="Repairman"
+        from Globals import G
+        G.RepairmanList.append(self) 
         

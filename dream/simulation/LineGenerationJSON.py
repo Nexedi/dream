@@ -199,41 +199,16 @@ def createObjects():
           element.pop(k, None)
                                                                     # with key 'id' and value the the element_id
         resourceClass = element.pop('_class')                       # get the class type of the element
-        if resourceClass=='Dream.Repairman':                        # check the object type
-            id = element.get('id', 'not found')                     # get the id of the element
-            name = element.get('name', id)                          # get the name of the element / default 'not_found'
-            capacity = int(element.get('capacity') or 1)
-            R = Repairman(element_id, name, capacity)               # create a repairman object
-            R.coreObjectIds=getSuccessorList(id)                    # update the list of objects that the repairman repairs
-                                                                    # calling the getSuccessorList() method on the repairman
-            G.RepairmanList.append(R)                               # add the repairman to the RepairmanList
-            G.ObjectResourceList.append(R) 
-        elif resourceClass=='Dream.Operator':
-            id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
-            name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
-            capacity = int(element.get('capacity') or 1)
-            schedulingRule=element.get('schedulingRule', 'FIFO')    # get the scheduling rule of the el. (how to choose which 
-                                                                    # station to serve first) / default 'FIFO' i.e. the one that 
-                                                                    # called first
-            skills=element.get('skills',[])                         # list of stations that the operator can attend to
-            O = Operator(element_id, name, capacity,schedulingRule,skills)                # create an operator object
-            O.coreObjectIds=getSuccessorList(id)                	# update the list of objects that the operator operates
-																	# calling the getSuccesorList() method on the operator
-            G.OperatorsList.append(O)                               # add the operator to the RepairmanList
-            G.ObjectResourceList.append(O) 
-        elif resourceClass=='Dream.OperatorManagedJob':
-            id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
-            name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
-            capacity = int(element.get('capacity') or 1)            # get the capacity of the el. / defautl '1'
-            schedulingRule=element.get('schedulingRule', 'FIFO')    # get the scheduling rule of the el. (how to choose which 
-                                                                    # station to serve first) / default 'FIFO' i.e. the one that 
-                                                                    # called first
-            O = OperatorManagedJob(element_id, name, capacity,schedulingRule)      # create an operator object
-            O.coreObjectIds=getSuccessorList(id)                    # update the list of objects that the operator operates
-                                                                    # calling the getSuccesorList() method on the operator
-            G.OperatorsList.append(O)                               # add the operator to the RepairmanList
-            G.OperatorManagedJobsList.append(O)
-            G.ObjectResourceList.append(O) 
+        
+        objectType=Globals.getClassFromName(resourceClass)    
+        from ObjectResource import ObjectResource     # operator pools to be created later since they use operators
+                                                      # ToDo maybe it is semantically diferent object  
+        if issubclass(objectType, ObjectResource) and not resourceClass=='Dream.OperatorPool':
+            inputDict=dict(element)
+            # create the CoreObject
+            objectResource=objectType(**inputDict)
+            objectResource.coreObjectIds=getSuccessorList(element['id'])    
+
     '''
     loop through all the model resources 
     search for operatorPools in order to create them
@@ -244,8 +219,8 @@ def createObjects():
                                                                     # element itself 
         element = element.copy()
         element['id'] = element_id                                  # create a new entry for the element (dictionary)
-#         for k in ('element_id', 'top', 'left'):
-#           element.pop(k, None)
+        for k in ('element_id', 'top', 'left'):
+          element.pop(k, None)
                                                                     # with key 'id' and value the the element_id
         resourceClass = element.pop('_class')          # get the class type of the element
         if resourceClass=='Dream.OperatorPool':

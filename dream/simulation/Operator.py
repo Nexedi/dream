@@ -41,7 +41,7 @@ class Operator(ObjectResource):
         ObjectResource.__init__(self)
         self.id=id
         self.objName=name
-        self.capacity=capacity      # repairman is an instance of resource
+        self.capacity=int(capacity)      # repairman is an instance of resource
         self.type="Operator"
         # lists to hold statistics of multiple runs
         self.Waiting=[]             # holds the percentage of waiting time 
@@ -78,6 +78,8 @@ class Operator(ObjectResource):
         self.skillsList=skills
         # flag to show if the resource is available at the start of simulation
         self.available=available
+        from Globals import G
+        G.OperatorsList.append(self) 
         
     @staticmethod
     def getSupportedSchedulingRules():
