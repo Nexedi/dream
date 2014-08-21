@@ -278,12 +278,6 @@ def createObjects():
           element.pop(k, None)
         objClass = element.pop('_class')
 
-        if objClass=='Dream.Source':
-            S=Source(**element)
-            S.nextIds=getSuccessorList(element['id'])
-            G.SourceList.append(S)
-            G.ObjList.append(S)
-
         if objClass=='Dream.BatchSource':
             S = BatchSource(**element)
             S.nextIds=getSuccessorList(element['id'])
@@ -294,14 +288,21 @@ def createObjects():
         elif objClass in ['Dream.Machine', 'Dream.BatchScrapMachine', 'Dream.M3', 'Dream.MachineJobShop',
                           'Dream.MachineManagedJob', 'Dream.MouldAssembly', 'Dream.Exit', 'Dream.ExitJobShop', 
                           'Dream.Queue', 'Dream.RoutingQueue', 'Dream.QueueJobShop', 'Dream.QueueManagedJob',
-                          'Dream.Assembly', 'Dream.Dismantle']:
+                          'Dream.Assembly', 'Dream.Dismantle', 'Dream.Source']:
+            inputDict=dict(element)
+            if 'wip' in inputDict:
+                del inputDict['wip']
+            if 'failures' in inputDict:
+                del inputDict['failures']
+            if 'shift' in inputDict:
+                del inputDict['shift']
             objectType=Globals.getClassFromName(objClass)
-            coreObject=objectType(inputsDict=element)
+            coreObject=objectType(**inputDict)
             # get the successorList for the 'Parts'
             coreObject.nextPartIds=getSuccessorList(element['id'], lambda source, destination, edge_data: edge_data.get('entity') == 'Part')
             # get the successorList for the 'Frames'
             coreObject.nextFrameIds=getSuccessorList(element['id'], lambda source, destination, edge_data: edge_data.get('entity') == 'Frame')
-            coreObject.nextIds=getSuccessorList(element['id'])           # update the nextIDs list of the machine
+            coreObject.nextIds=getSuccessorList(element['id'])           # update the nextIDs list of the object
                                                                                                                             
         elif objClass=='Dream.Conveyer':
             id=element.get('id', 'not found')

@@ -39,61 +39,22 @@ class Queue(CoreObject):
     #===========================================================================
     def __init__(self, id='', name='', capacity=1, isDummy=False, schedulingRule="FIFO", level=None, gatherWipStat=False, inputsDict={}):
         self.type="Queue"           # String that shows the type of object
-        if inputsDict:
-            CoreObject.__init__(self,inputsDict=inputsDict)
-        else:
-            CoreObject.__init__(self, id, name)
-            # used for the routing of the entities
-            #     holds the capacity of the Queue
-            if capacity>0:
-                self.capacity=capacity
-            else:
-                self.capacity=float("inf")
-    
-            #     No failures are considered for the Queue        
-    
-            self.isDummy=isDummy                    #Boolean that shows if it is the dummy first Queue
-            self.schedulingRule=schedulingRule      #the scheduling rule that the Queue follows
-            self.multipleCriterionList=[]           #list with the criteria used to sort the Entities in the Queue
-            SRlist = [schedulingRule]
-            if schedulingRule.startswith("MC"):     # if the first criterion is MC aka multiple criteria
-                SRlist = schedulingRule.split("-")  # split the string of the criteria (delimiter -)
-                self.schedulingRule=SRlist.pop(0)   # take the first criterion of the list
-                self.multipleCriterionList=SRlist   # hold the criteria list in the property multipleCriterionList
-     
-            for scheduling_rule in SRlist:
-              if scheduling_rule not in self.getSupportedSchedulingRules():
-                raise ValueError("Unknown scheduling rule %s for %s" %
-                  (scheduling_rule, id))
-    
-            self.gatherWipStat=gatherWipStat
-            # Will be populated by an event generator
-            self.wip_stat_list = []
-            # trigger level for the reallocation of operators
-            if level:
-                assert level<=self.capacity, "the level cannot be bigger than the capacity of the queue"
-            self.level=level
-            
-    # =======================================================================
-    # parses inputs if they are given in a dictionary
-    # =======================================================================       
-    def parseInputs(self, inputsDict):
-        CoreObject.parseInputs(self, inputsDict)
-        from Globals import G
-        G.QueueList.append(self)
-        # holds the capacity of the Queue
-        capacity=int(inputsDict.get('capacity') or 1)
+        CoreObject.__init__(self, id, name)
+        # used for the routing of the entities
+        #     holds the capacity of the Queue
         if capacity>0:
             self.capacity=capacity
         else:
             self.capacity=float("inf")
 
-        self.isDummy=bool(int(inputsDict.get('isDummy') or 0))                    #Boolean that shows if it is the dummy first Queue
-        self.schedulingRule=inputsDict.get('schedulingRule', 'FIFO')                                        #the scheduling rule that the Queue follows
+        #     No failures are considered for the Queue        
+
+        self.isDummy=bool(int(isDummy))                    #Boolean that shows if it is the dummy first Queue
+        self.schedulingRule=schedulingRule      #the scheduling rule that the Queue follows
         self.multipleCriterionList=[]           #list with the criteria used to sort the Entities in the Queue
-        SRlist = [self.schedulingRule]
-        if self.schedulingRule.startswith("MC"):     # if the first criterion is MC aka multiple criteria
-            SRlist = self.schedulingRule.split("-")  # split the string of the criteria (delimiter -)
+        SRlist = [schedulingRule]
+        if schedulingRule.startswith("MC"):     # if the first criterion is MC aka multiple criteria
+            SRlist = schedulingRule.split("-")  # split the string of the criteria (delimiter -)
             self.schedulingRule=SRlist.pop(0)   # take the first criterion of the list
             self.multipleCriterionList=SRlist   # hold the criteria list in the property multipleCriterionList
  
@@ -102,15 +63,16 @@ class Queue(CoreObject):
             raise ValueError("Unknown scheduling rule %s for %s" %
               (scheduling_rule, id))
 
-        self.gatherWipStat=bool(int(inputsDict.get('gatherWipStat', 0)))
+        self.gatherWipStat=gatherWipStat
         # Will be populated by an event generator
         self.wip_stat_list = []
-        level=int(inputsDict.get('level') or 1)
         # trigger level for the reallocation of operators
         if level:
             assert level<=self.capacity, "the level cannot be bigger than the capacity of the queue"
         self.level=level
-
+        from Globals import G
+        G.QueueList.append(self)
+            
     @staticmethod
     def getSupportedSchedulingRules():
         return ("FIFO", "Priority", "EDD", "EOD",

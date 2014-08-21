@@ -78,6 +78,8 @@ class Assembly(CoreObject):
                                                             # when the entities have to be loaded to operatedMachines
                                                             # then the giverObjects have to be blocked for the time
                                                             # that the machine is being loaded 
+            from Globals import G
+            G.AssemblyList.append(self)
 
     # =======================================================================
     # parses inputs if they are given in a dictionary

@@ -45,19 +45,10 @@ class Exit(CoreObject):
         self.Lifespan=[] 
         self.TaktTime=[]   
         # if input is given in a dictionary
-        if inputsDict:
-            CoreObject.__init__(self, inputsDict=inputsDict)
-        else:
-            CoreObject.__init__(self, id, name)            
-            
-    # =======================================================================
-    # parses inputs if they are given in a dictionary
-    # =======================================================================       
-    def parseInputs(self, inputsDict):
-        CoreObject.parseInputs(self, inputsDict)
+        CoreObject.__init__(self, id, name) 
         from Globals import G
-        G.ExitList.append(self)
-        
+        G.ExitList.append(self)           
+                   
     def initialize(self):
         # using the Process __init__ and not the CoreObject __init__
         CoreObject.initialize(self)

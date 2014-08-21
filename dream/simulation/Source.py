@@ -97,7 +97,9 @@ class Source(CoreObject):
 
         self.item=Globals.getClassFromName(entity)      #the type of object that the Source will generate
                
-        self.scheduledEntities=[]       # list of creations that are scheduled. pattern is [timeOfCreation, EntityCounter]       
+        self.scheduledEntities=[]       # list of creations that are scheduled. pattern is [timeOfCreation, EntityCounter]     
+        from Globals import G
+        G.SourceList.append(self)  
     
     #===========================================================================
     # The initialize method of the Source class
