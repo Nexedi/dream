@@ -96,6 +96,11 @@
                                 "M2"
                             ],
                             "stepNumber": "3"
+                        },
+                        {
+                            "stationIdsList": [
+                                "E1"
+                            ]
                         }
                     ]
                 }
@@ -133,6 +138,11 @@
                                 "M2"
                             ],
                             "stepNumber": "1"
+                        },
+                        {
+                            "stationIdsList": [
+                                "E1"
+                            ]
                         }
                     ]
                 }

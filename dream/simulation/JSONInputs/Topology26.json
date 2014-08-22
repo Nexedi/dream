@@ -72,11 +72,8 @@
             "wip": [
                 {
                     "_class": "Dream.Job",
-                    "due_date": "2013-12-15",
                     "id": "J1",
-                    "material": "Plastic",
                     "name": "Order 1 from X",
-                    "order_date": "2013-11-20",
                     "priority": "2",
                     "route": [
                         {
@@ -114,6 +111,11 @@
                             "stationIdsList": [
                                 "M3"
                             ]
+                        },
+                        {
+                            "stationIdsList": [
+                                "E1"
+                            ]
                         }
                     ]
                 }
@@ -127,11 +129,8 @@
             "wip": [
                 {
                     "_class": "Dream.Job",
-                    "due_date": "2013-11-30",
                     "id": "J2",
-                    "material": "Aluminium",
                     "name": "Order 2 from Y",
-                    "order_date": "2013-11-14",
                     "priority": "1",
                     "route": [
                         {
@@ -169,6 +168,11 @@
                             "stationIdsList": [
                                 "M1"
                             ]
+                        },
+                        {
+                            "stationIdsList": [
+                                "E1"
+                            ]
                         }
                     ]
                 }
@@ -182,11 +186,8 @@
             "wip": [
                 {
                     "_class": "Dream.Job",
-                    "due_date": "2014-02-01",
                     "id": "J3",
-                    "material": "Plastic",
                     "name": "Order 3 from Z",
-                    "order_date": "2013-11-03",
                     "priority": "3",
                     "route": [
                         {
@@ -223,6 +224,11 @@
                             },
                             "stationIdsList": [
                                 "M1"
+                            ]
+                        },
+                        {
+                            "stationIdsList": [
+                                "E1"
                             ]
                         }
                     ]

@@ -137,6 +137,11 @@
                             "stationIdsList": [
                                 "M2"
                             ]
+                        },
+                        {
+                            "stationIdsList": [
+                                "E1"
+                            ]
                         }
                     ]
                 }
@@ -196,6 +201,11 @@
                             },
                             "stationIdsList": [
                                 "M4"
+                            ]
+                        },
+                        {
+                            "stationIdsList": [
+                                "E1"
                             ]
                         }
                     ]

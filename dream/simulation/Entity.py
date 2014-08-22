@@ -34,7 +34,7 @@ import simpy
 class Entity(object):
     type="Entity"
 
-    def __init__(self, id=None, name=None, priority=0, dueDate=None, orderDate=None, 
+    def __init__(self, id=None, name=None, priority=0, dueDate=0, orderDate=0, 
                  isCritical=False, remainingProcessingTime=0):
         self.name=name
         self.id=id
@@ -48,16 +48,21 @@ class Entity(object):
         self.height=1.0
         self.length=1.0
         #         information concerning the sorting of the entities inside (for example) queues
-        self.priority=priority
-        self.dueDate=dueDate
-        self.orderDate=orderDate
+        self.priority=float(priority)
+        self.dueDate=float(dueDate)
+        self.orderDate=float(orderDate)
         #         a list that holds information about the schedule 
         #         of the entity (when it enters and exits every station)
         self.schedule=[]
         self.currentStation=None
         #         values to be used in the internal processing of compoundObjects
         self.internal = False               # informs if the entity is being processed internally
-        self.isCritical=isCritical          # flag to inform weather the entity is critical -> preemption
+        if isinstance(isCritical, unicode):
+            self.isCritical=bool(int(isCritical))
+        elif isinstance(isCritical, int): 
+            self.isCritical=bool(isCritical)          # flag to inform weather the entity is critical -> preemption
+        else:
+            self.isCritical=isCritical
         self.manager=None                   # default value
         self.numberOfUnits=1                # default value
         # variable used to differentiate entities with and entities without routes
@@ -70,6 +75,7 @@ class Entity(object):
         # alias used for printing the Route
         self.alias=None
         self.remainingProcessingTime=remainingProcessingTime
+        print self.id
     
     # =======================================================================
     # outputs results to JSON File 

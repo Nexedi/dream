@@ -36,23 +36,20 @@ class Job(Entity):                                  # inherits from the Entity c
     type='Job'
     family='Job'
     
-    def __init__(self, id=None, name=None, route=[], priority=0, dueDate=None, orderDate=None, extraPropertyDict=None,isCritical=False):
+    def __init__(self, id=None, name=None, route=[], priority=0, dueDate=0, orderDate=0, extraPropertyDict=None,isCritical=False):
         Entity.__init__(self, id=id,name=name, priority=priority, dueDate=dueDate, orderDate=orderDate, isCritical=isCritical)
         # instance specific attributes 
         # information on the routing and the stops of the entity
-        self.route=route                            # the route that the job follows, 
+        self.route=route          # the route that the job follows, 
                                                     # also contains the processing times in each station
-        self.remainingRoute=list(route)                   # the remaining route. in the beginning 
+        self.remainingRoute=list(route)             # the remaining route. in the beginning 
                                                     # this should be the same as the full route
-        # the scheduling of the entity as resolved by the simulation
-#         self.schedule=[]                            # keeps the result of the simulation. 
-#                                                     # A list with the stations and time of entrance
         self.extraPropertyDict = extraPropertyDict
         # variable used to differentiate entities with and entities without routes
         self.family='Job'
         # used by printRoute
         self.alias='J'+str(len(G.JobList))
-    
+
     # =======================================================================
     # outputs results to JSON File 
     # =======================================================================

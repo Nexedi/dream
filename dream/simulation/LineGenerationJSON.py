@@ -373,167 +373,14 @@ def createWIP():
             entityType=Globals.getClassFromName(entityClass)
             inputDict=dict(entity)
             inputDict.pop('_class')
-            
             if entityClass in ['Dream.CapacityEntity', 'Dream.CapacityProject', 'Dream.Part', 
-                               'Dream.Batch', 'Dream.SubBatch']:
+                               'Dream.Batch', 'Dream.SubBatch', 'Dream.Job', 'Dream.Mould', 'Dream.OrderComponent']:
                 entity=entityType(**inputDict)   
                 G.EntityList.append(entity)    
                 object=Globals.findObjectById(element['id'])
-                entity.currentStation=object               
-            
-            elif entityClass=='Dream.OrderComponent':
-                id=entity.get('id', 'not found')
-                name=entity.get('name', 'not found')
-                priority=int(entity.get('priority', '0'))
-                dueDate=float(entity.get('dueDate', '0'))
-                orderDate=float(entity.get('orderDate', '0'))
-                componentType=entity.get('componentType', 'not found')
-                isCritical=bool(int(entity.get('isCritical', '0'))) 
-                readyForAssembly=bool(int(entity.get('readyForAssembly', '0'))) 
-                JSONRoute=entity.get('route', [])                  # dummy variable that holds the routes of the jobs
-                                                                    #    the route from the JSON file 
-                                                                    #    is a sequence of dictionaries
-                route = [x for x in JSONRoute]       #    copy JSONRoute
+                entity.currentStation=object   
                 
-                # keep a reference of all extra properties passed to the job
-                extraPropertyDict = {}
-                for key, value in entity.items():
-                  if key not in ('_class', 'id'):
-                    extraPropertyDict[key] = value
-                    
-                # if there is an exit assigned to the component
-                #    update the corresponding local flag
-                # TODO: have to talk about it with NEX
-                exitAssigned=False
-                for element in route:
-                    elementIds = element.get('stationIdsList',[])
-                    for obj in G.ObjList:
-                        for elementId in elementIds:
-                            if obj.id==elementId and obj.type=='Exit':
-                                exitAssigned=True
-                # Below it is to assign assemblers if there are any in the corresponding Global list
-                if not exitAssigned:                    
-                    if len(G.MouldAssemblyList)!=0:
-                        bufferIDlist = []
-                        assemblerIDlist = []
-                        for assemblyBuffer in G.MouldAssemblyBufferList:
-                            bufferIDlist.append(str(assemblyBuffer.id))
-                        for assembler in G.MouldAssemblyList:
-                            assemblerIDlist.append(str(assembler.id))
-                        route.append({'stationIdsList':bufferIDlist})       # assign MouldAssemblyBuffers
-                        route.append({'stationIdsList':assemblerIDlist})    # assign MouldAssemblies
-                        # if assemblers are assigned then an 'exit' is assigned
-                        exitAssigned=True
-                #Below it is to assign an exit if it was not assigned in JSON and no assemblers are already assigned
-                if not exitAssigned:
-                    exitId=None
-                    for obj in G.ObjList:
-                        if obj.type=='Exit':
-                            exitId=obj.id
-                            break
-                    if exitId:
-                        route.append({'stationIdsList':[exitId],\
-                                      'processingTime':{}})
-                # initiate the job
-                OC=OrderComponent(id, name, route, priority=priority, dueDate=dueDate,orderDate=orderDate,
-                                  componentType=componentType, readyForAssembly=readyForAssembly,
-                                  isCritical=isCritical, extraPropertyDict=extraPropertyDict)
-                G.OrderComponentList.append(OC)
-                G.JobList.append(OC)   
-                G.WipList.append(OC)  
-                G.EntityList.append(OC)    
-            
-            elif entityClass=='Dream.Mould':
-                id=entity.get('id', 'not found')
-                name=entity.get('name', 'not found')
-                priority=int(entity.get('priority', '0'))
-                dueDate=float(entity.get('dueDate', '0'))
-                orderDate=float(entity.get('orderDate', '0'))
-                isCritical=bool(int(entity.get('isCritical', '0'))) 
-                JSONRoute=entity.get('route', [])                  # dummy variable that holds the routes of the jobs
-                                                                    #    the route from the JSON file 
-                                                                    #    is a sequence of dictionaries
-                route = [x for x in JSONRoute]       #    copy JSONRoute
-                
-                # keep a reference of all extra properties passed to the job
-                extraPropertyDict = {}
-                for key, value in entity.items():
-                  if key not in ('_class', 'id'):
-                    extraPropertyDict[key] = value
-
-                #Below it is to assign an exit if it was not assigned in JSON
-                #have to talk about it with NEX
-                exitAssigned=False
-                for element in route:
-#                     elementId=element[0]
-                    elementIds = element.get('stationIdsList',[])
-                    for obj in G.ObjList:
-                        for elementId in elementIds:
-                            if obj.id==elementId and obj.type=='Exit':
-                                exitAssigned=True 
-                if not exitAssigned:
-                    exitId=None
-                    for obj in G.ObjList:
-                        if obj.type=='Exit':
-                            exitId=obj.id
-                            break
-                    if exitId:
-#                         route.append([exitId, 0])
-                        route.append({'stationIdsList':[exitId],\
-                                      'processingTime':{}})
-                # initiate the job
-                M=Mould(id, name, route, priority=priority, dueDate=dueDate,orderDate=orderDate,
-                                  isCritical=isCritical, extraPropertyDict=extraPropertyDict)
-                G.MouldList.append(M)
-                G.JobList.append(M)   
-                G.WipList.append(M)  
-                G.EntityList.append(M)
-            
-            elif entityClass=='Dream.Job':
-                id=entity.get('id', 'not found')
-                name=entity.get('name', 'not found')
-                priority=int(entity.get('priority', '0'))
-                dueDate=float(entity.get('dueDate', '0'))
-                orderDate=float(entity.get('orderDate', '0'))
-                JSONRoute=entity.get('route', [])                  # dummy variable that holds the routes of the jobs
-                                                                    #    the route from the JSON file 
-                                                                    #    is a sequence of dictionaries
-                route = [x for x in JSONRoute]       #    copy JSONRoute
-                
-                # keep a reference of all extra properties passed to the job
-                extraPropertyDict = {}
-                for key, value in entity.items():
-                  if key not in ('_class', 'id'):
-                    extraPropertyDict[key] = value
-
-                #Below it is to assign an exit if it was not assigned in JSON
-                #have to talk about it with NEX
-                exitAssigned=False
-                for element in route:
-                    elementIds = element.get('stationIdsList',[])
-                    for obj in G.ObjList:
-                        for elementId in elementIds:
-                            if obj.id==elementId and obj.type=='Exit':
-                                exitAssigned=True 
-                if not exitAssigned:
-                    exitId=None
-                    for obj in G.ObjList:
-                        if obj.type=='Exit':
-                            exitId=obj.id
-                            break
-                    if exitId:
-#                         route.append([exitId, 0])
-                        route.append({'stationIdsList':[exitId],\
-                                      'processingTime':{}})
-                # initiate the job
-                J=Job(id, name, route, priority=priority, dueDate=dueDate,
-                    orderDate=orderDate, extraPropertyDict=extraPropertyDict)
-                G.JobList.append(J)   
-                G.WipList.append(J)  
-                G.EntityList.append(J) 
-
-
-
+                       
             if entityClass=='Dream.Order':
                 id=entity.get('id', 'not found')
                 name=entity.get('name', 'not found')
@@ -585,7 +432,7 @@ def createWIP():
                                       'processingTime':\
                                             {'distributionType':'Fixed',\
                                              'mean':'0'}})
-                # XXX durty way to implement new approach were the order is abstract and does not run through the system 
+                # XXX dirty way to implement new approach were the order is abstract and does not run through the system 
                 # but the OrderDesign does
                 # XXX initiate the Order and the OrderDesign
                 O=Order('G'+id, 'general '+name, route=[], priority=priority, dueDate=dueDate,orderDate=orderDate,
@@ -787,20 +634,11 @@ def main(argv=[], input_data=None):
     G.outputJSON['general']['totalExecutionTime'] = (time.time()-start);
     G.outputJSON['elementList'] =[];
     
+        
     #output data to JSON for every object in the topology         
-    for element in G.ObjList:
-        element.outputResultsJSON()
-        
-    #output data to JSON for every resource in the topology         
-    for model_resource in G.ObjectResourceList:
-        model_resource.outputResultsJSON()
-        
-    for job in G.JobList:
-        job.outputResultsJSON()
-        
-    for capacityProject in G.CapacityProjectList:
-        capacityProject.outputResultsJSON()
-         
+    for object in G.ObjectResourceList + G.EntityList + G.ObjList:
+        object.outputResultsJSON()
+                        
     outputJSONString=json.dumps(G.outputJSON, indent=True)
     G.outputJSONFile.write(outputJSONString)
 

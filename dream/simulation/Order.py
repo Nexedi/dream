@@ -62,3 +62,5 @@ class Order(Job):
         # used by printRoute
         self.alias='O'+str(len(G.OrderList))
 
+        def createRoute(self, route):
+            return route

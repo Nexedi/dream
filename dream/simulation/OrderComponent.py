@@ -37,8 +37,8 @@ class OrderComponent(Job):                                  # inherits from the 
     def __init__(self, id=None, name=None, 
                     route=[], 
                     priority=0, 
-                    dueDate=None, 
-                    orderDate=None, 
+                    dueDate=0, 
+                    orderDate=0, 
                     extraPropertyDict=None,
                     componentType='Basic', 
                     order=None, 
@@ -66,4 +66,3 @@ class OrderComponent(Job):                                  # inherits from the 
         # used by printRoute
         if self.order:
             self.alias=self.order.alias+'C'+str(len(G.OrderComponentList))
-        
