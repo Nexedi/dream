@@ -121,9 +121,10 @@ def readGeneralInput():
                                                                             # generic for the model
 
 # ===========================================================================
-#                       creates the simulation objects
+#                       creates first the object interruptions 
+#                            and then the core objects
 # ===========================================================================
-def createObjects():
+def createObjectResourcesAndCoreObjects():
 
     json_data = G.JSONData
     #Read the json data
@@ -289,169 +290,7 @@ def createObjects():
                     possible_successor.previousIds.append(element.id)            
 
 # ===========================================================================
-#    defines the topology (predecessors and successors for all the objects)
-# ===========================================================================
-def setTopology():
-    #loop through all the objects  
-    for element in G.ObjList:
-        next=[]
-        previous=[]
-        for j in range(len(element.previousIds)):
-            for q in range(len(G.ObjList)):
-                if G.ObjList[q].id==element.previousIds[j]:
-                    previous.append(G.ObjList[q])
-                    
-        for j in range(len(element.nextIds)):
-            for q in range(len(G.ObjList)):
-                if G.ObjList[q].id==element.nextIds[j]:
-                    next.append(G.ObjList[q])      
-                             
-        if element.type=="Source":
-            element.defineRouting(next)
-        elif element.type=="Exit":
-            element.defineRouting(previous)
-        #Dismantle should be changed to identify what the the successor is.
-        #nextPart and nextFrame will become problematic    
-        elif element.type=="Dismantle":
-            nextPart=[]
-            nextFrame=[]
-            for j in range(len(element.nextPartIds)):
-                for q in range(len(G.ObjList)):
-                    if G.ObjList[q].id==element.nextPartIds[j]:
-                        nextPart.append(G.ObjList[q])
-            for j in range(len(element.nextFrameIds)):
-                for q in range(len(G.ObjList)):
-                    if G.ObjList[q].id==element.nextFrameIds[j]:
-                        nextFrame.append(G.ObjList[q])
-            element.defineRouting(previous, next)            
-            element.definePartFrameRouting(nextPart, nextFrame)
-        else:
-            element.defineRouting(previous, next)
-            
-# ===========================================================================
-#            initializes all the objects that are in the topology
-# ===========================================================================
-def initializeObjects():
-    for element in G.ObjList + G.ObjectResourceList + G.EntityList + G.ObjectInterruptionList:
-        element.initialize()
-
-# ===========================================================================
-#                        activates all the objects
-# ===========================================================================
-def activateObjects():
-    for element in G.ObjList + G.ObjectInterruptionList:
-        G.env.process(element.run())
-
-# ===========================================================================
-#                reads the WIP of the stations
-# ===========================================================================
-def createWIP():
-    G.JobList=[]
-    G.WipList=[]
-    G.EntityList=[]  
-    G.PartList=[]
-    G.OrderComponentList=[]
-    G.DesignList=[]     # list of the OrderDesigns in the system
-    G.OrderList=[]
-    G.MouldList=[]
-    G.BatchList=[]
-    G.SubBatchList=[]
-    G.CapacityEntityList=[]
-    G.CapacityProjectList=[]
-    # entities that just finished processing in a station 
-    # and have to enter the next machine 
-    G.pendingEntities=[]
-    import Globals
-    json_data = G.JSONData
-    #Read the json data
-    nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
-    for (element_id, element) in nodes.iteritems():
-        element['id'] = element_id
-        wip=element.get('wip', [])
-        for entity in wip:
-            entityClass=entity.get('_class', None)
-            entityType=Globals.getClassFromName(entityClass)
-            inputDict=dict(entity)
-            inputDict.pop('_class')
-            if entityClass in ['Dream.CapacityEntity', 'Dream.CapacityProject', 'Dream.Part', 
-                               'Dream.Batch', 'Dream.SubBatch', 'Dream.Job', 'Dream.Mould', 'Dream.OrderComponent']:
-                entity=entityType(**inputDict)   
-                G.EntityList.append(entity)    
-                object=Globals.findObjectById(element['id'])
-                entity.currentStation=object   
-                
-                       
-            if entityClass=='Dream.Order':
-                id=entity.get('id', 'not found')
-                name=entity.get('name', 'not found')
-                priority=int(entity.get('priority', '0'))
-                dueDate=float(entity.get('dueDate', '0'))
-                orderDate=float(entity.get('orderDate', '0'))
-                isCritical=bool(int(entity.get('isCritical', '0')))  
-                basicsEnded=bool(int(entity.get('basicsEnded', '0'))) 
-                componentsReadyForAssembly = bool((entity.get('componentsReadyForAssembly', '0')))
-                # read the manager ID
-                manager=entity.get('manager', None)
-                # if a manager ID is assigned then search for the operator with the corresponding ID
-                # and assign it as the manager of the order 
-                if manager:
-                    for operator in G.OperatorsList:
-                        if manager==operator.id:
-                            manager=operator
-                            break
-                componentsList=entity.get('componentsList', {})
-                JSONRoute=entity.get('route', [])                  # dummy variable that holds the routes of the jobs
-                                                                    #    the route from the JSON file 
-                                                                    #    is a sequence of dictionaries
-                route = [x for x in JSONRoute]       #    copy JSONRoute
-                
-                # keep a reference of all extra properties passed to the job
-                extraPropertyDict = {}
-                for key, value in entity.items():
-                  if key not in ('_class', 'id'):
-                    extraPropertyDict[key] = value
-
-                #Below it is to assign an order decomposition if it was not assigned in JSON
-                #have to talk about it with NEX
-                odAssigned=False
-                for element in route:
-                    elementIds = element.get('stationIdsList',[])
-                    for obj in G.ObjList:
-                        for elementId in elementIds:
-                            if obj.id==elementId and obj.type=='OrderDecomposition':
-                                odAssigned=True 
-                if not odAssigned:
-                    odId=None
-                    for obj in G.ObjList:
-                        if obj.type=='OrderDecomposition':
-                            odId=obj.id
-                            break
-                    if odId:
-#                         route.append([odId, 0])
-                        route.append({'stationIdsList':[odId],\
-                                      'processingTime':\
-                                            {'distributionType':'Fixed',\
-                                             'mean':'0'}})
-                # XXX dirty way to implement new approach were the order is abstract and does not run through the system 
-                # but the OrderDesign does
-                # XXX initiate the Order and the OrderDesign
-                O=Order('G'+id, 'general '+name, route=[], priority=priority, dueDate=dueDate,orderDate=orderDate,
-                        isCritical=isCritical, basicsEnded=basicsEnded, manager=manager, componentsList=componentsList,
-                        componentsReadyForAssembly=componentsReadyForAssembly, extraPropertyDict=extraPropertyDict)
-                # create the OrderDesign
-                OD=OrderDesign(id, name, route, priority=priority, dueDate=dueDate,orderDate=orderDate,
-                        isCritical=isCritical, order=O, extraPropertyDict=extraPropertyDict)
-                # add the order to the OrderList
-                G.OrderList.append(O)
-                # add the OrderDesign to the DesignList and the OrderComponentList
-                G.OrderComponentList.append(OD)
-                G.DesignList.append(OD)
-                G.WipList.append(OD)  
-                G.EntityList.append(OD)
-                G.JobList.append(OD)
-                                                     
-# ===========================================================================
-#                reads the interruptions of the stations
+#                creates the object interruptions
 # ===========================================================================
 def createObjectInterruptions():
     G.ObjectInterruptionList=[]
@@ -542,6 +381,168 @@ def createObjectInterruptions():
             victim.objectInterruptions.append(SS)
             G.ObjectInterruptionList.append(SS)
             G.ShiftSchedulerList.append(SS)
+
+# ===========================================================================
+#                       creates the entities that are wip
+# ===========================================================================
+def createWIP():
+    G.JobList=[]
+    G.WipList=[]
+    G.EntityList=[]  
+    G.PartList=[]
+    G.OrderComponentList=[]
+    G.DesignList=[]     # list of the OrderDesigns in the system
+    G.OrderList=[]
+    G.MouldList=[]
+    G.BatchList=[]
+    G.SubBatchList=[]
+    G.CapacityEntityList=[]
+    G.CapacityProjectList=[]
+    # entities that just finished processing in a station 
+    # and have to enter the next machine 
+    G.pendingEntities=[]
+    import Globals
+    json_data = G.JSONData
+    #Read the json data
+    nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
+    for (element_id, element) in nodes.iteritems():
+        element['id'] = element_id
+        wip=element.get('wip', [])
+        for entity in wip:
+            entityClass=entity.get('_class', None)
+            entityType=Globals.getClassFromName(entityClass)
+            inputDict=dict(entity)
+            inputDict.pop('_class')
+            from Entity import Entity
+            if issubclass(entityType, Entity) and (not entityClass=='Dream.Order'):
+                entity=entityType(**inputDict)   
+                G.EntityList.append(entity)    
+                object=Globals.findObjectById(element['id'])
+                entity.currentStation=object   
+                
+            # ToDo order is to defined in a new way
+            if entityClass=='Dream.Order':
+                id=entity.get('id', 'not found')
+                name=entity.get('name', 'not found')
+                priority=int(entity.get('priority', '0'))
+                dueDate=float(entity.get('dueDate', '0'))
+                orderDate=float(entity.get('orderDate', '0'))
+                isCritical=bool(int(entity.get('isCritical', '0')))  
+                basicsEnded=bool(int(entity.get('basicsEnded', '0'))) 
+                componentsReadyForAssembly = bool((entity.get('componentsReadyForAssembly', '0')))
+                # read the manager ID
+                manager=entity.get('manager', None)
+                # if a manager ID is assigned then search for the operator with the corresponding ID
+                # and assign it as the manager of the order 
+                if manager:
+                    for operator in G.OperatorsList:
+                        if manager==operator.id:
+                            manager=operator
+                            break
+                componentsList=entity.get('componentsList', {})
+                JSONRoute=entity.get('route', [])                  # dummy variable that holds the routes of the jobs
+                                                                    #    the route from the JSON file 
+                                                                    #    is a sequence of dictionaries
+                route = [x for x in JSONRoute]       #    copy JSONRoute
+                
+                # keep a reference of all extra properties passed to the job
+                extraPropertyDict = {}
+                for key, value in entity.items():
+                  if key not in ('_class', 'id'):
+                    extraPropertyDict[key] = value
+
+                #Below it is to assign an order decomposition if it was not assigned in JSON
+                #have to talk about it with NEX
+                odAssigned=False
+                for element in route:
+                    elementIds = element.get('stationIdsList',[])
+                    for obj in G.ObjList:
+                        for elementId in elementIds:
+                            if obj.id==elementId and obj.type=='OrderDecomposition':
+                                odAssigned=True 
+                if not odAssigned:
+                    odId=None
+                    for obj in G.ObjList:
+                        if obj.type=='OrderDecomposition':
+                            odId=obj.id
+                            break
+                    if odId:
+#                         route.append([odId, 0])
+                        route.append({'stationIdsList':[odId],\
+                                      'processingTime':\
+                                            {'distributionType':'Fixed',\
+                                             'mean':'0'}})
+                # XXX dirty way to implement new approach were the order is abstract and does not run through the system 
+                # but the OrderDesign does
+                # XXX initiate the Order and the OrderDesign
+                O=Order('G'+id, 'general '+name, route=[], priority=priority, dueDate=dueDate,orderDate=orderDate,
+                        isCritical=isCritical, basicsEnded=basicsEnded, manager=manager, componentsList=componentsList,
+                        componentsReadyForAssembly=componentsReadyForAssembly, extraPropertyDict=extraPropertyDict)
+                # create the OrderDesign
+                OD=OrderDesign(id, name, route, priority=priority, dueDate=dueDate,orderDate=orderDate,
+                        isCritical=isCritical, order=O, extraPropertyDict=extraPropertyDict)
+                # add the order to the OrderList
+                G.OrderList.append(O)
+                # add the OrderDesign to the DesignList and the OrderComponentList
+                G.OrderComponentList.append(OD)
+                G.DesignList.append(OD)
+                G.WipList.append(OD)  
+                G.EntityList.append(OD)
+                G.JobList.append(OD)
+                
+# ===========================================================================
+#    defines the topology (predecessors and successors for all the objects)
+# ===========================================================================
+def setTopology():
+    #loop through all the objects  
+    for element in G.ObjList:
+        next=[]
+        previous=[]
+        for j in range(len(element.previousIds)):
+            for q in range(len(G.ObjList)):
+                if G.ObjList[q].id==element.previousIds[j]:
+                    previous.append(G.ObjList[q])
+                    
+        for j in range(len(element.nextIds)):
+            for q in range(len(G.ObjList)):
+                if G.ObjList[q].id==element.nextIds[j]:
+                    next.append(G.ObjList[q])      
+                             
+        if element.type=="Source":
+            element.defineRouting(next)
+        elif element.type=="Exit":
+            element.defineRouting(previous)
+        #Dismantle should be changed to identify what the the successor is.
+        #nextPart and nextFrame will become problematic    
+        elif element.type=="Dismantle":
+            nextPart=[]
+            nextFrame=[]
+            for j in range(len(element.nextPartIds)):
+                for q in range(len(G.ObjList)):
+                    if G.ObjList[q].id==element.nextPartIds[j]:
+                        nextPart.append(G.ObjList[q])
+            for j in range(len(element.nextFrameIds)):
+                for q in range(len(G.ObjList)):
+                    if G.ObjList[q].id==element.nextFrameIds[j]:
+                        nextFrame.append(G.ObjList[q])
+            element.defineRouting(previous, next)            
+            element.definePartFrameRouting(nextPart, nextFrame)
+        else:
+            element.defineRouting(previous, next)
+            
+# ===========================================================================
+#            initializes all the objects that are in the topology
+# ===========================================================================
+def initializeObjects():
+    for element in G.ObjList + G.ObjectResourceList + G.EntityList + G.ObjectInterruptionList:
+        element.initialize()
+
+# ===========================================================================
+#                        activates all the objects
+# ===========================================================================
+def activateObjects():
+    for element in G.ObjList + G.ObjectInterruptionList:
+        G.env.process(element.run())                                                  
                 
 # ===========================================================================
 #                        the main script that is ran
@@ -568,7 +569,7 @@ def main(argv=[], input_data=None):
     #read the input from the JSON file and create the line
     G.JSONData=json.loads(G.InputData)              # create the dictionary JSONData
     readGeneralInput()
-    createObjects()
+    createObjectResourcesAndCoreObjects()
     createObjectInterruptions()
     setTopology()
 
