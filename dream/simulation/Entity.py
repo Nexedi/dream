@@ -75,7 +75,6 @@ class Entity(object):
         # alias used for printing the Route
         self.alias=None
         self.remainingProcessingTime=remainingProcessingTime
-        print self.id
     
     # =======================================================================
     # outputs results to JSON File 
