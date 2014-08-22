@@ -361,7 +361,7 @@ def createWIP():
     # entities that just finished processing in a station 
     # and have to enter the next machine 
     G.pendingEntities=[]
-    
+    import Globals
     json_data = G.JSONData
     #Read the json data
     nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
@@ -370,8 +370,17 @@ def createWIP():
         wip=element.get('wip', [])
         for entity in wip:
             entityClass=entity.get('_class', None)
+            entityType=Globals.getClassFromName(entityClass)
+            inputDict=dict(entity)
+            inputDict.pop('_class')
             
-            if entityClass=='Dream.OrderComponent':
+            if entityClass in ['Dream.CapacityEntity', 'Dream.CapacityProject']:
+                entity=entityType(**inputDict)   
+                G.EntityList.append(entity)    
+                object=Globals.findObjectById(element['id'])
+                entity.currentStation=object
+            
+            elif entityClass=='Dream.OrderComponent':
                 id=entity.get('id', 'not found')
                 name=entity.get('name', 'not found')
                 priority=int(entity.get('priority', '0'))
@@ -500,7 +509,6 @@ def createWIP():
                 #have to talk about it with NEX
                 exitAssigned=False
                 for element in route:
-#                     elementId=element[0]
                     elementIds = element.get('stationIdsList',[])
                     for obj in G.ObjList:
                         for elementId in elementIds:
@@ -611,7 +619,6 @@ def createWIP():
                 #have to talk about it with NEX
                 odAssigned=False
                 for element in route:
-#                     elementId=element[0]
                     elementIds = element.get('stationIdsList',[])
                     for obj in G.ObjList:
                         for elementId in elementIds:
@@ -646,32 +653,7 @@ def createWIP():
                 G.WipList.append(OD)  
                 G.EntityList.append(OD)
                 G.JobList.append(OD)
-            
-            if entityClass=='Dream.CapacityProject':
-                id=entity.get('id', 'not found')  
-                name=entity.get('name', 'not found') 
-                capacityRequirementDict=entity.get('capacityRequirementDict', {})
-                earliestStartDict=entity.get('earliestStartDict', {})
-                dueDate=float(entity.get('dueDate', 0))
-                assemblySpaceRequirement=float(entity.get('assemblySpaceRequirement', 0))
-                
-                CP=CapacityProject(id=id, name=name, capacityRequirementDict=capacityRequirementDict, 
-                                        earliestStartDict=earliestStartDict, dueDate=dueDate,
-                                        assemblySpaceRequirement=assemblySpaceRequirement) 
-                G.EntityList.append(CP)     
-                G.CapacityProjectList.append(CP)
-                         
-            if entityClass=='Dream.CapacityEntity':
-                id=entity.get('id', 'not found')  
-                name=entity.get('name', 'not found') 
-                requiredCapacity=entity.get('requiredCapacity', 10)
-                capacityProjectId=entity.get('capacityProjectId', None)
-                CE=CapacityEntity(id=id, name=name, requiredCapacity=requiredCapacity, capacityProjectId=capacityProjectId) 
-                G.CapacityEntityList.append(CE)     
-                G.EntityList.append(CE)    
-                object=Globals.findObjectById(element['id'])
-                CE.currentStation=object
-                
+                                                     
 # ===========================================================================
 #                reads the interruptions of the stations
 # ===========================================================================

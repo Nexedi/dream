@@ -43,6 +43,8 @@ class CapacityProject(Entity):
         self.earliestStartDict=earliestStartDict
         # the assembly space the project requires
         self.assemblySpaceRequirement=assemblySpaceRequirement
+        from Globals import G
+        G.CapacityProjectList.append(self)
         
     def initialize(self):
         self.projectSchedule=[]     # a list of dicts to keep the schedule

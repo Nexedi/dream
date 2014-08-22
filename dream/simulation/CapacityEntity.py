@@ -40,6 +40,8 @@ class CapacityEntity(Entity):
         self.capacityProject=None                   # the project that the capacity Entity is part of. It is defined in initialize
         self.requiredCapacity=requiredCapacity  # the capacity that the capacity entity requires from the following station
         self.shouldMove=False
+        from Globals import G
+        G.CapacityEntityList.append(self)  
 
     def initialize(self):
         Entity.initialize(self)
