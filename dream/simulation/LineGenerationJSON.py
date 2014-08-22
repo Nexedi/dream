@@ -704,33 +704,33 @@ def createObjectInterruptions():
         # from CoreObject import CoreObject
         # if issubclass(objectType, CoreObject):
             
-        if objClass=='Dream.EventGenerator':                    # check the object type
-            inputDict=dict(element)           
-            # create the CoreObject
+        if objClass in ['Dream.EventGenerator', 'Dream.CapacityStationController']:               # check the object type
+            inputDict=dict(element)        
+            # create the ObjectInterruption
             objectInterruption=objectType(**inputDict)
             G.ObjectInterruptionList.append(objectInterruption)
             
-        elif objClass=='Dream.CapacityStationController':                    # check the object type
-            id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
-            name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
-            start = float(element.get('start') or 0)
-            stop = float(element.get('stop') or -1)
-                                                                    # infinity (had to be done to make it as float)
-            if stop<0:
-                stop=float('inf')            
-            interval = float(element.get('interval') or 1)
-            duration = float(element.get('duration') or 0)
-            dueDateThreshold = float(element.get('dueDateThreshold') or float('inf'))
-            prioritizeIfCanFinish = bool(element.get('prioritizeIfCanFinish', 0))
-            argumentDict=(element.get('argumentDict', {}))      # get the arguments of the method as a dict / default {}
-               
-            # create the CapacityStationController object
-            CSC = CapacityStationController(id, name, start=start, stop=stop, interval=interval, 
-                                duration=duration, argumentDict=argumentDict, dueDateThreshold=dueDateThreshold,
-                                prioritizeIfCanFinish=prioritizeIfCanFinish)                                                                         
-            G.EventGeneratorList.append(CSC)                              
-            G.CapacityStationControllerList.append(CSC)
-            G.ObjectInterruptionList.append(CSC)
+#         elif objClass=='Dream.CapacityStationController':                    # check the object type
+#             id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
+#             name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
+#             start = float(element.get('start') or 0)
+#             stop = float(element.get('stop') or -1)
+#                                                                     # infinity (had to be done to make it as float)
+#             if stop<0:
+#                 stop=float('inf')            
+#             interval = float(element.get('interval') or 1)
+#             duration = float(element.get('duration') or 0)
+#             dueDateThreshold = float(element.get('dueDateThreshold') or float('inf'))
+#             prioritizeIfCanFinish = bool(element.get('prioritizeIfCanFinish', 0))
+#             argumentDict=(element.get('argumentDict', {}))      # get the arguments of the method as a dict / default {}
+#                
+#             # create the CapacityStationController object
+#             CSC = CapacityStationController(id, name, start=start, stop=stop, interval=interval, 
+#                                 duration=duration, argumentDict=argumentDict, dueDateThreshold=dueDateThreshold,
+#                                 prioritizeIfCanFinish=prioritizeIfCanFinish)                                                                         
+#             G.EventGeneratorList.append(CSC)                              
+#             G.CapacityStationControllerList.append(CSC)
+#             G.ObjectInterruptionList.append(CSC)
     
     # for the elements in the nodes dict
     for (element_id, element) in nodes.iteritems():

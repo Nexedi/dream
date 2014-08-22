@@ -197,9 +197,6 @@
         "CSC": {
             "_class": "Dream.CapacityStationController",
             "name": "CSC",
-			"start": "0",
-			"interval": "1",
-			"method": "Dream.None"
-        }
+			"interval": "1"        }
     }
 }

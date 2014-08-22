@@ -100,7 +100,6 @@
             "name": "CSC",
             "start": "0",
             "interval": "1",
-            "method": "Dream.None",
 			"prioritizeIfCanFinish": 1,
             "dueDateThreshold": 7
         }
