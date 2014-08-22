@@ -34,11 +34,12 @@ from SubBatch import SubBatch
 class Batch(Entity):
     type="Batch"
 
-    def __init__(self, id, name, numberOfUnits=1):
-        Entity.__init__(self, name=name, id=id)
-        self.numberOfUnits=numberOfUnits
+    def __init__(self, id, name, numberOfUnits=1, remainingProcessingTime=0, unitsToProcess=0):
+        Entity.__init__(self, name=name, id=id, remainingProcessingTime=remainingProcessingTime)
+        self.numberOfUnits=int(numberOfUnits)
         self.numberOfSubBatches=1       #integer that shows in how many sub batches is the batch broken
         self.subBatchList=[]            #list that contains the sub-batches that this batch has been broken into
+        self.unitsToProcess=int(unitsToProcess)
     
     #===========================================================================
     # finds the schedule of each child and returns the combined route 

@@ -374,11 +374,12 @@ def createWIP():
             inputDict=dict(entity)
             inputDict.pop('_class')
             
-            if entityClass in ['Dream.CapacityEntity', 'Dream.CapacityProject', 'Dream.Part']:
+            if entityClass in ['Dream.CapacityEntity', 'Dream.CapacityProject', 'Dream.Part', 
+                               'Dream.Batch', 'Dream.SubBatch']:
                 entity=entityType(**inputDict)   
                 G.EntityList.append(entity)    
                 object=Globals.findObjectById(element['id'])
-                entity.currentStation=object
+                entity.currentStation=object               
             
             elif entityClass=='Dream.OrderComponent':
                 id=entity.get('id', 'not found')
@@ -530,48 +531,8 @@ def createWIP():
                 G.JobList.append(J)   
                 G.WipList.append(J)  
                 G.EntityList.append(J) 
-            
-            elif entityClass=='Dream.Batch':
-                id=entity.get('id', 'not found')
-                name=entity.get('name', 'not found')
-                numberOfUnits=int(entity.get('numberOfUnits', '4'))
-                B=Batch(id,name, numberOfUnits)
-                G.BatchList.append(B)   
-                G.WipList.append(B)  
-                G.EntityList.append(B)  
-                object=Globals.findObjectById(element['id'])
-                B.unitsToProcess=int(entity.get('unitsToProcess', numberOfUnits))
-                B.remainingProcessingTime=entity.get('remainingProcessingTime', {})
-                B.currentStation=object
-                
-            elif entityClass=='Dream.SubBatch':
-                id=entity.get('id', 'not found')
-                name=entity.get('name', 'not found')
-                numberOfUnits=int(entity.get('numberOfUnits', '4'))
-                parentBatchId=entity.get('parentBatchId', 'not found')
-                parentBatchName=entity.get('parentBatchName', 'not found')
-            
-                # check if the parent batch is already created. If not, then create it
-                batch=None
-                for b in G.BatchList:
-                    if b.id==parentBatchId:
-                        batch=b
-                if batch:               #if the parent batch was found add the number of units of current sub-batch
-                    batch.numberOfUnits+=numberOfUnits
-                else:     #if the parent batch was not found create it
-                    batch=Batch(parentBatchId,parentBatchName, numberOfUnits)
-                    G.BatchList.append(batch)   
-                    G.WipList.append(batch)  
-                    G.EntityList.append(batch)               
-                           
-                SB=SubBatch(id,name, numberOfUnits=numberOfUnits, parentBatch=batch)
-                G.SubBatchList.append(SB)   
-                G.WipList.append(SB)  
-                G.EntityList.append(SB)  
-                object=Globals.findObjectById(element['id'])
-                SB.unitsToProcess=int(entity.get('unitsToProcess', numberOfUnits))
-                SB.remainingProcessingTime=entity.get('remainingProcessingTime', {})
-                SB.currentStation=object
+
+
 
             if entityClass=='Dream.Order':
                 id=entity.get('id', 'not found')

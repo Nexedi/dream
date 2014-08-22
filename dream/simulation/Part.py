@@ -34,9 +34,6 @@ from Entity import Entity
 class Part(Entity):
     type="Part"
     def __init__(self, id=None, name=None, remainingProcessingTime=0):
-        Entity.__init__(self, id, name, remainingProcessingTime=remainingProcessingTime)
-        from Globals import G
-        G.PartList.append(self)      
-        
+        Entity.__init__(self, id, name, remainingProcessingTime=remainingProcessingTime) 
 
 

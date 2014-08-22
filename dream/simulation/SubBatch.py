@@ -31,10 +31,27 @@ from Entity import Entity
 class SubBatch(Entity):
     type="SubBatch"
 
-    def __init__(self, id, name, numberOfUnits=1, parentBatch=None):
-        Entity.__init__(self, name=name, id=id)
-        self.numberOfUnits=numberOfUnits
+    def __init__(self, id, name, numberOfUnits=1, parentBatch=None, parentBatchName=None, parentBatchId=None,
+                 remainingProcessingTime=0, unitsToProcess=0):
+        Entity.__init__(self, name=name, id=id, remainingProcessingTime=remainingProcessingTime)
+        self.numberOfUnits=int(numberOfUnits)
         self.parentBatch=parentBatch
-        self.batchId=parentBatch.id
+        self.unitsToProcess=int(unitsToProcess)
+        # if the parent batch was not given find it or create it
+        if not self.parentBatch:
+            # check if the parent batch is already created. If not, then create it
+            batch=None
+            from Batch import Batch
+            from Globals import G
+            for b in G.EntityList:
+                if b.id==parentBatchId:
+                    batch=b
+            if batch:               #if the parent batch was found add the number of units of current sub-batch
+                batch.numberOfUnits+=self.numberOfUnits
+            else:     #if the parent batch was not found create it
+                batch=Batch(parentBatchId,parentBatchName,numberOfUnits)
+                G.EntityList.append(batch)
+            self.parentBatch=batch
+        self.batchId=self.parentBatch.id
 
         
