@@ -136,24 +136,7 @@
    }
   }, 
   {
-   "_class": "Dream.Mould", 
    "family": "Job", 
-   "id": "M1", 
-   "results": {
-    "completionTime": 7.0, 
-    "schedule": [
-     {
-      "entranceTime": 6.0, 
-      "stationId": "MA1"
-     }, 
-     {
-      "entranceTime": 7.0, 
-      "stationId": "E1"
-     }
-    ]
-   }
-  }, 
-  {
    "_class": "Dream.MachineJobShop", 
    "family": "Server", 
    "id": "M2", 
@@ -173,6 +156,23 @@
     "failure_ratio": 0.0, 
     "waiting_ratio": 85.71428571428571, 
     "working_ratio": 14.285714285714286
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "id": "Mo1", 
+   "results": {
+    "completionTime": 7.0, 
+    "schedule": [
+     {
+      "entranceTime": 6.0, 
+      "stationId": "MA1"
+     }, 
+     {
+      "entranceTime": 7.0, 
+      "stationId": "E1"
+     }
+    ]
    }
   }, 
   {
