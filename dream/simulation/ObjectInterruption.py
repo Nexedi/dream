@@ -38,6 +38,8 @@ class ObjectInterruption(object):
         self.victim=victim
         # variable used to hand in control to the objectInterruption
         self.call=False
+        from Globals import G
+        # G.ObjectInterruptionList.append(self)
     
     def initialize(self):
         from Globals import G

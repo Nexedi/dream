@@ -82,7 +82,7 @@
             "_class": "Dream.EventGenerator",
             "argumentDict": {},
             "interval": "480",
-            "method": "Globals.countIntervalThroughput",
+            "method": "Dream.Globals.countIntervalThroughput",
             "name": "calculateDailyAttainment",
             "start": "480"
         },

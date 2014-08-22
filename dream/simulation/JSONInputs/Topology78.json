@@ -424,7 +424,7 @@
             "name": "attainment",
             "start": "1440",
             "interval": "1440",
-            "method": "Globals.countIntervalThroughput",
+            "method": "Dream.Globals.countIntervalThroughput",
             "argumentDict": {
             }
         }

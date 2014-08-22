@@ -45,7 +45,7 @@
                 "to": "E1"
             },
             "interval": "60",
-            "method": "Globals.moveExcess",
+            "method": "Dream.Globals.moveExcess",
             "name": "ExcessEntitiesMover",
             "start": "60"
         },

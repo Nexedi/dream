@@ -31,18 +31,23 @@ import simpy
 from ObjectInterruption import ObjectInterruption
 
 class EventGenerator(ObjectInterruption):
-    def __init__(self, id=id, name=None, start=None, stop=None, interval=None,
-                 duration=None, method=None, argumentDict=None):
+    def __init__(self, id=id, name=None, start=0, stop=float('inf'), interval=1,
+                 duration=0, method=None, argumentDict=None):
         ObjectInterruption.__init__(self)
         self.id=id
         self.name=name
-        self.start=start                #the time that the generator will be activated for the first time
-        self.stop=stop                  #the time that the generator will stop to trigger events
-        self.interval=interval          #the interval that the generator sleeps
-        self.duration=duration          #the duration that the generation is awake (this is not active for now)
+        self.start=float(start)                #the time that the generator will be activated for the first time
+        self.stop=float(stop)                  #the time that the generator will stop to trigger events
+        self.interval=float(interval)          #the interval that the generator sleeps
+        self.duration=float(duration)          #the duration that the generation is awake (this is not active for now)
         self.method=method              #the method to be invoked
         self.argumentDict=argumentDict  #the arguments of the method given in a dict
-        
+        from Globals import G
+        G.EventGeneratorList.append(self)
+        if method:
+            import Globals
+            self.method=Globals.getMethodFromName(method)
+
     def run(self):
         yield self.env.timeout(self.start)              #wait until the start time
         #loop until the end of the simulation

@@ -697,29 +697,20 @@ def createObjectInterruptions():
                                                                     # element itself 
         element['id'] = element_id                                  # create a new entry for the element (dictionary)
                                                                     # with key 'id' and value the the element_id
-        elementClass = element.get('_class', 'not found')           # get the class type of the element
-        if elementClass=='Dream.EventGenerator':                    # check the object type
-            id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
-            name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
-            start = float(element.get('start') or 0)
-            stop = float(element.get('stop') or -1)
-                                                                    # infinity (had to be done to make it as float)
-            if stop<0:
-                stop=float('inf')            
-            interval = float(element.get('interval') or 1)
-            duration = float(element.get('duration') or 0)
-            method = (element.get('method', None))                    # get the method to be run / default None
-            method = method.split('.')                                  #the method is given as 'Path.MethodName'
-            method=getattr(str_to_class(method[0]),method[1])           #and then parsed with getattr
-            argumentDict=(element.get('argumentDict', {}))      # get the arguments of the method as a dict / default {}
-               
-            EV = EventGenerator(id, name, start=start, stop=stop, interval=interval, 
-                                duration=duration, method=method, argumentDict=argumentDict)       # create the EventGenerator object
-                                                                   
-            G.EventGeneratorList.append(EV)                              
-            G.ObjectInterruptionList.append(EV)
+        objClass = element.get('_class', 'not found')           # get the class type of the element
+        import Globals
+        objClass = element.pop('_class')
+        objectType=Globals.getClassFromName(objClass)    
+        # from CoreObject import CoreObject
+        # if issubclass(objectType, CoreObject):
             
-        elif elementClass=='Dream.CapacityStationController':                    # check the object type
+        if objClass=='Dream.EventGenerator':                    # check the object type
+            inputDict=dict(element)           
+            # create the CoreObject
+            objectInterruption=objectType(**inputDict)
+            G.ObjectInterruptionList.append(objectInterruption)
+            
+        elif objClass=='Dream.CapacityStationController':                    # check the object type
             id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
             name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
             start = float(element.get('start') or 0)
@@ -792,14 +783,6 @@ def createObjectInterruptions():
             G.ObjectInterruptionList.append(SS)
             G.ShiftSchedulerList.append(SS)
                 
-# ===========================================================================
-#        used to convert a string read from the input to object type
-# ===========================================================================
-def str_to_class(str):
-    str = str.replace("Dream.", "") # XXX temporary.
-    # actuall this method can be dropped in favor of getClassFromName
-    return getattr(sys.modules[__name__], str)
-
 # ===========================================================================
 #                        the main script that is ran
 # ===========================================================================

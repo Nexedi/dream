@@ -164,7 +164,28 @@ def getClassFromName(dotted_name):
   except:
       _class=__import__(class_name)
       return getattr(_class,class_name)
-  
+
+# =======================================================================
+# returns a method by its name. name should be given as Dream.ClassName.MethodName
+# =======================================================================
+def getMethodFromName(dotted_name):
+    name=dotted_name.split('.')
+    methodName=name[-1]
+    # if the method is in this script
+    if 'Globals' in name:
+        methodName=name[name.index('Globals')+1]
+        possibles = globals().copy()
+        possibles.update(locals())
+        method = possibles.get(methodName)
+    # if the method is in a class
+    else:
+        clsName=name[0]+'.'+name[1]
+        cls=getClassFromName(clsName)
+        method = getattr(cls, methodName)
+    if not method:
+        raise Exception("Method %s not implemented" % method_name)
+    return method
+      
 # =======================================================================
 # method finding objects by ID
 # =======================================================================
