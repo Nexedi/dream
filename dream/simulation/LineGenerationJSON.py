@@ -698,41 +698,23 @@ def createObjectInterruptions():
         element['id'] = element_id                                  # create a new entry for the element (dictionary)
                                                                     # with key 'id' and value the the element_id
         objClass = element.get('_class', 'not found')           # get the class type of the element
+        from ObjectInterruption import ObjectInterruption
         import Globals
         objClass = element.pop('_class')
         objectType=Globals.getClassFromName(objClass)    
         # from CoreObject import CoreObject
         # if issubclass(objectType, CoreObject):
-            
-        if objClass in ['Dream.EventGenerator', 'Dream.CapacityStationController']:               # check the object type
+    
+        if issubclass(objectType,ObjectInterruption):   # check the object type
             inputDict=dict(element)        
             # create the ObjectInterruption
             objectInterruption=objectType(**inputDict)
             G.ObjectInterruptionList.append(objectInterruption)
-            
-#         elif objClass=='Dream.CapacityStationController':                    # check the object type
-#             id = element.get('id', 'not found')                     # get the id of the element   / default 'not_found'
-#             name = element.get('name', 'not found')                 # get the name of the element / default 'not_found'
-#             start = float(element.get('start') or 0)
-#             stop = float(element.get('stop') or -1)
-#                                                                     # infinity (had to be done to make it as float)
-#             if stop<0:
-#                 stop=float('inf')            
-#             interval = float(element.get('interval') or 1)
-#             duration = float(element.get('duration') or 0)
-#             dueDateThreshold = float(element.get('dueDateThreshold') or float('inf'))
-#             prioritizeIfCanFinish = bool(element.get('prioritizeIfCanFinish', 0))
-#             argumentDict=(element.get('argumentDict', {}))      # get the arguments of the method as a dict / default {}
-#                
-#             # create the CapacityStationController object
-#             CSC = CapacityStationController(id, name, start=start, stop=stop, interval=interval, 
-#                                 duration=duration, argumentDict=argumentDict, dueDateThreshold=dueDateThreshold,
-#                                 prioritizeIfCanFinish=prioritizeIfCanFinish)                                                                         
-#             G.EventGeneratorList.append(CSC)                              
-#             G.CapacityStationControllerList.append(CSC)
-#             G.ObjectInterruptionList.append(CSC)
     
-    # for the elements in the nodes dict
+    # search inside the nodes for encapsulated ObjectInterruptions (failures etc)
+    # ToDo this will be cleaned a lot if we update the JSON notation:
+    # define ObjectInterruption echelon inside node
+    # define interruptions' distribution better
     for (element_id, element) in nodes.iteritems():
         element['id'] = element_id
         scheduledMaintenance=element.get('scheduledMaintenance', {})
