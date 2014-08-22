@@ -374,7 +374,7 @@ def createWIP():
             inputDict=dict(entity)
             inputDict.pop('_class')
             
-            if entityClass in ['Dream.CapacityEntity', 'Dream.CapacityProject']:
+            if entityClass in ['Dream.CapacityEntity', 'Dream.CapacityProject', 'Dream.Part']:
                 entity=entityType(**inputDict)   
                 G.EntityList.append(entity)    
                 object=Globals.findObjectById(element['id'])
@@ -531,18 +531,6 @@ def createWIP():
                 G.WipList.append(J)  
                 G.EntityList.append(J) 
             
-            
-            elif entityClass=='Dream.Part':
-                id=entity.get('id', 'not found')
-                name=entity.get('name', 'not found')
-                P=Part(id,name)
-                G.PartList.append(P)   
-                G.WipList.append(P)  
-                G.EntityList.append(P)  
-                object=Globals.findObjectById(element['id'])
-                P.remainingProcessingTime=entity.get('remainingProcessingTime', {})
-                P.currentStation=object
-
             elif entityClass=='Dream.Batch':
                 id=entity.get('id', 'not found')
                 name=entity.get('name', 'not found')

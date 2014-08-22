@@ -34,7 +34,8 @@ import simpy
 class Entity(object):
     type="Entity"
 
-    def __init__(self, id=None, name=None, priority=0, dueDate=None, orderDate=None, isCritical=False):
+    def __init__(self, id=None, name=None, priority=0, dueDate=None, orderDate=None, 
+                 isCritical=False, remainingProcessingTime=0):
         self.name=name
         self.id=id
         #         information on the object holding the entity
@@ -68,6 +69,7 @@ class Entity(object):
         self.candidateReceiver=None         # the station that is finaly chosen to receive the entity
         # alias used for printing the Route
         self.alias=None
+        self.remainingProcessingTime=remainingProcessingTime
     
     # =======================================================================
     # outputs results to JSON File 
