@@ -32,7 +32,7 @@ from ObjectInterruption import ObjectInterruption
 
 class EventGenerator(ObjectInterruption):
     def __init__(self, id=id, name=None, start=0, stop=float('inf'), interval=1,
-                 duration=0, method=None, argumentDict=None):
+                 duration=0, method=None, argumentDict=None,**kw):
         ObjectInterruption.__init__(self)
         self.id=id
         self.name=name

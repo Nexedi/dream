@@ -39,7 +39,7 @@ class ShiftScheduler(ObjectInterruption):
     # =======================================================================
     # the __init__() method of the class
     # =======================================================================
-    def __init__(self, victim=None, shiftPattern=[], endUnfinished=False, receiveBeforeEndThreshold=0.0):
+    def __init__(self, victim=None, shiftPattern=[], endUnfinished=False, receiveBeforeEndThreshold=0.0,**kw):
         ObjectInterruption.__init__(self,victim)
         self.type='ShiftScheduler'
         self.shiftPattern=shiftPattern

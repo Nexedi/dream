@@ -34,7 +34,7 @@ from Operator import Operator
 #                 the resource that repairs the machines
 # ===========================================================================
 class Repairman(Operator):
-    def __init__(self, id, name, capacity=1):
+    def __init__(self, id, name, capacity=1,**kw):
         Operator.__init__(self,id=id, name=name, capacity=capacity)
         self.type="Repairman"
         from Globals import G

@@ -37,7 +37,7 @@ class Exit(CoreObject):
     family='Exit'
     
     
-    def __init__(self, id='', name='', inputsDict={}):
+    def __init__(self, id, name, **kw):
         self.type="Exit" # XXX needed ?
         #lists to hold statistics of multiple runs
         self.Exits=[]

@@ -41,23 +41,13 @@ class NoCallerError(Exception):
 # ===========================================================================
 class QueueManagedJob(QueueJobShop):
     
-    def __init__(self, id='', name='', capacity=1, isDummy=False, schedulingRule="FIFO", inputsDict={}):
-        if inputsDict:
-            QueueJobShop.__init__(self,inputsDict=inputsDict)
-        else:       
-            QueueJobShop.__init__(self, id=id, name=name,capacity=capacity, isDummy=isDummy, schedulingRule=schedulingRule)
+    def __init__(self, id, name, capacity=1, isDummy=False, schedulingRule="FIFO", **kw):
+        QueueJobShop.__init__(self, id=id, name=name,capacity=capacity, isDummy=isDummy, schedulingRule=schedulingRule)
         # variable used by the sortEntities method 
         # to identify the object it will be sorting for (manager.checkIfResourceIsAvailable(self.objectSortingFor))
         self.objectSortingFor=None
         
-    # =======================================================================
-    # parses inputs if they are given in a dictionary
-    # =======================================================================       
-    def parseInputs(self, inputsDict):
-        QueueJobShop.parseInputs(self, inputsDict)
-        from Globals import G
-        G.QueueManagedJobList.append(self)
-        
+       
     # =======================================================================
     # set all the objects in previous and next
     # =======================================================================

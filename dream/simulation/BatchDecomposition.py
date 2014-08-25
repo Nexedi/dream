@@ -45,7 +45,7 @@ class BatchDecomposition(CoreObject):
     # =======================================================================
     #initialize the id, the capacity of the object and the distribution
     # =======================================================================        
-    def __init__(self, id, name, processingTime=None, numberOfSubBatches=1, operator='None'):
+    def __init__(self, id, name, processingTime=None, numberOfSubBatches=1, operator='None', **kw):
         CoreObject.__init__(self, id, name)
         self.type="BatchDecomposition"              #String that shows the type of object
 

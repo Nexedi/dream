@@ -81,8 +81,7 @@ class MouldAssembly(MachineManagedJob):
     # =======================================================================
     # parses inputs if they are given in a dictionary
     # =======================================================================       
-    def parseInputs(self, inputsDict):
-        MachineManagedJob.parseInputs(self, inputsDict)
+    def parseInputs(self, **kw):
         from Globals import G
         G.MouldAssemblyList.append(self)
 

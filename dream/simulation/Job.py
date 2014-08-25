@@ -36,7 +36,8 @@ class Job(Entity):                                  # inherits from the Entity c
     type='Job'
     family='Job'
     
-    def __init__(self, id=None, name=None, route=[], priority=0, dueDate=0, orderDate=0, extraPropertyDict=None,isCritical=False):
+    def __init__(self, id=None, name=None, route=[], priority=0, dueDate=0, orderDate=0, 
+                 extraPropertyDict=None,isCritical=False,**kw):
         Entity.__init__(self, id=id,name=name, priority=priority, dueDate=dueDate, orderDate=orderDate, isCritical=isCritical)
         # instance specific attributes 
         # information on the routing and the stops of the entity

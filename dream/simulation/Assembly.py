@@ -41,7 +41,7 @@ class Assembly(CoreObject):
     #===========================================================================
     # initialize the object      
     #===========================================================================
-    def __init__(self, id='', name='', processingTime=None, inputsDict=None):
+    def __init__(self, id='', name='', processingTime=None, inputsDict=None, **kw):
         self.type="Assembly"   #String that shows the type of object
         self.next=[]        #list with the next objects in the flow
         self.previous=[]     #list with the previous objects in the flow

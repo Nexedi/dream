@@ -42,7 +42,7 @@ class Dismantle(CoreObject):
     #===========================================================================
     # initialize the object
     #===========================================================================
-    def __init__(self, id='', name='', processingTime=None):
+    def __init__(self, id='', name='', processingTime=None,**kw):
         
         self.type='Dismantle'
         self.previous=[]        #list with the previous objects in the flow

@@ -43,7 +43,8 @@ class OrderDesign(Job):                                  # inherits from the Job
                     extraPropertyDict=None,
                     order=None, 
                     requestingComponent = None, 
-                    isCritical=False):
+                    isCritical=False,
+                    **kw):
         Job.__init__(self, id, name, route, priority, dueDate, orderDate, extraPropertyDict, isCritical)
         self.order=order            # parent order of the order component
         # TODO: in case the order is not given as argument (when the component is given as WIP) have to give a manager as argument

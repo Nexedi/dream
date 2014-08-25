@@ -35,7 +35,7 @@ from Operator import Operator
 # ===========================================================================
 class OperatorManagedJob(Operator):
     
-    def __init__(self, id, name, capacity=1,schedulingRule="FIFO"):
+    def __init__(self, id, name, capacity=1,schedulingRule="FIFO",**kw):
         Operator.__init__(self,id=id,name=name,capacity=capacity,schedulingRule=schedulingRule)
         from Globals import G
         G.OperatorManagedJobsList.append(self) 

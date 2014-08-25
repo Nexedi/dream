@@ -37,7 +37,7 @@ from ObjectResource import ObjectResource
 class Operator(ObjectResource):
     family='Operator'  
     
-    def __init__(self, id, name, capacity=1, schedulingRule='FIFO', skills=[], available=True):
+    def __init__(self, id, name, capacity=1, schedulingRule='FIFO', skills=[], available=True,**kw):
         ObjectResource.__init__(self)
         self.id=id
         self.objName=name

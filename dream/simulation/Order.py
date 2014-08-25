@@ -45,7 +45,8 @@ class Order(Job):
                         manager=None, 
                         basicsEnded=0, 
                         componentsReadyForAssembly=0, 
-                        extraPropertyDict=None):
+                        extraPropertyDict=None,
+                        **kw):
         Job. __init__(self, id=id, name=name, route=route, priority=priority, dueDate=dueDate, orderDate=orderDate, 
                       extraPropertyDict=extraPropertyDict)
 #         self.isCritical=isCritical          # flag to inform weather the order is critical -> preemption

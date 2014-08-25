@@ -44,7 +44,7 @@ class BatchReassembly(CoreObject):
     # =======================================================================
     #initialize the id, the capacity of the object and the distribution
     # =======================================================================        
-    def __init__(self, id, name, numberOfSubBatches=1, processingTime=None, operator='None'):
+    def __init__(self, id, name, numberOfSubBatches=1, processingTime=None, operator='None', **kw):
         CoreObject.__init__(self,id, name)
         self.type="BatchRassembly"              #String that shows the type of object
         if not processingTime:

@@ -35,7 +35,7 @@ class Frame(Entity):
     type="Frame"
     capacity=4    #the number of parts that the frame can take
           
-    def __init__(self, id=None, name=None):
+    def __init__(self, id=None, name=None,**kw):
         Entity.__init__(self,id=id,name = name)
 
         self.Res=Resource(self.capacity)

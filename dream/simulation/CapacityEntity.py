@@ -34,7 +34,8 @@ from Entity import Entity
 class CapacityEntity(Entity):
     type="CapacityEntity"
     
-    def __init__(self, id=None, name=None, capacityProjectId=None, requiredCapacity=10, priority=0, dueDate=0, orderDate=0, isCritical=False):
+    def __init__(self, id=None, name=None, capacityProjectId=None, requiredCapacity=10, priority=0, dueDate=0,
+                  orderDate=0, isCritical=False, **kw):
         Entity.__init__(self, id, name, priority, dueDate, orderDate, isCritical)
         self.capacityProjectId=capacityProjectId    # the project id hat the capacity Entity is part of
         self.capacityProject=None                   # the project that the capacity Entity is part of. It is defined in initialize

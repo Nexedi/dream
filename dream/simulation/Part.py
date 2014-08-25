@@ -33,7 +33,7 @@ from Entity import Entity
 #The part object
 class Part(Entity):
     type="Part"
-    def __init__(self, id=None, name=None, remainingProcessingTime=0):
+    def __init__(self, id=None, name=None, remainingProcessingTime=0,**kw):
         Entity.__init__(self, id, name, remainingProcessingTime=remainingProcessingTime) 
 
 

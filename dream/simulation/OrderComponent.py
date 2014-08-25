@@ -44,7 +44,8 @@ class OrderComponent(Job):                                  # inherits from the 
                     order=None, 
                     requestingComponent = None, 
                     readyForAssembly = 0, 
-                    isCritical=False):
+                    isCritical=False,
+                    **kw):
         Job.__init__(self, id, name, route, priority, dueDate, orderDate, extraPropertyDict, isCritical)
         self.auxiliaryList=[]       # Holds the auxiliary components that the component needs for a certain processing
         self.order=order            # parent order of the order component

@@ -78,7 +78,7 @@ class Source(CoreObject):
     #===========================================================================
     # the __init__method of the Source class
     #===========================================================================
-    def __init__(self, id, name, interarrivalTime=None, entity='Dream.Part'):
+    def __init__(self, id, name, interarrivalTime=None, entity='Dream.Part',**kw):
         # Default values
         if not interarrivalTime:
           interarrivalTime = {'distributionType': 'Fixed', 'mean': 1}

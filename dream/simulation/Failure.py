@@ -35,7 +35,7 @@ from ObjectInterruption import ObjectInterruption
 class Failure(ObjectInterruption):
     
     def __init__(self, victim=None, distribution=None, index=0, repairman=None, offshift=False,
-                 deteriorationType='constant'):
+                 deteriorationType='constant',**kw):
         #Process.__init__(self)
         ObjectInterruption.__init__(self,victim)
         if distribution:

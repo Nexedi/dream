@@ -37,7 +37,7 @@ from Operator import Operator
 # ===========================================================================
 class OperatorPool(ObjectResource):
     
-    def __init__(self, id, name, capacity=1, operatorsList='None'):
+    def __init__(self, id, name, capacity=1, operatorsList='None',**kw):
 
         capacity = int(capacity or 1)
 

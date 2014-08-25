@@ -33,7 +33,8 @@ from Globals import G
 
 class CapacityStationController(EventGenerator):
     def __init__(self, id=id, name=None, start=0, stop=float('inf'), interval=1,
-                 duration=0, method=None, argumentDict=None, dueDateThreshold=float('inf'), prioritizeIfCanFinish=False):
+                 duration=0, method=None, argumentDict=None, dueDateThreshold=float('inf'), 
+                 prioritizeIfCanFinish=False,**kw):
         EventGenerator.__init__(self, id, name, start, stop, interval,
                  duration, method, argumentDict)
         # attribute used by optimization in calculateWhatIsToBeProcessed

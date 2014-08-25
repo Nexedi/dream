@@ -43,7 +43,7 @@ class ConditionalBuffer(QueueManagedJob):
     # whereas the default capacity is set to infinity
     # =======================================================================
     def __init__(self,  id, name, capacity=-1, isDummy=False,
-                 schedulingRule="FIFO"):
+                 schedulingRule="FIFO",**kw):
         QueueManagedJob.__init__(self, id=id, name=name, capacity=capacity,
         isDummy=isDummy, schedulingRule=schedulingRule)
         

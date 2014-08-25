@@ -54,7 +54,7 @@ class Machine(CoreObject):
                   operatorPool='None',operationType='None',\
                   setupTime=None, loadTime=None,
                   preemption={},
-                  canDeliverOnInterruption=False):
+                  canDeliverOnInterruption=False, **kw):
         self.type="Machine"                         #String that shows the type of object
         CoreObject.__init__(self, id, name)
         from Globals import G

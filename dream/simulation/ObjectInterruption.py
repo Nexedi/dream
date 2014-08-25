@@ -34,7 +34,7 @@ import simpy
 #===============================================================================
 class ObjectInterruption(object):
     
-    def __init__(self, victim=None):
+    def __init__(self, victim=None,**kw):
         self.victim=victim
         # variable used to hand in control to the objectInterruption
         self.call=False

@@ -40,7 +40,7 @@ class Conveyer(CoreObject):
     #===========================================================================
     # the conveyer __init__ method
     #===========================================================================
-    def __init__(self, id, name, length, speed):
+    def __init__(self, id, name, length, speed,**kw):
         CoreObject.__init__(self, id, name)
         self.type="Conveyer"
         self.speed=float(speed)    #the speed of the conveyer in m/sec

@@ -40,14 +40,6 @@ from MachineJobShop import MachineJobShop
 class MachineManagedJob(MachineJobShop):
 
     # =======================================================================
-    # parses inputs if they are given in a dictionary
-    # =======================================================================       
-    def parseInputs(self, inputsDict):
-        MachineJobShop.parseInputs(self, inputsDict)
-        from Globals import G
-        G.MachineManagedJobList.append(self)
-
-    # =======================================================================
     # initialise the MachineManagedJob
     # =======================================================================
     def initialize(self):

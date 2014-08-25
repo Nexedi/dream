@@ -35,7 +35,7 @@ class Entity(object):
     type="Entity"
 
     def __init__(self, id=None, name=None, priority=0, dueDate=0, orderDate=0, 
-                 isCritical=False, remainingProcessingTime=0):
+                 isCritical=False, remainingProcessingTime=0,**kw):
         self.name=name
         self.id=id
         #         information on the object holding the entity

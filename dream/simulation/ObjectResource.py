@@ -32,7 +32,7 @@ import simpy
 # ===========================================================================
 class ObjectResource(object):
     
-    def __init__(self):
+    def __init__(self,**kw):
         self.initialized = False
         # list that holds the objectInterruptions that have this element as victim
         self.objectInterruptions=[]        

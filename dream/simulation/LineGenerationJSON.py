@@ -257,16 +257,7 @@ def createObjectResourcesAndCoreObjects():
         from CoreObject import CoreObject
         if issubclass(objectType, CoreObject):
             # remove data that has to do with wip or object interruption. CoreObjects do not need it
-            inputDict=dict(element)
-            if 'wip' in inputDict:
-                del inputDict['wip']
-            if 'failures' in inputDict:
-                del inputDict['failures']
-            if 'shift' in inputDict:
-                del inputDict['shift']
-            if 'scheduledMaintenance' in inputDict:
-                del inputDict['scheduledMaintenance']
-            
+            inputDict=dict(element)           
             # create the CoreObject
             coreObject=objectType(**inputDict)
             # update the nextIDs list of the object

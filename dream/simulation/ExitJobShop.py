@@ -33,15 +33,7 @@ from Exit import Exit
 # ===========================================================================
 # the ExitJobShop object
 # ===========================================================================
-class ExitJobShop(Exit):
-    # =======================================================================
-    # parses inputs if they are given in a dictionary
-    # =======================================================================       
-    def parseInputs(self, inputsDict):
-        Exit.parseInputs(self, inputsDict)
-        from Globals import G
-        G.ExitJobShopList.append(self)
-    
+class ExitJobShop(Exit):   
     
     # =======================================================================
     # set all the objects in previous

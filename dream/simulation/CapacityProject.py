@@ -35,7 +35,7 @@ class CapacityProject(Entity):
     type="CapacityProject"
     
     def __init__(self, id=None, name=None, capacityRequirementDict={}, earliestStartDict={}, dueDate=0,
-                 assemblySpaceRequirement=0):
+                 assemblySpaceRequirement=0, **kw):
         Entity.__init__(self, id, name, dueDate=dueDate)
         # a dict that shows the required capacity from every station
         self.capacityRequirementDict=capacityRequirementDict

@@ -45,7 +45,7 @@ class BatchScrapMachine(Machine):
     # ======================================================================= 
     def __init__(self, id, name, capacity=1, \
                  processingTime=None, repairman='None',\
-                 scrapQuantity={}):
+                 scrapQuantity={}, **kw):
         if not processingTime:
           processingTime = {'distributionType': 'Fixed',
                             'mean': 1}

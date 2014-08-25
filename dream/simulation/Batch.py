@@ -34,7 +34,7 @@ from SubBatch import SubBatch
 class Batch(Entity):
     type="Batch"
 
-    def __init__(self, id, name, numberOfUnits=1, remainingProcessingTime=0, unitsToProcess=0):
+    def __init__(self, id, name, numberOfUnits=1, remainingProcessingTime=0, unitsToProcess=0, **kw):
         Entity.__init__(self, name=name, id=id, remainingProcessingTime=remainingProcessingTime)
         self.numberOfUnits=int(numberOfUnits)
         self.numberOfSubBatches=1       #integer that shows in how many sub batches is the batch broken
