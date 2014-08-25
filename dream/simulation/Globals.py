@@ -134,11 +134,11 @@ class G:
 # =======================================================================
 # method to move entities exceeding a certain safety stock
 # =======================================================================
-def moveExcess(argumentDict={}):
-    giver=findObjectById(argumentDict.get('from', None))
-    receiver=findObjectById(argumentDict.get('to', None))
-    safetyStock=int(argumentDict.get('safetyStock', 10))
-    consumption=int(argumentDict.get('consumption', 1))
+def moveExcess(consumption=1,safetyStock=70, giverId=None, receiverId=None):
+    giver=findObjectById(giverId)
+    receiver=findObjectById(receiverId)
+    safetyStock=int(safetyStock)
+    consumption=int(consumption)
     if giver and receiver:
         if len(giver.getActiveObjectQueue())>safetyStock:
             giver.receiver=receiver
@@ -285,8 +285,9 @@ def setWIP(entityList):
                     if not (entity.currentStation.initialWIP.triggered):
                         entity.currentStation.initialWIP.succeed(G.env)
 
-from Exit import Exit
-def countIntervalThroughput(argumentDict={}):
+
+def countIntervalThroughput():
+    from Exit import Exit
     currentExited=0  
     for obj in G.ObjList:
         if isinstance(obj, Exit):

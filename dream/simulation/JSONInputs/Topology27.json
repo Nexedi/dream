@@ -40,9 +40,9 @@
             "_class": "Dream.EventGenerator",
             "argumentDict": {
                 "consumption": 20,
-                "from": "Q2",
+                "giverId": "Q2",
                 "safetyStock": 70,
-                "to": "E1"
+                "receiverId": "E1"
             },
             "interval": "60",
             "method": "Dream.Globals.moveExcess",

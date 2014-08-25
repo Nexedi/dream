@@ -56,7 +56,7 @@ class EventGenerator(ObjectInterruption):
             if self.stop:
                 if self.env.now>self.stop:
                     break
-            self.method(self.argumentDict)              #call the method
+            self.method(**self.argumentDict)              #call the method
             yield self.env.timeout(self.interval)       #wait for the predetermined interval
         
     
