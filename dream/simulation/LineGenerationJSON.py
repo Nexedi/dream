@@ -1430,10 +1430,13 @@ def main(argv=[], input_data=None):
          
     outputJSONString=json.dumps(G.outputJSON, indent=True)
     G.outputJSONFile.write(outputJSONString)
-          
+
     #logger.info("execution time="+str(time.time()-start))
     if input_data:
       return outputJSONString
+
+    # Output on stdout
+    print outputJSONString
     
 if __name__ == '__main__':
 #     cProfile.run('main()')
