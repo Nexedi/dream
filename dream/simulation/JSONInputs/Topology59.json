@@ -560,7 +560,7 @@
             ]
         },
         "QCAM": {
-            "_class": "Dream.ConditionalBuffer",
+            "_class": "Dream.ConditionalBufferManaged",
             "capacity": -1,
             "isDummy": "0",
             "name": "Queue CAM"

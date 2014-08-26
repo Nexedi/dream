@@ -37,7 +37,7 @@ class NoCallerError(Exception):
 # ===========================================================================
 # the ConditionalBuffer object
 # ===========================================================================
-class ConditionalBuffer(QueueManagedJob):
+class ConditionalBufferManaged(QueueManagedJob):
     # =======================================================================                
     # the default __init__ method of the QueueManagedJob class
     # whereas the default capacity is set to infinity

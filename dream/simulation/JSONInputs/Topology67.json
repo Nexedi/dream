@@ -1103,7 +1103,7 @@
             "name": "Order Decomposition"
         },
         "QCAM": {
-            "_class": "Dream.ConditionalBuffer",
+            "_class": "Dream.ConditionalBufferManaged",
             "name": "Queue CAM",
             "isDummy": "0",
 			"schedulingRule": "Priority",
