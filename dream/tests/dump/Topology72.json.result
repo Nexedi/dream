@@ -640,7 +640,7 @@
    "results": {}
   }, 
   {
-   "_class": "Dream.ConditionalBuffer", 
+   "_class": "Dream.ConditionalBufferManaged", 
    "family": "Buffer", 
    "id": "QCAM", 
    "results": {}
