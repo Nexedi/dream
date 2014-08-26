@@ -2,7 +2,7 @@
  "_class": "Dream.Simulation", 
  "elementList": [
   {
-   "_class": "Dream.MouldAssemblyBuffer", 
+   "_class": "Dream.MouldAssemblyBufferManaged", 
    "family": "Buffer", 
    "id": "AB1", 
    "results": {}
