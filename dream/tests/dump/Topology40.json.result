@@ -68,7 +68,7 @@
    }
   }, 
   {
-   "_class": "Dream.ConditionalBuffer", 
+   "_class": "Dream.ConditionalBufferManaged", 
    "family": "Buffer", 
    "id": "CB1", 
    "results": {}
