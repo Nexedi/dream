@@ -49,7 +49,7 @@ from dream.simulation.BatchSource import BatchSource
 from dream.simulation.BatchDecomposition import BatchDecomposition
 from dream.simulation.BatchReassembly import BatchReassembly
 from dream.simulation.BatchScrapMachine import BatchScrapMachine
-from dream.simulation.ConditionalBuffer import ConditionalBuffer
+from dream.simulation.ConditionalBufferManaged import ConditionalBufferManaged
 from dream.simulation.LineClearance import LineClearance
 from dream.simulation.MachineManagedJob import MachineManagedJob
 from dream.simulation.QueueManagedJob import QueueManagedJob
