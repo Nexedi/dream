@@ -172,7 +172,7 @@ class Queue(CoreObject):
         if self.canAccept():
             self.signalGiver()
         # TODO: disable that for the mouldAssemblyBuffer
-        if not self.__class__.__name__=='MouldAssemblyBuffer':
+        if not self.__class__.__name__=='MouldAssemblyBufferManaged':
             if self.haveToDispose():
 #                 self.printTrace(self.id, attemptSignalReceiver='(removeEntity)')
                 self.signalReceiver()

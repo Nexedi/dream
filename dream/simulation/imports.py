@@ -53,8 +53,8 @@ from dream.simulation.ConditionalBufferManaged import ConditionalBufferManaged
 from dream.simulation.LineClearance import LineClearance
 from dream.simulation.MachineManagedJob import MachineManagedJob
 from dream.simulation.QueueManagedJob import QueueManagedJob
-from dream.simulation.MouldAssembly import MouldAssembly
-from dream.simulation.MouldAssemblyBuffer import MouldAssemblyBuffer
+from dream.simulation.MouldAssemblyManaged import MouldAssemblyManaged
+from dream.simulation.MouldAssemblyBufferManaged import MouldAssemblyBufferManaged
 from dream.simulation.OrderDecomposition import OrderDecomposition
 from dream.simulation.NonStarvingEntry import NonStarvingEntry
 
