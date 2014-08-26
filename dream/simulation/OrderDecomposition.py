@@ -254,7 +254,7 @@ class OrderDecomposition(CoreObject):
                 for obj in G.ObjList:
                     for elementId in elementIds:
                         type=obj.__class__.__name__
-                        if obj.id==elementId and (obj.type=='Exit' or type=='MouldAssembly' or type=='MouldAssemblyBuffer'):
+                        if obj.id==elementId and (obj.type=='Exit' or type=='MouldAssemblyManaged' or type=='MouldAssemblyBufferManaged'):
                             exitAssigned=True
             # Below it is to assign assemblers if there are any in the corresponding Global list
             if not exitAssigned:                    

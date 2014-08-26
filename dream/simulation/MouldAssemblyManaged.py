@@ -76,7 +76,7 @@ class AssembleMouldError(Exception):
 # ===========================================================================
 # the MachineManagedJob object
 # ===========================================================================
-class MouldAssembly(MachineManagedJob):
+class MouldAssemblyManaged(MachineManagedJob):
 
     # =======================================================================
     # the initialize method
