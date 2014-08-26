@@ -1148,7 +1148,7 @@
 			"operationType": "MT-Load-Setup-Processing"
         },
         "AB1": {
-            "_class": "Dream.MouldAssemblyBuffer",
+            "_class": "Dream.MouldAssemblyBufferManaged",
             "id": "AB1",
             "name": "Assembly Buffer",
 			"schedulingRule": "Priority",
@@ -1156,19 +1156,19 @@
             "capacity": "-1"
         },
         "MA1": {
-            "_class": "Dream.MouldAssembly",
+            "_class": "Dream.MouldAssemblyManaged",
             "id": "MA1",
             "name": "Assembly 1",
 			"operationType": "MT-Load-Setup-Processing"
         },
         "MA2": {
-            "_class": "Dream.MouldAssembly",
+            "_class": "Dream.MouldAssemblyManaged",
             "id": "MA2",
             "name": "Assembly 2",
 			"operationType": "MT-Load-Setup-Processing"
         },
         "MA3": {
-            "_class": "Dream.MouldAssembly",
+            "_class": "Dream.MouldAssemblyManaged",
             "id": "MA3",
             "name": "Assembly 3",
 			"operationType": "MT-Load-Setup-Processing"

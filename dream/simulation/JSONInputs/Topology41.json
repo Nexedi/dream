@@ -10,7 +10,7 @@
     },
     "nodes": {
         "AB1": {
-            "_class": "Dream.MouldAssemblyBuffer",
+            "_class": "Dream.MouldAssemblyBufferManaged",
             "capacity": -1,
             "id": "AB1",
             "isDummy": "0",
@@ -38,7 +38,7 @@
             "name": "Machine2"
         },
         "MA1": {
-            "_class": "Dream.MouldAssembly",
+            "_class": "Dream.MouldAssemblyManaged",
             "id": "MA1",
             "name": "Assembly"
         },
