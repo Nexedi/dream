@@ -45,7 +45,6 @@ from dream.simulation.Conveyer import Conveyer
 from dream.simulation.ExitJobShop import ExitJobShop
 from dream.simulation.QueueJobShop import QueueJobShop
 from dream.simulation.MachineJobShop import MachineJobShop
-from dream.simulation.QueueLIFO import QueueLIFO
 from dream.simulation.BatchSource import BatchSource
 from dream.simulation.BatchDecomposition import BatchDecomposition
 from dream.simulation.BatchReassembly import BatchReassembly

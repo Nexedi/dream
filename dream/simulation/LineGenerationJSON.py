@@ -47,7 +47,6 @@ from Source import Source
 from Machine import Machine
 from Exit import Exit
 from Queue import Queue
-from QueueLIFO import QueueLIFO
 from Repairman import Repairman
 from Part import Part
 from Frame import Frame
