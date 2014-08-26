@@ -40,7 +40,7 @@ class NoCallerError(Exception):
 # ===========================================================================
 # the MouldAssemblyBuffer object
 # ===========================================================================
-class MouldAssemblyBuffer(QueueManagedJob):
+class MouldAssemblyBufferManaged(QueueManagedJob):
     # =======================================================================                
     # the default __init__ method of the QueueManagedJob class
     # whereas the default capacity is set to infinity
