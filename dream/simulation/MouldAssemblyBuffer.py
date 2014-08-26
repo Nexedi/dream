@@ -108,7 +108,7 @@ class MouldAssemblyBuffer(QueueManagedJob):
                     activeEntity.order.basicsEnded = 1
                 # TODO: has to signal ConditionalBuffer to start sending entities again
                 for secondary in [x for x in activeEntity.order.secondaryComponentsList if activeEntity.order.basicsEnded]:
-                    if secondary.currentStation.__class__.__name__=='ConditionalBuffer':
+                    if secondary.currentStation.__class__.__name__=='ConditionalBufferManaged':
 #                         print now(), self.id, '                                                    signalling conditional buffer'
                         if secondary.currentStation.expectedSignals['canDispose']:
                             self.sendSignal(receiver=secondary.currentStation,signal=secondary.currentStation.canDispose)
