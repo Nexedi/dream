@@ -13,9 +13,9 @@
    "_class": "Dream.Exit", 
    "id": "CE2", 
    "results": {
-    "lifespan": 2.5, 
+    "lifespan": 2.0, 
     "takt_time": 1.0, 
-    "throughput": 4
+    "throughput": 3
    }
   }, 
   {
@@ -29,16 +29,12 @@
       "utilization": 0.375
      }, 
      {
-      "period": 1.0, 
-      "utilization": 0.0
-     }, 
-     {
       "P1": 20.0, 
-      "period": 2.0, 
-      "utilization": 0.06666666666666667
+      "period": 1.0, 
+      "utilization": 0.4
      }, 
      {
-      "period": 3.0, 
+      "period": 2.0, 
       "utilization": 0.0
      }
     ], 
@@ -53,10 +49,10 @@
       "allocation": 20.0, 
       "operation": "CS1", 
       "project": "P1", 
-      "time": 2.0
+      "time": 1.0
      }
     ], 
-    "meanUtilization": 0.11041666666666666
+    "meanUtilization": 0.2583333333333333
    }
   }, 
   {
@@ -70,19 +66,14 @@
       "utilization": 0.625
      }, 
      {
-      "P1": 50.0, 
+      "P1": 30.0, 
       "period": 1.0, 
-      "utilization": 1.0
+      "utilization": 0.6
      }, 
      {
-      "P1": 10.0, 
+      "P1": 70.0, 
       "period": 2.0, 
-      "utilization": 0.03333333333333333
-     }, 
-     {
-      "P1": 40.0, 
-      "period": 3.0, 
-      "utilization": 0.4
+      "utilization": 0.23333333333333334
      }
     ], 
     "detailedWorkPlan": [
@@ -93,25 +84,19 @@
       "time": 0.0
      }, 
      {
-      "allocation": 50.0, 
+      "allocation": 30.0, 
       "operation": "CS2", 
       "project": "P1", 
       "time": 1.0
      }, 
      {
-      "allocation": 10.0, 
+      "allocation": 70.0, 
       "operation": "CS2", 
       "project": "P1", 
       "time": 2.0
-     }, 
-     {
-      "allocation": 40.0, 
-      "operation": "CS2", 
-      "project": "P1", 
-      "time": 3.0
      }
     ], 
-    "meanUtilization": 0.5145833333333334
+    "meanUtilization": 0.4861111111111111
    }
   }, 
   {
@@ -121,12 +106,12 @@
     "schedule": [
      {
       "entranceTime": 0.0, 
-      "exitTime": 3.0, 
+      "exitTime": 2.0, 
       "stationId": "CS1"
      }, 
      {
       "entranceTime": 1.0, 
-      "exitTime": 4.0, 
+      "exitTime": 3.0, 
       "stationId": "CS2"
      }
     ]
