@@ -216,18 +216,22 @@ class CapacityStationController(EventGenerator):
 
     def calculateWhatIsToBeProcessed(self):
         import Globals
+        # calculate what space is available
         availableSpace=self.assemblySpace-self.calculateConsumedSpace()
         assert availableSpace>=0, 'negative available space'
+        # list to hold the buffers that are already considered (due to shared resources)
         alreadyConsideredBuffers = []      
 
         # loop through the capacity station buffers
         for buffer in G.CapacityStationBufferList:
+            # if the buffer was considered before (due to shared resources) continue
             if buffer in alreadyConsideredBuffers:
                 continue
 
             alreadyConsideredBuffers.append(buffer)
             sharedBuffers = []
             station=buffer.next[0]  # get the station
+            # find the stations that share resources with the one considered now
             if station.sharedResources:
                 sharedStations = station.sharedResources.get('stationIds',[])
                 for element in sharedStations:
@@ -235,6 +239,8 @@ class CapacityStationController(EventGenerator):
                     b = s.previous[0]
                     sharedBuffers.append(b)
             activeObjectQueue=buffer.getActiveObjectQueue()
+            # the entities considered should be the entities in the current buffer plus the ones in buffers
+            # of stations that share resources with the current one
             entitiesConsidered=list(activeObjectQueue)
             for b in sharedBuffers:
                 entitiesConsidered+=b.getActiveObjectQueue() 
@@ -249,8 +255,9 @@ class CapacityStationController(EventGenerator):
             entitiesNotAllocated=list(entitiesConsidered)                                                                             
             
             allCapacityConsumed=False    
+            # if there is no available capacity no need to do anything
             if totalAvailableCapacity==0:
-                allCapacityConsumed=True
+                continue
             while not allCapacityConsumed:       
                 # list to keep entities that are within a threshold from the EDD
                 entitiesWithinThreshold=[]
@@ -272,21 +279,29 @@ class CapacityStationController(EventGenerator):
                 # calculate the total capacity that is requested
                 totalRequestedCapacity=0
                 for entity in entitiesWithinThreshold:
-                    if self.checkIfProjectCanStartInStation(entity.capacityProject, entity.currentStation.next[0]) and\
-                                (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, entity.currentStation))\
-                                 and self.checkIfThereIsEnoughSpace(entity, entity.currentStation, availableSpace):
+                    # get buffer where the entity is and the station it requests to get in
+                    entityBuffer=entity.currentStation
+                    entityStation=entity.currentStation.next[0]
+                    # entities that cannot start (due to space, need for assembly or earliest start)  
+                    # do not request for capacity
+                    if self.checkIfProjectCanStartInStation(entity.capacityProject, entityStation) and\
+                                (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, entityBuffer))\
+                                 and self.checkIfThereIsEnoughSpace(entity, entityBuffer, availableSpace):
                         totalRequestedCapacity+=entity.requiredCapacity
                 
                 # if there is enough capacity for all the entities set them that they all should move
                 if totalRequestedCapacity<=totalAvailableCapacity:
                     for entity in entitiesWithinThreshold:
-                        if self.checkIfProjectCanStartInStation(entity.capacityProject, entity.currentStation.next[0]) and\
-                                    (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, entity.currentStation))\
-                                     and self.checkIfThereIsEnoughSpace(entity, entity.currentStation, availableSpace):
+                        # get buffer where the entity is and the station it requests to get in
+                        entityBuffer=entity.currentStation
+                        entityStation=entity.currentStation.next[0]
+                        if self.checkIfProjectCanStartInStation(entity.capacityProject, entityStation) and\
+                                    (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, entityBuffer))\
+                                     and self.checkIfThereIsEnoughSpace(entity, entityBuffer, availableSpace):
                             entity.shouldMove=True  
                             # reduce the available space if there is need to
-                            if entity.currentStation.requireFullProject and \
-                                    (not self.checkIfProjectConsumesAssemblySpace(entity, entity.currentStation)):                                    
+                            if entityBuffer.requireFullProject and \
+                                    (not self.checkIfProjectConsumesAssemblySpace(entity, entityBuffer)):                                    
                                 availableSpace-=entity.capacityProject.assemblySpaceRequirement  
                                 assert availableSpace>=0, 'negative available space'
                       
@@ -302,9 +317,12 @@ class CapacityStationController(EventGenerator):
                         # check in the entities outside the threshold if there is one or more that can be moved
                         haveMoreEntitiesToAllocate=False
                         for entity in entitiesOutsideThreshold:
-                            if self.checkIfProjectCanStartInStation(entity.capacityProject, entity.currentStation.next[0]) and\
-                                        (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, entity.currentStation))\
-                                         and self.checkIfThereIsEnoughSpace(entity, entity.currentStation, availableSpace):
+                            # get buffer where the entity is and the station it requests to get in
+                            entityBuffer=entity.currentStation
+                            entityStation=entity.currentStation.next[0]
+                            if self.checkIfProjectCanStartInStation(entity.capacityProject, entityStation) and\
+                                        (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, entityBuffer))\
+                                         and self.checkIfThereIsEnoughSpace(entity, entityBuffer, availableSpace):
                                 haveMoreEntitiesToAllocate=True
                                 break
                             
@@ -320,22 +338,29 @@ class CapacityStationController(EventGenerator):
                 else:
                     allCapacityConsumed=True
                     entitiesToBeBroken=list(entitiesWithinThreshold)
-                    entitiesToBeBroken.sort(key=lambda x: self.checkIfAProjectCanBeFinishedInStation(x,x.currentStation.next[0], totalAvailableCapacity) and self.prioritizeIfCanFinish, 
+                    # we sort the entities so the ones that can finish in current period (if any) go in front
+                    entitiesToBeBroken.sort(key=lambda \
+                                            x: self.checkIfAProjectCanBeFinishedInStation(x,x.currentStation.next[0], 
+                                                                                          totalAvailableCapacity) \
+                                            and self.prioritizeIfCanFinish, 
                                                 reverse=True)    
                     # loop through the entities
                     for entity in entitiesToBeBroken:
+                        # get buffer where the entity is and the station it requests to get in
+                        entityBuffer=entity.currentStation
+                        entityStation=entity.currentStation.next[0]
                         # consider only entities that can move - not those waiting for assembly or earliest start
-                        if self.checkIfProjectCanStartInStation(entity.capacityProject, entity.currentStation.next[0]) and\
-                            (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, entity.currentStation)) and\
-                            self.checkIfThereIsEnoughSpace(entity, entity.currentStation, availableSpace):
+                        if self.checkIfProjectCanStartInStation(entity.capacityProject, entityStation) and\
+                            (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, entityBuffer)) and\
+                            self.checkIfThereIsEnoughSpace(entity, entityBuffer, availableSpace):
                             # if we prioritize an entity that can completely finish then check for this
-                            if self.checkIfAProjectCanBeFinishedInStation(entity, entity.currentStation.next[0], totalAvailableCapacity)\
+                            if self.checkIfAProjectCanBeFinishedInStation(entity, entityStation, totalAvailableCapacity)\
                                  and self.prioritizeIfCanFinish:
                                 # set that the entity can move
                                 entity.shouldMove=True
                                 # reduce the available space if there is need to
-                                if entity.currentStation.requireFullProject and \
-                                        (not self.checkIfProjectConsumesAssemblySpace(entity, entity.currentStation)):                                    
+                                if entityBuffer.requireFullProject and \
+                                        (not self.checkIfProjectConsumesAssemblySpace(entity, entityBuffer)):                                    
                                     availableSpace-=entity.capacityProject.assemblySpaceRequirement  
                                     assert availableSpace>=0, 'negative available space'
                                 # update the values
@@ -344,11 +369,11 @@ class CapacityStationController(EventGenerator):
 
                             # else break the entity according to rule    
                             else:
-                                self.breakEntity(entity, entity.currentStation, entity.currentStation.next[0], 
+                                self.breakEntity(entity, entityBuffer, entityStation, 
                                                  totalAvailableCapacity, totalRequestedCapacity)
                                 # reduce the available space if there is need to
-                                if entity.currentStation.requireFullProject and \
-                                        (not self.checkIfProjectConsumesAssemblySpace(entity, entity.currentStation)):
+                                if entityBuffer.requireFullProject and \
+                                        (not self.checkIfProjectConsumesAssemblySpace(entity, entityBuffer)):
                                     availableSpace-=entity.capacityProject.assemblySpaceRequirement  
                                     assert availableSpace>=0, 'negative available space'
                            
