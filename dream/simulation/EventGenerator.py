@@ -48,10 +48,6 @@ class EventGenerator(ObjectInterruption):
             import Globals
             self.method=Globals.getMethodFromName(method)
             
-    def initialize(self):
-        ObjectInterruption.initialize(self)
-        self.methodEnded=self.env.event()
-
     def run(self):
         yield self.env.timeout(self.start)              #wait until the start time
         #loop until the end of the simulation
