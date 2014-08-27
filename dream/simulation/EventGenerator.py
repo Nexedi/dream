@@ -32,7 +32,7 @@ from ObjectInterruption import ObjectInterruption
 
 class EventGenerator(ObjectInterruption):
     def __init__(self, id=id, name=None, start=0, stop=float('inf'), interval=1,
-                 duration=0, method=None, argumentDict=None,**kw):
+                 duration=0, method=None, argumentDict=None, **kw):
         ObjectInterruption.__init__(self)
         self.id=id
         self.name=name
@@ -47,6 +47,10 @@ class EventGenerator(ObjectInterruption):
         if method:
             import Globals
             self.method=Globals.getMethodFromName(method)
+            
+    def initialize(self):
+        ObjectInterruption.initialize(self)
+        self.methodEnded=self.env.event()
 
     def run(self):
         yield self.env.timeout(self.start)              #wait until the start time
@@ -56,8 +60,15 @@ class EventGenerator(ObjectInterruption):
             if self.stop:
                 if self.env.now>self.stop:
                     break
-            self.method(**self.argumentDict)              #call the method
-            yield self.env.timeout(self.interval)       #wait for the predetermined interval
+            import inspect
+            # if the method is generator yield it
+            if inspect.isgeneratorfunction(self.method):
+                yield self.env.process(self.method(**self.argumentDict))     
+            # else just call the method
+            else:
+                self.method(**self.argumentDict)
+            # wait for the predetermined interval
+            yield self.env.timeout(self.interval)                
         
     
     

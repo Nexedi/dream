@@ -33,7 +33,7 @@ from Globals import G
 
 class CapacityStationController(EventGenerator):
     def __init__(self, id=id, name=None, start=0, stop=float('inf'), interval=1,
-                 duration=0, method=None, argumentDict=None, dueDateThreshold=float('inf'), 
+                 duration=0, method=None, argumentDict={}, dueDateThreshold=float('inf'), 
                  prioritizeIfCanFinish=False,**kw):
         EventGenerator.__init__(self, id, name, start, stop, interval,
                  duration, method, argumentDict)
@@ -45,27 +45,12 @@ class CapacityStationController(EventGenerator):
         self.prioritizeIfCanFinish=bool(int(prioritizeIfCanFinish))
         # the total assemblySpace in the system
         self.assemblySpace=float(G.extraPropertyDict.get('assemblySpace', float('inf')))
-
+        self.method=self.steps
+        
     def initialize(self):
         EventGenerator.initialize(self)
-        self.stepsAreComplete=self.env.event()
-
-    def run(self):
         # sort the buffers so if they have shared resources the ones with highest priority will go in front
         self.sortBuffers()
-        yield self.env.timeout(self.start)              #wait until the start time
-        #loop until the end of the simulation
-        while 1:
-            #if the stop time is exceeded then break the loop
-            if self.stop:
-                if self.env.now>self.stop:
-                    break
-            # activate the main loop
-            self.env.process(self.steps())
-            # wait until the main loop is completed
-            yield self.stepsAreComplete
-            self.stepsAreComplete=self.env.event()
-            yield self.env.timeout(self.interval)       #wait for the predetermined interval
 
     # the main loop that is carried in every interval  
     def steps(self):
@@ -99,6 +84,8 @@ class CapacityStationController(EventGenerator):
         # if the last exits led to an empty system then the simulation must be stopped
         # step returns and the generator never yields the stepsAreComplete signal
         if self.checkIfSystemEmpty():
+            # if the system is empty set stop to now so that the generator stops and return
+            self.stop=self.env.now
             return
         
         # if there is need to merge entities in a buffer
@@ -158,10 +145,7 @@ class CapacityStationController(EventGenerator):
 
         # for every station update the remaining interval capacity so that it is ready for next loop
         for station in G.CapacityStationList:
-            station.remainingIntervalCapacity.pop(0)                       
-            
-        # send message that the main loop is completed    
-        self.stepsAreComplete.succeed()         
+            station.remainingIntervalCapacity.pop(0)                            
 
     # invoked after entities have exited one station to create 
     # the corresponding entities to the following buffer     
