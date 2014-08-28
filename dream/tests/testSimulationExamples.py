@@ -162,3 +162,24 @@ class SimulationExamples(TestCase):
     result = main()
     self.assertEquals(result['parts'], 2)
     self.assertTrue(29.99 < result["working_ratio"] < 30.01)
+	
+  def testSettingWip1(self):
+    from dream.simulation.Examples.SettingWip1 import main
+    result = main()
+    self.assertEquals(result['parts'], 1)
+    self.assertEquals(result['simulationTime'], 0.25)	
+    self.assertEquals(result["working_ratio"], 100)
+	
+  def testSettingWip2(self):
+    from dream.simulation.Examples.SettingWip2 import main
+    result = main()
+    self.assertEquals(result['parts'], 2)
+    self.assertEquals(result['simulationTime'], 0.50)	
+    self.assertEquals(result["working_ratio"], 100)
+	
+  def testSettingWip3(self):
+    from dream.simulation.Examples.SettingWip3 import main
+    result = main()
+    self.assertEquals(result['parts'], 2)
+    self.assertEquals(result['simulationTime'], 0.35)	
+    self.assertEquals(result["working_ratio"], 100)
