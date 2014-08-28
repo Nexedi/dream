@@ -21,7 +21,7 @@ def main():
     runSimulation(objectList, maxSimTime, trace='Yes')
 
     #print the results
-    print "the system produced", E.numOfExits, "parts in", E.timeLastEntityLeft
+    print "the system produced", E.numOfExits, "parts in", E.timeLastEntityLeft, "minutes"
     working_ratio = (M.totalWorkingTime/G.maxSimTime)*100
     print "the total working ratio of the Machine is", working_ratio, "%"
     ExcelHandler.outputTrace('Wip1')
