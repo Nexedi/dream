@@ -7,9 +7,6 @@ M=Machine('M1','Machine', processingTime={'distributionType':'Fixed','mean':0.25
 E=Exit('E1','Exit')  
 P1=Part('P1', 'Part1', currentStation=Q)
 
-# set the current station 
-P1.currentStation=Q
-
 #define predecessors and successors for the objects    
 Q.defineRouting(successorList=[M])
 M.defineRouting(predecessorList=[Q],successorList=[E])
@@ -24,11 +21,12 @@ def main():
     runSimulation(objectList, maxSimTime, trace='Yes')
 
     #print the results
-    print "the system produced", E.numOfExits, "parts"
+    print "the system produced", E.numOfExits, "parts in", E.timeLastEntityLeft
     working_ratio = (M.totalWorkingTime/G.maxSimTime)*100
     print "the total working ratio of the Machine is", working_ratio, "%"
     ExcelHandler.outputTrace('Wip1')
     return {"parts": E.numOfExits,
+            "simulationTime":E.timeLastEntityLeft,
           "working_ratio": working_ratio}
 
 if __name__ == '__main__':

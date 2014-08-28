@@ -5,13 +5,8 @@ from dream.simulation.Globals import runSimulation, G
 Q=Queue('Q1','Queue', capacity=1)
 M=Machine('M1','Machine', processingTime={'distributionType':'Fixed','mean':0.25})
 E=Exit('E1','Exit')  
-P1=Part('P1', 'Part1')
-P2=Part('P2', 'Part2')
-
-# set the current station 
-P1.currentStation=Q
-P2.currentStation=M
-P2.remainingProcessingTime={'distributionType':'Fixed','mean':0.1}
+P1=Part('P1', 'Part1', currentStation=Q)
+P2=Part('P2', 'Part2', currentStation=M, remainingProcessingTime={'distributionType':'Fixed','mean':0.1})
 
 #define predecessors and successors for the objects    
 Q.defineRouting(successorList=[M])
@@ -27,11 +22,12 @@ def main():
     runSimulation(objectList, maxSimTime, trace='Yes')
 
     #print the results
-    print "the system produced", E.numOfExits, "parts"
+    print "the system produced", E.numOfExits, "parts in", E.timeLastEntityLeft
     working_ratio = (M.totalWorkingTime/G.maxSimTime)*100
     print "the total working ratio of the Machine is", working_ratio, "%"
     ExcelHandler.outputTrace('Wip3')
     return {"parts": E.numOfExits,
+            "simulationTime":E.timeLastEntityLeft,
           "working_ratio": working_ratio}
 
 if __name__ == '__main__':
