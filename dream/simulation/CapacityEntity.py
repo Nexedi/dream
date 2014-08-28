@@ -35,8 +35,8 @@ class CapacityEntity(Entity):
     type="CapacityEntity"
     
     def __init__(self, id=None, name=None, capacityProjectId=None, requiredCapacity=10, priority=0, dueDate=0,
-                  orderDate=0, isCritical=False, **kw):
-        Entity.__init__(self, id, name, priority, dueDate, orderDate, isCritical)
+                  orderDate=0, currentStation=None, isCritical=False, **kw):
+        Entity.__init__(self, id, name, priority, dueDate, orderDate, isCritical, currentStation=currentStation)
         self.capacityProjectId=capacityProjectId    # the project id hat the capacity Entity is part of
         self.capacityProject=None                   # the project that the capacity Entity is part of. It is defined in initialize
         self.requiredCapacity=requiredCapacity  # the capacity that the capacity entity requires from the following station

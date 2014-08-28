@@ -32,8 +32,9 @@ class SubBatch(Entity):
     type="SubBatch"
 
     def __init__(self, id, name, numberOfUnits=1, parentBatch=None, parentBatchName=None, parentBatchId=None,
-                 remainingProcessingTime=0, unitsToProcess=0,**kw):
-        Entity.__init__(self, name=name, id=id, remainingProcessingTime=remainingProcessingTime)
+                 remainingProcessingTime=0, currentStation=None, unitsToProcess=0,**kw):
+        Entity.__init__(self, name=name, id=id, remainingProcessingTime=remainingProcessingTime,
+                        currentStation=currentStation)
         self.numberOfUnits=int(numberOfUnits)
         self.parentBatch=parentBatch
         self.unitsToProcess=int(unitsToProcess)

@@ -35,7 +35,7 @@ class Entity(object):
     type="Entity"
 
     def __init__(self, id=None, name=None, priority=0, dueDate=0, orderDate=0, 
-                 isCritical=False, remainingProcessingTime=0,**kw):
+                 isCritical=False, remainingProcessingTime=0,currentStation=None,**kw):
         self.name=name
         self.id=id
         #         information on the object holding the entity
@@ -54,7 +54,7 @@ class Entity(object):
         #         a list that holds information about the schedule 
         #         of the entity (when it enters and exits every station)
         self.schedule=[]
-        self.currentStation=None
+        self.currentStation=currentStation
         #         values to be used in the internal processing of compoundObjects
         self.internal = False               # informs if the entity is being processed internally
         if isinstance(isCritical, unicode):
@@ -75,7 +75,8 @@ class Entity(object):
         # alias used for printing the Route
         self.alias=None
         self.remainingProcessingTime=remainingProcessingTime
-    
+        # the current station of the entity
+   
     # =======================================================================
     # outputs results to JSON File 
     # =======================================================================
