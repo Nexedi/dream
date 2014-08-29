@@ -50,7 +50,9 @@ class OrderComponent(Job):                                  # inherits from the 
         Job.__init__(self, id, name, route=route, priority=priority, dueDate=dueDate, 
                      orderDate=orderDate, extraPropertyDict=extraPropertyDict, isCritical=isCritical,
                      currentStation=currentStation)
+        #=======================================================================
         self.auxiliaryList=[]       # Holds the auxiliary components that the component needs for a certain processing
+        #=======================================================================
         self.order=order            # parent order of the order component
         # TODO: in case the order is not given as argument (when the component is given as WIP) have to give a manager as argument
         #     or create the initiate the parent order not as WIP 
@@ -58,13 +60,13 @@ class OrderComponent(Job):                                  # inherits from the 
             # if the order is not None, and the order.manager is given
             if self.order.manager:
                 self.manager=self.order.manager
-        # TODO: isCritical argument is deprecated
-#         self.isCritical=isCritical  # this should be self.order.isCritical. Added now for testing
         self.componentType = componentType  # the type of the component which can be Basic/Secondary/Auxiliary
+        #=======================================================================
         # if the componentType of the component is Auxiliary then there need a requesting Component be defined
         # the requestingComponent is the component that needs the auxiliary component during its processing
         # the auxiliary component should then be added to the requestingComponent's auxiliaryList
         self.requestingComponent = requestingComponent  # the id of the requesting component
+        #=======================================================================
         self.readyForAssembly = readyForAssembly        # flag informing weather the component was received
                                                         #     by the MouldAssembleBuffer
         # used by printRoute

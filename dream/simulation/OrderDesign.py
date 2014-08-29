@@ -53,10 +53,12 @@ class OrderDesign(Job):                                  # inherits from the Job
             # if the order is not None, and the order.manager is given
             if self.order.manager:
                 self.manager=self.order.manager
+        #=======================================================================
         # if the componentType of the component is Auxiliary then there need a requesting Component be defined
         # the requestingComponent is the component that needs the auxiliary component during its processing
         # the auxiliary component should then be added to the requestingComponent's auxiliaryList
         self.requestingComponent = requestingComponent  # the id of the requesting component
+        #=======================================================================
         # used by printRoute
         if self.order:
             self.alias=self.order.alias+'C'+str(len(G.OrderComponentList))
