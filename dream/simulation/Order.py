@@ -34,6 +34,8 @@ from Job import Job
 class Order(Job):
     type="Order"
     
+    assemblyValidTypes=set(['Mold Base', 'Mold Insert', 'Slider', 'Misc', 'Z-standards', 'K-Standards'])
+    assemblyInvalidTypes=set(['Mold','Injection Molding Part'])
     def __init__(self, id=None, 
                         name=None, 
                         route=[], 
@@ -48,14 +50,18 @@ class Order(Job):
                         extraPropertyDict=None,
                         **kw):
         Job. __init__(self, id=id, name=name, route=route, priority=priority, dueDate=dueDate, orderDate=orderDate, 
-                      extraPropertyDict=extraPropertyDict)
-#         self.isCritical=isCritical          # flag to inform weather the order is critical -> preemption
+                      isCritical=isCritical, extraPropertyDict=extraPropertyDict)
         self.componentsList=componentsList  # list of components that the order will be broken into
-        self.basicComponentsList = []      # list that holds the Basic Components of the order
+        self.components=[]                  # list of all the child components of the order 
+        self.assemblyComponents=[]          # list of the required components to build the mould
+        self.assemblyRequested=False        # flag used to check whether a mould is created out of other orderComponents
+        #=======================================================================
+        self.basicComponentsList = []       # list that holds the Basic Components of the order
         self.secondaryComponentsList = []   # list that holds the Secondary Components of the order
         self.auxiliaryComponentsList = []   # list of the auxiliary components of the order 
-        self.manager=manager                # the manager responsible to handle the order 
         self.basicsEnded=basicsEnded        # flag that informs that the basic components of the order are finished
+        #=======================================================================
+        self.manager=manager                # the manager responsible to handle the order 
         # flag that informs weather the components needed for the assembly are present in the Assembly Buffer
         self.componentsReadyForAssembly = componentsReadyForAssembly
         
@@ -65,3 +71,51 @@ class Order(Job):
 
         def createRoute(self, route):
             return route
+    
+    #===========================================================================
+    # find all the child components of the order 
+    # mould cannot be included as if it is not yet created then it can be found in the G.EntityList
+    # returns only the components that are present in the system 
+    #===========================================================================
+    def findComponents(self):
+        for componentDict in self.componentsList:
+            from Globals import findObjectById, G
+            componentId=componentDict.get('id',0)
+            componentClass=componentDict.get('_class','not found')
+            # if there is mould defined in the componentsList and the mould is not yet created, then assembly is requested
+            if componentClass=='Dream.Mould':
+                if not componentId in G.EntityList:
+                    self.assemblyRequested=True
+            # XXX if the component is not yet created then there is no entity to find. 
+            component=findObjectById(componentId)
+            if component:
+                if not component in self.components:
+                    self.components.append(component)
+    
+    #===========================================================================
+    # return the all the child components of the order
+    #===========================================================================
+    def getComponents(self):
+        if not self.components:
+            self.findComponents()
+        assert len(self.components)>=len(self.componentsList),'the created child components of an order cannot be less than the length of the componentsList'
+        return self.components
+    
+    #===========================================================================
+    # find all the child components of the order that are required for the building of the mould
+    #===========================================================================
+    def findAssemblyComponents(self):
+        for child in self.getComponents():
+            if child.componentType in assemblyValidTypes:
+                if not child in self.assemblyComponents:
+                    self.assemblyComponents.append(child)
+    
+    #===========================================================================
+    # get the components that are required for the construction of the mould
+    #===========================================================================
+    def getAssemblyComponents(self):
+        if not self.assemblyComponents:
+            self.findAssemblyComponents()
+        return self.assemblyComponents
+        
+    
