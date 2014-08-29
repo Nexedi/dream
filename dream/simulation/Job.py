@@ -117,7 +117,6 @@ class Job(Entity):                                  # inherits from the Entity c
                 raise SetWipTypeError('The starting station of the the entity is not defined uniquely')
         except SetWipTypeError as setWipError:
             print 'WIP definition error: {0}'.format(setWipError)
-#         self.currentStation=self.route[0][0]
     
     #===========================================================================
     # check if the entity can proceed to an operated machine, for use by Router
@@ -125,7 +124,87 @@ class Job(Entity):                                  # inherits from the Entity c
     def canProceed(self):
         activeObject=self.currentStation
         return activeObject.canDeliver(self)
-     
+    
+    #===========================================================================
+    # check if the requireParts of the entity next step sequence (route) have
+    # have concluded the steps with sequence numbers smaller than the sequence
+    # of the entity's next step in its route
+    #===========================================================================
+    def checkIfRequiredPartsReady(self):
+        # find the sequence of the next step in the route of the activeEntity
+        sequence=self.nextStepSequence()
+        # assert that the sequence is not zero
+        assert sequence, "the route sequence of the conditionalBuffer successor cannot be zero"
+        # flag that decides if the entity can proceed to the next station in its route
+        mayProceed=False
+        # find the required parts for the next step in the route (if any)
+        requiredParts=self.getRequiredParts()
+        # if there are required parts
+        if requiredParts:
+            # for each requested part
+            for part in requiredPartsIDs:
+                # retrieve the current step sequence of the requiredPart
+                curStepSeq=part.currentStepSequence()
+                # retrieve the next step sequence of the requiredParts
+                nextStepSeq=part.nextStepSequence()
+                # if there is no next step sequence (route finished)
+                # it means that the part has exhausted its route 
+                # if the sequence of the required part next step is smaller than the sequence of activeEntity's next step
+                # the activeEntity cannot proceed
+                if nextStepSeq>sequence or not nextStepSeq:
+                    # if the sequence of the requiredPart's currentStation is not zero then the 
+                    # required part is currently being processed and thus the activeEntity cannot proceed
+                    if not curStepSeq:
+                        mayProceed=True
+        # if there are no requestedParts defined, then entity can proceed to the next step of its route
+        else:
+            mayProceed=True
+        # if the local flag canProceed is true then return true
+        return mayProceed
+    
+    #===========================================================================
+    # method that returns the requiredParts 
+    # of a blocked entity at its current step sequence 
+    #===========================================================================
+    def getRequiredParts(self):
+        # retrieve the IDs of the required parts in the next step sequence
+        requiredPartsIDs=self.remainingRoute[0].get('requiredParts',[])
+        requiredParts=[]
+        # if there are requested parts
+        if requiredPartsIDs:
+            from Globals import findObjectById
+            for partID in requiredPartsIDs:
+                # find the objects with the corresponding IDs
+                part=findObjectById(partID)
+                if not part in requiredParts:
+                    requiredParts.append(part)
+        return requiredParts
+    
+    #===========================================================================
+    # method that returns the sequence of the entity's next step
+    #===========================================================================
+    def nextStepSequence(self):
+        # find the sequence of the next step in the route of the activeEntity
+        sequence=self.remainingRoute[0].get('sequence',0)
+        return sequence
+    
+    #===========================================================================
+    # method that returns the sequence of the entity's current step
+    #===========================================================================
+    def currentStepSequence(self):
+        currentStation=self.currentStation  # the current station of the part
+        curStepSeq=0                        # the sequence of the current process in the parts route
+        # if the part is being currently processed in a Station
+        from Machine import Machine
+        if issubclass(currentStation.__class__, Machine):
+            for routeStep in self.route:
+                stepSeq=routeStep.get('sequence',0)
+                stepIDs=routeStep.get('stationIdsList',[])
+                if currentStation.id in stepIDs:
+                    curStepSeq=stepSeq
+                    break
+        return curStepSeq
+    
     #===========================================================================
     # method that finds a receiver for a candidate entity
     #===========================================================================
