@@ -32,7 +32,7 @@ from ObjectInterruption import ObjectInterruption
 
 class EventGenerator(ObjectInterruption):
     def __init__(self, id=id, name=None, start=0, stop=float('inf'), interval=1,
-                 duration=0, method=None, argumentDict=None, **kw):
+                 duration=0, method=None, argumentDict={}, **kw):
         ObjectInterruption.__init__(self)
         self.id=id
         self.name=name
@@ -44,7 +44,8 @@ class EventGenerator(ObjectInterruption):
         self.argumentDict=argumentDict  #the arguments of the method given in a dict
         from Globals import G
         G.EventGeneratorList.append(self)
-        if method:
+        self.method=method
+        if isinstance(method, basestring):
             import Globals
             self.method=Globals.getMethodFromName(method)
             
