@@ -46,6 +46,36 @@ from RandomNumberGenerator import RandomNumberGenerator
 class Machine(CoreObject):
     family='Server'
     
+    def getProcessingTime(self,processingTime):
+        '''returns the processingTime dictionary updated'''
+        if not processingTime:
+            processingTime = { 'distributionType': 'Fixed',
+                               'mean': 1, }
+        if processingTime['distributionType'] == 'Normal' and\
+                processingTime.get('max', None) is None:
+            processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
+        return processingTime
+        
+    def getSetupTime(self,setupTime):
+        '''returns the setupTime dictionary updated'''
+        if not setupTime:
+            setupTime = { 'distributionType': 'Fixed',
+                          'mean': 1, }
+        if setupTime['distributionType'] == 'Normal' and\
+                setupTime.get('max', None) is None:
+            setupTime['max'] = float(setupTime['mean']) + 5 * float(setupTime['stdev'])
+        return setupTime
+          
+    def getLoadTime(self,loadTime):
+        '''returns the loadTime dictionary updated'''
+        if not loadTime:
+            loadTime = { 'distributionType': 'Fixed',
+                         'mean': 1, }
+        if loadTime['distributionType'] == 'Normal' and\
+                loadTime.get('max', None) is None:
+            loadTime['max'] = float(loadTime['mean']) + 5 * float(loadTime['stdev'])
+        return loadTime
+    
     # =======================================================================
     # initialise the id the capacity, of the resource and the distribution
     # =======================================================================
@@ -58,27 +88,13 @@ class Machine(CoreObject):
         self.type="Machine"                         #String that shows the type of object
         CoreObject.__init__(self, id, name)
         from Globals import G
-        if not processingTime:
-          processingTime = { 'distributionType': 'Fixed',
-                             'mean': 1, }
-        if processingTime['distributionType'] == 'Normal' and\
-              processingTime.get('max', None) is None:
-          processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
- 
-        if not setupTime:
-          setupTime = { 'distributionType': 'Fixed',
-                        'mean': 1, }
-        if setupTime['distributionType'] == 'Normal' and\
-              setupTime.get('max', None) is None:
-          setupTime['max'] = float(setupTime['mean']) + 5 * float(setupTime['stdev'])
- 
-        if not loadTime:
-          loadTime = { 'distributionType': 'Fixed',
-                        'mean': 1, }
-        if loadTime['distributionType'] == 'Normal' and\
-              loadTime.get('max', None) is None:
-          loadTime['max'] = float(loadTime['mean']) + 5 * float(loadTime['stdev'])
- 
+        
+        processingTime=self.getProcessingTime(processingTime)
+        
+        setupTime=self.getSetupTime(setupTime)
+        
+        loadTime=self.getLoadTime(loadTime)
+        
         #     holds the capacity of the machine 
         self.capacity=capacity
         #     sets the repairman resource of the Machine
