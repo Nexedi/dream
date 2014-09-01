@@ -44,7 +44,6 @@ numpy.seterr(all='raise')
 import simpy
 from Globals import G 
 from Source import Source
-from Machine import Machine
 from Exit import Exit
 from Queue import Queue
 from Repairman import Repairman
@@ -88,7 +87,6 @@ from ShiftScheduler import ShiftScheduler
 
 import PrintRoute
 from CapacityStation import CapacityStation
-from AllocationManagement import AllocationManagement
 
 from CapacityStationExit import CapacityStationExit
 from CapacityStationBuffer import CapacityStationBuffer
@@ -269,13 +267,6 @@ def createObjectResourcesAndCoreObjects():
             coreObject.nextPartIds=getSuccessorList(element['id'], lambda source, destination, edge_data: edge_data.get('entity') == 'Part')
             # get the successorList for the 'Frames'
             coreObject.nextFrameIds=getSuccessorList(element['id'], lambda source, destination, edge_data: edge_data.get('entity') == 'Frame')
-                         
-        elif objClass=='Dream.AllocationManagement':
-            id=element.get('id', 'not found')
-            name=element.get('name', 'not found')
-            argumentDict=element.get('argumentDict', {})
-            AM=AllocationManagement(id, name, argumentDict=argumentDict)
-            G.AllocationManagementList.append(AM)
             
     # -----------------------------------------------------------------------
     #                    loop through all the core objects    
