@@ -45,38 +45,6 @@ from RandomNumberGenerator import RandomNumberGenerator
 # ===========================================================================
 class Machine(CoreObject):
     family='Server'
-    @staticmethod
-    def getProcessingTime(processingTime):
-        '''returns the processingTime dictionary updated'''
-        if not processingTime:
-            processingTime = { 'distributionType': 'Fixed',
-                               'mean': 1, }
-        if processingTime['distributionType'] == 'Normal' and\
-                processingTime.get('max', None) is None:
-            processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
-        return processingTime
-    
-    @staticmethod
-    def getSetupTime(setupTime):
-        '''returns the setupTime dictionary updated'''
-        if not setupTime:
-            setupTime = { 'distributionType': 'Fixed',
-                          'mean': 1, }
-        if setupTime['distributionType'] == 'Normal' and\
-                setupTime.get('max', None) is None:
-            setupTime['max'] = float(setupTime['mean']) + 5 * float(setupTime['stdev'])
-        return setupTime
-    
-    @staticmethod
-    def getLoadTime(loadTime):
-        '''returns the loadTime dictionary updated'''
-        if not loadTime:
-            loadTime = { 'distributionType': 'Fixed',
-                         'mean': 1, }
-        if loadTime['distributionType'] == 'Normal' and\
-                loadTime.get('max', None) is None:
-            loadTime['max'] = float(loadTime['mean']) + 5 * float(loadTime['stdev'])
-        return loadTime
     
     # =======================================================================
     # initialise the id the capacity, of the resource and the distribution
@@ -208,6 +176,40 @@ class Machine(CoreObject):
         self.preemptQueue=self.env.event()
         # signal used for informing objectInterruption objects that the current entity processed has finished processnig
         self.endedLastProcessing=self.env.event()
+
+    @staticmethod
+    def getProcessingTime(processingTime):
+        '''returns the processingTime dictionary updated'''
+        if not processingTime:
+            processingTime = { 'distributionType': 'Fixed',
+                               'mean': 1, }
+        if processingTime['distributionType'] == 'Normal' and\
+                processingTime.get('max', None) is None:
+            processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
+        return processingTime
+    
+    @staticmethod
+    def getSetupTime(setupTime):
+        '''returns the setupTime dictionary updated'''
+        if not setupTime:
+            setupTime = { 'distributionType': 'Fixed',
+                          'mean': 1, }
+        if setupTime['distributionType'] == 'Normal' and\
+                setupTime.get('max', None) is None:
+            setupTime['max'] = float(setupTime['mean']) + 5 * float(setupTime['stdev'])
+        return setupTime
+    
+    @staticmethod
+    def getLoadTime(loadTime):
+        '''returns the loadTime dictionary updated'''
+        if not loadTime:
+            loadTime = { 'distributionType': 'Fixed',
+                         'mean': 1, }
+        if loadTime['distributionType'] == 'Normal' and\
+                loadTime.get('max', None) is None:
+            loadTime['max'] = float(loadTime['mean']) + 5 * float(loadTime['stdev'])
+        return loadTime
+
                 
     #===========================================================================
     # create an operatorPool if needed
