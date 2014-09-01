@@ -95,10 +95,10 @@
             // When duration is not returned by ManPy, it is calculated by
             // difference of entranceTime of this step and entranceTime of the
             // next step, or completionTime when this is the last step
-            if (i + 1 === obj.results.schedule.length) {
+            if (j + 1 === obj.results.schedule.length) {
               duration = obj.results.completionTime - schedule.entranceTime;
             } else {
-              duration = obj.results.schedule[i + 1]
+              duration = obj.results.schedule[j + 1]
                 .entranceTime - schedule.entranceTime;
             }
           }
