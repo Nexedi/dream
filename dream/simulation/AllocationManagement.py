@@ -29,6 +29,8 @@ class AllocationManagement(ObjectInterruption):
         ObjectInterruption.initialize(self)
         self.readData()
         self.FDC=FutureDemandCreator()
+        from Globals import G
+        G.AllocationManagementList.append(self)
         
     def run(self):
         self.FDC.run()
