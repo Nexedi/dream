@@ -27,11 +27,42 @@ extends the machine object so that it can act as a jobshop station. It reads the
 
 import simpy
 from Machine import Machine
+from RandomNumberGenerator import RandomNumberGenerator
 # ===========================================================================
 # the MachineJobShop object
 # ===========================================================================
 class MachineJobShop(Machine):
-           
+    @staticmethod
+    def getProcessingTime(processingTime):
+        '''returns the processingTime dictionary updated'''
+        if not processingTime:
+            processingTime = { 'distributionType': 'Fixed',
+                               'mean': 0, }
+        if processingTime['distributionType'] == 'Normal' and\
+                processingTime.get('max', None) is None:
+            processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
+        return processingTime
+    @staticmethod
+    def getSetupTime(setupTime):
+        '''returns the setupTime dictionary updated'''
+        if not setupTime:
+            setupTime = { 'distributionType': 'Fixed',
+                          'mean': 0, }
+        if setupTime['distributionType'] == 'Normal' and\
+                setupTime.get('max', None) is None:
+            setupTime['max'] = float(setupTime['mean']) + 5 * float(setupTime['stdev'])
+        return setupTime
+    @staticmethod
+    def getLoadTime(loadTime):
+        '''returns the loadTime dictionary updated'''
+        if not loadTime:
+            loadTime = { 'distributionType': 'Fixed',
+                         'mean': 0, }
+        if loadTime['distributionType'] == 'Normal' and\
+                loadTime.get('max', None) is None:
+            loadTime['max'] = float(loadTime['mean']) + 5 * float(loadTime['stdev'])
+        return loadTime
+    
     # =======================================================================
     # set all the objects in previous and next
     # =======================================================================
@@ -114,14 +145,18 @@ class MachineJobShop(Machine):
         
         # read the processing/setup/load times from the corresponding remainingRoute entry
         processingTime=activeEntity.remainingRoute[0].get('processingTime',{})
-        self.distType=processingTime.get('distributionType','Fixed')
-        self.procTime=float(processingTime.get('mean', 0))
+        processingTime=self.getProcessingTime(processingTime)
+        self.rng=RandomNumberGenerator(self, **processingTime)
+        self.procTime=self.rng.generateNumber()
         
         setupTime=activeEntity.remainingRoute[0].get('setupTime',{})
-        self.distType=setupTime.get('distributionType','Fixed')
-        self.setupTime=float(setupTime.get('mean', 0))
+        setupTime=self.getSetupTime(setupTime)
+        self.stpRng=RandomNumberGenerator(self, **setupTime)
+        
         removedStep = activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
         return activeEntity
+    
+    
     
     #===========================================================================
     # update the next list of the object based on the activeEentity
@@ -154,25 +189,14 @@ class MachineJobShop(Machine):
             # read the processing/setup/load times from the first entry of the full route
             activeEntity=self.getActiveObjectQueue()[0]
             processingTime=activeEntity.route[0].get('processingTime',{})
-            self.distType=processingTime.get('distributionType','Fixed')
-            self.procTime=float(processingTime.get('mean', 0))
+            processingTime=self.getProcessingTime(processingTime)
+            self.rng=RandomNumberGenerator(self, **processingTime)
+            self.procTime=self.rng.generateNumber()
             
             setupTime=activeEntity.route[0].get('setupTime',{})
-            self.distType=setupTime.get('distributionType','Fixed')
-            self.setupTime=float(setupTime.get('mean', 0))
+            setupTime=self.getSetupTime(setupTime)
+            self.stpRng=RandomNumberGenerator(self, **setupTime)
         return self.procTime    #this is the processing time for this unique entity 
-    
-    # =======================================================================
-    #                       calculates the setup time
-    # =======================================================================
-    def calculateSetupTime(self):
-        return self.setupTime    #this is the setup time for this unique entity
-    
-    # =======================================================================
-    #                        calculates the Load time
-    # =======================================================================
-    def calculateLoadTime(self):
-        return self.loadTime    #this is the load time for this unique entity
     
     # =======================================================================
     # checks if the Queue can accept an entity       
@@ -295,8 +319,8 @@ class MachineJobShop(Machine):
         thecaller.sortEntities()
         activeEntity=thecaller.Res.users[0]
         loadTime=activeEntity.remainingRoute[0].get('loadTime',{})
-        self.distType=loadTime.get('distributionType','Fixed')
-        self.loadTime=float(loadTime.get('mean', 0))
+        loadTime=self.getLoadTime(loadTime)
+        self.loadRng=RandomNumberGenerator(self, **loadTime)
         
     # =======================================================================
     # removes an entity from the Machine
