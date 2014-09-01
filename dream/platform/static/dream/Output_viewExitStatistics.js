@@ -20,7 +20,7 @@
         var output_data = data.result, input_data = data.input, elementList = output_data.elementList, i, j, metric, metric_value, element, interval_value, interval_list, attainment_list, throughputTarget = input_data.general.throughputTarget, result = "";
         for (i = 0; i < elementList.length; i += 1) {
             element = elementList[i];
-            if (element._class === "Dream.Exit") {
+            if (element.family === "Exit") {
                 result += "<table>";
                 result += header_template({
                     name: element.name || element.id

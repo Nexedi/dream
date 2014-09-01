@@ -8,10 +8,10 @@
      */
         var series = [];
         $.each(output_data.elementList, function(idx, el) {
-            if (el._class === "Dream.Queue") {
+            if (el.family === "Buffer") {
                 series.push({
                     label: el.name || el.id,
-                    data: el.wip_stat_list
+                    data: el.results.wip_stat_list
                 });
             }
         });
