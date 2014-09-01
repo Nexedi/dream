@@ -26,6 +26,8 @@ class AllocationManagement(ObjectInterruption):
         self.argumentDict=argumentDict  #the arguments of the method given in a dict        
         self.readData()
         self.FDC=FutureDemandCreator()
+        from Globals import G
+        G.AllocationManagementList.append(self)
         
     def run(self):
         self.FDC.run()
