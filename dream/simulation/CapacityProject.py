@@ -33,7 +33,6 @@ from Entity import Entity
 # ===========================================================================
 class CapacityProject(Entity):
     type="CapacityProject"
-    class_name = 'Dream.CapacityProject'
     
     def __init__(self, id=None, name=None, capacityRequirementDict={}):
         Entity.__init__(self, id, name)
@@ -48,8 +47,9 @@ class CapacityProject(Entity):
     # =======================================================================
     def outputResultsJSON(self):
         from Globals import G
-        json = {'_class': self.class_name,
+        json = {'_class': 'Dream.%s' % (self.__class__.__name__),
                 'id': self.id,
+                'family': 'Job',
                 'results': {}}
         if (G.numberOfReplications == 1):
             # if we had just one replication output the results as numbers
