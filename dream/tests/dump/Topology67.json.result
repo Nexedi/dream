@@ -614,7 +614,7 @@
    }
   }, 
   {
-   "_class": "Dream.MouldAssembly", 
+   "_class": "Dream.MouldAssemblyManaged", 
    "family": "Server", 
    "id": "MA1", 
    "results": {
@@ -627,7 +627,7 @@
    }
   }, 
   {
-   "_class": "Dream.MouldAssembly", 
+   "_class": "Dream.MouldAssemblyManaged", 
    "family": "Server", 
    "id": "MA2", 
    "results": {
@@ -640,7 +640,7 @@
    }
   }, 
   {
-   "_class": "Dream.MouldAssembly", 
+   "_class": "Dream.MouldAssemblyManaged", 
    "family": "Server", 
    "id": "MA3", 
    "results": {
