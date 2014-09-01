@@ -97,7 +97,7 @@
    }
   }, 
   {
-   "_class": "Dream.Order", 
+   "_class": "Dream.OrderDesign", 
    "family": "Job", 
    "id": "O1", 
    "results": {

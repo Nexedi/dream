@@ -3,6 +3,7 @@
  "elementList": [
   {
    "_class": "Dream.Exit", 
+   "family": "Exit", 
    "id": "E1", 
    "results": {
     "lifespan": 13.0, 
@@ -12,7 +13,8 @@
    }
   }, 
   {
-   "_class": "Dream.Machine", 
+   "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
    "id": "M1", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -22,7 +24,8 @@
    }
   }, 
   {
-   "_class": "Dream.Machine", 
+   "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
    "id": "M2", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -33,11 +36,15 @@
   }, 
   {
    "_class": "Dream.Queue", 
-   "id": "Q1"
+   "family": "Buffer", 
+   "id": "Q1", 
+   "results": {}
   }, 
   {
    "_class": "Dream.LineClearance", 
-   "id": "Q2"
+   "family": "Buffer", 
+   "id": "Q2", 
+   "results": {}
   }
  ], 
  "general": {

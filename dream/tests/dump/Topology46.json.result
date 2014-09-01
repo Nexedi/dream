@@ -56,7 +56,7 @@
    }
   }, 
   {
-   "_class": "Dream.Order", 
+   "_class": "Dream.OrderDesign", 
    "family": "Job", 
    "id": "Or1", 
    "results": {
@@ -86,7 +86,7 @@
    }
   }, 
   {
-   "_class": "Dream.Order", 
+   "_class": "Dream.OrderDesign", 
    "family": "Job", 
    "id": "Or2", 
    "results": {

@@ -106,7 +106,8 @@
    }
   }, 
   {
-   "_class": "Dream.Machine", 
+   "_class": "Dream.MouldAssembly", 
+   "family": "Server", 
    "id": "MA1", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -116,6 +117,8 @@
    }
   }, 
   {
+   "_class": "Dream.Mould", 
+   "family": "Job", 
    "id": "Mo1", 
    "results": {
     "completionTime": 5.0, 
@@ -132,8 +135,7 @@
    }
   }, 
   {
-   "family": "Server", 
-   "_class": "Dream.Order", 
+   "_class": "Dream.OrderDesign", 
    "family": "Job", 
    "id": "O1", 
    "results": {

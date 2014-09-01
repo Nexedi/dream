@@ -136,7 +136,6 @@
    }
   }, 
   {
-   "family": "Job", 
    "_class": "Dream.MachineJobShop", 
    "family": "Server", 
    "id": "M2", 
@@ -159,7 +158,8 @@
    }
   }, 
   {
-   "_class": "Dream.Job", 
+   "_class": "Dream.Mould", 
+   "family": "Job", 
    "id": "Mo1", 
    "results": {
     "completionTime": 7.0, 
@@ -176,7 +176,7 @@
    }
   }, 
   {
-   "_class": "Dream.Order", 
+   "_class": "Dream.OrderDesign", 
    "family": "Job", 
    "id": "O1", 
    "results": {

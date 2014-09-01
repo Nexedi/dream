@@ -3,6 +3,7 @@
  "elementList": [
   {
    "_class": "Dream.Exit", 
+   "family": "Exit", 
    "id": "E1", 
    "results": {
     "lifespan": 45.25, 
@@ -13,6 +14,7 @@
   }, 
   {
    "_class": "Dream.Machine", 
+   "family": "Server", 
    "id": "M1", 
    "results": {
     "blockage_ratio": 31.0, 
@@ -23,6 +25,7 @@
   }, 
   {
    "_class": "Dream.Machine", 
+   "family": "Server", 
    "id": "M2", 
    "results": {
     "blockage_ratio": 16.0, 
@@ -33,6 +36,7 @@
   }, 
   {
    "_class": "Dream.Machine", 
+   "family": "Server", 
    "id": "M3", 
    "results": {
     "blockage_ratio": 0.0, 
@@ -43,6 +47,7 @@
   }, 
   {
    "_class": "Dream.Machine", 
+   "family": "Server", 
    "id": "M4", 
    "results": {
     "blockage_ratio": 15.5, 
@@ -53,11 +58,15 @@
   }, 
   {
    "_class": "Dream.Queue", 
-   "id": "Q1"
+   "family": "Buffer", 
+   "id": "Q1", 
+   "results": {}
   }, 
   {
    "_class": "Dream.RoutingQueue", 
-   "id": "Q2"
+   "family": "Buffer", 
+   "id": "Q2", 
+   "results": {}
   }
  ], 
  "general": {
