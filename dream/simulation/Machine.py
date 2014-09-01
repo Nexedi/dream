@@ -45,8 +45,8 @@ from RandomNumberGenerator import RandomNumberGenerator
 # ===========================================================================
 class Machine(CoreObject):
     family='Server'
-    
-    def getProcessingTime(self,processingTime):
+    @staticmethod
+    def getProcessingTime(processingTime):
         '''returns the processingTime dictionary updated'''
         if not processingTime:
             processingTime = { 'distributionType': 'Fixed',
@@ -55,8 +55,9 @@ class Machine(CoreObject):
                 processingTime.get('max', None) is None:
             processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
         return processingTime
-        
-    def getSetupTime(self,setupTime):
+    
+    @staticmethod
+    def getSetupTime(setupTime):
         '''returns the setupTime dictionary updated'''
         if not setupTime:
             setupTime = { 'distributionType': 'Fixed',
@@ -65,8 +66,9 @@ class Machine(CoreObject):
                 setupTime.get('max', None) is None:
             setupTime['max'] = float(setupTime['mean']) + 5 * float(setupTime['stdev'])
         return setupTime
-          
-    def getLoadTime(self,loadTime):
+    
+    @staticmethod
+    def getLoadTime(loadTime):
         '''returns the loadTime dictionary updated'''
         if not loadTime:
             loadTime = { 'distributionType': 'Fixed',
@@ -89,11 +91,11 @@ class Machine(CoreObject):
         CoreObject.__init__(self, id, name)
         from Globals import G
         
-        processingTime=self.getProcessingTime(processingTime)
+        processingTime=self.getProcessingTime(processingTime=processingTime)
         
-        setupTime=self.getSetupTime(setupTime)
+        setupTime=self.getSetupTime(setupTime=setupTime)
         
-        loadTime=self.getLoadTime(loadTime)
+        loadTime=self.getLoadTime(loadTime=loadTime)
         
         #     holds the capacity of the machine 
         self.capacity=capacity
