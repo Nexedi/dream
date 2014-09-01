@@ -50,8 +50,7 @@
     for (i = 0; i < output_data.elementList.length; i += 1) {
       obj = output_data.elementList[i];
 
-      if (obj._class === 'Dream.Job' ||
-          obj._class === 'Dream.CapacityProject') {
+      if (obj.family === 'Job') {
         input_job = null;
         input_order = null;
 

@@ -55,7 +55,8 @@
 
     for (i = 0; i < elementList.length; i += 1) {
       element = elementList[i];
-      if (element._class === 'Dream.Exit') {
+
+      if (element.family === 'Exit') {
         result += '<table>';
 
         result += header_template({name: element.name || element.id});

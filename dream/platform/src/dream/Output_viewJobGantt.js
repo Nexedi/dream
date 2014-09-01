@@ -54,12 +54,8 @@
     function isVisibleStation(station) {
       // we should be able to define in the backend which
       // station is visible
-      return (input_data.nodes[station]._class !== "Dream.QueueManagedJob") &&
-        (input_data.nodes[station]._class !== "Dream.OperatorManagedJob") &&
-        (input_data.nodes[station]._class !== "Dream.ExitJobShop") &&
-        (input_data.nodes[station]._class !== "Dream.CapacityStationBuffer") &&
-        (input_data.nodes[station]._class !== "Dream.CapacityStationExit") &&
-        (input_data.nodes[station]._class !== "Dream.Queue");
+      return (input_data.nodes[station].family !== 'Buffer' &&
+          input_data.nodes[station].family !== 'Exit');
     }
 
     $.each(
@@ -78,8 +74,7 @@
           duration,
           seen_parts = {};
 
-        if (obj._class === 'Dream.Job' ||
-              obj._class === 'Dream.CapacityProject') {
+        if (obj.family === 'Job') {
           // find the corresponding input
           // find the input order and order component for this job
           for (node_key in input_data.nodes) {
