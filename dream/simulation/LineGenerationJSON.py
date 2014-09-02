@@ -382,6 +382,7 @@ def createObjectInterruptions():
             G.ObjectInterruptionList.append(SS)
             G.ShiftSchedulerList.append(SS)
 
+
 # ===========================================================================
 #                       creates the entities that are wip
 # ===========================================================================
@@ -541,9 +542,10 @@ def initializeObjects():
 #                        activates all the objects
 # ===========================================================================
 def activateObjects():
-    for element in G.ObjList + G.ObjectInterruptionList:
-        G.env.process(element.run())                                                  
-                
+    # XXX EventGeneratorList
+    for element in G.ObjList + G.ObjectInterruptionList + G.AllocationManagementList:
+        G.env.process(element.run())
+
 # ===========================================================================
 #                        the main script that is ran
 # ===========================================================================

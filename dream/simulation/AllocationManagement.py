@@ -14,7 +14,6 @@ import xlrd
 from AllocationRoutine import AllocationRoutine
 from CoreObject import CoreObject
 from Globals import G
-from SimPy.Simulation import hold
 from ObjectInterruption import ObjectInterruption
 from FutureDemandCreator import FutureDemandCreator
 
@@ -29,7 +28,7 @@ class AllocationManagement(ObjectInterruption):
         
     def run(self):
         self.FDC.run()
-        yield hold,self,0 
+        yield G.env.timeout(0)
         for kWeek in range(int(G.maxSimTime)):
         # activate allocation procedure for future items at target week
             procedureFuture = AllocationRoutine(initialWeek=kWeek, itemType=1)
