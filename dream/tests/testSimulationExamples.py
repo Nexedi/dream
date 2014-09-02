@@ -183,3 +183,9 @@ class SimulationExamples(TestCase):
     self.assertEquals(result['parts'], 2)
     self.assertEquals(result['simulationTime'], 0.35)	
     self.assertEquals(result["working_ratio"], 100)
+	
+  def testBalancingABuffer(self):
+    from dream.simulation.Examples.BalancingABuffer import main
+    result = main()
+    self.assertEquals(result['parts'], 13)
+    self.assertEquals(result["working_ratio"], 80)
