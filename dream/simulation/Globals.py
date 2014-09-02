@@ -280,7 +280,6 @@ def setWIP(entityList):
             if issubclass(entity.currentStation.__class__, Queue):
                 # send the signal only if it is not already triggered
                 if not entity.currentStation.canDispose.triggered:
-                    # print 'sending canDispose to', entity.currentStation.id
                     entity.currentStation.canDispose.succeed(G.env.now)   
         # if we are in the start of the simulation the object is of server type then we should send initialWIP signal
         # TODO, maybe use 'class_family attribute here'
