@@ -189,3 +189,10 @@ class SimulationExamples(TestCase):
     result = main()
     self.assertEquals(result['parts'], 13)
     self.assertEquals(result["working_ratio"], 80)
+	
+  def testChangingPredecessors(self):
+    from dream.simulation.Examples.ChangingPredecessors import main
+    result = main()
+    self.assertEquals(result['parts'], 10)
+    self.assertEquals(result['simulationTime'], 36.0)
+    self.assertTrue(83.32 < result["working_ratio"] < 83.34)
