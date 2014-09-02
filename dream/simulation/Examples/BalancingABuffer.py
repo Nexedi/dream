@@ -8,6 +8,7 @@ def balanceQueue(buffer, refillLevel=1):
     numInQueue=len(objectQueue)
     print '-'*50
     print 'at time=', G.env.now
+    # check if the buffer is empty and if yes fill it with 5 parts
     if numInQueue==0:
         print 'buffer is starving, I will bring 5 parts'
         for i in range(refillLevel):
@@ -19,8 +20,7 @@ def balanceQueue(buffer, refillLevel=1):
             # set the part as WIP
             setWIP([P])
             G.numOfParts+=1
-        # send a signal to the buffer that it can dispose an Entity
-        buffer.canDispose.succeed(G.env.now)
+    # else do nothing        
     else:
         print 'buffer has', numInQueue, 'parts. No need to bring more'
 
