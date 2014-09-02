@@ -33,68 +33,16 @@ from warnings import warn
 import logging
 logger = logging.getLogger("dream.platform")
 
-
 # By default numpy just prints on stderr when there's an error. We do not want
 # to hide errors.
 import numpy
 numpy.seterr(all='raise')
-
-
-# from SimPy.Simulation import activate, initialize, simulate, now, infinity
 import simpy
 from Globals import G 
-from Source import Source
-from Exit import Exit
-from Queue import Queue
-from Repairman import Repairman
-from Part import Part
-from Frame import Frame
-from Assembly import Assembly
-from Dismantle import Dismantle
-from Conveyer import Conveyer
-from Job import Job
-from MachineJobShop import MachineJobShop
-from QueueJobShop import QueueJobShop
-from ExitJobShop import ExitJobShop
-from Batch import Batch
-from SubBatch import SubBatch
-from BatchSource import BatchSource
-from BatchDecomposition import BatchDecomposition
-from BatchReassembly import BatchReassembly
-from RoutingQueue import RoutingQueue
-from BatchScrapMachine import BatchScrapMachine
-from LineClearance import LineClearance
-from EventGenerator import EventGenerator
-from Operator import Operator
-from OperatorManagedJob import OperatorManagedJob
-from OperatorPool import OperatorPool
-from OperatedPoolBroker import Broker
-from OperatedMachine import OperatedMachine
-from BatchDecompositionStartTime import BatchDecompositionStartTime
-from M3 import M3
-from OrderComponent import OrderComponent
-from ScheduledMaintenance import ScheduledMaintenance
-from Failure import Failure
 from Order import Order
 from OrderDesign import OrderDesign
 from Mould import Mould
-from OrderDecomposition import OrderDecomposition
-from ConditionalBuffer import ConditionalBuffer
-from MouldAssemblyBuffer import MouldAssemblyBuffer
-from MachineManagedJob import MachineManagedJob
-from QueueManagedJob import QueueManagedJob
-from ShiftScheduler import ShiftScheduler
-
 import PrintRoute
-from CapacityStation import CapacityStation
-
-from CapacityStationExit import CapacityStationExit
-from CapacityStationBuffer import CapacityStationBuffer
-from CapacityStationController import CapacityStationController
-from CapacityEntity import CapacityEntity
-from CapacityProject import CapacityProject
-from CapacityStationController import CapacityStationController
-
 import ExcelHandler
 import time
 import json
@@ -214,6 +162,7 @@ def createObjectResourcesAndCoreObjects():
     search for operatorPools in order to create them
     read the data and create them
     '''
+    from OperatorPool import OperatorPool
     for (element_id, element) in nodes.iteritems():                 # use an iterator to go through all the nodes
                                                                     # the key is the element_id and the second is the 
                                                                     # element itself 
@@ -323,6 +272,9 @@ def createObjectInterruptions():
     # ToDo this will be cleaned a lot if we update the JSON notation:
     # define ObjectInterruption echelon inside node
     # define interruptions' distribution better
+    from ScheduledMaintenance import ScheduledMaintenance    
+    from Failure import Failure
+    from ShiftScheduler import ShiftScheduler
     for (element_id, element) in nodes.iteritems():
         element['id'] = element_id
         scheduledMaintenance=element.get('scheduledMaintenance', {})
@@ -399,6 +351,8 @@ def createWIP():
     for (element_id, element) in nodes.iteritems():
         element['id'] = element_id
         wip=element.get('wip', [])
+        from OrderDesign import OrderDesign
+        from Order import Order
         for entity in wip:
             entityClass=entity.get('_class', None)
             entityType=Globals.getClassFromName(entityClass)
