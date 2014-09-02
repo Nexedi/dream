@@ -70,6 +70,24 @@
                         .gui.capacity_by_station_spreadsheet);
         }
       },
+      "view_dp_capacity_spreadsheet": {
+        "gadget": "Input_viewDemandPlanningCapacitySpreadsheet",
+        "type": "object_view",
+        "title": "Demand Planning Required Capacity Spreadsheet",
+        "condition": function (gadget) {
+          return (gadget.props.configuration_dict['Dream-Configuration']
+                        .gui.dp_capacity_spreadsheet);
+        }
+      },
+      "view_dp_route_spreadsheet": {
+        "gadget": "Input_viewDemandPlanningRouteSpreadsheet",
+        "type": "object_view",
+        "title": "Demand Planning Route Spreadsheet",
+        "condition": function (gadget) {
+          return (gadget.props.configuration_dict['Dream-Configuration']
+                        .gui.dp_route_spreadsheet);
+        }
+      },
       "view_simu": {
         "gadget": "Input_viewSimulation",
         "type": "object_view",

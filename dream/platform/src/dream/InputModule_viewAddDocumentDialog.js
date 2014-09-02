@@ -84,7 +84,9 @@
       capacity_by_station_spreadsheet: [[
         "Day",
         "CS1"
-      ]]
+      ]],
+      dp_capacity_spreadsheet: [[ ]],
+      dp_route_spreadsheet: [[ ]]
     },
       name = "Untitled";
 
