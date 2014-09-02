@@ -1,8 +1,9 @@
 from dream.simulation.imports import Machine, Queue, Exit, Part, EventGenerator  
-from dream.simulation.Globals import runSimulation, G
+from dream.simulation.Globals import runSimulation, setWIP, G
 
 # method to check if the buffer is starving and refill it
 def balanceQueue(buffer, refillLevel=1):
+    # get the internal queue of the buffer
     objectQueue=buffer.getActiveObjectQueue()
     numInQueue=len(objectQueue)
     print '-'*50
@@ -10,10 +11,13 @@ def balanceQueue(buffer, refillLevel=1):
     if numInQueue==0:
         print 'buffer is starving, I will bring 5 parts'
         for i in range(refillLevel):
+            # calculate the id and name of the new part
             partId='P'+str(G.numOfParts)
             partName='Part'+str(G.numOfParts)
+            # create the Part
             P=Part(partId, partName, currentStation=buffer)       
-            objectQueue.append(P)
+            # set the part as WIP
+            setWIP([P])
             G.numOfParts+=1
         # send a signal to the buffer that it can dispose an Entity
         buffer.canDispose.succeed(G.env.now)
@@ -27,6 +31,7 @@ E=Exit('E1','Exit')
 EV=EventGenerator('EV', 'EntityCreator', start=0, stop=float('inf'), interval=20,method=balanceQueue, 
                   argumentDict={'buffer':Q, 'refillLevel':5})  
 
+# counter used in order to give parts meaningful ids (e.g P1, P2...) and names (e.g. Part1, Part2...)
 G.numOfParts=0
    
 #define predecessors and successors for the objects    
