@@ -3,8 +3,8 @@ Created on 3 Oct 2013
 
 @author: Anna
 
-Basic implementation: runs the allocation routine for the future demand first (one week at a time for the whole planning horizon) and the 
-PPOS after
+Basic implementation: runs the allocation routine for the future demand first
+(one week at a time for the whole planning horizon) and the PPOS after
 
 Equivalent to M2 in MATLAB functions
 '''

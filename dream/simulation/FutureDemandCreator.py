@@ -49,21 +49,11 @@ class FutureDemandCreator():
         G.PPOSLateness.append(0)
         G.PPOSEarliness.append(0)
         
-        G.Capacity = []
-        wbin = xlrd.open_workbook('GUI/inputs.xlsx')
-        sh = wbin.sheet_by_name('Capacity')
-        nCols = sh.ncols
-        assert(nCols == G.planningHorizon+1)
-        capacity=[]
-        for i in range(1,nCols):
-            capacity.append(sh.col_values(i,2))
-        G.Capacity = capacity   
-        
         G.currentCapacity = G.Capacity
 
         
         # PPOS initial disaggregation profile
-        G.demandFile = 'GUI/DemandProfile.xlsx'
+        G.demandFile = ( '/home/jerome/src/dream/dream/simulation/GUI/DemandProfile.xlsx' )
         wbin = xlrd.open_workbook(G.demandFile)
         
         MAData=G.RouteDict

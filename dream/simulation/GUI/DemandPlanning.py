@@ -28,10 +28,12 @@ test script to convert the static excels to JSON. It does not communicate with G
 import xlwt
 import xlrd
 import json
-from AllocManagement import AllocManagement
+from dream.simulation.AllocationManagement import AllocationManagement
 from dream.simulation.LineGenerationJSON import main as simulate_line_json
 from dream.simulation.Globals import G
 
+from dream.simulation.GUI.Default import Simulation as DefaultSimulation
+from dream.simulation.GUI.Default import schema, overloaded_property
 
 class IG:
     TargetPPOS = 0
@@ -78,53 +80,61 @@ def createGlobals():
 #===================================
 # import simulation input data
 #===================================
-def readGeneralInput():
-    # general simulation input
-    wbin = xlrd.open_workbook('GUI/inputs.xlsx')
-    sh = wbin.sheet_by_name('Scalar_Var')
-    IG.TargetPPOS = int(sh.cell(2,1).value) -1 
-    IG.TargetPPOSqty = int(sh.cell(3,1).value)
-    IG.TargetPPOSweek = int(sh.cell(6,1).value) -1    
-    G.planningHorizon = int(sh.cell(7,1).value) 
-    G.ReplicationNo = int(sh.cell(15,1).value) 
-    IG.maxEarliness = int(sh.cell(18,1).value) 
-    IG.maxLateness = int(sh.cell(19,1).value) 
-    IG.minPackingSize = int(sh.cell(22,1).value)
+def readGeneralInput(data):
+    # Info on PPOS to be disaggregated    
+    # PPOS ID     1
+    # PPOS Quantity   430
+    IG.TargetPPOS = data['general']['TargetPPOS'] - 1
+    IG.TargetPPOSqty = data['general']['TargetPPOSqty']
 
-    # capacity information
-    sh = wbin.sheet_by_name('Capacity')
-    nCols = sh.ncols
-    nRows=sh.nrows
-    assert(nCols == G.planningHorizon+1)
-    capacity=[]
-#     for i in range(1,nCols):
-#         capacity.append(sh.col_values(i,2))
+    # Time Line   
+    # Week when the disaggregation has to be performed    2
+    # Planning horizon (consistent with capacity info)    3
+    IG.TargetPPOSweek = data['general']['TargetPPOSweek'] - 1
+    G.planningHorizon = data['general']['planningHorizon']
 
-    for i in range(2, nRows):
-        capacity.append(sh.row_values(i,1,4))
-    G.Capacity = capacity      
+    # Info on Global Demand - normal distribution parameters  
+    # DistributionType    Normal
+    # Mean    100000
+    # Standard Deviation  3000
+    #   XXX those 3 cannot be configured
 
-    # PPOS-MA disaggregation and corresponding routes
-    sh = wbin.sheet_by_name('Route')
-    nRows = sh.nrows
-    nCols = sh.ncols
-    # prepare a dict that holds the capacity of every bottleneck  per week
-    for i in range(3,nCols):
-        IG.CapacityDict[sh.cell(2,i).value]=G.Capacity[i-3]
-    
-    
-    for i in range(4,nRows):
-        tempPPOSlist = sh.row_values(i,0,3)
-        id=tempPPOSlist[2]
-        ppos=tempPPOSlist[0]
-        sp=tempPPOSlist[1]
-        routeValues=sh.row_values(i,3,nCols)
-        IG.RouteDict[id]={'PPOS':ppos, 'SP':sp, 'route':{}}
-        for j in range(len(routeValues)):
-            IG.RouteDict[id]['route'][sh.cell(2,j+3).value]=routeValues[j]
+    # Info on scenario analysis   
+    # Number of Iterations    1
+    G.ReplicationNo = data['general']['numberOfReplications']
+
+    # Info on Time Cosntraints for Allocation 
+    # Max Earliness   1
+    # Max Lateness    1
+    IG.maxEarliness = data['general']['maxEarliness']
+    IG.maxLateness = data['general']['maxLateness']
+
+    # Info on minimum allocable size  
+    # Min Packing Size    10
+    IG.minPackingSize = data['general']['minPackingSize']
+
+    capacity_data = data['dp_capacity_spreadsheet']
+    assert(len(capacity_data[0]) == G.planningHorizon+2)
+    capacity = []
+    for i in range(2, len(capacity_data) - 1):
+        capacity.append([int(x) for x in capacity_data[i][1:-1]])
+    G.Capacity = capacity
+
+    route_data = data['dp_route_spreadsheet']
+    for i in range(3, len(route_data[0]) - 1):
+        IG.CapacityDict[route_data[2][i]] = G.Capacity[i-3]
+
+    for i in range(4, len(route_data) - 1):
+        id = float(route_data[i][2])
+        ppos = float(route_data[i][0])
+        sp = float(route_data[i][1])
+
+        IG.RouteDict[id] = {'PPOS': ppos, 'SP': sp, 'route':{}}
+        for j in range(3, len(route_data[i]) - 1):
+            IG.RouteDict[id]['route'][route_data[2][j]] = float(route_data[i][j])
+
 
 def writeOutput():
-    
     wbin = xlwt.Workbook()
     for k in range(G.ReplicationNo):
         
@@ -254,57 +264,135 @@ def writeOutput():
             i+=1               
                    
     wbin.save("demandPlannerOutput.xls")    # temporary have a file for verification
+    import StringIO
+    out = StringIO.StringIO()
+    wbin.save(out)
+    return out.getvalue()
 
 
-def main():    
-    # set up global variables
-    createGlobals()
-    # read from inputs spreadsheet
-    readGeneralInput()
-    # open json file
-    argumentDictFile=open('inputFile.json', mode='w')
-    inputDict={}
+class Simulation(DefaultSimulation):
+    def getConfigurationDict(self):
+        conf = {'Dream-Configuration':
+            DefaultSimulation.getConfigurationDict(self)['Dream-Configuration']}
 
-    inputDict['_class']='Dream.Simulation'    
-    
-    # set general attributes
-    inputDict['general']={}
-    inputDict['general']['maxSimTime']=G.planningHorizon
-    inputDict['general']['numberOfReplications']=G.ReplicationNo
-    inputDict['general']['_class']='Dream.Simulation'
-    
-    inputDict['edges']={}
-    inputDict['nodes']={}
-    inputDict['nodes']['AM']={}
-    inputDict['nodes']['AM']['_class']='Dream.AllocationManagement'
-    inputDict['nodes']['AM']['id']='AM1'
-    inputDict['nodes']['AM']['name']='AM1'    
-    inputDict['nodes']['AM']['argumentDict']={}
-    
-    # set current PPOS attributes
-    inputDict['nodes']['AM']['argumentDict']['currentPPOS']={}
-    inputDict['nodes']['AM']['argumentDict']['currentPPOS']['id']=IG.TargetPPOS
-    inputDict['nodes']['AM']['argumentDict']['currentPPOS']['quantity']=IG.TargetPPOSqty
-    inputDict['nodes']['AM']['argumentDict']['currentPPOS']['targetWeek']=IG.TargetPPOSweek
-    
-    # set allocation attributes
-    inputDict['nodes']['AM']['argumentDict']['allocationData']={}
-    inputDict['nodes']['AM']['argumentDict']['allocationData']['maxEarliness']=IG.maxEarliness
-    inputDict['nodes']['AM']['argumentDict']['allocationData']['maxLateness']=IG.maxLateness
-    inputDict['nodes']['AM']['argumentDict']['allocationData']['minPackingSize']=IG.minPackingSize
-        
-    # set capacity attributes
-    inputDict['nodes']['AM']['argumentDict']['capacity']=IG.CapacityDict    
+        conf["Dream-Configuration"]["gui"]["exit_stat"] = 0
+        conf["Dream-Configuration"]["gui"]["debug_json"] = 1
+        conf["Dream-Configuration"]["gui"]["graph_editor"] = 0
+        conf["Dream-Configuration"]["gui"]["station_utilisation_graph"] = 0
+        conf["Dream-Configuration"]["gui"]["exit_stat"] = 0
+        conf["Dream-Configuration"]["gui"]["queue_stat"] = 0
+        conf["Dream-Configuration"]["gui"]["dp_capacity_spreadsheet"] = 1
+        conf["Dream-Configuration"]["gui"]["dp_route_spreadsheet"] = 1
 
-    # set MA attributes
-    inputDict['nodes']['AM']['argumentDict']['MAList']=IG.RouteDict  
-    
-    G.argumentDictString=json.dumps(inputDict, indent=5)
-    argumentDictFile.write(G.argumentDictString)
-    
-    simulate_line_json(input_data=(G.argumentDictString))
-#     writeOutput()   # currently to excel for verification. To be outputted in JSON
+        prop_list = conf["Dream-Configuration"]["property_list"] = []
+        prop_list.append({
+            "id": "TargetPPOS",
+            "name": "PPOS ID",
+            "description": "Info on PPOS to be disaggregated",
+            "type": "number",
+            "_class": "Dream.Property",
+            "_default": 1
+        })
+        prop_list.append({
+            "id": "TargetPPOSqty",
+            "name": "PPOS Quantity",
+            "description": "Info on PPOS to be disaggregated",
+            "type": "number",
+            "_class": "Dream.Property",
+            "_default": 430
+        })
+        prop_list.append({
+            "id": "TargetPPOSweek",
+            "name": "PPOS Week",
+            "description": "Week when the disaggregation has to be performed",
+            "type": "number",
+            "_class": "Dream.Property",
+            "_default": 2
+        })
+        prop_list.append({
+            "id": "planningHorizon",
+            "name": "Planning horizon",
+            "description": "Planning horizon (consistent with capacity info)",
+            "type": "number",
+            "_class": "Dream.Property",
+            "_default": 3
+        })
+        prop_list.append(overloaded_property(schema['numberOfReplications'],
+                        {'_default': 1}))
+        prop_list.append({
+            "id": "maxEarliness",
+            "name": "Max Earliness",
+            "description": "Info on Time Constraints for Allocation",
+            "type": "number",
+            "_class": "Dream.Property",
+            "_default": 1
+        })
+        prop_list.append({
+            "id": "maxLateness",
+            "name": "Max Lateness",
+            "description": "Info on Time Constraints for Allocation",
+            "type": "number",
+            "_class": "Dream.Property",
+            "_default": 1
+        })
+        prop_list.append({
+            "id": "minPackingSize",
+            "name": "Min Packing Size",
+            "description": "Info on minimum allocable size",
+            "type": "number",
+            "_class": "Dream.Property",
+            "_default": 10
+        })
+        return conf
 
-    
-if __name__ == '__main__':
-    main()
+    def run(self, data):
+        # set up global variables
+        createGlobals()
+        # read from inputs spreadsheet
+        readGeneralInput(data)
+        inputDict={}
+
+        inputDict['_class']='Dream.Simulation'
+
+        # set general attributes
+        inputDict['general']={}
+        inputDict['general']['maxSimTime']=G.planningHorizon
+        inputDict['general']['numberOfReplications']=G.ReplicationNo
+        inputDict['general']['_class']='Dream.Simulation'
+
+        inputDict['edges']={}
+        inputDict['nodes']={}
+        inputDict['nodes']['AM']={}
+        inputDict['nodes']['AM']['_class']='Dream.AllocationManagement'
+        inputDict['nodes']['AM']['id']='AM1'
+        inputDict['nodes']['AM']['name']='AM1'
+        inputDict['nodes']['AM']['argumentDict']={}
+
+        # set current PPOS attributes
+        inputDict['nodes']['AM']['argumentDict']['currentPPOS']={}
+        inputDict['nodes']['AM']['argumentDict']['currentPPOS']['id']=IG.TargetPPOS
+        inputDict['nodes']['AM']['argumentDict']['currentPPOS']['quantity']=IG.TargetPPOSqty
+        inputDict['nodes']['AM']['argumentDict']['currentPPOS']['targetWeek']=IG.TargetPPOSweek
+
+        # set allocation attributes
+        inputDict['nodes']['AM']['argumentDict']['allocationData']={}
+        inputDict['nodes']['AM']['argumentDict']['allocationData']['maxEarliness']=IG.maxEarliness
+        inputDict['nodes']['AM']['argumentDict']['allocationData']['maxLateness']=IG.maxLateness
+        inputDict['nodes']['AM']['argumentDict']['allocationData']['minPackingSize']=IG.minPackingSize
+
+        # set capacity attributes
+        inputDict['nodes']['AM']['argumentDict']['capacity']=IG.CapacityDict
+
+        # set MA attributes
+        inputDict['nodes']['AM']['argumentDict']['MAList']=IG.RouteDict
+
+        G.argumentDictString=json.dumps(inputDict, indent=5)
+
+        out = json.loads(simulate_line_json(input_data=(G.argumentDictString)))
+
+        output = writeOutput()
+        out['demandPlannerOutput.xls'] = output.encode('base64')
+        return [{'key': 'default', 'score':0, 'result': out}]
+
+
+
