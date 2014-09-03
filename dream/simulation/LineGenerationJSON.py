@@ -38,18 +38,18 @@ logger = logging.getLogger("dream.platform")
 import numpy
 numpy.seterr(all='raise')
 import simpy
-from Globals import G 
-from Order import Order
-from OrderDesign import OrderDesign
-from Mould import Mould
-import PrintRoute
-import ExcelHandler
+from dream.simulation.Globals import G 
+from dream.simulation.Order import Order
+from dream.simulation.OrderDesign import OrderDesign
+from dream.simulation.Mould import Mould
+import dream.simulation.PrintRoute as PrintRoute
+import dream.simulation.ExcelHandler as ExcelHandler
 import time
 import json
 from random import Random
 import sys
 import os.path
-import Globals
+import dream.simulation.Globals as Globals
 import ast
 import cProfile
 
@@ -149,7 +149,7 @@ def createObjectResourcesAndCoreObjects():
         resourceClass = element.pop('_class')                       # get the class type of the element
         
         objectType=Globals.getClassFromName(resourceClass)    
-        from ObjectResource import ObjectResource     # operator pools to be created later since they use operators
+        from dream.simulation.ObjectResource import ObjectResource     # operator pools to be created later since they use operators
                                                       # ToDo maybe it is semantically diferent object  
         if issubclass(objectType, ObjectResource) and not resourceClass=='Dream.OperatorPool':
             inputDict=dict(element)
@@ -162,7 +162,7 @@ def createObjectResourcesAndCoreObjects():
     search for operatorPools in order to create them
     read the data and create them
     '''
-    from OperatorPool import OperatorPool
+    from dream.simulation.OperatorPool import OperatorPool
     for (element_id, element) in nodes.iteritems():                 # use an iterator to go through all the nodes
                                                                     # the key is the element_id and the second is the 
                                                                     # element itself 
@@ -202,8 +202,9 @@ def createObjectResourcesAndCoreObjects():
         for k in ('element_id', 'top', 'left'):
           element.pop(k, None)
         objClass = element.pop('_class')
-        objectType=Globals.getClassFromName(objClass)    
-        from CoreObject import CoreObject
+        objectType=Globals.getClassFromName(objClass)  
+  
+        from dream.simulation.CoreObject import CoreObject
         if issubclass(objectType, CoreObject):
             # remove data that has to do with wip or object interruption. CoreObjects do not need it
             inputDict=dict(element)           
@@ -255,8 +256,7 @@ def createObjectInterruptions():
         element['id'] = element_id                                  # create a new entry for the element (dictionary)
                                                                     # with key 'id' and value the the element_id
         objClass = element.get('_class', 'not found')           # get the class type of the element
-        from ObjectInterruption import ObjectInterruption
-        import Globals
+        from dream.simulation.ObjectInterruption import ObjectInterruption
         objClass = element.pop('_class')
         objectType=Globals.getClassFromName(objClass)    
         # from CoreObject import CoreObject
@@ -272,9 +272,9 @@ def createObjectInterruptions():
     # ToDo this will be cleaned a lot if we update the JSON notation:
     # define ObjectInterruption echelon inside node
     # define interruptions' distribution better
-    from ScheduledMaintenance import ScheduledMaintenance    
-    from Failure import Failure
-    from ShiftScheduler import ShiftScheduler
+    from dream.simulation.ScheduledMaintenance import ScheduledMaintenance    
+    from dream.simulation.Failure import Failure
+    from dream.simulation.ShiftScheduler import ShiftScheduler
     for (element_id, element) in nodes.iteritems():
         element['id'] = element_id
         scheduledMaintenance=element.get('scheduledMaintenance', {})
@@ -345,21 +345,20 @@ def createWIP():
     # entities that just finished processing in a station 
     # and have to enter the next machine 
     G.pendingEntities=[]
-    import Globals
     json_data = G.JSONData
     #Read the json data
     nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
     for (element_id, element) in nodes.iteritems():
         element['id'] = element_id
         wip=element.get('wip', [])
-        from OrderDesign import OrderDesign
+        from dream.simulation.OrderDesign import OrderDesign
         from Order import Order
         for entity in wip:
             entityClass=entity.get('_class', None)
             entityType=Globals.getClassFromName(entityClass)
             inputDict=dict(entity)
             inputDict.pop('_class')
-            from Entity import Entity
+            from dream.simulation.Entity import Entity
             if issubclass(entityType, Entity) and (not entityClass=='Dream.Order'):
                 entity=entityType(**inputDict)   
                 G.EntityList.append(entity)    
