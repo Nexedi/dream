@@ -148,7 +148,7 @@ class Queue(CoreObject):
         if(callerObject==None):
             return len(activeObjectQueue)<self.capacity
         thecaller=callerObject
-        return len(activeObjectQueue)<self.capacity and (thecaller in self.previous)
+        return len(activeObjectQueue)<self.capacity and (self.isInRoute(thecaller))
     
     # =======================================================================
     #    checks if the Queue can dispose an entity to the following object
