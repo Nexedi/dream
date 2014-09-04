@@ -33,35 +33,15 @@ from RandomNumberGenerator import RandomNumberGenerator
 # ===========================================================================
 class MachineJobShop(Machine):
     @staticmethod
-    def getProcessingTime(processingTime):
+    def getOperationTime(time):
         '''returns the processingTime dictionary updated'''
-        if not processingTime:
-            processingTime = { 'distributionType': 'Fixed',
+        if not time:
+            time = { 'distributionType': 'Fixed',
                                'mean': 0, }
-        if processingTime['distributionType'] == 'Normal' and\
-                processingTime.get('max', None) is None:
-            processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
-        return processingTime
-    @staticmethod
-    def getSetupTime(setupTime):
-        '''returns the setupTime dictionary updated'''
-        if not setupTime:
-            setupTime = { 'distributionType': 'Fixed',
-                          'mean': 0, }
-        if setupTime['distributionType'] == 'Normal' and\
-                setupTime.get('max', None) is None:
-            setupTime['max'] = float(setupTime['mean']) + 5 * float(setupTime['stdev'])
-        return setupTime
-    @staticmethod
-    def getLoadTime(loadTime):
-        '''returns the loadTime dictionary updated'''
-        if not loadTime:
-            loadTime = { 'distributionType': 'Fixed',
-                         'mean': 0, }
-        if loadTime['distributionType'] == 'Normal' and\
-                loadTime.get('max', None) is None:
-            loadTime['max'] = float(loadTime['mean']) + 5 * float(loadTime['stdev'])
-        return loadTime
+        if time['distributionType'] == 'Normal' and\
+                time.get('max', None) is None:
+            time['max'] = float(time['mean']) + 5 * float(time['stdev'])
+        return time
     
     # =======================================================================
     # set all the objects in previous and next
@@ -145,12 +125,12 @@ class MachineJobShop(Machine):
         
         # read the processing/setup/load times from the corresponding remainingRoute entry
         processingTime=activeEntity.remainingRoute[0].get('processingTime',{})
-        processingTime=self.getProcessingTime(processingTime)
+        processingTime=self.getOperationTime(processingTime)
         self.rng=RandomNumberGenerator(self, **processingTime)
         self.procTime=self.rng.generateNumber()
         
         setupTime=activeEntity.remainingRoute[0].get('setupTime',{})
-        setupTime=self.getSetupTime(setupTime)
+        setupTime=self.getOperationTime(setupTime)
         self.stpRng=RandomNumberGenerator(self, **setupTime)
         
         removedStep = activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
@@ -189,12 +169,12 @@ class MachineJobShop(Machine):
             # read the processing/setup/load times from the first entry of the full route
             activeEntity=self.getActiveObjectQueue()[0]
             processingTime=activeEntity.route[0].get('processingTime',{})
-            processingTime=self.getProcessingTime(processingTime)
+            processingTime=self.getOperationTime(processingTime)
             self.rng=RandomNumberGenerator(self, **processingTime)
             self.procTime=self.rng.generateNumber()
             
             setupTime=activeEntity.route[0].get('setupTime',{})
-            setupTime=self.getSetupTime(setupTime)
+            setupTime=self.getOperationTime(setupTime)
             self.stpRng=RandomNumberGenerator(self, **setupTime)
         return self.procTime    #this is the processing time for this unique entity 
     
@@ -320,7 +300,7 @@ class MachineJobShop(Machine):
         thecaller.sortEntities()
         activeEntity=thecaller.Res.users[0]
         loadTime=activeEntity.remainingRoute[0].get('loadTime',{})
-        loadTime=self.getLoadTime(loadTime)
+        loadTime=self.getOperationTime(loadTime)
         self.loadRng=RandomNumberGenerator(self, **loadTime)
         
     # =======================================================================
