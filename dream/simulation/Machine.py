@@ -966,11 +966,7 @@ class Machine(CoreObject):
         if self.isLocked:
             return False
         activeObjectQueue=self.Res.users
-        # local flag that is set only if there is no callerObject or if thecaller is predecessor of the activeObject
-        theCallerIsPredecessor=False
         thecaller=callerObject
-        if callerObject==None or thecaller in self.previous:
-            theCallerIsPredecessor=True
         # return True ONLY if the length of the activeOjbectQue is smaller than
         # the object capacity, and the callerObject is not None but the giverObject
         if (self.operatorPool!='None' and (any(type=='Load' for type in self.multOperationTypeList)\
@@ -978,14 +974,14 @@ class Machine(CoreObject):
             return self.operatorPool.checkIfResourceIsAvailable()\
                 and self.checkIfMachineIsUp()\
                 and len(activeObjectQueue)<self.capacity\
-                and theCallerIsPredecessor\
+                and self.isInRoute(thecaller)\
                 and not self.entryIsAssignedTo()
         else:
             # the operator doesn't have to be present for the loading of the machine as the load operation
             # is not assigned to operators
             return self.checkIfMachineIsUp()\
                 and len(activeObjectQueue)<self.capacity\
-                and theCallerIsPredecessor\
+                and self.isInRoute(thecaller)\
                 and not self.entryIsAssignedTo()
     
     # =======================================================================
