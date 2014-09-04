@@ -232,24 +232,34 @@ class MouldAssembly(MachineJobShop):
             firstStep = route.pop(0)
             assert (self.id in firstStep.get('stationIdsList',[])),\
                          'the assembler must be in the mould-to-be-created route\' initial step'
+            
             # normal processing operation
             processingTime=firstStep['processingTime']
             # update the activeObject's processing time according to the readings in the mould's route
-            self.distType=processingTime.get('distributionType','not found')
-            self.procTime=float(processingTime.get('mean', 0))
-            procOpType=processingTime.get('operationType','not found') # can be manual/automatic
+            processDistType=processingTime.get('distributionType','not found')
+            procTime=float(processingTime.get('mean', 0))
+            processOpType=processingTime.get('operationType','not found') # can be manual/automatic
+            
+            processingTime=self.getOperationTime(processingTime)
+            self.rng=RandomNumberGenerator(self, **processingTime)
+            self.procTime=self.rng.generateNumber()
+            
             # setup operation
             setupTime=firstStep['setupTime']
             # update the activeObject's processing time according to the readings in the mould's route
-            self.distType=setup.get('distributionType','not found')
-            self.setupTime=float(setup.get('mean', 0))
+            setupDistType=setup.get('distributionType','not found')
+            setupTime=float(setup.get('mean', 0))
+            
             setupOpType=setup.get('operationType','not found') # can be manual/automatic
+            setupTime=self.getOperationTime(setupTime)
+            self.stpRng=RandomNumberGenerator(self, **setupTime)
+            
             # update the first step of the route with the activeObjects id as sole element of the stationIdsList
-            route.insert(0, {'stationIdsList':[str(self.id)],'processingTime':{'distributionType':str(self.distType),\
-                                                                               'mean':str(self.procTime),\
-                                                                               'operationType':str(procOpType)},\
-                                                             'setupTime':{'distributionType':str(self.distType),\
-                                                                               'mean':str(self.setupTime),\
+            route.insert(0, {'stationIdsList':[str(self.id)],'processingTime':{'distributionType':str(processDistType),\
+                                                                               'mean':str(procTime),\
+                                                                               'operationType':str(processOpType)},\
+                                                             'setupTime':{'distributionType':str(setupDistType),\
+                                                                               'mean':str(setupTime),\
                                                                                'operationType':str(setupOpType)}})
             #Below it is to assign an exit if it was not assigned in JSON
             #have to talk about it with NEX
