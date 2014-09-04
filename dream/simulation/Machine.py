@@ -59,11 +59,11 @@ class Machine(CoreObject):
         CoreObject.__init__(self, id, name)
         from Globals import G
         
-        processingTime=self.getProcessingTime(processingTime=processingTime)
+        processingTime=self.getOperationTime(time=processingTime)
         
-        setupTime=self.getSetupTime(setupTime=setupTime)
+        setupTime=self.getOperationTime(time=setupTime)
         
-        loadTime=self.getLoadTime(loadTime=loadTime)
+        loadTime=self.getOperationTime(time=loadTime)
         
         #     holds the capacity of the machine 
         self.capacity=capacity
@@ -192,38 +192,16 @@ class Machine(CoreObject):
         self.processOperatorUnavailable=self.env.event()
 
     @staticmethod
-    def getProcessingTime(processingTime):
-        '''returns the processingTime dictionary updated'''
-        if not processingTime:
-            processingTime = { 'distributionType': 'Fixed',
-                               'mean': 0, }
-        if processingTime['distributionType'] == 'Normal' and\
-                processingTime.get('max', None) is None:
-            processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
-        return processingTime
+    def getOperationTime(time):
+        '''returns the dictionary updated'''
+        if not time:
+            time = { 'distributionType': 'Fixed',
+                               'mean': 0 }
+        if time['distributionType'] == 'Normal' and\
+                time.get('max', None) is None:
+            time['max'] = float(time['mean']) + 5 * float(time['stdev'])
+        return time
     
-    @staticmethod
-    def getSetupTime(setupTime):
-        '''returns the setupTime dictionary updated'''
-        if not setupTime:
-            setupTime = { 'distributionType': 'Fixed',
-                          'mean': 0, }
-        if setupTime['distributionType'] == 'Normal' and\
-                setupTime.get('max', None) is None:
-            setupTime['max'] = float(setupTime['mean']) + 5 * float(setupTime['stdev'])
-        return setupTime
-    
-    @staticmethod
-    def getLoadTime(loadTime):
-        '''returns the loadTime dictionary updated'''
-        if not loadTime:
-            loadTime = { 'distributionType': 'Fixed',
-                         'mean': 0, }
-        if loadTime['distributionType'] == 'Normal' and\
-                loadTime.get('max', None) is None:
-            loadTime['max'] = float(loadTime['mean']) + 5 * float(loadTime['stdev'])
-        return loadTime
-               
     #===========================================================================
     # create an operatorPool if needed
     #===========================================================================
