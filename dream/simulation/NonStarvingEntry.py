@@ -59,12 +59,15 @@ class NonStarvingEntry(Queue):
         from Globals import G
         import Globals
         entityType=self.entityData.get('_class', None)
+        extraArgs=dict(self.entityData)
+        extraArgs.pop('_class')
         assert entityType, 'the entity type of the non starving buffer could not be identified'
         entityType=Globals.getClassFromName(entityType)
         Eargs={'id':G.numberOfEntities,
                'name':str(entityType)+str(G.numberOfEntities),
                'currentStation':self
                }
+        Eargs.update(extraArgs)
         E=entityType(**Eargs)
         Globals.setWIP([E])
         G.numberOfEntities+=1

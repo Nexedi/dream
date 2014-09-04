@@ -1,0 +1,36 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.Exit", 
+   "family": "Exit", 
+   "id": "E1", 
+   "results": {
+    "lifespan": 5.0, 
+    "takt_time": 2.0, 
+    "throughput": 4, 
+    "unitsThroughput": 400
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
+   "id": "M1", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 0.0, 
+    "working_ratio": 100.0
+   }
+  }, 
+  {
+   "_class": "Dream.NonStarvingEntry", 
+   "family": "Entry", 
+   "id": "NS1", 
+   "results": {}
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}
