@@ -696,6 +696,20 @@ class CoreObject(ManPyObject):
     def canAccept(self, callerObject=None): 
         pass
     
+    #===========================================================================
+    # method used to check whether the station is a successor of the caller
+    #===========================================================================
+    def isInRoute(self, callerObject=None):
+        thecaller=callerObject
+        # if the caller is not defined then return True. We are only interested in checking whether 
+        # the station can accept whatever entity from whichever giver
+        if not thecaller:
+            return True
+        #check it the caller object is predecessor to the activeObject
+        if thecaller in self.previous:
+            return True
+        return False
+    
     # =======================================================================
     # sorts the Entities in the activeQ of the objects 
     # =======================================================================
