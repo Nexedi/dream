@@ -36,10 +36,14 @@ class NonStarvingEntry(Queue):
     def __init__(self, id, name, capacity=float('inf'), entityData={'_class':'Dream.Part'}, threshold=2, 
                  initialWIPLevel=2,**kw):
         Queue.__init__(self, id=id,name=name, capacity=capacity)
+        # the threshold under which a new Entity will be created
         self.threshold=int(threshold)
+        # the number of Entities in the start of simulation
         self.initialWIPLevel=int(initialWIPLevel)
+        # the data of the Entities (dictionary)
         self.entityData=dict(entityData)
 
+    # extend to create the initial WIP in the given level
     def initialize(self):
         Queue.initialize(self)
         from Globals import G
@@ -47,6 +51,7 @@ class NonStarvingEntry(Queue):
         for i in range(self.initialWIPLevel):
             self.createEntity()
 
+    # extend to check if we are below the Threshold and create WIP if yes
     def removeEntity(self, entity=None):
         activeEntity=Queue.removeEntity(self, entity)                  #run the default method
         activeObjectQueue=self.getActiveObjectQueue()
@@ -55,6 +60,9 @@ class NonStarvingEntry(Queue):
             self.createEntity()
         return activeEntity
     
+    # create the Entity
+    # ToDo we could apply similar methodology to source.CreateEntity.
+    # Source JSON schema may change though.
     def createEntity(self):
         from Globals import G
         import Globals
