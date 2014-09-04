@@ -952,21 +952,11 @@ class Machine(CoreObject):
         if self.isLocked:
             return False
         activeObjectQueue=self.Res.users
-        # if we have only one predecessor just check if there is a place and the machine is up
-        # this is done to achieve better (cpu) processing time 
-        # then we can also use it as a filter for a yield method
-        if(callerObject==None):
-            if (self.operatorPool!='None' and (any(type=='Load' for type in self.multOperationTypeList)\
-                                                    or any(type=='Setup' for type in self.multOperationTypeList))):
-                return self.operatorPool.checkIfResourceIsAvailable()\
-                        and self.checkIfMachineIsUp()\
-                        and len(activeObjectQueue)<self.capacity\
-                        and not self.entryIsAssignedTo()
-            else:
-                return self.checkIfMachineIsUp()\
-                        and len(activeObjectQueue)<self.capacity\
-                        and not self.entryIsAssignedTo()
+        # local flag that is set only if there is no callerObject or if thecaller is predecessor of the activeObject
+        theCallerIsPredecessor=False
         thecaller=callerObject
+        if callerObject==None or thecaller in self.previous:
+            theCallerIsPredecessor=True
         # return True ONLY if the length of the activeOjbectQue is smaller than
         # the object capacity, and the callerObject is not None but the giverObject
         if (self.operatorPool!='None' and (any(type=='Load' for type in self.multOperationTypeList)\
@@ -974,13 +964,14 @@ class Machine(CoreObject):
             return self.operatorPool.checkIfResourceIsAvailable()\
                 and self.checkIfMachineIsUp()\
                 and len(activeObjectQueue)<self.capacity\
+                and theCallerIsPredecessor\
                 and not self.entryIsAssignedTo()
         else:
             # the operator doesn't have to be present for the loading of the machine as the load operation
             # is not assigned to operators
             return self.checkIfMachineIsUp()\
                 and len(activeObjectQueue)<self.capacity\
-                and (thecaller in self.previous)\
+                and theCallerIsPredecessor\
                 and not self.entryIsAssignedTo()
     
     # =======================================================================
