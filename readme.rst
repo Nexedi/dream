@@ -37,7 +37,7 @@ Then the user is referred to the documentation that is available in this reposit
 Dependencies
 =================
 
-ManPy uses the following Python libraries:
+DREAM uses the following Python libraries:
  + `SimPy3 <http://simpy.readthedocs.org/en/latest/>`_
  + `NumPy <http://www.numpy.org/>`_
  + `xlrd <https://pypi.python.org/pypi/xlrd>`_
