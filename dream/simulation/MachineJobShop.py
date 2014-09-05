@@ -132,11 +132,11 @@ class MachineJobShop(Machine):
         setupTime=activeEntity.remainingRoute[0].get('setupTime',{})
         setupTime=self.getOperationTime(setupTime)
         self.stpRng=RandomNumberGenerator(self, **setupTime)
+#         # update the multOperationTypeList according to the needs of the received entity
+#         self.readActiveOperationTypes(entity)
         
         removedStep = activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
         return activeEntity
-    
-    
     
     #===========================================================================
     # update the next list of the object based on the activeEentity
@@ -292,7 +292,7 @@ class MachineJobShop(Machine):
 
     #===========================================================================
     # to be called by canAcceptAndIsRequested if it is to return True.
-    # the load timeof the Entity must be read
+    # the load time of the Entity must be read
     #===========================================================================
     def readLoadTime(self,callerObject=None):
         assert callerObject!=None, 'the caller of readLoadTime cannot be None'
@@ -302,6 +302,39 @@ class MachineJobShop(Machine):
         loadTime=activeEntity.remainingRoute[0].get('loadTime',{})
         loadTime=self.getOperationTime(loadTime)
         self.loadRng=RandomNumberGenerator(self, **loadTime)
+    
+    #===========================================================================
+    # to be called by getEntity.
+    # it must be specified if the currentEntity requires manual setup/processing 
+    #===========================================================================
+    def readActiveOperationTypes(self,entity):
+        activeEntity=entity
+        # flag to notify whether the entity defined manual or automatic operation 
+        self.entityDefiningOperation=False
+        # read the definition of the setupTime from the remainingRoute dict
+        setupTime=activeEntity.remainingRoute[0].get('setupTime',{})
+        setupOpType=setupTime.get('operationType', 'not defined')
+        # if the setupOpType is 'not defined'
+        if setupOpType!='not defined':
+            # the multOperationTypeList must be cleared by the entity is removed
+            self.entityDefiningOperation=True
+            # add setup to the multOpeartionTypeList
+            if not 'Setup' in self.multOperationTypeList:
+                self.multOperationTypeList.append('Setup')
+            # find out if the setup operation type is automatic or manual
+            if setupOpType:
+                pass
+            
+        # read the definition of the processingTime from the remainingRoute dict
+        procTime=activeEntity.remainingRoute[0].get('processingTime',{})
+        procOpType=setupTime.get('operationType', 'not defined')
+        # if the procOpType is 'not defined'
+        if procOpType!='not defined':
+            # the multOperationTypeList must be cleared by the entity is removed
+            self.entityDefiningOperation=True
+        # find out if the processing type is manual or automatic
+        if procOpType and not 'Processing' in self.multOperationTypeList:
+            self.multOperationTypeList.append('Processing')
         
     # =======================================================================
     # removes an entity from the Machine
@@ -319,6 +352,12 @@ class MachineJobShop(Machine):
         # if not entity had the same receiver then the receiver will be removed    
         if removeReceiver:
             self.next.remove(receiverObject)
+#         if self.entityDefiningOperation:
+#             # reset the multOperationTypeList
+#             if 'Processing' in self.multOperationTypeList:
+#                 self.multOperationTypeList.remove('Processing') 
+#             if 'Setup' in self.multOperationTypeList:
+#                 self.multOperationTypeList.remove('Setup')
         return activeEntity
 
         
