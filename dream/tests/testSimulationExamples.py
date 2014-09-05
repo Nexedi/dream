@@ -196,3 +196,22 @@ class SimulationExamples(TestCase):
     self.assertEquals(result['parts'], 10)
     self.assertEquals(result['simulationTime'], 36.0)
     self.assertTrue(83.32 < result["working_ratio"] < 83.34)
+	
+  def testSettingWip3(self):
+    from dream.simulation.Examples.SettingWip3 import main
+    result = main()
+    self.assertEquals(result['parts'], 2)
+    self.assertEquals(result['simulationTime'], 0.35)	
+    self.assertEquals(result["working_ratio"], 100)
+	
+  def testNonStarvingLine(self):
+    from dream.simulation.Examples.NonStarvingLine import main
+    result = main()
+    self.assertEquals(result['parts'], 9)
+    self.assertEquals(result["working_ratio"], 100)
+	
+  def testNonStarvingLineBatches(self):
+    from dream.simulation.Examples.NonStarvingLineBatches import main
+    result = main()
+    self.assertEquals(result['batches'], 4)
+    self.assertEquals(result["working_ratio"], 100)
