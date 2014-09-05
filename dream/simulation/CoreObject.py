@@ -836,7 +836,14 @@ class CoreObject(object):
     # =======================================================================
     def interruptionActions(self):
         pass
-
+    
+    # =======================================================================
+    #         actions to be carried whenever the object recovers 
+    #   control after an interruption (failure, break, preemption, etc)
+    # =======================================================================
+    def postInterruptionActions(self):
+        pass
+    
     # =======================================================================
     # method to execute preemption
     # =======================================================================    
