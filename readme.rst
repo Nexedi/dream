@@ -38,20 +38,20 @@ developers.
 How to get started
 ========================
 
-Note: This section does not apply if DREAM is installed with python setup.py or
-if you use buildout.
+To use the platform you need to:
+ + Have Python installed.
+ + Clone our git repository (https://github.com/nexedi/dream) or download it into a folder in your computer.
+ + Run the setup script that is in the root folder (python setup.py install). This will install ManPy along with its dependencies (e.g. SimPy3)
 
-To be able to run the documentation examples just copy the dream/simulation to your Python folder. Then you can import ManPy objects as it is written in the examples, e.g.:
- + *from simulation.Queue import Queue* or
- + *from simulation.imports import Machine, Source, Exit*
-
-If you copy the whole dream folder, then the import should change to something like *from dream.simulation.Queue import Queue*. If you want to rename the folder it can be *from path.to.my.new.folder.Queue import Queue*.
+Then you can import ManPy objects as it is written in the examples, e.g.:
+ + *from dream.simulation.Queue import Queue* or
+ + *from dream.simulation.imports import Machine, Source, Exit*
 
 Dependencies
 =================
 
-ManPy uses the following Python libraries:
- + SimPy
+DREAM uses the following Python libraries:
+ + SimPy3
  + NumPy
  + SciPy
  + xlrd
