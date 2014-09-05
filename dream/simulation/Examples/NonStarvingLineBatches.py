@@ -20,10 +20,10 @@ def main():
     runSimulation(objectList, maxSimTime)
     
     #print the results
-    print "the system produced", E.numOfExits, "parts"
+    print "the system produced", E.numOfExits, "batches"
     working_ratio = (M.totalWorkingTime/maxSimTime)*100
     print "the total working ratio of the Machine is", working_ratio, "%"
-    return {"parts": E.numOfExits,
+    return {"batches": E.numOfExits,
           "working_ratio": working_ratio}
 
 if __name__ == '__main__':
