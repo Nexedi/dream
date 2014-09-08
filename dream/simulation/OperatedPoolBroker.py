@@ -41,8 +41,8 @@ class Broker(ObjectInterruption):
     #     The Broker is initiated within the Machine and considered as 
     #                black box for the ManPy end Developer
     # ======================================================================= 
-    def __init__(self, operatedMachine):
-        ObjectInterruption.__init__(self,operatedMachine)
+    def __init__(self, id='',name='', operatedMachine=None):
+        ObjectInterruption.__init__(self,id,name,victim=operatedMachine)
         self.type = "Broker"
         # variables that have to do with timing
         self.timeOperationStarted = 0

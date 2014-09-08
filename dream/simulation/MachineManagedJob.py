@@ -59,13 +59,7 @@ class MachineManagedJob(MachineJobShop):
         from Globals import G
         G.OperatorPoolsList.append(self.operatorPool)
     
-    #===========================================================================
-    # create broker if needed
-    #===========================================================================
-    def createBroker(self):
-        #create a Broker
-        self.broker = Broker(self)
-    
+   
     #===========================================================================
     # create router if needed
     #===========================================================================

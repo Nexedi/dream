@@ -26,13 +26,15 @@ Class that acts as an abstract. It should have no instances. All the Resources s
 '''
 # from SimPy.Simulation import Resource
 import simpy
+from ManPyObject import ManPyObject
 
 # ===========================================================================
 #                    the resource that repairs the machines
 # ===========================================================================
-class ObjectResource(object):
+class ObjectResource(ManPyObject):
     
-    def __init__(self,**kw):
+    def __init__(self,id='',name='',**kw):
+        ManPyObject.__init__(self,id,name)
         self.initialized = False
         # list that holds the objectInterruptions that have this element as victim
         self.objectInterruptions=[]        

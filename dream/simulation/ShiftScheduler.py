@@ -39,8 +39,8 @@ class ShiftScheduler(ObjectInterruption):
     # =======================================================================
     # the __init__() method of the class
     # =======================================================================
-    def __init__(self, victim=None, shiftPattern=[], endUnfinished=False, receiveBeforeEndThreshold=0.0,**kw):
-        ObjectInterruption.__init__(self,victim)
+    def __init__(self, id='', name='', victim=None, shiftPattern=[], endUnfinished=False, receiveBeforeEndThreshold=0.0,**kw):
+        ObjectInterruption.__init__(self,victim=victim)
         self.type='ShiftScheduler'
         self.shiftPattern=shiftPattern
         self.endUnfinished=endUnfinished    #flag that shows if half processed Jobs should end after the shift ends

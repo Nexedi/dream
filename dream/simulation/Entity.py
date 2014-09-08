@@ -27,17 +27,17 @@ Class that acts as an abstract. It should have no instances. All the Entities sh
 
 # from SimPy.Simulation import now
 import simpy
+from ManPyObject import ManPyObject
 
 # ===========================================================================
 # The entity object 
 # ===========================================================================
-class Entity(object):
+class Entity(ManPyObject):
     type="Entity"
 
     def __init__(self, id=None, name=None, priority=0, dueDate=0, orderDate=0, 
                  isCritical=False, remainingProcessingTime=0,currentStation=None,**kw):
-        self.name=name
-        self.id=id
+        ManPyObject.__init__(self,id,name)
         #         information on the object holding the entity
         #         initialized as None and updated every time an entity enters a new object
         #         information on the lifespan of the entity  

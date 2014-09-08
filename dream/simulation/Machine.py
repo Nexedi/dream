@@ -254,7 +254,7 @@ class Machine(CoreObject):
     def createBroker(self):
         # initiate the Broker and the router
         if (self.operatorPool!='None'):
-            self.broker=Broker(self)
+            self.broker=Broker(operatedMachine=self)
     
     #===========================================================================
     # create router if needed
