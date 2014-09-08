@@ -86,23 +86,26 @@ class BatchDecomposition(CoreObject):
                 receivedEvent=yield self.env.any_of([self.isRequested , self.interruptionStart , self.initialWIP])
                 # if an interruption has occurred 
                 if self.interruptionStart in receivedEvent:
-                    assert self.interruptionStart.value==self.env.now, 'the interruption received by batchDecomposition was created earlier'
+                    transmitter, eventTime=self.interruptionStart.value
+                    assert eventTime==self.env.now, 'the interruption received by batchDecomposition was created earlier'
                     self.interruptionStart=self.env.event()
                     # wait till it is over
                     yield self.interruptionEnd
-                    assert self==self.interruptionEnd.value, 'the victim of the failure is not the object that received the interruptionEnd event'
+                    transmitter, eventTime=self.interruptionEnd.value
+                    assert self==transmitter, 'the victim of the failure is not the object that received the interruptionEnd event'
                     self.interruptionEnd=self.env.event()
                     if self.signalGiver():
                         break
                 # if we have initial wip
                 elif self.initialWIP in receivedEvent:
-                    assert self.initialWIP.value==self.env, 'initial wip was not sent by the Environment'
+                    transmitter, eventTime=self.initialWIP.value
+                    assert transmitter==self.env, 'initial wip was not sent by the Environment'
                     self.initialWIP=self.env.event()
                     self.isProcessingInitialWIP=True
                     break  
                 # otherwise proceed with getEntity
-                else:              
-                    requestingObject=self.isRequested.value
+                else:
+                    requestingObject, eventTime=self.isRequested.value
                     assert requestingObject==self.giver, 'the giver is not the requestingObject'
                     self.isRequested=self.env.event()
                     break
@@ -138,11 +141,13 @@ class BatchDecomposition(CoreObject):
                         # if there was no success wait till the receiver is available
                         while 1:
                             yield self.canDispose
+                            transmitter, eventTime=self.canDispose.value
                             self.canDispose=self.env.event()
                             # signal the receiver again and break
                             if self.signalReceiver():
                                 self.waitEntityRemoval=True
                                 yield self.entityRemoved
+                                transmitter, eventTime=self.entityRemoved.value
                                 self.waitEntityRemoval=False
                                 break                           
                             
@@ -151,11 +156,13 @@ class BatchDecomposition(CoreObject):
                 else:
                     while 1:
                         yield self.canDispose
+                        transmitter, eventTime=self.canDispose.value
                         self.canDispose=self.env.event()
                         signaling=self.signalReceiver()
                         if signaling:
                             self.waitEntityRemoval=True
                             yield self.entityRemoved
+                            transmitter, eventTime=self.entityRemoved.value
                             self.waitEntityRemoval=False
                             break
 
