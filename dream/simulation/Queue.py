@@ -111,8 +111,8 @@ class Queue(CoreObject):
                 if self.isDummy:
                     activeObjectQueue[0].startTime=self.env.now
             # if the queue received an loadOperatorIsAvailable (from Router) with signalparam time
-            if self.loadOperatorAvailable:
-#                 transmitter, eventTime=self.loadOperatorAvailable.value
+            if self.loadOperatorAvailable in receivedEvent:
+                transmitter, eventTime=self.loadOperatorAvailable.value
                 self.loadOperatorAvailable=self.env.event()
             # if the queue received an canDispose with signalparam time, this means that the signals was sent from a MouldAssemblyBuffer
             if self.canDispose in receivedEvent:
