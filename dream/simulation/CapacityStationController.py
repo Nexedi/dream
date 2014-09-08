@@ -62,10 +62,12 @@ class CapacityStationController(EventGenerator):
             entitiesToCheck=list(station.getActiveObjectQueue())
             for entity in entitiesToCheck:
                 if not exit.isRequested.triggered:            # this is needed because the signal can be triggered also by the buffer
-                    exit.isRequested.succeed(station)         # send is requested to station
+                    succeedTuple=(station,self.env.now)
+                    exit.isRequested.succeed(succeedTuple)         # send is requested to station
                 # wait until the entity is removed
                 station.waitEntityRemoval=True
                 yield station.entityRemoved
+                transmitter, eventTime=station.entityRemoved.value
                 station.waitEntityRemoval=False
                 exit.currentlyObtainedEntities.append(entity)
                 station.entityRemoved=self.env.event()
@@ -113,10 +115,12 @@ class CapacityStationController(EventGenerator):
             for entity in entitiesToCheck:
                 if not entity.shouldMove:   # when the first entity that should not move is reached break
                     break
-                station.isRequested.succeed(buffer)         # send is requested to station
+                succeedTuple=(buffer,self.env.now)
+                station.isRequested.succeed(succeedTuple)         # send is requested to station
                 # wait until the entity is removed
                 buffer.waitEntityRemoval=True
                 yield buffer.entityRemoved
+                transmitter, eventTime=buffer.entityRemoved.value
                 buffer.waitEntityRemoval=False
                 buffer.entityRemoved=self.env.event()
                 project=entity.capacityProject
