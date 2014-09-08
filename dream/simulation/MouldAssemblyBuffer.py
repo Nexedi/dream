@@ -110,7 +110,8 @@ class MouldAssemblyBuffer(QueueManagedJob):
                 for secondary in [x for x in activeEntity.order.secondaryComponentsList if activeEntity.order.basicsEnded]:
                     if secondary.currentStation.__class__.__name__=='ConditionalBuffer':
 #                         print now(), self.id, '                                                    signalling conditional buffer'
-                        secondary.currentStation.canDispose.succeed(self.env.now)
+                        succeedTuple=(self,self.env.now)
+                        secondary.currentStation.canDispose.succeed(succeedTuple)
                         break
             # for all the components that have the same parent Order as the activeEntity
             activeEntity.order.componentsReadyForAssembly = 1

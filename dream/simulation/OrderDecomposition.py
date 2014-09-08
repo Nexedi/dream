@@ -75,12 +75,14 @@ class OrderDecomposition(CoreObject):
             receivedEvent=yield self.env.any_of([self.isRequested , self.canDispose])
             # if the event that activated the thread is isRequested then getEntity
             if self.isRequested in receivedEvent:
+                transmitter, eventTime=self.isRequested.value
                 self.isRequested=self.env.event()
                 # reset the isRequested signal parameter
                 self.isRequested.signalparam=None
                 self.getEntity()
                 self.decompose()
             if self.canDispose in receivedEvent:
+                transmitter, eventTime=self.canDispose.value
                 self.canDispose=self.env.event()
             # if the event that activated the thread is canDispose then signalReceiver
             if self.haveToDispose():
