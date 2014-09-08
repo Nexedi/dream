@@ -81,22 +81,25 @@ class BatchReassembly(CoreObject):
             while 1:
                 receivedEvent=yield self.env.any_of([self.isRequested , self.interruptionStart , self.initialWIP])
                 if self.interruptionStart in receivedEvent:
-                    assert self.interruptionStart.value==self.env.now, 'the interruptionStart received by BatchReassembly later than created'
+                    transmitter, eventTime=self.interruptionStart.value
+                    assert eventTime==self.env.now, 'the interruptionStart received by BatchReassembly later than created'
                     self.interruptionStart=self.env.event()
                     yield self.interruptionEnd
-                    assert self==self.interruptionEnd.value, 'the victim of the failure is not the object that received the interruptionEnd event'
+                    transmitter, eventTime=self.interruptionEnd.value
+                    assert self==transmitter, 'the victim of the failure is not the object that received the interruptionEnd event'
                     self.interruptionEnd=self.env.event()
                     if self.signalGiver():
                         break
                 # if we have initial wip
                 elif self.initialWIP in receivedEvent:
-                    assert self.initialWIP.value==self.env, 'initial wip was not sent by the Environment'
+                    transmitter, eventTime=self.initialWIP.value
+                    assert transmitter==self.env, 'initial wip was not sent by the Environment'
                     self.initialWIP=self.env.event()
                     self.isProcessingInitialWIP=True
                     break  
                 # otherwise proceed with getEntity
-                else:                 
-                    requestingObject=self.isRequested.value
+                else:
+                    requestingObject, eventTime=self.isRequested.value
                     assert requestingObject==self.giver, 'the giver is not the requestingObject'
                     self.isRequested=self.env.event()
                     self.isProcessingInitialWIP=False
@@ -128,14 +131,16 @@ class BatchReassembly(CoreObject):
                         # if there was interruption
                         # TODO not good implementation
                         if self.interruptionStart in receivedEvent:
-                            assert self.interruptionStart.value==self.env.now, 'the interruption has not been processed on the time of activation'
+                            transmitter, eventTime=self.interruptionStart.value
+                            assert eventTime==self.env.now, 'the interruption has not been processed on the time of activation'
                             self.interruptionStart=self.env.event()
                         # wait for the end of the interruption
                             self.interruptionActions()                          # execute interruption actions
                             # loop until we reach at a state that there is no interruption
                             while 1:
                                 yield self.interruptionEnd         # interruptionEnd to be triggered by ObjectInterruption
-                                assert self.env.now==self.interruptionEnd.value, 'the victim of the failure is not the object that received it'
+                                transmitter, eventTime=self.interruptionEnd.value
+                                assert eventTime==self.env.now, 'the victim of the failure is not the object that received it'
                                 self.interruptionEnd=self.env.event()
                                 if self.Up and self.onShift:
                                     break
@@ -146,10 +151,11 @@ class BatchReassembly(CoreObject):
                             else:
                                 continue
                         if self.canDispose in receivedEvent:
-                            if self.canDispose.value!=self.env.now:
+                            transmitter, eventTime=self.canDispose.value
+                            if eventTime!=self.env.now:
                                 self.canDispose=self.env.event()
                                 continue
-                            assert self.canDispose.value==self.env.now,'canDispose signal is late'
+                            assert eventTime==self.env.now,'canDispose signal is late'
                             self.canDispose=self.env.event()
                             # try to signal a receiver, if successful then proceed to get an other entity
                             if self.signalReceiver():
@@ -165,8 +171,9 @@ class BatchReassembly(CoreObject):
                         self.waitEntityRemoval=True
                         self.printTrace(self.id, waitEvent='(entityRemoved)')
                         yield self.entityRemoved
-                        self.printTrace(self.id, entityRemoved=self.entityRemoved.value)
-                        assert self.entityRemoved.value==self.env.now,'entityRemoved event activated earlier than received'
+                        transmitter, eventTime=self.entityRemoved.value
+                        self.printTrace(self.id, entityRemoved=eventTime)
+                        assert eventTime==self.env.now,'entityRemoved event activated earlier than received'
                         self.waitEntityRemoval=False
                         self.entityRemoved=self.env.event()
                         # if while waiting (for a canDispose event) became free as the machines that follows emptied it, then proceed
