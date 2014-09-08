@@ -75,12 +75,6 @@ class ObjectInterruption(ManPyObject):
         self.isCalled.succeed(self.env.now)
     
     #===========================================================================
-    # outputs data to "output.xls"
-    #===========================================================================
-    def outputTrace(self, message):
-        pass
-    
-    #===========================================================================
     # returns the internal queue of the victim
     #===========================================================================
     def getVictimQueue(self):
@@ -92,12 +86,7 @@ class ObjectInterruption(ManPyObject):
     def victimQueueIsEmpty(self):
         return len(self.getVictimQueue())==0
     
-    #===========================================================================
-    # actions to be performed after the end of the simulation
-    #===========================================================================
-    def postProcessing(self):
-        pass
-    
+   
     #===========================================================================
     # interrupts the victim
     #===========================================================================
@@ -124,24 +113,7 @@ class ObjectInterruption(ManPyObject):
         if self.victim.dedicatedOperator:
             # request allocation
             self.victim.requestAllocation()
-        
-    #===========================================================================
-    # outputs message to the trace.xls. Format is (Simulation Time | Victim Name | message)            
-    #===========================================================================
-    def outputTrace(self, message):
-        from Globals import G  
-        if(G.trace=="Yes"):     #output only if the user has selected to
-            #handle the 3 columns
-            G.traceSheet.write(G.traceIndex,0,str(self.env.now))
-            G.traceSheet.write(G.traceIndex,1, self.victim.objName)
-            G.traceSheet.write(G.traceIndex,2,message)          
-            G.traceIndex+=1      #increment the row
-            #if we reach row 65536 we need to create a new sheet (excel limitation)  
-            if(G.traceIndex==65536):
-                G.traceIndex=0
-                G.sheetIndex+=1
-                G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)
-        
+               
     #===========================================================================
     # prints message to the console
     #===========================================================================

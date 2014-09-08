@@ -113,3 +113,40 @@ class ManPyObject(object):
                     print phrase,arg,suffix
                 else:
                     print phrase,arg
+                    
+    # =======================================================================
+    # outputs message to the trace.xls 
+    # outputs message to the trace.xls. Format is (Simulation Time | Entity or Frame Name | message)
+    # =======================================================================
+    @staticmethod
+    def outputTrace(entityName, message):
+        from Globals import G
+        if(G.trace=="Yes"):         #output only if the user has selected to
+            #handle the 3 columns
+            G.traceSheet.write(G.traceIndex,0,str(G.env.now))
+            G.traceSheet.write(G.traceIndex,1,entityName)
+            G.traceSheet.write(G.traceIndex,2,message)          
+            G.traceIndex+=1       #increment the row
+            #if we reach row 65536 we need to create a new sheet (excel limitation)  
+            if(G.traceIndex==65536):
+                G.traceIndex=0
+                G.sheetIndex+=1
+                G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)
+
+    #===========================================================================
+    # actions to be performed after the end of the simulation
+    #===========================================================================
+    def postProcessing(self):
+        pass
+    
+    # =======================================================================
+    #                        outputs data to "output.xls"
+    # =======================================================================
+    def outputResultsXL(self, MaxSimtime=None):
+        pass
+    
+    # =======================================================================
+    #                       outputs results to JSON File
+    # =======================================================================
+    def outputResultsJSON(self):
+        pass

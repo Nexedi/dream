@@ -99,7 +99,7 @@ class ScheduledMaintenance(ObjectInterruption):
                     self.interruptVictim()
             self.victim.Up=False
             self.victim.timeLastFailure=self.env.now
-            self.outputTrace("is down")
+            self.outputTrace(self.victim.name,"is down")
         except AttributeError:
             print "AttributeError1"
             
@@ -110,7 +110,7 @@ class ScheduledMaintenance(ObjectInterruption):
             if(len(self.getVictimQueue())>0):
                 self.reactivateVictim()                 # since the maintenance is over, the victim is reactivated
             self.victim.Up=True              
-            self.outputTrace("is up")                                           
+            self.outputTrace(self.victim.name,"is up")                                           
         except AttributeError:
             print "AttributeError2"    
         

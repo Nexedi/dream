@@ -65,30 +65,7 @@ class ObjectResource(ManPyObject):
     def checkIfResourceIsAvailable(self,callerObject=None): 
         return len(self.Res.users)<self.capacity   
     
-    # =======================================================================
-    #              actions to be taken after the simulation ends
-    # =======================================================================
-    def postProcessing(self, MaxSimtime=None):
-        pass    
-    
-    # =======================================================================
-    #                     outputs message to the trace.xls
-    # =======================================================================
-    def outputTrace(self, message):
-        pass
-    
-    # =======================================================================
-    #                        outputs data to "output.xls"
-    # =======================================================================
-    def outputResultsXL(self, MaxSimtime=None):
-        pass
-    
-    # =======================================================================
-    #                       outputs results to JSON File
-    # =======================================================================
-    def outputResultsJSON(self):
-        pass
-    
+       
     # =======================================================================
     #                           returns the resource
     # =======================================================================
