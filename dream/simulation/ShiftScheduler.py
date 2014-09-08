@@ -68,7 +68,7 @@ class ShiftScheduler(ObjectInterruption):
             self.victim.onShift=False
             self.interruptVictim()                  # interrupt processing operations if any
             self.victim.timeLastShiftEnded=self.env.now
-            self.outputTrace("is off shift")
+            self.outputTrace(self.victim.name,"is off shift")
 
         while 1:
             if not self.victim.onShift:
@@ -83,7 +83,7 @@ class ShiftScheduler(ObjectInterruption):
                 self.victim.totalOffShiftTime+=self.env.now-self.victim.timeLastShiftEnded
                 self.victim.onShift=True
                 self.victim.timeLastShiftStarted=self.env.now
-                self.outputTrace("is on shift")
+                self.outputTrace(self.victim.name,"is on shift")
                 startShift=self.env.now
             else:
                 timeToEndShift=float(self.remainingShiftPattern[0][1]-self.env.now)
@@ -109,7 +109,7 @@ class ShiftScheduler(ObjectInterruption):
                     self.interruptVictim()                      # interrupt the victim
                 self.victim.onShift=False                        # get the victim off-shift
                 self.victim.timeLastShiftEnded=self.env.now
-                self.outputTrace("is off shift")
+                self.outputTrace(self.victim.name,"is off shift")
                 
                 self.remainingShiftPattern.pop(0)
             if len(self.remainingShiftPattern)==0:
