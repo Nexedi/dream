@@ -179,6 +179,10 @@ class Machine(CoreObject):
         self.expectedSignals['interruptionEnd']=1
         self.expectedSignals['loadOperatorAvailable']=1
         self.expectedSignals['initialWIP']=1
+        # events about the availability of process operator
+        # TODO group those operator relate events
+        self.processOperatorAvailable=self.env.event()
+        self.processOperatorUnavailable=self.env.event()
 
     @staticmethod
     def getProcessingTime(processingTime):
