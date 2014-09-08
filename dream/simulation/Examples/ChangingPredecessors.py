@@ -18,7 +18,9 @@ def changeMachinePredecessor(machine, possiblePredecessors):
                 break  
     # if canDispose is not triggered in the predecessor send it
     if not machine.previous[0].canDispose.triggered:
-        machine.previous[0].canDispose.succeed()
+        # a succeed function on an event must always take attributes the transmitter and the time of the event
+        succeedTuple=(machine, G.env.now)
+        machine.previous[0].canDispose.succeed(succeedTuple)
     print G.env.now, 'from now on the machine will take from', machine.previous[0].id
         
 #define the objects of the model 
