@@ -125,6 +125,7 @@ class ShiftScheduler(ObjectInterruption):
                     
                     transmitter, eventTime=self.victim.endedLastProcessing.value
                         self.victim.endedLastProcessing=self.env.event() 
+                    self.interruptVictim()
                 # if the victim is operator
                 elif issubclass(self.victim.__class__, ObjectResource):
                     # if the operator is working in a station and the mode is 
@@ -134,6 +135,7 @@ class ShiftScheduler(ObjectInterruption):
                     if station:
                         if not self.endUnfinished and station.isProcessing:
                             station.processOperatorUnavailable.succeed(self.env.now)
+                    CoreObject.requestAllocation()
 
                 # if the victim has interruptions that measure only the on-shift time, they have to be notified
                 for oi in self.victim.objectInterruptions:
@@ -142,14 +144,7 @@ class ShiftScheduler(ObjectInterruption):
                             succeedTuple=(self, self.env.now)
                             oi.victimOffShift.succeed(succeedTuple)
 
-                # if the victim is CoreObject interrupt it. Else ask the router for allocation of operators
-                # TODO more generic implementation
-                if issubclass(self.victim.__class__, CoreObject): 
-                    # interrupt the victim only if it was not previously interrupted
-                    self.interruptVictim()                      # interrupt the victim
-                else:
-                    CoreObject.requestAllocation()
-                        
+                       
                 self.victim.onShift=False                        # get the victim off-shift
                 self.victim.timeLastShiftEnded=self.env.now
                 self.outputTrace(self.victim.name,"is off shift")
