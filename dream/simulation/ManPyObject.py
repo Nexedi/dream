@@ -33,10 +33,19 @@ Also only abstract ManPy classes inherit directly (CoreObject, Entity, ObjectRes
 class ManPyObject(object):
     
     def __init__(self, id, name,**kw):
-        self.id=id
-        self.name=name 
-        
-        
+        if id:
+            self.id=id
+        # if no id was given create a random one    
+        else:
+            self.id=str(self.__class__.__name__)
+            import random 
+            self.id=self.id+str(random.randint(1, 1000000))
+        if name:
+            self.name=name   
+        # if no name was given give id as name  
+        else:
+            self.name=self.id      
+            
     #===========================================================================
     #  method used to request allocation from the Router
     #===========================================================================
