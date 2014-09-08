@@ -34,4 +34,82 @@ class ManPyObject(object):
     
     def __init__(self, id, name,**kw):
         self.id=id
-        self.name=name
+        self.name=name 
+        
+        
+    #===========================================================================
+    #  method used to request allocation from the Router
+    #===========================================================================
+    @staticmethod
+    def requestAllocation():
+        # TODO: signal the Router, skilled operators must be assigned to operatorPools
+        from Globals import G
+        G.Router.allocation=True
+        G.Router.waitEndProcess=False
+        if not G.Router.invoked:
+            G.Router.invoked=True
+            G.Router.isCalled.succeed(G.env.now)
+            
+    #===========================================================================
+    #  signalRouter method
+    #===========================================================================
+    @staticmethod
+    def signalRouter(receiver=None):
+        # if an operator is not assigned to the receiver then do not signal the receiver but the Router
+        try:
+            # XXX in the case of dedicatedOperator assignedOperators must be always True in order to avoid invoking the Router
+            if not receiver.assignedOperator or\
+                   (receiver.isPreemptive and len(receiver.Res.users)>0):
+                if receiver.isLoadRequested():
+                    try:
+                        from Globals import G
+                        if not G.Router.invoked:
+#                             self.printTrace(self.id, signal='router')
+                            G.Router.invoked=True
+                            G.Router.isCalled.succeed(G.env.now)
+                        return True
+                    except:
+                        return False
+            else:
+                return False
+        except:
+            return False
+        
+    #===========================================================================
+    # check if the any of the operators are skilled (having a list of skills regarding the objects)
+    #===========================================================================
+    @staticmethod
+    def checkForDedicatedOperators():
+        from Globals import G
+        # XXX this can also be global
+        # flag used to inform if the operators assigned to the station are skilled (skillsList)
+        return any(operator.skillsList for operator in G.OperatorsList)
+    
+    @staticmethod
+    def printTrace(entity='', **kw):
+        assert len(kw)==1, 'only one phrase per printTrace supported for the moment'
+        from Globals import G
+        import Globals
+        time=G.env.now
+        charLimit=60
+        remainingChar=charLimit-len(entity)-len(str(time))
+        if(G.console=='Yes'):
+            print time,entity,
+            for key in kw:
+                if key not in Globals.getSupportedPrintKwrds():
+                    raise ValueError("Unsupported phrase %s for %s" % (key, entity))
+                element=Globals.getPhrase()[key]
+                phrase=element['phrase']
+                prefix=element.get('prefix',None)
+                suffix=element.get('suffix',None)
+                arg=kw[key]
+                if prefix:
+                    print prefix*remainingChar,phrase,arg
+                elif suffix:
+                    remainingChar-=len(phrase)+len(arg)
+                    suffix*=remainingChar
+                    if key=='enter':
+                        suffix=suffix+'>'
+                    print phrase,arg,suffix
+                else:
+                    print phrase,arg
