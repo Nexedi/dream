@@ -40,6 +40,10 @@ class ObjectInterruption(object):
         self.call=False
         from Globals import G
         # G.ObjectInterruptionList.append(self)
+        # append the interruption to the list that victim (if any) holds
+        if self.victim:
+            if isinstance(self.victim.objectInterruptions, list):
+                self.victim.objectInterruptions.append(self)
     
     def initialize(self):
         from Globals import G
