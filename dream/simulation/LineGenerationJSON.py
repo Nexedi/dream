@@ -297,7 +297,7 @@ def createObjectInterruptions():
             else:
                 victim=Globals.findObjectById(element['id'])
                 deteriorationType=failure.get('deteriorationType', 'constant')
-                F=Failure(victim, distribution=failure, repairman=victim.repairman, deteriorationType=deteriorationType)
+                F=Failure(victim=victim, distribution=failure, repairman=victim.repairman, deteriorationType=deteriorationType)
                 G.ObjectInterruptionList.append(F)
                 G.FailureList.append(F)
         # if there is a shift pattern defined 
@@ -317,7 +317,7 @@ def createObjectInterruptions():
                     shiftPattern.remove(next)
             endUnfinished=bool(int(shift.get('endUnfinished', 0)))
             receiveBeforeEndThreshold=float(shift.get('receiveBeforeEndThreshold', 0))
-            SS=ShiftScheduler(victim, shiftPattern=shiftPattern, endUnfinished=endUnfinished, 
+            SS=ShiftScheduler(victim=victim, shiftPattern=shiftPattern, endUnfinished=endUnfinished, 
                               receiveBeforeEndThreshold=receiveBeforeEndThreshold)
             G.ObjectInterruptionList.append(SS)
             G.ShiftSchedulerList.append(SS)

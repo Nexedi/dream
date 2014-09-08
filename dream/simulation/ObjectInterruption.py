@@ -28,13 +28,15 @@ Class that acts as an abstract. It should have no instances. All object interrup
 
 # from SimPy.Simulation import Process, Resource, reactivate, now
 import simpy
+from ManPyObject import ManPyObject
 
 #===============================================================================
 # The ObjectInterruption process
 #===============================================================================
-class ObjectInterruption(object):
+class ObjectInterruption(ManPyObject):
     
-    def __init__(self, victim=None,**kw):
+    def __init__(self, id='',name='',victim=None,**kw):
+        ManPyObject.__init__(self,id,name)
         self.victim=victim
         # variable used to hand in control to the objectInterruption
         self.call=False

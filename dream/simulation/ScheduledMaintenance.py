@@ -38,14 +38,14 @@ class ScheduledMaintenance(ObjectInterruption):
     # =======================================================================
     # the __init__() method of the class
     # =======================================================================
-    def __init__(self, victim=None, start=0, duration=1, endStatus='interrupted',**kw):
+    def __init__(self, id='',name='',victim=None, start=0, duration=1, endStatus='interrupted',**kw):
         '''
             interrupted    : the maintenance starts immediately
             loaded         : the maintenance starts as soon as the victim has ended processing
             emptied        : the maintenance starts as soon as the victim is empty
         '''
         self.type="ScheduledMaintenance"
-        ObjectInterruption.__init__(self,victim)
+        ObjectInterruption.__init__(self,victim=victim)
         self.start=start
         self.duration=duration
         # the victim can be 'interrupted', 'loaded' or 'emptied' when the maintenance interruption happens

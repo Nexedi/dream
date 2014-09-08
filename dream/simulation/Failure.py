@@ -34,10 +34,9 @@ from ObjectInterruption import ObjectInterruption
 
 class Failure(ObjectInterruption):
     
-    def __init__(self, victim=None, distribution=None, index=0, repairman=None, offshift=False,
+    def __init__(self, id='',name='',victim=None, distribution=None, index=0, repairman=None, offshift=False,
                  deteriorationType='constant',**kw):
-        #Process.__init__(self)
-        ObjectInterruption.__init__(self,victim)
+        ObjectInterruption.__init__(self,id,name,victim=victim)
         if distribution:
             self.distType=distribution.get('distributionType','No')              # the distribution that the failure duration follows
             self.MTTF=distribution.get('MTTF',60)                  # the MTTF
@@ -146,8 +145,7 @@ class Failure(ObjectInterruption):
                         self.victimStartsProcess=self.env.event()
                     else:
                         failureNotTriggered=False
-           
-           
+             
             # interrupt the victim only if it was not previously interrupted
             if not self.victim.interruptionStart.triggered:
                 self.interruptVictim()                      # interrupt the victim

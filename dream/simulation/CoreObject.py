@@ -27,15 +27,16 @@ Class that acts as an abstract. It should have no instances. All the core-object
 
 # from SimPy.Simulation import Process, Resource, now, SimEvent, waitevent
 import simpy
+from ManPyObject import ManPyObject
 
 # ===========================================================================
 # the core object
 # ===========================================================================
-class CoreObject(object):
+class CoreObject(ManPyObject):
     class_name = 'Dream.CoreObject'
     
     def __init__(self, id, name, inputsDict={}, **kw):
-        self.id = id
+        ManPyObject.__init__(self,id,name)
         self.objName = name
         #     lists that hold the previous and next objects in the flow
         self.next=[]                                #list with the next objects in the flow
