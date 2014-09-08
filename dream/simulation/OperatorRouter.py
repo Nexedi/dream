@@ -107,6 +107,7 @@ class Router(ObjectInterruption):
         while 1:
             # wait until the router is called
             yield self.isCalled
+            transmitter, eventTime=self.isCalled.value
             self.isCalled=self.env.event()
             self.printTrace('','=-'*15)
             self.printTrace('','router received event')
@@ -238,13 +239,15 @@ class Router(ObjectInterruption):
                 elif station.broker.waitForOperator:
                     # signal this station's broker that the resource is available
                     self.printTrace('router', 'signalling broker of'+' '*50+operator.isAssignedTo().id)
-                    station.broker.resourceAvailable.succeed(self.env.now)
+                    succeedTuple=(self,self.env.now)
+                    station.broker.resourceAvailable.succeed(succeedTuple)
                 else:
                     # signal the queue proceeding the station
                     if station.canAccept()\
                             and any(type=='Load' for type in station.multOperationTypeList):
                         self.printTrace('router', 'signalling'+' '*50+operator.isAssignedTo().id)
-                        station.loadOperatorAvailable.succeed(self.env.now)
+                        succeedTuple=(self,self.env.now)
+                        station.loadOperatorAvailable.succeed(succeedTuple)
     
     #===========================================================================
     # clear the pending lists of the router

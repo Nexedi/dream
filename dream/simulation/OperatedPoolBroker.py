@@ -72,7 +72,8 @@ class Broker(ObjectInterruption):
         while 1:
             # TODO: add new broker event - brokerIsCalled
             yield self.isCalled
-            assert self.isCalled.value==self.env.now, 'the broker should be granted control instantly'
+            transmitter, eventTime=self.isCalled.value
+            assert eventTime==self.env.now, 'the broker should be granted control instantly'
             self.isCalled=self.env.event()
             self.victim.printTrace(self.victim.id, received='(broker)')
     # ======= request a resource
@@ -94,11 +95,13 @@ class Broker(ObjectInterruption):
                         if not G.Router.invoked:
                             self.victim.printTrace(self.victim.id, signal='router (broker)')
                             G.Router.invoked=True
-                            G.Router.isCalled.succeed(self.env.now)
+                            succeedTuple=(self,self.env.now)
+                            G.Router.isCalled.succeed(succeedTuple)
                            
                         self.waitForOperator=True
                         self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')
                         yield self.resourceAvailable
+                        transmitter, eventTime=self.resourceAvailable.value
                         self.resourceAvailable=self.env.event()
                         # remove the currentEntity from the pendingEntities
                         if self.victim.currentEntity in G.pendingEntities:
@@ -110,6 +113,7 @@ class Broker(ObjectInterruption):
                     self.waitForOperator=True
                     self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')
                     yield self.resourceAvailable
+                    transmitter, eventTime=self.resourceAvailable.value
                     self.resourceAvailable=self.env.event()
                     self.waitForOperator=False
                 #===============================================================
@@ -132,13 +136,15 @@ class Broker(ObjectInterruption):
                     self.victim.outputTrace(self.victim.currentOperator.objName, "started work in "+ self.victim.objName)
                     self.victim.currentOperator.timeLastOperationStarted=self.env.now#()
                     # signal the machine that an operator is reserved
-                    self.victim.brokerIsSet.succeed(self.env.now)
+                    succeedTuple=(self,self.env.now)
+                    self.victim.brokerIsSet.succeed(succeedTuple)
                     # update the schedule of the operator
                     self.victim.currentOperator.schedule.append([self.victim, self.env.now])
                     
                     # wait till the processing is over
                     yield self.isCalled
-                    assert self.isCalled.value==self.env.now, 'the broker should be granted control instantly'
+                    transmitter, eventTime=self.isCalled.value
+                    assert eventTime==self.env.now, 'the broker should be granted control instantly'
                     self.isCalled=self.env.event()
                 
                 # The operator is released (the router is not called in the case of skilled ops that work constantly on the same machine)
@@ -153,7 +159,8 @@ class Broker(ObjectInterruption):
                         if not self.victim.router.invoked:
                             self.victim.printTrace(self.victim.id, signal='router (broker)')
                             self.victim.router.invoked=True
-                            self.victim.router.isCalled.succeed(self.env.now)
+                            succeedTuple=(self,self.env.now)
+                            self.victim.router.isCalled.succeed(succeedTuple)
                         # TODO: signalling the router will give the chance to it to take the control, but when will it eventually receive it. 
                         #     after signalling the broker will signal it's victim that it has finished it's processes 
                         # TODO: this wont work for the moment. The actions that follow must be performed by all operated brokers. 
@@ -168,5 +175,6 @@ class Broker(ObjectInterruption):
                     else:
                         pass
                 # return the control to the victim
-                self.victim.brokerIsSet.succeed(self.env.now)
+                succeedTuple=(self,self.env.now)
+                self.victim.brokerIsSet.succeed(succeedTuple)
                 

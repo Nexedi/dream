@@ -280,7 +280,8 @@ def setWIP(entityList):
             if issubclass(entity.currentStation.__class__, Queue):
                 # send the signal only if it is not already triggered
                 if not entity.currentStation.canDispose.triggered:
-                    entity.currentStation.canDispose.succeed(G.env.now)   
+                    succeedTuple=(G.env,G.env.now)
+                    entity.currentStation.canDispose.succeed(succeedTuple)   
         # if we are in the start of the simulation the object is of server type then we should send initialWIP signal
         # TODO, maybe use 'class_family attribute here'
         if G.env.now==0 and entity.currentStation:
@@ -291,7 +292,8 @@ def setWIP(entityList):
                     # trigger initialWIP event only if it has not been triggered. Otherwise
                     # if we set more than one entities (e.g. in reassembly) it will crash
                     if not (entity.currentStation.initialWIP.triggered):
-                        entity.currentStation.initialWIP.succeed(G.env)
+                        succeedTuple=(G.env,G.env.now)
+                        entity.currentStation.initialWIP.succeed(succeedTuple)
 
 
 def countIntervalThroughput():

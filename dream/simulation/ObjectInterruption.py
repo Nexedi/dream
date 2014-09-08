@@ -72,7 +72,8 @@ class ObjectInterruption(ManPyObject):
     #     signalling can be done via Machine request/releaseOperator
     # =======================================================================    
     def invoke(self):
-        self.isCalled.succeed(self.env.now)
+        succeedTuple=(self.victim,self.env.now)
+        self.isCalled.succeed(succeedTuple)
     
     #===========================================================================
     # returns the internal queue of the victim
@@ -94,7 +95,8 @@ class ObjectInterruption(ManPyObject):
         # inform the victim by whom will it be interrupted
         # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously
         self.victim.interruptedBy=self.type
-        self.victim.interruptionStart.succeed(self.env.now)
+        succeedTuple=(self,self.env.now)
+        self.victim.interruptionStart.succeed(succeedTuple)
         # if the machines are operated by dedicated operators
         if self.victim.dedicatedOperator:
             # request allocation
@@ -104,7 +106,8 @@ class ObjectInterruption(ManPyObject):
     # reactivate the victim
     #===========================================================================
     def reactivateVictim(self):
-        self.victim.interruptionEnd.succeed(self.env.now)
+        succeedTuple=(self,self.env.now)
+        self.victim.interruptionEnd.succeed(succeedTuple)
         #reset the interruptionStart event of the victim
         self.victim.interruptionStart=self.env.event()
         # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously
