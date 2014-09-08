@@ -120,7 +120,8 @@ class QueueManagedJob(QueueJobShop):
                             if not G.Router.invoked:
 #                                 self.printTrace(self.id, signal='router')
                                 G.Router.invoked=True
-                                G.Router.isCalled.succeed(G.env.now)
+                                succeedTuple=(G.env, G.env.now)
+                                G.Router.isCalled.succeed(succeedTuple)
                             return True
                         except:
                             return False

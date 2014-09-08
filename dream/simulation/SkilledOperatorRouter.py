@@ -71,6 +71,7 @@ class SkilledRouter(Router):
         while 1:
             # wait until the router is called
             yield self.isCalled
+            transmitter, eventTime=self.isCalled.value
             self.isCalled=self.env.event()
             self.printTrace('','=-'*15)
             self.printTrace('','router received event')
@@ -128,6 +129,7 @@ class SkilledRouter(Router):
                     receivedEvent=yield self.env.all_of(self.endProcessingSignals)
                     for station in self.busyStations:
                         if station.endedLastProcessing in receivedEvent:
+                            transmitter, eventTime=station.endedLastProcessing.value
                             station.endedLastProcessing=self.env.event()
                 
                 
@@ -240,13 +242,15 @@ class SkilledRouter(Router):
                     if station.broker.waitForOperator:
                         # signal this station's broker that the resource is available
                         self.printTrace('router', 'signalling broker of'+' '*50+station.id)
-                        station.broker.resourceAvailable.succeed(self.env.now)
+                        succeedTuple=(self,self.env.now)
+                        station.broker.resourceAvailable.succeed(succeedTuple)
                     else:
                         # signal the queue proceeding the station
                         if station.canAccept()\
                                 and any(type=='Load' for type in station.multOperationTypeList):
                             self.printTrace('router', 'signalling'+' '*50+station.id)
-                            station.loadOperatorAvailable.succeed(self.env.now)
+                            succeedTuple=(self,self.env.now)
+                            station.loadOperatorAvailable.succeed(succeedTuple)
             
             #===================================================================
             # default behaviour

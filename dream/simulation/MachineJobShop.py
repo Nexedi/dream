@@ -292,7 +292,8 @@ class MachineJobShop(Machine):
         self.receiver.timeLastEntityEnded=self.env.now     #required to count blockage correctly in the preemptied station
         # TODO: use a signal and wait for it, reactivation is not recognised as interruption
 #         reactivate(self)
-        self.preemptQueue.succeed(self.env.now)
+        succeedTuple=(self,self.env.now)
+        self.preemptQueue.succeed(succeedTuple)
         # TODO: consider the case when a failure has the Station down. The event preempt will not be received now()
         #     but at a later simulation time. 
             
