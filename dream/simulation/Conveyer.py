@@ -103,12 +103,14 @@ class Conveyer(CoreObject):
             #set it as the timeToWait of the conveyerMover and raise call=true so that it will be triggered 
             if self.updateMoveTime():
 #                 print self.id, 'time to move', self.conveyerMover.timeToWait
-                self.conveyerMover.canMove.succeed(self.env.now)
+                succeedTuple=(self,self.env.now)
+                self.conveyerMover.canMove.succeed(succeedTuple)
             
             self.printTrace(self.id, waitEvent='')
             receivedEvent=yield self.env.any_of([self.isRequested , self.canDispose , self.moveEnd]) # , self.loadOperatorAvailable]
             # if the event that activated the thread is isRequested then getEntity
             if self.isRequested in receivedEvent:
+                transmitter, eventTime=self.isRequested.value
                 self.printTrace(self.id, isRequested='')
                 # reset the isRequested signal parameter
                 self.isRequested=self.env.event()
@@ -122,10 +124,12 @@ class Conveyer(CoreObject):
 #                 self.loadOperatorAvailable.value=None
             # if the queue received an canDispose with signalparam time, this means that the signals was sent from a MouldAssemblyBuffer
             if self.canDispose in receivedEvent:
+                transmitter, eventTime=self.canDispose.value
                 self.printTrace(self.id, canDispose='')
                 self.canDispose=self.env.event()
             # if the object received a moveEnd signal from the ConveyerMover
             if self.moveEnd in receivedEvent:
+                transmitter, eventTime=self.moveEnd.value
                 self.printTrace(self.id, moveEnd='')
                 self.moveEnd=self.env.event()
                 # check if there is a possibility to accept and signal a giver
@@ -359,7 +363,8 @@ class Conveyer(CoreObject):
         #calculate the time that the conveyer will become available again and trigger the conveyerMover
         if self.updateMoveTime():
 #             print self.id, 'time to move', self.conveyerMover.timeToWait
-            self.conveyerMover.canMove.succeed(self.env.now)
+            succeedTuple=(self,self.env.now)
+            self.conveyerMover.canMove.succeed(succeedTuple)
         # if there is anything to dispose of then signal a receiver
         if self.haveToDispose():
             self.printTrace(self.id, attemptSingalReceiver='(removeEntity)')
@@ -519,13 +524,15 @@ class ConveyerMover(object):
         while 1:
             self.conveyer.printTrace(self.conveyer.id, waitEvent='(canMove)')
             yield self.canMove      #wait until the conveyer triggers the mover
+            transmitter, eventTime=self.canMove.value
             self.canMove=self.env.event()
             self.conveyer.printTrace(self.conveyer.id, received='(canMove)')
             
             yield self.env.timeout(self.timeToWait)                 #wait for the time that the conveyer calculated
             #     continue if interrupted
             self.conveyer.moveEntities()                    # move the entities of the conveyer
-            self.conveyer.moveEnd.succeed(self.env.now)     # send a signal to the conveyer that the move has ended
+            succeedTuple=(self,self.env.now)
+            self.conveyer.moveEnd.succeed(succeedTuple)     # send a signal to the conveyer that the move has ended
             
 
     

@@ -62,8 +62,9 @@ class EntityGenerator(object):
                 self.victim.getActiveObjectQueue().append(entity)            # append the entity to the resource 
                 self.victim.numberOfArrivals+=1                              # we have one new arrival
                 G.numberOfEntities+=1
-                self.victim.appendEntity(entity) 
-                self.victim.entityCreated.succeed(entity)
+                self.victim.appendEntity(entity)
+                succeedTupple=(entity,self.env.now)
+                self.victim.entityCreated.succeed(succeedTupple)
             # else put it on the time list for scheduled Entities
             else:
                 entityCounter=G.numberOfEntities+len(self.victim.scheduledEntities) # this is used just ot output the trace correctly
@@ -138,11 +139,16 @@ class Source(CoreObject):
             self.printTrace(self.id, received='')
             # if an entity is created try to signal the receiver and continue
             if self.entityCreated in receivedEvent:
+                transmitter, eventTime=self.entityCreated.value
                 self.entityCreated=self.env.event()
             # otherwise, if the receiver requests availability then try to signal him if there is anything to dispose of
             if self.canDispose in receivedEvent or self.loadOperatorAvailable in receivedEvent:
-                self.canDispose=self.env.event()
-                self.loadOperatorAvailable=self.env.event()
+                if self.canDispose in receivedEvent:
+                    transmitter, eventTime=self.canDispose.value
+                    self.canDispose=self.env.event()
+                if self.loadOperatorAvailable in receivedEvent:
+                    transmitter, eventTime=self.loadOperatorAvailable.value
+                    self.loadOperatorAvailable=self.env.event()
             if self.haveToDispose():
                 if self.signalReceiver():
                     continue
@@ -192,5 +198,6 @@ class Source(CoreObject):
             self.appendEntity(newEntity)  
         activeEntity=CoreObject.removeEntity(self, entity)          # run the default method  
         if len(self.getActiveObjectQueue())==1:
-            self.entityCreated.succeed(newEntity)
+            succeedTuple=(newEntity,self.env.now)
+            self.entityCreated.succeed(succeedTuple)
         return activeEntity

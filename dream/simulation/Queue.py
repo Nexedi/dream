@@ -102,7 +102,8 @@ class Queue(CoreObject):
             self.printTrace(self.id, received='')
             # if the event that activated the thread is isRequested then getEntity
             if self.isRequested in receivedEvent:
-                self.printTrace(self.id, isRequested=self.isRequested.value.id)
+                transmitter, eventTime=self.isRequested.value
+                self.printTrace(self.id, isRequested=transmitter.id)
                 # reset the isRequested signal parameter
                 self.isRequested=self.env.event()
                 self.getEntity()
@@ -111,10 +112,11 @@ class Queue(CoreObject):
                     activeObjectQueue[0].startTime=self.env.now
             # if the queue received an loadOperatorIsAvailable (from Router) with signalparam time
             if self.loadOperatorAvailable:
-#                 self.printTrace(self.id, loadOperatorAvailable=str(self.loadOperatorAvailable.signalparam))
+#                 transmitter, eventTime=self.loadOperatorAvailable.value
                 self.loadOperatorAvailable=self.env.event()
             # if the queue received an canDispose with signalparam time, this means that the signals was sent from a MouldAssemblyBuffer
             if self.canDispose in receivedEvent:
+                transmitter, eventTime=self.canDispose.value
                 self.printTrace(self.id, canDispose='')
                 self.canDispose=self.env.event()
             # if the event that activated the thread is canDispose then signalReceiver

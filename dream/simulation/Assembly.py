@@ -156,7 +156,8 @@ class Assembly(CoreObject):
             # wait until the Queue can accept an entity and one predecessor requests it
             yield self.isRequested     #[self.isRequested,self.canDispose, self.loadOperatorAvailable]
             if self.isRequested.value:
-                self.printTrace(self.id, isRequested=self.isRequested.value.id)
+                transmitter, eventTime=self.isRequested.value
+                self.printTrace(self.id, isRequested=transmitter.id)
                 # reset the isRequested signal parameter
                 self.isRequested=self.env.event()
                 
@@ -166,7 +167,8 @@ class Assembly(CoreObject):
                     self.printTrace(self.id, waitEvent='(to load parts)')
                     yield self.isRequested
                     if self.isRequested.value:
-                        self.printTrace(self.id, isRequested=self.isRequested.value.id)
+                        transmitter, eventTime=self.isRequested.value
+                        self.printTrace(self.id, isRequested=transmitter.id)
                         # reset the isRequested signal parameter
                         self.isRequested=self.env.event()
                         # TODO: fix the getEntity 'Part' case
@@ -205,14 +207,16 @@ class Assembly(CoreObject):
                     # if there was interruption
                     # TODO not good implementation
                     if self.interruptionStart in receivedEvent:
-                        assert self.interruptionStart.value==self.env.now, 'the interruption has not been processed on the time of activation'
+                        transmitter, eventTime=self.interruptionStart.value
+                        assert eventTime==self.env.now, 'the interruption has not been processed on the time of activation'
                         self.interruptionStart=self.env.event()
                     # wait for the end of the interruption
                         self.interruptionActions()                          # execute interruption actions
                         # loop until we reach at a state that there is no interruption
                         while 1:
                             yield self.interruptionEnd         # interruptionEnd to be triggered by ObjectInterruption
-                            assert self.env.now==self.interruptionEnd.value, 'the victim of the failure is not the object that received it'
+                            transmitter, eventTime=self.interruptionEnd.value
+                            assert eventTime==self.env.now, 'the victim of the failure is not the object that received it'
                             self.interruptionEnd=self.env.event()
                             if self.Up and self.onShift:
                                 break
@@ -223,10 +227,11 @@ class Assembly(CoreObject):
                         else:
                             continue
                     if self.canDispose in receivedEvent:
-                        if self.canDispose.value!=self.env.now:
+                        transmitter, eventTime=self.canDispose.value
+                        if eventTime!=self.env.now:
                             self.canDispose=self.env.event()
                             continue
-                        assert self.canDispose.value==self.env.now,'canDispose signal is late'
+                        assert eventTime==self.env.now,'canDispose signal is late'
                         self.canDispose=self.env.event()
                         # try to signal a receiver, if successful then proceed to get an other entity
                         if self.signalReceiver():
@@ -242,8 +247,9 @@ class Assembly(CoreObject):
                     self.waitEntityRemoval=True
                     self.printTrace(self.id, waitEvent='(entityRemoved)')
                     yield self.entityRemoved
-                    self.printTrace(self.id, entityRemoved=self.entityRemoved.value)
-                    assert self.entityRemoved.value==self.env.now,'entityRemoved event activated earlier than received'
+                    transmitter, eventTime=self.entityRemoved.value
+                    self.printTrace(self.id, entityRemoved=eventTime)
+                    assert eventTime==self.env.now,'entityRemoved event activated earlier than received'
                     self.waitEntityRemoval=False
                     self.entityRemoved=self.env.event()
                     # if while waiting (for a canDispose event) became free as the machines that follows emptied it, then proceed

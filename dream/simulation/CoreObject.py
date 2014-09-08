@@ -267,11 +267,13 @@ class CoreObject(ManPyObject):
 #                 print self.id,'triggered and waiting'
                 self.entityRemoved=self.env.event()
                 self.printTrace(self.id, signal='(removedEntity)')
-                self.entityRemoved.succeed(self.env.now)
+                succeedTuple=(self,self.env.now)
+                self.entityRemoved.succeed(succeedTuple)
         elif self.waitEntityRemoval:
 #             print self.id,'not triggered and waiting'
             self.printTrace(self.id, signal='(removedEntity)')
-            self.entityRemoved.succeed(self.env.now)
+            succeedTuple=(self,self.env.now)
+            self.entityRemoved.succeed(succeedTuple)
         elif not self.waitEntityRemoval:
 #             print self.id,'not triggered but not waiting'
             pass
@@ -460,7 +462,8 @@ class CoreObject(ManPyObject):
             self.printTrace(self.id, signalReceiver=self.receiver.id)
             # assign the entry of the receiver
             self.receiver.assignEntryTo()
-            self.receiver.isRequested.succeed(self)
+            succeedTuple=(self,self.env.now)
+            self.receiver.isRequested.succeed(succeedTuple)
             return True
         # if no receiver can accept then try to preempt a receive if the stations holds a critical order
         self.preemptReceiver()
@@ -531,7 +534,8 @@ class CoreObject(ManPyObject):
             self.giver=giver
             self.giver.receiver=self
             self.printTrace(self.id, signalGiver=self.giver.id)
-            self.giver.canDispose.succeed(self.env.now)
+            succeedTuple=(self,self.env.now)
+            self.giver.canDispose.succeed(succeedTuple)
             return True
         return False
     
