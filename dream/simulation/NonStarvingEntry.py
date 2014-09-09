@@ -83,4 +83,5 @@ class NonStarvingEntry(Queue):
             if self.expectedSignals['canDispose']:
                 succeedTuple=(self, self.env.now)
                 self.canDispose.succeed(succeedTuple)
+                self.expectedSignals['canDispose']=0
     

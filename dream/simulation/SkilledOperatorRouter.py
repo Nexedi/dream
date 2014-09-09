@@ -257,6 +257,7 @@ class SkilledRouter(Router):
                             self.printTrace('router', 'signalling broker of'+' '*50+station.id)
                             succeedTuple=(self,self.env.now)
                             station.broker.resourceAvailable.succeed(succeedTuple)
+                            station.broker.expectedSignals['resourceAvailable']=0
                     else:
                         # signal the queue proceeding the station
                         if station.canAccept()\
@@ -265,6 +266,7 @@ class SkilledRouter(Router):
                                 self.printTrace('router', 'signalling'+' '*50+station.id)
                                 succeedTuple=(self,self.env.now)
                                 station.loadOperatorAvailable.succeed(succeedTuple)
+                                station.expectedSignals['loadOperatorAvailable']=0
             
             #===================================================================
             # default behaviour

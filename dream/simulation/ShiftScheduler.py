@@ -101,6 +101,7 @@ class ShiftScheduler(ObjectInterruption):
                         if oi.expectedSignals['victimOnShift']:
                             succeedTuple=(self,self.env.now)
                             oi.victimOnShift.succeed(succeedTuple)
+                            oi.expectedSignals['victimOnShift']=0
             else:
                 timeToEndShift=float(self.remainingShiftPattern[0][1]-self.env.now)
                 yield self.env.timeout(timeToEndShift-self.receiveBeforeEndThreshold)   # wait until the entry threshold
@@ -139,6 +140,7 @@ class ShiftScheduler(ObjectInterruption):
                         if oi.expectedSignals['victimOffShift']:
                             succeedTuple=(self, self.env.now)
                             oi.victimOffShift.succeed(succeedTuple)
+                            oi.expectedSignals['victimOnShift']=0
 
                        
                 self.victim.onShift=False                        # get the victim off-shift
