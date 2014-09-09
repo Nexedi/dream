@@ -283,6 +283,7 @@ def setWIP(entityList):
                     if entity.currentStation.expectedSignals['canDispose']:
                         succeedTuple=(G.env,G.env.now)
                         entity.currentStation.canDispose.succeed(succeedTuple)   
+                        entity.currentStation.expectedSignals['canDispose']=0
         # if we are in the start of the simulation the object is of server type then we should send initialWIP signal
         # TODO, maybe use 'class_family attribute here'
         if G.env.now==0 and entity.currentStation:
@@ -296,6 +297,7 @@ def setWIP(entityList):
                         if entity.currentStation.expectedSignals['initialWIP']:
                             succeedTuple=(G.env,G.env.now)
                             entity.currentStation.initialWIP.succeed(succeedTuple)
+                            entity.currentStation.expectedSignals['initialWIP']=0
 
 
 def countIntervalThroughput():

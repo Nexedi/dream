@@ -295,6 +295,7 @@ class MachineJobShop(Machine):
         if self.expectedSignals['preemptQueue']:
             succeedTuple=(self,self.env.now)
             self.preemptQueue.succeed(succeedTuple)
+            self.expectedSignals['preemptQueue']=0
         # TODO: consider the case when a failure has the Station down. The event preempt will not be received now()
         #     but at a later simulation time. 
             
