@@ -78,7 +78,13 @@ class RouterManaged(Router):
     def run(self):
         while 1:
             # wait until the router is called
+            
+            self.expectedSignals['isCalled']=1
+            
             yield self.isCalled
+            
+            self.expectedSignals['isCalled']=0
+            
             transmitter, eventTime=self.isCalled.value
             self.isCalled=self.env.event()
             self.printTrace('','=-'*15)
@@ -193,8 +199,9 @@ class RouterManaged(Router):
                 if station in self.pendingMachines and station in self.toBeSignalled:
                     # signal this station's broker that the resource is available
                     self.printTrace('router','signalling broker of'+' '*50+operator.isAssignedTo().id)
-                    succeedTuple=(self,self.env.now)
-                    operator.isAssignedTo().broker.resourceAvailable.succeed(succeedTuple)
+                    if operator.isAssignedTo().broker.expectedSignals['resourceAvailable']:
+                        succeedTuple=(self,self.env.now)
+                        operator.isAssignedTo().broker.resourceAvailable.succeed(succeedTuple)
                 elif (not station in self.pendingMachines) or (not station in self.toBeSignalled):
                     # signal the queue proceeding the station
                     assert operator.candidateEntity.currentStation in self.toBeSignalled, 'the candidateEntity currentStation is not picked by the Router'
@@ -204,8 +211,9 @@ class RouterManaged(Router):
                         # if the station is already is already signalled then do not send event
                         if not operator.candidateEntity.currentStation.loadOperatorAvailable.triggered:
                             self.printTrace('router','signalling queue'+' '*50+operator.candidateEntity.currentStation.id)
-                            succeedTuple=(self,self.env.now)
-                            operator.candidateEntity.currentStation.loadOperatorAvailable.succeed(succeedTuple)
+                            if operator.candidateEntity.currentStation.expectedSignals['loadOperatorAvailable']:
+                                succeedTuple=(self,self.env.now)
+                                operator.candidateEntity.currentStation.loadOperatorAvailable.succeed(succeedTuple)
     
     #===========================================================================
     # clear the pending lists of the router

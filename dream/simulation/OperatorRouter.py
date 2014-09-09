@@ -106,7 +106,13 @@ class Router(ObjectInterruption):
     def run(self):
         while 1:
             # wait until the router is called
+            
+            self.expectedSignals['isCalled']=1
+            
             yield self.isCalled
+            
+            self.expectedSignals['isCalled']=0
+            
             transmitter, eventTime=self.isCalled.value
             self.isCalled=self.env.event()
             self.printTrace('','=-'*15)
@@ -238,16 +244,18 @@ class Router(ObjectInterruption):
                     station.timeLastEntityEnded=self.env.now     #required to count blockage correctly in the preemptied station
                 elif station.broker.waitForOperator:
                     # signal this station's broker that the resource is available
-                    self.printTrace('router', 'signalling broker of'+' '*50+operator.isAssignedTo().id)
-                    succeedTuple=(self,self.env.now)
-                    station.broker.resourceAvailable.succeed(succeedTuple)
+                    if station.broker.expectedSignals['resourceAvailable']:
+                        self.printTrace('router', 'signalling broker of'+' '*50+operator.isAssignedTo().id)
+                        succeedTuple=(self,self.env.now)
+                        station.broker.resourceAvailable.succeed(succeedTuple)
                 else:
                     # signal the queue proceeding the station
                     if station.canAccept()\
                             and any(type=='Load' for type in station.multOperationTypeList):
-                        self.printTrace('router', 'signalling'+' '*50+operator.isAssignedTo().id)
-                        succeedTuple=(self,self.env.now)
-                        station.loadOperatorAvailable.succeed(succeedTuple)
+                        if station.expectedSignals['loadOperatorAvailable']:
+                            self.printTrace('router', 'signalling'+' '*50+operator.isAssignedTo().id)
+                            succeedTuple=(self,self.env.now)
+                            station.loadOperatorAvailable.succeed(succeedTuple)
     
     #===========================================================================
     # clear the pending lists of the router

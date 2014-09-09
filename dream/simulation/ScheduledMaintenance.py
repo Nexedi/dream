@@ -82,7 +82,13 @@ class ScheduledMaintenance(ObjectInterruption):
                     self.victim.isWorkingOnTheLast=True
                     self.waitingSignal=True
                     # TODO: signal to be triggered by postProcessingActions of Machines
+                    
+                    self.expectedSignals['endedLastProcessing']=1
+                    
                     yield self.victim.endedLastProcessing                # there is no signal yet that signals the change of such state (an object getting empty)
+                    
+                    self.expectedSignals['endedLastProcessing']=0
+                    
                     transmitter, eventTime=self.victim.endedLastProcessing.value
                     assert eventTime==self.env.now, 'the processing end signal is not received by maintenance on time'
                     self.victim.endedLastProcessing=self.env.event()
@@ -93,7 +99,13 @@ class ScheduledMaintenance(ObjectInterruption):
                     waitStartTime=self.env.now
                     self.waitingSignal=True
                     # TODO: signal to be triggered by removeEntity of Machines
+                    
+                    self.expectedSignals['victimIsEmptyBeforeMaintenance']=1
+                    
                     yield self.victimIsEmptyBeforeMaintenance                # there is no signal yet that signals the change of such state (an object getting empty)
+                    
+                    self.expectedSignals['victimIsEmptyBeforeMaintenance']=0
+                    
                     transmitter, eventTime=self.victimIsEmptyBeforeMaintenance.value
                     assert eventTime==self.env.now, 'the processing end signal is not received by maintenance on time'
                     self.victimIsEmptyBeforeMaintenance=self.env.event()
