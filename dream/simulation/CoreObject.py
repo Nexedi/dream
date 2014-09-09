@@ -493,8 +493,10 @@ class CoreObject(ManPyObject):
             self.printTrace(self.id, signalReceiver=self.receiver.id)
             # assign the entry of the receiver
             self.receiver.assignEntryTo()
-            succeedTuple=(self,self.env.now)
-            self.receiver.isRequested.succeed(succeedTuple)
+            if self.receiver.expectedSignals['isRequested']:
+                succeedTuple=(self,self.env.now)
+                self.receiver.isRequested.succeed(succeedTuple)
+                self.receiver.expectedSignals['isRequested']=0
             return True
         # if no receiver can accept then try to preempt a receive if the stations holds a critical order
         self.preemptReceiver()
