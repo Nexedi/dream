@@ -59,6 +59,7 @@ class ManPyObject(object):
             G.Router.invoked=True
             succeedTuple=(G.env,G.env.now)
             G.Router.isCalled.succeed(succeedTuple)
+            G.Router.expectedSignals['isCalled']=0
             
     #===========================================================================
     #  signalRouter method
@@ -78,6 +79,7 @@ class ManPyObject(object):
                             G.Router.invoked=True
                             succeedTuple=(G.env,G.env.now)
                             G.Router.isCalled.succeed(succeedTuple)
+                            G.Router.expectedSignals['isCalled']=0
                         return True
                     except:
                         return False
