@@ -627,9 +627,6 @@ class Machine(CoreObject):
                         self.expectedSignals['interruptionEnd']=1
                         
                         yield self.interruptionEnd         # interruptionEnd to be triggered by ObjectInterruption
-                        
-                        self.expectedSignals['interruptionEnd']=0
-                        
                         transmitter, eventTime=self.interruptionEnd.value
                         assert eventTime==self.env.now, 'the interruptionEnd was received later than anticipated'
                         self.interruptionEnd=self.env.event()
@@ -707,11 +704,7 @@ class Machine(CoreObject):
                 # if no interruption occurred the processing in M1 is ended 
                 else:
                     processingNotFinished=False
-            
-            
-            self.expectedSignals['interruptionStart']=0
-            self.expectedSignals['preemptQueue']=0
-            
+
             # carry on actions that have to take place when an Entity ends its processing
             self.endProcessingActions()
     # =============== release resource after the end of processing
@@ -757,9 +750,7 @@ class Machine(CoreObject):
                             self.expectedSignals['interruptionEnd']=1
                             
                             yield self.interruptionEnd         # interruptionEnd to be triggered by ObjectInterruption
-                            
-                            self.expectedSignals['interruptionEnd']=0
-                            
+
                             transmitter, eventTime=self.interruptionEnd.value
                             assert eventTime==self.env.now, 'the victim of the failure is not the object that received it'
                             self.interruptionEnd=self.env.event()
@@ -793,8 +784,7 @@ class Machine(CoreObject):
                     self.expectedSignals['entityRemoved']=1
                     
                     yield self.entityRemoved
-                    
-                    self.expectedSignals['entityRemoved']=0
+
                     
                     transmitter, eventTime=self.entityRemoved.value
                     self.printTrace(self.id, entityRemoved=eventTime)
@@ -804,8 +794,6 @@ class Machine(CoreObject):
                     # if while waiting (for a canDispose event) became free as the machines that follows emptied it, then proceed
                     if not self.haveToDispose():
                         break
-                
-                self.expectedSignals['canDispose']=0
     
     # =======================================================================
     # actions to be carried out when the processing of an Entity ends
