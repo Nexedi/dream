@@ -298,11 +298,13 @@ class CoreObject(ManPyObject):
                 self.printTrace(self.id, signal='(removedEntity)')
                 succeedTuple=(self,self.env.now)
                 self.entityRemoved.succeed(succeedTuple)
+                self.expectedSignals['entityRemoved']=0
         elif self.waitEntityRemoval and self.expectedSignals['entityRemoved']:
 #             print self.id,'not triggered and waiting'
             self.printTrace(self.id, signal='(removedEntity)')
             succeedTuple=(self,self.env.now)
             self.entityRemoved.succeed(succeedTuple)
+            self.expectedSignals['entityRemoved']=0
         elif not self.waitEntityRemoval and not self.expectedSignals['entityRemoved']:
 #             print self.id,'not triggered but not waiting'
             pass
@@ -566,6 +568,7 @@ class CoreObject(ManPyObject):
                 self.printTrace(self.id, signalGiver=self.giver.id)
                 succeedTuple=(self,self.env.now)
                 self.giver.canDispose.succeed(succeedTuple)
+                self.giver.expectedSignals['canDispose']=0
             return True
         return False
     

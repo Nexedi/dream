@@ -85,13 +85,11 @@ class BatchDecomposition(CoreObject):
         # check if there is WIP and signal receiver
         self.initialSignalReceiver()
         while 1:
-            # wait for an event or an interruption
-            
-            self.expectedSignals['isRequested']=1
-            self.expectedSignals['interruptionStart']=1
-            self.expectedSignals['initialWIP']=1
-            
+            # wait for an event or an interruption               
             while 1:
+                self.expectedSignals['isRequested']=1
+                self.expectedSignals['interruptionStart']=1
+                self.expectedSignals['initialWIP']=1
                 receivedEvent=yield self.env.any_of([self.isRequested , self.interruptionStart , self.initialWIP])
                 # if an interruption has occurred 
                 if self.interruptionStart in receivedEvent:
@@ -144,9 +142,7 @@ class BatchDecomposition(CoreObject):
             
             # reset the variable
             self.isProcessingInitialWIP=False
-            
-            self.expectedSignals['canDispose']=1
-            
+                      
             # TODO: add failure control
             # as long as there are sub-Batches in the internal Resource
             numberOfSubBatches=int(len(self.getActiveObjectQueue()))
@@ -161,6 +157,7 @@ class BatchDecomposition(CoreObject):
                     if not signaling:
                         # if there was no success wait till the receiver is available
                         while 1:
+                            self.expectedSignals['canDispose']=1
                             yield self.canDispose
                             transmitter, eventTime=self.canDispose.value
                             self.canDispose=self.env.event()
@@ -182,6 +179,7 @@ class BatchDecomposition(CoreObject):
                 #     we know that the receiver is occupied with the previous sub-batch
                 else:
                     while 1:
+                        self.expectedSignals['canDispose']=1
                         yield self.canDispose
                         transmitter, eventTime=self.canDispose.value
                         self.canDispose=self.env.event()

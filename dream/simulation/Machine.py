@@ -732,11 +732,10 @@ class Machine(CoreObject):
             # signal the receiver that the activeObject has something to dispose of
             if not self.signalReceiver():
             # if there was no available receiver, get into blocking control
-                
-                self.expectedSignals['interruptionStart']=1
-                self.expectedSignals['canDispose']=1
                                 
                 while 1:
+                    self.expectedSignals['interruptionStart']=1
+                    self.expectedSignals['canDispose']=1
                     self.timeLastBlockageStarted=self.env.now       # blockage is starting
                     # wait the event canDispose, this means that the station can deliver the item to successor
                     self.printTrace(self.id, waitEvent='(canDispose or interruption start)')

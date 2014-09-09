@@ -81,13 +81,11 @@ class BatchReassembly(CoreObject):
         activeObjectQueue=self.getActiveObjectQueue()
         # check if there is WIP and signal receiver
         self.initialSignalReceiver()
-        while 1:
-            
-            self.expectedSignals['isRequested']=1
-            self.expectedSignals['interruptionStart']=1
-            self.expectedSignals['initialWIP']=1
-            
+        while 1:           
             while 1:
+                self.expectedSignals['isRequested']=1
+                self.expectedSignals['interruptionStart']=1
+                self.expectedSignals['initialWIP']=1
                 receivedEvent=yield self.env.any_of([self.isRequested , self.interruptionStart , self.initialWIP])
                 if self.interruptionStart in receivedEvent:
                     transmitter, eventTime=self.interruptionStart.value
@@ -140,16 +138,15 @@ class BatchReassembly(CoreObject):
                     self.reassemble()
                 self.isProcessingInitialWIP=False
                 # signal the receiver that the activeObject has something to dispose of
-                
-                self.expectedSignals['interruptionStart']=1
-                self.expectedSignals['canDispose']=1
-                
+                   
                 if not self.signalReceiver():
                 # if there was no available receiver, get into blocking control
                     while 1:
     #                     self.timeLastBlockageStarted=self.env.now       # blockage is starting
                         # wait the event canDispose, this means that the station can deliver the item to successor
                         self.printTrace(self.id, waitEvent='(canDispose or interruption start)')
+                        self.expectedSignals['interruptionStart']=1
+                        self.expectedSignals['canDispose']=1
                         receivedEvent=yield self.env.any_of([self.canDispose , self.interruptionStart])
                         # if there was interruption
                         # TODO not good implementation

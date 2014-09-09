@@ -102,6 +102,9 @@ class Queue(CoreObject):
         while 1:
             self.printTrace(self.id, waitEvent='')
             # wait until the Queue can accept an entity and one predecessor requests it
+            self.expectedSignals['canDispose']=1
+            self.expectedSignals['isRequested']=1
+            self.expectedSignals['loadOperatorAvailable']=1
             receivedEvent=yield self.isRequested | self.canDispose | self.loadOperatorAvailable
             self.printTrace(self.id, received='')
             # if the event that activated the thread is isRequested then getEntity

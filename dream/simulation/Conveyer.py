@@ -543,6 +543,6 @@ class ConveyerMover(object):
             if self.conveyer.expectedSignals['moveEnd']:
                 succeedTuple=(self,self.env.now)
                 self.conveyer.moveEnd.succeed(succeedTuple)     # send a signal to the conveyer that the move has ended
-            
+                self.conveyer.expectedSignals['moveEnd']=0
 
     
