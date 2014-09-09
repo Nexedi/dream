@@ -27,6 +27,8 @@ module that creates the future demand and appends it to buffers
 
 import xlrd
 import json
+import urllib
+
 from Globals import G
 from JobMA import JobMA
 
@@ -53,8 +55,9 @@ class FutureDemandCreator():
 
         
         # PPOS initial disaggregation profile
-        G.demandFile = ( '/home/jerome/src/dream/dream/simulation/GUI/DemandProfile.xlsx' )
-        wbin = xlrd.open_workbook(G.demandFile)
+        # XXX this issue arbitrary requests
+        demand_data = urllib.urlopen(G.demandFile).read()
+        wbin = xlrd.open_workbook(file_contents=demand_data)
         
         MAData=G.RouteDict
         for k in range(2):

@@ -26,7 +26,6 @@ test script to convert the static excels to JSON. It does not communicate with G
 '''
 
 import xlwt
-import xlrd
 import json
 from dream.simulation.AllocationManagement import AllocationManagement
 from dream.simulation.LineGenerationJSON import main as simulate_line_json
@@ -137,8 +136,6 @@ def readGeneralInput(data):
 def writeOutput():
     wbin = xlwt.Workbook()
     for k in range(G.ReplicationNo):
-        
-        
         #export info on lateness
         sheet1=wbin.add_sheet('Lateness'+str(k+1))
         sheet1.write(0,0,'replication')
@@ -149,7 +146,7 @@ def writeOutput():
         sheet1.write(3,1,G.PPOSEarliness[k])
         sheet1.write(1,3,'Unconstrained Excess Units')
         sheet1.write(1,4,'Min Excess Units')
-               
+
         excessPPOS = sum([i.qty for i in G.ExcessPPOSBuffer[k]])
         minExcessPPOS = sum([i.qty for i in G.ExcessPPOSminBuffer[k]])
         sheet1.write(2,3,excessPPOS)
@@ -166,7 +163,7 @@ def writeOutput():
         sheet1.write(4,1,G.FutureLateness[k])
         sheet1.write(5,0,'Future Demand Earliness')
         sheet1.write(5,1,G.FutureEarliness[k])
-        
+
         # Export PPOS/Future allocation Results       
         for z in range(2):
             if z==0:
@@ -179,8 +176,7 @@ def writeOutput():
                 itemName = 'Initial Future Demand Disaggregation'
                 profile = G.FutureProfile[k]
                 alloc = G.AllocationFuture[k]
-                
-                
+
             sheet = wbin.add_sheet(shName)
             sheet.write_merge(0,0,0,4,itemName)
             sheet.write(1,0,'Order ID')
@@ -188,14 +184,14 @@ def writeOutput():
             sheet.write(1,2,'Total # Units')
             sheet.write(1,3,'Min # Units')
             sheet.write(1,4,'Planned Week')
-            
+
             for i in range(len(profile)):
                 for j in range(len(profile[i])):
                     sheet.write(i+2,j,profile[i][j])
-                    
+
             totQty = sum([i[2] for i in profile])
-            
-            if z==0:                
+
+            if z==0:
                 #pposQty = totQty
                 sheet1.write(2,6,excessPPOS*100.0/totQty)
                 sheet1.write(2,7,minExcessPPOS*100.0/totQty)
@@ -345,6 +341,9 @@ class Simulation(DefaultSimulation):
             "_class": "Dream.Property",
             "_default": 10
         })
+        prop_list.append(overloaded_property(schema['ke_url'],
+                        {'_default':
+        'http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/simulation/Examples/DemandProfile.xlsx'}))
         return conf
 
     def run(self, data):
@@ -389,6 +388,7 @@ class Simulation(DefaultSimulation):
         inputDict['nodes']['AM']['argumentDict']['MAList']=IG.RouteDict
 
         G.argumentDictString=json.dumps(inputDict, indent=5)
+        G.demandFile = data['general']['ke_url']
 
         out = json.loads(simulate_line_json(input_data=(G.argumentDictString)))
 
