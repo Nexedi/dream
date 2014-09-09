@@ -606,10 +606,10 @@ class Machine(CoreObject):
             # this loop is repeated until the processing time is expired with no failure
             # check when the processingEndedFlag switched to false
             
-            self.expectedSignals['interruptionStart']=1
-            self.expectedSignals['preemptQueue']=1
                       
             while processingNotFinished:
+                self.expectedSignals['interruptionStart']=1
+                self.expectedSignals['preemptQueue']=1
                 # timeLastProcessingStarted : dummy variable to keep track of the time that the processing starts after 
                 #           every interruption                        
                 self.timeLastProcessingStarted=self.env.now
@@ -634,9 +634,7 @@ class Machine(CoreObject):
                         self.releaseOperator()
                         
                         self.expectedSignals['brokerIsSet']=1
-                        
                         yield self.brokerIsSet
-                        
                         self.expectedSignals['brokerIsSet']=0
                         
                         transmitter, eventTime=self.brokerIsSet.value
@@ -833,7 +831,6 @@ class Machine(CoreObject):
                     if not self.haveToDispose():
                         break
                 
-                self.expectedSignals['interruptionStart']=0
                 self.expectedSignals['canDispose']=0
     
     # =======================================================================
