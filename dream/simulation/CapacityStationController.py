@@ -62,11 +62,18 @@ class CapacityStationController(EventGenerator):
             entitiesToCheck=list(station.getActiveObjectQueue())
             for entity in entitiesToCheck:
                 if not exit.isRequested.triggered:            # this is needed because the signal can be triggered also by the buffer
-                    succeedTuple=(station,self.env.now)
-                    exit.isRequested.succeed(succeedTuple)         # send is requested to station
+                    if exit.expectedSignals['isRequested']:
+                        succeedTuple=(station,self.env.now)
+                        exit.isRequested.succeed(succeedTuple)         # send is requested to station
                 # wait until the entity is removed
                 station.waitEntityRemoval=True
+                
+                station.expectedSignals['entityRemoved']=1
+                
                 yield station.entityRemoved
+                
+                station.expectedSignals['entityRemoved']=0
+                
                 transmitter, eventTime=station.entityRemoved.value
                 station.waitEntityRemoval=False
                 exit.currentlyObtainedEntities.append(entity)
@@ -115,11 +122,18 @@ class CapacityStationController(EventGenerator):
             for entity in entitiesToCheck:
                 if not entity.shouldMove:   # when the first entity that should not move is reached break
                     break
-                succeedTuple=(buffer,self.env.now)
-                station.isRequested.succeed(succeedTuple)         # send is requested to station
+                if station.expectedSignals['isRequested']:
+                    succeedTuple=(buffer,self.env.now)
+                    station.isRequested.succeed(succeedTuple)         # send is requested to station
                 # wait until the entity is removed
                 buffer.waitEntityRemoval=True
+                
+                buffer.expectedSignals['entityRemoved']=1
+                
                 yield buffer.entityRemoved
+                
+                buffer.expectedSignals['entityRemoved']=0
+                
                 transmitter, eventTime=buffer.entityRemoved.value
                 buffer.waitEntityRemoval=False
                 buffer.entityRemoved=self.env.event()
