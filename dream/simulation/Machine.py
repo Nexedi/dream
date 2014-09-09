@@ -681,7 +681,9 @@ class Machine(CoreObject):
                     self.interruptionActions()
                     # machine has to release the operator
                     self.releaseOperator()
+                    self.expectedSignals['brokerIsSet']=1
                     yield self.brokerIsSet
+                    self.expectedSignals['brokerIsSet']=0                    
                     self.brokerIsSet=self.env.event()                    
                     from Globals import G
                     # append the entity that was stopped to the pending ones
@@ -689,7 +691,9 @@ class Machine(CoreObject):
                         G.pendingEntities.append(self.currentEntity)
                     # machine has to request again for operaror                    
                     self.requestOperator()
+                    self.expectedSignals['brokerIsSet']=1
                     yield self.brokerIsSet
+                    self.expectedSignals['brokerIsSet']=0
                     self.brokerIsSet=self.env.event()
                     # carry post interruption actions
                     self.postInterruptionActions()                        
