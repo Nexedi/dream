@@ -73,6 +73,10 @@ class BatchDecomposition(CoreObject):
         G.BatchWaitingList = []                                     # batches waiting to be reassembled
         CoreObject.initialize(self)                                 # using the default CoreObject Functionality
         self.Res=simpy.Resource(self.env, self.numberOfSubBatches)  # initialize the Internal resource (Queue) functionality
+        
+        self.expectedSignals['isRequested']=1
+        self.expectedSignals['interruptionStart']=1
+        self.expectedSignals['initialWIP']=1
             
     # =======================================================================
     #     the run method of the BatchDecomposition
@@ -82,6 +86,11 @@ class BatchDecomposition(CoreObject):
         self.initialSignalReceiver()
         while 1:
             # wait for an event or an interruption
+            
+            self.expectedSignals['isRequested']=1
+            self.expectedSignals['interruptionStart']=1
+            self.expectedSignals['initialWIP']=1
+            
             while 1:
                 receivedEvent=yield self.env.any_of([self.isRequested , self.interruptionStart , self.initialWIP])
                 # if an interruption has occurred 
@@ -90,7 +99,13 @@ class BatchDecomposition(CoreObject):
                     assert eventTime==self.env.now, 'the interruption received by batchDecomposition was created earlier'
                     self.interruptionStart=self.env.event()
                     # wait till it is over
+                    
+                    self.expectedSignals['interruptionEnd']=1
+                    
                     yield self.interruptionEnd
+                    
+                    self.expectedSignals['interruptionEnd']=0
+                    
                     transmitter, eventTime=self.interruptionEnd.value
                     assert self==transmitter, 'the victim of the failure is not the object that received the interruptionEnd event'
                     self.interruptionEnd=self.env.event()
@@ -109,6 +124,10 @@ class BatchDecomposition(CoreObject):
                     assert requestingObject==self.giver, 'the giver is not the requestingObject'
                     self.isRequested=self.env.event()
                     break
+            
+            self.expectedSignals['isRequested']=0
+            self.expectedSignals['interruptionStart']=0
+            self.expectedSignals['initialWIP']=0
                                                               
             if not self.isProcessingInitialWIP:     # if we are in the state of having initial wip no need to take an Entity
                 self.currentEntity=self.getEntity()
@@ -125,6 +144,8 @@ class BatchDecomposition(CoreObject):
             
             # reset the variable
             self.isProcessingInitialWIP=False
+            
+            self.expectedSignals['canDispose']=1
             
             # TODO: add failure control
             # as long as there are sub-Batches in the internal Resource
@@ -146,7 +167,13 @@ class BatchDecomposition(CoreObject):
                             # signal the receiver again and break
                             if self.signalReceiver():
                                 self.waitEntityRemoval=True
+                                
+                                self.expectedSignals['entityRemoved']=1
+                                
                                 yield self.entityRemoved
+                                
+                                self.expectedSignals['entityRemoved']=0
+                                
                                 transmitter, eventTime=self.entityRemoved.value
                                 self.waitEntityRemoval=False
                                 break                           
@@ -161,13 +188,21 @@ class BatchDecomposition(CoreObject):
                         signaling=self.signalReceiver()
                         if signaling:
                             self.waitEntityRemoval=True
+                            
+                            self.expectedSignals['entityRemoved']=1
+                            
                             yield self.entityRemoved
+                            
+                            self.expectedSignals['entityRemoved']=0
+                            
                             transmitter, eventTime=self.entityRemoved.value
                             self.waitEntityRemoval=False
                             break
 
                 self.entityRemoved=self.env.event()
-
+            
+            self.expectedSignals['canDispose']=0
+            
     # =======================================================================
     # removes an entity from the Machine
     # =======================================================================
