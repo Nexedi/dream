@@ -154,6 +154,9 @@ class Assembly(CoreObject):
         while 1:
             self.printTrace(self.id, waitEvent='')
             # wait until the Queue can accept an entity and one predecessor requests it
+            
+            self.expectedSignals['isRequested']=1
+            
             yield self.isRequested     #[self.isRequested,self.canDispose, self.loadOperatorAvailable]
             if self.isRequested.value:
                 transmitter, eventTime=self.isRequested.value
@@ -173,7 +176,9 @@ class Assembly(CoreObject):
                         self.isRequested=self.env.event()
                         # TODO: fix the getEntity 'Part' case
                         self.getEntity("Part")
-               
+                
+                self.expectedSignals['isRequested']=0
+                
                 self.outputTrace(self.getActiveObjectQueue()[0].name, "is now full in "+ self.objName)
             
                 self.isProcessing=True
@@ -199,6 +204,10 @@ class Assembly(CoreObject):
             # signal the receiver that the activeObject has something to dispose of
             if not self.signalReceiver():
             # if there was no available receiver, get into blocking control
+                
+                self.expectedSignals['canDispose']=1
+                self.expectedSignals['interruptionStart']=1
+                
                 while 1:
 #                     self.timeLastBlockageStarted=self.env.now       # blockage is starting
                     # wait the event canDispose, this means that the station can deliver the item to successor
@@ -214,7 +223,13 @@ class Assembly(CoreObject):
                         self.interruptionActions()                          # execute interruption actions
                         # loop until we reach at a state that there is no interruption
                         while 1:
+                            
+                            self.expectedSignals['interruptionEnd']=1
+                            
                             yield self.interruptionEnd         # interruptionEnd to be triggered by ObjectInterruption
+                            
+                            self.expectedSignals['interruptionEnd']=0
+                            
                             transmitter, eventTime=self.interruptionEnd.value
                             assert eventTime==self.env.now, 'the victim of the failure is not the object that received it'
                             self.interruptionEnd=self.env.event()
@@ -246,7 +261,13 @@ class Assembly(CoreObject):
                     # notify that the station waits the entity to be removed
                     self.waitEntityRemoval=True
                     self.printTrace(self.id, waitEvent='(entityRemoved)')
+                    
+                    self.expectedSignals['entityRemoved']=1
+                    
                     yield self.entityRemoved
+                    
+                    self.expectedSignals['entityRemoved']=0
+                    
                     transmitter, eventTime=self.entityRemoved.value
                     self.printTrace(self.id, entityRemoved=eventTime)
                     assert eventTime==self.env.now,'entityRemoved event activated earlier than received'
@@ -255,7 +276,10 @@ class Assembly(CoreObject):
                     # if while waiting (for a canDispose event) became free as the machines that follows emptied it, then proceed
                     if not self.haveToDispose():
                         break
-  
+                    
+                self.expectedSignals['canDispose']=0
+                self.expectedSignals['interruptionStart']=0
+                
     #===========================================================================
     # checks if the Assembly can accept an entity 
     #===========================================================================

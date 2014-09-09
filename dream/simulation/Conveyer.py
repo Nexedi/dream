@@ -107,6 +107,11 @@ class Conveyer(CoreObject):
                 self.conveyerMover.canMove.succeed(succeedTuple)
             
             self.printTrace(self.id, waitEvent='')
+            
+            self.expectedSignals['isRequested']=1
+            self.expectedSignals['canDispose']=1
+            self.expectedSignals['moveEnd']=1
+            
             receivedEvent=yield self.env.any_of([self.isRequested , self.canDispose , self.moveEnd]) # , self.loadOperatorAvailable]
             # if the event that activated the thread is isRequested then getEntity
             if self.isRequested in receivedEvent:
@@ -136,6 +141,10 @@ class Conveyer(CoreObject):
                 if self.canAccept():
                     self.printTrace(self.id, attemptSignalGiver='(removeEntity)')
                     self.signalGiver()
+            
+            self.expectedSignals['isRequested']=0
+            self.expectedSignals['canDispose']=0
+            self.expectedSignals['moveEnd']=0
             
             # if the event that activated the thread is canDispose then signalReceiver
             if self.haveToDispose():
@@ -531,8 +540,9 @@ class ConveyerMover(object):
             yield self.env.timeout(self.timeToWait)                 #wait for the time that the conveyer calculated
             #     continue if interrupted
             self.conveyer.moveEntities()                    # move the entities of the conveyer
-            succeedTuple=(self,self.env.now)
-            self.conveyer.moveEnd.succeed(succeedTuple)     # send a signal to the conveyer that the move has ended
+            if self.conveyer.expectedSignals['moveEnd']:
+                succeedTuple=(self,self.env.now)
+                self.conveyer.moveEnd.succeed(succeedTuple)     # send a signal to the conveyer that the move has ended
             
 
     
