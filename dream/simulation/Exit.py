@@ -62,7 +62,9 @@ class Exit(CoreObject):
         self.totalLifespan=0
         
         self.totalTaktTime=0            # the total time between to consecutive exits    
-        self.intervalThroughPutList=[]                                  
+        self.intervalThroughPutList=[]
+        
+        self.expectedSignals['isRequested']=1                         
                                                       
   
     def run(self):
