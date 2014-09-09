@@ -328,9 +328,7 @@ class Machine(CoreObject):
             self.expectedSignals['brokerIsSet']=1
             
             yield self.brokerIsSet
-            
-            self.expectedSignals['brokerIsSet']=0
-            
+                   
             transmitter, eventTime=self.brokerIsSet.value
             assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
             assert eventTime==self.env.now, 'brokerIsSet is not received on time'
@@ -358,13 +356,8 @@ class Machine(CoreObject):
             # machine has to release the operator
             self.releaseOperator()
             # wait until the Broker has finished processing
-            
             self.expectedSignals['brokerIsSet']=1
-            
-            yield self.brokerIsSet
-            
-            self.expectedSignals['brokerIsSet']=0
-            
+            yield self.brokerIsSet           
             transmitter, eventTime=self.brokerIsSet.value
             assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
             assert eventTime==self.env.now, 'brokerIsSet is not received on time'
@@ -451,9 +444,7 @@ class Machine(CoreObject):
                 self.expectedSignals['brokerIsSet']=1
                 
                 yield self.brokerIsSet
-                
-                self.expectedSignals['brokerIsSet']=0
-                
+
                 transmitter, eventTime=self.brokerIsSet.value
                 assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
                 assert eventTime==self.env.now, 'brokerIsSet is not received on time'
@@ -485,9 +476,7 @@ class Machine(CoreObject):
                 self.expectedSignals['brokerIsSet']=1
                 
                 yield self.brokerIsSet
-                
-                self.expectedSignals['brokerIsSet']=0
-                
+
                 transmitter, eventTime=self.brokerIsSet.value
                 assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
                 assert eventTime==self.env.now, 'brokerIsSet is not received on time'
@@ -518,9 +507,7 @@ class Machine(CoreObject):
                 self.expectedSignals['brokerIsSet']=1
                 
                 yield self.brokerIsSet
-                
-                self.expectedSignals['brokerIsSet']=0
-                
+
                 transmitter, eventTime=self.brokerIsSet.value
                 assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
                 assert eventTime==self.env.now, 'brokerIsSet is not received on time'
@@ -571,9 +558,7 @@ class Machine(CoreObject):
                 self.expectedSignals['brokerIsSet']=1
                 
                 yield self.brokerIsSet
-                
-                self.expectedSignals['brokerIsSet']=0
-                
+
                 transmitter, eventTime=self.brokerIsSet.value
                 assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
                 assert eventTime==self.env.now, 'brokerIsSet is not received on time'
@@ -594,6 +579,7 @@ class Machine(CoreObject):
                         if oi.expectedSignals['victimStartsProcess']:
                             succeedTuple=(self,self.env.now)
                             oi.victimStartsProcess.succeed(succeedTuple)
+                            oi.expectedSignals['victimStartsProcess']=0
             
                                                  
             # this loop is repeated until the processing time is expired with no failure
@@ -629,7 +615,6 @@ class Machine(CoreObject):
                         
                         self.expectedSignals['brokerIsSet']=1
                         yield self.brokerIsSet
-                        self.expectedSignals['brokerIsSet']=0
                         
                         transmitter, eventTime=self.brokerIsSet.value
                         assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
@@ -663,9 +648,7 @@ class Machine(CoreObject):
                         self.expectedSignals['brokerIsSet']=1
                         
                         yield self.brokerIsSet
-                        
-                        self.expectedSignals['brokerIsSet']=0
-                        
+
                         transmitter, eventTime=self.brokerIsSet.value
                         assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
                         assert eventTime==self.env.now, 'brokerIsSet is not received on time'
@@ -683,7 +666,6 @@ class Machine(CoreObject):
                     self.releaseOperator()
                     self.expectedSignals['brokerIsSet']=1
                     yield self.brokerIsSet
-                    self.expectedSignals['brokerIsSet']=0                    
                     self.brokerIsSet=self.env.event()                    
                     from Globals import G
                     # append the entity that was stopped to the pending ones
@@ -693,7 +675,6 @@ class Machine(CoreObject):
                     self.requestOperator()
                     self.expectedSignals['brokerIsSet']=1
                     yield self.brokerIsSet
-                    self.expectedSignals['brokerIsSet']=0
                     self.brokerIsSet=self.env.event()
                     # carry post interruption actions
                     self.postInterruptionActions()                        
@@ -714,9 +695,7 @@ class Machine(CoreObject):
                         self.expectedSignals['brokerIsSet']=1
                         
                         yield self.brokerIsSet
-                        
-                        self.expectedSignals['brokerIsSet']=0
-                        
+
                         transmitter, eventTime=self.brokerIsSet.value
                         assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
                         assert eventTime==self.env.now, 'brokerIsSet is not received on time'
@@ -745,9 +724,7 @@ class Machine(CoreObject):
                 self.expectedSignals['brokerIsSet']=1
                 
                 yield self.brokerIsSet
-                
-                self.expectedSignals['brokerIsSet']=0
-                
+                               
                 transmitter, eventTime=self.brokerIsSet.value
                 assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
                 assert eventTime==self.env.now, 'brokerIsSet is not received on time'
@@ -890,6 +867,7 @@ class Machine(CoreObject):
                     if oi.expectedSignals['victimEndsProcess']:
                         succeedTuple=(self,self.env.now)
                         oi.victimEndsProcess.succeed(succeedTuple)
+                        oi.expectedSignals['victimEndsProcess']=0
 
         # in case Machine just performed the last work before the scheduled maintenance signal the corresponding object
         if self.isWorkingOnTheLast:
@@ -902,7 +880,8 @@ class Machine(CoreObject):
                     if interruption.expectedSignals['endedLastProcessing']:
                         succeedTuple=(self,self.env.now)
                         self.endedLastProcessing.succeed(succeedTuple)
-                        interruption.waitinSignal=False
+                        interruption.waitingSignal=False
+                        interruption.expectedSignals['endedLastProcessing']=0
                         self.isWorkingOnTheLast=False
             # set timeLastShiftEnded attribute so that if it is overtime working it is not counted as off-shift time
             if self.interruptedBy=='ShiftScheduler':
