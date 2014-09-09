@@ -248,6 +248,7 @@ class Router(ObjectInterruption):
                         self.printTrace('router', 'signalling broker of'+' '*50+operator.isAssignedTo().id)
                         succeedTuple=(self,self.env.now)
                         station.broker.resourceAvailable.succeed(succeedTuple)
+                        station.broker.expectedSignals['resourceAvailable']=0
                 else:
                     # signal the queue proceeding the station
                     if station.canAccept()\
@@ -256,6 +257,7 @@ class Router(ObjectInterruption):
                             self.printTrace('router', 'signalling'+' '*50+operator.isAssignedTo().id)
                             succeedTuple=(self,self.env.now)
                             station.loadOperatorAvailable.succeed(succeedTuple)
+                            station.expectedSignals['loadOperatorAvailable']=0
     
     #===========================================================================
     # clear the pending lists of the router

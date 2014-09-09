@@ -113,6 +113,7 @@ class MouldAssemblyBuffer(QueueManagedJob):
                         if secondary.currentStation.expectedSignals['canDispose']:
                             succeedTuple=(self,self.env.now)
                             secondary.currentStation.canDispose.succeed(succeedTuple)
+                            secondary.currentStation.expectedSignals['canDispose']=0
                         break
             # for all the components that have the same parent Order as the activeEntity
             activeEntity.order.componentsReadyForAssembly = 1

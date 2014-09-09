@@ -66,6 +66,7 @@ class EntityGenerator(object):
                 if self.victim.expectedSignals['entityCreated']:
                     succeedTupple=(entity,self.env.now)
                     self.victim.entityCreated.succeed(succeedTupple)
+                    self.victim.expectedSignals['entityCreated']=0
             # else put it on the time list for scheduled Entities
             else:
                 entityCounter=G.numberOfEntities+len(self.victim.scheduledEntities) # this is used just ot output the trace correctly
@@ -208,4 +209,5 @@ class Source(CoreObject):
             if self.expectedSignals['entityCreated']:
                 succeedTuple=(newEntity,self.env.now)
                 self.entityCreated.succeed(succeedTuple)
+                self.expectedSignals['entityCreated']=0
         return activeEntity

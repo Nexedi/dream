@@ -97,6 +97,7 @@ class ObjectInterruption(ManPyObject):
         if self.expectedSignals['isCalled']:
             succeedTuple=(self.victim,self.env.now)
             self.isCalled.succeed(succeedTuple)
+            self.expectedSignals['isCalled']=0
     
     #===========================================================================
     # returns the internal queue of the victim
@@ -134,6 +135,7 @@ class ObjectInterruption(ManPyObject):
         if self.victim.expectedSignals['interruptionEnd']:
             succeedTuple=(self,self.env.now)
             self.victim.interruptionEnd.succeed(succeedTuple)
+            self.victim.expectedSignals['interruptionEnd']=0
             #reset the interruptionStart event of the victim
             self.victim.interruptionStart=self.env.event()
             # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously
