@@ -61,7 +61,7 @@
         queue = new RSVP.Queue().push(function() {
             Object.keys(property_list).forEach(function(i) {
                 property = property_list[i];
-                value = property._default || "";
+                value = property._default === undefined ? "" : property._default;
                 addField(property, value);
             });
         });

@@ -64,6 +64,22 @@
                     return gadget.props.configuration_dict["Dream-Configuration"].gui.capacity_by_station_spreadsheet;
                 }
             },
+            view_dp_capacity_spreadsheet: {
+                gadget: "Input_viewDemandPlanningCapacitySpreadsheet",
+                type: "object_view",
+                title: "Demand Planning Required Capacity Spreadsheet",
+                condition: function(gadget) {
+                    return gadget.props.configuration_dict["Dream-Configuration"].gui.dp_capacity_spreadsheet;
+                }
+            },
+            view_dp_route_spreadsheet: {
+                gadget: "Input_viewDemandPlanningRouteSpreadsheet",
+                type: "object_view",
+                title: "Demand Planning Route Spreadsheet",
+                condition: function(gadget) {
+                    return gadget.props.configuration_dict["Dream-Configuration"].gui.dp_route_spreadsheet;
+                }
+            },
             view_simu: {
                 gadget: "Input_viewSimulation",
                 type: "object_view",
@@ -87,6 +103,14 @@
                 title: "Stations Utilization",
                 condition: function(gadget) {
                     return gadget.props.configuration_dict["Dream-Configuration"].gui.station_utilisation_graph;
+                }
+            },
+            download_excel_spreadsheet: {
+                gadget: "Output_viewDownloadExcelSpreadsheet",
+                type: "object_view",
+                title: "Download Excel Spreadsheet",
+                condition: function(gadget) {
+                    return gadget.props.configuration_dict["Dream-Configuration"].gui.download_excel_spreadsheet;
                 }
             },
             view_capacity_utilization: {

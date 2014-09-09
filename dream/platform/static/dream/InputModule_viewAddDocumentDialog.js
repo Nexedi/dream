@@ -46,7 +46,9 @@
             shift_spreadsheet: [ [ "Day", "Machines", // XXX more generic name ?
             "Start", "End" ] ],
             capacity_by_project_spreadsheet: [ [ "Project Name", "Sequence", "Capacity Requirements" ] ],
-            capacity_by_station_spreadsheet: [ [ "Day", "CS1" ] ]
+            capacity_by_station_spreadsheet: [ [ "Day", "CS1" ] ],
+            dp_capacity_spreadsheet: [ [] ],
+            dp_route_spreadsheet: [ [] ]
         }, name = "Untitled";
         return new RSVP.Queue().push(function() {
             return promiseEventListener(gadget.props.element.getElementsByClassName("new_form")[0], "submit", false);
