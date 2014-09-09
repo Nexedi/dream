@@ -69,6 +69,10 @@ class BatchReassembly(CoreObject):
     def initialize(self):
         CoreObject.initialize(self)                 # using the default CoreObject Functionality
         self.Res=simpy.Resource(self.env, self.numberOfSubBatches)  # initialize the Internal resource (Queue) functionality
+        
+        self.expectedSignals['isRequested']=1
+        self.expectedSignals['interruptionStart']=1
+        self.expectedSignals['initialWIP']=1
             
     # =======================================================================
     #     the main method of the object
@@ -78,13 +82,24 @@ class BatchReassembly(CoreObject):
         # check if there is WIP and signal receiver
         self.initialSignalReceiver()
         while 1:
+            
+            self.expectedSignals['isRequested']=1
+            self.expectedSignals['interruptionStart']=1
+            self.expectedSignals['initialWIP']=1
+            
             while 1:
                 receivedEvent=yield self.env.any_of([self.isRequested , self.interruptionStart , self.initialWIP])
                 if self.interruptionStart in receivedEvent:
                     transmitter, eventTime=self.interruptionStart.value
                     assert eventTime==self.env.now, 'the interruptionStart received by BatchReassembly later than created'
                     self.interruptionStart=self.env.event()
+                    
+                    self.expectedSignals['interruptionEnd']=1
+                    
                     yield self.interruptionEnd
+                    
+                    self.expectedSignals['interruptionEnd']=0
+                    
                     transmitter, eventTime=self.interruptionEnd.value
                     assert self==transmitter, 'the victim of the failure is not the object that received the interruptionEnd event'
                     self.interruptionEnd=self.env.event()
@@ -105,6 +120,10 @@ class BatchReassembly(CoreObject):
                     self.isProcessingInitialWIP=False
                     break
             
+            self.expectedSignals['isRequested']=0
+            self.expectedSignals['interruptionStart']=0
+            self.expectedSignals['initialWIP']=0
+            
             if not self.isProcessingInitialWIP:     # if we are in the state of having initial wip no need to take an Entity
                 self.currentEntity=self.getEntity()            
                 
@@ -121,6 +140,10 @@ class BatchReassembly(CoreObject):
                     self.reassemble()
                 self.isProcessingInitialWIP=False
                 # signal the receiver that the activeObject has something to dispose of
+                
+                self.expectedSignals['interruptionStart']=1
+                self.expectedSignals['canDispose']=1
+                
                 if not self.signalReceiver():
                 # if there was no available receiver, get into blocking control
                     while 1:
@@ -138,7 +161,13 @@ class BatchReassembly(CoreObject):
                             self.interruptionActions()                          # execute interruption actions
                             # loop until we reach at a state that there is no interruption
                             while 1:
+                                
+                                self.expectedSignals['interruptionEnd']=1
+                                
                                 yield self.interruptionEnd         # interruptionEnd to be triggered by ObjectInterruption
+                                
+                                self.expectedSignals['interruptionEnd']=0
+                                
                                 transmitter, eventTime=self.interruptionEnd.value
                                 assert eventTime==self.env.now, 'the victim of the failure is not the object that received it'
                                 self.interruptionEnd=self.env.event()
@@ -170,7 +199,13 @@ class BatchReassembly(CoreObject):
                             break
                         self.waitEntityRemoval=True
                         self.printTrace(self.id, waitEvent='(entityRemoved)')
+                        
+                        self.expectedSignals['entityRemoved']=1
+                        
                         yield self.entityRemoved
+                        
+                        self.expectedSignals['entityRemoved']=0
+                        
                         transmitter, eventTime=self.entityRemoved.value
                         self.printTrace(self.id, entityRemoved=eventTime)
                         assert eventTime==self.env.now,'entityRemoved event activated earlier than received'
@@ -179,7 +214,10 @@ class BatchReassembly(CoreObject):
                         # if while waiting (for a canDispose event) became free as the machines that follows emptied it, then proceed
                         if not self.haveToDispose():
                             break
-    
+                
+                self.expectedSignals['interruptionStart']=0
+                self.expectedSignals['canDispose']=0
+                
     # =======================================================================
     # removes an entity from the Machine
     # =======================================================================

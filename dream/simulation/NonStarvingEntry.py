@@ -80,6 +80,7 @@ class NonStarvingEntry(Queue):
         Globals.setWIP([E])
         G.numberOfEntities+=1
         if not self.canDispose.triggered:
-            succeedTuple=(self, self.env.now)
-            self.canDispose.succeed(succeedTuple)
+            if self.expectedSignals['canDispose']:
+                succeedTuple=(self, self.env.now)
+                self.canDispose.succeed(succeedTuple)
     
