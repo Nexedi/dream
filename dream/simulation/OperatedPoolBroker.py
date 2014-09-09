@@ -71,7 +71,13 @@ class Broker(ObjectInterruption):
     def run(self):
         while 1:
             # TODO: add new broker event - brokerIsCalled
+            
+            self.expectedSignals['isCalled']=1
+            
             yield self.isCalled
+            
+            self.expectedSignals['isCalled']=0
+            
             transmitter, eventTime=self.isCalled.value
             assert eventTime==self.env.now, 'the broker should be granted control instantly'
             self.isCalled=self.env.event()
@@ -92,7 +98,7 @@ class Broker(ObjectInterruption):
                         # add the currentEntity to the pendingEntities
                         if not self.victim.currentEntity in G.pendingEntities:
                             G.pendingEntities.append(self.victim.currentEntity)
-                        if not G.Router.invoked:
+                        if not G.Router.invoked and G.Router.expectedSignals['isCalled']:
                             self.victim.printTrace(self.victim.id, signal='router (broker)')
                             G.Router.invoked=True
                             succeedTuple=(self,self.env.now)
@@ -100,7 +106,13 @@ class Broker(ObjectInterruption):
                            
                         self.waitForOperator=True
                         self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')
+                        
+                        self.expectedSignals['resourceAvailable']=1
+                        
                         yield self.resourceAvailable
+                        
+                        self.expectedSignals['resourceAvailable']=0
+                        
                         transmitter, eventTime=self.resourceAvailable.value
                         self.resourceAvailable=self.env.event()
                         # remove the currentEntity from the pendingEntities
@@ -112,7 +124,13 @@ class Broker(ObjectInterruption):
                 elif G.Router.invoked and G.Router.allocation:
                     self.waitForOperator=True
                     self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')
+                    
+                    self.expectedSignals['resourceAvailable']=1
+                    
                     yield self.resourceAvailable
+                    
+                    self.expectedSignals['resourceAvailable']=0
+                    
                     transmitter, eventTime=self.resourceAvailable.value
                     self.resourceAvailable=self.env.event()
                     self.waitForOperator=False
@@ -136,13 +154,18 @@ class Broker(ObjectInterruption):
                     self.victim.outputTrace(self.victim.currentOperator.objName, "started work in "+ self.victim.objName)
                     self.victim.currentOperator.timeLastOperationStarted=self.env.now#()
                     # signal the machine that an operator is reserved
-                    succeedTuple=(self,self.env.now)
-                    self.victim.brokerIsSet.succeed(succeedTuple)
+                    if self.victim.expectedSignals['brokerIsSet']:
+                        succeedTuple=(self,self.env.now)
+                        self.victim.brokerIsSet.succeed(succeedTuple)
                     # update the schedule of the operator
                     self.victim.currentOperator.schedule.append([self.victim, self.env.now])
                     
                     # wait till the processing is over
+                    self.expectedSignals['isCalled']=1
+                    
                     yield self.isCalled
+                    
+                    self.expectedSignals['isCalled']=0
                     transmitter, eventTime=self.isCalled.value
                     assert eventTime==self.env.now, 'the broker should be granted control instantly'
                     self.isCalled=self.env.event()
@@ -156,11 +179,11 @@ class Broker(ObjectInterruption):
                         
                         # TODO: signalling the router must be done more elegantly, router must be set as global variable
                         # if the router is already invoked then do not signal it again
-                        if not self.victim.router.invoked:
+                        if not G.Router.invoked and G.Router.expectedSignals['isCalled']:
                             self.victim.printTrace(self.victim.id, signal='router (broker)')
-                            self.victim.router.invoked=True
+                            G.Router.invoked=True
                             succeedTuple=(self,self.env.now)
-                            self.victim.router.isCalled.succeed(succeedTuple)
+                            G.Router.isCalled.succeed(succeedTuple)
                         # TODO: signalling the router will give the chance to it to take the control, but when will it eventually receive it. 
                         #     after signalling the broker will signal it's victim that it has finished it's processes 
                         # TODO: this wont work for the moment. The actions that follow must be performed by all operated brokers. 
@@ -175,6 +198,7 @@ class Broker(ObjectInterruption):
                     else:
                         pass
                 # return the control to the victim
-                succeedTuple=(self,self.env.now)
-                self.victim.brokerIsSet.succeed(succeedTuple)
+                if self.victim.expectedSignals['brokerIsSet']:
+                    succeedTuple=(self,self.env.now)
+                    self.victim.brokerIsSet.succeed(succeedTuple)
                 

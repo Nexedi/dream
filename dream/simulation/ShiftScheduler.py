@@ -78,8 +78,9 @@ class ShiftScheduler(ObjectInterruption):
                 # if the victim has interruptions that measure only the on-shift time, they have to be notified
                 for oi in self.victim.objectInterruptions:
                     if oi.isWaitingForVictimOnShift:
-                        succeedTuple=(self,self.env.now)
-                        oi.victimOnShift.succeed(succeedTuple)
+                        if oi.expectedSignals['victimOnShift']:
+                            succeedTuple=(self,self.env.now)
+                            oi.victimOnShift.succeed(succeedTuple)
                         
                 self.victim.totalOffShiftTime+=self.env.now-self.victim.timeLastShiftEnded
                 self.victim.onShift=True
@@ -97,15 +98,22 @@ class ShiftScheduler(ObjectInterruption):
                 if self.endUnfinished and len(self.victim.getActiveObjectQueue())==1 and (not self.victim.waitToDispose):
                     self.victim.isWorkingOnTheLast=True
                     self.waitingSignal=True
+                    
+                    self.expectedSignals['endedLastProcessing']=1
+                    
                     yield self.victim.endedLastProcessing
+                    
+                    self.expectedSignals['endedLastProcessing']=0
+                    
                     transmitter, eventTime=self.victim.endedLastProcessing.value
                     self.victim.endedLastProcessing=self.env.event()                
 
                 # if the victim has interruptions that measure only the on-shift time, they have to be notified
                 for oi in self.victim.objectInterruptions:
                     if oi.isWaitingForVictimOffShift:
-                        succeedTuple=(self, self.env.now)
-                        oi.victimOffShift.succeed(succeedTuple)
+                        if oi.expectedSignals['victimOffShift']:
+                            succeedTuple=(self, self.env.now)
+                            oi.victimOffShift.succeed(succeedTuple)
 
                 # interrupt the victim only if it was not previously interrupted
                 if not self.victim.interruptionStart.triggered:

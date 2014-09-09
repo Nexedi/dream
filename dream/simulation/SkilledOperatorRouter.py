@@ -70,7 +70,13 @@ class SkilledRouter(Router):
     def run(self):
         while 1:
             # wait until the router is called
+            
+            self.expectedSignals['isCalled']=1
+            
             yield self.isCalled
+            
+            self.expectedSignals['isCalled']=0
+            
             transmitter, eventTime=self.isCalled.value
             self.isCalled=self.env.event()
             self.printTrace('','=-'*15)
@@ -126,7 +132,13 @@ class SkilledRouter(Router):
                     # # XXX wait till all the stations have finished their current WIP
                     #===================================================================
                     # TODO: fix that, add flags, reset the signals
+                    
+                    self.expectedSignals['endedLastProcessing']=1
+                    
                     receivedEvent=yield self.env.all_of(self.endProcessingSignals)
+                    
+                    self.expectedSignals['endedLastProcessing']=0
+                    
                     for station in self.busyStations:
                         if station.endedLastProcessing in receivedEvent:
                             transmitter, eventTime=station.endedLastProcessing.value
@@ -241,16 +253,18 @@ class SkilledRouter(Router):
                 for station in self.toBeSignalled:
                     if station.broker.waitForOperator:
                         # signal this station's broker that the resource is available
-                        self.printTrace('router', 'signalling broker of'+' '*50+station.id)
-                        succeedTuple=(self,self.env.now)
-                        station.broker.resourceAvailable.succeed(succeedTuple)
+                        if station.broker.expectedSignals['resourceAvailable']:
+                            self.printTrace('router', 'signalling broker of'+' '*50+station.id)
+                            succeedTuple=(self,self.env.now)
+                            station.broker.resourceAvailable.succeed(succeedTuple)
                     else:
                         # signal the queue proceeding the station
                         if station.canAccept()\
                                 and any(type=='Load' for type in station.multOperationTypeList):
-                            self.printTrace('router', 'signalling'+' '*50+station.id)
-                            succeedTuple=(self,self.env.now)
-                            station.loadOperatorAvailable.succeed(succeedTuple)
+                            if station.expectedSignals['loadOperatorAvailable']:
+                                self.printTrace('router', 'signalling'+' '*50+station.id)
+                                succeedTuple=(self,self.env.now)
+                                station.loadOperatorAvailable.succeed(succeedTuple)
             
             #===================================================================
             # default behaviour

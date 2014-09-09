@@ -112,7 +112,10 @@ class Failure(ObjectInterruption):
             elif self.deteriorationType=='onShift':
                 while failureNotTriggered:
                     timeRestartedCounting=self.env.now
-                    self.isWaitingForVictimOffShift=True                   
+                    self.isWaitingForVictimOffShift=True
+                    
+                    self.expectedSignals['victimOffShift']=1
+                    
                     receivedEvent=yield self.env.timeout(remainingTimeToFailure) | self.victimOffShift 
                     # the failure should receive a signal if there is a shift-off triggered
                     if self.victimOffShift in receivedEvent:
@@ -121,31 +124,57 @@ class Failure(ObjectInterruption):
                         remainingTimeToFailure=remainingTimeToFailure-(self.env.now-timeRestartedCounting)   
                         # wait for the shift to start again
                         self.isWaitingForVictimOnShift=True
+                        
+                        self.expectedSignals['victimOnShift']=1
+                        
                         yield self.victimOnShift
+                        
+                        self.expectedSignals['victimOnShift']=0
+                        
                         self.isWaitingForVictimOnShift=False
                         self.victimOnShift=self.env.event()
                         assert self.victim.onShift==True, 'the victim of shiftFailure must be onShift to continue counting the TTF'
                     else:
                         self.isWaitingForVictimOffShift=False
                         failureNotTriggered=False
+                
+                self.expectedSignals['victimOffShift']=0
+                
             # if time to failure counts only in working time
             elif self.deteriorationType=='working':
                 # wait for victim to start process
+                
+                self.expectedSignals['victimStartsProcess']=1
+                
                 yield self.victimStartsProcess
+                
+                self.expectedSignals['victimStartsProcess']=0
+                
                 self.victimStartsProcess=self.env.event()
                 while failureNotTriggered:
                     timeRestartedCounting=self.env.now
+                    
+                    self.expectedSignals['victimEndsProcess']=1
+                    
                     # wait either for the failure or end of process
                     receivedEvent=yield self.env.timeout(remainingTimeToFailure) | self.victimEndsProcess 
                     if self.victimEndsProcess in receivedEvent:
                         self.victimEndsProcess=self.env.event()
                         remainingTimeToFailure=remainingTimeToFailure-(self.env.now-timeRestartedCounting)
+                        
+                        self.expectedSignals['victimStartsProcess']=1
+                        
                         yield self.victimStartsProcess
+                        
+                        self.expectedSignals['victimStartsProcess']=0
+                        
                         # wait for victim to start again processing
                         self.victimStartsProcess=self.env.event()
                     else:
                         failureNotTriggered=False
-             
+                
+                self.expectedSignals['victimEndsProcess']=0
+           
             # interrupt the victim only if it was not previously interrupted
             if not self.victim.interruptionStart.triggered:
                 self.interruptVictim()                      # interrupt the victim
