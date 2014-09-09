@@ -181,7 +181,6 @@ class Machine(CoreObject):
         self.expectedSignals['initialWIP']=1
         # events about the availability of process operator
         # TODO group those operator relate events
-        self.processOperatorAvailable=self.env.event()
         self.processOperatorUnavailable=self.env.event()
 
     @staticmethod
@@ -216,13 +215,7 @@ class Machine(CoreObject):
                 loadTime.get('max', None) is None:
             loadTime['max'] = float(loadTime['mean']) + 5 * float(loadTime['stdev'])
         return loadTime
-
-        
-        # events about the availability of process operator
-        # TODO group those operator relate events
-        self.processOperatorAvailable=self.env.event()
-        self.processOperatorUnavailable=self.env.event()
-                
+               
     #===========================================================================
     # create an operatorPool if needed
     #===========================================================================
@@ -610,6 +603,7 @@ class Machine(CoreObject):
             while processingNotFinished:
                 self.expectedSignals['interruptionStart']=1
                 self.expectedSignals['preemptQueue']=1
+                self.expectedSignals['processOperatorUnavailable']=1
                 # timeLastProcessingStarted : dummy variable to keep track of the time that the processing starts after 
                 #           every interruption                        
                 self.timeLastProcessingStarted=self.env.now
@@ -1181,7 +1175,7 @@ class Machine(CoreObject):
         if not self.currentOperator.onShift:
             self.currentOperator.timeLastShiftEnded=self.env.now      
             self.currentOperator.unAssign()     # set the flag operatorAssignedTo to None     
-            self.outputTrace(self.currentOperator.objName, "released from "+ self.objName)
+            self.outputTrace(self.currentOperator.name, "released from "+ self.objName)
         # XXX in case of skilled operators which stay at the same station should that change
         elif not self.checkForDedicatedOperators():
             self.currentOperator.unAssign()     # set the flag operatorAssignedTo to None

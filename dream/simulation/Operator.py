@@ -38,8 +38,7 @@ class Operator(ObjectResource):
     family='Operator'  
     
     def __init__(self, id, name, capacity=1, schedulingRule='FIFO', skills=[], available=True,**kw):
-        ObjectResource.__init__(self)
-        self.id=id
+        ObjectResource.__init__(self,id=id, name=name)
         self.objName=name
         self.capacity=int(capacity)      # repairman is an instance of resource
         self.type="Operator"

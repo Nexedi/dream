@@ -44,7 +44,7 @@ class ManPyObject(object):
             self.name=name   
         # if no name was given give id as name  
         else:
-            self.name=self.id      
+            self.name=self.id    
             
     #===========================================================================
     #  method used to request allocation from the Router

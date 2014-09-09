@@ -151,7 +151,7 @@ class Broker(ObjectInterruption):
                     self.timeWaitForOperatorStarted = 0
                     # update the time that the operation started
                     self.timeOperationStarted = self.env.now
-                    self.victim.outputTrace(self.victim.currentOperator.objName, "started work in "+ self.victim.objName)
+                    self.victim.outputTrace(self.victim.currentOperator.name, "started work in "+ self.victim.objName)
                     self.victim.currentOperator.timeLastOperationStarted=self.env.now#()
                     # signal the machine that an operator is reserved
                     if self.victim.expectedSignals['brokerIsSet']:
