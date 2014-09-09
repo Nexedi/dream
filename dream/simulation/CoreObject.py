@@ -445,7 +445,7 @@ class CoreObject(ManPyObject):
     @staticmethod
     def findReceiversFor(activeObject):
         receivers=[]
-        for object in [x for x in activeObject.next if x.canAccept(activeObject) and not x.isRequested.triggered]:
+        for object in [x for x in activeObject.next if x.canAccept(activeObject) and not x.isRequested.triggered and x.expectedSignals['isRequested']]:
             receivers.append(object)
         return receivers
     
@@ -490,9 +490,8 @@ class CoreObject(ManPyObject):
             self.printTrace(self.id, signalReceiver=self.receiver.id)
             # assign the entry of the receiver
             self.receiver.assignEntryTo()
-            if self.receiver.expectedSignals['isRequested']:
-                succeedTuple=(self,self.env.now)
-                self.receiver.isRequested.succeed(succeedTuple)
+            succeedTuple=(self,self.env.now)
+            self.receiver.isRequested.succeed(succeedTuple)
             return True
         # if no receiver can accept then try to preempt a receive if the stations holds a critical order
         self.preemptReceiver()
@@ -528,7 +527,7 @@ class CoreObject(ManPyObject):
     @staticmethod
     def findGiversFor(activeObject):
         givers=[]
-        for object in [x for x in activeObject.previous if(not x is activeObject) and not x.canDispose.triggered]:
+        for object in [x for x in activeObject.previous if(not x is activeObject) and not x.canDispose.triggered and x.expectedSignals['canDispose']]:
             if object.haveToDispose(activeObject): 
                 givers.append(object)
         return givers
@@ -564,9 +563,8 @@ class CoreObject(ManPyObject):
             self.giver.receiver=self
             if self.giver.expectedSignals['canDispose']:
                 self.printTrace(self.id, signalGiver=self.giver.id)
-                if self.giver.expectedSignals['canDispose']:
-                    succeedTuple=(self,self.env.now)
-                    self.giver.canDispose.succeed(succeedTuple)
+                succeedTuple=(self,self.env.now)
+                self.giver.canDispose.succeed(succeedTuple)
             return True
         return False
     
