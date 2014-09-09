@@ -55,9 +55,10 @@ class ManPyObject(object):
         from Globals import G
         G.Router.allocation=True
         G.Router.waitEndProcess=False
-        if not G.Router.invoked:
+        if not G.Router.invoked and G.Router.expectedSignals['isCalled']:
             G.Router.invoked=True
-            G.Router.isCalled.succeed(G.env.now)
+            succeedTuple=(G.env,G.env.now)
+            G.Router.isCalled.succeed(succeedTuple)
             
     #===========================================================================
     #  signalRouter method
@@ -72,10 +73,11 @@ class ManPyObject(object):
                 if receiver.isLoadRequested():
                     try:
                         from Globals import G
-                        if not G.Router.invoked:
+                        if not G.Router.invoked and G.Router.expectedSignals['isCalled']:
 #                             self.printTrace(self.id, signal='router')
                             G.Router.invoked=True
-                            G.Router.isCalled.succeed(G.env.now)
+                            succeedTuple=(G.env,G.env.now)
+                            G.Router.isCalled.succeed(succeedTuple)
                         return True
                     except:
                         return False
