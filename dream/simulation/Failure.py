@@ -51,8 +51,6 @@ class Failure(ObjectInterruption):
         self.repairman=repairman        # the resource that may be needed to fix the failure
                                         # if now resource is needed this will be "None" 
         self.type="Failure"
-        self.id=0
-
         # shows how the time to failure is measured
         # 'constant' means it counts not matter the state of the victim
         # 'onShift' counts only if the victim is onShift

@@ -121,6 +121,7 @@ class ObjectInterruption(ManPyObject):
             self.victim.interruptedBy=self.type
             succeedTuple=(self,self.env.now)
             self.victim.interruptionStart.succeed(succeedTuple)
+            self.victim.expectedSignals['interruptionStart']=0
         # if the machines are operated by dedicated operators
         if self.victim.dedicatedOperator:
             # request allocation
