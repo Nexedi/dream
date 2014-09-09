@@ -114,6 +114,15 @@
                         .gui.station_utilisation_graph);
         }
       },
+      "download_excel_spreadsheet": {
+        "gadget": "Output_viewDownloadExcelSpreadsheet",
+        "type": "object_view",
+        "title": "Download Excel Spreadsheet",
+        "condition": function (gadget) {
+          return (gadget.props.configuration_dict['Dream-Configuration']
+                        .gui.download_excel_spreadsheet);
+        }
+      },
       "view_capacity_utilization": {
         "gadget": "Output_viewCapacityUtilisationGraph",
         "type": "object_view",

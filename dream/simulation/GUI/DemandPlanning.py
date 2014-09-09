@@ -276,11 +276,13 @@ class Simulation(DefaultSimulation):
             DefaultSimulation.getConfigurationDict(self)['Dream-Configuration']}
 
         conf["Dream-Configuration"]["gui"]["exit_stat"] = 0
-        conf["Dream-Configuration"]["gui"]["debug_json"] = 1
+        conf["Dream-Configuration"]["gui"]["debug_json"] = 0
         conf["Dream-Configuration"]["gui"]["graph_editor"] = 0
         conf["Dream-Configuration"]["gui"]["station_utilisation_graph"] = 0
         conf["Dream-Configuration"]["gui"]["exit_stat"] = 0
         conf["Dream-Configuration"]["gui"]["queue_stat"] = 0
+
+        conf["Dream-Configuration"]["gui"]["download_excel_spreadsheet"] = 1
         conf["Dream-Configuration"]["gui"]["dp_capacity_spreadsheet"] = 1
         conf["Dream-Configuration"]["gui"]["dp_route_spreadsheet"] = 1
 
