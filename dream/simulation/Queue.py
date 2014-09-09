@@ -86,12 +86,16 @@ class Queue(CoreObject):
         self.Res=simpy.Resource(self.env, self.capacity)
         # event used by router
         self.loadOperatorAvailable=self.env.event()
+        
+        self.expectedSignals['isRequested']=1
+        self.expectedSignals['canDispose']=1
+        self.expectedSignals['loadOperatorAvailable']=1
 
     
     #===========================================================================
     # run method of the queue
     #===========================================================================
-    def run(self):  
+    def run(self):
         activeObjectQueue=self.Res.users
         # check if there is WIP and signal receiver
         self.initialSignalReceiver()
