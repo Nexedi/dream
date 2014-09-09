@@ -71,6 +71,20 @@ class CoreObject(ManPyObject):
         # if there is input in a dictionary parse from it
         from Globals import G
         G.ObjList.append(self)  # add object to ObjList
+        # list of expected signals of a station (values can be used as flags to inform on which signals is the station currently yielding)
+        self.expectedSignals={
+                                "isRequested":0,
+                                "canDispose":0,
+                                "interruptionStart":0,
+                                "interruptionEnd":0,
+                                "loadOperatorAvailable":0,
+                                "initialWIP":0,
+                                "brokerIsSet":0,
+                                "preemptQueue":0,
+                                "entityRemoved":0,
+                                "entityCreated":0,
+                                "moveEnd":0
+                              }
                 
     def initialize(self):
         from Globals import G
@@ -190,6 +204,20 @@ class CoreObject(ManPyObject):
         # flag that shows if the object is blocked state at any given time
         self.isBlocked=False
         self.timeLastBlockageStarted=None
+        # list of expected signals of a station (values can be used as flags to inform on which signals is the station currently yielding)
+        self.expectedSignals={
+                                "isRequested":0,
+                                "canDispose":0,
+                                "interruptionStart":0,
+                                "interruptionEnd":0,
+                                "loadOperatorAvailable":0,
+                                "initialWIP":0,
+                                "brokerIsSet":0,
+                                "preemptQueue":0,
+                                "entityRemoved":0,
+                                "entityCreated":0,
+                                "moveEnd":0
+                              }
         
     # =======================================================================
     #                the main process of the core object 
@@ -263,18 +291,18 @@ class CoreObject(ManPyObject):
             self.wipStatList.append([self.env.now, len(activeObjectQueue)])
         
         if self.entityRemoved.triggered:
-            if self.entityRemoved.value!=self.env.now and self.waitEntityRemoval:
+            if self.entityRemoved.value!=self.env.now and self.waitEntityRemoval and self.expectedSignals['entityRemoved']:
 #                 print self.id,'triggered and waiting'
                 self.entityRemoved=self.env.event()
                 self.printTrace(self.id, signal='(removedEntity)')
                 succeedTuple=(self,self.env.now)
                 self.entityRemoved.succeed(succeedTuple)
-        elif self.waitEntityRemoval:
+        elif self.waitEntityRemoval and self.expectedSignals['entityRemoved']:
 #             print self.id,'not triggered and waiting'
             self.printTrace(self.id, signal='(removedEntity)')
             succeedTuple=(self,self.env.now)
             self.entityRemoved.succeed(succeedTuple)
-        elif not self.waitEntityRemoval:
+        elif not self.waitEntityRemoval and not self.expectedSignals['entityRemoved']:
 #             print self.id,'not triggered but not waiting'
             pass
         return entity
@@ -462,8 +490,9 @@ class CoreObject(ManPyObject):
             self.printTrace(self.id, signalReceiver=self.receiver.id)
             # assign the entry of the receiver
             self.receiver.assignEntryTo()
-            succeedTuple=(self,self.env.now)
-            self.receiver.isRequested.succeed(succeedTuple)
+            if self.receiver.expectedSignals['isRequested']:
+                succeedTuple=(self,self.env.now)
+                self.receiver.isRequested.succeed(succeedTuple)
             return True
         # if no receiver can accept then try to preempt a receive if the stations holds a critical order
         self.preemptReceiver()
@@ -533,9 +562,11 @@ class CoreObject(ManPyObject):
                 giversReceiver=self
             self.giver=giver
             self.giver.receiver=self
-            self.printTrace(self.id, signalGiver=self.giver.id)
-            succeedTuple=(self,self.env.now)
-            self.giver.canDispose.succeed(succeedTuple)
+            if self.giver.expectedSignals['canDispose']:
+                self.printTrace(self.id, signalGiver=self.giver.id)
+                if self.giver.expectedSignals['canDispose']:
+                    succeedTuple=(self,self.env.now)
+                    self.giver.canDispose.succeed(succeedTuple)
             return True
         return False
     
