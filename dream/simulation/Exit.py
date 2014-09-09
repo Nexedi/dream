@@ -70,6 +70,7 @@ class Exit(CoreObject):
     def run(self):
         while 1:
             # wait until the Queue can accept an entity and one predecessor requests it
+            self.expectedSignals['isRequested']=1
             yield self.isRequested
             self.isRequested=self.env.event()
             # TODO: insert extra controls to check whether the self.giver attribute is correctly updated

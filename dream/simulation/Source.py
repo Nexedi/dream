@@ -140,6 +140,9 @@ class Source(CoreObject):
         activeObjectQueue=self.getActiveObjectQueue()
         while 1:
             # wait for any event (entity creation or request for disposal of entity)
+            self.expectedSignals['canDispose']=1
+            self.expectedSignals['entityCreated']=1
+            self.expectedSignals['loadOperatorAvailable']=1
             receivedEvent=yield self.entityCreated | self.canDispose | self.loadOperatorAvailable
             self.printTrace(self.id, received='')
             # if an entity is created try to signal the receiver and continue

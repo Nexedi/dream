@@ -65,6 +65,7 @@ class CapacityStationController(EventGenerator):
                     if exit.expectedSignals['isRequested']:
                         succeedTuple=(station,self.env.now)
                         exit.isRequested.succeed(succeedTuple)         # send is requested to station
+                        exit.expectedSignals['isRequested']=0
                 # wait until the entity is removed
                 station.waitEntityRemoval=True
                 
@@ -125,6 +126,7 @@ class CapacityStationController(EventGenerator):
                 if station.expectedSignals['isRequested']:
                     succeedTuple=(buffer,self.env.now)
                     station.isRequested.succeed(succeedTuple)         # send is requested to station
+                    station.expectedSignals['isRequested']=0
                 # wait until the entity is removed
                 buffer.waitEntityRemoval=True
                 
