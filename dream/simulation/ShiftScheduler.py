@@ -116,14 +116,10 @@ class ShiftScheduler(ObjectInterruption):
                     if self.endUnfinished and self.victim.isProcessing:
                         self.victim.isWorkingOnTheLast=True
                         self.waitingSignal=True
-                    
-                    self.expectedSignals['endedLastProcessing']=1
-                    
-                    yield self.victim.endedLastProcessing
-                    
-                    self.expectedSignals['endedLastProcessing']=0
-                    
-                    transmitter, eventTime=self.victim.endedLastProcessing.value
+                        self.expectedSignals['endedLastProcessing']=1
+                        yield self.victim.endedLastProcessing
+                        self.expectedSignals['endedLastProcessing']=0
+                        transmitter, eventTime=self.victim.endedLastProcessing.value
                         self.victim.endedLastProcessing=self.env.event() 
                     self.interruptVictim()
                 # if the victim is operator
