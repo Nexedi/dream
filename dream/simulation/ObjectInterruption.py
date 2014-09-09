@@ -46,6 +46,17 @@ class ObjectInterruption(ManPyObject):
         if self.victim:
             if isinstance(self.victim.objectInterruptions, list):
                 self.victim.objectInterruptions.append(self)
+        # list of expected signals of an interruption (values can be used as flags to inform on which signals is the interruption currently yielding)
+        self.expectedSignals={
+                                "victimOffShift":0,
+                                "victimOnShift":0,
+                                "victimStartsProcessing":0,
+                                "victimEndsProcessing":0,
+                                "isCalled":0,
+                                "endedLastProcessing":0,
+                                "victimIsEmptyBeforeMaintenance":0,
+                                "resourceAvailable":0,
+                              }
     
     def initialize(self):
         from Globals import G
@@ -57,6 +68,17 @@ class ObjectInterruption(ManPyObject):
         # flags that show if the interruption waits for the event
         self.isWaitingForVictimOffShift=False
         self.isWaitingForVictimOnShift=False
+        # list of expected signals of an interruption (values can be used as flags to inform on which signals is the interruption currently yielding)
+        self.expectedSignals={
+                                "victimOffShift":0,
+                                "victimOnShift":0,
+                                "victimStartsProcessing":0,
+                                "victimEndsProcessing":0,
+                                "isCalled":0,
+                                "endedLastProcessing":0,
+                                "victimIsEmptyBeforeMaintenance":0,
+                                "resourceAvailable":0,
+                              }
     
     #===========================================================================
     # the main process of the core object
@@ -72,8 +94,9 @@ class ObjectInterruption(ManPyObject):
     #     signalling can be done via Machine request/releaseOperator
     # =======================================================================    
     def invoke(self):
-        succeedTuple=(self.victim,self.env.now)
-        self.isCalled.succeed(succeedTuple)
+        if self.expectedSignals['isCalled']:
+            succeedTuple=(self.victim,self.env.now)
+            self.isCalled.succeed(succeedTuple)
     
     #===========================================================================
     # returns the internal queue of the victim
@@ -94,9 +117,10 @@ class ObjectInterruption(ManPyObject):
     def interruptVictim(self):
         # inform the victim by whom will it be interrupted
         # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously
-        self.victim.interruptedBy=self.type
-        succeedTuple=(self,self.env.now)
-        self.victim.interruptionStart.succeed(succeedTuple)
+        if self.victim.expectedSignals['interruptionStart']:
+            self.victim.interruptedBy=self.type
+            succeedTuple=(self,self.env.now)
+            self.victim.interruptionStart.succeed(succeedTuple)
         # if the machines are operated by dedicated operators
         if self.victim.dedicatedOperator:
             # request allocation
@@ -106,12 +130,13 @@ class ObjectInterruption(ManPyObject):
     # reactivate the victim
     #===========================================================================
     def reactivateVictim(self):
-        succeedTuple=(self,self.env.now)
-        self.victim.interruptionEnd.succeed(succeedTuple)
-        #reset the interruptionStart event of the victim
-        self.victim.interruptionStart=self.env.event()
-        # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously
-        self.victim.interruptedBy=None
+        if self.victim.expectedSignals['interruptionEnd']:
+            succeedTuple=(self,self.env.now)
+            self.victim.interruptionEnd.succeed(succeedTuple)
+            #reset the interruptionStart event of the victim
+            self.victim.interruptionStart=self.env.event()
+            # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously
+            self.victim.interruptedBy=None
         # if the machines are operated by dedicated operators
         if self.victim.dedicatedOperator:
             # request allocation
