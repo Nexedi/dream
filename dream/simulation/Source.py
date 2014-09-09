@@ -143,7 +143,7 @@ class Source(CoreObject):
             self.expectedSignals['canDispose']=1
             self.expectedSignals['entityCreated']=1
             self.expectedSignals['loadOperatorAvailable']=1
-            receivedEvent=yield self.entityCreated | self.canDispose | self.loadOperatorAvailable
+            receivedEvent=yield self.env.any_of([self.entityCreated, self.canDispose, self.loadOperatorAvailable])
             self.printTrace(self.id, received='')
             # if an entity is created try to signal the receiver and continue
             if self.entityCreated in receivedEvent:
