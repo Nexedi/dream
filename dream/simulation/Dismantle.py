@@ -126,7 +126,12 @@ class Dismantle(CoreObject):
         while 1:
 #             self.printTrace(self.id, waitEvent='(frame)')
             # wait until the Queue can accept an entity and one predecessor requests it
+            
+            self.expectedSignals['isRequested']=1
+            
             yield self.isRequested     #[self.isRequested,self.canDispose, self.loadOperatorAvailable]
+            
+            self.expectedSignals['isRequested']=0
             
             if self.isRequested.value:
 #                 self.printTrace(self.id, isRequested=self.isRequested.value.id)
@@ -154,6 +159,9 @@ class Dismantle(CoreObject):
                 # while the object still holds the frame
                 flag=False
                 while not self.isEmpty():
+                    
+                    self.expectedSignals['canDispose']=1
+                    
                     # try and signal the receiver
                     if not self.signalReceiver():
                         # if not possible, then wait till a receiver is available
@@ -164,7 +172,13 @@ class Dismantle(CoreObject):
                             continue
                     # if the receiver was not responsive, release the control to let him remove the entity
                     self.waitEntityRemoval=True
+                    
+                    self.expectedSignals['entityRemoved']=1
+                    
                     yield self.entityRemoved
+                    
+                    self.expectedSignals['entityRemoved']=0
+                    
                     self.waitEntityRemoval=False
                     self.entityRemoved=self.env.event()
 
@@ -175,6 +189,8 @@ class Dismantle(CoreObject):
                     if self.isEmpty():
                         self.waitToDisposeFrame=False                     #the Dismantle has no Frame to dispose now
                         break
+                
+                self.expectedSignals['canDispose']=0
         
     #===========================================================================
     #    checks if the Dismantle can accept an entity and there is a Frame 
