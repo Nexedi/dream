@@ -103,7 +103,8 @@ class Broker(ObjectInterruption):
                             G.Router.invoked=True
                             succeedTuple=(self,self.env.now)
                             G.Router.isCalled.succeed(succeedTuple)
-                           
+                            G.Router.expectedSignals['isCalled']=0
+                            
                         self.waitForOperator=True
                         self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')
                         
@@ -157,12 +158,13 @@ class Broker(ObjectInterruption):
                     if self.victim.expectedSignals['brokerIsSet']:
                         succeedTuple=(self,self.env.now)
                         self.victim.brokerIsSet.succeed(succeedTuple)
+                        self.victim.expectedSignals['brokerIsSet']=0
                     # update the schedule of the operator
                     self.victim.currentOperator.schedule.append([self.victim, self.env.now])
                     
                     # wait till the processing is over
                     self.expectedSignals['isCalled']=1
-                    
+                
                     yield self.isCalled
                     
                     self.expectedSignals['isCalled']=0
@@ -184,6 +186,7 @@ class Broker(ObjectInterruption):
                             G.Router.invoked=True
                             succeedTuple=(self,self.env.now)
                             G.Router.isCalled.succeed(succeedTuple)
+                            G.Router.expectedSignals['isCalled']=0
                         # TODO: signalling the router will give the chance to it to take the control, but when will it eventually receive it. 
                         #     after signalling the broker will signal it's victim that it has finished it's processes 
                         # TODO: this wont work for the moment. The actions that follow must be performed by all operated brokers. 
@@ -201,4 +204,5 @@ class Broker(ObjectInterruption):
                 if self.victim.expectedSignals['brokerIsSet']:
                     succeedTuple=(self,self.env.now)
                     self.victim.brokerIsSet.succeed(succeedTuple)
+                    self.victim.expectedSignals['brokerIsSet']=0
                 
