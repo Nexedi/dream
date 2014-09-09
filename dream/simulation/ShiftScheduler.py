@@ -131,6 +131,7 @@ class ShiftScheduler(ObjectInterruption):
                     if station:
                         if not self.endUnfinished and station.isProcessing:
                             station.processOperatorUnavailable.succeed(self.env.now)
+                            station.expectedSignals['processOperatorUnavailable']=0
                     CoreObject.requestAllocation()
 
                 # if the victim has interruptions that measure only the on-shift time, they have to be notified

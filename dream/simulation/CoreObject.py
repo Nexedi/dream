@@ -83,7 +83,8 @@ class CoreObject(ManPyObject):
                                 "preemptQueue":0,
                                 "entityRemoved":0,
                                 "entityCreated":0,
-                                "moveEnd":0
+                                "moveEnd":0,
+                                "processOperatorUnavailable":0
                               }
                 
     def initialize(self):
