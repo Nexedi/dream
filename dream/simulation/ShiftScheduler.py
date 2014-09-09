@@ -75,7 +75,7 @@ class ShiftScheduler(ObjectInterruption):
                 # interrupt the victim only if it was not previously interrupted
                 self.interruptVictim()                      # interrupt the victim
             else:
-                CoreObject.requestAllocation()
+                self.requestAllocation()
 
             self.victim.timeLastShiftEnded=self.env.now
             self.outputTrace(self.victim.name,"is off shift")
@@ -85,10 +85,15 @@ class ShiftScheduler(ObjectInterruption):
                 yield self.env.timeout(float(self.remainingShiftPattern[0][0]-self.env.now))    # wait for the onShift
                 # if the victim is CoreObject reactivate it. Else ask the router for allocation of operators
                 # TODO more generic implementation
+                self.victim.onShift=True
+                self.victim.totalOffShiftTime+=self.env.now-self.victim.timeLastShiftEnded
+                self.victim.timeLastShiftStarted=self.env.now
+                self.outputTrace(self.victim.name,"is on shift")
+                startShift=self.env.now
                 if issubclass(self.victim.__class__, CoreObject): 
                     self.reactivateVictim()                 # re-activate the victim in case it was interrupted
                 else:
-                    CoreObject.requestAllocation()
+                    self.requestAllocation()
 
                 # if the victim has interruptions that measure only the on-shift time, they have to be notified
                 for oi in self.victim.objectInterruptions:
@@ -96,12 +101,6 @@ class ShiftScheduler(ObjectInterruption):
                         if oi.expectedSignals['victimOnShift']:
                             succeedTuple=(self,self.env.now)
                             oi.victimOnShift.succeed(succeedTuple)
-                        
-                self.victim.totalOffShiftTime+=self.env.now-self.victim.timeLastShiftEnded
-                self.victim.onShift=True
-                self.victim.timeLastShiftStarted=self.env.now
-                self.outputTrace(self.victim.name,"is on shift")
-                startShift=self.env.now
             else:
                 timeToEndShift=float(self.remainingShiftPattern[0][1]-self.env.now)
                 yield self.env.timeout(timeToEndShift-self.receiveBeforeEndThreshold)   # wait until the entry threshold
@@ -132,7 +131,7 @@ class ShiftScheduler(ObjectInterruption):
                         if not self.endUnfinished and station.isProcessing:
                             station.processOperatorUnavailable.succeed(self.env.now)
                             station.expectedSignals['processOperatorUnavailable']=0
-                    CoreObject.requestAllocation()
+                    self.requestAllocation()
 
                 # if the victim has interruptions that measure only the on-shift time, they have to be notified
                 for oi in self.victim.objectInterruptions:
