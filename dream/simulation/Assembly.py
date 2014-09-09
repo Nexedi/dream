@@ -168,6 +168,7 @@ class Assembly(CoreObject):
                                                                     
                 for i in range(self.getActiveObjectQueue()[0].capacity):         #this loop will be carried until the Frame is full with the parts
                     self.printTrace(self.id, waitEvent='(to load parts)')
+                    self.expectedSignals['isRequested']=1
                     yield self.isRequested
                     if self.isRequested.value:
                         transmitter, eventTime=self.isRequested.value
