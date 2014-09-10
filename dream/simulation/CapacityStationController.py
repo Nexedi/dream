@@ -70,9 +70,7 @@ class CapacityStationController(EventGenerator):
                 station.expectedSignals['entityRemoved']=1
                 
                 yield station.entityRemoved
-                
-                station.expectedSignals['entityRemoved']=0
-                
+                                
                 transmitter, eventTime=station.entityRemoved.value
                 station.waitEntityRemoval=False
                 exit.currentlyObtainedEntities.append(entity)
@@ -129,9 +127,7 @@ class CapacityStationController(EventGenerator):
                 buffer.expectedSignals['entityRemoved']=1
                 
                 yield buffer.entityRemoved
-                
-                buffer.expectedSignals['entityRemoved']=0
-                
+
                 transmitter, eventTime=buffer.entityRemoved.value
                 buffer.waitEntityRemoval=False
                 buffer.entityRemoved=self.env.event()

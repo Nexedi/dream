@@ -75,9 +75,7 @@ class Broker(ObjectInterruption):
             self.expectedSignals['isCalled']=1
             
             yield self.isCalled
-            
-            self.expectedSignals['isCalled']=0
-            
+
             transmitter, eventTime=self.isCalled.value
             assert eventTime==self.env.now, 'the broker should be granted control instantly'
             self.isCalled=self.env.event()
@@ -109,9 +107,7 @@ class Broker(ObjectInterruption):
                         self.expectedSignals['resourceAvailable']=1
                         
                         yield self.resourceAvailable
-                        
-                        self.expectedSignals['resourceAvailable']=0
-                        
+
                         transmitter, eventTime=self.resourceAvailable.value
                         self.resourceAvailable=self.env.event()
                         # remove the currentEntity from the pendingEntities
@@ -127,9 +123,7 @@ class Broker(ObjectInterruption):
                     self.expectedSignals['resourceAvailable']=1
                     
                     yield self.resourceAvailable
-                    
-                    self.expectedSignals['resourceAvailable']=0
-                    
+
                     transmitter, eventTime=self.resourceAvailable.value
                     self.resourceAvailable=self.env.event()
                     self.waitForOperator=False
@@ -162,8 +156,7 @@ class Broker(ObjectInterruption):
                     self.expectedSignals['isCalled']=1
                 
                     yield self.isCalled
-                    
-                    self.expectedSignals['isCalled']=0
+
                     transmitter, eventTime=self.isCalled.value
                     assert eventTime==self.env.now, 'the broker should be granted control instantly'
                     self.isCalled=self.env.event()

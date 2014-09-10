@@ -87,8 +87,6 @@ class ScheduledMaintenance(ObjectInterruption):
                     
                     yield self.victim.endedLastProcessing                # there is no signal yet that signals the change of such state (an object getting empty)
                     
-                    self.expectedSignals['endedLastProcessing']=0
-                    
                     transmitter, eventTime=self.victim.endedLastProcessing.value
                     assert eventTime==self.env.now, 'the processing end signal is not received by maintenance on time'
                     self.victim.endedLastProcessing=self.env.event()
@@ -103,8 +101,6 @@ class ScheduledMaintenance(ObjectInterruption):
                     self.expectedSignals['victimIsEmptyBeforeMaintenance']=1
                     
                     yield self.victimIsEmptyBeforeMaintenance                # there is no signal yet that signals the change of such state (an object getting empty)
-                    
-                    self.expectedSignals['victimIsEmptyBeforeMaintenance']=0
                     
                     transmitter, eventTime=self.victimIsEmptyBeforeMaintenance.value
                     assert eventTime==self.env.now, 'the processing end signal is not received by maintenance on time'

@@ -126,18 +126,14 @@ class Failure(ObjectInterruption):
                         self.expectedSignals['victimOnShift']=1
                         
                         yield self.victimOnShift
-                        
-                        self.expectedSignals['victimOnShift']=0
-                        
+
                         self.isWaitingForVictimOnShift=False
                         self.victimOnShift=self.env.event()
                         assert self.victim.onShift==True, 'the victim of shiftFailure must be onShift to continue counting the TTF'
                     else:
                         self.isWaitingForVictimOffShift=False
                         failureNotTriggered=False
-                
-                self.expectedSignals['victimOffShift']=0
-                
+
             # if time to failure counts only in working time
             elif self.deteriorationType=='working':
                 # wait for victim to start process
@@ -145,9 +141,7 @@ class Failure(ObjectInterruption):
                 self.expectedSignals['victimStartsProcess']=1
                 
                 yield self.victimStartsProcess
-                
-                self.expectedSignals['victimStartsProcess']=0
-                
+
                 self.victimStartsProcess=self.env.event()
                 while failureNotTriggered:
                     timeRestartedCounting=self.env.now
@@ -163,15 +157,11 @@ class Failure(ObjectInterruption):
                         self.expectedSignals['victimStartsProcess']=1
                         
                         yield self.victimStartsProcess
-                        
-                        self.expectedSignals['victimStartsProcess']=0
-                        
+
                         # wait for victim to start again processing
                         self.victimStartsProcess=self.env.event()
                     else:
                         failureNotTriggered=False
-                
-                self.expectedSignals['victimEndsProcess']=0
            
             # interrupt the victim
             self.interruptVictim()                      # interrupt the victim

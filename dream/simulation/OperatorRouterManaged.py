@@ -82,9 +82,7 @@ class RouterManaged(Router):
             self.expectedSignals['isCalled']=1
             
             yield self.isCalled
-            
-            self.expectedSignals['isCalled']=0
-            
+
             transmitter, eventTime=self.isCalled.value
             self.isCalled=self.env.event()
             self.printTrace('','=-'*15)
