@@ -407,7 +407,7 @@ class Machine(CoreObject):
                     methodsRequired.append(tup)
                 else:
                     methodsNotRequired.append(tup)
-            required = False
+            required = True
             from Globals import getMethodFromName
 #             print '    '*20, 'Requested methods'
             if methodsRequired:
@@ -416,10 +416,8 @@ class Machine(CoreObject):
 #                     print '    '*20,method,
                     objMethod=getMethodFromName('Dream.Machine.'+method)
 #                     print objMethod(self)
-                    required = required or (objMethod(self))
-            else:
-                required=True
-            notRequired = False
+                    required = required and (objMethod(self))
+            notRequired = True
 #             print '    '*20, 'not Requested methods'
             if methodsNotRequired:
                 for methodTup in methodsNotRequired:
@@ -427,7 +425,9 @@ class Machine(CoreObject):
 #                     print '    '*20,method,
                     objMethod=getMethodFromName('Dream.Machine.'+method)
 #                     print objMethod(self)
-                    notRequired = notRequired or (objMethod(self))
+                    notRequired = notRequired and (objMethod(self))
+            else:
+                notRequired=False
             methodsRequest=required and not notRequired
         
         if (self.operatorPool!="None")\
