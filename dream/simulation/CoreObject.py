@@ -114,12 +114,9 @@ class CoreObject(ManPyObject):
         # ============================== failure related times =====================================
         self.timeLastFailure=0                          #holds the time that the last failure of the object started
         self.timeLastFailureEnded=0                     #holds the time that the last failure of the object ended
-        self.downTimeProcessingCurrentEntity=0          #holds the time that the object was down while 
                                                         #processing the current entity
         self.downTimeInTryingToReleaseCurrentEntity=0   #holds the time that the object was down while trying 
                                                         #to release the current entity . This might be due to failure, off-shift, etc                                                         
-        self.downTimeInCurrentEntity=0                  #holds the total time that the 
-                                                        #object was down while holding current entity
         self.timeLastEntityLeft=0                       #holds the last time that an entity left the object
         
         self.processingTimeOfCurrentEntity=0            #holds the total processing time that the current entity required                                               
@@ -152,7 +149,7 @@ class CoreObject(ManPyObject):
         self.totalTimeInCurrentEntity=0
         self.operatorWaitTimeCurrentEntity=0
         self.totalProcessingTimeInCurrentEntity=0
-        self.failureTimeInCurrentEntity=0
+#         self.failureTimeInCurrentEntity=0
         self.setupTimeCurrentEntity=0
         
         # the time that the object started/ended its wait for the operator
@@ -274,7 +271,6 @@ class CoreObject(ManPyObject):
         if self.receiver:
             self.receiver.appendEntity(entity)
         
-        self.failureTimeInCurrentEntity=0
         self.downTimeInTryingToReleaseCurrentEntity=0
         self.offShiftTimeTryingToReleaseCurrentEntity=0
         
@@ -356,7 +352,6 @@ class CoreObject(ManPyObject):
         activeEntity.currentStation=self
         self.timeLastEntityEntered=self.env.now
         self.nameLastEntityEntered=activeEntity.name      # this holds the name of the last entity that got into object      
-        self.downTimeProcessingCurrentEntity=0
         # update the next list of the object
         self.updateNext(activeEntity)
         self.outputTrace(activeEntity.name, "got into "+self.objName)
