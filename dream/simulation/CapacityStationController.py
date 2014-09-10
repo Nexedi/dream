@@ -123,11 +123,11 @@ class CapacityStationController(EventGenerator):
             for entity in entitiesToCheck:
                 if not entity.shouldMove:   # when the first entity that should not move is reached break
                     break
-                if station.expectedSignals['isRequested']:
-                    succeedTuple=(buffer,self.env.now)
-                    station.isRequested.succeed(succeedTuple)         # send is requested to station
-                    station.expectedSignals['isRequested']=0
-                # wait until the entity is removed
+                # ToDo, here we do not check if station.expectedSignals['isRequested']==1
+                # consistency problem?
+                succeedTuple=(buffer,self.env.now)
+                station.isRequested.succeed(succeedTuple)         # send is requested to station
+                station.expectedSignals['isRequested']=0
                 buffer.waitEntityRemoval=True
                 
                 buffer.expectedSignals['entityRemoved']=1
