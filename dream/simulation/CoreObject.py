@@ -94,6 +94,7 @@ class CoreObject(ManPyObject):
         self.onShift=True
         self.currentEntity=None      
         # ============================== total times ===============================================
+        self.totalOperationTime=0                       #dummy variable to hold totalWorkin/SetupTime during an interruption (yield ...(self.operation('setup'))  
         self.totalBlockageTime=0                        #holds the total blockage time
         self.totalFailureTime=0                         #holds the total failure time
         self.totalWaitingTime=0                         #holds the total waiting time
@@ -199,6 +200,12 @@ class CoreObject(ManPyObject):
         
         # flag that shows if the object is processing state at any given time
         self.isProcessing=False
+        # variable that shows what kind of operation is the station performing at the moment
+        '''
+            it can be Processing or Setup 
+            XXX: others not yet implemented
+        '''
+        self.currentlyPerforming=None
         # flag that shows if the object is blocked state at any given time
         self.isBlocked=False
         self.timeLastBlockageStarted=None
@@ -593,8 +600,15 @@ class CoreObject(ManPyObject):
             self.addBlockage()
 
         #if object is currently processing an entity we should count this working time  
-        if self.isProcessing:     
-            activeObject.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
+        if self.isProcessing:
+            '''XXX currentlyPerforming can be Setup or Processing '''
+            if self.currentlyPerforming:
+                if self.currentlyPerforming=='Setup':
+                    activeObject.totalSetupTime+=self.env.now-self.timeLastOperationStarted
+                else:
+                    activeObject.totalWorkingTime+=self.env.now-self.timeLastOperationStarted
+            else:
+                activeObject.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
             # activeObject.totalTimeWaitingForOperator+=activeObject.operatorWaitTimeCurrentEntity
 
         # if object is down we have to add this failure time to its total failure time
