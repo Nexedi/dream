@@ -157,8 +157,16 @@ class Machine(CoreObject):
         self.initializeRouter()
         
         # variables used for interruptions
+        self.isProcessing=False
+        # variable that shows what kind of operation is the station performing at the moment
+        '''
+            it can be Processing or Setup 
+            XXX: others not yet implemented
+        '''
+        self.currentlyPerforming=None
         self.tinM=0
         self.timeLastProcessingStarted=0
+        self.timeLastOperationStarted=0
         self.interruption=False
         self.breakTime=0
         # flag notifying that there is operator assigned to the actievObject
@@ -419,13 +427,15 @@ class Machine(CoreObject):
     # general process, it can be processing or setup
     #===========================================================================
     def operation(self,type='Processing'):
-        # identify the method to get the operation time
+        # identify the method to get the operation time and initialise the totalOperationTime 
         assert type!=None, 'there must be an operation type defined'
         assert type in set(['Processing','Setup']), 'the operation type provided is not yet defined'
         if type=='Setup':
             method='calculateSetupTime'
+            self.totalOperationTime=self.totalSetupTime
         elif type=='Processing':
             method='calculateProcessingTime'
+            self.totalOperationTime=self.totalWorkingTime
         from Globals import getMethodFromName
         classMethod=getMethodFromName('Dream.Machine.'+method)
         # variables dedicated to hold the processing times, the time when the Entity entered, 
@@ -438,7 +448,6 @@ class Machine(CoreObject):
         self.interruption=False
         # XX
         operationNotFinished=True
-        
         # if there is a failure that depends on the working time of the Machine
         # send it the victimStartsProcess signal                                            
         for oi in self.objectInterruptions:
@@ -457,8 +466,15 @@ class Machine(CoreObject):
             #           every interruption
 # XX
             self.timeLastOperationStarted=self.env.now
-            # processing starts, update the flag
+            # if the type is setup then the time to record is timeLastProcessingStarted
+            if type=='Setup':
+                self.timeLastSetupStarted=self.timeLastOperationStarted
+            # else if the type is processing then the time to record is timeLastProcessingStarted
+            elif type=='Processing':
+                self.timeLastProcessingStarted=self.timeLastOperationStarted
+            # processing starts, update the flags
             self.isProcessing=True
+            self.currentlyPerforming=type
             # wait for the processing time left tinM, if no interruption occurs then change the processingEndedFlag and exit loop,
             #     else (if interrupted()) set interruption flag to true (only if tinM==0), 
             #     and recalculate the processing time left tinM, passivate while waiting for repair.
@@ -470,7 +486,7 @@ class Machine(CoreObject):
                 assert eventTime==self.env.now, 'the interruption has not been processed on the time of activation'
                 self.interruptionStart=self.env.event()
 # XX
-                self.interruptionActions()                      # execute interruption actions
+                self.genInterruptionActions(type)                      # execute interruption actions
                 #===========================================================
                 # # release the operator if there is interruption 
                 #===========================================================
@@ -503,7 +519,7 @@ class Machine(CoreObject):
                     assert eventTime==self.env.now, 'the preemption must be performed on the time of request'
                     self.preemptQueue=self.env.event()
 # XX
-                    self.interruptionActions()                      # execute interruption actions
+                    self.genInterruptionActions(type)                      # execute interruption actions
                 #===========================================================
                 # # release the operator if there is interruption 
                 #===========================================================
@@ -521,13 +537,119 @@ class Machine(CoreObject):
         # carry on actions that have to take place when an Entity ends its processing
 # XX
         self.endOperationActions(type)
+        
+    # =======================================================================
+    # actions to be carried out when the processing of an Entity ends
+    # =======================================================================    
+    def genInterruptionActions(self, type='Processing'):
+        # if object was processing add the working time
+        # only if object is not preempting though
+        # in case of preemption endProcessingActions will be called
+        if self.isProcessing and not self.shouldPreempt:
+            self.totalOperationTime+=self.env.now-self.timeLastOperationStarted
+            if type=='Processing':
+                self.totalWorkingTime=self.totalOperationTime
+            elif type=='Setup':
+                self.totalSetupTime=self.totalOperationTime
+        # if object was blocked add the working time
+        if self.isBlocked:
+            self.addBlockage()
+            
+        # set isProcessing to False          
+        self.isProcessing=False
+        self.currentlyPerforming=None
+        # set isBlocked to False          
+        self.isBlocked=False
+        activeObjectQueue=self.Res.users
+        activeEntity=activeObjectQueue[0]
+        self.printTrace(activeEntity.name, interrupted=self.objName)
+        # if the interrupt occurred while processing an entity
+        if not self.waitToDispose:
+            # output to trace that the Machine (self.objName) got interrupted           
+            try:                                                       
+                self.outputTrace(activeObjectQueue[0].name, "Interrupted at "+self.objName)
+            except IndexError:
+                pass
+            # recalculate the processing time left tinM
+            self.tinM=self.tinM-(self.env.now-self.timeLastProcessingStarted)
+            if(self.tinM==0):       # sometimes the failure may happen exactly at the time that the processing would finish
+                                    # this may produce disagreement with the simul8 because in both SimPy and Simul8
+                                    # it seems to be random which happens 1st
+                                    # this should not appear often to stochastic models though where times are random
+                self.interruption=True
+        # start counting the down time at breatTime dummy variable
+        self.breakTime=self.env.now        # dummy variable that the interruption happened
     
     #===========================================================================
     # actions to be performed after an operation (setup or processing)
     #===========================================================================
     def endOperationActions(self,type):
-        pass
-    
+        activeObjectQueue=self.Res.users
+        activeEntity=activeObjectQueue[0]
+        # set isProcessing to False
+        self.isProcessing=False
+        self.currentlyPerforming=None
+        # add working time
+        if type=='Setup':
+            self.totalWorkingTime+=self.env.now-self.timeLastOperationStarted
+        elif type=='Processing':
+            self.totalSetupTime+=self.env.now-self.timeLastOperationStarted
+#         self.totalOperationTime+=self.env.now-self.timeLastOperationStarted
+        # reseting variables used by operation() process
+        self.totalOperationTime=None
+        self.timeLastOperationStarted=None
+        # reseting flags
+        self.shouldPreempt=False
+        # reset the variables used to handle the interruptions timing 
+        self.breakTime=0
+        # if the station has just concluded a processing turn then
+        if type=='Processing':
+            # blocking starts
+            self.isBlocked=True
+            self.timeLastBlockageStarted=self.env.now
+            self.printTrace(self.getActiveObjectQueue()[0].name, processEnd=self.objName)
+            # output to trace that the processing in the Machine self.objName ended 
+            try:
+                self.outputTrace(activeObjectQueue[0].name,"ended processing in "+self.objName)
+            except IndexError:
+                pass
+            from Globals import G
+            if G.Router:
+                # the just processed entity is added to the list of entities 
+                # pending for the next processing
+                G.pendingEntities.append(activeObjectQueue[0])
+            # set the variable that flags an Entity is ready to be disposed 
+            self.waitToDispose=True
+            # update the variables keeping track of Entity related attributes of the machine    
+            self.timeLastEntityEnded=self.env.now                          # this holds the time that the last entity ended processing in Machine 
+            self.nameLastEntityEnded=self.currentEntity.name        # this holds the name of the last entity that ended processing in Machine
+            self.completedJobs+=1                                   # Machine completed one more Job# it will be used
+            self.isProcessingInitialWIP=False
+            # if there is a failure that depends on the working time of the Machine
+            # send it the victimEndsProcess signal                                  
+            for oi in self.objectInterruptions:
+                if oi.type=='Failure':
+                    if oi.deteriorationType=='working':
+                        if oi.expectedSignals['victimEndsProcess']:
+                            succeedTuple=(self,self.env.now)
+                            oi.victimEndsProcess.succeed(succeedTuple)
+            # in case Machine just performed the last work before the scheduled maintenance signal the corresponding object
+            if self.isWorkingOnTheLast:
+                # for the scheduled Object interruptions
+                # XXX add the SkilledOperatorRouter to this list and perform the signalling only once
+                for interruption in (G.ObjectInterruptionList):
+                    # if the objectInterruption is waiting for a a signal
+                    if interruption.victim==self and interruption.waitingSignal:
+                        # signal it and reset the flags
+                        if interruption.expectedSignals['endedLastProcessing']:
+                            succeedTuple=(self,self.env.now)
+                            self.endedLastProcessing.succeed(succeedTuple)
+                            interruption.waitinSignal=False
+                            self.isWorkingOnTheLast=False
+                # set timeLastShiftEnded attribute so that if it is overtime working it is not counted as off-shift time
+                if self.interruptedBy=='ShiftScheduler':
+                    self.timeLastShiftEnded=self.env.now
+
     # =======================================================================
     # the main process of the machine
     # =======================================================================
@@ -666,37 +788,6 @@ class Machine(CoreObject):
             #===================================================================
             #===================================================================
             
-            
-            #===================================================================
-            #===================================================================
-            # #===================================================================
-            # # #===================================================================
-            # #===================================================================
-            #===================================================================
-            #===================================================================
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            #===================================================================
-            #===================================================================
-            # #===================================================================
-            # # #===================================================================
-            # #===================================================================
-            #===================================================================
-            #===================================================================
-            
-            
-            
-            
     # ======= setup the machine if the Setup is defined as one of the Operators' operation types
             # in plantSim the setup is performed when the machine has to process a new type of Entity and only once
             if any(type=="Setup" for type in self.multOperationTypeList) and self.isOperated():
@@ -747,6 +838,7 @@ class Machine(CoreObject):
                 self.timeLastProcessingStarted=self.env.now
                 # processing starts, update the flag
                 self.isProcessing=True
+                self.currentlyPerforming=None
                 # wait for the processing time left tinM, if no interruption occurs then change the processingEndedFlag and exit loop,
                 #     else (if interrupted()) set interruption flag to true (only if tinM==0), 
                 #     and recalculate the processing time left tinM, passivate while waiting for repair.
@@ -927,6 +1019,7 @@ class Machine(CoreObject):
     def endProcessingActions(self):
         # set isProcessing to False
         self.isProcessing=False
+        self.currentlyPerforming=None
         # add working time
         self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
 
@@ -945,17 +1038,6 @@ class Machine(CoreObject):
             self.outputTrace(activeObjectQueue[0].name,"ended processing in "+self.objName)
         except IndexError:
             pass
-        # TODO: Not only Machines require time to process entities
-        #     entities such as batchReassembly/Decomposition require time to process entities
-        if activeEntity.family=='Entity':
-            successorsAreMachines=True
-            from Globals import G
-            for object in self.next:
-                if not object in G.MachineList:
-                    successorsAreMachines=False
-                    break
-            if not successorsAreMachines:
-                activeObjectQueue[0].hot = False
         from Globals import G
         if G.Router:
             # the just processed entity is added to the list of entities 
@@ -999,16 +1081,22 @@ class Machine(CoreObject):
     # =======================================================================
     # actions to be carried out when the processing of an Entity ends
     # =======================================================================    
-    def interruptionActions(self):
+    def interruptionActions(self, type='Processing'):
         # if object was processing add the working time
         # only if object is not preempting though
         # in case of preemption endProcessingActions will be called
         if self.isProcessing and not self.shouldPreempt:
             self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
+#             self.totalOperationTime+=self.env.now-self.timeLastOperationStarted
+#             if type=='Processing':
+#                 self.totalWorkingTime=self.totalOperationTime
+#             elif type=='Setup':
+#                 self.totalSetupTime=self.totalOperationTime
         # if object was blocked add the working time
         if self.isBlocked:
             self.addBlockage()
             
+        self.currentlyPerforming=None
         activeObjectQueue=self.Res.users
         activeEntity=activeObjectQueue[0]
         self.printTrace(activeEntity.name, interrupted=self.objName)
