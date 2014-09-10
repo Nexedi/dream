@@ -11,7 +11,7 @@
     "maxEarliness": 1,
     "maxLateness": 1,
     "minPackingSize": 10,
-    "ke_url": "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/simulation/Examples/DemandProfile.xls"
+    "ke_url": "http://git.erp5.org/gitweb/dream.git/blob_plain/41135effed8c10b2ce91a6cc375876f48e81f498:/dream/simulation/Examples/DemandPlanning_example.json"
   },
   "wip_part_spreadsheet": [
     [
