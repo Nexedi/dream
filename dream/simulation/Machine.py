@@ -362,7 +362,95 @@ class Machine(CoreObject):
             assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
             assert eventTime==self.env.now, 'brokerIsSet is not received on time'
             self.brokerIsSet=self.env.event()
-            
+    
+    #===========================================================================
+    # method controlling if there is a need to yield 
+    #===========================================================================
+    def shouldYield(self, operationTypes={}, methods={}):
+        '''
+            "methods":{'isInterrupted':'0'},
+            "operationTypes"={"Processing":1,                % must
+                               "Setup":0                   % must NOT
+                             }
+        '''
+        operationsRequired=[]
+        operationsNotRequired=[]
+        opRequest=True
+        if operationTypes:
+            for operationType, func in operationTypes.iteritems():
+                tup=(operationType, func)
+                if bool(func):
+                    operationsRequired.append(tup)
+                else:
+                    operationsNotRequired.append(tup)
+            required = False
+            if operationsRequired:
+                for opTup in operationsRequired:
+                    operation, func = opTup
+                    required = required or (any(type==str(operation) for type in self.multOperationTypeList))
+            else:
+                required=True
+            notRequired = False
+            if operationsNotRequired:
+                for opTup in operationsNotRequired:
+                    operation, func = opTup
+                    notRequired = notRequired or (any(type==str(operation) for type in self.multOperationTypeList))
+            opRequest=required and not notRequired
+        
+        methodsRequired=[]
+        methodsNotRequired=[]
+        methodsRequest=True
+        if methods:
+            for methodType, func in methods.iteritems():
+                tup=(methodType, func)
+                if bool(func):
+                    methodsRequired.append(tup)
+                else:
+                    methodsNotRequired.append(tup)
+            required = False
+            from Globals import getMethodFromName
+#             print '    '*20, 'Requested methods'
+            if methodsRequired:
+                for methodTup in methodsRequired:
+                    method, func = methodTup
+#                     print '    '*20,method,
+                    objMethod=getMethodFromName('Dream.Machine.'+method)
+#                     print objMethod(self)
+                    required = required or (objMethod(self))
+            else:
+                required=True
+            notRequired = False
+#             print '    '*20, 'not Requested methods'
+            if methodsNotRequired:
+                for methodTup in methodsNotRequired:
+                    method, func = methodTup
+#                     print '    '*20,method,
+                    objMethod=getMethodFromName('Dream.Machine.'+method)
+#                     print objMethod(self)
+                    notRequired = notRequired or (objMethod(self))
+            methodsRequest=required and not notRequired
+        
+        if (self.operatorPool!="None")\
+             and opRequest\
+             and methodsRequest:
+            return True
+        return False
+    
+    #===========================================================================
+    # yielding for the broker process
+    #===========================================================================
+    def release(self):
+        # after getting the entity release the operator
+        # machine has to release the operator
+        self.releaseOperator()
+        # wait until the Broker has finished processing
+        self.expectedSignals['brokerIsSet']=1
+        yield self.brokerIsSet
+        self.expectedSignals['brokerIsSet']=0
+        transmitter, eventTime=self.brokerIsSet.value
+        assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
+        assert eventTime==self.env.now, 'brokerIsSet is not received on time'
+        self.brokerIsSet=self.env.event()
             
     # =======================================================================
     # the main process of the machine
@@ -435,9 +523,9 @@ class Machine(CoreObject):
                 self.requestOperator()
                 self.timeWaitForLoadOperatorStarted = self.env.now
                 # wait until the Broker has waited times equal to loadTime (if any)
-                
+                 
                 self.expectedSignals['brokerIsSet']=1
-                
+                 
                 yield self.brokerIsSet
 
                 transmitter, eventTime=self.brokerIsSet.value
@@ -447,7 +535,7 @@ class Machine(CoreObject):
                 self.timeWaitForLoadOperatorEnded = self.env.now
                 self.loadOperatorWaitTimeCurrentEntity += self.timeWaitForLoadOperatorEnded-self.timeWaitForLoadOperatorStarted
                 self.totalTimeWaitingForLoadOperator += self.loadOperatorWaitTimeCurrentEntity 
-                   
+                    
     # ======= Load the machine if the Load is defined as one of the Operators' operation types
             if any(type=="Load" for type in self.multOperationTypeList) and self.isOperated():
                 self.timeLoadStarted = self.env.now
@@ -456,28 +544,39 @@ class Machine(CoreObject):
                 self.timeLoadEnded = self.env.now
                 self.loadTimeCurrentEntity = self.timeLoadEnded-self.timeLoadStarted 
                 self.totalLoadTime += self.loadTimeCurrentEntity
-                   
+            
+            if self.shouldYield(operationTypes={"Load":1, "Processing":0,"Setup":0},methods={'isOperated':1}):
+                yield self.env.process(self.release())
+            
     # ======= release a resource if the only operation type is Load
-            if (self.operatorPool!="None")\
-                 and any(type=="Load" for type in self.multOperationTypeList)\
-                 and not (any(type=="Processing" for type in self.multOperationTypeList)\
-                          or any(type=="Setup" for type in self.multOperationTypeList))\
-                 and self.isOperated():
-                # after getting the entity release the operator
-                # machine has to release the operator
-                self.releaseOperator()
-                # wait until the Broker has finished processing
-                
-                self.expectedSignals['brokerIsSet']=1
-                
-                yield self.brokerIsSet
+#             if (self.operatorPool!="None")\
+#                  and any(type=="Load" for type in self.multOperationTypeList)\
+#                  and not (any(type=="Processing" for type in self.multOperationTypeList)\
+#                           or any(type=="Setup" for type in self.multOperationTypeList))\
+#                  and self.isOperated():
+#                 # after getting the entity release the operator
+#                 # machine has to release the operator
+#                 self.releaseOperator()
+#                 # wait until the Broker has finished processing
+#                    
+#                 self.expectedSignals['brokerIsSet']=1
+#                    
+#                 yield self.brokerIsSet
+#                    
+#                 self.expectedSignals['brokerIsSet']=0
+#                    
+#                 transmitter, eventTime=self.brokerIsSet.value
+#                 assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
+#                 assert eventTime==self.env.now, 'brokerIsSet is not received on time'
+#                 self.brokerIsSet=self.env.event()
 
-                transmitter, eventTime=self.brokerIsSet.value
-                assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
-                assert eventTime==self.env.now, 'brokerIsSet is not received on time'
-                self.brokerIsSet=self.env.event()
-
-#             yield self.env.process(self.loading())
+            #===================================================================
+            #===================================================================
+            #===================================================================
+            # # # getting entity
+            #===================================================================
+            #===================================================================
+            #===================================================================
             
             # get the entity 
                     # TODO: if there was loading time then we must solve the problem of getting an entity
@@ -486,7 +585,28 @@ class Machine(CoreObject):
             if not self.isProcessingInitialWIP:     # if we are in the state of having initial wip no need to take an Entity
                 self.currentEntity=self.getEntity()
             # TODO: the Machine receive the entity  after the operator is available
-            #     the canAcceptAndIsRequested method checks only in case of Load type of operation 
+            #     the canAcceptAndIsRequested method checks only in case of Load type of operation
+            
+            
+            # variables dedicated to hold the processing times, the time when the Entity entered, 
+            # and the processing time left 
+            self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()                # get the processing time, tinMStarts holds the processing time of the machine 
+            self.tinM=self.totalProcessingTimeInCurrentEntity                                          # timer to hold the processing time left
+            
+            
+            
+            
+            
+            #===================================================================
+            #===================================================================
+            #===================================================================
+            # # # setup
+            #===================================================================
+            #===================================================================
+            #===================================================================
+            
+            
+            
             
     # ======= request a resource if it is not already assigned an Operator
             if(self.operatorPool!="None")\
@@ -510,10 +630,7 @@ class Machine(CoreObject):
                 self.timeWaitForOperatorEnded = self.env.now
                 self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
             
-            # variables dedicated to hold the processing times, the time when the Entity entered, 
-            # and the processing time left 
-            self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()                # get the processing time, tinMStarts holds the processing time of the machine 
-            self.tinM=self.totalProcessingTimeInCurrentEntity                                          # timer to hold the processing time left
+            
             
     # ======= setup the machine if the Setup is defined as one of the Operators' operation types
             # in plantSim the setup is performed when the machine has to process a new type of Entity and only once
@@ -538,27 +655,44 @@ class Machine(CoreObject):
 #                     self.totalSetupTime += self.setupTimeCurrentEntity
 #             except:
 #                 pass
-             
+            
+            if self.shouldYield(operationTypes={"Setup":1,"Load":1,"Processing":0},methods={'isOperated':1}):
+                yield self.env.process(self.release()) 
+            
     # ======= release a resource if the only operation type is Setup
-            if (self.operatorPool!="None")\
-                and self.isOperated()\
-                and (any(type=="Setup" for type in self.multOperationTypeList)\
-                     or any(type=="Load" for type in self.multOperationTypeList))\
-                and not any(type=="Processing" for type in self.multOperationTypeList):
-                # after getting the entity release the operator
-                # machine has to release the operator
-                self.releaseOperator()
-                # wait until the Broker has finished processing
-                
-                self.expectedSignals['brokerIsSet']=1
-                
-                yield self.brokerIsSet
-
-                transmitter, eventTime=self.brokerIsSet.value
-                assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
-                assert eventTime==self.env.now, 'brokerIsSet is not received on time'
-                self.brokerIsSet=self.env.event()
-                                                                                 
+#             if (self.operatorPool!="None")\
+#                 and self.isOperated()\
+#                 and (any(type=="Setup" for type in self.multOperationTypeList)\
+#                      or any(type=="Load" for type in self.multOperationTypeList))\
+#                 and not any(type=="Processing" for type in self.multOperationTypeList):
+#                 # after getting the entity release the operator
+#                 # machine has to release the operator
+#                 self.releaseOperator()
+#                 # wait until the Broker has finished processing
+#                   
+#                 self.expectedSignals['brokerIsSet']=1
+#                   
+#                 yield self.brokerIsSet
+#                   
+#                 self.expectedSignals['brokerIsSet']=0
+#                   
+#                 transmitter, eventTime=self.brokerIsSet.value
+#                 assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
+#                 assert eventTime==self.env.now, 'brokerIsSet is not received on time'
+#                 self.brokerIsSet=self.env.event()
+            
+            
+            
+            
+            #===================================================================
+            #===================================================================
+            #===================================================================
+            # # # processing
+            #===================================================================
+            #===================================================================
+            #===================================================================
+            
+            
             # variables used to flag any interruptions and the end of the processing
             self.interruption=False
             processingNotFinished=True
@@ -599,19 +733,26 @@ class Machine(CoreObject):
                     self.interruptionStart=self.env.event()
                     self.interruptionActions()                      # execute interruption actions
                     
+                    
+                    if self.shouldYield(operationTypes={"Processing":1},methods={'isOperated':1}):
+                        yield self.env.process(self.release())
+                    
     # =============== release the operator if there is interruption 
-                    if (self.operatorPool!="None")\
-                        and self.isOperated()\
-                        and any(type=="Processing" for type in self.multOperationTypeList):
-                        self.releaseOperator()
-                        
-                        self.expectedSignals['brokerIsSet']=1
-                        yield self.brokerIsSet
-                        
-                        transmitter, eventTime=self.brokerIsSet.value
-                        assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
-                        assert eventTime==self.env.now, 'brokerIsSet is not received on time'
-                        self.brokerIsSet=self.env.event()
+#                     if (self.operatorPool!="None")\
+#                         and self.isOperated()\
+#                         and any(type=="Processing" for type in self.multOperationTypeList):
+#                         self.releaseOperator()
+#                           
+#                         self.expectedSignals['brokerIsSet']=1
+#                           
+#                         yield self.brokerIsSet
+#                           
+#                         self.expectedSignals['brokerIsSet']=0
+#                           
+#                         transmitter, eventTime=self.brokerIsSet.value
+#                         assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
+#                         assert eventTime==self.env.now, 'brokerIsSet is not received on time'
+#                         self.brokerIsSet=self.env.event()
     
                     # loop until we reach at a state that there is no interruption
                     while 1:
@@ -630,7 +771,7 @@ class Machine(CoreObject):
     # =============== request a resource after the repair
                     if (self.operatorPool!="None")\
                         and any(type=="Processing" for type in self.multOperationTypeList)\
-                        and not self.interruption:
+                        and not self.isInterrupted():
                         self.timeWaitForOperatorStarted = self.env.now
                         self.requestOperator()
                         
@@ -675,21 +816,26 @@ class Machine(CoreObject):
                         assert eventTime==self.env.now, 'the preemption must be performed on the time of request'
                         self.preemptQueue=self.env.event()
                     self.interruptionActions()                      # execute interruption actions
-                         
+                    
+                    if self.shouldYield(operationTypes={"Processing":1},methods={'isOperated':1}):
+                        yield self.env.process(self.release())
+                    
     # =============== release the operator if there is interruption 
-                    if (self.operatorPool!="None")\
-                        and self.isOperated()\
-                        and any(type=="Processing" for type in self.multOperationTypeList):
-                        self.releaseOperator()
-                        
-                        self.expectedSignals['brokerIsSet']=1
-                        
-                        yield self.brokerIsSet
-
-                        transmitter, eventTime=self.brokerIsSet.value
-                        assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
-                        assert eventTime==self.env.now, 'brokerIsSet is not received on time'
-                        self.brokerIsSet=self.env.event()
+#                     if (self.operatorPool!="None")\
+#                         and self.isOperated()\
+#                         and any(type=="Processing" for type in self.multOperationTypeList):
+#                         self.releaseOperator()
+#                           
+#                         self.expectedSignals['brokerIsSet']=1
+#                           
+#                         yield self.brokerIsSet
+#                           
+#                         self.expectedSignals['brokerIsSet']=0
+#                           
+#                         transmitter, eventTime=self.brokerIsSet.value
+#                         assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
+#                         assert eventTime==self.env.now, 'brokerIsSet is not received on time'
+#                         self.brokerIsSet=self.env.event()
                      
                     self.postInterruptionActions()
                     break
@@ -700,21 +846,39 @@ class Machine(CoreObject):
 
             # carry on actions that have to take place when an Entity ends its processing
             self.endProcessingActions()
+            
+            if self.shouldYield(operationTypes={"Processing":1},methods={'isInterrupted':0, 'isOperated':1}):
+                yield self.env.process(self.release())
+            
     # =============== release resource after the end of processing
-            if (self.operatorPool!='None')\
-                and self.isOperated()\
-                and any(type=="Processing" for type in self.multOperationTypeList)\
-                and not self.interruption: 
-                self.releaseOperator()
-                
-                self.expectedSignals['brokerIsSet']=1
-                
-                yield self.brokerIsSet
-                               
-                transmitter, eventTime=self.brokerIsSet.value
-                assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
-                assert eventTime==self.env.now, 'brokerIsSet is not received on time'
-                self.brokerIsSet=self.env.event()
+#             if (self.operatorPool!='None')\
+#                 and self.isOperated()\
+#                 and any(type=="Processing" for type in self.multOperationTypeList)\
+#                 and not self.isInterrupted(): 
+#                 self.releaseOperator()
+#                   
+#                 self.expectedSignals['brokerIsSet']=1
+#                   
+#                 yield self.brokerIsSet
+#                   
+#                 self.expectedSignals['brokerIsSet']=0
+#                   
+#                 transmitter, eventTime=self.brokerIsSet.value
+#                 assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
+#                 assert eventTime==self.env.now, 'brokerIsSet is not received on time'
+#                 self.brokerIsSet=self.env.event()
+            
+            #===================================================================
+            #===================================================================
+            #===================================================================
+            # # # end of processing
+            #===================================================================
+            #===================================================================
+            #===================================================================
+            
+            
+            
+            
             # signal the receiver that the activeObject has something to dispose of
             if not self.signalReceiver():
             # if there was no available receiver, get into blocking control
@@ -725,8 +889,6 @@ class Machine(CoreObject):
                     self.timeLastBlockageStarted=self.env.now       # blockage is starting
                     # wait the event canDispose, this means that the station can deliver the item to successor
                     self.printTrace(self.id, waitEvent='(canDispose or interruption start)')
-                    
-
                     
                     receivedEvent=yield self.env.any_of([self.canDispose , self.interruptionStart])
                     # if there was interruption
@@ -899,6 +1061,12 @@ class Machine(CoreObject):
         self.isProcessing=False
         # set isBlocked to False          
         self.isBlocked=False
+    
+    #===========================================================================
+    # returns true if the station is interrupted
+    #===========================================================================
+    def isInterrupted(self):
+        return self.interruption
     
     # =======================================================================
     # actions to be carried out when the processing of an Entity ends
