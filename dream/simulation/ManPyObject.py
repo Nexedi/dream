@@ -145,7 +145,24 @@ class ManPyObject(object):
                 G.traceIndex=0
                 G.sheetIndex+=1
                 G.traceSheet=G.traceFile.add_sheet('sheet '+str(G.sheetIndex), cell_overwrite_ok=True)
-
+                
+    #===========================================================================
+    # sends a signal
+    #===========================================================================
+    def sendSignal(self,sender=None,receiver=None,signal=None,succeedTuple=None):
+        assert signal, 'there is no signal defined'
+        assert receiver, 'there is no receiver defined for the signal'
+        # give default values if not given
+        if not sender:
+            sender=self
+        if not succeedTuple:
+            succeedTuple=(self,self.env.now)
+        # send the signal
+        signal.succeed(succeedTuple)
+        # reset the expected signals of the receiver to 0
+        for key, value in receiver.expectedSignals.iteritems():
+            receiver.expectedSignals[key]=0
+          
     #===========================================================================
     # actions to be performed after the end of the simulation
     #===========================================================================
