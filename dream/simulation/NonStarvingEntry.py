@@ -81,7 +81,5 @@ class NonStarvingEntry(Queue):
         G.numberOfEntities+=1
         if not self.canDispose.triggered:
             if self.expectedSignals['canDispose']:
-                succeedTuple=(self, self.env.now)
-                self.canDispose.succeed(succeedTuple)
-                self.expectedSignals['canDispose']=0
+                self.sendSignal(receiver=self, signal=self.canDispose)
     

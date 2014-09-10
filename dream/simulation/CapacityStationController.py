@@ -63,9 +63,7 @@ class CapacityStationController(EventGenerator):
             for entity in entitiesToCheck:
                 if not exit.isRequested.triggered:            # this is needed because the signal can be triggered also by the buffer
                     if exit.expectedSignals['isRequested']:
-                        succeedTuple=(station,self.env.now)
-                        exit.isRequested.succeed(succeedTuple)         # send is requested to station
-                        exit.expectedSignals['isRequested']=0
+                        self.sendSignal(receiver=exit, signal=exit.isRequested)
                 # wait until the entity is removed
                 station.waitEntityRemoval=True
                 
@@ -125,9 +123,7 @@ class CapacityStationController(EventGenerator):
                     break
                 # ToDo, here we do not check if station.expectedSignals['isRequested']==1
                 # consistency problem?
-                succeedTuple=(buffer,self.env.now)
-                station.isRequested.succeed(succeedTuple)         # send is requested to station
-                station.expectedSignals['isRequested']=0
+                self.sendSignal(receiver=station, signal=station.isRequested)
                 buffer.waitEntityRemoval=True
                 
                 buffer.expectedSignals['entityRemoved']=1

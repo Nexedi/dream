@@ -96,8 +96,7 @@ class ObjectInterruption(ManPyObject):
     def invoke(self):
         if self.expectedSignals['isCalled']:
             succeedTuple=(self.victim,self.env.now)
-            self.isCalled.succeed(succeedTuple)
-            self.expectedSignals['isCalled']=0
+            self.sendSignal(receiver=self, signal=self.isCalled, succeedTuple=succeedTuple)
     
     #===========================================================================
     # returns the internal queue of the victim
@@ -120,9 +119,9 @@ class ObjectInterruption(ManPyObject):
         # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously
         if self.victim.expectedSignals['interruptionStart']:
             self.victim.interruptedBy=self.type
-            succeedTuple=(self,self.env.now)
-            self.victim.interruptionStart.succeed(succeedTuple)
-            self.victim.expectedSignals['interruptionStart']=0
+            self.sendSignal(receiver=self.victim, signal=self.victim.interruptionStart)
+            # ToDo following is needed for synching, check why
+            self.victim.expectedSignals['interruptionEnd']=1
         # if the machines are operated by dedicated operators
         if self.victim.dedicatedOperator:
             # request allocation
@@ -133,9 +132,7 @@ class ObjectInterruption(ManPyObject):
     #===========================================================================
     def reactivateVictim(self):
         if self.victim.expectedSignals['interruptionEnd']:
-            succeedTuple=(self,self.env.now)
-            self.victim.interruptionEnd.succeed(succeedTuple)
-            self.victim.expectedSignals['interruptionEnd']=0
+            self.sendSignal(receiver=self.victim, signal=self.victim.interruptionEnd)
             #reset the interruptionStart event of the victim
             self.victim.interruptionStart=self.env.event()
             # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously

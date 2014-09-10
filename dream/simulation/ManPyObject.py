@@ -152,7 +152,6 @@ class ManPyObject(object):
     def sendSignal(self,sender=None,receiver=None,signal=None,succeedTuple=None):
         assert signal, 'there is no signal defined'
         assert receiver, 'there is no receiver defined for the signal'
-        # give default values if not given
         if not sender:
             sender=self
         if not succeedTuple:
