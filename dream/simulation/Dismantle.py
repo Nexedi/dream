@@ -130,9 +130,6 @@ class Dismantle(CoreObject):
             self.expectedSignals['isRequested']=1
             
             yield self.isRequested     #[self.isRequested,self.canDispose, self.loadOperatorAvailable]
-            
-            self.expectedSignals['isRequested']=0
-            
             if self.isRequested.value:
 #                 self.printTrace(self.id, isRequested=self.isRequested.value.id)
                 # reset the isRequested signal parameter
@@ -176,9 +173,6 @@ class Dismantle(CoreObject):
                     self.expectedSignals['entityRemoved']=1
                     
                     yield self.entityRemoved
-                    
-                    self.expectedSignals['entityRemoved']=0
-                    
                     self.waitEntityRemoval=False
                     self.entityRemoved=self.env.event()
 
@@ -189,8 +183,7 @@ class Dismantle(CoreObject):
                     if self.isEmpty():
                         self.waitToDisposeFrame=False                     #the Dismantle has no Frame to dispose now
                         break
-                
-                self.expectedSignals['canDispose']=0
+
         
     #===========================================================================
     #    checks if the Dismantle can accept an entity and there is a Frame 

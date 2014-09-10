@@ -427,12 +427,7 @@ class Machine(CoreObject):
             self.loadOperatorWaitTimeCurrentEntity = 0
             self.loadTimeCurrentEntity = 0
             self.setupTimeCurrentEntity = 0
-            
-            self.expectedSignals['isRequested']=0
-            self.expectedSignals['interruptionEnd']=0
-            self.expectedSignals['loadOperatorAvailable']=0
-            self.expectedSignals['initialWIP']=0
-            
+                      
     # ======= request a resource
             if(self.operatorPool!="None") and any(type=='Load' for type in self.multOperationTypeList):
                 # when it's ready to accept (canAcceptAndIsRequested) then inform the broker

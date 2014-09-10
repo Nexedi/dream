@@ -89,9 +89,6 @@ class OrderDecomposition(CoreObject):
                 transmitter, eventTime=self.canDispose.value
                 self.canDispose=self.env.event()
             
-            self.expectedSignals['isRequested']=0
-            self.expectedSignals['canDispose']=0
-            
             # if the event that activated the thread is canDispose then signalReceiver
             if self.haveToDispose():
 #                 print now(), self.id, 'will try to signal a receiver from generator'

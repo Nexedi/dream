@@ -101,9 +101,7 @@ class BatchDecomposition(CoreObject):
                     self.expectedSignals['interruptionEnd']=1
                     
                     yield self.interruptionEnd
-                    
-                    self.expectedSignals['interruptionEnd']=0
-                    
+
                     transmitter, eventTime=self.interruptionEnd.value
                     assert self==transmitter, 'the victim of the failure is not the object that received the interruptionEnd event'
                     self.interruptionEnd=self.env.event()
@@ -122,11 +120,7 @@ class BatchDecomposition(CoreObject):
                     assert requestingObject==self.giver, 'the giver is not the requestingObject'
                     self.isRequested=self.env.event()
                     break
-            
-            self.expectedSignals['isRequested']=0
-            self.expectedSignals['interruptionStart']=0
-            self.expectedSignals['initialWIP']=0
-                                                              
+           
             if not self.isProcessingInitialWIP:     # if we are in the state of having initial wip no need to take an Entity
                 self.currentEntity=self.getEntity()
                 
@@ -169,8 +163,6 @@ class BatchDecomposition(CoreObject):
                                 
                                 yield self.entityRemoved
                                 
-                                self.expectedSignals['entityRemoved']=0
-                                
                                 transmitter, eventTime=self.entityRemoved.value
                                 self.waitEntityRemoval=False
                                 break                           
@@ -190,16 +182,12 @@ class BatchDecomposition(CoreObject):
                             self.expectedSignals['entityRemoved']=1
                             
                             yield self.entityRemoved
-                            
-                            self.expectedSignals['entityRemoved']=0
-                            
+
                             transmitter, eventTime=self.entityRemoved.value
                             self.waitEntityRemoval=False
                             break
 
                 self.entityRemoved=self.env.event()
-            
-            self.expectedSignals['canDispose']=0
             
     # =======================================================================
     # removes an entity from the Machine

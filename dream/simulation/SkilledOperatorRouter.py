@@ -74,9 +74,7 @@ class SkilledRouter(Router):
             self.expectedSignals['isCalled']=1
             
             yield self.isCalled
-            
-            self.expectedSignals['isCalled']=0
-            
+                      
             transmitter, eventTime=self.isCalled.value
             self.isCalled=self.env.event()
             self.printTrace('','=-'*15)
@@ -136,8 +134,6 @@ class SkilledRouter(Router):
                     self.expectedSignals['endedLastProcessing']=1
                     
                     receivedEvent=yield self.env.all_of(self.endProcessingSignals)
-                    
-                    self.expectedSignals['endedLastProcessing']=0
                     
                     for station in self.busyStations:
                         if station.endedLastProcessing in receivedEvent:

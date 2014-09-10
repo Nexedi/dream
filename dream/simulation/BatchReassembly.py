@@ -96,8 +96,6 @@ class BatchReassembly(CoreObject):
                     
                     yield self.interruptionEnd
                     
-                    self.expectedSignals['interruptionEnd']=0
-                    
                     transmitter, eventTime=self.interruptionEnd.value
                     assert self==transmitter, 'the victim of the failure is not the object that received the interruptionEnd event'
                     self.interruptionEnd=self.env.event()
@@ -117,10 +115,6 @@ class BatchReassembly(CoreObject):
                     self.isRequested=self.env.event()
                     self.isProcessingInitialWIP=False
                     break
-            
-            self.expectedSignals['isRequested']=0
-            self.expectedSignals['interruptionStart']=0
-            self.expectedSignals['initialWIP']=0
             
             if not self.isProcessingInitialWIP:     # if we are in the state of having initial wip no need to take an Entity
                 self.currentEntity=self.getEntity()            
@@ -163,8 +157,6 @@ class BatchReassembly(CoreObject):
                                 
                                 yield self.interruptionEnd         # interruptionEnd to be triggered by ObjectInterruption
                                 
-                                self.expectedSignals['interruptionEnd']=0
-                                
                                 transmitter, eventTime=self.interruptionEnd.value
                                 assert eventTime==self.env.now, 'the victim of the failure is not the object that received it'
                                 self.interruptionEnd=self.env.event()
@@ -201,8 +193,6 @@ class BatchReassembly(CoreObject):
                         
                         yield self.entityRemoved
                         
-                        self.expectedSignals['entityRemoved']=0
-                        
                         transmitter, eventTime=self.entityRemoved.value
                         self.printTrace(self.id, entityRemoved=eventTime)
                         assert eventTime==self.env.now,'entityRemoved event activated earlier than received'
@@ -211,10 +201,7 @@ class BatchReassembly(CoreObject):
                         # if while waiting (for a canDispose event) became free as the machines that follows emptied it, then proceed
                         if not self.haveToDispose():
                             break
-                
-                self.expectedSignals['interruptionStart']=0
-                self.expectedSignals['canDispose']=0
-                
+
     # =======================================================================
     # removes an entity from the Machine
     # =======================================================================
