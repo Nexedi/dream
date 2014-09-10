@@ -290,24 +290,9 @@ class CoreObject(ManPyObject):
         # update wipStatList
         if self.gatherWipStat:
             self.wipStatList.append([self.env.now, len(activeObjectQueue)])
-        
-        if self.entityRemoved.triggered:
-            if self.entityRemoved.value!=self.env.now and self.waitEntityRemoval and self.expectedSignals['entityRemoved']:
-#                 print self.id,'triggered and waiting'
-                self.entityRemoved=self.env.event()
-                self.printTrace(self.id, signal='(removedEntity)')
-                succeedTuple=(self,self.env.now)
-                self.entityRemoved.succeed(succeedTuple)
-                self.expectedSignals['entityRemoved']=0
-        elif self.waitEntityRemoval and self.expectedSignals['entityRemoved']:
-#             print self.id,'not triggered and waiting'
+        if self.expectedSignals['entityRemoved']:
             self.printTrace(self.id, signal='(removedEntity)')
-            succeedTuple=(self,self.env.now)
-            self.entityRemoved.succeed(succeedTuple)
-            self.expectedSignals['entityRemoved']=0
-        elif not self.waitEntityRemoval and not self.expectedSignals['entityRemoved']:
-#             print self.id,'not triggered but not waiting'
-            pass
+            self.sendSignal(receiver=self, signal=self.entityRemoved)
         return entity
     
     #===========================================================================
@@ -494,9 +479,7 @@ class CoreObject(ManPyObject):
             # assign the entry of the receiver
             self.receiver.assignEntryTo()
             if self.receiver.expectedSignals['isRequested']:
-                succeedTuple=(self,self.env.now)
-                self.receiver.isRequested.succeed(succeedTuple)
-                self.receiver.expectedSignals['isRequested']=0
+                self.sendSignal(receiver=self.receiver, signal=self.receiver.isRequested)
             return True
         # if no receiver can accept then try to preempt a receive if the stations holds a critical order
         self.preemptReceiver()
