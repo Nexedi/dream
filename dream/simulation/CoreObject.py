@@ -567,10 +567,8 @@ class CoreObject(ManPyObject):
             self.giver=giver
             self.giver.receiver=self
             if self.giver.expectedSignals['canDispose']:
+                self.sendSignal(receiver=self.giver, signal=self.giver.canDispose)
                 self.printTrace(self.id, signalGiver=self.giver.id)
-                succeedTuple=(self,self.env.now)
-                self.giver.canDispose.succeed(succeedTuple)
-                self.giver.expectedSignals['canDispose']=0
             return True
         return False
     
