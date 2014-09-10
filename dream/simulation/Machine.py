@@ -577,10 +577,7 @@ class Machine(CoreObject):
                 if oi.type=='Failure':
                     if oi.deteriorationType=='working':
                         if oi.expectedSignals['victimStartsProcess']:
-                            succeedTuple=(self,self.env.now)
-                            oi.victimStartsProcess.succeed(succeedTuple)
-                            oi.expectedSignals['victimStartsProcess']=0
-            
+                            self.sendSignal(receiver=oi, signal=oi.victimStartsProcess)           
                                                  
             # this loop is repeated until the processing time is expired with no failure
             # check when the processingEndedFlag switched to false
@@ -654,8 +651,9 @@ class Machine(CoreObject):
                         self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
                 # if the processing operator left
                 elif self.processOperatorUnavailable in receivedEvent:
-                    assert self.env.now==self.processOperatorUnavailable.value, 'the operator leaving has not been processed at \
-                                                                        the time it should'   
+                    transmitter, eventTime=self.processOperatorUnavailable.value
+                    assert self.env.now==eventTime, 'the operator leaving has not been processed at \
+                                the time it should'   
                     self.processOperatorUnavailable=self.env.event()                
                     # carry interruption actions
                     self.interruptionActions()
@@ -852,9 +850,7 @@ class Machine(CoreObject):
             if oi.type=='Failure':
                 if oi.deteriorationType=='working':
                     if oi.expectedSignals['victimEndsProcess']:
-                        succeedTuple=(self,self.env.now)
-                        oi.victimEndsProcess.succeed(succeedTuple)
-                        oi.expectedSignals['victimEndsProcess']=0
+                        self.sendSignal(receiver=oi, signal=oi.victimEndsProcess)
 
         # in case Machine just performed the last work before the scheduled maintenance signal the corresponding object
         if self.isWorkingOnTheLast:
@@ -865,10 +861,8 @@ class Machine(CoreObject):
                 if interruption.victim==self and interruption.waitingSignal:
                     # signal it and reset the flags
                     if interruption.expectedSignals['endedLastProcessing']:
-                        succeedTuple=(self,self.env.now)
-                        self.endedLastProcessing.succeed(succeedTuple)
+                        self.sendSignal(receiver=self, signal=self.endedLastProcessing)
                         interruption.waitingSignal=False
-                        interruption.expectedSignals['endedLastProcessing']=0
                         self.isWorkingOnTheLast=False
             # set timeLastShiftEnded attribute so that if it is overtime working it is not counted as off-shift time
             if self.interruptedBy=='ShiftScheduler':

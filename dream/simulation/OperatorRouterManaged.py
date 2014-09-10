@@ -200,9 +200,7 @@ class RouterManaged(Router):
                     # signal this station's broker that the resource is available
                     self.printTrace('router','signalling broker of'+' '*50+operator.isAssignedTo().id)
                     if operator.isAssignedTo().broker.expectedSignals['resourceAvailable']:
-                        succeedTuple=(self,self.env.now)
-                        operator.isAssignedTo().broker.resourceAvailable.succeed(succeedTuple)
-                        operator.isAssignedTo().broker.expectedSignals['resourceAvailable']=0
+                        self.sendSignal(receiver=operator.isAssignedTo().broker, signal=operator.isAssignedTo().broker.resourceAvailable)
                 elif (not station in self.pendingMachines) or (not station in self.toBeSignalled):
                     # signal the queue proceeding the station
                     assert operator.candidateEntity.currentStation in self.toBeSignalled, 'the candidateEntity currentStation is not picked by the Router'
@@ -213,9 +211,7 @@ class RouterManaged(Router):
                         if not operator.candidateEntity.currentStation.loadOperatorAvailable.triggered:
                             self.printTrace('router','signalling queue'+' '*50+operator.candidateEntity.currentStation.id)
                             if operator.candidateEntity.currentStation.expectedSignals['loadOperatorAvailable']:
-                                succeedTuple=(self,self.env.now)
-                                operator.candidateEntity.currentStation.loadOperatorAvailable.succeed(succeedTuple)
-                                operator.candidateEntity.currentStation.expectedSignals['loadOperatorAvailable']=0
+                                self.sendSignal(receiver=operator.candidateEntity.currentStation, signal=operator.candidateEntity.currentStation.loadOperatorAvailable)
     
     #===========================================================================
     # clear the pending lists of the router

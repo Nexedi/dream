@@ -207,7 +207,5 @@ class Source(CoreObject):
         activeEntity=CoreObject.removeEntity(self, entity)          # run the default method  
         if len(self.getActiveObjectQueue())==1:
             if self.expectedSignals['entityCreated']:
-                succeedTuple=(newEntity,self.env.now)
-                self.entityCreated.succeed(succeedTuple)
-                self.expectedSignals['entityCreated']=0
+                self.sendSignal(receiver=self, signal=self.entityCreated)
         return activeEntity

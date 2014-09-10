@@ -100,10 +100,8 @@ class Broker(ObjectInterruption):
                             G.pendingEntities.append(self.victim.currentEntity)
                         if not G.Router.invoked and G.Router.expectedSignals['isCalled']:
                             self.victim.printTrace(self.victim.id, signal='router (broker)')
+                            self.sendSignal(receiver=G.Router, signal=G.Router.isCalled)
                             G.Router.invoked=True
-                            succeedTuple=(self,self.env.now)
-                            G.Router.isCalled.succeed(succeedTuple)
-                            G.Router.expectedSignals['isCalled']=0
                             
                         self.waitForOperator=True
                         self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')
@@ -156,9 +154,7 @@ class Broker(ObjectInterruption):
                     self.victim.currentOperator.timeLastOperationStarted=self.env.now#()
                     # signal the machine that an operator is reserved
                     if self.victim.expectedSignals['brokerIsSet']:
-                        succeedTuple=(self,self.env.now)
-                        self.victim.brokerIsSet.succeed(succeedTuple)
-                        self.victim.expectedSignals['brokerIsSet']=0
+                        self.sendSignal(receiver=self.victim, signal=self.victim.brokerIsSet)
                     # update the schedule of the operator
                     self.victim.currentOperator.schedule.append([self.victim, self.env.now])
                     
@@ -184,9 +180,7 @@ class Broker(ObjectInterruption):
                         if not G.Router.invoked and G.Router.expectedSignals['isCalled']:
                             self.victim.printTrace(self.victim.id, signal='router (broker)')
                             G.Router.invoked=True
-                            succeedTuple=(self,self.env.now)
-                            G.Router.isCalled.succeed(succeedTuple)
-                            G.Router.expectedSignals['isCalled']=0
+                            self.sendSignal(receiver=G.Router, signal=G.Router.isCalled)
                         # TODO: signalling the router will give the chance to it to take the control, but when will it eventually receive it. 
                         #     after signalling the broker will signal it's victim that it has finished it's processes 
                         # TODO: this wont work for the moment. The actions that follow must be performed by all operated brokers. 
@@ -202,7 +196,4 @@ class Broker(ObjectInterruption):
                         pass
                 # return the control to the victim
                 if self.victim.expectedSignals['brokerIsSet']:
-                    succeedTuple=(self,self.env.now)
-                    self.victim.brokerIsSet.succeed(succeedTuple)
-                    self.victim.expectedSignals['brokerIsSet']=0
-                
+                    self.sendSignal(receiver=self.victim, signal=self.victim.brokerIsSet)

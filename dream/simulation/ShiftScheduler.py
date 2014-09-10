@@ -99,9 +99,7 @@ class ShiftScheduler(ObjectInterruption):
                 for oi in self.victim.objectInterruptions:
                     if oi.isWaitingForVictimOnShift:
                         if oi.expectedSignals['victimOnShift']:
-                            succeedTuple=(self,self.env.now)
-                            oi.victimOnShift.succeed(succeedTuple)
-                            oi.expectedSignals['victimOnShift']=0
+                            self.sendSignal(receiver=oi, signal=oi.victimOnShift)
             else:
                 timeToEndShift=float(self.remainingShiftPattern[0][1]-self.env.now)
                 yield self.env.timeout(timeToEndShift-self.receiveBeforeEndThreshold)   # wait until the entry threshold
@@ -129,19 +127,15 @@ class ShiftScheduler(ObjectInterruption):
                     # signal to the station that the operator has to leave
                     station=self.victim.workingStation
                     if station:
-                        if not self.endUnfinished and station.isProcessing:
-                            station.processOperatorUnavailable.succeed(self.env.now)
-                            station.expectedSignals['processOperatorUnavailable']=0
+                        if not self.endUnfinished and station.expectedSignals['processOperatorUnavailable']:
+                            self.sendSignal(receiver=station, signal=station.processOperatorUnavailable)
                     self.requestAllocation()
 
                 # if the victim has interruptions that measure only the on-shift time, they have to be notified
                 for oi in self.victim.objectInterruptions:
                     if oi.isWaitingForVictimOffShift:
                         if oi.expectedSignals['victimOffShift']:
-                            succeedTuple=(self, self.env.now)
-                            oi.victimOffShift.succeed(succeedTuple)
-                            oi.expectedSignals['victimOnShift']=0
-
+                            self.sendSignal(receiver=oi, signal=oi.victimOffShift)
                        
                 self.victim.onShift=False                        # get the victim off-shift
                 self.victim.timeLastShiftEnded=self.env.now

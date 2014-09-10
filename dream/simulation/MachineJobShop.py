@@ -293,9 +293,7 @@ class MachineJobShop(Machine):
         # TODO: use a signal and wait for it, reactivation is not recognised as interruption
 #         reactivate(self)
         if self.expectedSignals['preemptQueue']:
-            succeedTuple=(self,self.env.now)
-            self.preemptQueue.succeed(succeedTuple)
-            self.expectedSignals['preemptQueue']=0
+            self.sendSignal(receiver=self, signal=self.preemptQueue)
         # TODO: consider the case when a failure has the Station down. The event preempt will not be received now()
         #     but at a later simulation time. 
             

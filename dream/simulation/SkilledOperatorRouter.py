@@ -254,19 +254,15 @@ class SkilledRouter(Router):
                     if station.broker.waitForOperator:
                         # signal this station's broker that the resource is available
                         if station.broker.expectedSignals['resourceAvailable']:
+                            self.sendSignal(receiver=station.broker, signal=station.broker.resourceAvailable)
                             self.printTrace('router', 'signalling broker of'+' '*50+station.id)
-                            succeedTuple=(self,self.env.now)
-                            station.broker.resourceAvailable.succeed(succeedTuple)
-                            station.broker.expectedSignals['resourceAvailable']=0
                     else:
                         # signal the queue proceeding the station
                         if station.canAccept()\
                                 and any(type=='Load' for type in station.multOperationTypeList):
                             if station.expectedSignals['loadOperatorAvailable']:
+                                self.sendSignal(receiver=station, signal=station.loadOperatorAvailable)
                                 self.printTrace('router', 'signalling'+' '*50+station.id)
-                                succeedTuple=(self,self.env.now)
-                                station.loadOperatorAvailable.succeed(succeedTuple)
-                                station.expectedSignals['loadOperatorAvailable']=0
             
             #===================================================================
             # default behaviour
