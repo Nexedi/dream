@@ -90,6 +90,7 @@ class BatchDecomposition(CoreObject):
                 self.expectedSignals['isRequested']=1
                 self.expectedSignals['interruptionStart']=1
                 self.expectedSignals['initialWIP']=1
+                self.printTrace(self.id, waitEvent='(isRequested), interruptionStart, initialWIP')
                 receivedEvent=yield self.env.any_of([self.isRequested , self.interruptionStart , self.initialWIP])
                 # if an interruption has occurred 
                 if self.interruptionStart in receivedEvent:
@@ -99,7 +100,7 @@ class BatchDecomposition(CoreObject):
                     # wait till it is over
                     
                     self.expectedSignals['interruptionEnd']=1
-                    
+                    self.printTrace(self.id, waitEvent='interruptionEnd')
                     yield self.interruptionEnd
 
                     transmitter, eventTime=self.interruptionEnd.value
@@ -118,6 +119,7 @@ class BatchDecomposition(CoreObject):
                 else:
                     requestingObject, eventTime=self.isRequested.value
                     assert requestingObject==self.giver, 'the giver is not the requestingObject'
+                    self.printTrace(self.id, isRequested=requestingObject.id)
                     self.isRequested=self.env.event()
                     break
            
@@ -151,8 +153,10 @@ class BatchDecomposition(CoreObject):
                     if not signaling:
                         # if there was no success wait till the receiver is available
                         while 1:
+                            self.printTrace(self.id, waitEvent='canDispose')
                             self.expectedSignals['canDispose']=1
                             yield self.canDispose
+                            self.printTrace(self.id, canDispose='')
                             transmitter, eventTime=self.canDispose.value
                             self.canDispose=self.env.event()
                             # signal the receiver again and break
@@ -160,32 +164,37 @@ class BatchDecomposition(CoreObject):
                                 self.waitEntityRemoval=True
                                 
                                 self.expectedSignals['entityRemoved']=1
-                                
+                                self.printTrace(self.id, waitEvent='entityRemoved')
                                 yield self.entityRemoved
-                                
+                                self.printTrace(self.id, received='')
                                 transmitter, eventTime=self.entityRemoved.value
                                 self.waitEntityRemoval=False
-                                break                           
-                            
+                                break
+                
                 # for the consecutive times wait till the receiver is available and then signalReceiver
                 #     we know that the receiver is occupied with the previous sub-batch
                 else:
-                    while 1:
-                        self.expectedSignals['canDispose']=1
-                        yield self.canDispose
-                        transmitter, eventTime=self.canDispose.value
-                        self.canDispose=self.env.event()
-                        signaling=self.signalReceiver()
-                        if signaling:
-                            self.waitEntityRemoval=True
-                            
-                            self.expectedSignals['entityRemoved']=1
-                            
-                            yield self.entityRemoved
-
-                            transmitter, eventTime=self.entityRemoved.value
-                            self.waitEntityRemoval=False
-                            break
+                    if not self.signalReceiver():
+                        while 1:
+                            self.printTrace(self.id, waitEvent='canDispose')# or entityRemoved')
+                            self.expectedSignals['canDispose']=1
+                            yield self.canDispose
+                            self.printTrace(self.id, canDispose='')
+                            transmitter, eventTime=self.canDispose.value
+                            self.canDispose=self.env.event()
+                            if not self.getActiveObjectQueue():
+                                break
+                            signaling=self.signalReceiver()
+                            if signaling:
+                                self.waitEntityRemoval=True
+                                
+                                self.expectedSignals['entityRemoved']=1
+                                self.printTrace(self.id, waitEvent='entityRemoved')
+                                yield self.entityRemoved
+                                self.printTrace(self.id, received='entityRemoved')
+                                transmitter, eventTime=self.entityRemoved.value
+                                self.waitEntityRemoval=False
+                                break
 
                 self.entityRemoved=self.env.event()
             
