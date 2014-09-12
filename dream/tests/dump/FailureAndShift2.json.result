@@ -6,9 +6,9 @@
    "family": "Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 2.52, 
-    "takt_time": 0.59, 
-    "throughput": 25
+    "lifespan": 2.480769230769231, 
+    "takt_time": 0.5769230769230769, 
+    "throughput": 26
    }
   }, 
   {
