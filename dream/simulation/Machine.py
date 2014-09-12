@@ -659,9 +659,8 @@ class Machine(CoreObject):
                     if interruption.victim==self and interruption.waitingSignal:
                         # signal it and reset the flags
                         if interruption.expectedSignals['endedLastProcessing']:
-                            succeedTuple=(self,self.env.now)
-                            self.endedLastProcessing.succeed(succeedTuple)
-                            interruption.waitinSignal=False
+                            self.sendSignal(receiver=self, signal=self.endedLastProcessing)
+                            interruption.waitingSignal=False
                             self.isWorkingOnTheLast=False
                 # set timeLastShiftEnded attribute so that if it is overtime working it is not counted as off-shift time
                 if self.interruptedBy=='ShiftScheduler':
@@ -845,11 +844,11 @@ class Machine(CoreObject):
             # and the processing time left 
             self.totalProcessingTimeInCurrentEntity=self.calculateProcessingTime()                # get the processing time, tinMStarts holds the processing time of the machine 
             self.tinM=self.totalProcessingTimeInCurrentEntity                                          # timer to hold the processing time left
-                
+                   
             # variables used to flag any interruptions and the end of the processing
             self.interruption=False
             processingNotFinished=True
-                
+                   
             # if there is a failure that depends on the working time of the Machine
             # send it the victimStartsProcess signal                                            
             for oi in self.objectInterruptions:
@@ -857,11 +856,11 @@ class Machine(CoreObject):
                     if oi.deteriorationType=='working':
                         if oi.expectedSignals['victimStartsProcess']:
                             self.sendSignal(receiver=oi, signal=oi.victimStartsProcess)           
-             
+                
             # this loop is repeated until the processing time is expired with no failure
             # check when the processingEndedFlag switched to false
+                   
                 
-             
             while processingNotFinished:
                 self.expectedSignals['interruptionStart']=1
                 self.expectedSignals['preemptQueue']=1
@@ -883,28 +882,28 @@ class Machine(CoreObject):
                     assert eventTime==self.env.now, 'the interruption has not been processed on the time of activation'
                     self.interruptionStart=self.env.event()
                     self.interruptionActions()                      # execute interruption actions
-                        
+                           
                     #===========================================================
                     # # release the operator if there is interruption 
                     #===========================================================
                     if self.shouldYield(operationTypes={"Processing":1},methods={'isOperated':1}):
                         yield self.env.process(self.release())
-                        
+                           
                     # loop until we reach at a state that there is no interruption
                     while 1:
-                            
+                        
                         self.expectedSignals['interruptionEnd']=1
-                            
+                               
                         yield self.interruptionEnd         # interruptionEnd to be triggered by ObjectInterruption
-                            
-                            
+                               
+                               
                         transmitter, eventTime=self.interruptionEnd.value
                         assert eventTime==self.env.now, 'the interruptionEnd was received later than anticipated'
                         self.interruptionEnd=self.env.event()
                         if self.Up and self.onShift:
                             break
                     self.postInterruptionActions()
-                        
+                           
                     #===========================================================
                     # # request a resource after the repair
                     #===========================================================
@@ -944,22 +943,20 @@ class Machine(CoreObject):
                         assert eventTime==self.env.now, 'the preemption must be performed on the time of request'
                         self.preemptQueue=self.env.event()
                     self.interruptionActions()                      # execute interruption actions
-                        
+                           
                     #===========================================================
                     # # release the operator if there is interruption 
                     #===========================================================
                     if self.shouldYield(operationTypes={"Processing":1},methods={'isOperated':1}):
                         yield self.env.process(self.release())
-                        
+                           
                     self.postInterruptionActions()
                     break
-                    
+                       
                 # if no interruption occurred the processing in M1 is ended 
                 else:
                     processingNotFinished=False
-                
-                
-                
+                   
             # carry on actions that have to take place when an Entity ends its processing
             self.endProcessingActions()
             #===================================================================
