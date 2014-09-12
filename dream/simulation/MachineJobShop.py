@@ -72,68 +72,68 @@ class MachineJobShop(Machine):
         self.next=[]
         Machine.initialize(self)    #run default behaviour
     
-    # =======================================================================
-    # actions to be carried out when the processing of an Entity ends
-    # =======================================================================    
-    def endProcessingActions(self):
-        # set isProcessing to False
-        self.isProcessing=False
-        # add working time
-        self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
-
-        # blocking starts
-        self.isBlocked=True
-        self.timeLastBlockageStarted=self.env.now
-
-        activeObject=self.getActiveObject()
-        activeObjectQueue=activeObject.Res.users
-        activeEntity=activeObjectQueue[0]
-#         self.printTrace(activeEntity.name,processEnd=activeObject.objName)
-        # reset the variables used to handle the interruptions timing 
-        # self.timeRestartingProcessing=0
-        self.breakTime=0
-        # output to trace that the processing in the Machine self.objName ended 
-        try:
-            activeObject.outputTrace(activeEntity.name,"ended processing in "+activeObject.objName)
-        except IndexError:
-            pass
-        
-        import Globals
-        from Globals import G
-        # the entity that just got processed is cold again it will get 
-        # hot again by the time it reaches the giver of the next machine
-        # TODO: Not only Machines require time to process entities
-        if activeEntity.family=='Job':
-            # read the list of next stations for the entity in just finished processing
-            nextObjectIds=activeEntity.remainingRoute[0].get('stationIdsList',[])
-            nextObjects = []
-            for nextObjectId in nextObjectIds:
-                nextObject=Globals.findObjectById(nextObjectId)
-                nextObjects.append(nextObject)
-            successorsAreMachines=True
-            for object in nextObjects:
-                if not object in G.MachineList:
-                    successorsAreMachines=False
-                    break
-            if not successorsAreMachines:
-                activeObjectQueue[0].hot = False
-        # the just processed entity is added to the list of entities 
-        # pending for the next processing
-        G.pendingEntities.append(activeObjectQueue[0])
-        # set the variable that flags an Entity is ready to be disposed 
-        activeObject.waitToDispose=True
-        #do this so that if it is overtime working it is not counted as off-shift time
-        if not activeObject.onShift:
-            activeObject.timeLastShiftEnded=self.env.now
-        # update the variables keeping track of Entity related attributes of the machine
-        activeObject.timeLastEntityEnded=self.env.now                              # this holds the time that the last entity ended processing in Machine 
-        activeObject.nameLastEntityEnded=activeObject.currentEntity.name    # this holds the name of the last entity that ended processing in Machine
-        activeObject.completedJobs+=1                                       # Machine completed one more Job
-        # reset flags
-        self.shouldPreempt=False 
-        self.isProcessingInitialWIP=False 
-
-        # TODO: collapse that to Machine
+#     # =======================================================================
+#     # actions to be carried out when the processing of an Entity ends
+#     # =======================================================================    
+#     def endProcessingActions(self):
+#         # set isProcessing to False
+#         self.isProcessing=False
+#         # add working time
+#         self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
+# 
+#         # blocking starts
+#         self.isBlocked=True
+#         self.timeLastBlockageStarted=self.env.now
+# 
+#         activeObject=self.getActiveObject()
+#         activeObjectQueue=activeObject.Res.users
+#         activeEntity=activeObjectQueue[0]
+# #         self.printTrace(activeEntity.name,processEnd=activeObject.objName)
+#         # reset the variables used to handle the interruptions timing 
+#         # self.timeRestartingProcessing=0
+#         self.breakTime=0
+#         # output to trace that the processing in the Machine self.objName ended 
+#         try:
+#             activeObject.outputTrace(activeEntity.name,"ended processing in "+activeObject.objName)
+#         except IndexError:
+#             pass
+#         
+#         import Globals
+#         from Globals import G
+#         # the entity that just got processed is cold again it will get 
+#         # hot again by the time it reaches the giver of the next machine
+#         # TODO: Not only Machines require time to process entities
+#         if activeEntity.family=='Job':
+#             # read the list of next stations for the entity in just finished processing
+#             nextObjectIds=activeEntity.remainingRoute[0].get('stationIdsList',[])
+#             nextObjects = []
+#             for nextObjectId in nextObjectIds:
+#                 nextObject=Globals.findObjectById(nextObjectId)
+#                 nextObjects.append(nextObject)
+#             successorsAreMachines=True
+#             for object in nextObjects:
+#                 if not object in G.MachineList:
+#                     successorsAreMachines=False
+#                     break
+#             if not successorsAreMachines:
+#                 activeObjectQueue[0].hot = False
+#         # the just processed entity is added to the list of entities 
+#         # pending for the next processing
+#         G.pendingEntities.append(activeObjectQueue[0])
+#         # set the variable that flags an Entity is ready to be disposed 
+#         activeObject.waitToDispose=True
+#         #do this so that if it is overtime working it is not counted as off-shift time
+#         if not activeObject.onShift:
+#             activeObject.timeLastShiftEnded=self.env.now
+#         # update the variables keeping track of Entity related attributes of the machine
+#         activeObject.timeLastEntityEnded=self.env.now                              # this holds the time that the last entity ended processing in Machine 
+#         activeObject.nameLastEntityEnded=activeObject.currentEntity.name    # this holds the name of the last entity that ended processing in Machine
+#         activeObject.completedJobs+=1                                       # Machine completed one more Job
+#         # reset flags
+#         self.shouldPreempt=False 
+#         self.isProcessingInitialWIP=False 
+# 
+#         # TODO: collapse that to Machine
 
 
     # =======================================================================
