@@ -401,7 +401,6 @@ class Machine(CoreObject):
         # wait until the Broker has finished processing
         self.expectedSignals['brokerIsSet']=1
         yield self.brokerIsSet
-        self.expectedSignals['brokerIsSet']=0
         transmitter, eventTime=self.brokerIsSet.value
         assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
         assert eventTime==self.env.now, 'brokerIsSet is not received on time'
@@ -417,7 +416,6 @@ class Machine(CoreObject):
         # wait until the Broker has waited times equal to loadTime (if any)
         self.expectedSignals['brokerIsSet']=1
         yield self.brokerIsSet
-        self.expectedSignals['brokerIsSet']=0
         transmitter, eventTime=self.brokerIsSet.value
         assert transmitter==self.broker, 'brokerIsSet is not sent by the stations broker'
         assert eventTime==self.env.now, 'brokerIsSet is not received on time'
@@ -427,10 +425,10 @@ class Machine(CoreObject):
     # general process, it can be processing or setup
     #===========================================================================
     def operation(self,type='Processing'):
-        # identify the method to get the operation time and initialise the totalOperationTime 
+        # assert that the type is not None and is one of the already implemented ones
         assert type!=None, 'there must be an operation type defined'
         assert type in set(['Processing','Setup']), 'the operation type provided is not yet defined'
-# XX
+        # identify the method to get the operation time and initialise the totalOperationTime 
         if type=='Setup':
             method='calculateSetupTime'
             self.totalOperationTime=self.totalSetupTime
@@ -441,17 +439,18 @@ class Machine(CoreObject):
         try:
             classMethod=getMethodFromName('Dream.'+str(self.__class__.__name__)+'.'+method)
         except:
+            # if there is no module name as the self.__class__.__name__
             parents=self.__class__.__bases__
             classMethod=getMethodFromName('Dream.'+str(parents[-1].__name__)+'.'+method)
         # variables dedicated to hold the processing times, the time when the Entity entered, 
         # and the processing time left
-# XX
-        self.totalOperationTimeInCurrentEntity=classMethod(self)                # get the processing time, tinMStarts holds the processing time of the machine
-# XX
-        self.tinM=self.totalOperationTimeInCurrentEntity                                          # timer to hold the processing time left
+        # get the operation time, tinMStarts holds the processing time of the machine
+        self.totalOperationTimeInCurrentEntity=classMethod(self)
+        # timer to hold the operation time left
+        self.tinM=self.totalOperationTimeInCurrentEntity                                          
         # variables used to flag any interruptions and the end of the processing
         self.interruption=False
-# XX
+        # local variable that is used to check whether the operation is concluded
         operationNotFinished=True
         # if there is a failure that depends on the working time of the Machine
         # send it the victimStartsProcess signal                                            
@@ -459,17 +458,14 @@ class Machine(CoreObject):
             if oi.type=='Failure':
                 if oi.deteriorationType=='working':
                     if oi.expectedSignals['victimStartsProcess']:
-                        succeedTuple=(self,self.env.now)
-                        oi.victimStartsProcess.succeed(succeedTuple)
+                        self.sendSignal(receiver=oi, signal=oi.victimStartsProcess)
         # this loop is repeated until the processing time is expired with no failure
         # check when the processingEndedFlag switched to false
-        self.expectedSignals['interruptionStart']=1
-        self.expectedSignals['preemptQueue']=1
-# XX
         while operationNotFinished:
-            # timeLastOperationStarted : dummy variable to keep track of the time that the processing starts after 
-            #           every interruption
-# XX
+            self.expectedSignals['interruptionStart']=1
+            self.expectedSignals['preemptQueue']=1
+            self.expectedSignals['processOperatorUnavailable']=1
+            # dummy variable to keep track of the time that the operation starts after every interruption
             self.timeLastOperationStarted=self.env.now
 #             # if the type is setup then the time to record is timeLastProcessingStarted
 #             if type=='Setup':
@@ -484,13 +480,13 @@ class Machine(CoreObject):
             #     else (if interrupted()) set interruption flag to true (only if tinM==0), 
             #     and recalculate the processing time left tinM, passivate while waiting for repair.
             # if a preemption has occurred then react accordingly (proceed with getting the critical entity)
-            # receivedEvent = yield self.env.timeout(self.tinM) | self.interruptionStart | self.preemptQueue
-            receivedEvent = yield self.env.any_of([self.interruptionStart, self.env.timeout(self.tinM) , self.preemptQueue])
-            if self.interruptionStart in receivedEvent:                              # if a failure occurs while processing the machine is interrupted.
+            receivedEvent = yield self.env.any_of([self.interruptionStart, self.env.timeout(self.tinM), 
+                                                   self.preemptQueue, self.processOperatorUnavailable])
+            # if a failure occurs while processing the machine is interrupted.
+            if self.interruptionStart in receivedEvent:
                 transmitter, eventTime=self.interruptionStart.value
                 assert eventTime==self.env.now, 'the interruption has not been processed on the time of activation'
                 self.interruptionStart=self.env.event()
-# XX
                 self.genInterruptionActions(type)                      # execute interruption actions
                 #===========================================================
                 # # release the operator if there is interruption 
@@ -501,14 +497,12 @@ class Machine(CoreObject):
                 while 1:
                     self.expectedSignals['interruptionEnd']=1
                     yield self.interruptionEnd         # interruptionEnd to be triggered by ObjectInterruption
-                    self.expectedSignals['interruptionEnd']=0
                     transmitter, eventTime=self.interruptionEnd.value
                     assert eventTime==self.env.now, 'the interruptionEnd was received later than anticipated'
                     self.interruptionEnd=self.env.event()
                     if self.Up and self.onShift:
                         break
-# XX
-                    self.postInterruptionActions()
+                    self.postInterruptionActions()                      # execute interruption actions
                     #===========================================================
                     # # request a resource after the repair
                     #===========================================================
@@ -517,31 +511,49 @@ class Machine(CoreObject):
                         yield self.env.process(self.request())
                         self.timeWaitForOperatorEnded = self.env.now
                         self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
+            # if the processing operator left
+            elif self.processOperatorUnavailable in receivedEvent:
+                transmitter, eventTime=self.processOperatorUnavailable.value
+                assert self.env.now==eventTime, 'the operator leaving has not been processed at the time it should'   
+                self.processOperatorUnavailable=self.env.event()                
+                # carry interruption actions
+                self.genInterruptionActions(type)
+                #===========================================================
+                # # release the operator  
+                #===========================================================
+                yield self.env.process(self.release())                 
+                from Globals import G
+                # append the entity that was stopped to the pending ones
+                if G.Router:
+                    G.pendingEntities.append(self.currentEntity)
+                #===========================================================
+                # # request a resource after the interruption
+                #===========================================================
+                self.timeWaitForOperatorStarted = self.env.now
+                yield self.env.process(self.request())
+                self.timeWaitForOperatorEnded = self.env.now
+                self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
+                # carry post interruption actions
+                self.postInterruptionActions() 
+            
+            
             # if the station is reactivated by the preempt method
             elif(self.shouldPreempt):
                 if (self.preemptQueue in receivedEvent):
                     transmitter, eventTime=self.preemptQueue.value
                     assert eventTime==self.env.now, 'the preemption must be performed on the time of request'
                     self.preemptQueue=self.env.event()
-# XX
                     self.genInterruptionActions(type)                      # execute interruption actions
                 #===========================================================
                 # # release the operator if there is interruption 
                 #===========================================================
                 if self.shouldYield(operationTypes={"Processing":1},methods={'isOperated':1}):
                     yield self.env.process(self.release())
-# XX
-                self.postInterruptionActions()
+                self.postInterruptionActions()                              # execute interruption actions
                 break
             # if no interruption occurred the processing in M1 is ended 
             else:
-# XX
                 operationNotFinished=False
-        self.expectedSignals['interruptionStart']=0
-        self.expectedSignals['preemptQueue']=0
-        # carry on actions that have to take place when an Entity ends its processing
-# XX
-#         self.endOperationActions(type)
         
     # =======================================================================
     # actions to be carried out when the processing of an Entity ends
@@ -559,12 +571,8 @@ class Machine(CoreObject):
         # if object was blocked add the working time
         if self.isBlocked:
             self.addBlockage()
-            
-        # set isProcessing to False          
-        self.isProcessing=False
+        # the machine is currently performing nothing
         self.currentlyPerforming=None
-        # set isBlocked to False          
-        self.isBlocked=False
         activeObjectQueue=self.Res.users
         activeEntity=activeObjectQueue[0]
         self.printTrace(activeEntity.name, interrupted=self.objName)
@@ -584,6 +592,10 @@ class Machine(CoreObject):
                 self.interruption=True
         # start counting the down time at breatTime dummy variable
         self.breakTime=self.env.now        # dummy variable that the interruption happened
+        # set isProcessing to False          
+        self.isProcessing=False
+        # set isBlocked to False          
+        self.isBlocked=False
     
     #===========================================================================
     # actions to be performed after an operation (setup or processing)
@@ -593,6 +605,7 @@ class Machine(CoreObject):
         activeEntity=activeObjectQueue[0]
         # set isProcessing to False
         self.isProcessing=False
+        # the machine is currently performing no operation
         self.currentlyPerforming=None
         # add working time
         self.totalOperationTime+=self.env.now-self.timeLastOperationStarted
@@ -636,8 +649,7 @@ class Machine(CoreObject):
                 if oi.type=='Failure':
                     if oi.deteriorationType=='working':
                         if oi.expectedSignals['victimEndsProcess']:
-                            succeedTuple=(self,self.env.now)
-                            oi.victimEndsProcess.succeed(succeedTuple)
+                            self.sendSignal(receiver=oi, signal=oi.victimEndsProcess)
             # in case Machine just performed the last work before the scheduled maintenance signal the corresponding object
             if self.isWorkingOnTheLast:
                 # for the scheduled Object interruptions
