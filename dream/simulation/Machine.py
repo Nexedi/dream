@@ -103,7 +103,7 @@ class Machine(CoreObject):
         self.toBeOperated = False
         # define the load times
         self.loadRng = RandomNumberGenerator(self, **loadTime)
-        # variable that informs on the need for setup
+        # XX variable that informs on the need for setup
         self.setUp=True
         # define the setup times
         self.stpRng = RandomNumberGenerator(self, **setupTime)
@@ -196,7 +196,7 @@ class Machine(CoreObject):
         '''returns the processingTime dictionary updated'''
         if not processingTime:
             processingTime = { 'distributionType': 'Fixed',
-                               'mean': 1, }
+                               'mean': 0, }
         if processingTime['distributionType'] == 'Normal' and\
                 processingTime.get('max', None) is None:
             processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
@@ -207,7 +207,7 @@ class Machine(CoreObject):
         '''returns the setupTime dictionary updated'''
         if not setupTime:
             setupTime = { 'distributionType': 'Fixed',
-                          'mean': 1, }
+                          'mean': 0, }
         if setupTime['distributionType'] == 'Normal' and\
                 setupTime.get('max', None) is None:
             setupTime['max'] = float(setupTime['mean']) + 5 * float(setupTime['stdev'])
@@ -218,7 +218,7 @@ class Machine(CoreObject):
         '''returns the loadTime dictionary updated'''
         if not loadTime:
             loadTime = { 'distributionType': 'Fixed',
-                         'mean': 1, }
+                         'mean': 0, }
         if loadTime['distributionType'] == 'Normal' and\
                 loadTime.get('max', None) is None:
             loadTime['max'] = float(loadTime['mean']) + 5 * float(loadTime['stdev'])
@@ -491,7 +491,7 @@ class Machine(CoreObject):
                 #===========================================================
                 # # release the operator if there is interruption 
                 #===========================================================
-                if self.shouldYield(operationTypes={"Processing":1},methods={'isOperated':1}):
+                if self.shouldYield(operationTypes={str(self.currentlyPerforming):1},methods={'isOperated':1}):
                     yield self.env.process(self.release())
                 # loop until we reach at a state that there is no interruption
                 while 1:
@@ -506,7 +506,7 @@ class Machine(CoreObject):
                     #===========================================================
                     # # request a resource after the repair
                     #===========================================================
-                    if self.shouldYield(operationTypes={"Processing":1}, methods={"isInterrupted":0}):
+                    if self.shouldYield(operationTypes={str(self.currentlyPerforming):1}, methods={"isInterrupted":0}):
                         self.timeWaitForOperatorStarted = self.env.now
                         yield self.env.process(self.request())
                         self.timeWaitForOperatorEnded = self.env.now
@@ -547,7 +547,7 @@ class Machine(CoreObject):
                 #===========================================================
                 # # release the operator if there is interruption 
                 #===========================================================
-                if self.shouldYield(operationTypes={"Processing":1},methods={'isOperated':1}):
+                if self.shouldYield(operationTypes={str(self.currentlyPerforming):1},methods={'isOperated':1}):
                     yield self.env.process(self.release())
                 self.postInterruptionActions()                              # execute interruption actions
                 break
@@ -804,16 +804,18 @@ class Machine(CoreObject):
             #===================================================================
             #===================================================================
             #===================================================================
+            yield self.env.process(self.operation(type='Setup'))
+            self.endOperationActions(type='Setup')
             
-    # ======= setup the machine if the Setup is defined as one of the Operators' operation types
-            # in plantSim the setup is performed when the machine has to process a new type of Entity and only once
-            if any(type=="Setup" for type in self.multOperationTypeList) and self.isOperated():
-                self.timeSetupStarted = self.env.now
-                yield self.env.timeout(self.calculateSetupTime())
-                # TODO: if self.interrupted(): There is the issue of failure during the setup
-                self.timeSetupEnded = self.env.now
-                self.setupTimeCurrentEntity = self.timeSetupEnded-self.timeSetupStarted
-                self.totalSetupTime += self.setupTimeCurrentEntity
+#     # ======= setup the machine if the Setup is defined as one of the Operators' operation types
+#             # in plantSim the setup is performed when the machine has to process a new type of Entity and only once
+#             if any(type=="Setup" for type in self.multOperationTypeList) and self.isOperated():
+#                 self.timeSetupStarted = self.env.now
+#                 yield self.env.timeout(self.calculateSetupTime())
+#                 # TODO: if self.interrupted(): There is the issue of failure during the setup
+#                 self.timeSetupEnded = self.env.now
+#                 self.setupTimeCurrentEntity = self.timeSetupEnded-self.timeSetupStarted
+#                 self.totalSetupTime += self.setupTimeCurrentEntity
             
             #===================================================================
             #===================================================================
