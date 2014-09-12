@@ -1003,7 +1003,7 @@ class Machine(CoreObject):
                         assert eventTime==self.env.now, 'the interruption has not been processed on the time of activation'
                         self.interruptionStart=self.env.event()
                     # wait for the end of the interruption
-                        self.interruptionActions()                          # execute interruption actions
+                        self.genInterruptionActions()                          # execute interruption actions
                         # loop until we reach at a state that there is no interruption
                         while 1:
                             
