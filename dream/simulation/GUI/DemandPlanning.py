@@ -102,7 +102,7 @@ def readGeneralInput(data):
     # Number of Iterations    1
     G.ReplicationNo = data['general']['numberOfReplications']
 
-    # Info on Time Cosntraints for Allocation 
+    # Info on Time Consntraints for Allocation
     # Max Earliness   1
     # Max Lateness    1
     IG.maxEarliness = data['general']['maxEarliness']
