@@ -75,7 +75,7 @@ class FutureDemandCreator():
             nRows = sh.nrows
             for i in range(1,nRows):
                 order = int(sh.cell_value(i,0)) - 1
-                MA = str(sh.cell_value(i,1))
+                MA = str(int(sh.cell_value(i,1)))
                 orderQty = float(sh.cell_value(i,2))
                 orderMinQty = float(sh.cell_value(i,3))
                 week = int(sh.cell_value(i,4)) - 1  

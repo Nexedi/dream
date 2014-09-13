@@ -124,9 +124,9 @@ def readGeneralInput(data):
         IG.CapacityDict[route_data[2][i]] = G.Capacity[i-3]
 
     for i in range(4, len(route_data) - 1):
-        id = float(route_data[i][2])
-        ppos = float(route_data[i][0])
-        sp = float(route_data[i][1])
+        id = int(route_data[i][2])
+        ppos = int(route_data[i][0])
+        sp = int(route_data[i][1])
 
         IG.RouteDict[id] = {'PPOS': ppos, 'SP': sp, 'route':{}}
         for j in range(3, len(route_data[i]) - 1):
