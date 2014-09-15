@@ -804,8 +804,10 @@ class Machine(CoreObject):
             #===================================================================
             #===================================================================
             #===================================================================
-            yield self.env.process(self.operation(type='Setup'))
-            self.endOperationActions(type='Setup')
+            # if the distribution is Fixed and the mean is zero then yield not
+            if not (self.stpRng.mean==0 and self.stpRng.distributionType=='Fixed'):
+                yield self.env.process(self.operation(type='Setup'))
+                self.endOperationActions(type='Setup')
             
 #     # ======= setup the machine if the Setup is defined as one of the Operators' operation types
 #             # in plantSim the setup is performed when the machine has to process a new type of Entity and only once
