@@ -31,18 +31,7 @@ from RandomNumberGenerator import RandomNumberGenerator
 # ===========================================================================
 # the MachineJobShop object
 # ===========================================================================
-class MachineJobShop(Machine):
-    @staticmethod
-    def getOperationTime(time):
-        '''returns the processingTime dictionary updated'''
-        if not time:
-            time = { 'distributionType': 'Fixed',
-                               'mean': 0, }
-        if time['distributionType'] == 'Normal' and\
-                time.get('max', None) is None:
-            time['max'] = float(time['mean']) + 5 * float(time['stdev'])
-        return time
-    
+class MachineJobShop(Machine):    
     # =======================================================================
     # set all the objects in previous and next
     # =======================================================================
@@ -52,89 +41,25 @@ class MachineJobShop(Machine):
         self.next=[]
         Machine.initialize(self)    #run default behaviour
     
-#     # =======================================================================
-#     # actions to be carried out when the processing of an Entity ends
-#     # =======================================================================    
-#     def endProcessingActions(self):
-#         # set isProcessing to False
-#         self.isProcessing=False
-#         # add working time
-#         self.totalWorkingTime+=self.env.now-self.timeLastProcessingStarted
-# 
-#         # blocking starts
-#         self.isBlocked=True
-#         self.timeLastBlockageStarted=self.env.now
-# 
-#         activeObject=self.getActiveObject()
-#         activeObjectQueue=activeObject.Res.users
-#         activeEntity=activeObjectQueue[0]
-# #         self.printTrace(activeEntity.name,processEnd=activeObject.objName)
-#         # reset the variables used to handle the interruptions timing 
-#         # self.timeRestartingProcessing=0
-#         self.breakTime=0
-#         # output to trace that the processing in the Machine self.objName ended 
-#         try:
-#             activeObject.outputTrace(activeEntity.name,"ended processing in "+activeObject.objName)
-#         except IndexError:
-#             pass
-#         
-#         import Globals
-#         from Globals import G
-#         # the entity that just got processed is cold again it will get 
-#         # hot again by the time it reaches the giver of the next machine
-#         # TODO: Not only Machines require time to process entities
-#         if activeEntity.family=='Job':
-#             # read the list of next stations for the entity in just finished processing
-#             nextObjectIds=activeEntity.remainingRoute[0].get('stationIdsList',[])
-#             nextObjects = []
-#             for nextObjectId in nextObjectIds:
-#                 nextObject=Globals.findObjectById(nextObjectId)
-#                 nextObjects.append(nextObject)
-#             successorsAreMachines=True
-#             for object in nextObjects:
-#                 if not object in G.MachineList:
-#                     successorsAreMachines=False
-#                     break
-#             if not successorsAreMachines:
-#                 activeObjectQueue[0].hot = False
-#         # the just processed entity is added to the list of entities 
-#         # pending for the next processing
-#         G.pendingEntities.append(activeObjectQueue[0])
-#         # set the variable that flags an Entity is ready to be disposed 
-#         activeObject.waitToDispose=True
-#         #do this so that if it is overtime working it is not counted as off-shift time
-#         if not activeObject.onShift:
-#             activeObject.timeLastShiftEnded=self.env.now
-#         # update the variables keeping track of Entity related attributes of the machine
-#         activeObject.timeLastEntityEnded=self.env.now                              # this holds the time that the last entity ended processing in Machine 
-#         activeObject.nameLastEntityEnded=activeObject.currentEntity.name    # this holds the name of the last entity that ended processing in Machine
-#         activeObject.completedJobs+=1                                       # Machine completed one more Job
-#         # reset flags
-#         self.shouldPreempt=False 
-#         self.isProcessingInitialWIP=False 
-# 
-#         # TODO: collapse that to Machine
-
-
     # =======================================================================
     # gets an entity from the predecessor that the predecessor index points to
     # =======================================================================     
     def getEntity(self):
         activeObject=self.getActiveObject()
         activeEntity=Machine.getEntity(self)     #run the default code
-        
-        # read the processing/setup/load times from the corresponding remainingRoute entry
+        # read the processing time from the corresponding remainingRoute entry
         processingTime=activeEntity.remainingRoute[0].get('processingTime',{})
         processingTime=self.getOperationTime(processingTime)
         self.rng=RandomNumberGenerator(self, **processingTime)
         self.procTime=self.rng.generateNumber()
-        
+        # check if there is a need for manual processing
+        self.checkForManualOperation(type='Processing',entity=activeEntity)
+        # read the setup time from the corresponding remainingRoute entry
         setupTime=activeEntity.remainingRoute[0].get('setupTime',{})
         setupTime=self.getOperationTime(setupTime)
         self.stpRng=RandomNumberGenerator(self, **setupTime)
-#         # update the multOperationTypeList according to the needs of the received entity
-#         self.readActiveOperationTypes(entity)
-        
+        # check if there is a need for manual processing
+        self.checkForManualOperation(type='Setup',entity=activeEntity)
         removedStep = activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
         return activeEntity
     
@@ -166,13 +91,13 @@ class MachineJobShop(Machine):
     def calculateProcessingTime(self):
         # this is only for processing of the initial wip
         if self.isProcessingInitialWIP:
-            # read the processing/setup/load times from the first entry of the full route
+            # read the processing time from the first entry of the full route
             activeEntity=self.getActiveObjectQueue()[0]
             processingTime=activeEntity.route[0].get('processingTime',{})
             processingTime=self.getOperationTime(processingTime)
             self.rng=RandomNumberGenerator(self, **processingTime)
             self.procTime=self.rng.generateNumber()
-            
+            # read the setup time from the corresponding remainingRoute entry
             setupTime=activeEntity.route[0].get('setupTime',{})
             setupTime=self.getOperationTime(setupTime)
             self.stpRng=RandomNumberGenerator(self, **setupTime)
@@ -202,9 +127,6 @@ class MachineJobShop(Machine):
                         
     #===========================================================================
     # method used to check whether the station is in the entity-to-be-received route
-    # TODO: consider giving the activeEntity as attribute
-    # TODO: consider the case when no caller is defined, 
-    #         postProcessing calls canAccept on next members with no arguments
     #===========================================================================
     def isInRoute(self, callerObject=None):
         activeObjectQueue=self.Res.users
@@ -239,8 +161,8 @@ class MachineJobShop(Machine):
         return len(activeObjectQueue)>0\
              and self.waitToDispose\
              and self.checkIfActive()\
-             and (thecaller in self.next)\
              and thecaller.isInRoute(self)
+#              and (thecaller in self.next)
 
     # =======================================================================
     # method to execute preemption
@@ -299,42 +221,42 @@ class MachineJobShop(Machine):
         thecaller=callerObject
         thecaller.sortEntities()
         activeEntity=thecaller.Res.users[0]
+        # read the load time from the corresponding remainingRoute entry
         loadTime=activeEntity.remainingRoute[0].get('loadTime',{})
         loadTime=self.getOperationTime(loadTime)
         self.loadRng=RandomNumberGenerator(self, **loadTime)
     
     #===========================================================================
-    # to be called by getEntity.
-    # it must be specified if the currentEntity requires manual setup/processing 
+    # get the initial operationTypes (Setup/Processing) : manual or automatic
     #===========================================================================
-    def readActiveOperationTypes(self,entity):
-        activeEntity=entity
-        # flag to notify whether the entity defined manual or automatic operation 
-        self.entityDefiningOperation=False
-        # read the definition of the setupTime from the remainingRoute dict
-        setupTime=activeEntity.remainingRoute[0].get('setupTime',{})
-        setupOpType=setupTime.get('operationType', 'not defined')
-        # if the setupOpType is 'not defined'
-        if setupOpType!='not defined':
-            # the multOperationTypeList must be cleared by the entity is removed
-            self.entityDefiningOperation=True
-            # add setup to the multOpeartionTypeList
-            if not 'Setup' in self.multOperationTypeList:
-                self.multOperationTypeList.append('Setup')
-            # find out if the setup operation type is automatic or manual
-            if setupOpType:
-                pass
-            
-        # read the definition of the processingTime from the remainingRoute dict
-        procTime=activeEntity.remainingRoute[0].get('processingTime',{})
-        procOpType=setupTime.get('operationType', 'not defined')
-        # if the procOpType is 'not defined'
-        if procOpType!='not defined':
-            # the multOperationTypeList must be cleared by the entity is removed
-            self.entityDefiningOperation=True
-        # find out if the processing type is manual or automatic
-        if procOpType and not 'Processing' in self.multOperationTypeList:
-            self.multOperationTypeList.append('Processing')
+    def checkInitialOperationTypes(self):
+        # check if manual Setup is required
+        self.checkForManualOperation(type='Setup')
+        # check if manual Processing is required
+        self.checkForManualOperation(type='Processing')
+    
+    #===========================================================================
+    # check if the operation defined as an argument requires manual operation
+    #===========================================================================
+    def checkForManualOperation(self,type,entity=None):
+        assert type!=None, 'a type must be defined for the checkForManualOperation method'
+        if not entity:
+            activeEntity=self.getActiveObjectQueue()[0]
+        else:
+            activeEntity=entity
+        # read the definition of the time from the remainingRoute dict
+        time=activeEntity.remainingRoute[0].get(str(type),{})
+        operationType=time.get('operationType', 'not defined')
+        # if the operationType is not 'not defined'
+        if operationType!='not defined':
+            # if the operationType key has value 1 (manual operation)
+            if operationType:
+                # add setup to the multOpeartionTypeList
+                if not type in self.multOperationTypeList:
+                    self.multOperationTypeList.append(str(type))
+            else:   # otherwise remove it from the multOperationTypeList
+                if type in self.multOperationTypeList:
+                    self.multOperationTypeList.remove(str(type))
         
     # =======================================================================
     # removes an entity from the Machine
@@ -352,12 +274,6 @@ class MachineJobShop(Machine):
         # if not entity had the same receiver then the receiver will be removed    
         if removeReceiver:
             self.next.remove(receiverObject)
-#         if self.entityDefiningOperation:
-#             # reset the multOperationTypeList
-#             if 'Processing' in self.multOperationTypeList:
-#                 self.multOperationTypeList.remove('Processing') 
-#             if 'Setup' in self.multOperationTypeList:
-#                 self.multOperationTypeList.remove('Setup')
         return activeEntity
 
         
