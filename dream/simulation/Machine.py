@@ -301,6 +301,12 @@ class Machine(CoreObject):
             if not self.router.isActivated:
                 self.env.process(self.router.run())
                 self.router.isActivated=True
+                
+    #===========================================================================
+    # get the initial operationTypes (setup/processing) : manual or automatic
+    #===========================================================================
+    def checkInitialOperationTypes(self):
+        pass
     
     #===========================================================================
     # method controlling if there is a need to yield 
@@ -532,11 +538,7 @@ class Machine(CoreObject):
             # if no interruption occurred the processing in M1 is ended 
             else:
                 operationNotFinished=False
-        
     
-    
-
-
     # =======================================================================
     # the main process of the machine
     # =======================================================================
@@ -656,7 +658,10 @@ class Machine(CoreObject):
                     # may fall in failure mode (assignExit()?)
             if not self.isProcessingInitialWIP:     # if we are in the state of having initial wip no need to take an Entity
                 self.currentEntity=self.getEntity()
-            # TODO: the Machine receive the entity  after the operator is available
+            else:
+                # find out if the initialWIP requires manual operations (manual/setup)
+                self.checkInitialOperationTypes()
+            # TODO: the Machine receive the entity after the operator is available
             #     the canAcceptAndIsRequested method checks only in case of Load type of operation
             
             #===================================================================
