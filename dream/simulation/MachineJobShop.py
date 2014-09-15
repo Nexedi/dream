@@ -239,13 +239,14 @@ class MachineJobShop(Machine):
     # check if the operation defined as an argument requires manual operation
     #===========================================================================
     def checkForManualOperation(self,type,entity=None):
+        typeDict={'Setup':'setupTime', 'Processing':'processingTime'}
         assert type!=None, 'a type must be defined for the checkForManualOperation method'
         if not entity:
             activeEntity=self.getActiveObjectQueue()[0]
         else:
             activeEntity=entity
         # read the definition of the time from the remainingRoute dict
-        time=activeEntity.remainingRoute[0].get(str(type),{})
+        time=activeEntity.remainingRoute[0].get(str(typeDict[str(type)]),{})
         operationType=time.get('operationType', 'not defined')
         # if the operationType is not 'not defined'
         if operationType!='not defined':
