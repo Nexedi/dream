@@ -211,38 +211,21 @@ class SkilledRouter(Router):
                 # pendingStations/ available stations not yet given operator
                 self.pendingStations=[]
                 from Globals import findObjectById
-                for operator in solution.keys():
-                    for resource in G.OperatorsList:
-                        if resource.id==operator:
-                            station=findObjectById(solution[operator])
-                            station.operatorPool.operators=[resource]
-                            resource.assignTo(station)
-                            self.toBeSignalled.append(station)
-                            i=0
-                            for op in self.availableOperatorList:
-                                if op==resource.id:
-                                    self.availableOperatorList.pop(i)
-                                    break
-                                i+=1
-                            break
-                if len(solution)!=len(self.availableStations):
-                    from Globals import findObjectById
-                    for station in self.availableStations:
-                        if not station.id in solution.keys():
-                            for i in range(len(self.availableOperatorList)):
-                                for resource in G.OperatorsList:
-                                    if resource.id==self.availableOperatorList[i]:
-                                        candidate=resource
-                                if station.id in candidate.skillsList:
-                                    operatorID=self.availableOperatorList.pop(i)
-                                    break
-                            #operator=findObjectById(operatorID)
-                            for resource in G.OperatorsList:
-                                if resource.id==operatorID:
-                                    operator=resource
-                            station.operatorPool.operators=[operator]
-                            operator.assignTo(station)
-                            self.toBeSignalled.append(station)
+                # apply the solution
+                # loop through the entries in the solution dictionary
+                for operatorID in solution.keys():
+                    # obtain the operator and the station
+                    operator=findObjectById(operatorID)
+                    station=findObjectById(solution[operatorID])
+                    # update the operatorPool of the station
+                    station.operatorPool.operators=[operator]
+                    # assign the operator to the station
+                    operator.assignTo(station)
+                    # append the station to the ones that are to be  signalled
+                    self.toBeSignalled.append(station)
+                    # remove the operator id from availableOperatorList
+                    self.availableOperatorList.remove(operatorID)
+
                 #===================================================================
                 # # XXX signal the stations that the assignment is complete
                 #===================================================================
