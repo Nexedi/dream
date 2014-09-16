@@ -26,8 +26,8 @@ M1.defineRouting([Q],[E])
 M2.defineRouting([Q],[E])
 E.defineRouting([M1,M2])
 
-def main():
-    
+def main(test=0):
+
     # add all the objects in a list
     objectList=[S,Q,M1,M2,E,F]  
     # set the length of the experiment  
@@ -35,15 +35,20 @@ def main():
     # call the runSimulation giving the objects and the length of the experiment
     runSimulation(objectList, maxSimTime)
     
+    # calculate metrics
+    working_ratio_M1=(M1.totalWorkingTime/maxSimTime)*100
+    working_ratio_M2=(M2.totalWorkingTime/maxSimTime)*100    
+
+    # return results for the test
+    if test:
+        return {"parts": E.numOfExits,
+              "working_ratio_M1": working_ratio_M1,
+              "working_ratio_M2": working_ratio_M2}
+
     #print the results
     print "the system produced", E.numOfExits, "parts"
-    working_ratio_M1=(M1.totalWorkingTime/maxSimTime)*100
-    working_ratio_M2=(M2.totalWorkingTime/maxSimTime)*100
     print "the working ratio of", M1.objName,  "is", working_ratio_M1, "%"
     print "the working ratio of", M2.objName,  "is", working_ratio_M2, "%"
-    return {"parts": E.numOfExits,
-          "working_ratio_M1": working_ratio_M1,
-          "working_ratio_M2": working_ratio_M2}
 
 if __name__ == '__main__':
     main()

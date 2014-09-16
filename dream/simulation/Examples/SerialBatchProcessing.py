@@ -23,46 +23,50 @@ BRA.defineRouting([M2],[M3])
 M3.defineRouting([BRA],[E])
 E.defineRouting([M3])
 
-def main():
+def main(test=0):
     # add all the objects in a list
     objectList=[S,Q,BD,M1,Q1,M2,BRA,M3,E]  
     # set the length of the experiment  
     maxSimTime=1440.0
     # call the runSimulation giving the objects and the length of the experiment
     runSimulation(objectList, maxSimTime)
-    
-    # print the results 
-    print "the system produced", E.numOfExits, "batches"
+
+    # calculate metrics
     working_ratio_M1 = (M1.totalWorkingTime/maxSimTime)*100
     blockage_ratio_M1 = (M1.totalBlockageTime/maxSimTime)*100
-    waiting_ratio_M1 = (M1.totalWaitingTime/maxSimTime)*100
-    print "the working ratio of", M1.objName, "is", working_ratio_M1
-    print "the blockage ratio of", M1.objName, 'is', blockage_ratio_M1
-    print "the waiting ratio of", M1.objName, 'is', waiting_ratio_M1
+    waiting_ratio_M1 = (M1.totalWaitingTime/maxSimTime)*100    
     working_ratio_M2 = (M2.totalWorkingTime/maxSimTime)*100
     blockage_ratio_M2 = (M2.totalBlockageTime/maxSimTime)*100
-    waiting_ratio_M2 = (M2.totalWaitingTime/maxSimTime)*100
-    print "the working ratio of", M2.objName, "is", working_ratio_M2
-    print "the blockage ratio of", M2.objName, 'is', blockage_ratio_M2
-    print "the waiting ratio of", M2.objName, 'is', waiting_ratio_M2
+    waiting_ratio_M2 = (M2.totalWaitingTime/maxSimTime)*100    
     working_ratio_M3 = (M3.totalWorkingTime/maxSimTime)*100
     blockage_ratio_M3 = (M3.totalBlockageTime/maxSimTime)*100
     waiting_ratio_M3 = (M3.totalWaitingTime/maxSimTime)*100
+
+    # return results for the test
+    if test:
+        return {"batches": E.numOfExits,
+               "working_ratio_M1": working_ratio_M1,
+              "blockage_ratio_M1": blockage_ratio_M1,
+              "waiting_ratio_M1": waiting_ratio_M1,
+               "working_ratio_M2": working_ratio_M2,
+              "blockage_ratio_M2": blockage_ratio_M2,
+              "waiting_ratio_M2": waiting_ratio_M2,   
+               "working_ratio_M3": working_ratio_M3,
+              "blockage_ratio_M3": blockage_ratio_M3,
+              "waiting_ratio_M3": waiting_ratio_M3,       
+              }
+
+    # print the results 
+    print "the system produced", E.numOfExits, "batches"
+    print "the working ratio of", M1.objName, "is", working_ratio_M1
+    print "the blockage ratio of", M1.objName, 'is', blockage_ratio_M1
+    print "the waiting ratio of", M1.objName, 'is', waiting_ratio_M1
+    print "the working ratio of", M2.objName, "is", working_ratio_M2
+    print "the blockage ratio of", M2.objName, 'is', blockage_ratio_M2
+    print "the waiting ratio of", M2.objName, 'is', waiting_ratio_M2
     print "the working ratio of", M3.objName, "is", working_ratio_M3
     print "the blockage ratio of", M3.objName, 'is', blockage_ratio_M3
     print "the waiting ratio of", M3.objName, 'is', waiting_ratio_M3
 
-    return {"batches": E.numOfExits,
-           "working_ratio_M1": working_ratio_M1,
-          "blockage_ratio_M1": blockage_ratio_M1,
-          "waiting_ratio_M1": waiting_ratio_M1,
-           "working_ratio_M2": working_ratio_M2,
-          "blockage_ratio_M2": blockage_ratio_M2,
-          "waiting_ratio_M2": waiting_ratio_M2,   
-           "working_ratio_M3": working_ratio_M3,
-          "blockage_ratio_M3": blockage_ratio_M3,
-          "waiting_ratio_M3": waiting_ratio_M3,       
-          }
-    
 if __name__ == '__main__':
     main()

@@ -49,22 +49,27 @@ E.defineRouting(predecessorList=[M])
 EV=EventGenerator('EV', 'PredecessorChanger', start=0, stop=50, interval=10,method=changeMachinePredecessor, 
                   argumentDict={'machine':M, 'possiblePredecessors':[Q1,Q2]})  
 
-def main():
+def main(test=0):
     # add all the objects in a list
     objectList=[Q1,Q2,M,E,EV]+entityList  
     # set the length of the experiment  
     maxSimTime=float('inf')
     # call the runSimulation giving the objects and the length of the experiment
     runSimulation(objectList, maxSimTime, trace='Yes')
+    
+    # calculate metrics
+    working_ratio = (M.totalWorkingTime/E.timeLastEntityLeft)*100
+
+    # return results for the test
+    if test:
+        return {"parts": E.numOfExits,
+            "simulationTime":E.timeLastEntityLeft,
+            "working_ratio": working_ratio}
     #print the results
     print '='*50
     print "the system produced", E.numOfExits, "parts in", E.timeLastEntityLeft, "minutes"
-    working_ratio = (M.totalWorkingTime/E.timeLastEntityLeft)*100
     print "the total working ratio of the Machine is", working_ratio, "%"
     ExcelHandler.outputTrace('ChangingPredecessors')
-    return {"parts": E.numOfExits,
-            "simulationTime":E.timeLastEntityLeft,
-          "working_ratio": working_ratio}
 
 if __name__ == '__main__':
     main()

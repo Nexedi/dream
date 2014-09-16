@@ -39,7 +39,7 @@ Q.defineRouting(successorList=[M])
 M.defineRouting(predecessorList=[Q],successorList=[E])
 E.defineRouting(predecessorList=[M])
 
-def main():
+def main(test=0):
     # add all the objects in a list
     objectList=[Q,M,E,EV]  
     # set the length of the experiment  
@@ -47,13 +47,19 @@ def main():
     # call the runSimulation giving the objects and the length of the experiment
     runSimulation(objectList, maxSimTime)
 
+    # calculate metrics
+    working_ratio = (M.totalWorkingTime/maxSimTime)*100
+
+    # return results for the test
+    if test:
+        return {"parts": E.numOfExits,
+              "working_ratio": working_ratio}
+
     #print the results
     print '='*50
     print "the system produced", E.numOfExits, "parts"
-    working_ratio = (M.totalWorkingTime/maxSimTime)*100
     print "the total working ratio of the Machine is", working_ratio, "%"
-    return {"parts": E.numOfExits,
-          "working_ratio": working_ratio}
+
 
 if __name__ == '__main__':
     main()
