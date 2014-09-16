@@ -37,6 +37,10 @@ workbook = xlrd.open_workbook(r'Input8PPOS.xlsx','r')
 worksheets = workbook.sheet_names()
 worksheet_RapidMiner = worksheets[0] 
 
+PPOSToBeDisaggregated='PPOS4'
+PPOSQuantity=1000
+PlannedWeek=2
+
 A= Import_Excel()
 Turnovers=A.Input_data(worksheet_RapidMiner, workbook) #Dictionary with the data from the Excel file
 
@@ -102,23 +106,8 @@ for ppos in PPOS:
         uniquePPOS.append(ppos)
 
 
-# ###=====================================================================================================###
-# 
-# book = Workbook()                   
-# sheet1 = book.add_sheet('Future Demand Profile', cell_overwrite_ok=True)
-# r=0
-# for key in DemandProfile.keys():
-#     t=1
-#     for elem in DemandProfile[key]:
-#         sheet1.write(2+t,0,elem)
-#         sheet1.write(t+2,key+r,DemandProfile[key].get(elem)[0])
-#         sheet1.write(t+2,key+r+1,DemandProfile[key].get(elem)[1])
-#         book.save('Output8PPOS.xls')
-#         t+=1
-#     r+=1
-###======================================================================================================###
 book=Workbook()
-sheet1 = book.add_sheet('New Output', cell_overwrite_ok=True)
+sheet1 = book.add_sheet('Future', cell_overwrite_ok=True)
 aggrTable=[]
 for key in DemandProfile.keys():
     for elem in DemandProfile[key]:
@@ -143,30 +132,25 @@ for i in sorted(aggrTable, key= lambda x:int(x[3])):
     sheet1.write(t,3,i[2])
     sheet1.write(t,4,i[3])
     sheet1.write(t,0,t)    
-    book.save('NewOutput8PPOS.xls')
+    book.save('DemandProfile.xls')
     t+=1
 
 # open json file
 futureDemandProfileFile=open('futureDemandProfile.json', mode='w')
 futureDemandProfile={}
-
+ 
 t=1
 for i in sorted(aggrTable, key= lambda x:int(x[3])):
     dicta={'MAID':i[0],'TotalUnits':i[1],'MinUnits':i[2],'PlannedWeek':i[3]}
     futureDemandProfile[t]=dicta
     futureDemandProfileString=json.dumps(futureDemandProfile, indent=5)
     t+=1
-
+ 
 #write json file
 futureDemandProfileFile.write(futureDemandProfileString)
         
 ###==================================================================================================### 
-book=Workbook()
-sheet1 = book.add_sheet('PPOS Profile', cell_overwrite_ok=True)
-
-PPOSToBeDisaggregated='PPOS4'
-PPOSQuantity=1000
-PlannedWeek=2
+sheet2 = book.add_sheet('PPOS', cell_overwrite_ok=True)
 
 dictPPOS={}
 dictPPOSMA={}
@@ -178,7 +162,7 @@ for ind in uniquePPOS:
 
 t=1
 for key in dictPPOSMA.keys():
-    for elem in dictPPOSMA[key]:    
+    for elem in dictPPOSMA[key]:   
         if key==PPOSToBeDisaggregated:
             c=constrained_sum_sample_nonneg(len(dictPPOSMA[key]),PPOSQuantity)
             d=constrained_sum_sample_nonneg(len(dictPPOSMA[key]),100)
@@ -196,19 +180,18 @@ for key in dictPPOSMA.keys():
                              
 t=1
 for i in range(0,len(dictPPOS)):
-    sheet1.write(0,0,'Order ID')
-    sheet1.write(0,1,'MA ID')
-    sheet1.write(0,2,'Total # Units')
-    sheet1.write(0,3,'Min # Units')
-    sheet1.write(0,4,'Planned Week')
-    sheet1.write(t,0,t)
-    sheet1.write(t,1,dictPPOSMA[PPOSToBeDisaggregated][i])
-    sheet1.write(t,2,dictPPOS[dictPPOSMA[PPOSToBeDisaggregated][i]][0])
-    sheet1.write(t,3,dictPPOS[dictPPOSMA[PPOSToBeDisaggregated][i]][1])
-    sheet1.write(t,4,PlannedWeek)
-    book.save('PPOSOutput8PPOS.xls')
-    t+=1  
-        
+    sheet2.write(0,0,'Order ID')
+    sheet2.write(0,1,'MA ID')
+    sheet2.write(0,2,'Total # Units')
+    sheet2.write(0,3,'Min # Units')
+    sheet2.write(0,4,'Planned Week')
+    sheet2.write(t,0,t)
+    sheet2.write(t,1,dictPPOSMA[PPOSToBeDisaggregated][i])
+    sheet2.write(t,2,dictPPOS[dictPPOSMA[PPOSToBeDisaggregated][i]][0])
+    sheet2.write(t,3,dictPPOS[dictPPOSMA[PPOSToBeDisaggregated][i]][1])
+    sheet2.write(t,4,PlannedWeek)
+    book.save('DemandProfile.xls')
+    t+=1          
 
 # open json file
 PPOSProfileFile=open('PPOSProfile.json', mode='w')
@@ -219,6 +202,6 @@ for i in range(0,len(dictPPOS)):
     PPOSProfile[t]=dictb
     PPOSProfileString=json.dumps(PPOSProfile, indent=5)
     t+=1
-
+ 
 #write json file
 PPOSProfileFile.write(PPOSProfileString)
