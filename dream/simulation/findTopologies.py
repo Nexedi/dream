@@ -22,15 +22,15 @@ Created on 16 Sep 2014
 @author: GDang
 '''
 '''
-auxiliary script to search for specific code in the simulation folder
+auxiliary script to search for specific objects in topologies
 '''
 
 keyString=raw_input('give the string to find:')
 numberFound=0
 import os
-for filename in os.listdir(os.getcwd()):
-    if filename.endswith('.py'):
-        file = open(filename, 'r')
+for filename in os.listdir(os.getcwd()+'\JSONInputs'):
+    if filename.endswith('.json'):
+        file=open(os.path.join('JSONInputs', filename), "r")
         content = file.readlines()
         i=1
         for line in content:
