@@ -18,20 +18,26 @@ A.defineRouting([Sp,Sf],[M])
 M.defineRouting([A],[E])
 E.defineRouting([M])
 
-def main():
+def main(test=0):
     # add all the objects in a list
     objectList=[Sp,Sf,M,A,E,F]  
     # set the length of the experiment  
     maxSimTime=1440.0
     # call the runSimulation giving the objects and the length of the experiment
     runSimulation(objectList, maxSimTime)
-    
-    #print the results
-    print "the system produced", E.numOfExits, "frames"
+
+    # calculate metrics
     working_ratio=(A.totalWorkingTime/maxSimTime)*100
+    
+    # return results for the test
+    if test:
+        return {"frames": E.numOfExits,
+              "working_ratio": working_ratio}    
+   
+    # print the results
+    print "the system produced", E.numOfExits, "frames"
     print "the working ratio of", A.objName,  "is", working_ratio, "%"
-    return {"frames": E.numOfExits,
-          "working_ratio": working_ratio}
+
 
 if __name__ == '__main__':
     main()

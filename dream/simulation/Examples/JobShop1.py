@@ -21,7 +21,7 @@ route=[{"stationIdsList": ["Q1"]},
 #define the Jobs
 J=Job('J1','Job1',route=route)
 
-def main():
+def main(test=0):
     # add all the objects in a list
     objectList=[M1,M2,M3,Q1,Q2,Q3,E,J]  
     # set the length of the experiment  
@@ -29,12 +29,16 @@ def main():
     # call the runSimulation giving the objects and the length of the experiment
     runSimulation(objectList, maxSimTime)
     
-    #loop in the schedule to print the results
-    returnSchedule=[]     # dummy variable used just for returning values and testing
+    # return results for the test
+    if test:
+        returnSchedule=[]
+        for record in J.schedule:
+            returnSchedule.append([record[0].objName,record[1]])
+        return returnSchedule
+    
+    # print the results
     for record in J.schedule:
-        returnSchedule.append([record[0].objName,record[1]])
         print J.name, "got into", record[0].objName, "at", record[1]
-    return returnSchedule 
 
 if __name__ == '__main__':
     main()              

@@ -19,7 +19,7 @@ Q.defineRouting([M1],[M2])
 M2.defineRouting([Q],[E])
 E.defineRouting([M2])
 
-def main():
+def main(test=0):
 
     # add all the objects in a list
     objectList=[S,M1,M2,E,Q,R,F1,F2]  
@@ -28,12 +28,20 @@ def main():
     # call the runSimulation giving the objects and the length of the experiment
     runSimulation(objectList, maxSimTime)
 
-    #print the results
-    print "the system produced", E.numOfExits, "parts"
+    # calculate metrics
     blockage_ratio = (M1.totalBlockageTime/maxSimTime)*100
     blockage_ratio = (M1.totalBlockageTime/maxSimTime)*100
     working_ratio = (R.totalWorkingTime/maxSimTime)*100
     waiting_ratio = (R.totalWaitingTime/maxSimTime)*100
+
+    # return results for the test
+    if test:
+        return {"parts": E.numOfExits,
+              "blockage_ratio": blockage_ratio,
+              "working_ratio": working_ratio}
+
+    #print the results
+    print "the system produced", E.numOfExits, "parts"
     print "the blockage ratio of", M1.objName,  "is", blockage_ratio, "%"
     print "the working ratio of", R.objName,"is", working_ratio, "%"
 
@@ -42,11 +50,6 @@ def main():
     graph=Graphs()
     #create the pie
     graph.Pie([working_ratio,waiting_ratio], "repairmanPie.jpg")
-
-    return {"parts": E.numOfExits,
-          "blockage_ratio": blockage_ratio,
-          "working_ratio": working_ratio}
-    
 
 if __name__ == '__main__':
     main()
