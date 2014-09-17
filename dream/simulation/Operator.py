@@ -202,12 +202,16 @@ class Operator(ObjectResource):
                     machine.timeWaiting=self.env.now-machine.broker.timeWaitForOperatorStarted
                 else:
                     machine.timeWaiting=self.env.now-machine.timeLastEntityLeft
-                # find the stations that hold critical entities
+                # find the stations that hold or are about to be delivered critical entities  
                 if self in router.preemptiveOperators:
-                    for entity in station.getActiveObjectQueue():
-                        if entity.isCritical:
+                    for entity in machine.getActiveObjectQueue():
+                        if entity in router.pending and entity.isCritical:
                             machine.critical=True
                             break
+                    for previous in machine.previous:
+                        for entity in previous.getActiveObjectQueue():
+                            if entity in router.pending and entity.isCritical:
+                                machine.critical=True
         # sort the stations according their timeWaiting
         self.candidateStations.sort(key= lambda x: x.timeWaiting, reverse=True)
         # sort the stations if they hold critical entities
