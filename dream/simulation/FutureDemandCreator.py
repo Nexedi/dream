@@ -55,10 +55,14 @@ class FutureDemandCreator():
 
         
         # PPOS initial disaggregation profile
-        # XXX this issue arbitrary requests
-        demand_data = urllib.urlopen(G.demandFile).read()
-        wbin = xlrd.open_workbook(file_contents=demand_data)
         
+        # get a random demand profile from KE.
+        from dream.KnowledgeExtraction.PilotCases.InputData_DemandPlanning \
+            import generateDemandPlanning
+
+        G.generatedDemandPlanning = generateDemandPlanning(G.demandFile)
+        wbin = xlrd.open_workbook(file_contents=G.generatedDemandPlanning)
+
         MAData=G.RouteDict
         for k in range(2):
             if k == 0:
