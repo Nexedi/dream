@@ -52,6 +52,7 @@ class RouterManaged(Router):
         self.schedulingRule='WT'
         # boolean flag to check whether the Router should perform sorting on operators and on pendingEntities
         self.sorting=sorting
+        self.entitiesWithOccupiedReceivers=[]        # list of entities that have no available receivers
         
     #===========================================================================
     #                         the initialize method
@@ -67,6 +68,7 @@ class RouterManaged(Router):
         self.multipleCriterionList=[]
         # TODO: find out which must be the default for the scheduling Rule
         self.schedulingRule='WT'
+        self.entitiesWithOccupiedReceivers=[]
         
     # =======================================================================
     #                          the run method
@@ -248,6 +250,7 @@ class RouterManaged(Router):
     def findPendingEntities(self):
         from Globals import G
         self.pending=[]             # list of entities that are pending
+        self.criticalPending=[]
         for machine in self.pendingMachines:
             self.pending.append(machine.currentEntity)
         for entity in G.pendingEntities:
