@@ -136,7 +136,8 @@ def generateDemandPlanning(input_url):
         sheet1.write(0,2,'Total # Units')
         sheet1.write(0,3,'Min # Units')
         sheet1.write(0,4,'Planned Week')
-        sheet1.write(t,1,i[0])
+        # XXX
+        sheet1.write(t,1, int(i[0].replace('MA', '', 1)))
         sheet1.write(t,2,i[1])
         sheet1.write(t,3,i[2])
         sheet1.write(t,4,i[3])
@@ -194,7 +195,10 @@ def generateDemandPlanning(input_url):
         sheet2.write(0,3,'Min # Units')
         sheet2.write(0,4,'Planned Week')
         sheet2.write(t,0,t)
-        sheet2.write(t,1,dictPPOSMA[PPOSToBeDisaggregated][i])
+        # XXX the MA id should not have MA prefix...
+        sheet2.write(t,1,int(dictPPOSMA[PPOSToBeDisaggregated][i].replace('MA',
+        '', 1)))
+
         sheet2.write(t,2,dictPPOS[dictPPOSMA[PPOSToBeDisaggregated][i]][0])
         sheet2.write(t,3,dictPPOS[dictPPOSMA[PPOSToBeDisaggregated][i]][1])
         sheet2.write(t,4,PlannedWeek)
