@@ -155,7 +155,7 @@ class ManPyObject(object):
         if not sender:
             sender=self
         if not succeedTuple:
-            succeedTuple=(self,self.env.now)
+            succeedTuple=(sender,self.env.now)
         # send the signal
         signal.succeed(succeedTuple)
         # reset the expected signals of the receiver to 0
