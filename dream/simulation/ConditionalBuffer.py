@@ -56,34 +56,16 @@ class ConditionalBuffer(QueueJobShop):
     #===========================================================================
     def getEntity(self):
         activeEntity=QueueJobShop.getEntity(self)
-        import Globals
+        from Globals import G
         # for all the entities in the EntityList
         for entity in G.EntityList:
             requiredParts=entity.getRequiredParts()
             if requiredParts:
                 # if the activeEntity is in the requierdParts of the entity
                 if activeEntity in requiredParts:
-                    # if the entity is blocked
-                    if not entity.checkIfRequiredPartsReady():
-                        # concluded flag to signal that the required parts have concluded their sequence
-                        allConcluded=False
-                        # figure out if the all required parts have concluded their sequences
-                        for part in requiredParts:
-                            # if the requiredParts have concluded its sequence then the flag must be set to True
-                            #  1. the requiredPart hasn't reached the last step sequence before the requiring entity's sequence
-                            #  2. The requiredPart has reached the last step sequence but not yet finished its current processing
-                            if (part.nextStepSequence()<entity.nextStepSequence()\
-                                    and part.nextStepSequence()>0)\
-                                or (part.nextStepSequence()>=entity.currentStepSequence()\
-                                    and part.currentStepSequence() ):
-                                allConcluded=False
-                                break
-                        # if all the requiredParts completed the required sequence
-                        if allConcluded:
-                            # signal the current station of the blocked entity requesting the parts that it can proceed
-                            # with delivering the blocked entity
-                            entity.currentStation.canDispose.succeed(self.env.now)
-                    break
+                    # if the entity that requires the activeEntity can proceed then signal the currentStation of the entity
+                    if entity.checkIfRequiredPartsReady():
+                        self.sendSignal(receiver=entity.currentStation, signal=entity.currentStation.canDispose)
         return activeEntity
         
     # =======================================================================
