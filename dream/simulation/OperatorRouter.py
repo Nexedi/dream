@@ -301,9 +301,13 @@ class Router(ObjectInterruption):
     def findPreemptiveOperators(self):
         # for every queue that holds critical pending entities
         for queue in self.criticalQueues:
-            # if no receiver can be found
+            # if no receivers can be found
             if not queue.findReceiversFor(queue):
+                # for each of the following objects
                 for nextobject in queue.next:
+                    # if an operator is occupied by a critical entity then that operator can preempt
+                    # This way the first operator that is not currently on a critical entity is invoked
+                    # TODO: consider picking an operator more wisely by sorting
                     for operator in nextobject.operatorPool.operators:
                         currentStation=operator.workingStation
                         if not currentStation.getActiveObjectQueue()[0].isCritical:
@@ -332,7 +336,7 @@ class Router(ObjectInterruption):
             if candidateOperators:	# if there was an operator found append the Machine on his candidateStations
                 for candidateOperator in candidateOperators:
                     if not station in candidateOperator.candidateStations:
-                        candidateOperator.candidateStations.append(object)
+                        candidateOperator.candidateStations.append(station)
             # if there is candidateOperator that is not already in self.candidateOperators add him
             # TODO: this way no sorting is performed
                     if not candidateOperator in self.candidateOperators:
@@ -340,25 +344,6 @@ class Router(ObjectInterruption):
   
                 
         self.findPreemptiveOperators()
-#         # for each pendingQueue
-#         for object in self.pendingQueues:
-#             # check the option of preemption if there are critical entities and no available operators
-#             if not object.findReceiversFor(object) and\
-#                 any(entity for entity in object.getActiveObjectQueue() if entity.isCritical and entity in self.pending):
-#                 # for each of the following objects
-#                 for nextObject in object.next:
-#                     # if an operator is occupied by a critical entity then that operator can preempt
-#                     # This way the first operator that is not currently on a critical entity is invoked
-#                     # TODO: consider picking an operator more wisely by sorting
-#                     for operator in nextObject.operatorPool.operators:
-#                         currentStation=operator.workingStation
-#                         if not currentStation.getActiveObjectQueue()[0].isCritical:
-#                             preemptiveOperator=operator
-#                             preemptiveOperator.candidateStations.append(nextObject)
-#                             if not preemptiveOperator in self.candidateOperators:
-#                                 self.candidateOperators.append(preemptiveOperator)
-#                                 self.preemptiveOperators.append(preemptiveOperator)
-#                             break
 
 #          # update the schedulingRule/multipleCriterionList of the Router
 #         if self.sorting:
