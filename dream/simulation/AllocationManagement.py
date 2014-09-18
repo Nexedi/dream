@@ -23,6 +23,9 @@ class AllocationManagement(ObjectInterruption):
         self.id=id
         self.name=name
         self.argumentDict=argumentDict  #the arguments of the method given in a dict        
+        
+    def initialize(self):
+        ObjectInterruption.initialize(self)
         self.readData()
         self.FDC=FutureDemandCreator()
         
