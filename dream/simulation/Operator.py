@@ -91,6 +91,7 @@ class Operator(ObjectResource):
         self.totalOffShiftTime=0        #holds the total off-shift time
         self.timeLastShiftStarted=0                     #holds the time that the last shift of the object started
         self.timeLastShiftEnded=0                       #holds the time that the last shift of the object ended
+        self.candidateStation=None      #holds the candidate receiver of the entity the resource will work on - used by router
         
     @staticmethod
     def getSupportedSchedulingRules():
@@ -136,11 +137,13 @@ class Operator(ObjectResource):
     def findCandidateStation(self):
         from Globals import G
         router=G.Router
-        candidateStation=next(x for x in self.candidateStations if not x in router.conflictingStations)
-        if not router.sorting:
-            if not candidateStation:
-                candidateStation=next(x for x in self.candidateStations)
-                router.conflictingStations.append(candidateStation)
+        candidateStation=None
+        possibleReceivers=[x for x in self.candidateStations if not x in router.conflictingStations and not x in router.getReceivers()]
+        if possibleReceivers:
+            candidateStation=next(x for x in possibleReceivers)
+        if not candidateStation:
+            candidateStation=next(x for x in self.candidateStations)
+            router.conflictingStations.append(candidateStation)
         return candidateStation
     
     #===========================================================================
