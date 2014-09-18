@@ -142,7 +142,7 @@ class Job(Entity):                                  # inherits from the Entity c
         # if there are required parts
         if requiredParts:
             # for each requested part
-            for part in requiredPartsIDs:
+            for part in requiredParts:
                 # retrieve the current step sequence of the requiredPart
                 curStepSeq=part.currentStepSequence()
                 # retrieve the next step sequence of the requiredParts
@@ -156,10 +156,16 @@ class Job(Entity):                                  # inherits from the Entity c
                     # required part is currently being processed and thus the activeEntity cannot proceed
                     if not curStepSeq:
                         mayProceed=True
+                    else:
+                        mayProceed=False
+                        break
+                else:
+                    mayProceed=False
+                    break
         # if there are no requestedParts defined, then entity can proceed to the next step of its route
         else:
             mayProceed=True
-        # if the local flag canProceed is true then return true
+        # if the local flag mayProceed is true then return true
         return mayProceed
     
     #===========================================================================
@@ -168,16 +174,17 @@ class Job(Entity):                                  # inherits from the Entity c
     #===========================================================================
     def getRequiredParts(self):
         # retrieve the IDs of the required parts in the next step sequence
-        requiredPartsIDs=self.remainingRoute[0].get('requiredParts',[])
         requiredParts=[]
-        # if there are requested parts
-        if requiredPartsIDs:
-            from Globals import findObjectById
-            for partID in requiredPartsIDs:
-                # find the objects with the corresponding IDs
-                part=findObjectById(partID)
-                if not part in requiredParts:
-                    requiredParts.append(part)
+        if self.remainingRoute:
+            requiredPartsIDs=self.remainingRoute[0].get('requiredParts',[])
+            # if there are requested parts
+            if requiredPartsIDs:
+                from Globals import findObjectById
+                for partID in requiredPartsIDs:
+                    # find the objects with the corresponding IDs
+                    part=findObjectById(partID)
+                    if not part in requiredParts:
+                        requiredParts.append(part)
         return requiredParts
     
     #===========================================================================
