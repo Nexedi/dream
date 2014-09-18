@@ -49,6 +49,8 @@ class Job(Entity):                                  # inherits from the Entity c
         self.extraPropertyDict = extraPropertyDict
         # variable used to differentiate entities with and entities without routes
         self.family='Job'
+        # append to G.JobList
+        G.JobList.append(self)
         # used by printRoute
         self.alias='J'+str(len(G.JobList))
 
