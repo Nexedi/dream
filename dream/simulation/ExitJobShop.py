@@ -63,4 +63,19 @@ class ExitJobShop(Exit):
             if activeObject.id in activeEntity.remainingRoute[0].get('stationIdsList',[]):
                 return True
         return False
+    
+    
+    def getEntity(self):
+        activeEntity = Exit.getEntity(self)           #run the default method
+        from Globals import G
+        # for all the entities in the EntityList
+        for entity in G.EntityList:
+            requiredParts=entity.getRequiredParts()
+            if requiredParts:
+                # if the activeEntity is in the requierdParts of the entity
+                if activeEntity in requiredParts:
+                    # if the entity that requires the activeEntity can proceed then signal the currentStation of the entity
+                    if entity.checkIfRequiredPartsReady():
+                        self.sendSignal(receiver=entity.currentStation, signal=entity.currentStation.canDispose)
+        return activeEntity
         
