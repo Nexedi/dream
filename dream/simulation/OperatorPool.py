@@ -105,6 +105,12 @@ class OperatorPool(ObjectResource):
                 freeOperator=operator
                 break
         return freeOperator
+    
+    #===========================================================================
+    # returns the operators that are currently available
+    #===========================================================================
+    def availableOperators(self):
+        return [operator for operator in self.operators if operator.checkIfResourceIsAvailable()]
         
     # =======================================================================
     #                           returns the resource
