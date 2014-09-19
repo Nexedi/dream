@@ -120,6 +120,8 @@ class Router(ObjectInterruption):
                     self.printTrace('','there are NO more events for now')
                     break
             self.printTrace('','=-'*15)
+            # entry actions
+            self.entry()
             # run the routine that allocates operators to machines
             self.allocateOperators()
             # assign operators to stations
@@ -130,6 +132,7 @@ class Router(ObjectInterruption):
             self.signalOperatedStations()
             self.printTrace('', 'router exiting')
             self.printTrace('','=-'*20)
+            # exit actions
             self.exit()
     
     def allocateOperators(self):
@@ -137,16 +140,16 @@ class Router(ObjectInterruption):
         self.findPending()
         # find the operators that can start working now 
         self.findCandidateOperators()
-#         # sort the operators according to their idle time
-#         self.sortOperators()
-#         # find working stations for the candidate operators
-#         self.findStationsForOperators()
+        # sort the operators according to their idle time
+        self.sortOperators()
+        # find working stations for the candidate operators
+        self.findStationsForOperators()
         
-        # find the operators candidateEntities
-        self.sortCandidateEntities()
-        # find the entity that will occupy the resource, and the station that will receive it (if any available)
-        #  entities that are already in stations have already a receiver
-        self.findCandidateReceivers()
+#         # find the operators candidateEntities
+#         self.sortCandidateEntities()
+#         # find the entity that will occupy the resource, and the station that will receive it (if any available)
+#         #  entities that are already in stations have already a receiver
+#         self.findCandidateReceivers()
     
     #===========================================================================
     # unassigns exits of queues that are not to be signalled 
@@ -170,24 +173,31 @@ class Router(ObjectInterruption):
     def assignOperators(self):
         # for all the operators that are requested
         for operator in self.candidateOperators:
-            # check if the candidateOperators are available, if the are requested and reside in the pendingObjects list
-            if operator.checkIfResourceIsAvailable():
-                # assign an operator to the priorityObject
-                self.printTrace('router', 'will assign '+operator.id+' to '+operator.candidateStation.id)
-                operator.assignTo(operator.candidateStation)
-                if not operator.candidateStation in self.toBeSignalled:
-                    self.toBeSignalled.append(operator.candidateStation)
-            # if there must be preemption performed
-            elif operator in self.preemptiveOperators:
-                # if the operator is not currently working on the candidateStation then the entity he is
-                #     currently working on must be preempted, and he must be unassigned and assigned to the new station
-                if operator.workingStation!=operator.candidateStation:
-                    operator.unAssign()
-                    self.printTrace('router', ' will assign'+operator.id+'to'+operator.candidateStation.id)
+            if operator.candidateStation:
+                
+                # check if the candidateOperators are available, if the are requested and reside in the pendingObjects list
+                if operator.checkIfResourceIsAvailable():
+                    # assign an operator to the priorityObject
+                    self.printTrace('router', 'will assign '+operator.id+' to '+operator.candidateStation.id)
                     operator.assignTo(operator.candidateStation)
-                if not operator.candidateStation in self.toBeSignalled:
-                    self.toBeSignalled.append(operator.candidateStation)
+                    if not operator.candidateStation in self.toBeSignalled:
+                        self.toBeSignalled.append(operator.candidateStation)
+                # if there must be preemption performed
+                elif operator in self.preemptiveOperators:
+                    # if the operator is not currently working on the candidateStation then the entity he is
+                    #     currently working on must be preempted, and he must be unassigned and assigned to the new station
+                    if operator.workingStation!=operator.candidateStation:
+                        operator.unAssign()
+                        self.printTrace('router', ' will assign'+operator.id+'to'+operator.candidateStation.id)
+                        operator.assignTo(operator.candidateStation)
+                    if not operator.candidateStation in self.toBeSignalled:
+                        self.toBeSignalled.append(operator.candidateStation)
         self.printTrace('objects to be signaled:'+' '*11, [str(object.id) for object in self.toBeSignalled])
+    
+    def entry(self):
+        from Globals import G
+        for operator in G.OperatorsList:
+            operator.candidateEntity=None
     
     # =======================================================================
     #                 return control to the Machine.run
@@ -199,7 +209,7 @@ class Router(ObjectInterruption):
             operator.candidateEntities=[]
             operator.candidateStations=[]
             operator.candidateStation=None
-            operator.candidateEntity=None
+#             operator.candidateEntity=None
         for entity in G.pendingEntities:
             entity.proceed=False
             entity.candidateReceivers=[]
@@ -271,7 +281,6 @@ class Router(ObjectInterruption):
                         break
         # figure out which queues are holding critical pending entities 
         self.findCriticalQueues()
-        
         self.printTrace('pendingMachines'+'-'*19+'>', [str(object.id) for object in self.pendingMachines])
         self.printTrace('pendingQueues'+'-'*21+'>', [str(object.id) for object in self.pendingQueues])
         self.printTrace('found pending entities'+'-'*12+'>', [str(entity.id) for entity in self.pending if not entity.type=='Part'])
@@ -284,29 +293,6 @@ class Router(ObjectInterruption):
             for entity in queue.getActiveObjectQueue():
                 if entity in self.pending and entity.isCritical:
                     self.criticalQueues.append(queue)
-    
-    #===========================================================================
-    # find operators that can perform preemption for a critical pending entity
-    #===========================================================================
-    def findPreemptiveOperators(self):
-        # for every queue that holds critical pending entities
-        for queue in self.criticalQueues:
-            # if no receivers can be found
-            if not queue.findReceiversFor(queue):
-                # for each of the following objects
-                for nextobject in queue.next:
-                    # if an operator is occupied by a critical entity then that operator can preempt
-                    # This way the first operator that is not currently on a critical entity is invoked
-                    # TODO: consider picking an operator more wisely by sorting
-                    for operator in nextobject.operatorPool.operators:
-                        currentStation=operator.workingStation
-                        if not currentStation.getActiveObjectQueue()[0].isCritical:
-                            preemptiveOperator=operator
-                            preemptiveOperator.candidateStations.append(nextobject)
-                            if not preemptiveOperator in self.candidateOperators:
-                                self.candidateOperators.append(preemptiveOperator)
-                                self.preemptiveOperators.append(preemptiveOperator)
-                            break
     
     #========================================================================
     # Find candidate Operators
@@ -340,6 +326,29 @@ class Router(ObjectInterruption):
                             [(operator.id, [station.id for station in operator.candidateStations]) for operator in self.candidateOperators])
         else:    
             self.printTrace('router', 'found NO candidate operators')
+            
+    #===========================================================================
+    # find operators that can perform preemption for a critical pending entity
+    #===========================================================================
+    def findPreemptiveOperators(self):
+        # for every queue that holds critical pending entities
+        for queue in self.criticalQueues:
+            # if no receivers can be found
+            if not queue.findReceiversFor(queue):
+                # for each of the following objects
+                for nextobject in queue.next:
+                    # if an operator is occupied by a critical entity then that operator can preempt
+                    # This way the first operator that is not currently on a critical entity is invoked
+                    # TODO: consider picking an operator more wisely by sorting
+                    for operator in nextobject.operatorPool.operators:
+                        currentStation=operator.workingStation
+                        if not currentStation.getActiveObjectQueue()[0].isCritical:
+                            preemptiveOperator=operator
+                            preemptiveOperator.candidateStations.append(nextobject)
+                            if not preemptiveOperator in self.candidateOperators:
+                                self.candidateOperators.append(preemptiveOperator)
+                                self.preemptiveOperators.append(preemptiveOperator)
+                            break
     
     #=======================================================================
     # Sort candidateOperators
@@ -347,11 +356,17 @@ class Router(ObjectInterruption):
     #=======================================================================
     def sortOperators(self): 
         if self.candidateOperators:
+            for op in self.candidateOperators:
+                op.criterion=0
+                if op.schedule:
+                    op.criterion=self.env.now-op.schedule[-1][-1]
             # sort according to the time they concluded their last operation
-            self.candidateOperators.sort(key=lambda x:x.schedule[-1][-1])
+            self.candidateOperators.sort(key=lambda x: x.criterion, reverse=True)
             
             
-    
+    #===========================================================================
+    # find working stations for the candidateOperators
+    #===========================================================================
     def findStationsForOperators(self):
         occupiedEntities=[]
         occupiedStations=[]
@@ -368,8 +383,8 @@ class Router(ObjectInterruption):
                 else:
                     for predecessor in station.previous:
                         if predecessor in self.pendingQueues and not station in occupiedStations:
-                            operator.candidateEntities.append([x for x in predecessor.getActiveObjectQueue()
-                                                       if x in self.pending and not x in occupiedEntities])
+                            operator.candidateEntities+=[x for x in predecessor.getActiveObjectQueue()
+                                                       if x in self.pending and not x in occupiedEntities]
             
             # sort candidateEntities according to the scheduling rule of the operator
             operator.sortEntities()
@@ -378,18 +393,19 @@ class Router(ObjectInterruption):
                 operator.candidateEntities.sort(key=lambda x: x.isCritical, reverse=False)
             
             # pick an entity and a station
-            operator.candidateEntity=candidateEntities[0]
+            if operator.candidateEntities:
+                operator.candidateEntity=operator.candidateEntities[0]
             
-            # if the entities currentStation is machine
-            if operator.candidateEntity.currentStation in self.pendingMachines:
-                operator.candidateStation=operator.candidateEntity.currentStation
-            elif operator.candidateEntity.currentStation in self.pendingQueues:
-                for station in operator.candidateStations:
-                    if station in candidateEntity.currentStation.next:
-                        operator.candidateStation=station
-                        break
-            occupiedStations.append(operator.candidateStation)
-            occupiedEntities.append(candidateEntity)
+                # if the entities currentStation is machine
+                if operator.candidateEntity.currentStation in self.pendingMachines:
+                    operator.candidateStation=operator.candidateEntity.currentStation
+                elif operator.candidateEntity.currentStation in self.pendingQueues:
+                    for station in operator.candidateStations:
+                        if station in operator.candidateEntity.currentStation.next:
+                            operator.candidateStation=station
+                            break
+                occupiedStations.append(operator.candidateStation)
+                occupiedEntities.append(operator.candidateEntity)
     
     #=======================================================================
     #         Find the candidateEntities for each candidateOperator
