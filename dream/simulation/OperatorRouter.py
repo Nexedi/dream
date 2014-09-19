@@ -139,8 +139,8 @@ class Router(ObjectInterruption):
         self.findCandidateOperators()
 #         # sort the operators according to their idle time
 #         self.sortOperators()
-        
-        
+#         # find working stations for the candidate operators
+#         self.findStationsForOperators()
         
         # find the operators candidateEntities
         self.sortCandidateEntities()
@@ -340,7 +340,57 @@ class Router(ObjectInterruption):
                             [(operator.id, [station.id for station in operator.candidateStations]) for operator in self.candidateOperators])
         else:    
             self.printTrace('router', 'found NO candidate operators')
-                
+    
+    #=======================================================================
+    # Sort candidateOperators
+    # sort the operators according to their idle time
+    #=======================================================================
+    def sortOperators(self): 
+        if self.candidateOperators:
+            # sort according to the time they concluded their last operation
+            self.candidateOperators.sort(key=lambda x:x.schedule[-1][-1])
+            
+            
+    
+    def findStationsForOperators(self):
+        occupiedEntities=[]
+        occupiedStations=[]
+        for operator in self.candidateOperators:
+            # first sort the candidateStations according to their waiting time
+            operator.sortStations()
+            
+            # then find all the candidateEntities
+            operator.candidateEntities=[]
+            for station in operator.candidateStations:
+                if station in self.pendingMachines and not station in occupiedStations:
+                    if station.currentEntity in self.pending and not station.currentEntity in occupiedEntities:
+                        operator.candidateEntities.append(station.currentEntity)
+                else:
+                    for predecessor in station.previous:
+                        if predecessor in self.pendingQueues and not station in occupiedStations:
+                            operator.candidateEntities.append([x for x in predecessor.getActiveObjectQueue()
+                                                       if x in self.pending and not x in occupiedEntities])
+            
+            # sort candidateEntities according to the scheduling rule of the operator
+            operator.sortEntities()
+            # if the operator is of the preemptives then there is a need to sort for critical orders
+            if operator in self.preemptiveOperators:
+                operator.candidateEntities.sort(key=lambda x: x.isCritical, reverse=False)
+            
+            # pick an entity and a station
+            operator.candidateEntity=candidateEntities[0]
+            
+            # if the entities currentStation is machine
+            if operator.candidateEntity.currentStation in self.pendingMachines:
+                operator.candidateStation=operator.candidateEntity.currentStation
+            elif operator.candidateEntity.currentStation in self.pendingQueues:
+                for station in operator.candidateStations:
+                    if station in candidateEntity.currentStation.next:
+                        operator.candidateStation=station
+                        break
+            occupiedStations.append(operator.candidateStation)
+            occupiedEntities.append(candidateEntity)
+    
     #=======================================================================
     #         Find the candidateEntities for each candidateOperator
     # find the candidateEntities of each candidateOperator and sort them according
@@ -353,14 +403,7 @@ class Router(ObjectInterruption):
         for operator in [x for x in self.candidateOperators if x.candidateStations]:
             operator.sortCandidateEntities()
          
-    #=======================================================================
-    # Sort candidateOperators
-    # sort the operators according to their idle time
-    #=======================================================================
-    def sortOperators(self): 
-        if self.candidateOperators:
-            # sort according to the time they concluded their last operation
-            self.candidateOperators.sort(key=lambda x:x.schedule[-1][-1])
+
     
     #===========================================================================
     # get all the candidate stations that have been chosen by an operator
@@ -372,7 +415,7 @@ class Router(ObjectInterruption):
                 if not operator.candidateStation in candidateStations:
                     candidateStations.append(operator.candidateStation)
         return candidateStations 
-         
+    
     #=======================================================================
     # Find candidate entities and their receivers
     # TODO: if there is a critical entity, its manager should be served first
