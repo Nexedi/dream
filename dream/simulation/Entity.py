@@ -95,3 +95,9 @@ class Entity(ManPyObject):
     def printRoute(self):
         pass
     
+    #===========================================================================
+    # method not implemented yet
+    #===========================================================================
+    def checkIfRequiredPartsReady(self):
+        return True
+    

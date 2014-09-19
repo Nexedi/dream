@@ -135,6 +135,9 @@ class Job(Entity):                                  # inherits from the Entity c
     def checkIfRequiredPartsReady(self):
         # find the sequence of the next step in the route of the activeEntity
         sequence=self.nextStepSequence()
+        # if no sequence is provided then return true
+        if sequence=='not available':
+            return True
         # assert that the sequence is not zero
         assert sequence, "the route sequence of the conditionalBuffer successor cannot be zero"
         # flag that decides if the entity can proceed to the next station in its route
@@ -194,7 +197,7 @@ class Job(Entity):                                  # inherits from the Entity c
     #===========================================================================
     def nextStepSequence(self):
         # find the sequence of the next step in the route of the activeEntity
-        sequence=self.remainingRoute[0].get('sequence',0)
+        sequence=self.remainingRoute[0].get('sequence','not available')
         return sequence
     
     #===========================================================================
