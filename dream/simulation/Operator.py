@@ -119,23 +119,6 @@ class Operator(ObjectResource):
     def isAssignedTo(self):
         return self.operatorAssignedTo
     
-    
-    
-    #===========================================================================
-    # method that finds a candidate entity for an operator 
-    #===========================================================================
-    def findCandidateStation(self):
-        from Globals import G
-        router=G.Router
-        candidateStation=None
-        possibleReceivers=[x for x in self.candidateStations if not x in router.conflictingStations and not x in router.getReceivers()]
-        if possibleReceivers:
-            candidateStation=next(x for x in possibleReceivers)
-        if not candidateStation:
-            candidateStation=next(x for x in self.candidateStations)
-            router.conflictingStations.append(candidateStation)
-        return candidateStation
-    
     #===========================================================================
     # sort candidate stations
     #===========================================================================
@@ -166,39 +149,6 @@ class Operator(ObjectResource):
         #else we just use the default scheduling rule
         else:
             self.activeQSorter(self.schedulingRule)
-        
-    # =======================================================================
-    #    sorts the candidateEntities of the Operator according to the scheduling rule
-    # TODO: find a way to sort machines or candidate entities for machines, 
-    #       now picks the machine that waits the most
-    # =======================================================================
-    def sortCandidateEntities(self):
-        from Globals import G
-        router=G.Router
-        candidateMachines=self.candidateStations
-        # for the candidateMachines
-        if candidateMachines:
-            # choose the one that waits the most time and give it the chance to grasp the resource
-            for machine in candidateMachines:
-                machine.critical=False
-                if machine.broker.waitForOperator:
-                    machine.timeWaiting=self.env.now-machine.broker.timeWaitForOperatorStarted
-                else:
-                    machine.timeWaiting=self.env.now-machine.timeLastEntityLeft
-                # find the stations that hold or are about to be delivered critical entities  
-                if self in router.preemptiveOperators:
-                    for entity in machine.getActiveObjectQueue():
-                        if entity in router.pending and entity.isCritical:
-                            machine.critical=True
-                            break
-                    for previous in machine.previous:
-                        for entity in previous.getActiveObjectQueue():
-                            if entity in router.pending and entity.isCritical:
-                                machine.critical=True
-        # sort the stations according their timeWaiting
-        self.candidateStations.sort(key= lambda x: x.timeWaiting, reverse=True)
-        # sort the stations if they hold critical entities
-        self.candidateStations.sort(key=lambda x: x.critical, reverse=False)
 
     # =======================================================================
     #    sorts the Entities of the Queue according to the scheduling rule
