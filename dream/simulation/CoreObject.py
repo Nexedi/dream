@@ -336,6 +336,7 @@ class CoreObject(ManPyObject):
         giverObject=self.giver
         giverObject.sortEntities()                      #sort the Entities of the giver 
                                                         #according to the scheduling rule if applied
+        giverObject.sortEntitiesForReceiver(self)
         giverObjectQueue=giverObject.Res.users
         # if the giverObject is blocked then unBlock it
         if giverObject.exitIsAssignedTo():
