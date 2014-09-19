@@ -152,16 +152,6 @@ class Operator(ObjectResource):
                     machine.timeWaiting=self.env.now-machine.broker.timeWaitForOperatorStarted
                 else:
                     machine.timeWaiting=self.env.now-machine.timeLastEntityLeft
-                # find the stations that hold or are about to be delivered critical entities  
-                if self in router.preemptiveOperators:
-                    for entity in machine.getActiveObjectQueue():
-                        if entity in router.pending and entity.isCritical:
-                            machine.critical=True
-                            break
-                    for previous in machine.previous:
-                        for entity in previous.getActiveObjectQueue():
-                            if entity in router.pending and entity.isCritical:
-                                machine.critical=True
         # sort the stations according their timeWaiting
         self.candidateStations.sort(key= lambda x: x.timeWaiting, reverse=True)
     
@@ -175,7 +165,6 @@ class Operator(ObjectResource):
                self.activeQSorter(criterion=criterion) 
         #else we just use the default scheduling rule
         else:
-            print self.schedulingRule
             self.activeQSorter(self.schedulingRule)
         
     # =======================================================================
@@ -216,12 +205,13 @@ class Operator(ObjectResource):
     # =======================================================================
     def activeQSorter(self, criterion=None):
         activeObjectQ=self.candidateEntities
+        
         if criterion==None:
             criterion=self.schedulingRule           
         #if the schedulingRule is first in first out
         if criterion=="FIFO": 
             # FIFO sorting has no meaning when sorting candidateEntities
-            self.activeCandidateQSorter('WT')
+            self.activeQSorter('WT')
         #if the schedulingRule is based on a pre-defined priority
         elif criterion=="Priority":
             
@@ -229,7 +219,12 @@ class Operator(ObjectResource):
         #if the scheduling rule is time waiting (time waiting of machine)
         elif criterion=='WT':
             
-            activeObjectQ.sort(key=lambda x: x.schedule[-1][1])
+            for part in activeObjectQ:
+                part.factor=0
+                if part.schedule:
+                   part.factor=self.env.now-part.schedule[-1][1] 
+            
+            activeObjectQ.sort(key=lambda x: x.factor, reverse=True)
         #if the schedulingRule is earliest due date
         elif criterion=="EDD":
             
