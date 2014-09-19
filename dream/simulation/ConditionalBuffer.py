@@ -65,6 +65,7 @@ class ConditionalBuffer(QueueJobShop):
                 if activeEntity in requiredParts:
                     # if the entity that requires the activeEntity can proceed then signal the currentStation of the entity
                     if entity.checkIfRequiredPartsReady():
+                        entity.mayProceed=True
                         self.sendSignal(receiver=entity.currentStation, signal=entity.currentStation.canDispose)
         return activeEntity
         
