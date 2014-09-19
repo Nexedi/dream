@@ -117,19 +117,7 @@ class Operator(ObjectResource):
     def isAssignedTo(self):
         return self.operatorAssignedTo
     
-    #===========================================================================
-    # check whether the operator has only one candidateStation to work for
-    #===========================================================================
-    def hasOneOption(self):
-        return len(self.candidateStations)==1
     
-    #=======================================================================
-    # findCandidateEntities method finding the candidateEntities of the operator  
-    #=======================================================================
-    def findCandidateEntities(self, pendingEntities=[]):
-        if pendingEntities:
-            for entity in [x for x in pendingEntities if x.canProceed and x.manager==self]:
-                self.candidateEntities.append(entity)
     
     #===========================================================================
     # method that finds a candidate entity for an operator 
@@ -147,40 +135,46 @@ class Operator(ObjectResource):
         return candidateStation
     
     #===========================================================================
-    # recursive method that searches for entities with available receivers
+    # sort candidate stations
     #===========================================================================
-    def findAvailableEntity(self):
+    def sortStations(self):
         from Globals import G
         router=G.Router
-        # if the candidateEntities and the entitiesWithOccupiedReceivers lists are identical then return None 
-        if len(set(self.candidateEntities).intersection(router.entitiesWithOccupiedReceivers))==len(self.candidateEntities):
-            return None
-        availableEntity=next(x for x in self.candidateEntities if not x in router.entitiesWithOccupiedReceivers)
-        receiverAvailability=False
-        if availableEntity:
-            for receiver in availableEntity.candidateReceivers:
-                if not receiver in router.occupiedReceivers:
-                    receiverAvailability=True
-                    break
-            # if there are no available receivers for the entity
-            if not receiverAvailability:
-                router.entitiesWithOccupiedReceivers.append(availableEntity)
-                return self.findAvailableEntity()
-        return availableEntity
+        candidateMachines=self.candidateStations
+        # for the candidateMachines
+        if candidateMachines:
+            # choose the one that waits the most time and give it the chance to grasp the resource
+            for machine in candidateMachines:
+                machine.critical=False
+                if machine.broker.waitForOperator:
+                    machine.timeWaiting=self.env.now-machine.broker.timeWaitForOperatorStarted
+                else:
+                    machine.timeWaiting=self.env.now-machine.timeLastEntityLeft
+                # find the stations that hold or are about to be delivered critical entities  
+                if self in router.preemptiveOperators:
+                    for entity in machine.getActiveObjectQueue():
+                        if entity in router.pending and entity.isCritical:
+                            machine.critical=True
+                            break
+                    for previous in machine.previous:
+                        for entity in previous.getActiveObjectQueue():
+                            if entity in router.pending and entity.isCritical:
+                                machine.critical=True
+        # sort the stations according their timeWaiting
+        self.candidateStations.sort(key= lambda x: x.timeWaiting, reverse=True)
     
     #===========================================================================
-    # method that finds a candidate entity for an operator
+    # sort entities provided in a list
     #===========================================================================
-    def findCandidateEntity(self):
-        from Globals import G
-        router=G.Router
-        # pick a candidateEntity
-        candidateEntity=self.findAvailableEntity()
-        if not router.sorting:
-            if not candidateEntity:
-                candidateEntity=next(x for x in self.candidateEntities)
-                router.conflictingEntities.append(candidateEntity)
-        return candidateEntity
+    def sortEntities(self):
+        #if we have sorting according to multiple criteria we have to call the sorter many times
+        if self.schedulingRule=="MC":
+            for criterion in reversed(self.multipleCriterionList):
+               self.activeQSorter(criterion=criterion) 
+        #else we just use the default scheduling rule
+        else:
+            print self.schedulingRule
+            self.activeQSorter(self.schedulingRule)
         
     # =======================================================================
     #    sorts the candidateEntities of the Operator according to the scheduling rule
@@ -214,104 +208,92 @@ class Operator(ObjectResource):
         self.candidateStations.sort(key= lambda x: x.timeWaiting, reverse=True)
         # sort the stations if they hold critical entities
         self.candidateStations.sort(key=lambda x: x.critical, reverse=False)
-#         # TODO: have to consider what happens in case of a critical order
-#         #if we have sorting according to multiple criteria we have to call the sorter many times
-#         if self.schedulingRule=="MC":
-#             for criterion in reversed(self.multipleCriterionList):
-#                self.activeCandidateQSorter(criterion=criterion) 
-#         #else we just use the default scheduling rule
-#         else:
-#             print self.schedulingRule
-#             self.activeCandidateQSorter(self.schedulingRule)
-    
 
     # =======================================================================
     #    sorts the Entities of the Queue according to the scheduling rule
     # =======================================================================
-    def activeCandidateQSorter(self, criterion=None):
-    # TODO: entityToGet is not updated for all stations, consider using it for all stations or withdraw the idea
-    # TODO: sorting candidateStations is strange. some of them are waiting to get an entity, others are waiting for operator while holding an entity
-        activeObjectQ=self.candidateStations
+    def activeQSorter(self, criterion=None):
+        activeObjectQ=self.candidateEntities
         if criterion==None:
             criterion=self.schedulingRule           
         #if the schedulingRule is first in first out
         if criterion=="FIFO": 
             # FIFO sorting has no meaning when sorting candidateEntities
             self.activeCandidateQSorter('WT')
-            # added for testing
-#             print 'there is no point of using FIFO scheduling rule for operators candidateEntities,\
-#                     WT scheduling rule used instead'
         #if the schedulingRule is based on a pre-defined priority
         elif criterion=="Priority":
-            activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().priority)
-        #if the scheduling rule is time waiting (time waiting of machine
-        # TODO: consider that the timeLastEntityEnded is not a 
-        #     indicative identifier of how long the station was waiting
+            
+            activeObjectQ.sort(key=lambda x: x.priority)
+        #if the scheduling rule is time waiting (time waiting of machine)
         elif criterion=='WT':
-            activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().schedule[-1][1])
+            
+            activeObjectQ.sort(key=lambda x: x.schedule[-1][1])
         #if the schedulingRule is earliest due date
         elif criterion=="EDD":
-            activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().dueDate)   
+            
+            activeObjectQ.sort(key=lambda x: x.dueDate)   
         #if the schedulingRule is earliest order date
         elif criterion=="EOD":
-            activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().orderDate)
+            
+            activeObjectQ.sort(key=lambda x: x.orderDate)
         #if the schedulingRule is to sort Entities according to the stations they have to visit
         elif criterion=="NumStages":
-            activeObjectQ.sort(key=lambda x: len(x.identifyEntityToGet().remainingRoute), reverse=True)  
+            
+            activeObjectQ.sort(key=lambda x: len(x.remainingRoute), reverse=True)  
         #if the schedulingRule is to sort Entities according to the their remaining processing time in the system
         elif criterion=="RPC":
-            for object in activeObjectQ:
-                entity=object.identifyEntityToGet()
+            
+            for entity in activeObjectQ:
                 RPT=0
                 for step in entity.remainingRoute:
                     processingTime=step.get('processingTime',None)
                     if processingTime:
                         RPT+=float(processingTime.get('mean',0))           
                 entity.remainingProcessingTime=RPT
-            activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().remainingProcessingTime, reverse=True)     
+            activeObjectQ.sort(key=lambda x: x.remainingProcessingTime, reverse=True)     
         #if the schedulingRule is to sort Entities according to longest processing time first in the next station
         elif criterion=="LPT":
-            for object in activeObjectQ:
-                entity=object.identifyEntityToGet()
+            
+            for entity in activeObjectQ:
                 processingTime = entity.remainingRoute[0].get('processingTime',None)
                 entity.processingTimeInNextStation=float(processingTime.get('mean',0))
                 if processingTime:
                     entity.processingTimeInNextStation=float(processingTime.get('mean',0))
                 else:
                     entity.processingTimeInNextStation=0
-            activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().processingTimeInNextStation, reverse=True)             
+            activeObjectQ.sort(key=lambda x: x.processingTimeInNextStation, reverse=True)             
         #if the schedulingRule is to sort Entities according to shortest processing time first in the next station
         elif criterion=="SPT":
-            for object in activeObjectQ:
-                entity=object.identifyEntityToGet()
+            
+            for entity in activeObjectQ:
                 processingTime = entity.remainingRoute[0].get('processingTime',None)
                 if processingTime:
                     entity.processingTimeInNextStation=float(processingTime.get('mean',0))
                 else:
                     entity.processingTimeInNextStation=0
-            activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().processingTimeInNextStation) 
+            activeObjectQ.sort(key=lambda x: x.processingTimeInNextStation) 
         #if the schedulingRule is to sort Entities based on the minimum slackness
         elif criterion=="MS":
-            for object in activeObjectQ:
-                object.identifyEntityToGet()
+            
+            for entity in activeObjectQ:
                 RPT=0
                 for step in entity.remainingRoute:
                     processingTime=step.get('processingTime',None)
                     if processingTime:
                         RPT+=float(processingTime.get('mean',0))              
                 entity.remainingProcessingTime=RPT
-            activeObjectQ.sort(key=lambda x: (x.identifyEntityToGet().dueDate-x.identifyEntityToGet().remainingProcessingTime))  
+            activeObjectQ.sort(key=lambda x: (x.dueDate-x.remainingProcessingTime))  
         #if the schedulingRule is to sort Entities based on the length of the following Queue
         elif criterion=="WINQ":
+            
             from Globals import G
-            for object in activeObjectQ:
-                entity=object.identifyEntityToGet()
+            for entity in activeObjectQ:
                 nextObjIds=entity.remainingRoute[1].get('stationIdsList',[])
                 for obj in G.ObjList:
                     if obj.id in nextObjIds:
                         nextObject=obj
                 entity.nextQueueLength=len(nextObject.getActiveObjectQueue())           
-            activeObjectQ.sort(key=lambda x: x.identifyEntityToGet().nextQueueLength)
+            activeObjectQ.sort(key=lambda x: x.nextQueueLength)
         else:
             assert False, "Unknown scheduling criterion %r" % (criterion, )
             
