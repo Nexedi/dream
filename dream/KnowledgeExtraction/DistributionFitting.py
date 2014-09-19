@@ -43,6 +43,7 @@ class Distributions:
         try:                                        #try..except syntax to test if the data sample fits to Normal distribution
             self.Normal= rFitDistr(data,'Normal')   #It fits the normal distribution to the given data sample
         except RRuntimeError:                        
+            raise
             return None                             #If it doesn't fit Return None
         myDict = {'distributionType':'Normal','mean':self.Normal[0][0],'stdev': self.Normal[0][1],'min':0, 'max':(self.Normal[0][0]+3*self.Normal[0][1])}      #Create a dictionary with keys distribution's and distribution's parameters  names and the parameters' values                      
         return myDict                      #If there is no Error return the dictionary with the Normal distribution parameters for the given data sample
