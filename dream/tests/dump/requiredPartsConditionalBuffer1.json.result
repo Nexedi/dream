@@ -1,0 +1,204 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.ExitJobShop", 
+   "family": "Exit", 
+   "id": "E1", 
+   "results": {
+    "lifespan": 11.666666666666666, 
+    "takt_time": 4.666666666666667, 
+    "throughput": 3
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "family": "Job", 
+   "id": "J1", 
+   "results": {
+    "completionTime": 14.0, 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "stationId": "Q1"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "stationId": "M1"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "stationId": "Q3"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "stationId": "M3"
+     }, 
+     {
+      "entranceTime": 4.0, 
+      "stationId": "Q2"
+     }, 
+     {
+      "entranceTime": 12.0, 
+      "stationId": "M2"
+     }, 
+     {
+      "entranceTime": 14.0, 
+      "stationId": "E1"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "family": "Job", 
+   "id": "J2", 
+   "results": {
+    "completionTime": 9.0, 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "stationId": "Q1"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "stationId": "M1"
+     }, 
+     {
+      "entranceTime": 2.0, 
+      "stationId": "Q3"
+     }, 
+     {
+      "entranceTime": 4.0, 
+      "stationId": "M3"
+     }, 
+     {
+      "entranceTime": 7.0, 
+      "stationId": "Q2"
+     }, 
+     {
+      "entranceTime": 7.0, 
+      "stationId": "M2"
+     }, 
+     {
+      "entranceTime": 9.0, 
+      "stationId": "E1"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Job", 
+   "family": "Job", 
+   "id": "J3", 
+   "results": {
+    "completionTime": 12.0, 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "stationId": "Q1"
+     }, 
+     {
+      "entranceTime": 2.0, 
+      "stationId": "M1"
+     }, 
+     {
+      "entranceTime": 3.0, 
+      "stationId": "Q3"
+     }, 
+     {
+      "entranceTime": 7.0, 
+      "stationId": "M3"
+     }, 
+     {
+      "entranceTime": 10.0, 
+      "stationId": "Q2"
+     }, 
+     {
+      "entranceTime": 10.0, 
+      "stationId": "M2"
+     }, 
+     {
+      "entranceTime": 12.0, 
+      "stationId": "E1"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "M1", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "waiting_ratio": 78.57142857142857, 
+    "working_ratio": 21.428571428571427
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "M2", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "waiting_ratio": 57.142857142857146, 
+    "working_ratio": 42.857142857142854
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "M3", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "waiting_ratio": 35.714285714285715, 
+    "working_ratio": 64.28571428571429
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "O1", 
+   "results": {
+    "waiting_ratio": 78.57142857142857, 
+    "working_ratio": 21.428571428571427
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "O2", 
+   "results": {
+    "waiting_ratio": 57.142857142857146, 
+    "working_ratio": 42.857142857142854
+   }
+  }, 
+  {
+   "_class": "Dream.ConditionalBuffer", 
+   "family": "Buffer", 
+   "id": "Q1", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.ConditionalBuffer", 
+   "family": "Buffer", 
+   "id": "Q2", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.ConditionalBuffer", 
+   "family": "Buffer", 
+   "id": "Q3", 
+   "results": {}
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}
