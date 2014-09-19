@@ -63,6 +63,8 @@ class Router(ObjectInterruption):
         
         self.criticalQueues=[]
         
+        self.pending=[]                              # list of entities that require operators now
+        
     #===========================================================================
     #                         the initialize method
     #===========================================================================
@@ -91,6 +93,8 @@ class Router(ObjectInterruption):
         self.occupiedReceivers=[]
         
         self.criticalQueues=[]
+        
+        self.pending=[]                              # list of entities that require operators now
         
     # =======================================================================
     #                          the run method
@@ -174,7 +178,6 @@ class Router(ObjectInterruption):
         # for all the operators that are requested
         for operator in self.candidateOperators:
             if operator.candidateStation:
-                
                 # check if the candidateOperators are available, if the are requested and reside in the pendingObjects list
                 if operator.checkIfResourceIsAvailable():
                     # assign an operator to the priorityObject
@@ -194,6 +197,9 @@ class Router(ObjectInterruption):
                         self.toBeSignalled.append(operator.candidateStation)
         self.printTrace('objects to be signaled:'+' '*11, [str(object.id) for object in self.toBeSignalled])
     
+    #===========================================================================
+    # entry actions 
+    #===========================================================================
     def entry(self):
         from Globals import G
         for operator in G.OperatorsList:
@@ -224,6 +230,7 @@ class Router(ObjectInterruption):
         del self.conflictingEntities[:]
         del self.occupiedReceivers[:]
         del self.criticalQueues[:]
+        del self.pending[:]
         self.invoked=False
     
     
@@ -267,14 +274,13 @@ class Router(ObjectInterruption):
     #===========================================================================
     def findPending(self):
         from Globals import G
-        self.pending=[]             # list of entities that require operators now
         for entity in G.pendingEntities:
             if entity.currentStation in G.MachineList:
                 if entity.currentStation.broker.waitForOperator:
                     self.pendingMachines.append(entity.currentStation)
                     self.pending.append(entity)
             for machine in entity.currentStation.next:
-                if machine in G.MachineList:
+                if machine in G.MachineList and entity.checkIfRequiredPartsReady():
                     if any(type=='Load' for type in machine.multOperationTypeList) and not entity.currentStation in self.pendingQueues:
                         self.pendingQueues.append(entity.currentStation)
                         self.pending.append(entity)
