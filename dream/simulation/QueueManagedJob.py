@@ -160,20 +160,7 @@ class QueueManagedJob(QueueJobShop):
     def sortEntitiesForOperator(self, operator=None):
         activeObjectQueue=self.getActiveObjectQueue()
         if operator:
-#             self.sortEntities()
             activeObjectQueue.sort(key=lambda x: x.manager==operator and x.managerAvailable, reverse=True)
         else:
             # added for testing
             print 'there must be a caller defined for this kind of Queue sorting'
-    
-    #===========================================================================
-    # sort the entities of the queue for the receiver
-    #===========================================================================
-    def sortEntitiesForReceiver(self, receiver=None):
-        # TODO: if the receiver is already assigned an operator then the giver should sort for that manager
-        activeObject=self.getActiveObject()
-        from Globals import G
-        for operator in G.OperatorsList:
-            if operator.isAssignedTo()==receiver:
-                activeObject.sortEntitiesForOperator(operator)
-                break

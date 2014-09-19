@@ -145,5 +145,32 @@ class QueueJobShop(Queue):
         if removeReceiver:
             self.next.remove(receiverObject)
         return activeEntity
+    
+    # =======================================================================
+    # sorting will take into account the manager calling the method
+    #     the entities which have the same manager with the operator
+    #     will be in front of the queue
+    #     if the entity in front of the queue has no manager available 
+    #     then the sorting is unsuccessful 
+    # =======================================================================
+    def sortEntitiesForOperator(self, operator=None):
+        activeObjectQueue=self.getActiveObjectQueue()
+        if operator:
+            activeObjectQueue.sort(key=lambda x: x==operator.candidateEntity, reverse=True)
+        else:
+            # added for testing
+            print 'there must be a caller defined for this kind of Queue sorting'
+    
+    #===========================================================================
+    # sort the entities of the queue for the receiver
+    #===========================================================================
+    def sortEntitiesForReceiver(self, receiver=None):
+        # TODO: if the receiver is already assigned an operator then the giver should sort for that manager
+        activeObject=self.getActiveObject()
+        from Globals import G
+        for operator in G.OperatorsList:
+            if operator.isAssignedTo()==receiver:
+                activeObject.sortEntitiesForOperator(operator)
+                break
 
         
