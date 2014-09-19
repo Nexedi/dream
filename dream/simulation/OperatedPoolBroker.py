@@ -132,7 +132,14 @@ class Broker(ObjectInterruption):
                 
                 assert self.victim.operatorPool.checkIfResourceIsAvailable(), 'there is no available operator to request'
                 # set the available resource as the currentOperator
-                self.victim.currentOperator=self.victim.operatorPool.findAvailableOperator()
+                currentOperator=None
+                for operator in self.victim.operatorPool.operators:
+                    if operator.isAssignedTo()==self.victim:
+                        currentOperator=operator
+                        break
+                self.victim.currentOperator=currentOperator
+                if not currentOperator:
+                    self.victim.currentOperator=self.victim.operatorPool.findAvailableOperator()
                 
                 
                 with self.victim.operatorPool.getResource(self.victim.currentOperator).request() as request:
