@@ -38,8 +38,6 @@ class Router(ObjectInterruption):
     #   according to this implementation one machine per broker is allowed
     #     The Broker is initiated within the Machine and considered as 
     #                black box for the ManPy end Developer
-    # TODO: we should maybe define a global schedulingRule criterion that will be 
-    #         chosen in case of multiple criteria for different Operators
     # ======================================================================= 
     def __init__(self,sorting=False):
         ObjectInterruption.__init__(self)
@@ -72,11 +70,9 @@ class Router(ObjectInterruption):
         ObjectInterruption.initialize(self)
         # signal used to initiate the generator of the Router
         self.isCalled=self.env.event()
-        # list that holds all the objects that can receive
-#         self.pendingObjects=[]
+        # lists that hold all the objects that can receive
         self.pendingMachines=[]
         self.pendingQueues=[]
-#         self.calledOperator=[]
         # list of the operators that may handle a machine at the current simulation time
         self.candidateOperators=[]
         # flag used to check if the Router is initialised
@@ -106,7 +102,6 @@ class Router(ObjectInterruption):
     def run(self):
         while 1:
             # wait until the router is called
-            
             self.expectedSignals['isCalled']=1
             
             yield self.isCalled
@@ -139,6 +134,9 @@ class Router(ObjectInterruption):
             # exit actions
             self.exit()
     
+    #===========================================================================
+    # routing performed to define the candidate operators the pending entities and how the operators should be allocated
+    #===========================================================================
     def allocateOperators(self):
         # find the pending objects
         self.findPending()
@@ -148,12 +146,6 @@ class Router(ObjectInterruption):
         self.sortOperators()
         # find working stations for the candidate operators
         self.findStationsForOperators()
-        
-#         # find the operators candidateEntities
-#         self.sortCandidateEntities()
-#         # find the entity that will occupy the resource, and the station that will receive it (if any available)
-#         #  entities that are already in stations have already a receiver
-#         self.findCandidateReceivers()
     
     #===========================================================================
     # unassigns exits of queues that are not to be signalled 
@@ -215,7 +207,6 @@ class Router(ObjectInterruption):
             operator.candidateEntities=[]
             operator.candidateStations=[]
             operator.candidateStation=None
-#             operator.candidateEntity=None
         for entity in G.pendingEntities:
             entity.proceed=False
             entity.candidateReceivers=[]
@@ -319,8 +310,6 @@ class Router(ObjectInterruption):
                 for candidateOperator in candidateOperators:
                     if not station in candidateOperator.candidateStations:
                         candidateOperator.candidateStations.append(station)
-            # if there is candidateOperator that is not already in self.candidateOperators add him
-            # TODO: this way no sorting is performed
                     if not candidateOperator in self.candidateOperators:
                         self.candidateOperators.append(candidateOperator)
         # if there are critical pending entities then populate the candidateOperators list with preemptiveOperators
