@@ -819,7 +819,7 @@ class CoreObject(ManPyObject):
     # =======================================================================
     # actions to be carried out when the processing of an Entity ends
     # =======================================================================    
-    def endProcessingActions(self):
+    def endOperationActions(self):
         pass
     
     #===========================================================================
