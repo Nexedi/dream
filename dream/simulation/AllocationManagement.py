@@ -42,6 +42,7 @@ class AllocationManagement(ObjectInterruption):
         procedurePPOS = AllocationRoutine(initialWeek=G.TargetPPOSweek, itemType=0)
         procedurePPOS.Run()
         G.reCapacity.append(G.currentCapacity)
+        G.replication+=1
         
     def readData(self):
         G.CapacityDict=self.argumentDict['capacity']
