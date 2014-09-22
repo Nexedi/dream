@@ -50,11 +50,7 @@ class FutureDemandCreator():
         G.AllocationPPOS.append([])
         G.PPOSLateness.append(0)
         G.PPOSEarliness.append(0)
-        
-        import copy
-        G.currentCapacity = copy.deepcopy(G.Capacity)
-        print G.currentCapacity
-        
+               
         # PPOS initial disaggregation profile
         
         # get a random demand profile from KE.
