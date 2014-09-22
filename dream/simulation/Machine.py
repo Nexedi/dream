@@ -1110,19 +1110,6 @@ class Machine(CoreObject):
     def calculateLoadTime(self):
         return self.loadRng.generateNumber()
     
-            
-#     #===========================================================================
-#     # find candidate operators within the free operators
-#     #===========================================================================
-#     def findCandidateOperator(self):
-#         # TODO: this way no sorting is performed
-#         # find an available operator
-#         candidateOperator=self.operatorPool.findAvailableOperator()
-#         # append the station into its candidateStations
-#         if candidateOperator:   # if there was an operator found append the Machine on his candidateStations
-#             candidateOperator.candidateStations.append(self)
-#         return candidateOperator
-    
     #===========================================================================
     # checks whether the entity can proceed to a successor object
     #===========================================================================
