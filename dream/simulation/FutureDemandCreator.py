@@ -73,7 +73,7 @@ class FutureDemandCreator():
                 pProf = []
             else:
                 #sh = wbin.sheet_by_name('Future_Profile')
-                sh = wbin.sheet_by_name('Future'+str(G.replication+1))
+                sh = wbin.sheet_by_name('Future1')
                 fut = 1
                 fProf = []
                  
