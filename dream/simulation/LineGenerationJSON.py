@@ -543,7 +543,7 @@ def initializeObjects():
 # ===========================================================================
 def activateObjects():
     # XXX EventGeneratorList
-    for element in G.ObjList + G.ObjectInterruptionList + G.AllocationManagementList:
+    for element in G.ObjList + G.ObjectInterruptionList:
         G.env.process(element.run())
 
 # ===========================================================================
@@ -551,7 +551,7 @@ def activateObjects():
 # ===========================================================================
 def main(argv=[], input_data=None):
     argv = argv or sys.argv[1:]
-    
+
     #create an empty list to store all the objects in   
     G.ObjList=[]
 
