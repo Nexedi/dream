@@ -40,11 +40,6 @@ class Allocation():
         for x in G.RouteDict[MA.MAid]['route']:
             requiredCapacity[x]=G.RouteDict[MA.MAid]['route'][x]*MA.qty
         
-        print '-'*100
-        print 'MA',MA.MAid,'week',self.week
-        print 'Quantity to allocate=', MA.qty
-        print 'required',requiredCapacity
-        print 'available', G.CurrentCapacityDict
         # read the remaining capacity for thegiven week and subtract the required from it
         remainingCapacity={}
         for bottleneck in G.CurrentCapacityDict:
@@ -52,10 +47,6 @@ class Allocation():
             # if we dropped below zero then the capacity is not sufficient
             if remainingCapacity[bottleneck]<0:
                 sufficient=False
-        #remainingCapacity = numpy.array(G.currentCapacity[self.week]) - numpy.array(requiredCapacity)
-        #remainingCapacity = remainingCapacity.tolist()
-        print 'remaining',remainingCapacity
-        print sufficient
         
         # check if there is sufficient capacity to process the order
         if sufficient:            
@@ -64,8 +55,6 @@ class Allocation():
             if MA.qty >= G.minPackingSize:
                 for bottleneck in G.CurrentCapacityDict:
                      G.CurrentCapacityDict[bottleneck][self.week]=remainingCapacity[bottleneck]
-                print 'allocation performed fully! remaining:'
-                print G.CurrentCapacityDict
         
         # if the capacity available is not sufficient, the max allocable qty is derived
         else:             
@@ -78,26 +67,16 @@ class Allocation():
                     excessUnits= remainingCapacity[bottleneck]/G.RouteDict[MA.MAid]['route'][bottleneck]
                     if math.ceil(math.fabs(excessUnits))>excess:
                         excess = math.ceil(math.fabs(excessUnits))
-            print 'excess', excess
-            
-            
-#             for i in range(len(remainingCapacity)):
-#                 if requiredCapacity[i]>0 and remainingCapacity[i]<0:
-#                     excessUnits[i] = remainingCapacity[i]/G.route[MA.MAid][i]            
-#             excess = math.ceil(math.fabs(min(excessUnits)))
+           
             
             # update remaining capacity
             assert(excess <= MA.qty or MA.qty < G.minPackingSize)
             allocableQty = MA.qty - excess
-            print 'MA quantity', MA.qty
-            print 'allocableQty', allocableQty
             
             if allocableQty >= G.minPackingSize:
                 #rCap = numpy.array(G.currentCapacity[self.week]) - numpy.multiply(allocableQty,G.route[MA.MAid])
                 for bottleneck in G.CurrentCapacityDict:
                      G.CurrentCapacityDict[bottleneck][self.week]-=allocableQty*G.RouteDict[MA.MAid]['route'][bottleneck]
-                print 'allocation performed partially! remaining:'
-                print G.CurrentCapacityDict
                    
         # update attributes/variables affected by allocation
         if allocableQty >= G.minPackingSize:
@@ -115,13 +94,8 @@ class Allocation():
                 G.PPOSLateness[G.replication] += max([0, self.week - MA.originalWeek])*allocableQty
                 G.PPOSEarliness[G.replication] += max([0, MA.originalWeek - self.week])*allocableQty
         
-        print '-'*100
-        
     def alternativeRoutes(self, MA):
         sufficient=False     #flag that shows if we have sufficient capacity
-        print '='*100
-        print 'MA',MA.MAid,'week',self.week
-        print 'Quantity to allocate=', MA.qty
         # identify MAs with the same SP as the MA investigated
         alternativeMADict={}   #FIXME: the PPOS attribute can be used instead for the current MA
         # loop through the MAinfo
@@ -135,8 +109,6 @@ class Allocation():
             if PPOS==MA.PPOSid and SP==MA.SPid:                
                 alternativeMADict[alernativeMA]=G.RouteDict[alernativeMA]
         
-        print 'alternativeRoutes',alternativeMADict
-        print 'available',G.CurrentCapacityDict
         # calculate max number of units for each alternative MA
         maxUnits = {}    
         for alternativeMA in alternativeMADict:
@@ -147,9 +119,7 @@ class Allocation():
                     MAunits.append(G.CurrentCapacityDict[routeElement][self.week]/units)
                     sufficient=True
             maxUnits[alternativeMA]=math.floor(min(MAunits))
-
-        print 'print units that can be allocated in alternative routes:', maxUnits
-         
+        
         # choose MA with max number of units
         if maxUnits and sufficient:
             maxU=0
@@ -163,19 +133,12 @@ class Allocation():
                 
             # choose MA randomly among those with max number of units
             chosenMAId = random.choice(maxID)
-            
-            print 'chose to allocate in MA with id =', chosenMAId
-            
+
             allocableQty = min([maxU, MA.qty])
-            print 'in this route we can allocate ',allocableQty
             
             if allocableQty >= G.minPackingSize:               
                 for bottleneck in G.CurrentCapacityDict:
                     G.CurrentCapacityDict[bottleneck][self.week]-=allocableQty*G.RouteDict[chosenMAId]['route'][bottleneck]
-
-                print 'allocation performed in the alternative route! remaining:'
-                print G.CurrentCapacityDict
-
                 # update attributes/variables affected by allocation
                 MA.qty -= allocableQty
                 MA.minQty = max([0, MA.minQty - allocableQty])
@@ -190,7 +153,5 @@ class Allocation():
                     G.AllocationPPOS[G.replication].append([MA.orderID, chosenMAId, allocableQty, self.week+1])
                     G.PPOSLateness[G.replication] += max([0, self.week - MA.originalWeek])*allocableQty
                     G.PPOSEarliness[G.replication] += max([0, MA.originalWeek - self.week])*allocableQty
-                    
-        print '='*100
         
         

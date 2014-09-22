@@ -151,8 +151,6 @@ def writeOutput():
         minExcessPPOS = sum([i.qty for i in G.ExcessPPOSminBuffer[k]])
         sheet1.write(2,3,excessPPOS)
         sheet1.write(2,4, minExcessPPOS)
-        print 'excess future', [i.orderID for i in G.ExcessFutureBuffer[k]], [i.qty for i in G.ExcessFutureBuffer[k]]
-        print 'excess ppos', [i.orderID for i in G.ExcessPPOSBuffer[k]], [i.qty for i in G.ExcessPPOSBuffer[k]]
         excessFuture = sum([i.qty for i in G.ExcessFutureBuffer[k]])
         minExcessFuture = sum([i.qty for i in G.ExcessFutureMinBuffer[k]])
         sheet1.write(1,6,'% Unconstrained Excess')
@@ -199,7 +197,6 @@ def writeOutput():
                 sheet1.write(4,6,excessFuture*100.0/totQty)
                 sheet1.write(4,7,minExcessFuture*100.0/totQty)
 
-            print 'allocation', alloc
             counterCols = [5 for i in range(len(profile))]  
             # TODO the below crashes, got to check             
             for i in range(len(alloc)):

@@ -140,7 +140,6 @@ class AllocationRoutine():
             if len(self.internalBuffer): 
                 if self.itemType == 1:
                     G.ExcessFutureBuffer[G.replication] = self.internalBuffer
-                    print 'end allocation routine - excessBuffer', [i.orderID for i in G.ExcessFutureBuffer[G.replication]], [i.qty for i in G.ExcessFutureBuffer[G.replication]]
                 else:
                     G.ExcessPPOSBuffer[G.replication] = self.internalBuffer
                 
