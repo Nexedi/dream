@@ -45,7 +45,9 @@ class AllocationManagement(ObjectInterruption):
         
     def readData(self):
         G.CapacityDict=self.argumentDict['capacity']
-        G.CurrentCapacityDict=dict(G.CapacityDict)
+        import copy
+        G.CurrentCapacityDict=copy.deepcopy(G.CapacityDict)
+        print G.CurrentCapacityDict        
         G.RouteDict=self.argumentDict['MAList']
         G.TargetPPOS=self.argumentDict['currentPPOS']['id']
         G.TargetPPOSqty=self.argumentDict['currentPPOS']['quantity']

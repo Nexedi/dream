@@ -51,8 +51,9 @@ class FutureDemandCreator():
         G.PPOSLateness.append(0)
         G.PPOSEarliness.append(0)
         
-        G.currentCapacity = G.Capacity
-
+        import copy
+        G.currentCapacity = copy.deepcopy(G.Capacity)
+        print G.currentCapacity
         
         # PPOS initial disaggregation profile
         
