@@ -128,7 +128,7 @@ class Operator(ObjectResource):
         if candidateMachines:
             # choose the one that waits the most time and give it the chance to grasp the resource
             for machine in candidateMachines:
-                machine.critical=False
+#                 machine.critical=False
                 if machine.broker.waitForOperator:
                     machine.timeWaiting=self.env.now-machine.broker.timeWaitForOperatorStarted
                 else:
