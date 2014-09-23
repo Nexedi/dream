@@ -43,13 +43,14 @@ class RouterManaged(Router):
     #   according to this implementation one machine per broker is allowed
     #     The Broker is initiated within the Machine and considered as 
     #                black box for the ManPy end Developer
-    # TODO: we should maybe define a global schedulingRule criterion that will be 
-    #         chosen in case of multiple criteria for different Operators
     # ======================================================================= 
     def __init__(self):
         Router.__init__(self)
         # boolean flag to check whether the Router should perform sorting on operators and on pendingEntities
         self.entitiesWithOccupiedReceivers=[]        # list of entities that have no available receivers
+        self.conflictingEntities=[]                  # entities with conflictingReceivers
+        self.conflictingOperators=[]                 # list with the operators that have candidateEntity with conflicting candidateReceivers
+        self.occupiedReceivers=[]                    # occupied candidateReceivers of a candidateEntity
         
     #===========================================================================
     #                         the initialize method
@@ -59,6 +60,9 @@ class RouterManaged(Router):
         # list that holds all the objects that can receive
         self.pendingObjects=[]
         self.entitiesWithOccupiedReceivers=[]
+        self.conflictingEntities=[]                  # entities with conflictingReceivers
+        self.conflictingOperators=[]                 # list with the operators that have candidateEntity with conflicting candidateReceivers
+        self.occupiedReceivers=[]                    # occupied candidateReceivers of a candidateEntity
         
     # =======================================================================
     #                          the run method
@@ -90,7 +94,7 @@ class RouterManaged(Router):
             self.printTrace('','=-'*15)
             
             # entry actions
-            self.entry()
+            self.entryActions()
             # run the routine that allocates operators to machines
             self.allocateOperators()
             # assign operators to stations
@@ -102,9 +106,9 @@ class RouterManaged(Router):
             self.printTrace('', 'router exiting')
             self.printTrace('','=-'*20)
             # exit actions
-            self.exit()
+            self.exitActions()
     
-    def entry(self):
+    def entryActions(self):
         pass
     
     def allocateOperators(self):
@@ -134,32 +138,16 @@ class RouterManaged(Router):
     # =======================================================================
     #                 return control to the Machine.run
     # =======================================================================
-    def exit(self):
-        from Globals import G
-        # reset the variables that are used from the Router
+    def exitActions(self):
+        # reset the candidateEntities of the operators
         for operator in self.candidateOperators:
-            operator.candidateEntities=[]
-            operator.candidateStations=[]
-            operator.candidateStation=None
             operator.candidateEntity=None
-        for entity in G.pendingEntities:
-            entity.proceed=False
-            entity.candidateReceivers=[]
-            entity.candidateReceiver=None    
-        del self.candidateOperators[:]
-        del self.criticalPending[:]
-        del self.preemptiveOperators[:]
         del self.pendingObjects[:]
-        del self.pendingMachines[:]
-        del self.pendingQueues[:]
-        del self.toBeSignalled[:]
         del self.conflictingOperators[:]
-        del self.conflictingStations[:]
         del self.conflictingEntities[:]
         del self.occupiedReceivers[:]
         del self.entitiesWithOccupiedReceivers[:]
-        self.invoked=False
-    
+        Router.exitActions(self)
     
     #===========================================================================
     # assigning operators to machines
@@ -233,7 +221,6 @@ class RouterManaged(Router):
     def findPendingEntities(self):
         from Globals import G
         self.pending=[]             # list of entities that are pending
-        self.criticalPending=[]
         for machine in self.pendingMachines:
             self.pending.append(machine.currentEntity)
         for entity in G.pendingEntities:
@@ -241,13 +228,8 @@ class RouterManaged(Router):
                 for machine in entity.currentStation.next:
                     if any(type=='Load' for type in machine.multOperationTypeList):
                         self.pending.append(entity)
-                        # if the entity is critical add it to the criticalPending List
-                        if entity.isCritical and not entity in self.criticalPending:
-                            self.criticalPending.append(entity)
                         break
         self.printTrace('found pending entities'+'-'*12+'>', [str(entity.id) for entity in self.pending if not entity.type=='Part'])
-        if self.criticalPending:
-            self.printTrace('found pending critical'+'-'*12+'>', [str(entity.id) for entity in self.criticalPending if not entity.type=='Part'])
         
     #========================================================================
     # Find candidate Operators

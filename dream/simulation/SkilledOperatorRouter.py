@@ -264,7 +264,7 @@ class SkilledRouter(Router):
             #===================================================================
             else:
                 # entry actions
-                self.entry()
+                self.entryActions()
                 # run the routine that allocates operators to machines
                 self.allocateOperators()
                 # assign operators to stations
@@ -276,13 +276,13 @@ class SkilledRouter(Router):
             
             self.printTrace('', 'router exiting')
             self.printTrace('','=-'*20)
-            self.exit()
+            self.exitActions()
     
     # =======================================================================
     #                 return control to the Machine.run
     # =======================================================================
-    def exit(self):
-        Router.exit(self)
+    def exitActions(self):
+        Router.exitActions(self)
         self.allocation=False
         self.waitEndProcess=False
     
