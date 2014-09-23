@@ -33,11 +33,15 @@ import xlrd
 import random
 import urllib
 
-def generateDemandPlanning(input_url):
+def generateDemandPlanning(input_url, PPOSQuantity=1000, PlannedWeek=1, PPOSToBeDisaggregated='PPOS1', 
+                           MinPackagingSize=10, planningHorizon=10):
     """Generate random demand from spreadsheet at input_url.
     """
+    # id is given as an integer and minus one
+    # ToDo we have to standardize data
+    PPOSToBeDisaggregated='PPOS'+str(PPOSToBeDisaggregated+1)
 
-
+    
     # Read data from the exported Excel file from RapidMiner and call the Import_Excel object of the KE tool to import this data in the tool
 
     demand_data = urllib.urlopen(input_url).read()
@@ -45,10 +49,6 @@ def generateDemandPlanning(input_url):
 
     worksheets = workbook.sheet_names()
     worksheet_RapidMiner = worksheets[0] 
-
-    PPOSToBeDisaggregated='PPOS4'
-    PPOSQuantity=1000
-    PlannedWeek=2
 
     A= Import_Excel()
     Turnovers=A.Input_data(worksheet_RapidMiner, workbook) #Dictionary with the data from the Excel file
@@ -81,8 +81,10 @@ def generateDemandPlanning(input_url):
         return [x - 1 for x in constrained_sum_sample_pos(n, total + n)]     
         
     DemandProfile={} #Create a dictionary
-    MinPackagingSize=10
-    week=[1,2,3,4,5,6,7,8,9,10] # list that defines the planning horizon, i.e. 10 weeks
+    
+    week=[] # list that defines the planning horizon, i.e. 10 weeks
+    for i in range(int(planningHorizon)):
+        week.append(i+1)
 
     for i in week:
         Demand=int(abs(random.normalvariate(avg,stdev))) # Generate a random, non-negative, integer number from the Normal distribution

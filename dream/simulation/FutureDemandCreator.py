@@ -57,7 +57,9 @@ class FutureDemandCreator():
         from dream.KnowledgeExtraction.PilotCases.InputData_DemandPlanning \
             import generateDemandPlanning
 
-        G.generatedDemandPlanning = generateDemandPlanning(G.demandFile)
+        G.generatedDemandPlanning = generateDemandPlanning(G.demandFile, PPOSToBeDisaggregated=G.TargetPPOS,
+                                                           PPOSQuantity=G.TargetPPOSqty, PlannedWeek=G.TargetPPOSweek,
+                                                           planningHorizon=G.maxSimTime, MinPackagingSize=G.minPackingSize)
         wbin = xlrd.open_workbook(file_contents=G.generatedDemandPlanning)
 
         MAData=G.RouteDict
