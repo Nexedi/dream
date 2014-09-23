@@ -295,7 +295,7 @@ class RouterManaged(Router):
         #       and as the operators chooses the sorting of the queue (if they do reside in the same queue is not taken into account)
         # sort the candidateEntities list of each operator according to its schedulingRule
         for operator in [x for x in self.candidateOperators if x.candidateEntities]:
-            operator.sortCandidateEntities()
+            operator.sortEntities()
         
         self.printTrace('candidateEntities for each operator',\
                         [(str(operator.id),[str(x.id) for x in operator.candidateEntities])
