@@ -39,14 +39,12 @@ class Router(ObjectInterruption):
     #     The Broker is initiated within the Machine and considered as 
     #                black box for the ManPy end Developer
     # ======================================================================= 
-    def __init__(self,sorting=False):
+    def __init__(self):
         ObjectInterruption.__init__(self)
         self.type = "Router"
         self.isInitialized=False
         self.isActivated=False
         self.candidateOperators=[]
-        # boolean flag to check whether the Router should perform sorting on operators and on pendingEntities
-        self.sorting=sorting
         # list of objects to be signalled by the Router
         self.toBeSignalled=[]
         # flag to notify whether the router is already invoked

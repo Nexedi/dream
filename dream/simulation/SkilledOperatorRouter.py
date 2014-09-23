@@ -58,7 +58,6 @@ class SkilledRouter(Router):
         self.waitEndProcess=False
         self.pendingQueues=[]
         self.pendingMachines=[]
-        self.pendingObjects=[]
         self.previousSolution={}
         
     # =======================================================================
@@ -268,32 +267,14 @@ class SkilledRouter(Router):
             # default behaviour
             #===================================================================
             else:
-                # find the pending objects
-                self.findPendingObjects()
-                # find the pending entities
-                self.findPendingEntities()
-                # find the operators that can start working now 
-                self.findCandidateOperators()
-                # sort the pendingEntities list
-                if self.sorting:
-                    self.sortPendingEntities()
-                # find the operators candidateEntities
-                self.sortCandidateEntities()
-                # find the entity that will occupy the resource, and the station that will receive it (if any available)
-                #  entities that are already in stations have already a receiver
-                self.findCandidateReceivers()
+                # entry actions
+                self.entry()
+                # run the routine that allocates operators to machines
+                self.allocateOperators()
                 # assign operators to stations
                 self.assignOperators()
-    
-                for operator in [x for x in self.candidateOperators if x.isAssignedTo()]:
-                    if not operator.isAssignedTo() in self.pendingObjects:
-                        for object in [x for x in operator.isAssignedTo().previous if x.exitIsAssignedTo()]:
-                            if object.exitIsAssignedTo()!=operator.isAssignedTo():
-                                object.unAssignExit()
-                # if an object cannot proceed with getEntity, unAssign the exit of its giver
-                for object in self.pendingQueues:
-                    if not object in self.toBeSignalled:
-                        object.unAssignExit()
+                # unAssign exits
+                self.unAssignExits()
                 # signal the stations that ought to be signalled
                 self.signalOperatedStations()
             

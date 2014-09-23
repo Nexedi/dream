@@ -84,7 +84,7 @@ class OperatorManagedJob(Operator):
     #=======================================================================
     def findCandidateEntities(self, pendingEntities=[]):
         if pendingEntities:
-            for entity in [x for x in pendingEntities if x.canProceed and x.manager==self]:
+            for entity in [x for x in pendingEntities if x.currentStation.canDeliver(x) and x.manager==self]:
                 self.candidateEntities.append(entity)
                 
     #===========================================================================
@@ -117,10 +117,9 @@ class OperatorManagedJob(Operator):
         router=G.Router
         # pick a candidateEntity
         candidateEntity=self.findAvailableEntity()
-        if not router.sorting:
-            if not candidateEntity:
-                candidateEntity=next(x for x in self.candidateEntities)
-                router.conflictingEntities.append(candidateEntity)
+        if not candidateEntity:
+            candidateEntity=next(x for x in self.candidateEntities)
+            router.conflictingEntities.append(candidateEntity)
         return candidateEntity
     
     # =======================================================================
