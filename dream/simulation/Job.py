@@ -211,6 +211,41 @@ class Job(Entity):                                  # inherits from the Entity c
         return curStepSeq
     
     #===========================================================================
+    # return the responsible operator for the current step
+    #===========================================================================
+    def responsibleForCurrentStep(self):
+        ''' The route is supposed to provide information on the responsible personnel for
+            the current (or next) station step in the sequence of the route
+            E.g. 
+            {
+                "stepNumber": "6",
+                "sequence": "4",
+                "requiredParts": ["OC1", "OC2"],
+                "operator": "OP1",
+                "stationIdsList": [
+                    "EDM"
+                ],
+                "processingTime": {
+                    "distributionType": "Fixed",
+                    "operationType": "",
+                    "mea n": "2"
+                }
+            },
+    
+        '''
+        currentStation=self.currentStation
+        from Machine import Machine
+        if issubclass(currentStation.__class__, Machine):
+            for routeStep in self.route:
+                stepResponsible=routeStep.get('operator','not available')
+                stepIDs=routeStep.get('stationIdsList',[])
+                if currentStation.id in stepIDs:
+                    responsible=stepResponsible
+                    break
+        else:
+            responsible=self.remainingRoute[0].get('operator','not available')
+        return responsible
+    #===========================================================================
     # method that finds a receiver for a candidate entity
     #===========================================================================
     def findCandidateReceiver(self):
