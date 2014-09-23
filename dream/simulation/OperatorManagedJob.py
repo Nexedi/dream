@@ -70,14 +70,6 @@ class OperatorManagedJob(Operator):
 #             if self.operatorAssignedTo==None:
 #                 return False
             return len(activeResourceQueue)<self.capacity
-        
-    #===========================================================================
-    # check if the operator has only one station as candidate option
-    #===========================================================================
-    def hasOneOption(self):
-        if len(self.candidateEntities)==1:
-            # if the candidate entity has only one receiver then return True
-            return len(self.candidateEntities[0].candidateReceivers)==1
     
     #=======================================================================
     # findCandidateEntities method finding the candidateEntities of the operator  
