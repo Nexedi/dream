@@ -439,17 +439,6 @@ class CoreObject(ManPyObject):
         for object in [x for x in activeObject.next if x.canAccept(activeObject) and not x.isRequested.triggered and x.expectedSignals['isRequested']]:
             receivers.append(object)
         return receivers
-    
-#     #===========================================================================
-#     # find possible receivers
-#     #===========================================================================
-#     def findReceivers(self):
-#         activeObject=self.getActiveObject()
-#         receivers=[]
-#         for object in [x for x in self.next if x.canAccept(activeObject)]:
-#             receivers.append(object)
-#         return receivers
-    
         
     # =======================================================================
     # signal the successor that the object can dispose an entity 
@@ -522,18 +511,6 @@ class CoreObject(ManPyObject):
             if object.haveToDispose(activeObject): 
                 givers.append(object)
         return givers
-    
-    
-#     #===========================================================================
-#     # find possible givers
-#     #===========================================================================
-#     def findGivers(self):
-#         activeObject=self.getActiveObject()
-#         givers=[]
-#         for object in [x for x in activeObject.previous if(not x is activeObject)]:
-#             if object.haveToDispose(activeObject): 
-#                 givers.append(object)
-#         return givers
     
     # =======================================================================
     # signal the giver that the entity is removed from its internalQueue
