@@ -242,17 +242,39 @@ class Router(ObjectInterruption):
     #===========================================================================
     def findPending(self):
         from Globals import G
+        # first sort the queues according to their sorting rule
+        for object in G.ObjList:
+            object.sortEntities()
+            object.getActiveObjectQueue().sort(key=lambda x:x.isCritical, reverse=True)
+        # search among the pendingEntities
         for entity in G.pendingEntities:
+            # if the entity resides in a machine
             if entity.currentStation in G.MachineList:
                 if entity.currentStation.broker.waitForOperator:
                     self.pendingMachines.append(entity.currentStation)
                     self.pending.append(entity)
-            for machine in entity.currentStation.next:
-                if machine in G.MachineList and entity.checkIfRequiredPartsReady():
-                    if any(type=='Load' for type in machine.multOperationTypeList) and not entity.currentStation in self.pendingQueues:
-                        self.pendingQueues.append(entity.currentStation)
-                        self.pending.append(entity)
-                        break
+            # otherwise proceed only if the entity is at the head of the queue it resides
+            if entity.currentStation.getActiveObjectQueue().index(entity)==0:
+                # check the next stations
+                for machine in entity.currentStation.next:
+                    if machine in G.MachineList and entity.checkIfRequiredPartsReady():
+                        if any(type=='Load' for type in machine.multOperationTypeList) and not entity.currentStation in self.pendingQueues:
+                            self.pendingQueues.append(entity.currentStation)
+                            self.pending.append(entity)
+                            break
+        
+        
+#         for entity in G.pendingEntities:
+#             if entity.currentStation in G.MachineList:
+#                 if entity.currentStation.broker.waitForOperator:
+#                     self.pendingMachines.append(entity.currentStation)
+#                     self.pending.append(entity)
+#             for machine in entity.currentStation.next:
+#                 if machine in G.MachineList and entity.checkIfRequiredPartsReady():
+#                     if any(type=='Load' for type in machine.multOperationTypeList) and not entity.currentStation in self.pendingQueues:
+#                         self.pendingQueues.append(entity.currentStation)
+#                         self.pending.append(entity)
+#                         break
         # figure out which queues are holding critical pending entities 
         self.findCriticalQueues()
         self.printTrace('pendingMachines'+'-'*19+'>', [str(object.id) for object in self.pendingMachines])
@@ -264,9 +286,13 @@ class Router(ObjectInterruption):
     #===========================================================================
     def findCriticalQueues(self):
         for queue in self.pendingQueues:
-            for entity in queue.getActiveObjectQueue():
-                if entity in self.pending and entity.isCritical:
-                    self.criticalQueues.append(queue)
+            if queue.getActiveObjectQueue()[0].isCritical:
+                self.criticalQueues.append(queue)
+        
+#         for queue in self.pendingQueues:
+#             for entity in queue.getActiveObjectQueue():
+#                 if entity in self.pending and entity.isCritical:
+#                     self.criticalQueues.append(queue)
     
     #========================================================================
     # Find candidate Operators
@@ -355,15 +381,18 @@ class Router(ObjectInterruption):
                 else:
                     for predecessor in station.previous:
                         if predecessor in self.pendingQueues and not station in occupiedStations:
-                            operator.candidateEntities+=[x for x in predecessor.getActiveObjectQueue()
-                                                       if x in self.pending and not x in occupiedEntities]
-            
+                            if predecessor.getActiveObjectQueue()[0] in self.pending\
+                                 and not predecessor.getActiveObjectQueue()[0] in occupiedEntities:
+                                operator.candidateEntities.append(predecessor.getActiveObjectQueue()[0])
+#                             operator.candidateEntities+=[x for x in predecessor.getActiveObjectQueue()
+#                                                        if x in self.pending and not x in occupiedEntities]
             # sort candidateEntities according to the scheduling rule of the operator
             operator.sortEntities()
             # if the operator is of the preemptives then there is a need to sort for critical orders
             if operator in self.preemptiveOperators:
-                operator.candidateEntities.sort(key=lambda x: x.isCritical, reverse=False)
-            
+                operator.candidateEntities.sort(key=lambda x: x.isCritical, reverse=True)
+            # sort the candidate entities according to their responsible personnel
+            operator.candidateEntities.sort(key=lambda x:x.responsibleForCurrentStep()==operator)
             # pick an entity and a station
             if operator.candidateEntities:
                 operator.candidateEntity=operator.candidateEntities[0]
