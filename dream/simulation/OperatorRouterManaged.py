@@ -46,12 +46,9 @@ class RouterManaged(Router):
     # TODO: we should maybe define a global schedulingRule criterion that will be 
     #         chosen in case of multiple criteria for different Operators
     # ======================================================================= 
-    def __init__(self,sorting=False):
+    def __init__(self):
         Router.__init__(self)
-        self.multipleCriterionList=[]
-        self.schedulingRule='WT'
         # boolean flag to check whether the Router should perform sorting on operators and on pendingEntities
-        self.sorting=sorting
         self.entitiesWithOccupiedReceivers=[]        # list of entities that have no available receivers
         
     #===========================================================================
@@ -61,13 +58,6 @@ class RouterManaged(Router):
         Router.initialize(self)
         # list that holds all the objects that can receive
         self.pendingObjects=[]
-        self.calledOperator=[]
-        # list of the operators that may handle a machine at the current simulation time
-        self.candidateOperators=[]
-        # list of criteria
-        self.multipleCriterionList=[]
-        # TODO: find out which must be the default for the scheduling Rule
-        self.schedulingRule='WT'
         self.entitiesWithOccupiedReceivers=[]
         
     # =======================================================================
@@ -99,60 +89,47 @@ class RouterManaged(Router):
                     break
             self.printTrace('','=-'*15)
             
-            
-            # find the pending objects
-            self.findPendingObjects()
-            # find the pending entities
-            self.findPendingEntities()
-            # find the operators that can start working now 
-            self.findCandidateOperators()
-            # sort the pendingEntities list
-            if self.sorting:
-                self.sortPendingEntities()
-            # find the operators candidateEntities
-            self.sortCandidateEntities()
-            # find the entity that will occupy the resource, and the station that will receive it (if any available)
-            #  entities that are already in stations have already a receiver
-            self.findCandidateReceivers()
+            # entry actions
+            self.entry()
+            # run the routine that allocates operators to machines
+            self.allocateOperators()
             # assign operators to stations
             self.assignOperators()
-
-            for operator in [x for x in self.candidateOperators if x.isAssignedTo()]:
-                if not operator.isAssignedTo() in self.pendingObjects:
-                    if operator.candidateEntity.currentStation.exitIsAssignedTo():
-                        if operator.isAssignedTo()!=operator.candidateEntity.currentStation.exitIsAssignedTo():
-                            operator.candidateEntity.currentStation.unAssignExit()
-            # if an object cannot proceed with getEntity, unAssign the exit of its giver
-            for object in self.pendingQueues:
-                if not object in self.toBeSignalled:
-                    object.unAssignExit()
+            # unAssign exits
+            self.unAssignExits()
             # signal the stations that ought to be signalled
             self.signalOperatedStations()
             self.printTrace('', 'router exiting')
             self.printTrace('','=-'*20)
+            # exit actions
             self.exit()
-     
-    #===========================================================================
-    # assigning operators to machines
-    #===========================================================================
-    def assignOperators(self):
-        #------------------------------------------------------------------------------ 
-        # for all the operators that are requested
-        for operator in self.candidateOperators:
-            # check if the candidateOperators are available, if the are requested and reside in the pendingObjects list
-            #------------------------------------------------------------------------------
-            if operator.checkIfResourceIsAvailable():
-                if operator.candidateEntity:
-                    # and if the priorityObject is indeed pending
-                    if (operator.candidateEntity.currentStation in self.pendingObjects)\
-                        and (not operator in self.conflictingOperators)\
-                        and operator.candidateEntity.candidateReceiver:
-                        # assign an operator to the priorityObject
-                        self.printTrace('router', 'will assign '+operator.id+' to -->  '+operator.candidateEntity.candidateReceiver.id)
-                        operator.assignTo(operator.candidateEntity.candidateReceiver)
-                        if not operator.candidateEntity.currentStation in self.toBeSignalled:
-                            self.toBeSignalled.append(operator.candidateEntity.currentStation)
-        self.printTrace('objects to be signalled:'+' '*11, [str(object.id) for object in self.toBeSignalled])
+    
+    def entry(self):
+        pass
+    
+    def allocateOperators(self):
+        # find the pending objects
+        self.findPendingObjects()
+        # find the pending entities
+        self.findPendingEntities()
+        # find the operators that can start working now 
+        self.findCandidateOperators()
+        # find the operators candidateEntities
+        self.sortCandidateEntities()
+        # find the entity that will occupy the resource, and the station that will receive it (if any available)
+        #  entities that are already in stations have already a receiver
+        self.findCandidateReceivers()
+    
+    def unAssignExits(self):
+        for operator in [x for x in self.candidateOperators if x.isAssignedTo()]:
+            if not operator.isAssignedTo() in self.pendingObjects:
+                if operator.candidateEntity.currentStation.exitIsAssignedTo():
+                    if operator.isAssignedTo()!=operator.candidateEntity.currentStation.exitIsAssignedTo():
+                        operator.candidateEntity.currentStation.unAssignExit()
+        # if an object cannot proceed with getEntity, unAssign the exit of its giver
+        for object in self.pendingQueues:
+            if not object in self.toBeSignalled:
+                object.unAssignExit()
     
     # =======================================================================
     #                 return control to the Machine.run
@@ -176,15 +153,33 @@ class RouterManaged(Router):
         del self.pendingMachines[:]
         del self.pendingQueues[:]
         del self.toBeSignalled[:]
-        del self.multipleCriterionList[:]
         del self.conflictingOperators[:]
         del self.conflictingStations[:]
         del self.conflictingEntities[:]
         del self.occupiedReceivers[:]
         del self.entitiesWithOccupiedReceivers[:]
-        self.schedulingRule='WT'
         self.invoked=False
     
+    
+    #===========================================================================
+    # assigning operators to machines
+    #===========================================================================
+    def assignOperators(self):
+        # for all the operators that are requested
+        for operator in self.candidateOperators:
+            # check if the candidateOperators are available, if the are requested and reside in the pendingObjects list
+            if operator.checkIfResourceIsAvailable():
+                if operator.candidateEntity:
+                    # and if the priorityObject is indeed pending
+                    if (operator.candidateEntity.currentStation in self.pendingObjects)\
+                        and (not operator in self.conflictingOperators)\
+                        and operator.candidateEntity.candidateReceiver:
+                        # assign an operator to the priorityObject
+                        self.printTrace('router', 'will assign '+operator.id+' to -->  '+operator.candidateEntity.candidateReceiver.id)
+                        operator.assignTo(operator.candidateEntity.candidateReceiver)
+                        if not operator.candidateEntity.currentStation in self.toBeSignalled:
+                            self.toBeSignalled.append(operator.candidateEntity.currentStation)
+        self.printTrace('objects to be signalled:'+' '*11, [str(object.id) for object in self.toBeSignalled])
     
     #===========================================================================
     # signal stations that wait for load operators
@@ -195,7 +190,6 @@ class RouterManaged(Router):
             station=operator.isAssignedTo()
             if station:
                 # if the router deals with simple entities
-                
                 if station in self.pendingMachines and station in self.toBeSignalled:
                     # signal this station's broker that the resource is available
                     self.printTrace('router','signalling broker of'+' '*50+operator.isAssignedTo().id)
@@ -214,20 +208,10 @@ class RouterManaged(Router):
                                 self.sendSignal(receiver=operator.candidateEntity.currentStation, signal=operator.candidateEntity.currentStation.loadOperatorAvailable)
     
     #===========================================================================
-    # clear the pending lists of the router
-    #===========================================================================
-    def clearPendingObjects(self):
-        self.pendingQueues=[]
-        self.pendingMachines=[]
-        self.pendingObjects=[]
-    
-    
-    #===========================================================================
     # find the stations that can be signalled by the router
     #===========================================================================
     def findPendingObjects(self):
         from Globals import G
-        self.clearPendingObjects()
         for entity in G.pendingEntities:
             if entity.currentStation in G.MachineList:
                 if entity.currentStation.broker.waitForOperator:
@@ -238,7 +222,6 @@ class RouterManaged(Router):
                         self.pendingQueues.append(entity.currentStation)
                         self.pendingObjects.append(entity.currentStation)
                         break
-#         self.pendingMachines=[machine for machine in G.MachineList if machine.broker.waitForOperator]
         self.pendingObjects=self.pendingQueues+self.pendingMachines
         self.printTrace('router found pending objects'+'-'*6+'>', [str(object.id) for object in self.pendingObjects])
         self.printTrace('pendingMachines'+'-'*19+'>', [str(object.id) for object in self.pendingMachines])
@@ -282,15 +265,12 @@ class RouterManaged(Router):
         # if the entity is ready to move to a machine and its manager is available
                 if entity.manager.checkIfResourceIsAvailable():
                     # check whether the entity canProceed and update the its candidateReceivers
-                    if entity.canProceed()\
+                    if entity.currentStation.canDeliver(entity)\
                         and not entity.manager in self.candidateOperators:
                         self.candidateOperators.append(entity.manager)
         # TODO: check if preemption can be implemented for the managed case
             # find the candidateEntities for each operator
-            self.findCandidateEntities()      
-         # update the schedulingRule/multipleCriterionList of the Router
-        if self.sorting:
-            self.updateSchedulingRule()  
+            self.findCandidateEntities()
         self.printTrace('router found candidate operators'+' '*3,
                         [(operator.id, [station.id for station in operator.candidateStations]) for operator in self.candidateOperators])
     
@@ -301,25 +281,6 @@ class RouterManaged(Router):
         for operator in self.candidateOperators:
             # find which pendingEntities that can move to machines is the operator managing
             operator.findCandidateEntities(self.pending)
-    
-    #=======================================================================
-    # find the schedulingRules of the candidateOperators
-    #=======================================================================
-    def updateSchedulingRule(self):
-        if self.candidateOperators:
-            for operator in self.candidateOperators:
-                if operator.multipleCriterionList:
-                    for criterion in operator.multipleCriterionList:
-                        if not criterion in self.multipleCriterionList:
-                            self.multipleCriterionList.append(criterion)
-                else: # if operator has only simple scheduling Rule
-                    if not operator.schedulingRule in self.multipleCriterionList:
-                        self.multipleCriterionList.append(operator.schedulingRule)
-            # TODO: For the moment all operators should have only one scheduling rule and the same among them
-            # added for testing
-            assert len(self.multipleCriterionList)==1,'The operators must have the same (one) scheduling rule' 
-            if len(self.multipleCriterionList)==1:
-                    self.schedulingRule=self.multipleCriterionList[0]
                 
     #=======================================================================
     #         Find the candidateEntities for each candidateOperator
@@ -329,63 +290,16 @@ class RouterManaged(Router):
     #=======================================================================
     def sortCandidateEntities(self):
         from Globals import G
-        # TODO: sort according to the number of pending Jobs
-        # TODO Have to sort again according to the priority used by the operators
-        
-        # initialise the operatorsWithOneOption and operatorsWithOneCandidateEntity lists
-        operatorsWithOneOption=[]
-        # for all the candidateOperators
-        for operator in self.candidateOperators:
-        # sort the candidate operators so that those who have only one option be served first
-        # if the candidate entity has only one receiver then append the operator to operatorsWithOneOption list
-            if operator.hasOneOption():
-                operatorsWithOneOption.append(operator)
         
         # TODO: the operator here actually chooses entity. This may pose a problem as two entities may be equivalent
         #       and as the operators chooses the sorting of the queue (if they do reside in the same queue is not taken into account)
         # sort the candidateEntities list of each operator according to its schedulingRule
         for operator in [x for x in self.candidateOperators if x.candidateEntities]:
             operator.sortCandidateEntities()
-            
-        # if there operators that have only one option then sort the candidateOperators according to the first one of these
-        # TODO: find out what happens if there are many operators with one option
-        # TODO: incorporate that to 
-        # self.sortOperators() 
-        
-        if self.sorting:
-            # sort the operators according to their waiting time
-            self.candidateOperators.sort(key=lambda x: x.totalWorkingTime)
-            # sort according to the number of options
-            if operatorsWithOneOption:
-                self.candidateOperators.sort(key=lambda x: x in operatorsWithOneOption, reverse=True)
         
         self.printTrace('candidateEntities for each operator',\
                         [(str(operator.id),[str(x.id) for x in operator.candidateEntities])
                         for operator in self.candidateOperators])
-
-    #=======================================================================
-    #                          Sort pendingEntities
-    # TODO: sorting them according to the operators schedulingRule
-    #=======================================================================
-    def sortPendingEntities(self):
-        if self.candidateOperators:
-            from Globals import G
-            candidateList=self.pending
-            self.activeQSorter(criterion=self.schedulingRule,candList=candidateList)
-            self.printTrace('router', ' sorted pending entities')
-         
-    #=======================================================================
-    #                             Sort candidateOperators
-    # TODO: consider if there must be an argument set for the schedulingRules of the Router
-    # TODO: consider if the scheduling rule for the operators must be global for all of them
-    #=======================================================================
-    def sortOperators(self):
-        # TODO: there must be criteria for sorting the cadidateOperators
-        #if we have sorting according to multiple criteria we have to call the sorter many times
-        # TODO: find out what happens in case of multiple criteria 
-        if self.candidateOperators:
-            candidateList=self.candidateOperators
-            self.activeQSorter(criterion=self.schedulingRule,candList=candidateList)
          
     #=======================================================================
     # Find candidate entities and their receivers
@@ -408,182 +322,33 @@ class RouterManaged(Router):
                     operator.candidateEntity.candidateReceiver=operator.candidateEntity.findCandidateReceiver()
                         
         # find the resources that are 'competing' for the same station
-        if not self.sorting:
-            # if there are entities that have conflicting receivers
-            if len(self.conflictingEntities):
-                # find the conflictingOperators
-                self.conflictingOperators=[operator for operator in self.candidateOperators\
-                                            if operator.candidateEntity in self.conflictingEntities or\
-                                                operator.candidateEntity.candidateReceiver in [x.candidateReceiver for x in self.conflictingEntities]]
-                # keep the sorting provided by the queues if there is conflict between operators
-                conflictingGroup=[]                     # list that holds the operators that have the same recipient
-            if len(self.conflictingOperators):
-                # for each of the candidateReceivers
-                for receiver in [x.candidateEntity.candidateReceiver for x in self.conflictingOperators]:
-                    # find the group of operators that compete for this station
-                    conflictingGroup=[operator for operator in self.conflictingOperators if operator.candidateEntity.candidateReceiver==receiver]
-                    assert len([station for station in [x.candidateEntity.currentStation for x in conflictingGroup]]),\
-                                'the conflicting entities must reside in the same queue'
-                    # for each of the competing for the same station operators 
-                    for operator in conflictingGroup:
-                    #     find the index of entities to be operated by them in the queue that holds them
-                        operator.ind=operator.candidateEntity.currentStation.getActiveObjectQueue().index(operator.candidateEntity)
-                    # the operator that can proceed is the manager of the entity as sorted by the queue that holds them
-                    conflictingGroup.sort(key=lambda x: x.ind)
-                    # the operators that are not first in the list cannot proceed
-                    for operator in conflictingGroup:
-                        if conflictingGroup.index(operator)!=0:
-                            self.candidateOperators.remove(operator)
+        # if there are entities that have conflicting receivers
+        if len(self.conflictingEntities):
+            # find the conflictingOperators
+            self.conflictingOperators=[operator for operator in self.candidateOperators\
+                                        if operator.candidateEntity in self.conflictingEntities or\
+                                            operator.candidateEntity.candidateReceiver in [x.candidateReceiver for x in self.conflictingEntities]]
+            # keep the sorting provided by the queues if there is conflict between operators
+            conflictingGroup=[]                     # list that holds the operators that have the same recipient
+        if len(self.conflictingOperators):
+            # for each of the candidateReceivers
+            for receiver in [x.candidateEntity.candidateReceiver for x in self.conflictingOperators]:
+                # find the group of operators that compete for this station
+                conflictingGroup=[operator for operator in self.conflictingOperators if operator.candidateEntity.candidateReceiver==receiver]
+                assert len([station for station in [x.candidateEntity.currentStation for x in conflictingGroup]]),\
+                            'the conflicting entities must reside in the same queue'
+                # for each of the competing for the same station operators 
+                for operator in conflictingGroup:
+                #     find the index of entities to be operated by them in the queue that holds them
+                    operator.ind=operator.candidateEntity.currentStation.getActiveObjectQueue().index(operator.candidateEntity)
+                # the operator that can proceed is the manager of the entity as sorted by the queue that holds them
+                conflictingGroup.sort(key=lambda x: x.ind)
+                # the operators that are not first in the list cannot proceed
+                for operator in conflictingGroup:
+                    if conflictingGroup.index(operator)!=0:
+                        self.candidateOperators.remove(operator)
             
         self.printTrace('candidateReceivers for each entity ',[(str(entity.id),\
                                                                             str(entity.candidateReceiver.id))
                                                                             for entity in self.pending if entity.candidateReceiver])
         
-        
-        # =======================================================================
-    #    sorts the Operators of the Queue according to the scheduling rule
-    # =======================================================================
-    def activeQSorter(self, criterion=None, candList=[]):
-        activeObjectQ=candList
-        if not activeObjectQ:
-            assert False, "empty candidateOperators list"
-        if criterion==None:
-            criterion=self.multipleCriterionList[0]
-        #if the schedulingRule is first in first out
-        if criterion=="FIFO":
-            # FIFO sorting has no meaning when sorting candidateEntities
-            self.activeQSorter(criterion='WT',candList=activeObjectQ)
-        #if the schedulingRule is based on a pre-defined priority
-        elif criterion=="Priority":
-            # if the activeObjectQ is a list of entities then perform the default sorting
-            try:
-                activeObjectQ.sort(key=lambda x: x.priority)
-            # if the activeObjectQ is a list of operators then sort them according to their candidateEntities
-            except:
-                activeObjectQ.sort(key=lambda x: x.candidateEntity.priority)
-        #if the scheduling rule is time waiting (time waiting of machine
-        # TODO: consider that the timeLastEntityEnded is not a 
-        #     indicative identifier of how long the station was waiting
-        elif criterion=='WT':
-            try:
-                activeObjectQ.sort(key=lambda x: x.schedule[-1][1])
-            except:
-                activeObjectQ.sort(key=lambda x: x.candidateEntity.schedule[-1][1])
-        #if the schedulingRule is earliest due date
-        elif criterion=="EDD":
-            try:
-                activeObjectQ.sort(key=lambda x: x.dueDate)
-            except:
-                activeObjectQ.sort(key=lambda x: x.candidateEntity.dueDate)
-        #if the schedulingRule is earliest order date
-        elif criterion=="EOD":
-            try:
-                activeObjectQ.sort(key=lambda x: x.orderDate)
-            except:
-                activeObjectQ.sort(key=lambda x: x.candidateEntity.orderDate)
-        #if the schedulingRule is to sort Entities according to the stations they have to visit
-        elif criterion=="NumStages":
-            try:
-                activeObjectQ.sort(key=lambda x: len(x.remainingRoute), reverse=True)
-            except:
-                activeObjectQ.sort(key=lambda x: len(x.candidateEntity.remainingRoute), reverse=True)
-        #if the schedulingRule is to sort Entities according to the their remaining processing time in the system
-        elif criterion=="RPC":
-            try:
-                for entity in activeObjectQ:
-                    RPT=0
-                    for step in entity.remainingRoute:
-                        processingTime=step.get('processingTime',None)
-                        if processingTime:
-                            RPT+=float(processingTime.get('mean',0))
-                    entity.remainingProcessingTime=RPT
-                activeObjectQ.sort(key=lambda x: x.remainingProcessingTime, reverse=True)
-            except:
-                for entity in [operator.candidateEntity for operator in activeObjectQ]:
-                    RPT=0
-                    for step in entity.remainingRoute:
-                        processingTime=step.get('processingTime',None)
-                        if processingTime:
-                            RPT+=float(processingTime.get('mean',0))
-                    entity.remainingProcessingTime=RPT
-                activeObjectQ.sort(key=lambda x: x.candidateEntity.remainingProcessingTime, reverse=True)
-        #if the schedulingRule is to sort Entities according to longest processing time first in the next station
-        elif criterion=="LPT":
-            try:
-                for entity in activeObjectQ:
-                    processingTime = entity.remainingRoute[0].get('processingTime',None)
-                    entity.processingTimeInNextStation=float(processingTime.get('mean',0))
-                    if processingTime:
-                        entity.processingTimeInNextStation=float(processingTime.get('mean',0))
-                    else:
-                        entity.processingTimeInNextStation=0
-                activeObjectQ.sort(key=lambda x: x.processingTimeInNextStation, reverse=True)
-            except:
-                for entity in [operator.candidateEntity for operator in activeObjectQ]:
-                    processingTime = entity.remainingRoute[0].get('processingTime',None)
-                    entity.processingTimeInNextStation=float(processingTime.get('mean',0))
-                    if processingTime:
-                        entity.processingTimeInNextStation=float(processingTime.get('mean',0))
-                    else:
-                        entity.processingTimeInNextStation=0
-                activeObjectQ.sort(key=lambda x: x.candidateEntity.processingTimeInNextStation, reverse=True)
-        #if the schedulingRule is to sort Entities according to shortest processing time first in the next station
-        elif criterion=="SPT":
-            try:
-                for entity in activeObjectQ:
-                    processingTime = entity.remainingRoute[0].get('processingTime',None)
-                    if processingTime:
-                        entity.processingTimeInNextStation=float(processingTime.get('mean',0))
-                    else:
-                        entity.processingTimeInNextStation=0
-                activeObjectQ.sort(key=lambda x: x.processingTimeInNextStation)
-            except:
-                for entity in [operator.candidateEntity for operator in activeObjectQ]:
-                    processingTime = entity.remainingRoute[0].get('processingTime',None)
-                    if processingTime:
-                        entity.processingTimeInNextStation=float(processingTime.get('mean',0))
-                    else:
-                        entity.processingTimeInNextStation=0
-                activeObjectQ.sort(key=lambda x: x.candidateEntity.processingTimeInNextStation)
-        #if the schedulingRule is to sort Entities based on the minimum slackness
-        elif criterion=="MS":
-            try:
-                for entity in activeObjectQ:
-                    RPT=0
-                    for step in entity.remainingRoute:
-                        processingTime=step.get('processingTime',None)
-                        if processingTime:
-                            RPT+=float(processingTime.get('mean',0))
-                    entity.remainingProcessingTime=RPT
-                activeObjectQ.sort(key=lambda x: (x.dueDate-x.remainingProcessingTime))
-            except:
-                for entity in [operator.candidateEntity for operator in activeObjectQ]:
-                    RPT=0
-                    for step in entity.remainingRoute:
-                        processingTime=step.get('processingTime',None)
-                        if processingTime:
-                            RPT+=float(processingTime.get('mean',0))
-                    entity.remainingProcessingTime=RPT
-                activeObjectQ.sort(key=lambda x: (x.candidateEntity.dueDate-x.candidateEntity.remainingProcessingTime))
-        #if the schedulingRule is to sort Entities based on the length of the following Queue
-        elif criterion=="WINQ":
-            try:
-                from Globals import G
-                for entity in activeObjectQ:
-                    nextObjIds=entity.remainingRoute[1].get('stationIdsList',[])
-                    for obj in G.ObjList:
-                        if obj.id in nextObjIds:
-                            nextObject=obj
-                    entity.nextQueueLength=len(nextObject.getActiveObjectQueue())
-                activeObjectQ.sort(key=lambda x: x.nextQueueLength)
-            except:
-                from Globals import G
-                for entity in [operator.candidateEntity for operator in activeObjectQ]:
-                    nextObjIds=entity.remainingRoute[1].get('stationIdsList',[])
-                    for obj in G.ObjList:
-                        if obj.id in nextObjIds:
-                            nextObject=obj
-                    entity.nextQueueLength=len(nextObject.getActiveObjectQueue())
-                activeObjectQ.sort(key=lambda x: x.candidateEntity.nextQueueLength)
-        else:
-            assert False, "Unknown scheduling criterion %r" % (criterion, )

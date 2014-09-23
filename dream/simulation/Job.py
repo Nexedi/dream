@@ -121,13 +121,6 @@ class Job(Entity):                                  # inherits from the Entity c
             print 'WIP definition error: {0}'.format(setWipError)
     
     #===========================================================================
-    # check if the entity can proceed to an operated machine, for use by Router
-    #===========================================================================
-    def canProceed(self):
-        activeObject=self.currentStation
-        return activeObject.canDeliver(self)
-    
-    #===========================================================================
     # check if the requireParts of the entity next step sequence (route) have
     # have concluded the steps with sequence numbers smaller than the sequence
     # of the entity's next step in its route
@@ -236,7 +229,7 @@ class Job(Entity):                                  # inherits from the Entity c
             router.entitiesWithOccupiedReceivers.append(self)
             availableReceiver=None
         # if the sorting flag is not set then the sorting of each queue must prevail in case of operators conflict
-        if not router.sorting and not availableReceiver and bool(availableReceivers):
+        if not availableReceiver and bool(availableReceivers):
             availableReceiver=self.currentStation.selectReceiver(self.candidateReceivers)
             if not self in router.conflictingEntities:
                 router.conflictingEntities.append(self)
