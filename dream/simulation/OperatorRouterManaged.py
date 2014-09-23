@@ -108,9 +108,15 @@ class RouterManaged(Router):
             # exit actions
             self.exitActions()
     
+    #===========================================================================
+    # entry actions on Router call
+    #===========================================================================
     def entryActions(self):
         pass
     
+    #===========================================================================
+    # routine to allocate the operators to the stations
+    #===========================================================================
     def allocateOperators(self):
         # find the pending objects
         self.findPendingObjects()
@@ -124,6 +130,9 @@ class RouterManaged(Router):
         #  entities that are already in stations have already a receiver
         self.findCandidateReceivers()
     
+    #===========================================================================
+    # un-assign the exit of the objects that are not to be signalled
+    #===========================================================================
     def unAssignExits(self):
         for operator in [x for x in self.candidateOperators if x.isAssignedTo()]:
             if not operator.isAssignedTo() in self.pendingObjects:
@@ -136,7 +145,7 @@ class RouterManaged(Router):
                 object.unAssignExit()
     
     # =======================================================================
-    #                 return control to the Machine.run
+    #                 Exit actions return control to the Machine.run
     # =======================================================================
     def exitActions(self):
         # reset the candidateEntities of the operators
