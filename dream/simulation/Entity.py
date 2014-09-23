@@ -76,6 +76,12 @@ class Entity(ManPyObject):
         self.alias=None
         self.remainingProcessingTime=remainingProcessingTime
         # the current station of the entity
+        
+    #===========================================================================
+    # return the responsible operator for the current step, not implemented for entities
+    #===========================================================================
+    def responsibleForCurrentStep(self):
+        return None
    
     # =======================================================================
     # outputs results to JSON File 
