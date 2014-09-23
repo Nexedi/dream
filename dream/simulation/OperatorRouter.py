@@ -49,16 +49,8 @@ class Router(ObjectInterruption):
         self.toBeSignalled=[]
         # flag to notify whether the router is already invoked
         self.invoked=False
-        
         self.preemptiveOperators=[]                  # list of preemptiveOperators that should preempt their machines
-        
-        self.conflictingOperators=[]                 # list with the operators that have candidateEntity with conflicting candidateReceivers
-        self.conflictingEntities=[]                  # entities with conflictingReceivers
-        self.conflictingStations=[]                  # stations with conflicting operators
-        self.occupiedReceivers=[]                    # occupied candidateReceivers of a candidateEntity
-        
         self.criticalQueues=[]
-        
         self.pending=[]                              # list of entities that require operators now
         
     #===========================================================================
@@ -75,19 +67,10 @@ class Router(ObjectInterruption):
         self.candidateOperators=[]
         # flag used to check if the Router is initialised
         self.isInitialized=True
-        
         self.invoked=False
-        
         self.preemptiveOperators=[]
-        
         self.toBeSignalled=[]
-        self.conflictingOperators=[]
-        self.conflictingEntities=[]
-        self.conflictingStations=[]
-        self.occupiedReceivers=[]
-        
         self.criticalQueues=[]
-        
         self.pending=[]                              # list of entities that require operators now
         
     # =======================================================================
@@ -118,7 +101,7 @@ class Router(ObjectInterruption):
                     break
             self.printTrace('','=-'*15)
             # entry actions
-            self.entry()
+            self.entryActions()
             # run the routine that allocates operators to machines
             self.allocateOperators()
             # assign operators to stations
@@ -130,7 +113,7 @@ class Router(ObjectInterruption):
             self.printTrace('', 'router exiting')
             self.printTrace('','=-'*20)
             # exit actions
-            self.exit()
+            self.exitActions()
     
     #===========================================================================
     # routing performed to define the candidate operators the pending entities and how the operators should be allocated
@@ -190,7 +173,7 @@ class Router(ObjectInterruption):
     #===========================================================================
     # entry actions 
     #===========================================================================
-    def entry(self):
+    def entryActions(self):
         from Globals import G
         for operator in G.OperatorsList:
             operator.candidateEntity=None
@@ -198,7 +181,7 @@ class Router(ObjectInterruption):
     # =======================================================================
     #                 return control to the Machine.run
     # =======================================================================
-    def exit(self):
+    def exitActions(self):
         from Globals import G
         # reset the variables that are used from the Router
         for operator in self.candidateOperators:
@@ -214,10 +197,6 @@ class Router(ObjectInterruption):
         del self.pendingMachines[:]
         del self.pendingQueues[:]
         del self.toBeSignalled[:]
-        del self.conflictingOperators[:]
-        del self.conflictingStations[:]
-        del self.conflictingEntities[:]
-        del self.occupiedReceivers[:]
         del self.criticalQueues[:]
         del self.pending[:]
         self.invoked=False
