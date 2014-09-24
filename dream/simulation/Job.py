@@ -237,13 +237,15 @@ class Job(Entity):                                  # inherits from the Entity c
         from Machine import Machine
         if issubclass(currentStation.__class__, Machine):
             for routeStep in self.route:
-                stepResponsible=routeStep.get('operator','not available')
+                stepResponsible=routeStep.get('operator',None)
                 stepIDs=routeStep.get('stationIdsList',[])
                 if currentStation.id in stepIDs:
-                    responsible=stepResponsible
+                    responsibleID=stepResponsible
                     break
         else:
-            responsible=self.remainingRoute[0].get('operator','not available')
+            responsibleID=self.remainingRoute[0].get('operator',None)
+        from Globals import findObjectById
+        responsible=findObjectById(responsibleID)
         return responsible
     #===========================================================================
     # method that finds a receiver for a candidate entity
