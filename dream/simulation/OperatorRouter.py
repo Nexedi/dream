@@ -354,12 +354,13 @@ class Router(ObjectInterruption):
     #=======================================================================
     def sortOperators(self): 
         if self.candidateOperators:
+            # calculate the time the operators have been waiting
             for op in self.candidateOperators:
-                op.criterion=0
+                op.waitingTime=0
                 if op.schedule:
-                    op.criterion=self.env.now-op.schedule[-1][-1]
+                    op.waitingTime=self.env.now-op.schedule[-1][-1]
             # sort according to the time they concluded their last operation
-            self.candidateOperators.sort(key=lambda x: x.criterion, reverse=True)
+            self.candidateOperators.sort(key=lambda x: x.waitingTime, reverse=True)
             
             
     #===========================================================================
@@ -380,7 +381,7 @@ class Router(ObjectInterruption):
                         operator.candidateEntities.append(station.currentEntity)
                 else:
                     for predecessor in station.previous:
-                        if predecessor in self.pendingQueues and not station in occupiedStations:
+                        if predecessor in self.pendingQueues and not station in occupiedStations and station.isInRoute(predecessor):
                             if predecessor.getActiveObjectQueue()[0] in self.pending\
                                  and not predecessor.getActiveObjectQueue()[0] in occupiedEntities:
                                 operator.candidateEntities.append(predecessor.getActiveObjectQueue()[0])
@@ -392,11 +393,10 @@ class Router(ObjectInterruption):
             if operator in self.preemptiveOperators:
                 operator.candidateEntities.sort(key=lambda x: x.isCritical, reverse=True)
             # sort the candidate entities according to their responsible personnel
-            operator.candidateEntities.sort(key=lambda x:x.responsibleForCurrentStep()==operator)
+            operator.candidateEntities.sort(key=lambda x:x.responsibleForCurrentStep()==operator,reverse=True)
             # pick an entity and a station
             if operator.candidateEntities:
                 operator.candidateEntity=operator.candidateEntities[0]
-            
                 # if the entities currentStation is machine
                 if operator.candidateEntity.currentStation in self.pendingMachines:
                     operator.candidateStation=operator.candidateEntity.currentStation
