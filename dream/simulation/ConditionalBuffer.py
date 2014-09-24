@@ -96,24 +96,13 @@ class ConditionalBuffer(QueueJobShop):
     # =======================================================================
     def sortEntities(self):
         activeObject = self.getActiveObject()
-        # (run the default behaviour - loan from Queue)
-        # if we have sorting according to multiple criteria we have to call the sorter many times
-        if self.schedulingRule=="MC":
-            for criterion in reversed(self.multipleCriterionList):
-               self.activeQSorter(criterion=criterion) 
-        #else we just use the default scheduling rule
-        else:
-            self.activeQSorter()
+        # perform the default sorting
+        QueueJobShop.sortEntities(activeObject)
         # and in the end sort according to the ConditionalBuffer sorting rule
         activeObjectQueue = activeObject.getActiveObjectQueue()
-        
         # for every entity in the activeObjectQueue
         for entity in activeObjectQueue:
             # check if the requiredParts (if any) have concluded the steps with sequence smaller 
             # than the sequence of the entity next step
             entity.mayProceed=entity.checkIfRequiredPartsReady()
-        
         activeObjectQueue.sort(key=lambda x: x.mayProceed, reverse=True)
-
-
-
