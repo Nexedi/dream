@@ -162,7 +162,6 @@ class MachineJobShop(Machine):
              and self.waitToDispose\
              and self.checkIfActive()\
              and thecaller.isInRoute(self)
-#              and (thecaller in self.next)
 
     # =======================================================================
     # method to execute preemption
