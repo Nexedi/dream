@@ -53,10 +53,6 @@ class Mould(Job):                                  # inherits from the Job class
             # if the order is not None, and the order.manager is given
             if self.order.manager:
                 self.manager=self.order.manager
-        #=======================================================================
-        # variable to be used by OperatorRouter
-        self.hot=False
-        #=======================================================================
         # used by printRoute
         if self.order:
             self.alias=self.order.alias+'C'+str(len(G.OrderComponentList))
