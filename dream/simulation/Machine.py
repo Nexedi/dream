@@ -1093,7 +1093,7 @@ class Machine(CoreObject):
         thecaller=callerObject
         return len(activeObjectQueue)>0\
              and self.waitToDispose\
-             and (thecaller in self.next)\
+             and thecaller.isInRoute(self)\
              and (self.canDeliverOnInterruption
                   or self.timeLastEntityEnded==self.env.now
                   or self.checkIfActive())
