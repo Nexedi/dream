@@ -47,7 +47,7 @@ class ExitJobShop(Exit):
     # method used to check whether the station is in the entity-to-be-received route
     # TODO: consider giving the activeEntity as attribute
     #===========================================================================
-    def isInRoute(self, callerObject=None):
+    def isInRouteOf(self, callerObject=None):
         activeObject=self.getActiveObject()
         activeObjectQueue=activeObject.getActiveObjectQueue()
         thecaller=callerObject

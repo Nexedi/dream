@@ -157,13 +157,13 @@ class OrderDecomposition(CoreObject):
             return True
         
         #return True if the OrderDecomposition in the state of disposing and the caller is the receiver
-        return self.Up and thecaller.isInRoute(activeObject)
+        return self.Up and thecaller.isInRouteOf(activeObject)
     
     #===========================================================================
     # method used to check whether the station is in the entity-to-be-received route
     # TODO: consider giving the activeEntity as attribute
     #===========================================================================
-    def isInRoute(self, callerObject=None):
+    def isInRouteOf(self, callerObject=None):
         activeObject=self.getActiveObject()
         activeObjectQueue=activeObject.getActiveObjectQueue()
         thecaller=callerObject
