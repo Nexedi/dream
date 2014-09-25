@@ -107,3 +107,9 @@ class Entity(ManPyObject):
     def checkIfRequiredPartsReady(self):
         return True
     
+    #===========================================================================
+    # method not implemented yet
+    #===========================================================================
+    def getRequiredParts(self):
+        return []
+    
