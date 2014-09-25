@@ -126,13 +126,14 @@ class Job(Entity):                                  # inherits from the Entity c
     # of the entity's next step in its route
     #===========================================================================
     def checkIfRequiredPartsReady(self):
+        # if the entity is in a queue (currentSeq==0) then return false
+        if self.currentStepSequence():
+            return False
         # find the sequence of the next step in the route of the activeEntity
-        sequence=self.nextStepSequence()
+        nextSequence=self.nextStepSequence()
         # if no sequence is provided then return true
-        if sequence=='not available':
+        if nextSequence==None:
             return True
-        # assert that the sequence is not zero
-        assert sequence, "the route sequence of the conditionalBuffer successor cannot be zero"
         # flag that decides if the entity can proceed to the next station in its route
         mayProceed=False
         # find the required parts for the next step in the route (if any)
@@ -142,17 +143,17 @@ class Job(Entity):                                  # inherits from the Entity c
             # for each requested part
             for part in requiredParts:
                 # retrieve the current step sequence of the requiredPart
-                curStepSeq=part.currentStepSequence()
+                partCurrentSeq=part.currentStepSequence()
                 # retrieve the next step sequence of the requiredParts
-                nextStepSeq=part.nextStepSequence()
+                partNextSeq=part.nextStepSequence()
                 # if there is no next step sequence (route finished)
                 # it means that the part has exhausted its route 
                 # if the sequence of the required part next step is smaller than the sequence of activeEntity's next step
                 # the activeEntity cannot proceed
-                if nextStepSeq>sequence or not nextStepSeq:
+                if partNextSeq>nextSequence or not partNextSeq:
                     # if the sequence of the requiredPart's currentStation is not zero then the 
                     # required part is currently being processed and thus the activeEntity cannot proceed
-                    if not curStepSeq:
+                    if not partCurrentSeq:
                         mayProceed=True
                     else:
                         mayProceed=False
@@ -190,11 +191,11 @@ class Job(Entity):                                  # inherits from the Entity c
     #===========================================================================
     def nextStepSequence(self):
         # find the sequence of the next step in the route of the activeEntity
-        sequence=self.remainingRoute[0].get('sequence','not available')
+        sequence=self.remainingRoute[0].get('sequence',None)
         return sequence
     
     #===========================================================================
-    # method that returns the sequence of the entity's current step
+    # method that returns the sequence of the entity's current step (returns zero if the entity is in a queue)
     #===========================================================================
     def currentStepSequence(self):
         currentStation=self.currentStation  # the current station of the part
