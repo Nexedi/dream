@@ -60,15 +60,14 @@ class Order(Job):
         self.secondaryComponentsList = []   # list that holds the Secondary Components of the order
         self.auxiliaryComponentsList = []   # list of the auxiliary components of the order 
         self.basicsEnded=basicsEnded        # flag that informs that the basic components of the order are finished
-        #=======================================================================
-        self.manager=manager                # the manager responsible to handle the order 
+        self.manager=manager                # the manager responsible to handle the order
+        #======================================================================= 
         # flag that informs weather the components needed for the assembly are present in the Assembly Buffer
         self.componentsReadyForAssembly = componentsReadyForAssembly
         
-        self.decomposed=False
+#         self.decomposed=False
         # used by printRoute
         self.alias='O'+str(len(G.OrderList))
-
         def createRoute(self, route):
             return route
     
@@ -78,13 +77,13 @@ class Order(Job):
     # returns only the components that are present in the system 
     #===========================================================================
     def findComponents(self):
+        from Globals import findObjectById
         for componentDict in self.componentsList:
-            from Globals import findObjectById, G
             componentId=componentDict.get('id',0)
             componentClass=componentDict.get('_class','not found')
             # if there is mould defined in the componentsList and the mould is not yet created, then assembly is requested
             if componentClass=='Dream.Mould':
-                if not componentId in G.EntityList:
+                if not componentId in [x.id for x in G.EntityList]:
                     self.assemblyRequested=True
             # XXX if the component is not yet created then there is no entity to find. 
             component=findObjectById(componentId)
@@ -98,7 +97,6 @@ class Order(Job):
     def getComponents(self):
         if not self.components:
             self.findComponents()
-        assert len(self.components)>=len(self.componentsList),'the created child components of an order cannot be less than the length of the componentsList'
         return self.components
     
     #===========================================================================
@@ -106,7 +104,7 @@ class Order(Job):
     #===========================================================================
     def findAssemblyComponents(self):
         for child in self.getComponents():
-            if child.componentType in assemblyValidTypes:
+            if child.componentType in self.assemblyValidTypes:
                 if not child in self.assemblyComponents:
                     self.assemblyComponents.append(child)
     
