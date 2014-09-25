@@ -117,18 +117,18 @@ class MachineJobShop(Machine):
             return self.operatorPool.checkIfResourceIsAvailable()\
                     and len(activeObjectQueue)<self.capacity\
                     and self.checkIfMachineIsUp()\
-                    and self.isInRoute(thecaller)\
+                    and self.isInRouteOf(thecaller)\
                     and not self.entryIsAssignedTo()
         else:
             return len(activeObjectQueue)<self.capacity\
                     and self.checkIfMachineIsUp()\
-                    and self.isInRoute(thecaller)\
+                    and self.isInRouteOf(thecaller)\
                     and not self.entryIsAssignedTo()
                         
     #===========================================================================
     # method used to check whether the station is in the entity-to-be-received route
     #===========================================================================
-    def isInRoute(self, callerObject=None):
+    def isInRouteOf(self, callerObject=None):
         activeObjectQueue=self.Res.users
         thecaller=callerObject
         # if the caller is not defined then return True. We are only interested in checking whether 
@@ -161,7 +161,7 @@ class MachineJobShop(Machine):
         return len(activeObjectQueue)>0\
              and self.waitToDispose\
              and self.checkIfActive()\
-             and thecaller.isInRoute(self)
+             and thecaller.isInRouteOf(self)
 
     # =======================================================================
     # method to execute preemption
@@ -205,7 +205,7 @@ class MachineJobShop(Machine):
     def canAcceptAndIsRequested(self,callerObject):
         giverObject=callerObject
         assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
-        if self.isInRoute(giverObject):
+        if self.isInRouteOf(giverObject):
             if Machine.canAcceptAndIsRequested(self,giverObject):
                 self.readLoadTime(giverObject)
                 return True

@@ -171,15 +171,15 @@ class MouldAssemblyBufferManaged(QueueManagedJob):
         # TODO: the activeEntity is already checked for the flag componentsReadyForAssembly
         if len(thecaller.getActiveObjectQueue())==0:
             if activeEntity.type=='Mould':
-                return thecaller.isInRoute(activeObject)
+                return thecaller.isInRouteOf(activeObject)
             else:
-                return thecaller.isInRoute(activeObject)\
+                return thecaller.isInRouteOf(activeObject)\
                         and activeEntity.order.componentsReadyForAssembly
         # otherwise, check additionally if the receiver holds orderComponents of the same order
         # TODO: should revise, this check may be redundant, as the receiver (assembler must be empty in order to start receiving
         # It is therefore needed that the control is performed by the assembler's getEntity() 
         else:
-            return thecaller.isInRoute(activeObject)\
+            return thecaller.isInRouteOf(activeObject)\
                     and thecaller.getActiveObjectQueue()[0].order is activeEntity.order\
                     and activeEntity.order.componentsReadyForAssembly
                     
