@@ -248,12 +248,12 @@ class Router(ObjectInterruption):
             object.getActiveObjectQueue().sort(key=lambda x:x.isCritical, reverse=True)
         # search among the pendingEntities
         for entity in G.pendingEntities:
-            # if the entity resides in a machine
+            # if the entity resides in a machine that waits for load operation
             if entity.currentStation in G.MachineList:
                 if entity.currentStation.broker.waitForOperator:
                     self.pendingMachines.append(entity.currentStation)
                     self.pending.append(entity)
-            # otherwise proceed only if the entity is at the head of the queue it resides
+            # otherwise proceed only if the entity is at the head of the "queue" it resides
             if entity.currentStation.getActiveObjectQueue().index(entity)==0:
                 # check the next stations
                 for machine in entity.currentStation.next:
