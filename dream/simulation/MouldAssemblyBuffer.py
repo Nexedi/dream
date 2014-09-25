@@ -27,7 +27,6 @@ Only if all the mould (order) components are present, will it be able to dispose
 '''
 
 from ConditionalBuffer import ConditionalBuffer
-# from SimPy.Simulation import now
 import simpy
 
 # ===========================================================================
@@ -65,12 +64,13 @@ class MouldAssemblyBuffer(ConditionalBuffer):
             are present in other MouldAssemblyBuffers
         '''
         # execute default behaviour
+        from Globals import G
         activeObject = self.getActiveObject()
         activeObjectQueue = activeObject.getActiveObjectQueue()
         activeEntity=ConditionalBuffer.getEntity(self)
         # if the activeEntity is of type orderComponent
         try:
-            if activeEntity.componentType in assemblyValidTypes:
+            if activeEntity.componentType in self.assemblyValidTypes:
                 activeEntity.readyForAssembly=1
             # for all the components that have the same parent Order as the activeEntity
             activeEntity.order.componentsReadyForAssembly = 1
@@ -143,8 +143,9 @@ class MouldAssemblyBuffer(ConditionalBuffer):
         activeObjectQueue = activeObject.getActiveObjectQueue()
         # if all the components of the same mould are present then move them to the front of the activeQ
         activeObjectQueue.sort(key=lambda x: x.order.componentsReadyForAssembly, reverse=True)
-        # keep the first entity of the activeQ
-        activeEntity = activeObjectQueue[0]
-        # bring the entities that have the same parentOrder as the first entity to the front
-        activeObjectQueue.sort(key=lambda x: not x.order.name == activeEntity.order.name)
+        if activeObjectQueue:
+            # keep the first entity of the activeQ
+            activeEntity = activeObjectQueue[0]
+            # bring the entities that have the same parentOrder as the first entity to the front
+            activeObjectQueue.sort(key=lambda x: not x.order.name == activeEntity.order.name)
 
