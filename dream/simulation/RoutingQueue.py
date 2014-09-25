@@ -60,7 +60,7 @@ class RoutingQueue(Queue):
                 # if yes then that entity can proceed
                 isInRouting=True
                 break
-        return len(activeObjectQueue)>0 and (thecaller in self.next) and isInRouting
+        return len(activeObjectQueue)>0 and thecaller.isInRoute(self) and isInRouting
     
     #===========================================================================
     # sort the entities of the queue for the receiver

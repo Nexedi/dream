@@ -88,7 +88,6 @@ class QueueJobShop(Queue):
         
         #return True if the Queue has Entities and the caller is in the self.next list
         return len(activeObjectQueue)>0\
-                and (thecaller in self.next)\
                 and thecaller.isInRoute(self)
     
     #===========================================================================
