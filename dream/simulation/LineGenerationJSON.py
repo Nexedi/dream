@@ -348,7 +348,6 @@ def createWIP():
         element['id'] = element_id
         wip=element.get('wip', [])
         from dream.simulation.OrderDesign import OrderDesign
-        from Order import Order
         for entity in wip:
             entityClass=entity.get('_class', None)
             entityType=Globals.getClassFromName(entityClass)
