@@ -381,7 +381,7 @@ class Router(ObjectInterruption):
                         operator.candidateEntities.append(station.currentEntity)
                 else:
                     for predecessor in station.previous:
-                        if predecessor in self.pendingQueues and not station in occupiedStations and station.isInRoute(predecessor):
+                        if predecessor in self.pendingQueues and not station in occupiedStations and station.isInRouteOf(predecessor):
                             if predecessor.getActiveObjectQueue()[0] in self.pending\
                                  and not predecessor.getActiveObjectQueue()[0] in occupiedEntities:
                                 operator.candidateEntities.append(predecessor.getActiveObjectQueue()[0])
