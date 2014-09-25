@@ -234,7 +234,7 @@ class OrderDecomposition(CoreObject):
             # variable that holds the componentType which can be Basic/Secondary/Auxiliary
             componentType=component.get('componentType', 'Basic') 
             # the component that needs the auxiliary (if the componentType is "Auxiliary") during its processing
-            requestingComponent = component.get('requestingComponent', 'not found') 
+            requestingComponent = component.get('requestingComponent', 'not found')
             # dummy variable that holds the routes of the jobs the route from the JSON file is a sequence of dictionaries
             JSONRoute=component.get('route', [])
             # variable that holds the argument used in the Job initiation hold None for each entry in the 'route' list
@@ -291,12 +291,14 @@ class OrderDecomposition(CoreObject):
                               isCritical=self.orderToBeDecomposed.isCritical)
             
             # check the componentType of the component and accordingly add to the corresponding list of the parent order
+            #===============================================================================
             if OC.componentType == 'Basic':
                 self.orderToBeDecomposed.basicComponentsList.append(OC)
             elif OC.componentType == 'Secondary':
                 self.orderToBeDecomposed.secondaryComponentsList.append(OC)
-            else:
-                self.orderToBeDecomposed.auxiliaryComponentsList.append(OC)
+#             else:
+#                 self.orderToBeDecomposed.auxiliaryComponentsList.append(OC)
+            #===============================================================================
                     
             G.OrderComponentList.append(OC)
             G.JobList.append(OC)   
