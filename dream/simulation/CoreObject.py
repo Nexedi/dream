@@ -673,7 +673,7 @@ class CoreObject(ManPyObject):
     #===========================================================================
     # method used to check whether the station is a successor of the caller
     #===========================================================================
-    def isInRoute(self, callerObject=None):
+    def isInRouteOf(self, callerObject=None):
         thecaller=callerObject
         # if the caller is not defined then return True. We are only interested in checking whether 
         # the station can accept whatever entity from whichever giver

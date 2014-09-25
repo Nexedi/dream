@@ -53,13 +53,13 @@ class QueueJobShop(Queue):
         #return according to the state of the Queue
         #check it the caller object holds an Entity that requests for current object
         return len(self.Res.users)<self.capacity\
-                and self.isInRoute(callerObject)
+                and self.isInRouteOf(callerObject)
     
     #===========================================================================
     # method used to check whether the station is in the entity-to-be-received route
     # TODO: consider giving the activeEntity as attribute
     #===========================================================================
-    def isInRoute(self, callerObject=None):
+    def isInRouteOf(self, callerObject=None):
         activeObjectQueue=self.Res.users
         thecaller=callerObject
         # if the caller is not defined then return True. We are only interested in checking whether 
@@ -88,7 +88,7 @@ class QueueJobShop(Queue):
         
         #return True if the Queue has Entities and the caller is in the self.next list
         return len(activeObjectQueue)>0\
-                and thecaller.isInRoute(self)
+                and thecaller.isInRouteOf(self)
     
     #===========================================================================
     # extend the default behaviour to check if whether the station 
@@ -97,7 +97,7 @@ class QueueJobShop(Queue):
     def canAcceptAndIsRequested(self,callerObject=None):
         giverObject=callerObject
         assert giverObject, 'there must be a caller for canAcceptAndIsRequested'
-        if self.isInRoute(giverObject):
+        if self.isInRouteOf(giverObject):
             return Queue.canAcceptAndIsRequested(self,giverObject)
 
     # =======================================================================

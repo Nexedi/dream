@@ -965,14 +965,14 @@ class Machine(CoreObject):
             return self.operatorPool.checkIfResourceIsAvailable()\
                 and self.checkIfMachineIsUp()\
                 and len(activeObjectQueue)<self.capacity\
-                and self.isInRoute(thecaller)\
+                and self.isInRouteOf(thecaller)\
                 and not self.entryIsAssignedTo()
         else:
             # the operator doesn't have to be present for the loading of the machine as the load operation
             # is not assigned to operators
             return self.checkIfMachineIsUp()\
                 and len(activeObjectQueue)<self.capacity\
-                and self.isInRoute(thecaller)\
+                and self.isInRouteOf(thecaller)\
                 and not self.entryIsAssignedTo()
     
     # =======================================================================
@@ -1079,7 +1079,7 @@ class Machine(CoreObject):
         thecaller=callerObject
         return len(activeObjectQueue)>0\
              and self.waitToDispose\
-             and thecaller.isInRoute(self)\
+             and thecaller.isInRouteOf(self)\
              and (self.canDeliverOnInterruption
                   or self.timeLastEntityEnded==self.env.now
                   or self.checkIfActive())

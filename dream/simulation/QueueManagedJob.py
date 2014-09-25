@@ -80,10 +80,6 @@ class QueueManagedJob(QueueJobShop):
             else:
                 haveEntityWithAvailableManager=True
                 break
-#         for entity in [x for x in activeObjectQueue if x.manager]:
-#             if entity.manager.checkIfResourceIsAvailable(thecaller):
-#                 haveEntityWithAvailableManager=True
-#                 break
         #if none of the Entities has an available manager return False
         if not haveEntityWithAvailableManager:
             return False
@@ -95,14 +91,6 @@ class QueueManagedJob(QueueJobShop):
         
         # and then perform the default behaviour
         return QueueJobShop.haveToDispose(self,thecaller)
-#         #if we have only one possible receiver just check if the Queue holds one or more entities
-#         if(thecaller==None):
-#             return len(activeObjectQueue)>0
-#         
-#         #return True if the Queue has Entities and the caller is the receiver
-#         return len(activeObjectQueue)>0\
-#                 and (thecaller in activeObject.next)\
-#                 and thecaller.isInRoute(activeObject)
     
     #===========================================================================
     #  signalRouter method
