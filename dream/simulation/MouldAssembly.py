@@ -64,6 +64,7 @@ TODOs: check the case when a mould is already in the WIP by the beginning of the
 from MachineJobShop import MachineJobShop
 import simpy
 from Globals import G
+from RandomNumberGenerator import RandomNumberGenerator
 
 # =======================================================================
 # Error in the assembling of the mould
@@ -239,28 +240,32 @@ class MouldAssembly(MachineJobShop):
             processDistType=processingTime.get('distributionType','not found')
             procTime=float(processingTime.get('mean', 0))
             processOpType=processingTime.get('operationType','not found') # can be manual/automatic
-            
             processingTime=self.getOperationTime(processingTime)
             self.rng=RandomNumberGenerator(self, **processingTime)
             self.procTime=self.rng.generateNumber()
             
             # setup operation
-            setupTime=firstStep['setupTime']
-            # update the activeObject's processing time according to the readings in the mould's route
-            setupDistType=setup.get('distributionType','not found')
-            setupTime=float(setup.get('mean', 0))
+            setupTime=firstStep.get('setupTime',None)
+            if setupTime:
+                # update the activeObject's processing time according to the readings in the mould's route
+                setupDistType=setupTime.get('distributionType','not found')
+                setTime=float(setupTime.get('mean', 0))
+                setupOpType=setupTime.get('operationType','not found') # can be manual/automatic
+                setupTime=self.getOperationTime(setupTime)
+                self.stpRng=RandomNumberGenerator(self, **setupTime)
             
-            setupOpType=setup.get('operationType','not found') # can be manual/automatic
-            setupTime=self.getOperationTime(setupTime)
-            self.stpRng=RandomNumberGenerator(self, **setupTime)
-            
-            # update the first step of the route with the activeObjects id as sole element of the stationIdsList
-            route.insert(0, {'stationIdsList':[str(self.id)],'processingTime':{'distributionType':str(processDistType),\
-                                                                               'mean':str(procTime),\
-                                                                               'operationType':str(processOpType)},\
-                                                             'setupTime':{'distributionType':str(setupDistType),\
-                                                                               'mean':str(setupTime),\
-                                                                               'operationType':str(setupOpType)}})
+                # update the first step of the route with the activeObjects id as sole element of the stationIdsList
+                route.insert(0, {'stationIdsList':[str(self.id)],'processingTime':{'distributionType':str(processDistType),\
+                                                                                   'mean':str(procTime),\
+                                                                                   'operationType':str(processOpType)},\
+                                                                 'setupTime':{'distributionType':str(setupDistType),\
+                                                                                   'mean':str(setupTime),\
+                                                                                   'operationType':str(setupOpType)}})
+            else:
+                # update the first step of the route with the activeObjects id as sole element of the stationIdsList
+                route.insert(0, {'stationIdsList':[str(self.id)],'processingTime':{'distributionType':str(processDistType),\
+                                                                                   'mean':str(procTime),\
+                                                                                   'operationType':str(processOpType)}})
             #Below it is to assign an exit if it was not assigned in JSON
             #have to talk about it with NEX
             exitAssigned=False
