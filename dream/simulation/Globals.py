@@ -263,16 +263,6 @@ def setWIP(entityList):
         # the following to be performed only if there is a current station. Orders, Projects e.t.c do not have
         # TODO, maybe we should loop in wiplist here
         if (not (entity.currentStation in G.MachineList)) and entity.currentStation:    
-            # variable to inform whether the successors are machines or not
-            successorsAreMachines=True
-            for nextObject in entity.currentStation.next:
-                if not nextObject in G.MachineList:
-                    successorsAreMachines=False
-                    break
-            if not successorsAreMachines:
-                entity.hot = False
-            else:
-                entity.hot = True
             # add the entity to the pendingEntities list
             G.pendingEntities.append(entity)
             
