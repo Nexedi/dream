@@ -166,7 +166,7 @@ class Queue(CoreObject):
         if(callerObject==None):
             return len(activeObjectQueue)>0 
         thecaller=callerObject
-        return len(activeObjectQueue)>0 and (thecaller in self.next)
+        return len(activeObjectQueue)>0 and thecaller.isInRoute(self)
     
     # =======================================================================
     #                    removes an entity from the Object
