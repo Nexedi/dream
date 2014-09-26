@@ -33,7 +33,7 @@ from Job import Job
 # =======================================================================
 class Order(Job):
     type="Order"
-    
+    # XX define which are the valid assembly types - for which components should the order be searching for 
     assemblyValidTypes=set(['Mold Base', 'Mold Insert', 'Slider', 'Misc', 'Z-standards', 'K-Standards'])
     assemblyInvalidTypes=set(['Mold','Injection Molding Part'])
     def __init__(self, id=None, 
@@ -72,11 +72,10 @@ class Order(Job):
             return route
     
     #===========================================================================
-    # find all the child components of the order 
-    # mould cannot be included as if it is not yet created then it can be found in the G.EntityList
+    # find all the active child components of the order 
     # returns only the components that are present in the system 
     #===========================================================================
-    def findComponents(self):
+    def findActiveComponents(self):
         from Globals import findObjectById
         for componentDict in self.componentsList:
             componentId=componentDict.get('id',0)
@@ -85,25 +84,24 @@ class Order(Job):
             if componentClass=='Dream.Mould':
                 if not componentId in [x.id for x in G.EntityList]:
                     self.assemblyRequested=True
-            # XXX if the component is not yet created then there is no entity to find. 
+            # if the component is not yet created then there is no entity to find. 
             component=findObjectById(componentId)
             if component:
                 if not component in self.components:
                     self.components.append(component)
     
     #===========================================================================
-    # return the all the child components of the order
+    # return the all the active child components of the order
     #===========================================================================
-    def getComponents(self):
-        if not self.components:
-            self.findComponents()
+    def getActiveComponents(self):
+        self.findActiveComponents()
         return self.components
     
     #===========================================================================
     # find all the child components of the order that are required for the building of the mould
     #===========================================================================
     def findAssemblyComponents(self):
-        for child in self.getComponents():
+        for child in self.getActiveComponents():
             if child.componentType in self.assemblyValidTypes:
                 if not child in self.assemblyComponents:
                     self.assemblyComponents.append(child)
