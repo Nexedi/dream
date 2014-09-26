@@ -25,7 +25,7 @@
         "numberOfReplications": "1",
         "numberOfSolutions": "4",
         "processTimeout": "2000",
-        "trace": "Yes"
+        "trace": "No"
     },
     "nodes": {
         "E1": {
