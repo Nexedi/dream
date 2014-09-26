@@ -67,6 +67,28 @@ class ConditionalBuffer(QueueJobShop):
             return activeObjectQueue[0].mayProceed
         return False
     
+    #===========================================================================
+    # getEntity method
+    # ass soon as the buffer receives an entity it controls if the entity is requested elsewhere,
+    # then it checks if there other requested entities by the same requesting entity.
+    # Finally, it is controlled whether all the requested parts have concluded 
+    # their sequences for the requesting entity
+    #===========================================================================
+    def getEntity(self):
+        activeEntity=QueueJobShop.getEntity(self)
+        from Globals import G
+        # for all the entities in the EntityList
+        for entity in G.EntityList:
+            requiredParts=entity.getRequiredParts()
+            if requiredParts:
+                # if the activeEntity is in the requierdParts of the entity
+                if activeEntity in requiredParts:
+                    # if the entity that requires the activeEntity can proceed then signal the currentStation of the entity
+                    if entity.checkIfRequiredPartsReady() and entity.currentStation.expectedSignals['canDispose']:
+                        entity.mayProceed=True
+                        self.sendSignal(receiver=entity.currentStation, signal=entity.currentStation.canDispose)
+        return activeEntity
+    
     # =======================================================================                
     # sort the entities of the activeQ
     # bring to the front the entities that have no requestedParts for the following step in their route
