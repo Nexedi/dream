@@ -72,3 +72,6 @@ class OrderComponent(Job):                                  # inherits from the 
         # used by printRoute
         if self.order:
             self.alias=self.order.alias+'C'+str(len(G.OrderComponentList))
+        
+        G.OrderComponentList.append(self)
+        G.WipList.append(self)
