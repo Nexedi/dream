@@ -364,22 +364,22 @@ class CoreObject(ManPyObject):
         self.updateNext(activeEntity)
         self.outputTrace(activeEntity.name, "got into "+self.objName)
         self.printTrace(activeEntity.name, enter=self.id)
-        # if there are entities with requiredParts then check whether the requirements are fulfilled for them to proceed
-        #     ass soon as a "buffer" receives an entity it controls if the entity is requested elsewhere,
-        #     then it checks if there other requested entities by the same requesting entity.
-        #     Finally, it is controlled whether all the requested parts have concluded 
-        #     their sequences for the requesting entity
-        from Globals import G
-        # for all the entities in the EntityList
-        for entity in G.EntityList:
-            requiredParts=entity.getRequiredParts()
-            if requiredParts:
-                # if the activeEntity is in the requierdParts of the entity
-                if activeEntity in requiredParts:
-                    # if the entity that requires the activeEntity can proceed then signal the currentStation of the entity
-                    if entity.checkIfRequiredPartsReady() and entity.currentStation.expectedSignals['canDispose']:
-                        entity.mayProceed=True
-                        self.sendSignal(receiver=entity.currentStation, signal=entity.currentStation.canDispose)
+#         # if there are entities with requiredParts then check whether the requirements are fulfilled for them to proceed
+#         #     ass soon as a "buffer" receives an entity it controls if the entity is requested elsewhere,
+#         #     then it checks if there other requested entities by the same requesting entity.
+#         #     Finally, it is controlled whether all the requested parts have concluded 
+#         #     their sequences for the requesting entity
+#         from Globals import G
+#         # for all the entities in the EntityList
+#         for entity in G.EntityList:
+#             requiredParts=entity.getRequiredParts()
+#             if requiredParts:
+#                 # if the activeEntity is in the requierdParts of the entity
+#                 if activeEntity in requiredParts:
+#                     # if the entity that requires the activeEntity can proceed then signal the currentStation of the entity
+#                     if entity.checkIfRequiredPartsReady() and entity.currentStation.expectedSignals['canDispose']:
+#                         entity.mayProceed=True
+#                         self.sendSignal(receiver=entity.currentStation, signal=entity.currentStation.canDispose)
         
         # if the object (eg Queue) canAccept then signal the Giver
         if self.canAccept():
