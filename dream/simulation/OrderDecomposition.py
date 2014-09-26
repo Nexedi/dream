@@ -191,6 +191,7 @@ class OrderDecomposition(CoreObject):
             if entity.type=='OrderDesign':
                 self.orderToBeDecomposed=entity.order
                 activeObjectQueue.remove(entity)            #remove the order from the internal Queue
+                entity.currentStation=None                  # reset the currentStation of the entity
                 self.printTrace(entity.id, destroy=self.id)
                 # if the entity is in G.pendingEntities list remove it from there
                 if entity in G.pendingEntities:
@@ -227,10 +228,10 @@ class OrderDecomposition(CoreObject):
         name=component.get('name', 'not found')
         try:
             # there is the case were the component of the componentsList of the parent Order
-            # is of type Mould and therefore has no argument componentType
-            # in this case no Mould object should be initiated
-            if component.get('_class', 'not found')=='Dream.Mould':
-                raise MouldComponentException('there is a mould in the componentList')
+            # is of type Mould or OrderDesign and therefore has no argument componentType
+            # in this case no Mould or OrderDesign object should be initiated
+            if component.get('_class', 'not found')=='Dream.Mould' or component.get('_class', 'not found')=='Dream.OrderDesign':
+                raise MouldComponentException('there is a mould/orderDesign in the componentList')
             # variable that holds the componentType which can be Basic/Secondary/Auxiliary
             componentType=component.get('componentType', 'Basic') 
             # the component that needs the auxiliary (if the componentType is "Auxiliary") during its processing
@@ -299,7 +300,6 @@ class OrderDecomposition(CoreObject):
 #             else:
 #                 self.orderToBeDecomposed.auxiliaryComponentsList.append(OC)
             #===============================================================================
-                    
             G.OrderComponentList.append(OC)
             G.JobList.append(OC)   
             G.WipList.append(OC)  
