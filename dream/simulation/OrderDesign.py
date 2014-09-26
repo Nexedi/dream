@@ -38,14 +38,15 @@ class OrderDesign(Job):                                  # inherits from the Job
     def __init__(self, id=None, name=None, 
                     route=[], 
                     priority=0, 
-                    dueDate=None, 
-                    orderDate=None, 
+                    dueDate=0, 
+                    orderDate=0, 
                     extraPropertyDict=None,
                     order=None, 
                     requestingComponent = None, 
                     isCritical=False,
                     **kw):
-        Job.__init__(self, id, name, route, priority, dueDate, orderDate, extraPropertyDict, isCritical)
+        Job.__init__(self, id=id, name=name, route=route, priority=priority, dueDate=dueDate, orderDate=orderDate, 
+                     extraPropertyDict=extraPropertyDict, isCritical=isCritical)
         self.order=order            # parent order of the order component
         # TODO: in case the order is not given as argument (when the component is given as WIP) have to give a manager as argument
         #     or create the initiate the parent order not as WIP 
@@ -62,3 +63,30 @@ class OrderDesign(Job):                                  # inherits from the Job
         # used by printRoute
         if self.order:
             self.alias=self.order.alias+'C'+str(len(G.OrderComponentList))
+            
+        route = [x for x in self.route]       #    copy self.route
+        #Below it is to assign an order decomposition if it was not assigned in JSON
+        #have to talk about it with NEX
+        odAssigned=False
+        for element in route:
+            elementIds = element.get('stationIdsList',[])
+            for obj in G.ObjList:
+                for elementId in elementIds:
+                    if obj.id==elementId and obj.type=='OrderDecomposition':
+                        odAssigned=True 
+        if not odAssigned:
+            odId=None
+            for obj in G.ObjList:
+                if obj.type=='OrderDecomposition':
+                    odId=obj.id
+                    break
+            if odId:
+                route.append({'stationIdsList':[odId],\
+                              'processingTime':\
+                             {'distributionType':'Fixed',\
+                              'mean':'0'}})
+            self.route=route
+        # add the OrderDesign to the DesignList and the OrderComponentList
+        G.OrderComponentList.append(self)
+        G.DesignList.append(self)
+        G.WipList.append(self)
