@@ -184,8 +184,9 @@ class MouldAssembly(MachineJobShop):
         for element in temp_activeObjectQueue:
             # update their schedule
             element.schedule[-1].append(self.env.now)
-            # remove the elements
+            # remove the elements from the activeObjectQueue and reset the current station of the entity
             activeObjectQueue.remove(element)
+            element.currentStation=None
         del temp_activeObjectQueue[:]
         # after assembling reset the capacity
         activeObject.updateCapacity(1)
