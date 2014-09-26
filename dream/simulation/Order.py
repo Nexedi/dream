@@ -87,8 +87,12 @@ class Order(Job):
             # if the component is not yet created then there is no entity to find. 
             component=findObjectById(componentId)
             if component:
-                if not component in self.components:
+                # if the component is not in the components list and has a currentStation add it
+                if not component in self.components and component.currentStation:
                     self.components.append(component)
+                # if the component is in the components list and has no currentStation remove it
+                if component in self.components and not component.currentStation:
+                    self.components.remove(component)
     
     #===========================================================================
     # return the all the active child components of the order
