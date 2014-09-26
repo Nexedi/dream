@@ -195,7 +195,7 @@ class Job(Entity):                                  # inherits from the Entity c
         return sequence
     
     #===========================================================================
-    # method that returns the sequence of the entity's current step (returns zero if the entity is in a queue)
+    # method that returns the sequence of the entity's current step (returns zero if the entity is in a queue or orderDecomposition)
     #===========================================================================
     def currentStepSequence(self):
         currentStation=self.currentStation  # the current station of the part
