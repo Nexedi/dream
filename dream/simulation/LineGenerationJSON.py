@@ -344,22 +344,70 @@ def createWIP():
     # entities that just finished processing in a station 
     # and have to enter the next machine 
     G.pendingEntities=[]
-    json_data = G.JSONData
     #Read the json data
-    nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
+    json_data = G.JSONData
+    # read from the dictionary the dicts with key 'BOM' (if there are any)
+    bom=json_data.get('BOM',None)
+    if bom:
+        orders=bom.get('productionOrders',[])
+        # for every order in the productionOrders list
+        for prodOrder in orders:
+            orderClass=prodOrder.get('_class',None)
+            orderType=Globals.getClassFromName(orderClass)
+            # make sure that their type is Dream.Order
+            assert issubclass(orderType, Order), 'a production order must be sub-class of Order'
+            if orderClass=='Dream.Order':
+                id=prodOrder.get('id', 'not found')
+                name=prodOrder.get('name', 'not found')
+                priority=int(prodOrder.get('priority', '0'))
+                dueDate=float(prodOrder.get('dueDate', '0'))
+                orderDate=float(prodOrder.get('orderDate', '0'))
+                isCritical=bool(int(prodOrder.get('isCritical', '0')))  
+                componentsReadyForAssembly = bool((prodOrder.get('componentsReadyForAssembly', '0')))
+                componentsList=prodOrder.get('componentsList', {})
+                # keep a reference of all extra properties passed to the job
+                extraPropertyDict = {}
+                for key, value in prodOrder.items():
+                  if key not in ('_class', 'id'):
+                    extraPropertyDict[key] = value
+                # initiate the Order
+                O=Order('G'+id, 'general '+name, route=[], priority=priority, dueDate=dueDate,orderDate=orderDate,
+                        isCritical=isCritical, componentsList=componentsList,
+                        componentsReadyForAssembly=componentsReadyForAssembly, extraPropertyDict=extraPropertyDict)
+                G.OrderList.append(O)
+                
+    # read from the dictionary the dicts with key 'nodes'
+    nodes = json_data['nodes']
     for (element_id, element) in nodes.iteritems():
         element['id'] = element_id
         wip=element.get('wip', [])
         from dream.simulation.OrderDesign import OrderDesign
         for entity in wip:
+            entityOrder=None    # variable to hold the parent order of the WIP
+            # if the dictionary contains no objects but ids (the orders are provided in BOM echelon)
+            if not type(entity) is dict:
+                # try to find the parent order and the dict corresponding to the ID provided in the WIP
+                for order in G.OrderList:
+                    if order.componentsList:
+                        for componentDict in order.componentsList:
+                            tempID=componentDict.get('id','not found')
+                            if entity==tempID:
+                                entity=componentDict
+                                entityOrder=order
+                    if type(entity) is dict:
+                        break
             entityClass=entity.get('_class', None)
             entityType=Globals.getClassFromName(entityClass)
             inputDict=dict(entity)
             inputDict.pop('_class')
             from dream.simulation.Entity import Entity
             if issubclass(entityType, Entity) and (not entityClass=='Dream.Order'):
-                entity=entityType(**inputDict)   
-                G.EntityList.append(entity)    
+                # if orders are provided separately (BOM) provide the parent order as argument  
+                if entityOrder:
+                    entity=entityType(order=order,**inputDict)
+                else:
+                    entity=entityType(**inputDict)
+                G.EntityList.append(entity)
                 object=Globals.findObjectById(element['id'])
                 entity.currentStation=object   
                 
