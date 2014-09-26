@@ -1,0 +1,210 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.MouldAssemblyBuffer", 
+   "family": "Buffer", 
+   "id": "AB1", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.OrderComponent", 
+   "family": "Job", 
+   "id": "C1", 
+   "results": {
+    "completionTime": "still in progress", 
+    "schedule": [
+     {
+      "entranceTime": 1.0, 
+      "stationId": "OD0"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "stationId": "Q1"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "stationId": "M1"
+     }, 
+     {
+      "entranceTime": 3.0, 
+      "stationId": "AB1"
+     }, 
+     {
+      "entranceTime": 6.0, 
+      "stationId": "MA1"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.OrderComponent", 
+   "family": "Job", 
+   "id": "C2", 
+   "results": {
+    "completionTime": "still in progress", 
+    "schedule": [
+     {
+      "entranceTime": 1.0, 
+      "stationId": "OD0"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "stationId": "Q1"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "stationId": "M2"
+     }, 
+     {
+      "entranceTime": 2.0, 
+      "stationId": "AB1"
+     }, 
+     {
+      "entranceTime": 6.0, 
+      "stationId": "MA1"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.OrderComponent", 
+   "family": "Job", 
+   "id": "C3", 
+   "results": {
+    "completionTime": "still in progress", 
+    "schedule": [
+     {
+      "entranceTime": 1.0, 
+      "stationId": "OD0"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "stationId": "Q1"
+     }, 
+     {
+      "entranceTime": 3.0, 
+      "stationId": "M2"
+     }, 
+     {
+      "entranceTime": 6.0, 
+      "stationId": "AB1"
+     }, 
+     {
+      "entranceTime": 6.0, 
+      "stationId": "MA1"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.ExitJobShop", 
+   "family": "Exit", 
+   "id": "E1", 
+   "results": {
+    "lifespan": 7.0, 
+    "takt_time": 7.0, 
+    "throughput": 1
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "M0", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 85.71428571428571, 
+    "working_ratio": 14.285714285714286
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "M1", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 71.42857142857143, 
+    "working_ratio": 28.571428571428573
+   }
+  }, 
+  {
+   "_class": "Dream.MachineJobShop", 
+   "family": "Server", 
+   "id": "M2", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 42.857142857142854, 
+    "working_ratio": 57.142857142857146
+   }
+  }, 
+  {
+   "_class": "Dream.MouldAssembly", 
+   "family": "Server", 
+   "id": "MA1", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 85.71428571428571, 
+    "working_ratio": 14.285714285714286
+   }
+  }, 
+  {
+   "_class": "Dream.Mould", 
+   "family": "Job", 
+   "id": "Mo1", 
+   "results": {
+    "completionTime": 7.0, 
+    "schedule": [
+     {
+      "entranceTime": 6.0, 
+      "stationId": "MA1"
+     }, 
+     {
+      "entranceTime": 7.0, 
+      "stationId": "E1"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.OrderDesign", 
+   "family": "Job", 
+   "id": "OD1", 
+   "results": {
+    "completionTime": 1.0, 
+    "schedule": [
+     {
+      "entranceTime": 0, 
+      "stationId": "Q0"
+     }, 
+     {
+      "entranceTime": 0, 
+      "stationId": "M0"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "stationId": "OD0"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.ConditionalBuffer", 
+   "family": "Buffer", 
+   "id": "Q0", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.ConditionalBuffer", 
+   "family": "Buffer", 
+   "id": "Q1", 
+   "results": {}
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}
