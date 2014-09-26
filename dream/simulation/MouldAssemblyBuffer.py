@@ -99,9 +99,6 @@ class MouldAssemblyBuffer(ConditionalBuffer):
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
         thecaller=callerObject
-        # sort the entities and bring to front the entities that have parerntOrders
-        # with the flag componentsReadyForAssembly raised
-        activeObject.sortEntities()
         # and then perform the default behaviour
         if ConditionalBuffer.haveToDispose(self,callerObject):
             # update the local variable activeEntity
@@ -111,25 +108,6 @@ class MouldAssemblyBuffer(ConditionalBuffer):
                        and activeEntity.order.componentsReadyForAssembly
             except:
                 return activeEntity.order.componentsReadyForAssembly
-            
-#             # if no caller is defined then check if the entity to be disposed has the flag componentsReadyForAssembly raised
-#             if not thecaller:
-#                 return activeEntity.order.componentsReadyForAssembly
-#             # if the successors (MouldAssembly) internal queue is empty then proceed with checking weather
-#             # the caller is the receiver
-#             # TODO: the activeEntity is already checked for the flag componentsReadyForAssembly
-#             if len(thecaller.getActiveObjectQueue())==0:
-#                 return activeEntity.order.componentsReadyForAssembly
-# #                 if activeEntity.type=='Mould':
-# #                     return True
-# #                 else:
-# #                     return activeEntity.order.componentsReadyForAssembly
-#             # otherwise, check additionally if the receiver holds orderComponents of the same order
-#             # TODO: should revise, this check may be redundant, as the receiver (assembler must be empty in order to start receiving
-#             # It is therefore needed that the control is performed by the assembler's getEntity() 
-#             else:
-#                 return thecaller.getActiveObjectQueue()[0].order is activeEntity.order\
-#                        and activeEntity.order.componentsReadyForAssembly
     
     # =======================================================================                
     # Sort the entities of the activeQ
