@@ -105,20 +105,30 @@ class Job(Entity):                                  # inherits from the Entity c
     # initializes all the Entity for a new simulation replication 
     # =======================================================================
     def initialize(self):
-        # has to be re-initialized each time a new Job is added
-        self.remainingRoute=list(self.route)
-        # check the number of stations in the stationIdsList for the current step (0)
-        # if it is greater than 1 then there is a problem definition
-        objectIds = self.route[0].get('stationIdsList',[])
-        try:
-            if len(objectIds)==1:
-                from Globals import findObjectById
-                self.currentStation=findObjectById(objectIds[0])
-            else:
-                from Globals import SetWipTypeError
-                raise SetWipTypeError('The starting station of the the entity is not defined uniquely')
-        except SetWipTypeError as setWipError:
-            print 'WIP definition error: {0}'.format(setWipError)
+        
+        if self.currentStation:
+            for step in self.route:
+                stepObjectIds=step.get('stationIdsList',[])
+                if self.currentStation.id in stepObjectIds:
+                    ind=self.route.index(step)
+                    self.remainingRoute = self.route[ind:]
+                    break
+            
+        else:
+            # has to be re-initialized each time a new Job is added
+            self.remainingRoute=list(self.route)
+            # check the number of stations in the stationIdsList for the current step (0)
+            # if it is greater than 1 then there is a problem definition
+            objectIds = self.route[0].get('stationIdsList',[])
+            try:
+                if len(objectIds)==1:
+                    from Globals import findObjectById
+                    self.currentStation=findObjectById(objectIds[0])
+                else:
+                    from Globals import SetWipTypeError
+                    raise SetWipTypeError('The starting station of the the entity is not defined uniquely')
+            except SetWipTypeError as setWipError:
+                print 'WIP definition error: {0}'.format(setWipError)
     
     #===========================================================================
     # check if the requireParts of the entity next step sequence (route) have
