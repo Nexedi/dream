@@ -227,7 +227,9 @@ def setWIP(entityList):
         # if the entity is of type Job/OrderComponent/Order/Mould
         # XXX Orders do no more run in the system, instead we have OrderDesigns
         elif entity.type in ['Job', 'OrderComponent', 'Order','OrderDesign', 'Mould']:
+            
             # find the list of starting station of the entity
+            # XXX if the entity is in wip then the current station is already defined and the remainingRoute has to be redefined
             currentObjectIds=entity.remainingRoute[0].get('stationIdsList',[])
             # if the list of starting stations has length greater than one then there is a starting WIP definition error 
             try:
@@ -240,6 +242,9 @@ def setWIP(entityList):
             # get the starting station of the entity and load it with it
             object = findObjectById(objectId)
             object.getActiveObjectQueue().append(entity)        # append the entity to its Queue
+            # if the entity is to be appended to a mouldAssemblyBuffer then it is readyForAsselbly
+            if object.__class__.__name__=='MouldAssemblyBuffer':
+                entity.readyForAssembly=1
             
             # read the IDs of the possible successors of the object
             nextObjectIds=entity.remainingRoute[1].get('stationIdsList',[])
