@@ -363,7 +363,7 @@ def createWIP():
                 dueDate=float(prodOrder.get('dueDate', '0'))
                 orderDate=float(prodOrder.get('orderDate', '0'))
                 isCritical=bool(int(prodOrder.get('isCritical', '0')))  
-                componentsReadyForAssembly = bool((prodOrder.get('componentsReadyForAssembly', '0')))
+                componentsReadyForAssembly = bool((prodOrder.get('componentsReadyForAssembly', False)))
                 componentsList=prodOrder.get('componentsList', {})
                 # keep a reference of all extra properties passed to the job
                 extraPropertyDict = {}
@@ -409,7 +409,7 @@ def createWIP():
                     entity=entityType(**inputDict)
                 G.EntityList.append(entity)
                 object=Globals.findObjectById(element['id'])
-                entity.currentStation=object   
+                entity.currentStation=object
                 
             # ToDo order is to defined in a new way
             if entityClass=='Dream.Order':
@@ -420,7 +420,7 @@ def createWIP():
                 orderDate=float(entity.get('orderDate', '0'))
                 isCritical=bool(int(entity.get('isCritical', '0')))  
                 basicsEnded=bool(int(entity.get('basicsEnded', '0'))) 
-                componentsReadyForAssembly = bool((entity.get('componentsReadyForAssembly', '0')))
+                componentsReadyForAssembly = bool((entity.get('componentsReadyForAssembly', False)))
                 # read the manager ID
                 manager=entity.get('manager', None)
                 # if a manager ID is assigned then search for the operator with the corresponding ID
