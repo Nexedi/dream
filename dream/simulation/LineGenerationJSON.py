@@ -405,6 +405,7 @@ def createWIP():
                 # if orders are provided separately (BOM) provide the parent order as argument  
                 if entityOrder:
                     entity=entityType(order=order,**inputDict)
+                    entity.orderInBOM=True
                 else:
                     entity=entityType(**inputDict)
                 G.EntityList.append(entity)

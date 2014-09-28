@@ -53,6 +53,8 @@ class Job(Entity):                                  # inherits from the Entity c
         G.JobList.append(self)
         # used by printRoute
         self.alias='J'+str(len(G.JobList))
+        # added for testing - flag that shows if the order and component routes are defined in the BOM
+        self.orderInBOM=False
 
     # =======================================================================
     # outputs results to JSON File 
@@ -105,16 +107,18 @@ class Job(Entity):                                  # inherits from the Entity c
     # initializes all the Entity for a new simulation replication 
     # =======================================================================
     def initialize(self):
+        currentStationWellDefined=False
         
-        if self.currentStation:
+        if self.currentStation and self.orderInBOM:
             for step in self.route:
                 stepObjectIds=step.get('stationIdsList',[])
                 if self.currentStation.id in stepObjectIds:
                     ind=self.route.index(step)
                     self.remainingRoute = self.route[ind:]
+                    currentStationWellDefined=True
                     break
             
-        else:
+        if not currentStationWellDefined:
             # has to be re-initialized each time a new Job is added
             self.remainingRoute=list(self.route)
             # check the number of stations in the stationIdsList for the current step (0)
