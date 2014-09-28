@@ -242,7 +242,7 @@
             "isDummy": "0",
             "name": "StartQueue",
             "wip": [
-                "OD1"
+                {"id":"OD1","sequence":"1"}
             ]
         }
     }
