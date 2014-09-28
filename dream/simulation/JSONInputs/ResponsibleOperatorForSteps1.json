@@ -27,7 +27,7 @@
 		"confidenceLevel" : "0.95",
 		"maxSimTime" : "-1",
 		"numberOfReplications" : "1",
-		"trace" : "Yes",
+		"trace" : "No",
 		"console" : "No"
 	},
 	"nodes" : {
@@ -423,7 +423,7 @@
 					"route" : [{
 							"sequence" : 1,
 							"stationIdsList" : [
-								"Q1"
+								"Q2"
 							]
 						}, {
 							"sequence" : 1,
@@ -435,12 +435,12 @@
 								"operationType" : 1
 							},
 							"stationIdsList" : [
-								"M1"
+								"M2"
 							]
 						}, {
 							"sequence" : 4,
 							"stationIdsList" : [
-								"Q2"
+								"Q1"
 							]
 						}, {
 							"sequence" : 4,
@@ -452,7 +452,7 @@
 								"operationType" : 1
 							},
 							"stationIdsList" : [
-								"M2"
+								"M1"
 							]
 						}, {
 							"stationIdsList" : [
