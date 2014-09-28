@@ -16,10 +16,6 @@
     "schedule": [
      {
       "entranceTime": 0, 
-      "stationId": "OD0"
-     }, 
-     {
-      "entranceTime": 0, 
       "stationId": "Q1"
      }, 
      {
@@ -46,10 +42,6 @@
     "schedule": [
      {
       "entranceTime": 0, 
-      "stationId": "OD0"
-     }, 
-     {
-      "entranceTime": 0, 
       "stationId": "Q1"
      }, 
      {
@@ -74,10 +66,6 @@
    "results": {
     "completionTime": "still in progress", 
     "schedule": [
-     {
-      "entranceTime": 0, 
-      "stationId": "OD0"
-     }, 
      {
       "entranceTime": 0, 
       "stationId": "Q1"
