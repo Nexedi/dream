@@ -54,7 +54,7 @@ class Job(Entity):                                  # inherits from the Entity c
         # used by printRoute
         self.alias='J'+str(len(G.JobList))
         # added for testing - flag that shows if the order and component routes are defined in the BOM
-        self.orderInBOM=False
+        self.routeInBOM=False
 
     # =======================================================================
     # outputs results to JSON File 
@@ -108,8 +108,8 @@ class Job(Entity):                                  # inherits from the Entity c
     # =======================================================================
     def initialize(self):
         currentStationWellDefined=False
-        
-        if self.currentStation and self.orderInBOM:
+        # XXX change WIP definition when BOM is provided (current sequence number should be provided)
+        if self.currentStation and self.routeInBOM:
             for step in self.route:
                 stepObjectIds=step.get('stationIdsList',[])
                 if self.currentStation.id in stepObjectIds:
