@@ -211,7 +211,9 @@
             "isDummy": "0",
             "name": "Queue1",
 			"wip": [
-                "C1","C2","C3"
+                {"id":"C1","sequence":"2"},
+				{"id":"C2","sequence":"3"},
+				{"id":"C3","sequence":"4"}
             ]
         },
         "E1": {
