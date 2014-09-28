@@ -384,18 +384,39 @@ def createWIP():
         from dream.simulation.OrderDesign import OrderDesign
         for entity in wip:
             entityOrder=None    # variable to hold the parent order of the WIP
-            # if the dictionary contains no objects but ids (the orders are provided in BOM echelon)
-            if not type(entity) is dict:
-                # try to find the parent order and the dict corresponding to the ID provided in the WIP
-                for order in G.OrderList:
-                    if order.componentsList:
-                        for componentDict in order.componentsList:
-                            tempID=componentDict.get('id','not found')
-                            if entity==tempID:
-                                entity=componentDict
-                                entityOrder=order
-                    if type(entity) is dict:
-                        break
+            # if there is BOM defined
+            if bom:
+                # and production orders in it
+                if bom.get('productionOrders',[]):
+                    # find which order has the entity in its componentsList
+                    for order in G.OrderList:
+                        if order.componentsList:
+                            for componentDict in order.componentsList:
+                                # if the entity has no parent order the following control will not be performed
+                                if entity['id']==componentDict['id']:
+                                    entityOrder=order                       # the parent order of the entity
+                                    entityCurrentSeq=int(entity['sequence'])# the current seq number of the entity's  route
+                                    ind=0               # holder of the route index corresponding to the entityCurrentSeq
+                                    solution=False      # flag to signal that the route step is found
+                                    # find the step that corresponds to the entityCurrentSeq
+                                    for i, step in enumerate(componentDict.get('route',[])):
+                                        stepSeq=step['sequence']        # the sequence of step i
+                                        if stepSeq=='':
+                                            stepSeq=0                   # if the seq is ''>OrderDecomposition then 0
+                                        # if the entityCurrentSeq is found and the id of the holding Station is in the steps stationIdsList
+                                        if int(stepSeq)==int(entityCurrentSeq) and element['id'] in step['stationIdsList']:
+                                            ind=i                       # hold the index 
+                                            solution=True               # the solution isfound
+                                            break
+                                    # assert that there is solution
+                                    assert solution, 'something is wrong with the initial step of '+entity['id']
+                                    # the remaining route of the entity assuming that the given route doesn't start from the entityCurrentSeq
+                                    entityRoute=componentDict.get('route',[])[ind:]
+                                    entity=dict(componentDict)          # copy the entity dict
+                                    entity.pop('route')                 # remove the old route
+                                    entity['route']=entityRoute         # and hold the new one without the previous steps
+                                    break
+            
             entityClass=entity.get('_class', None)
             entityType=Globals.getClassFromName(entityClass)
             inputDict=dict(entity)
@@ -405,7 +426,7 @@ def createWIP():
                 # if orders are provided separately (BOM) provide the parent order as argument  
                 if entityOrder:
                     entity=entityType(order=order,**inputDict)
-                    entity.orderInBOM=True
+                    entity.routeInBOM=True
                 else:
                     entity=entityType(**inputDict)
                 G.EntityList.append(entity)
