@@ -359,9 +359,10 @@ class Router(ObjectInterruption):
                 op.waitingTime=0
                 if op.schedule:
                     op.waitingTime=self.env.now-op.schedule[-1][-1]
-            # sort according to the time they concluded their last operation
+                elif self.env.now>0:
+                    op.waitingTime=self.env.now
+            print 'before', [[x.id, x.waitingTime] for x in self.candidateOperators]
             self.candidateOperators.sort(key=lambda x: x.waitingTime, reverse=True)
-            
             
     #===========================================================================
     # find working stations for the candidateOperators
