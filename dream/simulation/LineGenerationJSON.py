@@ -379,7 +379,6 @@ def createWIP():
         wip=element.get('wip', [])
         from dream.simulation.OrderDesign import OrderDesign
         for entity in wip:
-            entityOrder=None    # variable to hold the parent order of the WIP
             # if there is BOM defined
             if bom:
                 # and production orders in it
@@ -390,7 +389,6 @@ def createWIP():
                             for componentDict in order.componentsList:
                                 # if the entity has no parent order the following control will not be performed
                                 if entity['id']==componentDict['id']:
-                                    entityOrder=order                       # the parent order of the entity
                                     entityCurrentSeq=int(entity['sequence'])# the current seq number of the entity's  route
                                     ind=0               # holder of the route index corresponding to the entityCurrentSeq
                                     solution=False      # flag to signal that the route step is found
@@ -411,6 +409,7 @@ def createWIP():
                                     entity=dict(componentDict)          # copy the entity dict
                                     entity.pop('route')                 # remove the old route
                                     entity['route']=entityRoute         # and hold the new one without the previous steps
+                                    entity['order']=order.id
                                     break
             
             entityClass=entity.get('_class', None)
@@ -420,8 +419,10 @@ def createWIP():
             from dream.simulation.Entity import Entity
             if issubclass(entityType, Entity) and (not entityClass=='Dream.Order'):
                 # if orders are provided separately (BOM) provide the parent order as argument  
-                if entityOrder:
-                    entity=entityType(order=order,**inputDict)
+                if entity.get('order',None):
+                    entityOrder=Globals.findObjectById(entity['order'])
+                    inputDict.pop('order')
+                    entity=entityType(order=entityOrder,**inputDict)
                     entity.routeInBOM=True
                 else:
                     entity=entityType(**inputDict)
