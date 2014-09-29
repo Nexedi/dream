@@ -257,7 +257,7 @@ class Router(ObjectInterruption):
             if entity.currentStation.getActiveObjectQueue().index(entity)==0:
                 # check the next stations
                 for machine in entity.currentStation.next:
-                    if machine in G.MachineList and entity.checkIfRequiredPartsReady():
+                    if machine in G.MachineList and entity.checkIfRequiredPartsReady() and entity.currentStation.haveToDispose():
                         if any(type=='Load' for type in machine.multOperationTypeList) and not entity.currentStation in self.pendingQueues:
                             self.pendingQueues.append(entity.currentStation)
                             self.pending.append(entity)
