@@ -638,11 +638,11 @@ class Machine(CoreObject):
             #===================================================================
             #===================================================================
             
-            #===================================================================
-            # # release a resource if the only operation type is Load
-            #===================================================================
-            if self.shouldYield(operationTypes={"Load":1, "Processing":0,"Setup":0},methods={'isOperated':1}):
-                yield self.env.process(self.release())
+#             #===================================================================
+#             # # release a resource if the only operation type is Load
+#             #===================================================================
+#             if self.shouldYield(operationTypes={"Load":1, "Processing":0,"Setup":0},methods={'isOperated':1}):
+#                 yield self.env.process(self.release())
             
             #===================================================================
             #===================================================================
@@ -663,6 +663,13 @@ class Machine(CoreObject):
                 self.checkInitialOperationTypes()
             # TODO: the Machine receive the entity after the operator is available
             #     the canAcceptAndIsRequested method checks only in case of Load type of operation
+            
+            
+            #===================================================================
+            # # release a resource if the only operation type is Load
+            #===================================================================
+            if self.shouldYield(operationTypes={"Load":1, "Processing":0,"Setup":0},methods={'isOperated':1}):
+                yield self.env.process(self.release())
             
             #===================================================================
             # # request a resource if it is not already assigned an Operator
