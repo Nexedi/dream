@@ -361,7 +361,6 @@ class Router(ObjectInterruption):
                     op.waitingTime=self.env.now-op.schedule[-1][-1]
                 elif self.env.now>0:
                     op.waitingTime=self.env.now
-            print 'before', [[x.id, x.waitingTime] for x in self.candidateOperators]
             self.candidateOperators.sort(key=lambda x: x.waitingTime, reverse=True)
             
     #===========================================================================
