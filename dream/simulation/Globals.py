@@ -54,11 +54,9 @@ class G:
     maxSimTime=0                    #the total simulation time
     
     # flag for printing in console
-    # -----------------------------------------------------------------------
     console=""
     
     # data for the trace output in excel
-    # -----------------------------------------------------------------------
     trace=""                        #this is written from input. If it is "Yes" then you write to trace, else we do not
     traceIndex=0                    #index that shows in what row we are
     sheetIndex=1                    #index that shows in what sheet we are
@@ -67,26 +65,21 @@ class G:
     
     
     # variables for excel output
-    # -----------------------------------------------------------------------
     outputIndex=0                   #index that shows in what row we are
     sheetIndex=1                    #index that shows in what sheet we are
     outputFile = xlwt.Workbook()    #create excel file
     outputSheet = outputFile.add_sheet('sheet '+str(sheetIndex), cell_overwrite_ok=True)  #create excel sheet
     
     #variables for json output
-    # -----------------------------------------------------------------------
     outputJSON={}
     outputJSONFile=None
     
     numberOfEntities = 0
     
     #object that routes the operators in the model
-    #------------------------------------------------------------------------
     Router=None 
     
-    # -----------------------------------------------------------------------
     #                define the lists of each object type
-    # -----------------------------------------------------------------------
     SourceList=[]
     MachineList=[]
     ExitList=[]
@@ -206,7 +199,6 @@ class SetWipTypeError(Exception):
 # =======================================================================
 # method to set-up the entities in the current stations 
 # as Work In Progress
-# -----------------------------------------
 # in this case the current station must be defined! 
 # otherwise there is no current station but a list of possible stations
 # although the entity cannot be in more than one stations

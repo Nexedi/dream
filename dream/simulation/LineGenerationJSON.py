@@ -218,10 +218,8 @@ def createObjectResourcesAndCoreObjects():
             # get the successorList for the 'Frames'
             coreObject.nextFrameIds=getSuccessorList(element['id'], lambda source, destination, edge_data: edge_data.get('entity') == 'Frame')
             
-    # -----------------------------------------------------------------------
     #                    loop through all the core objects    
     #                         to read predecessors
-    # -----------------------------------------------------------------------
     for element in G.ObjList:
         #loop through all the nextIds of the object
         for nextId in element.nextIds:
@@ -244,12 +242,10 @@ def createObjectInterruptions():
     #Read the json data
     nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
     
-    # -----------------------------------------------------------------------
     #                loop through all the nodes to  
     #            search for Event Generator and create them
     #                   this is put last, since the EventGenerator 
     #                may take other objects as argument
-    # -----------------------------------------------------------------------
     for (element_id, element) in nodes.iteritems():                 # use an iterator to go through all the nodes
                                                                     # the key is the element_id and the second is the 
                                                                     # element itself 

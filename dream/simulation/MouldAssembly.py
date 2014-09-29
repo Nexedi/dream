@@ -202,6 +202,10 @@ class MouldAssembly(MachineJobShop):
                         break
                 # create the mould
                 self.createMould(self.mouldToBeCreated)
+                # check if there is a need for manual processing
+                self.checkForManualOperation(type='Processing',entity=self.mouldToBeCreated)
+                # check if there is a need for manual processing
+                self.checkForManualOperation(type='Setup',entity=self.mouldToBeCreated)
                 # set the created mould as WIP
                 import Globals
                 Globals.setWIP([self.mouldToBeCreated])
@@ -225,7 +229,6 @@ class MouldAssembly(MachineJobShop):
         id=component.get('id', 'not found')
         name=component.get('name', 'not found')
         try:
-            
             # dummy variable that holds the routes of the jobs the route from the JSON file is a sequence of dictionaries
             JSONRoute=component.get('route', [])
             # variable that holds the argument used in the Job initiation hold None for each entry in the 'route' list
@@ -234,27 +237,25 @@ class MouldAssembly(MachineJobShop):
             firstStep = route.pop(0)
             assert (self.id in firstStep.get('stationIdsList',[])),\
                          'the assembler must be in the mould-to-be-created route\' initial step'
-            
             # normal processing operation
             processingTime=firstStep['processingTime']
+            processingTime=self.getOperationTime(processingTime)
+            self.rng=RandomNumberGenerator(self, **processingTime)
+            self.procTime=self.rng.generateNumber()
             # update the activeObject's processing time according to the readings in the mould's route
             processDistType=processingTime.get('distributionType','not found')
             procTime=float(processingTime.get('mean', 0))
             processOpType=processingTime.get('operationType','not found') # can be manual/automatic
-            processingTime=self.getOperationTime(processingTime)
-            self.rng=RandomNumberGenerator(self, **processingTime)
-            self.procTime=self.rng.generateNumber()
             
             # setup operation
             setupTime=firstStep.get('setupTime',None)
             if setupTime:
+                setupTime=self.getOperationTime(setupTime)
+                self.stpRng=RandomNumberGenerator(self, **setupTime)
                 # update the activeObject's processing time according to the readings in the mould's route
                 setupDistType=setupTime.get('distributionType','not found')
                 setTime=float(setupTime.get('mean', 0))
                 setupOpType=setupTime.get('operationType','not found') # can be manual/automatic
-                setupTime=self.getOperationTime(setupTime)
-                self.stpRng=RandomNumberGenerator(self, **setupTime)
-            
                 # update the first step of the route with the activeObjects id as sole element of the stationIdsList
                 route.insert(0, {'stationIdsList':[str(self.id)],'processingTime':{'distributionType':str(processDistType),\
                                                                                    'mean':str(procTime),\
