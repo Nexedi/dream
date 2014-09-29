@@ -178,8 +178,8 @@
    "family": "Operator", 
    "id": "O1", 
    "results": {
-    "waiting_ratio": 71.42857142857143, 
-    "working_ratio": 28.571428571428573
+    "waiting_ratio": 57.142857142857146, 
+    "working_ratio": 42.857142857142854
    }
   }, 
   {
@@ -187,8 +187,8 @@
    "family": "Operator", 
    "id": "O2", 
    "results": {
-    "waiting_ratio": 14.285714285714286, 
-    "working_ratio": 85.71428571428571
+    "waiting_ratio": 28.571428571428573, 
+    "working_ratio": 71.42857142857143
    }
   }, 
   {
