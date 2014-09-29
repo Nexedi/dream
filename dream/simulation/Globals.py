@@ -184,7 +184,7 @@ def getMethodFromName(dotted_name):
 # method finding objects by ID
 # =======================================================================
 def findObjectById(id):
-    for obj in G.ObjList + G.ObjectResourceList + G.EntityList + G.ObjectInterruptionList:
+    for obj in G.ObjList + G.ObjectResourceList + G.EntityList + G.ObjectInterruptionList + G.OrderList:
         if obj.id==id:
             return obj
     return None
