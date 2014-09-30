@@ -58,8 +58,8 @@
         "_class": "Dream.Configuration",
         "numberOfReplications": "1",
         "maxSimTime": "-1",
-        "trace": "Yes",
-		"console": "Yes",
+        "trace": "No",
+		"console": "No",
         "confidenceLevel": "0.95"
     },
 	"BOM":{
