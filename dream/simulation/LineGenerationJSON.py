@@ -390,6 +390,7 @@ def createWIP():
                                 # if the entity has no parent order the following control will not be performed
                                 if entity['id']==componentDict['id']:
                                     entityCurrentSeq=int(entity['sequence'])# the current seq number of the entity's  route
+                                    entityRemainingProcessingTime=entity.get('remainingProcessingTime',{})
                                     ind=0               # holder of the route index corresponding to the entityCurrentSeq
                                     solution=False      # flag to signal that the route step is found
                                     # find the step that corresponds to the entityCurrentSeq
@@ -410,6 +411,7 @@ def createWIP():
                                     entity.pop('route')                 # remove the old route
                                     entity['route']=entityRoute         # and hold the new one without the previous steps
                                     entity['order']=order.id
+                                    entity['remainingProcessingTime']=entityRemainingProcessingTime
                                     break
             
             entityClass=entity.get('_class', None)
