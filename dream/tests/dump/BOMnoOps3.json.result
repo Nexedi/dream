@@ -12,7 +12,7 @@
    "family": "Job", 
    "id": "C1", 
    "results": {
-    "completionTime": "still in progress", 
+    "completionTime": 4.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -30,7 +30,7 @@
    "family": "Job", 
    "id": "C2", 
    "results": {
-    "completionTime": "still in progress", 
+    "completionTime": 4.0, 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -56,7 +56,7 @@
    "family": "Job", 
    "id": "C3", 
    "results": {
-    "completionTime": "still in progress", 
+    "completionTime": 4.0, 
     "schedule": [
      {
       "entranceTime": 0, 
