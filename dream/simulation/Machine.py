@@ -1075,27 +1075,6 @@ class Machine(CoreObject):
              and (self.canDeliverOnInterruption
                   or self.timeLastEntityEnded==self.env.now
                   or self.checkIfActive())
-                 
-#     # =======================================================================
-#     #                       calculates the setup time
-#     # =======================================================================
-#     def calculateSetupTime(self):
-#         return self.stpRng.generateNumber()
-    
-#     # =======================================================================
-#     #                        calculates the Load time
-#     # =======================================================================
-#     def calculateLoadTime(self):
-#         return self.loadRng.generateNumber()
-    
-#     # =======================================================================
-#     #                        calculates the Load time
-#     # =======================================================================
-#     def calculateTime(self, type='Processing'):
-#         if type=='Setup':
-#             return self.stpRng.generateNumber()
-#         elif type=='Load':
-#            return self.loadRng.generateNumber()
     
     #===========================================================================
     # checks whether the entity can proceed to a successor object
