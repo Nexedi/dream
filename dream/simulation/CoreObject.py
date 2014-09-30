@@ -740,6 +740,16 @@ class CoreObject(ManPyObject):
                 return initialWIPrng.generateNumber()
         return self.rng.generateNumber()           # this is if we have a default processing time for all the entities
     
+    #===========================================================================
+    # calculates time (running through a dictionary) according to the type of processing given as argument
+    #===========================================================================
+    def calculateTime(self,type='Processing'):
+        return {
+                'Load': self.loadRng.generateNumber,
+                'Setup': self.stpRng.generateNumber,
+                'Processing': self.calculateProcessingTime
+        }[type]()
+    
     # =======================================================================
     # checks if the object is blocked
     # =======================================================================
