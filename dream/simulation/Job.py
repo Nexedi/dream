@@ -108,13 +108,26 @@ class Job(Entity):                                  # inherits from the Entity c
     # =======================================================================
     def initialize(self):
         currentStationWellDefined=False
-        # XXX change WIP definition when BOM is provided (current sequence number should be provided)
+        # if the currentStation is defined and the route is given in the BOM
         if self.currentStation and self.routeInBOM:
+            # find the current sequence given in the WIP in the entity's route
             for step in self.route:
                 stepObjectIds=step.get('stationIdsList',[])
                 if self.currentStation.id in stepObjectIds:
+                    # find the corresponding station to the sequence 
                     ind=self.route.index(step)
+                    # copy the route from that sequence on to the remainingRoute 
                     self.remainingRoute = self.route[ind:]
+                    # correct the first step of the remainingRoute (only one station (currentStation) 
+                    #     should be present in the stationIdsList of the firstStep) 
+                    firstStep=self.remainingRoute[0]
+                    firstStepStationIdsList=firstStep.get('stationIdsList',[])
+                    assert self.currentStation.id in firstStepStationIdsList, 'the initialStation is not in the first step\'s stationIdsList'
+                    firstStepStationIdsList=[str(self.currentStation.id)]
+                    firstStep.pop('stationIdsList')
+                    firstStep['stationIdsList']=firstStepStationIdsList
+                    self.remainingRoute.pop(0)
+                    self.remainingRoute.insert(0, firstStep)
                     currentStationWellDefined=True
                     break
             
