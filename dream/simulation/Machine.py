@@ -413,22 +413,13 @@ class Machine(CoreObject):
         assert type in set(['Processing','Setup']), 'the operation type provided is not yet defined'
         # identify the method to get the operation time and initialise the totalOperationTime 
         if type=='Setup':
-            method='calculateSetupTime'
             self.totalOperationTime=self.totalSetupTime
         elif type=='Processing':
-            method='calculateProcessingTime'
             self.totalOperationTime=self.totalWorkingTime
-        from Globals import getMethodFromName
-        try:
-            classMethod=getMethodFromName('Dream.'+str(self.__class__.__name__)+'.'+method)
-        except:
-            # if there is no module name as the self.__class__.__name__
-            parents=self.__class__.__bases__
-            classMethod=getMethodFromName('Dream.'+str(parents[-1].__name__)+'.'+method)
         # variables dedicated to hold the processing times, the time when the Entity entered, 
         # and the processing time left
         # get the operation time, tinMStarts holds the processing time of the machine
-        self.totalOperationTimeInCurrentEntity=classMethod(self)
+        self.totalOperationTimeInCurrentEntity=self.calculateTime(type)
         # timer to hold the operation time left
         self.tinM=self.totalOperationTimeInCurrentEntity                                          
         # variables used to flag any interruptions and the end of the processing
@@ -623,7 +614,7 @@ class Machine(CoreObject):
     # ======= Load the machine if the Load is defined as one of the Operators' operation types
             if any(type=="Load" for type in self.multOperationTypeList) and self.isOperated():
                 self.timeLoadStarted = self.env.now
-                yield self.env.timeout(self.calculateLoadTime())
+                yield self.env.timeout(self.calculateTime(type='Load'))
                 # TODO: if self.interrupted(): There is the issue of failure during the Loading
                 self.timeLoadEnded = self.env.now
                 self.loadTimeCurrentEntity = self.timeLoadEnded-self.timeLoadStarted 
@@ -636,12 +627,6 @@ class Machine(CoreObject):
             #===================================================================
             #===================================================================
             #===================================================================
-            
-#             #===================================================================
-#             # # release a resource if the only operation type is Load
-#             #===================================================================
-#             if self.shouldYield(operationTypes={"Load":1, "Processing":0,"Setup":0},methods={'isOperated':1}):
-#                 yield self.env.process(self.release())
             
             #===================================================================
             #===================================================================
@@ -1105,17 +1090,26 @@ class Machine(CoreObject):
                   or self.timeLastEntityEnded==self.env.now
                   or self.checkIfActive())
                  
-    # =======================================================================
-    #                       calculates the setup time
-    # =======================================================================
-    def calculateSetupTime(self):
-        return self.stpRng.generateNumber()
+#     # =======================================================================
+#     #                       calculates the setup time
+#     # =======================================================================
+#     def calculateSetupTime(self):
+#         return self.stpRng.generateNumber()
     
-    # =======================================================================
-    #                        calculates the Load time
-    # =======================================================================
-    def calculateLoadTime(self):
-        return self.loadRng.generateNumber()
+#     # =======================================================================
+#     #                        calculates the Load time
+#     # =======================================================================
+#     def calculateLoadTime(self):
+#         return self.loadRng.generateNumber()
+    
+#     # =======================================================================
+#     #                        calculates the Load time
+#     # =======================================================================
+#     def calculateTime(self, type='Processing'):
+#         if type=='Setup':
+#             return self.stpRng.generateNumber()
+#         elif type=='Load':
+#            return self.loadRng.generateNumber()
     
     #===========================================================================
     # checks whether the entity can proceed to a successor object
