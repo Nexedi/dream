@@ -45,10 +45,13 @@ class OrderComponent(Job):                                  # inherits from the 
                     requestingComponent = None, 
                     readyForAssembly = 0, 
                     isCritical=False,
+                    remainingProcessingTime={}, 
+                    remainingSetupTime={},
                     currentStation=None,
                     **kw):
         Job.__init__(self, id, name, route=route, priority=priority, dueDate=dueDate, 
                      orderDate=orderDate, extraPropertyDict=extraPropertyDict, isCritical=isCritical,
+                     remainingProcessingTime=remainingProcessingTime, remainingSetupTime=remainingSetupTime,
                      currentStation=currentStation)
         #=======================================================================
         self.auxiliaryList=[]       # Holds the auxiliary components that the component needs for a certain processing
