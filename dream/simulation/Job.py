@@ -37,7 +37,7 @@ class Job(Entity):                                  # inherits from the Entity c
     family='Job'
     
     def __init__(self, id=None, name=None, route=[], priority=0, dueDate=0, orderDate=0, 
-                 extraPropertyDict=None,remainingProcessingTime={}, remainingSetupTime={}, currentStation=None, isCritical=False,**kw):
+                 extraPropertyDict=None,remainingProcessingTime={}, remainingSetupTime={},currentStation=None, isCritical=False,**kw):
         Entity.__init__(self, id=id,name=name, priority=priority, dueDate=dueDate,
                         remainingProcessingTime=remainingProcessingTime, remainingSetupTime=remainingSetupTime,
                         currentStation=currentStation, orderDate=orderDate, isCritical=isCritical)
@@ -56,6 +56,18 @@ class Job(Entity):                                  # inherits from the Entity c
         self.alias='J'+str(len(G.JobList))
         # added for testing - flag that shows if the order and component routes are defined in the BOM
         self.routeInBOM=False
+        # initialOperationTypes dictionary that shows if there are any manual operations to be performed if the Job is initial WIP at a machine
+        if self.remainingRoute:
+            initialSetup=self.remainingRoute[0].get('setupTime',{})              # the setupTime dict of the first step
+            initialSetupType=0
+            if initialSetup:
+                initialSetupType=initialSetup.get('operationType',0)
+            initialProcessing=self.remainingRoute[0].get('processingTime',{})    # the processingTime dict of the first step
+            initialProcessingType=0
+            if initialProcessing:
+                initialProcessingType=initialProcessing.get('operationType',0)
+            self.initialOperationTypes={"Setup":initialSetupType,
+                                        "Processing":initialProcessingType}
 
     # =======================================================================
     # outputs results to JSON File 
