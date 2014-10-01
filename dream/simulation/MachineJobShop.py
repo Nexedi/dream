@@ -94,6 +94,7 @@ class MachineJobShop(Machine):
             # read the setup/processing time from the first entry of the full route
             activeEntity=self.getActiveObjectQueue()[0]
             #if the entity has its route defined in the BOM then remainingProcessing/SetupTime is provided
+            # XX consider moving setupUPtime update to checkForManualOperationTypes as Setup is performed before Processing
             if activeEntity.routeInBOM:
                 processingTime=self.getOperationTime(activeEntity.remainingProcessingTime)
                 setupTime=self.getOperationTime(activeEntity.remainingSetupTime)
