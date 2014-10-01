@@ -300,7 +300,7 @@ def setWIP(entityList):
                             entity.currentStation.expectedSignals['initialWIP']=0
 
 
-def countIntervalThroughput():
+def countIntervalThroughput(**kw):
     from Exit import Exit
     currentExited=0  
     for obj in G.ObjList:

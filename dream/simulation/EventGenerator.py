@@ -38,10 +38,17 @@ class EventGenerator(ObjectInterruption):
         self.name=name
         self.start=float(start)                #the time that the generator will be activated for the first time
         self.stop=float(stop)                  #the time that the generator will stop to trigger events
+        # negative stop means infinity
+        if self.stop<0:
+            self.stop=float('inf') 
         self.interval=float(interval)          #the interval that the generator sleeps
         self.duration=float(duration)          #the duration that the generation is awake (this is not active for now)
-        self.method=method              #the method to be invoked
-        self.argumentDict=argumentDict  #the arguments of the method given in a dict
+        self.method=method              #the method to be invoke       
+        self.argumentDict=argumentDict
+        # if the argumentDict is passed as string convert it to dict
+        if isinstance(self.argumentDict, basestring):
+            import ast
+            self.argumentDict=ast.literal_eval(self.argumentDict)
         from Globals import G
         G.EventGeneratorList.append(self)
         self.method=method
