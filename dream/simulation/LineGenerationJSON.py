@@ -391,6 +391,7 @@ def createWIP():
                                 if entity['id']==componentDict['id']:
                                     entityCurrentSeq=int(entity['sequence'])# the current seq number of the entity's  route
                                     entityRemainingProcessingTime=entity.get('remainingProcessingTime',{})
+                                    entityRemainingSetupTime=entity.get('remainingSetupTime',{})
                                     ind=0               # holder of the route index corresponding to the entityCurrentSeq
                                     solution=False      # flag to signal that the route step is found
                                     # find the step that corresponds to the entityCurrentSeq
@@ -412,6 +413,7 @@ def createWIP():
                                     entity['route']=entityRoute         # and hold the new one without the previous steps
                                     entity['order']=order.id
                                     entity['remainingProcessingTime']=entityRemainingProcessingTime
+                                    entity['remainingSetupTime']=entityRemainingSetupTime
                                     break
             
             entityClass=entity.get('_class', None)
