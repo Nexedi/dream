@@ -91,15 +91,19 @@ class MachineJobShop(Machine):
     def calculateProcessingTime(self):
         # this is only for processing of the initial wip
         if self.isProcessingInitialWIP:
-            # read the processing time from the first entry of the full route
+            # read the setup/processing time from the first entry of the full route
             activeEntity=self.getActiveObjectQueue()[0]
-            processingTime=activeEntity.route[0].get('processingTime',{})
-            processingTime=self.getOperationTime(processingTime)
+            #if the entity has its route defined in the BOM then remainingProcessing/SetupTime is provided
+            if activeEntity.routeInBOM:
+                processingTime=self.getOperationTime(activeEntity.remainingProcessingTime)
+                setupTime=self.getOperationTime(activeEntity.remainingSetupTime)
+            else:   # other wise these should be read from the route
+                processingTime=activeEntity.route[0].get('processingTime',{})
+                processingTime=self.getOperationTime(processingTime)
+                setupTime=activeEntity.route[0].get('setupTime',{})
+                setupTime=self.getOperationTime(setupTime)
             self.rng=RandomNumberGenerator(self, **processingTime)
             self.procTime=self.rng.generateNumber()
-            # read the setup time from the corresponding remainingRoute entry
-            setupTime=activeEntity.route[0].get('setupTime',{})
-            setupTime=self.getOperationTime(setupTime)
             self.stpRng=RandomNumberGenerator(self, **setupTime)
         return self.procTime    #this is the processing time for this unique entity 
     
