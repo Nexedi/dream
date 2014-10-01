@@ -36,7 +36,7 @@ class Entity(ManPyObject):
     type="Entity"
 
     def __init__(self, id=None, name=None, priority=0, dueDate=0, orderDate=0, 
-                 isCritical=False, remainingProcessingTime=0,currentStation=None,**kw):
+                 isCritical=False, remainingProcessingTime=0,remainingSetupTime=0,currentStation=None,**kw):
         ManPyObject.__init__(self,id,name)
         #         information on the object holding the entity
         #         initialized as None and updated every time an entity enters a new object
@@ -54,6 +54,7 @@ class Entity(ManPyObject):
         #         a list that holds information about the schedule 
         #         of the entity (when it enters and exits every station)
         self.schedule=[]
+        # the current station of the entity
         self.currentStation=currentStation
         #         values to be used in the internal processing of compoundObjects
         self.internal = False               # informs if the entity is being processed internally
@@ -75,7 +76,7 @@ class Entity(ManPyObject):
         # alias used for printing the Route
         self.alias=None
         self.remainingProcessingTime=remainingProcessingTime
-        # the current station of the entity
+        self.remainingSetupTime=remainingSetupTime
         
     #===========================================================================
     # return the responsible operator for the current step, not implemented for entities
