@@ -32,7 +32,7 @@ class SubBatch(Entity):
     type="SubBatch"
 
     def __init__(self, id, name, numberOfUnits=1, parentBatch=None, parentBatchName=None, parentBatchId=None,
-                 remainingProcessingTime=0, currentStation=None, unitsToProcess=0,**kw):
+                 remainingProcessingTime=0, currentStation=None, unitsToProcess=0,receiver=None,**kw):
         Entity.__init__(self, name=name, id=id, remainingProcessingTime=remainingProcessingTime,
                         currentStation=currentStation)
         self.numberOfUnits=int(numberOfUnits)
@@ -54,5 +54,7 @@ class SubBatch(Entity):
                 G.EntityList.append(batch)
             self.parentBatch=batch
         self.batchId=self.parentBatch.id
+        import Globals
+        self.receiver=Globals.findObjectById(receiver)
 
         
