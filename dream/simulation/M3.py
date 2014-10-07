@@ -37,23 +37,12 @@ class M3(BatchScrapMachine):
     # should be blocked if the BatchDecomposition is blocked
     # =======================================================================
     def canAcceptAndIsRequested(self, callerObject=None):
-        # get active and giver objects
-        activeObject=self.getActiveObject()
-        activeObjectQueue=self.getActiveObjectQueue()
-        giverObject=self.getGiverObject()
         nextObject=self.next[0]
-        batchReassemblyHoldsBatch=False
         if len(nextObject.getActiveObjectQueue())>0:
-            if nextObject.getActiveObjectQueue()[0].type=='Batch' or len(nextObject.getActiveObjectQueue())==4:
-                batchReassemblyHoldsBatch=True
-                
-               
-        # if we have only one predecessor just check if there is a place, 
-        # the machine is up and the predecessor has an entity to dispose
-        # this is done to achieve better (cpu) processing time
-        if(len(activeObject.previous)==1):
-            return activeObject.Up and len(activeObjectQueue)<activeObject.capacity\
-                 and giverObject.haveToDispose(activeObject) and (not batchReassemblyHoldsBatch)
+            if nextObject.getActiveObjectQueue()[0].type=='Batch':
+                return False
+        return BatchScrapMachine.canAcceptAndIsRequested(self, callerObject)
+
     
     
     
