@@ -994,7 +994,7 @@
         },
         "St4M0D": {
             "_class": "Dream.BatchDecomposition",
-            "name": "Decomposition",
+            "name": "St4M0D",
             "element_id": "DreamNode_24",
             "processingTime": {
                 "distributionType": "Fixed",
@@ -1008,7 +1008,7 @@
         },
         "St4M0R": {
             "_class": "Dream.BatchReassembly",
-            "name": "Reassembly",
+            "name": "St4M0R",
             "element_id": "DreamNode_25",
             "processingTime": {
                 "distributionType": "Fixed",
@@ -1078,7 +1078,7 @@
         },
         "St3M0D": {
             "_class": "Dream.BatchDecomposition",
-            "name": "Decomposition",
+            "name": "St3M0D",
             "element_id": "DreamNode_27",
             "processingTime": {
                 "distributionType": "Fixed",
@@ -1092,7 +1092,7 @@
         },
         "St3M0R": {
             "_class": "Dream.BatchReassembly",
-            "name": "Reassembly",
+            "name": "St3M0R",
             "element_id": "DreamNode_28",
             "processingTime": {
                 "distributionType": "Fixed",
@@ -1220,7 +1220,7 @@
         },
         "St5M0D": {
             "_class": "Dream.BatchDecomposition",
-            "name": "Decomposition",
+            "name": "St5M0D",
             "element_id": "DreamNode_33",
             "processingTime": {
                 "distributionType": "Fixed",
@@ -1234,7 +1234,7 @@
         },
         "St5M1D": {
             "_class": "Dream.BatchDecomposition",
-            "name": "Decomposition",
+            "name": "St5M1D",
             "element_id": "DreamNode_34",
             "processingTime": {
                 "distributionType": "Fixed",
@@ -1248,7 +1248,7 @@
         },
         "St5M0R": {
             "_class": "Dream.BatchReassembly",
-            "name": "Reassembly",
+            "name": "St5M0R",
             "element_id": "DreamNode_35",
             "processingTime": {
                 "distributionType": "Fixed",
@@ -1262,7 +1262,7 @@
         },
         "St5M1R": {
             "_class": "Dream.BatchReassembly",
-            "name": "Reassembly",
+            "name": "St5M1R",
             "element_id": "DreamNode_36",
             "processingTime": {
                 "distributionType": "Fixed",
@@ -1276,7 +1276,7 @@
         },
         "St6M0D": {
             "_class": "Dream.BatchDecomposition",
-            "name": "Decomposition",
+            "name": "St6M0D",
             "element_id": "DreamNode_37",
             "id": "St6M0D",
             "processingTime": {
@@ -1324,7 +1324,7 @@
         },
         "St6M0R": {
             "_class": "Dream.BatchReassembly",
-            "name": "Reassembly",
+            "name": "St6M0R",
             "element_id": "DreamNode_38",
             "id": "St6M0R",
             "processingTime": {
@@ -1364,7 +1364,7 @@
         },
         "St6M1D": {
             "_class": "Dream.BatchDecomposition",
-            "name": "Decomposition",
+            "name": "St6M1D",
             "element_id": "DreamNode_39",
             "id": "St6M1D",
             "processingTime": {
@@ -1388,7 +1388,7 @@
         },
         "St6M1R": {
             "_class": "Dream.BatchReassembly",
-            "name": "Reassembly",
+            "name": "St6M1R",
             "element_id": "DreamNode_40",
             "id": "St6M1R",
             "processingTime": {
@@ -1460,7 +1460,7 @@
         },
         "St7M0D": {
             "_class": "Dream.BatchDecomposition",
-            "name": "Decomposition",
+            "name": "St7M0D",
             "element_id": "DreamNode_41",
             "id": "St7M0D",
             "processingTime": {
@@ -1492,7 +1492,7 @@
         },
         "St8M0R": {
             "_class": "Dream.BatchReassembly",
-            "name": "Reassembly",
+            "name": "St8M0R",
             "element_id": "DreamNode_42",
             "id": "St8M0R",
             "processingTime": {
@@ -1524,7 +1524,7 @@
         },
         "St8M1R": {
             "_class": "Dream.BatchReassembly",
-            "name": "Reassembly",
+            "name": "St8M1R",
             "element_id": "DreamNode_43",
             "id": "St8M1R",
             "processingTime": {
