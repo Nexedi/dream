@@ -68,13 +68,13 @@ class SkilledRouter(Router):
     read the pendingEntities currentStations, these are the stations (queues) that may be signalled
     '''
     def run(self):
+        
         while 1:
             # wait until the router is called
             
             self.expectedSignals['isCalled']=1
             
             yield self.isCalled
-                      
             transmitter, eventTime=self.isCalled.value
             self.isCalled=self.env.event()
             self.printTrace('','=-'*15)
@@ -159,26 +159,14 @@ class SkilledRouter(Router):
                 # # XXX calculate the WIP of each station
                 #===================================================================
                 for station in self.availableStations:
-#                     station.wip=0
                     station.wip=1+(len(station.getActiveObjectQueue())/station.capacity)
                     for predecessor in station.previous:
-#                         predecessor.remainingWip=0
-#                         if len(predecessor.next)>1:
-#                             nextNo=len(predecessor.next)
-#                             for obj in predecessor.next:
-#                                 if not obj in self.availableStations:
-#                                     nextNo-=1
                         try:
-                            station.wip+=float(len(predecessor.getActiveObjectQueue())/predecessor.capacity)
+                            station.wip+=float(len(predecessor.getActiveObjectQueue())/float(predecessor.capacity))
                         except:
                             # XXX what happens in the case of sources or infinite-capacity-queues
                             pass
-#                             predecessor.remainingWip=len(predecessor.getActiveObjectQueue()) % nextNo
-#                 for buffer in G.QueueList:
-#                     if buffer.remainingWip:
-#                         nextObj=next(x for x in buffer.next if x in self.availableStations) # pick the first of the list available
-#                         nextObj.wip+=buffer.remainingWip
-#                         buffer.remainingWip=0
+
                 #===================================================================
                 # # stations of the line and their corresponding WIP
                 # TODO: the WIP of the stations must be normalised to the max WIP possible on that station
