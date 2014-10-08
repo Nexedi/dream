@@ -333,7 +333,6 @@
                     "parentBatchId": 10,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch10_WIP",
-					"receiver":"St8M0",
 					"name": "Batch10_WIP_SB1",
                     "id": "10.0_SB1_step2.0"
                 }
@@ -678,7 +677,7 @@
             "id": "St2M1"
         },
         "St4M0": {
-            "_class": "Dream.BatchScrapMachine",
+            "_class": "Dream.M3",
             "name": "Moulding",
             "element_id": "DreamNode_13",
             "failures": {
@@ -722,7 +721,7 @@
             "id": "St4M0"
         },
         "St8M0": {
-            "_class": "Dream.BatchScrapMachine",
+            "_class": "Dream.M3",
             "name": "Packaging_A",
             "element_id": "DreamNode_14",
             "failures": {
@@ -770,7 +769,7 @@
             "id": "St8M0"
         },
         "St8M1": {
-            "_class": "Dream.BatchScrapMachine",
+            "_class": "Dream.M3",
             "name": "Packaging_B",
             "element_id": "DreamNode_15",
             "failures": {
@@ -806,7 +805,7 @@
             "id": "St8M1"
         },
         "St6M0": {
-            "_class": "Dream.BatchScrapMachine",
+            "_class": "Dream.M3",
             "name": "Pressure_A",
             "element_id": "DreamNode_16",
             "failures": {
@@ -857,7 +856,7 @@
             "id": "St6M0"
         },
         "St6M1": {
-            "_class": "Dream.BatchScrapMachine",
+            "_class": "Dream.M3",
             "name": "Pressure_B",
             "element_id": "DreamNode_17",
             "failures": {
@@ -1021,7 +1020,7 @@
             "id": "St4M0R"
         },
         "St3M0": {
-            "_class": "Dream.BatchScrapMachine",
+            "_class": "Dream.M3",
             "name": "Cut & Bend",
             "element_id": "DreamNode_26",
             "processingTime": {
@@ -1135,7 +1134,7 @@
             "id": "B9"
         },
         "St5M0": {
-            "_class": "Dream.BatchScrapMachine",
+            "_class": "Dream.M3",
             "name": "Flag Labelling1",
             "element_id": "DreamNode_31",
             "processingTime": {
@@ -1183,7 +1182,7 @@
             "id": "St5M0"
         },
         "St5M1": {
-            "_class": "Dream.BatchScrapMachine",
+            "_class": "Dream.M3",
             "name": "Flag Labelling 2",
             "element_id": "DreamNode_32",
             "processingTime": {
@@ -1704,7 +1703,6 @@
                     "parentBatchId": 2,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch2_WIP",
-					"receiver":"St8M0",
 					"name": "Batch2_WIP_SB1",
                     "id": "2.0_SB1_step7.0"
                 },
@@ -1713,7 +1711,6 @@
                     "parentBatchId": 2,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch2_WIP",
-					"receiver":"St8M0",
 					"name": "Batch2_WIP_SB2",
                     "id": "2.0_SB2_step7.0"
                 },
@@ -1722,7 +1719,6 @@
                     "parentBatchId": 2,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch2_WIP",
-					"receiver":"St8M0",
 					"name": "Batch2_WIP_SB3",
                     "id": "2.0_SB3_step7.0"
                 },
@@ -1731,7 +1727,6 @@
                     "parentBatchId": 2,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch2_WIP",
-					"receiver":"St8M0",
 					"name": "Batch2_WIP_SB4",
                     "id": "2.0_SB4_step7.0"
                 },
@@ -1740,7 +1735,6 @@
                     "parentBatchId": 2,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch2_WIP",
-					"receiver":"St8M0",
 					"name": "Batch2_WIP_SB5",
                     "id": "2.0_SB5_step7.0"
                 },
@@ -1749,7 +1743,6 @@
                     "parentBatchId": 2,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch6",
-					"receiver":"St8M0",
 					"name": "Batch2_WIP_SB6",
                     "id": "2.0_SB6_step7.0"
                 }
