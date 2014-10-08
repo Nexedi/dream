@@ -246,7 +246,7 @@ class BatchDecomposition(CoreObject):
             #===================================================================
             G.EntityList.append(subBatch)
             activeObjectQueue.append(subBatch)                          #append the sub-batch to the active object Queue
-            activeEntity.subBatchList.append(subBatch)
+            #activeEntity.subBatchList.append(subBatch)
             subBatch.currentStation=self
             # if the activeEntity is in the pendingEntities list then place the subBatches there
             if activeEntity in G.pendingEntities:

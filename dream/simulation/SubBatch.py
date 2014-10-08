@@ -56,5 +56,5 @@ class SubBatch(Entity):
         self.batchId=self.parentBatch.id
         import Globals
         self.receiver=Globals.findObjectById(receiver)
-
+        self.parentBatch.subBatchList.append(self)
         
