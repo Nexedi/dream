@@ -336,6 +336,7 @@ class CoreObject(ManPyObject):
         giverObject=self.giver
         giverObject.sortEntities()                      #sort the Entities of the giver 
                                                         #according to the scheduling rule if applied
+        #giverObject.sortEntitiesForReceiver()
         giverObjectQueue=giverObject.Res.users
         # if the giverObject is blocked then unBlock it
         if giverObject.exitIsAssignedTo():
@@ -343,7 +344,8 @@ class CoreObject(ManPyObject):
         # if the activeObject entry is blocked then unBlock it
         if self.entryIsAssignedTo():
             self.unAssignEntry()
-            
+        activeEntity=self.identifyEntityToGet()
+        activeEntity.currentStation=self
         # remove entity from the giver
         activeEntity = giverObject.removeEntity(entity=self.identifyEntityToGet())
         # variable that holds the last giver; used in case of preemption
