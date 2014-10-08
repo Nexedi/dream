@@ -67,27 +67,10 @@ class RoutingQueue(Queue):
     #===========================================================================
     def sortEntitiesForReceiver(self, receiver=None):
         activeObjectQueue=self.getActiveObjectQueue()
-        # find the entities that have None as receiver and update their receiver to the receiver provided as argument to the method
-        #     the entities that have no receiver can proceed as none of their siblings have gone through the next of the activeObject
-#         for entity in activeObjectQueue:
-#             if not entity.receiver:
-#                 entity.receiver=receiver
-#         print '='*10
-#         print '----------------- Before'
-#         print self.env.now, receiver.id        
-#         for entity in activeObjectQueue:
-#             print entity.id, entity.receiver
-#             if entity.receiver:
-#                 print entity.receiver.id
         activeObjectQueue.sort(key=lambda x: not(x.receiver is receiver), reverse=False)
         activeObjectQueue.sort(key=lambda x: x.receiver==None, reverse=True)
         activeObjectQueue.sort(key=lambda x: (x.receiver is receiver), reverse=True)
-#         print '----------------- After'
-#         print self.env.now, receiver.id        
-#         for entity in activeObjectQueue:
-#             print entity.id, entity.receiver
-#             if entity.receiver:
-#                 print entity.receiver.id
+
     
     # =======================================================================
     #            gets an entity from the predecessor that 
@@ -99,20 +82,6 @@ class RoutingQueue(Queue):
         for subbatch in parentBatch.subBatchList:
             subbatch.receiver=activeEntity.currentStation
         return activeEntity
-        
-#         activeEntity=Queue.getEntity(self)  #run the default behavior
-#         # update the receiver object of the entity just received according to the routing of the parent batch
-#         route = activeEntity.parentBatch.routing()
-#         activeEntity.receiver=None
-#         try:
-#             for nextObj in self.next:
-#                 if nextObj in activeEntity.parentBatch.routing():
-#                     activeEntity.receiver=nextObj
-#                     break
-#         # if none of the siblings (same parentBatch) has gone through the buffer then the receiver should remain None 
-#         except:
-#             pass
-#         return activeEntity
     
     # =======================================================================
     #    sorts the Entities of the Queue according to the scheduling rule
