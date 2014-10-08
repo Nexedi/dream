@@ -444,7 +444,10 @@ def runSimulation(objectList=[], maxSimTime=100, numberOfReplications=1, trace='
             object.initialize()
     
         #activate all the objects
-        for object in G.ObjList + G.ObjectInterruptionList:
+        for object in G.ObjectInterruptionList:
+            G.env.process(object.run())
+        #activate all the objects
+        for object in G.ObjList:
             G.env.process(object.run())
 
         #set the WIP

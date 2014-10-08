@@ -483,9 +483,10 @@ def initializeObjects():
 #                        activates all the objects
 # ===========================================================================
 def activateObjects():
-    # XXX EventGeneratorList
-    for element in G.ObjList + G.ObjectInterruptionList:
-        G.env.process(element.run())
+    for element in G.ObjectInterruptionList:
+        G.env.process(element.run())       
+    for element in G.ObjList:
+        G.env.process(element.run())                                             
 
 # ===========================================================================
 #                        the main script that is ran
