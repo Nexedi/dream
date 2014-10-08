@@ -39,7 +39,8 @@ class M3(BatchScrapMachine):
     def canAcceptAndIsRequested(self, callerObject=None):
         nextObject=self.next[0]
         if len(nextObject.getActiveObjectQueue())>0:
-            if nextObject.getActiveObjectQueue()[0].type=='Batch':
+            if nextObject.getActiveObjectQueue()[0].type=='Batch' or\
+                len(nextObject.getActiveObjectQueue())==nextObject.numberOfSubBatches:
                 return False
         return BatchScrapMachine.canAcceptAndIsRequested(self, callerObject)
 
