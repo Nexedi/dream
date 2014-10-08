@@ -259,7 +259,7 @@
         "currentDate": "2014/02/18",
         "timeUnitPerDay": 24,
         "trace": "Yes",
-		"console":"No",
+        "console": "No",
         "seed": "",
         "ke_url": "http://git.erp5.org/gitweb/dream.git/blob_plain/ee686e74fe5f2e18cc2ba820163a52e8626a696c:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
         "throughputTarget": 10
@@ -277,16 +277,16 @@
                 "min": "",
                 "stdev": ""
             },
-			"wip":[
-			    {
+            "wip": [
+                {
                     "numberOfUnits": 20,
                     "parentBatchId": 10,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch10_WIP",
-					"name": "Batch10_WIP_SB3",
+                    "name": "Batch10_WIP_SB3",
                     "id": "10.0_SB3_step2.0"
                 }
-			],
+            ],
             "id": "BDA"
         },
         "BDB": {
@@ -298,24 +298,24 @@
                 "distributionType": "Fixed",
                 "mean": 0
             },
-			"wip":[
-			    {
+            "wip": [
+                {
                     "numberOfUnits": 20,
                     "parentBatchId": 11,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch11_WIP",
-					"name": "Batch10_WIP_SB3",
+                    "name": "Batch10_WIP_SB3",
                     "id": "11.0_SB3_step0.0"
                 },
-			    {
+                {
                     "numberOfUnits": 20,
                     "parentBatchId": 11,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch11_WIP",
-					"name": "Batch10_WIP_SB4",
+                    "name": "Batch10_WIP_SB4",
                     "id": "11.0_SB4_step0.0"
                 }
-			],
+            ],
             "id": "BDB"
         },
         "BRA": {
@@ -327,16 +327,16 @@
                 "distributionType": "Fixed",
                 "mean": 0
             },
-			"wip":[
-			    {
+            "wip": [
+                {
                     "numberOfUnits": 20,
                     "parentBatchId": 10,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch10_WIP",
-					"name": "Batch10_WIP_SB1",
+                    "name": "Batch10_WIP_SB1",
                     "id": "10.0_SB1_step2.0"
                 }
-			],			
+            ],
             "id": "BRA"
         },
         "BRB": {
@@ -416,7 +416,8 @@
                         465
                     ]
                 ],
-                "endUnfinished": 0
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
             },
             "id": "St0M0"
         },
@@ -464,7 +465,8 @@
                         450
                     ]
                 ],
-                "endUnfinished": 0
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
             },
             "id": "St0M1"
         },
@@ -516,7 +518,8 @@
                         465
                     ]
                 ],
-                "endUnfinished": 0
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
             },
             "id": "St1M0"
         },
@@ -564,7 +567,8 @@
                         465
                     ]
                 ],
-                "endUnfinished": 0
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
             },
             "id": "St1M1"
         },
@@ -620,7 +624,8 @@
                         465
                     ]
                 ],
-                "endUnfinished": 0
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
             },
             "id": "St2M0"
         },
@@ -672,7 +677,8 @@
                         465
                     ]
                 ],
-                "endUnfinished": 0
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
             },
             "id": "St2M1"
         },
@@ -716,7 +722,8 @@
                         465
                     ]
                 ],
-                "endUnfinished": 0
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
             },
             "id": "St4M0"
         },
@@ -764,7 +771,8 @@
                         465
                     ]
                 ],
-                "endUnfinished": 0
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
             },
             "id": "St8M0"
         },
@@ -800,7 +808,8 @@
                         360
                     ]
                 ],
-                "endUnfinished": 0
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
             },
             "id": "St8M1"
         },
@@ -840,19 +849,20 @@
                         465
                     ]
                 ],
-                "endUnfinished": 0
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
             },
-			"wip":[
+            "wip": [
                 {
                     "numberOfUnits": 10,
                     "parentBatchId": 4,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch4_WIP",
-					"name": "Batch4_WIP_SB4",
+                    "name": "Batch4_WIP_SB4",
                     "unitsToProcess": 5,
                     "id": "4.0_SB4_step6.0"
                 }
-			],
+            ],
             "id": "St6M0"
         },
         "St6M1": {
@@ -887,7 +897,8 @@
                         420
                     ]
                 ],
-                "endUnfinished": 0
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
             },
             "id": "St6M1"
         },
@@ -898,16 +909,16 @@
             "capacity": 2,
             "isDummy": "0",
             "schedulingRule": "FIFO",
-			"wip":[
-			    {
+            "wip": [
+                {
                     "numberOfUnits": 20,
                     "parentBatchId": 10,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch10_WIP",
-					"name": "Batch10_WIP_SB3",
+                    "name": "Batch10_WIP_SB3",
                     "id": "10.0_SB3_step2.0"
                 }
-			],
+            ],
             "id": "B1"
         },
         "B4": {
@@ -917,16 +928,16 @@
             "capacity": 2,
             "isDummy": "0",
             "schedulingRule": "FIFO",
-			"wip":[
-			    {
+            "wip": [
+                {
                     "numberOfUnits": 20,
                     "parentBatchId": 11,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch11_WIP",
-					"name": "Batch11_WIP_SB2",
+                    "name": "Batch11_WIP_SB2",
                     "id": "11.0_SB2_step1.0"
                 }
-			],
+            ],
             "id": "B4"
         },
         "B2": {
@@ -936,16 +947,16 @@
             "capacity": 2,
             "isDummy": "0",
             "schedulingRule": "FIFO",
-			"wip":[
-			    {
+            "wip": [
+                {
                     "numberOfUnits": 20,
                     "parentBatchId": 10,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch10_WIP",
-					"name": "Batch10_WIP_SB2",
+                    "name": "Batch10_WIP_SB2",
                     "id": "10.0_SB2_step2.0"
                 }
-			],
+            ],
             "id": "B2"
         },
         "B5": {
@@ -955,16 +966,16 @@
             "capacity": 2,
             "isDummy": "0",
             "schedulingRule": "FIFO",
-			"wip":[
-			    {
+            "wip": [
+                {
                     "numberOfUnits": 20,
                     "parentBatchId": 11,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch11_WIP",
-					"name": "Batch11_WIP_SB1",
+                    "name": "Batch11_WIP_SB1",
                     "id": "11.0_SB1_step2.0"
                 }
-			],
+            ],
             "id": "B5"
         },
         "QStart": {
@@ -1071,7 +1082,8 @@
                         465
                     ]
                 ],
-                "endUnfinished": 0
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
             },
             "id": "St3M0"
         },
@@ -1121,16 +1133,16 @@
                 {
                     "numberOfUnits": 80,
                     "_class": "Dream.Batch",
-					"name": "Batch7_WIP",
+                    "name": "Batch7_WIP",
                     "id": "7"
                 },
                 {
                     "numberOfUnits": 80,
                     "_class": "Dream.Batch",
-					"name": "Batch8_WIP",
+                    "name": "Batch8_WIP",
                     "id": "8"
                 }
-			],
+            ],
             "id": "B9"
         },
         "St5M0": {
@@ -1177,7 +1189,8 @@
                         435
                     ]
                 ],
-                "endUnfinished": 0
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
             },
             "id": "St5M0"
         },
@@ -1213,7 +1226,8 @@
                         360
                     ]
                 ],
-                "endUnfinished": 0
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
             },
             "id": "St5M1"
         },
@@ -1285,13 +1299,13 @@
                 "min": null,
                 "max": null
             },
-			"wip":[
+            "wip": [
                 {
                     "numberOfUnits": 10,
                     "parentBatchId": 4,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch4_WIP",
-					"name": "Batch4_WIP_SB5",
+                    "name": "Batch4_WIP_SB5",
                     "id": "4.0_SB5_step6.0"
                 },
                 {
@@ -1299,7 +1313,7 @@
                     "parentBatchId": 4,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch4_WIP",
-					"name": "Batch4_WIP_SB6",
+                    "name": "Batch4_WIP_SB6",
                     "id": "4.0_SB6_step6.0"
                 },
                 {
@@ -1307,7 +1321,7 @@
                     "parentBatchId": 4,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch4_WIP",
-					"name": "Batch4_WIP_SB7",
+                    "name": "Batch4_WIP_SB7",
                     "id": "4.0_SB7_step6.0"
                 },
                 {
@@ -1315,10 +1329,10 @@
                     "parentBatchId": 4,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch4_WIP",
-					"name": "Batch4_WIP_SB8",
+                    "name": "Batch4_WIP_SB8",
                     "id": "4.0_SB8_step6.0"
-                }				
-			],
+                }
+            ],
             "numberOfSubBatches": 8
         },
         "St6M0R": {
@@ -1333,13 +1347,13 @@
                 "min": null,
                 "max": null
             },
-			"wip":[
+            "wip": [
                 {
                     "numberOfUnits": 10,
                     "parentBatchId": 4,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch4_WIP",
-					"name": "Batch4_WIP_SB1",
+                    "name": "Batch4_WIP_SB1",
                     "id": "4.0_SB1_step6.0"
                 },
                 {
@@ -1347,7 +1361,7 @@
                     "parentBatchId": 4,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch4_WIP",
-					"name": "Batch4_WIP_SB2",
+                    "name": "Batch4_WIP_SB2",
                     "id": "4.0_SB2_step6.0"
                 },
                 {
@@ -1355,10 +1369,10 @@
                     "parentBatchId": 4,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch4_WIP",
-					"name": "Batch4_WIP_SB3",
+                    "name": "Batch4_WIP_SB3",
                     "id": "4.0_SB3_step6.0"
-                }				
-			],
+                }
+            ],
             "numberOfSubBatches": 8
         },
         "St6M1D": {
@@ -1373,16 +1387,16 @@
                 "min": null,
                 "max": null
             },
-			"wip":[
+            "wip": [
                 {
                     "numberOfUnits": 10,
                     "parentBatchId": 5,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch5_WIP",
-					"name": "Batch5_WIP_SB8",
+                    "name": "Batch5_WIP_SB8",
                     "id": "5.0_SB8_step6.0"
                 }
-			],
+            ],
             "numberOfSubBatches": 8
         },
         "St6M1R": {
@@ -1397,13 +1411,13 @@
                 "min": null,
                 "max": null
             },
-			"wip":[
+            "wip": [
                 {
                     "numberOfUnits": 10,
                     "parentBatchId": 5,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch5_WIP",
-					"name": "Batch5_WIP_SB1",
+                    "name": "Batch5_WIP_SB1",
                     "id": "5.0_SB1_step6.0"
                 },
                 {
@@ -1411,7 +1425,7 @@
                     "parentBatchId": 5,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch5_WIP",
-					"name": "Batch5_WIP_SB2",
+                    "name": "Batch5_WIP_SB2",
                     "id": "5.0_SB2_step6.0"
                 },
                 {
@@ -1419,7 +1433,7 @@
                     "parentBatchId": 5,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch5_WIP",
-					"name": "Batch5_WIP_SB3",
+                    "name": "Batch5_WIP_SB3",
                     "id": "5.0_SB3_step6.0"
                 },
                 {
@@ -1427,7 +1441,7 @@
                     "parentBatchId": 5,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch5_WIP",
-					"name": "Batch5_WIP_SB4",
+                    "name": "Batch5_WIP_SB4",
                     "id": "5.0_SB4_step6.0"
                 },
                 {
@@ -1435,7 +1449,7 @@
                     "parentBatchId": 5,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch5_WIP",
-					"name": "Batch5_WIP_SB5",
+                    "name": "Batch5_WIP_SB5",
                     "id": "5.0_SB1_step6.0"
                 },
                 {
@@ -1443,7 +1457,7 @@
                     "parentBatchId": 5,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch5_WIP",
-					"name": "Batch5_WIP_SB6",
+                    "name": "Batch5_WIP_SB6",
                     "id": "5.0_SB1_step6.0"
                 },
                 {
@@ -1451,10 +1465,10 @@
                     "parentBatchId": 5,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch5_WIP",
-					"name": "Batch5_WIP_SB7",
+                    "name": "Batch5_WIP_SB7",
                     "id": "5.0_SB1_step6.0"
                 }
-			],
+            ],
             "numberOfSubBatches": 8
         },
         "St7M0D": {
@@ -1475,7 +1489,7 @@
                     "parentBatchId": 2,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch2_WIP",
-					"name": "Batch2_WIP_SB7",
+                    "name": "Batch2_WIP_SB7",
                     "id": "1.0_SB7_step8.0"
                 },
                 {
@@ -1483,7 +1497,7 @@
                     "parentBatchId": 2,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch2_WIP",
-					"name": "Batch2_WIP_SB8",
+                    "name": "Batch2_WIP_SB8",
                     "id": "1.0_SB1_step8.0"
                 }
             ],
@@ -1507,7 +1521,7 @@
                     "parentBatchId": 1,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch1_WIP",
-					"name": "Batch1_WIP_SB1",
+                    "name": "Batch1_WIP_SB1",
                     "id": "1.0_SB0_step8.0"
                 },
                 {
@@ -1515,7 +1529,7 @@
                     "parentBatchId": 1,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch1_WIP",
-					"name": "Batch1_WIP_SB2",
+                    "name": "Batch1_WIP_SB2",
                     "id": "1.0_SB1_step8.0"
                 }
             ],
@@ -1571,7 +1585,8 @@
                         465
                     ]
                 ],
-                "endUnfinished": 0
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
             },
             "id": "St7M0"
         },
@@ -1586,22 +1601,22 @@
                 {
                     "numberOfUnits": 80,
                     "_class": "Dream.Batch",
-					"name": "Batch9_WIP",
+                    "name": "Batch9_WIP",
                     "id": "9"
                 },
                 {
                     "numberOfUnits": 80,
                     "_class": "Dream.Batch",
-					"name": "Batch12_WIP",
+                    "name": "Batch12_WIP",
                     "id": "12"
                 },
                 {
                     "numberOfUnits": 80,
                     "_class": "Dream.Batch",
-					"name": "Batch13_WIP",
+                    "name": "Batch13_WIP",
                     "id": "13"
                 }
-			],
+            ],
             "id": "B7"
         },
         "B10": {
@@ -1615,10 +1630,10 @@
                 {
                     "numberOfUnits": 80,
                     "_class": "Dream.Batch",
-					"name": "Batch6_WIP",
+                    "name": "Batch6_WIP",
                     "id": "6"
                 }
-			],
+            ],
             "id": "B10"
         },
         "B11": {
@@ -1632,10 +1647,10 @@
                 {
                     "numberOfUnits": 80,
                     "_class": "Dream.Batch",
-					"name": "Batch3_WIP",
+                    "name": "Batch3_WIP",
                     "id": "3"
                 }
-			],
+            ],
             "id": "B11"
         },
         "B12": {
@@ -1643,14 +1658,14 @@
             "name": "B12",
             "element_id": "DreamNode_48",
             "capacity": 23,
-			"wip":[
-			    {
+            "wip": [
+                {
                     "numberOfUnits": 10,
                     "parentBatchId": 1,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch1_WIP",
-					"receiver":"St8M0",
-					"name": "Batch1_WIP_SB3",
+                    "receiver": "St8M0",
+                    "name": "Batch1_WIP_SB3",
                     "id": "1.0_SB3_step8.0"
                 },
                 {
@@ -1658,17 +1673,17 @@
                     "parentBatchId": 1,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch1_WIP",
-					"receiver":"St8M0",
-					"name": "Batch1_WIP_SB4",
+                    "receiver": "St8M0",
+                    "name": "Batch1_WIP_SB4",
                     "id": "1.0_SB4_step8.0"
                 },
-			    {
+                {
                     "numberOfUnits": 10,
                     "parentBatchId": 1,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch1_WIP",
-					"receiver":"St8M0",
-					"name": "Batch1_WIP_SB5",
+                    "receiver": "St8M0",
+                    "name": "Batch1_WIP_SB5",
                     "id": "1.0_SB5_step8.0"
                 },
                 {
@@ -1676,17 +1691,17 @@
                     "parentBatchId": 1,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch1_WIP",
-					"receiver":"St8M0",
-					"name": "Batch1_WIP_SB6",
+                    "receiver": "St8M0",
+                    "name": "Batch1_WIP_SB6",
                     "id": "1.0_SB6_step8.0"
                 },
-			    {
+                {
                     "numberOfUnits": 10,
                     "parentBatchId": 1,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch1_WIP",
-					"receiver":"St8M0",
-					"name": "Batch1_WIP_SB7",
+                    "receiver": "St8M0",
+                    "name": "Batch1_WIP_SB7",
                     "id": "1.0_SB7_step8.0"
                 },
                 {
@@ -1694,59 +1709,59 @@
                     "parentBatchId": 1,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch1_WIP",
-					"receiver":"St8M0",
-					"name": "Batch1_WIP_SB8",
+                    "receiver": "St8M0",
+                    "name": "Batch1_WIP_SB8",
                     "id": "1.0_SB8_step8.0"
                 },
-			    {
+                {
                     "numberOfUnits": 10,
                     "parentBatchId": 2,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch2_WIP",
-					"name": "Batch2_WIP_SB1",
+                    "name": "Batch2_WIP_SB1",
                     "id": "2.0_SB1_step7.0"
                 },
-			    {
+                {
                     "numberOfUnits": 10,
                     "parentBatchId": 2,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch2_WIP",
-					"name": "Batch2_WIP_SB2",
+                    "name": "Batch2_WIP_SB2",
                     "id": "2.0_SB2_step7.0"
                 },
-			    {
+                {
                     "numberOfUnits": 10,
                     "parentBatchId": 2,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch2_WIP",
-					"name": "Batch2_WIP_SB3",
+                    "name": "Batch2_WIP_SB3",
                     "id": "2.0_SB3_step7.0"
                 },
-			    {
+                {
                     "numberOfUnits": 10,
                     "parentBatchId": 2,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch2_WIP",
-					"name": "Batch2_WIP_SB4",
+                    "name": "Batch2_WIP_SB4",
                     "id": "2.0_SB4_step7.0"
                 },
-			    {
+                {
                     "numberOfUnits": 10,
                     "parentBatchId": 2,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch2_WIP",
-					"name": "Batch2_WIP_SB5",
+                    "name": "Batch2_WIP_SB5",
                     "id": "2.0_SB5_step7.0"
                 },
-			    {
+                {
                     "numberOfUnits": 10,
                     "parentBatchId": 2,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch6",
-					"name": "Batch2_WIP_SB6",
+                    "name": "Batch2_WIP_SB6",
                     "id": "2.0_SB6_step7.0"
                 }
-			],
+            ],
             "schedulingRule": "FIFO"
         }
     }
