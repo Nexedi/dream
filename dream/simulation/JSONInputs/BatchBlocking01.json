@@ -1,0 +1,115 @@
+{
+    "edges": {
+        "1": [
+            "Q1",
+            "BD",
+            {}
+        ],
+        "2": [
+            "BD",
+            "M1",
+            {}
+        ],
+        "3": [
+            "M1",
+            "BR",
+            {}
+        ],
+        "4": [
+            "BR",
+            "Q2",
+            {}
+        ],
+        "5": [
+            "Q2",
+            "M2",
+            {}
+        ],
+        "6": [
+            "M2",
+            "E",
+            {}
+        ]		
+    },
+    "general": {
+        "numberOfReplications": 1,
+        "maxSimTime": -1,
+        "trace": "Yes",
+        "console": "No"
+    },
+    "nodes": {
+        "Q1": {
+            "_class": "Dream.Queue",
+            "name": "Q1",
+            "element_id": "DreamNode_30",
+            "capacity": 4,
+            "schedulingRule": "FIFO",
+            "wip": [
+                {
+                    "numberOfUnits": 10,
+                    "_class": "Dream.Batch",
+                    "name": "Batch0",
+                    "id": "0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "_class": "Dream.Batch",
+                    "name": "Batch1",
+                    "id": "1"
+                }
+            ]
+        },
+        "Q2": {
+            "_class": "Dream.Queue",
+            "name": "Q2",
+            "element_id": "DreamNode_30",
+            "capacity": 4,
+            "schedulingRule": "FIFO"
+		},
+        "BD": {
+            "_class": "Dream.BatchDecompositionBlocking",
+            "name": "Deco",
+            "numberOfSubBatches": 2,
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0
+            },
+            "id": "BD"
+        },
+        "M1": {
+            "_class": "Dream.BatchScrapMachine",
+            "name": "M1",
+            "element_id": "DreamNode_8",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0.1
+            },
+            "id": "M1"
+        },
+        "BR": {
+            "_class": "Dream.BatchReassemblyBlocking",
+            "name": "Reassembly",
+            "numberOfSubBatches": 2,
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0
+            },
+            "id": "BR"
+        },
+        "M2": {
+            "_class": "Dream.BatchScrapMachine",
+            "name": "M2",
+            "element_id": "DreamNode_8",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 1
+            },
+            "id": "M2"
+        },
+        "E": {
+            "_class": "Dream.Exit",
+            "name": "Stock",
+            "id": "E1"
+        }
+    }
+}
