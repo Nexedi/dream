@@ -30,9 +30,7 @@ from BatchReassembly import BatchReassembly
 class BatchReassemblyBlocking(BatchReassembly):
 
     # =======================================================================
-    # This is only for a BatchScrapMachine that is followed by a BatchDecomposition
-    # We consider that since this is in essence one station, the BatchScrapMachine
-    # should be blocked if the BatchDecomposition is blocked
+    #  extend behaviour to send canDispose signal to the correct predecessor  
     # =======================================================================
     def removeEntity(self, entity=None):
         activeEntity=BatchReassembly.removeEntity(self, entity)
@@ -45,7 +43,8 @@ class BatchReassemblyBlocking(BatchReassembly):
             if issubclass(previous.__class__, Queue):
                 if previous.expectedSignals['canDispose']:
                     self.sendSignal(receiver=previous, signal=previous.canDispose, sender=station)
-                    break
+                break
+            # continue with further previous stations
             else:
                 station=previous
         return activeEntity
