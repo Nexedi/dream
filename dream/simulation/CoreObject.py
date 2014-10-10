@@ -245,6 +245,8 @@ class CoreObject(ManPyObject):
     def initialSignalReceiver(self):
         if self.haveToDispose():
             self.signalReceiver()
+            
+    def initialAllocationRequest(self):
         # TODO if the station is operated, and the operators have skills defined then the SkilledOperatorRouter should be signalled
         # XXX: there may be a case where one object is not assigned an operator, in that case we do not want to invoke the allocation routine
         if self.checkForDedicatedOperators():
