@@ -66,10 +66,10 @@
    "family": "Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 262.5, 
-    "takt_time": 112.5, 
-    "throughput": 4, 
-    "unitsThroughput": 320
+    "lifespan": 212.0, 
+    "takt_time": 72.0, 
+    "throughput": 5, 
+    "unitsThroughput": 400
    }
   }, 
   {
@@ -79,7 +79,7 @@
    "results": {}
   }, 
   {
-   "_class": "Dream.BatchScrapMachine", 
+   "_class": "Dream.BatchScrapMachineAfterDecompose", 
    "family": "Server", 
    "id": "St0M0", 
    "results": {
@@ -91,15 +91,15 @@
    }
   }, 
   {
-   "_class": "Dream.BatchScrapMachine", 
+   "_class": "Dream.BatchScrapMachineAfterDecompose", 
    "family": "Server", 
    "id": "St0M1", 
    "results": {
-    "blockage_ratio": 0.0, 
+    "blockage_ratio": 9.375, 
     "failure_ratio": 0.0, 
     "off_shift_ratio": 37.5, 
-    "waiting_ratio": 43.75, 
-    "working_ratio": 18.75
+    "waiting_ratio": 6.25, 
+    "working_ratio": 46.875
    }
   }, 
   {
@@ -119,11 +119,11 @@
    "family": "Server", 
    "id": "St1M1", 
    "results": {
-    "blockage_ratio": 0.0, 
+    "blockage_ratio": 3.125, 
     "failure_ratio": 0.0, 
     "off_shift_ratio": 34.375, 
-    "waiting_ratio": 43.75, 
-    "working_ratio": 21.875
+    "waiting_ratio": 18.75, 
+    "working_ratio": 43.75
    }
   }, 
   {
@@ -146,12 +146,12 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "off_shift_ratio": 34.375, 
-    "waiting_ratio": 40.625, 
-    "working_ratio": 25.0
+    "waiting_ratio": 28.125, 
+    "working_ratio": 37.5
    }
   }, 
   {
-   "_class": "Dream.BatchScrapMachine", 
+   "_class": "Dream.M3", 
    "family": "Server", 
    "id": "St3M0", 
    "results": {
@@ -163,19 +163,19 @@
    }
   }, 
   {
-   "_class": "Dream.BatchScrapMachine", 
+   "_class": "Dream.M3", 
    "family": "Server", 
    "id": "St4M0", 
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "off_shift_ratio": 43.75, 
-    "waiting_ratio": 50.0, 
-    "working_ratio": 6.25
+    "waiting_ratio": 43.75, 
+    "working_ratio": 12.5
    }
   }, 
   {
-   "_class": "Dream.BatchScrapMachine", 
+   "_class": "Dream.M3", 
    "family": "Server", 
    "id": "St5M0", 
    "results": {
@@ -187,7 +187,7 @@
    }
   }, 
   {
-   "_class": "Dream.BatchScrapMachine", 
+   "_class": "Dream.M3", 
    "family": "Server", 
    "id": "St5M1", 
    "results": {
@@ -199,19 +199,19 @@
    }
   }, 
   {
-   "_class": "Dream.BatchScrapMachine", 
+   "_class": "Dream.M3", 
    "family": "Server", 
    "id": "St6M0", 
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "off_shift_ratio": 25.0, 
-    "waiting_ratio": 15.625, 
-    "working_ratio": 59.375
+    "waiting_ratio": 65.625, 
+    "working_ratio": 9.375
    }
   }, 
   {
-   "_class": "Dream.BatchScrapMachine", 
+   "_class": "Dream.M3", 
    "family": "Server", 
    "id": "St6M1", 
    "results": {
@@ -223,39 +223,39 @@
    }
   }, 
   {
-   "_class": "Dream.BatchScrapMachine", 
+   "_class": "Dream.BatchScrapMachineAfterDecompose", 
    "family": "Server", 
    "id": "St7M0", 
    "results": {
-    "blockage_ratio": 12.5, 
+    "blockage_ratio": 1.0416666666666667, 
     "failure_ratio": 0.0, 
     "off_shift_ratio": 40.625, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 46.875
+    "waiting_ratio": 31.25, 
+    "working_ratio": 27.083333333333332
    }
   }, 
   {
-   "_class": "Dream.BatchScrapMachine", 
+   "_class": "Dream.M3", 
    "family": "Server", 
    "id": "St8M0", 
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "off_shift_ratio": 34.375, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 65.625
+    "waiting_ratio": 19.791666666666668, 
+    "working_ratio": 45.833333333333336
    }
   }, 
   {
-   "_class": "Dream.BatchScrapMachine", 
+   "_class": "Dream.M3", 
    "family": "Server", 
    "id": "St8M1", 
    "results": {
-    "blockage_ratio": 4.166666666666667, 
+    "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "off_shift_ratio": 65.625, 
-    "waiting_ratio": 15.625, 
-    "working_ratio": 14.583333333333334
+    "waiting_ratio": 1.0416666666666667, 
+    "working_ratio": 33.333333333333336
    }
   }
  ], 

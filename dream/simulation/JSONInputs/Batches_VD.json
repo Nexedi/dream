@@ -319,7 +319,7 @@
             "id": "BDB"
         },
         "BRA": {
-            "_class": "Dream.BatchReassembly",
+            "_class": "Dream.BatchReassemblyBlocking",
             "name": "Assembly_A",
             "element_id": "DreamNode_3",
             "numberOfSubBatches": 4,
@@ -340,7 +340,7 @@
             "id": "BRA"
         },
         "BRB": {
-            "_class": "Dream.BatchReassembly",
+            "_class": "Dream.BatchReassemblyBlocking",
             "name": "Assembly_B",
             "element_id": "DreamNode_4",
             "numberOfSubBatches": 4,
@@ -369,7 +369,7 @@
             "id": "EV"
         },
         "St0M0": {
-            "_class": "Dream.BatchScrapMachine",
+            "_class": "Dream.BatchScrapMachineAfterDecompose",
             "name": "RO_E_M_A_A",
             "element_id": "DreamNode_7",
             "failures": {
@@ -422,7 +422,7 @@
             "id": "St0M0"
         },
         "St0M1": {
-            "_class": "Dream.BatchScrapMachine",
+            "_class": "Dream.BatchScrapMachineAfterDecompose",
             "name": "RO_E_M_A_B",
             "element_id": "DreamNode_8",
             "failures": {
@@ -995,7 +995,7 @@
             "entity": "Dream.Batch",
             "interarrivalTime": {
                 "distributionType": "Fixed",
-                "mean": 1000,
+                "mean": 0.5,
                 "stdev": null,
                 "min": null,
                 "max": null
@@ -1003,7 +1003,7 @@
             "id": "S1"
         },
         "St4M0D": {
-            "_class": "Dream.BatchDecomposition",
+            "_class": "Dream.BatchDecompositionBlocking",
             "name": "St4M0D",
             "element_id": "DreamNode_24",
             "processingTime": {
@@ -1017,7 +1017,7 @@
             "id": "St4M0D"
         },
         "St4M0R": {
-            "_class": "Dream.BatchReassembly",
+            "_class": "Dream.BatchReassemblyBlocking",
             "name": "St4M0R",
             "element_id": "DreamNode_25",
             "processingTime": {
@@ -1088,7 +1088,7 @@
             "id": "St3M0"
         },
         "St3M0D": {
-            "_class": "Dream.BatchDecomposition",
+            "_class": "Dream.BatchDecompositionBlocking",
             "name": "St3M0D",
             "element_id": "DreamNode_27",
             "processingTime": {
@@ -1102,7 +1102,7 @@
             "id": "St3M0D"
         },
         "St3M0R": {
-            "_class": "Dream.BatchReassembly",
+            "_class": "Dream.BatchReassemblyBlocking",
             "name": "St3M0R",
             "element_id": "DreamNode_28",
             "processingTime": {
@@ -1232,7 +1232,7 @@
             "id": "St5M1"
         },
         "St5M0D": {
-            "_class": "Dream.BatchDecomposition",
+            "_class": "Dream.BatchDecompositionBlocking",
             "name": "St5M0D",
             "element_id": "DreamNode_33",
             "processingTime": {
@@ -1246,7 +1246,7 @@
             "id": "St5M0D"
         },
         "St5M1D": {
-            "_class": "Dream.BatchDecomposition",
+            "_class": "Dream.BatchDecompositionBlocking",
             "name": "St5M1D",
             "element_id": "DreamNode_34",
             "processingTime": {
@@ -1260,7 +1260,7 @@
             "id": "St5M1D"
         },
         "St5M0R": {
-            "_class": "Dream.BatchReassembly",
+            "_class": "Dream.BatchReassemblyBlocking",
             "name": "St5M0R",
             "element_id": "DreamNode_35",
             "processingTime": {
@@ -1274,7 +1274,7 @@
             "id": "St5M0R"
         },
         "St5M1R": {
-            "_class": "Dream.BatchReassembly",
+            "_class": "Dream.BatchReassemblyBlocking",
             "name": "St5M1R",
             "element_id": "DreamNode_36",
             "processingTime": {
@@ -1288,7 +1288,7 @@
             "id": "St5M1R"
         },
         "St6M0D": {
-            "_class": "Dream.BatchDecomposition",
+            "_class": "Dream.BatchDecompositionBlocking",
             "name": "St6M0D",
             "element_id": "DreamNode_37",
             "id": "St6M0D",
@@ -1336,7 +1336,7 @@
             "numberOfSubBatches": 8
         },
         "St6M0R": {
-            "_class": "Dream.BatchReassembly",
+            "_class": "Dream.BatchReassemblyBlocking",
             "name": "St6M0R",
             "element_id": "DreamNode_38",
             "id": "St6M0R",
@@ -1376,7 +1376,7 @@
             "numberOfSubBatches": 8
         },
         "St6M1D": {
-            "_class": "Dream.BatchDecomposition",
+            "_class": "Dream.BatchDecompositionBlocking",
             "name": "St6M1D",
             "element_id": "DreamNode_39",
             "id": "St6M1D",
@@ -1400,7 +1400,7 @@
             "numberOfSubBatches": 8
         },
         "St6M1R": {
-            "_class": "Dream.BatchReassembly",
+            "_class": "Dream.BatchReassemblyBlocking",
             "name": "St6M1R",
             "element_id": "DreamNode_40",
             "id": "St6M1R",
@@ -1472,7 +1472,7 @@
             "numberOfSubBatches": 8
         },
         "St7M0D": {
-            "_class": "Dream.BatchDecomposition",
+            "_class": "Dream.BatchDecompositionBlocking",
             "name": "St7M0D",
             "element_id": "DreamNode_41",
             "id": "St7M0D",
@@ -1504,7 +1504,7 @@
             "numberOfSubBatches": 8
         },
         "St8M0R": {
-            "_class": "Dream.BatchReassembly",
+            "_class": "Dream.BatchReassemblyBlocking",
             "name": "St8M0R",
             "element_id": "DreamNode_42",
             "id": "St8M0R",
@@ -1536,7 +1536,7 @@
             "numberOfSubBatches": 8
         },
         "St8M1R": {
-            "_class": "Dream.BatchReassembly",
+            "_class": "Dream.BatchReassemblyBlocking",
             "name": "St8M1R",
             "element_id": "DreamNode_43",
             "id": "St8M1R",
@@ -1550,7 +1550,7 @@
             "numberOfSubBatches": 8
         },
         "St7M0": {
-            "_class": "Dream.BatchScrapMachine",
+            "_class": "Dream.BatchScrapMachineAfterDecompose",
             "name": "Carding",
             "element_id": "DreamNode_44",
             "processingTime": {
