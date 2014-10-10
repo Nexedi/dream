@@ -563,8 +563,8 @@ class Machine(CoreObject):
     # the main process of the machine
     # =======================================================================
     def run(self):
-        # check if there is WIP and signal receiver
-        self.initialSignalReceiver()
+        # request for allocation if needed
+        self.initialAllocationRequest()
         # execute all through simulation time
         while 1:
             # waitEvent isRequested /interruptionEnd/loadOperatorAvailable

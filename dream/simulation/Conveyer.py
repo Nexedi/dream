@@ -96,8 +96,6 @@ class Conveyer(CoreObject):
         #these are just for the first Entity
 #         activate(self.conveyerMover,self.conveyerMover.run())
         self.env.process(self.conveyerMover.run())
-        # check if there is WIP and signal receiver
-        self.initialSignalReceiver()
         while 1:
             #calculate the time to reach end. If this is greater than 0 (we did not already have an entity at the end)
             #set it as the timeToWait of the conveyerMover and raise call=true so that it will be triggered 

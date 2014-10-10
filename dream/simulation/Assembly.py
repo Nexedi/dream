@@ -149,8 +149,6 @@ class Assembly(CoreObject):
     #===========================================================================
     def run(self):
         activeObjectQueue=self.getActiveObjectQueue()
-        # check if there is WIP and signal receiver
-        self.initialSignalReceiver()
         while 1:
             self.printTrace(self.id, waitEvent='')
             # wait until the Queue can accept an entity and one predecessor requests it
