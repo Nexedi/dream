@@ -176,6 +176,11 @@ class Queue(CoreObject):
             if self.haveToDispose():
 #                 self.printTrace(self.id, attemptSignalReceiver='(removeEntity)')
                 self.signalReceiver()
+        # reset the signals for the Queue. It be in the start of the loop for now
+        # xxx consider to dothis in all CoreObjects
+        self.expectedSignals['isRequested']=1
+        self.expectedSignals['canDispose']=1
+        self.expectedSignals['loadOperatorAvailable']=1
         # check if the queue is empty, if yes then try to signal the router, operators may need reallocation
         try:
             if self.level:
