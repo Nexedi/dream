@@ -35,7 +35,7 @@
     }
     var gadget_klass = rJS(window);
     initGadgetMixin(gadget_klass);
-    gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareMethod("render", function(options) {
+    gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareAcquiredMethod("aq_putAttachment", "jio_putAttachment").declareMethod("render", function(options) {
         var jio_key = options.id, gadget = this;
         gadget.props.jio_key = jio_key;
         return new RSVP.Queue().push(function() {
