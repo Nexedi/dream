@@ -253,7 +253,7 @@
                     "parentBatchId": 10,
                     "_class": "Dream.SubBatch",
                     "parentBatchName": "Batch10_WIP",
-                    "name": "Batch10_WIP_SB3",
+                    "name": "Batch10_WIP_SB4",
                     "id": "10.0_SB3_step2.0"
                 }
             ],
@@ -1001,7 +1001,7 @@
             "id": "St4M0R"
         },
         "St3M0": {
-            "_class": "Dream.M3",
+            "_class": "Dream.BatchScrapMachine",
             "name": "Cut & Bend",
             "element_id": "DreamNode_26",
             "processingTime": {
@@ -1088,7 +1088,7 @@
             "id": "B9"
         },
         "St5M0": {
-            "_class": "Dream.M3",
+            "_class": "Dream.BatchScrapMachine",
             "name": "Flag Labelling1",
             "element_id": "DreamNode_31",
             "processingTime": {
@@ -1137,7 +1137,7 @@
             "id": "St5M0"
         },
         "St5M1": {
-            "_class": "Dream.M3",
+            "_class": "Dream.BatchScrapMachine",
             "name": "Flag Labelling 2",
             "element_id": "DreamNode_32",
             "processingTime": {
