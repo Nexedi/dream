@@ -56,6 +56,7 @@
     // Acquired methods
     /////////////////////////////////////////////////////////////////
     .declareAcquiredMethod("aq_getAttachment", "jio_getAttachment")
+    .declareAcquiredMethod("aq_putAttachment", "jio_putAttachment")
 
     /////////////////////////////////////////////////////////////////
     // declared methods
