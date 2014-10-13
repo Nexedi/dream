@@ -97,21 +97,11 @@
         ],
         "con_100": [
             "B7",
-            "St3M0D",
-            {}
-        ],
-        "con_105": [
-            "St3M0D",
             "St3M0",
-            {}
-        ],
-        "con_110": [
-            "St3M0",
-            "St3M0R",
             {}
         ],
         "con_115": [
-            "St3M0R",
+            "St3M0",
             "B8",
             {}
         ],
@@ -127,41 +117,21 @@
         ],
         "con_130": [
             "B9",
-            "St5M0D",
+            "St5M0",
             {}
         ],
         "con_135": [
             "B9",
-            "St5M1D",
-            {}
-        ],
-        "con_140": [
-            "St5M1D",
             "St5M1",
-            {}
-        ],
-        "con_145": [
-            "St5M1",
-            "St5M1R",
-            {}
-        ],
-        "con_150": [
-            "St5M0",
-            "St5M0R",
-            {}
-        ],
-        "con_155": [
-            "St5M0D",
-            "St5M0",
             {}
         ],
         "con_160": [
-            "St5M0R",
+            "St5M0",
             "B10",
             {}
         ],
         "con_165": [
-            "St5M1R",
+            "St5M1",
             "B10",
             {}
         ],
@@ -1087,34 +1057,6 @@
             },
             "id": "St3M0"
         },
-        "St3M0D": {
-            "_class": "Dream.BatchDecompositionBlocking",
-            "name": "St3M0D",
-            "element_id": "DreamNode_27",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0,
-                "stdev": null,
-                "min": null,
-                "max": null
-            },
-            "numberOfSubBatches": 1,
-            "id": "St3M0D"
-        },
-        "St3M0R": {
-            "_class": "Dream.BatchReassemblyBlocking",
-            "name": "St3M0R",
-            "element_id": "DreamNode_28",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0,
-                "stdev": null,
-                "min": null,
-                "max": null
-            },
-            "numberOfSubBatches": 1,
-            "id": "St3M0R"
-        },
         "B8": {
             "_class": "Dream.Queue",
             "name": "B8",
@@ -1230,62 +1172,6 @@
                 "receiveBeforeEndThreshold": 7
             },
             "id": "St5M1"
-        },
-        "St5M0D": {
-            "_class": "Dream.BatchDecompositionBlocking",
-            "name": "St5M0D",
-            "element_id": "DreamNode_33",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0,
-                "stdev": null,
-                "min": null,
-                "max": null
-            },
-            "numberOfSubBatches": 1,
-            "id": "St5M0D"
-        },
-        "St5M1D": {
-            "_class": "Dream.BatchDecompositionBlocking",
-            "name": "St5M1D",
-            "element_id": "DreamNode_34",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0,
-                "stdev": null,
-                "min": null,
-                "max": null
-            },
-            "numberOfSubBatches": 1,
-            "id": "St5M1D"
-        },
-        "St5M0R": {
-            "_class": "Dream.BatchReassemblyBlocking",
-            "name": "St5M0R",
-            "element_id": "DreamNode_35",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0,
-                "stdev": null,
-                "min": null,
-                "max": null
-            },
-            "numberOfSubBatches": 1,
-            "id": "St5M0R"
-        },
-        "St5M1R": {
-            "_class": "Dream.BatchReassemblyBlocking",
-            "name": "St5M1R",
-            "element_id": "DreamNode_36",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0,
-                "stdev": null,
-                "min": null,
-                "max": null
-            },
-            "numberOfSubBatches": 1,
-            "id": "St5M1R"
         },
         "St6M0D": {
             "_class": "Dream.BatchDecompositionBlocking",
