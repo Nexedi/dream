@@ -128,12 +128,15 @@ class Queue(CoreObject):
                 self.canDispose=self.env.event()
             # if the event that activated the thread is canDispose then signalReceiver
             if self.haveToDispose():
-#                 self.printTrace(self.id, attemptSignalReceiver='(generator)')
                 if self.receiver:
                     if not self.receiver.entryIsAssignedTo():
-                        self.signalReceiver()
+                        # try to signal receiver. In case fo failure signal giver (for synchronization issues)
+                        if not self.signalReceiver():
+                            self.signalGiver()
                     continue
-                self.signalReceiver()
+                if not self.signalReceiver():
+                    # try to signal receiver. In case fo failure signal giver (for synchronization issues)
+                    self.signalGiver()
     
     # =======================================================================
     #               checks if the Queue can accept an entity       
