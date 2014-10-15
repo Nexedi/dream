@@ -1168,14 +1168,18 @@ class Machine(CoreObject):
     def releaseOperator(self):
         # this checks if the operator is working on the last element. 
         # If yes the time that he was set off-shift should be updated
+        operator=self.currentOperator
         if not self.currentOperator.onShift:
-            self.currentOperator.timeLastShiftEnded=self.env.now      
-            self.currentOperator.unAssign()     # set the flag operatorAssignedTo to None     
-            self.outputTrace(self.currentOperator.name, "released from "+ self.objName)
+            operator.timeLastShiftEnded=self.env.now      
+            operator.unAssign()     # set the flag operatorAssignedTo to None     
+            self.outputTrace(operator.name, "released from "+ self.objName)
         # XXX in case of skilled operators which stay at the same station should that change
         elif not self.checkForDedicatedOperators():
-            self.currentOperator.unAssign()     # set the flag operatorAssignedTo to None
-            self.outputTrace(self.currentOperator.objName, "released from "+ self.objName)
+            operator.unAssign()     # set the flag operatorAssignedTo to None
+            self.outputTrace(operator.objName, "released from "+ self.objName)
+        else:
+            self.outputTrace(operator.objName, "ended a process in "+ self.objName)
+            operator.totalWorkingTime+=self.env.now-operator.timeLastOperationStarted   
         self.broker.invoke()
         self.toBeOperated = False
         
