@@ -6,9 +6,9 @@
    "family": "Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 57.75, 
-    "takt_time": 17.28125, 
-    "throughput": 8
+    "lifespan": 22.0, 
+    "takt_time": 22.0, 
+    "throughput": 1
    }
   }, 
   {
@@ -19,8 +19,8 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 100.0
+    "waiting_ratio": 83.0, 
+    "working_ratio": 17.0
    }
   }, 
   {
@@ -31,9 +31,8 @@
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
     "load_ratio": 0.0, 
-    "setup_ratio": 1.4516129032258065, 
-    "waiting_ratio": 87.09677419354838, 
-    "working_ratio": 11.451612903225806
+    "waiting_ratio": 98.0, 
+    "working_ratio": 2.0
    }
   }, 
   {
@@ -41,18 +40,21 @@
    "family": "Operator", 
    "id": "O1", 
    "results": {
-    "waiting_ratio": 0.0, 
-    "working_ratio": 100.0
+    "waiting_ratio": 81.0, 
+    "working_ratio": 19.0
    }
   }, 
   {
-   "_class": "Dream.Operator", 
-   "family": "Operator", 
-   "id": "O2", 
-   "results": {
-    "waiting_ratio": 87.09677419354838, 
-    "working_ratio": 12.903225806451612
-   }
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "Q1", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "Q2", 
+   "results": {}
   }
  ], 
  "general": {

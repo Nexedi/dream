@@ -42,8 +42,8 @@
    "family": "Operator", 
    "id": "O1", 
    "results": {
-    "waiting_ratio": 100.0, 
-    "working_ratio": 0.0
+    "waiting_ratio": 66.0, 
+    "working_ratio": 34.0
    }
   }, 
   {
@@ -51,8 +51,8 @@
    "family": "Operator", 
    "id": "O2", 
    "results": {
-    "waiting_ratio": 100.0, 
-    "working_ratio": 0.0
+    "waiting_ratio": 95.5, 
+    "working_ratio": 4.5
    }
   }
  ], 
