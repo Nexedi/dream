@@ -173,7 +173,7 @@ class SkilledRouter(Router):
                 #===================================================================
                 self.availableStationsDict={}
                 for station in self.availableStations:
-                    self.availableStationsDict[str(station.id)]={'stationID':str(station.id),'WIP':station.wip}
+                    self.availableStationsDict[str(station.id)]={'stationID':str(station.id),'WIP':station.wip, 'lastAssignment':self.env.now}
                 #===================================================================
                 # # operators and their skills set
                 #===================================================================
