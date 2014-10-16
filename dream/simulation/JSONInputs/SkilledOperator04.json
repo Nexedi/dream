@@ -1,0 +1,111 @@
+{
+    "_class": "Dream.Simulation",
+    "edges": {
+        "1": [
+            "Q1",
+            "M1",
+            {}
+        ],
+        "2": [
+            "M1",
+            "Q2",
+            {}
+        ],
+        "3": [
+            "Q2",
+            "M2",
+            {}
+        ],
+        "4": [
+            "M2",
+            "E1",
+            {}
+        ]
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "confidenceLevel": "0.95",
+        "maxSimTime": "100",
+        "numberOfReplications": "1",
+        "trace": "Yes",
+		"console": "No"
+    },
+    "nodes": {
+        "E1": {
+            "_class": "Dream.Exit",
+            "name": "Exit"
+        },
+        "Q1": {
+            "_class": "Dream.Queue",
+            "capacity": 1,
+            "left": 0.4414893617021277,
+            "name": "Q1",
+            "top": 0.40909090909090906,
+            "wip": [
+                {
+                    "_class": "Dream.Part",
+                    "id": "P1",
+                    "name": "Part1"
+                }
+            ]
+        },
+        "M1": {
+            "_class": "Dream.Machine",
+            "loadTime": {
+                "distributionType": "Fixed",
+                "mean": 0.0
+            },
+            "name": "Machine1",
+            "operationType": "MT-Load-Processing",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 7.0
+            }
+        },
+        "Q2": {
+            "_class": "Dream.Queue",
+            "capacity": 1,
+            "left": 0.4414893617021277,
+            "name": "Q2",
+            "top": 0.40909090909090906,
+            "wip": [
+                {
+                    "_class": "Dream.Part",
+                    "id": "P3",
+                    "name": "Part3"
+                }
+			]
+        },
+        "M2": {
+            "_class": "Dream.Machine",
+            "failures": {},
+            "loadTime": {
+                "distributionType": "Fixed",
+                "mean": 0.0
+            },
+            "name": "Machine2",
+            "operationType": "MT-Load-Processing",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 11.0
+            }
+        },
+        "O1": {
+            "_class": "Dream.Operator",
+            "capacity": 1,
+            "name": "Operator1",
+			"skills":["M1","M2"]
+        },
+        "EV": {
+            "_class": "Dream.EventGenerator",
+            "name": "Allocator",
+            "element_id": "DreamNode_6",
+            "argumentDict": "{}",
+            "interval": 10,
+            "method": "Dream.ManPyObject.requestAllocation",
+            "start": 0,
+            "stop": -1,
+            "id": "EV"
+        }
+    }
+}
