@@ -64,6 +64,8 @@ class Operator(ObjectResource):
         
         # the station that the operator is assigned to
         self.operatorAssignedTo=None
+        # the station that the operator is dedicated to
+        self.operatorDedicatedTo=None
         # the station the operator currently operating
         self.workingStation=None
         

@@ -59,6 +59,7 @@ class SkilledRouter(Router):
         self.pendingQueues=[]
         self.pendingMachines=[]
         self.pendingObjects=[]
+        self.previousSolution={}
         
     # =======================================================================
     #                          the run method
@@ -194,7 +195,10 @@ class SkilledRouter(Router):
                 # TODO: a constant integer must be added to all WIP before provided to the opAss_LP
                 #     as it doesn't support zero WIP levels
                 #===================================================================
-                solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, self.operators)
+                solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
+                                  self.operators)
+#                 print '-------'
+#                 print self.env.now, solution
                 # XXX assign the operators to operatorPools
                 # pendingStations/ available stations not yet given operator
                 self.pendingStations=[]
@@ -205,31 +209,60 @@ class SkilledRouter(Router):
                     # obtain the operator and the station
                     operator=findObjectById(operatorID)
                     station=findObjectById(solution[operatorID])
+                    if operatorID in self.previousSolution:
+                        # if the solution returned the operator that is already in the station
+                        # then no signal is needed
+                        if not self.previousSolution[operatorID] == solution[operatorID]:
+                            self.toBeSignalled.append(station)
+                    else:
+                        self.toBeSignalled.append(station)
                     # update the operatorPool of the station
                     station.operatorPool.operators=[operator]
                     # assign the operator to the station
                     operator.assignTo(station)
-                    # append the station to the ones that are to be  signalled
-                    self.toBeSignalled.append(station)
+                    # set that the operator is dedicated to the station
+                    operator.operatorDedicatedTo=station
+                    # set in every station the operator that it is to get
+                    station.operatorToGet=operator
                     # remove the operator id from availableOperatorList
                     self.availableOperatorList.remove(operatorID)
 
                 #===================================================================
                 # # XXX signal the stations that the assignment is complete
-                #===================================================================
+                #===================================================================             
+                # the stations that 
+                stationsProcessingLast=[]
                 for station in self.toBeSignalled:
-                    if station.broker.waitForOperator:
-                        # signal this station's broker that the resource is available
-                        if station.broker.expectedSignals['resourceAvailable']:
-                            self.sendSignal(receiver=station.broker, signal=station.broker.resourceAvailable)
-                            self.printTrace('router', 'signalling broker of'+' '*50+station.id)
-                    else:
-                        # signal the queue proceeding the station
-                        if station.canAccept()\
-                                and any(type=='Load' for type in station.multOperationTypeList):
-                            if station.expectedSignals['loadOperatorAvailable']:
-                                self.sendSignal(receiver=station, signal=station.loadOperatorAvailable)
-                                self.printTrace('router', 'signalling'+' '*50+station.id)
+                    # check if the operator that the station waits for is free
+                    operator=station.operatorToGet
+                    if operator.workingStation:
+                        if operator.workingStation.isProcessing:
+                            stationsProcessingLast.append(operator.workingStation)
+                            continue
+                    # signal the station so that it gets the operator
+                    self.signalStation(station, operator)
+                           
+                self.expectedFinishSignalsDict={}
+                self.expectedFinishSignals=[]
+                for station in stationsProcessingLast:
+                    signal=self.env.event()
+                    self.expectedFinishSignalsDict[station.id]=signal
+                    self.expectedFinishSignals.append(signal)
+                while self.expectedFinishSignals:
+                    receivedEvent = yield self.env.any_of(self.expectedFinishSignals)
+                    for signal in self.expectedFinishSignals:
+                        if signal in receivedEvent:
+                            transmitter, eventTime=signal.value
+                            assert eventTime==self.env.now, 'the station finished signal must be received on the time of request'
+                            self.expectedFinishSignals.remove(signal)
+                            del self.expectedFinishSignalsDict[station.id]
+                            for id in solution.keys():
+                                operator=findObjectById(id)
+                                station=findObjectById(solution[id])
+                                operator.totalWorkingTime+=self.env.now-operator.timeLastOperationStarted 
+                                # signal the station so that it gets the operator
+                                self.signalStation(station, operator)
+          
             
             #===================================================================
             # default behaviour
@@ -264,10 +297,31 @@ class SkilledRouter(Router):
                 # signal the stations that ought to be signalled
                 self.signalOperatedStations()
             
+            
+            self.previousSolution=solution
             self.printTrace('', 'router exiting')
             self.printTrace('','=-'*20)
             self.exit()
     
+    # =======================================================================
+    #                 signal the station or the Queue to impose the assignment
+    # =======================================================================
+    def signalStation(self, station, operator):
+        # signal this station's broker that the resource is available
+        if station.broker.waitForOperator:
+            if station.broker.expectedSignals['resourceAvailable']:
+                self.sendSignal(receiver=station.broker, signal=station.broker.resourceAvailable)
+                self.printTrace('router', 'signalling broker of'+' '*50+station.id)
+                self.toBeSignalled.remove(station)
+        # signal the queue proceeding the station
+        else:         
+            if station.canAccept()\
+                    and any(type=='Load' for type in station.multOperationTypeList):
+                if station.expectedSignals['loadOperatorAvailable']:
+                    self.sendSignal(receiver=station, signal=station.loadOperatorAvailable)
+                    self.printTrace('router', 'signalling'+' '*50+station.id)
+                    self.toBeSignalled.remove(station)      
+                    
     # =======================================================================
     #                 return control to the Machine.run
     # =======================================================================

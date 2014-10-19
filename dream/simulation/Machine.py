@@ -1172,13 +1172,23 @@ class Machine(CoreObject):
         if not self.currentOperator.onShift:
             operator.timeLastShiftEnded=self.env.now      
             operator.unAssign()     # set the flag operatorAssignedTo to None     
+            operator.workingStation=None  
             self.outputTrace(operator.name, "released from "+ self.objName)
         # XXX in case of skilled operators which stay at the same station should that change
-        elif not self.checkForDedicatedOperators():
+        elif not operator.operatorDedicatedTo==self:
             operator.unAssign()     # set the flag operatorAssignedTo to None
-            self.outputTrace(operator.objName, "released from "+ self.objName)
+            operator.workingStation=None
+            self.outputTrace(operator.name, "released from "+ self.objName)
+            # if the Router is expecting for signal send it
+            from Globals import G
+            from SkilledOperatorRouter import SkilledRouter
+            if G.Router.__class__ is SkilledRouter:
+                if G.Router.expectedFinishSignals:
+                    if self.id in G.Router.expectedFinishSignalsDict:
+                        signal=G.Router.expectedFinishSignalsDict[self.id]
+                        self.sendSignal(receiver=G.Router, signal=signal)
         else:
-            self.outputTrace(operator.objName, "ended a process in "+ self.objName)
+            self.outputTrace(operator.name, "ended a process in "+ self.objName)
             operator.totalWorkingTime+=self.env.now-operator.timeLastOperationStarted   
         self.broker.invoke()
         self.toBeOperated = False
