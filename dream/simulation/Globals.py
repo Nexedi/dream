@@ -290,7 +290,8 @@ def setWIP(entityList):
             if entity.currentStation.class_name:
                 stationClass=entity.currentStation.__class__.__name__
                 if stationClass in ['Machine', 'BatchScrapMachine', 'MachineJobShop','BatchDecomposition', 'BatchReassembly','M3',
-                                    'BatchReassemblyBlocking','BatchDecompositionBlocking','BatchScrapMachineAfterDecompose']:
+                                    'BatchReassemblyBlocking','BatchDecompositionBlocking','BatchScrapMachineAfterDecompose',
+                                    'BatchDecompositionStartTime']:
                     entity.currentStation.currentEntity=entity
                     # trigger initialWIP event only if it has not been triggered. Otherwise
                     # if we set more than one entities (e.g. in reassembly) it will crash
