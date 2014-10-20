@@ -1,0 +1,1802 @@
+{
+    "edges": {
+        "con_5": [
+            "B5",
+            "St2M1",
+            {}
+        ],
+        "con_10": [
+            "St2M1",
+            "BRB",
+            {}
+        ],
+        "con_15": [
+            "BRB",
+            "B7",
+            {}
+        ],
+        "con_20": [
+            "QStart",
+            "BDA",
+            {}
+        ],
+        "con_25": [
+            "QStart",
+            "BDB",
+            {}
+        ],
+        "con_30": [
+            "BDA",
+            "St0M0",
+            {}
+        ],
+        "con_35": [
+            "St0M0",
+            "B1",
+            {}
+        ],
+        "con_40": [
+            "B1",
+            "St1M0",
+            {}
+        ],
+        "con_45": [
+            "St1M0",
+            "B2",
+            {}
+        ],
+        "con_50": [
+            "B2",
+            "St2M0",
+            {}
+        ],
+        "con_55": [
+            "St2M0",
+            "BRA",
+            {}
+        ],
+        "con_60": [
+            "S1",
+            "QStart",
+            {}
+        ],
+        "con_65": [
+            "BRA",
+            "B7",
+            {}
+        ],
+        "con_70": [
+            "BDB",
+            "St0M1",
+            {}
+        ],
+        "con_75": [
+            "St0M1",
+            "B4",
+            {}
+        ],
+        "con_80": [
+            "B4",
+            "St1M1",
+            {}
+        ],
+        "con_85": [
+            "St1M1",
+            "B5",
+            {}
+        ],
+        "con_90": [
+            "St4M0D",
+            "St4M0",
+            {}
+        ],
+        "con_95": [
+            "St4M0",
+            "St4M0R",
+            {}
+        ],
+        "con_100": [
+            "B7",
+            "St3M0",
+            {}
+        ],
+        "con_115": [
+            "St3M0",
+            "B8",
+            {}
+        ],
+        "con_120": [
+            "B8",
+            "St4M0D",
+            {}
+        ],
+        "con_125": [
+            "St4M0R",
+            "B9",
+            {}
+        ],
+        "con_130": [
+            "B9",
+            "St5M0",
+            {}
+        ],
+        "con_135": [
+            "B9",
+            "St5M1",
+            {}
+        ],
+        "con_160": [
+            "St5M0",
+            "B10",
+            {}
+        ],
+        "con_165": [
+            "St5M1",
+            "B10",
+            {}
+        ],
+        "con_170": [
+            "B10",
+            "St6M0D",
+            {}
+        ],
+        "con_175": [
+            "B10",
+            "St6M1D",
+            {}
+        ],
+        "con_180": [
+            "St6M1D",
+            "St6M1",
+            {}
+        ],
+        "con_185": [
+            "St6M0D",
+            "St6M0",
+            {}
+        ],
+        "con_190": [
+            "St6M0",
+            "St6M0R",
+            {}
+        ],
+        "con_195": [
+            "St6M1",
+            "St6M1R",
+            {}
+        ],
+        "con_200": [
+            "St6M0R",
+            "B11",
+            {}
+        ],
+        "con_205": [
+            "St6M1R",
+            "B11",
+            {}
+        ],
+        "con_210": [
+            "St7M0D",
+            "St7M0",
+            {}
+        ],
+        "con_220": [
+            "St8M0",
+            "St8M0R",
+            {}
+        ],
+        "con_225": [
+            "St8M1",
+            "St8M1R",
+            {}
+        ],
+        "con_230": [
+            "St8M1R",
+            "E1",
+            {}
+        ],
+        "con_235": [
+            "St8M0R",
+            "E1",
+            {}
+        ],
+        "con_245": [
+            "B11",
+            "St7M0D",
+            {}
+        ],
+        "con_260": [
+            "St7M0",
+            "B12",
+            {}
+        ],
+        "con_270": [
+            "B12",
+            "St8M0",
+            {}
+        ],
+        "con_280": [
+            "B12",
+            "St8M1",
+            {}
+        ]
+    },
+    "general": {
+        "numberOfReplications": 1,
+        "maxSimTime": 5000,
+        "confidenceLevel": 0.95,
+        "processTimeout": 20,
+        "currentDate": "2014/07/14",
+        "timeUnitPerDay": 24,
+        "trace": "Yes",
+        "console": "No",
+        "seed": "",
+        "ke_url": "http://git.erp5.org/gitweb/dream.git/blob_plain/ee686e74fe5f2e18cc2ba820163a52e8626a696c:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
+        "throughputTarget": 10
+    },
+    "nodes": {
+        "BDA": {
+            "_class": "Dream.BatchDecompositionStartTime",
+            "name": "Deco_A",
+            "element_id": "DreamNode_1",
+            "numberOfSubBatches": 4,
+            "processingTime": {
+                "distributionType": "Fixed",
+                "max": "",
+                "mean": 0,
+                "min": "",
+                "stdev": ""
+            },
+            "wip": [
+                {
+                    "numberOfUnits": 20,
+                    "parentBatchId": 10,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch10_WIP",
+                    "name": "Batch10_WIP_SB4",
+                    "id": "10.0_SB4_step0.0"
+                }
+            ],
+            "id": "BDA"
+        },
+        "BDB": {
+            "_class": "Dream.BatchDecompositionStartTime",
+            "name": "Deco_B",
+            "element_id": "DreamNode_2",
+            "numberOfSubBatches": 4,
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0
+            },
+            "wip": [
+                {
+                    "numberOfUnits": 20,
+                    "parentBatchId": 11,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch11_WIP",
+                    "name": "Batch10_WIP_SB3",
+                    "id": "11.0_SB3_step0.0"
+                },
+                {
+                    "numberOfUnits": 20,
+                    "parentBatchId": 11,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch11_WIP",
+                    "name": "Batch10_WIP_SB4",
+                    "id": "11.0_SB4_step0.0"
+                }
+            ],
+            "id": "BDB"
+        },
+        "BRA": {
+            "_class": "Dream.BatchReassemblyBlocking",
+            "name": "Assembly_A",
+            "element_id": "DreamNode_3",
+            "numberOfSubBatches": 4,
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0
+            },
+            "wip": [
+                {
+                    "numberOfUnits": 20,
+                    "parentBatchId": 10,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch10_WIP",
+                    "name": "Batch10_WIP_SB1",
+                    "id": "10.0_SB1_step2.0"
+                }
+            ],
+            "id": "BRA"
+        },
+        "BRB": {
+            "_class": "Dream.BatchReassemblyBlocking",
+            "name": "Assembly_B",
+            "element_id": "DreamNode_4",
+            "numberOfSubBatches": 4,
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0
+            },
+            "id": "BRB"
+        },
+        "E1": {
+            "_class": "Dream.Exit",
+            "name": "Stock",
+            "element_id": "DreamNode_5",
+            "id": "E1"
+        },
+        "EV": {
+            "_class": "Dream.EventGenerator",
+            "name": "Attainment",
+            "element_id": "DreamNode_6",
+            "argumentDict": "{}",
+            "duration": 10,
+            "interval": 1000,
+            "method": "Globals.countIntervalThroughput",
+            "start": 1000,
+            "stop": -1,
+            "id": "EV"
+        },
+        "St0M0": {
+            "_class": "Dream.BatchScrapMachineAfterDecompose",
+            "name": "RO_E_M_A_A",
+            "element_id": "DreamNode_7",
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": 40,
+                "MTTR": 10,
+                "repairman": "None"
+            },
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0.75,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "shift": {
+                "shiftPattern": [
+                    [
+                        0,
+                        105
+                    ],
+                    [
+                        150,
+                        300
+                    ],
+                    [
+                        303,
+                        480
+                    ],
+                    [
+                        510,
+                        645
+                    ],
+                    [
+                        690,
+                        840
+                    ],
+                    [
+                        1200,
+                        1380
+                    ],
+                    [
+                        1410,
+                        1545
+                    ],
+                    [
+                        1590,
+                        1620
+                    ]
+                ],
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
+            },
+            "id": "St0M0"
+        },
+        "St0M1": {
+            "_class": "Dream.BatchScrapMachineAfterDecompose",
+            "name": "RO_E_M_A_B",
+            "element_id": "DreamNode_8",
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": 40,
+                "MTTR": 10,
+                "repairman": "None"
+            },
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0.75,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "shift": {
+                "shiftPattern": [
+                    [
+                        0,
+                        105
+                    ],
+                    [
+                        150,
+                        300
+                    ],
+                    [
+                        303,
+                        480
+                    ],
+                    [
+                        510,
+                        645
+                    ],
+                    [
+                        690,
+                        840
+                    ],
+                    [
+                        1200,
+                        1380
+                    ],
+                    [
+                        1410,
+                        1545
+                    ],
+                    [
+                        1590,
+                        1620
+                    ]
+                ],
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
+            },
+            "id": "St0M1"
+        },
+        "St1M0": {
+            "_class": "Dream.BatchScrapMachine",
+            "name": "P_B_A_A",
+            "element_id": "DreamNode_9",
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": 40,
+                "MTTR": 10,
+                "repairman": "None"
+            },
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0.75,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "shift": {
+                "shiftPattern": [
+                    [
+                        0,
+                        105
+                    ],
+                    [
+                        150,
+                        300
+                    ],
+                    [
+                        303,
+                        480
+                    ],
+                    [
+                        510,
+                        645
+                    ],
+                    [
+                        690,
+                        840
+                    ],
+                    [
+                        1200,
+                        1380
+                    ],
+                    [
+                        1410,
+                        1545
+                    ],
+                    [
+                        1590,
+                        1620
+                    ]
+                ],
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
+            },
+            "id": "St1M0"
+        },
+        "St1M1": {
+            "_class": "Dream.BatchScrapMachine",
+            "name": "P_B_A_B",
+            "element_id": "DreamNode_10",
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": 40,
+                "MTTR": 10,
+                "repairman": "None"
+            },
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0.75,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "shift": {
+                "shiftPattern": [
+                    [
+                        0,
+                        105
+                    ],
+                    [
+                        150,
+                        300
+                    ],
+                    [
+                        303,
+                        480
+                    ],
+                    [
+                        510,
+                        645
+                    ],
+                    [
+                        690,
+                        840
+                    ],
+                    [
+                        1200,
+                        1380
+                    ],
+                    [
+                        1410,
+                        1545
+                    ],
+                    [
+                        1590,
+                        1620
+                    ]
+                ],
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
+            },
+            "id": "St1M1"
+        },
+        "St2M0": {
+            "_class": "Dream.M3",
+            "name": "D_B_A_A",
+            "element_id": "DreamNode_11",
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": 40,
+                "MTTR": 10,
+                "repairman": "None"
+            },
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0.75,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "shift": {
+                "shiftPattern": [
+                    [
+                        0,
+                        105
+                    ],
+                    [
+                        150,
+                        300
+                    ],
+                    [
+                        303,
+                        480
+                    ],
+                    [
+                        510,
+                        645
+                    ],
+                    [
+                        690,
+                        840
+                    ],
+                    [
+                        1200,
+                        1380
+                    ],
+                    [
+                        1410,
+                        1545
+                    ],
+                    [
+                        1590,
+                        1620
+                    ]
+                ],
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
+            },
+            "id": "St2M0"
+        },
+        "St2M1": {
+            "_class": "Dream.M3",
+            "name": "D_B_A_B",
+            "element_id": "DreamNode_12",
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": 40,
+                "MTTR": 10,
+                "repairman": "None"
+            },
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0.75,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "shift": {
+                "shiftPattern": [
+                    [
+                        0,
+                        105
+                    ],
+                    [
+                        150,
+                        300
+                    ],
+                    [
+                        303,
+                        480
+                    ],
+                    [
+                        510,
+                        645
+                    ],
+                    [
+                        690,
+                        840
+                    ],
+                    [
+                        1200,
+                        1380
+                    ],
+                    [
+                        1410,
+                        1545
+                    ],
+                    [
+                        1590,
+                        1620
+                    ]
+                ],
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
+            },
+            "id": "St2M1"
+        },
+        "St4M0": {
+            "_class": "Dream.M3",
+            "name": "Moulding",
+            "element_id": "DreamNode_13",
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": 40,
+                "MTTR": 10,
+                "repairman": "None"
+            },
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0.375,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "shift": {
+                "shiftPattern": [
+                    [
+                        0,
+                        105
+                    ],
+                    [
+                        150,
+                        300
+                    ],
+                    [
+                        303,
+                        480
+                    ],
+                    [
+                        510,
+                        645
+                    ],
+                    [
+                        690,
+                        840
+                    ],
+                    [
+                        1200,
+                        1380
+                    ],
+                    [
+                        1410,
+                        1545
+                    ],
+                    [
+                        1590,
+                        1620
+                    ]
+                ],
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
+            },
+            "id": "St4M0"
+        },
+        "St8M0": {
+            "_class": "Dream.M3",
+            "name": "Packaging_A",
+            "element_id": "DreamNode_14",
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": 40,
+                "MTTR": 10,
+                "repairman": "None"
+            },
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 1,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "shift": {
+                "shiftPattern": [
+                    [
+                        0,
+                        105
+                    ],
+                    [
+                        150,
+                        300
+                    ],
+                    [
+                        303,
+                        480
+                    ],
+                    [
+                        510,
+                        645
+                    ],
+                    [
+                        690,
+                        840
+                    ],
+                    [
+                        1200,
+                        1380
+                    ],
+                    [
+                        1410,
+                        1545
+                    ],
+                    [
+                        1590,
+                        1620
+                    ]
+                ],
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
+            },
+            "id": "St8M0"
+        },
+        "St8M1": {
+            "_class": "Dream.M3",
+            "name": "Packaging_B",
+            "element_id": "DreamNode_15",
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": 40,
+                "MTTR": 10,
+                "repairman": "None"
+            },
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 1,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "shift": {
+                "shiftPattern": [
+                    [
+                        0,
+                        105
+                    ],
+                    [
+                        150,
+                        300
+                    ],
+                    [
+                        303,
+                        480
+                    ],
+                    [
+                        510,
+                        645
+                    ],
+                    [
+                        690,
+                        840
+                    ],
+                    [
+                        1200,
+                        1380
+                    ],
+                    [
+                        1410,
+                        1545
+                    ],
+                    [
+                        1590,
+                        1620
+                    ]
+                ],
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
+            },
+            "id": "St8M1"
+        },
+        "St6M0": {
+            "_class": "Dream.M3",
+            "name": "Pressure_A",
+            "element_id": "DreamNode_16",
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": 40,
+                "MTTR": 10,
+                "repairman": "None"
+            },
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 1,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "shift": {
+                "shiftPattern": [
+                    [
+                        0,
+                        105
+                    ],
+                    [
+                        150,
+                        300
+                    ],
+                    [
+                        303,
+                        480
+                    ],
+                    [
+                        510,
+                        645
+                    ],
+                    [
+                        690,
+                        840
+                    ],
+                    [
+                        1200,
+                        1380
+                    ],
+                    [
+                        1410,
+                        1545
+                    ],
+                    [
+                        1590,
+                        1620
+                    ]
+                ],
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
+            },
+            "wip": [
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 4,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch4_WIP",
+                    "name": "Batch4_WIP_SB4",
+                    "unitsToProcess": 5,
+                    "id": "4.0_SB4_step6.0"
+                }
+            ],
+            "id": "St6M0"
+        },
+        "St6M1": {
+            "_class": "Dream.M3",
+            "name": "Pressure_B",
+            "element_id": "DreamNode_17",
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": 40,
+                "MTTR": 10,
+                "repairman": "None"
+            },
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 1,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "shift": {
+                "shiftPattern": [
+                    [
+                        0,
+                        105
+                    ],
+                    [
+                        150,
+                        300
+                    ],
+                    [
+                        303,
+                        480
+                    ],
+                    [
+                        510,
+                        645
+                    ],
+                    [
+                        690,
+                        840
+                    ],
+                    [
+                        1200,
+                        1380
+                    ],
+                    [
+                        1410,
+                        1545
+                    ],
+                    [
+                        1590,
+                        1620
+                    ]
+                ],
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
+            },
+            "id": "St6M1"
+        },
+        "B1": {
+            "_class": "Dream.LineClearance",
+            "name": "B1",
+            "element_id": "DreamNode_18",
+            "capacity": 2,
+            "isDummy": "0",
+            "schedulingRule": "FIFO",
+            "wip": [
+                {
+                    "numberOfUnits": 20,
+                    "parentBatchId": 10,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch10_WIP",
+                    "name": "Batch10_WIP_SB3",
+                    "id": "10.0_SB3_step0.0"
+                }
+            ],
+            "id": "B1"
+        },
+        "B4": {
+            "_class": "Dream.LineClearance",
+            "name": "B4",
+            "element_id": "DreamNode_19",
+            "capacity": 2,
+            "isDummy": "0",
+            "schedulingRule": "FIFO",
+            "wip": [
+                {
+                    "numberOfUnits": 20,
+                    "parentBatchId": 11,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch11_WIP",
+                    "name": "Batch11_WIP_SB2",
+                    "id": "11.0_SB2_step1.0"
+                }
+            ],
+            "id": "B4"
+        },
+        "B2": {
+            "_class": "Dream.LineClearance",
+            "name": "B2",
+            "element_id": "DreamNode_20",
+            "capacity": 2,
+            "isDummy": "0",
+            "schedulingRule": "FIFO",
+            "wip": [
+                {
+                    "numberOfUnits": 20,
+                    "parentBatchId": 10,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch10_WIP",
+                    "name": "Batch10_WIP_SB2",
+                    "id": "10.0_SB2_step2.0"
+                }
+            ],
+            "id": "B2"
+        },
+        "B5": {
+            "_class": "Dream.LineClearance",
+            "name": "B5",
+            "element_id": "DreamNode_21",
+            "capacity": 2,
+            "isDummy": "0",
+            "schedulingRule": "FIFO",
+            "wip": [
+                {
+                    "numberOfUnits": 20,
+                    "parentBatchId": 11,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch11_WIP",
+                    "name": "Batch11_WIP_SB1",
+                    "id": "11.0_SB1_step2.0"
+                }
+            ],
+            "id": "B5"
+        },
+        "QStart": {
+            "_class": "Dream.Queue",
+            "name": "StartQueue",
+            "element_id": "DreamNode_22",
+            "capacity": 1,
+            "isDummy": "0",
+            "schedulingRule": "FIFO",
+            "id": "QStart"
+        },
+        "S1": {
+            "_class": "Dream.BatchSource",
+            "name": "Source",
+            "element_id": "DreamNode_23",
+            "batchNumberOfUnits": 80,
+            "entity": "Dream.Batch",
+            "interarrivalTime": {
+                "distributionType": "Fixed",
+                "mean": 0.5,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "id": "S1"
+        },
+        "St4M0D": {
+            "_class": "Dream.BatchDecompositionBlocking",
+            "name": "St4M0D",
+            "element_id": "DreamNode_24",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "numberOfSubBatches": 2,
+            "id": "St4M0D"
+        },
+        "St4M0R": {
+            "_class": "Dream.BatchReassemblyBlocking",
+            "name": "St4M0R",
+            "element_id": "DreamNode_25",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "numberOfSubBatches": 2,
+            "id": "St4M0R"
+        },
+        "St3M0": {
+            "_class": "Dream.BatchScrapMachine",
+            "name": "Cut & Bend",
+            "element_id": "DreamNode_26",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0.1875,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": 40,
+                "MTTR": 10,
+                "repairman": "None"
+            },
+            "shift": {
+                "shiftPattern": [
+                    [
+                        0,
+                        105
+                    ],
+                    [
+                        150,
+                        300
+                    ],
+                    [
+                        303,
+                        480
+                    ],
+                    [
+                        510,
+                        645
+                    ],
+                    [
+                        690,
+                        840
+                    ],
+                    [
+                        1200,
+                        1380
+                    ],
+                    [
+                        1410,
+                        1545
+                    ],
+                    [
+                        1590,
+                        1620
+                    ]
+                ],
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
+            },
+            "id": "St3M0"
+        },
+        "B8": {
+            "_class": "Dream.Queue",
+            "name": "B8",
+            "element_id": "DreamNode_29",
+            "capacity": 4,
+            "schedulingRule": "FIFO",
+            "id": "B8"
+        },
+        "B9": {
+            "_class": "Dream.Queue",
+            "name": "B9",
+            "element_id": "DreamNode_30",
+            "capacity": 4,
+            "schedulingRule": "FIFO",
+            "wip": [
+                {
+                    "numberOfUnits": 80,
+                    "_class": "Dream.Batch",
+                    "name": "Batch7_WIP",
+                    "id": "7"
+                },
+                {
+                    "numberOfUnits": 80,
+                    "_class": "Dream.Batch",
+                    "name": "Batch8_WIP",
+                    "id": "8"
+                }
+            ],
+            "id": "B9"
+        },
+        "St5M0": {
+            "_class": "Dream.BatchScrapMachine",
+            "name": "Flag Labelling1",
+            "element_id": "DreamNode_31",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0.1875,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": 40,
+                "MTTR": 10,
+                "repairman": "None"
+            },
+            "shift": {
+                "shiftPattern": [
+                    [
+                        0,
+                        105
+                    ],
+                    [
+                        150,
+                        300
+                    ],
+                    [
+                        303,
+                        480
+                    ],
+                    [
+                        510,
+                        645
+                    ],
+                    [
+                        690,
+                        840
+                    ],
+                    [
+                        1200,
+                        1380
+                    ],
+                    [
+                        1410,
+                        1545
+                    ],
+                    [
+                        1590,
+                        1620
+                    ]
+                ],
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
+            },
+            "id": "St5M0"
+        },
+        "St5M1": {
+            "_class": "Dream.BatchScrapMachine",
+            "name": "Flag Labelling 2",
+            "element_id": "DreamNode_32",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0.1875,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": 40,
+                "MTTR": 10,
+                "repairman": "None"
+            },
+            "shift": {
+                "shiftPattern": [
+                    [
+                        0,
+                        105
+                    ],
+                    [
+                        150,
+                        300
+                    ],
+                    [
+                        303,
+                        480
+                    ],
+                    [
+                        510,
+                        645
+                    ],
+                    [
+                        690,
+                        840
+                    ],
+                    [
+                        1200,
+                        1380
+                    ],
+                    [
+                        1410,
+                        1545
+                    ],
+                    [
+                        1590,
+                        1620
+                    ]
+                ],
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
+            },
+            "id": "St5M1"
+        },
+        "St6M0D": {
+            "_class": "Dream.BatchDecompositionBlocking",
+            "name": "St6M0D",
+            "element_id": "DreamNode_37",
+            "id": "St6M0D",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "wip": [
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 4,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch4_WIP",
+                    "name": "Batch4_WIP_SB5",
+                    "id": "4.0_SB5_step6.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 4,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch4_WIP",
+                    "name": "Batch4_WIP_SB6",
+                    "id": "4.0_SB6_step6.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 4,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch4_WIP",
+                    "name": "Batch4_WIP_SB7",
+                    "id": "4.0_SB7_step6.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 4,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch4_WIP",
+                    "name": "Batch4_WIP_SB8",
+                    "id": "4.0_SB8_step6.0"
+                }
+            ],
+            "numberOfSubBatches": 8
+        },
+        "St6M0R": {
+            "_class": "Dream.BatchReassemblyBlocking",
+            "name": "St6M0R",
+            "element_id": "DreamNode_38",
+            "id": "St6M0R",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "wip": [
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 4,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch4_WIP",
+                    "name": "Batch4_WIP_SB1",
+                    "id": "4.0_SB1_step6.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 4,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch4_WIP",
+                    "name": "Batch4_WIP_SB2",
+                    "id": "4.0_SB2_step6.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 4,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch4_WIP",
+                    "name": "Batch4_WIP_SB3",
+                    "id": "4.0_SB3_step6.0"
+                }
+            ],
+            "numberOfSubBatches": 8
+        },
+        "St6M1D": {
+            "_class": "Dream.BatchDecompositionBlocking",
+            "name": "St6M1D",
+            "element_id": "DreamNode_39",
+            "id": "St6M1D",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "wip": [
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 5,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch5_WIP",
+                    "name": "Batch5_WIP_SB8",
+                    "id": "5.0_SB8_step6.0"
+                }
+            ],
+            "numberOfSubBatches": 8
+        },
+        "St6M1R": {
+            "_class": "Dream.BatchReassemblyBlocking",
+            "name": "St6M1R",
+            "element_id": "DreamNode_40",
+            "id": "St6M1R",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "wip": [
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 5,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch5_WIP",
+                    "name": "Batch5_WIP_SB1",
+                    "id": "5.0_SB1_step6.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 5,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch5_WIP",
+                    "name": "Batch5_WIP_SB2",
+                    "id": "5.0_SB2_step6.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 5,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch5_WIP",
+                    "name": "Batch5_WIP_SB3",
+                    "id": "5.0_SB3_step6.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 5,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch5_WIP",
+                    "name": "Batch5_WIP_SB4",
+                    "id": "5.0_SB4_step6.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 5,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch5_WIP",
+                    "name": "Batch5_WIP_SB5",
+                    "id": "5.0_SB5_step6.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 5,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch5_WIP",
+                    "name": "Batch5_WIP_SB6",
+                    "id": "5.0_SB6_step6.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 5,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch5_WIP",
+                    "name": "Batch5_WIP_SB7",
+                    "id": "5.0_SB7_step6.0"
+                }
+            ],
+            "numberOfSubBatches": 8
+        },
+        "St7M0D": {
+            "_class": "Dream.BatchDecompositionBlocking",
+            "name": "St7M0D",
+            "element_id": "DreamNode_41",
+            "id": "St7M0D",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "wip": [
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 2,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch2_WIP",
+                    "name": "Batch2_WIP_SB7",
+                    "id": "1.0_SB7_step8.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 2,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch2_WIP",
+                    "name": "Batch2_WIP_SB8",
+                    "id": "1.0_SB1_step8.0"
+                }
+            ],
+            "numberOfSubBatches": 8
+        },
+        "St8M0R": {
+            "_class": "Dream.BatchReassemblyBlocking",
+            "name": "St8M0R",
+            "element_id": "DreamNode_42",
+            "id": "St8M0R",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "wip": [
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 1,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch1_WIP",
+                    "name": "Batch1_WIP_SB1",
+                    "id": "1.0_SB0_step8.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 1,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch1_WIP",
+                    "name": "Batch1_WIP_SB2",
+                    "id": "1.0_SB1_step8.0"
+                }
+            ],
+            "numberOfSubBatches": 8
+        },
+        "St8M1R": {
+            "_class": "Dream.BatchReassemblyBlocking",
+            "name": "St8M1R",
+            "element_id": "DreamNode_43",
+            "id": "St8M1R",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "numberOfSubBatches": 8
+        },
+        "St7M0": {
+            "_class": "Dream.BatchScrapMachineAfterDecompose",
+            "name": "Carding",
+            "element_id": "DreamNode_44",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0.5,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "failures": {
+                "failureDistribution": "No",
+                "MTTF": 40,
+                "MTTR": 10,
+                "repairman": "None"
+            },
+            "shift": {
+                "shiftPattern": [
+                    [
+                        0,
+                        105
+                    ],
+                    [
+                        150,
+                        300
+                    ],
+                    [
+                        303,
+                        480
+                    ],
+                    [
+                        510,
+                        645
+                    ],
+                    [
+                        690,
+                        840
+                    ],
+                    [
+                        1200,
+                        1380
+                    ],
+                    [
+                        1410,
+                        1545
+                    ],
+                    [
+                        1590,
+                        1620
+                    ]
+                ],
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7
+            },
+            "id": "St7M0"
+        },
+        "B7": {
+            "_class": "Dream.Queue",
+            "name": "B7",
+            "element_id": "DreamNode_45",
+            "capacity": 4,
+            "isDummy": "0",
+            "schedulingRule": "FIFO",
+            "wip": [
+                {
+                    "numberOfUnits": 80,
+                    "_class": "Dream.Batch",
+                    "name": "Batch9_WIP",
+                    "id": "9"
+                },
+                {
+                    "numberOfUnits": 80,
+                    "_class": "Dream.Batch",
+                    "name": "Batch12_WIP",
+                    "id": "12"
+                },
+                {
+                    "numberOfUnits": 80,
+                    "_class": "Dream.Batch",
+                    "name": "Batch13_WIP",
+                    "id": "13"
+                }
+            ],
+            "id": "B7"
+        },
+        "B10": {
+            "_class": "Dream.Queue",
+            "name": "B10",
+            "element_id": "DreamNode_46",
+            "capacity": 4,
+            "isDummy": "0",
+            "schedulingRule": "FIFO",
+            "wip": [
+                {
+                    "numberOfUnits": 80,
+                    "_class": "Dream.Batch",
+                    "name": "Batch6_WIP",
+                    "id": "6"
+                }
+            ],
+            "id": "B10"
+        },
+        "B11": {
+            "_class": "Dream.Queue",
+            "name": "B11",
+            "element_id": "DreamNode_47",
+            "capacity": 4,
+            "isDummy": "0",
+            "schedulingRule": "FIFO",
+            "wip": [
+                {
+                    "numberOfUnits": 80,
+                    "_class": "Dream.Batch",
+                    "name": "Batch3_WIP",
+                    "id": "3"
+                }
+            ],
+            "id": "B11"
+        },
+        "B12": {
+            "_class": "Dream.RoutingQueue",
+            "name": "B12",
+            "element_id": "DreamNode_48",
+            "capacity": 23,
+            "wip": [
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 1,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch1_WIP",
+                    "receiver": "St8M0",
+                    "name": "Batch1_WIP_SB3",
+                    "id": "1.0_SB3_step8.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 1,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch1_WIP",
+                    "receiver": "St8M0",
+                    "name": "Batch1_WIP_SB4",
+                    "id": "1.0_SB4_step8.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 1,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch1_WIP",
+                    "receiver": "St8M0",
+                    "name": "Batch1_WIP_SB5",
+                    "id": "1.0_SB5_step8.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 1,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch1_WIP",
+                    "receiver": "St8M0",
+                    "name": "Batch1_WIP_SB6",
+                    "id": "1.0_SB6_step8.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 1,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch1_WIP",
+                    "receiver": "St8M0",
+                    "name": "Batch1_WIP_SB7",
+                    "id": "1.0_SB7_step8.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 1,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch1_WIP",
+                    "receiver": "St8M0",
+                    "name": "Batch1_WIP_SB8",
+                    "id": "1.0_SB8_step8.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 2,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch2_WIP",
+                    "name": "Batch2_WIP_SB1",
+                    "id": "2.0_SB1_step7.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 2,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch2_WIP",
+                    "name": "Batch2_WIP_SB2",
+                    "id": "2.0_SB2_step7.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 2,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch2_WIP",
+                    "name": "Batch2_WIP_SB3",
+                    "id": "2.0_SB3_step7.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 2,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch2_WIP",
+                    "name": "Batch2_WIP_SB4",
+                    "id": "2.0_SB4_step7.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 2,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch2_WIP",
+                    "name": "Batch2_WIP_SB5",
+                    "id": "2.0_SB5_step7.0"
+                },
+                {
+                    "numberOfUnits": 10,
+                    "parentBatchId": 2,
+                    "_class": "Dream.SubBatch",
+                    "parentBatchName": "Batch6",
+                    "name": "Batch2_WIP_SB6",
+                    "id": "2.0_SB6_step7.0"
+                }
+            ],
+            "schedulingRule": "FIFO"
+        }
+    }
+}
