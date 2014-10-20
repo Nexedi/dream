@@ -17,11 +17,13 @@ setup(
         'pydot',
         'numpy',
         'rpy2>=2.3,<2.4', # 2.4.1 does not work for me
+        'zope.dottedname',
     ],
     entry_points=("""
     [console_scripts]
     dream_platform=dream.platform:main
     dream_simulation=dream.simulation.LineGenerationJSON:main
+    manpy_cli=dream.simulation.ManPyCLI:main
     """),
     include_package_data=True,
     zip_safe=False,

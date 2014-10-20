@@ -376,6 +376,7 @@ class Simulation(object):
   def _preprocess(self, data):
     """Preprocess the data, for instance reading spreadsheet.
     """
+    # TODO: plugin
     # by default we add an event generator if using queue stats
     if self.getConfigurationDict()["Dream-Configuration"]["gui"]["queue_stat"]:
       for node in data["nodes"].values():
