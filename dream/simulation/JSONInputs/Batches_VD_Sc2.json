@@ -290,6 +290,7 @@
         },
         "BRA": {
             "_class": "Dream.BatchReassemblyBlocking",
+			"outputResults": 1,
             "name": "Assembly_A",
             "element_id": "DreamNode_3",
             "numberOfSubBatches": 4,
@@ -311,6 +312,7 @@
         },
         "BRB": {
             "_class": "Dream.BatchReassemblyBlocking",
+			"outputResults": 1,
             "name": "Assembly_B",
             "element_id": "DreamNode_4",
             "numberOfSubBatches": 4,
@@ -356,6 +358,7 @@
                 "max": null
             },
             "shift": {
+				"thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -433,6 +436,7 @@
                 "max": null
             },
             "shift": {
+				"thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -510,6 +514,7 @@
                 "max": null
             },
             "shift": {
+				"thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -587,6 +592,7 @@
                 "max": null
             },
             "shift": {
+				"thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -664,6 +670,7 @@
                 "max": null
             },
             "shift": {
+				"thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -741,6 +748,7 @@
                 "max": null
             },
             "shift": {
+				"thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -818,6 +826,7 @@
                 "max": null
             },
             "shift": {
+				"thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -895,6 +904,7 @@
                 "max": null
             },
             "shift": {
+				"thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -972,6 +982,7 @@
                 "max": null
             },
             "shift": {
+				"thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -1049,6 +1060,7 @@
                 "max": null
             },
             "shift": {
+				"thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -1137,6 +1149,7 @@
                 "max": null
             },
             "shift": {
+				"thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -1312,6 +1325,7 @@
         },
         "St4M0R": {
             "_class": "Dream.BatchReassemblyBlocking",
+			"outputResults": 1,
             "name": "St4M0R",
             "element_id": "DreamNode_25",
             "processingTime": {
@@ -1322,6 +1336,7 @@
                 "max": null
             },
             "numberOfSubBatches": 2,
+			"outputResults": 1,
             "id": "St4M0R"
         },
         "St3M0": {
@@ -1342,6 +1357,7 @@
                 "repairman": "None"
             },
             "shift": {
+				"thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -1449,6 +1465,7 @@
                 "repairman": "None"
             },
             "shift": {
+				"thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -1526,6 +1543,7 @@
                 "repairman": "None"
             },
             "shift": {
+				"thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -1635,6 +1653,7 @@
         },
         "St6M0R": {
             "_class": "Dream.BatchReassemblyBlocking",
+			"outputResults": 1,
             "name": "St6M0R",
             "element_id": "DreamNode_38",
             "id": "St6M0R",
@@ -1699,6 +1718,7 @@
         },
         "St6M1R": {
             "_class": "Dream.BatchReassemblyBlocking",
+			"outputResults": 1,
             "name": "St6M1R",
             "element_id": "DreamNode_40",
             "id": "St6M1R",
@@ -1803,6 +1823,7 @@
         },
         "St8M0R": {
             "_class": "Dream.BatchReassemblyBlocking",
+			"outputResults": 1,
             "name": "St8M0R",
             "element_id": "DreamNode_42",
             "id": "St8M0R",
@@ -1835,6 +1856,7 @@
         },
         "St8M1R": {
             "_class": "Dream.BatchReassemblyBlocking",
+			"outputResults": 1,
             "name": "St8M1R",
             "element_id": "DreamNode_43",
             "id": "St8M1R",
@@ -1865,6 +1887,7 @@
                 "repairman": "None"
             },
             "shift": {
+				"thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,

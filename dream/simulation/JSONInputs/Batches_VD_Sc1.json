@@ -307,6 +307,7 @@
                     "id": "10.0_SB1_step2.0"
                 }
             ],
+            "outputResults": 1,
             "id": "BRA"
         },
         "BRB": {
@@ -318,6 +319,7 @@
                 "distributionType": "Fixed",
                 "mean": 0
             },
+            "outputResults": 1,
             "id": "BRB"
         },
         "E1": {
@@ -332,9 +334,9 @@
             "element_id": "DreamNode_6",
             "argumentDict": "{}",
             "duration": 10,
-            "interval": 1000,
+            "interval": 1440,
             "method": "Globals.countIntervalThroughput",
-            "start": 1000,
+            "start": 1440,
             "stop": -1,
             "id": "EV"
         },
@@ -356,6 +358,7 @@
                 "max": null
             },
             "shift": {
+                "thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -470,6 +473,7 @@
                 "max": null
             },
             "shift": {
+                "thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -527,6 +531,7 @@
                 "max": null
             },
             "shift": {
+                "thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -584,6 +589,7 @@
                 "max": null
             },
             "shift": {
+                "thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -641,6 +647,7 @@
                 "max": null
             },
             "shift": {
+                "thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -698,6 +705,7 @@
                 "max": null
             },
             "shift": {
+                "thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -755,6 +763,7 @@
                 "max": null
             },
             "shift": {
+                "thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -812,6 +821,7 @@
                 "max": null
             },
             "shift": {
+                "thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -869,6 +879,7 @@
                 "max": null
             },
             "shift": {
+                "thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -937,6 +948,7 @@
                 "max": null
             },
             "shift": {
+                "thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -1102,6 +1114,7 @@
                 "max": null
             },
             "numberOfSubBatches": 2,
+            "outputResults": 1,
             "id": "St4M0R"
         },
         "St3M0": {
@@ -1122,6 +1135,7 @@
                 "repairman": "None"
             },
             "shift": {
+                "thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -1209,6 +1223,7 @@
                 "repairman": "None"
             },
             "shift": {
+                "thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -1266,6 +1281,7 @@
                 "repairman": "None"
             },
             "shift": {
+                "thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
@@ -1391,6 +1407,7 @@
                     "id": "4.0_SB3_step6.0"
                 }
             ],
+            "outputResults": 1,
             "numberOfSubBatches": 8
         },
         "St6M1D": {
@@ -1487,6 +1504,7 @@
                     "id": "5.0_SB7_step6.0"
                 }
             ],
+            "outputResults": 1,
             "numberOfSubBatches": 8
         },
         "St7M0D": {
@@ -1551,6 +1569,7 @@
                     "id": "1.0_SB1_step8.0"
                 }
             ],
+            "outputResults": 1,
             "numberOfSubBatches": 8
         },
         "St8M1R": {
@@ -1565,6 +1584,7 @@
                 "min": null,
                 "max": null
             },
+            "outputResults": 1,
             "numberOfSubBatches": 8
         },
         "St7M0": {
@@ -1585,6 +1605,7 @@
                 "repairman": "None"
             },
             "shift": {
+                "thresholdTimeIsOnShift": 0,
                 "shiftPattern": [
                     [
                         0,
