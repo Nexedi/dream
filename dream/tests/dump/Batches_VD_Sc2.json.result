@@ -71,7 +71,7 @@
      320, 
      320
     ], 
-    "lifespan": 1881.7272727272727, 
+    "lifespan": 1882.0681818181818, 
     "takt_time": 111.93181818181819, 
     "throughput": 44, 
     "unitsThroughput": 3520
@@ -184,11 +184,11 @@
    "family": "Server", 
    "id": "St5M0", 
    "results": {
-    "blockage_ratio": 23.24, 
+    "blockage_ratio": 22.84, 
     "failure_ratio": 0.0, 
-    "off_shift_ratio": 63.22, 
-    "waiting_ratio": 6.34, 
-    "working_ratio": 7.2
+    "off_shift_ratio": 63.12, 
+    "waiting_ratio": 6.24, 
+    "working_ratio": 7.8
    }
   }, 
   {
@@ -196,11 +196,11 @@
    "family": "Server", 
    "id": "St5M1", 
    "results": {
-    "blockage_ratio": 22.08, 
+    "blockage_ratio": 22.48, 
     "failure_ratio": 0.0, 
-    "off_shift_ratio": 63.12, 
-    "waiting_ratio": 7.0, 
-    "working_ratio": 7.8
+    "off_shift_ratio": 63.22, 
+    "waiting_ratio": 7.1, 
+    "working_ratio": 7.2
    }
   }, 
   {
