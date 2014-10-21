@@ -759,7 +759,6 @@ class Machine(CoreObject):
                     self.timeLastBlockageStarted=self.env.now       # blockage is starting
                     # wait the event canDispose, this means that the station can deliver the item to successor
                     self.printTrace(self.id, waitEvent='(canDispose or interruption start)')
-                    
                     receivedEvent=yield self.env.any_of([self.canDispose , self.interruptionStart])
                     # if there was interruption
                     # TODO not good implementation
@@ -767,7 +766,7 @@ class Machine(CoreObject):
                         transmitter, eventTime=self.interruptionStart.value
                         assert eventTime==self.env.now, 'the interruption has not been processed on the time of activation'
                         self.interruptionStart=self.env.event()
-                    # wait for the end of the interruption
+                        # wait for the end of the interruption
                         self.interruptionActions()                          # execute interruption actions
                         # loop until we reach at a state that there is no interruption
                         while 1:
@@ -779,7 +778,10 @@ class Machine(CoreObject):
                             transmitter, eventTime=self.interruptionEnd.value
                             assert eventTime==self.env.now, 'the victim of the failure is not the object that received it'
                             self.interruptionEnd=self.env.event()
+                            # if there is no other interruption
                             if self.Up and self.onShift:
+                                # Machine is back to blocked state
+                                self.isBlocked=True
                                 break
                         self.postInterruptionActions()
                         if self.signalReceiver():
