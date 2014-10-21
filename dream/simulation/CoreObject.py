@@ -266,7 +266,7 @@ class CoreObject(ManPyObject):
     # removes an Entity from the Object the Entity to be removed is passed
     # as argument by getEntity of the receiver
     # =======================================================================
-    def removeEntity(self, entity=None, resetFlags=True, addBlockage=True):       
+    def removeEntity(self, entity=None, resetFlags=True, addBlockage=True):
         # reset flags
         if resetFlags:
             self.isBlocked=False
@@ -502,7 +502,7 @@ class CoreObject(ManPyObject):
         receiver=None
         from Globals import G
         for object in candidates:
-            timeWaiting=G.env.now-object.timeLastEntityLeft         # the time it has been waiting is updated and stored in dummy variable timeWaiting
+            timeWaiting=G.env.now-object.timeLastEntityLeft     # the time it has been waiting is updated and stored in dummy variable timeWaiting
             if(timeWaiting>maxTimeWaiting or maxTimeWaiting==0):# if the timeWaiting is the maximum among the ones of the successors 
                 maxTimeWaiting=timeWaiting
                 receiver=object                                 # set the receiver as the longest waiting possible receiver
@@ -573,14 +573,11 @@ class CoreObject(ManPyObject):
         from Globals import G
         # loop through the possible givers to see which have to dispose and which is the one blocked for longer
         for object in candidates:
-            if(object.downTimeInTryingToReleaseCurrentEntity>0):# and the predecessor has been down while trying to give away the Entity
-                timeWaiting=G.env.now-object.timeLastFailureEnded   # the timeWaiting dummy variable counts the time end of the last failure of the giver object
-            else:
-                timeWaiting=G.env.now-object.timeLastEntityEnded    # in any other case, it holds the time since the end of the Entity processing
-            #if more than one predecessor have to dispose take the part from the one that is blocked longer
+            # calculate how much the giver is waiting
+            timeWaiting=G.env.now-object.timeLastEntityEnded   
             if(timeWaiting>=maxTimeWaiting): 
                 giver=object                 # the object to deliver the Entity to the activeObject is set to the ith member of the previous list
-                maxTimeWaiting=timeWaiting    
+                maxTimeWaiting=timeWaiting  
         return giver
     
     # =======================================================================
