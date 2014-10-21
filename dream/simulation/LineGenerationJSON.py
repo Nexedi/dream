@@ -317,7 +317,7 @@ def createObjectInterruptions():
                     shiftPattern.remove(next)
             endUnfinished=bool(int(shift.get('endUnfinished', 0)))
             receiveBeforeEndThreshold=float(shift.get('receiveBeforeEndThreshold', 0))
-            thresholdTimeIsOnShift=bool(int(shift.get('thresholdTimeIsOnShift', 0)))
+            thresholdTimeIsOnShift=bool(int(shift.get('thresholdTimeIsOnShift', 1)))
             SS=ShiftScheduler(victim=victim, shiftPattern=shiftPattern, endUnfinished=endUnfinished, 
                               receiveBeforeEndThreshold=receiveBeforeEndThreshold,
                               thresholdTimeIsOnShift=thresholdTimeIsOnShift)
