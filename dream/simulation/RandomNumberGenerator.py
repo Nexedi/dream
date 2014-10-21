@@ -26,7 +26,8 @@ Created on 14 Feb 2013
 holds methods for generations of numbers from different distributions
 '''
 class RandomNumberGenerator(object):
-    def __init__(self, obj, distributionType, mean=0, stdev=0, min=0, max=0, alpha=0, beta=0):
+    def __init__(self, obj, distributionType, mean=0, stdev=0, min=0, max=0, alpha=0, beta=0,
+                 logmean=0,logsd=0, probability=0, shape=0, scale=0, location=0):
         self.distributionType = distributionType
         self.mean = float(mean or 0)
         self.stdev = float(stdev or 0)
@@ -34,7 +35,15 @@ class RandomNumberGenerator(object):
         self.max = float(max or 0)
         self.alpha = float(alpha or 0)
         self.beta = float(beta or 0)
+        self.logmean=float(logmean or 0)
+        self.logsd=float(logsd or 0)
+        self.probability=float(probability or 0)
+        self.shape=float(shape or 0)
+        self.scale=float(scale or 0)
+        self.location=float(location or 0)
         self.obj = obj
+
+        
 
     def generateNumber(self):
         from Globals import G
