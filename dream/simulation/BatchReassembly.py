@@ -41,10 +41,11 @@ from Batch import Batch
 # the Batch-Reassembly Object
 # ===========================================================================
 class BatchReassembly(CoreObject):
+    family='Server'
     # =======================================================================
     #initialize the id, the capacity of the object and the distribution
     # =======================================================================        
-    def __init__(self, id, name, numberOfSubBatches=1, processingTime=None, operator='None', **kw):
+    def __init__(self, id, name, numberOfSubBatches=1, processingTime=None, operator='None', outputResults=False, **kw):
         CoreObject.__init__(self,id, name)
         self.type="BatchRassembly"              #String that shows the type of object
         if not processingTime:
@@ -62,6 +63,8 @@ class BatchReassembly(CoreObject):
         self.rng=RandomNumberGenerator(self, **processingTime)
         from Globals import G
         G.BatchReassemblyList.append(self)
+        # flag to show if the objects outputs results
+        self.outputResults=bool(int(outputResults))
 
     # =======================================================================
     #     initialize the internal resource of the object
@@ -130,7 +133,7 @@ class BatchReassembly(CoreObject):
                     self.reassemble()
                 self.isProcessingInitialWIP=False
                 # signal the receiver that the activeObject has something to dispose of
-                   
+                self.timeLastBlockageStarted=self.env.now                   
                 if not self.signalReceiver():
                 # if there was no available receiver, get into blocking control
                     while 1:
@@ -328,4 +331,34 @@ class BatchReassembly(CoreObject):
                 and len(activeObjectQueue)<activeObject.numberOfSubBatches\
                 and activeObjectQueue[0].type!='Batch'\
                 and giverObjectQueue[0].batchId==activeObjectQueue[0].batchId
+                
+    # =======================================================================
+    # outputs results to JSON File 
+    # =======================================================================
+    def outputResultsJSON(self):
+        if self.outputResults:
+            from Globals import G
+            from Globals import getConfidenceIntervals
+            json = {'_class': 'Dream.%s' % self.__class__.__name__,
+                    'id': self.id,
+                    'family': self.family,
+                    'results': {}}
+            if (G.numberOfReplications == 1):
+                # if we had just one replication output the results as numbers
+                json['results']['failure_ratio']=100*self.totalFailureTime/G.maxSimTime
+                json['results']['working_ratio']=100*self.totalWorkingTime/G.maxSimTime
+                json['results']['blockage_ratio']=100*self.totalBlockageTime/G.maxSimTime
+                json['results']['waiting_ratio']=100*self.totalWaitingTime/G.maxSimTime
+                #output the off-shift time only if there is any
+                if self.totalOffShiftTime:
+                    json['results']['off_shift_ratio']=100*self.totalOffShiftTime/G.maxSimTime
+            else:
+                json['results']['failure_ratio'] = getConfidenceIntervals(self.Failure)
+                json['results']['working_ratio'] = getConfidenceIntervals(self.Working)
+                json['results']['blockage_ratio'] = getConfidenceIntervals(self.Blockage)
+                json['results']['waiting_ratio'] = getConfidenceIntervals(self.Waiting)
+                json['results']['off_shift_ratio'] = getConfidenceIntervals(self.OffShift)
+            G.outputJSON['elementList'].append(json)
+        
+        
         
