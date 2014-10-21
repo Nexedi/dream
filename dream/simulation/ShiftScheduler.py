@@ -39,13 +39,15 @@ class ShiftScheduler(ObjectInterruption):
     # =======================================================================
     # the __init__() method of the class
     # =======================================================================
-    def __init__(self, id='', name='', victim=None, shiftPattern=[], endUnfinished=False, receiveBeforeEndThreshold=0.0,**kw):
+    def __init__(self, id='', name='', victim=None, shiftPattern=[], endUnfinished=False, receiveBeforeEndThreshold=0.0,
+                 thresholdTimeIsOnShift=True,**kw):
         ObjectInterruption.__init__(self,victim=victim)
         self.type='ShiftScheduler'
         self.shiftPattern=shiftPattern
         self.endUnfinished=endUnfinished    #flag that shows if half processed Jobs should end after the shift ends
         # if the end of shift is below this threshold then the victim is on shift but does not accept new entities
         self.receiveBeforeEndThreshold=receiveBeforeEndThreshold   
+        self.thresholdTimeIsOnShift=thresholdTimeIsOnShift
     
     # =======================================================================
     # initialize for every replications
@@ -103,9 +105,10 @@ class ShiftScheduler(ObjectInterruption):
             else:
                 timeToEndShift=float(self.remainingShiftPattern[0][1]-self.env.now)
                 yield self.env.timeout(timeToEndShift-self.receiveBeforeEndThreshold)   # wait until the entry threshold
-                self.victim.isLocked=True   # lock the entry of the victim
-                yield self.env.timeout(self.receiveBeforeEndThreshold)    # wait until the shift is over
-                self.victim.isLocked=False  # unlock the entry of the victim
+                if self.thresholdTimeIsOnShift:
+                    self.victim.isLocked=True   # lock the entry of the victim
+                    yield self.env.timeout(self.receiveBeforeEndThreshold)    # wait until the shift is over
+                    self.victim.isLocked=False  # unlock the entry of the victim
                 # if the victim is station
                 if issubclass(self.victim.__class__, CoreObject):
                     # if the mode is to end current work before going off-shift and there is current work, 
