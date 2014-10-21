@@ -47,6 +47,7 @@ class ShiftScheduler(ObjectInterruption):
         self.endUnfinished=endUnfinished    #flag that shows if half processed Jobs should end after the shift ends
         # if the end of shift is below this threshold then the victim is on shift but does not accept new entities
         self.receiveBeforeEndThreshold=receiveBeforeEndThreshold   
+        # flag that shows if the threshold time is counted as off-shift or waiting
         self.thresholdTimeIsOnShift=thresholdTimeIsOnShift
     
     # =======================================================================
@@ -105,6 +106,7 @@ class ShiftScheduler(ObjectInterruption):
             else:
                 timeToEndShift=float(self.remainingShiftPattern[0][1]-self.env.now)
                 yield self.env.timeout(timeToEndShift-self.receiveBeforeEndThreshold)   # wait until the entry threshold
+                # if threshold time is counted as onShift, then yield until the end of shift. Else, set as off-shift now
                 if self.thresholdTimeIsOnShift:
                     self.victim.isLocked=True   # lock the entry of the victim
                     yield self.env.timeout(self.receiveBeforeEndThreshold)    # wait until the shift is over
