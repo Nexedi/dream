@@ -41,7 +41,7 @@ class Batch(Entity):
         self.numberOfUnits=int(numberOfUnits)
         self.numberOfSubBatches=1       #integer that shows in how many sub batches is the batch broken
         self.subBatchList=[]            #list that contains the sub-batches that this batch has been broken into
-        self.unitsToProcess=int(unitsToProcess)
+        self.unitsToProcess=int(float(unitsToProcess))
     
     #===========================================================================
     # finds the schedule of each child and returns the combined route 

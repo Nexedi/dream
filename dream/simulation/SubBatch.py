@@ -37,7 +37,7 @@ class SubBatch(Entity):
                         currentStation=currentStation)
         self.numberOfUnits=int(numberOfUnits)
         self.parentBatch=parentBatch
-        self.unitsToProcess=int(unitsToProcess)
+        self.unitsToProcess=int(float(unitsToProcess))
         # if the parent batch was not given find it or create it
         if not self.parentBatch:
             # check if the parent batch is already created. If not, then create it
