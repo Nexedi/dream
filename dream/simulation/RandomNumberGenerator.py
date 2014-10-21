@@ -64,6 +64,17 @@ class RandomNumberGenerator(object):
                     return number
         elif self.distributionType=="Erlang":    #if the distribution is erlang          
             return G.Rnd.gammavariate(self.alpha, self.beta)
+        elif(self.distributionType=="Logistic"):     #if the distribution is Logistic
+            return 1
+        elif(self.distributionType=="Geometric"):     #if the distribution is Geometric
+            return 1
+        elif(self.distributionType=="Lognormal"):     #if the distribution is Lognormal
+            return 1
+        elif(self.distributionType=="Weibull"):     #if the distribution is Weibull
+            return 1
+        elif(self.distributionType=="Cauchy"):     #if the distribution is Cauchy
+            return 1
+        
         else:
             raise ValueError("Unknown distribution %r used in %s %s" %
                             (self.distributionType, self.obj.__class__, self.obj.id))
