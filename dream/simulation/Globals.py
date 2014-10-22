@@ -40,7 +40,8 @@ import simpy
 class G:   
     seed=1450                       #the seed of the random number generator
     Rnd = Random(seed)              #random number generator
-    
+    import numpy
+    numpyRnd=numpy    
 
     ObjList=[]                      #a list that holds all the CoreObjects 
     EntityList=[]                   #a list that holds all the Entities 

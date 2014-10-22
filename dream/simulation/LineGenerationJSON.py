@@ -529,9 +529,11 @@ def main(argv=[], input_data=None):
             G.Router.isInitialized=False
         
         if G.seed:
-          G.Rnd=Random('%s%s' % (G.seed, i))
+            G.Rnd=Random('%s%s' % (G.seed, i))
+            G.numpyRnd.random.seed(G.seed)
         else:
-          G.Rnd=Random()
+            G.Rnd=Random()
+            G.numpyRnd.random.seed()
         createWIP()
         initializeObjects()
         Globals.setWIP(G.EntityList)        
