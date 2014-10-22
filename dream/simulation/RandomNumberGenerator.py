@@ -84,6 +84,7 @@ class RandomNumberGenerator(object):
         elif(self.distributionType=="Weibull"):     #if the distribution is Weibull
             return G.Rnd.weibullvariate(self.scale, self.shape)
         elif(self.distributionType=="Cauchy"):     #if the distribution is Cauchy
+            # XXX from http://www.johndcook.com/python_cauchy_rng.html
             while 1:
                 p = 0.0
                 while p == 0.0:
