@@ -67,10 +67,14 @@ class RandomNumberGenerator(object):
         elif(self.distributionType=="Logistic"):     #if the distribution is Logistic
             # XXX from http://stackoverflow.com/questions/3955877/generating-samples-from-the-logistic-distribution
             # to check
-            from random import random
             import math
-            x = random()
-            return self.location + self.scale * math.log(x / (1-x))
+            while 1:
+                x = G.Rnd.random()
+                number=self.location + self.scale * math.log(x / (1-x))
+                if number>0:
+                    return number
+                else:
+                    continue
         elif(self.distributionType=="Geometric"):     #if the distribution is Geometric
             return 1
         elif(self.distributionType=="Lognormal"):     #if the distribution is Lognormal
