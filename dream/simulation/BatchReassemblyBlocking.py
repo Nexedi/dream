@@ -49,3 +49,36 @@ class BatchReassemblyBlocking(BatchReassembly):
                 station=previous
         return activeEntity
 
+    # =======================================================================
+    #              adds the blockage time to totalBlockageTime 
+    #                    each time an Entity is removed
+    # =======================================================================
+    def addBlockage(self): 
+        # find the previous station
+        station=self.previous[0]
+        from Globals import G
+        from ShiftScheduler import ShiftScheduler
+        shift=[]
+        # find the shiftPattern of the previous station
+        for oi in G.ObjectInterruptionList:
+            if issubclass(oi.__class__,ShiftScheduler):
+                if oi.victim is station:
+                    shift=oi.shiftPattern   
+                    break             
+        if self.timeLastBlockageStarted:
+            # calculate how much time the previous station was offShift 
+            offShift=0
+            for i, record in enumerate(shift):
+                start=record[0]
+                end=record[1]
+                if start>self.env.now:
+                    break
+                if end<self.timeLastBlockageStarted:
+                    continue
+                # if the there is offShift time in the blockage
+                if end<self.env.now:
+                    try:
+                        offShift+=shift[i+1][0]-end        
+                    except IndexError:
+                        pass                   
+            self.totalBlockageTime+=self.env.now-self.timeLastBlockageStarted-offShift  
