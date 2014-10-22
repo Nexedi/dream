@@ -58,7 +58,10 @@ class ObjectResource(ManPyObject):
         self.coreObjects=[]
         # flag that locks the resource so that it cannot get new jobs
         self.isLocked=False
-        
+        # lists that keep the start/endShiftTimes of the victim
+        self.endShiftTimes=[]
+        self.startShiftTimes=[]
+                
     # =======================================================================
     #                    checks if the worker is available
     # =======================================================================       

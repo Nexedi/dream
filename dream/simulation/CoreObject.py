@@ -223,6 +223,9 @@ class CoreObject(ManPyObject):
                                 "entityCreated":0,
                                 "moveEnd":0
                               }
+        # lists that keep the start/endShiftTimes of the victim
+        self.endShiftTimes=[]
+        self.startShiftTimes=[]
         
     # =======================================================================
     #                the main process of the core object 

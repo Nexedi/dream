@@ -133,7 +133,8 @@ class BatchReassembly(CoreObject):
                     self.reassemble()
                 self.isProcessingInitialWIP=False
                 # signal the receiver that the activeObject has something to dispose of
-                self.timeLastBlockageStarted=self.env.now                   
+                self.timeLastBlockageStarted=self.env.now 
+                self.isBlocked=True                  
                 if not self.signalReceiver():
                 # if there was no available receiver, get into blocking control
                     while 1:

@@ -58,7 +58,7 @@ class ShiftScheduler(ObjectInterruption):
         self.remainingShiftPattern=list(self.shiftPattern) 
 #         self.victimEndedLastProcessing=self.env.event()
         self.waitingSignal=False
-        
+               
     # =======================================================================
     #    The run method for the failure which has to served by a repairman
     # =======================================================================
@@ -81,6 +81,7 @@ class ShiftScheduler(ObjectInterruption):
                 self.requestAllocation()
 
             self.victim.timeLastShiftEnded=self.env.now
+            self.victim.endShiftTimes.append(self.env.now)
             self.outputTrace(self.victim.name,"is off shift")
 
         while 1:
@@ -91,6 +92,7 @@ class ShiftScheduler(ObjectInterruption):
                 self.victim.onShift=True
                 self.victim.totalOffShiftTime+=self.env.now-self.victim.timeLastShiftEnded
                 self.victim.timeLastShiftStarted=self.env.now
+                self.victim.startShiftTimes.append(self.env.now)
                 self.outputTrace(self.victim.name,"is on shift")
                 startShift=self.env.now
                 if issubclass(self.victim.__class__, CoreObject): 
@@ -143,6 +145,7 @@ class ShiftScheduler(ObjectInterruption):
                        
                 self.victim.onShift=False                        # get the victim off-shift
                 self.victim.timeLastShiftEnded=self.env.now
+                self.victim.endShiftTimes.append(self.env.now)
                 self.outputTrace(self.victim.name,"is off shift")
                 
                 self.remainingShiftPattern.pop(0)

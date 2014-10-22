@@ -57,28 +57,26 @@ class BatchReassemblyBlocking(BatchReassembly):
         # find the previous station
         station=self.previous[0]
         from Globals import G
-        from ShiftScheduler import ShiftScheduler
-        shift=[]
-        # find the shiftPattern of the previous station
-        for oi in G.ObjectInterruptionList:
-            if issubclass(oi.__class__,ShiftScheduler):
-                if oi.victim is station:
-                    shift=oi.shiftPattern   
-                    break             
+        from ShiftScheduler import ShiftScheduler          
         if self.timeLastBlockageStarted:
             # calculate how much time the previous station was offShift 
             offShift=0
-            for i, record in enumerate(shift):
-                start=record[0]
-                end=record[1]
-                if start>self.env.now:
-                    break
-                if end<self.timeLastBlockageStarted:
-                    continue
-                # if the there is offShift time in the blockage
-                if end<self.env.now:
-                    try:
-                        offShift+=shift[i+1][0]-end        
-                    except IndexError:
-                        pass                   
+            for endShiftTime in station.endShiftTimes:
+                # if there was end of shift while the station was blocked
+                if endShiftTime>=self.timeLastBlockageStarted:
+                    end=endShiftTime
+                    lastShift=True
+                    # find the start of the next shift
+                    for startShiftTime in station.startShiftTimes:
+                        if startShiftTime>end:
+                            lastShift=False
+                            nextStart=startShiftTime
+                            break
+                    # if there is not start of next shift, then it was the last shift, so 
+                    # the station is currently off. Subtract this off-shift time
+                    if lastShift:
+                        offShift+=self.env.now-end
+                    # else, subtract the whole off-shift time of that shift
+                    else:
+                        offShift+=nextStart-end
             self.totalBlockageTime+=self.env.now-self.timeLastBlockageStarted-offShift  
