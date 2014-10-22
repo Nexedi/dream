@@ -206,9 +206,9 @@
    "family": "Server", 
    "id": "St4M0R", 
    "results": {
-    "blockage_ratio": 0.3, 
+    "blockage_ratio": 0.46, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 99.7, 
+    "waiting_ratio": 99.54, 
     "working_ratio": 0.0
    }
   }, 

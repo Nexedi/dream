@@ -77,9 +77,9 @@
    "family": "Server", 
    "id": "BRB", 
    "results": {
-    "blockage_ratio": 0.4, 
+    "blockage_ratio": 0.76, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 99.6, 
+    "waiting_ratio": 99.24, 
     "working_ratio": 0.0
    }
   }, 
@@ -206,9 +206,9 @@
    "family": "Server", 
    "id": "St4M0R", 
    "results": {
-    "blockage_ratio": 55.34, 
+    "blockage_ratio": 4.26, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 44.66, 
+    "waiting_ratio": 95.74, 
     "working_ratio": 0.0
    }
   }, 
