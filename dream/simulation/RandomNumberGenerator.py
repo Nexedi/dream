@@ -26,6 +26,8 @@ Created on 14 Feb 2013
 holds methods for generations of numbers from different distributions
 '''
 
+import math
+
 class RandomNumberGenerator(object):
     def __init__(self, obj, distributionType, mean=0, stdev=0, min=0, max=0, alpha=0, beta=0,
                  logmean=0,logsd=0, probability=0, shape=0, scale=0, location=0):
@@ -66,7 +68,6 @@ class RandomNumberGenerator(object):
         elif(self.distributionType=="Logistic"):     #if the distribution is Logistic
             # XXX from http://stackoverflow.com/questions/3955877/generating-samples-from-the-logistic-distribution
             # to check
-            import math
             while 1:
                 x = G.Rnd.random()
                 number=self.location + self.scale * math.log(x / (1-x))
@@ -83,7 +84,15 @@ class RandomNumberGenerator(object):
         elif(self.distributionType=="Weibull"):     #if the distribution is Weibull
             return G.Rnd.weibullvariate(self.scale, self.shape)
         elif(self.distributionType=="Cauchy"):     #if the distribution is Cauchy
-            return 1
+            while 1:
+                p = 0.0
+                while p == 0.0:
+                    p = G.Rnd.random()     
+                number=self.location + self.scale*math.tan(math.pi*(p - 0.5))
+                if number>0:
+                    return number
+                else:
+                    continue
         else:
             raise ValueError("Unknown distribution %r used in %s %s" %
                             (self.distributionType, self.obj.__class__, self.obj.id))
