@@ -239,11 +239,20 @@ class Output(BasicStatisticalMeasures,DistFittest):
             del A['min']
             del A['max']
             del A['distributionType']
+            sheet2.write(14,15,(A.keys()[0]))
+            sheet2.write(14,16,(A.keys()[1]))
+            sheet2.write(15,15,(A.values()[0]))
+            sheet2.write(15,16,(A.values()[1]))
+        elif A['distributionType']=='Exp' or A['distributionType']=='Poisson' or A['distributionType']=='Geometric':
+            del A['distributionType']
+            sheet2.write(14,15,(A.keys()[0]))
+            sheet2.write(15,15,(A.values()[0]))
+             
         else:
             del A['distributionType']
-        sheet2.write(14,15,(A.keys()[0]))
-        sheet2.write(14,16,(A.keys()[1]))
-        sheet2.write(15,15,(A.values()[0]))
-        sheet2.write(15,16,(A.values()[1]))
+            sheet2.write(14,15,(A.keys()[0]))
+            sheet2.write(14,16,(A.keys()[1]))
+            sheet2.write(15,15,(A.values()[0]))
+            sheet2.write(15,16,(A.values()[1]))
         
         book.save(fileName)    #Save the excel document 

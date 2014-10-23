@@ -359,14 +359,14 @@ def CMSD_example(list1,list2):
     Name.text=str(list1['P1']['distributionType'])
     DistributionParameter=SubElement(Distribution,'DistributionParameter')
     Name=SubElement(DistributionParameter,'Name')
-    Name.text='mean'
+    Name.text='shape'
     Value=SubElement(DistributionParameter,'Value')
-    Value.text=str(list1['P1']['mean'])
+    Value.text=str(list1['P1']['shape'])
     DistributionParameter=SubElement(Distribution,'DistributionParameter')
     Name=SubElement(DistributionParameter,'Name')
-    Name.text='stdev'
+    Name.text='rate'
     Value=SubElement(DistributionParameter,'Value')
-    Value.text=str(list1['P1']['stdev'])
+    Value.text=str(list1['P1']['rate'])
     
     Property=SubElement(Process,'Property')
     Name=SubElement(Property,'Name')
@@ -420,14 +420,14 @@ def CMSD_example(list1,list2):
     Name.text=str(list1['P2']['distributionType'])
     DistributionParameter=SubElement(Distribution,'DistributionParameter')
     Name=SubElement(DistributionParameter,'Name')
-    Name.text='mean'
+    Name.text='shape'
     Value=SubElement(DistributionParameter,'Value')
-    Value.text=str(list1['P2']['mean'])
+    Value.text=str(list1['P2']['shape'])
     DistributionParameter=SubElement(Distribution,'DistributionParameter')
     Name=SubElement(DistributionParameter,'Name')
-    Name.text='stdev'
+    Name.text='rate'
     Value=SubElement(DistributionParameter,'Value')
-    Value.text=str(list1['P2']['stdev'])
+    Value.text=str(list1['P2']['rate'])
     
     Property=SubElement(Process,'Property')
     Name=SubElement(Property,'Name')
@@ -606,14 +606,14 @@ def CMSD_example(list1,list2):
     Name.text=str(list1['P5']['distributionType'])
     DistributionParameter=SubElement(Distribution,'DistributionParameter')
     Name=SubElement(DistributionParameter,'Name')
-    Name.text='mean'
+    Name.text='shape'
     Value=SubElement(DistributionParameter,'Value')
-    Value.text=str(list1['P5']['mean'])
+    Value.text=str(list1['P5']['shape'])
     DistributionParameter=SubElement(Distribution,'DistributionParameter')
     Name=SubElement(DistributionParameter,'Name')
-    Name.text='stdev'
+    Name.text='rate'
     Value=SubElement(DistributionParameter,'Value')
-    Value.text=str(list1['P5']['mean'])
+    Value.text=str(list1['P5']['rate'])
     
     Property=SubElement(Process,'Property')
     Name=SubElement(Property,'Name')
@@ -792,14 +792,14 @@ def CMSD_example(list1,list2):
     Name.text=str(list1['P8']['distributionType'])
     DistributionParameter=SubElement(Distribution,'DistributionParameter')
     Name=SubElement(DistributionParameter,'Name')
-    Name.text='mean'
+    Name.text='shape'
     Value=SubElement(DistributionParameter,'Value')
-    Value.text=str(list1['P8']['mean'])
+    Value.text=str(list1['P8']['shape'])
     DistributionParameter=SubElement(Distribution,'DistributionParameter')
     Name=SubElement(DistributionParameter,'Name')
-    Name.text='stdev'
+    Name.text='rate'
     Value=SubElement(DistributionParameter,'Value')
-    Value.text=str(list1['P8']['stdev'])
+    Value.text=str(list1['P8']['rate'])
     
     Property=SubElement(Process,'Property')
     Name=SubElement(Property,'Name')
@@ -854,14 +854,14 @@ def CMSD_example(list1,list2):
     Name.text=str(list1['P9']['distributionType'])
     DistributionParameter=SubElement(Distribution,'DistributionParameter')
     Name=SubElement(DistributionParameter,'Name')
-    Name.text='mean'
+    Name.text='shape'
     Value=SubElement(DistributionParameter,'Value')
-    Value.text=str(list1['P9']['mean'])
+    Value.text=str(list1['P9']['shape'])
     DistributionParameter=SubElement(Distribution,'DistributionParameter')
     Name=SubElement(DistributionParameter,'Name')
-    Name.text='stdev'
+    Name.text='rate'
     Value=SubElement(DistributionParameter,'Value')
-    Value.text=str(list1['P9']['stdev'])
+    Value.text=str(list1['P9']['rate'])
     
     Property=SubElement(Process,'Property')
     Name=SubElement(Property,'Name')
@@ -923,7 +923,7 @@ def CMSD_example(list1,list2):
     Name=SubElement(DistributionParameter,'Name')
     Name.text='stdev'
     Value=SubElement(DistributionParameter,'Value')
-    Value.text=str(list1['P9']['mean'])
+    Value.text=str(list1['P10']['stdev'])
     
     Property=SubElement(Process,'Property')
     Name=SubElement(Property,'Name')
@@ -985,7 +985,7 @@ def CMSD_example(list1,list2):
     Name=SubElement(DistributionParameter,'Name')
     Name.text='stdev'
     Value=SubElement(DistributionParameter,'Value')
-    Value.text=str(list1['P11']['mean'])
+    Value.text=str(list1['P11']['stdev'])
     
     Property=SubElement(Process,'Property')
     Name=SubElement(Property,'Name')
