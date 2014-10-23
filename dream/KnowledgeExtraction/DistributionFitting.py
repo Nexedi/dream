@@ -234,7 +234,7 @@ class DistFittest:
         except RRuntimeError: 
             return None
         gam=self.Gam
-        self.Gamtest= rkstest(data,"pgamma",scale=gam[0][1],shape=gam[0][0])
+        self.Gamtest= rkstest(data,"pgamma",rate=gam[0][1],shape=gam[0][0])
         return self.Gamtest
 
     def Weib_kstest(self,data):
