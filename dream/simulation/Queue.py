@@ -96,6 +96,7 @@ class Queue(CoreObject):
     # run method of the queue
     #===========================================================================
     def run(self):
+        
         activeObjectQueue=self.Res.users
         # check if there is WIP and signal receiver
         self.initialSignalReceiver()
@@ -130,13 +131,13 @@ class Queue(CoreObject):
             if self.haveToDispose():
                 if self.receiver:
                     if not self.receiver.entryIsAssignedTo():
-                        # try to signal receiver. In case fo failure signal giver (for synchronization issues)
+                        # try to signal receiver. In case of failure signal giver (for synchronization issues)
                         if not self.signalReceiver():
                             self.signalGiver()
                     continue
-                if not self.signalReceiver():
-                    # try to signal receiver. In case fo failure signal giver (for synchronization issues)
-                    self.signalGiver()
+                self.signalReceiver()
+            # signal the giver (for synchronization issues)
+            self.signalGiver()
     
     # =======================================================================
     #               checks if the Queue can accept an entity       
