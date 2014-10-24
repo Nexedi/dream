@@ -125,6 +125,17 @@ class ShiftScheduler(ObjectInterruption):
                         yield self.victim.endedLastProcessing
                         transmitter, eventTime=self.victim.endedLastProcessing.value
                         self.victim.endedLastProcessing=self.env.event() 
+                    # sometimes the time to end the last process may overcome the time to restart theshift
+                    # so off-shift should not happen at such a case
+                    if len(self.remainingShiftPattern)>1:
+                        if self.env.now>self.remainingShiftPattern[1][0]:
+                            self.remainingShiftPattern.pop(0)
+                            if self.victim.id=='St4M0':
+                                print '------', self.env.now, 'break skipped'                   
+                            # if there is no more shift data break the loop
+                            if len(self.remainingShiftPattern)==0:
+                                break
+                            continue
                     self.interruptVictim()
                 # if the victim is operator
                 elif issubclass(self.victim.__class__, ObjectResource):
@@ -149,5 +160,6 @@ class ShiftScheduler(ObjectInterruption):
                 self.outputTrace(self.victim.name,"is off shift")
                 
                 self.remainingShiftPattern.pop(0)
+            # if there is no more shift data break the loop
             if len(self.remainingShiftPattern)==0:
                 break
