@@ -1,0 +1,347 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.LineClearance", 
+   "family": "Buffer", 
+   "id": "B1", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "B10", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "B11", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.RoutingQueue", 
+   "family": "Buffer", 
+   "id": "B12", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.LineClearance", 
+   "family": "Buffer", 
+   "id": "B2", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.LineClearance", 
+   "family": "Buffer", 
+   "id": "B4", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.LineClearance", 
+   "family": "Buffer", 
+   "id": "B5", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "B7", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "B8", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "B9", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.BatchReassemblyBlocking", 
+   "family": "Server", 
+   "id": "BRA", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 100.0, 
+    "working_ratio": 0.0
+   }
+  }, 
+  {
+   "_class": "Dream.BatchReassemblyBlocking", 
+   "family": "Server", 
+   "id": "BRB", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 100.0, 
+    "working_ratio": 0.0
+   }
+  }, 
+  {
+   "_class": "Dream.Exit", 
+   "family": "Exit", 
+   "id": "E1", 
+   "results": {
+    "intervalThroughputList": [
+     1800, 
+     200, 
+     0
+    ], 
+    "lifespan": 736.55, 
+    "takt_time": 76.5, 
+    "throughput": 20, 
+    "unitsThroughput": 2000
+   }
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "QStart", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachineAfterDecompose", 
+   "family": "Server", 
+   "id": "St0M0", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "off_shift_ratio": 78.7, 
+    "waiting_ratio": 0.0, 
+    "working_ratio": 21.3
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachineAfterDecompose", 
+   "family": "Server", 
+   "id": "St0M1", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "off_shift_ratio": 78.7, 
+    "waiting_ratio": 0.0, 
+    "working_ratio": 21.3
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
+   "id": "St1M0", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "off_shift_ratio": 78.7, 
+    "waiting_ratio": 0.0, 
+    "working_ratio": 21.3
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
+   "id": "St1M1", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "off_shift_ratio": 78.7, 
+    "waiting_ratio": 0.0, 
+    "working_ratio": 21.3
+   }
+  }, 
+  {
+   "_class": "Dream.M3", 
+   "family": "Server", 
+   "id": "St2M0", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "off_shift_ratio": 78.7, 
+    "waiting_ratio": 0.0, 
+    "working_ratio": 21.3
+   }
+  }, 
+  {
+   "_class": "Dream.M3", 
+   "family": "Server", 
+   "id": "St2M1", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "off_shift_ratio": 78.7, 
+    "waiting_ratio": 0.0, 
+    "working_ratio": 21.3
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
+   "id": "St3M0", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "off_shift_ratio": 79.375, 
+    "waiting_ratio": 9.0, 
+    "working_ratio": 11.625
+   }
+  }, 
+  {
+   "_class": "Dream.M3", 
+   "family": "Server", 
+   "id": "St4M0", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "off_shift_ratio": 78.225, 
+    "waiting_ratio": 0.4, 
+    "working_ratio": 21.375
+   }
+  }, 
+  {
+   "_class": "Dream.BatchReassemblyBlocking", 
+   "family": "Server", 
+   "id": "St4M0R", 
+   "results": {
+    "blockage_ratio": 0.025, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 99.975, 
+    "working_ratio": 0.0
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
+   "id": "St5M0", 
+   "results": {
+    "blockage_ratio": 9.125, 
+    "failure_ratio": 0.0, 
+    "off_shift_ratio": 79.53, 
+    "waiting_ratio": 6.47, 
+    "working_ratio": 4.875
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachine", 
+   "family": "Server", 
+   "id": "St5M1", 
+   "results": {
+    "blockage_ratio": 9.93, 
+    "failure_ratio": 0.0, 
+    "off_shift_ratio": 79.12, 
+    "waiting_ratio": 6.075, 
+    "working_ratio": 4.875
+   }
+  }, 
+  {
+   "_class": "Dream.M3", 
+   "family": "Server", 
+   "id": "St6M0", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "off_shift_ratio": 79.1, 
+    "waiting_ratio": 0.0, 
+    "working_ratio": 20.9
+   }
+  }, 
+  {
+   "_class": "Dream.BatchReassemblyBlocking", 
+   "family": "Server", 
+   "id": "St6M0R", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 100.0, 
+    "working_ratio": 0.0
+   }
+  }, 
+  {
+   "_class": "Dream.M3", 
+   "family": "Server", 
+   "id": "St6M1", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "off_shift_ratio": 79.2, 
+    "waiting_ratio": 0.0, 
+    "working_ratio": 20.8
+   }
+  }, 
+  {
+   "_class": "Dream.BatchReassemblyBlocking", 
+   "family": "Server", 
+   "id": "St6M1R", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 100.0, 
+    "working_ratio": 0.0
+   }
+  }, 
+  {
+   "_class": "Dream.BatchScrapMachineAfterDecompose", 
+   "family": "Server", 
+   "id": "St7M0", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "off_shift_ratio": 79.6, 
+    "waiting_ratio": 0.0, 
+    "working_ratio": 20.4
+   }
+  }, 
+  {
+   "_class": "Dream.M3", 
+   "family": "Server", 
+   "id": "St8M0", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "off_shift_ratio": 79.2, 
+    "waiting_ratio": 0.0, 
+    "working_ratio": 20.8
+   }
+  }, 
+  {
+   "_class": "Dream.BatchReassemblyBlocking", 
+   "family": "Server", 
+   "id": "St8M0R", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 100.0, 
+    "working_ratio": 0.0
+   }
+  }, 
+  {
+   "_class": "Dream.M3", 
+   "family": "Server", 
+   "id": "St8M1", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "off_shift_ratio": 79.2, 
+    "waiting_ratio": 0.0, 
+    "working_ratio": 20.8
+   }
+  }, 
+  {
+   "_class": "Dream.BatchReassemblyBlocking", 
+   "family": "Server", 
+   "id": "St8M1R", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 100.0, 
+    "working_ratio": 0.0
+   }
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}

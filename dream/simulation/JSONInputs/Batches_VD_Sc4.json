@@ -37,36 +37,16 @@
                     [
                         1590,
                         1620
-                    ],
-                    [
-                        4080,
-                        4260
-                    ],
-                    [
-                        4290,
-                        4425
-                    ],
-                    [
-                        4470,
-                        4620
-                    ],
-                    [
-                        4623,
-                        4800
-                    ],
-                    [
-                        4830,
-                        4965
                     ]
                 ],
                 "thresholdTimeIsOnShift": 0
             },
             "processingTime": {
-                "mean": 0.5,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0.5
             },
             "failures": {
                 "MTTR": 10,
@@ -115,36 +95,16 @@
                     [
                         1590,
                         1620
-                    ],
-                    [
-                        4080,
-                        4260
-                    ],
-                    [
-                        4290,
-                        4425
-                    ],
-                    [
-                        4470,
-                        4620
-                    ],
-                    [
-                        4623,
-                        4800
-                    ],
-                    [
-                        4830,
-                        4965
                     ]
                 ],
                 "thresholdTimeIsOnShift": 0
             },
             "processingTime": {
-                "mean": 0.1875,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0.1875
             },
             "failures": {
                 "MTTR": 10,
@@ -157,7 +117,7 @@
             "id": "St5M0"
         },
         "St5M1": {
-            "name": " FlagLabelling 2",
+            "name": "Flag Labelling 2",
             "shift": {
                 "endUnfinished": 1,
                 "receiveBeforeEndThreshold": 7,
@@ -193,36 +153,16 @@
                     [
                         1590,
                         1620
-                    ],
-                    [
-                        4080,
-                        4260
-                    ],
-                    [
-                        4290,
-                        4425
-                    ],
-                    [
-                        4470,
-                        4620
-                    ],
-                    [
-                        4623,
-                        4800
-                    ],
-                    [
-                        4830,
-                        4965
                     ]
                 ],
                 "thresholdTimeIsOnShift": 0
             },
             "processingTime": {
-                "mean": 0.1875,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0.1875
             },
             "failures": {
                 "MTTR": 10,
@@ -238,11 +178,11 @@
             "name": "Source",
             "entity": "Dream.Batch",
             "interarrivalTime": {
-                "mean": 0.5,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0.5
             },
             "batchNumberOfUnits": 100,
             "element_id": "DreamNode_23",
@@ -303,36 +243,16 @@
                     [
                         1590,
                         1620
-                    ],
-                    [
-                        4080,
-                        4260
-                    ],
-                    [
-                        4290,
-                        4425
-                    ],
-                    [
-                        4470,
-                        4620
-                    ],
-                    [
-                        4623,
-                        4800
-                    ],
-                    [
-                        4830,
-                        4965
                     ]
                 ],
                 "thresholdTimeIsOnShift": 0
             },
             "processingTime": {
-                "mean": 1,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 1
             },
             "failures": {
                 "MTTR": 10,
@@ -381,36 +301,16 @@
                     [
                         1590,
                         1620
-                    ],
-                    [
-                        4080,
-                        4260
-                    ],
-                    [
-                        4290,
-                        4425
-                    ],
-                    [
-                        4470,
-                        4620
-                    ],
-                    [
-                        4623,
-                        4800
-                    ],
-                    [
-                        4830,
-                        4965
                     ]
                 ],
                 "thresholdTimeIsOnShift": 0
             },
             "processingTime": {
-                "mean": 1,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 1
             },
             "wip": [
                 {
@@ -436,11 +336,11 @@
         "St8M0R": {
             "name": "St8M0R",
             "processingTime": {
-                "mean": 0,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0
             },
             "outputResults": 1,
             "numberOfSubBatches": 10,
@@ -502,11 +402,11 @@
         "St7M0D": {
             "name": "St7M0D",
             "processingTime": {
-                "mean": 0,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0
             },
             "numberOfSubBatches": 10,
             "wip": [
@@ -568,36 +468,16 @@
                     [
                         1590,
                         1620
-                    ],
-                    [
-                        4080,
-                        4260
-                    ],
-                    [
-                        4290,
-                        4425
-                    ],
-                    [
-                        4470,
-                        4620
-                    ],
-                    [
-                        4623,
-                        4800
-                    ],
-                    [
-                        4830,
-                        4965
                     ]
                 ],
                 "thresholdTimeIsOnShift": 0
             },
             "processingTime": {
-                "mean": 1,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 1
             },
             "failures": {
                 "MTTR": 10,
@@ -655,36 +535,16 @@
                     [
                         1590,
                         1620
-                    ],
-                    [
-                        4080,
-                        4260
-                    ],
-                    [
-                        4290,
-                        4425
-                    ],
-                    [
-                        4470,
-                        4620
-                    ],
-                    [
-                        4623,
-                        4800
-                    ],
-                    [
-                        4830,
-                        4965
                     ]
                 ],
                 "thresholdTimeIsOnShift": 0
             },
             "processingTime": {
-                "mean": 0.75,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0.75
             },
             "failures": {
                 "MTTR": 10,
@@ -733,36 +593,16 @@
                     [
                         1590,
                         1620
-                    ],
-                    [
-                        4080,
-                        4260
-                    ],
-                    [
-                        4290,
-                        4425
-                    ],
-                    [
-                        4470,
-                        4620
-                    ],
-                    [
-                        4623,
-                        4800
-                    ],
-                    [
-                        4830,
-                        4965
                     ]
                 ],
                 "thresholdTimeIsOnShift": 0
             },
             "processingTime": {
-                "mean": 0.75,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0.75
             },
             "failures": {
                 "MTTR": 10,
@@ -811,36 +651,16 @@
                     [
                         1590,
                         1620
-                    ],
-                    [
-                        4080,
-                        4260
-                    ],
-                    [
-                        4290,
-                        4425
-                    ],
-                    [
-                        4470,
-                        4620
-                    ],
-                    [
-                        4623,
-                        4800
-                    ],
-                    [
-                        4830,
-                        4965
                     ]
                 ],
                 "thresholdTimeIsOnShift": 0
             },
             "processingTime": {
-                "mean": 0.1875,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0.1875
             },
             "failures": {
                 "MTTR": 10,
@@ -889,36 +709,16 @@
                     [
                         1590,
                         1620
-                    ],
-                    [
-                        4080,
-                        4260
-                    ],
-                    [
-                        4290,
-                        4425
-                    ],
-                    [
-                        4470,
-                        4620
-                    ],
-                    [
-                        4623,
-                        4800
-                    ],
-                    [
-                        4830,
-                        4965
                     ]
                 ],
                 "thresholdTimeIsOnShift": 0
             },
             "processingTime": {
-                "mean": 0.375,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0.375
             },
             "failures": {
                 "MTTR": 10,
@@ -933,11 +733,11 @@
         "St6M1R": {
             "name": "St6M1R",
             "processingTime": {
-                "mean": 0,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0
             },
             "outputResults": 1,
             "numberOfSubBatches": 10,
@@ -1012,11 +812,11 @@
         "BDA": {
             "name": "Deco_A",
             "processingTime": {
-                "mean": 0,
+                "stdev": "",
                 "max": "",
                 "min": "",
                 "distributionType": "Fixed",
-                "stdev": ""
+                "mean": 0
             },
             "numberOfSubBatches": 5,
             "wip": [
@@ -1038,7 +838,7 @@
                 }
             ],
             "element_id": "DreamNode_1",
-            "_class": "Dream.BatchDecompositionStartTime",
+            "_class": "Dream.BatchDecomposition",
             "id": "BDA"
         },
         "St8M0": {
@@ -1078,36 +878,16 @@
                     [
                         1590,
                         1620
-                    ],
-                    [
-                        4080,
-                        4260
-                    ],
-                    [
-                        4290,
-                        4425
-                    ],
-                    [
-                        4470,
-                        4620
-                    ],
-                    [
-                        4623,
-                        4800
-                    ],
-                    [
-                        4830,
-                        4965
                     ]
                 ],
                 "thresholdTimeIsOnShift": 0
             },
             "processingTime": {
-                "mean": 1,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 1
             },
             "failures": {
                 "MTTR": 10,
@@ -1122,11 +902,11 @@
         "St4M0D": {
             "name": "St4M0D",
             "processingTime": {
-                "mean": 0,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0
             },
             "numberOfSubBatches": 2,
             "element_id": "DreamNode_24",
@@ -1159,17 +939,17 @@
                 }
             ],
             "element_id": "DreamNode_2",
-            "_class": "Dream.BatchDecompositionStartTime",
+            "_class": "Dream.BatchDecomposition",
             "id": "BDB"
         },
         "St6M0R": {
             "name": "St6M0R",
             "processingTime": {
-                "mean": 0,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0
             },
             "outputResults": 1,
             "numberOfSubBatches": 10,
@@ -1214,11 +994,11 @@
         "St4M0R": {
             "name": "St4M0R",
             "processingTime": {
-                "mean": 0,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0
             },
             "outputResults": 1,
             "numberOfSubBatches": 2,
@@ -1229,11 +1009,11 @@
         "St6M1D": {
             "name": "St6M1D",
             "processingTime": {
-                "mean": 0,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0
             },
             "numberOfSubBatches": 10,
             "wip": [
@@ -1269,11 +1049,11 @@
         "St8M1R": {
             "name": "St8M1R",
             "processingTime": {
-                "mean": 0,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0
             },
             "outputResults": 1,
             "numberOfSubBatches": 10,
@@ -1318,36 +1098,16 @@
                     [
                         1590,
                         1620
-                    ],
-                    [
-                        4080,
-                        4260
-                    ],
-                    [
-                        4290,
-                        4425
-                    ],
-                    [
-                        4470,
-                        4620
-                    ],
-                    [
-                        4623,
-                        4800
-                    ],
-                    [
-                        4830,
-                        4965
                     ]
                 ],
                 "thresholdTimeIsOnShift": 0
             },
             "processingTime": {
-                "mean": 0.75,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0.75
             },
             "failures": {
                 "MTTR": 10,
@@ -1396,36 +1156,16 @@
                     [
                         1590,
                         1620
-                    ],
-                    [
-                        4080,
-                        4260
-                    ],
-                    [
-                        4290,
-                        4425
-                    ],
-                    [
-                        4470,
-                        4620
-                    ],
-                    [
-                        4623,
-                        4800
-                    ],
-                    [
-                        4830,
-                        4965
                     ]
                 ],
                 "thresholdTimeIsOnShift": 0
             },
             "processingTime": {
-                "mean": 0.75,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0.75
             },
             "failures": {
                 "MTTR": 10,
@@ -1442,21 +1182,21 @@
             "argumentDict": "{}",
             "interval": 1440,
             "stop": -1,
-            "method": "Globals.countIntervalThroughput",
+            "id": "EV",
             "start": 1440,
             "duration": 10,
             "element_id": "DreamNode_6",
             "_class": "Dream.EventGenerator",
-            "id": "EV"
+            "method": "Globals.countIntervalThroughput"
         },
         "St6M0D": {
             "name": "St6M0D",
             "processingTime": {
-                "mean": 0,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0
             },
             "numberOfSubBatches": 10,
             "wip": [
@@ -1542,36 +1282,16 @@
                     [
                         1590,
                         1620
-                    ],
-                    [
-                        4080,
-                        4260
-                    ],
-                    [
-                        4290,
-                        4425
-                    ],
-                    [
-                        4470,
-                        4620
-                    ],
-                    [
-                        4623,
-                        4800
-                    ],
-                    [
-                        4830,
-                        4965
                     ]
                 ],
                 "thresholdTimeIsOnShift": 0
             },
             "processingTime": {
-                "mean": 0.75,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0.75
             },
             "failures": {
                 "MTTR": 10,
@@ -1620,36 +1340,16 @@
                     [
                         1590,
                         1620
-                    ],
-                    [
-                        4080,
-                        4260
-                    ],
-                    [
-                        4290,
-                        4425
-                    ],
-                    [
-                        4470,
-                        4620
-                    ],
-                    [
-                        4623,
-                        4800
-                    ],
-                    [
-                        4830,
-                        4965
                     ]
                 ],
                 "thresholdTimeIsOnShift": 0
             },
             "processingTime": {
-                "mean": 0.75,
                 "max": null,
+                "stdev": null,
                 "min": null,
                 "distributionType": "Fixed",
-                "stdev": null
+                "mean": 0.75
             },
             "failures": {
                 "MTTR": 10,
@@ -1661,17 +1361,27 @@
             "_class": "Dream.BatchScrapMachineAfterDecompose",
             "id": "St0M0"
         },
-        "BRB": {
-            "name": "Assembly_B",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0
-            },
-            "outputResults": 1,
-            "numberOfSubBatches": 5,
-            "element_id": "DreamNode_4",
-            "_class": "Dream.BatchReassemblyBlocking",
-            "id": "BRB"
+        "B9": {
+            "capacity": 4,
+            "name": "B9",
+            "wip": [
+                {
+                    "_class": "Dream.Batch",
+                    "numberOfUnits": 100,
+                    "name": "Batch7_WIP",
+                    "id": "7"
+                },
+                {
+                    "_class": "Dream.Batch",
+                    "numberOfUnits": 100,
+                    "name": "Batch8_WIP",
+                    "id": "8"
+                }
+            ],
+            "element_id": "DreamNode_30",
+            "_class": "Dream.Queue",
+            "id": "B9",
+            "schedulingRule": "FIFO"
         },
         "B4": {
             "capacity": 2,
@@ -1921,27 +1631,17 @@
             "id": "B8",
             "schedulingRule": "FIFO"
         },
-        "B9": {
-            "capacity": 4,
-            "name": "B9",
-            "wip": [
-                {
-                    "_class": "Dream.Batch",
-                    "numberOfUnits": 100,
-                    "name": "Batch7_WIP",
-                    "id": "7"
-                },
-                {
-                    "_class": "Dream.Batch",
-                    "numberOfUnits": 100,
-                    "name": "Batch8_WIP",
-                    "id": "8"
-                }
-            ],
-            "element_id": "DreamNode_30",
-            "_class": "Dream.Queue",
-            "id": "B9",
-            "schedulingRule": "FIFO"
+        "BRB": {
+            "name": "Assembly_B",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0
+            },
+            "outputResults": 1,
+            "numberOfSubBatches": 5,
+            "element_id": "DreamNode_4",
+            "_class": "Dream.BatchReassemblyBlocking",
+            "id": "BRB"
         },
         "BRA": {
             "name": "Assembly_A",
@@ -2032,9 +1732,9 @@
             "St1M1",
             {}
         ],
-        "con_95": [
-            "St4M0",
-            "St4M0R",
+        "con_135": [
+            "B9",
+            "St5M1",
             {}
         ],
         "con_40": [
@@ -2057,14 +1757,19 @@
             "BDA",
             {}
         ],
-        "con_90": [
-            "St4M0D",
-            "St4M0",
+        "con_235": [
+            "St8M0R",
+            "E1",
             {}
         ],
-        "con_195": [
-            "St6M1",
-            "St6M1R",
+        "con_130": [
+            "B9",
+            "St5M0",
+            {}
+        ],
+        "con_230": [
+            "St8M1R",
+            "E1",
             {}
         ],
         "con_270": [
@@ -2082,14 +1787,14 @@
             "St6M1D",
             {}
         ],
-        "con_230": [
-            "St8M1R",
-            "E1",
+        "con_195": [
+            "St6M1",
+            "St6M1R",
             {}
         ],
-        "con_235": [
-            "St8M0R",
-            "E1",
+        "con_190": [
+            "St6M0",
+            "St6M0R",
             {}
         ],
         "con_210": [
@@ -2107,14 +1812,14 @@
             "St0M1",
             {}
         ],
-        "con_135": [
-            "B9",
-            "St5M1",
+        "con_95": [
+            "St4M0",
+            "St4M0R",
             {}
         ],
-        "con_130": [
-            "B9",
-            "St5M0",
+        "con_90": [
+            "St4M0D",
+            "St4M0",
             {}
         ],
         "con_30": [
@@ -2180,11 +1885,6 @@
         "con_260": [
             "St7M0",
             "B12",
-            {}
-        ],
-        "con_190": [
-            "St6M0",
-            "St6M0R",
             {}
         ]
     },
