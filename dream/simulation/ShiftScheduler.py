@@ -129,9 +129,7 @@ class ShiftScheduler(ObjectInterruption):
                     # so off-shift should not happen at such a case
                     if len(self.remainingShiftPattern)>1:
                         if self.env.now>self.remainingShiftPattern[1][0]:
-                            self.remainingShiftPattern.pop(0)
-                            if self.victim.id=='St4M0':
-                                print '------', self.env.now, 'break skipped'                   
+                            self.remainingShiftPattern.pop(0)                
                             # if there is no more shift data break the loop
                             if len(self.remainingShiftPattern)==0:
                                 break
