@@ -228,7 +228,7 @@
         "processTimeout": 20,
         "currentDate": "2014/07/14",
         "timeUnitPerDay": 24,
-        "trace": "Yes",
+        "trace": "No",
         "console": "No",
         "seed": "",
         "ke_url": "http://git.erp5.org/gitweb/dream.git/blob_plain/ee686e74fe5f2e18cc2ba820163a52e8626a696c:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
