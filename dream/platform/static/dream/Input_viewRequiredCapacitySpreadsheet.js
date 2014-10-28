@@ -5,7 +5,9 @@
         var gadget = this, editor_data, editor_gadget;
         return new RSVP.Queue().push(function() {
             // Prevent double click
-            evt.target.getElementsByClassName("ui-btn")[0].disabled = true;
+            if (evt) {
+                evt.target.getElementsByClassName("ui-btn")[0].disabled = true;
+            }
             return gadget.getDeclaredGadget("tableeditor");
         }).push(function(tablegadget) {
             editor_gadget = tablegadget;
@@ -27,7 +29,9 @@
                 _mimetype: "application/json"
             });
         }).push(function() {
-            evt.target.getElementsByClassName("ui-btn")[0].disabled = false;
+            if (evt) {
+                evt.target.getElementsByClassName("ui-btn")[0].disabled = false;
+            }
         });
     }
     function waitForSave(gadget) {
@@ -45,7 +49,13 @@
             }), gadget.getDeclaredGadget("tableeditor") ]);
         }).push(function(result_list) {
             return result_list[1].render(JSON.stringify(JSON.parse(result_list[0]).capacity_by_project_spreadsheet), {
-                minSpareRows: 1
+                minSpareRows: 1,
+                onChange: function() {
+                    if (gadget.timeout) {
+                        window.clearTimeout(gadget.timeout);
+                    }
+                    gadget.timeout = window.setTimeout(saveSpreadsheet.bind(gadget), 100);
+                }
             });
         });
     }).declareMethod("startService", function() {

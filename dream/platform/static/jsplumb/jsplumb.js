@@ -84,12 +84,18 @@
         }
         return "DreamNode_" + n;
     }
+    function onDataChange(g) {
+        g.getData().then(function(data) {
+            $.publish("Dream.Gui.onDataChange", data);
+        });
+    }
     function updateConnectionData(gadget, connection, remove, edge_data) {
         if (remove) {
             delete gadget.props.edge_container[connection.id];
         } else {
             gadget.props.edge_container[connection.id] = [ getNodeId(gadget.props.node_container, connection.sourceId), getNodeId(gadget.props.node_container, connection.targetId), edge_data || {} ];
         }
+        onDataChange(gadget);
     }
     // bind to connection/connectionDetached events,
     // and update the list of connections on screen.
@@ -129,6 +135,7 @@
         }
         coordinates[node_id] = coordinate;
         gadget.props.preference_container.coordinates = coordinates;
+        onDataChange(gadget);
         return coordinate;
     }
     function draggable(gadget) {
@@ -190,6 +197,7 @@
         //     return undefined;
         //   });
         // split in 2 methods ? one for events one for manip
+        onDataChange(gadget);
         draggable(gadget);
     }
     function updateNodeStyle(gadget, element_id) {
@@ -268,6 +276,7 @@
     //       1.1111;
     //   setZoom(gadget, zoom_level);
     //   gadget.props.preference_container.zoom_level = zoom_level;
+    //   onDataChange();
     //   redraw(gadget);
     // }
     // function zoom_out(gadget) {
@@ -275,6 +284,7 @@
     //     0.9;
     //   setZoom(gadget, zoom_level);
     //   gadget.props.preference_container.zoom_level = zoom_level;
+    //   onDataChange();
     //   redraw(gadget);
     // }
     function removeElement(gadget, node_id) {
@@ -288,6 +298,7 @@
                 delete gadget.props.edge_container[k];
             }
         });
+        onDataChange(gadget);
     }
     function updateElementData(gadget, node_id, data) {
         var element_id = gadget.props.node_container[node_id].element_id, new_id = data.id;
@@ -312,6 +323,7 @@
             gadget.props.preference_container.coordinates[new_id] = gadget.props.preference_container.coordinates[node_id];
             delete gadget.props.preference_container.coordinates[node_id];
         }
+        onDataChange(gadget);
     }
     // function clearAll(gadget) {
     //   $.each(gadget.props.node_container, function (node_id) {
@@ -353,9 +365,11 @@
     // }
     // function setGeneralProperties(gadget, properties) {
     //   gadget.props.general_container = properties;
+    //   onDataChange();
     // }
     // function updateGeneralProperties(gadget, properties) {
     //   $.extend(gadget.props.general_container, properties);
+    //   onDataChange();
     // }
     function openNodeDialog(gadget, element, config_dict) {
         var node_id = getNodeId(gadget.props.node_container, element.id), node_data = gadget.props.node_container[node_id], element_type = node_data._class.replace(".", "-"), property_list = config_dict[element_type].property_list || [], node_edit_popup = $(gadget.props.element).find("#popup-edit-template"), fieldset_element, delete_promise;
@@ -454,6 +468,7 @@
         box.css("left", absolute_position[0]);
         updateNodeStyle(gadget, element.element_id);
         draggable(gadget);
+        onDataChange(gadget);
     }
     function waitForDragover(gadget) {
         return loopEventListener(gadget.props.main, "dragover", false, function() {

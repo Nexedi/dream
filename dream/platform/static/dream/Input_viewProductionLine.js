@@ -3,13 +3,14 @@
     "use strict";
     var gadget_klass = rJS(window);
     function saveGraph(evt) {
-        var gadget = this, graph_data, graph_gadget;
+        var gadget = this, graph_data;
         return new RSVP.Queue().push(function() {
             // Prevent double click
-            evt.target.getElementsByClassName("ui-btn")[0].disabled = true;
+            if (evt) {
+                evt.target.getElementsByClassName("ui-btn")[0].disabled = true;
+            }
             return gadget.getDeclaredGadget("productionline_graph");
-        }).push(function(graphgadget) {
-            graph_gadget = graphgadget;
+        }).push(function(graph_gadget) {
             return graph_gadget.getData();
         }).push(function(data) {
             graph_data = data;
@@ -19,10 +20,10 @@
                 _attachment: "body.json"
             });
         }).push(function(body) {
-            var data = JSON.parse(body);
-            data.nodes = JSON.parse(graph_data).nodes;
-            data.edges = JSON.parse(graph_data).edges;
-            data.preference = JSON.parse(graph_data).preference;
+            var data = JSON.parse(body), json_graph_data = JSON.parse(graph_data);
+            data.nodes = json_graph_data.nodes;
+            data.edges = json_graph_data.edges;
+            data.preference = json_graph_data.preference;
             return gadget.aq_putAttachment({
                 _id: gadget.props.jio_key,
                 _attachment: "body.json",
@@ -30,7 +31,9 @@
                 _mimetype: "application/json"
             });
         }).push(function() {
-            evt.target.getElementsByClassName("ui-btn")[0].disabled = false;
+            if (evt) {
+                evt.target.getElementsByClassName("ui-btn")[0].disabled = false;
+            }
         });
     }
     function waitForSave(gadget) {
@@ -60,6 +63,13 @@
         });
     }).declareMethod("startService", function() {
         var g = this, graph;
+        // save automatically
+        window.$.subscribe("Dream.Gui.onDataChange", function() {
+            if (g.timeout) {
+                window.clearTimeout(g.timeout);
+            }
+            g.timeout = window.setTimeout(saveGraph.bind(g), 100);
+        });
         return g.getDeclaredGadget("productionline_graph").push(function(graph_gadget) {
             graph = graph_gadget;
             return g.getDeclaredGadget("productionline_toolbox");
