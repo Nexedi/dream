@@ -1,62 +1,56 @@
-
 ========================
-ManPy overview
+DREAM overview
 ========================
-
-ManPy stands for "Manufacturing in Python" and it is a layer of Discrete Event Simulation 
-(DES) objects built in SimPy (http://simpy.readthedocs.org/en/latest/). 
-
-It is built within DREAM project (http://dream-simulation.eu/) 
 
 Scope
 ============
 
-The scope of the project is to provide simulation modellers with a collection of open-
-source DES objects that can be connected like "black boxes" in order to form a model. 
-
-This collection is desired to be expandable by giving means to developers for:  
- + customizing existing objects  
- + adding completely new objects to the list
+DREAM an EU funded (FP7) project. Its main objective is to increase the competitiveness of the European Manufacturing Sector through targeting the advancement of discrete event simulation technology beyond the current state of the art to promote the embedding of simulation based decision support across the array of multi-level decisions faced by European Manufacturing Enterprises, from strategic (product/process development), tactical (ERP decision level support) and down to the MES level with the requirement of reactive real time decision support. More information can be found in http://dream-simulation.eu/.
 
 What's included
 =================
 
-In the DREAM folder you can find three sub-folders:
- + simulation: contains all the simulation objects that are built in SimPy and also 2 python scripts to read inputs and run the simulation. Support documents and example inputs are provided in subfolders
- + platform: contains code related to the platform and the GUI that is also built and cooperates with the ManPy simulation engine
- + tests: contains code for unit-testing
+Within DREAM project 3 sub-projects are currently being developed. They are separate projects, but they also cooperate in the DREAM framework. A brief description of each one is given below. 
+
+Currently in DREAM folder there are 4 sub-folders:
+ + simulation: contains all ManPy simulation objects. 
+ + KnowledgeExtraction: contains the KE tool code.	
+ + platform: contains code related to the platform and the GUI.
+ + tests: contains code for unit-testing.
 
 Current Status
 =================
 
 DREAM is a project which kicked off in October of 2012 and finishes in September of 2015. 
-ManPy is an ongoing project and we do not claim that it is complete. The platform will be 
-expanded and validated through the industrial pilot cases of DREAM. Nevertheless, we 
-launch the project in order to attract the interest of simulation modellers and software 
-developers.  
+ManPy is an ongoing project and we do not claim that it is complete. The platform is being 
+expanded and validated through the industrial pilot cases of DREAM. 
+
+The first official versions of DREAM modules (ManPy, KE tool and GUI editor) will be released in September of 2015.
 
 How to get started
 ========================
 
-Note: This section does not apply if DREAM is installed with python setup.py or
-if you use buildout.
+To install DREAM along with its dependencies run the setup.py in he root of the repository (python setup.py install).
 
-To be able to run the documentation examples just copy the dream/simulation to your Python folder. Then you can import ManPy objects as it is written in the examples, e.g.:
- + *from simulation.Queue import Queue* or
- + *from simulation.imports import Machine, Source, Exit*
-
-If you copy the whole dream folder, then the import should change to something like *from dream.simulation.Queue import Queue*. If you want to rename the folder it can be *from path.to.my.new.folder.Queue import Queue*.
+Then the user is referred to the documentation that is available in this repository.
 
 Dependencies
 =================
 
 ManPy uses the following Python libraries:
- + SimPy
- + NumPy
- + SciPy
- + xlrd
- + xlwt
- + rpy2
+ + `SimPy3 <http://simpy.readthedocs.org/en/latest/>`_
+ + `NumPy <http://www.numpy.org/>`_
+ + `xlrd <https://pypi.python.org/pypi/xlrd>`_
+ + `xlwt <https://pypi.python.org/pypi/xlwt>`_
+ + `rpy2 <http://rpy.sourceforge.net/>`_ (temporary dependency to be dropped soon)
+ + `R <http://www.r-project.org/>`_ (temporary dependency to be dropped soon)
+
+KE tool uses the following Python libraries:
+ + `NumPy <http://www.numpy.org/>`_
+ + `xlrd <https://pypi.python.org/pypi/xlrd>`_
+ + `xlwt <https://pypi.python.org/pypi/xlwt>`_
+ + `rpy2 <http://rpy.sourceforge.net/>`_
+ + `R <http://www.r-project.org/>`_
 
 The HTML5 graphical user interface uses the following javascript libraries:
  + `DHTMLX Gantt <http://dhtmlx.com/docs/products/dhtmlxGantt/>`_
@@ -69,13 +63,11 @@ The HTML5 graphical user interface uses the following javascript libraries:
  + `RenderJS <http://www.renderjs.org/>`_
  + `RSVP.js <https://github.com/tildeio/rsvp.js>`_
 
-=================
 Documentation
 =================
 
-Documentation for ManPy can be found in this repo in the root directory.
+Documentation for ManPy and KE tool can be found in the root directory of this directory.
 
-=================
 Acknowledgements
 =================
 
@@ -85,13 +77,12 @@ DREAM and stands for "Simulation based application Decision support in Real-time
 Efficient Agile Manufacturing". More information about the scope of DREAM can be found in 
 http://dream-simulation.eu/. 
 
-==================================
 Copyright and license
 ==================================
 
-ManPy is licensed under the GNU Lesser General Public License (LGPL).
+DREAM modules are licensed under the GNU Lesser General Public License (LGPL).
 
-==================================
+
 Authors
 ==================================
 
@@ -105,4 +96,40 @@ Ioannis Papagiannopoulos
 
 Panos Barlas
 
-Kazuhiko Shiozaki
+========================
+ManPy 
+========================
+
+ManPy stands for "Manufacturing in Python" and it is a layer of Discrete Event Simulation 
+(DES) objects built in Python. ManPy uses the `SimPy3 <http://simpy.readthedocs.org/en/latest/>`_ library in order to implement the process oriented world view.
+
+The scope of the project is to provide simulation modellers with a collection of open-
+source DES objects that can be connected like "black boxes" in order to form a model. 
+
+This collection is desired to be expandable by giving means to developers for:  
+ + customizing existing objects  
+ + adding completely new objects to the list
+
+Documentation for ManPy can be found in the root directory of this directory.
+
+========================
+KE tool 
+========================
+
+KE tool stands for "Knowledge Extraction" and is an IT solution built to link production data stored in different organization’s IT-systems with the simulation software. The software built using `rpy2 <http://rpy.sourceforge.net/>`_ and other Python libraries.
+
+The scope of the tool is the provision of functionalities that cover the “input data phase” in DES. These functionalities cover the four main components of the tool ('Data extraction', 'Data processing', 'Output preparation', 'Output analysis'), are offered as Python objects that can be connected line "black boxes" in order to form the KE tool main script.
+
+The collection of the objects is desired to be expandable by giving means for developers for:
+ + customizing existing objects  
+ + developing new objects based on their needs.
+
+Documentation for the KE tool can be found in the root directory of this directory.
+
+========================
+GUI editor
+========================
+
+The GUI editor has been developed with two ideas in mind: firstly it should help the user to develop a simulation model visually and it should also provide the user with straightforward and understandable results of simulation experiments that should help him understanding at a glance the output of the model by showing the results in formats such as bar charts, plots, Gantt diagrams or spreadsheets.
+
+The GUI editor is designed based on the Javascript language so as to be supported by web browsers like Firefox, Chrome, Opera, Apple Safari, etc. 
