@@ -64,9 +64,13 @@
             doc = document_list[i];
             parameter_list[i] = {
               link: doc[0],
-              title: doc[1] + " (" + doc[2] + ")"
+              title: doc[1] + " (" + doc[2] + ")",
+              date: new Date(doc[2])
             };
           }
+          parameter_list.sort(function (a, b) {
+            return b.date - a.date;
+          });
 
 //           gadget.props.element.querySelector('a').href = document_list[0];
 
