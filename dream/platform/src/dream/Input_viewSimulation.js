@@ -76,7 +76,7 @@
     return new RSVP.Queue()
       .push(function () {
         return promiseEventListener(
-          gadget.props.element.getElementsByClassName("save_form")[0],
+          gadget.props.element.getElementsByClassName("run_form")[0],
           'submit',
           false
         );

@@ -9,7 +9,9 @@
     return new RSVP.Queue()
       .push(function () {
         // Prevent double click
-        evt.target.getElementsByClassName("ui-btn")[0].disabled = true;
+        if (evt) {
+          evt.target.getElementsByClassName("ui-btn")[0].disabled = true;
+        }
         return gadget.getDeclaredGadget("tableeditor");
       })
       .push(function (tablegadget) {
@@ -35,7 +37,9 @@
         });
       })
       .push(function () {
-        evt.target.getElementsByClassName("ui-btn")[0].disabled = false;
+        if (evt) {
+          evt.target.getElementsByClassName("ui-btn")[0].disabled = false;
+        }
       });
   }
 
@@ -79,7 +83,17 @@
         .push(function (result_list) {
           return result_list[1].render(
             JSON.stringify(JSON.parse(result_list[0]).wip_part_spreadsheet),
-            { minSpareRows: 1 }
+            { minSpareRows: 1,
+              onChange: function () {
+                if (gadget.timeout) {
+                  window.clearTimeout(gadget.timeout);
+                }
+                gadget.timeout = window.setTimeout(
+                  saveSpreadsheet.bind(gadget),
+                  100
+                );
+              }
+              }
           );
         });
     })

@@ -77,7 +77,6 @@
     return new RSVP.Promise(itsANonResolvableTrap, canceller);
   }
 
-
   function getNodeId(node_container, element_id) {
     var node_id;
     $.each(node_container, function (k, v) {
@@ -111,9 +110,10 @@
     return 'DreamNode_' + n;
   }
 
-  function onDataChange() {
-    //$.publish("Dream.Gui.onDataChange", g.private.getData());
-    return undefined;
+  function onDataChange(g) {
+    g.getData().then(function (data) {
+      $.publish("Dream.Gui.onDataChange", data);
+    });
   }
 
   function updateConnectionData(gadget, connection, remove, edge_data) {
@@ -126,7 +126,7 @@
         edge_data || {}
       ];
     }
-    onDataChange();
+    onDataChange(gadget);
   }
 
   // bind to connection/connectionDetached events,
@@ -202,7 +202,7 @@
     }
     coordinates[node_id] = coordinate;
     gadget.props.preference_container.coordinates = coordinates;
-    onDataChange();
+    onDataChange(gadget);
     return coordinate;
   }
 
@@ -283,7 +283,7 @@
     //   });
     // split in 2 methods ? one for events one for manip
 
-    onDataChange();
+    onDataChange(gadget);
     draggable(gadget);
   }
 
@@ -399,7 +399,7 @@
         delete gadget.props.edge_container[k];
       }
     });
-    onDataChange();
+    onDataChange(gadget);
   }
 
   function updateElementData(gadget, node_id, data) {
@@ -429,7 +429,7 @@
         = gadget.props.preference_container.coordinates[node_id];
       delete gadget.props.preference_container.coordinates[node_id];
     }
-    onDataChange();
+    onDataChange(gadget);
   }
 
   // function clearAll(gadget) {
@@ -642,7 +642,7 @@
     box.css("left", absolute_position[0]);
     updateNodeStyle(gadget, element.element_id);
     draggable(gadget);
-    onDataChange();
+    onDataChange(gadget);
   }
 
   function waitForDragover(gadget) {
