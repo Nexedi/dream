@@ -91,6 +91,8 @@ Jerome Perrin
 
 Sebastien Robin
 
+Kazuhiko Shiozaki
+
 Ioannis Papagiannopoulos
 
 Panos Barlas
@@ -115,9 +117,9 @@ Documentation for ManPy can be found in the root directory of this repository.
 KE tool 
 ========================
 
-KE tool stands for "Knowledge Extraction" and is an IT solution built to link production data stored in different organization’s IT-systems with the simulation software. The software built using `rpy2 <http://rpy.sourceforge.net/>`_ and other Python libraries.
+KE tool stands for "Knowledge Extraction" and is an IT solution built to link production data stored in different organization's IT-systems with the simulation software. The software built using `rpy2 <http://rpy.sourceforge.net/>`_ and other Python libraries.
 
-The scope of the tool is the provision of functionalities that cover the “input data phase” in DES. These functionalities cover the four main components of the tool ('Data extraction', 'Data processing', 'Output preparation', 'Output analysis'), are offered as Python objects that can be connected line "black boxes" in order to form the KE tool main script.
+The scope of the tool is the provision of functionalities that cover the "input data phase" in DES. These functionalities cover the four main components of the tool ('Data extraction', 'Data processing', 'Output preparation', 'Output analysis'), are offered as Python objects that can be connected line "black boxes" in order to form the KE tool main script.
 
 The collection of the objects is desired to be expandable by giving means for developers for:
  + customizing existing objects  
