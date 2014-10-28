@@ -46,7 +46,6 @@ ManPy uses the following Python libraries:
  + `R <http://www.r-project.org/>`_ (temporary dependency to be dropped soon)
 
 KE tool uses the following Python libraries:
- + `NumPy <http://www.numpy.org/>`_
  + `xlrd <https://pypi.python.org/pypi/xlrd>`_
  + `xlwt <https://pypi.python.org/pypi/xlwt>`_
  + `rpy2 <http://rpy.sourceforge.net/>`_
