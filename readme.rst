@@ -66,7 +66,7 @@ The HTML5 graphical user interface uses the following javascript libraries:
 Documentation
 =================
 
-Documentation for ManPy and KE tool can be found in the root directory of this directory.
+Documentation for ManPy and KE tool can be found in the root directory of this repository.
 
 Acknowledgements
 =================
@@ -110,7 +110,7 @@ This collection is desired to be expandable by giving means to developers for:
  + customizing existing objects  
  + adding completely new objects to the list
 
-Documentation for ManPy can be found in the root directory of this directory.
+Documentation for ManPy can be found in the root directory of this repository.
 
 ========================
 KE tool 
@@ -124,7 +124,7 @@ The collection of the objects is desired to be expandable by giving means for de
  + customizing existing objects  
  + developing new objects based on their needs.
 
-Documentation for the KE tool can be found in the root directory of this directory.
+Documentation for the KE tool can be found in the root directory of this repository.
 
 ========================
 GUI editor
