@@ -167,7 +167,7 @@ class BatchDecomposition(CoreObject):
                                 self.printTrace(self.id, received='')
                                 transmitter, eventTime=self.entityRemoved.value
                                 self.waitEntityRemoval=False
-                                break
+                            break
                 
                 # for the consecutive times wait till the receiver is available and then signalReceiver
                 #     we know that the receiver is occupied with the previous sub-batch
