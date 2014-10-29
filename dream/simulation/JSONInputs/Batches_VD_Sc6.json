@@ -2111,7 +2111,7 @@
     "general": {
         "console": "No",
         "numberOfReplications": 1,
-        "trace": "Yes",
+        "trace": "No",
         "ke_url": "http://git.erp5.org/gitweb/dream.git/blob_plain/ee686e74fe5f2e18cc2ba820163a52e8626a696c:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
         "processTimeout": 20,
         "seed": "",
