@@ -135,7 +135,6 @@ class Machine(CoreObject):
         G.MachineList.append(self)                             # add machine to global MachineList
         if self.operatorPool!="None":
             G.OperatedMachineList.append(self)                 # add the machine to the operatedMachines List
-
    
     # =======================================================================
     # initialize the machine
@@ -770,19 +769,33 @@ class Machine(CoreObject):
                         self.interruptionActions()                          # execute interruption actions
                         # loop until we reach at a state that there is no interruption
                         while 1:
-                            
                             self.expectedSignals['interruptionEnd']=1
-                            
-                            yield self.interruptionEnd         # interruptionEnd to be triggered by ObjectInterruption
-
-                            transmitter, eventTime=self.interruptionEnd.value
-                            assert eventTime==self.env.now, 'the victim of the failure is not the object that received it'
-                            self.interruptionEnd=self.env.event()
-                            # if there is no other interruption
-                            if self.Up and self.onShift:
-                                # Machine is back to blocked state
-                                self.isBlocked=True
-                                break
+                            if not self.canDeliverOnInterruption:
+                                receivedEvent=yield self.interruptionEnd         # interruptionEnd to be triggered by ObjectInterruption
+                            # if the object canDeliverOnInterruption then it has to wait also for canDispose
+                            else:
+                                self.expectedSignals['canDispose']=1
+                                receivedEvent=yield self.env.any_of([self.canDispose , self.interruptionEnd])
+                            # if we have interruption end
+                            if (self.interruptionEnd in receivedEvent) or (not self.canDeliverOnInterruption):    
+                                transmitter, eventTime=self.interruptionEnd.value
+                                assert eventTime==self.env.now, 'the victim of the failure is not the object that received it'
+                                self.interruptionEnd=self.env.event()
+                                # if there is no other interruption
+                                if self.Up and self.onShift:
+                                    # Machine is back to blocked state
+                                    self.isBlocked=True
+                                    break
+                            # else signalReceiver and continue
+                            elif (self.canDispose in receivedEvent) and self.canDeliverOnInterruption:
+                                transmitter, eventTime=self.canDispose.value
+                                if eventTime!=self.env.now:
+                                    self.canDispose=self.env.event()
+                                    continue
+                                assert eventTime==self.env.now,'canDispose signal is late'
+                                self.canDispose=self.env.event()
+                                self.signalReceiver()
+                                continue
                         self.postInterruptionActions()
                         if self.signalReceiver():
                             self.timeLastBlockageStarted=self.env.now
