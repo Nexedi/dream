@@ -358,6 +358,7 @@ class Conveyer(CoreObject):
     #===========================================================================
     def removeEntity(self, entity=None):
         activeEntity=CoreObject.removeEntity(self, entity)      #run the default method  
+        self.addBlockage()
         # remove the entity from the position list
         self.position.pop(0)
         # the object doesn't wait to dispose any more
