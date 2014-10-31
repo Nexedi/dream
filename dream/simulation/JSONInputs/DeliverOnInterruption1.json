@@ -27,7 +27,7 @@
         "confidenceLevel": "0.95",
         "maxSimTime": "-1",
         "numberOfReplications": "1",
-        "trace": "Yes",
+        "trace": "No",
         "console": "No"
     },
     "nodes": {
@@ -52,15 +52,12 @@
         "M1": {
             "_class": "Dream.Machine",
             "name": "Machine1",
-            "operationType": "MT-Load-Processing",
 			"canDeliverOnInterruption": 1,
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": 5
             },
             "shift": {
-                "endUnfinished": 1,
-                "receiveBeforeEndThreshold": 7,
                 "shiftPattern": [
                     [
                         0,
@@ -92,7 +89,6 @@
             "_class": "Dream.Machine",
             "failures": {},
             "name": "Machine2",
-            "operationType": "MT-Load-Processing",
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": 10

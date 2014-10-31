@@ -18,7 +18,6 @@
    "results": {
     "blockage_ratio": 6.666666666666667, 
     "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
     "off_shift_ratio": 76.66666666666667, 
     "waiting_ratio": 0.0, 
     "working_ratio": 16.666666666666668
@@ -31,7 +30,6 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
     "waiting_ratio": 0.0, 
     "working_ratio": 100.0
    }
