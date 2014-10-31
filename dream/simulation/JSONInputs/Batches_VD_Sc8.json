@@ -1897,7 +1897,7 @@
         "processTimeout": 20,
         "seed": "",
         "timeUnitPerDay": 24,
-        "maxSimTime": 100.1,
+        "maxSimTime": 5000,
         "currentDate": "2014/07/14",
         "throughputTarget": 10,
         "confidenceLevel": 0.95

@@ -88,10 +88,15 @@
    "family": "Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 72.0, 
-    "takt_time": 72.0, 
-    "throughput": 1, 
-    "unitsThroughput": 100
+    "intervalThroughputList": [
+     1100, 
+     100, 
+     0
+    ], 
+    "lifespan": 661.0, 
+    "takt_time": 124.5, 
+    "throughput": 12, 
+    "unitsThroughput": 1200
    }
   }, 
   {
@@ -107,9 +112,9 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "off_shift_ratio": 0.09990009990009423, 
+    "off_shift_ratio": 78.0, 
     "waiting_ratio": 0.0, 
-    "working_ratio": 99.9000999000999
+    "working_ratio": 22.0
    }
   }, 
   {
@@ -119,9 +124,9 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "off_shift_ratio": 0.09990009990009423, 
+    "off_shift_ratio": 78.0, 
     "waiting_ratio": 0.0, 
-    "working_ratio": 99.9000999000999
+    "working_ratio": 22.0
    }
   }, 
   {
@@ -131,9 +136,9 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "off_shift_ratio": 0.09990009990009423, 
+    "off_shift_ratio": 78.0, 
     "waiting_ratio": 0.0, 
-    "working_ratio": 99.9000999000999
+    "working_ratio": 22.0
    }
   }, 
   {
@@ -143,9 +148,9 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "off_shift_ratio": 0.09990009990009423, 
+    "off_shift_ratio": 78.0, 
     "waiting_ratio": 0.0, 
-    "working_ratio": 99.9000999000999
+    "working_ratio": 22.0
    }
   }, 
   {
@@ -155,9 +160,9 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "off_shift_ratio": 0.09990009990009423, 
+    "off_shift_ratio": 78.0, 
     "waiting_ratio": 0.0, 
-    "working_ratio": 99.9000999000999
+    "working_ratio": 22.0
    }
   }, 
   {
@@ -167,9 +172,9 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "off_shift_ratio": 0.09990009990009423, 
+    "off_shift_ratio": 78.0, 
     "waiting_ratio": 0.0, 
-    "working_ratio": 99.9000999000999
+    "working_ratio": 22.0
    }
   }, 
   {
@@ -177,11 +182,11 @@
    "family": "Server", 
    "id": "St3M0", 
    "results": {
-    "blockage_ratio": 0.0, 
+    "blockage_ratio": 2.46, 
     "failure_ratio": 0.0, 
-    "off_shift_ratio": 0.09990009990009423, 
+    "off_shift_ratio": 77.54, 
     "waiting_ratio": 0.0, 
-    "working_ratio": 99.9000999000999
+    "working_ratio": 20.0
    }
   }, 
   {
@@ -191,8 +196,9 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 49.95004995004995, 
-    "working_ratio": 50.04995004995004
+    "off_shift_ratio": 75.8, 
+    "waiting_ratio": 1.0, 
+    "working_ratio": 23.2
    }
   }, 
   {
@@ -213,9 +219,9 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "off_shift_ratio": 0.09990009990009423, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 99.9000999000999
+    "off_shift_ratio": 77.52, 
+    "waiting_ratio": 6.48, 
+    "working_ratio": 16.0
    }
   }, 
   {
@@ -225,9 +231,9 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "off_shift_ratio": 0.09990009990009423, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 99.9000999000999
+    "off_shift_ratio": 74.74, 
+    "waiting_ratio": 9.26, 
+    "working_ratio": 16.0
    }
   }, 
   {
@@ -237,9 +243,9 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "off_shift_ratio": 2.097902097902092, 
-    "waiting_ratio": 64.93506493506494, 
-    "working_ratio": 32.96703296703297
+    "off_shift_ratio": 79.78, 
+    "waiting_ratio": 11.16, 
+    "working_ratio": 9.06
    }
   }, 
   {
@@ -247,9 +253,9 @@
    "family": "Server", 
    "id": "St6M0R", 
    "results": {
-    "blockage_ratio": 0.0, 
+    "blockage_ratio": 5.28, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 100.0, 
+    "waiting_ratio": 94.72, 
     "working_ratio": 0.0
    }
   }, 
@@ -260,9 +266,9 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "off_shift_ratio": 2.097902097902092, 
-    "waiting_ratio": 19.980019980019982, 
-    "working_ratio": 77.92207792207793
+    "off_shift_ratio": 79.74, 
+    "waiting_ratio": 11.02, 
+    "working_ratio": 9.24
    }
   }, 
   {
@@ -270,9 +276,9 @@
    "family": "Server", 
    "id": "St6M1R", 
    "results": {
-    "blockage_ratio": 0.0, 
+    "blockage_ratio": 4.48, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 100.0, 
+    "waiting_ratio": 95.52, 
     "working_ratio": 0.0
    }
   }, 
@@ -283,9 +289,9 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "off_shift_ratio": 1.0989010989010932, 
+    "off_shift_ratio": 79.3, 
     "waiting_ratio": 0.0, 
-    "working_ratio": 98.9010989010989
+    "working_ratio": 20.7
    }
   }, 
   {
@@ -295,8 +301,9 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 100.0
+    "off_shift_ratio": 79.22, 
+    "waiting_ratio": 5.18, 
+    "working_ratio": 15.6
    }
   }, 
   {
@@ -317,8 +324,9 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 100.0
+    "off_shift_ratio": 79.1, 
+    "waiting_ratio": 6.02, 
+    "working_ratio": 14.88
    }
   }, 
   {
