@@ -86,6 +86,8 @@ class CoreObject(ManPyObject):
                                 "moveEnd":0,
                                 "processOperatorUnavailable":0
                               }
+        # flag notifying the the station can deliver entities that ended their processing while interrupted
+        self.canDeliverOnInterruption=False
                 
     def initialize(self):
         from Globals import G
@@ -525,7 +527,10 @@ class CoreObject(ManPyObject):
     @staticmethod
     def findGiversFor(activeObject):
         givers=[]
-        for object in [x for x in activeObject.previous if(not x is activeObject) and not x.canDispose.triggered and x.expectedSignals['canDispose']]:
+        for object in [x for x in activeObject.previous if(not x is activeObject) and not x.canDispose.triggered and 
+                       (x.expectedSignals['canDispose'] or 
+                        (x.canDeliverOnInterruption and x.timeLastShiftEnded==x.env.now))]: # extra check.If shift ended right now and the object 
+                                                                                            # can unload we relax the canDispose flag 
             if object.haveToDispose(activeObject): 
                 givers.append(object)
         return givers
@@ -559,7 +564,9 @@ class CoreObject(ManPyObject):
                 giversReceiver=self
             self.giver=giver
             self.giver.receiver=self
-            if self.giver.expectedSignals['canDispose']:
+            if self.giver.expectedSignals['canDispose'] or (self.giver.canDeliverOnInterruption 
+                                                            and self.giver.timeLastShiftEnded==self.env.now): # extra check.If shift ended right now and the object 
+                                                                                                              # can unload we relax the canDispose flag 
                 self.sendSignal(receiver=self.giver, signal=self.giver.canDispose)
                 self.printTrace(self.id, signalGiver=self.giver.id)
             return True
