@@ -270,13 +270,14 @@ class CoreObject(ManPyObject):
     # as argument by getEntity of the receiver
     # =======================================================================
     def removeEntity(self, entity=None, resetFlags=True, addBlockage=True):
+        if addBlockage and self.isBlocked:    
+            # add the blocking time
+            self.addBlockage()   
         # reset flags
         if resetFlags:
             self.isBlocked=False
             self.isProcessing=False
-        if addBlockage:    
-            # add the blocking time
-            self.addBlockage()        
+     
         
         activeObjectQueue=self.Res.users
         activeObjectQueue.remove(entity)       #remove the Entity from the queue
@@ -625,7 +626,16 @@ class CoreObject(ManPyObject):
         
         #if the object is off shift,add this to the off-shift time
         if activeObject.onShift==False:
-            self.totalOffShiftTime+=self.env.now-self.timeLastShiftEnded 
+            # if we ran the simulation for infinite time we have to identify the last event
+            now=self.env.now
+            if now==float('inf'):
+                now=0
+                lastExits=[]
+                for object in G.ExitList:
+                    lastExits.append(object.timeLastEntityEntered)
+                if lastExits:
+                    now=max(lastExits)
+            self.totalOffShiftTime+=now-self.timeLastShiftEnded 
                 
         #object was idle when it was not in any other state    
         activeObject.totalWaitingTime=MaxSimtime-activeObject.totalWorkingTime-activeObject.totalBlockageTime-activeObject.totalFailureTime-activeObject.totalLoadTime-activeObject.totalSetupTime-self.totalOffShiftTime
