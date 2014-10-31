@@ -1,0 +1,65 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.Exit", 
+   "family": "Exit", 
+   "id": "E1", 
+   "results": {
+    "lifespan": 20.0, 
+    "takt_time": 12.5, 
+    "throughput": 2
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "family": "Server", 
+   "id": "M1A", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "off_shift_ratio": 80.0, 
+    "waiting_ratio": 0.0, 
+    "working_ratio": 20.0
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "family": "Server", 
+   "id": "M1B", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "off_shift_ratio": 80.0, 
+    "waiting_ratio": 0.0, 
+    "working_ratio": 20.0
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "family": "Server", 
+   "id": "M2", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "waiting_ratio": 20.0, 
+    "working_ratio": 80.0
+   }
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "Q1", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "Q2", 
+   "results": {}
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}

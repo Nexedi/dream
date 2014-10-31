@@ -73,10 +73,11 @@
                 "mean": 5
             },
             "shift": {
+				"endUnfinished": 1,
                 "shiftPattern": [
                     [
                         0,
-						7
+						3
                     ]
 				]
 			}
@@ -84,38 +85,28 @@
         "M1B": {
             "_class": "Dream.Machine",
             "name": "Machine1B",
+
 			"canDeliverOnInterruption": 1,
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": 5
             },
             "shift": {
+				"endUnfinished": 1,
                 "shiftPattern": [
                     [
                         0,
-						7
+						3
                     ]
 				]
 			}
         },
         "Q2": {
             "_class": "Dream.Queue",
-            "capacity": 1,
+            "capacity": 2,
             "left": 0.4414893617021277,
             "name": "Q2",
-            "top": 0.40909090909090906,
-            "wip": [
-                {
-                    "_class": "Dream.Part",
-                    "id": "P2",
-                    "name": "Part2"
-                },
-                {
-                    "_class": "Dream.Part",
-                    "id": "P3",
-                    "name": "Part3"
-                }
-            ]
+            "top": 0.40909090909090906
         },
         "M2": {
             "_class": "Dream.Machine",
