@@ -1,0 +1,102 @@
+{
+    "_class": "Dream.Simulation",
+    "edges": {
+        "1": [
+            "Q1",
+            "M1",
+            {}
+        ],
+        "2": [
+            "M1",
+            "Q2",
+            {}
+        ],
+        "3": [
+            "Q2",
+            "M2",
+            {}
+        ],
+        "4": [
+            "M2",
+            "E1",
+            {}
+        ]
+    },
+    "general": {
+        "_class": "Dream.Configuration",
+        "confidenceLevel": "0.95",
+        "maxSimTime": "-1",
+        "numberOfReplications": "1",
+        "trace": "Yes",
+        "console": "No"
+    },
+    "nodes": {
+        "E1": {
+            "_class": "Dream.Exit",
+            "name": "Exit"
+        },
+        "Q1": {
+            "_class": "Dream.Queue",
+            "capacity": 10,
+            "left": 0.4414893617021277,
+            "name": "Q1",
+            "top": 0.40909090909090906,
+            "wip": [
+                {
+                    "_class": "Dream.Part",
+                    "id": "P1",
+                    "name": "Part1"
+                }
+            ]
+        },
+        "M1": {
+            "_class": "Dream.Machine",
+            "name": "Machine1",
+            "operationType": "MT-Load-Processing",
+			"canDeliverOnInterruption": 1,
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 5
+            },
+            "shift": {
+                "endUnfinished": 1,
+                "receiveBeforeEndThreshold": 7,
+                "shiftPattern": [
+                    [
+                        0,
+						7
+                    ]
+				]
+			}
+        },
+        "Q2": {
+            "_class": "Dream.Queue",
+            "capacity": 1,
+            "left": 0.4414893617021277,
+            "name": "Q2",
+            "top": 0.40909090909090906,
+            "wip": [
+                {
+                    "_class": "Dream.Part",
+                    "id": "P2",
+                    "name": "Part2"
+                },
+                {
+                    "_class": "Dream.Part",
+                    "id": "P3",
+                    "name": "Part3"
+                }
+            ]
+        },
+        "M2": {
+            "_class": "Dream.Machine",
+            "failures": {},
+            "name": "Machine2",
+            "operationType": "MT-Load-Processing",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 10
+            }
+        }
+    }
+}
