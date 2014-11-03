@@ -30,7 +30,7 @@ import math
 
 class RandomNumberGenerator(object):
     def __init__(self, obj, distributionType, mean=0, stdev=0, min=0, max=0, alpha=0, beta=0,
-                 logmean=0,logsd=0, probability=0, shape=0, scale=0, location=0):
+                 logmean=0,logsd=0, probability=0, shape=0, scale=0, location=0, **kw):
         self.distributionType = distributionType
         self.mean = float(mean or 0)
         self.stdev = float(stdev or 0)
