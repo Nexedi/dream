@@ -753,6 +753,8 @@ class Machine(CoreObject):
             # if there was no available receiver, get into blocking control
                                 
                 while 1:
+                    if not len(self.getActiveObjectQueue()):
+                        break
                     self.expectedSignals['interruptionStart']=1
                     self.expectedSignals['canDispose']=1
                     self.timeLastBlockageStarted=self.env.now       # blockage is starting
@@ -818,22 +820,21 @@ class Machine(CoreObject):
                     #       the preceding machine gets the canDispose signal which is actually useless, is emptied by the following station
                     #       and then cannot exit an infinite loop.
                     # notify that the station waits the entity to be removed
-                    self.waitEntityRemoval=True
-                    self.printTrace(self.id, waitEvent='(entityRemoved)')
-                    
-                    self.expectedSignals['entityRemoved']=1
-                    
-                    yield self.entityRemoved
-
-                    
-                    transmitter, eventTime=self.entityRemoved.value
-                    self.printTrace(self.id, entityRemoved=eventTime)
-                    assert eventTime==self.env.now,'entityRemoved event activated earlier than received'
-                    self.waitEntityRemoval=False
-                    self.entityRemoved=self.env.event()
-                    # if while waiting (for a canDispose event) became free as the machines that follows emptied it, then proceed
-                    if not self.haveToDispose():
-                        break
+                    activeObjectQueue=self.getActiveObjectQueue()
+                    if len(activeObjectQueue): 
+                        self.waitEntityRemoval=True
+                        self.printTrace(self.id, waitEvent='(entityRemoved)')
+                        
+                        self.expectedSignals['entityRemoved']=1
+                        yield self.entityRemoved
+                        transmitter, eventTime=self.entityRemoved.value
+                        self.printTrace(self.id, entityRemoved=eventTime)
+                        assert eventTime==self.env.now,'entityRemoved event activated earlier than received'
+                        self.waitEntityRemoval=False
+                        self.entityRemoved=self.env.event()
+                        # if while waiting (for a canDispose event) became free as the machines that follows emptied it, then proceed
+                        if not self.haveToDispose():
+                            break
     
     #===========================================================================
     # actions to be performed after an operation (setup or processing)
@@ -923,22 +924,18 @@ class Machine(CoreObject):
         # the machine is currently performing nothing
         self.currentlyPerforming=None
         activeObjectQueue=self.Res.users
-        activeEntity=activeObjectQueue[0]
-        self.printTrace(activeEntity.name, interrupted=self.objName)
-        # if the interrupt occurred while processing an entity
-        if not self.waitToDispose:
-            # output to trace that the Machine (self.objName) got interrupted           
-            try:                                                       
-                self.outputTrace(activeObjectQueue[0].name, "Interrupted at "+self.objName)
-            except IndexError:
-                pass
+        if len(activeObjectQueue):
+            activeEntity=activeObjectQueue[0]
+            self.printTrace(activeEntity.name, interrupted=self.objName)                                    
+            self.outputTrace(activeObjectQueue[0].name, "Interrupted at "+self.objName)
             # recalculate the processing time left tinM
-            self.tinM=self.tinM-(self.env.now-self.timeLastOperationStarted)
-            if(self.tinM==0):       # sometimes the failure may happen exactly at the time that the processing would finish
-                                    # this may produce disagreement with the simul8 because in both SimPy and Simul8
-                                    # it seems to be random which happens 1st
-                                    # this should not appear often to stochastic models though where times are random
-                self.interruption=True
+            if self.timeLastOperationStarted:
+                self.tinM=self.tinM-(self.env.now-self.timeLastOperationStarted)
+                if(self.tinM==0):       # sometimes the failure may happen exactly at the time that the processing would finish
+                                        # this may produce disagreement with the simul8 because in both SimPy and Simul8
+                                        # it seems to be random which happens 1st
+                                        # this should not appear often to stochastic models though where times are random
+                    self.interruption=True
         # start counting the down time at breatTime dummy variable
         self.breakTime=self.env.now        # dummy variable that the interruption happened
         # set isProcessing to False          
@@ -957,13 +954,15 @@ class Machine(CoreObject):
     # =======================================================================    
     def postInterruptionActions(self):
         activeObjectQueue=self.Res.users
-        activeEntity=activeObjectQueue[0]
+        if len(activeObjectQueue):
+            activeEntity=activeObjectQueue[0]
         # if the machine returns from an failure while processing an entity
         if not self.waitToDispose:
             # use the timers to count the time that Machine is down and related
             self.timeLastFailureEnded=self.env.now                                 # set the timeLastFailureEnded
             # output to trace that the Machine self.objName was passivated for the current failure time
-            self.outputTrace(activeObjectQueue[0].name, "passivated in "+self.objName+" for "+str(self.env.now-self.breakTime))
+            if len(activeObjectQueue):
+                self.outputTrace(activeObjectQueue[0].name, "passivated in "+self.objName+" for "+str(self.env.now-self.breakTime))
         # when a machine returns from failure while trying to deliver an entity
         else:
             # calculate the time the Machine was down while trying to dispose the current Entity,
