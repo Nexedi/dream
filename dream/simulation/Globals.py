@@ -155,16 +155,17 @@ def moveExcess(consumption=1,safetyStock=70, giverId=None, receiverId=None):
 # Import a class from a dotted name used in json.
 # =======================================================================
 def getClassFromName(dotted_name):
-  # XXX dotted name is always Dream.Something, but the real class lives in
-  # dream.simulation.Something.Something
-  dream, class_name = dotted_name.split('.')
-  try:
-      import dream.simulation as ds
-      __import__('dream.simulation.%s' % class_name)
-      return getattr(getattr(ds, class_name), class_name)
-  except:
-      _class=__import__(class_name)
-      return getattr(_class,class_name)
+    from zope.dottedname.resolve import resolve
+    import logging
+    logger = logging.getLogger("dream.platform")
+    parts = dotted_name.split('.')
+    # this is added for backwards compatibility
+    if dotted_name.startswith('Dream'):
+        class_name = dotted_name.split('.')[-1]
+        new_dotted_name = 'dream.simulation.%s.%s' % (class_name, class_name)
+        logger.info(("Old style name %s used, using %s instead" % (dotted_name, new_dotted_name)))
+        dotted_name = new_dotted_name
+    return resolve(dotted_name)
 
 # =======================================================================
 # returns a method by its name. name should be given as Dream.ClassName.MethodName
