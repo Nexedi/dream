@@ -34,12 +34,12 @@
     },
     "nodes": {
         "CB1": {
-            "_class": "Dream.CapacityStationBuffer",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer",
             "name": "PPASBBuffer",
             "requireFullProject": 1,
             "wip": [
                 {
-                    "_class": "Dream.CapacityEntity",
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity",
                     "capacityProjectId": "P1",
                     "name": "P1_ASBTST_50",
                     "requiredCapacity": 50
@@ -47,7 +47,7 @@
             ]
         },
         "CS1": {
-            "_class": "Dream.CapacityStation",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
             "name": "PPASB",
             "intervalCapacity": [
                 100,
@@ -65,17 +65,17 @@
             }
         },
         "CE1": {
-            "_class": "Dream.CapacityStationExit",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
             "name": "PPASBExit",
             "nextCapacityStationBufferId": "CB2"
         },
         "CB2": {
-            "_class": "Dream.CapacityStationBuffer",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer",
             "name": "ASBTSTBuffer",
             "requireFullProject": 1,
             "wip": [
                 {
-                    "_class": "Dream.CapacityEntity",
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity",
                     "capacityProjectId": "P2",
                     "name": "P2_ASBTST_50",
                     "requiredCapacity": 50
@@ -83,7 +83,7 @@
             ]
         },
         "CS2": {
-            "_class": "Dream.CapacityStation",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
             "name": "ASBTST",
             "intervalCapacity": [
                 100,
@@ -101,7 +101,7 @@
             }
         },
         "CE2": {
-            "_class": "Dream.CapacityStationExit",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
             "name": "ASBTSTExit"
         },
         "QD": {
@@ -111,7 +111,7 @@
             "name": "DUMMY",
             "wip": [
                 {
-                    "_class": "Dream.CapacityProject",
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityProject.CapacityProject",
                     "id": "P1",
                     "name": "P1",
                     "capacityRequirementDict": {
@@ -122,7 +122,7 @@
 					"assemblySpaceRequirement":50
                 },
                 {
-                    "_class": "Dream.CapacityProject",
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityProject.CapacityProject",
                     "id": "P2",
                     "name": "P2",
                     "capacityRequirementDict": {
@@ -134,7 +134,7 @@
             ]
         },
         "CSC": {
-            "_class": "Dream.CapacityStationController",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStationController.CapacityStationController",
             "name": "CSC",
             "start": "0",
             "interval": "1",
