@@ -42,10 +42,23 @@ class CapacityStationBuffer(Queue):
         self.requireFullProject=requireFullProject       # flag that shows if here the whole project is assembled
         from dream.simulation.Globals import G
         G.CapacityStationBufferList.append(self)
-        self.notRequiredOperations=notRequiredOperations
+        self.notRequiredOperations=notRequiredOperations    # operations that are not required to be assembled
+
         
     def initialize(self):
         Queue.initialize(self)
+        import dream.simulation.Globals as Globals
+        # identify the notRequiredOperations
+        # input gives only stationId, buffer and exit should be identified
+        notRequiredOperations=[]
+        for id in self.notRequiredOperations:
+            station=Globals.findObjectById(id)
+            notRequiredOperations.append(station.id)
+            bufferId=station.previous[0].id
+            notRequiredOperations.append(bufferId)
+            exitId=station.next[0].id
+            notRequiredOperations.append(exitId)
+        self.notRequiredOperations=notRequiredOperations
         self.isLocked=True
 
     def canAccept(self, callerObject=None):
