@@ -30,7 +30,7 @@ import math
 
 class RandomNumberGenerator(object):
     def __init__(self, obj, distributionType, mean=0, stdev=0, min=0, max=0, alpha=0, beta=0,
-                 logmean=0,logsd=0, probability=0, shape=0, scale=0, location=0):
+                 logmean=0,logsd=0, probability=0, shape=0, scale=0, location=0, rate=0,**kw):
         self.distributionType = distributionType
         self.mean = float(mean or 0)
         self.stdev = float(stdev or 0)
@@ -44,6 +44,7 @@ class RandomNumberGenerator(object):
         self.shape=float(shape or 0)
         self.scale=float(scale or 0)
         self.location=float(location or 0)
+        self.rate=float(rate or 0)
         self.obj = obj
 
     def generateNumber(self):
@@ -63,7 +64,13 @@ class RandomNumberGenerator(object):
                     continue
                 else:           #if the number is in the limits stop the process
                     return number
-        elif self.distributionType=="Erlang":    #if the distribution is erlang          
+        elif self.distributionType=="Gamma" or self.distributionType=="Erlang":    #if the distribution is gamma or erlang
+            # in case shape is given instead of alpha
+            if not self.alpha:
+                self.alpha=self.shape
+            # in case rate is given instead of beta
+            if not self.beta:
+                self.beta=1/float(self.rate)          
             return G.Rnd.gammavariate(self.alpha, self.beta)
         elif(self.distributionType=="Logistic"):     #if the distribution is Logistic
             # XXX from http://stackoverflow.com/questions/3955877/generating-samples-from-the-logistic-distribution
