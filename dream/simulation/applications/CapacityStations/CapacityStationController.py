@@ -460,24 +460,12 @@ class CapacityStationController(EventGenerator):
         
     # checks if the given project is all in the buffer
     def checkIfProjectAssembledInBuffer(self, project, buffer):
-        import dream.simulation.Globals as Globals
-        # find the ids that are in the notRequiredOperations
-        notRequiredList=[]
-        if buffer.notRequiredOperations:
-            for id in buffer.notRequiredOperations:
-                station=Globals.findObjectById(id)
-                notRequiredList.append(station.id)
-                bufferId=station.previous[0].id
-                notRequiredList.append(bufferId)
-                exitId=station.next[0].id
-                notRequiredList.append(exitId)
-        # loop through all the stations of the system
         for object in G.CapacityStationList+G.CapacityStationBufferList+G.CapacityStationExitList:
             # skip the given buffer
             if object is buffer:
                 continue
             # skip not required operations
-            if object.id in notRequiredList:
+            if object.id in buffer.notRequiredOperations:
                 continue
             # if there is one entity from the same project which we check somewhere else return false
             for entity in object.getActiveObjectQueue():
