@@ -36,12 +36,13 @@ class CapacityStationBuffer(Queue):
     # the __init__ method of the CapacityStationBuffer
     #===========================================================================
     def __init__(self, id, name, requireFullProject =False, capacity=float("inf"), isDummy=False, 
-                 schedulingRule="FIFO", gatherWipStat=False,**kw):
+                 schedulingRule="FIFO", gatherWipStat=False, notRequiredOperations=[],**kw):
         Queue.__init__(self, id, name, capacity=capacity)
         self.isLocked=True
         self.requireFullProject=requireFullProject       # flag that shows if here the whole project is assembled
         from dream.simulation.Globals import G
         G.CapacityStationBufferList.append(self)
+        self.notRequiredOperations=notRequiredOperations
         
     def initialize(self):
         Queue.initialize(self)
