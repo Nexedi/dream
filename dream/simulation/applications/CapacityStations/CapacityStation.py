@@ -57,7 +57,7 @@ class CapacityStation(Queue):
         # then read it from some other of the sharing stations
         if not self.intervalCapacity and self.sharedResources:
             for stationId in self.sharedResources.get('stationIds',[]):
-                import dream.simulation.Globals
+                import dream.simulation.Globals as Globals
                 station=Globals.findObjectById(stationId)
                 if station.intervalCapacity:
                     self.intervalCapacity=station.intervalCapacity

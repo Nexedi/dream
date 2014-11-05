@@ -52,17 +52,17 @@
     },
     "nodes": {
         "CB1": {
-            "_class": "Dream.CapacityStationBuffer",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer",
             "name": "SMFBuffer",
             "wip": [
                 {
-                    "_class": "Dream.CapacityEntity",
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity",
                     "capacityProjectId": "P1",
 					"name": "P1_SMF_100",
                     "requiredCapacity": 100
                 },
                 {
-                    "_class": "Dream.CapacityEntity",
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity",
                     "capacityProjectId": "P2",
 					"name": "P2_SMF_50",
                     "requiredCapacity": 50
@@ -70,7 +70,7 @@
             ]
         },
         "CS1": {
-            "_class": "Dream.CapacityStation",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
             "name": "SMF",
             "intervalCapacity": [
                 100,
@@ -82,16 +82,16 @@
             ]
         },
         "CE1": {
-            "_class": "Dream.CapacityStationExit",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
             "nextCapacityStationBufferId": "CB2",
             "name": "SMFExit"
         },
         "CB2": {
-            "_class": "Dream.CapacityStationBuffer",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer",
             "name": "WELDBuffer"
         },
         "CS2": {
-            "_class": "Dream.CapacityStation",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
             "name": "WELD",
             "intervalCapacity": [
                 150,
@@ -103,7 +103,7 @@
             ]
         },
         "CE2": {
-            "_class": "Dream.CapacityStationExit",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
 			"nextCapacityStationBufferId": "CB4",
             "name": "WELDExit"
         },
@@ -114,7 +114,7 @@
             "name": "DUMMY",
             "wip": [
                 {
-                    "_class": "Dream.CapacityProject",
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityProject.CapacityProject",
                     "id": "P1",
                     "name": "P1",
                     "capacityRequirementDict": {
@@ -125,7 +125,7 @@
                     }
                 },
                 {
-                    "_class": "Dream.CapacityProject",
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityProject.CapacityProject",
                     "id": "P2",
                     "name": "P2",
                     "capacityRequirementDict": {
@@ -138,17 +138,17 @@
             ]
         },
         "CB3": {
-            "_class": "Dream.CapacityStationBuffer",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer",
             "name": "CNCBuffer",
             "wip": [
                 {
-                    "_class": "Dream.CapacityEntity",
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity",
                     "capacityProjectId": "P1",
 					"name": "P1_CNC_50",
                     "requiredCapacity": 50
                 },
                 {
-                    "_class": "Dream.CapacityEntity",
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity",
                     "capacityProjectId": "P2",
 					"name": "P2_CNC_100",
                     "requiredCapacity": 100
@@ -156,7 +156,7 @@
             ]
         },
         "CS3": {
-            "_class": "Dream.CapacityStation",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
             "name": "CNC",
             "intervalCapacity": [
                 50,
@@ -168,18 +168,18 @@
             ]
         },
         "CE3": {
-            "_class": "Dream.CapacityStationExit",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
             "nextCapacityStationBufferId": "CB4",
             "name": "CNCExit"
         },
         "CB4": {
-            "_class": "Dream.CapacityStationBuffer",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer",
             "name": "AssemblyBuffer",
 			"requireFullProject":1,
             "wip": []
         },
         "CS4": {
-            "_class": "Dream.CapacityStation",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
             "name": "Assembly",
             "intervalCapacity": [
                 50,
@@ -191,11 +191,11 @@
             ]
         },
         "CE4": {
-            "_class": "Dream.CapacityStationExit",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
             "name": "AssemblyExit"
         },
         "CSC": {
-            "_class": "Dream.CapacityStationController",
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStationController.CapacityStationController",
             "name": "CSC",
 			"interval": "1"        }
     }
