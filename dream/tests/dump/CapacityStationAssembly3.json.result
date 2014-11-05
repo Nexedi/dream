@@ -1,0 +1,371 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "CB1", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "CB2", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "CB3", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "CB4", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "CB5", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "CB6", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStationExit", 
+   "family": "Exit", 
+   "id": "CE6", 
+   "results": {
+    "lifespan": 6.0, 
+    "takt_time": 6.0, 
+    "throughput": 1
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "CS1", 
+   "results": {
+    "capacityUsed": [
+     {
+      "P1": 50, 
+      "period": 0.0, 
+      "utilization": 0.3333333333333333
+     }, 
+     {
+      "period": 1.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 4.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 50, 
+      "operation": "CS1", 
+      "project": "P1", 
+      "time": 0.0
+     }
+    ], 
+    "meanUtilization": 0.05555555555555555
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "CS2", 
+   "results": {
+    "capacityUsed": [
+     {
+      "P1": 100, 
+      "period": 0.0, 
+      "utilization": 0.6666666666666666
+     }, 
+     {
+      "period": 1.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 4.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 100, 
+      "operation": "CS2", 
+      "project": "P1", 
+      "time": 0.0
+     }
+    ], 
+    "meanUtilization": 0.1111111111111111
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "CS3", 
+   "results": {
+    "capacityUsed": [
+     {
+      "P1": 50.0, 
+      "period": 0.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P1": 50.0, 
+      "period": 1.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P1": 50.0, 
+      "period": 2.0, 
+      "utilization": 0.3333333333333333
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 4.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 50.0, 
+      "operation": "CS3", 
+      "project": "P1", 
+      "time": 0.0
+     }, 
+     {
+      "allocation": 50.0, 
+      "operation": "CS3", 
+      "project": "P1", 
+      "time": 1.0
+     }, 
+     {
+      "allocation": 50.0, 
+      "operation": "CS3", 
+      "project": "P1", 
+      "time": 2.0
+     }
+    ], 
+    "meanUtilization": 0.38888888888888884
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "CS4", 
+   "results": {
+    "capacityUsed": [
+     {
+      "period": 0.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 1.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P1": 50, 
+      "period": 3.0, 
+      "utilization": 0.625
+     }, 
+     {
+      "period": 4.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 50, 
+      "operation": "CS4", 
+      "project": "P1", 
+      "time": 3.0
+     }
+    ], 
+    "meanUtilization": 0.10416666666666667
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "CS5", 
+   "results": {
+    "capacityUsed": [
+     {
+      "period": 0.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 1.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P1": 30.0, 
+      "period": 4.0, 
+      "utilization": 0.1
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 30.0, 
+      "operation": "CS5", 
+      "project": "P1", 
+      "time": 4.0
+     }
+    ], 
+    "meanUtilization": 0.016666666666666666
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "CS6", 
+   "results": {
+    "capacityUsed": [
+     {
+      "period": 0.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 1.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 4.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P1": 50, 
+      "period": 5.0, 
+      "utilization": 0.14285714285714285
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 50, 
+      "operation": "CS6", 
+      "project": "P1", 
+      "time": 5.0
+     }
+    ], 
+    "meanUtilization": 0.023809523809523808
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityProject", 
+   "family": "Job", 
+   "id": "P1", 
+   "results": {
+    "schedule": [
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "CS1"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 3.0, 
+      "stationId": "CS3"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "CS2"
+     }, 
+     {
+      "entranceTime": 3.0, 
+      "exitTime": 4.0, 
+      "stationId": "CS4"
+     }, 
+     {
+      "entranceTime": 4.0, 
+      "exitTime": 5.0, 
+      "stationId": "CS5"
+     }, 
+     {
+      "entranceTime": 5.0, 
+      "exitTime": 6.0, 
+      "stationId": "CS6"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "QD", 
+   "results": {}
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}
