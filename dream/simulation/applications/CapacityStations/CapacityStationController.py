@@ -162,7 +162,10 @@ class CapacityStationController(EventGenerator):
             # if remainingIntervalCapacity is empty reset it (to obtain rolling capacity)
             if len(station.remainingIntervalCapacity)==0:
                 station.remainingIntervalCapacity=list(station.intervalCapacity)
-                           
+            # ig the next interval is in the exceptions update the capacity accordingly
+            if str((self.env.now)+1.0) in station.intervalCapacityExceptions.keys():
+                station.remainingIntervalCapacity[0]=station.intervalCapacityExceptions[str((self.env.now)+1)]
+            
     # invoked after entities have exited one station to create 
     # the corresponding entities to the following buffer     
     def createInCapacityStationBuffers(self): 

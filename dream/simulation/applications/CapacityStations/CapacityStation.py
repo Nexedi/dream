@@ -40,7 +40,7 @@ class CapacityStation(Queue):
     # the __init__ method of the CapacityStation
     #===========================================================================
     def __init__(self, id, name, capacity=float("inf"), intervalCapacity=[], schedulingRule="FIFO", gatherWipStat=False,
-                 sharedResources={}, **kw):
+                 sharedResources={}, intervalCapacityStart=0,intervalCapacityExceptions={},**kw):
         Queue.__init__(self, id, name, capacity=capacity)
         # a list that holds the capacity (manhours) that is available in each interval
         self.intervalCapacity=intervalCapacity
@@ -50,6 +50,8 @@ class CapacityStation(Queue):
         self.isLocked=True
         # dict that holds information if station shares workpower with some other station
         self.sharedResources=sharedResources
+        self.intervalCapacityStart=intervalCapacityStart
+        self.intervalCapacityExceptions=intervalCapacityExceptions
         
     def initialize(self):
         Queue.initialize(self)
@@ -64,6 +66,8 @@ class CapacityStation(Queue):
                     break 
         # initialize variables               
         self.remainingIntervalCapacity=list(self.intervalCapacity)
+        for i in range(self.intervalCapacityStart):
+            self.remainingIntervalCapacity.pop(0)
         self.isLocked=True
         self.utilisationDict=[]     # a list of dicts for the utilization results
         self.detailedWorkPlan=[]    # a list of dicts to keep detailed data
