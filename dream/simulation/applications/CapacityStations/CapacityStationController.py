@@ -114,7 +114,8 @@ class CapacityStationController(EventGenerator):
             periodDict['period']=self.env.now
             # loop though the entities
             entitiesToCheck=list(buffer.getActiveObjectQueue())
-            capacityAvailable=station.intervalCapacity[int(self.env.now)]
+            #capacityAvailable=station.intervalCapacity[int(self.env.now)]
+            capacityAvailable=station.remainingIntervalCapacity[0]
             capacityAllocated=0
             for entity in entitiesToCheck:
                 if not entity.shouldMove:   # when the first entity that should not move is reached break
@@ -157,8 +158,11 @@ class CapacityStationController(EventGenerator):
 
         # for every station update the remaining interval capacity so that it is ready for next loop
         for station in G.CapacityStationList:
-            station.remainingIntervalCapacity.pop(0)                            
-
+            station.remainingIntervalCapacity.pop(0)
+            # if remainingIntervalCapacity is empty reset it (to obtain rolling capacity)
+            if len(station.remainingIntervalCapacity)==0:
+                station.remainingIntervalCapacity=list(station.intervalCapacity)
+                           
     # invoked after entities have exited one station to create 
     # the corresponding entities to the following buffer     
     def createInCapacityStationBuffers(self): 
@@ -246,6 +250,7 @@ class CapacityStationController(EventGenerator):
 
             totalAvailableCapacity=station.remainingIntervalCapacity[0]     # get the available capacity of the station
                                                                             # for this interval
+
 
             # list to keep entities that have not been already allocated
             entitiesNotAllocated=list(entitiesConsidered)                                                                             
