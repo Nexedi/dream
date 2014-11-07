@@ -87,7 +87,10 @@
         "confidenceLevel": "0.95",
         "maxSimTime": "-1",
         "numberOfReplications": "1",
-        "trace": "Yes"
+        "trace": "Yes",
+        "extraPropertyDict": {
+            "assemblySpace": 600
+        }
     },
     "nodes": {
         "SMFB": {
@@ -107,7 +110,7 @@
             "name": "SMF",
             "intervalCapacity": [20.0, 30.0, 130.0, 80.0, 180.0, 20.0, 0.0],
 			"intervalCapacityStart":3,
-			"intervalCapacityExceptions":{"2.0":10000}
+			"intervalCapacityExceptions":{"2.0":70,"9.0":70}
         },
         "SMFE": {
             "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
@@ -123,7 +126,8 @@
             "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
             "name": "WELD",
             "intervalCapacity": [70.0, 170.0, 270.0, 80.0, 180.0, 20.0, 0.0],
-			"intervalCapacityStart":3
+			"intervalCapacityStart":3,
+			"intervalCapacityExceptions":{"2.0":90,"9.0":90}
         },
         "WELDE": {
             "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
@@ -146,7 +150,8 @@
             "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
             "name": "CNC",
             "intervalCapacity": [90.0, 190.0, 290.0, 390.0, 490.0, 20.0, 0.0],
-			"intervalCapacityStart":3
+			"intervalCapacityStart":3,
+			"intervalCapacityExceptions":{"2.0":80,"9.0":80}				
         },
         "CNCE": {
             "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
@@ -169,7 +174,8 @@
             "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
             "name": "MCH",
             "intervalCapacity": [20.0, 70.0, 170.0, 270.0, 370.0, 20.0, 0.0],
-			"intervalCapacityStart":3
+			"intervalCapacityStart":3,
+			"intervalCapacityExceptions":{"2.0":20,"9.0":60}		
         },
         "MCHE": {
             "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
@@ -192,7 +198,8 @@
             "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
             "name": "EEP",
             "intervalCapacity": [290.0, 100.0, 200.0, 300.0, 390.0, 20.0, 0.0],
-			"intervalCapacityStart":3
+			"intervalCapacityStart":3,
+			"intervalCapacityExceptions":{"2.0":70,"9.0":70}
         },
         "EEPE": {
             "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
@@ -210,7 +217,8 @@
             "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
             "name": "PPASB",
             "intervalCapacity": [170.0, 270.0, 370.0, 20.0, 20.0, 20.0, 0.0],
-			"intervalCapacityStart":3
+			"intervalCapacityStart":3,
+			"intervalCapacityExceptions":{"2.0":50,"9.0":80}
         },
         "PPASBE": {
             "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
@@ -226,7 +234,8 @@
             "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
             "name": "Paint",
             "intervalCapacity": [20.0, 20.0, 20.0, 320.0, 420.0, 20.0, 0.0],
-			"intervalCapacityStart":3
+			"intervalCapacityStart":3,
+			"intervalCapacityExceptions":{"2.0":70,"9.0":170}
         },
         "PAINTE": {
             "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
@@ -243,15 +252,18 @@
             "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
             "name": "ASBTST",
             "intervalCapacity": [170.0, 270.0, 370.0, 20.0, 20.0, 20.0, 0.0],
-			"intervalCapacityStart":3
+			"intervalCapacityStart":3,
+			"intervalCapacityExceptions":{"2.0":50,"9.0":80}
         },
         "ASBTSTE": {
             "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
             "name": "ASBTSTExit"
         },
         "CSC": {
+            "start": "0", 
             "_class": "dream.simulation.applications.CapacityStations.CapacityStationController.CapacityStationController",
             "name": "CSC",
+            "dueDateThreshold": 7, 
             "interval": "1"
         },
         "QD": {
@@ -264,6 +276,7 @@
                     "_class": "dream.simulation.applications.CapacityStations.CapacityProject.CapacityProject",
                     "id": "P1",
                     "name": "P1",
+					"dueDate": 34, 
                     "capacityRequirementDict": {
                         "SMF": 80,
                         "WELD": 90,
