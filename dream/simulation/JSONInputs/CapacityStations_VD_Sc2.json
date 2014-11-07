@@ -200,9 +200,9 @@
                 },
                 {
                     "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity",
-                    "capacityProjectId": "P2",
+                    "capacityProjectId": "P3",
                     "name": "P3_MCH_90",
-                    "requiredCapacity": 30
+                    "requiredCapacity": 90
                 }
             ]
         },
@@ -264,6 +264,12 @@
         "PPASB": {
             "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
             "name": "PPASB",
+			"sharedResources": {
+				"stationIds": [
+					 "ASBTST"
+				], 
+				"priority": 1
+			}, 
             "intervalCapacity": [170.0, 270.0, 370.0, 20.0, 20.0, 20.0, 0.0],
 			"intervalCapacityStart":3,
 			"intervalCapacityExceptions":{"30.0":50,"63.0":80,"33.0":80}
@@ -301,6 +307,12 @@
             "name": "ASBTST",
             "intervalCapacity": [170.0, 270.0, 370.0, 20.0, 20.0, 20.0, 0.0],
 			"intervalCapacityStart":3,
+			"sharedResources": {
+				"stationIds": [
+					 "PPASB"
+				], 
+				"priority": 2
+			}, 
 			"intervalCapacityExceptions":{"30.0":50,"63.0":80,"33.0":80}
         },
         "ASBTSTE": {
