@@ -311,7 +311,8 @@
             "start": "0", 
             "_class": "dream.simulation.applications.CapacityStations.CapacityStationController.CapacityStationController",
             "name": "CSC",
-            "dueDateThreshold": 7, 
+            "dueDateThreshold": 14, 
+            "prioritizeIfCanFinish": 1, 
             "interval": "1"
         },
         "QD": {
