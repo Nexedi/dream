@@ -309,8 +309,8 @@ class CapacityStationController(EventGenerator):
                                 availableSpace-=entity.capacityProject.assemblySpaceRequirement  
                                 assert availableSpace>=0, 'negative available space'
                       
-                            # remove the entity from the none allocated ones
-                            entitiesNotAllocated.remove(entity)
+                        # remove the entity from the none allocated ones
+                        entitiesNotAllocated.remove(entity)
                     # check if all the capacity is consumed to update the flag and break the loop
                     if totalRequestedCapacity==totalAvailableCapacity:
                         # the capacity will be 0 since we consumed it all 
@@ -373,32 +373,37 @@ class CapacityStationController(EventGenerator):
 
                             # else break the entity according to rule    
                             else:
-                                self.breakEntity(entity, entityBuffer, entityStation, 
-                                                 totalAvailableCapacity, totalRequestedCapacity)
-                                # reduce the available space if there is need to
-                                if entityBuffer.requireFullProject and \
-                                        (not self.checkIfProjectConsumesAssemblySpace(entity, entityBuffer)):
-                                    availableSpace-=entity.capacityProject.assemblySpaceRequirement  
-                                    assert availableSpace>=0, 'negative available space'
+                                if self.breakEntity(entity, entityBuffer, entityStation, 
+                                                 totalAvailableCapacity, totalRequestedCapacity):
+                                    # reduce the available space if there is need to
+                                    if entityBuffer.requireFullProject and \
+                                            (not self.checkIfProjectConsumesAssemblySpace(entity, entityBuffer)):
+                                        availableSpace-=entity.capacityProject.assemblySpaceRequirement  
+                                        assert availableSpace>=0, 'negative available space'
                            
     # breaks an entity in the part that should move and the one that should stay
     def breakEntity(self, entity, buffer, station, totalAvailableCapacity, totalRequestedCapacity):
         # calculate what is the capacity that should proceed and what that should remain
         capacityToMove=totalAvailableCapacity*(entity.requiredCapacity)/float(totalRequestedCapacity)
         capacityToStay=entity.requiredCapacity-capacityToMove
-        # remove the capacity entity by the buffer so that the broken ones are created
-        buffer.getActiveObjectQueue().remove(entity)
-        entityToMoveName=entity.capacityProjectId+'_'+station.objName+'_'+str(capacityToMove)
-        entityToMove=CapacityEntity(name=entityToMoveName, capacityProjectId=entity.capacityProjectId, requiredCapacity=capacityToMove)
-        entityToMove.initialize()
-        entityToMove.currentStation=buffer
-        entityToMove.shouldMove=True
-        entityToStayName=entity.capacityProjectId+'_'+station.objName+'_'+str(capacityToStay)
-        entityToStay=CapacityEntity(name=entityToStayName, capacityProjectId=entity.capacityProjectId, requiredCapacity=capacityToStay)
-        entityToStay.initialize()
-        entityToStay.currentStation=buffer
-        import dream.simulation.Globals as Globals
-        Globals.setWIP([entityToMove,entityToStay])     #set the new components as wip    
+        # if capacityToMove is equal to 0 no need to break. Return false.
+        if capacityToMove==0:
+            return False
+        else:
+            # remove the capacity entity by the buffer so that the broken ones are created
+            buffer.getActiveObjectQueue().remove(entity)
+            entityToMoveName=entity.capacityProjectId+'_'+station.objName+'_'+str(capacityToMove)
+            entityToMove=CapacityEntity(name=entityToMoveName, capacityProjectId=entity.capacityProjectId, requiredCapacity=capacityToMove)
+            entityToMove.initialize()
+            entityToMove.currentStation=buffer
+            entityToMove.shouldMove=True
+            entityToStayName=entity.capacityProjectId+'_'+station.objName+'_'+str(capacityToStay)
+            entityToStay=CapacityEntity(name=entityToStayName, capacityProjectId=entity.capacityProjectId, requiredCapacity=capacityToStay)
+            entityToStay.initialize()
+            entityToStay.currentStation=buffer
+            import dream.simulation.Globals as Globals
+            Globals.setWIP([entityToMove,entityToStay])     #set the new components as wip    
+            return True   
 
     # merges the capacity entities if they belong to the same project
     def mergeEntities(self):
