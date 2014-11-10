@@ -280,9 +280,9 @@
                     "capacityRequirementDict": {
                         "SMF": 80,
                         "WELD": 90,
-                        "CNC": 150,
-                        "MCH": 130,
-                        "EEP": 125,
+                        "CNC": 130,
+                        "MCH": 125,
+                        "EEP": 30,
 						"PPASB":700,
 						"PAINT":50,
                         "ASBTST": 300
