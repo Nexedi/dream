@@ -364,7 +364,7 @@
 				"stationIds": [
 					 "ASBTST"
 				], 
-				"priority": 1
+				"priority": 3
 			}, 
             "intervalCapacity": [170.0, 270.0, 370.0, 20.0, 20.0, 20.0, 0.0],
 			"intervalCapacityStart":3,
