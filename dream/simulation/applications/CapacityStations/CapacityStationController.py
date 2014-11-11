@@ -230,7 +230,6 @@ class CapacityStationController(EventGenerator):
             # if the buffer was considered before (due to shared resources) continue
             if buffer in alreadyConsideredBuffers:
                 continue
-
             alreadyConsideredBuffers.append(buffer)
             sharedBuffers = []
             station=buffer.next[0]  # get the station
@@ -261,7 +260,7 @@ class CapacityStationController(EventGenerator):
             # if there is no available capacity no need to do anything
             if totalAvailableCapacity==0:
                 continue
-            while not allCapacityConsumed:       
+            while not allCapacityConsumed: 
                 # list to keep entities that are within a threshold from the EDD
                 entitiesWithinThreshold=[]
                 # list to keep entities that are outside a threshold from the EDD
@@ -270,8 +269,7 @@ class CapacityStationController(EventGenerator):
                 EDD=float('inf')
                 for entity in entitiesNotAllocated:
                     if EDD>entity.capacityProject.dueDate:
-                        EDD=entity.capacityProject.dueDate            
-
+                        EDD=entity.capacityProject.dueDate 
                 # put the entities in the corresponding list according to their due date
                 for entity in entitiesNotAllocated: 
                     if entity.capacityProject.dueDate-EDD<=self.dueDateThreshold:
@@ -337,7 +335,9 @@ class CapacityStationController(EventGenerator):
 
                         # if we have more entities break
                         if not haveMoreEntitiesToAllocate:
-                            break                          
+                            break       
+                        if station.notProcessOutsideThreshold:
+                            break                   
                         
                 # else calculate the capacity for every entity and create the entities
                 else:
