@@ -72,6 +72,19 @@
     .declareAcquiredMethod("aq_getAttachment", "jio_getAttachment")
     .declareAcquiredMethod("aq_putAttachment", "jio_putAttachment")
 
+    .allowPublicAcquisition("notifyDataChanged", function () {
+      // We are notified by an included gadget that the data has changed.
+      // Here we save automatically. We could mark a dirty flag to warn the
+      // user if she leaves the page without saving.
+
+      // Since we are notified quite often and saving is resource expensive, we
+      // use this trick to prevent saving too many times
+      if (this.timeout) {
+        window.clearTimeout(this.timeout);
+      }
+      this.timeout = window.setTimeout(saveGraph.bind(this), 100);
+    })
+
     .declareMethod("render", function (options) {
       var jio_key = options.id, gadget = this;
       gadget.props.jio_key = jio_key;
@@ -98,13 +111,6 @@
     .declareMethod("startService", function () {
       var g = this,
         graph;
-      // save automatically
-      window.$.subscribe("Dream.Gui.onDataChange", function () {
-        if (g.timeout) {
-          window.clearTimeout(g.timeout);
-        }
-        g.timeout = window.setTimeout(saveGraph.bind(g), 100);
-      });
       return g.getDeclaredGadget("productionline_graph")
         .push(function (graph_gadget) {
           graph = graph_gadget;

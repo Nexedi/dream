@@ -110,12 +110,6 @@
     return 'DreamNode_' + n;
   }
 
-  function onDataChange(g) {
-    g.getData().then(function (data) {
-      $.publish("Dream.Gui.onDataChange", data);
-    });
-  }
-
   function updateConnectionData(gadget, connection, remove, edge_data) {
     if (remove) {
       delete gadget.props.edge_container[connection.id];
@@ -126,7 +120,7 @@
         edge_data || {}
       ];
     }
-    onDataChange(gadget);
+    gadget.notifyDataChanged();
   }
 
   // bind to connection/connectionDetached events,
@@ -202,7 +196,7 @@
     }
     coordinates[node_id] = coordinate;
     gadget.props.preference_container.coordinates = coordinates;
-    onDataChange(gadget);
+    gadget.notifyDataChanged();
     return coordinate;
   }
 
@@ -283,7 +277,7 @@
     //   });
     // split in 2 methods ? one for events one for manip
 
-    onDataChange(gadget);
+    gadget.notifyDataChanged();
     draggable(gadget);
   }
 
@@ -372,7 +366,7 @@
   //       1.1111;
   //   setZoom(gadget, zoom_level);
   //   gadget.props.preference_container.zoom_level = zoom_level;
-  //   onDataChange();
+  //   gadget.notifyDataChanged();
   //   redraw(gadget);
   // }
 
@@ -381,7 +375,7 @@
   //     0.9;
   //   setZoom(gadget, zoom_level);
   //   gadget.props.preference_container.zoom_level = zoom_level;
-  //   onDataChange();
+  //   gadget.notifyDataChanged();
   //   redraw(gadget);
   // }
 
@@ -399,7 +393,7 @@
         delete gadget.props.edge_container[k];
       }
     });
-    onDataChange(gadget);
+    gadget.notifyDataChanged();
   }
 
   function updateElementData(gadget, node_id, data) {
@@ -429,7 +423,7 @@
         = gadget.props.preference_container.coordinates[node_id];
       delete gadget.props.preference_container.coordinates[node_id];
     }
-    onDataChange(gadget);
+    gadget.notifyDataChanged();
   }
 
   // function clearAll(gadget) {
@@ -473,16 +467,6 @@
   //   gadget.props.preference_container = preferences;
   //   var zoom_level = gadget.props.preference_container.zoom_level || 1.0;
   //   setZoom(gadget, zoom_level);
-  // }
-
-  // function setGeneralProperties(gadget, properties) {
-  //   gadget.props.general_container = properties;
-  //   onDataChange();
-  // }
-
-  // function updateGeneralProperties(gadget, properties) {
-  //   $.extend(gadget.props.general_container, properties);
-  //   onDataChange();
   // }
 
   function openNodeDialog(gadget, element, config_dict) {
@@ -642,7 +626,7 @@
     box.css("left", absolute_position[0]);
     updateNodeStyle(gadget, element.element_id);
     draggable(gadget);
-    onDataChange(gadget);
+    gadget.notifyDataChanged();
   }
 
   function waitForDragover(gadget) {
@@ -705,6 +689,7 @@
   gadget_klass
 
     .declareAcquiredMethod('getConfigurationDict', 'getConfigurationDict')
+    .declareAcquiredMethod('notifyDataChanged', 'notifyDataChanged')
 
     .ready(function (g) {
       g.props.edge_container = {};
@@ -737,6 +722,7 @@
             g.props.data.preference : {},
         coordinates = preference.coordinates,
         config;
+      g.notifyDataChanged();
       return g.getConfigurationDict()
         .push(function (config_dict) {
           config = config_dict;
