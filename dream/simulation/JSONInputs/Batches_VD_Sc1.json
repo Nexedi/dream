@@ -95,13 +95,23 @@
             "St4M0R",
             {}
         ],
-        "con_100": [
+        "con_1000": [
             "B7",
+            "St3M0D",
+            {}
+        ],
+        "con_1001": [
+            "St3M0D",
             "St3M0",
             {}
         ],
-        "con_115": [
+        "con_1002": [
             "St3M0",
+            "St3M0R",
+            {}
+        ],
+        "con_115": [
+            "St3M0R",
             "B8",
             {}
         ],
@@ -1115,6 +1125,35 @@
             },
             "numberOfSubBatches": 2,
             "outputResults": 1,
+            "id": "St4M0R"
+        },
+        "St3M0D": {
+            "_class": "Dream.BatchDecompositionBlocking",
+            "name": "St3M0D",
+            "element_id": "DreamNode_240",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "numberOfSubBatches": 1,
+            "id": "St3M0D"
+        },
+        "St3M0R": {
+            "_class": "Dream.BatchReassemblyBlocking",
+            "name": "St3M0R",
+            "element_id": "DreamNode_250",
+            "processingTime": {
+                "distributionType": "Fixed",
+                "mean": 0,
+                "stdev": null,
+                "min": null,
+                "max": null
+            },
+            "numberOfSubBatches": 1,
+            "outputResults": 0,
             "id": "St4M0R"
         },
         "St3M0": {
