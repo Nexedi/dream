@@ -368,6 +368,7 @@
 			}, 
             "intervalCapacity": [170.0, 270.0, 370.0, 20.0, 20.0, 20.0, 0.0],
 			"intervalCapacityStart":3,
+			"notProcessOutsideThreshold":1,
 			"intervalCapacityExceptions":{"30.0":50,"63.0":80,"33.0":80}
         },
         "PPASBE": {
@@ -409,6 +410,7 @@
 				], 
 				"priority": 2
 			}, 
+			"notProcessOutsideThreshold":1,
 			"intervalCapacityExceptions":{"30.0":50,"63.0":80,"33.0":80}
         },
         "ASBTSTE": {
