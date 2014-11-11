@@ -218,6 +218,7 @@
             "name": "PPASB",
             "intervalCapacity": [170.0, 270.0, 370.0, 20.0, 20.0, 20.0, 0.0],
 			"intervalCapacityStart":3,
+			"notProcessOutsideThreshold":1,
 			"intervalCapacityExceptions":{"2.0":50,"9.0":80}
         },
         "PPASBE": {
@@ -253,6 +254,7 @@
             "name": "ASBTST",
             "intervalCapacity": [170.0, 270.0, 370.0, 20.0, 20.0, 20.0, 0.0],
 			"intervalCapacityStart":3,
+			"notProcessOutsideThreshold":1,
 			"intervalCapacityExceptions":{"2.0":50,"9.0":80}
         },
         "ASBTSTE": {

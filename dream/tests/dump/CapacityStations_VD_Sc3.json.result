@@ -72,71 +72,69 @@
       "utilization": 0.0
      }, 
      {
+      "P1": 20.0, 
       "period": 16.0, 
-      "utilization": 0.0
+      "utilization": 1.0
      }, 
      {
       "period": 17.0, 
       "utilization": 0
      }, 
      {
+      "P1": 170.0, 
       "period": 18.0, 
-      "utilization": 0.0
+      "utilization": 1.0
      }, 
      {
+      "P1": 110.0, 
       "period": 19.0, 
-      "utilization": 0.0
+      "utilization": 0.4074074074074074
      }, 
      {
       "period": 20.0, 
       "utilization": 0.0
      }, 
      {
-      "P1": 6.0, 
       "period": 21.0, 
-      "utilization": 0.3
+      "utilization": 0.0
      }, 
      {
-      "P1": 20.0, 
       "period": 22.0, 
-      "utilization": 1.0
+      "utilization": 0.0
      }, 
      {
-      "P1": 20.0, 
       "period": 23.0, 
-      "utilization": 1.0
+      "utilization": 0.0
      }, 
      {
       "period": 24.0, 
       "utilization": 0
      }, 
      {
-      "P1": 170.0, 
       "period": 25.0, 
-      "utilization": 1.0
+      "utilization": 0.0
      }, 
      {
-      "P1": 84.0, 
       "period": 26.0, 
-      "utilization": 0.3111111111111111
+      "utilization": 0.0
      }, 
      {
-      "P2": 59.075630252100844, 
+      "P2": 370.0, 
       "period": 27.0, 
-      "utilization": 0.1596638655462185
-     }, 
-     {
-      "P2": 20.0, 
-      "period": 28.0, 
       "utilization": 1.0
      }, 
      {
-      "P2": 20.0, 
+      "P2": 10.0, 
+      "period": 28.0, 
+      "utilization": 0.5
+     }, 
+     {
+      "P4": 20.0, 
       "period": 29.0, 
       "utilization": 1.0
      }, 
      {
-      "P2": 50.0, 
+      "P4": 50.0, 
       "period": 30.0, 
       "utilization": 1.0
      }, 
@@ -145,20 +143,17 @@
       "utilization": 0
      }, 
      {
-      "P2": 170.0, 
+      "P4": 160.0, 
       "period": 32.0, 
-      "utilization": 1.0
+      "utilization": 0.9411764705882353
      }, 
      {
-      "P2": 60.92436974789916, 
-      "P6": 19.075630252100837, 
       "period": 33.0, 
-      "utilization": 1.0
+      "utilization": 0.0
      }, 
      {
-      "P6": 110.92436974789916, 
       "period": 34.0, 
-      "utilization": 0.299795593913241
+      "utilization": 0.0
      }, 
      {
       "period": 35.0, 
@@ -205,8 +200,9 @@
       "utilization": 0
      }, 
      {
+      "P7": 130, 
       "period": 46.0, 
-      "utilization": 0.0
+      "utilization": 0.7647058823529411
      }, 
      {
       "period": 47.0, 
@@ -217,17 +213,17 @@
       "utilization": 0.0
      }, 
      {
-      "P4": 4.946236559139785, 
+      "P5": 20.0, 
       "period": 49.0, 
-      "utilization": 0.24731182795698925
+      "utilization": 1.0
      }, 
      {
-      "P4": 20.0, 
+      "P5": 20.0, 
       "period": 50.0, 
       "utilization": 1.0
      }, 
      {
-      "P4": 20.0, 
+      "P5": 20.0, 
       "period": 51.0, 
       "utilization": 1.0
      }, 
@@ -236,17 +232,17 @@
       "utilization": 0
      }, 
      {
-      "P4": 170.0, 
+      "P5": 170.0, 
       "period": 53.0, 
       "utilization": 1.0
      }, 
      {
-      "P4": 15.053763440860223, 
+      "P5": 70.0, 
       "period": 54.0, 
-      "utilization": 0.05575467941059342
+      "utilization": 0.25925925925925924
      }, 
      {
-      "P7": 130, 
+      "P6": 130, 
       "period": 55.0, 
       "utilization": 0.35135135135135137
      }, 
@@ -283,103 +279,52 @@
       "utilization": 0.0
      }, 
      {
+      "P3": 20.0, 
       "period": 64.0, 
-      "utilization": 0.0
+      "utilization": 1.0
      }, 
      {
+      "P3": 20.0, 
       "period": 65.0, 
-      "utilization": 0.0
+      "utilization": 1.0
      }, 
      {
       "period": 66.0, 
       "utilization": 0
      }, 
      {
+      "P3": 90.0, 
       "period": 67.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 68.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 69.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "P5": 20.0, 
-      "period": 70.0, 
-      "utilization": 1.0
-     }, 
-     {
-      "P5": 20.0, 
-      "period": 71.0, 
-      "utilization": 1.0
-     }, 
-     {
-      "P5": 20.0, 
-      "period": 72.0, 
-      "utilization": 1.0
-     }, 
-     {
-      "period": 73.0, 
-      "utilization": 0
-     }, 
-     {
-      "P5": 170.0, 
-      "period": 74.0, 
-      "utilization": 1.0
-     }, 
-     {
-      "P5": 70.0, 
-      "period": 75.0, 
-      "utilization": 0.25925925925925924
-     }, 
-     {
-      "P3": 130, 
-      "period": 76.0, 
-      "utilization": 0.35135135135135137
+      "utilization": 0.5294117647058824
      }
     ], 
     "detailedWorkPlan": [
      {
-      "allocation": 6.0, 
-      "operation": "ASBTST", 
-      "project": "P1", 
-      "time": 21.0
-     }, 
-     {
       "allocation": 20.0, 
       "operation": "ASBTST", 
       "project": "P1", 
-      "time": 22.0
-     }, 
-     {
-      "allocation": 20.0, 
-      "operation": "ASBTST", 
-      "project": "P1", 
-      "time": 23.0
+      "time": 16.0
      }, 
      {
       "allocation": 170.0, 
       "operation": "ASBTST", 
       "project": "P1", 
-      "time": 25.0
+      "time": 18.0
      }, 
      {
-      "allocation": 84.0, 
+      "allocation": 110.0, 
       "operation": "ASBTST", 
       "project": "P1", 
-      "time": 26.0
+      "time": 19.0
      }, 
      {
-      "allocation": 59.075630252100844, 
+      "allocation": 370.0, 
       "operation": "ASBTST", 
       "project": "P2", 
       "time": 27.0
      }, 
      {
-      "allocation": 20.0, 
+      "allocation": 10.0, 
       "operation": "ASBTST", 
       "project": "P2", 
       "time": 28.0
@@ -387,113 +332,83 @@
      {
       "allocation": 20.0, 
       "operation": "ASBTST", 
-      "project": "P2", 
+      "project": "P4", 
       "time": 29.0
      }, 
      {
       "allocation": 50.0, 
       "operation": "ASBTST", 
-      "project": "P2", 
+      "project": "P4", 
       "time": 30.0
      }, 
      {
-      "allocation": 170.0, 
+      "allocation": 160.0, 
       "operation": "ASBTST", 
-      "project": "P2", 
+      "project": "P4", 
       "time": 32.0
-     }, 
-     {
-      "allocation": 60.92436974789916, 
-      "operation": "ASBTST", 
-      "project": "P2", 
-      "time": 33.0
-     }, 
-     {
-      "allocation": 19.075630252100837, 
-      "operation": "ASBTST", 
-      "project": "P6", 
-      "time": 33.0
-     }, 
-     {
-      "allocation": 110.92436974789916, 
-      "operation": "ASBTST", 
-      "project": "P6", 
-      "time": 34.0
-     }, 
-     {
-      "allocation": 4.946236559139785, 
-      "operation": "ASBTST", 
-      "project": "P4", 
-      "time": 49.0
-     }, 
-     {
-      "allocation": 20.0, 
-      "operation": "ASBTST", 
-      "project": "P4", 
-      "time": 50.0
-     }, 
-     {
-      "allocation": 20.0, 
-      "operation": "ASBTST", 
-      "project": "P4", 
-      "time": 51.0
-     }, 
-     {
-      "allocation": 170.0, 
-      "operation": "ASBTST", 
-      "project": "P4", 
-      "time": 53.0
-     }, 
-     {
-      "allocation": 15.053763440860223, 
-      "operation": "ASBTST", 
-      "project": "P4", 
-      "time": 54.0
      }, 
      {
       "allocation": 130, 
       "operation": "ASBTST", 
       "project": "P7", 
-      "time": 55.0
+      "time": 46.0
      }, 
      {
       "allocation": 20.0, 
       "operation": "ASBTST", 
       "project": "P5", 
-      "time": 70.0
+      "time": 49.0
      }, 
      {
       "allocation": 20.0, 
       "operation": "ASBTST", 
       "project": "P5", 
-      "time": 71.0
+      "time": 50.0
      }, 
      {
       "allocation": 20.0, 
       "operation": "ASBTST", 
       "project": "P5", 
-      "time": 72.0
+      "time": 51.0
      }, 
      {
       "allocation": 170.0, 
       "operation": "ASBTST", 
       "project": "P5", 
-      "time": 74.0
+      "time": 53.0
      }, 
      {
       "allocation": 70.0, 
       "operation": "ASBTST", 
       "project": "P5", 
-      "time": 75.0
+      "time": 54.0
      }, 
      {
       "allocation": 130, 
       "operation": "ASBTST", 
+      "project": "P6", 
+      "time": 55.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "ASBTST", 
       "project": "P3", 
-      "time": 76.0
+      "time": 64.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "ASBTST", 
+      "project": "P3", 
+      "time": 65.0
+     }, 
+     {
+      "allocation": 90.0, 
+      "operation": "ASBTST", 
+      "project": "P3", 
+      "time": 67.0
      }
     ], 
-    "meanUtilization": 0.22513764986883272
+    "meanUtilization": 0.21696047258331
    }
   }, 
   {
@@ -507,9 +422,9 @@
    "family": "Exit", 
    "id": "ASBTSTE", 
    "results": {
-    "lifespan": 45.52, 
-    "takt_time": 3.08, 
-    "throughput": 25
+    "lifespan": 42.833333333333336, 
+    "takt_time": 3.7777777777777777, 
+    "throughput": 18
    }
   }, 
   {
@@ -798,42 +713,6 @@
      {
       "period": 67.0, 
       "utilization": 0.0
-     }, 
-     {
-      "period": 68.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 69.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 70.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 71.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 72.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 73.0, 
-      "utilization": 0
-     }, 
-     {
-      "period": 74.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 75.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 76.0, 
-      "utilization": 0.0
      }
     ], 
     "detailedWorkPlan": [
@@ -892,7 +771,7 @@
       "time": 1.0
      }
     ], 
-    "meanUtilization": 0.023058574078982243
+    "meanUtilization": 0.02611044417767107
    }
   }, 
   {
@@ -1185,42 +1064,6 @@
      {
       "period": 67.0, 
       "utilization": 0.0
-     }, 
-     {
-      "period": 68.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 69.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 70.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 71.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 72.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 73.0, 
-      "utilization": 0
-     }, 
-     {
-      "period": 74.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 75.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 76.0, 
-      "utilization": 0.0
      }
     ], 
     "detailedWorkPlan": [
@@ -1267,7 +1110,7 @@
       "time": 0.0
      }
     ], 
-    "meanUtilization": 0.009956709956709957
+    "meanUtilization": 0.01127450980392157
    }
   }, 
   {
@@ -1563,42 +1406,6 @@
      {
       "period": 67.0, 
       "utilization": 0.0
-     }, 
-     {
-      "period": 68.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 69.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 70.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 71.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 72.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 73.0, 
-      "utilization": 0
-     }, 
-     {
-      "period": 74.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 75.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 76.0, 
-      "utilization": 0.0
      }
     ], 
     "detailedWorkPlan": [
@@ -1663,7 +1470,7 @@
       "time": 5.0
      }
     ], 
-    "meanUtilization": 0.06493506493506494
+    "meanUtilization": 0.07352941176470588
    }
   }, 
   {
@@ -1714,8 +1521,8 @@
       "stationId": "PAINT"
      }, 
      {
-      "entranceTime": 21.0, 
-      "exitTime": 27.0, 
+      "entranceTime": 16.0, 
+      "exitTime": 20.0, 
       "stationId": "ASBTST"
      }
     ]
@@ -1764,7 +1571,7 @@
      }, 
      {
       "entranceTime": 27.0, 
-      "exitTime": 34.0, 
+      "exitTime": 29.0, 
       "stationId": "ASBTST"
      }
     ]
@@ -1802,18 +1609,18 @@
       "stationId": "WELD"
      }, 
      {
-      "entranceTime": 63.0, 
-      "exitTime": 70.0, 
+      "entranceTime": 56.0, 
+      "exitTime": 63.0, 
       "stationId": "PPASB"
      }, 
      {
-      "entranceTime": 70.0, 
-      "exitTime": 71.0, 
+      "entranceTime": 63.0, 
+      "exitTime": 64.0, 
       "stationId": "PAINT"
      }, 
      {
-      "entranceTime": 76.0, 
-      "exitTime": 77.0, 
+      "entranceTime": 64.0, 
+      "exitTime": 68.0, 
       "stationId": "ASBTST"
      }
     ]
@@ -1851,18 +1658,18 @@
       "stationId": "WELD"
      }, 
      {
-      "entranceTime": 35.0, 
-      "exitTime": 42.0, 
+      "entranceTime": 20.0, 
+      "exitTime": 27.0, 
       "stationId": "PPASB"
      }, 
      {
-      "entranceTime": 42.0, 
-      "exitTime": 43.0, 
+      "entranceTime": 27.0, 
+      "exitTime": 29.0, 
       "stationId": "PAINT"
      }, 
      {
-      "entranceTime": 49.0, 
-      "exitTime": 55.0, 
+      "entranceTime": 29.0, 
+      "exitTime": 33.0, 
       "stationId": "ASBTST"
      }
     ]
@@ -1900,18 +1707,18 @@
       "stationId": "WELD"
      }, 
      {
-      "entranceTime": 56.0, 
-      "exitTime": 63.0, 
+      "entranceTime": 40.0, 
+      "exitTime": 45.0, 
       "stationId": "PPASB"
      }, 
      {
-      "entranceTime": 63.0, 
-      "exitTime": 64.0, 
+      "entranceTime": 46.0, 
+      "exitTime": 49.0, 
       "stationId": "PAINT"
      }, 
      {
-      "entranceTime": 70.0, 
-      "exitTime": 76.0, 
+      "entranceTime": 49.0, 
+      "exitTime": 55.0, 
       "stationId": "ASBTST"
      }
     ]
@@ -1949,18 +1756,18 @@
       "stationId": "WELD"
      }, 
      {
-      "entranceTime": 15.0, 
-      "exitTime": 21.0, 
+      "entranceTime": 47.0, 
+      "exitTime": 49.0, 
       "stationId": "PPASB"
      }, 
      {
-      "entranceTime": 21.0, 
-      "exitTime": 22.0, 
+      "entranceTime": 49.0, 
+      "exitTime": 50.0, 
       "stationId": "PAINT"
      }, 
      {
-      "entranceTime": 33.0, 
-      "exitTime": 35.0, 
+      "entranceTime": 55.0, 
+      "exitTime": 56.0, 
       "stationId": "ASBTST"
      }
     ]
@@ -1998,18 +1805,18 @@
       "stationId": "WELD"
      }, 
      {
-      "entranceTime": 42.0, 
-      "exitTime": 49.0, 
+      "entranceTime": 33.0, 
+      "exitTime": 40.0, 
       "stationId": "PPASB"
      }, 
      {
-      "entranceTime": 49.0, 
-      "exitTime": 50.0, 
+      "entranceTime": 40.0, 
+      "exitTime": 43.0, 
       "stationId": "PAINT"
      }, 
      {
-      "entranceTime": 55.0, 
-      "exitTime": 56.0, 
+      "entranceTime": 46.0, 
+      "exitTime": 47.0, 
       "stationId": "ASBTST"
      }
     ]
@@ -2112,9 +1919,8 @@
      }, 
      {
       "P2": 170.0, 
-      "P6": 100.0, 
       "period": 21.0, 
-      "utilization": 0.84375
+      "utilization": 0.53125
      }, 
      {
       "period": 22.0, 
@@ -2137,12 +1943,14 @@
       "utilization": 0.0
      }, 
      {
+      "P4": 20.0, 
       "period": 27.0, 
-      "utilization": 0.0
+      "utilization": 1.0
      }, 
      {
+      "P4": 30.0, 
       "period": 28.0, 
-      "utilization": 0.0
+      "utilization": 0.09375
      }, 
      {
       "period": 29.0, 
@@ -2189,17 +1997,19 @@
       "utilization": 0.0
      }, 
      {
+      "P7": 20.0, 
       "period": 40.0, 
-      "utilization": 0.0
+      "utilization": 1.0
      }, 
      {
+      "P7": 20.0, 
       "period": 41.0, 
-      "utilization": 0.0
+      "utilization": 1.0
      }, 
      {
-      "P4": 50.0, 
+      "P7": 60.0, 
       "period": 42.0, 
-      "utilization": 0.15625
+      "utilization": 0.1875
      }, 
      {
       "period": 43.0, 
@@ -2214,19 +2024,22 @@
       "utilization": 0
      }, 
      {
+      "P5": 20.0, 
       "period": 46.0, 
-      "utilization": 0.0
+      "utilization": 1.0
      }, 
      {
+      "P5": 20.0, 
       "period": 47.0, 
-      "utilization": 0.0
+      "utilization": 1.0
      }, 
      {
+      "P5": 10.0, 
       "period": 48.0, 
-      "utilization": 0.0
+      "utilization": 0.5
      }, 
      {
-      "P7": 100.0, 
+      "P6": 100.0, 
       "period": 49.0, 
       "utilization": 0.3125
      }, 
@@ -2283,9 +2096,9 @@
       "utilization": 0.0
      }, 
      {
-      "P5": 50.0, 
+      "P3": 100.0, 
       "period": 63.0, 
-      "utilization": 0.29411764705882354
+      "utilization": 0.5882352941176471
      }, 
      {
       "period": 64.0, 
@@ -2301,43 +2114,6 @@
      }, 
      {
       "period": 67.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 68.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 69.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "P3": 100.0, 
-      "period": 70.0, 
-      "utilization": 0.3125
-     }, 
-     {
-      "period": 71.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 72.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 73.0, 
-      "utilization": 0
-     }, 
-     {
-      "period": 74.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 75.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 76.0, 
       "utilization": 0.0
      }
     ], 
@@ -2379,37 +2155,67 @@
       "time": 21.0
      }, 
      {
-      "allocation": 100.0, 
-      "operation": "PAINT", 
-      "project": "P6", 
-      "time": 21.0
-     }, 
-     {
-      "allocation": 50.0, 
+      "allocation": 20.0, 
       "operation": "PAINT", 
       "project": "P4", 
+      "time": 27.0
+     }, 
+     {
+      "allocation": 30.0, 
+      "operation": "PAINT", 
+      "project": "P4", 
+      "time": 28.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PAINT", 
+      "project": "P7", 
+      "time": 40.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PAINT", 
+      "project": "P7", 
+      "time": 41.0
+     }, 
+     {
+      "allocation": 60.0, 
+      "operation": "PAINT", 
+      "project": "P7", 
       "time": 42.0
      }, 
      {
-      "allocation": 100.0, 
-      "operation": "PAINT", 
-      "project": "P7", 
-      "time": 49.0
-     }, 
-     {
-      "allocation": 50.0, 
+      "allocation": 20.0, 
       "operation": "PAINT", 
       "project": "P5", 
-      "time": 63.0
+      "time": 46.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PAINT", 
+      "project": "P5", 
+      "time": 47.0
+     }, 
+     {
+      "allocation": 10.0, 
+      "operation": "PAINT", 
+      "project": "P5", 
+      "time": 48.0
+     }, 
+     {
+      "allocation": 100.0, 
+      "operation": "PAINT", 
+      "project": "P6", 
+      "time": 49.0
      }, 
      {
       "allocation": 100.0, 
       "operation": "PAINT", 
       "project": "P3", 
-      "time": 70.0
+      "time": 63.0
      }
     ], 
-    "meanUtilization": 0.07890087853323148
+    "meanUtilization": 0.16719831314878894
    }
   }, 
   {
@@ -2457,9 +2263,9 @@
       "utilization": 0.6486486486486487
      }, 
      {
-      "P2": 11.25, 
+      "P2": 20.0, 
       "period": 7.0, 
-      "utilization": 0.5625
+      "utilization": 1.0
      }, 
      {
       "P2": 20.0, 
@@ -2496,58 +2302,59 @@
       "utilization": 1.0
      }, 
      {
-      "P2": 18.75, 
-      "P6": 1.25, 
+      "P2": 10.0, 
       "period": 15.0, 
-      "utilization": 1.0
+      "utilization": 0.5
      }, 
      {
-      "P6": 20.0, 
       "period": 16.0, 
-      "utilization": 1.0
+      "utilization": 0.0
      }, 
      {
       "period": 17.0, 
       "utilization": 0
      }, 
      {
-      "P6": 170.0, 
       "period": 18.0, 
-      "utilization": 1.0
+      "utilization": 0.0
      }, 
      {
-      "P6": 270.0, 
       "period": 19.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P4": 370.0, 
+      "period": 20.0, 
       "utilization": 1.0
      }, 
      {
-      "P6": 138.75, 
-      "period": 20.0, 
-      "utilization": 0.375
-     }, 
-     {
+      "P4": 20.0, 
       "period": 21.0, 
-      "utilization": 0.0
+      "utilization": 1.0
      }, 
      {
+      "P4": 20.0, 
       "period": 22.0, 
-      "utilization": 0.0
+      "utilization": 1.0
      }, 
      {
+      "P4": 20.0, 
       "period": 23.0, 
-      "utilization": 0.0
+      "utilization": 1.0
      }, 
      {
       "period": 24.0, 
       "utilization": 0
      }, 
      {
+      "P4": 170.0, 
       "period": 25.0, 
-      "utilization": 0.0
+      "utilization": 1.0
      }, 
      {
+      "P4": 100.0, 
       "period": 26.0, 
-      "utilization": 0.0
+      "utilization": 0.37037037037037035
      }, 
      {
       "period": 27.0, 
@@ -2574,25 +2381,27 @@
       "utilization": 0.0
      }, 
      {
+      "P7": 80.0, 
       "period": 33.0, 
-      "utilization": 0.0
+      "utilization": 1.0
      }, 
      {
+      "P7": 370.0, 
       "period": 34.0, 
-      "utilization": 0.0
+      "utilization": 1.0
      }, 
      {
-      "P4": 7.0, 
+      "P7": 20.0, 
       "period": 35.0, 
-      "utilization": 0.35
+      "utilization": 1.0
      }, 
      {
-      "P4": 20.0, 
+      "P7": 20.0, 
       "period": 36.0, 
       "utilization": 1.0
      }, 
      {
-      "P4": 20.0, 
+      "P7": 20.0, 
       "period": 37.0, 
       "utilization": 1.0
      }, 
@@ -2601,32 +2410,32 @@
       "utilization": 0
      }, 
      {
-      "P4": 170.0, 
+      "P7": 90.0, 
       "period": 39.0, 
-      "utilization": 1.0
+      "utilization": 0.5294117647058824
      }, 
      {
-      "P4": 270.0, 
+      "P5": 270.0, 
       "period": 40.0, 
       "utilization": 1.0
      }, 
      {
-      "P4": 213.0, 
+      "P5": 370.0, 
       "period": 41.0, 
-      "utilization": 0.5756756756756757
+      "utilization": 1.0
      }, 
      {
-      "P7": 9.23076923076923, 
+      "P5": 20.0, 
       "period": 42.0, 
-      "utilization": 0.4615384615384615
+      "utilization": 1.0
      }, 
      {
-      "P7": 20.0, 
+      "P5": 20.0, 
       "period": 43.0, 
       "utilization": 1.0
      }, 
      {
-      "P7": 20.0, 
+      "P5": 20.0, 
       "period": 44.0, 
       "utilization": 1.0
      }, 
@@ -2635,19 +2444,18 @@
       "utilization": 0
      }, 
      {
-      "P7": 170.0, 
       "period": 46.0, 
-      "utilization": 1.0
+      "utilization": 0.0
      }, 
      {
-      "P7": 270.0, 
+      "P6": 270.0, 
       "period": 47.0, 
       "utilization": 1.0
      }, 
      {
-      "P7": 110.76923076923077, 
+      "P6": 330.0, 
       "period": 48.0, 
-      "utilization": 0.2993762993762994
+      "utilization": 0.8918918918918919
      }, 
      {
       "period": 49.0, 
@@ -2678,17 +2486,17 @@
       "utilization": 0.0
      }, 
      {
-      "P5": 20.0, 
+      "P3": 20.0, 
       "period": 56.0, 
       "utilization": 1.0
      }, 
      {
-      "P5": 20.0, 
+      "P3": 20.0, 
       "period": 57.0, 
       "utilization": 1.0
      }, 
      {
-      "P5": 20.0, 
+      "P3": 20.0, 
       "period": 58.0, 
       "utilization": 1.0
      }, 
@@ -2697,80 +2505,38 @@
       "utilization": 0
      }, 
      {
-      "P5": 170.0, 
+      "P3": 170.0, 
       "period": 60.0, 
       "utilization": 1.0
      }, 
      {
-      "P5": 270.0, 
+      "P3": 270.0, 
       "period": 61.0, 
       "utilization": 1.0
      }, 
      {
-      "P5": 200.0, 
+      "P3": 100.0, 
       "period": 62.0, 
-      "utilization": 0.5405405405405406
+      "utilization": 0.2702702702702703
      }, 
      {
-      "P3": 80.0, 
       "period": 63.0, 
-      "utilization": 1.0
+      "utilization": 0.0
      }, 
      {
-      "P3": 20.0, 
       "period": 64.0, 
-      "utilization": 1.0
+      "utilization": 0.0
      }, 
      {
-      "P3": 20.0, 
       "period": 65.0, 
-      "utilization": 1.0
+      "utilization": 0.0
      }, 
      {
       "period": 66.0, 
       "utilization": 0
      }, 
      {
-      "P3": 170.0, 
       "period": 67.0, 
-      "utilization": 1.0
-     }, 
-     {
-      "P3": 270.0, 
-      "period": 68.0, 
-      "utilization": 1.0
-     }, 
-     {
-      "P3": 40.0, 
-      "period": 69.0, 
-      "utilization": 0.10810810810810811
-     }, 
-     {
-      "period": 70.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 71.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 72.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 73.0, 
-      "utilization": 0
-     }, 
-     {
-      "period": 74.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 75.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 76.0, 
       "utilization": 0.0
      }
     ], 
@@ -2800,7 +2566,7 @@
       "time": 6.0
      }, 
      {
-      "allocation": 11.25, 
+      "allocation": 20.0, 
       "operation": "PPASB", 
       "project": "P2", 
       "time": 7.0
@@ -2842,187 +2608,163 @@
       "time": 14.0
      }, 
      {
-      "allocation": 18.75, 
+      "allocation": 10.0, 
       "operation": "PPASB", 
       "project": "P2", 
       "time": 15.0
      }, 
      {
-      "allocation": 1.25, 
+      "allocation": 370.0, 
       "operation": "PPASB", 
-      "project": "P6", 
-      "time": 15.0
+      "project": "P4", 
+      "time": 20.0
      }, 
      {
       "allocation": 20.0, 
       "operation": "PPASB", 
-      "project": "P6", 
-      "time": 16.0
+      "project": "P4", 
+      "time": 21.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P4", 
+      "time": 22.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P4", 
+      "time": 23.0
      }, 
      {
       "allocation": 170.0, 
       "operation": "PPASB", 
-      "project": "P6", 
-      "time": 18.0
+      "project": "P4", 
+      "time": 25.0
      }, 
      {
-      "allocation": 270.0, 
-      "operation": "PPASB", 
-      "project": "P6", 
-      "time": 19.0
-     }, 
-     {
-      "allocation": 138.75, 
-      "operation": "PPASB", 
-      "project": "P6", 
-      "time": 20.0
-     }, 
-     {
-      "allocation": 7.0, 
+      "allocation": 100.0, 
       "operation": "PPASB", 
       "project": "P4", 
+      "time": 26.0
+     }, 
+     {
+      "allocation": 80.0, 
+      "operation": "PPASB", 
+      "project": "P7", 
+      "time": 33.0
+     }, 
+     {
+      "allocation": 370.0, 
+      "operation": "PPASB", 
+      "project": "P7", 
+      "time": 34.0
+     }, 
+     {
+      "allocation": 20.0, 
+      "operation": "PPASB", 
+      "project": "P7", 
       "time": 35.0
      }, 
      {
       "allocation": 20.0, 
       "operation": "PPASB", 
-      "project": "P4", 
+      "project": "P7", 
       "time": 36.0
      }, 
      {
       "allocation": 20.0, 
       "operation": "PPASB", 
-      "project": "P4", 
+      "project": "P7", 
       "time": 37.0
      }, 
      {
-      "allocation": 170.0, 
+      "allocation": 90.0, 
       "operation": "PPASB", 
-      "project": "P4", 
+      "project": "P7", 
       "time": 39.0
      }, 
      {
       "allocation": 270.0, 
       "operation": "PPASB", 
-      "project": "P4", 
+      "project": "P5", 
       "time": 40.0
      }, 
      {
-      "allocation": 213.0, 
+      "allocation": 370.0, 
       "operation": "PPASB", 
-      "project": "P4", 
+      "project": "P5", 
       "time": 41.0
      }, 
      {
-      "allocation": 9.23076923076923, 
+      "allocation": 20.0, 
       "operation": "PPASB", 
-      "project": "P7", 
+      "project": "P5", 
       "time": 42.0
      }, 
      {
       "allocation": 20.0, 
       "operation": "PPASB", 
-      "project": "P7", 
+      "project": "P5", 
       "time": 43.0
      }, 
      {
       "allocation": 20.0, 
       "operation": "PPASB", 
-      "project": "P7", 
+      "project": "P5", 
       "time": 44.0
-     }, 
-     {
-      "allocation": 170.0, 
-      "operation": "PPASB", 
-      "project": "P7", 
-      "time": 46.0
      }, 
      {
       "allocation": 270.0, 
       "operation": "PPASB", 
-      "project": "P7", 
+      "project": "P6", 
       "time": 47.0
      }, 
      {
-      "allocation": 110.76923076923077, 
+      "allocation": 330.0, 
       "operation": "PPASB", 
-      "project": "P7", 
+      "project": "P6", 
       "time": 48.0
      }, 
      {
       "allocation": 20.0, 
       "operation": "PPASB", 
-      "project": "P5", 
+      "project": "P3", 
       "time": 56.0
      }, 
      {
       "allocation": 20.0, 
       "operation": "PPASB", 
-      "project": "P5", 
+      "project": "P3", 
       "time": 57.0
      }, 
      {
       "allocation": 20.0, 
       "operation": "PPASB", 
-      "project": "P5", 
+      "project": "P3", 
       "time": 58.0
      }, 
      {
       "allocation": 170.0, 
       "operation": "PPASB", 
-      "project": "P5", 
+      "project": "P3", 
       "time": 60.0
      }, 
      {
       "allocation": 270.0, 
       "operation": "PPASB", 
-      "project": "P5", 
+      "project": "P3", 
       "time": 61.0
      }, 
      {
-      "allocation": 200.0, 
+      "allocation": 100.0, 
       "operation": "PPASB", 
-      "project": "P5", 
+      "project": "P3", 
       "time": 62.0
-     }, 
-     {
-      "allocation": 80.0, 
-      "operation": "PPASB", 
-      "project": "P3", 
-      "time": 63.0
-     }, 
-     {
-      "allocation": 20.0, 
-      "operation": "PPASB", 
-      "project": "P3", 
-      "time": 64.0
-     }, 
-     {
-      "allocation": 20.0, 
-      "operation": "PPASB", 
-      "project": "P3", 
-      "time": 65.0
-     }, 
-     {
-      "allocation": 170.0, 
-      "operation": "PPASB", 
-      "project": "P3", 
-      "time": 67.0
-     }, 
-     {
-      "allocation": 270.0, 
-      "operation": "PPASB", 
-      "project": "P3", 
-      "time": 68.0
-     }, 
-     {
-      "allocation": 40.0, 
-      "operation": "PPASB", 
-      "project": "P3", 
-      "time": 69.0
      }
     ], 
-    "meanUtilization": 0.45352451602451616
+    "meanUtilization": 0.5030969550865745
    }
   }, 
   {
@@ -3334,42 +3076,6 @@
      {
       "period": 67.0, 
       "utilization": 0.0
-     }, 
-     {
-      "period": 68.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 69.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 70.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 71.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 72.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 73.0, 
-      "utilization": 0
-     }, 
-     {
-      "period": 74.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 75.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 76.0, 
-      "utilization": 0.0
      }
     ], 
     "detailedWorkPlan": [
@@ -3494,7 +3200,7 @@
       "time": 8.0
      }
     ], 
-    "meanUtilization": 0.09595959595959598
+    "meanUtilization": 0.10866013071895425
    }
   }, 
   {
@@ -3806,42 +3512,6 @@
      {
       "period": 67.0, 
       "utilization": 0.0
-     }, 
-     {
-      "period": 68.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 69.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 70.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 71.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 72.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 73.0, 
-      "utilization": 0
-     }, 
-     {
-      "period": 74.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 75.0, 
-      "utilization": 0.0
-     }, 
-     {
-      "period": 76.0, 
-      "utilization": 0.0
      }
     ], 
     "detailedWorkPlan": [
@@ -4002,7 +3672,7 @@
       "time": 12.0
      }
     ], 
-    "meanUtilization": 0.10517737857310051
+    "meanUtilization": 0.11909791397248146
    }
   }, 
   {
