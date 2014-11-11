@@ -40,7 +40,8 @@ class CapacityStation(Queue):
     # the __init__ method of the CapacityStation
     #===========================================================================
     def __init__(self, id, name, capacity=float("inf"), intervalCapacity=[], schedulingRule="FIFO", gatherWipStat=False,
-                 sharedResources={}, intervalCapacityStart=0,intervalCapacityExceptions={},**kw):
+                 sharedResources={}, intervalCapacityStart=0,intervalCapacityExceptions={},
+                 notProcessOutsideThreshold=False,**kw):
         Queue.__init__(self, id, name, capacity=capacity)
         # a list that holds the capacity (manhours) that is available in each interval
         self.intervalCapacity=intervalCapacity
@@ -52,6 +53,7 @@ class CapacityStation(Queue):
         self.sharedResources=sharedResources
         self.intervalCapacityStart=intervalCapacityStart
         self.intervalCapacityExceptions=intervalCapacityExceptions
+        self.notProcessOutsideThreshold=int(notProcessOutsideThreshold)
         
     def initialize(self):
         Queue.initialize(self)
