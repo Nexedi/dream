@@ -257,7 +257,6 @@ class CapacityStationController(EventGenerator):
 
             # list to keep entities that have not been already allocated
             entitiesNotAllocated=list(entitiesConsidered)                                                                             
-            
             allCapacityConsumed=False    
             # if there is no available capacity no need to do anything
             if totalAvailableCapacity==0:
@@ -282,15 +281,17 @@ class CapacityStationController(EventGenerator):
 
                 # calculate the total capacity that is requested
                 totalRequestedCapacity=0
+                # do not to count projects that cannot move due to space limitations
+                # so check according to considered capacity
+                consideredSpace=float(availableSpace)
                 for entity in entitiesWithinThreshold:
                     # get buffer where the entity is and the station it requests to get in
                     entityBuffer=entity.currentStation
                     entityStation=entity.currentStation.next[0]
-                    # entities that cannot start (due to space, need for assembly or earliest start)  
-                    # do not request for capacity
                     if self.checkIfProjectCanStartInStation(entity.capacityProject, entityStation) and\
                                 (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, entityBuffer))\
-                                 and self.checkIfThereIsEnoughSpace(entity, entityBuffer, availableSpace):
+                                 and self.checkIfThereIsEnoughSpace(entity, entityBuffer, consideredSpace):
+                        consideredSpace-=entity.capacityProject.assemblySpaceRequirement
                         totalRequestedCapacity+=entity.requiredCapacity
                 
                 # if there is enough capacity for all the entities set them that they all should move
