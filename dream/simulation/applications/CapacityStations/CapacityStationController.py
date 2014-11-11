@@ -268,8 +268,14 @@ class CapacityStationController(EventGenerator):
                 # get the EDD
                 EDD=float('inf')
                 for entity in entitiesNotAllocated:
-                    if EDD>entity.capacityProject.dueDate:
-                        EDD=entity.capacityProject.dueDate 
+                    entityBuffer=entity.currentStation
+                    entityStation=entity.currentStation.next[0]
+                    # consider only projects that can get into station
+                    if self.checkIfProjectCanStartInStation(entity.capacityProject, entityStation) and\
+                                (not self.checkIfProjectNeedsToBeAssembled(entity.capacityProject, entityBuffer))\
+                                 and self.checkIfThereIsEnoughSpace(entity, entityBuffer, availableSpace):
+                        if EDD>entity.capacityProject.dueDate:
+                            EDD=entity.capacityProject.dueDate 
                 # put the entities in the corresponding list according to their due date
                 for entity in entitiesNotAllocated: 
                     if entity.capacityProject.dueDate-EDD<=self.dueDateThreshold:
