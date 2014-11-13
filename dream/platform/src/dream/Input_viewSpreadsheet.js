@@ -86,10 +86,11 @@
         .push(function (result_list) {
           // XXX here, get options to create some columns,
           // creating empty list from options
-data = JSON.parse(result_list[0]).tutorial_spreadsheet;
+/* data = JSON.parse(result_list[0]).tutorial_spreadsheet;
 if (!data) {
   data = configuration columns
 }
+*/
           return result_list[1].render(
             JSON.stringify(data),
             { minSpareRows: 1,
