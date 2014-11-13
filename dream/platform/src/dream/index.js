@@ -34,6 +34,32 @@
         "type": "object_view",
         "title": "Production Line"
       },
+      "view_tutorial_spreadsheet": {
+        "gadget": "Input_viewSpreadsheet",
+        "type": "object_view",
+        "title": "Tutorial Spreadsheet",
+        "configuration":
+          {"columns": [
+            {
+              "name": "Date",
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "name": "Machines",
+              "type": "string"
+            },
+            {
+              "name": "Start",
+              "type": "string"
+            },
+            {
+              "name": "Stop",
+              "type": "string"
+            }
+          ]
+            }
+      },
       "view_wip_part_spreadsheet": {
         "gadget": "Input_viewWipPartSpreadsheet",
         "type": "object_view",
@@ -509,6 +535,7 @@
           back_kw.id = options.id;
         }
       }
+      // XXX : read configuration json here to know the available actions.
 
       // Get the action information
       return gadget.declareGadget(
@@ -517,7 +544,8 @@
         .push(function (g) {
           page_gadget = g;
           if (page_gadget.render !== undefined) {
-            return page_gadget.render(options);
+            return page_gadget.render(options,
+              portal_types[portal_type][options.action].configuration);
           }
         }).push(function () {
           return RSVP.all([
