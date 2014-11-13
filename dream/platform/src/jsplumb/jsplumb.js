@@ -729,7 +729,7 @@
           g.props.main = g.props.element.querySelector('#main');
           initJsPlumb(g);
           g.props.nodes_click_monitor = RSVP.Monitor();
-          $.each(g.props.data.nodes, function (key, value) {
+          $.each(g.props.data.graph.main_graph.node, function (key, value) {
             if (coordinates === undefined || coordinates[key] === undefined) {
               value.coordinate = {
                 'top': 0.0,
@@ -746,7 +746,7 @@
               });
             }
           });
-          $.each(g.props.data.edges, function (key, value) {
+          $.each(g.props.data.graph.main_graph.edge, function (key, value) {
             addEdge(g, key, value);
           });
         })

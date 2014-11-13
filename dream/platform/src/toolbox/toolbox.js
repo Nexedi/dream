@@ -36,15 +36,18 @@
 
     .declareAcquiredMethod("getConfigurationDict", "getConfigurationDict")
 
-    .declareMethod("render", function () {
-      var g = this;
+    .declareMethod("render", function (options) {
+      var g = this, options = JSON.parse(options);
+
       return g.getConfigurationDict()
         .push(function (config_dict) {
           var tools_container = document.createElement('div');
           tools_container.className = 'tools-container';
-          Object.keys(config_dict).forEach(function (key) {
-            var name = config_dict[key].name || key.split('-')[1];
-            if (key !== 'Dream-Configuration') {
+          window.console.log("X", options);
+          Object.keys(options.class_definition).forEach(function (key) {
+            window.console.log("K", key,options.class_definition[key]);           
+            var name = options.class_definition[key].name || key.split('-')[1];
+            if (options.class_definition[key]._class === 'node') {
               tools_container.innerHTML += tool_template({
                 key: key,
                 name: name
