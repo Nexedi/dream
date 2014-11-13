@@ -59,7 +59,8 @@
       edges: {},
       preference: {},
       general: {},
-      wip_part_spreadsheet: [[
+//XXX do not set spreadsheet default here but in the spreadsheet gadget
+ /*     wip_part_spreadsheet: [[
         "Order ID",
         "Due Date",
         "Priority",
@@ -81,13 +82,13 @@
         "Sequence",
         "Capacity Requirements"
       ]],
-      capacity_by_station_spreadsheet: [[
-        "Day",
-        "CS1"
-      ]],
-      dp_capacity_spreadsheet: [[ ]],
-      dp_route_spreadsheet: [[ ]]
-    },
+//      capacity_by_station_spreadsheet: [[
+//        "Day",
+//        "CS1"
+ //     ]],
+//      dp_capacity_spreadsheet: [[ ]],
+//      dp_route_spreadsheet: [[ ]]
+*/    },
       name = "Untitled";
 
     return new RSVP.Queue()
