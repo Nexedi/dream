@@ -86,7 +86,7 @@
     })
 
     .declareMethod("render", function (options) {
-      var jio_key = options.id, gadget = this;
+      var jio_key = options.id, gadget = this, data;
       gadget.props.jio_key = jio_key;
       return new RSVP.Queue()
         .push(function () {
@@ -98,13 +98,14 @@
             }), gadget.getDeclaredGadget("productionline_graph") ]);
         })
         .push(function (result_list) {
-          return result_list[1].render(result_list[0]);
+          data = result_list[0];
+          return result_list[1].render(data);
         })
         .push(function () {
           return gadget.getDeclaredGadget("productionline_toolbox");
         })
         .push(function (toolbox_gadget) {
-          toolbox_gadget.render();
+          toolbox_gadget.render(data);
         });
     })
 
