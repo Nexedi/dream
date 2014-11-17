@@ -153,8 +153,7 @@ for key in processStory.keys():
                 t1= (((mktime(processStory[key][elem][1][0].timetuple()) - mktime(processStory[key][elem][0][0].timetuple())) / batchSize) / 60)
                 scr1=processStory[key][elem][0][1]-processStory[key][elem][1][1]
                 MA['ProcTime'].append(t1)
-                if scr1:
-                    MA['ScrapQuant'].append(scr1)
+                MA['ScrapQuant'].append(scr1)
             except IndexError:
                 continue
         elif elem=='M1A':
@@ -162,8 +161,7 @@ for key in processStory.keys():
                 t2= (((mktime(processStory[key][elem][1][0].timetuple()) - mktime(processStory[key][elem][0][0].timetuple())) / batchSize) / 60)
                 scr2=processStory[key][elem][0][1]-processStory[key][elem][1][1]
                 M1A['ProcTime'].append(t2)
-                if scr2:
-                    M1A['ScrapQuant'].append(scr2)
+                M1A['ScrapQuant'].append(scr2)
             except IndexError:
                 continue
         elif elem=='M1B':
@@ -171,8 +169,7 @@ for key in processStory.keys():
                 t3= (((mktime(processStory[key][elem][1][0].timetuple()) - mktime(processStory[key][elem][0][0].timetuple())) / batchSize) / 60)
                 scr3=processStory[key][elem][0][1]-processStory[key][elem][1][1]
                 M1B['ProcTime'].append(t3)
-                if scr3:
-                    M1B['ScrapQuant'].append(scr3)
+                M1B['ScrapQuant'].append(scr3)
             except IndexError:
                 continue
         elif elem=='M2A':
@@ -180,8 +177,7 @@ for key in processStory.keys():
                 t4= (((mktime(processStory[key][elem][1][0].timetuple()) - mktime(processStory[key][elem][0][0].timetuple())) / batchSize) / 60)
                 scr4=processStory[key][elem][0][1]-processStory[key][elem][1][1]
                 M2A['ProcTime'].append(t4)
-                if scr4:
-                    M2A['ScrapQuant'].append(scr4)
+                M2A['ScrapQuant'].append(scr4)
             except IndexError:
                 continue
         elif elem=='M2B':
@@ -189,8 +185,7 @@ for key in processStory.keys():
                 t5= (((mktime(processStory[key][elem][1][0].timetuple()) - mktime(processStory[key][elem][0][0].timetuple())) / batchSize) / 60)
                 scr5=processStory[key][elem][0][1]-processStory[key][elem][1][1]
                 M2B['ProcTime'].append(t5)
-                if scr5:
-                    M2B['ScrapQuant'].append(scr5)
+                M2B['ScrapQuant'].append(scr5)
             except IndexError:
                 continue
         elif elem=='M3A':
@@ -198,8 +193,7 @@ for key in processStory.keys():
                 t6= (((mktime(processStory[key][elem][1][0].timetuple()) - mktime(processStory[key][elem][0][0].timetuple())) / batchSize) / 60)
                 scr6=processStory[key][elem][0][1]-processStory[key][elem][1][1]
                 M3A['ProcTime'].append(t6)
-                if scr6:
-                    M3A['ScrapQuant'].append(scr6)
+                M3A['ScrapQuant'].append(scr6)
             except IndexError:
                 continue
         elif elem=='M3B':
@@ -207,8 +201,7 @@ for key in processStory.keys():
                 t7= (((mktime(processStory[key][elem][1][0].timetuple()) - mktime(processStory[key][elem][0][0].timetuple())) / batchSize) / 60)
                 scr7=processStory[key][elem][0][1]-processStory[key][elem][1][1]
                 M3B['ProcTime'].append(t7)
-                if scr7:
-                    M3B['ScrapQuant'].append(scr7)
+                M3B['ScrapQuant'].append(scr7)
             except IndexError:
                 continue
         elif elem=='MM':
@@ -216,8 +209,7 @@ for key in processStory.keys():
                 t8= (((mktime(processStory[key][elem][1][0].timetuple()) - mktime(processStory[key][elem][0][0].timetuple())) / batchSize) / 60)
                 scr8=processStory[key][elem][0][1]-processStory[key][elem][1][1]
                 MM['ProcTime'].append(t8)
-                if scr8:
-                    MM['ScrapQuant'].append(scr8)
+                MM['ScrapQuant'].append(scr8)
             except IndexError:
                 continue   
         elif elem=='PrA':
@@ -225,8 +217,7 @@ for key in processStory.keys():
                 t10= (((mktime(processStory[key][elem][1][0].timetuple()) - mktime(processStory[key][elem][0][0].timetuple())) / batchSize) / 60)
                 scr10=processStory[key][elem][0][1]-processStory[key][elem][1][1]
                 PrA['ProcTime'].append(t10)
-                if scr10:
-                    PrA['ScrapQuant'].append(scr10)
+                PrA['ScrapQuant'].append(scr10)
             except IndexError:
                 continue
         elif elem=='PrB':
@@ -234,8 +225,7 @@ for key in processStory.keys():
                 t11= (((mktime(processStory[key][elem][1][0].timetuple()) - mktime(processStory[key][elem][0][0].timetuple())) / batchSize) / 60)
                 scr11=processStory[key][elem][0][1]-processStory[key][elem][1][1]
                 PrB['ProcTime'].append(t11)
-                if scr11:
-                    PrB['ScrapQuant'].append(scr11)
+                PrB['ScrapQuant'].append(scr11)
             except IndexError:
                 continue
         elif elem=='PaA':
@@ -243,8 +233,7 @@ for key in processStory.keys():
                 t12= (((mktime(processStory[key][elem][1][0].timetuple()) - mktime(processStory[key][elem][0][0].timetuple())) / batchSize) / 60)
                 scr12=processStory[key][elem][0][1]-processStory[key][elem][1][1]
                 PaA['ProcTime'].append(t12)
-                if scr12:
-                    PaA['ScrapQuant'].append(scr12)
+                PaA['ScrapQuant'].append(scr12)
             except IndexError:
                 continue
         elif elem=='PaB':
@@ -252,8 +241,7 @@ for key in processStory.keys():
                 t13= (((mktime(processStory[key][elem][1][0].timetuple()) - mktime(processStory[key][elem][0][0].timetuple())) / batchSize) / 60)
                 scr13=processStory[key][elem][0][1]-processStory[key][elem][1][1]
                 PaB['ProcTime'].append(t13)
-                if scr13:
-                    PaB['ScrapQuant'].append(scr13)
+                PaB['ScrapQuant'].append(scr13)
             except IndexError:
                 continue
 
@@ -284,31 +272,19 @@ PaA_Proc= B.DeleteMissingValue(PaA.get('ProcTime',[]))
 PaB_Scrap= B.DeleteMissingValue(PaB.get('ScrapQuant',[]))
 PaB_Proc= B.DeleteMissingValue(PaB.get('ProcTime',[]))
 
-#Call the HandleOutliers object and delete the outliers in the lists with the scrap quantity and processing times data of each station
+#Call the HandleOutliers object and delete the outliers in the lists with the processing times data of each station
 C= HandleOutliers()
-MA_Scrap= C.DeleteOutliers(MA_Scrap)
 MA_Proc= C.DeleteOutliers(MA_Proc)
-M1A_Scrap= C.DeleteOutliers(M1A_Scrap)
 M1A_Proc= C.DeleteOutliers(M1A_Proc)
-M1B_Scrap= C.DeleteOutliers(M1B_Scrap)
 M1B_Proc= C.DeleteOutliers(M1B_Proc)
-M2A_Scrap= C.DeleteOutliers(M2A_Scrap)
 M2A_Proc= C.DeleteOutliers(M2A_Proc)
-M2B_Scrap= C.DeleteOutliers(M2B_Scrap)
 M2B_Proc= C.DeleteOutliers(M2B_Proc)
-M3A_Scrap= C.DeleteOutliers(M3A_Scrap)
 M3A_Proc= C.DeleteOutliers(M3A_Proc)
-M3B_Scrap= C.DeleteOutliers(M3B_Scrap)
 M3B_Proc= C.DeleteOutliers(M3B_Proc)
-MM_Scrap= C.DeleteOutliers(MM_Scrap)
 MM_Proc= C.DeleteOutliers(MM_Proc)
-PrA_Scrap= C.DeleteOutliers(PrA_Scrap)
 PrA_Proc= C.DeleteOutliers(PrA_Proc)
-PrB_Scrap= C.DeleteOutliers(PrB_Scrap)
 PrB_Proc= C.DeleteOutliers(PrB_Proc)
-PaA_Scrap= C.DeleteOutliers(PaA_Scrap)
 PaA_Proc= C.DeleteOutliers(PaA_Proc)
-PaB_Scrap= C.DeleteOutliers(PaB_Scrap)
 PaB_Proc= C.DeleteOutliers(PaB_Proc)
 
 #Call the BasicStatisticalMeasures object and calculate the mean value of the processing times for each station 
