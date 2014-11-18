@@ -264,9 +264,9 @@ module.exports = function (grunt) {
         dest: '<%= global_config.dest %>/<%= curl.jqueryuicss.relative_dest %>'
       },
       jsplumbjs: {
-        src: "https://github.com/sporritt/jsPlumb/raw/" +
-          "master/dist/js/jquery.jsPlumb-1.6.2-min.js",
-        relative_dest: 'lib/jquery.jsplumb.min.js',
+        src: "https://raw.githubusercontent.com/sporritt/jsPlumb/" +
+          "1.6.2/dist/js/jquery.jsPlumb-1.6.2.js",
+        relative_dest: 'lib/jquery.jsplumb.js',
         dest: '<%= global_config.dest %>/<%= curl.jsplumbjs.relative_dest %>'
       }
 //       },
