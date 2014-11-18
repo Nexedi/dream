@@ -24,7 +24,19 @@
            loopEventListener, promiseEventListener, DOMParser) {
   "use strict";
 
-  /*jslint nomen: true*/
+  /*jslint nomen: true */
+  /* TODO:
+   *  - make node edit a gadget ?
+   *  - add function to turn event handlers in promise. Or just use event
+   *  handlers ? XXX understand the diff with example
+   * 
+   * tests:
+   *   - loading
+   *   - dragging a node
+   *   - clicking a node
+   *   - connecting two nodes ? (see jsplumb tests)
+   *   - removing a connection
+   */
   var gadget_klass = rJS(window),
     node_template_source = gadget_klass.__template_element
       .getElementById('node-template').innerHTML,
@@ -88,18 +100,20 @@
     return node_id;
   }
 
-  function getElementId(node_container, node_id) {
-    return node_container[node_id].element_id;
+  function getElementId(gadget, node_id) {
+    // TODO: inline
+    return gadget.props.dom_element_id_container[node_id];
   }
 
-  function generateNodeId(gadget, element_type, option) {
-    var n = 1;
-    while (gadget.props.node_container[
-        ((option.short_id || element_type) + n)
-      ] !== undefined) {
+  function generateNodeId(gadget, element) {
+    var n = 1,
+      class_def = gadget.props.data.class_definition[element._class],
+      id = class_def.short_id || element._class;
+    console.log("gni", element, class_def);
+    while (gadget.props.node_container[id + n] !== undefined) {
       n += 1;
     }
-    return (option.short_id || element_type) + n;
+    return id + n;
   }
 
   function generateElementId(gadget_element) {
@@ -112,13 +126,14 @@
 
   function updateConnectionData(gadget, connection, remove, edge_data) {
     if (remove) {
-      delete gadget.props.edge_container[connection.id];
+      delete gadget.props.data.graph.main_graph.edge[connection.id];
     } else {
-      gadget.props.edge_container[connection.id] = [
-        getNodeId(gadget.props.node_container, connection.sourceId),
-        getNodeId(gadget.props.node_container, connection.targetId),
-        edge_data || {}
-      ];
+      edge_data = edge_data || {'_class': 'Dream.Edge'};
+      edge_data.source = getNodeId(gadget.props.node_container,
+                                      connection.sourceId);
+      edge_data.destination = getNodeId(gadget.props.node_container,
+                                      connection.targetId);
+      gadget.props.data.graph.main_graph.edge[connection.id] = edge_data;
     }
     gadget.notifyDataChanged();
   }
@@ -149,8 +164,7 @@
   }
 
   function convertToAbsolutePosition(gadget, x, y) {
-    var zoom_level = (gadget.props.preference_container.zoom_level || 1.0) *
-        1.1111,
+    var zoom_level = gadget.props.zoom_level * 1.1111,
       canvas_size_x = $(gadget.props.element).find('#main').width(),
       canvas_size_y = $(gadget.props.element).find('#main').height(),
       size_x = $(gadget.props.element).find('.dummy_window').width() *
@@ -163,8 +177,7 @@
   }
 
   function convertToRelativePosition(gadget, x, y) {
-    var zoom_level = (gadget.props.preference_container.zoom_level || 1.0) *
-        1.1111,
+    var zoom_level = gadget.props.zoom_level * 1.1111,
       canvas_size_x = $(gadget.props.element).find('#main').width(),
       canvas_size_y = $(gadget.props.element).find('#main').height(),
       size_x = $(gadget.props.element).find('.dummy_window').width() *
@@ -179,8 +192,7 @@
   }
 
   function updateElementCoordinate(gadget, node_id, coordinate) {
-    var element_id = gadget.props.node_container[node_id].element_id,
-      coordinates = gadget.props.preference_container.coordinates || {},
+    var element_id = gadget.props.dom_element_id_container[node_id],
       element,
       relative_position;
     if (coordinate === undefined) {
@@ -194,8 +206,8 @@
       coordinate.top = relative_position[1];
       coordinate.left = relative_position[0];
     }
-    coordinates[node_id] = coordinate;
-    gadget.props.preference_container.coordinates = coordinates;
+    console.log("uec", node_id, gadget.props.node_container);
+    gadget.props.node_container[node_id].coordinate = coordinate;
     gadget.notifyDataChanged();
     return coordinate;
   }
@@ -282,8 +294,7 @@
   }
 
   function updateNodeStyle(gadget, element_id) {
-    var zoom_level = (gadget.props.preference_container.zoom_level || 1.0) *
-        1.1111,
+    var zoom_level = gadget.props.zoom_level * 1.1111,
       element = $(gadget.props.element).find("#" + element_id),
       new_value;
     $.each(gadget.props.style_attr_list, function (i, j) {
@@ -353,32 +364,6 @@
   //   );
   // }
 
-  // function setZoom(gadget, zoom_level) {
-  //   $.each(gadget.props.style_attr_list, function (i, j) {
-  //     var new_value = $(gadget.props.element).find('.dummy_window')
-  //       .css(j).replace('px', '') * zoom_level + 'px';
-  //     $(gadget.props.element).find('.window').css(j, new_value);
-  //   });
-  // }
-
-  // function zoom_in(gadget) {
-  // var zoom_level = (gadget.props.preference_container.zoom_level || 1.0) *
-  //       1.1111;
-  //   setZoom(gadget, zoom_level);
-  //   gadget.props.preference_container.zoom_level = zoom_level;
-  //   gadget.notifyDataChanged();
-  //   redraw(gadget);
-  // }
-
-  // function zoom_out(gadget) {
-  // var zoom_level = (gadget.props.preference_container.zoom_level || 1.0) *
-  //     0.9;
-  //   setZoom(gadget, zoom_level);
-  //   gadget.props.preference_container.zoom_level = zoom_level;
-  //   gadget.notifyDataChanged();
-  //   redraw(gadget);
-  // }
-
 
   function removeElement(gadget, node_id) {
     var element_id = gadget.props.node_container[node_id].element_id;
@@ -387,7 +372,6 @@
     );
     $(gadget.props.element).find("#" + element_id).remove();
     delete gadget.props.node_container[node_id];
-    delete gadget.props.preference_container.coordinates[node_id];
     $.each(gadget.props.edge_container, function (k, v) {
       if (node_id === v[0] || node_id === v[1]) {
         delete gadget.props.edge_container[k];
@@ -397,7 +381,7 @@
   }
 
   function updateElementData(gadget, node_id, data) {
-    var element_id = gadget.props.node_container[node_id].element_id,
+    var element_id = gadget.props.dom_element_id_container[node_id];
       new_id = data.id;
     if (data.data.name) {
       $(gadget.props.element).find("#" + element_id).text(data.data.name)
@@ -419,55 +403,30 @@
           v[1] = new_id;
         }
       });
-      gadget.props.preference_container.coordinates[new_id]
-        = gadget.props.preference_container.coordinates[node_id];
-      delete gadget.props.preference_container.coordinates[node_id];
     }
     gadget.notifyDataChanged();
   }
 
-  // function clearAll(gadget) {
-  //   $.each(gadget.props.node_container, function (node_id) {
-  //     removeElement(gadget, node_id);
-  //   });
-  //   // delete anything if still remains
-  //   $(gadget.props.element).find("#main").children().remove();
-  //   gadget.props.node_container = {};
-  //   gadget.props.edge_container = {};
-  //   gadget.props.preference_container = {};
-  //   gadget.props.general_container = {};
-  //   gadget.props.initGeneralProperties();
-  //   gadget.props.prepareDialogForGeneralProperties();
-  // }
-
   function addEdge(gadget, edge_id, edge_data) {
-    var source_id = edge_data[0],
-      target_id = edge_data[1],
-      data = edge_data[2],
-      overlays = [],
+    var overlays = [],
       connection;
-    if (data && data.title) {
+
+    if (edge_data.name) {
       overlays = [["Label", {
         cssClass: "l1 component label",
-        label: data.title
+        label: edge_data.name
       }]];
     }
+
     connection = gadget.props.jsplumb_instance.connect({
-      source: getElementId(gadget.props.node_container, source_id),
-      target: getElementId(gadget.props.node_container, target_id),
+      source: getElementId(gadget, edge_data.source),
+      target: getElementId(gadget, edge_data.destination),
       Connector: [ "Bezier", {curviness: 75} ],
       overlays: overlays
     });
-    // call again updateConnectionData to set the connection data that
-    // was not passed to the connection hook
-    updateConnectionData(gadget, connection, 0, data);
+    // jsplumb assigned an id, but we are controlling ids ourselves.
+    connection.id = edge_id;
   }
-
-  // function setPreferences(gadget, preferences) {
-  //   gadget.props.preference_container = preferences;
-  //   var zoom_level = gadget.props.preference_container.zoom_level || 1.0;
-  //   setZoom(gadget, zoom_level);
-  // }
 
   function openNodeDialog(gadget, element, config_dict) {
     var node_id = getNodeId(gadget.props.node_container, element.id),
@@ -578,45 +537,48 @@
       ));
   }
 
-  function newElement(gadget, element, configuration) {
-    var element_type = element._class.replace('.', '-'),
-      option = configuration[element_type],
-      render_element = $(gadget.props.element).find("#main"),
-      coordinate = element.coordinate,
+  function addNode(gadget, node_id, node_data) {
+    var render_element = $(gadget.props.element).find("#main"),
+      class_definition = gadget.props.data.class_definition[node_data._class],
+      coordinate = node_data.coordinate,
       box,
       absolute_position,
       domElement;
-    // we don't save coordinates as properties of nodes
-    delete element.coordinate;
-    element.element_id = generateElementId(gadget.props.element);
+    console.log("adding", node_id, gadget.props.dom_element_id_container);
+    gadget.props.dom_element_id_container[node_id] = 
+        generateElementId(gadget.props.element);
+    /*
     if (!element.id) {
-      element.id = generateNodeId(gadget, element_type, option);
+      element.id = generateNodeId(gadget, element);
     }
-    element.name = element.name || option.name;
-    addElementToContainer(gadget.props.node_container, element);
+    */
+    // element.name = element.name || element.class_definition.name;
+    node_data.name = node_data.name || class_definition.name;
+    addElementToContainer(gadget.props.node_container, node_data);
+
     if (coordinate !== undefined) {
-      coordinate = updateElementCoordinate(
+      node_data.coordinate = updateElementCoordinate(
         gadget,
-        element.id,
+        node_id,
         coordinate
       );
     }
-    if (element.element_id === undefined) {
-      element.element_id = generateElementId(gadget.props.element);
-    }
+
+    // XXX stop using handlebars
     /*jslint nomen: true*/
     domElement = domParser.parseFromString(
       node_template({
-        "class": element._class.replace('.', '-'),
-        "element_id": element.element_id,
-        "title": element.name || element.id,
-        "name": element.name || element.id
+        "class": node_data._class.replace('.', '-'),
+        "element_id": node_data.element_id,
+        "title": node_data.name || node_data.id,
+        "name": node_data.name || node_data.id
       }),
       "text/html"
     ).querySelector('.window');
     render_element.append(domElement);
-    waitForNodeClick(gadget, domElement, configuration);
-    box = $(gadget.props.element).find("#" + element.element_id);
+
+    waitForNodeClick(gadget, domElement, class_definition);
+    box = $(gadget.props.element).find("#" + node_data.element_id);
     absolute_position = convertToAbsolutePosition(
       gadget,
       coordinate.left,
@@ -624,11 +586,12 @@
     );
     box.css("top", absolute_position[1]);
     box.css("left", absolute_position[0]);
-    updateNodeStyle(gadget, element.element_id);
+    updateNodeStyle(gadget, node_data.element_id);
     draggable(gadget);
     gadget.notifyDataChanged();
   }
 
+  // XXX why is that needed ?
   function waitForDragover(gadget) {
     return loopEventListener(
       gadget.props.main,
@@ -638,7 +601,7 @@
     );
   }
 
-  function waitForDrop(gadget, config) {
+  function waitForDrop(gadget) {
     var callback;
 
     function canceller() {
@@ -649,31 +612,32 @@
 
     /*jslint unparam: true*/
     function itsANonResolvableTrap(resolve, reject) {
-
+      // XXX name this function seriously
       callback = function (evt) {
         try {
-          var element = domParser.parseFromString(
-            evt.dataTransfer.getData('text/html'),
-            'text/html'
-          ).querySelector(".tool"),
+          var class_name_and_class_definition = JSON.parse(
+              evt.dataTransfer.getData('application/json')
+            ),
+            class_name = class_name_and_class_definition[0],
+            class_definition = class_name_and_class_definition[1],
             offset = $(gadget.props.main).offset(),
             box_top = evt.clientY - offset.top + "px",
             box_left = evt.clientX - offset.left + "px",
-            element_class = element.id.replace('-', '.'),
             relative_position = convertToRelativePosition(
               gadget,
               box_left,
               box_top
             );
-          newElement(gadget, {
-            coordinate: {
-              left: relative_position[0],
-              top: relative_position[1]
-            },
-            "_class": element_class
-          },
-            config);
 
+          addNode(gadget,
+            generateNodeId(gadget, {_class: class_name}),
+            {
+              coordinate: {
+                left: relative_position[0],
+                top: relative_position[1]
+              },
+              _class: class_name
+            });
         } catch (e) {
           reject(e);
         }
@@ -693,7 +657,8 @@
 
     .ready(function (g) {
       g.props.edge_container = {};
-      g.props.preference_container = {};
+      g.props.dom_element_id_container = {};
+      g.props.zoom_level = 1.0;
       g.props.style_attr_list = [
         'width',
         'height',
@@ -704,62 +669,37 @@
 
     .declareMethod('render', function (data) {
       this.props.data = JSON.parse(data);
-      this.props.node_container = this.props.data.nodes;
+      console.log("render", this.props.data);
+      this.props.node_container = this.props.data.graph.main_graph.node;
       this.props.jsplumb_instance = jsPlumb.getInstance();
     })
 
-    .declareMethod('getData', function () {
-      return JSON.stringify({
-        "nodes": this.props.node_container,
-        "edges": this.props.edge_container,
-        "preference": this.props.preference_container
-      });
+    .declareMethod('getContent', function () {
+      return JSON.stringify(this.props.data)
     })
 
     .declareMethod('startService', function () {
-      var g = this,
-        preference = g.props.data.preference !== undefined ?
-            g.props.data.preference : {},
-        coordinates = preference.coordinates,
-        config;
-      g.notifyDataChanged();
-      return g.getConfigurationDict()
-        .push(function (config_dict) {
-          config = config_dict;
-          g.props.main = g.props.element.querySelector('#main');
-          initJsPlumb(g);
-          g.props.nodes_click_monitor = RSVP.Monitor();
-          $.each(g.props.data.graph.main_graph.node, function (key, value) {
-            if (coordinates === undefined || coordinates[key] === undefined) {
-              value.coordinate = {
-                'top': 0.0,
-                'left': 0.0
-              };
-            } else {
-              value.coordinate = coordinates[key];
-            }
-            value.id = key;
-            newElement(g, value, config);
-            if (value.data) { // backward compatibility
-              updateElementData(g, key, {
-                data: value.data
-              });
-            }
-          });
-          $.each(g.props.data.graph.main_graph.edge, function (key, value) {
-            addEdge(g, key, value);
-          });
-        })
-        .push(function () {
-          return RSVP.all([
-            waitForDragover(g),
-            waitForDrop(g, config),
-            waitForConnection(g),
-            waitForConnectionDetached(g),
-            waitForConnectionClick(g),
-            g.props.nodes_click_monitor
-          ]);
-        });
+      var gadget = this;
+      this.props.main = this.props.element.querySelector('#main');
+      initJsPlumb(this);
+      // XXX what is this ?
+      this.props.nodes_click_monitor = RSVP.Monitor();
+
+      $.each(this.props.data.graph.main_graph.node, function (key, value) {
+        addNode(gadget, key, value);
+      });
+      $.each(this.props.data.graph.main_graph.edge, function (key, value) {
+        addEdge(gadget, key, value);
+      });
+
+      return RSVP.all([
+        waitForDragover(gadget),
+        waitForDrop(gadget),
+        waitForConnection(gadget),
+        waitForConnectionDetached(gadget),
+        waitForConnectionClick(gadget),
+        gadget.props.nodes_click_monitor
+      ]);
     });
 }(RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
   loopEventListener, promiseEventListener, DOMParser));
