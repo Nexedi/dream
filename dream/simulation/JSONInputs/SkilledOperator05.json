@@ -46,11 +46,6 @@
                     "_class": "Dream.Part",
                     "id": "P1",
                     "name": "Part1"
-                },
-                {
-                    "_class": "Dream.Part",
-                    "id": "P2",
-                    "name": "Part2"
                 }
             ]
         },
@@ -65,7 +60,14 @@
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": 7.0
-            }
+            },
+            "wip": [
+                {
+                    "_class": "Dream.Part",
+                    "id": "P2",
+                    "name": "Part2"
+                }
+            ]			
         },
         "Q2": {
             "_class": "Dream.Queue",
@@ -78,11 +80,6 @@
                     "_class": "Dream.Part",
                     "id": "P3",
                     "name": "Part3"
-                },
-                {
-                    "_class": "Dream.Part",
-                    "id": "P4",
-                    "name": "Part4"
                 }
 			]
         },
@@ -98,7 +95,14 @@
             "processingTime": {
                 "distributionType": "Fixed",
                 "mean": 11.0
-            }
+            },
+            "wip": [
+                {
+                    "_class": "Dream.Part",
+                    "id": "P4",
+                    "name": "Part4"
+                }
+			]
         },
         "O1": {
             "_class": "Dream.Operator",
