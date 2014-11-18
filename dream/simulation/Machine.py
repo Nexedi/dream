@@ -441,6 +441,7 @@ class Machine(CoreObject):
             self.expectedSignals['processOperatorUnavailable']=1
             # dummy variable to keep track of the time that the operation starts after every interruption
             
+            # update timeLastOperationStarted both for Machine and Operator (if any)
             self.timeLastOperationStarted=self.env.now
             if self.currentOperator:
                 self.currentOperator.timeLastOperationStarted=self.env.now
@@ -838,6 +839,7 @@ class Machine(CoreObject):
         self.shouldPreempt=False
         # reset the variables used to handle the interruptions timing 
         self.breakTime=0
+        # update totalWorking time for operator and also print trace
         if self.currentOperator:
             operator=self.currentOperator
             self.outputTrace(operator.name, "ended a process in "+ self.objName)
