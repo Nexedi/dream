@@ -231,7 +231,8 @@ class SkilledRouter(Router):
                 #===================================================================             
                 # the stations that 
                 stationsProcessingLast=[]
-                for station in self.toBeSignalled:
+                toBeSignalled=list(self.toBeSignalled)
+                for station in toBeSignalled:
                     # check if the operator that the station waits for is free
                     operator=station.operatorToGet
                     if operator.workingStation:
@@ -240,7 +241,7 @@ class SkilledRouter(Router):
                             continue
                     # signal the station so that it gets the operator
                     self.signalStation(station, operator)
-                           
+                       
                 self.expectedFinishSignalsDict={}
                 self.expectedFinishSignals=[]
                 for station in stationsProcessingLast:
