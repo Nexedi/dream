@@ -440,7 +440,10 @@ class Machine(CoreObject):
             self.expectedSignals['preemptQueue']=1
             self.expectedSignals['processOperatorUnavailable']=1
             # dummy variable to keep track of the time that the operation starts after every interruption
+            
             self.timeLastOperationStarted=self.env.now
+            if self.currentOperator:
+                self.currentOperator.timeLastOperationStarted=self.env.now
 #             # if the type is setup then the time to record is timeLastProcessingStarted
 #             if type=='Setup':
 #                 self.timeLastSetupStarted=self.timeLastOperationStarted
@@ -466,7 +469,7 @@ class Machine(CoreObject):
                 # # release the operator if there is interruption 
                 #===========================================================
                 if self.shouldYield(operationTypes={str(self.currentlyPerforming):1},methods={'isOperated':1}):
-                    yield self.env.process(self.release())
+                    yield self.env.process(self.release())  
                 # loop until we reach at a state that there is no interruption
                 while 1:
                     self.expectedSignals['interruptionEnd']=1
@@ -495,6 +498,7 @@ class Machine(CoreObject):
                 #===========================================================
                 # # release the operator  
                 #===========================================================
+                self.currentOperator.totalWorkingTime+=self.env.now-self.currentOperator.timeLastOperationStarted 
                 yield self.env.process(self.release())                 
                 from Globals import G
                 # append the entity that was stopped to the pending ones
@@ -834,6 +838,10 @@ class Machine(CoreObject):
         self.shouldPreempt=False
         # reset the variables used to handle the interruptions timing 
         self.breakTime=0
+        if self.currentOperator:
+            operator=self.currentOperator
+            self.outputTrace(operator.name, "ended a process in "+ self.objName)
+            operator.totalWorkingTime+=self.env.now-operator.timeLastOperationStarted  
         # if the station has just concluded a processing turn then
         if type=='Processing':
             # blocking starts
@@ -1138,9 +1146,6 @@ class Machine(CoreObject):
                     if self.id in G.Router.expectedFinishSignalsDict:
                         signal=G.Router.expectedFinishSignalsDict[self.id]
                         self.sendSignal(receiver=G.Router, signal=signal)
-        else:
-            self.outputTrace(operator.name, "ended a process in "+ self.objName)
-            operator.totalWorkingTime+=self.env.now-operator.timeLastOperationStarted   
         self.broker.invoke()
         self.toBeOperated = False
         

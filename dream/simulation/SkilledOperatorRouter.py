@@ -259,7 +259,6 @@ class SkilledRouter(Router):
                             for id in solution.keys():
                                 operator=findObjectById(id)
                                 station=findObjectById(solution[id])
-                                operator.totalWorkingTime+=self.env.now-operator.timeLastOperationStarted 
                                 # signal the station so that it gets the operator
                                 self.signalStation(station, operator)
           
