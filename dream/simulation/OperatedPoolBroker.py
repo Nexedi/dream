@@ -116,7 +116,9 @@ class Broker(ObjectInterruption):
                         self.waitForOperator=False
                         self.victim.printTrace(self.victim.id, resourceAvailable='(broker)')
                 # else if the Router is already invoked for allocating purposes wait until a resource is allocated to the victim's operatorPool
-                elif G.Router.invoked and G.Router.allocation:
+                # wait only if there is no current operator
+                # XXX discuss this
+                elif G.Router.invoked and G.Router.allocation and not self.victim.currentOperator:
                     self.waitForOperator=True
                     self.victim.printTrace(self.victim.id, waitEvent='(resourceIsAvailable broker)')
                     
