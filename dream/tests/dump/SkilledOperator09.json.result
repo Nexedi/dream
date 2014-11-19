@@ -1,0 +1,90 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.Exit", 
+   "family": "Exit", 
+   "id": "E1", 
+   "results": {
+    "lifespan": 38.0, 
+    "takt_time": 16.333333333333332, 
+    "throughput": 3
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "family": "Server", 
+   "id": "M1", 
+   "results": {
+    "blockage_ratio": 1.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "waiting_ratio": 92.0, 
+    "working_ratio": 7.0
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "family": "Server", 
+   "id": "M2", 
+   "results": {
+    "blockage_ratio": 3.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "waiting_ratio": 73.0, 
+    "working_ratio": 24.0
+   }
+  }, 
+  {
+   "_class": "Dream.Machine", 
+   "family": "Server", 
+   "id": "M3", 
+   "results": {
+    "blockage_ratio": 0.0, 
+    "failure_ratio": 0.0, 
+    "load_ratio": 0.0, 
+    "waiting_ratio": 67.0, 
+    "working_ratio": 33.0
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "O1", 
+   "results": {
+    "waiting_ratio": 85.0, 
+    "working_ratio": 15.0
+   }
+  }, 
+  {
+   "_class": "Dream.Operator", 
+   "family": "Operator", 
+   "id": "O2", 
+   "results": {
+    "waiting_ratio": 51.0, 
+    "working_ratio": 49.0
+   }
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "Q1", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "Q2", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.Queue", 
+   "family": "Buffer", 
+   "id": "Q3", 
+   "results": {}
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }
+}
