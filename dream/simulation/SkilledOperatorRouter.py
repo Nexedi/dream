@@ -259,8 +259,9 @@ class SkilledRouter(Router):
                             for id in solution.keys():
                                 operator=findObjectById(id)
                                 station=findObjectById(solution[id])
-                                # signal the station so that it gets the operator
-                                self.signalStation(station, operator)
+                                if station in self.toBeSignalled:
+                                    # signal the station so that it gets the operator
+                                    self.signalStation(station, operator)
           
             
             #===================================================================
