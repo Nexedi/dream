@@ -4,7 +4,7 @@ Created on 2 Jul 2014
 @author: Anna
 '''
 
-def opAss_LP(machineList, PBlist, PBskills, previousAssignment={}, weightFactors = [2, 1, 0.5, 2, 1, 1], Tool={}):
+def opAss_LP(machineList, PBlist, PBskills, previousAssignment={}, weightFactors = [2, 1, 0, 2, 1, 1], Tool={}):
     
     from pulp import LpProblem, LpMaximize, LpVariable, LpBinary, lpSum, LpStatus
     import pulp

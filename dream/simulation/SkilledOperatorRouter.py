@@ -195,7 +195,7 @@ class SkilledRouter(Router):
                 #     as it doesn't support zero WIP levels
                 #===================================================================
                 solution=opAss_LP(self.availableStationsDict, self.availableOperatorList, 
-                                  self.operators)
+                                  self.operators, previousAssignment=self.previousSolution)
 #                 print '-------'
 #                 print self.env.now, solution
                 # XXX assign the operators to operatorPools
