@@ -2,7 +2,6 @@
 (function (window, document, RSVP, rJS, initGadgetMixin) {
   "use strict";
 
-   // XXX use a renderjs utility function for that
   /*jslint nomen: true*/
   var gadget_klass = rJS(window);
   function waitForDragstart(tool) {
@@ -19,7 +18,7 @@
       callback = function (evt) {
         try {
           evt.dataTransfer.setData('application/json',
-            tool.dataset.class_definition);
+            tool.dataset.class_name);
         } catch (e) {
           reject(e);
         }
@@ -49,7 +48,7 @@
           tool.className = "tool " + key;
           tool.textContent = _class.name || key;
           tool.draggable = true;
-          tool.dataset.class_definition = JSON.stringify([key, _class]);
+          tool.dataset.class_name = JSON.stringify(key);
           Object.keys(_class.css || {}).forEach(function (k) {
             tool.style[k] = _class.css[k];
           });
