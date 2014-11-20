@@ -43,6 +43,10 @@ class BatchReassemblyBlocking(BatchReassembly):
             if issubclass(previous.__class__, Queue):
                 if previous.expectedSignals['canDispose']:
                     self.sendSignal(receiver=previous, signal=previous.canDispose, sender=station)
+                if previous.previous:
+                    if issubclass(previous.previous[0].__class__, Queue):
+                        station=previous
+                        continue
                 break
             # continue with further previous stations
             else:
