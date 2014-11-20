@@ -19,16 +19,15 @@
 
 /*global RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
   loopEventListener, promiseEventListener, DOMParser, confirm */
-/*jslint unparam: true */
+/*jslint unparam: true todo: true */
 (function (RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
            loopEventListener, promiseEventListener, DOMParser) {
   "use strict";
 
   /*jslint nomen: true */
   /* TODO:
-   *  - make node edit a gadget ?
-   *  - add function to turn event handlers in promise. Or just use event
-   *  handlers ? XXX understand the diff with example
+   *  - make node edition popup a gadget ?
+   *  - add function to turn event handlers in promise ?
    * 
    * tests:
    *   - loading
@@ -67,7 +66,8 @@
       }
       cancelResolver();
     }
-    function itsANonResolvableTrap(resolve, reject) {
+
+    function resolver(resolve, reject) {
 
       handle_event_callback = function () {
         var args = arguments;
@@ -86,13 +86,14 @@
 
       jsplumb_instance.bind(type, handle_event_callback);
     }
-    return new RSVP.Promise(itsANonResolvableTrap, canceller);
+    return new RSVP.Promise(resolver, canceller);
   }
 
-  function getNodeId(node_container, element_id) {
+  function getNodeId(gadget, element_id) {
+    // returns the ID of the node in the graph from its DOM element id
     var node_id;
-    $.each(node_container, function (k, v) {
-      if (v.element_id === element_id) {
+    $.each(gadget.props.node_id_to_dom_element_id, function (k, v) {
+      if (v === element_id) {
         node_id = k;
         return false;
       }
@@ -100,23 +101,19 @@
     return node_id;
   }
 
-  function getElementId(gadget, node_id) {
-    // TODO: inline
-    return gadget.props.dom_element_id_container[node_id];
-  }
-
   function generateNodeId(gadget, element) {
+    // Generate a node id
     var n = 1,
       class_def = gadget.props.data.class_definition[element._class],
       id = class_def.short_id || element._class;
-    console.log("gni", element, class_def);
     while (gadget.props.node_container[id + n] !== undefined) {
       n += 1;
     }
     return id + n;
   }
 
-  function generateElementId(gadget_element) {
+  function generateDomElementId(gadget_element) {
+    // Generate a probably unique DOM element ID.
     var n = 1;
     while ($(gadget_element).find('#DreamNode_' + n).length > 0) {
       n += 1;
@@ -129,10 +126,8 @@
       delete gadget.props.data.graph.main_graph.edge[connection.id];
     } else {
       edge_data = edge_data || {'_class': 'Dream.Edge'};
-      edge_data.source = getNodeId(gadget.props.node_container,
-                                      connection.sourceId);
-      edge_data.destination = getNodeId(gadget.props.node_container,
-                                      connection.targetId);
+      edge_data.source = getNodeId(gadget, connection.sourceId);
+      edge_data.destination = getNodeId(gadget, connection.targetId);
       gadget.props.data.graph.main_graph.edge[connection.id] = edge_data;
     }
     gadget.notifyDataChanged();
@@ -192,21 +187,23 @@
   }
 
   function updateElementCoordinate(gadget, node_id, coordinate) {
-    var element_id = gadget.props.dom_element_id_container[node_id],
+    var element_id = gadget.props.node_id_to_dom_element_id[node_id],
       element,
       relative_position;
+
     if (coordinate === undefined) {
-      coordinate = {};
       element = $(gadget.props.element).find("#" + element_id);
       relative_position = convertToRelativePosition(
         gadget,
         element.css('left'),
         element.css('top')
       );
-      coordinate.top = relative_position[1];
-      coordinate.left = relative_position[0];
+      coordinate = {
+        left: relative_position[0],
+        top: relative_position[1]
+      };
     }
-    console.log("uec", node_id, gadget.props.node_container);
+
     gadget.props.node_container[node_id].coordinate = coordinate;
     gadget.notifyDataChanged();
     return coordinate;
@@ -215,10 +212,7 @@
   function draggable(gadget) {
     var jsplumb_instance = gadget.props.jsplumb_instance,
       stop = function (element) {
-        updateElementCoordinate(gadget, getNodeId(
-          gadget.props.node_container,
-          element.target.id
-        ));
+        updateElementCoordinate(gadget, getNodeId(gadget, element.target.id));
       };
 
     jsplumb_instance
@@ -294,6 +288,8 @@
   }
 
   function updateNodeStyle(gadget, element_id) {
+    // Update node size according to the zoom level
+    // XXX does nothing for now
     var zoom_level = gadget.props.zoom_level * 1.1111,
       element = $(gadget.props.element).find("#" + element_id),
       new_value;
@@ -302,22 +298,6 @@
         .replace('px', '') * zoom_level + 'px';
       element.css(j, new_value);
     });
-  }
-
-  function addElementToContainer(node_container, element) {
-    // Now update the container of elements
-    /*jslint nomen: true*/
-    var element_data = {
-      _class: element._class,
-      name: element.name,
-      element_id: element.element_id
-    };
-    Object.keys(element).forEach(function (k) {
-      if (k !== '_class' && k !== 'name' && k !== 'element_id') {
-        element_data[k] = element[k];
-      }
-    });
-    node_container[element.id] = element_data;
   }
 
   // function redraw(gadget) {
@@ -331,7 +311,7 @@
   //       v.top
   //     );
   //     element = $(gadget.props.element).find(
-  //       '#' + getElementId(gadget.props.node_container, node_id)
+  //       '#' + gadget.props.node_id_to_dom_element_id[node_id];
   //     );
   //     element.css('top', absolute_position[1]);
   //     element.css('left', absolute_position[0]);
@@ -381,8 +361,10 @@
   }
 
   function updateElementData(gadget, node_id, data) {
-    var element_id = gadget.props.dom_element_id_container[node_id];
+  // XXX should probably not use data.data
+    var element_id = gadget.props.node_id_to_dom_element_id[node_id],
       new_id = data.id;
+    console.log('ued', node_id, data);
     if (data.data.name) {
       $(gadget.props.element).find("#" + element_id).text(data.data.name)
         .append('<div class="ep"></div></div>');
@@ -419,8 +401,8 @@
     }
 
     connection = gadget.props.jsplumb_instance.connect({
-      source: getElementId(gadget, edge_data.source),
-      target: getElementId(gadget, edge_data.destination),
+      source: gadget.props.node_id_to_dom_element_id[edge_data.source],
+      target: gadget.props.node_id_to_dom_element_id[edge_data.destination],
       Connector: [ "Bezier", {curviness: 75} ],
       overlays: overlays
     });
@@ -428,12 +410,38 @@
     connection.id = edge_id;
   }
 
-  function openNodeDialog(gadget, element, config_dict) {
-    var node_id = getNodeId(gadget.props.node_container, element.id),
+  function expandSchema(class_definition, full_schema) {
+    // minimal expanding of json schema, supports merging allOf and $ref
+    // references
+    var name, property, referenced, i,
+      expanded_class_definition = {properties:
+        class_definition.properties || {}};
+    if (class_definition.allOf) {
+      for (i = 0; i < class_definition.allOf.length; i += 1) {
+        referenced = class_definition.allOf[i];
+        if (referenced.$ref) {
+          referenced = expandSchema(
+            full_schema.class_definition[
+              referenced.$ref.substr(1, referenced.$ref.length)
+            ],
+            full_schema);
+        }
+        for (property in (referenced.properties || [])) {
+          if (referenced.properties[property].type) {
+            expanded_class_definition.properties[property] 
+              = referenced.properties[property];
+          }
+        }
+      }
+    }
+    return expanded_class_definition;
+  }
+
+  function openNodeDialog(gadget, element, class_definition) {
+    var node_id = getNodeId(gadget, element.id),
       node_data = gadget.props.node_container[node_id],
-      element_type = node_data._class.replace('.', '-'),
-      property_list = config_dict[element_type].property_list || [],
       node_edit_popup = $(gadget.props.element).find('#popup-edit-template'),
+      schema = expandSchema(class_definition, gadget.props.data),
       fieldset_element,
       delete_promise;
 
@@ -450,23 +458,7 @@
     fieldset_element = node_edit_popup.find('fieldset')[0];
     node_edit_popup.popup();
 
-    node_data.id = node_id;
-    if (property_list.length === 0 || property_list[0].id !== "id") {
-     // XXX name & id should not be handled differently in form.
-      property_list.unshift({
-        "_class": "Dream.Property",
-        "id": "name",
-        "name": "Name",
-        "type": "string"
-      });
-
-      property_list.unshift({
-        "_class": "Dream.Property",
-        "id": 'id',
-        "name": "ID",
-        "type": "string"
-      });
-    }
+    node_data.id = node_id; // XXX
 
     function save_promise(fieldset_gadget, node_id) {
       return RSVP.Queue()
@@ -509,7 +501,9 @@
       .push(function (fieldset_gadget) {
        // XXX those promises can probably be merged
         return RSVP.all([fieldset_gadget,
-                fieldset_gadget.render(property_list, node_data)]);
+                         fieldset_gadget.render({value: node_data, 
+                                          property_definition: schema},
+                                          node_id)]);
       })
       .push(function (fieldset_gadget) {
         node_edit_popup.enhanceWithin();
@@ -541,20 +535,16 @@
     var render_element = $(gadget.props.element).find("#main"),
       class_definition = gadget.props.data.class_definition[node_data._class],
       coordinate = node_data.coordinate,
+      dom_element_id,
       box,
       absolute_position,
       domElement;
-    console.log("adding", node_id, gadget.props.dom_element_id_container);
-    gadget.props.dom_element_id_container[node_id] = 
-        generateElementId(gadget.props.element);
-    /*
-    if (!element.id) {
-      element.id = generateNodeId(gadget, element);
-    }
-    */
-    // element.name = element.name || element.class_definition.name;
+
+    dom_element_id = generateDomElementId(gadget.props.element);
+    gadget.props.node_id_to_dom_element_id[node_id] = dom_element_id;
+
     node_data.name = node_data.name || class_definition.name;
-    addElementToContainer(gadget.props.node_container, node_data);
+    gadget.props.node_container[node_id] = node_data;
 
     if (coordinate !== undefined) {
       node_data.coordinate = updateElementCoordinate(
@@ -564,12 +554,12 @@
       );
     }
 
-    // XXX stop using handlebars
+    // XXX make this an option, or use CSS from class_definition
     /*jslint nomen: true*/
     domElement = domParser.parseFromString(
       node_template({
         "class": node_data._class.replace('.', '-'),
-        "element_id": node_data.element_id,
+        "element_id": dom_element_id,
         "title": node_data.name || node_data.id,
         "name": node_data.name || node_data.id
       }),
@@ -578,7 +568,8 @@
     render_element.append(domElement);
 
     waitForNodeClick(gadget, domElement, class_definition);
-    box = $(gadget.props.element).find("#" + node_data.element_id);
+
+    box = $(gadget.props.element).find("#" + dom_element_id);
     absolute_position = convertToAbsolutePosition(
       gadget,
       coordinate.left,
@@ -586,7 +577,7 @@
     );
     box.css("top", absolute_position[1]);
     box.css("left", absolute_position[0]);
-    updateNodeStyle(gadget, node_data.element_id);
+    updateNodeStyle(gadget, dom_element_id);
     draggable(gadget);
     gadget.notifyDataChanged();
   }
@@ -603,32 +594,25 @@
 
   function waitForDrop(gadget) {
     var callback;
-
     function canceller() {
       if (callback !== undefined) {
         gadget.props.main.removeEventListener('drop', callback, false);
       }
     }
-
     /*jslint unparam: true*/
-    function itsANonResolvableTrap(resolve, reject) {
+    function resolver(resolve, reject) {
       // XXX name this function seriously
       callback = function (evt) {
         try {
-          var class_name_and_class_definition = JSON.parse(
+          var class_name = JSON.parse(
               evt.dataTransfer.getData('application/json')
             ),
-            class_name = class_name_and_class_definition[0],
-            class_definition = class_name_and_class_definition[1],
             offset = $(gadget.props.main).offset(),
-            box_top = evt.clientY - offset.top + "px",
-            box_left = evt.clientX - offset.left + "px",
             relative_position = convertToRelativePosition(
               gadget,
-              box_left,
-              box_top
+              evt.clientX - offset.left + "px",
+              evt.clientY - offset.top + "px"
             );
-
           addNode(gadget,
             generateNodeId(gadget, {_class: class_name}),
             {
@@ -646,18 +630,17 @@
       gadget.props.main.addEventListener('drop', callback, false);
     }
 
-    return new RSVP.Promise(itsANonResolvableTrap, canceller);
+    return new RSVP.Promise(resolver, canceller);
   }
 
   initGadgetMixin(gadget_klass);
   gadget_klass
 
-    .declareAcquiredMethod('getConfigurationDict', 'getConfigurationDict')
     .declareAcquiredMethod('notifyDataChanged', 'notifyDataChanged')
 
     .ready(function (g) {
-      g.props.edge_container = {};
-      g.props.dom_element_id_container = {};
+      g.props.edge_container = {}; // XXX remove
+      g.props.node_id_to_dom_element_id = {};
       g.props.zoom_level = 1.0;
       g.props.style_attr_list = [
         'width',
@@ -669,13 +652,12 @@
 
     .declareMethod('render', function (data) {
       this.props.data = JSON.parse(data);
-      console.log("render", this.props.data);
       this.props.node_container = this.props.data.graph.main_graph.node;
       this.props.jsplumb_instance = jsPlumb.getInstance();
     })
 
     .declareMethod('getContent', function () {
-      return JSON.stringify(this.props.data)
+      return JSON.stringify(this.props.data);
     })
 
     .declareMethod('startService', function () {
