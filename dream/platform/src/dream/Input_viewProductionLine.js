@@ -3,9 +3,9 @@
   "use strict";
   var gadget_klass = rJS(window);
 
+// TODO: save on parent gadget
   function saveGraph(evt) {
-    var gadget = this,
-      graph_data;
+    var gadget = this;
     return new RSVP.Queue()
       .push(function () {
         // Prevent double click
@@ -18,11 +18,10 @@
         return graph_gadget.getContent();
       })
       .push(function (body) {
-        console.log("saving", JSON.parse(body));
         return gadget.aq_putAttachment({
           "_id": gadget.props.jio_key,
           "_attachment": "body.json",
-          "_data": body, //JSON.stringify(data, null, 2),
+          "_data": JSON.stringify(JSON.parse(body), null, 2),
           "_mimetype": "application/json"
         });
       })
@@ -44,6 +43,7 @@
 
   gadget_klass
 
+    // TODO Mixin
     .ready(function (g) {
       g.props = {};
     })

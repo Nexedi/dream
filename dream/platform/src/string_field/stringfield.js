@@ -10,11 +10,10 @@
         });
     })
     .declareMethod('render', function (options) {
-      var input = this.element.querySelector('input'),
-        field_json = options.field_json || {};
-      input.setAttribute('value', field_json.value || "");
-      input.setAttribute('name', field_json.key);
-      input.setAttribute('title', field_json.title);
+      var input = this.element.querySelector('input');
+      input.setAttribute('value', options.value || "");
+      input.setAttribute('name', options.key);
+      input.setAttribute('title', options.title || options.key);
     })
 
     .declareMethod('getContent', function () {

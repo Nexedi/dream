@@ -28,18 +28,18 @@
       var select = this.element.getElementsByTagName('select')[0],
         i,
         template,
-        field_json = options.field_json,
         tmp = '';
-      select.setAttribute('name', field_json.key);
-      for (i = 0; i < field_json.items.length; i += 1) {
-        if (field_json.items[i][1] === field_json.value) {
+      select.setAttribute('name', options.key);
+      for (i = 0; i < options.property_definition.enum.length; i += 1) {
+        if (options.property_definition.enum[i] === options.value) {
           template = selected_option_template;
         } else {
           template = option_template;
         }
+        // XXX value and text are always same in json schema
         tmp += template({
-          value: field_json.items[i][1],
-          text: field_json.items[i][0]
+          value: options.property_definition.enum[i],
+          text: options.property_definition.enum[i]
         });
       }
       select.innerHTML += tmp;
