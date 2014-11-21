@@ -30,11 +30,13 @@
    *  - add function to turn event handlers in promise ?
    * 
    * tests:
-   *   - loading
+   *   - loading & saving DONE
+   *   - dropping a new node from palette DONE
    *   - dragging a node
-   *   - clicking a node
-   *   - connecting two nodes ? (see jsplumb tests)
+   *   - editing node properties with popup
+   *   - connecting two nodes
    *   - removing a connection
+   *   - changing a node id ( make sure connections are updated )
    */
   var gadget_klass = rJS(window),
     node_template_source = gadget_klass.__template_element
