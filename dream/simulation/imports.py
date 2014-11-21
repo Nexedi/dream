@@ -57,6 +57,7 @@ from dream.simulation.MouldAssemblyManaged import MouldAssemblyManaged
 from dream.simulation.MouldAssemblyBufferManaged import MouldAssemblyBufferManaged
 from dream.simulation.OrderDecomposition import OrderDecomposition
 from dream.simulation.NonStarvingEntry import NonStarvingEntry
+from dream.simulation.RoutingQueue import RoutingQueue
 
 #Entities
 from dream.simulation.Job import Job
