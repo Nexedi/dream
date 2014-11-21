@@ -108,7 +108,7 @@
     var n = 1,
       class_def = gadget.props.data.class_definition[element._class],
       id = class_def.short_id || element._class;
-    while (gadget.props.node_container[id + n] !== undefined) {
+    while (gadget.props.data.graph.node[id + n] !== undefined) {
       n += 1;
     }
     return id + n;
@@ -206,7 +206,7 @@
       };
     }
 
-    gadget.props.node_container[node_id].coordinate = coordinate;
+    gadget.props.data.graph.node[node_id].coordinate = coordinate;
     gadget.notifyDataChanged();
     return coordinate;
   }
@@ -353,7 +353,7 @@
       $(gadget.props.element).find("#" + element_id)
     );
     $(gadget.props.element).find("#" + element_id).remove();
-    delete gadget.props.node_container[node_id];
+    delete gadget.props.data.graph.node[node_id];
 
     $.each(gadget.props.edge_container, function (k, v) {
       if (node_id === v[0] || node_id === v[1]) {
@@ -368,19 +368,18 @@
   // XXX should probably not use data.data
     var element_id = gadget.props.node_id_to_dom_element_id[node_id],
       new_id = data.id;
-    console.log('ued', node_id, data);
     if (data.data.name) {
       $(gadget.props.element).find("#" + element_id).text(data.data.name)
         .append('<div class="ep"></div></div>');
-      gadget.props.node_container[node_id].name = data.data.name;
+      gadget.props.data.graph.node[node_id].name = data.data.name;
     }
     delete data.id;
-    $.extend(gadget.props.node_container[node_id], data.data);
+    $.extend(gadget.props.data.graph.node[node_id], data.data);
     if (new_id && new_id !== node_id) {
-      gadget.props.node_container[new_id]
-        = gadget.props.node_container[node_id];
-      delete gadget.props.node_container[node_id];
-      delete gadget.props.node_container[new_id].id;
+      gadget.props.data.graph.node[new_id]
+        = gadget.props.data.graph.node[node_id];
+      delete gadget.props.data.graph.node[node_id];
+      delete gadget.props.data.graph.node[new_id].id;
       $.each(gadget.props.edge_container, function (k, v) {
         if (v[0] === node_id) {
           v[0] = new_id;
@@ -444,7 +443,7 @@
   // TODO: remove class_definition from this function and callees signature
   function openNodeDialog(gadget, element, class_definition) {
     var node_id = getNodeId(gadget, element.id),
-      node_data = gadget.props.node_container[node_id],
+      node_data = gadget.props.data.graph.node[node_id],
       node_edit_popup = $(gadget.props.element).find('#popup-edit-template'),
       schema = expandSchema(class_definition, gadget.props.data),
       fieldset_element,
@@ -549,7 +548,7 @@
     gadget.props.node_id_to_dom_element_id[node_id] = dom_element_id;
 
     node_data.name = node_data.name || class_definition.name;
-    gadget.props.node_container[node_id] = node_data;
+    gadget.props.data.graph.node[node_id] = node_data;
 
     if (coordinate === undefined) {
       coordinate = {top: 0, left: 0}
@@ -660,7 +659,6 @@
 
     .declareMethod('render', function (data) {
       this.props.data = JSON.parse(data);
-      this.props.node_container = this.props.data.graph.node;
       this.props.jsplumb_instance = jsPlumb.getInstance();
     })
 
