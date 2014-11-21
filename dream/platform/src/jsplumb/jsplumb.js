@@ -494,12 +494,12 @@
         return removeElement(gadget, node_id);
       });
 
+    // XXX the gadget to use on node click should be an option
     return gadget.declareGadget("../fieldset/index.html", {
       element: fieldset_element,
       scope: 'fieldset'
     })
       .push(function (fieldset_gadget) {
-       // XXX those promises can probably be merged
         return RSVP.all([fieldset_gadget,
                          fieldset_gadget.render({value: node_data, 
                                           property_definition: schema},
@@ -554,7 +554,7 @@
       );
     }
 
-    // XXX make this an option, or use CSS from class_definition
+    // XXX make node template an option, or use CSS from class_definition
     /*jslint nomen: true*/
     domElement = domParser.parseFromString(
       node_template({
@@ -582,7 +582,9 @@
     gadget.notifyDataChanged();
   }
 
-  // XXX why is that needed ?
+  // This will register a dragover handler that prevents default on the event,
+  // so that we can wait for drop
+  // TODO: add in waitForDrop
   function waitForDragover(gadget) {
     return loopEventListener(
       gadget.props.main,
@@ -601,7 +603,6 @@
     }
     /*jslint unparam: true*/
     function resolver(resolve, reject) {
-      // XXX name this function seriously
       callback = function (evt) {
         try {
           var class_name = JSON.parse(
