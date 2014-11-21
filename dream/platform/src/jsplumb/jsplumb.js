@@ -346,17 +346,19 @@
 
 
   function removeElement(gadget, node_id) {
-    var element_id = gadget.props.node_container[node_id].element_id;
+    var element_id = gadget.props.node_id_to_dom_element_id[node_id];
     gadget.props.jsplumb_instance.removeAllEndpoints(
       $(gadget.props.element).find("#" + element_id)
     );
     $(gadget.props.element).find("#" + element_id).remove();
     delete gadget.props.node_container[node_id];
+
     $.each(gadget.props.edge_container, function (k, v) {
       if (node_id === v[0] || node_id === v[1]) {
         delete gadget.props.edge_container[k];
       }
     });
+
     gadget.notifyDataChanged();
   }
 
