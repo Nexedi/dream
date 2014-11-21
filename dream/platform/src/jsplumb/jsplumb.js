@@ -439,6 +439,7 @@
     return expanded_class_definition;
   }
 
+  // TODO: remove class_definition from this function and callees signature
   function openNodeDialog(gadget, element, class_definition) {
     var node_id = getNodeId(gadget, element.id),
       node_data = gadget.props.node_container[node_id],
