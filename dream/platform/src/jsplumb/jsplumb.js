@@ -549,13 +549,15 @@
     node_data.name = node_data.name || class_definition.name;
     gadget.props.node_container[node_id] = node_data;
 
-    if (coordinate !== undefined) {
-      node_data.coordinate = updateElementCoordinate(
-        gadget,
-        node_id,
-        coordinate
-      );
+    if (coordinate === undefined) {
+      coordinate = {top: 0, left: 0}
     }
+
+    node_data.coordinate = updateElementCoordinate(
+      gadget,
+      node_id,
+      coordinate
+    );
 
     // XXX make node template an option, or use CSS from class_definition
     /*jslint nomen: true*/
