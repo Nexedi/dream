@@ -123,12 +123,12 @@
 
   function updateConnectionData(gadget, connection, remove, edge_data) {
     if (remove) {
-      delete gadget.props.data.graph.main_graph.edge[connection.id];
+      delete gadget.props.data.graph.edge[connection.id];
     } else {
       edge_data = edge_data || {'_class': 'Dream.Edge'};
       edge_data.source = getNodeId(gadget, connection.sourceId);
       edge_data.destination = getNodeId(gadget, connection.targetId);
-      gadget.props.data.graph.main_graph.edge[connection.id] = edge_data;
+      gadget.props.data.graph.edge[connection.id] = edge_data;
     }
     gadget.notifyDataChanged();
   }
@@ -653,7 +653,7 @@
 
     .declareMethod('render', function (data) {
       this.props.data = JSON.parse(data);
-      this.props.node_container = this.props.data.graph.main_graph.node;
+      this.props.node_container = this.props.data.graph.node;
       this.props.jsplumb_instance = jsPlumb.getInstance();
     })
 
@@ -665,13 +665,12 @@
       var gadget = this;
       this.props.main = this.props.element.querySelector('#main');
       initJsPlumb(this);
-      // XXX what is this ?
       this.props.nodes_click_monitor = RSVP.Monitor();
 
-      $.each(this.props.data.graph.main_graph.node, function (key, value) {
+      $.each(this.props.data.graph.node, function (key, value) {
         addNode(gadget, key, value);
       });
-      $.each(this.props.data.graph.main_graph.edge, function (key, value) {
+      $.each(this.props.data.graph.edge, function (key, value) {
         addEdge(gadget, key, value);
       });
 
