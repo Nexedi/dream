@@ -588,18 +588,6 @@
     gadget.notifyDataChanged();
   }
 
-  // This will register a dragover handler that prevents default on the event,
-  // so that we can wait for drop
-  // TODO: add in waitForDrop
-  function waitForDragover(gadget) {
-    return loopEventListener(
-      gadget.props.main,
-      'dragover',
-      false,
-      function () {return undefined; }
-    );
-  }
-
   function waitForDrop(gadget) {
     var callback;
     function canceller() {
@@ -637,7 +625,12 @@
       gadget.props.main.addEventListener('drop', callback, false);
     }
 
-    return new RSVP.Promise(resolver, canceller);
+    return new RSVP.all( [
+      // loopEventListener adds an event listener that will prevent default for
+      // dragover
+      loopEventListener(gadget.props.main, 'dragover', false,
+        function () {return undefined; }),
+      RSVP.Promise(resolver, canceller) ]);
   }
 
   initGadgetMixin(gadget_klass);
@@ -680,7 +673,6 @@
       });
 
       return RSVP.all([
-        waitForDragover(gadget),
         waitForDrop(gadget),
         waitForConnection(gadget),
         waitForConnectionDetached(gadget),
