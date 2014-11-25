@@ -949,17 +949,17 @@
             newFunction = newFunction || function() { };
             return function() {
                 var r = null;
-                try {
+                //try {
                     r = newFunction.apply(this, arguments);
-                } catch (e) {
-                    jsPlumbUtil.log("jsPlumb function failed : " + e);
-                }
+                //} catch (e) {
+                //    jsPlumbUtil.log("jsPlumb function failed : " + e);
+                //}
                 if (returnOnThisValue == null || (r !== returnOnThisValue)) {
-                    try {
+                    //try {
                         r = wrappedFunction.apply(this, arguments);
-                    } catch (e) {
-                        jsPlumbUtil.log("wrapped function failed : " + e);
-                    }
+                    //} catch (e) {
+                    //    jsPlumbUtil.log("wrapped function failed : " + e);
+                    //}
                 }
                 return r;
             };
