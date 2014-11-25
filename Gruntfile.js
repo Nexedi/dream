@@ -239,6 +239,12 @@ module.exports = function (grunt) {
         src: 'http://dhtmlx.com/x/download/regular/dhtmlxGantt.zip',
         dest: '<%= global_config.tmp %>/dhtmlxGantt.zip'
       },
+      jquerysimulatejs: {
+        src: "https://raw.githubusercontent.com/eduardolundgren/jquery-simulate/" +
+          "b9e110ddbdff2fc0853c9ebf00c493c8e368e6c9/jquery.simulate.js",
+        relative_dest: 'lib/jquery.simulate.js',
+        dest: '<%= global_config.dest %>/<%= curl.jquerysimulatejs.relative_dest %>'
+      },
       momentjs: {
         src: 'https://raw.githubusercontent.com/moment/moment/2.5.1/min/' +
           'moment-with-langs.min.js',
