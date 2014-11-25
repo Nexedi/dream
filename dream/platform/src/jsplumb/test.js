@@ -1,95 +1,95 @@
-/*global rJS, JSON, QUnit, jQuery*/
+/*global rJS, JSON, QUnit, jQuery, RSVP, console*/
 
-(function (rJS, JSON, QUnit, $) {
+(function (rJS, JSON, QUnit, RSVP) {
   "use strict";
   var start = QUnit.start,
     stop = QUnit.stop,
     test = QUnit.test,
     equal = QUnit.equal,
     sample_class_definition = {
-        "edge": {
-            "description": "Base definition for edge",
+      "edge": {
+        "description": "Base definition for edge",
+        "properties": {
+          "_class": {
+            "type": "string"
+          },
+          "destination": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "required": [
+            "name",
+            "_class",
+            "source",
+            "destination"
+          ],
+          "source": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Example.Edge": {
+        "_class": "edge",
+        "allOf": [
+          {
+            "$ref": "#edge"
+          },
+          {
             "properties": {
-                "_class": {
-                    "type": "string"
-                },
-                "destination": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "required": [
-                    "name",
-                    "_class",
-                    "source",
-                    "destination"
-                ],
-                "source": {
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "Example.Edge": {
-            "_class": "edge",
-            "allOf": [
-                {
-                    "$ref": "#edge"
-                },
-                {
-                    "properties": {
-                        "color": {
-                            "enum": [
-                                "red",
-                                "green",
-                                "blue"
-                            ]
-                        }
-                    }
-                }
-            ],
-            "description": "An example edge with a color property"
-        },
-        "Example.Node": {
-            "_class": "node",
-            "allOf": [
-                {
-                    "$ref": "#node"
-                },
-                {
-                    "properties": {
-                        "shape": {
-                            "type": "string"
-                        }
-                    }
-                }
-            ],
-            "description": "An example node with a shape property"
-        },
-        "node": {
-            "description": "Base definition for node",
-            "properties": {
-                "_class": {
-                    "type": "string"
-                },
-                "coordinate": {
-                    "properties": {
-                        "left": "number",
-                        "top": "number"
-                    },
-                    "type": "object"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "required": [
-                    "name",
-                    "_class"
+              "color": {
+                "enum": [
+                  "red",
+                  "green",
+                  "blue"
                 ]
+              }
+            }
+          }
+        ],
+        "description": "An example edge with a color property"
+      },
+      "Example.Node": {
+        "_class": "node",
+        "allOf": [
+          {
+            "$ref": "#node"
+          },
+          {
+            "properties": {
+              "shape": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "description": "An example node with a shape property"
+      },
+      "node": {
+        "description": "Base definition for node",
+        "properties": {
+          "_class": {
+            "type": "string"
+          },
+          "coordinate": {
+            "properties": {
+              "left": "number",
+              "top": "number"
             },
             "type": "object"
-        }
+          },
+          "name": {
+            "type": "string"
+          },
+          "required": [
+            "name",
+            "_class"
+          ]
+        },
+        "type": "object"
+      }
     },
     sample_graph = {
       "edge": {
@@ -185,4 +185,4 @@
 
   });
 
-}(rJS, JSON, QUnit, jQuery));
+}(rJS, JSON, QUnit, RSVP));

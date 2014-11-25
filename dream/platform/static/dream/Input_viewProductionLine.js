@@ -3,7 +3,7 @@
     "use strict";
     var gadget_klass = rJS(window);
     function saveGraph(evt) {
-        var gadget = this, graph_data;
+        var gadget = this;
         return new RSVP.Queue().push(function() {
             // Prevent double click
             if (evt) {

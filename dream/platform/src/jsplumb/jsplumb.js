@@ -416,7 +416,7 @@
   function expandSchema(class_definition, full_schema) {
     // minimal expanding of json schema, supports merging allOf and $ref
     // references
-    var name, property, referenced, i,
+    var property, referenced, i,
       expanded_class_definition = {properties:
         class_definition.properties || {}};
     if (class_definition.allOf) {
@@ -429,10 +429,14 @@
             ],
             full_schema);
         }
-        for (property in (referenced.properties || [])) {
-          if (referenced.properties[property].type) {
-            expanded_class_definition.properties[property] 
-              = referenced.properties[property];
+        if (referenced.properties) {
+          for (property in referenced.properties) {
+            if (referenced.properties.hasOwnProperty(property)) {
+              if (referenced.properties[property].type) {
+                expanded_class_definition.properties[property]
+                  = referenced.properties[property];
+              }
+            }
           }
         }
       }
@@ -551,7 +555,7 @@
     gadget.props.data.graph.node[node_id] = node_data;
 
     if (coordinate === undefined) {
-      coordinate = {top: 0, left: 0}
+      coordinate = {top: 0, left: 0};
     }
 
     node_data.coordinate = updateElementCoordinate(
@@ -621,7 +625,6 @@
           reject(e);
         }
       };
-
       gadget.props.main.addEventListener('drop', callback, false);
     }
 
@@ -664,7 +667,6 @@
       this.props.main = this.props.element.querySelector('#main');
       initJsPlumb(this);
       this.props.nodes_click_monitor = RSVP.Monitor();
-
       $.each(this.props.data.graph.node, function (key, value) {
         addNode(gadget, key, value);
       });

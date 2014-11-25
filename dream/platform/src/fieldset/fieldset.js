@@ -21,8 +21,7 @@
       // XXX node_id is added like a property so that one can change the node
       // id
       var gadget = this,
-        queue,
-        property;
+        queue;
 
       gadget.props.key = options.key; // used for recursive fieldsets
       gadget.props.field_gadget_list = [];
@@ -78,7 +77,7 @@
             ).forEach(function (property_name) {
             var property_definition =
               options.property_definition.properties[property_name],
-              value = (options.value || {})[property_name] === undefined 
+              value = (options.value || {})[property_name] === undefined
               ? property_definition._default : options.value[property_name];
             // XXX some properties are not editable
             if (property_name !== 'coordinate' && property_name !== '_class') {
