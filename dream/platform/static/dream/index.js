@@ -363,12 +363,30 @@
                 applicationname: "dream"
             });
         }).push(function() {
-            // XXX Hardcoded relative URL
-            return jio_gadget.ajax({
-                url: "../../getConfigurationDict"
-            });
-        }).push(function(evt) {
-            g.props.configuration_dict = JSON.parse(evt.target.responseText);
+            g.props.configuration_dict = {
+                "Dream-Configuration": {
+                    _class: "Dream.Configuration",
+                    gui: {
+                        debug_json: 1,
+                        download_excel_spreadsheet: 0,
+                        exit_stat: 1,
+                        job_gantt: 0,
+                        job_schedule_spreadsheet: 0,
+                        queue_stat: 1,
+                        shift_spreadsheet: 0,
+                        station_utilisation_graph: 1,
+                        wip_part_spreadsheet: 0,
+                        wip_spreadsheet: 0
+                    },
+                    property_list: [ {
+                        _class: "Dream.Property",
+                        _default: 10,
+                        id: "numberOfReplications",
+                        name: "Number of replications",
+                        type: "number"
+                    } ]
+                }
+            };
         });
     }).declareMethod("render", function(options) {
         var gadget = this, back_kw = {
