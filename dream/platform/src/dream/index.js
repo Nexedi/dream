@@ -37,56 +37,62 @@
       "view_wip_part_spreadsheet": {
         "gadget": "Input_viewWipPartSpreadsheet",
         "type": "object_view",
-        "title": "WIP Part Spreadsheet",
+        "title": "WIP Part Spreadsheet" /* ,
         "condition": function (gadget) {
           return (gadget.props.configuration_dict['Dream-Configuration']
                         .gui.wip_part_spreadsheet);
         }
+        */
       },
       "view_shift_spreadsheet": {
         "gadget": "Input_viewShiftSpreadsheet",
         "type": "object_view",
-        "title": "Shift Spreadsheet",
+        "title": "Shift Spreadsheet" /* ,
         "condition": function (gadget) {
           return (gadget.props.configuration_dict['Dream-Configuration']
                         .gui.shift_spreadsheet);
         }
+        */
       },
       "view_available_capacity_spreadsheet": {
         "gadget": "Input_viewAvailableCapacitySpreadsheet",
         "type": "object_view",
-        "title": "Available Capacity Spreadsheet",
+        "title": "Available Capacity Spreadsheet" /* ,
         "condition": function (gadget) {
           return (gadget.props.configuration_dict['Dream-Configuration']
                         .gui.capacity_by_project_spreadsheet);
         }
+        */
       },
       "view_required_capacity_spreadsheet": {
         "gadget": "Input_viewRequiredCapacitySpreadsheet",
         "type": "object_view",
-        "title": "Required Capacity Spreadsheet",
+        "title": "Required Capacity Spreadsheet" /* ,
         "condition": function (gadget) {
           return (gadget.props.configuration_dict['Dream-Configuration']
                         .gui.capacity_by_station_spreadsheet);
         }
+        */
       },
       "view_dp_capacity_spreadsheet": {
         "gadget": "Input_viewDemandPlanningCapacitySpreadsheet",
         "type": "object_view",
-        "title": "Demand Planning Required Capacity Spreadsheet",
+        "title": "Demand Planning Required Capacity Spreadsheet" /* ,
         "condition": function (gadget) {
           return (gadget.props.configuration_dict['Dream-Configuration']
                         .gui.dp_capacity_spreadsheet);
         }
+        */
       },
       "view_dp_route_spreadsheet": {
         "gadget": "Input_viewDemandPlanningRouteSpreadsheet",
         "type": "object_view",
-        "title": "Demand Planning Route Spreadsheet",
+        "title": "Demand Planning Route Spreadsheet" /* ,
         "condition": function (gadget) {
           return (gadget.props.configuration_dict['Dream-Configuration']
                         .gui.dp_route_spreadsheet);
         }
+        */
       },
       "view_simu": {
         "gadget": "Input_viewSimulation",
@@ -108,74 +114,82 @@
       "view": {
         "gadget": "Output_viewStationUtilisationGraph",
         "type": "object_view",
-        "title": "Stations Utilization",
+        "title": "Stations Utilization" /* ,
         "condition": function (gadget) {
           return (gadget.props.configuration_dict['Dream-Configuration']
                         .gui.station_utilisation_graph);
         }
+        */
       },
       "download_excel_spreadsheet": {
         "gadget": "Output_viewDownloadExcelSpreadsheet",
         "type": "object_view",
-        "title": "Download Excel Spreadsheet",
+        "title": "Download Excel Spreadsheet" /* ,
         "condition": function (gadget) {
           return (gadget.props.configuration_dict['Dream-Configuration']
                         .gui.download_excel_spreadsheet);
         }
+        */
       },
       "view_capacity_utilization": {
         "gadget": "Output_viewCapacityUtilisationGraph",
         "type": "object_view",
-        "title": "Capacity Utilization",
+        "title": "Capacity Utilization" /* ,
         "condition": function (gadget) {
           return (gadget.props.configuration_dict['Dream-Configuration']
                         .gui.capacity_utilisation_graph);
         }
+        */
       },
       "view_queue_stat": {
         "gadget": "Output_viewQueueStatGraph",
         "type": "object_view",
-        "title": "Queues Statistics",
+        "title": "Queues Statistics" /* ,
         "condition": function (gadget) {
           return (gadget.props.configuration_dict['Dream-Configuration']
                         .gui.queue_stat);
         }
+        */
       },
       "view_exit_stat": {
         "gadget": "Output_viewExitStatistics",
         "type": "object_view",
-        "title": "Exit Statistics",
+        "title": "Exit Statistics" /* ,
         "condition": function (gadget) {
           return (gadget.props.configuration_dict['Dream-Configuration']
                         .gui.exit_stat);
         }
+        */
       },
       "view_gantt": {
         "gadget": "Output_viewJobGantt",
         "type": "object_view",
-        "title": "Job Gantt",
+        "title": "Job Gantt" /* ,
         "condition": function (gadget) {
           return (gadget.props.configuration_dict['Dream-Configuration']
                         .gui.job_gantt);
         }
+        */
       },
       "view_schedule": {
         "gadget": "Output_viewJobScheduleSpreadsheet",
         "type": "object_view",
-        "title": "Job Schedule",
+        "title": "Job Schedule" /* ,
         "condition": function (gadget) {
           return (gadget.props.configuration_dict['Dream-Configuration']
                         .gui.job_schedule_spreadsheet);
         }
+        */
       },
       "view_debug": {
         "gadget": "Output_viewDebugJson",
         "type": "object_view",
-        "title": "Debug JSON",
+        "title": "Debug JSON" /* ,
         "condition": function (gadget) {
           return (gadget.props.configuration_dict['Dream-Configuration']
                         .gui.debug_json);
         }
+        */
       }
     }
   },
@@ -407,9 +421,6 @@
           result: param_list[1]
         });
       })
-    .allowPublicAcquisition("getConfigurationDict", function () {
-      return this.props.configuration_dict;
-    })
 
     /////////////////////////////////////////////////////////////////
     // ready
@@ -456,27 +467,16 @@
     })
 
     // Configure jIO to use localstorage
-    // And load configuration from server
     .ready(function (g) {
-      var jio_gadget;
       return g.getDeclaredGadget("jio")
         .push(function (gadget) {
-          jio_gadget = gadget;
-          return jio_gadget.createJio({
+          return gadget.createJio({
             type: "local",
             username: "dream",
             applicationname: "dream"
           });
-        })
-        .push(function () {
-          // XXX Hardcoded relative URL
-          return jio_gadget.ajax({url: "../../getConfigurationDict"});
-        })
-        .push(function (evt) {
-          g.props.configuration_dict = JSON.parse(evt.target.responseText);
         });
     })
-
 
     /////////////////////////////////////////////////////////////////
     // declared methods
@@ -510,10 +510,26 @@
         }
       }
 
-      // Get the action information
-      return gadget.declareGadget(
-        portal_types[portal_type][options.action].gadget + ".html"
-      )
+      return gadget.getDeclaredGadget("jio")
+        .push(function(jio_gadget) {
+          if (options.id) {
+            return jio_gadget.getAttachment({
+              "_id": options.id,
+              "_attachment": "body.json"
+            });
+          }
+        })
+        .push(function(result) {
+          gadget.props.data = result ? JSON.parse(result) : {};
+          // TODO
+          window.console.log("We got this data", gadget.props.data,
+            "we can now set portal_types");
+
+          // Get the action information
+          return gadget.declareGadget(
+            portal_types[portal_type][options.action].gadget + ".html"
+          );
+        })
         .push(function (g) {
           page_gadget = g;
           if (page_gadget.render !== undefined) {
