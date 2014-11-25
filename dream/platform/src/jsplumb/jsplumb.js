@@ -359,9 +359,9 @@
     $(gadget.props.element).find("#" + element_id).remove();
     delete gadget.props.data.graph.node[node_id];
 
-    $.each(gadget.props.edge_container, function (k, v) {
-      if (node_id === v[0] || node_id === v[1]) {
-        delete gadget.props.edge_container[k];
+    $.each(gadget.props.data.graph.edge, function (k, v) {
+      if (node_id === v.source || node_id === v.destination) {
+        delete gadget.props.data.graph.edge[k];
       }
     });
 
@@ -382,13 +382,18 @@
       gadget.props.data.graph.node[new_id]
         = gadget.props.data.graph.node[node_id];
       delete gadget.props.data.graph.node[node_id];
+
+      gadget.props.node_id_to_dom_element_id[new_id]
+        = gadget.props.node_id_to_dom_element_id[node_id];
+      delete gadget.props.node_id_to_dom_element_id[node_id];
+
       delete gadget.props.data.graph.node[new_id].id;
-      $.each(gadget.props.edge_container, function (k, v) {
-        if (v[0] === node_id) {
-          v[0] = new_id;
+      $.each(gadget.props.data.graph.edge, function (k, v) {
+        if (v.source === node_id) {
+          v.source = new_id;
         }
-        if (v[1] === node_id) {
-          v[1] = new_id;
+        if (v.destination === node_id) {
+          v.destination = new_id;
         }
       });
     }
@@ -646,7 +651,6 @@
     .declareAcquiredMethod('notifyDataChanged', 'notifyDataChanged')
 
     .ready(function (g) {
-      g.props.edge_container = {}; // XXX remove
       g.props.node_id_to_dom_element_id = {};
       g.props.zoom_level = 1.0;
       g.props.style_attr_list = [
