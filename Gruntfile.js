@@ -43,10 +43,14 @@ module.exports = function (grunt) {
         directives: {
           maxlen: 79,
           indent: 2,
-          maxerr: 3,
+          maxerr: 5,
+          todo: true,
+          white: true,
+          nomen: true,
           predef: [
             'window',
-            'document'
+            'document',
+            'Event'
           ]
         }
       }
