@@ -880,12 +880,10 @@ class Machine(CoreObject):
                 # XXX add the SkilledOperatorRouter to this list and perform the signalling only once
                 for interruption in (G.ObjectInterruptionList):
                     # if the objectInterruption is waiting for a a signal
-                    if interruption.victim==self and interruption.waitingSignal:
-                        # signal it and reset the flags
-                        if interruption.expectedSignals['endedLastProcessing']:
-                            self.sendSignal(receiver=self, signal=self.endedLastProcessing)
-                            interruption.waitingSignal=False
-                            self.isWorkingOnTheLast=False
+                    if interruption.victim==self and interruption.expectedSignals['endedLastProcessing']:
+                        self.sendSignal(receiver=self, signal=self.endedLastProcessing)
+                        interruption.waitingSignal=False
+                        self.isWorkingOnTheLast=False
                 # set timeLastShiftEnded attribute so that if it is overtime working it is not counted as off-shift time
                 if self.interruptedBy=='ShiftScheduler':
                     self.timeLastShiftEnded=self.env.now
