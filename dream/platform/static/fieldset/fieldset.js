@@ -9,47 +9,39 @@
     // Precompile the templates while loading the first gadget instance
     var gadget_klass = rJS(window), source = gadget_klass.__template_element.getElementById("label-template").innerHTML, label_template = Handlebars.compile(source);
     initGadgetMixin(gadget_klass);
-    gadget_klass.declareMethod("render", function(property_list, data, key) {
-        var gadget = this, queue, value, property;
-        gadget.key = key;
+    gadget_klass.declareMethod("render", function(options, node_id) {
+        // XXX node_id is added like a property so that one can change the node
+        // id
+        var gadget = this, queue;
+        gadget.props.key = options.key;
         // used for recursive fieldsets
         gadget.props.field_gadget_list = [];
-        function addField(property, value) {
+        function addField(property_id, property_definition, value) {
             var sub_gadget;
             queue.push(function() {
                 // XXX this is incorrect for recursive fieldsets.
                 // we should use nested fieldset with legend
                 gadget.props.element.insertAdjacentHTML("beforeend", label_template({
-                    "for": property.id,
-                    name: property.name || property.id
+                    "for": property_id,
+                    name: property_definition.name || property_id
                 }));
-                if (property._class === "Dream.PropertyList") {
+                if (property_definition.type === "object") {
                     // Create a recursive fieldset for this key.
                     return gadget.declareGadget("../fieldset/index.html");
                 }
-                if (property.type === "number") {
+                if (property_definition.type === "number") {
                     return gadget.declareGadget("../number_field/index.html");
                 }
-                if (property.choice) {
+                if (property_definition.enum) {
                     return gadget.declareGadget("../list_field/index.html");
                 }
                 return gadget.declareGadget("../string_field/index.html");
             }).push(function(gg) {
                 sub_gadget = gg;
-                var choice = property.choice || [], default_opt = choice[0] ? [ choice[0][1] ] : [ "" ];
-                value = data[property.id] === undefined ? value : data[property.id];
-                if (gg.__title === "Fieldset") {
-                    // XXX there must be a better way instead of using __title ?
-                    return gg.render(property.property_list, value, property.id);
-                }
                 return sub_gadget.render({
-                    field_json: {
-                        title: property.description || "",
-                        key: property.id,
-                        value: value,
-                        items: choice,
-                        "default": default_opt
-                    }
+                    key: property_id,
+                    value: value,
+                    property_definition: property_definition
                 });
             }).push(function() {
                 return sub_gadget.getElement();
@@ -59,10 +51,17 @@
             });
         }
         queue = new RSVP.Queue().push(function() {
-            Object.keys(property_list).forEach(function(i) {
-                property = property_list[i];
-                value = property._default === undefined ? "" : property._default;
-                addField(property, value);
+            if (node_id) {
+                addField("id", {
+                    type: "string"
+                }, node_id);
+            }
+            Object.keys(options.property_definition.properties).forEach(function(property_name) {
+                var property_definition = options.property_definition.properties[property_name], value = (options.value || {})[property_name] === undefined ? property_definition._default : options.value[property_name];
+                // XXX some properties are not editable
+                if (property_name !== "coordinate" && property_name !== "_class") {
+                    addField(property_name, property_definition, value);
+                }
             });
         });
         return queue;
@@ -75,8 +74,8 @@
             return RSVP.all(promise_list);
         }).push(function(result_list) {
             var name, result = {}, content = result;
-            if (gadget.key) {
-                content = result[gadget.key] = {};
+            if (gadget.props.key) {
+                content = result[gadget.props.key] = {};
             }
             for (i = 0; i < result_list.length; i += 1) {
                 for (name in result_list[i]) {

@@ -2,6 +2,7 @@
 (function(window, rJS, RSVP, loopEventListener) {
     "use strict";
     var gadget_klass = rJS(window);
+    // TODO: save on parent gadget
     function saveGraph(evt) {
         var gadget = this;
         return new RSVP.Queue().push(function() {
@@ -11,23 +12,12 @@
             }
             return gadget.getDeclaredGadget("productionline_graph");
         }).push(function(graph_gadget) {
-            return graph_gadget.getData();
-        }).push(function(data) {
-            graph_data = data;
-            // Always get a fresh version, to prevent deleting spreadsheet & co
-            return gadget.aq_getAttachment({
-                _id: gadget.props.jio_key,
-                _attachment: "body.json"
-            });
+            return graph_gadget.getContent();
         }).push(function(body) {
-            var data = JSON.parse(body), json_graph_data = JSON.parse(graph_data);
-            data.nodes = json_graph_data.nodes;
-            data.edges = json_graph_data.edges;
-            data.preference = json_graph_data.preference;
             return gadget.aq_putAttachment({
                 _id: gadget.props.jio_key,
                 _attachment: "body.json",
-                _data: JSON.stringify(data, null, 2),
+                _data: JSON.stringify(JSON.parse(body), null, 2),
                 _mimetype: "application/json"
             });
         }).push(function() {
@@ -56,7 +46,7 @@
         }
         this.timeout = window.setTimeout(saveGraph.bind(this), 100);
     }).declareMethod("render", function(options) {
-        var jio_key = options.id, gadget = this;
+        var jio_key = options.id, gadget = this, data;
         gadget.props.jio_key = jio_key;
         return new RSVP.Queue().push(function() {
             /*jslint nomen: true*/
@@ -65,11 +55,12 @@
                 _attachment: "body.json"
             }), gadget.getDeclaredGadget("productionline_graph") ]);
         }).push(function(result_list) {
-            return result_list[1].render(result_list[0]);
+            data = result_list[0];
+            return result_list[1].render(data);
         }).push(function() {
             return gadget.getDeclaredGadget("productionline_toolbox");
         }).push(function(toolbox_gadget) {
-            toolbox_gadget.render();
+            toolbox_gadget.render(data);
         });
     }).declareMethod("startService", function() {
         var g = this, graph;
