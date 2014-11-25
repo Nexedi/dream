@@ -422,6 +422,9 @@
           result: param_list[1]
         });
       })
+    .allowPublicAcquisition("getConfigurationDict", function () {
+      return this.props.configuration_dict;
+    })
 
     /////////////////////////////////////////////////////////////////
     // ready
