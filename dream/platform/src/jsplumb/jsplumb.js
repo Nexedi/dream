@@ -33,10 +33,13 @@
    *   - loading & saving DONE
    *   - dropping a new node from palette DONE
    *   - dragging a node
-   *   - editing node properties with popup
+   *   - editing node properties with popup (make sure we can display after
+   *   edit)
    *   - connecting two nodes
    *   - removing a connection
-   *   - changing a node id ( make sure connections are updated )
+   *   - removing a node ( make sure connections are removed )
+   *   - changing a node id ( make sure connections are updated ) ( make sure
+   *   we can display after edit )
    */
   var gadget_klass = rJS(window),
     node_template_source = gadget_klass.__template_element
@@ -153,6 +156,7 @@
   }
 
   function waitForConnectionClick(gadget) {
+    // TODO: dialog to edit connection properties
     loopJsplumbBind(gadget, 'click', function (connection) {
       if (confirm("Delete connection ?")) {
         gadget.props.jsplumb_instance.detach(connection);
@@ -365,7 +369,6 @@
   }
 
   function updateElementData(gadget, node_id, data) {
-  // XXX should probably not use data.data
     var element_id = gadget.props.node_id_to_dom_element_id[node_id],
       new_id = data.id;
     if (data.data.name) {
@@ -416,6 +419,7 @@
   function expandSchema(class_definition, full_schema) {
     // minimal expanding of json schema, supports merging allOf and $ref
     // references
+    // TODO: check for a library with full support
     var property, referenced, i,
       expanded_class_definition = {properties:
         class_definition.properties || {}};
