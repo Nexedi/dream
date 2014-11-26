@@ -128,7 +128,6 @@ class ShiftScheduler(ObjectInterruption):
                             transmitter, eventTime=self.victim.endedLastProcessing.value
                             self.victim.endedLastProcessing=self.env.event()
                         elif self.victimFailed in receivedEvent:
-                            print self.env.now,self.victim.id, 'received victim failed'
                             transmitter, eventTime=self.victimFailed.value
                             self.victimFailed=self.env.event()
                     # sometimes the time to end the last process may overcome the time to restart theshift
