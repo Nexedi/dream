@@ -116,15 +116,21 @@ class ShiftScheduler(ObjectInterruption):
                 # if the victim is station
                 if issubclass(self.victim.__class__, CoreObject):
                     # if the mode is to end current work before going off-shift and there is current work, 
-                    # wait for victimEndedLastProcessing
+                    # wait for victimEndedLastProcessing or victimFailed
                     # signal before going off-shift
                     if self.endUnfinished and self.victim.isProcessing:
                         self.victim.isWorkingOnTheLast=True
                         self.waitingSignal=True
                         self.expectedSignals['endedLastProcessing']=1
-                        yield self.victim.endedLastProcessing
-                        transmitter, eventTime=self.victim.endedLastProcessing.value
-                        self.victim.endedLastProcessing=self.env.event() 
+                        self.expectedSignals['victimFailed']=1
+                        receivedEvent=yield self.env.any_of([self.victim.endedLastProcessing , self.victimFailed])
+                        if self.victim.endedLastProcessing in receivedEvent:
+                            transmitter, eventTime=self.victim.endedLastProcessing.value
+                            self.victim.endedLastProcessing=self.env.event()
+                        elif self.victimFailed in receivedEvent:
+                            print self.env.now,self.victim.id, 'received victim failed'
+                            transmitter, eventTime=self.victimFailed.value
+                            self.victimFailed=self.env.event()
                     # sometimes the time to end the last process may overcome the time to restart theshift
                     # so off-shift should not happen at such a case
                     if len(self.remainingShiftPattern)>1:
