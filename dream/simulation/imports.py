@@ -80,6 +80,7 @@ from dream.simulation.Failure import Failure
 from dream.simulation.EventGenerator import EventGenerator
 from dream.simulation.ScheduledMaintenance import ScheduledMaintenance
 from dream.simulation.ShiftScheduler import ShiftScheduler
+from dream.simulation.PeriodicMaintenance import PeriodicMaintenance
 
 #Auxiliary
 from dream.simulation.Globals import G
