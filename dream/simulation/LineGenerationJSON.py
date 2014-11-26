@@ -238,6 +238,7 @@ def createObjectInterruptions():
     G.ShiftSchedulerList=[]
     G.EventGeneratorList=[]
     G.CapacityStationControllerList=[]
+    G.PeriodicMaintenanceList=[]
     json_data = G.JSONData
     #Read the json data
     nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
@@ -270,6 +271,7 @@ def createObjectInterruptions():
     # define interruptions' distribution better
     from dream.simulation.ScheduledMaintenance import ScheduledMaintenance    
     from dream.simulation.Failure import Failure
+    from dream.simulation.PeriodicMaintenance import PeriodicMaintenance    
     from dream.simulation.ShiftScheduler import ShiftScheduler
     for (element_id, element) in nodes.iteritems():
         element['id'] = element_id
@@ -296,6 +298,18 @@ def createObjectInterruptions():
                 F=Failure(victim=victim, distribution=failure, repairman=victim.repairman, deteriorationType=deteriorationType)
                 G.ObjectInterruptionList.append(F)
                 G.FailureList.append(F)
+        # if there are periodic maintenances assigned 
+        # initiate them   
+        periodicMaintenance=element.get('periodicMaintenance', None)
+        if periodicMaintenance:
+            distributionType=periodicMaintenance.get('distributionType', 'No')
+            if distributionType=='No':
+                pass
+            else:
+                victim=Globals.findObjectById(element['id'])
+                PM=PeriodicMaintenance(victim=victim, distribution=periodicMaintenance, repairman=victim.repairman)
+                G.ObjectInterruptionList.append(PM)
+                G.PeriodicMaintenanceList.append(PM)
         # if there is a shift pattern defined 
         # initiate them             
         shift=element.get('shift', {})
