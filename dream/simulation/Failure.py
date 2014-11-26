@@ -165,7 +165,13 @@ class Failure(ObjectInterruption):
            
             # interrupt the victim
             self.interruptVictim()                      # interrupt the victim
-
+            
+            from ShiftScheduler import ShiftScheduler
+            # check in the ObjectInterruptions of the victim. If there is a one that is waiting for victimFailed send it
+            for oi in self.victim.objectInterruptions:
+                if oi.__class__ is ShiftScheduler:
+                    if oi.expectedSignals['victimFailed']:
+                        self.sendSignal(receiver=oi, signal=oi.victimFailed)
             self.victim.Up=False
             self.victim.timeLastFailure=self.env.now           
             self.outputTrace(self.victim.name,"is down")

@@ -56,15 +56,17 @@ class ObjectInterruption(ManPyObject):
                                 "endedLastProcessing":0,
                                 "victimIsEmptyBeforeMaintenance":0,
                                 "resourceAvailable":0,
+                                "victimFailed":0
                               }
     
     def initialize(self):
         from Globals import G
         self.env=G.env
         self.call=False
-        # events that are send by the ShiftScheduler to all the other interruptions that might wait for them
+        # events that are send by one interruption to all the other interruptions that might wait for them
         self.victimOffShift=self.env.event()
         self.victimOnShift=self.env.event()
+        self.victimFailed=self.env.event()
         # flags that show if the interruption waits for the event
         self.isWaitingForVictimOffShift=False
         self.isWaitingForVictimOnShift=False
@@ -78,6 +80,7 @@ class ObjectInterruption(ManPyObject):
                                 "endedLastProcessing":0,
                                 "victimIsEmptyBeforeMaintenance":0,
                                 "resourceAvailable":0,
+                                "victimFailed":0
                               }
     
     #===========================================================================
