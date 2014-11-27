@@ -373,6 +373,7 @@
       new_id = data.id;
     if (data.data.name) {
       $(gadget.props.element).find("#" + element_id).text(data.data.name)
+        .attr("title", data.data.name)
         .append('<div class="ep"></div></div>');
       gadget.props.data.graph.node[node_id].name = data.data.name;
     }
