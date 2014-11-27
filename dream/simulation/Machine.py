@@ -165,7 +165,7 @@ class Machine(CoreObject):
         self.currentlyPerforming=None
         self.tinM=0
         self.timeLastProcessingStarted=0
-        self.timeLastOperationStarted=0
+        self.timeLastOperationStarted=-1
         self.interruption=False
         self.breakTime=0
         # flag notifying that there is operator assigned to the actievObject
@@ -912,7 +912,7 @@ class Machine(CoreObject):
             self.printTrace(activeEntity.name, interrupted=self.objName)                                    
             self.outputTrace(activeObjectQueue[0].name, "Interrupted at "+self.objName)
             # recalculate the processing time left tinM
-            if self.timeLastOperationStarted:
+            if self.timeLastOperationStarted>=0:
                 self.tinM=self.tinM-(self.env.now-self.timeLastOperationStarted)
                 if(self.tinM==0):       # sometimes the failure may happen exactly at the time that the processing would finish
                                         # this may produce disagreement with the simul8 because in both SimPy and Simul8
