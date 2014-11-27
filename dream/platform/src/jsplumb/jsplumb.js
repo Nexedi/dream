@@ -528,13 +528,17 @@
         return fieldset_gadget[0];
       })
       .push(function (fieldset_gadget) {
-        return RSVP.any([
+        // Expose the dialog handling promise so that we can wait for it in
+        // test.
+        gadget.props.dialog_promise = RSVP.any([
           save_promise(fieldset_gadget, node_id),
           delete_promise
         ]);
+        return gadget.props.dialog_promise;
       })
       .push(function () {
         node_edit_popup.popup('close');
+        delete gadget.props.dialog_promise;
       });
   }
 

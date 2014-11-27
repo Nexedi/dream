@@ -1,4 +1,4 @@
-/*global rJS, JSON, QUnit, jQuery, RSVP, console*/
+/*global rJS, JSON, QUnit, jQuery, RSVP, console, setTimeout*/
 
 (function (rJS, JSON, QUnit, RSVP, $) {
   "use strict";
@@ -262,21 +262,50 @@
       stop();
 
       function runTest() {
-        return jsplumb_gadget.getContent().then(function () {
-            $("div[title='Node 1']").simulate("dblclick");
-          
-            // XXX popup not displayed
-            $("input[name='name']").val("Modified Name");
-            $("input[value='Validate']").click();
-          })
-          .then(function () {
-            return jsplumb_gadget.getContent();
-          })
-          .then(function (content) {
-            var graph = JSON.parse(content).graph,
-              node = graph.node.N1;
-            equal(node.name, "Modified Name");
+        return jsplumb_gadget.getContent().then( function() {
+          // click on a node to see display the popup
+          $("div[title='Node 1']").simulate('dblclick');
+
+          // Promises that handle the dialog actions are not available
+          // immediately after clicking.
+          var promise = RSVP.Promise( function (resolve) {
+            var fillDialog = function() {
+              if (! jsplumb_gadget.props.dialog_promise ) {
+                // Dialog not ready. Let's retry later.
+                // XXX this condition is actually incorrect. We need to wait
+                // for the event listener to have been registered for the
+                // dialog buttons. This setTimeout is good enough for now.
+                return setTimeout(fillDialog, 1000);
+              }
+
+              // check displayed values
+              equal($("input[name='id']").val(), "N1");
+              equal($("input[name='name']").val(), "Node 1");
+              equal($("input[name='shape']").val(), "square");
+
+              // change the name
+              $("input[name='name']").val("Modified Name");
+
+              // and save
+              $("input[value='Validate']").click();
+
+              // resolve our test promise once the dialog handling promise is
+              // finished.
+              jsplumb_gadget.props.dialog_promise.then(resolve);
+            };
+
+            fillDialog();
+          } );
+
+          return promise.then( function () {
+             return jsplumb_gadget.getContent().then(function (content) {
+               var graph = JSON.parse(content).graph,
+                 node = graph.node.N1;
+               // check the data is well modified.
+               equal("Modified Name", node.name);
+             });
           });
+        });
       }
 
       g.declareGadget("./index.html", {
@@ -290,7 +319,7 @@
           return RSVP.any([
             jsplumb_gadget.startService(),
             runTest()
-            ]);
+          ]);
         })
         .fail(console.error.bind(this))
         .always(start);
