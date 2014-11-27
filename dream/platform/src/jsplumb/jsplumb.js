@@ -25,22 +25,6 @@
   "use strict";
 
   /*jslint nomen: true */
-  /* TODO:
-   *  - make node edition popup a gadget ?
-   *  - add function to turn event handlers in promise ?
-   * 
-   * tests:
-   *   - loading & saving DONE
-   *   - dropping a new node from palette DONE
-   *   - dragging a node
-   *   - editing node properties with popup (make sure we can display after
-   *   edit)
-   *   - connecting two nodes
-   *   - removing a connection
-   *   - removing a node ( make sure connections are removed )
-   *   - changing a node id ( make sure connections are updated ) ( make sure
-   *   we can display after edit )
-   */
   var gadget_klass = rJS(window),
     node_template_source = gadget_klass.__template_element
       .getElementById('node-template').innerHTML,
@@ -512,7 +496,6 @@
         return removeElement(gadget, node_id);
       });
 
-    // XXX the gadget to use on node click should be an option
     return gadget.declareGadget("../fieldset/index.html", {
       element: fieldset_element,
       scope: 'fieldset'
@@ -532,6 +515,7 @@
         // Expose the dialog handling promise so that we can wait for it in
         // test.
         gadget.props.dialog_promise = RSVP.any([
+          // TODO: why different signature ?
           save_promise(fieldset_gadget, node_id),
           delete_promise
         ]);
