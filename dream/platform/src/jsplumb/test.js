@@ -385,18 +385,48 @@
 
       function runTest() {
         return jsplumb_gadget.getContent().then(function () {
-            $("div[title='Node 1']").simulate("dblclick");
-          
-            // XXX popup not displayed
-            $("input[value='Delete']").click();
-          })
-          .then(function () {
-            return jsplumb_gadget.getContent();
-          })
-          .then(function (content) {
-            var graph = JSON.parse(content).graph;
-            equal(1, Object.keys(graph.node).length);
+           equal(1, $("div[title='Node 1']").length, "node 1 is visible");
+           equal(1, $("._jsPlumb_connector").length, "there is one connection");
+
+          // click on node 1 to see display the popup
+          $("div[title='Node 1']").simulate("dblclick");
+
+          // Promises that handle the dialog actions are not available
+          // immediately after clicking.
+          var promise = RSVP.Promise( function (resolve) {
+            var waitForDialogAndDelete = function() {
+              if (! jsplumb_gadget.props.dialog_promise ) {
+                // Dialog not ready. Let's retry later.
+                // XXX this condition is actually incorrect. We need to wait
+                // for the event listener to have been registered for the
+                // dialog buttons. This setTimeout is good enough for now.
+                return setTimeout(waitForDialogAndDelete, 1000);
+              }
+
+              $("input[value='Delete']").click();
+
+              // resolve our test promise once the dialog handling promise is
+              // finished.
+              jsplumb_gadget.props.dialog_promise.then(resolve);
+            };
+
+            waitForDialogAndDelete();
+          } );
+
+          return promise.then( function () {
+             return jsplumb_gadget.getContent().then(function (content) {
+               var graph = JSON.parse(content).graph;
+               equal(1, Object.keys(graph.node).length,
+                 "node is removed from data");
+               equal(0, Object.keys(graph.edge).length,
+                "edge referencing this node is also removed");
+               equal(0, $("div[title='Node 1']").length,
+                "DOM element for node is removed");
+               equal(0, $("._jsPlumb_connector").length,
+                "DOM element for edge is removed");
+             });
           });
+        });
       }
 
       g.declareGadget("./index.html", {
