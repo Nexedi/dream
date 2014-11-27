@@ -939,6 +939,9 @@ class Machine(CoreObject):
         activeObjectQueue=self.Res.users
         if len(activeObjectQueue):
             activeEntity=activeObjectQueue[0]
+        # if the machine is empty signal giver
+        else:
+            self.signalGiver()
         # if the machine returns from an failure while processing an entity
         if not self.waitToDispose:
             # use the timers to count the time that Machine is down and related
