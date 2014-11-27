@@ -523,6 +523,7 @@
       })
       .push(function () {
         node_edit_popup.popup('close');
+        node_edit_popup.remove();
         delete gadget.props.dialog_promise;
       });
   }
