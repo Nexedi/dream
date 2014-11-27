@@ -7,6 +7,7 @@
     test = QUnit.test,
     equal = QUnit.equal,
     ok = QUnit.ok,
+    error_handler = function(e) { console.error(e); ok(false, e); },
     sample_class_definition = {
       "edge": {
         "description": "Base definition for edge",
@@ -166,7 +167,7 @@
           .then(function (content) {
             equal(content, sample_data_graph);
           })
-          .fail(console.error.bind(this))
+          .fail(error_handler)
           .always(start);
     });
 
@@ -183,7 +184,8 @@
             e.dataTransfer = {
               getData: function(type){
                  // make sure we are called properly
-                 equal(type, 'application/json');
+                 equal('application/json', type,
+             "The drag&dropped element must have data type application/json");
                  return JSON.stringify("Example.Node");
               }
             };
@@ -213,7 +215,7 @@
             runTest()
             ]);
         })
-        .fail(console.error.bind(this))
+        .fail(error_handler)
         .always(start);
     });
 
@@ -253,7 +255,7 @@
             runTest()
             ]);
         })
-        .fail(console.error.bind(this))
+        .fail(error_handler)
         .always(start);
     });
 
@@ -321,7 +323,7 @@
             runTest()
           ]);
         })
-        .fail(console.error.bind(this))
+        .fail(error_handler)
         .always(start);
     });
 
@@ -338,8 +340,8 @@
               "div[title='Node 2']"
             );
 
-            // At this point we have no edge
-            equal(Object.keys(JSON.parse(content).graph.edge).length, 0);
+            equal(0, Object.keys(JSON.parse(content).graph.edge).length,
+              "There are no edge at the beginning");
 
             jsplumb_gadget.props.jsplumb_instance.connect(
               {source: node1.id, target: node2.id}
@@ -351,14 +353,14 @@
           })
           .then(function (content) {
             var edge, graph = JSON.parse(content).graph;
-            equal(Object.keys(graph.node).length, 2);
-            equal(Object.keys(graph.edge).length, 1);
+            equal(2, Object.keys(graph.node).length, "We still have 2 nodes");
+            equal(1, Object.keys(graph.edge).length, "We have 1 edge");
             edge = graph.edge[Object.keys(graph.edge)[0]];
 
             // XXX how edge class would be set ? the first one from schema ?
-            //equal(edge._class, "Example.Edge");
-            equal(edge.source, "N1");
-            equal(edge.destination, "N2");
+            //equal("Example.Edge", edge._class, "Edge class is correct");
+            equal("N1", edge.source, "edge source is correct");
+            equal("N2", edge.destination, "edge destination is correct");
           });
       }
 
@@ -375,7 +377,7 @@
             runTest()
             ]);
         })
-        .fail(console.error.bind(this))
+        .fail(error_handler)
         .always(start);
     });
 
@@ -386,7 +388,7 @@
       function runTest() {
         return jsplumb_gadget.getContent().then(function () {
            equal(1, $("div[title='Node 1']").length, "node 1 is visible");
-           equal(1, $("._jsPlumb_connector").length, "there is one connection");
+           equal(1, $("._jsPlumb_connector").length, "there is 1 connection");
 
           // click on node 1 to see display the popup
           $("div[title='Node 1']").simulate("dblclick");
@@ -442,7 +444,7 @@
             runTest()
             ]);
         })
-        .fail(console.error.bind(this))
+        .fail(error_handler)
         .always(start);
     });
 
