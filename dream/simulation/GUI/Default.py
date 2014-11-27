@@ -164,11 +164,11 @@ schema = {
     "name": "URL for Knowledge Extraction Spreadsheet",
     "description": "The URL for knowledge extraction to access its data"
                    " for example "
-                   "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
+                   "C|\Users\GDang\Dropbox\DREAM-UL-Share\Work Package 7\Task 7.1\WSC14\Generic DREAM paper\Presentation\dream-KnowledgeExtraction-KEtool_examples-KE tool&GUI-demo_mockup.xlsx",
     "type": "string",
     "_class": "Dream.Property",
     "_default":
-    "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
+    "C|\Users\GDang\Dropbox\DREAM-UL-Share\Work Package 7\Task 7.1\WSC14\Generic DREAM paper\Presentation\dream-KnowledgeExtraction-KEtool_examples-KE tool&GUI-demo_mockup.xlsx",
   },
   "batchNumberOfUnits": {
     "id": "batchNumberOfUnits",
