@@ -288,6 +288,9 @@
               // change the name
               $("input[name='name']").val("Modified Name");
 
+              equal(1, $("input[value='Validate']").length,
+                "There should be one validate button");
+
               // and save
               $("input[value='Validate']").click();
 
@@ -303,8 +306,13 @@
              return jsplumb_gadget.getContent().then(function (content) {
                var graph = JSON.parse(content).graph,
                  node = graph.node.N1;
-               // check the data is well modified.
-               equal("Modified Name", node.name);
+               equal("Modified Name", node.name,
+                "Data is modified");
+               equal("Modified Name", $("div#" +
+                jsplumb_gadget.props.node_id_to_dom_element_id.N1 ).text(),
+                "DOM is modified");
+               equal(1, $("div[title='Modified Name']").length,
+                "DOM title attribute is modified");
              });
           });
         });
@@ -405,6 +413,8 @@
                 return setTimeout(waitForDialogAndDelete, 1000);
               }
 
+              equal(1, $("input[value='Delete']").length,
+                "There should be one delete button");
               $("input[value='Delete']").click();
 
               // resolve our test promise once the dialog handling promise is
@@ -449,10 +459,270 @@
     });
 
 
-    // test("Node id can changed (connections are updated and node"
-    //      " can be edited afterwards)",
-    // test("New node can edited",
-    // test("New node can deleted",
+    test("Node id can be changed (connections are updated and node" +
+          " can be edited afterwards)", function () {
+      var jsplumb_gadget;
+      stop();
+
+      function runTest() {
+        return jsplumb_gadget.getContent().then( function() {
+          // click on a node to see display the popup
+          $("div[title='Node 1']").simulate('dblclick');
+
+          // Promises that handle the dialog actions are not available
+          // immediately after clicking.
+          var promise = RSVP.Promise( function (resolve) {
+            var fillDialog = function() {
+              if (! jsplumb_gadget.props.dialog_promise ) {
+                // Dialog not ready. Let's retry later.
+                // XXX this condition is actually incorrect. We need to wait
+                // for the event listener to have been registered for the
+                // dialog buttons. This setTimeout is good enough for now.
+                return setTimeout(fillDialog, 1000);
+              }
+              equal($("input[name='id']").val(), "N1");
+
+              // change the id
+              $("input[name='id']").val("N1b");
+
+              equal(1, $("input[value='Validate']").length,
+                "There should be one validate button");
+
+              $("input[value='Validate']").click();
+
+              // resolve our test promise once the dialog handling promise is
+              // finished.
+              jsplumb_gadget.props.dialog_promise.then(resolve);
+            };
+
+            fillDialog();
+          } );
+
+          return promise.then( function () {
+             return jsplumb_gadget.getContent().then(function (content) {
+               var graph = JSON.parse(content).graph;
+               equal(2, Object.keys(graph.node).length,
+                 "We still have two nodes");
+               ok(graph.node.N1b !== undefined,
+                 "Node Id changed");
+               equal(1, Object.keys(graph.edge).length,
+                "We still have one connection");
+               equal("N1b", graph.edge.edge1.source,
+                "Connection source has been updated");
+             });
+          });
+        });
+      }
+
+      g.declareGadget("./index.html", {
+        element: document.querySelector("#qunit-fixture")
+      })
+        .then(function (new_gadget) {
+          jsplumb_gadget = new_gadget;
+          jsplumb_gadget.render(sample_data_graph);
+        })
+        .then(function () {
+          return RSVP.any([
+            jsplumb_gadget.startService(),
+            runTest()
+          ]);
+        })
+        .fail(error_handler)
+        .always(start);
+    });
+
+    test("New node can be edited", function () { 
+      var jsplumb_gadget,
+        node_id;
+      stop();
+
+      function runTest() {
+        // XXX here I used getContent to have a promise, but there must be a
+        // more elegant way.
+        return jsplumb_gadget.getContent().then(function () {
+            // fake a drop event
+            var e = new Event('drop');
+            e.dataTransfer = {
+              getData: function(type){
+                 // make sure we are called properly
+                 equal('application/json', type,
+             "The drag&dropped element must have data type application/json");
+                 return JSON.stringify("Example.Node");
+              }
+            };
+            jsplumb_gadget.props.main.dispatchEvent(e);
+          })
+          .then(function () {
+            return jsplumb_gadget.getContent();
+          })
+          .then(function (content) {
+            var node, graph = JSON.parse(content).graph;
+            equal(1, Object.keys(graph.node).length);
+            node_id = Object.keys(graph.node)[0];
+            node = graph.node[node_id];
+            equal('Example.Node', node._class);
+          }).then(function () { 
+
+          // click the new node to see display the popup
+          // XXX at the moment nodes have class window
+          equal(1, $("div.window").length, "We have a new node");
+
+          $("div.window").simulate('dblclick');
+
+          // Promises that handle the dialog actions are not available
+          // immediately after clicking.
+          var promise = RSVP.Promise( function (resolve) {
+            var fillDialog = function() {
+              if (! jsplumb_gadget.props.dialog_promise ) {
+                // Dialog not ready. Let's retry later.
+                // XXX this condition is actually incorrect. We need to wait
+                // for the event listener to have been registered for the
+                // dialog buttons. This setTimeout is good enough for now.
+                return setTimeout(fillDialog, 1000);
+              }
+
+              // check displayed values
+              equal($("input[name='id']").val(), node_id);
+              equal($("input[name='name']").val(), "");
+              equal($("input[name='shape']").val(), "");
+
+              // change the name
+              $("input[name='name']").val("Modified Name");
+
+              equal(1, $("input[value='Validate']").length,
+                "There should be one validate button");
+
+              // and save
+              $("input[value='Validate']").click();
+
+              // resolve our test promise once the dialog handling promise is
+              // finished.
+              jsplumb_gadget.props.dialog_promise.then(resolve);
+            };
+
+            fillDialog();
+          } );
+
+          return promise.then( function () {
+             return jsplumb_gadget.getContent().then(function (content) {
+               var graph = JSON.parse(content).graph,
+                 node = graph.node[node_id];
+               equal("Modified Name", node.name,
+                "Data is modified");
+               equal("Modified Name", $("div.window").text(),
+                "DOM is modified");
+             });
+          });
+        });
+      }
+
+      g.declareGadget("./index.html", {
+        element: document.querySelector("#qunit-fixture")
+      })
+        .then(function (new_gadget) {
+          jsplumb_gadget = new_gadget;
+          jsplumb_gadget.render(sample_data_empty_graph);
+        })
+        .then(function () {
+          return RSVP.any([
+            jsplumb_gadget.startService(),
+            runTest()
+          ]);
+        })
+        .fail(error_handler)
+        .always(start);
+    });
+
+    test("New node can be deleted", function () { 
+      var jsplumb_gadget,
+        node_id;
+      stop();
+
+      function runTest() {
+        // XXX here I used getContent to have a promise, but there must be a
+        // more elegant way.
+        return jsplumb_gadget.getContent().then(function () {
+            // fake a drop event
+            var e = new Event('drop');
+            e.dataTransfer = {
+              getData: function(type){
+                 // make sure we are called properly
+                 equal('application/json', type,
+             "The drag&dropped element must have data type application/json");
+                 return JSON.stringify("Example.Node");
+              }
+            };
+            jsplumb_gadget.props.main.dispatchEvent(e);
+          })
+          .then(function () {
+            return jsplumb_gadget.getContent();
+          })
+          .then(function (content) {
+            var node, graph = JSON.parse(content).graph;
+            equal(1, Object.keys(graph.node).length);
+            node_id = Object.keys(graph.node)[0];
+            node = graph.node[node_id];
+            equal('Example.Node', node._class);
+          }).then(function () { 
+
+          // click the new node to see display the popup
+          // XXX at the moment nodes have class window
+          equal(1, $("div.window").length, "We have a new node");
+
+          $("div.window").simulate('dblclick');
+
+          // Promises that handle the dialog actions are not available
+          // immediately after clicking.
+          var promise = RSVP.Promise( function (resolve) {
+            var waitForDialogAndDelete = function() {
+              if (! jsplumb_gadget.props.dialog_promise ) {
+                // Dialog not ready. Let's retry later.
+                // XXX this condition is actually incorrect. We need to wait
+                // for the event listener to have been registered for the
+                // dialog buttons. This setTimeout is good enough for now.
+                return setTimeout(waitForDialogAndDelete, 1000);
+              }
+
+              equal(1, $("input[value='Delete']").length,
+                "There should be one delete button");
+              $("input[value='Delete']").click();
+
+              // resolve our test promise once the dialog handling promise is
+              // finished.
+              jsplumb_gadget.props.dialog_promise.then(resolve);
+            };
+
+            waitForDialogAndDelete();
+          } );
+
+          return promise.then( function () {
+             return jsplumb_gadget.getContent().then(function (content) {
+               var graph = JSON.parse(content).graph;
+               equal(0, Object.keys(graph.node).length,
+                 "node is removed from data");
+               equal(0, $("div.window").length,
+                "DOM is modified");
+             });
+          });
+        });
+      }
+
+      g.declareGadget("./index.html", {
+        element: document.querySelector("#qunit-fixture")
+      })
+        .then(function (new_gadget) {
+          jsplumb_gadget = new_gadget;
+          jsplumb_gadget.render(sample_data_empty_graph);
+        })
+        .then(function () {
+          return RSVP.any([
+            jsplumb_gadget.startService(),
+            runTest()
+          ]);
+        })
+        .fail(error_handler)
+        .always(start);
+    });
 
   });
 
