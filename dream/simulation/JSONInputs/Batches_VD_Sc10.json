@@ -56,6 +56,7 @@
             },
             "element_id": "DreamNode_44",
             "_class": "Dream.BatchScrapMachineAfterDecompose",
+			"canDeliverOnInterruption": 1,
             "id": "St7M0"
         },
         "St5M0": {
@@ -114,7 +115,8 @@
             },
             "element_id": "DreamNode_31",
             "_class": "Dream.BatchScrapMachine",
-            "id": "St5M0"
+            "canDeliverOnInterruption": 1,
+			"id": "St5M0"
         },
         "St5M1": {
             "name": "Flag Labelling 2",
@@ -168,7 +170,8 @@
             },
             "element_id": "DreamNode_32",
             "_class": "Dream.BatchScrapMachine",
-            "id": "St5M1"
+            "canDeliverOnInterruption": 1,
+			"id": "St5M1"
         },
         "S1": {
             "name": "Source",
@@ -254,6 +257,7 @@
             },
             "element_id": "DreamNode_17",
             "_class": "Dream.M3",
+			"canDeliverOnInterruption": 1,
             "id": "St6M1"
         },
         "St6M0": {
@@ -323,6 +327,7 @@
             },
             "element_id": "DreamNode_16",
             "_class": "Dream.M3",
+			"canDeliverOnInterruption": 1,
             "id": "St6M0"
         },
         "St8M0R": {
@@ -459,6 +464,7 @@
             },
             "element_id": "DreamNode_15",
             "_class": "Dream.M3",
+			"canDeliverOnInterruption": 1,
             "id": "St8M1"
         },
         "QStart": {
@@ -522,6 +528,7 @@
             },
             "element_id": "DreamNode_12",
             "_class": "Dream.M3",
+			"canDeliverOnInterruption": 1,
             "id": "St2M1"
         },
         "St2M0": {
@@ -580,6 +587,7 @@
             },
             "element_id": "DreamNode_11",
             "_class": "Dream.M3",
+			"canDeliverOnInterruption": 1,
             "id": "St2M0"
         },
         "St3M0": {
@@ -638,7 +646,8 @@
             },
             "element_id": "DreamNode_26",
             "_class": "Dream.BatchScrapMachine",
-            "id": "St3M0"
+            "canDeliverOnInterruption": 1,
+			"id": "St3M0"
         },
         "St4M0": {
             "name": "Moulding",
@@ -696,6 +705,7 @@
             },
             "element_id": "DreamNode_13",
             "_class": "Dream.M3",
+			"canDeliverOnInterruption": 1,
             "id": "St4M0"
         },
         "St6M1R": {
@@ -857,6 +867,7 @@
             },
             "element_id": "DreamNode_14",
             "_class": "Dream.M3",
+			"canDeliverOnInterruption": 1,
             "id": "St8M0"
         },
         "St4M0D": {
@@ -1053,7 +1064,8 @@
             },
             "element_id": "DreamNode_9",
             "_class": "Dream.BatchScrapMachine",
-            "id": "St1M0"
+            "canDeliverOnInterruption": 1,
+			"id": "St1M0"
         },
         "St1M1": {
             "name": "P_B_A_B",
@@ -1107,7 +1119,8 @@
             },
             "element_id": "DreamNode_10",
             "_class": "Dream.BatchScrapMachine",
-            "id": "St1M1"
+            "canDeliverOnInterruption": 1,
+			"id": "St1M1"
         },
         "EV": {
             "name": "Attainment",
@@ -1220,10 +1233,12 @@
             },
             "element_id": "DreamNode_8",
             "_class": "Dream.BatchScrapMachineAfterDecompose",
-            "id": "St0M1"
+            "canDeliverOnInterruption": 1,
+			"id": "St0M1"
         },
         "St0M0": {
             "name": "RO_E_M_A_A",
+			"canDeliverOnInterruption": 1,
             "shift": {
                 "thresholdTimeIsOnShift": 0,
                 "receiveBeforeEndThreshold": 7,
@@ -1278,7 +1293,7 @@
             },
             "element_id": "DreamNode_7",
             "_class": "Dream.BatchScrapMachineAfterDecompose",
-            "id": "St0M0"
+			"id": "St0M0"
         },
         "B9": {
             "capacity": 4,
