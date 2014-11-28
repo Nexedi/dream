@@ -29,7 +29,11 @@
     /////////////////////////////////////////////////////////////////
     .declareMethod("render", function () {
       var gadget = this;
-      return gadget.aq_allDocs({"select_list": ["title", "modified"]})
+      return gadget.aq_allDocs({
+        "include_docs": true,
+        "query": 'type:= "Dream"',
+        "select_list": ["title", "modified"]
+      })
         .push(function (document_list) {
           var result_list = [],
             doc,
@@ -71,7 +75,6 @@
           parameter_list.sort(function (a, b) {
             return b.date - a.date;
           });
-
 //           gadget.props.element.querySelector('a').href = document_list[0];
 
           gadget.props.element.querySelector('.document_list').innerHTML =
