@@ -438,14 +438,23 @@
     return expanded_class_definition;
   }
 
-  // TODO: remove class_definition from this function and callees signature
-  function openNodeDialog(gadget, element, class_definition) {
+  function openNodeDialog(gadget, element) {
     var node_id = getNodeId(gadget, element.id),
       node_data = gadget.props.data.graph.node[node_id],
       node_edit_popup = $(gadget.props.element).find('#popup-edit-template'),
-      schema = expandSchema(class_definition, gadget.props.data),
+      schema,
       fieldset_element,
       delete_promise;
+   
+    // If we have no definition for this, we do not allow edition.
+    if ( gadget.props.data.class_definition[node_data._class] === undefined ) {
+      return;
+    }
+
+    schema = expandSchema(
+      gadget.props.data.class_definition[node_data._class],
+      gadget.props.data
+    );
 
     if (node_edit_popup.length !== 0) {
       node_edit_popup.remove();
@@ -528,13 +537,13 @@
       });
   }
 
-  function waitForNodeClick(gadget, node, config_dict) {
+  function waitForNodeClick(gadget, node) {
     gadget.props.nodes_click_monitor
       .monitor(loopEventListener(
         node,
         'dblclick',
         false,
-        openNodeDialog.bind(null, gadget, node, config_dict)
+        openNodeDialog.bind(null, gadget, node)
       ));
   }
 
@@ -576,7 +585,7 @@
     ).querySelector('.window');
     render_element.append(domElement);
 
-    waitForNodeClick(gadget, domElement, class_definition);
+    waitForNodeClick(gadget, domElement);
 
     box = $(gadget.props.element).find("#" + dom_element_id);
     absolute_position = convertToAbsolutePosition(
