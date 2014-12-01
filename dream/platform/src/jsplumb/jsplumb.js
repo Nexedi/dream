@@ -661,7 +661,7 @@
         delete gadget.props.dialog_promise;
       });
   }
-
+  //function waitForNodeClick(gadget, node, config_dict) {
   function waitForNodeClick(gadget, node) {
     console.log("waitFORNODEclick 1");
     gadget.props.nodes_click_monitor
@@ -670,6 +670,7 @@
         'dblclick',
         false,
         openNodeEditionDialog.bind(null, gadget, node)
+        //openNodeDialog.bind(null, gadget, node, config_dict)
       ));
   }
 
@@ -743,6 +744,7 @@
     render_element.append(domElement);
     console.log("addNODE 5");
     waitForNodeClick(gadget, domElement);
+    //waitForNodeClick(gadget, domElement, class_definition);
 
     box = $(gadget.props.element).find("#" + dom_element_id);
     absolute_position = convertToAbsolutePosition(
