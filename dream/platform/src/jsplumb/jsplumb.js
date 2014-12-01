@@ -136,9 +136,6 @@
     gadget.notifyDataChanged();
   }
 
-  // bind to connection/connectionDetached events,
-  // and update the list of connections on screen.
-
   function waitForConnection(gadget) {
     loopJsplumbBind(gadget, 'connection',
                     function (info, originalEvent) {
