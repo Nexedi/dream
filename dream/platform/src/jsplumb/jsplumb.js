@@ -150,8 +150,8 @@
 
   function convertToAbsolutePosition(gadget, x, y) {
     var zoom_level = gadget.props.zoom_level * 1.1111,
-      canvas_size_x = $(gadget.props.element).find('#main').width(),
-      canvas_size_y = $(gadget.props.element).find('#main').height(),
+      canvas_size_x = $(gadget.props.main).width(),
+      canvas_size_y = $(gadget.props.main).height(),
       size_x = $(gadget.props.element).find('.dummy_window').width() *
         zoom_level,
       size_y = $(gadget.props.element).find('.dummy_window').height() *
@@ -163,8 +163,8 @@
 
   function convertToRelativePosition(gadget, x, y) {
     var zoom_level = gadget.props.zoom_level * 1.1111,
-      canvas_size_x = $(gadget.props.element).find('#main').width(),
-      canvas_size_y = $(gadget.props.element).find('#main').height(),
+      canvas_size_x = $(gadget.props.main).width(),
+      canvas_size_y = $(gadget.props.main).height(),
       size_x = $(gadget.props.element).find('.dummy_window').width() *
         zoom_level,
       size_y = $(gadget.props.element).find('.dummy_window').height() *
@@ -548,7 +548,7 @@
   }
 
   function addNode(gadget, node_id, node_data) {
-    var render_element = $(gadget.props.element).find("#main"),
+    var render_element = $(gadget.props.main),
       class_definition = gadget.props.data.class_definition[node_data._class],
       coordinate = node_data.coordinate,
       dom_element_id,
