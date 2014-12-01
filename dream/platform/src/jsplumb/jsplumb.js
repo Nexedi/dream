@@ -688,8 +688,19 @@
     })
     .declareAcquiredMethod('notifyDataChanged', 'notifyDataChanged')
     .declareMethod('render', function (data) {
+      // var gadget = this;
       this.props.data = JSON.parse(data);
       this.props.jsplumb_instance = jsPlumb.getInstance();
+
+      // XXX data loading is done in startService
+      /*
+      $.each(this.props.data.graph.node, function (key, value) {
+        addNode(gadget, key, value);
+      });
+      $.each(this.props.data.graph.edge, function (key, value) {
+        addEdge(gadget, key, value);
+      });
+      */
     })
 
     .declareMethod('getContent', function () {
@@ -724,6 +735,8 @@
       draggable(gadget);
 
       this.props.nodes_click_monitor = RSVP.Monitor();
+
+      // load the data
       $.each(this.props.data.graph.node, function (key, value) {
         addNode(gadget, key, value);
       });
