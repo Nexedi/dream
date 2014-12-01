@@ -115,7 +115,6 @@
     .declareAcquiredMethod("aq_getAttachment", "jio_getAttachment")
     .declareAcquiredMethod("aq_putAttachment", "jio_putAttachment")
     .declareAcquiredMethod("aq_ajax", "jio_ajax")
-    .declareAcquiredMethod("aq_getConfigurationDict", "getConfigurationDict")
     .declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash")
     .declareAcquiredMethod("whoWantsToDisplayThisDocument",
                            "whoWantsToDisplayThisDocument")
@@ -125,7 +124,6 @@
     /////////////////////////////////////////////////////////////////
     .declareMethod("render", function (options) {
       var gadget = this,
-        property_list,
         data;
 
       this.props.jio_key = options.id;
@@ -135,16 +133,19 @@
         "_attachment": "body.json"
       })
         .push(function (json) {
-          data = JSON.parse(json).general;
-          return gadget.aq_getConfigurationDict();
-        })
-        .push(function (configuration_dict) {
-          property_list =
-            configuration_dict['Dream-Configuration'].property_list;
-          return gadget.getDeclaredGadget('fieldset');
-        })
-        .push(function (fieldset_gadget) {
-          return fieldset_gadget.render(property_list, data);
+          var application_configuration = {};
+          data = JSON.parse(json);
+          application_configuration =
+            data.application_configuration.general || {};
+
+          return gadget.getDeclaredGadget('fieldset').push(
+            function (fieldset_gadget) {
+              return fieldset_gadget.render({
+                value: data.general,
+                property_definition: application_configuration
+              });
+            }
+          );
         });
     })
 
