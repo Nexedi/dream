@@ -146,10 +146,6 @@ def getGUIInstance():
     instance = klass.Simulation(logger=app.logger)
     return instance
 
-@app.route("/getConfigurationDict")
-def getConfigurationDict():
-  return jsonify(getGUIInstance().getConfigurationDict())
-
 @app.route("/runKnowledgeExtraction", methods=["POST", "OPTIONS"])
 def runKnowledgeExtraction():
   parameter_dict = request.json
