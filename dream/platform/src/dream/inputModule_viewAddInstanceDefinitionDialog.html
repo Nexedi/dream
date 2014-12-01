@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="inputModule_viewAddInstanceDefinitionDialog.css" />
 
     <script src="../lib/rsvp.min.js" type="text/javascript"></script>
+    <script src="../<%= copy.handlebars.relative_dest %>" type="text/javascript"></script>
     <script src="../lib/renderjs.min.js" type="text/javascript"></script>
     <script src="mixin_gadget.js" type="text/javascript"></script>
     <script src="mixin_promise.js" type="text/javascript"></script>
@@ -19,6 +20,11 @@
           <li><a href="{{link}}">{{title}}</a></li>
         {{/documentlist}}
       </ul>
+    </script-->
+    <!--script id="li-template" type="text/x-handlebars-template">
+      <div class="ui-btn ui-input-btn ui-corner-all ui-shadow"> {{value}}
+        <input type="submit" value="{{value}}" name= "{{name}}">
+      </div>
     </script-->
 	
   </head>
