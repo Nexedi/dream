@@ -1,0 +1,810 @@
+{
+	"definitions" : {
+		"distributionTypes" : {
+			"_fixed" : {
+				"description" : "Fixed",
+				"type" : "object",
+				"properties" : {
+					"distributionType" : {
+						"type" : "string",
+						"default" : "Fixed",
+						"required" : true
+					},
+					"mean" : {
+						"type" : "number",
+						"default" : 0.75,
+						"required" : true
+					}
+				}
+			},
+			"_exp" : {
+				"type" : "object",
+				"description" : "Exponential",
+				"properties" : {
+					"mean" : {
+						"type" : "number",
+						"default" : 0,
+						"required" : true
+					}
+				}
+			},
+			"_normal" : {
+				"type" : "object",
+				"description" : "Normal",
+				"properties" : {
+					"mean" : {
+						"type" : "number",
+						"default" : 0,
+						"required" : true
+					},
+					"stdev" : {
+						"type" : "number",
+						"default" : 0,
+						"required" : true
+					}
+				}
+			},
+			"_lognormal" : {
+				"type" : "object",
+				"description" : "Lognormal",
+				"properties" : {
+					"mean" : {
+						"_class" : "Dream.Property",
+						"name" : "Mean",
+						"type" : "number",
+						"default" : 0
+					},
+					"stdev" : {
+						"_class" : "Dream.Property",
+						"name" : "Standard Deviation",
+						"type" : "number",
+						"default" : 0
+					}
+				}
+			},
+			"_binomial" : {
+				"type" : "object",
+				"description" : "Binomial",
+				"properties" : {
+					"mean" : {
+						"type" : "number",
+						"default" : 0
+					},
+					"size" : {
+						"type" : "number",
+						"default" : 0
+					}
+				}
+			},
+			"_poisson" : {
+				"type" : "object",
+				"description" : "Poisson",
+				"properties" : {
+					"lambda" : {
+						"type" : "number",
+						"default" : 0
+					}
+				}
+			},
+			"_logistic" : {
+				"type" : "object",
+				"description" : "Logicist",
+				"properties" : {
+					"location" : {
+						"type" : "number",
+						"default" : 0,
+						"required" : true
+					},
+					"scale" : {
+						"type" : "number",
+						"default" : 0,
+						"required" : true
+					}
+				}
+			},
+			"_caucy" : {
+				"type" : "object",
+				"description" : "Caucy",
+				"properties" : {
+					"location" : {
+						"type" : "number",
+						"default" : 0
+					},
+					"scale" : {
+						"type" : "number",
+						"default" : 0
+					}
+				}
+			},
+			"_geometric" : {
+				"type" : "object",
+				"description" : "Geometric",
+				"properties" : {
+					"probability" : {
+						"type" : "number",
+						"default" : 0,
+						"required" : true
+					}
+				}
+			},
+			"_gama" : {
+				"type" : "object",
+				"description" : "Gama",
+				"properties" : {
+					"distributionType" : {
+						"type" : "string",
+						"default" : "Gama",
+						"required" : true
+					},
+					"shape" : {
+						"type" : "number",
+						"default" : 0,
+						"required" : true
+					},
+					"rate" : {
+						"type" : "number",
+						"default" : 0,
+						"required" : true
+					}
+				}
+			},
+			"_weibull" : {
+				"type" : "object",
+				"description" : "Weibull",
+				"properties" : {
+					"distributionType" : {
+						"type" : "string",
+						"default" : "Weibull",
+						"required" : true
+					},
+					"shape" : {
+						"type" : "number",
+						"default" : 0,
+						"required" : true
+					},
+					"scale" : {
+						"type" : "number",
+						"default" : 0,
+						"required" : true
+					}
+				}
+			},
+			"_fixedFailure" : {
+				"type" : "object",
+				"description" : "Fixed",
+				"properties" : {
+					"MTTF" : {
+						"description" : "Mean Time To Failure",
+						"type" : "number",
+						"default" : 40,
+						"required" : true
+					},
+					"MTTR" : {
+						"description" : "Mean Time To Repair",
+						"type" : "number",
+						"default" : 10,
+						"required" : true
+					},
+					"repairman" : {
+						"description" : "Repairman",
+						"type" : "string",
+						"required" : true
+					}
+				}
+			},
+			"_no" : {
+				"type" : "object",
+				"description" : "None"
+			},
+			"_availability" : {
+				"type" : "object",
+				"description" : "Availability",
+				"properties" : {
+					"MTTF" : {
+						"description" : "Mean Time To Failure",
+						"type" : "number",
+						"required" : true
+					},
+					"MTTR" : {
+						"description" : "Mean Time To Failure",
+						"type" : "number",
+						"required" : true
+					},
+					"availability" : {
+						"type" : "number",
+						"required" : true
+					},
+					"repairman" : {
+						"description" : "Repairman",
+						"type" : "string",
+						"required" : true
+					}
+				}
+			}
+		},
+		"_failureDist" : {
+			"allOf" : [{
+					"type" : "object",
+					"properties" : {
+						"failureDistribution" : {
+							"type" : "string",
+							"default" : "No",
+							"enum" : [
+								"No",
+								"Fixed",
+								"Availability"
+							]
+						}
+					}
+				}, {
+					"oneOf" : [{
+							"$ref" : "#/definitions/distributionTypes/_fixedFailure"
+						}, {
+							"$ref" : "#/definitions/distributionTypes/_no"
+						}, {
+							"$ref" : "#/definitions/distributionTypes/_availability"
+						}
+					]
+				}
+			]
+		},
+		"_dist" : {
+			"allOf" : [{
+					"type" : "object",
+					"properties" : {
+						"distribution" : {
+							"type" : "string",
+							"default" : "Fixed",
+							"enum" : [
+								"Fixed",
+								"Exp",
+								"Normal",
+								"Longnormal",
+								"Binomial",
+								"Poisson",
+								"Logistic",
+								"Caucy",
+								"Geometric",
+								"Gama",
+								"Weibull"
+							]
+						}
+					}
+				}, {
+					"oneOf" : [{
+							"$ref" : "#/definitions/distributionTypes/_fixed"
+						}, {
+							"$ref" : "#/definitions/distributionTypes/_exp"
+						}, {
+							"$ref" : "#/definitions/distributionTypes/_normal"
+						}, {
+							"$ref" : "#/definitions/distributionTypes/_lognormal"
+						}, {
+							"$ref" : "#/definitions/distributionTypes/_binomial"
+						}, {
+							"$ref" : "#/definitions/distributionTypes/_poisson"
+						}, {
+							"$ref" : "#/definitions/distributionTypes/_logistic"
+						}, {
+							"$ref" : "#/definitions/distributionTypes/_caucy"
+						}, {
+							"$ref" : "#/definitions/distributionTypes/_geometric"
+						}, {
+							"$ref" : "#/definitions/distributionTypes/_gama"
+						}, {
+							"$ref" : "#/definitions/distributionTypes/_weibull"
+						}
+					]
+				}
+			]
+		},
+		"_schedulingRule" : {
+			"description" : "Scheduling Rule, one of FIFO Priority EDD EOD NumStages RPC LPT SPT MS WINQ",
+			"type" : "string",
+			"default" : "FIFO",
+			"enum" : [
+				"FIFO",
+				"Priority",
+				"EDD",
+				"EOD",
+				"NumStages",
+				"RPC",
+				"LPT",
+				"SPT",
+				"MS",
+				"WINQ",
+				"WT"
+			]
+		},
+		"_capacity" : {
+			"description" : "capacity of the queue. -1 means infinite",
+			"type" : "number",
+			"default" : 1,
+			"oneOf" : [{
+					"enum" : [
+						-1
+					]
+				}, {
+					"multipleOf" : 1
+				}
+			]
+		},
+		"_operationType" : {
+			"_class" : "Dream.PropertyList",
+			"name" : "Operation type",
+			"id" : "operationType",
+			"description" : "the type of operations that are performed manually in the machine",
+			"properties" : {
+				"operationType" : {
+					"type" : "string",
+					"enum" : [
+						"Load",
+						"Setup",
+						"Processing",
+						"MT-Load",
+						"MT-Load-Setup",
+						"MT-Load-Setup-Processing",
+						"MT-Setup-Processing"
+					]
+				}
+			}
+		}
+	},
+	"class_definition" : {
+		"edge" : {
+			"description" : "Base definition for edge",
+			"properties" : {
+				"_class" : {
+					"type" : "string"
+				},
+				"source" : {
+					"type" : "string"
+				},
+				"destination" : {
+					"type" : "string"
+				},
+				"name" : {
+					"type" : "string"
+				},
+				"required" : [
+					"_class",
+					"source",
+					"destination"
+				]
+			},
+			"type" : "object"
+		},
+		"node" : {
+			"description" : "Base definition for node",
+			"properties" : {
+				"_class" : {
+					"type" : "string"
+				},
+				"coordinate" : {
+					"properties" : {
+						"left" : "number",
+						"top" : "number"
+					},
+					"type" : "object"
+				},
+				"name" : {
+					"type" : "string"
+				}
+			},
+			"required" : [
+				"name",
+				"_class"
+			],
+			"type" : "object"
+		},
+		"Dream.Edge" : {
+			"_class" : "edge",
+			"allOf" : [{
+					"$ref" : "#/class_defintion/edge"
+				}
+			],
+			"description" : "Connect stations together"
+		},
+		"Dream.Exit" : {
+			"_class" : "node",
+			"name" : "Exit",
+			"colour" : "#F0F",
+			"shape" : "rectangle",
+			"description" : "A station where entities exits from the system",
+			"allOf" : [{
+					"$ref" : "#/class_definition/node"
+				}, {
+					"type" : "object",
+					"properties" : {
+						"name" : {
+							"type" : "string",
+							"default" : "Exit"
+						},
+						"id" : {
+							"default" : "E",
+							"required" : true
+						}
+					}
+				}
+			]
+		},
+		"Dream.Queue" : {
+			"name" : "Queue",
+			"_class" : "node",
+			"description" : "A buffer where entites can be hold until the next station is ready to process them",
+			"allOf" : [{
+					"$ref" : "#/class_definition/node"
+				}, {
+					"type" : "object",
+					"properties" : {
+						"name" : {
+							"type" : "string",
+							"default" : "Queue"
+						},
+						"id" : {
+							"type" : "string",
+							"default" : "Q"
+						},
+						"capacity" : {
+							"$ref" : "#/definitions/_capacity",
+							"required" : true
+						},
+						"schedulingRule" : {
+							"$ref" : "#/definitions/_schedulingRule",
+							"required" : true
+						},
+						"isDummy" : {
+							"type" : "boolean",
+							"default" : false
+						}
+					}
+				}
+			]
+		},
+		"Dream.Machine" : {
+			"name" : "Machine",
+			"description" : "A station processing items for some time given by a distribution",
+			"_class" : "node",
+			"allOf" : [{
+					"$ref" : "#/class_definition/node"
+				}, {
+					"type" : "object",
+					"properties" : {
+						"name" : {
+							"type" : "string",
+							"default" : "Machine"
+						},
+						"id" : {
+							"type" : "string",
+							"default" : "M",
+							"required" : true
+						},
+						"processingTime" : {
+							"$ref" : "#/definitions/_dist",
+							"required" : true
+						},
+						"failures" : {
+							"$ref" : "#/definitions/_failureDist",
+							"required" : true
+						}
+					}
+				}
+			]
+		},
+		"Dream.Source" : {
+			"name" : "Source",
+			"_class" : "node",
+			"description" : "A station creating entities",
+			"allOf" : [{
+					"$ref" : "#/class_definition/node"
+				}, {
+					"type" : "object",
+					"properties" : {
+						"name" : {
+							"type" : "string",
+							"default" : "Source"
+						},
+						"id" : {
+							"type" : "string",
+							"default" : "S",
+							"required" : true
+						},
+						"interArrivalTime" : {
+							"description" : "Inter-arrivaltime",
+							"$ref" : "#/definitions/_dist",
+							"required" : true
+						},
+						"entity" : {
+							"type" : "string",
+							"description" : "EntityClass",
+							"default" : "Dream.Part",
+							"required" : true
+						}
+					}
+				}
+			]
+		},
+		"Dream.EventGenerator" : {
+			"name" : "Attainment",
+			"_class" : "node",
+			"description" : "Attainment",
+			"allOf" : [{
+					"$ref" : "#/class_definition/node"
+				}, {
+					"type" : "object",
+					"properties" : {
+						"name" : {
+							"type" : "string",
+							"default" : "Attainment"
+						},
+						"id" : {
+							"type" : "string",
+							"default" : "A",
+							"required" : true
+						},
+						"start" : {
+							"description" : "Starttime",
+							"type" : "number",
+							"default" : 1,
+							"required" : true
+						},
+						"stop" : {
+							"description" : "Stoptime",
+							"type" : "number",
+							"default" : -1,
+							"required" : true
+						},
+						"duration" : {
+							"description" : "duration",
+							"type" : "number",
+							"default" : 10,
+							"required" : true
+						},
+						"interval" : {
+							"description" : "intervaltime",
+							"type" : "number",
+							"default" : 10,
+							"required" : true
+						},
+						"method" : {
+							"description" : "methodtobeperformed",
+							"type" : "string",
+							"default" : "Globals.countIntervalThroughput",
+							"required" : true
+						},
+						"argumentDict" : {
+							"description" : "arguments to be used by the method",
+							"type" : "string",
+							"default" : "{}",
+							"required" : true
+						}
+					}
+				}
+			]
+		},
+		"Dream.Repairman" : {
+			"name" : "Repairman",
+			"_class" : "node",
+			"description" : "A resource that repairs stations in failure",
+			"allOf" : [{
+					"$ref" : "#/class_definition/node"
+				}, {
+					"type" : "object",
+					"properties" : {
+						"name" : {
+							"type" : "string",
+							"default" : "Repairman"
+						},
+						"id" : {
+							"type" : "string",
+							"default" : "R",
+							"required" : true
+						},
+						"capacity" : {
+							"$ref" : "#/definitions/_capacity",
+							"required" : true
+						}
+					}
+				}
+			]
+		}
+	},
+	"application_configuration" : {
+		"Input" : {
+			"view" : {
+				"title" : "ProductionLine",
+				"type" : "object_view",
+				"gadget" : "Input_viewProductionLine"
+			},
+			"view_machine_shift_spreadsheet" : {
+				"gadget" : "Input_viewSpreadsheet",
+				"type" : "object_view",
+				"title" : "Machine Shifts Spreadsheet",
+				"configuration" : {
+					"columns" : [{
+							"name" : "Date",
+							"type" : "string",
+							"format" : "date-time"
+						}, {
+							"name" : "Machine",
+							"type" : "string"
+						}, {
+							"name" : "Start",
+							"type" : "string"
+						}, {
+							"name" : "Stop",
+							"type" : "string"
+						}
+					]
+				}
+			},
+			"view_repairman_shift_spreadsheet" : {
+				"gadget" : "Input_viewSpreadsheet",
+				"type" : "object_view",
+				"title" : "Repairman Shifts Spreadsheet",
+				"configuration" : {
+					"columns" : [{
+							"name" : "Date",
+							"type" : "string",
+							"format" : "date-time"
+						}, {
+							"name" : "Repairman",
+							"type" : "string"
+						}, {
+							"name" : "Start",
+							"type" : "string"
+						}, {
+							"name" : "Stop",
+							"type" : "string"
+						}
+					]
+				}
+			},
+			"view_wip_spreadsheet" : {
+				"gadget" : "Input_viewSpreadsheet",
+				"type" : "object_view",
+				"title" : "WIP Spreadsheet",
+				"configuration" : {
+					"columns" : [{
+							"name" : "ID",
+							"type" : "string"
+						}, {
+							"name" : "StationID",
+							"type" : "string"
+						}, {
+							"name" : "RemainingProcessingTime",
+							"type" : "number"
+						}
+					]
+				}
+			},
+			"view_run_simulation" : {
+				"title" : "RunSiumulation",
+				"type" : "object_view",
+				"gadget" : "Input_viewSimulation"
+			}
+		},
+		"Output" : {
+			"view_station_utilization" : {
+				"title" : "StationUtilization",
+				"type" : "object_view",
+				"gadget" : "Output_viewStationUtilisationGraph",
+				"configuration" : {
+					"columns" : [
+
+					]
+				}
+			},
+			"view_queue_stats" : {
+				"title" : "QueueStatistics",
+				"type" : "object_view",
+				"gadget" : "Output_viewQueueStatGraph",
+				"configuration" : {
+					"columns" : [
+
+					]
+				}
+			},
+			"view_exit_stats" : {
+				"title" : "ExitStatistics",
+				"type" : "object_view",
+				"gadget" : "Output_viewExitStatistics",
+				"configuration" : {
+					"properties" : {
+						"throughput" : {
+							"type" : "number"
+						},
+						"taktTime" : {
+							"type" : "number"
+						},
+						"lifespan" : {
+							"type" : "number"
+						}
+					}
+				}
+			},
+			"view_debug_json" : {
+				"title" : "DebugJson",
+				"type" : "object_view",
+				"gadget" : "Output_viewDebugJson"
+			}
+		},
+		"preprocessing_plugin_list" : [{
+				"plugin" : "ReadShiftFromSpreadsheet",
+				"input_id" : "ShiftSpreadsheet"
+			}
+		],
+		"postprocessing_plugin_list" : [{
+				"plugin" : "CalculateConfidenceIntervals"
+			}
+		],
+		"general" : {
+			"properties" : {
+				"numberOfReplications" : {
+					"title" : "Numberofreplications",
+					"type" : "integer",
+					"description" : "Numberofreplicationstorun",
+					"default" : 10
+				},
+				"maxSimTime" : {
+					"title" : "LengthofExperiment",
+					"description" : "Lengthofthesimulationrun",
+					"type" : "number",
+					"default" : 100
+				},
+				"confidenceLevel" : {
+					"title" : "Confidencelevel",
+					"type" : "number",
+					"default" : 0.95,
+					"description" : "Confidencelevelforstatisticalanalysisofstochasticexperiments"
+				},
+				"processTimeout" : {
+					"title" : "ProcessTimeout",
+					"type" : "number",
+					"default" : 10,
+					"description" : "Numberofsecondsbeforethecalculationprocessisinterrupted"
+				},
+				"currentDate" : {
+					"default" : "2014/10/01",
+					"description" : "The day the experiment starts, in YYYY/MM/DD format",
+					"title" : "SimulationStartTime",
+					"type" : "string"
+				},
+				"timeUnitPerDay" : {
+					"default" : 24,
+					"description" : "Used for input and reporting widgets. Forexample, 24 means that simulation clock time unit is one hour.",
+					"title" : "Numberoftimeunitsperday",
+					"type" : "number"
+				},
+				"trace" : {
+					"default" : false,
+					"description" : "Createanexceltracefile(trueorfalse)",
+					"title" : "OutputTrace",
+					"type" : "boolean"
+				},
+				"seed" : {
+					"default" : "",
+					"description" : "When using the same seed, the random number generator produce the same sequence of numbers",
+					"title" : "Seedforrandomnumbergenerator",
+					"type" : "string"
+				},
+				"ke_url" : {
+					"default" : "http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
+					"description" : "TheURLforknowledgeextractiontoaccessitsdataforexamplehttp: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
+					"title" : "URLforKnowledgeExtractionSpreadsheet",
+					"type" : "string"
+				}
+			}
+		}
+	},
+	"general" : {},
+	"graph" : {
+		"main_graph" : {
+			"node" : {},
+			"edge" : {}
+		}
+	},
+	"input" : {},
+	"result" : {},
+	"constraints" : {}
+}
