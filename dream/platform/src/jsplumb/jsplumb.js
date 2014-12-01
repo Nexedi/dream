@@ -396,12 +396,34 @@
       }]];
     }
 
-    connection = gadget.props.jsplumb_instance.connect({
-      source: gadget.props.node_id_to_dom_element_id[edge_data.source],
-      target: gadget.props.node_id_to_dom_element_id[edge_data.destination],
-      Connector: [ "Bezier", {curviness: 75} ],
-      overlays: overlays
-    });
+    // If an edge has this data:
+    // { _class: 'Edge',
+    //   source: 'N1',
+    //   destination: 'N2',
+    //   jsplumb_source_endpoint: 'BottomCenter',
+    //   jsplumb_destination_endpoint: 'LeftMiddle',
+    //   jsplumb_connector: 'Flowchart' }
+    // Then it is rendered using a flowchart connector. The difficulty is that
+    // jsplumb does not let you configure the connector type on the edge, but
+    // on the source endpoint. One solution seem to create all types of
+    // endpoints on nodes.
+    if ( edge_data.jsplumb_connector === 'Flowchart' ) {
+        connection = gadget.props.jsplumb_instance.connect({
+            uuids: [edge_data.source + ".flowChart" +
+                         edge_data.jsplumb_source_endpoint,
+                    edge_data.destination + ".flowChart" +
+                         edge_data.jsplumb_destination_endpoint],
+            overlays: overlays
+        });
+    } else {
+      connection = gadget.props.jsplumb_instance.connect({
+        source: gadget.props.node_id_to_dom_element_id[edge_data.source],
+        target: gadget.props.node_id_to_dom_element_id[edge_data.destination],
+        Connector: [ "Bezier", {curviness: 75} ],
+        overlays: overlays
+      });
+    }
+
     // jsplumb assigned an id, but we are controlling ids ourselves.
     connection.id = edge_id;
   }
@@ -596,7 +618,25 @@
     box.css("top", absolute_position[1]);
     box.css("left", absolute_position[0]);
     updateNodeStyle(gadget, dom_element_id);
-    draggable(gadget);
+    draggable(gadget); // XXX make only this element draggable.
+
+    // Add some flowchart endpoints
+    // TODO: add them all !
+    gadget.props.jsplumb_instance.addEndpoint(dom_element_id, {
+        isSource:true,
+        maxConnections:-1,
+        connector:[ "Flowchart", { stub:[40, 60],
+                                   gap:10,
+                                   cornerRadius:5,
+                                   alwaysRespectStubs:true } ]
+        }, { anchor: "BottomCenter",
+            uuid: node_id + ".flowchartBottomCenter" });
+
+    gadget.props.jsplumb_instance.addEndpoint(dom_element_id,
+        { isTarget:true, maxConnections: -1 },
+        { anchor: "LeftMiddle", uuid: node_id + ".flowChartLeftMiddle" });
+
+
     gadget.notifyDataChanged();
   }
 
