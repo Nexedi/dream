@@ -416,6 +416,14 @@
       }]];
     }
 
+    if (gadget.props.data.graph.node[edge_data.source] === undefined) {
+      throw new Error("Edge Source " + edge_data.source + " does not exist");
+    }
+    if (gadget.props.data.graph.node[edge_data.source] === undefined) {
+      throw new Error("Edge Destination " + edge_data.source
+        + " does not exist");
+    }
+
     // If an edge has this data:
     // { _class: 'Edge', 
     //   source: 'N1',
