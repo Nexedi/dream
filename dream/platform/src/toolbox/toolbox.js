@@ -1,4 +1,4 @@
-/*global window, document, RSVP, rJS, initGadgetMixin, console*/
+/*global window, document, RSVP, rJS, initGadgetMixin*/
 (function (window, document, RSVP, rJS, initGadgetMixin) {
   "use strict";
 
@@ -38,26 +38,18 @@
         tools_container = document.createElement('div');
       /* display all nodes in the palette.
        */
-      console.log("RENDERING TOOLBOX");
       tools_container.className = 'tools-container';
       Object.keys(data.class_definition).forEach(function (key) {
         var _class_object = data.class_definition[key], tool;
         // XXX "expand" the json schema "allOF" etc
-        console.log(_class_object);
         if (_class_object.allOf) {
-          console.log("yupi");
           if (_class_object.allOf[0].$ref === "#/class_definition/node") {
-            console.log("yupi2");
             tool = document.createElement('div');
             // XXX maybe allow to configure the class name ?
             tool.className = "tool " + key;
-            console.log("..");
-            console.log(tool.className);
             tool.textContent = _class_object.name || key;
-            console.log(tool.textContent);
             tool.draggable = true;
             tool.dataset.class_name = JSON.stringify(key);
-            console.log(tool.dataset.class_name);
             Object.keys(_class_object.css || {}).forEach(function (k) {
               tool.style[k] = _class_object.css[k];
             });
