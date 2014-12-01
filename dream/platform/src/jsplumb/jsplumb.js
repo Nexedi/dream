@@ -17,10 +17,10 @@
  * along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
  * ==========================================================================*/
 
-/*global RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
+/*global RSVP, rJS, $, jsPlumb, Handlebars,
   loopEventListener, promiseEventListener, DOMParser, confirm */
 /*jslint unparam: true todo: true */
-(function (RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
+(function (RSVP, rJS, $, jsPlumb, Handlebars,
            loopEventListener, promiseEventListener, DOMParser) {
   "use strict";
   
@@ -712,12 +712,9 @@
       RSVP.Promise(resolver, canceller) ]);
   }
 
-  initGadgetMixin(gadget_klass);
   gadget_klass
-
-    .declareAcquiredMethod('notifyDataChanged', 'notifyDataChanged')
-
     .ready(function (g) {
+      g.props = {};
       g.props.node_id_to_dom_element_id = {};
       g.props.zoom_level = 1.0;
       g.props.style_attr_list = [
@@ -726,8 +723,11 @@
         'padding-top',
         'line-height'
       ];
+      g.getElement().then( function (element) {
+        g.props.element = element;
+      });
     })
-
+    .declareAcquiredMethod('notifyDataChanged', 'notifyDataChanged')
     .declareMethod('render', function (data) {
       this.props.data = JSON.parse(data);
       this.props.jsplumb_instance = jsPlumb.getInstance();
@@ -757,5 +757,5 @@
         gadget.props.nodes_click_monitor
       ]);
     });
-}(RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
-  loopEventListener, promiseEventListener, DOMParser));
+}(RSVP, rJS, $, jsPlumb, Handlebars, loopEventListener,
+promiseEventListener, DOMParser));
