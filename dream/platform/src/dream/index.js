@@ -28,6 +28,7 @@
         "title": "Create Document"
       }
     },
+    // TODO: remove this once everything is merged.
     "Input": {
       "view": {
         "gadget": "Input_viewProductionLine",
@@ -520,11 +521,13 @@
           }
         })
         .push(function(result) {
-          gadget.props.data = result ? JSON.parse(result) : {};
-          // TODO
-          window.console.log("We got this data", gadget.props.data,
-            "we can now set portal_types");
-
+          var data;
+          if (result) {
+            data = JSON.parse(result);
+            gadget.props.data = data;
+            portal_types.Input = data.application_configuration.input;
+            portal_types.Output = data.application_configuration.output;
+          }
           // Get the action information
           return gadget.declareGadget(
             portal_types[portal_type][options.action].gadget + ".html"
