@@ -1,0 +1,341 @@
+{
+  "class_definition": {
+    "edge": {
+      "description": "Base definition for edge",
+      "properties": {
+        "_class": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "destination": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "required": [
+          "_class",
+          "source",
+          "destination"
+        ]
+      },
+      "type": "object"
+    },
+    "node": {
+      "description": "Base definition for node",
+      "properties": {
+        "_class": {
+          "type": "string"
+        },
+        "coordinate": {
+          "properties": {
+            "left": "number",
+            "top": "number"
+          },
+          "type": "object"
+        },
+        "name": {
+          "type": "string"
+        },
+        "required": [
+          "name",
+          "_class"
+        ]
+      },
+      "type": "object"
+    },
+    "Dream.Edge": {
+      "_class": "edge",
+      "allOf": [
+        {
+          "$ref": "#edge"
+        }
+      ],
+      "description": "Connect stations together"
+    },
+    "Dream.Exit": {
+      "_class": "node",
+      "name": "Exit",
+      "css": {
+        "color": "#F0F"
+      },
+      "description": "A station where entities exits from the system",
+      "allOf": [
+        {
+          "$ref": "#node"
+        }
+      ]
+    },
+    "Dream.Queue": {
+      "name": "Queue",
+      "_class": "node",
+      "description": "A buffer where entites can be hold until the next station is ready to process them",
+      "allOf": [
+        {
+          "$ref": "#node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "capacity": {
+              "type": "number",
+              "minimum": 0
+            },
+            "schedulingRule": {
+              "type": "string",
+              "enum": [
+                "FIFO",
+                "Priority",
+                "EDD",
+                "EOD",
+                "NumStages",
+                "RPC",
+                "LPT",
+                "SPT",
+                "MS",
+                "WINQ"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "Dream.Machine": {
+      "name": "Machine",
+      "description": "A station processing items for some time given by a distribution",
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#node"
+        },
+        {
+          "properties": {
+            "processingTime": {
+              "type": "object",
+              "properties": {
+                "distributionType": {
+                  "type": "string",
+                  "enum": [
+                    "Fixed",
+                    "Exp",
+                    "Normal"
+                  ]
+                },
+                "mean": {
+                  "type": "number"
+                },
+                "stdev": {
+                  "type": "number"
+                },
+                "min": {
+                  "type": "number"
+                },
+                "max": {
+                  "type": "number"
+                }
+              }
+            },
+            "failures": {
+              "type": "object",
+              "properties": {
+                "MTTF": {
+                  "type": "number"
+                },
+                "MTTR": {
+                  "type": "number"
+                },
+                "repairman": {
+                  "type": "string",
+                  "enum": [
+                    "None"
+                  ]
+                },
+                "failureDistribution": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "No"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "distributionType": {
+                          "type": "string",
+                          "enum": [
+                            "Fixed",
+                            "Exp",
+                            "Normal"
+                          ]
+                        },
+                        "mean": {
+                          "type": "number"
+                        },
+                        "stdev": {
+                          "type": "number"
+                        },
+                        "min": {
+                          "type": "number"
+                        },
+                        "max": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Dream.Source": {
+      "name": "Source",
+      "_class": "node",
+      "description": "A station creating entities",
+      "allOf": [
+        {
+          "$ref": "#node"
+        },
+        {
+          "interArrivalTime": {
+            "type": "object",
+            "properties": {
+              "distributionType": {
+                "type": "string",
+                "enum": [
+                  "Fixed",
+                  "Exp",
+                  "Normal"
+                ]
+              },
+              "mean": {
+                "type": "number"
+              },
+              "stdev": {
+                "type": "number"
+              },
+              "min": {
+                "type": "number"
+              },
+              "max": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "application_configuration": {
+    "input": {
+      "view": {
+        "title": "Production Line",
+        "type": "object_view",
+        "gadget": "Input_viewProductionLine.html"
+      },
+      "view_shift_spreadsheet": {
+        "gadget": "Input_viewSpreadsheet.html",
+        "type": "object_view",
+        "title": "Shift Spreadsheeet",
+        "configuration": {
+          "columns": [
+            {
+              "name": "Date",
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "name": "Machines",
+              "type": "string"
+            },
+            {
+              "name": "Start",
+              "type": "string"
+            },
+            {
+              "name": "Stop",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "view_run_simulation": {
+        "title": "Run Siumulation",
+        "type": "object_view",
+        "gadget": "Input_viewSimulation.html"
+      }
+    },
+    "output": {
+      "view_station_utilization": {
+        "title": "Station Utilization",
+        "type": "object_view",
+        "gadget": "Output_viewStationUtilisationGraph.html"
+      },
+      "view_queue_stats": {
+        "title": "Queue Statistics",
+        "type": "object_view",
+        "gadget": "Output_viewQueueStatGraph.html"
+      },
+      "view_exit_stats": {
+        "title": "Exit Statistics",
+        "type": "object_view",
+        "gadget": "Output_viewExitStatistics.html"
+      },
+      "view_debug_json": {
+        "title": "Debug Json",
+        "type": "object_view",
+        "gadget": "Output_viewDebugJson.html"
+      }
+    },
+    "preprocessing_plugin_list": [
+      {
+        "plugin": "ReadShiftFromSpreadsheet",
+        "input_id": "Shift Spreadsheet"
+      }
+    ],
+    "postprocessing_plugin_list": [
+      {
+        "plugin": "CalculateConfidenceIntervals"
+      }
+    ],
+    "general": {
+      "properties": {
+        "numberOfReplications": {
+          "type": "number",
+          "title": "Number of replications",
+          "description": "Number of replications to run",
+          "default": 1
+        },
+        "lengthOfExperiment": {
+          "type": "number",
+          "description": "Length of experiment",
+          "default": 1440
+        }
+      }
+    }
+  },
+  "general": {
+    "numberOfReplications": 12456
+  },
+  "graph": {
+    "node": {},
+    "edge": {}
+  },
+  "input": {
+    "Shift Spreadsheet": [
+      [
+        "2014/10/02", 
+        "M1",
+        "06:00",
+        "13:00"
+      ]
+    ]
+  },
+  "result": {},
+  "constraints": {}
+}
