@@ -26,17 +26,12 @@
   
 /* TODO:
  * use services
- * no more #main
  * drop jquery ui dependency
  * less dependancies ( promise event listner ? )
- * less css
  * document exposed css / jsplumb config
  * no more handlebars
- * different signatures on promises
  * accept ERP5 format
  * auto springy layout
- * error reporting service
- * should fit to the element size
  * drop zoom level
  * edge edit popup on click
  * rename draggable()
@@ -533,7 +528,6 @@
         // Expose the dialog handling promise so that we can wait for it in
         // test.
         gadget.props.dialog_promise = RSVP.any([
-          // TODO: why different signature ?
           save_promise(fieldset_gadget, node_id),
           delete_promise
         ]);
