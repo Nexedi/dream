@@ -256,47 +256,6 @@
       });
   }
 
-  function initJsPlumb(gadget) {
-    var jsplumb_instance = gadget.props.jsplumb_instance;
-
-    jsplumb_instance.setRenderMode(jsplumb_instance.SVG);
-    jsplumb_instance.importDefaults({
-      HoverPaintStyle: {
-        strokeStyle: "#1e8151",
-        lineWidth: 2
-      },
-      Endpoint: ["Dot", {
-        radius: 2
-      }],
-      ConnectionOverlays: [
-        ["Arrow", {
-          location: 1,
-          id: "arrow",
-          length: 14,
-          foldback: 0.8
-        }]
-      ],
-      Container: "main"
-    });
-
-    // listen for clicks on connections,
-    // and offer to change values on click.
-
-    // jsplumb_instance
-    //   .bind("connectionDrag", function (connection) {
-    //     return undefined;
-    //   });
-
-    // jsplumb_instance
-    //   .bind("connectionDragStop", function (connection) {
-    //     return undefined;
-    //   });
-    // split in 2 methods ? one for events one for manip
-
-    gadget.notifyDataChanged();
-    draggable(gadget);
-  }
-
   function updateNodeStyle(gadget, element_id) {
     // Update node size according to the zoom level
     // XXX does nothing for now
@@ -738,9 +697,32 @@
     })
 
     .declareMethod('startService', function () {
-      var gadget = this;
+      var gadget = this,
+        jsplumb_instance = gadget.props.jsplumb_instance;
       this.props.main = this.props.element.querySelector('#main');
-      initJsPlumb(this);
+
+      jsplumb_instance.setRenderMode(jsplumb_instance.SVG);
+      jsplumb_instance.importDefaults({
+        HoverPaintStyle: {
+          strokeStyle: "#1e8151",
+          lineWidth: 2
+        },
+        Endpoint: ["Dot", {
+          radius: 2
+        }],
+        ConnectionOverlays: [
+          ["Arrow", {
+            location: 1,
+            id: "arrow",
+            length: 14,
+            foldback: 0.8
+          }]
+        ],
+        Container: this.props.main
+      });
+
+      draggable(gadget);
+
       this.props.nodes_click_monitor = RSVP.Monitor();
       $.each(this.props.data.graph.node, function (key, value) {
         addNode(gadget, key, value);
