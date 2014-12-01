@@ -23,6 +23,25 @@
 (function (RSVP, rJS, $, jsPlumb, Handlebars, initGadgetMixin,
            loopEventListener, promiseEventListener, DOMParser) {
   "use strict";
+  
+/* TODO:
+ * use services
+ * no more #main
+ * drop jquery ui dependency
+ * less dependancies ( promise event listner ? )
+ * less css
+ * document exposed css / jsplumb config
+ * no more handlebars
+ * different signatures on promises
+ * accept ERP5 format
+ * auto springy layout
+ * error reporting service
+ * should fit to the element size
+ * drop zoom level
+ * edge edit popup on click
+ * rename draggable()
+ * somehow choose edge class on connect
+ */
 
   /*jslint nomen: true */
   var gadget_klass = rJS(window),
@@ -205,6 +224,7 @@
         updateElementCoordinate(gadget, getNodeId(gadget, element.target.id));
       };
 
+    // XXX This function should only touch the node element that we just added.
     jsplumb_instance
       .draggable(jsplumb_instance.getSelector(".window"), {
         containment: 'parent',
@@ -397,7 +417,7 @@
     }
 
     // If an edge has this data:
-    // { _class: 'Edge',
+    // { _class: 'Edge', 
     //   source: 'N1',
     //   destination: 'N2',
     //   jsplumb_source_endpoint: 'BottomCenter',
@@ -415,7 +435,7 @@
                          edge_data.jsplumb_destination_endpoint],
             overlays: overlays
         });
-    } else {
+    } else {    
       connection = gadget.props.jsplumb_instance.connect({
         source: gadget.props.node_id_to_dom_element_id[edge_data.source],
         target: gadget.props.node_id_to_dom_element_id[edge_data.destination],
@@ -431,7 +451,7 @@
   function expandSchema(class_definition, full_schema) {
     // minimal expanding of json schema, supports merging allOf and $ref
     // references
-    // TODO: check for a library with full support
+    // TODO: check for a library that would provide full support
     var property, referenced, i,
       expanded_class_definition = {properties:
         class_definition.properties || {}};
@@ -467,7 +487,7 @@
       schema,
       fieldset_element,
       delete_promise;
-   
+    
     // If we have no definition for this, we do not allow edition.
     if ( gadget.props.data.class_definition[node_data._class] === undefined ) {
       return;
