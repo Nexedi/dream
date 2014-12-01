@@ -1,7 +1,7 @@
 /*global $, rJS, RSVP, promiseEventListener, promiseReadAsText,
-         initGadgetMixin, console */
+         initGadgetMixin, Handlebars, console */
 (function (window, rJS, RSVP, promiseEventListener,
-           promiseReadAsText, initGadgetMixin) {
+           promiseReadAsText, initGadgetMixin) { /* Handlebars*/
   "use strict";
   // delete last session document
   function removeLastSession(gadget, name) {
@@ -172,6 +172,11 @@
   }
 
   var gadget_klass = rJS(window);
+  //var gadget_klass = rJS(window),
+  //  source = gadget_klass.__template_element
+  //                       .getElementById("li-template")
+  //                       .innerHTML,
+  //  li_template = Handlebars.compile(source);
   initGadgetMixin(gadget_klass);
   gadget_klass.declareAcquiredMethod("aq_post", "jio_post")
     /////////////////////////////////////////////////////////////////
@@ -199,17 +204,28 @@
       gadget.state_parameter_dict = {};
     })
     .declareMethod("render", function () {
+      console.log("VIEWADDINSTANCE RENDER 1");
       var gadget, doc_list;
       gadget = this;
       doc_list = gadget.props.element.querySelector("ul.document-list");
       // helper: add options to selects
       function makeListItems(row_list) {
-        var i, len, fragment, item, record, button, box, label; /*text_node*/
+        console.log("MAKEDOCUMENTLIST 1");
+        var i, len, fragment, record, item, button, box, label; //test; 
         fragment = document.createDocumentFragment();
         for (i = 0, len = row_list.length; i < len; i += 1) {
           record = row_list[i].doc;
 
+
           item = document.createElement("li");
+
+          //test = document.createElement("li");
+          /*jslint nomen: true*/
+          //test.innerHTML = li_template({
+          //  value: record.title + " (" + record.date + ")",
+          //  name: "record_" + record._id
+          //});
+          /*jslint nomen: false*/
 
           button = document.createElement("input");
           button.type = "submit";
@@ -218,6 +234,7 @@
           button.setAttribute("name", "record_" + record._id);
           /*jslint nomen: false*/
 
+          
           label = document.createElement("label");
           box = document.createElement("input");
           box.type = "checkbox";
@@ -227,10 +244,14 @@
           /*jslint nomen: false*/
 
           label.appendChild(box);
+
+          //test.appendChild(label);
+
           item.appendChild(button);
           item.appendChild(label);
           fragment.appendChild(item);
         }
+        console.log("MAKEDOCUMENTLIST 2");
         return fragment;
       }
       // helper: select a configuration dictionary from a doc 
@@ -240,7 +261,12 @@
         //prevent default
         e.preventDefault();
         form = e.target;
+        console.log('HANDLEDICTSELECT');
+        console.log(form);
         element = form.querySelector("div.ui-focus");
+        if (element === undefined || null) {
+          element = form.querySelector("input.ui-state-focus");
+        }
         id = element.childNodes[1].name.replace("record_", "");
         return gadget.aq_getAttachment({
           "_id": id,
@@ -307,6 +333,7 @@
         "select_list": ["title", "modified"]
       })
         .push(function (document_list) {
+          console.log("VIEWADDINSTANCE RENDER 2");
           var len, data, $doc, fragment;
           data = document_list.data;
           len = data.total_rows;
@@ -328,6 +355,7 @@
           }
         })
         .push(function () {
+          console.log("VIEWADDINSTANCE RENDER 3");
           if (!gadget.state_parameter_dict.bound) {
             gadget.state_parameter_dict.bound = true;
             return RSVP.all([
@@ -347,19 +375,23 @@
         });/*.fail(console.log);*/
     })
     .declareMethod("startService", function () {
+      console.log("VIEWADDINSTANCE STARTSERVICE 1");
       var gadget = this;
 
       return new RSVP.Queue()
         .push(function () {
+          console.log("VIEWADDINSTANCE STARTSERVICE 2");
           return RSVP.any([ waitForImport(gadget), waitForDefault(gadget) ]);
         })
         .push(function (result) {
+          console.log("VIEWADDINSTANCE STARTSERVICE 3");
           return gadget.whoWantsToDisplayThisDocument(result[0].id);
         })
         .push(function (url) {
+          console.log("VIEWADDINSTANCE STARTSERVICE 4");
           return gadget.pleaseRedirectMyHash(url);
         });
     });
 
 }(window, rJS, RSVP, promiseEventListener, promiseReadAsText,
-  initGadgetMixin));
+  initGadgetMixin)); /* Handlebars*/
