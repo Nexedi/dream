@@ -234,14 +234,14 @@
   "application_configuration": {
     "input": {
       "view": {
-        "title": "Production Line",
+        "gadget": "Input_viewProductionLine",
         "type": "object_view",
-        "gadget": "Input_viewProductionLine.html"
+        "title": "Production Line"
       },
       "view_shift_spreadsheet": {
-        "gadget": "Input_viewSpreadsheet.html",
+        "gadget": "Input_viewSpreadsheet",
         "type": "object_view",
-        "title": "Shift Spreadsheeet",
+        "title": "Configurable Shift Spreadsheeet (not functional yet)",
         "configuration": {
           "columns": [
             {
@@ -267,29 +267,29 @@
       "view_run_simulation": {
         "title": "Run Siumulation",
         "type": "object_view",
-        "gadget": "Input_viewSimulation.html"
+        "gadget": "Input_viewSimulation"
       }
     },
     "output": {
       "view_station_utilization": {
         "title": "Station Utilization",
         "type": "object_view",
-        "gadget": "Output_viewStationUtilisationGraph.html"
+        "gadget": "Output_viewStationUtilisationGraph"
       },
       "view_queue_stats": {
         "title": "Queue Statistics",
         "type": "object_view",
-        "gadget": "Output_viewQueueStatGraph.html"
+        "gadget": "Output_viewQueueStatGraph"
       },
       "view_exit_stats": {
         "title": "Exit Statistics",
         "type": "object_view",
-        "gadget": "Output_viewExitStatistics.html"
+        "gadget": "Output_viewExitStatistics"
       },
       "view_debug_json": {
         "title": "Debug Json",
         "type": "object_view",
-        "gadget": "Output_viewDebugJson.html"
+        "gadget": "Output_viewDebugJson"
       }
     },
     "preprocessing_plugin_list": [
