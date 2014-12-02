@@ -35,7 +35,8 @@ from ObjectInterruption import ObjectInterruption
 class Failure(ObjectInterruption):
     
     def __init__(self, id='',name='',victim=None, distribution=None, index=0, repairman=None, offshift=False,
-                 deteriorationType='constant',**kw):
+                 deteriorationType='constant',
+                 waitOnTie=False,**kw):
         ObjectInterruption.__init__(self,id,name,victim=victim)
         if distribution:
             self.distType=distribution.get('distributionType','No')              # the distribution that the failure duration follows
@@ -87,6 +88,8 @@ class Failure(ObjectInterruption):
             self.rngTTR.mean=self.MTTR
         # flag used to identify if the time between failures should be counted while the victim is off-shift
         self.offshift=offshift
+        # flag to show if the failure will wait on tie with other events before interrupting the victim
+        self.waitOnTie=waitOnTie
 
     def initialize(self):
         ObjectInterruption.initialize(self)
@@ -162,7 +165,13 @@ class Failure(ObjectInterruption):
                         self.victimStartsProcess=self.env.event()
                     else:
                         failureNotTriggered=False
-           
+            
+            # if the mode is to wait on tie before interruption add a dummy hold for 0
+            # this is done so that if processing finishes exactly at the time of interruption
+            # the processing will finish first (if this mode is selected)
+            if self.waitOnTie:
+                yield self.env.timeout(0)
+                
             # interrupt the victim
             self.interruptVictim()                      # interrupt the victim
             
