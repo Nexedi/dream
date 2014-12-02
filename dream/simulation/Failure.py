@@ -170,7 +170,9 @@ class Failure(ObjectInterruption):
             # this is done so that if processing finishes exactly at the time of interruption
             # the processing will finish first (if this mode is selected)
             if self.waitOnTie:
-                yield self.env.timeout(0)
+                if hasattr(self.victim, 'timeToEndCurrentOperation'):
+                    if float(self.victim.timeToEndCurrentOperation)==float(self.env.now):
+                        yield self.env.timeout(0)
                 
             # interrupt the victim
             self.interruptVictim()                      # interrupt the victim

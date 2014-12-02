@@ -421,7 +421,8 @@ class Machine(CoreObject):
         # get the operation time, tinMStarts holds the processing time of the machine
         self.totalOperationTimeInCurrentEntity=self.calculateTime(type)
         # timer to hold the operation time left
-        self.tinM=self.totalOperationTimeInCurrentEntity                                          
+        self.tinM=self.totalOperationTimeInCurrentEntity    
+        self.timeToEndCurrentOperation=self.env.now+self.tinM                                      
         # variables used to flag any interruptions and the end of the processing
         self.interruption=False
         # local variable that is used to check whether the operation is concluded
@@ -914,6 +915,7 @@ class Machine(CoreObject):
             # recalculate the processing time left tinM
             if self.timeLastOperationStarted>=0:
                 self.tinM=self.tinM-(self.env.now-self.timeLastOperationStarted)
+                self.timeToEndCurrentOperation=self.env.now+self.tinM
                 if(self.tinM==0):       # sometimes the failure may happen exactly at the time that the processing would finish
                                         # this may produce disagreement with the simul8 because in both SimPy and Simul8
                                         # it seems to be random which happens 1st
