@@ -131,8 +131,8 @@
    "results": {
     "blockage_ratio": 0.0, 
     "failure_ratio": 0.0, 
-    "off_shift_ratio": 15.4, 
-    "waiting_ratio": 6.6, 
+    "off_shift_ratio": 14.0, 
+    "waiting_ratio": 8.0, 
     "working_ratio": 78.0
    }
   }, 

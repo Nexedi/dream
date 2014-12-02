@@ -166,7 +166,8 @@
                 "MTTR": 15,
                 "distributionType": "Fixed",
                 "repairman": "None",
-                "MTTF": 150
+                "MTTF": 150,
+				"waitOnTie":1
             },
             "element_id": "DreamNode_32",
             "_class": "Dream.BatchScrapMachine",
@@ -863,7 +864,8 @@
                 "MTTR": 15,
                 "distributionType": "Fixed",
                 "repairman": "None",
-                "MTTF": 100
+                "MTTF": 100,
+				"waitOnTie":1
             },
             "element_id": "DreamNode_14",
             "_class": "Dream.M3",
@@ -1289,7 +1291,8 @@
                 "MTTR": 10,
                 "distributionType": "Fixed",
                 "repairman": "None",
-                "MTTF": 90
+                "MTTF": 90,
+				"waitOnTie":1
             },
             "element_id": "DreamNode_7",
             "_class": "Dream.BatchScrapMachineAfterDecompose",
