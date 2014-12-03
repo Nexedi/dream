@@ -14,18 +14,24 @@
     <script src="InputModule_viewAddInstanceDefinitionDialog.js" type="text/javascript"></script>
 	
 	
-	<!--script id="table-template" type="text/x-handlebars-template">
+	<script id="table-template" type="text/x-handlebars-template">
       <ul data-role="listview" data-inset="true" class="document-listview">
         {{#documentlist}}
-          <li><a href="{{link}}">{{title}}</a></li>
+          <li>
+            <div>
+            <!--div class="ui-btn ui-input-btn">{{title}} -->
+              <input type="submit" value="{{title}}" name= "{{name}}">
+            </div>
+            <div class="ui-checkbox">
+              <label class="ui-corner-all ui-btn-inherit ui-btn-icon-left ui-icon-checkbox-off ui-checkbox-off">
+              <!--label class="ui-corner-all ui-btn-inherit"-->
+                <input type="checkbox" value="" name="{{name}}">
+              </label>
+            </div>
+          </li>
         {{/documentlist}}
       </ul>
-    </script-->
-    <!--script id="li-template" type="text/x-handlebars-template">
-      <div class="ui-btn ui-input-btn ui-corner-all ui-shadow"> {{value}}
-        <input type="submit" value="{{value}}" name= "{{name}}">
-      </div>
-    </script-->
+    </script>
 	
   </head>
   <body>
@@ -44,10 +50,10 @@
       </div>
 
       <div class="ui-block-b">
-        <!--section class="document_list"></section-->
         <form method="post" action="#">
           <input type="hidden" name="method" value="delete_status" ></input>
-          <ul data-role="listview" class="document-list" data-inset="true"></ul>
+          <section class="document_list"></section>
+          <!--ul data-role="listview" class="document-list" data-inset="true"></ul-->
           <div class="ui-input-btn ui-btn ui-icon-delete ui-btn-inline ui-btn-icon-left">
             Delete
             <input type="submit" data-enhanced="true" value="Delete">
