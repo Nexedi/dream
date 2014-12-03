@@ -1,7 +1,7 @@
 /*global $, rJS, RSVP, promiseEventListener, promiseReadAsText,
          initGadgetMixin, Handlebars, console */
 (function (window, rJS, RSVP, promiseEventListener,
-           promiseReadAsText, initGadgetMixin) { /* Handlebars*/
+           promiseReadAsText, initGadgetMixin, Handlebars) { /* Handlebars*/
   "use strict";
   // delete last session document
   function removeLastSession(gadget, name) {
@@ -171,12 +171,11 @@
       });
   }
 
-  var gadget_klass = rJS(window);
-  //var gadget_klass = rJS(window),
-  //  source = gadget_klass.__template_element
-  //                       .getElementById("li-template")
-  //                       .innerHTML,
-  //  li_template = Handlebars.compile(source);
+  var gadget_klass = rJS(window),
+    source = gadget_klass.__template_element
+                         .getElementById("table-template")
+                         .innerHTML,
+    table_template = Handlebars.compile(source);
   initGadgetMixin(gadget_klass);
   gadget_klass.declareAcquiredMethod("aq_post", "jio_post")
     /////////////////////////////////////////////////////////////////
@@ -205,69 +204,66 @@
     })
     .declareMethod("render", function () {
       console.log("VIEWADDINSTANCE RENDER 1");
-      var gadget, doc_list;
+      var gadget, doc_list, innerHTML;
       gadget = this;
-      doc_list = gadget.props.element.querySelector("ul.document-list");
+      doc_list = gadget.props.element.querySelector(".document_list");
+      console.log("list created? 1");
+      console.log(doc_list);
       // helper: add options to selects
       function makeListItems(row_list) {
         console.log("MAKEDOCUMENTLIST 1");
-        var i, len, fragment, record, item, button, box, label; //test; 
-        fragment = document.createDocumentFragment();
-        for (i = 0, len = row_list.length; i < len; i += 1) {
-          record = row_list[i].doc;
-
-
-          item = document.createElement("li");
-
-          //test = document.createElement("li");
-          /*jslint nomen: true*/
-          //test.innerHTML = li_template({
-          //  value: record.title + " (" + record.date + ")",
-          //  name: "record_" + record._id
-          //});
-          /*jslint nomen: false*/
-
-          button = document.createElement("input");
-          button.type = "submit";
-          button.value = record.title + " (" + record.date + ")";
-          /*jslint nomen: true*/
-          button.setAttribute("name", "record_" + record._id);
-          /*jslint nomen: false*/
-
-          
-          label = document.createElement("label");
-          box = document.createElement("input");
-          box.type = "checkbox";
-          box.value = " ";
-          /*jslint nomen: true*/
-          box.setAttribute("name", "record_" + record._id);
-          /*jslint nomen: false*/
-
-          label.appendChild(box);
-
-          //test.appendChild(label);
-
-          item.appendChild(button);
-          item.appendChild(label);
-          fragment.appendChild(item);
+        var i, len, record, item, //button, box, label, fragment
+          param_list; //test;
+        param_list = [];
+        //fragment = document.createDocumentFragment();
+        len = row_list.length;
+        if (len === 1) {
+          if (row_list[0].doc === "none") {
+            item = document.createElement("div");
+			item.innerHTML = "no records";
+            doc_list.appendChild(item);
+          } else {
+            record = row_list[0].doc;
+            param_list[0] = {
+              title: record.title + " (" + record.date + ")",
+              name: "record_" + record._id,
+              date: new Date(record.date)
+            };
+          }
+        } else {
+          for (i = 0; i < len; i += 1) {
+            record = row_list[i].doc;
+            param_list[i] = {
+              title: record.title + " (" + record.date + ")",
+              name: "record_" + record._id,
+              date: new Date(record.date)
+            };
+          }
+          param_list.sort(function (a, b) {
+            return b.date - a.date;
+          });
         }
+		innerHTML = table_template({
+            documentlist: param_list
+          });
         console.log("MAKEDOCUMENTLIST 2");
-        return fragment;
+        //return fragment;
       }
       // helper: select a configuration dictionary from a doc 
       function handleDictSelect(e) {
-        //console.log('SELECTING CONFIGURATION DICTIONARY??????');
         var form, element, id, json_data;
         //prevent default
         e.preventDefault();
         form = e.target;
-        console.log('HANDLEDICTSELECT');
-        console.log(form);
         element = form.querySelector("div.ui-focus");
-        if (element === undefined || null) {
+        if (element === null || element === "undefined") {
+          console.log(0);
           element = form.querySelector("input.ui-state-focus");
+          console.log(element);
+          id = element.name.replace("record_", "");
+        } else {
+          id = element.childNodes[1].name.replace("record_", "");
         }
-        id = element.childNodes[1].name.replace("record_", "");
         return gadget.aq_getAttachment({
           "_id": id,
           "_attachment": "body.json"
@@ -278,7 +274,7 @@
             gadget.setConfigurationDict(json_data);
           })
           .push(function () {
-            console.log("happiness");
+            console.log("to remove last session");
             return removeLastSession(gadget);
           })
           .push(function (jio_document_list) {
@@ -325,6 +321,8 @@
             $doc.listview("refresh");
           }
         }
+        console.log("list created? 1");
+        console.log(doc_list);
         return RSVP.all(promise_list);
       }
       return gadget.aq_allDocs({
@@ -333,21 +331,21 @@
         "select_list": ["title", "modified"]
       })
         .push(function (document_list) {
-          console.log("VIEWADDINSTANCE RENDER 2");
-          var len, data, $doc, fragment;
+          var len, data, $doc;
           data = document_list.data;
           len = data.total_rows;
           if (len > 0) {
-            fragment = makeListItems(data.rows);
+            makeListItems(data.rows);
           } else {
-            fragment = document.createElement("li");
-            fragment.innerHTML = "no records";
+            makeListItems([{doc: "none"}]);
           }
           // append
           while (doc_list.firstChild) {
             doc_list.removeChild(doc_list.firstChild);
           }
-          doc_list.appendChild(fragment);
+          console.log("list created? last");
+          console.log(doc_list);
+          doc_list.innerHTML = innerHTML;
           // enhance/refresh
           $doc = $(doc_list);
           if ($doc.listview("instance")) {
@@ -394,4 +392,4 @@
     });
 
 }(window, rJS, RSVP, promiseEventListener, promiseReadAsText,
-  initGadgetMixin)); /* Handlebars*/
+  initGadgetMixin, Handlebars)); /* Handlebars*/
