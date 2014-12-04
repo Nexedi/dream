@@ -34,7 +34,7 @@
     "general": {
         "numberOfReplications": 1,
         "maxSimTime": -1,
-        "trace": "Yes",
+        "trace" : "No",
         "console": "No"
     },
     "nodes": {

@@ -121,7 +121,7 @@
           ]
      }, 
      "general": {
-          "trace": "Yes", 
+          "trace" : "No", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
           "maxSimTime": "-1", 
