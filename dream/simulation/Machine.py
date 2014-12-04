@@ -1010,9 +1010,8 @@ class Machine(CoreObject):
             if giverObject.haveToDispose(self):
                 if self.checkOperator()\
                     and self.checkIfActive() and len(activeObjectQueue)<self.capacity:
-                    if not giverObject.exitIsAssignedTo():
-                        giverObject.assignExitTo(self)
-                    elif giverObject.exitIsAssignedTo()!=self:
+                    # if the exit of the object is already assigned somewhere else, return false
+                    if giverObject.exitIsAssignedTo() and giverObject.exitIsAssignedTo()!=self:
                         return False
                     return True
             else:
@@ -1023,9 +1022,8 @@ class Machine(CoreObject):
             # operation is assigned
             if self.checkIfActive() and len(activeObjectQueue)<self.capacity\
                     and giverObject.haveToDispose(self):
-                if not giverObject.exitIsAssignedTo():
-                    giverObject.assignExitTo(self)
-                elif giverObject.exitIsAssignedTo()!=self:
+                # if the exit of the object is already assigned somewhere else, return false
+                if giverObject.exitIsAssignedTo() and giverObject.exitIsAssignedTo()!=self:
                     return False
                 return True
     
