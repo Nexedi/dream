@@ -667,7 +667,7 @@
       console.log(portal_type);
       console.log(options);
       console.log(portal_types[portal_type]);
-      return gadget.getDeclaredGadget("jio")
+      /*return gadget.getDeclaredGadget("jio")
         .push(function(jio_gadget) {
           if (options.id) {
             return jio_gadget.getAttachment({
@@ -684,11 +684,14 @@
             portal_types.Input = data.application_configuration.input;
             portal_types.Output = data.application_configuration.output;
           }
-          // Get the action information
+          // Get the action information 
           return gadget.declareGadget(
             portal_types[portal_type][options.action].gadget + ".html"
           );
-        })
+        })*/
+      return gadget.declareGadget(
+        portal_types[portal_type][options.action].gadget + ".html"
+      )
         .push(function (g) {
           page_gadget = g;
           if (page_gadget.render !== undefined) {
