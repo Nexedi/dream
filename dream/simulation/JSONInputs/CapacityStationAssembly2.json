@@ -160,7 +160,7 @@
                "assemblySpace": 100
           }, 
           "numberOfReplications": "1", 
-          "trace": "Yes", 
+          "trace" : "No", 
           "confidenceLevel": "0.95", 
           "maxSimTime": "-1", 
           "_class": "Dream.Configuration"
