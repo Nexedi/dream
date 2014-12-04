@@ -298,6 +298,7 @@
         var form, element_list, promise_list, i, len,
           element, list_element, id, fragment, $doc;
         //prevent default
+        console.log("HANDLING DELETE 1");
         e.preventDefault();
         form = e.target;
         promise_list = [];
@@ -306,7 +307,7 @@
           for (i = 0, len = element_list.length; i < len; i += 1) {
             element = element_list[i].nextSibling;
             id = element.name.replace("record_", "");
-            list_element = element.parentNode.parentNode;
+            list_element = element.parentNode.parentNode.parentNode;
             list_element.parentNode.removeChild(list_element);
             if (form.querySelector("ul").children.length === 0) {
               fragment = document.createElement("li");
@@ -321,6 +322,7 @@
             $doc.listview("refresh");
           }
         }
+        console.log("HANDLING DELETE 2");
         console.log("list created? 1");
         console.log(doc_list);
         return RSVP.all(promise_list);
