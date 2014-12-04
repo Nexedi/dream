@@ -30,19 +30,21 @@
        */
         tools_container.className = "tools-container";
         Object.keys(data.class_definition).forEach(function(key) {
-            var _class = data.class_definition[key], tool;
+            var _class_object = data.class_definition[key], tool;
             // XXX "expand" the json schema "allOF" etc
-            if (_class._class === "node") {
-                tool = document.createElement("div");
-                // XXX maybe allow to configure the class name ?
-                tool.className = "tool " + key;
-                tool.textContent = _class.name || key;
-                tool.draggable = true;
-                tool.dataset.class_name = JSON.stringify(key);
-                Object.keys(_class.css || {}).forEach(function(k) {
-                    tool.style[k] = _class.css[k];
-                });
-                tools_container.appendChild(tool);
+            if (_class_object.allOf) {
+                if (_class_object.allOf[0].$ref === "#/class_definition/node") {
+                    tool = document.createElement("div");
+                    // XXX maybe allow to configure the class name ?
+                    tool.className = "tool " + key;
+                    tool.textContent = _class_object.name || key;
+                    tool.draggable = true;
+                    tool.dataset.class_name = JSON.stringify(key);
+                    Object.keys(_class_object.css || {}).forEach(function(k) {
+                        tool.style[k] = _class_object.css[k];
+                    });
+                    tools_container.appendChild(tool);
+                }
             }
         });
         this.props.element.querySelector(".tools").appendChild(tools_container);

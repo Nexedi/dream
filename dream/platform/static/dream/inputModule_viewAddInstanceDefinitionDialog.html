@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Choose Instance</title>
+    <link rel="stylesheet" href="inputModule_viewAddInstanceDefinitionDialog.css" />
+
+    <script src="../lib/rsvp.min.js" type="text/javascript"></script>
+    <script src="../lib/handlebars.min.js" type="text/javascript"></script>
+    <script src="../lib/renderjs.min.js" type="text/javascript"></script>
+    <script src="mixin_gadget.js" type="text/javascript"></script>
+    <script src="mixin_promise.js" type="text/javascript"></script>
+    <script src="InputModule_viewAddInstanceDefinitionDialog.js" type="text/javascript"></script>
+	
+	
+	<script id="table-template" type="text/x-handlebars-template">
+      <ul data-role="listview" data-inset="true" class="document-listview">
+        {{#documentlist}}
+          <li>
+            <div>
+            <!--div class="ui-btn ui-input-btn">{{title}} -->
+              <input type="submit" value="{{title}}" name= "{{name}}">
+            </div>
+            <div class="ui-checkbox">
+              <label class="ui-corner-all ui-btn-inherit ui-btn-icon-left ui-icon-checkbox-off ui-checkbox-off">
+              <!--label class="ui-corner-all ui-btn-inherit"-->
+                <input type="checkbox" value="" name="{{name}}">
+              </label>
+            </div>
+          </li>
+        {{/documentlist}}
+      </ul>
+    </script>
+	
+  </head>
+  <body>
+  
+	<div class="ui-grid-a ui-responsive">
+	  <div class="ui-block-a">
+	    <form class="new_form">
+          <button type="submit" class="ui-btn ui-btn ui-btn-inline ui-icon-plus ui-btn-icon-right">Default</button>
+	    </form>
+        <form class="import_form">
+          <input id="dream_import" type="file" required=""
+                 name="dream_import" class="ui-btn ui-btn-b ui-btn-inline">
+
+          <button type="submit" class="ui-btn ui-btn ui-btn-inline ui-icon-plus ui-btn-icon-right">Import</button>
+        </form>
+      </div>
+
+      <div class="ui-block-b">
+        <form method="post" action="#">
+          <input type="hidden" name="method" value="delete_status" ></input>
+          <section class="document_list"></section>
+          <!--ul data-role="listview" class="document-list" data-inset="true"></ul-->
+          <div class="ui-input-btn ui-btn ui-icon-delete ui-btn-inline ui-btn-icon-left">
+            Delete
+            <input type="submit" data-enhanced="true" value="Delete">
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+  </body>
+</html>
