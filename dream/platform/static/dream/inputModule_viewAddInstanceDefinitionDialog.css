@@ -1,0 +1,61 @@
+/* ====================== listview checkbox ======================== */
+/* allow checkbox and radio in split listview */
+html body .ui-listview li.ui-li-has-checkbox {
+  padding-right: 2.25em;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  -webkit-border-top-right-radius: 0;
+  -webkit-border-bottom-right-radius: 0;
+}
+html body .ui-listview li.ui-li-has-checkbox label {
+  border-left-width: 0px;
+  -moz-box-sizing: border-box;
+}
+html .ui-listview li.ui-li-has-alt a.ui-btn.ui-icon-caret-right:after,
+html .ui-listview li.ui-li-has-alt a.ui-btn.ui-icon-carat-r:after {
+  content: "";
+}
+html .ui-listview li div.ui-radio,
+html .ui-listview li div.ui-checkbox {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 2.5em;
+  z-index: 2;
+}
+html body .ui-listview li div.ui-radio label.ui-btn,
+html body .ui-listview li div.ui-checkbox label.ui-btn {
+  border-radius: .375em;
+  height: 100%;
+  min-height: 1em;
+  padding: 0;
+  width: auto;
+}
+html body .ui-listview li div.ui-radio,
+html body .ui-listview li div.ui-radio label.ui-btn,
+html body .ui-listview li div.ui-checkbox,
+html body .ui-listview li div.ui-checkbox label.ui-btn {
+  box-shadow: 0;
+  -webkit-box-shadow: 0;
+  border-radius: 0;
+  -webkit-border-radius: 0;
+}
+html body .ui-listview li.ui-first-child div.ui-radio,
+html body .ui-listview li.ui-first-child div.ui-radio label.ui-btn,
+html body .ui-listview li.ui-first-child div.ui-checkbox,
+html body .ui-listview li.ui-first-child div.ui-checkbox label.ui-btn {
+  border-top-right-radius: .375em;
+  -webkit-border-top-right-radius: .375em;
+}
+html body .ui-listview li.ui-last-child div.ui-radio,
+html body .ui-listview li.ui-last-child div.ui-radio label,
+html body .ui-listview li.ui-last-child div.ui-checkbox,
+html body .ui-listview li.ui-last-child div.ui-checkbox label {
+  border-bottom-right-radius: .375em;
+  -webkit-border-bottom-right-radius: .375em;
+  border-bottom-width: 1px;
+  margin-bottom: -1px;
+}

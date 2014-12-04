@@ -11,6 +11,8 @@
     gadget_klass.declareAcquiredMethod("aq_allDocs", "jio_allDocs").declareAcquiredMethod("pleaseRedirectMyHash", "pleaseRedirectMyHash").declareAcquiredMethod("whoWantsToDisplayThisDocument", "whoWantsToDisplayThisDocument").declareMethod("render", function() {
         var gadget = this;
         return gadget.aq_allDocs({
+            include_docs: true,
+            query: 'type:= "Dream"',
             select_list: [ "title", "modified" ]
         }).push(function(document_list) {
             var result_list = [], doc, i;

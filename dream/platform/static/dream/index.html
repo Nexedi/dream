@@ -18,8 +18,9 @@
 
     <script id="panel-template" type="text/x-handlebars-template">
       <ul data-role="listview">
-        <li><a class="home_link ui-btn ui-icon-home ui-btn-icon-left" data-icon="home">Documents</a></li>
-        <li><a class="fast_input_link ui-btn ui-icon-plus ui-btn-icon-left" data-icon="plus">New Document</a></li>
+        <li><a class="pre_input_link ui-btn ui-icon-grid ui-btn-icon-left" data-icon="grid">Documents</a></li>
+        <!--li><a class="home_link ui-btn ui-icon-home ui-btn-icon-left" data-icon="home">Documents</a></li-->
+        <!--li><a class="fast_input_link ui-btn ui-icon-plus ui-btn-icon-left" data-icon="plus">New Document</a></li-->
         {{#navigationlist}}
           <li><a href="{{link}}">{{title}}</a></li>
         {{/navigationlist}}
