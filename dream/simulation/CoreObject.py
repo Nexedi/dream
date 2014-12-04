@@ -496,6 +496,8 @@ class CoreObject(ManPyObject):
             self.printTrace(self.id, signalReceiver=self.receiver.id)
             # assign the entry of the receiver
             self.receiver.assignEntryTo()
+            # assign the exit of the current object to the receiver
+            self.assignExitTo(self.receiver)
             if self.receiver.expectedSignals['isRequested']:
                 self.sendSignal(receiver=self.receiver, signal=self.receiver.isRequested)
             return True
