@@ -99,8 +99,12 @@ class Simulation(DefaultSimulation):
             ant = {}
             # for each of the machines, rules are randomly picked from the
             # options list
+            l=1 # used to create different random from every key
             for k in collated.keys():
-                ant[k] = random.choice(collated[k])
+                from random import Random
+                rnd=Random(1+i*j*l)
+                l+=1
+                ant[k] = rnd.choice(collated[k])
             # TODO: function to calculate ant id. Store ant id in ant dict
             ant_key = repr(ant)
             # if the ant was not already tested, only then test it
