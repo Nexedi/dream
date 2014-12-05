@@ -4,6 +4,7 @@
 			"distributionTypes" : {
 				"_fixed" : {
 					"description" : "Fixed",
+					"title" : "Fixed",
 					"type" : "object",
 					"properties" : {
 						"mean" : {
@@ -15,6 +16,7 @@
 				},
 				"_exp" : {
 					"type" : "object",
+					"title": "Exp",
 					"description" : "Exponential",
 					"properties" : {
 						"mean" : {
@@ -26,6 +28,7 @@
 				},
 				"_normal" : {
 					"type" : "object",
+					"title" : "Normal",
 					"description" : "Normal",
 					"properties" : {
 						"mean" : {
@@ -42,6 +45,7 @@
 				},
 				"_lognormal" : {
 					"type" : "object",
+					"title" : "Lognormal",
 					"description" : "Lognormal",
 					"properties" : {
 						"mean" : {
@@ -60,6 +64,7 @@
 				},
 				"_binomial" : {
 					"type" : "object",
+					"title" : "Binomial",
 					"description" : "Binomial",
 					"properties" : {
 						"mean" : {
@@ -74,6 +79,7 @@
 				},
 				"_poisson" : {
 					"type" : "object",
+					"title" : "Poisson",
 					"description" : "Poisson",
 					"properties" : {
 						"lambda" : {
@@ -84,7 +90,8 @@
 				},
 				"_logistic" : {
 					"type" : "object",
-					"description" : "Logicist",
+					"title" : "Logistic",
+					"description" : "Logistic",
 					"properties" : {
 						"location" : {
 							"type" : "number",
@@ -100,6 +107,7 @@
 				},
 				"_caucy" : {
 					"type" : "object",
+					"title" : "Caucy",
 					"description" : "Caucy",
 					"properties" : {
 						"location" : {
@@ -114,6 +122,7 @@
 				},
 				"_geometric" : {
 					"type" : "object",
+					"title" : "Geometric",
 					"description" : "Geometric",
 					"properties" : {
 						"probability" : {
@@ -125,6 +134,7 @@
 				},
 				"_gama" : {
 					"type" : "object",
+					"title" : "Gama",
 					"description" : "Gama",
 					"properties" : {
 						"shape" : {
@@ -141,6 +151,7 @@
 				},
 				"_weibull" : {
 					"type" : "object",
+					"title" : "Weibull",
 					"description" : "Weibull",
 					"properties" : {
 						"shape" : {
@@ -157,6 +168,7 @@
 				},
 				"_fixedFailure" : {
 					"type" : "object",
+					"title" : "Fixed",
 					"description" : "Fixed",
 					"properties" : {
 						"MTTF" : {
@@ -180,10 +192,12 @@
 				},
 				"_no" : {
 					"type" : "object",
-					"description" : "No"
+					"title" : "No",
+					"description" : "None"
 				},
 				"_availability" : {
 					"type" : "object",
+					"title" : "Availability",
 					"description" : "Availability",
 					"properties" : {
 						"MTTF" : {
