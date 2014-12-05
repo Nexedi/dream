@@ -107,7 +107,7 @@
     });
     console.log("getNODEID 2");
     console.log(node_id);
-    console.log(gadget.props.data.graph.main_graph.node);
+    console.log(gadget.props.data.graph.node);
     return node_id;
   }
 
@@ -116,8 +116,8 @@
     // Generate a node id
     var n = 1,
       class_def = gadget.props.data.class_definition[element._class],
-      id = class_def.allOf[1].properties.id._default || element._class;
-    while (gadget.props.data.graph.main_graph.node[id + n] !== undefined) {
+      id = class_def.allOf[1].properties.id.default || element._class;
+    while (gadget.props.data.graph.node[id + n] !== undefined) {
       n += 1;
     }
     console.log("generateNODEID 2");
@@ -416,10 +416,13 @@
     // references
     // TODO: check for a library that would provide full support
     console.log("expandSCHEMA 1");
-    var property, referenced, i,
+    var property, referenced, i, j, len,
       expanded_class_definition = {properties:
         class_definition.properties || {}},
-      ref_word_list, ref_word;
+      ref_word_list, ref_word, ref_definition_list,
+      ref_definition_word, ref_definition,
+      sub_ref_def, sub_ref_def_list,
+      sub_ref_def_word, sub_ref_def_root;
     if (class_definition.allOf) {
       for (i = 0; i < class_definition.allOf.length; i += 1) {
         referenced = class_definition.allOf[i];
@@ -430,19 +433,65 @@
             full_schema.class_definition[ref_word],
             full_schema);
         }
+        console.log(full_schema.class_definition.definitions);
         if (referenced.properties) {
+          console.log("[[[[[[[[[[]]]]]]]]]]");
+          console.log(referenced.properties);
           for (property in referenced.properties) {
             if (referenced.properties.hasOwnProperty(property)) {
-              if (referenced.properties[property].type) {
-                expanded_class_definition.properties[property]
-                  = referenced.properties[property];
+              if (referenced.properties[property].type || 
+                  referenced.properties[property].$ref) {
+                console.log("..");
+                console.log(property);
+                if (referenced.properties[property].$ref) {
+                  ref_definition_list
+                    = referenced.properties[property].$ref.split("/");
+                  ref_definition_word
+                    = ref_definition_list[ref_definition_list.length-1];
+                  ref_definition
+                    = full_schema.class_definition
+                                 .definitions[ref_definition_word];
+                  console.log("(((((((())))))))");
+                  console.log(ref_definition);
+                  if (ref_definition.allOf) {
+                    if (ref_definition.allOf[1].oneOf) {
+                      len = ref_definition.allOf[1].oneOf.length - 1;
+                      for (j = 0; j <= len; j += 1) {
+                        console.log("--------- " + j);
+                        console.log(ref_definition.allOf[1].oneOf[j]);
+                        if (ref_definition.allOf[1]
+                                          .oneOf[j].$ref) {
+                          sub_ref_def_list = ref_definition.allOf[1]
+                                               .oneOf[j].$ref.split("/");
+                          console.log(">>>>>>");
+                          sub_ref_def_word
+                            = sub_ref_def_list[sub_ref_def_list.length-1];
+                          sub_ref_def_root
+                            = sub_ref_def_list[sub_ref_def_list.length-2];
+                          sub_ref_def = full_schema.class_definition
+                            .definitions[sub_ref_def_root][sub_ref_def_word];
+                          console.log(sub_ref_def);
+                          ref_definition.allOf[1].oneOf[j] = sub_ref_def;
+                        }
+                      }
+                    }
+                  }
+                  expanded_class_definition.properties[property]
+                    = ref_definition;
+                  console.log("for property " + property + ", definition:");
+                  console.log(ref_definition);
+                } else {
+                  expanded_class_definition.properties[property]
+                    = referenced.properties[property];
+                }
               }
             }
           }
         }
       }
     }
-    console.log("expandSCHEMA 1");
+    console.log("expandSCHEMA 2");
+    console.log(expanded_class_definition);
     return expanded_class_definition;
   }
 
@@ -548,7 +597,6 @@
 
   function openNodeEditionDialog(gadget, element) {
     console.log("openNODEDIALOG 1");
-    console.log(class_definition);
     var node_id = getNodeId(gadget, element.id),
       node_data = gadget.props.data.graph.node[node_id],
       node_edit_popup = $(gadget.props.element).find('#popup-edit-template'),
@@ -581,7 +629,7 @@
     console.log("openNODEDIALOG 1.35");
     console.log(node_edit_popup);
     console.log(node_edit_popup.find(".node_class"));
-    console.log(gadget.props.data.graph.main_graph.node);
+    console.log(gadget.props.data.graph.node);
     console.log(node_data);
     console.log(node_edit_popup.find(".node_class").text(node_data._class));
     // Set the name of the popup to the node class
@@ -911,7 +959,7 @@
       $.each(this.props.data.graph.edge, function (key, value) {
         addEdge(gadget, key, value);
       });
-      console.log("startservice WORKFLOW EDITOR2");
+      console.log("startservice WORKFLOW EDITOR7");
 
       return RSVP.all([
         waitForDrop(gadget),
