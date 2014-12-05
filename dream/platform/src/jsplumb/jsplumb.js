@@ -316,6 +316,10 @@
 
   function updateElementData(gadget, node_id, data) {
     console.log("updateELEMENTDATA 1");
+    console.log("updateELEMENTDATA 1");
+    console.log(gadget);
+    console.log(node_id);
+    console.log(data);
     var element_id = gadget.props.node_id_to_dom_element_id[node_id],
       new_id = data.id;
     if (data.data.name) {
@@ -433,16 +437,16 @@
             full_schema.class_definition[ref_word],
             full_schema);
         }
-        console.log(full_schema.class_definition.definitions);
+        // console.log(full_schema.class_definition.definitions);
         if (referenced.properties) {
-          console.log("[[[[[[[[[[]]]]]]]]]]");
-          console.log(referenced.properties);
+          // console.log("[[[[[[[[[[]]]]]]]]]]");
+          // console.log(referenced.properties);
           for (property in referenced.properties) {
             if (referenced.properties.hasOwnProperty(property)) {
               if (referenced.properties[property].type || 
                   referenced.properties[property].$ref) {
-                console.log("..");
-                console.log(property);
+                // console.log("..");
+                // console.log(property);
                 if (referenced.properties[property].$ref) {
                   ref_definition_list
                     = referenced.properties[property].$ref.split("/");
@@ -451,26 +455,26 @@
                   ref_definition
                     = full_schema.class_definition
                                  .definitions[ref_definition_word];
-                  console.log("(((((((())))))))");
-                  console.log(ref_definition);
+                  // console.log("(((((((())))))))");
+                  // console.log(ref_definition);
                   if (ref_definition.allOf) {
                     if (ref_definition.allOf[1].oneOf) {
                       len = ref_definition.allOf[1].oneOf.length - 1;
                       for (j = 0; j <= len; j += 1) {
-                        console.log("--------- " + j);
-                        console.log(ref_definition.allOf[1].oneOf[j]);
+                        // console.log("--------- " + j);
+                        // console.log(ref_definition.allOf[1].oneOf[j]);
                         if (ref_definition.allOf[1]
                                           .oneOf[j].$ref) {
                           sub_ref_def_list = ref_definition.allOf[1]
                                                .oneOf[j].$ref.split("/");
-                          console.log(">>>>>>");
+                          // console.log(">>>>>>");
                           sub_ref_def_word
                             = sub_ref_def_list[sub_ref_def_list.length-1];
                           sub_ref_def_root
                             = sub_ref_def_list[sub_ref_def_list.length-2];
                           sub_ref_def = full_schema.class_definition
                             .definitions[sub_ref_def_root][sub_ref_def_word];
-                          console.log(sub_ref_def);
+                          // console.log(sub_ref_def);
                           ref_definition.allOf[1].oneOf[j] = sub_ref_def;
                         }
                       }
@@ -478,8 +482,8 @@
                   }
                   expanded_class_definition.properties[property]
                     = ref_definition;
-                  console.log("for property " + property + ", definition:");
-                  console.log(ref_definition);
+                  //console.log("for property " + property + ", definition:");
+                  //console.log(ref_definition);
                 } else {
                   expanded_class_definition.properties[property]
                     = referenced.properties[property];
@@ -490,8 +494,8 @@
         }
       }
     }
-    console.log("expandSCHEMA 2");
-    console.log(expanded_class_definition);
+    // console.log("expandSCHEMA 2");
+    // console.log(expanded_class_definition);
     return expanded_class_definition;
   }
 
@@ -659,6 +663,13 @@
               "data": {}
             };
           return fieldset_gadget.getContent().then(function (r) {
+            console.log("******");
+            console.log("******");
+            console.log("******");
+            console.log(r);
+            console.log("******");
+            console.log("******");
+            console.log("******");
             $.extend(data.data, r);
             updateElementData(gadget, node_id, data);
           });
@@ -684,6 +695,13 @@
       scope: 'fieldset'
     })
       .push(function (fieldset_gadget) {
+        console.log("^^^^^^^^^^^^^^^^^^^");
+        console.log("^^^^^^^^^^^^^^^^^^^");
+        console.log("^^^^^^^^^^^^^^^^^^^");
+        console.log(node_data);
+        console.log("^^^^^^^^^^^^^^^^^^^");
+        console.log("^^^^^^^^^^^^^^^^^^^");
+        console.log("^^^^^^^^^^^^^^^^^^^");
         return RSVP.all([fieldset_gadget,
                          fieldset_gadget.render({value: node_data, 
                                           property_definition: schema},
@@ -919,6 +937,13 @@
     })
 
     .declareMethod('getContent', function () {
+      console.log("£££££££");
+      console.log("£££££££");
+      console.log("£££££££");
+      console.log(this.props.data);
+      console.log("£££££££");
+      console.log("£££££££");
+      console.log("£££££££");
       return JSON.stringify(this.props.data);
     })
 
