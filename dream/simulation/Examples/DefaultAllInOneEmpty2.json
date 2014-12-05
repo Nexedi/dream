@@ -180,7 +180,7 @@
 				},
 				"_no" : {
 					"type" : "object",
-					"description" : "None"
+					"description" : "No"
 				},
 				"_availability" : {
 					"type" : "object",
