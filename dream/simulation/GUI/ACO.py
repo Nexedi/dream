@@ -122,9 +122,16 @@ class Simulation(DefaultSimulation):
                 scenario_list.append(ant)
 
         if distributor is None:
+            successful_scenario_list = []
             # synchronous
             for ant in scenario_list:
-                ant['result'] = DefaultSimulation.runOneScenario(self, ant['input'])
+                try:
+                    ant['result'] = DefaultSimulation.runOneScenario(self, ant['input'])
+                    successful_scenario_list.append(ant)
+                except Exception, e:
+                    print "Error executing scenario, skipping ant. Scenaro was:\n%s" %  ant['input']
+            scenario_list = successful_scenario_list
+
         else: # asynchronous
             job_id = distributor.requestSimulationRun(
                 [json.dumps(x) for x in scenario_list])
