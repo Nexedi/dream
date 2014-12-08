@@ -420,7 +420,8 @@
         if (referenced.$ref) {
           referenced = expandSchema(
             full_schema.class_definition[
-              referenced.$ref.substr(1, referenced.$ref.length)
+                  // 2 here is for #/
+              referenced.$ref.substr(2, referenced.$ref.length)
             ],
             full_schema);
         }
