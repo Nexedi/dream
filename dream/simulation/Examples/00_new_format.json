@@ -50,7 +50,7 @@
       "_class": "edge",
       "allOf": [
         {
-          "$ref": "#edge"
+          "$ref": "#/edge"
         }
       ],
       "description": "Connect stations together"
@@ -64,7 +64,7 @@
       "description": "A station where entities exits from the system",
       "allOf": [
         {
-          "$ref": "#node"
+          "$ref": "#/node"
         }
       ]
     },
@@ -74,7 +74,7 @@
       "description": "A buffer where entites can be hold until the next station is ready to process them",
       "allOf": [
         {
-          "$ref": "#node"
+          "$ref": "#/node"
         },
         {
           "type": "object",
@@ -108,7 +108,7 @@
       "_class": "node",
       "allOf": [
         {
-          "$ref": "#node"
+          "$ref": "#/node"
         },
         {
           "properties": {
@@ -199,7 +199,7 @@
       "description": "A station creating entities",
       "allOf": [
         {
-          "$ref": "#node"
+          "$ref": "#/node"
         },
         {
           "interArrivalTime": {
