@@ -407,7 +407,9 @@
 		"Dream.Exit" : {
 			"_class" : "node",
 			"name" : "Exit",
-			"colour" : "#F0F",
+			"css": {
+                          "color" : "#F0F"
+                        },
 			"shape" : "rectangle",
 			"description" : "A station where entities exits from the system",
 			"allOf" : [{
