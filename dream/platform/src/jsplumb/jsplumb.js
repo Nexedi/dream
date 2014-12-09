@@ -137,14 +137,14 @@
   }
 
   function waitForConnection(gadget) {
-    loopJsplumbBind(gadget, 'connection',
+    return loopJsplumbBind(gadget, 'connection',
                     function (info, originalEvent) {
         updateConnectionData(gadget, info.connection);
       });
   }
 
   function waitForConnectionDetached(gadget) {
-    loopJsplumbBind(gadget, 'connectionDetached',
+    return loopJsplumbBind(gadget, 'connectionDetached',
                     function (info, originalEvent) {
         updateConnectionData(gadget, info.connection, true);
       });
@@ -152,7 +152,7 @@
 
   function waitForConnectionClick(gadget) {
     // TODO: dialog to edit connection properties
-    loopJsplumbBind(gadget, 'click', function (connection) {
+    return loopJsplumbBind(gadget, 'click', function (connection) {
       if (confirm("Delete connection ?")) {
         gadget.props.jsplumb_instance.detach(connection);
       }
