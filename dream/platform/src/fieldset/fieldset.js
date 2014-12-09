@@ -31,7 +31,7 @@
 
       function addField(property_id, property_definition,
                                      value) {
-        var sub_gadget, temp_property_def;
+        var sub_gadget;
         queue
           .push(function () {
             // XXX this is incorrect for recursive fieldsets.
@@ -48,12 +48,13 @@
             console.log(property_id);
             console.log(property_definition);
             console.log(value);
+            // XXX maybe type should be used instead
             if (property_definition.allOf) {
+              // if there is type property then remove it
               if (property_definition.allOf[0].type) {
                 delete property_definition.allOf[0].type;
               }
-              temp_property_def = property_definition.allOf[0];
-              return gadget.declareGadget("../fieldset/index.html");
+              return gadget.declareGadget("../expandable_field/index.html");
             if (property_definition.type === "object") {
               // Create a recursive fieldset for this key.
               return gadget.declareGadget("../fieldset/index.html");
@@ -68,13 +69,6 @@
           })
           .push(function (gg) {
             sub_gadget = gg;
-            if (temp_property_def) {
-              return sub_gadget.render({
-                key: property_id,
-                value: value,
-                property_definition: temp_property_def
-              });
-            }
             return sub_gadget.render({
               key: property_id,
               value: value,
@@ -104,9 +98,6 @@
             // XXX some properties are not editable
             if (property_name !== 'coordinate' && property_name !== '_class') {
               addField(property_name, property_definition, value);
-            console.log("******************");
-            console.log(property_name);
-            console.log(property_definition);
             if (property_definition.allOf) {
               if (property_definition.allOf[0].properties) {
                 for (property in property_definition
@@ -121,11 +112,16 @@
                 }
               }
             }
+            console.log("TRYING TO FIND A VALUE!!!!");
+            console.log(options);
+            console.log(options.value);
+            console.log(property_name);
             value = (options.value || {})[property_name] === undefined
                     ? value : options.value[property_name];
             if (property_name !== 'coordinate'
              && property_name !== '_class'
              && property_name !== 'id') {
+              console.log("ADDING FIELD FOR " + property_name + "!!!!!!!");
               addField(property_name, property_definition, value);
             }
           });
@@ -155,7 +151,23 @@
           }
           return result;
         });
-    });
+    })
 
+    .declareMethod('startService', function () {
+      console.log("startservice FIElDSET 2");
+      var gadget = this,
+        i,
+        promise_list = [];
+      console.log(gadget.props.field_gadget_list.length);
+      for (i = 0; gadget.props.field_gadget_list.length; i += 1) {
+        console.log(gadget.props.field_gadget_list[i]);
+        if (gadget.props.field_gadget_list[i].startService) {
+          promise_list.push(gadget.props.field_gadget_list[i].startService());
+        }
+      }
+      console.log("startservice FIELDSET 2");
+      console.log(promise_list.length);
+      return RSVP.all(promise_list);
+    });
 
 }(window, rJS, RSVP, Handlebars, initGadgetMixin));
