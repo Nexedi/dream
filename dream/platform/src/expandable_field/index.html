@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fieldset</title>
+    <script src="../<%= copy.rsvp.relative_dest %>" type="text/javascript"></script>
+    <script src="../<%= copy.renderjs.relative_dest %>" type="text/javascript"></script>
+    <script src="../<%= copy.handlebars.relative_dest %>" type="text/javascript"></script>
+    <script src="../<%= curl.jquery.relative_dest %>" type="text/javascript"></script>
+    <script src="../<%= curl.jquerymobilejs.relative_dest %>" type="text/javascript"></script>
+
+    <script id="expand-label-template" type="text/x-handlebars-template">
+      <label for="{{for}}">{{name}}</label>
+    </script>
+
+    <script id="expand-option-template" type="text/x-handlebars-template">
+      <option value="{{value}}">{{text}}</option>
+    </script>
+
+    <script id="selected-expand-option-template" type="text/x-handlebars-template">
+      <option selected="selected" value="{{value}}">{{text}}</option>
+    </script>
+
+    <script src="../dream/mixin_gadget.js" type="text/javascript"></script>
+    <script src="expandablefield.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <select />
+  </body>
+</html>
