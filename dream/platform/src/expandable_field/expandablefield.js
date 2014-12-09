@@ -262,13 +262,22 @@
           return result;
         })
         .push(function (results) {
+          var keys, index;
           if (Object.keys(results).length !== 1) {
             console.log("the expandable property results must contain" + 
               "a single key of an object that can contain detailed results"); 
           }
           results[Object.keys(results)[0]][select.getAttribute('name')] =
             select.options[select.selectedIndex].value;
-          console.log(results);
+          keys = Object.keys(results[Object.keys(results)[0]]);
+          for (index = 0; index <= keys.length - 1; index +=1) {
+            if (keys[index] !== select.options[select.selectedIndex].value &&
+                keys[index] !== select.getAttribute('name')) {
+              delete results[Object.keys(results)[0]][keys[index]];
+              break;
+            }
+          }
+
           return results;
         });
     });
