@@ -680,24 +680,9 @@
                                           node_id)]);
       })
       .push(function (fieldset_gadget) {
-        console.log(fieldset_gadget[0]);
-        return RSVP.Queue()
-          .push(function () {
-            console.log(fieldset_gadget[0]);
-            fieldset_gadget[0].startService();
-          })
-          .push(function () {
-            console.log(":::::::::::::::::::");
-            console.log(":::::::::::::::::::");
-            console.log(":::::::::::::::::::");
-            console.log(fieldset_gadget);
-            console.log(":::::::::::::::::::");
-            console.log(":::::::::::::::::::");
-            console.log(":::::::::::::::::::");
-            node_edit_popup.enhanceWithin();
-            node_edit_popup.popup('open');
-            return fieldset_gadget[0];
-          });
+        node_edit_popup.enhanceWithin();
+        node_edit_popup.popup('open');
+        return fieldset_gadget[0];
       })
       .push(function (fieldset_gadget) {
         // Expose the dialog handling promise so that we can wait for it in
@@ -706,7 +691,6 @@
         console.log(":::::::::::::::::::2");
         console.log(":::::::::::::::::::2");
         console.log(fieldset_gadget);
-        // gadget.props.field_gadget_list.push(field_gadget_list);
         console.log(":::::::::::::::::::2");
         console.log(":::::::::::::::::::2");
         console.log(":::::::::::::::::::2");

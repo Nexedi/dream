@@ -151,23 +151,6 @@
           }
           return result;
         });
-    })
-
-    .declareMethod('startService', function () {
-      console.log("startservice FIElDSET 2");
-      var gadget = this,
-        i,
-        promise_list = [];
-      console.log(gadget.props.field_gadget_list.length);
-      for (i = 0; gadget.props.field_gadget_list.length; i += 1) {
-        console.log(gadget.props.field_gadget_list[i]);
-        if (gadget.props.field_gadget_list[i].startService) {
-          promise_list.push(gadget.props.field_gadget_list[i].startService());
-        }
-      }
-      console.log("startservice FIELDSET 2");
-      console.log(promise_list.length);
-      return RSVP.all(promise_list);
     });
 
 }(window, rJS, RSVP, Handlebars, initGadgetMixin));
