@@ -191,7 +191,7 @@
 					}
 				},
 				"_no" : {
-					"type" : "object",
+					"type" : "string",
 					"title" : "No",
 					"description" : "None"
 				},
@@ -259,7 +259,7 @@
 									"Fixed",
 									"Exp",
 									"Normal",
-									"Longnormal",
+									"Lognormal",
 									"Binomial",
 									"Poisson",
 									"Logistic",
