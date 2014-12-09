@@ -40,7 +40,7 @@
 
       function addField(property_id, property_definition, value) {
         console.log("ADDFIELD EXPANDABLEFIELDSET 1");
-        var sub_gadget, temp_property_def;
+        var sub_gadget;
         try {
           queue
             .push(function () {
@@ -55,13 +55,6 @@
                   "name": (property_definition.name || property_id)
                 })
               );
-              if (property_definition.allOf) {
-                if (property_definition.allOf[0].type) {
-                  delete property_definition.allOf[0].type;
-                }
-                temp_property_def = property_definition.allOf[0];
-                return gadget.declareGadget("../list_field/index.html");
-              }
               if (property_definition.type === "object") {
                 // Create a recursive fieldset for this key.
                 return gadget.declareGadget("../fieldset/index.html");
@@ -76,13 +69,6 @@
             })
             .push(function (gg) {
               sub_gadget = gg;
-              if (temp_property_def) {
-                return sub_gadget.render({
-                  key: property_id,
-                  value: value,
-                  property_definition: temp_property_def
-                });
-              }
               return sub_gadget.render({
                 key: property_id,
                 value: value,
@@ -110,13 +96,6 @@
                   "name": (property_definition.name || property_id)
                 })
               );
-              if (property_definition.allOf) {
-                if (property_definition.allOf[0].type) {
-                  delete property_definition.allOf[0].type;
-                }
-                temp_property_def = property_definition.allOf[0];
-                return gadget.declareGadget("../list_field/index.html");
-              }
               if (property_definition.type === "object") {
                 // Create a recursive fieldset for this key.
                 return gadget.declareGadget("../fieldset/index.html");
@@ -131,13 +110,6 @@
             })
             .push(function (gg) {
               sub_gadget = gg;
-              if (temp_property_def) {
-                return sub_gadget.render({
-                  key: property_id,
-                  value: value,
-                  property_definition: temp_property_def
-                });
-              }
               return sub_gadget.render({
                 key: property_id,
                 value: value,
