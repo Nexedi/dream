@@ -18,7 +18,7 @@
  * ==========================================================================*/
 
 /*global RSVP, rJS, $, jsPlumb, Handlebars,
-  loopEventListener, promiseEventListener, DOMParser, confirm */
+  loopEventListener, promiseEventListener, DOMParser */
 /*jslint unparam: true todo: true */
 (function (RSVP, rJS, $, jsPlumb, Handlebars,
            loopEventListener, promiseEventListener, DOMParser) {
@@ -33,9 +33,9 @@
  * accept ERP5 format
  * auto springy layout
  * drop zoom level
- * edge edit popup on click
  * rename draggable()
- * somehow choose edge class on connect
+ * allow changing node and edge class
+ * factorize node & edge popup edition
  */
 
   /*jslint nomen: true */
@@ -124,39 +124,28 @@
     return 'DreamNode_' + n;
   }
 
-  function updateConnectionData(gadget, connection, remove, edge_data) {
+  function getDefaultEdgeClass(gadget){
+    // TODO: use first edge class available in class_definition
+    return 'Dream.Edge';
+  }
+
+  function updateConnectionData(gadget, connection, remove) {
+    if (connection.ignoreEvent) {
+      // this hack is for edge edition. Maybe there I missed one thing and
+      // there is a better way.
+      return;
+    }
     if (remove) {
       delete gadget.props.data.graph.edge[connection.id];
     } else {
-      edge_data = edge_data || {'_class': 'Dream.Edge'};
+      var edge_data = gadget.props.data.graph.edge[connection.id] || {
+        _class: getDefaultEdgeClass(gadget)
+      };
       edge_data.source = getNodeId(gadget, connection.sourceId);
       edge_data.destination = getNodeId(gadget, connection.targetId);
       gadget.props.data.graph.edge[connection.id] = edge_data;
     }
     gadget.notifyDataChanged();
-  }
-
-  function waitForConnection(gadget) {
-    return loopJsplumbBind(gadget, 'connection',
-                    function (info, originalEvent) {
-        updateConnectionData(gadget, info.connection);
-      });
-  }
-
-  function waitForConnectionDetached(gadget) {
-    return loopJsplumbBind(gadget, 'connectionDetached',
-                    function (info, originalEvent) {
-        updateConnectionData(gadget, info.connection, true);
-      });
-  }
-
-  function waitForConnectionClick(gadget) {
-    // TODO: dialog to edit connection properties
-    return loopJsplumbBind(gadget, 'click', function (connection) {
-      if (confirm("Delete connection ?")) {
-        gadget.props.jsplumb_instance.detach(connection);
-      }
-    });
   }
 
   function convertToAbsolutePosition(gadget, x, y) {
@@ -260,25 +249,6 @@
       element.css(j, new_value);
     });
   }
-
-  // function redraw(gadget) {
-  //   var coordinates = gadget.props.preference_container.coordinates || {},
-  //     absolute_position,
-  //     element;
-  //   $.each(coordinates, function (node_id, v) {
-  //     absolute_position = convertToAbsolutePosition(
-  //       gadget,
-  //       v.left,
-  //       v.top
-  //     );
-  //     element = $(gadget.props.element).find(
-  //       '#' + gadget.props.node_id_to_dom_element_id[node_id];
-  //     );
-  //     element.css('top', absolute_position[1]);
-  //     element.css('left', absolute_position[0]);
-  //     gadget.props.jsplumb_instance.repaint(element);
-  //   });
-  // }
 
   // function positionGraph(gadget) {
   //   $.ajax(
@@ -404,6 +374,9 @@
       });
     }
 
+    // set data for 'connection' event that will be called "later"
+    gadget.props.data.graph.edge[edge_id] = edge_data;
+
     // jsplumb assigned an id, but we are controlling ids ourselves.
     connection.id = edge_id;
   }
@@ -441,7 +414,107 @@
     return expanded_class_definition;
   }
 
-  function openNodeDialog(gadget, element) {
+  function openEdgeEditionDialog(gadget, connection) {
+    var edge_id = connection.id,
+      edge_data = gadget.props.data.graph.edge[edge_id],
+      edit_popup = $(gadget.props.element).find('#popup-edit-template'),
+      schema,
+      fieldset_element,
+      delete_promise;
+
+    schema = expandSchema(
+      gadget.props.data.class_definition[edge_data._class],
+      gadget.props.data
+    );
+
+    // We do not edit source & destination on edge this way.
+    delete schema.properties.source;
+    delete schema.properties.destination;
+
+    gadget.props.element.appendChild(
+      document.importNode(popup_edit_template.content, true).children[0]
+    );
+    edit_popup = $(gadget.props.element).find('#node-edit-popup');
+    edit_popup.find('.node_class').text(connection._class);
+    fieldset_element = edit_popup.find('fieldset')[0];
+    edit_popup.popup();
+    edit_popup.show();
+
+    function save_promise(fieldset_gadget, edge_id) {
+      return RSVP.Queue()
+        .push(function () {
+          return promiseEventListener(
+            edit_popup.find("form")[0],
+            'submit',
+            false
+          );
+        })
+        .push(function (evt) {
+          var data = {
+              "id": $(evt.target[1]).val(),
+              "data": {}
+          };
+          return fieldset_gadget.getContent().then(function (r) {
+            $.extend(data.data, gadget.props.data.graph.edge[connection.id]);
+            $.extend(data.data, r);
+            // to redraw, we remove the edge and add again.
+            // but we want to disable events on connection, since event
+            // handling promise are executed asynchronously in undefined order,
+            // we cannot just remove and /then/ add, because the new edge is
+            // added before the old is removed.
+            connection.ignoreEvent = true;
+            gadget.props.jsplumb_instance.detach(connection);
+
+            addEdge(gadget, r.id, data.data);
+          });
+        });
+    }
+
+    delete_promise = new RSVP.Queue()
+      .push(function () {
+        return promiseEventListener(
+          edit_popup.find("form [type='button']")[0],
+          'click',
+          false
+        );
+      })
+      .push(function () {
+        // connectionDetached event will remove the edge from data
+        gadget.props.jsplumb_instance.detach(connection);
+      });
+
+    return gadget.declareGadget("../fieldset/index.html", {
+      element: fieldset_element,
+      scope: 'fieldset'
+    })
+      .push(function (fieldset_gadget) {
+        return RSVP.all([fieldset_gadget,
+                         fieldset_gadget.render({value: edge_data, 
+                                          property_definition: schema},
+                                          edge_id)]);
+      })
+      .push(function (fieldset_gadget) {
+        edit_popup.enhanceWithin();
+        edit_popup.popup('open');
+        return fieldset_gadget[0];
+      })
+      .push(function (fieldset_gadget) {
+        // Expose the dialog handling promise so that we can wait for it in
+        // test.
+        gadget.props.dialog_promise = RSVP.any([
+          save_promise(fieldset_gadget, edge_id),
+          delete_promise
+        ]);
+        return gadget.props.dialog_promise;
+      })
+      .push(function () {
+        edit_popup.popup('close');
+        edit_popup.remove();
+        delete gadget.props.dialog_promise;
+      });
+  }
+
+  function openNodeEditionDialog(gadget, element) {
     var node_id = getNodeId(gadget, element.id),
       node_data = gadget.props.data.graph.node[node_id],
       node_edit_popup = $(gadget.props.element).find('#popup-edit-template'),
@@ -545,8 +618,28 @@
         node,
         'dblclick',
         false,
-        openNodeDialog.bind(null, gadget, node)
+        openNodeEditionDialog.bind(null, gadget, node)
       ));
+  }
+
+  function waitForConnection(gadget) {
+    return loopJsplumbBind(gadget, 'connection',
+                    function (info, originalEvent) {
+        updateConnectionData(gadget, info.connection, false);
+      });
+  }
+
+  function waitForConnectionDetached(gadget) {
+    return loopJsplumbBind(gadget, 'connectionDetached',
+                    function (info, originalEvent) {
+        updateConnectionData(gadget, info.connection, true);
+      });
+  }
+
+  function waitForConnectionClick(gadget) {
+    return loopJsplumbBind(gadget, 'click', function (connection) {
+      return openEdgeEditionDialog(gadget, connection);
+    });
   }
 
   function addNode(gadget, node_id, node_data) {
