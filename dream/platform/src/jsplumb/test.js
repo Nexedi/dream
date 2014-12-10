@@ -37,7 +37,7 @@
         "_class": "edge",
         "allOf": [
           {
-            "$ref": "#edge"
+            "$ref": "#/edge"
           },
           {
             "properties": {
@@ -57,7 +57,7 @@
         "_class": "node",
         "allOf": [
           {
-            "$ref": "#node"
+            "$ref": "#/node"
           },
           {
             "properties": {
