@@ -725,5 +725,9 @@
     });
 
   });
+  /* TODO:
+   * test for edge removal
+   * test for edge properties edition
+   */
 
 }(rJS, JSON, QUnit, RSVP, jQuery));
