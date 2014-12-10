@@ -152,8 +152,6 @@
         var gadget, doc_list, innerHTML;
         gadget = this;
         doc_list = gadget.props.element.querySelector(".document_list");
-        console.log("list created? 1");
-        console.log(doc_list);
         // helper: add options to selects
         function makeListItems(row_list) {
             console.log("MAKEDOCUMENTLIST 1");
@@ -202,9 +200,7 @@
             form = e.target;
             element = form.querySelector("div.ui-focus");
             if (element === null || element === "undefined") {
-                console.log(0);
                 element = form.querySelector("input.ui-state-focus");
-                console.log(element);
                 id = element.name.replace("record_", "");
             } else {
                 id = element.childNodes[1].name.replace("record_", "");
@@ -242,14 +238,11 @@
             form = e.target;
             promise_list = [];
             element_list = form.querySelectorAll("label.ui-checkbox-on");
-            console.log(element_list);
             if (element_list) {
                 for (i = 0, len = element_list.length; i < len; i += 1) {
                     element = element_list[i].nextSibling;
                     id = element.name.replace("record_", "");
-                    console.log(id);
                     list_element = element.parentNode.parentNode.parentNode;
-                    console.log(list_element);
                     list_element.parentNode.removeChild(list_element);
                     if (form.querySelector("ul").children.length === 0) {
                         fragment = document.createElement("li");
@@ -267,8 +260,6 @@
                 }
             }
             console.log("HANDLING DELETE 2");
-            console.log("list created? 1");
-            console.log(doc_list);
             return RSVP.all(promise_list);
         }
         return gadget.aq_allDocs({
@@ -290,8 +281,6 @@
             while (doc_list.firstChild) {
                 doc_list.removeChild(doc_list.firstChild);
             }
-            console.log("list created? last");
-            console.log(doc_list);
             doc_list.innerHTML = innerHTML;
             // enhance/refresh
             $doc = $(doc_list);
@@ -310,10 +299,8 @@
         console.log("VIEWADDINSTANCE STARTSERVICE 1");
         var gadget = this;
         return new RSVP.Queue().push(function() {
-            console.log("VIEWADDINSTANCE STARTSERVICE 2");
             return RSVP.any([ waitForImport(gadget), waitForDefault(gadget) ]);
         }).push(function(result) {
-            console.log("VIEWADDINSTANCE STARTSERVICE 3");
             return gadget.whoWantsToDisplayThisDocument(result[0].id);
         }).push(function(url) {
             console.log("VIEWADDINSTANCE STARTSERVICE 4");
