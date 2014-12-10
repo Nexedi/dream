@@ -313,7 +313,7 @@
     );
     $(gadget.props.element).find("#" + element_id).remove();
     delete gadget.props.data.graph.node[node_id];
-    delete gadget.props.data.node_id_to_dom_element_id[node_id];
+    delete gadget.props.node_id_to_dom_element_id[node_id];
 
     $.each(gadget.props.data.graph.edge, function (k, v) {
       if (node_id === v.source || node_id === v.destination) {
