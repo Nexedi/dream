@@ -303,15 +303,10 @@
             $(panel).trigger("create");
         });
     }).ready(function(g) {
-        var jio_gadget;
         //console.log('@@@@@@@@@@@@@@@getting DeclalredGadget@@@@@@@@@@@@@@@');
         //console.log(g);
         return g.getDeclaredGadget("jio").push(function(gadget) {
-            jio_gadget = gadget;
-            //console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            //console.log(jio_gadget);
-            //console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            return jio_gadget.createJio({
+            return gadget.createJio({
                 type: "local",
                 username: "dream",
                 applicationname: "dream"
@@ -354,7 +349,28 @@
         console.log(portal_type);
         console.log(options);
         console.log(portal_types[portal_type]);
-        // Get the action information
+        /*return gadget.getDeclaredGadget("jio")
+        .push(function(jio_gadget) {
+          if (options.id) {
+            return jio_gadget.getAttachment({
+              "_id": options.id,
+              "_attachment": "body.json"
+            });
+          }
+        })
+        .push(function(result) {
+          var data;
+          if (result) {
+            data = JSON.parse(result);
+            gadget.props.data = data;
+            portal_types.Input = data.application_configuration.input;
+            portal_types.Output = data.application_configuration.output;
+          }
+          // Get the action information 
+          return gadget.declareGadget(
+            portal_types[portal_type][options.action].gadget + ".html"
+          );
+        })*/
         return gadget.declareGadget(portal_types[portal_type][options.action].gadget + ".html").push(function(g) {
             page_gadget = g;
             if (page_gadget.render !== undefined) {

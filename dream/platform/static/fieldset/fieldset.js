@@ -1,5 +1,5 @@
 /*global rJS, RSVP, jQuery, Handlebars,
-  promiseEventListener, initGadgetMixin*/
+  promiseEventListener, initGadgetMixin, console */
 /*jslint nomen: true */
 (function(window, rJS, RSVP, Handlebars, initGadgetMixin) {
     "use strict";
@@ -13,6 +13,9 @@
         // XXX node_id is added like a property so that one can change the node
         // id
         var gadget = this, queue;
+        console.log("FIELDSET RENDER 1");
+        console.log(options);
+        console.log(node_id);
         gadget.props.key = options.key;
         // used for recursive fieldsets
         gadget.props.field_gadget_list = [];
@@ -21,10 +24,23 @@
             queue.push(function() {
                 // XXX this is incorrect for recursive fieldsets.
                 // we should use nested fieldset with legend
+                console.log("insertingAdjacentHTML for:" + property_id);
                 gadget.props.element.insertAdjacentHTML("beforeend", label_template({
                     "for": property_id,
                     name: property_definition.name || property_id
                 }));
+                console.log("....................");
+                console.log(property_id);
+                console.log(property_definition);
+                console.log(value);
+                // XXX maybe type should be used instead
+                if (property_definition.allOf) {
+                    // if there is type property then remove it
+                    if (property_definition.allOf[0].type) {
+                        delete property_definition.allOf[0].type;
+                    }
+                    return gadget.declareGadget("../expandable_field/index.html");
+                }
                 if (property_definition.type === "object") {
                     // Create a recursive fieldset for this key.
                     return gadget.declareGadget("../fieldset/index.html");
@@ -57,9 +73,27 @@
                 }, node_id);
             }
             Object.keys(options.property_definition.properties).forEach(function(property_name) {
-                var property_definition = options.property_definition.properties[property_name], value = (options.value || {})[property_name] === undefined ? property_definition._default : options.value[property_name];
-                // XXX some properties are not editable
-                if (property_name !== "coordinate" && property_name !== "_class") {
+                var property_definition = options.property_definition.properties[property_name], value = property_definition.default, i = 0, property;
+                if (property_definition.allOf) {
+                    if (property_definition.allOf[0].properties) {
+                        for (property in property_definition.allOf[0].properties) {
+                            if (property_definition.allOf[0].properties.hasOwnProperty(property)) {
+                                i += 1;
+                                if (i > 1) {
+                                    console.log("something is wrong!");
+                                }
+                                value = property_definition.allOf[0].properties[property].default;
+                            }
+                        }
+                    }
+                }
+                console.log("TRYING TO FIND A VALUE!!!!");
+                console.log(options);
+                console.log(options.value);
+                console.log(property_name);
+                value = (options.value || {})[property_name] === undefined ? value : options.value[property_name];
+                if (property_name !== "coordinate" && property_name !== "_class" && property_name !== "id") {
+                    console.log("ADDING FIELD FOR " + property_name + "!!!!!!!");
                     addField(property_name, property_definition, value);
                 }
             });
