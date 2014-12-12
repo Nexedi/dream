@@ -1,4 +1,4 @@
-/*global rJS, RSVP, initGadgetMixin, loopEventListener */
+/*global rJS, RSVP, initGadgetMixin, loopEventListener, console */
 (function(window, rJS, RSVP, initGadgetMixin, loopEventListener) {
     "use strict";
     function saveSpreadsheet(evt) {
@@ -40,15 +40,31 @@
     var gadget_klass = rJS(window);
     initGadgetMixin(gadget_klass);
     gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareAcquiredMethod("aq_putAttachment", "jio_putAttachment").declareMethod("render", function(options) {
+        console.log("generic spreadsheet RENDER1");
         var jio_key = options.id, gadget = this;
         gadget.props.jio_key = jio_key;
+        console.log("generic spreadsheet RENDER2");
+        console.log(options);
         return new RSVP.Queue().push(function() {
+            console.log("generic spreadsheet RENDER3");
             return RSVP.all([ gadget.aq_getAttachment({
                 _id: jio_key,
                 _attachment: "body.json"
             }), gadget.getDeclaredGadget("tableeditor") ]);
         }).push(function(result_list) {
-            return result_list[1].render(JSON.stringify(JSON.parse(result_list[0]).shift_spreadsheet), {
+            console.log("generic spreadsheet RENDER4");
+            console.log(JSON.parse(result_list[0]));
+            var i, content, data = JSON.parse(result_list[0]).application_configuration.Input;
+            console.log(data);
+            for (i = 0; i <= Object.keys(data).length; i += 1) {
+                if (Object.keys(data)[i] === options.action) {
+                    console.log("content");
+                    content = data[options.action].configuration.columns;
+                    console.log(content);
+                }
+            }
+            // application_configuration.input.view_???_spreasheet.configuration
+            return result_list[1].render(JSON.stringify(content), {
                 minSpareRows: 1,
                 onChange: function() {
                     if (gadget.timeout) {
