@@ -671,7 +671,7 @@
 							"name" : "StationID",
 							"type" : "string"
 						}, {
-							"name" : "RemainingProcessingTime",
+							"name" : "Remaining Processing Time",
 							"type" : "number"
 						}
 					]
