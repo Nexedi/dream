@@ -470,19 +470,24 @@
                 property_definition: schema
             }, node_id) ]);
         }).push(function(fieldset_gadget) {
-            node_edit_popup.enhanceWithin();
-            node_edit_popup.popup("open");
-            return fieldset_gadget[0];
+            console.log(fieldset_gadget[0]);
+            return RSVP.Queue().push(function() {
+                console.log(fieldset_gadget[0]);
+                fieldset_gadget[0].startService();
+            }).push(function() {
+                console.log(":::::::::::::::::::::::::::");
+                console.log(fieldset_gadget);
+                console.log(":::::::::::::::::::::::::::");
+                node_edit_popup.enhanceWithin();
+                node_edit_popup.popup("open");
+                return fieldset_gadget[0];
+            });
         }).push(function(fieldset_gadget) {
             // Expose the dialog handling promise so that we can wait for it in
             // test.
-            console.log(":::::::::::::::::::2");
-            console.log(":::::::::::::::::::2");
-            console.log(":::::::::::::::::::2");
+            console.log("=======:::::::::::::::::::=======");
             console.log(fieldset_gadget);
-            console.log(":::::::::::::::::::2");
-            console.log(":::::::::::::::::::2");
-            console.log(":::::::::::::::::::2");
+            console.log("=======:::::::::::::::::::=======");
             gadget.props.dialog_promise = RSVP.any([ save_promise(fieldset_gadget, node_id), delete_promise ]);
             return gadget.props.dialog_promise;
         }).push(function() {
