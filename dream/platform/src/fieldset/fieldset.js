@@ -131,6 +131,7 @@
 
     // getContent of all subfields
     .declareMethod("getContent", function () {
+      console.log("GET CONTENT SIMPLE FIELDSET");
       var i, promise_list = [], gadget = this;
       for (i = 0; i < this.props.field_gadget_list.length; i += 1) {
         promise_list.push(this.props.field_gadget_list[i].getContent());
@@ -149,8 +150,23 @@
               }
             }
           }
+          console.log("GET CONTENT SIMPLE FIELDSET 2");
+          console.log(result);
           return result;
         });
+    })
+    .declareMethod('startService', function () {
+      console.log("startservice FIElDSET 1");
+      var gadget = this,
+        i,
+        promise_list = [];
+      for (i = 0; i < gadget.props.field_gadget_list.length; i += 1) {
+        if (gadget.props.field_gadget_list[i].startService) {
+          promise_list.push(gadget.props.field_gadget_list[i].startService());
+        }
+      }
+      console.log("there are " + promise_list.length + " subgadget promises");
+      return RSVP.all(promise_list);
     });
 
 }(window, rJS, RSVP, Handlebars, initGadgetMixin));
