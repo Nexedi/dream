@@ -1,8 +1,8 @@
 /*global rJS, RSVP, jQuery, Handlebars, loopEventListener,
   promiseEventListener, initGadgetMixin, console */
 /*jslint nomen: true */
-(function (window, rJS, RSVP, Handlebars, initGadgetMixin) {
-  // loopEventListener) {
+(function (window, rJS, RSVP, Handlebars, initGadgetMixin,
+           loopEventListener) {
   "use strict";
 
   /////////////////////////////////////////////////////////////////
@@ -23,72 +23,16 @@
                            .innerHTML,
     selected_option_template = Handlebars.compile(selected_option_source);
 
-  /*function addField(gadget, property_id, property_definition, value) {
-    console.log("ADDFIELD EXPANDABLEFIELDSET 1");
-    console.log(gadget);
-    var sub_gadget,
-      queue = new RSVP.Queue();
-    queue
-      .push(function () {
-        // XXX this is incorrect for recursive fieldsets.
-        // we should use nested fieldset with legend
-        console.log("EXPANDABLE insertingAdjacentHTML for:"
-          + property_id);
-
-        console.log(1111111111111);
-        gadget.props.element.insertAdjacentHTML(
-          'beforeend',
-          label_template({
-            "for": property_id,
-            "name": (property_definition.name || property_id)
-          })
-        );
-        console.log("ADDFIELD EXPANDABLEFIELDSET 2");
-        if (property_definition.type === "object") {
-          // Create a recursive fieldset for this key.
-          console.log(1);
-          return gadget.declareGadget("../fieldset/index.html");
-        }
-        if (property_definition.type === "number") {
-          console.log(2);
-          return gadget.declareGadget("../number_field/index.html");
-        }
-        if (property_definition.enum) {
-          console.log(3);
-          return gadget.declareGadget("../list_field/index.html");
-        }
-          console.log(4);
-        return gadget.declareGadget("../string_field/index.html");
-      })
-      .push(function (gg) {
-        console.log("ADDFIELD EXPANDABLEFIELDSET to render subgadgets");
-        sub_gadget = gg;
-        return sub_gadget.render({
-          key: property_id,
-          value: value,
-          property_definition: property_definition
-        });
-      })
-      .push(function () {
-        console.log("ADDFIELD EXPANDABLEFIELDSET to get elements");	  
-        return sub_gadget.getElement();
-      })
-      .push(function (sub_element) {
-        console.log("ADDFIELD EXPANDABLEFIELDSET updating field_gadget_list");
-        gadget.props.element.appendChild(sub_element);
-        gadget.props.field_gadget_list.push(sub_gadget);
-      });
-  }*/
-
   function syncField(gadget) {
     console.log("SYNCFIELD EXPANDABLEFIELDSET 1");
-    var i, properties_dict, //type, value, ind,
-      // current_options = gadget.props.options.value,
+    var i, properties_dict,
       sub_title, sub_type, in_type, default_value, previous_value,
-      labels, ins, j,
+      labels, inps, j,
       recent_occupied = [],
       prop_name = gadget.props.definition.property_def.title;
+    console.log("for prop_name");
     console.log(prop_name);
+	
 	// set the title of the field
     gadget.props.element.children[1].innerHTML = prop_name;
     gadget.props.element.children[1].setAttribute("for", prop_name);
@@ -104,7 +48,7 @@
       gadget.props.element.children[2].style.display = '';
       // XXX assuming that the number of labels
       //     is the same as the number of inputs
-      ins = gadget.props.element.children[2]
+      inps = gadget.props.element.children[2]
                                    .getElementsByTagName("input");
       labels = gadget.props.element.children[2]
                                    .getElementsByTagName("label");
@@ -118,19 +62,23 @@
         if (gadget.props.options.value[prop_name]) {
           previous_value = gadget.props.options.value[prop_name][sub_title];
 		}
-        for (j = 0; j <= ins.length-1; j += 1) {
+        for (j = 0; j <= inps.length-1; j += 1) {
           // if the element is not already occupied
-          if (!(recent_occupied.indexOf(ins[j]) > -1)) {
-            if (ins[j].getAttribute("type")) {
+          if (!(recent_occupied.indexOf(inps[j]) > -1)) {
+            if (inps[j].getAttribute("type")) {
               // XXX hardcoded value for string input 
               //  as text is used in HTML
               if (sub_type === "string") {in_type = "text"; }
-              if (ins[j].getAttribute("type") === sub_type ||
-                  ins[j].getAttribute("type") === in_type ) {
-                ins[j].setAttribute("name", sub_title);
-                ins[j].setAttribute("title", sub_title);
-                // if (previous_value !== "undefined") 
-                ins[j].setAttribute(
+              if (inps[j].getAttribute("type") === sub_type ||
+                  inps[j].getAttribute("type") === in_type ) {
+                inps[j].setAttribute("name", sub_title);
+                inps[j].setAttribute("title", sub_title);
+                // if the input type is text then undefined --> "" 
+                if (inps[j].getAttribute("type") === "text" &&
+                    default_value === undefined) {
+                  default_value = "";
+                }
+                inps[j].setAttribute(
                   "value",
                   previous_value === undefined
                   ? default_value
@@ -138,86 +86,76 @@
                 );
                 labels[j].innerHTML = sub_title;
                 labels[j].setAttribute('for', sub_title);
-                recent_occupied.push(ins[j]);
+                recent_occupied.push(inps[j]);
+                // present them
+                inps[j].parentNode.parentNode.style.display = '';
+                labels[j].style.display = '';
                 break;
               }
             }
           }
         }
       }
-      console.log("occupied");
-      console.log(recent_occupied);
-      for (j = 0; j <= ins.length-1; j += 1) {
-        if (!(recent_occupied.indexOf(ins[j]) > -1)) {
-          ins[j].parentNode.parentNode.style.display = 'block';
-          ins[j].parentNode.parentNode.style.display = 'none';
+      for (j = 0; j <= inps.length-1; j += 1) {
+        if (!(recent_occupied.indexOf(inps[j]) > -1)) {
+          inps[j].parentNode.parentNode.style.display = 'block';
+          inps[j].parentNode.parentNode.style.display = 'none';
           labels[j].style.display = 'block';
           labels[j].style.display = 'none';
         }
       }
+    } else {
+      // hide the sub_field as there is nothing to show
+      gadget.props.element.children[2].style.display = 'block';
+      gadget.props.element.children[2].style.display = 'none';
     }
   }
 
-  /*function updateFieldSet(evt) {
-    console.log("updateFieldSetupdateFieldSetupdateFieldSet");
-    console.log(evt);
-    console.log(this);
-    console.log(this.props);
-    var gadget = this,
+  function handleSelectChange() { //evt) {
+    console.log("UPDATING FIELDS DUE TO SELECTION CHANGE");
+    var gadget = this, oneOf_list, i,
+      prop_name = gadget.props.definition.property_def.title,
       select = gadget.props.element.getElementsByTagName('select')[0],
-      update_value = select.options[select.selectedIndex].value,
-      options = gadget.props.options,
-      i, select_index, child, index;
-    for (select_index = 0; 
-         select_index <= gadget.props.element.childNodes.length-1;
-         select_index += 1) {
-      child = gadget.props.element.childNodes[select_index];
-      if (child.className === "ui-select") { select_index += 1; break; }
-    }
-    for (i = 0; i <= select_index; i += 1) {
-      gadget.props.element.removeChild(gadget.props.element.lastChild);
-    }
-    for (index = 0;
-         index <= options.property_definition.allOf.length - 1;
-         index += 1) {
-      if (options.property_definition.allOf[index].oneOf) {
-        break;
+      update_name = select.options[select.selectedIndex].value;
+    if (!(update_name === prop_name)) {
+      prop_name = update_name;
+	  // change gadget.props.definition 
+      for (i = 0;
+           i <= gadget.props.options.property_definition.allOf.length - 1;
+           i += 1) {
+        if (gadget.props.options.property_definition.allOf[i].oneOf) {
+          oneOf_list 
+            = gadget.props.options.property_definition.allOf[i].oneOf;
+          break;
+        }
+      }
+      for (i = 0;
+           i <= oneOf_list.length - 1;
+           i += 1) {
+        if (oneOf_list[i].title
+            === prop_name) {
+          gadget.props.definition = {
+            name : prop_name,
+            property_def : oneOf_list[i],
+            value : oneOf_list[i].default
+          };
+          break;
+        }
       }
     }
-    console.log(options.property_definition.allOf[index]);
-    for (i = 0;
-         i <= options.property_definition.allOf[index].oneOf.length - 1;
-         i += 1) {
-      if (options.property_definition.allOf[index].oneOf[i].title
-          === update_value) {
-        console.log(
-          options.property_definition.allOf[index].oneOf[i].title,
-          options.property_definition.allOf[index].oneOf[i],
-          options.property_definition.allOf[index].oneOf[i].default
-        );
-        // addField(
-          // gadget,
-          // options.property_definition.allOf[index].oneOf[i].title,
-          // options.property_definition.allOf[index].oneOf[i],
-          // options.property_definition.allOf[index].oneOf[i].default
-        // );
-        break;
-      }
-    }
-  }*/
+    syncField(gadget);
+  }
 
-  /*function waitForListFieldSelection(gadget) {
+  function waitForListFieldSelection(gadget) {
     var element = gadget.props.element.getElementsByTagName('select')[0];
-    console.log("OLA Ta Mora stin pistaAaAaA");
-    console.log(gadget);
-    console.log(element);
+    console.log("INITIATING A LOOP EVENT LISTENER FOR OPTION CHANGE");
     return loopEventListener(
       element,
       'change',
       false,
-      updateFieldSet.bind(gadget)
+      handleSelectChange.bind(gadget)
     );
-  }*/
+  }
 
   initGadgetMixin(gadget_klass);
   gadget_klass
@@ -231,6 +169,7 @@
         value, prop_name, prop_definition, string_value;
 
       console.log("EXPANDABLEFIELDSET RENDER 1");
+      console.log("provided options");
       console.log(options);
       gadget.props.key = options.key; // used for recursive fieldsets
       gadget.props.field_gadget_list = [];
@@ -245,8 +184,7 @@
           .push(function () {
             // XXX this is incorrect for recursive fieldsets.
             // we should use nested fieldset with legend
-            console.log("EXPANDABLE insertingAdjacentHTML for:"
-              + property_id);
+            console.log("expa insertingAdjacentHTML for:" + property_id);
             gadget.props.element.insertAdjacentHTML(
               'beforeend',
               label_template({
@@ -398,7 +336,7 @@
           }
           len = gadget.props.options.property_definition.allOf.length;
           for (index = 0; index <= len - 1; index += 1) {
-            console.log("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+            console.log(index + "th option of allOf");
             console.log(gadget.props.options.
                                property_definition.allOf[index]);
             if (gadget.props.options
@@ -434,7 +372,7 @@
                   };
                 }
               }
-              console.log("ab_definition for " + index);
+              console.log("abstract_definition for " + index);
               console.log(ab_definition);
               // add a field with abstract definition
               addField(
@@ -522,10 +460,10 @@
             select.options[select.selectedIndex].value;
           keys = Object.keys(results[Object.keys(results)[0]]);
           console.log("modifying received results");
-          /* results[Object.keys(results)[0]] :::::: is the result returned
-		   keys[index] :::::: different keys of the result returned
-           results[Object.keys(results)[0]][keys[index]] ::::::: 
-                     the variable with key keys[index] */
+          /* results[Object.keys(results)[0]] ====== is the result returned
+		     keys[index] ====== different keys of the result returned
+             results[Object.keys(results)[0]][keys[index]] ====== 
+                                         the variable with key keys[index] */
           for (index = 0; index <= keys.length - 1; index +=1) {
             // if the type of the variable of the result is object
             if (typeof results[Object.keys(results)[0]][keys[index]]
@@ -594,8 +532,7 @@
           syncField(gadget);
         })
         .push(function () {
-          // waitForListFieldSelection(gadget);
-          console.log("wait for selection ended");
+          waitForListFieldSelection(gadget);
         });
     });
-}(window, rJS, RSVP, Handlebars, initGadgetMixin));//, loopEventListener));
+}(window, rJS, RSVP, Handlebars, initGadgetMixin, loopEventListener));
