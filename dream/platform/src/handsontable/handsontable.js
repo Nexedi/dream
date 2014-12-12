@@ -5,12 +5,18 @@
 
   rJS(window)
     .declareMethod('render', function (content, options) {
-      var data = JSON.parse(content);
+      var data = JSON.parse(content),
+        i, def  = [];
+      for (i = 0; i <= data.length-1; i += 1) {
+        def.push(data[i].name);
+      }
+      def = [def];
+
       return this.getElement()
         .push(function (element) {
           $(element).find('.table-container')
                     .handsontable($.extend({
-              data: data,
+              data: def,
               stretchH: 'all'
             }, options || {}));
         });
