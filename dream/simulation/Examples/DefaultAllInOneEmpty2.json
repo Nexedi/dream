@@ -406,20 +406,8 @@
 			"shape" : "rectangle",
 			"description" : "A station where entities exits from the system",
 			"allOf" : [{
-					"$ref" : "#/node"
-				}, {
-					"type" : "object",
-					"properties" : {
-						"name" : {
-							"type" : "string",
-							"default" : "Exit"
-						},
-						"id" : {
-							"default" : "E",
-							"required" : true
-						}
-					}
-				}
+				"$ref" : "#/node"
+		 	   }
 			]
 		},
 		"Dream.Queue" : {
@@ -431,14 +419,6 @@
 				}, {
 					"type" : "object",
 					"properties" : {
-						"name" : {
-							"type" : "string",
-							"default" : "Queue"
-						},
-						"id" : {
-							"type" : "string",
-							"default" : "Q"
-						},
 						"capacity" : {
 							"$ref" : "#/definitions/_capacity",
 							"required" : true
@@ -464,15 +444,6 @@
 				}, {
 					"type" : "object",
 					"properties" : {
-						"name" : {
-							"type" : "string",
-							"default" : "Machine"
-						},
-						"id" : {
-							"type" : "string",
-							"default" : "M",
-							"required" : true
-						},
 						"processingTime" : {
 							"$ref" : "#/definitions/_dist",
 							"required" : true
@@ -494,15 +465,6 @@
 				}, {
 					"type" : "object",
 					"properties" : {
-						"name" : {
-							"type" : "string",
-							"default" : "Source"
-						},
-						"id" : {
-							"type" : "string",
-							"default" : "S",
-							"required" : true
-						},
 						"interArrivalTime" : {
 							"description" : "Inter-arrivaltime",
 							"$ref" : "#/definitions/_dist",
@@ -527,15 +489,6 @@
 				}, {
 					"type" : "object",
 					"properties" : {
-						"name" : {
-							"type" : "string",
-							"default" : "Attainment"
-						},
-						"id" : {
-							"type" : "string",
-							"default" : "A",
-							"required" : true
-						},
 						"start" : {
 							"description" : "Starttime",
 							"type" : "number",
@@ -585,15 +538,6 @@
 				}, {
 					"type" : "object",
 					"properties" : {
-						"name" : {
-							"type" : "string",
-							"default" : "Repairman"
-						},
-						"id" : {
-							"type" : "string",
-							"default" : "R",
-							"required" : true
-						},
 						"capacity" : {
 							"$ref" : "#/definitions/_capacity",
 							"required" : true
