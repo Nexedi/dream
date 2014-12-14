@@ -297,7 +297,7 @@
 				]
 			},
 			"_schedulingRule" : {
-				"description" : "Scheduling Rule, one of FIFO Priority EDD EOD NumStages RPC LPT SPT MS WINQ",
+				"description" : "Scheduling Rule",
 				"type" : "string",
 				"default" : "FIFO",
 				"enum" : [
