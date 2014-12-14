@@ -49,13 +49,11 @@
 					"description" : "Lognormal",
 					"properties" : {
 						"mean" : {
-							"_class" : "Dream.Property",
 							"name" : "Mean",
 							"type" : "number",
 							"default" : 0
 						},
 						"stdev" : {
-							"_class" : "Dream.Property",
 							"name" : "Standard Deviation",
 							"type" : "number",
 							"default" : 0
@@ -330,24 +328,19 @@
 				]
 			},
 			"_operationType" : {
-				"_class" : "Dream.PropertyList",
 				"name" : "Operation type",
 				"id" : "operationType",
 				"description" : "the type of operations that are performed manually in the machine",
-				"properties" : {
-					"operationType" : {
-						"type" : "string",
-						"enum" : [
-							"Load",
-							"Setup",
-							"Processing",
-							"MT-Load",
-							"MT-Load-Setup",
-							"MT-Load-Setup-Processing",
-							"MT-Setup-Processing"
-						]
-					}
-				}
+                                "type" : "string",
+                                "enum" : [
+                                        "Load",
+                                        "Setup",
+                                        "Processing",
+                                        "MT-Load",
+                                        "MT-Load-Setup",
+                                        "MT-Load-Setup-Processing",
+                                        "MT-Setup-Processing"
+                                ]
 			}
 		},
 		"edge" : {
