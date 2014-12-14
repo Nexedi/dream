@@ -206,11 +206,10 @@ def main(*args):
   parser = argparse.ArgumentParser(description='Launch the DREAM simulation platform.')
   parser.add_argument('gui_class', metavar='GUI_KLASS', nargs="?", default="Default",
                    help='The GUI klass to launch')
-  parser.add_argument('--port', dest='port', default=5000, type=int,
-                   help='Port number to listen to')
-  parser.add_argument('--host', dest='host', default="localhost",
-                   help='Host address')
-  parser.add_argument('--logfile', dest='logfile', help='Log to file')
+  parser.add_argument('--port', default=5000, type=int,
+                      help='Port number to listen on')
+  parser.add_argument('--host', default="localhost", help='Host address')
+  parser.add_argument('--logfile', help='Log to file')
   arguments = parser.parse_args()
   global klass_name
   klass_name = 'dream.simulation.GUI.%s' % arguments.gui_class
