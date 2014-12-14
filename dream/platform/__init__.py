@@ -40,8 +40,6 @@ global klass_name
 klass_name = None
 
 app = Flask(__name__)
-# Serve static file with no cache
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 @app.route("/")
 def front_page():
@@ -210,6 +208,7 @@ def main(*args):
                       help='Port number to listen on')
   parser.add_argument('--host', default="localhost", help='Host address')
   parser.add_argument('--logfile', help='Log to file')
+  parser.add_argument('--debug', help='Debug mode', action='store_true')
   arguments = parser.parse_args()
   global klass_name
   klass_name = 'dream.simulation.GUI.%s' % arguments.gui_class
@@ -218,8 +217,12 @@ def main(*args):
     file_handler.setLevel(logging.DEBUG)
     app.logger.addHandler(file_handler)
 
+  if arguments.debug:
+    # Serve static file with no cache
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
   # start the server
-  app.run(debug=True, host=arguments.host, port=arguments.port)
+  app.run(debug=arguments.debug, host=arguments.host, port=arguments.port)
 
 if __name__ == "__main__":
   main()
