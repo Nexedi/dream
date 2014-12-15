@@ -36,7 +36,7 @@
               'beforeend',
               label_template({
                 "for": property_id,
-                "name": (property_definition.name || property_id)
+                "name": (property_definition.name || property_definition.description || property_id)
               })
             );
             if (property_definition.type === "object") {
@@ -80,6 +80,7 @@
               value = (options.value || {})[property_name] === undefined
               ? property_definition._default : options.value[property_name];
             // XXX some properties are not editable
+            // XXX should not be defined here
             if (property_name !== 'coordinate' && property_name !== '_class') {
               addField(property_name, property_definition, value);
             }
