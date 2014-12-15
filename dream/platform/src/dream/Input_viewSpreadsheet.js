@@ -86,11 +86,17 @@
         })
         .push(function (result_list) {
           var i, content,
-            data = JSON.parse(result_list[0])
-                       .application_configuration.input;
-          for (i = 0; i <= Object.keys(data).length; i += 1) {
-            if (Object.keys(data)[i] === options.action) {
-              content = data[options.action].configuration.columns;
+            result = JSON.parse(result_list[0]),
+            config = result.application_configuration.input;
+          // if there are previously stored data in input for this sprSheet
+          if (result.input[gadget.props.name]) {
+            content = result.input[gadget.props.name];
+          } else {
+            // otherwise use the clean configuration
+            for (i = 0; i <= Object.keys(config).length; i += 1) {
+              if (Object.keys(config)[i] === options.action) {
+                content = config[options.action].configuration.columns;
+              }
             }
           }
           // application_configuration.input.view_???_spreasheet.configuration
