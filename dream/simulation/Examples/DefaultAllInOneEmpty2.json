@@ -609,7 +609,7 @@
 		}
 	},
 	"application_configuration" : {
-		"Input" : {
+		"input" : {
 			"view" : {
 				"title" : "ProductionLine",
 				"type" : "object_view",
@@ -683,7 +683,7 @@
 				"gadget" : "Input_viewSimulation"
 			}
 		},
-		"Output" : {
+		"output" : {
 			"view_station_utilization" : {
 				"title" : "StationUtilization",
 				"type" : "object_view",
