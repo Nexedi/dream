@@ -41,7 +41,7 @@
               'beforeend',
               label_template({
                 "for": property_id,
-                "name": (property_definition.name || property_id)
+                "name": (property_definition.name || property_definition.description || property_id)
               })
             );
             console.log("....................");
@@ -156,7 +156,8 @@
               if (property_name !== 'coordinate'
                && property_name !== '_class'
                && property_name !== 'id') {
-                console.log("ADDING FIELD FOR " + property_name + "!!!!!!!");
+            // XXX some properties are not editable
+            // XXX should not be defined here
                 addField(property_name, property_definition, value);
               }
             });
