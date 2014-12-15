@@ -479,16 +479,19 @@
                   allowed_sub_keys 
                     = Object.keys(
                       gadget.props.definition.property_def.properties
-                  );
+                    );
                   for (j = 0; j <= sub_keys.length-1; j += 1) {
                     // if any of the keys is not in the allowed_sub_keys
                     if (!(allowed_sub_keys.indexOf(sub_keys[j]) > -1)) {
                       // remove it
                       delete results[
                                Object.keys(results)[0]
-                             ][keys[index]][sub_keys[i]];
+                             ][keys[index]][sub_keys[j]];
                     }
                   }
+                } else {
+                  // if the definition has no props then the object is empty
+                  results[Object.keys(results)[0]][keys[index]] = {};
                 }
               }
             }
