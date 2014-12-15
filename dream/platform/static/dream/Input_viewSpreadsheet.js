@@ -21,7 +21,9 @@
             });
         }).push(function(body) {
             var data = JSON.parse(body);
-            data.shift_spreadsheet = JSON.parse(editor_data);
+            // create a property within input 
+            // with name the provided at render time
+            data.input[gadget.props.name] = JSON.parse(editor_data);
             return gadget.aq_putAttachment({
                 _id: gadget.props.jio_key,
                 _attachment: "body.json",
@@ -43,24 +45,18 @@
         console.log("generic spreadsheet RENDER1");
         var jio_key = options.id, gadget = this;
         gadget.props.jio_key = jio_key;
-        console.log("generic spreadsheet RENDER2");
-        console.log(options);
+        // view_##### is the formulatino of the names
+        gadget.props.name = options.action.substr(5, options.action.length);
         return new RSVP.Queue().push(function() {
-            console.log("generic spreadsheet RENDER3");
             return RSVP.all([ gadget.aq_getAttachment({
                 _id: jio_key,
                 _attachment: "body.json"
             }), gadget.getDeclaredGadget("tableeditor") ]);
         }).push(function(result_list) {
-            console.log("generic spreadsheet RENDER4");
-            console.log(JSON.parse(result_list[0]));
-            var i, content, data = JSON.parse(result_list[0]).application_configuration.Input;
-            console.log(data);
+            var i, content, data = JSON.parse(result_list[0]).application_configuration.input;
             for (i = 0; i <= Object.keys(data).length; i += 1) {
                 if (Object.keys(data)[i] === options.action) {
-                    console.log("content");
                     content = data[options.action].configuration.columns;
-                    console.log(content);
                 }
             }
             // application_configuration.input.view_???_spreasheet.configuration
