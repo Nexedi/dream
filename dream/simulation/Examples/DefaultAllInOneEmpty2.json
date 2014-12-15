@@ -7,6 +7,10 @@
 					"title" : "Fixed",
 					"type" : "object",
 					"properties" : {
+                                                "distribution": {
+							"type" : "string",
+                                                        "enum": ["Fixed"]
+                                                },
 						"mean" : {
 							"type" : "number",
 							"default" : 0.75,
@@ -19,6 +23,10 @@
 					"title": "Exp",
 					"description" : "Exponential",
 					"properties" : {
+                                                "distribution": {
+							"type" : "string",
+                                                        "enum": ["Exp"]
+                                                },
 						"mean" : {
 							"type" : "number",
 							"default" : 0,
@@ -31,6 +39,10 @@
 					"title" : "Normal",
 					"description" : "Normal",
 					"properties" : {
+                                                "distribution": {
+							"type" : "string",
+                                                        "enum": ["Normal"]
+                                                },
 						"mean" : {
 							"type" : "number",
 							"default" : 0,
@@ -48,6 +60,10 @@
 					"title" : "Lognormal",
 					"description" : "Lognormal",
 					"properties" : {
+                                                "distribution": {
+							"type" : "string",
+                                                        "enum": ["Lognormal"]
+                                                },
 						"mean" : {
 							"name" : "Mean",
 							"type" : "number",
@@ -65,6 +81,10 @@
 					"title" : "Binomial",
 					"description" : "Binomial",
 					"properties" : {
+                                                "distribution": {
+							"type" : "string",
+                                                        "enum": ["Binomial"]
+                                                },
 						"mean" : {
 							"type" : "number",
 							"default" : 0
@@ -80,6 +100,10 @@
 					"title" : "Poisson",
 					"description" : "Poisson",
 					"properties" : {
+                                                "distribution": {
+							"type" : "string",
+                                                        "enum": ["Poisson"]
+                                                },
 						"lambda" : {
 							"type" : "number",
 							"default" : 0
@@ -91,6 +115,10 @@
 					"title" : "Logistic",
 					"description" : "Logistic",
 					"properties" : {
+                                                "distribution": {
+							"type" : "string",
+                                                        "enum": ["Logistic"]
+                                                },
 						"location" : {
 							"type" : "number",
 							"default" : 0,
@@ -108,6 +136,10 @@
 					"title" : "Caucy",
 					"description" : "Caucy",
 					"properties" : {
+                                                "distribution": {
+							"type" : "string",
+                                                        "enum": ["Caucy"]
+                                                },
 						"location" : {
 							"type" : "number",
 							"default" : 0
@@ -123,6 +155,10 @@
 					"title" : "Geometric",
 					"description" : "Geometric",
 					"properties" : {
+                                                "distribution": {
+							"type" : "string",
+                                                        "enum": ["Geometric"]
+                                                },
 						"probability" : {
 							"type" : "number",
 							"default" : 0,
@@ -135,6 +171,10 @@
 					"title" : "Gama",
 					"description" : "Gama",
 					"properties" : {
+                                                "distribution": {
+							"type" : "string",
+                                                        "enum": ["Gama"]
+                                                },
 						"shape" : {
 							"type" : "number",
 							"default" : 0,
@@ -152,6 +192,10 @@
 					"title" : "Weibull",
 					"description" : "Weibull",
 					"properties" : {
+                                                "distribution": {
+							"type" : "string",
+                                                        "enum": ["Weibull"]
+                                                },
 						"shape" : {
 							"type" : "number",
 							"default" : 0,
@@ -247,54 +291,30 @@
 				]
 			},
 			"_dist" : {
-				"allOf" : [{
-						"type" : "object",
-						"properties" : {
-							"distribution" : {
-								"type" : "string",
-								"default" : "Fixed",
-								"enum" : [
-									"Fixed",
-									"Exp",
-									"Normal",
-									"Lognormal",
-									"Binomial",
-									"Poisson",
-									"Logistic",
-									"Caucy",
-									"Geometric",
-									"Gama",
-									"Weibull"
-								]
-							}
-						}
-					}, {
-						"oneOf" : [{
-								"$ref" : "#/definitions/distributionTypes/_fixed"
-							}, {
-								"$ref" : "#/definitions/distributionTypes/_exp"
-							}, {
-								"$ref" : "#/definitions/distributionTypes/_normal"
-							}, {
-								"$ref" : "#/definitions/distributionTypes/_lognormal"
-							}, {
-								"$ref" : "#/definitions/distributionTypes/_binomial"
-							}, {
-								"$ref" : "#/definitions/distributionTypes/_poisson"
-							}, {
-								"$ref" : "#/definitions/distributionTypes/_logistic"
-							}, {
-								"$ref" : "#/definitions/distributionTypes/_caucy"
-							}, {
-								"$ref" : "#/definitions/distributionTypes/_geometric"
-							}, {
-								"$ref" : "#/definitions/distributionTypes/_gama"
-							}, {
-								"$ref" : "#/definitions/distributionTypes/_weibull"
-							}
-						]
-					}
-				]
+                            "oneOf" : [{
+                                            "$ref" : "#/definitions/distributionTypes/_fixed"
+                                    }, {
+                                            "$ref" : "#/definitions/distributionTypes/_exp"
+                                    }, {
+                                            "$ref" : "#/definitions/distributionTypes/_normal"
+                                    }, {
+                                            "$ref" : "#/definitions/distributionTypes/_lognormal"
+                                    }, {
+                                            "$ref" : "#/definitions/distributionTypes/_binomial"
+                                    }, {
+                                            "$ref" : "#/definitions/distributionTypes/_poisson"
+                                    }, {
+                                            "$ref" : "#/definitions/distributionTypes/_logistic"
+                                    }, {
+                                            "$ref" : "#/definitions/distributionTypes/_caucy"
+                                    }, {
+                                            "$ref" : "#/definitions/distributionTypes/_geometric"
+                                    }, {
+                                            "$ref" : "#/definitions/distributionTypes/_gama"
+                                    }, {
+                                            "$ref" : "#/definitions/distributionTypes/_weibull"
+                                    }
+                            ]
 			},
 			"_schedulingRule" : {
 				"description" : "Scheduling Rule",
