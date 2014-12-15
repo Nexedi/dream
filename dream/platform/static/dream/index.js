@@ -62,9 +62,9 @@
         var forward_kw = {
             action: options.action || "view"
         }, queue = new RSVP.Queue();
-        if (portal_type === "Input") {
+        if (portal_type === "input") {
             forward_kw.id = options.id;
-        } else if (portal_type === "Output") {
+        } else if (portal_type === "output") {
             forward_kw.id = options.id;
             queue.push(function() {
                 return gadget.getDeclaredGadget("jio");
@@ -92,7 +92,7 @@
         var title;
         if (portal_type === "Pre Input Module") {
             title = "Documents";
-        } else if (portal_type === "Input") {
+        } else if (portal_type === "input") {
             title = gadget.getDeclaredGadget("jio").push(function(jio_gadget) {
                 return jio_gadget.get({
                     _id: options.id
@@ -100,7 +100,7 @@
             }).push(function(jio_doc) {
                 return jio_doc.data.title + " (" + jio_doc.data.modified + ")";
             });
-        } else if (portal_type === "Output") {
+        } else if (portal_type === "output") {
             title = gadget.getDeclaredGadget("jio").push(function(jio_gadget) {
                 return jio_gadget.getAttachment({
                     _id: options.id,
@@ -223,9 +223,9 @@
         // Hey, I want to display some jIO document
         // We'll display the result using the first enabled action
         var action = "view", action_info, action_id;
-        for (action_id in portal_types.Output) {
-            if (portal_types.Output.hasOwnProperty(action_id)) {
-                action_info = portal_types.Output[action_id];
+        for (action_id in portal_types.output) {
+            if (portal_types.output.hasOwnProperty(action_id)) {
+                action_info = portal_types.output[action_id];
                 if (action_info.condition === undefined || action_info.condition(this)) {
                     action = action_id;
                     break;
@@ -331,15 +331,15 @@
         $('.pre_input_link').hide();
       }*/
         if (gadget.props.configSet === true) {
-            portal_types.Input = gadget.props.configuration_dict.application_configuration.Input;
-            portal_types.Output = gadget.props.configuration_dict.application_configuration.Output;
+            portal_types.input = gadget.props.configuration_dict.application_configuration.input;
+            portal_types.output = gadget.props.configuration_dict.application_configuration.output;
         }
         // Detect what is the kind of document displayed
         if (options.id !== undefined) {
             if (options.result === undefined) {
-                portal_type = "Input";
+                portal_type = "input";
             } else {
-                portal_type = "Output";
+                portal_type = "output";
                 back_kw.action = "view_result";
                 back_kw.id = options.id;
             }
@@ -363,8 +363,8 @@
           if (result) {
             data = JSON.parse(result);
             gadget.props.data = data;
-            portal_types.Input = data.application_configuration.input;
-            portal_types.Output = data.application_configuration.output;
+            portal_types.input = data.application_configuration.input;
+            portal_types.output = data.application_configuration.output;
           }
           // Get the action information 
           return gadget.declareGadget(
