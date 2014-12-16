@@ -203,15 +203,18 @@
 						"MTTF" : {
 							"description" : "Mean Time To Failure",
 							"type" : "number",
+							"default" : 40,
 							"required" : true
 						},
 						"MTTR" : {
 							"description" : "Mean Time To Failure",
+							"default" : 10,
 							"type" : "number",
 							"required" : true
 						},
 						"availability" : {
 							"type" : "number",
+							"default" : 0,
 							"required" : true
 						},
 						"repairman" : {
@@ -678,9 +681,14 @@
 				}
 			},
 			"view_run_simulation" : {
-				"title" : "RunSiumulation",
+				"title" : "Run Simulation",
 				"type" : "object_view",
 				"gadget" : "Input_viewSimulation"
+			},
+			"view_result": {
+				"gadget": "Input_viewResultList",
+				"type": "object_view",
+				"title": "Results"
 			}
 		},
 		"output" : {
@@ -728,15 +736,20 @@
 				"gadget" : "Output_viewDebugJson"
 			}
 		},
-		"preprocessing_plugin_list" : [{
-				"plugin" : "ReadShiftFromSpreadsheet",
-				"input_id" : "ShiftSpreadsheet"
-			}
-		],
-		"postprocessing_plugin_list" : [{
+		"preprocessing" : {
+			"plugin_list" : [{
+					"plugin" : "Default",
+					"input_id" : "Simulation"
+			},{
+					"plugin" : "ReadShiftFromSpreadsheet",
+					"input_id" : "ShiftSpreadsheet"
+			}]
+		},
+		"postprocessing" : {
+			"plugin_list" : [{
 				"plugin" : "CalculateConfidenceIntervals"
-			}
-		],
+			}]
+		},
 		"general" : {
 			"properties" : {
 				"numberOfReplications" : {
