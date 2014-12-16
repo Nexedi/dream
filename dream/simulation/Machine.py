@@ -58,11 +58,11 @@ class Machine(CoreObject):
         self.type="Machine"                         #String that shows the type of object
         CoreObject.__init__(self, id, name)
         from Globals import G
-        
+
         processingTime=self.getOperationTime(time=processingTime)
-        
+
         setupTime=self.getOperationTime(time=setupTime)
-        
+
         loadTime=self.getOperationTime(time=loadTime)
         
         #     holds the capacity of the machine 
@@ -192,6 +192,18 @@ class Machine(CoreObject):
 
     @staticmethod
     def getOperationTime(time):
+
+        def refactorTime(time):
+            if time:
+                if time["distribution"]:
+                    time["distributionType"] = time["distribution"]
+                    for key in time[time["distribution"]]:
+                        time[key] = time[time["distribution"]][key]
+                    del time[time["distribution"]]
+                    del time["distribution"]
+            return time
+        # XXX update time to comply with old definition
+        time = refactorTime(time)
         '''returns the dictionary updated'''
         if not time:
             time = { 'distributionType': 'Fixed',
