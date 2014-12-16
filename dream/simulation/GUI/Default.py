@@ -377,8 +377,9 @@ class Simulation(object):
     """Preprocess the data, for instance reading spreadsheet.
     """
     # by default we add an event generator if using queue stats
-    if self.getConfigurationDict()["Dream-Configuration"]["gui"]["queue_stat"]:
-      for node in data["nodes"].values():
+    # if self.getConfigurationDict()["Dream-Configuration"]["gui"]["queue_stat"]:
+    if data["application_configuration"]["output"]["view_queue_stats"]:
+      for node in data["graph"]["node"].values():
         if node['_class'] in ('Dream.Queue', ):
           node['gatherWipStat'] = 1
     return data

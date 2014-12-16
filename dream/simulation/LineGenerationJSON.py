@@ -75,8 +75,9 @@ def createObjectResourcesAndCoreObjects():
 
     json_data = G.JSONData
     #Read the json data
-    nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
-    edges = json_data['edges']                      # read from the dictionary the dicts with key 'edges'
+    # nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
+    nodes = json_data['graph']["node"]                      # read from the dictionary the dicts with key 'nodes'
+    edges = json_data['graph']["edge"]                      # read from the dictionary the dicts with key 'edges'
 
 
     '''
@@ -241,7 +242,7 @@ def createObjectInterruptions():
     G.PeriodicMaintenanceList=[]
     json_data = G.JSONData
     #Read the json data
-    nodes = json_data['nodes']                      # read from the dictionary the dicts with key 'nodes'
+    nodes = json_data['graph']["node"]                      # read from the dictionary the dicts with key 'nodes'
     
     #                loop through all the nodes to  
     #            search for Event Generator and create them
@@ -389,7 +390,7 @@ def createWIP():
                 G.OrderList.append(O)
                 
     # read from the dictionary the dicts with key 'nodes'
-    nodes = json_data['nodes']
+    nodes = json_data["graph"]['node']
     for (element_id, element) in nodes.iteritems():
         element['id'] = element_id
         wip=element.get('wip', [])
