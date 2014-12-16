@@ -134,14 +134,17 @@ def runSimulation():
 
 def _runSimulation(parameter_dict):
   try:
-    return dict(success=True, data=getGUIInstance().run(parameter_dict))
+    return dict(success=True, data=getGUIInstance(parameter_dict).run(parameter_dict))
   except Exception, e:
     tb = traceback.format_exc()
     app.logger.error(tb)
     return dict(error=tb)
 
-def getGUIInstance():
+def getGUIInstance(data):
     # XXX do not instanciate each time!
+    klass_name = data["application_configuration"]["preprocessing"]["plugin_list"][0]["plugin"]
+    klass_name = 'dream.simulation.GUI.%s' % klass_name
+
     klass = __import__(klass_name, globals(), {}, klass_name)
     instance = klass.Simulation(logger=app.logger)
     return instance
