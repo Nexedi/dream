@@ -367,13 +367,13 @@
 				},
 				"name" : {
 					"type" : "string"
-				},
-				"required" : [
-					"_class",
-					"source",
-					"destination"
-				]
+				}
 			},
+			"required" : [
+				"_class",
+				"source",
+				"destination"
+			],
 			"type" : "object"
 		},
 		"node" : {
