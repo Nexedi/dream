@@ -85,12 +85,17 @@ def createObjectResourcesAndCoreObjects():
     list of object with ID = id
     XXX slow implementation
     '''
-    def getSuccessorList(node_id, predicate=lambda source, destination, edge_data: True):
+    def getSuccessorList(node_id, predicate=lambda source, destination, edge_class, edge_data: True):
       successor_list = []                           # dummy variable that holds the list to be returned
-      for source, destination, edge_data in edges.values(): # for all the values in the dictionary edges
-        if source == node_id:                               # for the node_id argument
-          if predicate(source, destination, edge_data):     # find its 'destinations' and 
-            successor_list.append(destination)              # append it to the successor list
+      
+      for edge in edges.values():
+          source = edge["source"]
+          destination = edge["destination"]
+          edge_class = edge["_class"]
+          edge_data = edge.get("data", {})
+          if source == node_id:                               # for the node_id argument
+              if predicate(source, destination, edge_class, edge_data):     # find its 'destinations' and 
+                successor_list.append(destination)              # append it to the successor list
       # XXX We should probably not need to sort, but there is a bug that
       # prevents Topology10 to work if this sort is not used.
       successor_list.sort()
@@ -215,9 +220,9 @@ def createObjectResourcesAndCoreObjects():
             coreObject.nextIds=getSuccessorList(element['id'])           
             # (Below is only for Dismantle for now)
             # get the successorList for the 'Parts'
-            coreObject.nextPartIds=getSuccessorList(element['id'], lambda source, destination, edge_data: edge_data.get('entity') == 'Part')
+            coreObject.nextPartIds=getSuccessorList(element['id'], lambda source, destination, edge_class, edge_data: edge_data.get('entity',{}) == 'Part')
             # get the successorList for the 'Frames'
-            coreObject.nextFrameIds=getSuccessorList(element['id'], lambda source, destination, edge_data: edge_data.get('entity') == 'Frame')
+            coreObject.nextFrameIds=getSuccessorList(element['id'], lambda source, destination, edge_class, edge_data: edge_data.get('entity',{}) == 'Frame')
             
     #                    loop through all the core objects    
     #                         to read predecessors
