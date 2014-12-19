@@ -1,5 +1,5 @@
 /*global rJS, RSVP, jQuery, Handlebars,
-  promiseEventListener, initGadgetMixin*/
+  promiseEventListener, initGadgetMixin, console */
 /*jslint nomen: true */
 (function (window, rJS, RSVP, Handlebars, initGadgetMixin) {
   "use strict";
@@ -55,6 +55,7 @@
                 delete property_definition.allOf[0].type;
               }
               return gadget.declareGadget("../expandable_field/index.html");
+            }
             if (property_definition.type === "object") {
               // Create a recursive fieldset for this key.
               return gadget.declareGadget("../fieldset/index.html");
@@ -89,46 +90,42 @@
           if (node_id) {
             addField('id', {'type': 'string'}, node_id);
           }
-          Object.keys(options.property_definition.properties
-            ).forEach(function (property_name) {
-            var property_definition =
-              options.property_definition.properties[property_name],
-              value = property_definition.default,
-              i=0, property;
-            // XXX some properties are not editable
-            if (property_name !== 'coordinate' && property_name !== '_class') {
-              addField(property_name, property_definition, value);
-            if (property_definition.allOf) {
-              if (property_definition.allOf[0].properties) {
-                for (property in property_definition
-                                 .allOf[0].properties) {
-                  if (property_definition.allOf[0].properties
-                                                  .hasOwnProperty(property)) {
-                    i += 1;
-                    if (i > 1) {console.log("something is wrong!");}
-                    value = property_definition.allOf[0]
-                            .properties[property].default;
+          Object.keys(options.property_definition.properties)
+            .forEach(function (property_name) {
+              var property_definition =
+                options.property_definition.properties[property_name],
+                value = property_definition.default,
+                i=0, property;
+              if (property_definition.allOf) {
+                if (property_definition.allOf[0].properties) {
+                  for (property in property_definition
+                                   .allOf[0].properties) {
+                    if (property_definition.allOf[0]
+                       .properties.hasOwnProperty(property)) {
+                      i += 1;
+                      if (i > 1) {console.log("something is wrong!");}
+                      value = property_definition.allOf[0]
+                              .properties[property].default;
+                    }
                   }
                 }
               }
-            }
-            console.log("TRYING TO FIND A VALUE!!!!");
-            console.log(options);
-            console.log(options.value);
-            console.log(property_name);
-            value = (options.value || {})[property_name] === undefined
-                    ? value : options.value[property_name];
-            if (property_name !== 'coordinate'
-             && property_name !== '_class'
-             && property_name !== 'id') {
-              console.log("ADDING FIELD FOR " + property_name + "!!!!!!!");
-              addField(property_name, property_definition, value);
-            }
-          });
+              console.log("TRYING TO FIND A VALUE!!!!");
+              console.log(options);
+              console.log(options.value);
+              console.log(property_name);
+              value = (options.value || {})[property_name] === undefined
+                      ? value : options.value[property_name];
+              if (property_name !== 'coordinate'
+               && property_name !== '_class'
+               && property_name !== 'id') {
+                console.log("ADDING FIELD FOR " + property_name + "!!!!!!!");
+                addField(property_name, property_definition, value);
+              }
+            });
         });
-      return queue;
+        return queue;
     })
-
     // getContent of all subfields
     .declareMethod("getContent", function () {
       console.log("GET CONTENT SIMPLE FIELDSET");

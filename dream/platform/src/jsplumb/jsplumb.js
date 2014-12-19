@@ -596,7 +596,9 @@
       gadget.props.data.class_definition[node_data._class],
       gadget.props.data
     );
-
+    console.log("----schema----");
+    console.log(schema);
+    console.log("----schema----");
     if (node_edit_popup.length !== 0) {
       node_edit_popup.remove();
     }
@@ -606,7 +608,6 @@
     );
     node_edit_popup = $(gadget.props.element).find('#edit-popup');
     console.log("openNODEDIALOG 1.3");
-    console.log("openNODEDIALOG 1.35");
     console.log(node_edit_popup);
     console.log(node_edit_popup.find(".node_class"));
     console.log(gadget.props.data.graph.node);
