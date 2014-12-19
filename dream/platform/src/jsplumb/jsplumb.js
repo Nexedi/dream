@@ -381,30 +381,114 @@
     connection.id = edge_id;
   }
 
+  function resolveReference(ref, schema) {
+                  // 2 here is for #/
+    var i, ref_path = ref.substr(2, ref.length),
+      parts = ref_path.split("/");
+    for (i = 0 ; i < parts.length; i++) {
+      schema = schema[parts[i]];
+    }
+    return schema;
+  }
+
   function expandSchema(class_definition, full_schema) {
     // minimal expanding of json schema, supports merging allOf and $ref
     // references
-    // TODO: check for a library that would provide full support
+    // XXX this should probably be moved to fieldset ( and not handle
+    // class_definition here)
+    // XXX known limitation: we do not expand refs inside oneOf
     var property, referenced, i,
       expanded_class_definition = {properties:
         class_definition.properties || {}};
+    console.log('expandSchema', class_definition);
+
+    // expand direct ref
+    if (class_definition.$ref) {
+      console.log('DI', class_definition.$ref);
+      referenced = expandSchema(resolveReference(class_definition.$ref,
+                                                 full_schema.class_definition),
+                                full_schema);
+      if (referenced.properties) {
+        delete referenced.properties;
+      }
+      $.extend(expanded_class_definition, referenced);
+      console.log("after direct expand", Object.create(referenced));
+    }
+    
+    /*
+    // expand refs inside properties
+    for (property in expanded_class_definition.properties) {
+      if (expanded_class_definition.properties.hasOwnProperty(property)) {
+        referenced = expanded_class_definition.properties[property];
+        if (referenced.$ref) {
+          if (!expanded_class_definition.properties[property]){
+            expanded_class_definition.properties[property] = {};
+          }
+          $.extend(expanded_class_definition.properties[property], expandSchema(
+            resolveReference(referenced.$ref, full_schema.class_definition),
+            full_schema));
+        }
+      }
+    }
+*/
+    if (class_definition.oneOf) {
+      expanded_class_definition.oneOf = [];
+      for (i = 0; i < class_definition.oneOf.length; i += 1) {
+        expanded_class_definition.oneOf.push(
+          expandSchema(class_definition.oneOf[i], full_schema)
+        );
+      }
+    }
     if (class_definition.allOf) {
+      for (i = 0; i < class_definition.allOf.length; i += 1) {
+        referenced = expandSchema(class_definition.allOf[i], full_schema);
+        if (referenced.properties) {
+          $.extend(expanded_class_definition.properties, referenced.properties);
+          delete referenced.properties;
+        }
+        $.extend(expanded_class_definition, referenced);
+      }
+    }
+    if (expanded_class_definition.$ref) {
+      delete expanded_class_definition.$ref;
+    }
+    console.log('R', expanded_class_definition);
+    return Object.create(expanded_class_definition);
+
+    // expand refs directly in allOf
+    if (class_definition.xallOf) {
       for (i = 0; i < class_definition.allOf.length; i += 1) {
         referenced = class_definition.allOf[i];
         if (referenced.$ref) {
-          referenced = expandSchema(
-            full_schema.class_definition[
-                  // 2 here is for #/
-              referenced.$ref.substr(2, referenced.$ref.length)
-            ],
-            full_schema);
+          referenced = Object.create(referenced);
+          $.extend(referenced, expandSchema(
+            resolveReference(referenced.$ref, full_schema.class_definition),
+            full_schema));
         }
         if (referenced.properties) {
           for (property in referenced.properties) {
             if (referenced.properties.hasOwnProperty(property)) {
+              //console.log('property2', property, referenced.properties[property]);
+              // and in allOf references. XXX I guess this can be merged with
+              // "expand ref inside properties"
+              if (referenced.properties[property].$ref) {
+
+                expanded_class_definition.properties[property] = 
+                 referenced.properties[property];
+
+                $.extend(expanded_class_definition.properties[property],
+                    expandSchema(
+                    resolveReference(referenced.properties[property].$ref,
+                                   full_schema.class_definition),
+                           full_schema));
+              }
+
               if (referenced.properties[property].type) {
-                expanded_class_definition.properties[property]
-                  = referenced.properties[property];
+                if (! expanded_class_definition.properties[property] ) {
+                  expanded_class_definition.properties[property] = {};
+                }
+                $.extend(expanded_class_definition.properties[property],
+                         referenced.properties[property]);
               }
             }
           }
@@ -531,6 +615,7 @@
       gadget.props.data.class_definition[node_data._class],
       gadget.props.data
     );
+    console.log('editing node with', schema);
 
     if (node_edit_popup.length !== 0) {
       node_edit_popup.remove();
