@@ -393,7 +393,7 @@
     connection.id = edge_id;
   }
 
-  function expandSchema(class_definition, full_schema) {
+  /* function expandSchema(class_definition, full_schema) {
     // minimal expanding of json schema, supports merging allOf and $ref
     // references
     // TODO: check for a library that would provide full support
@@ -539,6 +539,125 @@
     // console.log("expandSCHEMA 2");
     // console.log(expanded_class_definition);
     return expanded_class_definition;
+  } */
+
+  function expandOneOf(definition, fullSchema) {
+    var j, len = definition.allOf[1].oneOf.length - 1,
+      def_ref_list, def_ref_word,
+	  def_ref_root, referenced_def;
+    for (j = 0; j <= len; j += 1) {
+      if (definition.allOf[1].oneOf[j].$ref) {
+        def_ref_list = definition.allOf[1].oneOf[j].$ref.split("/");
+        def_ref_word = def_ref_list[def_ref_list.length - 1];
+        def_ref_root = def_ref_list[def_ref_list.length - 2];
+        referenced_def
+          = fullSchema.class_definition
+                      .definitions[def_ref_root][def_ref_word];
+        definition.allOf[1].oneOf[j] = referenced_def;
+      }
+    }
+    return definition;
+  }
+
+  function expandReference(definition, fullSchema) {
+    var  ref_definition_list
+           = definition.$ref.split("/"),
+         ref_definition_word
+           = ref_definition_list[ref_definition_list.length - 1],
+	     ref_definition_root
+           = ref_definition_list[ref_definition_list.length - 2],
+	     ref_definition = fullSchema
+           .class_definition[ref_definition_root][ref_definition_word];
+    console.log("expandingReference");
+    if (ref_definition.allOf) {
+      if (ref_definition.allOf[1].oneOf) {
+        console.log("there is oneOf");
+        ref_definition = expandOneOf(ref_definition, fullSchema);
+      }
+    }
+    definition = ref_definition;
+    console.log("* * *");
+    console.log(definition);
+    return definition;
+  }
+
+  function expandProperties(definition, expanded_class_def, fullSchema) {
+    console.log("expanding properties");
+    var property, temp1, temp2;
+    for (property in definition.properties) {
+      if (definition.properties.hasOwnProperty(property)) {
+        console.log("...");
+        console.log(property);
+        if (definition.properties[property].allOf
+         || definition.properties[property].properties
+         || definition.properties[property].type
+         || definition.properties[property].$ref) {
+          if (definition.properties[property].$ref) {
+            temp1
+              = expandReference(
+                  definition.properties[property], fullSchema
+                );
+            console.log("there is a referenced property # #");
+            expanded_class_def.properties[property]
+              = temp1;
+          } else {
+            if (definition.properties[property].properties) {
+              console.log("there is a property property --> recursive");
+              expanded_class_def.properties[property] = {properties: {}};
+              temp2 = expandProperties(
+                definition.properties[property],
+                expanded_class_def.properties[property],
+                fullSchema
+              );
+              definition.properties[property] = temp2;
+            }
+            expanded_class_def.properties[property]
+              = definition.properties[property];
+          }
+        }
+      }
+    }
+    console.log("- * - * -");
+    console.log(expanded_class_def);
+    return expanded_class_def;
+  }
+
+  function expandSchema(class_definition, full_schema) {
+    // minimal expanding of json schema, supports merging allOf and $ref
+    // references
+    // TODO: check for a library that would provide full support
+    console.log("EXPANDING SCHEMA FOR :");
+    console.log(class_definition);
+    var referenced, i, 
+      expanded_class_definition = {
+        properties: class_definition.properties || {}
+      }, 
+      ref_word_list, ref_word;
+    if (class_definition.allOf) {
+      for (i = 0; i < class_definition.allOf.length; i += 1) {
+        referenced = class_definition.allOf[i];
+        if (referenced.$ref) {
+          ref_word_list = referenced.$ref.split("/");
+          ref_word = ref_word_list[ref_word_list.length - 1];
+          console.log("# there is reference");
+          referenced = expandSchema(
+            full_schema.class_definition[ref_word],
+            full_schema
+          );
+        }
+        if (referenced.properties) {
+          console.log("# there are properties");
+          expanded_class_definition = expandProperties(
+            referenced,
+            expanded_class_definition,
+            full_schema
+          );
+        }
+      }
+    }
+    console.log("EXPANDED SCHEMA FOR : 2");
+    console.log(expanded_class_definition);
+    return expanded_class_definition;
   }
 
   function openEdgeEditionDialog(gadget, connection) {
@@ -655,7 +774,10 @@
     if ( gadget.props.data.class_definition[node_data._class] === undefined ) {
       return;
     }
-
+    console.log("OPEN DIALOG FOR NODE");
+    console.log(gadget.props);
+    console.log(gadget.props.data.class_definition);
+    console.log(node_data);
     schema = expandSchema(
       gadget.props.data.class_definition[node_data._class],
       gadget.props.data
