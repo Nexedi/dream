@@ -485,9 +485,14 @@
 							"$ref" : "#/definitions/_dist",
 							"required" : true
 						},
-						"failures" : {
-							"$ref" : "#/definitions/_failureDist",
-							"required" : true
+						"interruption" : {
+							"type": "object",
+							"properties" : {
+								"failure" : {
+									"$ref" : "#/definitions/_failureDist",
+									"required" : true
+								}
+							}
 						}
 					}
 				}
