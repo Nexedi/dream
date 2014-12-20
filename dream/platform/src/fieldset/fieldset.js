@@ -56,6 +56,10 @@
               }
               return gadget.declareGadget("../expandable_field/index.html");
             }
+            if (property_definition.properties) {
+              // Create a recursive fieldset for this key.
+              return gadget.declareGadget("../fieldset/index.html");
+            }
             if (property_definition.type === "object") {
               // Create a recursive fieldset for this key.
               return gadget.declareGadget("../fieldset/index.html");
@@ -94,22 +98,26 @@
             .forEach(function (property_name) {
               var property_definition =
                 options.property_definition.properties[property_name],
-                value = property_definition.default,
+                value,
                 i=0, property;
-              if (property_definition.allOf) {
-                if (property_definition.allOf[0].properties) {
-                  for (property in property_definition
-                                   .allOf[0].properties) {
-                    if (property_definition.allOf[0]
-                       .properties.hasOwnProperty(property)) {
-                      i += 1;
-                      if (i > 1) {console.log("something is wrong!");}
-                      value = property_definition.allOf[0]
-                              .properties[property].default;
+              if (property_definition) {
+                value = property_definition.default || {};
+                if (property_definition.allOf) {
+                  if (property_definition.allOf[0].properties) {
+                    for (property in property_definition
+                                     .allOf[0].properties) {
+                      if (property_definition.allOf[0]
+                         .properties.hasOwnProperty(property)) {
+                        i += 1;
+                        if (i > 1) {console.log("something is wrong!");}
+                        value = property_definition.allOf[0]
+                                .properties[property].default;
+                      }
                     }
                   }
                 }
               }
+
               console.log("TRYING TO FIND A VALUE!!!!");
               console.log(options);
               console.log(options.value);
