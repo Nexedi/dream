@@ -1,212 +1,222 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {},
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "-1",
-        "numberOfReplications": "1",
-        "trace": "No"
-    },
-    "nodes": {
-        "AB1": {
-            "_class": "Dream.MouldAssemblyBufferManaged",
-            "capacity": -1,
-            "id": "AB1",
-            "isDummy": "0",
-            "name": "Assembly Buffer"
-        },
-        "CB1": {
-            "_class": "Dream.ConditionalBufferManaged",
-            "isDummy": "0",
-            "name": "Conditional Buffer"
-        },
-        "E1": {
-            "_class": "Dream.ExitJobShop",
-            "name": "Exit"
-        },
-        "M0": {
-            "_class": "Dream.MachineJobShop",
-            "name": "Design"
-        },
-        "M1": {
-            "_class": "Dream.MachineJobShop",
-            "name": "Machine1"
-        },
-        "MA1": {
-            "_class": "Dream.MouldAssemblyManaged",
-            "id": "MA1",
-            "name": "Assembly"
-        },
-        "OD0": {
-            "_class": "Dream.OrderDecomposition",
-            "name": "Order Decomposition"
-        },
-        "Q0": {
-            "_class": "Dream.QueueJobShop",
-            "capacity": -1,
-            "isDummy": "0",
-            "name": "StartQueue",
-            "wip": [
-                {
-                    "_class": "Dream.Order",
-                    "componentsList": [
-                        {
-                            "_class": "Dream.OrderComponent",
-                            "componentType": "Secondary",
-                            "id": "C1",
-                            "name": "Component1",
-                            "route": [
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "0"
-                                    },
-                                    "stationIdsList": [
-                                        "OD0"
-                                    ]
-                                },
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "0"
-                                    },
-                                    "stationIdsList": [
-                                        "CB1"
-                                    ]
-                                },
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "2"
-                                    },
-                                    "stationIdsList": [
-                                        "M1"
-                                    ]
-                                },
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "0"
-                                    },
-                                    "stationIdsList": [
-                                        "AB1"
-                                    ]
-                                },
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "0"
-                                    },
-                                    "stationIdsList": [
-                                        "MA1"
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "_class": "Dream.OrderComponent",
-                            "componentType": "Basic",
-                            "id": "C2",
-                            "name": "Component2",
-                            "route": [
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "0"
-                                    },
-                                    "stationIdsList": [
-                                        "OD0"
-                                    ]
-                                },
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "0"
-                                    },
-                                    "stationIdsList": [
-                                        "CB1"
-                                    ]
-                                },
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "1"
-                                    },
-                                    "stationIdsList": [
-                                        "M1"
-                                    ]
-                                },
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "0"
-                                    },
-                                    "stationIdsList": [
-                                        "AB1"
-                                    ]
-                                },
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "0"
-                                    },
-                                    "stationIdsList": [
-                                        "MA1"
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "_class": "Dream.Mould",
-                            "id": "Mo1",
-                            "name": "Mould1",
-                            "route": [
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "1"
-                                    },
-                                    "stationIdsList": [
-                                        "MA1"
-                                    ]
-                                },
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "0"
-                                    },
-                                    "stationIdsList": [
-                                        "E1"
-                                    ]
-                                }
-                            ]
-                        }
-                    ],
-                    "id": "O1",
-                    "name": "Order1",
-                    "route": [
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 0.0
-                            },
-                            "stationIdsList": [
-                                "Q0"
-                            ]
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 1.0
-                            },
-                            "stationIdsList": [
-                                "M0"
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-    }
+     "graph": {
+          "node": {
+               "MA1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MouldAssemblyManaged", 
+                    "id": "MA1", 
+                    "name": "Assembly"
+               }, 
+               "Q0": {
+                    "capacity": -1, 
+                    "name": "StartQueue", 
+                    "isDummy": "0", 
+                    "wip": [
+                         {
+                              "route": [
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 0.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "Q0"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 1.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M0"
+                                        ]
+                                   }
+                              ], 
+                              "componentsList": [
+                                   {
+                                        "componentType": "Secondary", 
+                                        "route": [
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "0"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "OD0"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "0"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "CB1"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "2"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "M1"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "0"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "AB1"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "0"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "MA1"
+                                                  ]
+                                             }
+                                        ], 
+                                        "_class": "Dream.OrderComponent", 
+                                        "id": "C1", 
+                                        "name": "Component1"
+                                   }, 
+                                   {
+                                        "componentType": "Basic", 
+                                        "route": [
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "0"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "OD0"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "0"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "CB1"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "1"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "M1"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "0"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "AB1"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "0"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "MA1"
+                                                  ]
+                                             }
+                                        ], 
+                                        "_class": "Dream.OrderComponent", 
+                                        "id": "C2", 
+                                        "name": "Component2"
+                                   }, 
+                                   {
+                                        "route": [
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "1"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "MA1"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "0"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "E1"
+                                                  ]
+                                             }
+                                        ], 
+                                        "_class": "Dream.Mould", 
+                                        "id": "Mo1", 
+                                        "name": "Mould1"
+                                   }
+                              ], 
+                              "_class": "Dream.Order", 
+                              "id": "O1", 
+                              "name": "Order1"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.QueueJobShop"
+               }, 
+               "OD0": {
+                    "interruptions": {}, 
+                    "_class": "Dream.OrderDecomposition", 
+                    "name": "Order Decomposition"
+               }, 
+               "AB1": {
+                    "capacity": -1, 
+                    "name": "Assembly Buffer", 
+                    "isDummy": "0", 
+                    "interruptions": {}, 
+                    "_class": "Dream.MouldAssemblyBufferManaged", 
+                    "id": "AB1"
+               }, 
+               "CB1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.ConditionalBufferManaged", 
+                    "name": "Conditional Buffer", 
+                    "isDummy": "0"
+               }, 
+               "M1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MachineJobShop", 
+                    "name": "Machine1"
+               }, 
+               "M0": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MachineJobShop", 
+                    "name": "Design"
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.ExitJobShop", 
+                    "name": "Exit"
+               }
+          }, 
+          "edge": {}
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "trace": "No", 
+          "_class": "Dream.Configuration", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "-1", 
+          "numberOfReplications": "1"
+     }
 }

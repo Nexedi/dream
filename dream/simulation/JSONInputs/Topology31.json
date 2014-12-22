@@ -1,113 +1,149 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {
-        "0": [
-            "W1",
-            "M1",
-            {}
-        ],
-        "1": [
-            "W1",
-            "M2",
-            {}
-        ],
-        "2": [
-            "S1",
-            "DummyQ",
-            {}
-        ],
-        "3": [
-            "M1",
-            "Q1",
-            {}
-        ],
-        "4": [
-            "M2",
-            "E1",
-            {}
-        ],
-        "5": [
-            "DummyQ",
-            "M1",
-            {}
-        ],
-        "6": [
-            "Q1",
-            "M2",
-            {}
-        ]
-    },
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "1440",
-        "numberOfReplications": "1",
-        "trace": "No"
-    },
-    "nodes": {
-        "DummyQ": {
-            "_class": "Dream.Queue",
-            "capacity": 1,
-            "id": "DummyQ",
-            "isDummy": "1",
-            "name": "DummyQ"
-        },
-        "E1": {
-            "_class": "Dream.Exit",
-            "id": "E1",
-            "name": "Stock"
-        },
-        "M1": {
-            "_class": "Dream.Machine",
-            "failures": {
-                "MTTF": 60,
-                "MTTR": 5,
-                "distributionType": "Fixed"
-            },
-            "id": "M1",
-            "name": "Machine1",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0.25
-            }
-        },
-        "M2": {
-            "_class": "Dream.Machine",
-            "failures": {
-                "MTTF": 40,
-                "MTTR": 10,
-                "distributionType": "Fixed"
-            },
-            "id": "M2",
-            "name": "Machine2",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 1.5
-            }
-        },
-        "Q1": {
-            "_class": "Dream.Queue",
-            "capacity": 1,
-            "id": "Q1",
-            "isDummy": "0",
-            "name": "Q1"
-        },
-        "S1": {
-            "_class": "Dream.Source",
-            "entity": "Dream.Part",
-            "id": "S1",
-            "interArrivalTime": {
-                "distributionType": "Fixed",
-                "mean": 0.5
-            },
-            "name": "Raw Material"
-        },
-        "W1": {
-            "_class": "Dream.Repairman",
-            "capacity": 1,
-            "left": 0.14893617021276595,
-            "name": "W1",
-            "top": 0.7727272727272727
-        }
-    }
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": 1, 
+                    "name": "Q1", 
+                    "isDummy": "0", 
+                    "interruptions": {}, 
+                    "_class": "Dream.Queue", 
+                    "id": "Q1"
+               }, 
+               "S1": {
+                    "name": "Raw Material", 
+                    "entity": "Dream.Part", 
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "distributionType": "Fixed", 
+                              "mean": 0.5
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Source", 
+                    "id": "S1"
+               }, 
+               "M1": {
+                    "name": "Machine1", 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.25
+                         }
+                    }, 
+                    "interruptions": {
+                         "failure": {
+                              "TTR": {
+                                   "Fixed": {
+                                        "mean": 5
+                                   }
+                              }, 
+                              "TTF": {
+                                   "Fixed": {
+                                        "mean": 60
+                                   }
+                              }
+                         }
+                    }, 
+                    "_class": "Dream.Machine", 
+                    "id": "M1"
+               }, 
+               "W1": {
+                    "capacity": 1, 
+                    "name": "W1", 
+                    "top": 0.7727272727272727, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Repairman", 
+                    "left": 0.14893617021276595
+               }, 
+               "M2": {
+                    "name": "Machine2", 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.5
+                         }
+                    }, 
+                    "interruptions": {
+                         "failure": {
+                              "TTR": {
+                                   "Fixed": {
+                                        "mean": 10
+                                   }
+                              }, 
+                              "TTF": {
+                                   "Fixed": {
+                                        "mean": 40
+                                   }
+                              }
+                         }
+                    }, 
+                    "_class": "Dream.Machine", 
+                    "id": "M2"
+               }, 
+               "DummyQ": {
+                    "capacity": 1, 
+                    "name": "DummyQ", 
+                    "isDummy": "1", 
+                    "interruptions": {}, 
+                    "_class": "Dream.Queue", 
+                    "id": "DummyQ"
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.Exit", 
+                    "id": "E1", 
+                    "name": "Stock"
+               }
+          }, 
+          "edge": {
+               "1": {
+                    "source": "W1", 
+                    "destination": "M2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "0": {
+                    "source": "W1", 
+                    "destination": "M1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "3": {
+                    "source": "M1", 
+                    "destination": "Q1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "2": {
+                    "source": "S1", 
+                    "destination": "DummyQ", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "5": {
+                    "source": "DummyQ", 
+                    "destination": "M1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "4": {
+                    "source": "M2", 
+                    "destination": "E1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "6": {
+                    "source": "Q1", 
+                    "destination": "M2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }
+          }
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "trace": "No", 
+          "_class": "Dream.Configuration", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "1440", 
+          "numberOfReplications": "1"
+     }
 }

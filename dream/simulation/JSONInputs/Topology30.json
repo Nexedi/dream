@@ -1,92 +1,105 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {
-        "0": [
-            "M1",
-            "Q2",
-            {}
-        ],
-        "1": [
-            "M2",
-            "E1",
-            {}
-        ],
-        "2": [
-            "Q1",
-            "M1",
-            {}
-        ],
-        "3": [
-            "Q2",
-            "M2",
-            {}
-        ]
-    },
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "-1",
-        "numberOfReplications": "1",
-        "trace": "No"
-    },
-    "nodes": {
-        "E1": {
-            "_class": "Dream.Exit",
-            "id": "E1",
-            "name": "Stock"
-        },
-        "M1": {
-            "_class": "Dream.Machine",
-            "failures": {},
-            "id": "M1",
-            "name": "Machine1",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0.25
-            }
-        },
-        "M2": {
-            "_class": "Dream.Machine",
-            "failures": {},
-            "id": "M2",
-            "name": "Machine2",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 1.5
-            }
-        },
-        "Q1": {
-            "_class": "Dream.Queue",
-            "capacity": 1,
-            "id": "Q1",
-            "isDummy": "0",
-            "name": "Queue1",
-            "wip": [
-                {
-                    "_class": "Dream.Part",
-                    "id": "P1",
-                    "name": "Part1"
-                },
-                {
-                    "_class": "Dream.Part",
-                    "id": "P2",
-                    "name": "Part2"
-                }
-            ]
-        },
-        "Q2": {
-            "_class": "Dream.Queue",
-            "capacity": 1,
-            "id": "Q2",
-            "isDummy": "0",
-            "name": "Queue2",
-            "wip": [
-                {
-                    "_class": "Dream.Part",
-                    "id": "P3",
-                    "name": "Part3"
-                }
-            ]
-        }
-    }
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": 1, 
+                    "name": "Queue1", 
+                    "isDummy": "0", 
+                    "wip": [
+                         {
+                              "_class": "Dream.Part", 
+                              "id": "P1", 
+                              "name": "Part1"
+                         }, 
+                         {
+                              "_class": "Dream.Part", 
+                              "id": "P2", 
+                              "name": "Part2"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.Queue", 
+                    "id": "Q1"
+               }, 
+               "M1": {
+                    "name": "Machine1", 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.25
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "failures": {}, 
+                    "_class": "Dream.Machine", 
+                    "id": "M1"
+               }, 
+               "Q2": {
+                    "capacity": 1, 
+                    "name": "Queue2", 
+                    "isDummy": "0", 
+                    "wip": [
+                         {
+                              "_class": "Dream.Part", 
+                              "id": "P3", 
+                              "name": "Part3"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.Queue", 
+                    "id": "Q2"
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.Exit", 
+                    "id": "E1", 
+                    "name": "Stock"
+               }, 
+               "M2": {
+                    "name": "Machine2", 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.5
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "failures": {}, 
+                    "_class": "Dream.Machine", 
+                    "id": "M2"
+               }
+          }, 
+          "edge": {
+               "1": {
+                    "source": "M2", 
+                    "destination": "E1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "0": {
+                    "source": "M1", 
+                    "destination": "Q2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "3": {
+                    "source": "Q2", 
+                    "destination": "M2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "2": {
+                    "source": "Q1", 
+                    "destination": "M1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }
+          }
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "trace": "No", 
+          "_class": "Dream.Configuration", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "-1", 
+          "numberOfReplications": "1"
+     }
 }

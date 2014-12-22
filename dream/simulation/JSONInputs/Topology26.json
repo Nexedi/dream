@@ -1,239 +1,233 @@
 {
-    "edges": {},
-    "general": {
-        "confidenceLevel": "0.5",
-        "maxSimTime": "-1",
-        "numberOfReplications": "1",
-        "processTimeout": "0.5",
-        "simulationClass": "Leotech",
-        "trace": "No"
-    },
-    "nodes": {
-        "E1": {
-            "_class": "Dream.ExitJobShop",
-            "name": "E1"
-        },
-        "M1": {
-            "_class": "Dream.MachineJobShop",
-            "failures": {
-                "MTTF": 40,
-                "MTTR": 10,
-                "failureDistribution": "No",
-                "repairman": "None"
-            },
-            "name": "M1",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "max": "1",
-                "mean": 0.9,
-                "min": "0.1",
-                "stdev": "0.1"
-            }
-        },
-        "M2": {
-            "_class": "Dream.MachineJobShop",
-            "failures": {
-                "MTTF": 40,
-                "MTTR": 10,
-                "failureDistribution": "No",
-                "repairman": "None"
-            },
-            "name": "M2",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "max": "1",
-                "mean": 0.9,
-                "min": "0.1",
-                "stdev": "0.1"
-            }
-        },
-        "M3": {
-            "_class": "Dream.MachineJobShop",
-            "failures": {
-                "MTTF": 40,
-                "MTTR": 10,
-                "failureDistribution": "No",
-                "repairman": "None"
-            },
-            "name": "M3",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "max": "1",
-                "mean": 0.9,
-                "min": "0.1",
-                "stdev": "0.1"
-            }
-        },
-        "Q1": {
-            "_class": "Dream.QueueJobShop",
-            "capacity": -1,
-            "isDummy": "0",
-            "name": "Q1",
-            "wip": [
-                {
-                    "_class": "Dream.Job",
-                    "id": "J1",
-                    "name": "Order 1 from X",
-                    "priority": "2",
-                    "route": [
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 0.0
-                            },
-                            "stationIdsList": [
-                                "Q1"
-                            ]
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 10.0
-                            },
-                            "stationIdsList": [
-                                "M1"
-                            ]
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 0.0
-                            },
-                            "stationIdsList": [
-                                "Q3"
-                            ]
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 20.0
-                            },
-                            "stationIdsList": [
-                                "M3"
-                            ]
-                        },
-                        {
-                            "stationIdsList": [
-                                "E1"
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        "Q2": {
-            "_class": "Dream.QueueJobShop",
-            "capacity": -1,
-            "isDummy": "0",
-            "name": "Q2",
-            "wip": [
-                {
-                    "_class": "Dream.Job",
-                    "id": "J2",
-                    "name": "Order 2 from Y",
-                    "priority": "1",
-                    "route": [
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 0.0
-                            },
-                            "stationIdsList": [
-                                "Q2"
-                            ]
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 20.0
-                            },
-                            "stationIdsList": [
-                                "M2"
-                            ]
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 0.0
-                            },
-                            "stationIdsList": [
-                                "Q1"
-                            ]
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 34.0
-                            },
-                            "stationIdsList": [
-                                "M1"
-                            ]
-                        },
-                        {
-                            "stationIdsList": [
-                                "E1"
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        "Q3": {
-            "_class": "Dream.QueueJobShop",
-            "capacity": -1,
-            "isDummy": "0",
-            "name": "Q3",
-            "wip": [
-                {
-                    "_class": "Dream.Job",
-                    "id": "J3",
-                    "name": "Order 3 from Z",
-                    "priority": "3",
-                    "route": [
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 0.0
-                            },
-                            "stationIdsList": [
-                                "Q3"
-                            ]
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 30.0
-                            },
-                            "stationIdsList": [
-                                "M3"
-                            ]
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 0.0
-                            },
-                            "stationIdsList": [
-                                "Q1"
-                            ]
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 20.0
-                            },
-                            "stationIdsList": [
-                                "M1"
-                            ]
-                        },
-                        {
-                            "stationIdsList": [
-                                "E1"
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-    }
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": -1, 
+                    "name": "Q1", 
+                    "isDummy": "0", 
+                    "wip": [
+                         {
+                              "priority": "2", 
+                              "route": [
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 0.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 10.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M1"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 0.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 20.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M3"
+                                        ]
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ], 
+                              "_class": "Dream.Job", 
+                              "id": "J1", 
+                              "name": "Order 1 from X"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.QueueJobShop"
+               }, 
+               "Q3": {
+                    "capacity": -1, 
+                    "name": "Q3", 
+                    "isDummy": "0", 
+                    "wip": [
+                         {
+                              "priority": "3", 
+                              "route": [
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 0.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 30.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M3"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 0.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 20.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M1"
+                                        ]
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ], 
+                              "_class": "Dream.Job", 
+                              "id": "J3", 
+                              "name": "Order 3 from Z"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.QueueJobShop"
+               }, 
+               "Q2": {
+                    "capacity": -1, 
+                    "name": "Q2", 
+                    "isDummy": "0", 
+                    "wip": [
+                         {
+                              "priority": "1", 
+                              "route": [
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 0.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 20.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M2"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 0.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 34.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M1"
+                                        ]
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ], 
+                              "_class": "Dream.Job", 
+                              "id": "J2", 
+                              "name": "Order 2 from Y"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.QueueJobShop"
+               }, 
+               "M1": {
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.9, 
+                              "max": "1", 
+                              "min": "0.1", 
+                              "stdev": "0.1"
+                         }
+                    }, 
+                    "_class": "Dream.MachineJobShop", 
+                    "name": "M1", 
+                    "interruptions": {}
+               }, 
+               "M3": {
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.9, 
+                              "max": "1", 
+                              "min": "0.1", 
+                              "stdev": "0.1"
+                         }
+                    }, 
+                    "_class": "Dream.MachineJobShop", 
+                    "name": "M3", 
+                    "interruptions": {}
+               }, 
+               "M2": {
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.9, 
+                              "max": "1", 
+                              "min": "0.1", 
+                              "stdev": "0.1"
+                         }
+                    }, 
+                    "_class": "Dream.MachineJobShop", 
+                    "name": "M2", 
+                    "interruptions": {}
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.ExitJobShop", 
+                    "name": "E1"
+               }
+          }, 
+          "edge": {}
+     }, 
+     "general": {
+          "numberOfReplications": "1", 
+          "trace": "No", 
+          "processTimeout": "0.5", 
+          "simulationClass": "Leotech", 
+          "confidenceLevel": "0.5", 
+          "maxSimTime": "-1"
+     }
 }

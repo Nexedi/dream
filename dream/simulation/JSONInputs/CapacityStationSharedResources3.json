@@ -1,131 +1,145 @@
 {
-     "nodes": {
-          "CSC": {
-               "dueDateThreshold": 7, 
-               "name": "CSC", 
-               "prioritizeIfCanFinish": 1, 
-               "interval": "1", 
-               "start": "0", 
-               "_class": "dream.simulation.applications.CapacityStations.CapacityStationController.CapacityStationController"
-          }, 
-          "CB2": {
-               "requireFullProject": 1, 
-               "_class": "dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer", 
-               "name": "ASBTSTBuffer", 
-               "wip": [
-                    {
-                         "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity", 
-                         "requiredCapacity": 50, 
-                         "capacityProjectId": "P2", 
-                         "name": "P2_ASBTST_50"
-                    }
-               ]
-          }, 
-          "CB1": {
-               "_class": "dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer", 
-               "name": "PPASBBuffer", 
-               "wip": [
-                    {
-                         "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity", 
-                         "requiredCapacity": 50, 
-                         "capacityProjectId": "P1", 
-                         "name": "P1_ASBTST_50"
-                    }
-               ]
-          }, 
-          "CE2": {
-               "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit", 
-               "name": "ASBTSTExit"
-          }, 
-          "CE1": {
-               "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit", 
-               "name": "PPASBExit", 
-               "nextCapacityStationBufferId": "CB2"
-          }, 
-          "QD": {
-               "wip": [
-                    {
-                         "dueDate": 10, 
-                         "capacityRequirementDict": {
-                              "CS1": 50, 
-                              "CS2": 100
+     "graph": {
+          "node": {
+               "CSC": {
+                    "dueDateThreshold": 7, 
+                    "name": "CSC", 
+                    "prioritizeIfCanFinish": 1, 
+                    "interval": "1", 
+                    "start": "0", 
+                    "interruptions": {}, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationController.CapacityStationController"
+               }, 
+               "CB2": {
+                    "wip": [
+                         {
+                              "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity", 
+                              "capacityProjectId": "P2", 
+                              "name": "P2_ASBTST_50", 
+                              "requiredCapacity": 50
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "requireFullProject": 1, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer", 
+                    "name": "ASBTSTBuffer"
+               }, 
+               "CB1": {
+                    "interruptions": {}, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer", 
+                    "name": "PPASBBuffer", 
+                    "wip": [
+                         {
+                              "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity", 
+                              "capacityProjectId": "P1", 
+                              "name": "P1_ASBTST_50", 
+                              "requiredCapacity": 50
+                         }
+                    ]
+               }, 
+               "QD": {
+                    "capacity": "-1", 
+                    "name": "DUMMY", 
+                    "wip": [
+                         {
+                              "capacityRequirementDict": {
+                                   "CS1": 50, 
+                                   "CS2": 100
+                              }, 
+                              "_class": "dream.simulation.applications.CapacityStations.CapacityProject.CapacityProject", 
+                              "dueDate": 10, 
+                              "name": "P1", 
+                              "id": "P1"
                          }, 
-                         "_class": "dream.simulation.applications.CapacityStations.CapacityProject.CapacityProject", 
-                         "id": "P1", 
-                         "name": "P1"
+                         {
+                              "capacityRequirementDict": {
+                                   "CS2": 50
+                              }, 
+                              "_class": "dream.simulation.applications.CapacityStations.CapacityProject.CapacityProject", 
+                              "dueDate": 10, 
+                              "name": "P2", 
+                              "id": "P2"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.Queue", 
+                    "id": "QD"
+               }, 
+               "CE1": {
+                    "interruptions": {}, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit", 
+                    "name": "PPASBExit", 
+                    "nextCapacityStationBufferId": "CB2"
+               }, 
+               "CS2": {
+                    "interruptions": {}, 
+                    "sharedResources": {
+                         "stationIds": [
+                              "CS1"
+                         ], 
+                         "priority": 2
                     }, 
-                    {
-                         "dueDate": 10, 
-                         "capacityRequirementDict": {
-                              "CS2": 50
-                         }, 
-                         "_class": "dream.simulation.applications.CapacityStations.CapacityProject.CapacityProject", 
-                         "id": "P2", 
-                         "name": "P2"
-                    }
-               ], 
-               "_class": "Dream.Queue", 
-               "capacity": "-1", 
-               "id": "QD", 
-               "name": "DUMMY"
-          }, 
-          "CS1": {
-               "sharedResources": {
-                    "stationIds": [
-                         "CS2"
-                    ], 
-                    "priority": 1
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
+                    "name": "ASBTST", 
+                    "intervalCapacity": [
+                         80, 
+                         50, 
+                         300, 
+                         100, 
+                         200, 
+                         300
+                    ]
                }, 
-               "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
-               "name": "PPASB"
-          }, 
-          "CS2": {
-               "sharedResources": {
-                    "stationIds": [
-                         "CS1"
-                    ], 
-                    "priority": 2
+               "CS1": {
+                    "sharedResources": {
+                         "stationIds": [
+                              "CS2"
+                         ], 
+                         "priority": 1
+                    }, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
+                    "name": "PPASB", 
+                    "interruptions": {}
                }, 
-               "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
-               "name": "ASBTST", 
-               "intervalCapacity": [
-                    80, 
-                    50, 
-                    300, 
-                    100, 
-                    200, 
-                    300
-               ]
+               "CE2": {
+                    "interruptions": {}, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit", 
+                    "name": "ASBTSTExit"
+               }
+          }, 
+          "edge": {
+               "1": {
+                    "source": "CS1", 
+                    "destination": "CE1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "0": {
+                    "source": "CB1", 
+                    "destination": "CS1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "3": {
+                    "source": "CS2", 
+                    "destination": "CE2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "2": {
+                    "source": "CB2", 
+                    "destination": "CS2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }
           }
      }, 
      "_class": "Dream.Simulation", 
-     "edges": {
-          "1": [
-               "CS1", 
-               "CE1", 
-               {}
-          ], 
-          "0": [
-               "CB1", 
-               "CS1", 
-               {}
-          ], 
-          "3": [
-               "CS2", 
-               "CE2", 
-               {}
-          ], 
-          "2": [
-               "CB2", 
-               "CS2", 
-               {}
-          ]
-     }, 
      "general": {
-          "trace" : "No", 
+          "maxSimTime": "-1", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }

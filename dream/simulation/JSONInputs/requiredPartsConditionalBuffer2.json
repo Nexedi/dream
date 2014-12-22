@@ -1,411 +1,481 @@
 {
-	"_class" : "Dream.Simulation",
-	"edges" : {
-		"0" : [
-			"O1",
-			"OP1", {}
-		],
-		"1" : [
-			"O2",
-			"OP1", {}
-		],
-		"2" : [
-			"OP1",
-			"M1", {}
-		],
-		"3" : [
-			"OP1",
-			"M2", {}
-		],
-		"4" : [
-			"OP1",
-			"M3", {}
-		]
-	},
-	"general" : {
-		"_class" : "Dream.Configuration",
-		"confidenceLevel" : "0.95",
-		"maxSimTime" : "-1",
-		"numberOfReplications" : "1",
-		"trace" : "No",
-		"console" : "No"
-	},
-	"nodes" : {
-		"E1" : {
-			"_class" : "Dream.ExitJobShop",
-			"name" : "Exit"
-		},
-		"M1" : {
-			"_class" : "Dream.MachineJobShop",
-			"name" : "Machine1",
-			"operationType" : "Load"
-		},
-		"M2" : {
-			"_class" : "Dream.MachineJobShop",
-			"name" : "Machine2",
-			"operationType" : "Load"
-		},
-		"M3" : {
-			"_class" : "Dream.MachineJobShop",
-			"name" : "Machine3",
-			"operationType" : "Load"
-		},
-		"O1" : {
-			"_class" : "Dream.Operator",
-			"capacity" : 1,
-			"name" : "Operator1"
-		},
-		"O2" : {
-			"_class" : "Dream.Operator",
-			"capacity" : 1,
-			"name" : "Operator2"
-		},
-		"OP1" : {
-			"_class" : "Dream.OperatorPool",
-			"capacity" : 2,
-			"name" : "Operator Pool 1"
-		},
-		"Q1" : {
-			"_class" : "Dream.ConditionalBuffer",
-			"capacity" : -1,
-			"isDummy" : "0",
-			"name" : "Queue1",
-			"schedulingRule":"NumStages",
-			"wip" : [{
-					"_class" : "Dream.Job",
-					"id" : "J1",
-					"name" : "Job1",
-					"route" : [{
-							"sequence" : 1,
-							"stationIdsList" : [
-								"Q1"
-							]
-						}, {
-							"sequence" : 1,
-							"requiredParts" : [],
-							"processingTime" : {
-								"distributionType" : "Fixed",
-								"mean" : 1.0,
-								"operationType" : 1
-							},
-							"stationIdsList" : [
-								"M1"
-							]
-						}, {
-							"sequence" : 2,
-							"stationIdsList" : [
-								"Q3"
-							]
-						}, {
-							"sequence" : 2,
-							"requiredParts" : [],
-							"processingTime" : {
-								"distributionType" : "Fixed",
-								"mean" : 3.0,
-								"operationType" : 0
-							},
-							"stationIdsList" : [
-								"M3"
-							]
-						}, {
-							"sequence" : 7,
-							"stationIdsList" : [
-								"Q2"
-							]
-						}, {
-							"sequence" : 7,
-							"requiredParts" : [
-								"J2", "J3", "J4", "J5", "J6"
-							],
-							"processingTime" : {
-								"distributionType" : "Fixed",
-								"mean" : 2.0,
-								"operationType" : 1
-							},
-							"stationIdsList" : [
-								"M2"
-							]
-						}, {
-							"stationIdsList" : [
-								"E1"
-							]
-						}
-					]
-				}, {
-					"_class" : "Dream.Job",
-					"id" : "J2",
-					"name" : "Job2",
-					"route" : [{
-							"sequence" : 2,
-							"stationIdsList" : [
-								"Q1"
-							]
-						}, {
-							"sequence" : 2,
-							"requiredParts" : [],
-							"processingTime" : {
-								"distributionType" : "Fixed",
-								"mean" : 1.0,
-								"operationType" : 1
-							},
-							"stationIdsList" : [
-								"M1"
-							]
-						}, {
-							"sequence" : 3,
-							"stationIdsList" : [
-								"Q3"
-							]
-						}, {
-							"sequence" : 3,
-							"requiredParts" : [],
-							"processingTime" : {
-								"distributionType" : "Fixed",
-								"mean" : 3.0,
-								"operationType" : 0
-							},
-							"stationIdsList" : [
-								"M3"
-							]
-						}, {
-							"sequence" : 4,
-							"stationIdsList" : [
-								"Q2"
-							]
-						}, {
-							"sequence" : 4,
-							"requiredParts" : [],
-							"processingTime" : {
-								"distributionType" : "Fixed",
-								"mean" : 2.0,
-								"operationType" : 1
-							},
-							"stationIdsList" : [
-								"M2"
-							]
-						}, {
-							"stationIdsList" : [
-								"E1"
-							]
-						}
-					]
-				}, {
-					"_class" : "Dream.Job",
-					"id" : "J3",
-					"name" : "Job3",
-					"route" : [{
-							"sequence" : 1,
-							"stationIdsList" : [
-								"Q1"
-							]
-						}, {
-							"sequence" : 1,
-							"requiredParts" : [],
-							"processingTime" : {
-								"distributionType" : "Fixed",
-								"mean" : 1.0,
-								"operationType" : 1
-							},
-							"stationIdsList" : [
-								"M1"
-							]
-						}, {
-							"sequence" : 3,
-							"stationIdsList" : [
-								"Q3"
-							]
-						}, {
-							"sequence" : 3,
-							"requiredParts" : [],
-							"processingTime" : {
-								"distributionType" : "Fixed",
-								"mean" : 3.0,
-								"operationType" : 0
-							},
-							"stationIdsList" : [
-								"M3"
-							]
-						}, {
-							"sequence" : 5,
-							"stationIdsList" : [
-								"Q2"
-							]
-						}, {
-							"sequence" : 5,
-							"requiredParts" : [],
-							"processingTime" : {
-								"distributionType" : "Fixed",
-								"mean" : 2.0,
-								"operationType" : 1
-							},
-							"stationIdsList" : [
-								"M2"
-							]
-						}, {
-							"stationIdsList" : [
-								"E1"
-							]
-						}
-					]
-				}, {
-					"_class" : "Dream.Job",
-					"id" : "J4",
-					"name" : "Job4",
-					"route" : [{
-							"sequence" : 1,
-							"stationIdsList" : [
-								"Q1"
-							]
-						}, {
-							"sequence" : 1,
-							"requiredParts" : [],
-							"processingTime" : {
-								"distributionType" : "Fixed",
-								"mean" : 1.0,
-								"operationType" : 1
-							},
-							"stationIdsList" : [
-								"M1"
-							]
-						}, {
-							"sequence" : 4,
-							"stationIdsList" : [
-								"Q2"
-							]
-						}, {
-							"sequence" : 4,
-							"requiredParts" : [],
-							"processingTime" : {
-								"distributionType" : "Fixed",
-								"mean" : 2.0,
-								"operationType" : 1
-							},
-							"stationIdsList" : [
-								"M2"
-							]
-						}, {
-							"stationIdsList" : [
-								"E1"
-							]
-						}
-					]
-				}, {
-					"_class" : "Dream.Job",
-					"id" : "J5",
-					"name" : "Job5",
-					"route" : [{
-							"sequence" : 1,
-							"stationIdsList" : [
-								"Q1"
-							]
-						}, {
-							"sequence" : 1,
-							"requiredParts" : [],
-							"processingTime" : {
-								"distributionType" : "Fixed",
-								"mean" : 1.0,
-								"operationType" : 1
-							},
-							"stationIdsList" : [
-								"M1"
-							]
-						}, {
-							"sequence" : 9,
-							"stationIdsList" : [
-								"Q3"
-							]
-						}, {
-							"sequence" : 9,
-							"requiredParts" : [],
-							"processingTime" : {
-								"distributionType" : "Fixed",
-								"mean" : 2.0,
-								"operationType" : 1
-							},
-							"stationIdsList" : [
-								"M3"
-							]
-						}, {
-							"stationIdsList" : [
-								"E1"
-							]
-						}
-					]
-				}, {
-					"_class" : "Dream.Job",
-					"id" : "J6",
-					"name" : "Job6",
-					"route" : [{
-							"sequence" : 1,
-							"stationIdsList" : [
-								"Q1"
-							]
-						}, {
-							"sequence" : 1,
-							"requiredParts" : [],
-							"processingTime" : {
-								"distributionType" : "Fixed",
-								"mean" : 1.0,
-								"operationType" : 1
-							},
-							"stationIdsList" : [
-								"M1"
-							]
-						}, {
-							"sequence" : 3,
-							"stationIdsList" : [
-								"Q3"
-							]
-						}, {
-							"sequence" : 3,
-							"requiredParts" : [],
-							"processingTime" : {
-								"distributionType" : "Fixed",
-								"mean" : 1.0,
-								"operationType" : 0
-							},
-							"stationIdsList" : [
-								"M3"
-							]
-						}, {
-							"sequence" : 10,
-							"stationIdsList" : [
-								"Q2"
-							]
-						}, {
-							"sequence" : 10,
-							"requiredParts" : [],
-							"processingTime" : {
-								"distributionType" : "Fixed",
-								"mean" : 1.0,
-								"operationType" : 1
-							},
-							"stationIdsList" : [
-								"M2"
-							]
-						}, {
-							"stationIdsList" : [
-								"E1"
-							]
-						}
-					]
-				}
-			]
-		},
-		"Q2" : {
-			"_class" : "Dream.ConditionalBuffer",
-			"capacity" : -1,
-			"id" : "Q2",
-			"isDummy" : "0",
-			"name" : "Queue2",
-			"schedulingRule":"RPC"
-		},
-		"Q3" : {
-			"_class" : "Dream.ConditionalBuffer",
-			"capacity" : -1,
-			"isDummy" : "0",
-			"name" : "Queue3",
-			"schedulingRule":"LPT"
-		}
-	}
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": -1, 
+                    "name": "Queue1", 
+                    "isDummy": "0", 
+                    "wip": [
+                         {
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ], 
+                                        "sequence": 1
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "operationType": 1, 
+                                             "distributionType": "Fixed", 
+                                             "mean": 1.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M1"
+                                        ], 
+                                        "requiredParts": [], 
+                                        "sequence": 1
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ], 
+                                        "sequence": 2
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "operationType": 0, 
+                                             "distributionType": "Fixed", 
+                                             "mean": 3.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M3"
+                                        ], 
+                                        "requiredParts": [], 
+                                        "sequence": 2
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ], 
+                                        "sequence": 7
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "operationType": 1, 
+                                             "distributionType": "Fixed", 
+                                             "mean": 2.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M2"
+                                        ], 
+                                        "requiredParts": [
+                                             "J2", 
+                                             "J3", 
+                                             "J4", 
+                                             "J5", 
+                                             "J6"
+                                        ], 
+                                        "sequence": 7
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ], 
+                              "_class": "Dream.Job", 
+                              "id": "J1", 
+                              "name": "Job1"
+                         }, 
+                         {
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ], 
+                                        "sequence": 2
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "operationType": 1, 
+                                             "distributionType": "Fixed", 
+                                             "mean": 1.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M1"
+                                        ], 
+                                        "requiredParts": [], 
+                                        "sequence": 2
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ], 
+                                        "sequence": 3
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "operationType": 0, 
+                                             "distributionType": "Fixed", 
+                                             "mean": 3.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M3"
+                                        ], 
+                                        "requiredParts": [], 
+                                        "sequence": 3
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ], 
+                                        "sequence": 4
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "operationType": 1, 
+                                             "distributionType": "Fixed", 
+                                             "mean": 2.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M2"
+                                        ], 
+                                        "requiredParts": [], 
+                                        "sequence": 4
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ], 
+                              "_class": "Dream.Job", 
+                              "id": "J2", 
+                              "name": "Job2"
+                         }, 
+                         {
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ], 
+                                        "sequence": 1
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "operationType": 1, 
+                                             "distributionType": "Fixed", 
+                                             "mean": 1.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M1"
+                                        ], 
+                                        "requiredParts": [], 
+                                        "sequence": 1
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ], 
+                                        "sequence": 3
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "operationType": 0, 
+                                             "distributionType": "Fixed", 
+                                             "mean": 3.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M3"
+                                        ], 
+                                        "requiredParts": [], 
+                                        "sequence": 3
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ], 
+                                        "sequence": 5
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "operationType": 1, 
+                                             "distributionType": "Fixed", 
+                                             "mean": 2.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M2"
+                                        ], 
+                                        "requiredParts": [], 
+                                        "sequence": 5
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ], 
+                              "_class": "Dream.Job", 
+                              "id": "J3", 
+                              "name": "Job3"
+                         }, 
+                         {
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ], 
+                                        "sequence": 1
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "operationType": 1, 
+                                             "distributionType": "Fixed", 
+                                             "mean": 1.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M1"
+                                        ], 
+                                        "requiredParts": [], 
+                                        "sequence": 1
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ], 
+                                        "sequence": 4
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "operationType": 1, 
+                                             "distributionType": "Fixed", 
+                                             "mean": 2.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M2"
+                                        ], 
+                                        "requiredParts": [], 
+                                        "sequence": 4
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ], 
+                              "_class": "Dream.Job", 
+                              "id": "J4", 
+                              "name": "Job4"
+                         }, 
+                         {
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ], 
+                                        "sequence": 1
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "operationType": 1, 
+                                             "distributionType": "Fixed", 
+                                             "mean": 1.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M1"
+                                        ], 
+                                        "requiredParts": [], 
+                                        "sequence": 1
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ], 
+                                        "sequence": 9
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "operationType": 1, 
+                                             "distributionType": "Fixed", 
+                                             "mean": 2.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M3"
+                                        ], 
+                                        "requiredParts": [], 
+                                        "sequence": 9
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ], 
+                              "_class": "Dream.Job", 
+                              "id": "J5", 
+                              "name": "Job5"
+                         }, 
+                         {
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ], 
+                                        "sequence": 1
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "operationType": 1, 
+                                             "distributionType": "Fixed", 
+                                             "mean": 1.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M1"
+                                        ], 
+                                        "requiredParts": [], 
+                                        "sequence": 1
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ], 
+                                        "sequence": 3
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "operationType": 0, 
+                                             "distributionType": "Fixed", 
+                                             "mean": 1.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M3"
+                                        ], 
+                                        "requiredParts": [], 
+                                        "sequence": 3
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ], 
+                                        "sequence": 10
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "operationType": 1, 
+                                             "distributionType": "Fixed", 
+                                             "mean": 1.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M2"
+                                        ], 
+                                        "requiredParts": [], 
+                                        "sequence": 10
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ], 
+                              "_class": "Dream.Job", 
+                              "id": "J6", 
+                              "name": "Job6"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.ConditionalBuffer", 
+                    "schedulingRule": "NumStages"
+               }, 
+               "Q3": {
+                    "capacity": -1, 
+                    "name": "Queue3", 
+                    "isDummy": "0", 
+                    "interruptions": {}, 
+                    "_class": "Dream.ConditionalBuffer", 
+                    "schedulingRule": "LPT"
+               }, 
+               "Q2": {
+                    "capacity": -1, 
+                    "name": "Queue2", 
+                    "isDummy": "0", 
+                    "interruptions": {}, 
+                    "_class": "Dream.ConditionalBuffer", 
+                    "id": "Q2", 
+                    "schedulingRule": "RPC"
+               }, 
+               "OP1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.OperatorPool", 
+                    "capacity": 2, 
+                    "name": "Operator Pool 1"
+               }, 
+               "M1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MachineJobShop", 
+                    "name": "Machine1", 
+                    "operationType": "Load"
+               }, 
+               "M3": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MachineJobShop", 
+                    "name": "Machine3", 
+                    "operationType": "Load"
+               }, 
+               "M2": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MachineJobShop", 
+                    "name": "Machine2", 
+                    "operationType": "Load"
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.ExitJobShop", 
+                    "name": "Exit"
+               }, 
+               "O2": {
+                    "interruptions": {}, 
+                    "_class": "Dream.Operator", 
+                    "capacity": 1, 
+                    "name": "Operator2"
+               }, 
+               "O1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.Operator", 
+                    "capacity": 1, 
+                    "name": "Operator1"
+               }
+          }, 
+          "edge": {
+               "1": {
+                    "source": "O2", 
+                    "destination": "OP1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "0": {
+                    "source": "O1", 
+                    "destination": "OP1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "3": {
+                    "source": "OP1", 
+                    "destination": "M2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "2": {
+                    "source": "OP1", 
+                    "destination": "M1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "4": {
+                    "source": "OP1", 
+                    "destination": "M3", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }
+          }
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "console": "No", 
+          "numberOfReplications": "1", 
+          "trace": "No", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "-1", 
+          "_class": "Dream.Configuration"
+     }
 }

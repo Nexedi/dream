@@ -1,95 +1,112 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {
-        "0": [
-            "S1",
-            "DummyQ",
-            {}
-        ],
-        "1": [
-            "M1",
-            "Q1",
-            {}
-        ],
-        "2": [
-            "M2",
-            "E1",
-            {}
-        ],
-        "3": [
-            "DummyQ",
-            "M1",
-            {}
-        ],
-        "4": [
-            "Q1",
-            "M2",
-            {}
-        ]
-    },
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "1440.0",
-        "numberOfReplications": "1",
-        "trace": "No"
-    },
-    "nodes": {
-        "DummyQ": {
-            "_class": "Dream.Queue",
-            "capacity": 1,
-            "id": "DummyQ",
-            "isDummy": "1",
-            "name": "DummyQ"
-        },
-        "E1": {
-            "_class": "Dream.Exit",
-            "id": "E1",
-            "name": "Stock"
-        },
-        "M1": {
-            "_class": "Dream.BatchScrapMachine",
-            "id": "M1",
-            "name": "Machine1",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0.25
-            },
-            "scrapQuantity": {
-                "distributionType": "Fixed",
-                "mean": "2"
-            }
-        },
-        "M2": {
-            "_class": "Dream.BatchScrapMachine",
-            "id": "M2",
-            "name": "Machine2",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 1.0
-            },
-            "scrapQuantity": {
-                "distributionType": "Fixed",
-                "mean": "2"
-            }
-        },
-        "Q1": {
-            "_class": "Dream.Queue",
-            "capacity": 1,
-            "id": "Q1",
-            "isDummy": "0",
-            "name": "Q1"
-        },
-        "S1": {
-            "_class": "Dream.BatchSource",
-            "batchNumberOfUnits": 100,
-            "entity": "Dream.Batch",
-            "id": "S1",
-            "interArrivalTime": {
-                "distributionType": "Fixed",
-                "mean": 30.0
-            },
-            "name": "Raw Material"
-        }
-    }
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": 1, 
+                    "name": "Q1", 
+                    "isDummy": "0", 
+                    "interruptions": {}, 
+                    "_class": "Dream.Queue", 
+                    "id": "Q1"
+               }, 
+               "S1": {
+                    "name": "Raw Material", 
+                    "entity": "Dream.Batch", 
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "distributionType": "Fixed", 
+                              "mean": 30.0
+                         }
+                    }, 
+                    "batchNumberOfUnits": 100, 
+                    "interruptions": {}, 
+                    "_class": "Dream.BatchSource", 
+                    "id": "S1"
+               }, 
+               "M1": {
+                    "name": "Machine1", 
+                    "scrapQuantity": {
+                         "distributionType": "Fixed", 
+                         "mean": "2"
+                    }, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.25
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.BatchScrapMachine", 
+                    "id": "M1"
+               }, 
+               "M2": {
+                    "name": "Machine2", 
+                    "scrapQuantity": {
+                         "distributionType": "Fixed", 
+                         "mean": "2"
+                    }, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.0
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.BatchScrapMachine", 
+                    "id": "M2"
+               }, 
+               "DummyQ": {
+                    "capacity": 1, 
+                    "name": "DummyQ", 
+                    "isDummy": "1", 
+                    "interruptions": {}, 
+                    "_class": "Dream.Queue", 
+                    "id": "DummyQ"
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.Exit", 
+                    "id": "E1", 
+                    "name": "Stock"
+               }
+          }, 
+          "edge": {
+               "1": {
+                    "source": "M1", 
+                    "destination": "Q1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "0": {
+                    "source": "S1", 
+                    "destination": "DummyQ", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "3": {
+                    "source": "DummyQ", 
+                    "destination": "M1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "2": {
+                    "source": "M2", 
+                    "destination": "E1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "4": {
+                    "source": "Q1", 
+                    "destination": "M2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }
+          }
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "trace": "No", 
+          "_class": "Dream.Configuration", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "1440.0", 
+          "numberOfReplications": "1"
+     }
 }

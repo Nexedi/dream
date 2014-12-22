@@ -1,85 +1,93 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {
-        "0": [
-            "Q1",
-            "M1",
-            {}
-        ],
-        "1": [
-            "M1",
-            "BRB",
-            {}
-        ],
-        "2": [
-            "BRB",
-            "E1",
-            {}
-        ]
-    },
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "-1",
-        "numberOfReplications": "1",
-        "trace": "No"
-    },
-    "nodes": {
-        "E1": {
-            "_class": "Dream.Exit",
-            "left": 0.5,
-            "name": "Stock",
-            "top": 0.10215053763440862
-        },
-        "Q1": {
-            "_class": "Dream.Queue",
-            "capacity": 1,
-            "left": 0.4414893617021277,
-            "name": "Q1",
-            "top": 0.40909090909090906,
-            "wip": [
-                {
-                    "_class": "Dream.SubBatch",
-                    "id": "SB2",
-                    "name": "Batch1_SB2",
-                    "numberOfUnits": 30,
-					"parentBatchId":"B1",
-					"parentBatchName":"Batch1"
-                }
-            ]
-        },
-        "M1": {
-            "_class": "Dream.BatchScrapMachine",
-            "failures": {
-                "failureDistribution": "No"
-            },
-            "left": 0.5,
-            "name": "Moulding",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0.1
-            },
-            "wip": [
-                {
-                    "_class": "Dream.SubBatch",
-                    "id": "SB1",
-                    "name": "Batch1_SB1",
-                    "numberOfUnits": 30,
-                    "unitsToProcess": 10,
-					"parentBatchId":"B1",
-					"parentBatchName":"Batch1"
-                }
-            ],
-            "top": 0.5
-        },
-        "BRB": {
-            "name": "Reassembly",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0
-            },
-            "numberOfSubBatches": 2,
-            "_class": "Dream.BatchReassembly"
-        }
-    }
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": 1, 
+                    "name": "Q1", 
+                    "top": 0.40909090909090906, 
+                    "wip": [
+                         {
+                              "name": "Batch1_SB2", 
+                              "parentBatchName": "Batch1", 
+                              "numberOfUnits": 30, 
+                              "parentBatchId": "B1", 
+                              "_class": "Dream.SubBatch", 
+                              "id": "SB2"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.Queue", 
+                    "left": 0.4414893617021277
+               }, 
+               "M1": {
+                    "name": "Moulding", 
+                    "top": 0.5, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.1
+                         }
+                    }, 
+                    "wip": [
+                         {
+                              "name": "Batch1_SB1", 
+                              "parentBatchName": "Batch1", 
+                              "unitsToProcess": 10, 
+                              "numberOfUnits": 30, 
+                              "parentBatchId": "B1", 
+                              "_class": "Dream.SubBatch", 
+                              "id": "SB1"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.BatchScrapMachine", 
+                    "left": 0.5
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "top": 0.10215053763440862, 
+                    "_class": "Dream.Exit", 
+                    "name": "Stock", 
+                    "left": 0.5
+               }, 
+               "BRB": {
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.BatchReassembly", 
+                    "numberOfSubBatches": 2, 
+                    "name": "Reassembly"
+               }
+          }, 
+          "edge": {
+               "1": {
+                    "source": "M1", 
+                    "destination": "BRB", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "0": {
+                    "source": "Q1", 
+                    "destination": "M1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "2": {
+                    "source": "BRB", 
+                    "destination": "E1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }
+          }
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "trace": "No", 
+          "_class": "Dream.Configuration", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "-1", 
+          "numberOfReplications": "1"
+     }
 }

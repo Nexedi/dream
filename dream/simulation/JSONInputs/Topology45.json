@@ -1,224 +1,242 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {
-        "0": [
-            "O1",
-            "M1",
-            {}
-        ],
-        "1": [
-            "O2",
-            "M3",
-            {}
-        ],
-        "2": [
-            "O3",
-            "M2",
-            {}
-        ],
-        "3": [
-            "O3",
-            "M4",
-            {}
-        ]
-    },
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "-1",
-        "numberOfReplications": "1",
-        "trace": "No"
-    },
-    "nodes": {
-        "E1": {
-            "_class": "Dream.ExitJobShop",
-            "id": "E1",
-            "name": "Stock"
-        },
-        "M1": {
-            "_class": "Dream.MachineJobShop",
-            "failures": {},
-            "id": "M1",
-            "name": "Machine1",
-            "operationType": "Processing",
-            "processingTime": {}
-        },
-        "M2": {
-            "_class": "Dream.MachineJobShop",
-            "failures": {},
-            "id": "M2",
-            "name": "Machine2",
-            "operationType": "MT-Setup-Processing",
-            "processingTime": {},
-            "setupTime": {
-                "distributionType": "Fixed",
-                "mean": 0.0
-            }
-        },
-        "M3": {
-            "_class": "Dream.MachineJobShop",
-            "failures": {},
-            "id": "M3",
-            "name": "Machine3",
-            "operationType": "Processing",
-            "processingTime": {}
-        },
-        "M4": {
-            "_class": "Dream.MachineJobShop",
-            "failures": {},
-            "id": "M4",
-            "name": "Machine4",
-            "operationType": "MT-Setup-Processing",
-            "processingTime": {},
-            "setupTime": {
-                "distributionType": "Fixed",
-                "mean": 0.0
-            }
-        },
-        "O1": {
-            "_class": "Dream.Operator",
-            "capacity": 1,
-            "name": "Operator1"
-        },
-        "O2": {
-            "_class": "Dream.Operator",
-            "capacity": 2,
-            "name": "Operator2"
-        },
-        "O3": {
-            "_class": "Dream.Operator",
-            "capacity": 1,
-            "name": "Operator3"
-        },
-        "Q1": {
-            "_class": "Dream.QueueJobShop",
-            "capacity": -1,
-            "id": "Q1",
-            "isDummy": "0",
-            "name": "Queue1",
-            "wip": [
-                {
-                    "_class": "Dream.OrderComponent",
-                    "id": "C1",
-                    "name": "Component1",
-                    "route": [
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 0.0
-                            },
-                            "stationIdsList": [
-                                "Q1"
-                            ]
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 1.0
-                            },
-                            "stationIdsList": [
-                                "M1"
-                            ]
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 0.0
-                            },
-                            "stationIdsList": [
-                                "Q2"
-                            ]
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 1.0
-                            },
-                            "stationIdsList": [
-                                "M2"
-                            ]
-                        },
-                        {
-                            "stationIdsList": [
-                                "E1"
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        "Q2": {
-            "_class": "Dream.QueueJobShop",
-            "capacity": -1,
-            "id": "Q2",
-            "isDummy": "0",
-            "name": "Queue2",
-            "wip": []
-        },
-        "Q3": {
-            "_class": "Dream.QueueJobShop",
-            "capacity": -1,
-            "id": "Q3",
-            "isDummy": "0",
-            "name": "Queue4",
-            "wip": [
-                {
-                    "_class": "Dream.OrderComponent",
-                    "id": "C2",
-                    "name": "Component2",
-                    "route": [
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 0.0
-                            },
-                            "stationIdsList": [
-                                "Q3"
-                            ]
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 1.0
-                            },
-                            "stationIdsList": [
-                                "M3"
-                            ]
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 0.0
-                            },
-                            "stationIdsList": [
-                                "Q4"
-                            ]
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 1.0
-                            },
-                            "stationIdsList": [
-                                "M4"
-                            ]
-                        },
-                        {
-                            "stationIdsList": [
-                                "E1"
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        "Q4": {
-            "_class": "Dream.QueueJobShop",
-            "capacity": -1,
-            "id": "Q4",
-            "isDummy": "0",
-            "name": "Queue4",
-            "wip": []
-        }
-    }
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": -1, 
+                    "name": "Queue1", 
+                    "isDummy": "0", 
+                    "wip": [
+                         {
+                              "route": [
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 0.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 1.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M1"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 0.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 1.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M2"
+                                        ]
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ], 
+                              "_class": "Dream.OrderComponent", 
+                              "id": "C1", 
+                              "name": "Component1"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.QueueJobShop", 
+                    "id": "Q1"
+               }, 
+               "Q3": {
+                    "capacity": -1, 
+                    "name": "Queue4", 
+                    "isDummy": "0", 
+                    "wip": [
+                         {
+                              "route": [
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 0.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 1.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M3"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 0.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "Q4"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 1.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M4"
+                                        ]
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ], 
+                              "_class": "Dream.OrderComponent", 
+                              "id": "C2", 
+                              "name": "Component2"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.QueueJobShop", 
+                    "id": "Q3"
+               }, 
+               "Q2": {
+                    "capacity": -1, 
+                    "name": "Queue2", 
+                    "isDummy": "0", 
+                    "wip": [], 
+                    "interruptions": {}, 
+                    "_class": "Dream.QueueJobShop", 
+                    "id": "Q2"
+               }, 
+               "Q4": {
+                    "capacity": -1, 
+                    "name": "Queue4", 
+                    "isDummy": "0", 
+                    "wip": [], 
+                    "interruptions": {}, 
+                    "_class": "Dream.QueueJobShop", 
+                    "id": "Q4"
+               }, 
+               "O3": {
+                    "interruptions": {}, 
+                    "_class": "Dream.Operator", 
+                    "capacity": 1, 
+                    "name": "Operator3"
+               }, 
+               "M4": {
+                    "name": "Machine4", 
+                    "setupTime": {
+                         "distributionType": "Fixed", 
+                         "mean": 0.0
+                    }, 
+                    "processingTime": {}, 
+                    "operationType": "MT-Setup-Processing", 
+                    "interruptions": {}, 
+                    "failures": {}, 
+                    "_class": "Dream.MachineJobShop", 
+                    "id": "M4"
+               }, 
+               "M1": {
+                    "name": "Machine1", 
+                    "processingTime": {}, 
+                    "operationType": "Processing", 
+                    "interruptions": {}, 
+                    "failures": {}, 
+                    "_class": "Dream.MachineJobShop", 
+                    "id": "M1"
+               }, 
+               "M3": {
+                    "name": "Machine3", 
+                    "processingTime": {}, 
+                    "operationType": "Processing", 
+                    "interruptions": {}, 
+                    "failures": {}, 
+                    "_class": "Dream.MachineJobShop", 
+                    "id": "M3"
+               }, 
+               "M2": {
+                    "name": "Machine2", 
+                    "setupTime": {
+                         "distributionType": "Fixed", 
+                         "mean": 0.0
+                    }, 
+                    "processingTime": {}, 
+                    "operationType": "MT-Setup-Processing", 
+                    "interruptions": {}, 
+                    "failures": {}, 
+                    "_class": "Dream.MachineJobShop", 
+                    "id": "M2"
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.ExitJobShop", 
+                    "id": "E1", 
+                    "name": "Stock"
+               }, 
+               "O2": {
+                    "interruptions": {}, 
+                    "_class": "Dream.Operator", 
+                    "capacity": 2, 
+                    "name": "Operator2"
+               }, 
+               "O1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.Operator", 
+                    "capacity": 1, 
+                    "name": "Operator1"
+               }
+          }, 
+          "edge": {
+               "1": {
+                    "source": "O2", 
+                    "destination": "M3", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "0": {
+                    "source": "O1", 
+                    "destination": "M1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "3": {
+                    "source": "O3", 
+                    "destination": "M4", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "2": {
+                    "source": "O3", 
+                    "destination": "M2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }
+          }
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "trace": "No", 
+          "_class": "Dream.Configuration", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "-1", 
+          "numberOfReplications": "1"
+     }
 }

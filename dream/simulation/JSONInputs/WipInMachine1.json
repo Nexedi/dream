@@ -1,45 +1,48 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {
-        "0": [
-            "M1",
-            "E1",
-            {}
-        ]
-    },
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "-1",
-        "numberOfReplications": "1",
-        "trace": "No"
-    },
-    "nodes": {
-        "E1": {
-            "_class": "Dream.Exit",
-            "left": 0.5,
-            "name": "Stock",
-            "top": 0.10215053763440862
-        },
-        "M1": {
-            "_class": "Dream.Machine",
-            "failures": {
-                "failureDistribution": "No"
-            },
-            "left": 0.5,
-            "name": "Moulding",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 5
-            },
-            "wip": [
-                {
-                    "_class": "Dream.Part",
-                    "id": "P1",
-                    "name": "Part1"
-                }
-            ],
-            "top": 0.5
-        }
-    }
+     "graph": {
+          "node": {
+               "M1": {
+                    "name": "Moulding", 
+                    "top": 0.5, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 5
+                         }
+                    }, 
+                    "wip": [
+                         {
+                              "_class": "Dream.Part", 
+                              "id": "P1", 
+                              "name": "Part1"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.Machine", 
+                    "left": 0.5
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "top": 0.10215053763440862, 
+                    "_class": "Dream.Exit", 
+                    "name": "Stock", 
+                    "left": 0.5
+               }
+          }, 
+          "edge": {
+               "0": {
+                    "source": "M1", 
+                    "destination": "E1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }
+          }
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "trace": "No", 
+          "_class": "Dream.Configuration", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "-1", 
+          "numberOfReplications": "1"
+     }
 }

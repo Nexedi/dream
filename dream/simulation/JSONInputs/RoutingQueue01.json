@@ -1,158 +1,188 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {
-        "0": [
-            "S1",
-            "Q1",
-            {}
-        ],
-        "1": [
-            "Q1",
-            "BD1",
-            {}
-        ],
-        "2": [
-            "BD1",
-            "M1",
-            {}
-        ],
-        "3": [
-            "M1",
-            "Q2",
-            {}
-        ],
-        "4": [
-            "Q2",
-            "M2",
-            {}
-        ],
-		"5": [
-            "Q2",
-            "M4",
-            {}
-        ],
-        "6": [
-            "M2",
-            "BR1",
-            {}
-        ],
-		"7": [
-            "M4",
-            "BR1",
-            {}
-        ],
-        "8": [
-            "BR1",
-            "M3",
-            {}
-        ],
-        "9": [
-            "M3",
-            "E1",
-            {}
-        ]
-    },
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "100",
-        "numberOfReplications": "1",
-        "trace": "No",
-		"console":"No"
-    },
-    "nodes": {
-        "BD1": {
-            "_class": "Dream.BatchDecomposition",
-            "left": 0.4414893617021277,
-            "name": "Batch_Decomposition",
-            "numberOfSubBatches": 4,
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 1.0
-            },
-            "top": 0.5909090909090908
-        },
-        "BR1": {
-            "_class": "Dream.BatchReassembly",
-            "left": 0.4414893617021277,
-            "name": "Batch_Reassembly",
-            "numberOfSubBatches": 4,
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0.0
-            },
-            "top": 0.5909090909090908
-        },
-        "E1": {
-            "_class": "Dream.Exit",
-            "left": 0.2978723404255319,
-            "name": "Stock",
-            "top": 0.045454545454545414
-        },
-        "M1": {
-            "_class": "Dream.Machine",
-            "failures": {},
-            "left": 0.4414893617021277,
-            "name": "Station1",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0.5
-            },
-            "top": 0.5909090909090908
-        },
-        "M2": {
-            "_class": "Dream.Machine",
-            "left": 0.4414893617021277,
-            "name": "Station2",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 1.0
-            },
-            "top": 0.5909090909090908
-        },
-		"M4": {
-            "_class": "Dream.Machine",
-            "name": "Station4",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 1.0
-            }
-        },
-        "M3": {
-            "_class": "Dream.Machine",
-            "left": 0.4414893617021277,
-            "name": "Station3",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 1.0
-            },
-            "top": 0.5909090909090908
-        },
-        "Q1": {
-            "_class": "Dream.Queue",
-            "capacity": -1,
-            "left": 0.6968085106382979,
-            "name": "StartQueue",
-            "top": 0.7727272727272727
-        },
-        "Q2": {
-            "_class": "Dream.RoutingQueue",
-            "capacity": 2,
-            "left": 0.6968085106382979,
-            "name": "Queue1",
-            "top": 0.7727272727272727
-        },
-        "S1": {
-            "_class": "Dream.BatchSource",
-            "batchNumberOfUnits": 100,
-            "entity": "Dream.Batch",
-            "interArrivalTime": {
-                "distributionType": "Fixed",
-                "mean": 0.5
-            },
-            "left": 0.6968085106382979,
-            "name": "Source",
-            "top": 0.9545454545454546
-        }
-    }
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": -1, 
+                    "name": "StartQueue", 
+                    "top": 0.7727272727272727, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Queue", 
+                    "left": 0.6968085106382979
+               }, 
+               "Q2": {
+                    "capacity": 2, 
+                    "name": "Queue1", 
+                    "top": 0.7727272727272727, 
+                    "interruptions": {}, 
+                    "_class": "Dream.RoutingQueue", 
+                    "left": 0.6968085106382979
+               }, 
+               "S1": {
+                    "name": "Source", 
+                    "top": 0.9545454545454546, 
+                    "entity": "Dream.Batch", 
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "distributionType": "Fixed", 
+                              "mean": 0.5
+                         }
+                    }, 
+                    "batchNumberOfUnits": 100, 
+                    "interruptions": {}, 
+                    "_class": "Dream.BatchSource", 
+                    "left": 0.6968085106382979
+               }, 
+               "BR1": {
+                    "name": "Batch_Reassembly", 
+                    "top": 0.5909090909090908, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.0
+                         }
+                    }, 
+                    "numberOfSubBatches": 4, 
+                    "interruptions": {}, 
+                    "_class": "Dream.BatchReassembly", 
+                    "left": 0.4414893617021277
+               }, 
+               "M4": {
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.0
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Machine", 
+                    "name": "Station4"
+               }, 
+               "M1": {
+                    "name": "Station1", 
+                    "top": 0.5909090909090908, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.5
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "failures": {}, 
+                    "_class": "Dream.Machine", 
+                    "left": 0.4414893617021277
+               }, 
+               "M3": {
+                    "name": "Station3", 
+                    "top": 0.5909090909090908, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.0
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Machine", 
+                    "left": 0.4414893617021277
+               }, 
+               "M2": {
+                    "name": "Station2", 
+                    "top": 0.5909090909090908, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.0
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Machine", 
+                    "left": 0.4414893617021277
+               }, 
+               "BD1": {
+                    "name": "Batch_Decomposition", 
+                    "top": 0.5909090909090908, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.0
+                         }
+                    }, 
+                    "numberOfSubBatches": 4, 
+                    "interruptions": {}, 
+                    "_class": "Dream.BatchDecomposition", 
+                    "left": 0.4414893617021277
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "top": 0.045454545454545414, 
+                    "_class": "Dream.Exit", 
+                    "name": "Stock", 
+                    "left": 0.2978723404255319
+               }
+          }, 
+          "edge": {
+               "1": {
+                    "source": "Q1", 
+                    "destination": "BD1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "0": {
+                    "source": "S1", 
+                    "destination": "Q1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "3": {
+                    "source": "M1", 
+                    "destination": "Q2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "2": {
+                    "source": "BD1", 
+                    "destination": "M1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "5": {
+                    "source": "Q2", 
+                    "destination": "M4", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "4": {
+                    "source": "Q2", 
+                    "destination": "M2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "7": {
+                    "source": "M4", 
+                    "destination": "BR1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "6": {
+                    "source": "M2", 
+                    "destination": "BR1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "9": {
+                    "source": "M3", 
+                    "destination": "E1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "8": {
+                    "source": "BR1", 
+                    "destination": "M3", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }
+          }
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "console": "No", 
+          "numberOfReplications": "1", 
+          "trace": "No", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "100", 
+          "_class": "Dream.Configuration"
+     }
 }
