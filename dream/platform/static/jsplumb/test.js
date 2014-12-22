@@ -27,7 +27,7 @@
         "Example.Edge": {
             _class: "edge",
             allOf: [ {
-                $ref: "#edge"
+                $ref: "#/edge"
             }, {
                 properties: {
                     color: {
@@ -40,7 +40,7 @@
         "Example.Node": {
             _class: "node",
             allOf: [ {
-                $ref: "#node"
+                $ref: "#/node"
             }, {
                 properties: {
                     shape: {

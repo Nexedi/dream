@@ -9,9 +9,8 @@
     // Precompile the templates while loading the first gadget instance
     var gadget_klass = rJS(window), label_source = gadget_klass.__template_element.getElementById("expand-label-template").innerHTML, label_template = Handlebars.compile(label_source), option_source = gadget_klass.__template_element.getElementById("expand-option-template").innerHTML, option_template = Handlebars.compile(option_source), selected_option_source = gadget_klass.__template_element.getElementById("selected-expand-option-template").innerHTML, selected_option_template = Handlebars.compile(selected_option_source);
     function syncField(gadget) {
-        console.log("SYNCFIELD EXPANDABLEFIELDSET 1");
-        var i, properties_dict, sub_title, sub_type, in_type, default_value, previous_value, labels, inps, j, recent_occupied = [], prop_name = gadget.props.definition.property_def.title;
-        console.log("for prop_name");
+        var i, properties_dict, sub_title, sub_type, in_type, default_value, previous_value, labels = [], lbls, inps = [], inputs, j, recent_occupied = [], recent_occupied_labels = [], prop_name = gadget.props.definition.property_def.title;
+        console.log("for prop_name syncField");
         console.log(prop_name);
         // set the title of the field
         gadget.props.element.children[1].innerHTML = prop_name;
@@ -26,53 +25,85 @@
         if (gadget.props.definition.property_def.properties) {
             properties_dict = gadget.props.definition.property_def.properties;
             gadget.props.element.children[2].style.display = "";
-            // XXX assuming that the number of labels
-            //     is the same as the number of inputs
-            inps = gadget.props.element.children[2].getElementsByTagName("input");
-            labels = gadget.props.element.children[2].getElementsByTagName("label");
+            inputs = gadget.props.element.children[2].getElementsByTagName("input");
+            for (i = 0; i <= inputs.length - 1; i += 1) {
+                if (inputs[i].parentNode.parentNode.parentNode === gadget.props.element.children[2]) {
+                    inps.push(inputs[i]);
+                }
+            }
+            lbls = gadget.props.element.children[2].getElementsByTagName("label");
+            for (i = 0; i <= lbls.length - 1; i += 1) {
+                if (lbls[i].parentNode === gadget.props.element.children[2]) {
+                    labels.push(lbls[i]);
+                }
+            }
             for (i = 0; i <= Object.keys(properties_dict).length - 1; i += 1) {
                 sub_title = Object.keys(properties_dict)[i];
                 console.log("sub_title");
                 console.log(sub_title);
                 sub_type = properties_dict[sub_title].type;
+                // if the gadget contains expandable inputs (allOf)
+                // find the labels of that inputs
+                if (properties_dict[sub_title].allOf) {
+                    for (j = 0; j <= labels.length - 1; j += 1) {
+                        if (labels[j].getAttribute("for").split("_")[0] === "allOf") {
+                            if (!(recent_occupied_labels.indexOf(labels[j]) > -1)) {
+                                labels[j].innerHTML = sub_title;
+                                recent_occupied_labels.push(labels[j]);
+                                break;
+                            }
+                        }
+                    }
+                }
                 default_value = properties_dict[sub_title].default;
                 // previous value
                 if (gadget.props.options.value[prop_name]) {
                     previous_value = gadget.props.options.value[prop_name][sub_title];
                 }
                 for (j = 0; j <= inps.length - 1; j += 1) {
-                    // if the element is not already occupied
-                    if (!(recent_occupied.indexOf(inps[j]) > -1)) {
-                        if (inps[j].getAttribute("type")) {
-                            // XXX hardcoded value for string input 
-                            //  as text is used in HTML
-                            if (sub_type === "string") {
-                                in_type = "text";
-                            }
-                            if (inps[j].getAttribute("type") === sub_type || inps[j].getAttribute("type") === in_type) {
-                                inps[j].setAttribute("name", sub_title);
-                                inps[j].setAttribute("title", sub_title);
-                                // if the input type is text then undefined --> "" 
-                                if (inps[j].getAttribute("type") === "text" && default_value === undefined) {
-                                    default_value = "";
+                    // check if the input is one of a sub-gadget
+                    // do not proceed if yes
+                    if (inps[j].parentNode.parentNode.parentNode === gadget.props.element.children[2]) {
+                        // if the element is not already occupied
+                        if (!(recent_occupied.indexOf(inps[j]) > -1)) {
+                            if (inps[j].getAttribute("type")) {
+                                // XXX hardcoded value for string input 
+                                //  as text is used in HTML
+                                if (sub_type === "string") {
+                                    in_type = "text";
                                 }
-                                inps[j].setAttribute("value", previous_value === undefined ? default_value : previous_value);
-                                labels[j].innerHTML = sub_title;
-                                labels[j].setAttribute("for", sub_title);
-                                recent_occupied.push(inps[j]);
-                                // present them
-                                inps[j].parentNode.parentNode.style.display = "";
-                                labels[j].style.display = "";
-                                break;
+                                if (inps[j].getAttribute("type") === sub_type || inps[j].getAttribute("type") === in_type) {
+                                    inps[j].setAttribute("name", sub_title);
+                                    inps[j].setAttribute("title", sub_title);
+                                    // if the input type is text then undefined --> "" 
+                                    if (inps[j].getAttribute("type") === "text" && default_value === undefined) {
+                                        default_value = "";
+                                    }
+                                    inps[j].setAttribute("value", previous_value === undefined ? default_value : previous_value);
+                                    recent_occupied.push(inps[j]);
+                                    // find the label for that input
+                                    inps[j].parentNode.parentNode.previousSibling.previousSibling.innerHTML = sub_title;
+                                    recent_occupied_labels.push(inps[j].parentNode.parentNode.previousSibling.previousSibling);
+                                    // present them
+                                    inps[j].parentNode.parentNode.previousSibling.previousSibling.style.display = "";
+                                    inps[j].parentNode.parentNode.style.display = "";
+                                    break;
+                                }
                             }
                         }
                     }
                 }
             }
+            // hiding the inps that are not occupied
             for (j = 0; j <= inps.length - 1; j += 1) {
                 if (!(recent_occupied.indexOf(inps[j]) > -1)) {
                     inps[j].parentNode.parentNode.style.display = "block";
                     inps[j].parentNode.parentNode.style.display = "none";
+                }
+            }
+            // hiding the labels that are not occupied
+            for (j = 0; j <= labels.length - 1; j += 1) {
+                if (!(recent_occupied_labels.indexOf(labels[j]) > -1)) {
                     labels[j].style.display = "block";
                     labels[j].style.display = "none";
                 }
@@ -139,6 +170,13 @@
                     "for": property_id,
                     name: property_definition.name || property_id
                 }));
+                if (property_definition.allOf) {
+                    // if there is type property then remove it
+                    if (property_definition.allOf[0].type) {
+                        delete property_definition.allOf[0].type;
+                    }
+                    return gadget.declareGadget("../expandable_field/index.html");
+                }
                 if (property_definition.type === "object") {
                     // Create a recursive fieldset for this key.
                     return gadget.declareGadget("../fieldset/index.html");
@@ -189,7 +227,7 @@
         //  fields of type object are assumed to be all the same
         ////////////////////////////////////////////////////////////////
         function findRequestedTypes(oneOf_list) {
-            var prop_dict, prop_list, prop_type_list, x, search_item, req_props_dlist = [], req_props_slist = [], // req_props_sdict = {},
+            var prop_dict, prop_list, prop_type_list, x, search_item, search_item_def, req_props_dlist = [], req_props_slist = [], // req_props_sdict = {},
             counter, y, handleReduce = function(previous, current) {
                 return previous > current ? previous : current;
             };
@@ -211,31 +249,39 @@
                     //  the same definition
                     ////////////////////////////////////////////////////////
                     for (x = 0; x <= prop_list.length - 1; x += 1) {
-                        search_item = prop_dict[prop_list[x]].type;
-                        prop_type_list.push(search_item);
+                        search_item = prop_dict[prop_list[x]].allOf ? "allOf" : prop_dict[prop_list[x]].type;
+                        search_item_def = prop_dict[prop_list[x]] || "";
+                        prop_type_list.push([ search_item, search_item_def ]);
                         if (req_props_slist.indexOf(search_item) === -1) {
                             // list of unique requested properties
-                            req_props_slist.push(prop_dict[prop_list[x]].type);
+                            req_props_slist.push(search_item);
                         }
                     }
                     // array of requested type-arrays for each different item
                     req_props_dlist.push(prop_type_list);
                 }
             }
+            console.log("array of requested type-arrays for each item");
+            console.log(req_props_dlist);
             /////////////////////////////////////////////////////////////
             // find the maximum number of appearances 
             // for each requested type within req_props_dlist
             /////////////////////////////////////////////////////////////
             for (x = 0; x <= req_props_slist.length - 1; x += 1) {
-                req_props_sdict[req_props_slist[x]] = [];
+                req_props_sdict[req_props_slist[x]] = {
+                    number: [],
+                    definition: {}
+                };
                 for (ind = 0; ind <= req_props_dlist.length - 1; ind += 1) {
                     counter = 0;
                     for (y = 0; y <= req_props_dlist[ind].length - 1; y += 1) {
-                        if (req_props_slist[x] === req_props_dlist[ind][y]) {
+                        if (req_props_slist[x] === req_props_dlist[ind][y][0]) {
                             counter += 1;
+                            search_item_def = req_props_dlist[ind][y][1];
                         }
                     }
-                    req_props_sdict[req_props_slist[x]].push(counter);
+                    req_props_sdict[req_props_slist[x]].number.push(counter);
+                    req_props_sdict[req_props_slist[x]].definition = search_item_def;
                 }
             }
             for (ind = 0; ind <= Object.keys(req_props_sdict).length - 1; ind += 1) {
@@ -246,7 +292,7 @@
                 // find the maximum number within the array 
                 //  and replace the array itself
                 ////////////////////////////////////////////////////////////
-                req_props_sdict[Object.keys(req_props_sdict)[ind]] = req_props_sdict[Object.keys(req_props_sdict)[ind]].reduce(handleReduce);
+                req_props_sdict[Object.keys(req_props_sdict)[ind]].number = req_props_sdict[Object.keys(req_props_sdict)[ind]].number.reduce(handleReduce);
             }
             console.log("req_props_sdict");
             console.log(req_props_sdict);
@@ -283,14 +329,18 @@
                     };
                     for (ind = 0; ind <= Object.keys(req_props_sdict).length - 1; ind += 1) {
                         // create an abstract property definition (updated later)
-                        for (w = 0; w <= req_props_sdict[Object.keys(req_props_sdict)[ind]] - 1; w += 1) {
+                        for (w = 0; w <= req_props_sdict[Object.keys(req_props_sdict)[ind]].number - 1; w += 1) {
                             ab_title = Object.keys(req_props_sdict)[ind] + "_" + w;
-                            ab_definition.properties[ab_title] = {
-                                type: Object.keys(req_props_sdict)[ind],
-                                "default": "",
-                                description: "",
-                                required: true
-                            };
+                            if (req_props_sdict[Object.keys(req_props_sdict)[ind]].definition.allOf) {
+                                ab_definition.properties[ab_title] = req_props_sdict[Object.keys(req_props_sdict)[ind]].definition;
+                            } else {
+                                ab_definition.properties[ab_title] = {
+                                    type: Object.keys(req_props_sdict)[ind],
+                                    "default": "",
+                                    description: "",
+                                    required: true
+                                };
+                            }
                         }
                     }
                     console.log("abstract_definition for " + index);
@@ -404,13 +454,22 @@
                 }
             }
             for (ind = sel_ind; ind <= gadget.props.element.children.length - 1; ind += 1) {
-                console.log("hiding :");
+                console.log("hiding all the children as the service starts:");
                 gadget.props.element.children[ind].style.display = "block";
                 gadget.props.element.children[ind].style.display = "none";
             }
         }).push(function() {
             console.log("STARTSERVICE EXPANDFIELD 1");
             syncField(gadget);
+        }).push(function() {
+            var i, promise_list = [];
+            for (i = 0; i < gadget.props.field_gadget_list.length; i += 1) {
+                if (gadget.props.field_gadget_list[i].startService) {
+                    promise_list.push(gadget.props.field_gadget_list[i].startService());
+                }
+            }
+            console.log("thr r " + promise_list.length + " subgadget promises");
+            return RSVP.all(promise_list);
         }).push(function() {
             waitForListFieldSelection(gadget);
         });
