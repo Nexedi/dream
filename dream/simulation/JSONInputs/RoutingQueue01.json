@@ -146,7 +146,7 @@
             "_class": "Dream.BatchSource",
             "batchNumberOfUnits": 100,
             "entity": "Dream.Batch",
-            "interarrivalTime": {
+            "interArrivalTime": {
                 "distributionType": "Fixed",
                 "mean": 0.5
             },

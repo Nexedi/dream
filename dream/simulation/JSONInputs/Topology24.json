@@ -85,7 +85,7 @@
             "batchNumberOfUnits": 100,
             "entity": "Dream.Batch",
             "id": "S1",
-            "interarrivalTime": {
+            "interArrivalTime": {
                 "distributionType": "Fixed",
                 "mean": 30.0
             },
