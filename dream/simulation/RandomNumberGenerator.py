@@ -29,22 +29,24 @@ holds methods for generations of numbers from different distributions
 import math
 
 class RandomNumberGenerator(object):
-    def __init__(self, obj, distributionType, mean=0, stdev=0, min=0, max=0, alpha=0, beta=0,
+    def __init__(self, obj, distribution, mean=0, stdev=0, min=0, max=0, alpha=0, beta=0,
                  logmean=0,logsd=0, probability=0, shape=0, scale=0, location=0, rate=0,**kw):
-        self.distributionType = distributionType
-        self.mean = float(mean or 0)
-        self.stdev = float(stdev or 0)
-        self.min = float(min or 0)
-        self.max = float(max or 0)
-        self.alpha = float(alpha or 0)
-        self.beta = float(beta or 0)
-        self.logmean=float(logmean or 0)
-        self.logsd=float(logsd or 0)
-        self.probability=float(probability or 0)
-        self.shape=float(shape or 0)
-        self.scale=float(scale or 0)
-        self.location=float(location or 0)
-        self.rate=float(rate or 0)
+        self.distribution=distribution
+        self.distributionType = distribution.keys()[0]
+        parameters=distribution[self.distributionType]
+        self.mean = float(parameters.get('mean', 0))
+        self.stdev = float(parameters.get('stdev', 0))
+        self.min = float(parameters.get('min',0))
+        self.max = float(parameters.get('max',0))
+        self.alpha = float(parameters.get('alpha',0))
+        self.beta = float(parameters.get('beta',0))
+        self.logmean=float(parameters.get('logmean',0))
+        self.logsd=float(parameters.get('logsd',0))
+        self.probability=float(parameters.get('probability',0))
+        self.shape=float(parameters.get('shape',0))
+        self.scale=float(parameters.get('scale',0))
+        self.location=float(parameters.get('location',0))
+        self.rate=float(parameters.get('rate',0))
         self.obj = obj
 
     def generateNumber(self):

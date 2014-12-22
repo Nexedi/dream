@@ -72,7 +72,7 @@ class EntityGenerator(object):
                 entityCounter=G.numberOfEntities+len(self.victim.scheduledEntities) # this is used just ot output the trace correctly
                 self.victim.scheduledEntities.append(self.env.now)
                 self.victim.outputTrace(self.victim.item.type+str(entityCounter), "generated")       # output the trace
-            yield self.env.timeout(self.victim.calculateInterarrivalTime()) # wait until the next arrival
+            yield self.env.timeout(self.victim.calculateInterArrivalTime()) # wait until the next arrival
 
 #============================================================================
 #                 The Source object is a Process
@@ -81,22 +81,21 @@ class Source(CoreObject):
     #===========================================================================
     # the __init__method of the Source class
     #===========================================================================
-    def __init__(self, id, name, interarrivalTime=None, entity='Dream.Part',**kw):
+    def __init__(self, id, name, interArrivalTime=None, entity='Dream.Part',**kw):
         # Default values
-        if not interarrivalTime:
-          interarrivalTime = {'distributionType': 'Fixed', 'mean': 1}
-        if interarrivalTime['distributionType'] == 'Normal' and\
-              interarrivalTime.get('max', None) is None:
-          interarrivalTime['max'] = interarrivalTime['mean'] + 5 * interarrivalTime['stdev']
+        if not interArrivalTime:
+          interArrivalTime = {'distributionType': 'Fixed', 'mean': 1}
+        if 'Normal' in interArrivalTime.keys() and\
+              interArrivalTime['Normal'].get('max', None) is None:
+          interArrivalTime['Normal']['max'] = interArrivalTime['Normal']['mean'] + 5 * interArrivalTime['Normal']['stdev']
 
         CoreObject.__init__(self, id, name)
         # properties used for statistics
-        self.totalInterArrivalTime = 0                  # the total interarrival time 
+        self.totalinterArrivalTime = 0                  # the total interarrival time 
         self.numberOfArrivals = 0                       # the number of entities that were created
 
         self.type="Source"                              #String that shows the type of object
-        
-        self.rng = RandomNumberGenerator(self, **interarrivalTime)
+        self.rng = RandomNumberGenerator(self, interArrivalTime)
 
         self.item=Globals.getClassFromName(entity)      #the type of object that the Source will generate
                
@@ -186,7 +185,7 @@ class Source(CoreObject):
     #============================================================================
     #                    calculates the processing time
     #============================================================================
-    def calculateInterarrivalTime(self):
+    def calculateInterArrivalTime(self):
         return self.rng.generateNumber()    #this is if we have a default interarrival  time for all the entities
     
     # =======================================================================
