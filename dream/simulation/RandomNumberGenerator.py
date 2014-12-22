@@ -38,6 +38,16 @@ class RandomNumberGenerator(object):
 #            ...
 #         },
     def __init__(self, obj, distribution):   
+        # check in case an inknown distrbution was given
+        unknownDistribution=True
+        for key in distribution.keys():
+            if key in ['Fixed', 'Normal','Exp','Gamma','Logistic','Erlang',
+                           'Geometric','Lognormal','Weibull','Cauchy']:
+                unknownDistribution=False
+                break
+        if unknownDistribution:
+            raise ValueError("Unknown distribution %r used in %s %s" %
+                            (distribution, obj.__class__, obj.id)) 
         # pop irrelevant keys
         for key in distribution.keys():
             if key not in ['Fixed', 'Normal','Exp','Gamma','Logistic','Erlang',
