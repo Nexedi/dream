@@ -291,21 +291,17 @@ def createObjectInterruptions():
             SM=ScheduledMaintenance(victim=victim, start=start, duration=duration)
             G.ObjectInterruptionList.append(SM)
             G.ScheduledMaintenanceList.append(SM)
-        failure=element.get('failures', None)
+        failure=element.get('interruptions',{}).get('failure', None)
         # if there are failures assigned 
         # initiate them   
         if failure:
-            distributionType=failure.get('distributionType', 'No')
-            if distributionType=='No':
-                pass
-            else:
-                victim=Globals.findObjectById(element['id'])
-                deteriorationType=failure.get('deteriorationType', 'constant')
-                waitOnTie=failure.get('waitOnTie', False)
-                F=Failure(victim=victim, distribution=failure, repairman=victim.repairman, deteriorationType=deteriorationType,
-                          waitOnTie=waitOnTie)
-                G.ObjectInterruptionList.append(F)
-                G.FailureList.append(F)
+            victim=Globals.findObjectById(element['id'])
+            deteriorationType=failure.get('deteriorationType', 'constant')
+            waitOnTie=failure.get('waitOnTie', False)
+            F=Failure(victim=victim, distribution=failure, repairman=victim.repairman, deteriorationType=deteriorationType,
+                      waitOnTie=waitOnTie)
+            G.ObjectInterruptionList.append(F)
+            G.FailureList.append(F)
         # if there are periodic maintenances assigned 
         # initiate them   
         periodicMaintenance=element.get('periodicMaintenance', None)
