@@ -70,7 +70,7 @@ class Machine(CoreObject):
         #     sets the repairman resource of the Machine
         self.repairman=repairman
         #     Sets the attributes of the processing (and failure) time(s)
-        self.rng=RandomNumberGenerator(self, **processingTime)
+        self.rng=RandomNumberGenerator(self, processingTime)
         # check whether the operators are provided with a skills set
         # check whether the operators are provided with a skills set
         self.dedicatedOperator=self.checkForDedicatedOperators()
@@ -102,11 +102,11 @@ class Machine(CoreObject):
         # boolean to check whether the machine is being operated
         self.toBeOperated = False
         # define the load times
-        self.loadRng = RandomNumberGenerator(self, **loadTime)
+        self.loadRng = RandomNumberGenerator(self, loadTime)
         # XX variable that informs on the need for setup
         self.setUp=True
         # define the setup times
-        self.stpRng = RandomNumberGenerator(self, **setupTime)
+        self.stpRng = RandomNumberGenerator(self, setupTime)
         # examine if there are multiple operation types performed by the operator
         #     there can be Setup/Processing operationType
         #     or the combination of both (MT-Load-Setup-Processing) 
@@ -192,25 +192,13 @@ class Machine(CoreObject):
 
     @staticmethod
     def getOperationTime(time):
-
-        def refactorTime(time):
-            if time:
-                if time["distribution"]:
-                    time["distributionType"] = time["distribution"]
-                    for key in time[time["distribution"]]:
-                        time[key] = time[time["distribution"]][key]
-                    del time[time["distribution"]]
-                    del time["distribution"]
-            return time
         # XXX update time to comply with old definition
-        time = refactorTime(time)
         '''returns the dictionary updated'''
         if not time:
-            time = { 'distributionType': 'Fixed',
-                               'mean': 0 }
-        if time['distributionType'] == 'Normal' and\
-                time.get('max', None) is None:
-            time['max'] = float(time['mean']) + 5 * float(time['stdev'])
+            time = {'Fixed':{'mean': 0 }}
+        if 'Normal' in time.keys() and\
+                time['Normal'].get('max', None) is None:
+            time['Normal']['max'] = float(time['Normal']['mean']) + 5 * float(time['Normal']['stdev'])
         return time
     
     #===========================================================================
