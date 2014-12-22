@@ -166,22 +166,16 @@
 						}
 					}
 				},
-				"_fixedFailure" : {
+				"_failure" : {
 					"type" : "object",
-					"title" : "Fixed",
+					"title" : "Yes",
 					"description" : "Fixed",
 					"properties" : {
-						"MTTF" : {
-							"description" : "Mean Time To Failure",
-							"type" : "number",
-							"default" : 40,
-							"required" : true
+						"Time to Failure" : {
+							"$ref" : "#/definitions/_dist"
 						},
-						"MTTR" : {
-							"description" : "Mean Time To Repair",
-							"type" : "number",
-							"default" : 10,
-							"required" : true
+						"Time to Repair" : {
+							"$ref" : "#/definitions/_dist"
 						},
 						"repairman" : {
 							"description" : "Repairman",
@@ -194,35 +188,6 @@
 					"type" : "string",
 					"title" : "No",
 					"description" : "None"
-				},
-				"_availability" : {
-					"type" : "object",
-					"title" : "Availability",
-					"description" : "Availability",
-					"properties" : {
-						"MTTF" : {
-							"description" : "Mean Time To Failure",
-							"type" : "number",
-							"default" : 40,
-							"required" : true
-						},
-						"MTTR" : {
-							"description" : "Mean Time To Failure",
-							"default" : 10,
-							"type" : "number",
-							"required" : true
-						},
-						"availability" : {
-							"type" : "number",
-							"default" : 0,
-							"required" : true
-						},
-						"repairman" : {
-							"description" : "Repairman",
-							"type" : "string",
-							"required" : true
-						}
-					}
 				}
 			},
 			"_failureDist" : {
@@ -234,18 +199,15 @@
 								"default" : "No",
 								"enum" : [
 									"No",
-									"Fixed",
-									"Availability"
+									"Yes"
 								]
 							}
 						}
 					}, {
 						"oneOf" : [{
-								"$ref" : "#/definitions/distributionTypes/_fixedFailure"
+								"$ref" : "#/definitions/distributionTypes/_failure"
 							}, {
 								"$ref" : "#/definitions/distributionTypes/_no"
-							}, {
-								"$ref" : "#/definitions/distributionTypes/_availability"
 							}
 						]
 					}
