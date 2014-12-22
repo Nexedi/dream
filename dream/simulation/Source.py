@@ -84,7 +84,7 @@ class Source(CoreObject):
     def __init__(self, id, name, interArrivalTime=None, entity='Dream.Part',**kw):
         # Default values
         if not interArrivalTime:
-          interArrivalTime = {'distributionType': 'Fixed', 'mean': 1}
+          interArrivalTime = {'Fixed': {'mean': 1}}
         if 'Normal' in interArrivalTime.keys() and\
               interArrivalTime['Normal'].get('max', None) is None:
           interArrivalTime['Normal']['max'] = interArrivalTime['Normal']['mean'] + 5 * interArrivalTime['Normal']['stdev']
