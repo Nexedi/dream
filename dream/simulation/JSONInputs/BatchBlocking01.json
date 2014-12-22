@@ -1,115 +1,134 @@
 {
-    "edges": {
-        "1": [
-            "Q1",
-            "BD",
-            {}
-        ],
-        "2": [
-            "BD",
-            "M1",
-            {}
-        ],
-        "3": [
-            "M1",
-            "BR",
-            {}
-        ],
-        "4": [
-            "BR",
-            "Q2",
-            {}
-        ],
-        "5": [
-            "Q2",
-            "M2",
-            {}
-        ],
-        "6": [
-            "M2",
-            "E",
-            {}
-        ]		
-    },
-    "general": {
-        "numberOfReplications": 1,
-        "maxSimTime": -1,
-        "trace" : "No",
-        "console": "No"
-    },
-    "nodes": {
-        "Q1": {
-            "_class": "Dream.Queue",
-            "name": "Q1",
-            "element_id": "DreamNode_30",
-            "capacity": 4,
-            "schedulingRule": "FIFO",
-            "wip": [
-                {
-                    "numberOfUnits": 10,
-                    "_class": "Dream.Batch",
-                    "name": "Batch0",
-                    "id": "0"
-                },
-                {
-                    "numberOfUnits": 10,
-                    "_class": "Dream.Batch",
-                    "name": "Batch1",
-                    "id": "1"
-                }
-            ]
-        },
-        "Q2": {
-            "_class": "Dream.Queue",
-            "name": "Q2",
-            "element_id": "DreamNode_30",
-            "capacity": 4,
-            "schedulingRule": "FIFO"
-		},
-        "BD": {
-            "_class": "Dream.BatchDecompositionBlocking",
-            "name": "Deco",
-            "numberOfSubBatches": 2,
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0
-            },
-            "id": "BD"
-        },
-        "M1": {
-            "_class": "Dream.BatchScrapMachine",
-            "name": "M1",
-            "element_id": "DreamNode_8",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0.1
-            },
-            "id": "M1"
-        },
-        "BR": {
-            "_class": "Dream.BatchReassemblyBlocking",
-            "name": "Reassembly",
-            "numberOfSubBatches": 2,
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0
-            },
-            "id": "BR"
-        },
-        "M2": {
-            "_class": "Dream.BatchScrapMachine",
-            "name": "M2",
-            "element_id": "DreamNode_8",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 1
-            },
-            "id": "M2"
-        },
-        "E": {
-            "_class": "Dream.Exit",
-            "name": "Stock",
-            "id": "E1"
-        }
-    }
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": 4, 
+                    "name": "Q1", 
+                    "wip": [
+                         {
+                              "_class": "Dream.Batch", 
+                              "numberOfUnits": 10, 
+                              "name": "Batch0", 
+                              "id": "0"
+                         }, 
+                         {
+                              "_class": "Dream.Batch", 
+                              "numberOfUnits": 10, 
+                              "name": "Batch1", 
+                              "id": "1"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "element_id": "DreamNode_30", 
+                    "_class": "Dream.Queue", 
+                    "schedulingRule": "FIFO"
+               }, 
+               "BD": {
+                    "name": "Deco", 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0
+                         }
+                    }, 
+                    "numberOfSubBatches": 2, 
+                    "interruptions": {}, 
+                    "_class": "Dream.BatchDecompositionBlocking", 
+                    "id": "BD"
+               }, 
+               "Q2": {
+                    "capacity": 4, 
+                    "name": "Q2", 
+                    "interruptions": {}, 
+                    "element_id": "DreamNode_30", 
+                    "_class": "Dream.Queue", 
+                    "schedulingRule": "FIFO"
+               }, 
+               "E": {
+                    "interruptions": {}, 
+                    "_class": "Dream.Exit", 
+                    "name": "Stock", 
+                    "id": "E1"
+               }, 
+               "M1": {
+                    "name": "M1", 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.1
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "element_id": "DreamNode_8", 
+                    "_class": "Dream.BatchScrapMachine", 
+                    "id": "M1"
+               }, 
+               "BR": {
+                    "name": "Reassembly", 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0
+                         }
+                    }, 
+                    "numberOfSubBatches": 2, 
+                    "interruptions": {}, 
+                    "_class": "Dream.BatchReassemblyBlocking", 
+                    "id": "BR"
+               }, 
+               "M2": {
+                    "name": "M2", 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "element_id": "DreamNode_8", 
+                    "_class": "Dream.BatchScrapMachine", 
+                    "id": "M2"
+               }
+          }, 
+          "edge": {
+               "1": {
+                    "source": "Q1", 
+                    "destination": "BD", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "3": {
+                    "source": "M1", 
+                    "destination": "BR", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "2": {
+                    "source": "BD", 
+                    "destination": "M1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "5": {
+                    "source": "Q2", 
+                    "destination": "M2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "4": {
+                    "source": "BR", 
+                    "destination": "Q2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "6": {
+                    "source": "M2", 
+                    "destination": "E", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }
+          }
+     }, 
+     "general": {
+          "trace": "No", 
+          "console": "No", 
+          "numberOfReplications": 1, 
+          "maxSimTime": -1
+     }
 }

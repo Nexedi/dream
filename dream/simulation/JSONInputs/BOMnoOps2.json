@@ -1,251 +1,272 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {},
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "-1",
-        "numberOfReplications": "1",
-        "trace": "No",
-		"console": "No"
-    },
-	"BOM": {
-        "productionOrders": [
-			{
-				"_class": "Dream.Order",
-				"id": "O1",
-				"name": "Order 1",
-				"componentsList": [
-					{
-						"_class": "Dream.OrderDesign",
-						"id": "OD1",
-						"name": "OrderDesign1",
-						"route": [
-							{
-								"sequence": "1",
-								"stationIdsList": [
-									"Q0"
-								]
-							},
-							{
-								"sequence": "1",
-								"processingTime": {
-									"distributionType": "Fixed",
-									"mean": 1.0
-								},
-								"stationIdsList": [
-									"M0"
-								]
-							}
-						]
-					},
-					{
-						"_class": "Dream.OrderComponent",
-						"componentType": "Mold Insert",
-						"id": "C1",
-						"name": "Component1",
-						"route": [
-							{
-								"sequence": "",
-								"stationIdsList": [
-									"OD0"
-								]
-							},
-							{
-								"sequence": "2",
-								"stationIdsList": [
-									"Q1"
-								]
-							},
-							{
-								"sequence": "2",
-								"processingTime": {
-									"distributionType": "Fixed",
-									"mean": "2"
-								},
-								"stationIdsList": [
-									"M1",
-									"M2"
-								]
-							},
-							{
-								"sequence": "6",
-								"stationIdsList": [
-									"AB1"
-								]
-							},
-							{
-								"sequence": "6",
-								"stationIdsList": [
-									"MA1"
-								]
-							}
-						]
-					},
-					{
-						"_class": "Dream.OrderComponent",
-						"componentType": "Misc",
-						"id": "C2",
-						"name": "Component2",
-						"route": [
-							{
-								"sequence": "",
-								"stationIdsList": [
-									"OD0"
-								]
-							},
-							{
-								"sequence": "3",
-								"stationIdsList": [
-									"Q1"
-								]
-							},
-							{
-								"sequence": "3",
-								"processingTime": {
-									"distributionType": "Fixed",
-									"mean": "1"
-								},
-								"stationIdsList": [
-									"M1",
-									"M2"
-								]
-							},
-							{
-								"sequence": "6",
-								"stationIdsList": [
-									"AB1"
-								]
-							},
-							{
-								"sequence": "6",
-								"stationIdsList": [
-									"MA1"
-								]
-							}
-						]
-					},
-					{
-						"_class": "Dream.OrderComponent",
-						"componentType": "K-Standards",
-						"id": "C3",
-						"name": "Component3",
-						"route": [
-							{
-								"sequence": "",
-								"stationIdsList": [
-									"OD0"
-								]
-							},
-							{
-								"sequence": "4",
-								"stationIdsList": [
-									"Q1"
-								]
-							},
-							{
-								"sequence": "4",
-								"requiredParts":[
-									"C2","C1"
-								],
-								"processingTime": {
-									"distributionType": "Fixed",
-									"mean": "3"
-								},
-								"stationIdsList": [
-									"M1",
-									"M2"
-								]
-							},
-							{
-								"sequence": "6",
-								"stationIdsList": [
-									"AB1"
-								]
-							},
-							{
-								"sequence": "6",
-								"stationIdsList": [
-									"MA1"
-								]
-							}
-						]
-					},
-					{
-						"_class": "Dream.Mould",
-						"id": "Mo1",
-						"name": "Mould1",
-						"route": [
-							{
-								"sequence": "6",
-								"processingTime": {
-									"distributionType": "Fixed",
-									"mean": "1"
-								},
-								"stationIdsList": [
-									"MA1"
-								]
-							},
-							{
-								"sequence": "6",
-								"stationIdsList": [
-									"E1"
-								]
-							}
-						]
-					}
-				]
-			}
-		]
-    },
-    "nodes": {
-        "AB1": {
-            "_class": "Dream.MouldAssemblyBuffer",
-            "capacity": -1,
-            "id": "AB1",
-            "isDummy": "0",
-            "name": "Assembly Buffer"
-        },
-        "Q1": {
-            "_class": "Dream.ConditionalBuffer",
-            "isDummy": "0",
-            "name": "Queue1",
-			"wip": [
-                {"id":"C1","sequence":"2"},
-				{"id":"C2","sequence":"3"},
-				{"id":"C3","sequence":"4"}
-            ]
-        },
-        "E1": {
-            "_class": "Dream.ExitJobShop",
-            "name": "Exit"
-        },
-        "M0": {
-            "_class": "Dream.MachineJobShop",
-            "name": "Design"
-        },
-        "M1": {
-            "_class": "Dream.MachineJobShop",
-            "name": "Machine1"
-        },
-        "M2": {
-            "_class": "Dream.MachineJobShop",
-            "name": "Machine2"
-        },
-        "MA1": {
-            "_class": "Dream.MouldAssembly",
-            "id": "MA1",
-            "name": "Assembly"
-        },
-        "OD0": {
-            "_class": "Dream.OrderDecomposition",
-            "name": "Order Decomposition"
-        },
-        "Q0": {
-            "_class": "Dream.ConditionalBuffer",
-            "capacity": -1,
-            "isDummy": "0",
-            "name": "StartQueue"
-        }
-    }
+     "graph": {
+          "node": {
+               "Q1": {
+                    "wip": [
+                         {
+                              "id": "C1", 
+                              "sequence": "2"
+                         }, 
+                         {
+                              "id": "C2", 
+                              "sequence": "3"
+                         }, 
+                         {
+                              "id": "C3", 
+                              "sequence": "4"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.ConditionalBuffer", 
+                    "name": "Queue1", 
+                    "isDummy": "0"
+               }, 
+               "MA1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MouldAssembly", 
+                    "id": "MA1", 
+                    "name": "Assembly"
+               }, 
+               "Q0": {
+                    "interruptions": {}, 
+                    "_class": "Dream.ConditionalBuffer", 
+                    "capacity": -1, 
+                    "name": "StartQueue", 
+                    "isDummy": "0"
+               }, 
+               "OD0": {
+                    "interruptions": {}, 
+                    "_class": "Dream.OrderDecomposition", 
+                    "name": "Order Decomposition"
+               }, 
+               "AB1": {
+                    "capacity": -1, 
+                    "name": "Assembly Buffer", 
+                    "isDummy": "0", 
+                    "interruptions": {}, 
+                    "_class": "Dream.MouldAssemblyBuffer", 
+                    "id": "AB1"
+               }, 
+               "M1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MachineJobShop", 
+                    "name": "Machine1"
+               }, 
+               "M0": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MachineJobShop", 
+                    "name": "Design"
+               }, 
+               "M2": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MachineJobShop", 
+                    "name": "Machine2"
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.ExitJobShop", 
+                    "name": "Exit"
+               }
+          }, 
+          "edge": {}
+     }, 
+     "general": {
+          "console": "No", 
+          "numberOfReplications": "1", 
+          "trace": "No", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "-1", 
+          "_class": "Dream.Configuration"
+     }, 
+     "BOM": {
+          "productionOrders": [
+               {
+                    "componentsList": [
+                         {
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q0"
+                                        ], 
+                                        "sequence": "1"
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 1.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "M0"
+                                        ], 
+                                        "sequence": "1"
+                                   }
+                              ], 
+                              "_class": "Dream.OrderDesign", 
+                              "id": "OD1", 
+                              "name": "OrderDesign1"
+                         }, 
+                         {
+                              "componentType": "Mold Insert", 
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "OD0"
+                                        ], 
+                                        "sequence": ""
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ], 
+                                        "sequence": "2"
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": "2"
+                                        }, 
+                                        "stationIdsList": [
+                                             "M1", 
+                                             "M2"
+                                        ], 
+                                        "sequence": "2"
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "AB1"
+                                        ], 
+                                        "sequence": "6"
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "MA1"
+                                        ], 
+                                        "sequence": "6"
+                                   }
+                              ], 
+                              "_class": "Dream.OrderComponent", 
+                              "id": "C1", 
+                              "name": "Component1"
+                         }, 
+                         {
+                              "componentType": "Misc", 
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "OD0"
+                                        ], 
+                                        "sequence": ""
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ], 
+                                        "sequence": "3"
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": "1"
+                                        }, 
+                                        "stationIdsList": [
+                                             "M1", 
+                                             "M2"
+                                        ], 
+                                        "sequence": "3"
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "AB1"
+                                        ], 
+                                        "sequence": "6"
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "MA1"
+                                        ], 
+                                        "sequence": "6"
+                                   }
+                              ], 
+                              "_class": "Dream.OrderComponent", 
+                              "id": "C2", 
+                              "name": "Component2"
+                         }, 
+                         {
+                              "componentType": "K-Standards", 
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "OD0"
+                                        ], 
+                                        "sequence": ""
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ], 
+                                        "sequence": "4"
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": "3"
+                                        }, 
+                                        "stationIdsList": [
+                                             "M1", 
+                                             "M2"
+                                        ], 
+                                        "requiredParts": [
+                                             "C2", 
+                                             "C1"
+                                        ], 
+                                        "sequence": "4"
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "AB1"
+                                        ], 
+                                        "sequence": "6"
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "MA1"
+                                        ], 
+                                        "sequence": "6"
+                                   }
+                              ], 
+                              "_class": "Dream.OrderComponent", 
+                              "id": "C3", 
+                              "name": "Component3"
+                         }, 
+                         {
+                              "route": [
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": "1"
+                                        }, 
+                                        "stationIdsList": [
+                                             "MA1"
+                                        ], 
+                                        "sequence": "6"
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ], 
+                                        "sequence": "6"
+                                   }
+                              ], 
+                              "_class": "Dream.Mould", 
+                              "id": "Mo1", 
+                              "name": "Mould1"
+                         }
+                    ], 
+                    "_class": "Dream.Order", 
+                    "id": "O1", 
+                    "name": "Order 1"
+               }
+          ]
+     }, 
+     "_class": "Dream.Simulation"
 }

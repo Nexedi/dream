@@ -1,153 +1,170 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {
-        "0": [
-            "S1",
-            "M1",
-            {}
-        ],
-        "1": [
-            "S2",
-            "M2",
-            {}
-        ],
-        "2": [
-            "S3",
-            "M3",
-            {}
-        ],
-        "3": [
-            "M1",
-            "Q1",
-            {}
-        ],
-        "4": [
-            "M2",
-            "Q1",
-            {}
-        ],
-        "5": [
-            "M3",
-            "Q1",
-            {}
-        ],
-        "6": [
-            "M4",
-            "E1",
-            {}
-        ],
-        "7": [
-            "Q1",
-            "M4",
-            {}
-        ]
-    },
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "1440",
-        "numberOfReplications": "1",
-        "trace": "No"
-    },
-    "nodes": {
-        "E1": {
-            "_class": "Dream.Exit",
-            "left": 0.5,
-            "name": "Stock",
-            "top": 0.05688622754491013
-        },
-        "M1": {
-            "_class": "Dream.Machine",
-            "failures": {
-                "failureDistribution": "No"
-            },
-            "left": 0.8636363636363636,
-            "name": "Machine1",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0.25
-            },
-            "top": 0.721556886227545
-        },
-        "M2": {
-            "_class": "Dream.Machine",
-            "failures": {
-                "failureDistribution": "No"
-            },
-            "left": 0.13636363636363635,
-            "name": "Machine2",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 1.5
-            },
-            "top": 0.721556886227545
-        },
-        "M3": {
-            "_class": "Dream.Machine",
-            "failures": {
-                "failureDistribution": "No"
-            },
-            "left": 0.5,
-            "name": "Machine3",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 1.0
-            },
-            "top": 0.721556886227545
-        },
-        "M4": {
-            "_class": "Dream.Machine",
-            "failures": {
-                "failureDistribution": "No"
-            },
-            "left": 0.5,
-            "name": "Machine4",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 1.25
-            },
-            "top": 0.2784431137724551
-        },
-        "Q1": {
-            "_class": "Dream.Queue",
-            "capacity": 1,
-            "isDummy": "0",
-            "left": 0.5,
-            "name": "Q1",
-            "top": 0.5
-        },
-        "S1": {
-            "_class": "Dream.Source",
-            "entity": "Dream.Part",
-            "interArrivalTime": {
-                "distributionType": "Fixed",
-                "mean": 0.5
-            },
-            "left": 0.8636363636363636,
-            "name": "Raw Material 1",
-            "top": 0.9431137724550899
-        },
-        "S2": {
-            "_class": "Dream.Source",
-            "entity": "Dream.Part",
-            "interArrivalTime": {
-                "distributionType": "Fixed",
-                "mean": 1.0
-            },
-            "left": 0.13636363636363635,
-            "name": "Raw Material 2",
-            "top": 0.9431137724550899
-        },
-        "S3": {
-            "_class": "Dream.Source",
-            "entity": "Dream.Part",
-            "interArrivalTime": {
-                "distributionType": "Fixed",
-                "mean": 2.0
-            },
-            "left": 0.5,
-            "name": "Raw Material 3",
-            "top": 0.9431137724550899
-        }
-    }
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": 1, 
+                    "name": "Q1", 
+                    "top": 0.5, 
+                    "isDummy": "0", 
+                    "interruptions": {}, 
+                    "_class": "Dream.Queue", 
+                    "left": 0.5
+               }, 
+               "S3": {
+                    "name": "Raw Material 3", 
+                    "top": 0.9431137724550899, 
+                    "entity": "Dream.Part", 
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "distributionType": "Fixed", 
+                              "mean": 2.0
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Source", 
+                    "left": 0.5
+               }, 
+               "S2": {
+                    "name": "Raw Material 2", 
+                    "top": 0.9431137724550899, 
+                    "entity": "Dream.Part", 
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "distributionType": "Fixed", 
+                              "mean": 1.0
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Source", 
+                    "left": 0.13636363636363635
+               }, 
+               "S1": {
+                    "name": "Raw Material 1", 
+                    "top": 0.9431137724550899, 
+                    "entity": "Dream.Part", 
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "distributionType": "Fixed", 
+                              "mean": 0.5
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Source", 
+                    "left": 0.8636363636363636
+               }, 
+               "M4": {
+                    "name": "Machine4", 
+                    "top": 0.2784431137724551, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.25
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Machine", 
+                    "left": 0.5
+               }, 
+               "M1": {
+                    "name": "Machine1", 
+                    "top": 0.721556886227545, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.25
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Machine", 
+                    "left": 0.8636363636363636
+               }, 
+               "M3": {
+                    "name": "Machine3", 
+                    "top": 0.721556886227545, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.0
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Machine", 
+                    "left": 0.5
+               }, 
+               "M2": {
+                    "name": "Machine2", 
+                    "top": 0.721556886227545, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.5
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Machine", 
+                    "left": 0.13636363636363635
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "top": 0.05688622754491013, 
+                    "_class": "Dream.Exit", 
+                    "name": "Stock", 
+                    "left": 0.5
+               }
+          }, 
+          "edge": {
+               "1": {
+                    "source": "S2", 
+                    "destination": "M2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "0": {
+                    "source": "S1", 
+                    "destination": "M1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "3": {
+                    "source": "M1", 
+                    "destination": "Q1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "2": {
+                    "source": "S3", 
+                    "destination": "M3", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "5": {
+                    "source": "M3", 
+                    "destination": "Q1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "4": {
+                    "source": "M2", 
+                    "destination": "Q1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "7": {
+                    "source": "Q1", 
+                    "destination": "M4", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "6": {
+                    "source": "M4", 
+                    "destination": "E1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }
+          }
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "trace": "No", 
+          "_class": "Dream.Configuration", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "1440", 
+          "numberOfReplications": "1"
+     }
 }

@@ -1,122 +1,141 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {
-        "0": [
-            "Q1",
-            "BD1",
-            {}
-        ],
-        "1": [
-            "BD1",
-            "M1",
-            {}
-        ],
-        "2": [
-            "M1",
-            "Q2",
-            {}
-        ],
-        "3": [
-            "Q2",
-            "M2",
-            {}
-        ],
-        "4": [
-            "M2",
-            "BR1",
-            {}
-        ],
-        "5": [
-            "BR1",
-            "E1",
-            {}
-        ]
-    },
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "-1",
-        "numberOfReplications": "1",
-        "trace": "No"
-    },
-    "nodes": {
-        "BD1": {
-            "_class": "Dream.BatchDecomposition",
-            "left": 0.4414893617021277,
-            "name": "Batch_Decomposition",
-            "numberOfSubBatches": 4,
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0
-            },
-            "top": 0.5909090909090908
-        },
-        "BR1": {
-            "_class": "Dream.BatchReassembly",
-            "left": 0.4414893617021277,
-            "name": "Batch_Reassembly",
-            "numberOfSubBatches": 4,
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0
-            },
-            "top": 0.5909090909090908
-        },
-        "E1": {
-            "_class": "Dream.Exit",
-            "left": 0.2978723404255319,
-            "name": "Stock",
-            "top": 0.045454545454545414
-        },
-        "M1": {
-            "_class": "Dream.BatchScrapMachine",
-            "failures": {},
-            "left": 0.4414893617021277,
-            "name": "Station1",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0.1
-            },
-            "top": 0.5909090909090908
-        },
-        "M2": {
-            "_class": "Dream.BatchScrapMachine",
-            "failures": {},
-            "left": 0.4414893617021277,
-            "name": "Station2",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0.2
-            },
-            "top": 0.5909090909090908
-        },
-        "Q1": {
-            "_class": "Dream.Queue",
-            "capacity": "-1",
-            "left": 0.6968085106382979,
-            "name": "StartQueue",
-            "top": 0.7727272727272727,
-            "wip": [
-                {
-                    "_class": "Dream.Batch",
-                    "name": "Batch1",
-                    "id": "B1",
-                    "numberOfUnits": "80"
-                },
-                {
-                    "_class": "Dream.Batch",
-                    "name": "Batch2",
-                    "id": "B2",
-                    "numberOfUnits": "80"
-                }
-            ]
-        },
-        "Q2": {
-            "_class": "Dream.LineClearance",
-            "capacity": "2",
-            "left": 0.6968085106382979,
-            "name": "Queue1",
-            "top": 0.7727272727272727
-        }
-    }
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": "-1", 
+                    "name": "StartQueue", 
+                    "top": 0.7727272727272727, 
+                    "wip": [
+                         {
+                              "_class": "Dream.Batch", 
+                              "numberOfUnits": "80", 
+                              "name": "Batch1", 
+                              "id": "B1"
+                         }, 
+                         {
+                              "_class": "Dream.Batch", 
+                              "numberOfUnits": "80", 
+                              "name": "Batch2", 
+                              "id": "B2"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.Queue", 
+                    "left": 0.6968085106382979
+               }, 
+               "Q2": {
+                    "capacity": "2", 
+                    "name": "Queue1", 
+                    "top": 0.7727272727272727, 
+                    "interruptions": {}, 
+                    "_class": "Dream.LineClearance", 
+                    "left": 0.6968085106382979
+               }, 
+               "BR1": {
+                    "name": "Batch_Reassembly", 
+                    "top": 0.5909090909090908, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0
+                         }
+                    }, 
+                    "numberOfSubBatches": 4, 
+                    "interruptions": {}, 
+                    "_class": "Dream.BatchReassembly", 
+                    "left": 0.4414893617021277
+               }, 
+               "M1": {
+                    "name": "Station1", 
+                    "top": 0.5909090909090908, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.1
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "failures": {}, 
+                    "_class": "Dream.BatchScrapMachine", 
+                    "left": 0.4414893617021277
+               }, 
+               "M2": {
+                    "name": "Station2", 
+                    "top": 0.5909090909090908, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.2
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "failures": {}, 
+                    "_class": "Dream.BatchScrapMachine", 
+                    "left": 0.4414893617021277
+               }, 
+               "BD1": {
+                    "name": "Batch_Decomposition", 
+                    "top": 0.5909090909090908, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0
+                         }
+                    }, 
+                    "numberOfSubBatches": 4, 
+                    "interruptions": {}, 
+                    "_class": "Dream.BatchDecomposition", 
+                    "left": 0.4414893617021277
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "top": 0.045454545454545414, 
+                    "_class": "Dream.Exit", 
+                    "name": "Stock", 
+                    "left": 0.2978723404255319
+               }
+          }, 
+          "edge": {
+               "1": {
+                    "source": "BD1", 
+                    "destination": "M1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "0": {
+                    "source": "Q1", 
+                    "destination": "BD1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "3": {
+                    "source": "Q2", 
+                    "destination": "M2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "2": {
+                    "source": "M1", 
+                    "destination": "Q2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "5": {
+                    "source": "BR1", 
+                    "destination": "E1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "4": {
+                    "source": "M2", 
+                    "destination": "BR1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }
+          }
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "trace": "No", 
+          "_class": "Dream.Configuration", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "-1", 
+          "numberOfReplications": "1"
+     }
 }

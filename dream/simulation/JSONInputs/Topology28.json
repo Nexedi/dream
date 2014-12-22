@@ -1,87 +1,103 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {
-        "0": [
-            "O1",
-            "M1",
-            {}
-        ],
-        "1": [
-            "O1",
-            "M2",
-            {}
-        ],
-        "2": [
-            "S1",
-            "M1",
-            {}
-        ],
-        "3": [
-            "M1",
-            "M2",
-            {}
-        ],
-        "4": [
-            "M2",
-            "E1",
-            {}
-        ]
-    },
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "1440",
-        "numberOfReplications": "1",
-        "trace": "No"
-    },
-    "nodes": {
-        "E1": {
-            "_class": "Dream.Exit",
-            "left": 0.7083333333333333,
-            "top": 0.05688622754491013
-        },
-        "M1": {
-            "_class": "Dream.Machine",
-            "left": 0.5625,
-            "name": "Machine1",
-            "operationType": "Processing",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 17.0
-            },
-            "top": 0.5
-        },
-        "M2": {
-            "_class": "Dream.Machine",
-            "failures": {},
-            "left": 0.7083333333333333,
-            "loadTime": {},
-            "name": "Machine2",
-            "operationType": "Processing",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 2.0
-            },
-            "setupTime": {},
-            "top": 0.2784431137724551
-        },
-        "O1": {
-            "_class": "Dream.Operator",
-            "capacity": 1,
-            "left": 0.8489583333333334,
-            "name": "Operator1",
-            "top": 0.721556886227545
-        },
-        "S1": {
-            "_class": "Dream.Source",
-            "entity": "Dream.Part",
-            "interArrivalTime": {
-                "distributionType": "Fixed",
-                "mean": 1.5
-            },
-            "left": 0.30208333333333337,
-            "name": "Source",
-            "top": 0.9431137724550899
-        }
-    }
+     "graph": {
+          "node": {
+               "M1": {
+                    "name": "Machine1", 
+                    "top": 0.5, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 17.0
+                         }
+                    }, 
+                    "operationType": "Processing", 
+                    "interruptions": {}, 
+                    "_class": "Dream.Machine", 
+                    "left": 0.5625
+               }, 
+               "S1": {
+                    "name": "Source", 
+                    "top": 0.9431137724550899, 
+                    "entity": "Dream.Part", 
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "distributionType": "Fixed", 
+                              "mean": 1.5
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Source", 
+                    "left": 0.30208333333333337
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "top": 0.05688622754491013, 
+                    "_class": "Dream.Exit", 
+                    "left": 0.7083333333333333
+               }, 
+               "O1": {
+                    "capacity": 1, 
+                    "name": "Operator1", 
+                    "top": 0.721556886227545, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Operator", 
+                    "left": 0.8489583333333334
+               }, 
+               "M2": {
+                    "name": "Machine2", 
+                    "loadTime": {}, 
+                    "top": 0.2784431137724551, 
+                    "setupTime": {}, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 2.0
+                         }
+                    }, 
+                    "operationType": "Processing", 
+                    "interruptions": {}, 
+                    "failures": {}, 
+                    "_class": "Dream.Machine", 
+                    "left": 0.7083333333333333
+               }
+          }, 
+          "edge": {
+               "1": {
+                    "source": "O1", 
+                    "destination": "M2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "0": {
+                    "source": "O1", 
+                    "destination": "M1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "3": {
+                    "source": "M1", 
+                    "destination": "M2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "2": {
+                    "source": "S1", 
+                    "destination": "M1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "4": {
+                    "source": "M2", 
+                    "destination": "E1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }
+          }
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "trace": "No", 
+          "_class": "Dream.Configuration", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "1440", 
+          "numberOfReplications": "1"
+     }
 }

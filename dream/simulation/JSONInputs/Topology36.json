@@ -1,70 +1,79 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {
-        "0": [
-            "S1",
-            "Q1",
-            {}
-        ],
-        "1": [
-            "Q1",
-            "M1",
-            {}
-        ],
-        "2": [
-            "M1",
-            "E1",
-            {}
-        ]
-    },
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "240",
-        "numberOfReplications": "1",
-        "trace": "No"
-    },
-    "nodes": {
-        "E1": {
-            "_class": "Dream.Exit",
-            "left": 0.5,
-            "name": "Stock",
-            "top": 0.10215053763440862
-        },
-        "M1": {
-            "_class": "Dream.Machine",
-            "failures": {
-                "failureDistribution": "No"
-            },
-            "left": 0.5,
-            "name": "Moulding",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0.25
-            },
-            "scheduledMaintenance": {
-                "duration": "60",
-                "start": "120"
-            },
-            "top": 0.5
-        },
-        "Q1": {
-            "_class": "Dream.Queue",
-            "capacity": -1,
-            "id": "Q1",
-            "isDummy": "0",
-            "name": "Queue1"
-        },
-        "S1": {
-            "_class": "Dream.Source",
-            "entity": "Dream.Part",
-            "interArrivalTime": {
-                "distributionType": "Fixed",
-                "mean": 0.5
-            },
-            "left": 0.5,
-            "name": "Raw Material",
-            "top": 0.8978494623655914
-        }
-    }
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": -1, 
+                    "name": "Queue1", 
+                    "isDummy": "0", 
+                    "interruptions": {}, 
+                    "_class": "Dream.Queue", 
+                    "id": "Q1"
+               }, 
+               "M1": {
+                    "scheduledMaintenance": {
+                         "duration": "60", 
+                         "start": "120"
+                    }, 
+                    "name": "Moulding", 
+                    "top": 0.5, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.25
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Machine", 
+                    "left": 0.5
+               }, 
+               "S1": {
+                    "name": "Raw Material", 
+                    "top": 0.8978494623655914, 
+                    "entity": "Dream.Part", 
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "distributionType": "Fixed", 
+                              "mean": 0.5
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Source", 
+                    "left": 0.5
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "top": 0.10215053763440862, 
+                    "_class": "Dream.Exit", 
+                    "name": "Stock", 
+                    "left": 0.5
+               }
+          }, 
+          "edge": {
+               "1": {
+                    "source": "Q1", 
+                    "destination": "M1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "0": {
+                    "source": "S1", 
+                    "destination": "Q1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "2": {
+                    "source": "M1", 
+                    "destination": "E1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }
+          }
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "trace": "No", 
+          "_class": "Dream.Configuration", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "240", 
+          "numberOfReplications": "1"
+     }
 }

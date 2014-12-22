@@ -1,67 +1,72 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {
-        "0": [
-            "Q1",
-            "M1",
-            {}
-        ],
-        "1": [
-            "M1",
-            "E1",
-            {}
-        ]
-    },
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "-1",
-        "numberOfReplications": "1",
-        "trace": "No"
-    },
-    "nodes": {
-        "E1": {
-            "_class": "Dream.Exit",
-            "left": 0.5,
-            "name": "Stock",
-            "top": 0.10215053763440862
-        },
-        "Q1": {
-            "_class": "Dream.Queue",
-            "capacity": 1,
-            "left": 0.4414893617021277,
-            "name": "Q1",
-            "top": 0.40909090909090906,
-            "wip": [
-                {
-                    "_class": "Dream.Batch",
-                    "id": "B2",
-                    "name": "Batch2",
-                    "numberOfUnits": 80
-                }
-            ]
-        },
-        "M1": {
-            "_class": "Dream.BatchScrapMachine",
-            "failures": {
-                "failureDistribution": "No"
-            },
-            "left": 0.5,
-            "name": "Moulding",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0.1
-            },
-            "wip": [
-                {
-                    "_class": "Dream.Batch",
-                    "id": "B1",
-                    "name": "Batch1",
-                    "numberOfUnits": 80,
-                    "unitsToProcess": 40
-                }
-            ],
-            "top": 0.5
-        }
-    }
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": 1, 
+                    "name": "Q1", 
+                    "top": 0.40909090909090906, 
+                    "wip": [
+                         {
+                              "_class": "Dream.Batch", 
+                              "numberOfUnits": 80, 
+                              "id": "B2", 
+                              "name": "Batch2"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.Queue", 
+                    "left": 0.4414893617021277
+               }, 
+               "M1": {
+                    "name": "Moulding", 
+                    "top": 0.5, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.1
+                         }
+                    }, 
+                    "wip": [
+                         {
+                              "unitsToProcess": 40, 
+                              "_class": "Dream.Batch", 
+                              "numberOfUnits": 80, 
+                              "id": "B1", 
+                              "name": "Batch1"
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.BatchScrapMachine", 
+                    "left": 0.5
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "top": 0.10215053763440862, 
+                    "_class": "Dream.Exit", 
+                    "name": "Stock", 
+                    "left": 0.5
+               }
+          }, 
+          "edge": {
+               "1": {
+                    "source": "M1", 
+                    "destination": "E1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "0": {
+                    "source": "Q1", 
+                    "destination": "M1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }
+          }
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "trace": "No", 
+          "_class": "Dream.Configuration", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "-1", 
+          "numberOfReplications": "1"
+     }
 }

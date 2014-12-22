@@ -1,355 +1,377 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {},
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "-1",
-        "numberOfReplications": "1",
-        "trace": "No"
-    },
-    "nodes": {
-        "AB1": {
-            "_class": "Dream.MouldAssemblyBufferManaged",
-            "capacity": -1,
-            "id": "AB1",
-            "isDummy": "0",
-            "name": "Assembly Buffer"
-        },
-        "CAD1": {
-            "_class": "Dream.MachineManagedJob",
-            "name": "CAD Design 1",
-            "operationType": "MT-Load-Setup-Processing"
-        },
-        "CAD2": {
-            "_class": "Dream.MachineManagedJob",
-            "name": "CAD Design 2",
-            "operationType": "MT-Load-Setup-Processing"
-        },
-        "CAM1": {
-            "_class": "Dream.MachineManagedJob",
-            "name": "CAM Design 1",
-            "operationType": "MT-Load-Setup-Processing"
-        },
-        "CAM2": {
-            "_class": "Dream.MachineManagedJob",
-            "name": "CAM Design 2",
-            "operationType": "MT-Load-Setup-Processing"
-        },
-        "E1": {
-            "_class": "Dream.ExitJobShop",
-            "name": "Exit"
-        },
-        "EDM": {
-            "_class": "Dream.MachineManagedJob",
-            "name": "EDM",
-            "operationType": "MT-Load-Setup-Processing"
-        },
-        "IM": {
-            "_class": "Dream.MachineManagedJob",
-            "name": "Mould Injection",
-            "operationType": "MT-Load-Setup-Processing"
-        },
-        "MA1": {
-            "_class": "Dream.MouldAssemblyManaged",
-            "id": "MA1",
-            "name": "Assembly 1",
-            "operationType": "MT-Load-Setup-Processing"
-        },
-        "MA2": {
-            "_class": "Dream.MouldAssemblyManaged",
-            "id": "MA2",
-            "name": "Assembly 2",
-            "operationType": "MT-Load-Setup-Processing"
-        },
-        "MA3": {
-            "_class": "Dream.MouldAssemblyManaged",
-            "id": "MA3",
-            "name": "Assembly 3",
-            "operationType": "MT-Load-Setup-Processing"
-        },
-        "MILL1": {
-            "_class": "Dream.MachineManagedJob",
-            "name": "Milling 1",
-            "operationType": "MT-Load-Setup-Processing"
-        },
-        "MILL2": {
-            "_class": "Dream.MachineManagedJob",
-            "name": "Milling 2",
-            "operationType": "MT-Load-Setup-Processing"
-        },
-        "OD0": {
-            "_class": "Dream.OrderDecomposition",
-            "name": "Order Decomposition"
-        },
-        "OP1": {
-            "_class": "Dream.OperatorManagedJob",
-            "capacity": 1,
-            "name": "Operator1"
-        },
-        "Q0": {
-            "_class": "Dream.QueueManagedJob",
-            "capacity": -1,
-            "isDummy": "0",
-            "name": "StartQueue",
-            "wip": [
-                {
-                    "_class": "Dream.Order",
-                    "componentsList": [
-                        {
-                            "_class": "Dream.OrderComponent",
-                            "componentType": "Basic",
-                            "id": "C1",
-                            "name": "Component1",
-                            "route": [
-                                {
-                                    "stationIdsList": [
-                                        "OD0"
-                                    ]
-                                },
-                                {
-                                    "stationIdsList": [
-                                        "QCAM"
-                                    ]
-                                },
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "2"
-                                    },
-                                    "setupTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "0.5"
-                                    },
-                                    "stationIdsList": [
-                                        "CAM1",
-                                        "CAM2"
-                                    ]
-                                },
-                                {
-                                    "stationIdsList": [
-                                        "QMILL"
-                                    ]
-                                },
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "2"
-                                    },
-                                    "setupTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "0.5"
-                                    },
-                                    "stationIdsList": [
-                                        "MILL1",
-                                        "MILL2"
-                                    ]
-                                },
-                                {
-                                    "stationIdsList": [
-                                        "QEDM"
-                                    ]
-                                },
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "2"
-                                    },
-                                    "setupTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "0.5"
-                                    },
-                                    "stationIdsList": [
-                                        "EDM"
-                                    ]
-                                },
-                                {
-                                    "stationIdsList": [
-                                        "AB1"
-                                    ]
-                                },
-                                {
-                                    "stationIdsList": [
-                                        "MA1",
-                                        "MA2",
-                                        "MA3"
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "_class": "Dream.OrderComponent",
-                            "componentType": "Secondary",
-                            "id": "C2",
-                            "name": "Component2",
-                            "route": [
-                                {
-                                    "stationIdsList": [
-                                        "OD0"
-                                    ]
-                                },
-                                {
-                                    "stationIdsList": [
-                                        "QCAM"
-                                    ]
-                                },
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "1"
-                                    },
-                                    "setupTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "0.6"
-                                    },
-                                    "stationIdsList": [
-                                        "CAM1",
-                                        "CAM2"
-                                    ]
-                                },
-                                {
-                                    "stationIdsList": [
-                                        "QMILL"
-                                    ]
-                                },
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "4"
-                                    },
-                                    "setupTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "0.4"
-                                    },
-                                    "stationIdsList": [
-                                        "MILL1",
-                                        "MILL2"
-                                    ]
-                                },
-                                {
-                                    "stationIdsList": [
-                                        "QEDM"
-                                    ]
-                                },
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "1"
-                                    },
-                                    "setupTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "0.6"
-                                    },
-                                    "stationIdsList": [
-                                        "EDM"
-                                    ]
-                                },
-                                {
-                                    "stationIdsList": [
-                                        "AB1"
-                                    ]
-                                },
-                                {
-                                    "stationIdsList": [
-                                        "MA1",
-                                        "MA2",
-                                        "MA3"
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "_class": "Dream.Mould",
-                            "id": "M1",
-                            "name": "Mould1",
-                            "route": [
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "1"
-                                    },
-                                    "stationIdsList": [
-                                        "MA1",
-                                        "MA2",
-                                        "MA3"
-                                    ]
-                                },
-                                {
-                                    "stationIdsList": [
-                                        "QIM"
-                                    ]
-                                },
-                                {
-                                    "processingTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "2"
-                                    },
-                                    "setupTime": {
-                                        "distributionType": "Fixed",
-                                        "mean": "0.5"
-                                    },
-                                    "stationIdsList": [
-                                        "IM"
-                                    ]
-                                },
-                                {
-                                    "stationIdsList": [
-                                        "E1"
-                                    ]
-                                }
-                            ]
-                        }
-                    ],
-                    "id": "O1",
-                    "manager": "OP1",
-                    "name": "Order1",
-                    "route": [
-                        {
-                            "stationIdsList": [
-                                "Q0"
-                            ]
-                        },
-                        {
-                            "processingTime": {
-                                "distributionType": "Fixed",
-                                "mean": 1.0
-                            },
-                            "setupTime": {
-                                "distributionType": "Fixed",
-                                "mean": 0.5
-                            },
-                            "stationIdsList": [
-                                "CAD1",
-                                "CAD2"
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        "QCAM": {
-            "_class": "Dream.ConditionalBufferManaged",
-            "capacity": -1,
-            "isDummy": "0",
-            "name": "Queue CAM"
-        },
-        "QEDM": {
-            "_class": "Dream.QueueManagedJob",
-            "capacity": -1,
-            "isDummy": "0",
-            "name": "Queue EDM"
-        },
-        "QIM": {
-            "_class": "Dream.QueueManagedJob",
-            "capacity": -1,
-            "isDummy": "0",
-            "name": "Queue Mould Injection"
-        },
-        "QMILL": {
-            "_class": "Dream.QueueManagedJob",
-            "capacity": -1,
-            "isDummy": "0",
-            "name": "Queue Milling"
-        }
-    }
+     "graph": {
+          "node": {
+               "MA1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MouldAssemblyManaged", 
+                    "id": "MA1", 
+                    "operationType": "MT-Load-Setup-Processing", 
+                    "name": "Assembly 1"
+               }, 
+               "CAD1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MachineManagedJob", 
+                    "name": "CAD Design 1", 
+                    "operationType": "MT-Load-Setup-Processing"
+               }, 
+               "CAD2": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MachineManagedJob", 
+                    "name": "CAD Design 2", 
+                    "operationType": "MT-Load-Setup-Processing"
+               }, 
+               "MA2": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MouldAssemblyManaged", 
+                    "id": "MA2", 
+                    "operationType": "MT-Load-Setup-Processing", 
+                    "name": "Assembly 2"
+               }, 
+               "MILL2": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MachineManagedJob", 
+                    "name": "Milling 2", 
+                    "operationType": "MT-Load-Setup-Processing"
+               }, 
+               "Q0": {
+                    "capacity": -1, 
+                    "name": "StartQueue", 
+                    "isDummy": "0", 
+                    "wip": [
+                         {
+                              "name": "Order1", 
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q0"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 1.0
+                                        }, 
+                                        "stationIdsList": [
+                                             "CAD1", 
+                                             "CAD2"
+                                        ], 
+                                        "setupTime": {
+                                             "distributionType": "Fixed", 
+                                             "mean": 0.5
+                                        }
+                                   }
+                              ], 
+                              "id": "O1", 
+                              "manager": "OP1", 
+                              "_class": "Dream.Order", 
+                              "componentsList": [
+                                   {
+                                        "componentType": "Basic", 
+                                        "route": [
+                                             {
+                                                  "stationIdsList": [
+                                                       "OD0"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "stationIdsList": [
+                                                       "QCAM"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "2"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "CAM1", 
+                                                       "CAM2"
+                                                  ], 
+                                                  "setupTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "0.5"
+                                                  }
+                                             }, 
+                                             {
+                                                  "stationIdsList": [
+                                                       "QMILL"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "2"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "MILL1", 
+                                                       "MILL2"
+                                                  ], 
+                                                  "setupTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "0.5"
+                                                  }
+                                             }, 
+                                             {
+                                                  "stationIdsList": [
+                                                       "QEDM"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "2"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "EDM"
+                                                  ], 
+                                                  "setupTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "0.5"
+                                                  }
+                                             }, 
+                                             {
+                                                  "stationIdsList": [
+                                                       "AB1"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "stationIdsList": [
+                                                       "MA1", 
+                                                       "MA2", 
+                                                       "MA3"
+                                                  ]
+                                             }
+                                        ], 
+                                        "_class": "Dream.OrderComponent", 
+                                        "id": "C1", 
+                                        "name": "Component1"
+                                   }, 
+                                   {
+                                        "componentType": "Secondary", 
+                                        "route": [
+                                             {
+                                                  "stationIdsList": [
+                                                       "OD0"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "stationIdsList": [
+                                                       "QCAM"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "1"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "CAM1", 
+                                                       "CAM2"
+                                                  ], 
+                                                  "setupTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "0.6"
+                                                  }
+                                             }, 
+                                             {
+                                                  "stationIdsList": [
+                                                       "QMILL"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "4"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "MILL1", 
+                                                       "MILL2"
+                                                  ], 
+                                                  "setupTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "0.4"
+                                                  }
+                                             }, 
+                                             {
+                                                  "stationIdsList": [
+                                                       "QEDM"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "1"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "EDM"
+                                                  ], 
+                                                  "setupTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "0.6"
+                                                  }
+                                             }, 
+                                             {
+                                                  "stationIdsList": [
+                                                       "AB1"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "stationIdsList": [
+                                                       "MA1", 
+                                                       "MA2", 
+                                                       "MA3"
+                                                  ]
+                                             }
+                                        ], 
+                                        "_class": "Dream.OrderComponent", 
+                                        "id": "C2", 
+                                        "name": "Component2"
+                                   }, 
+                                   {
+                                        "route": [
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "1"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "MA1", 
+                                                       "MA2", 
+                                                       "MA3"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "stationIdsList": [
+                                                       "QIM"
+                                                  ]
+                                             }, 
+                                             {
+                                                  "processingTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "2"
+                                                  }, 
+                                                  "stationIdsList": [
+                                                       "IM"
+                                                  ], 
+                                                  "setupTime": {
+                                                       "distributionType": "Fixed", 
+                                                       "mean": "0.5"
+                                                  }
+                                             }, 
+                                             {
+                                                  "stationIdsList": [
+                                                       "E1"
+                                                  ]
+                                             }
+                                        ], 
+                                        "_class": "Dream.Mould", 
+                                        "id": "M1", 
+                                        "name": "Mould1"
+                                   }
+                              ]
+                         }
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.QueueManagedJob"
+               }, 
+               "OD0": {
+                    "interruptions": {}, 
+                    "_class": "Dream.OrderDecomposition", 
+                    "name": "Order Decomposition"
+               }, 
+               "CAM2": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MachineManagedJob", 
+                    "name": "CAM Design 2", 
+                    "operationType": "MT-Load-Setup-Processing"
+               }, 
+               "CAM1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MachineManagedJob", 
+                    "name": "CAM Design 1", 
+                    "operationType": "MT-Load-Setup-Processing"
+               }, 
+               "MA3": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MouldAssemblyManaged", 
+                    "id": "MA3", 
+                    "operationType": "MT-Load-Setup-Processing", 
+                    "name": "Assembly 3"
+               }, 
+               "MILL1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MachineManagedJob", 
+                    "name": "Milling 1", 
+                    "operationType": "MT-Load-Setup-Processing"
+               }, 
+               "EDM": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MachineManagedJob", 
+                    "name": "EDM", 
+                    "operationType": "MT-Load-Setup-Processing"
+               }, 
+               "AB1": {
+                    "capacity": -1, 
+                    "name": "Assembly Buffer", 
+                    "isDummy": "0", 
+                    "interruptions": {}, 
+                    "_class": "Dream.MouldAssemblyBufferManaged", 
+                    "id": "AB1"
+               }, 
+               "IM": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MachineManagedJob", 
+                    "name": "Mould Injection", 
+                    "operationType": "MT-Load-Setup-Processing"
+               }, 
+               "QMILL": {
+                    "interruptions": {}, 
+                    "_class": "Dream.QueueManagedJob", 
+                    "capacity": -1, 
+                    "name": "Queue Milling", 
+                    "isDummy": "0"
+               }, 
+               "QIM": {
+                    "interruptions": {}, 
+                    "_class": "Dream.QueueManagedJob", 
+                    "capacity": -1, 
+                    "name": "Queue Mould Injection", 
+                    "isDummy": "0"
+               }, 
+               "QCAM": {
+                    "interruptions": {}, 
+                    "_class": "Dream.ConditionalBufferManaged", 
+                    "capacity": -1, 
+                    "name": "Queue CAM", 
+                    "isDummy": "0"
+               }, 
+               "QEDM": {
+                    "interruptions": {}, 
+                    "_class": "Dream.QueueManagedJob", 
+                    "capacity": -1, 
+                    "name": "Queue EDM", 
+                    "isDummy": "0"
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.ExitJobShop", 
+                    "name": "Exit"
+               }, 
+               "OP1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.OperatorManagedJob", 
+                    "capacity": 1, 
+                    "name": "Operator1"
+               }
+          }, 
+          "edge": {}
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "trace": "No", 
+          "_class": "Dream.Configuration", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "-1", 
+          "numberOfReplications": "1"
+     }
 }

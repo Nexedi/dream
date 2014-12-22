@@ -1,73 +1,93 @@
 {
-    "_class": "Dream.Simulation",
-    "edges": {
-        "0": [
-            "S1",
-            "M1",
-            {}
-        ],
-        "1": [
-            "M1",
-            "M2",
-            {}
-        ],
-        "2": [
-            "M2",
-            "E1",
-            {}
-        ]
-    },
-    "general": {
-        "_class": "Dream.Configuration",
-        "confidenceLevel": "0.95",
-        "maxSimTime": "20",
-        "numberOfReplications": "1",
-        "trace": "No",
-		"console": "No"
-    },
-    "nodes": {
-        "E1": {
-            "_class": "Dream.Exit",
-            "left": 0.5,
-            "name": "Stock",
-            "top": 0.10215053763440862
-        },
-        "M1": {
-            "_class": "Dream.Machine",
-            "left": 0.5,
-            "name": "Moulding",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 0.5
-            },
-            "failures": {
-                "MTTF": 5,
-                "MTTR": 4,
-                "distributionType": "Fixed",
-				"deteriorationType": "working"
-            },
-            "top": 0.5
-        },
-        "M2": {
-            "_class": "Dream.Machine",
-            "left": 0.5,
-            "name": "Testing",
-            "processingTime": {
-                "distributionType": "Fixed",
-                "mean": 2
-            },
-            "top": 0.5
-        },
-        "S1": {
-            "_class": "Dream.Source",
-            "entity": "Dream.Part",
-            "interArrivalTime": {
-                "distributionType": "Fixed",
-                "mean": 1
-            },
-            "left": 0.5,
-            "name": "Raw Material",
-            "top": 0.8978494623655914
-        }
-    }
+     "graph": {
+          "node": {
+               "M1": {
+                    "name": "Moulding", 
+                    "top": 0.5, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.5
+                         }
+                    }, 
+                    "interruptions": {
+                         "failure": {
+                              "TTR": {
+                                   "Fixed": {
+                                        "mean": 4
+                                   }
+                              }, 
+                              "TTF": {
+                                   "Fixed": {
+                                        "mean": 5
+                                   }
+                              }
+                         }
+                    }, 
+                    "_class": "Dream.Machine", 
+                    "left": 0.5
+               }, 
+               "S1": {
+                    "name": "Raw Material", 
+                    "top": 0.8978494623655914, 
+                    "entity": "Dream.Part", 
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "distributionType": "Fixed", 
+                              "mean": 1
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Source", 
+                    "left": 0.5
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "top": 0.10215053763440862, 
+                    "_class": "Dream.Exit", 
+                    "name": "Stock", 
+                    "left": 0.5
+               }, 
+               "M2": {
+                    "name": "Testing", 
+                    "top": 0.5, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 2
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Machine", 
+                    "left": 0.5
+               }
+          }, 
+          "edge": {
+               "1": {
+                    "source": "M1", 
+                    "destination": "M2", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "0": {
+                    "source": "S1", 
+                    "destination": "M1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "2": {
+                    "source": "M2", 
+                    "destination": "E1", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }
+          }
+     }, 
+     "_class": "Dream.Simulation", 
+     "general": {
+          "console": "No", 
+          "numberOfReplications": "1", 
+          "trace": "No", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "20", 
+          "_class": "Dream.Configuration"
+     }
 }
