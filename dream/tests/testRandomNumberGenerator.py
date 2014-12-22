@@ -25,30 +25,32 @@ obj = Source(id='dummy_obj', name="Dummy obj to instanciate RNG")
 
 class RandomNumberGeneratorTestCase(TestCase):
     def testFixed(self):
-        rng = RandomNumberGenerator(obj, distributionType='Fixed', mean=32)
+        rng = RandomNumberGenerator(obj, distribution={'Fixed': {'mean':32}})
         self.assertEquals(rng.generateNumber(), 32)
         self.assertEquals(rng.generateNumber(), 32)
 
     def testExp(self):
-        rng = RandomNumberGenerator(obj, distributionType='Exp', mean=10)
+        rng = RandomNumberGenerator(obj, distribution={'Exp': {'mean':10}})
         number = rng.generateNumber()
         # at least we make sure we generate a number
         self.assertTrue(number >= 0)
 
     def testErlang(self):
         rng = RandomNumberGenerator(obj,
-            distributionType='Erlang', alpha=1, beta=2)
+            distribution={'Erlang': {'alpha':1, 'beta':2}})
         number = rng.generateNumber()
         # at least we make sure we generate a number
         self.assertTrue(number >= 0)
 
     def testNormal(self):
         rng = RandomNumberGenerator(obj,
-            distributionType='Normal',
-            min=0,
-            max=3,
-            stdev=.5,
-            mean=2)
+            distribution={'Normal':
+            {              
+            'min':0,
+            'max':3,
+            'stdev':.5,
+            'mean':2}
+            })
         for i in range(10):
             number = rng.generateNumber()
             self.assertTrue(number >= 0)
@@ -56,14 +58,16 @@ class RandomNumberGeneratorTestCase(TestCase):
 
     def testNormalWrongParameter(self):
         rng = RandomNumberGenerator(obj,
-            distributionType='Normal',
-            min=3,
-            max=0, # here min > max
-            stdev=.5,
-            mean=2)
+            distribution={'Normal':
+            {              
+            'min':3,
+            'max':0, # here min > max
+            'stdev':.5,
+            'mean':2}
+            })
         self.assertRaises(ValueError, rng.generateNumber)
 
     def testUnkonwnDistribution(self):
-        rng = RandomNumberGenerator(obj, distributionType='Unknown')
+        rng = RandomNumberGenerator(obj, distribution='Unknown')
         self.assertRaises(ValueError, rng.generateNumber)
 
