@@ -583,7 +583,8 @@
 
   function expandProperties(definition, expanded_class_def, fullSchema) {
     console.log("expanding properties");
-    var property, temp1, temp2;
+    console.log(definition);
+    var property, temp1, temp2, i, subProp, temp3;//, coppy;
     for (property in definition.properties) {
       if (definition.properties.hasOwnProperty(property)) {
         console.log("...");
@@ -598,11 +599,38 @@
                   definition.properties[property], fullSchema
                 );
             console.log("there is a referenced property # #");
+            console.log(property);
             expanded_class_def.properties[property]
               = temp1;
+            if (temp1.allOf) {
+              if (temp1.allOf[1].oneOf) {
+                for (i = 0; i <= temp1.allOf[1].oneOf.length-1; i += 1) {
+                  if (temp1.allOf[1].oneOf[i].properties) {
+                    for (subProp in temp1.allOf[1].oneOf[i].properties) {
+                      if (temp1.allOf[1].oneOf[i]
+                               .properties.hasOwnProperty(subProp)) {
+                        if (temp1.allOf[1].oneOf[i].properties[subProp].$ref) {
+                          console.log("there is referenced sub-property");
+                          console.log(subProp);
+                          temp3
+                            = expandReference(
+                              temp1.allOf[1].oneOf[i].properties[subProp],
+                              fullSchema
+                            );
+                          expanded_class_def.properties[property]
+                            .allOf[1].oneOf[i].properties[subProp]
+                            = temp3;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           } else {
             if (definition.properties[property].properties) {
               console.log("there is a property property --> recursive");
+              console.log(property);
               expanded_class_def.properties[property] = {properties: {}};
               temp2 = expandProperties(
                 definition.properties[property],
@@ -611,6 +639,8 @@
               );
               definition.properties[property] = temp2;
             }
+            console.log("before expanding definition");
+            console.log(property);
             expanded_class_def.properties[property]
               = definition.properties[property];
           }
