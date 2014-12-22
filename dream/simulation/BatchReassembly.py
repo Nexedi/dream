@@ -49,18 +49,17 @@ class BatchReassembly(CoreObject):
         CoreObject.__init__(self,id, name)
         self.type="BatchRassembly"              #String that shows the type of object
         if not processingTime:
-          processingTime = { 'distributionType': 'Fixed',
-                             'mean': 1, }
-        if processingTime['distributionType'] == 'Normal' and\
-              processingTime.get('max', None) is None:
-          processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
+            processingTime = {'Fixed':{'mean': 0 }}
+        if 'Normal' in processingTime.keys() and\
+                processingTime['Normal'].get('max', None) is None:
+            processingTime['Normal']['max'] = float(processingTime['Normal']['mean']) + 5 * float(processingTime['Normal']['stdev'])
           
         # holds the capacity of the object 
         self.numberOfSubBatches=numberOfSubBatches
         # sets the operator resource of the Machine
         self.operator=operator         
         # Sets the attributes of the processing (and failure) time(s)
-        self.rng=RandomNumberGenerator(self, **processingTime)
+        self.rng=RandomNumberGenerator(self, processingTime)
         from Globals import G
         G.BatchReassemblyList.append(self)
         # flag to show if the objects outputs results

@@ -31,10 +31,10 @@ import simpy
 from RandomNumberGenerator import RandomNumberGenerator
 
 class BatchSource(Source):
-    def __init__(self, id, name, interarrivalTime=None,
+    def __init__(self, id, name, interArrivalTime=None,
                  entity='Dream.Batch', batchNumberOfUnits=1, **kw):
         Source.__init__(self, id=id, name=name,
-                        interarrivalTime=interarrivalTime, entity=entity)
+                        interArrivalTime=interArrivalTime, entity=entity)
         self.numberOfUnits = int(batchNumberOfUnits)
         from Globals import G
         G.BatchSourceList.append(self)  
