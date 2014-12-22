@@ -145,7 +145,7 @@
         "S1": {
             "_class": "Dream.Source",
             "entity": "Dream.Part",
-            "interarrivalTime": {
+            "interArrivalTime": {
                 "distributionType": "Fixed",
                 "mean": 0.5
             },
@@ -156,7 +156,7 @@
         "S2": {
             "_class": "Dream.Source",
             "entity": "Dream.Frame",
-            "interarrivalTime": {
+            "interArrivalTime": {
                 "distributionType": "Fixed",
                 "mean": 2.0
             },

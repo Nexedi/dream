@@ -237,7 +237,7 @@
         "S1": {
             "name": "Source",
             "entity": "Dream.Batch",
-            "interarrivalTime": {
+            "interArrivalTime": {
                 "mean": 0.5,
                 "max": null,
                 "min": null,

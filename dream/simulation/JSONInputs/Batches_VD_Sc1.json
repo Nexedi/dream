@@ -1089,7 +1089,7 @@
             "element_id": "DreamNode_23",
             "batchNumberOfUnits": 80,
             "entity": "Dream.Batch",
-            "interarrivalTime": {
+            "interArrivalTime": {
                 "distributionType": "Fixed",
                 "mean": 0.5,
                 "stdev": null,

@@ -93,7 +93,7 @@
             "_class": "Dream.Source",
             "entity": "Dream.Part",
             "id": "S1",
-            "interarrivalTime": {
+            "interArrivalTime": {
                 "distributionType": "Fixed",
                 "mean": 0.75
             },

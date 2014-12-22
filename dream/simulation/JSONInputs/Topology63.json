@@ -44,7 +44,7 @@
       "_class": "Dream.Source", 
       "element_id": "DreamNode_1", 
       "entity": "Dream.Part", 
-      "interarrivalTime": {
+      "interArrivalTime": {
         "distributionType": "Normal",
 		"mean": 1.25,		
         "max": 2, 
