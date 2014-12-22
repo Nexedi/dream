@@ -34,58 +34,22 @@ from ObjectInterruption import ObjectInterruption
 
 class Failure(ObjectInterruption):
     
-    def __init__(self, id='',name='',victim=None, distribution=None, index=0, repairman=None, offshift=False,
+    def __init__(self, id='',name='',victim=None, distribution={}, index=0, repairman=None, offshift=False,
                  deteriorationType='constant',
                  waitOnTie=False,**kw):
         ObjectInterruption.__init__(self,id,name,victim=victim)
-        if distribution:
-            self.distType=distribution.get('distributionType','No')              # the distribution that the failure duration follows
-            self.MTTF=distribution.get('MTTF',60)                  # the MTTF
-            self.MTTR=distribution.get('MTTR',5)                  # the MTTR  
-            self.availability=distribution.get('availability',100)  # the availability      
-        else:
-            self.distType='No'
-            self.MTTF=60
-            self.MTTR=5
-            self.availability=100
+        self.rngTTF=RandomNumberGenerator(self, distribution.get('TTF',{'Fixed':{'mean':100}}))
+        self.rngTTR=RandomNumberGenerator(self, distribution.get('TTR',{'Fixed':{'mean':10}}))
         self.name="F"+str(index)
         self.repairman=repairman        # the resource that may be needed to fix the failure
                                         # if now resource is needed this will be "None" 
         self.type="Failure"
+        
         # shows how the time to failure is measured
         # 'constant' means it counts not matter the state of the victim
         # 'onShift' counts only if the victim is onShift
         # 'working' counts only working time
         self.deteriorationType=deteriorationType
-        
-        if(self.distType=="Availability"):      
-            
-            # -------------------------------------------------------------- 
-            #     the following are used if we have availability defined 
-            #      (as in plant) the erlang is a special case of Gamma. 
-            #        To model the Mu and sigma (that is given in plant) 
-            #    as alpha and beta for gamma you should do the following:
-            #                     beta=(sigma^2)/Mu    
-            #                     alpha=Mu/beta
-            # --------------------------------------------------------------    
-            self.AvailabilityMTTF=self.MTTR*(float(availability)/100)/(1-(float(availability)/100))
-            self.sigma=0.707106781185547*self.MTTR   
-            self.theta=(pow(self.sigma,2))/float(self.MTTR)             
-            self.beta=self.theta
-            self.alpha=(float(self.MTTR)/self.theta)        
-            self.rngTTF=RandomNumberGenerator(self, "Exp")
-            self.rngTTF.avg=self.AvailabilityMTTF
-            self.rngTTR=RandomNumberGenerator(self, "Erlang")
-            self.rngTTR.alpha=self.alpha
-            self.rngTTR.beta=self.beta       
-        else:   
-            # --------------------------------------------------------------
-            #               if the distribution is fixed
-            # --------------------------------------------------------------
-            self.rngTTF=RandomNumberGenerator(self, self.distType)
-            self.rngTTF.mean=self.MTTF
-            self.rngTTR=RandomNumberGenerator(self, self.distType)
-            self.rngTTR.mean=self.MTTR
         # flag used to identify if the time between failures should be counted while the victim is off-shift
         self.offshift=offshift
         # flag to show if the failure will wait on tie with other events before interrupting the victim
