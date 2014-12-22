@@ -55,31 +55,22 @@ class Assembly(CoreObject):
         self.Working=[]
         self.Blockage=[]
 
-        # if input is given in a dictionary
-        if inputsDict:
-            CoreObject.__init__(self, inputsDict=inputsDict)
-        # else read the separate ones
-        else:
-            if not processingTime:
-                processingTime = {'distributionType': 'Fixed',
-                                'mean': 0,
-                                'stdev': 0,
-                                'min': 0,
-                                }
-            if processingTime['distributionType'] == 'Normal' and\
-                  processingTime.get('max', None) is None:
-                processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
+        if not processingTime:
+            processingTime = {'Fixed':{'mean': 0 }}
+        if 'Normal' in processingTime.keys() and\
+                processingTime['Normal'].get('max', None) is None:
+            processingTime['Normal']['max'] = float(processingTime['Normal']['mean']) + 5 * float(processingTime['Normal']['stdev'])
     
-            CoreObject.__init__(self, id, name)
-            self.rng=RandomNumberGenerator(self, **processingTime)
-            
-             # ============================== variable that is used for the loading of machines =============
-            self.exitAssignedToReceiver = False             # by default the objects are not blocked 
-                                                            # when the entities have to be loaded to operatedMachines
-                                                            # then the giverObjects have to be blocked for the time
-                                                            # that the machine is being loaded 
-            from Globals import G
-            G.AssemblyList.append(self)
+        CoreObject.__init__(self, id, name)
+        self.rng=RandomNumberGenerator(self, processingTime)
+        
+         # ============================== variable that is used for the loading of machines =============
+        self.exitAssignedToReceiver = False             # by default the objects are not blocked 
+                                                        # when the entities have to be loaded to operatedMachines
+                                                        # then the giverObjects have to be blocked for the time
+                                                        # that the machine is being loaded 
+        from Globals import G
+        G.AssemblyList.append(self)
 
     # =======================================================================
     # parses inputs if they are given in a dictionary

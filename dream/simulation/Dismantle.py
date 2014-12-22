@@ -67,16 +67,12 @@ class Dismantle(CoreObject):
         CoreObject.__init__(self, id, name)
         from Globals import G
         if not processingTime:
-            processingTime = {'distributionType': 'Fixed',
-                            'mean': 0,
-                            'stdev': 0,
-                            'min': 0,
-                            }
-        if processingTime['distributionType'] == 'Normal' and\
-              processingTime.get('max', None) is None:
-            processingTime['max'] = float(processingTime['mean']) + 5 * float(processingTime['stdev'])
+            processingTime = {'Fixed':{'mean': 0 }}
+        if 'Normal' in processingTime.keys() and\
+                processingTime['Normal'].get('max', None) is None:
+            processingTime['Normal']['max'] = float(processingTime['Normal']['mean']) + 5 * float(processingTime['Normal']['stdev'])
 
-        self.rng=RandomNumberGenerator(self, **processingTime)   
+        self.rng=RandomNumberGenerator(self, processingTime)   
                                     
     #===========================================================================
     # the initialize method
