@@ -65,20 +65,7 @@
                               "mean": 3.0
                          }
                     }, 
-                    "interruptions": {
-                         "failure": {
-                              "TTR": {
-                                   "Fixed": {
-                                        "mean": null
-                                   }
-                              }, 
-                              "TTF": {
-                                   "Fixed": {
-                                        "mean": null
-                                   }
-                              }
-                         }
-                    }, 
+                    "interruptions": {}, 
                     "_class": "Dream.Machine", 
                     "left": 0.296875
                }, 
