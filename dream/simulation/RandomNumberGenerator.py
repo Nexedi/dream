@@ -29,8 +29,20 @@ holds methods for generations of numbers from different distributions
 import math
 
 class RandomNumberGenerator(object):
-    def __init__(self, obj, distribution, mean=0, stdev=0, min=0, max=0, alpha=0, beta=0,
-                 logmean=0,logsd=0, probability=0, shape=0, scale=0, location=0, rate=0,**kw):
+    # data should be given as a dict:
+#     "distribution": {
+#         "distributionType": {
+#             "mean": 10,
+#             "stdev": 1,
+#             "parameterX":X,
+#            ...
+#         },
+    def __init__(self, obj, distribution):   
+        # pop irrelevant keys
+        for key in distribution.keys():
+            if key not in ['Fixed', 'Normal','Exp','Gamma','Logistic','Erlang',
+                           'Geometric','Lognormal','Weibull','Cauchy']:
+                distribution.pop(key, None)
         self.distribution=distribution
         self.distributionType = distribution.keys()[0]
         parameters=distribution[self.distributionType]
