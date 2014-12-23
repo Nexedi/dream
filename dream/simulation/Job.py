@@ -58,14 +58,16 @@ class Job(Entity):                                  # inherits from the Entity c
         self.routeInBOM=False
         # initialOperationTypes dictionary that shows if there are any manual operations to be performed if the Job is initial WIP at a machine
         if self.remainingRoute:
-            initialSetup=self.remainingRoute[0].get('setupTime',{})              # the setupTime dict of the first step
-            initialSetupType=0
-            if initialSetup:
-                initialSetupType=initialSetup.get('operationType',0)
-            initialProcessing=self.remainingRoute[0].get('processingTime',{})    # the processingTime dict of the first step
-            initialProcessingType=0
-            if initialProcessing:
-                initialProcessingType=initialProcessing.get('operationType',0)
+            # the setupType of the first step
+            initialSetupType=self.remainingRoute[0].get('operationType',{}).get('Setup',0)       
+            initialProcessingType=self.remainingRoute[0].get('operationType',{}).get('Processing',0)          
+#             initialSetupType=0
+#             if initialSetup:
+#                 initialSetupType=initialSetup.get('operationType',0)
+#             initialProcessing=self.remainingRoute[0].get('processingTime',{})    # the processingTime dict of the first step
+#             initialProcessingType=0
+#             if initialProcessing:
+#                 initialProcessingType=initialProcessing.get('operationType',0)
             self.initialOperationTypes={"Setup":initialSetupType,
                                         "Processing":initialProcessingType}
 

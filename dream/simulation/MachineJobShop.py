@@ -248,8 +248,8 @@ class MachineJobShop(Machine):
             activeEntity=entity
         # read the definition of the time from the remainingRoute dict
         if not self.isProcessingInitialWIP:
-            time=activeEntity.remainingRoute[0].get(str(typeDict[str(type)]),{})
-            operationType=time.get('operationType', 'not defined')
+            operationTypeDict=activeEntity.remainingRoute[0].get('operationType',{})
+            operationType=operationTypeDict.get(str(type),'not defined')
         else: # if the active entity is initialWIP at the start of simulation
             operationType=activeEntity.initialOperationTypes.get(str(type),'not defined')
         # if the operationType is not 'not defined'
