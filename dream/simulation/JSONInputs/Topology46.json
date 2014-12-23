@@ -16,8 +16,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.25
+                                             "Fixed": {
+                                                  "mean": 0.25
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M1"
@@ -30,15 +31,17 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 1.0
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M2"
                                         ], 
                                         "setupTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 2.0
+                                             "Fixed": {
+                                                  "mean": 2.0
+                                             }
                                         }
                                    }, 
                                    {
@@ -72,15 +75,17 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 1.0
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M2"
                                         ], 
                                         "setupTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.5
+                                             "Fixed": {
+                                                  "mean": 0.5
+                                             }
                                         }
                                    }, 
                                    {
@@ -136,10 +141,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }
