@@ -103,9 +103,9 @@ class MachineJobShop(Machine):
                 processingTime=self.getOperationTime(processingTime)
                 setupTime=activeEntity.route[0].get('setupTime',{})
                 setupTime=self.getOperationTime(setupTime)
-            self.rng=RandomNumberGenerator(self, **processingTime)
+            self.rng=RandomNumberGenerator(self, processingTime)
             self.procTime=self.rng.generateNumber()
-            self.stpRng=RandomNumberGenerator(self, **setupTime)
+            self.stpRng=RandomNumberGenerator(self, setupTime)
         return self.procTime    #this is the processing time for this unique entity 
     
     # =======================================================================
