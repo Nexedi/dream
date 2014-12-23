@@ -185,12 +185,9 @@ class MachineJobShop(Machine):
         #update the remaining route of activeEntity
         activeEntity.remainingRoute.insert(0, {'stationIdsList':[str(self.id)],\
                                                'processingTime':\
-                                                    {'distributionType':'Fixed',\
-                                                     'mean':str(remainingProcessingTime)}})
+                                                    {'Fixed':{'mean':str(remainingProcessingTime)}}})
         activeEntity.remainingRoute.insert(0, {'stationIdsList':[str(self.lastGiver.id)],\
-                                               'processingTime':\
-                                                    {'distributionType':'Fixed',\
-                                                     'mean':'0'}})   
+                                               'processingTime':{'Fixed':{'mean':'0'}}})   
         #set the receiver  as the object where the active entity was preempted from 
         self.receiver=self.lastGiver
         self.next=[self.receiver]
