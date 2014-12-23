@@ -28,8 +28,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 1.0
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M0"
@@ -37,6 +38,7 @@
                                         "sequence": "1"
                                    }
                               ], 
+                              "_class": "Dream.Order", 
                               "componentsList": [
                                    {
                                         "componentType": "Mold Insert", 
@@ -55,8 +57,9 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "2"
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "M1", 
@@ -98,8 +101,9 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "1"
+                                                       "Fixed": {
+                                                            "mean": "1"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "M1", 
@@ -141,8 +145,9 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "3"
+                                                       "Fixed": {
+                                                            "mean": "3"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "M1", 
@@ -175,8 +180,9 @@
                                         "route": [
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "1"
+                                                       "Fixed": {
+                                                            "mean": "1"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "MA1"
@@ -195,9 +201,8 @@
                                         "name": "Mould1"
                                    }
                               ], 
-                              "_class": "Dream.Order", 
-                              "id": "O1", 
-                              "name": "Order1"
+                              "name": "Order1", 
+                              "id": "O1"
                          }
                     ], 
                     "interruptions": {}, 
