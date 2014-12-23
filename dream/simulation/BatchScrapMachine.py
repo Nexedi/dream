@@ -59,10 +59,9 @@ class BatchScrapMachine(Machine):
 
         # set the attributes of the scrap quantity distribution
         if not scrapQuantity:
-            scrapQuantity = {'distributionType': 'Fixed',
-                            'mean': 0}
+            scrapQuantity = {'Fixed':{'mean': 0}}
             
-        self.scrapRng=RandomNumberGenerator(self, **scrapQuantity)
+        self.scrapRng=RandomNumberGenerator(self, scrapQuantity)
         from Globals import G
         G.BatchScrapMachineList.append(self)
 
