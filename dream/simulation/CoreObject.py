@@ -758,7 +758,7 @@ class CoreObject(ManPyObject):
             if activeEntity.remainingProcessingTime:
                 remainingProcessingTime=activeEntity.remainingProcessingTime
                 from RandomNumberGenerator import RandomNumberGenerator
-                initialWIPrng=RandomNumberGenerator(self, **remainingProcessingTime)
+                initialWIPrng=RandomNumberGenerator(self, remainingProcessingTime)
                 return initialWIPrng.generateNumber()
         return self.rng.generateNumber()           # this is if we have a default processing time for all the entities
     
