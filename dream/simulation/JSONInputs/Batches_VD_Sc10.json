@@ -168,7 +168,8 @@
                                    "Fixed": {
                                         "mean": 150
                                    }
-                              }
+                              },
+							  "waitOnTie":1
                          }
                     }, 
                     "element_id": "DreamNode_32", 
@@ -861,7 +862,8 @@
                                    "Fixed": {
                                         "mean": 100
                                    }
-                              }
+                              },
+							  "waitOnTie":1
                          }
                     }, 
                     "element_id": "DreamNode_14", 
@@ -1298,7 +1300,8 @@
                                    "Fixed": {
                                         "mean": 90
                                    }
-                              }
+                              },
+							  "waitOnTie":1
                          }
                     }, 
                     "element_id": "DreamNode_7", 
