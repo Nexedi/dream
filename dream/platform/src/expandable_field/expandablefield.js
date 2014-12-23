@@ -27,6 +27,7 @@
     var i, properties_dict,
       sub_title, sub_type, in_type, default_value, previous_value,
       labels = [], lbls, inps = [], inputs, j,
+      index, corresponding_input, sub_gadget_list = [], old_title,
       recent_occupied = [],
       recent_occupied_labels = [],
       prop_name = gadget.props.definition.property_def.title;
@@ -37,8 +38,26 @@
     gadget.props.element.children[1].innerHTML = prop_name;
     gadget.props.element.children[1].setAttribute("for", prop_name);
     // sub fields set props.key correctly
+    // find any sub_sub_gadgets if any
     for (j = 0; j <= gadget.props.field_gadget_list.length-1; j +=1) {
       gadget.props.field_gadget_list[j].props.key = prop_name;
+      if (gadget.props.field_gadget_list[j].props.field_gadget_list) {
+        for (i = 0;
+             i <= gadget.props.field_gadget_list[j]
+                        .props.field_gadget_list.length-1;
+             i += 1) {
+          // if the sub-gadget has itself a field_gadget_list : 
+          //  thus is a expandable field itself
+          if (gadget.props.field_gadget_list[j]
+              .props.field_gadget_list[i].props) {
+            if (gadget.props.field_gadget_list[j]
+                .props.field_gadget_list[i].props.field_gadget_list) {
+              sub_gadget_list.push(gadget.props.field_gadget_list[j]
+                                         .props.field_gadget_list[i]);
+            }
+          }
+        }
+      }
     }
     // un-hide the title of the field
     gadget.props.element.children[1].style.display = '';
@@ -66,14 +85,39 @@
         sub_title = Object.keys(properties_dict)[i];
         console.log("sub_title");
         console.log(sub_title);
-        sub_type = properties_dict[sub_title].type;
+        sub_type = properties_dict[sub_title].type ||
+          (properties_dict[sub_title].allOf ?
+            "allOf" : undefined);
         // if the gadget contains expandable inputs (allOf)
         // find the labels of that inputs
         if (properties_dict[sub_title].allOf) {
           for (j = 0; j <= labels.length-1; j += 1) {
-            if (labels[j].getAttribute("for").split("_")[0] === "allOf") {
-              if (!(recent_occupied_labels.indexOf(labels[j]) > -1)) {
+
+            if (!(recent_occupied_labels.indexOf(labels[j]) > -1)) {
+              // for that label, find if it is assigned to any input
+              // proceed only if no input is assigned to it
+              corresponding_input = false;
+              for (index = 0; index <= inps.length-1; index += 1) {
+                if (labels[j].getAttribute("for")
+                    === inps[index].getAttribute("title")) {
+                  corresponding_input = true;
+                }
+              }
+              if (! corresponding_input) {
+                old_title 
+                  = JSON.parse(JSON.stringify(labels[j].getAttribute("for")));
+                // if the old title of the label is the same with the key
+                // of the subsubgadget then update the key of the subsubgadget
+                for (index = 0;
+                     index <= sub_gadget_list.length-1;
+                     index += 1) {
+                  if (sub_gadget_list[index].props.key === old_title) {
+                    sub_gadget_list[index].props.key = sub_title;
+                    break;
+                  }
+                }
                 labels[j].innerHTML = sub_title;
+                labels[j].setAttribute("for", sub_title);
                 recent_occupied_labels.push(labels[j]);
                 break;
               }
@@ -115,9 +159,12 @@
                   recent_occupied.push(inps[j]);
 				  // find the label for that input
                   inps[j].parentNode.parentNode
-                      .previousSibling.previousSibling.innerHTML = sub_title;
+                    .previousSibling.previousSibling.innerHTML = sub_title;
+                  inps[j].parentNode.parentNode
+                    .previousSibling.previousSibling
+                    .setAttribute("for", sub_title);
                   recent_occupied_labels.push(inps[j].parentNode.parentNode
-                      .previousSibling.previousSibling);
+                    .previousSibling.previousSibling);
                   // present them
                   inps[j].parentNode.parentNode
                       .previousSibling.previousSibling.style.display = '';
@@ -502,6 +549,7 @@
         .push(function () { return RSVP.all(promise_list); })
         .push(function (result_list) {
           console.log("Retrieving results from sub_fields");
+          console.log("[*](/)[*]");
           console.log(result_list);
           var name, result = {}, content = result;
           if (gadget.props.key) {
