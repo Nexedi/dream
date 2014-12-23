@@ -33,7 +33,8 @@
                                    "Fixed": {
                                         "mean": 7
                                    }
-                              }
+                              },
+							  "deteriorationType": "onShift"
                          }
                     }, 
                     "_class": "Dream.Machine", 
