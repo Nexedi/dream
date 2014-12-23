@@ -27,8 +27,9 @@
                "M1": {
                     "name": "Machine1", 
                     "loadTime": {
-                         "distributionType": "Fixed", 
-                         "mean": 0.0
+                         "Fixed": {
+                              "mean": 0.0
+                         }
                     }, 
                     "processingTime": {
                          "Fixed": {
@@ -42,8 +43,9 @@
                "M2": {
                     "name": "Machine2", 
                     "loadTime": {
-                         "distributionType": "Fixed", 
-                         "mean": 0.0
+                         "Fixed": {
+                              "mean": 0.0
+                         }
                     }, 
                     "processingTime": {
                          "Fixed": {
@@ -51,8 +53,8 @@
                          }
                     }, 
                     "operationType": "MT-Load-Processing", 
-                    "interruptions": {}, 
                     "failures": {}, 
+                    "interruptions": {}, 
                     "_class": "Dream.Machine"
                }, 
                "EV": {
@@ -60,12 +62,12 @@
                     "argumentDict": "{}", 
                     "interval": 10, 
                     "stop": -1, 
-                    "id": "EV", 
+                    "method": "Dream.ManPyObject.requestAllocation", 
                     "start": 0, 
                     "interruptions": {}, 
                     "element_id": "DreamNode_6", 
                     "_class": "Dream.EventGenerator", 
-                    "method": "Dream.ManPyObject.requestAllocation"
+                    "id": "EV"
                }, 
                "E1": {
                     "interruptions": {}, 
