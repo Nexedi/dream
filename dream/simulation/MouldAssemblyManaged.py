@@ -230,11 +230,10 @@ class MouldAssemblyManaged(MachineManagedJob):
                          'the assembler must be in the mould-to-be-created route\' initial step'
             processingTime=firstStep['processingTime']  
             # update the activeObject's processing time according to the readings in the mould's route
-            self.distType=processingTime.get('distributionType','not found')
-            self.procTime=float(processingTime.get('mean', 0))
+            self.distType=processingTime.keys()[0]
+            self.procTime=float(processingTime[self.distType].get('mean', 0))
             # update the first step of the route with the activeObjects id as sole element of the stationIdsList
-            route.insert(0, {'stationIdsList':[str(self.id)],'processingTime':{'distributionType':str(self.distType),\
-                                                                               'mean':str(self.procTime)}})
+            route.insert(0, {'stationIdsList':[str(self.id)],'processingTime':{str(self.distType):{'mean':str(self.procTime)}}})
             #Below it is to assign an exit if it was not assigned in JSON
             #have to talk about it with NEX
             exitAssigned=False
