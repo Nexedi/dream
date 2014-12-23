@@ -16,8 +16,9 @@
                               "route": [
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.0
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "Q0"
@@ -25,21 +26,24 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 1.0
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M0"
                                         ]
                                    }
                               ], 
+                              "_class": "Dream.Order", 
                               "componentsList": [
                                    {
                                         "route": [
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0"
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "OD0"
@@ -47,8 +51,9 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0"
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "Q1"
@@ -56,8 +61,9 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "2"
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "M1"
@@ -65,8 +71,9 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0"
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "AB1"
@@ -74,8 +81,9 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0"
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "MA1"
@@ -90,8 +98,9 @@
                                         "route": [
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0"
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "OD0"
@@ -99,8 +108,9 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0"
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "Q1"
@@ -108,8 +118,9 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "1"
+                                                       "Fixed": {
+                                                            "mean": "1"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "M1"
@@ -117,8 +128,9 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0"
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "AB1"
@@ -126,8 +138,9 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0"
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "MA1"
@@ -142,8 +155,9 @@
                                         "route": [
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "1"
+                                                       "Fixed": {
+                                                            "mean": "1"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "MA1"
@@ -151,8 +165,9 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0"
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "E1"
@@ -164,9 +179,8 @@
                                         "name": "Mould1"
                                    }
                               ], 
-                              "_class": "Dream.Order", 
-                              "id": "O1", 
-                              "name": "Order1"
+                              "name": "Order1", 
+                              "id": "O1"
                          }
                     ], 
                     "interruptions": {}, 
@@ -212,10 +226,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }
