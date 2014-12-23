@@ -15,10 +15,13 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 1.0
+											"Fixed": {
+												"mean": 1
+											}
                                         }, 
+										"operationType": {
+											"Processing": 1
+										}, 
                                         "stationIdsList": [
                                              "M1"
                                         ]
@@ -30,10 +33,13 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "operationType": 0, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 3.0
+											"Fixed": {
+												"mean": 3
+											}
                                         }, 
+										"operationType": {
+											"Processing": 0
+										}, 
                                         "stationIdsList": [
                                              "M3"
                                         ]
@@ -45,10 +51,13 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 2.0
+											"Fixed": {
+												"mean": 2
+											}
                                         }, 
+										"operationType": {
+											"Processing": 1
+										}, 
                                         "stationIdsList": [
                                              "M2"
                                         ]
