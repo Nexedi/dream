@@ -26,8 +26,9 @@
                "M1": {
                     "name": "Machine1", 
                     "scrapQuantity": {
-                         "distributionType": "Fixed", 
-                         "mean": "2"
+                         "Fixed": {
+                              "mean": 2.0
+                         }
                     }, 
                     "processingTime": {
                          "Fixed": {
@@ -41,8 +42,9 @@
                "M2": {
                     "name": "Machine2", 
                     "scrapQuantity": {
-                         "distributionType": "Fixed", 
-                         "mean": "2"
+                         "Fixed": {
+                              "mean": 2.0
+                         }
                     }, 
                     "processingTime": {
                          "Fixed": {
