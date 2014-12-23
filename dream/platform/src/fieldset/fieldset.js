@@ -144,6 +144,8 @@
       return RSVP.Queue()
         .push(function () { return RSVP.all(promise_list); })
         .push(function (result_list) {
+          console.log("(*)(/)(*)");
+          console.log(result_list);
           var name, result = {}, content = result;
           if (gadget.props.key) {
             content = result[gadget.props.key] = {};
