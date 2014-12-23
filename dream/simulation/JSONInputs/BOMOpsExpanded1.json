@@ -264,15 +264,19 @@
                                              "CAD2"
                                         ], 
                                         "processingTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 1
+											"Fixed": {
+												"mean": 1
+											}
                                         }, 
                                         "setupTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.5
+											"Fixed": {
+												"mean": 0.5
+											}
                                         }, 
+										"operationType": {
+											"Processing": 1,
+											"Setup":1
+										},
                                         "sequence": "1"
                                    }
                               ], 
@@ -300,17 +304,21 @@
                                         "stationIdsList": [
                                              "CAM1", 
                                              "CAM2"
-                                        ], 
+                                        ],
                                         "processingTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 2
+											"Fixed": {
+												"mean": 2
+											}
                                         }, 
                                         "setupTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.5
+											"Fixed": {
+												"mean": 0.5
+											}
                                         }, 
+										"operationType": {
+											"Processing": 1,
+											"Setup":1
+										},
                                         "sequence": "2"
                                    }, 
                                    {
@@ -326,15 +334,19 @@
                                              "MILL2"
                                         ], 
                                         "processingTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 2
+											"Fixed": {
+												"mean": 2
+											}
                                         }, 
                                         "setupTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.5
+											"Fixed": {
+												"mean": 0.5
+											}
                                         }, 
+										"operationType": {
+											"Processing": 1,
+											"Setup":1
+										},
                                         "sequence": "3"
                                    }, 
                                    {
@@ -349,15 +361,19 @@
                                              "EDM"
                                         ], 
                                         "processingTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 2
+											"Fixed": {
+												"mean": 2
+											}
                                         }, 
                                         "setupTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.5
+											"Fixed": {
+												"mean": 0.5
+											}
                                         }, 
+										"operationType": {
+											"Processing": 1,
+											"Setup":1
+										},
                                         "sequence": "4"
                                    }, 
                                    {
@@ -401,15 +417,19 @@
                                              "CAM2"
                                         ], 
                                         "processingTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 1
+											"Fixed": {
+												"mean": 1
+											}
                                         }, 
                                         "setupTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.6
+											"Fixed": {
+												"mean": 0.6
+											}
                                         }, 
+										"operationType": {
+											"Processing": 1,
+											"Setup":1
+										},
                                         "sequence": "3"
                                    }, 
                                    {
@@ -425,15 +445,19 @@
                                              "MILL2"
                                         ], 
                                         "processingTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 4
+											"Fixed": {
+												"mean": 4
+											}
                                         }, 
                                         "setupTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.4
+											"Fixed": {
+												"mean": 0.4
+											}
                                         }, 
+										"operationType": {
+											"Processing": 1,
+											"Setup":1
+										},
                                         "sequence": "4"
                                    }, 
                                    {
@@ -448,15 +472,19 @@
                                              "EDM"
                                         ], 
                                         "processingTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 1
+											"Fixed": {
+												"mean": 1
+											}
                                         }, 
                                         "setupTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.6
+											"Fixed": {
+												"mean": 0.6
+											}
                                         }, 
+										"operationType": {
+											"Processing": 1,
+											"Setup":1
+										}, 
                                         "sequence": "5"
                                    }, 
                                    {
@@ -488,10 +516,13 @@
                                              "MA3"
                                         ], 
                                         "processingTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 1
+											"Fixed": {
+												"mean": 1
+											}
                                         }, 
+										"operationType": {
+											"Processing": 1
+										},
                                         "sequence": "6"
                                    }, 
                                    {
@@ -506,15 +537,19 @@
                                              "IM"
                                         ], 
                                         "processingTime": {
-                                             "operationType": 0, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 2
+											"Fixed": {
+												"mean": 2
+											}
                                         }, 
                                         "setupTime": {
-                                             "operationType": 1, 
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.5
+											"Fixed": {
+												"mean": 0.5
+											}
                                         }, 
+										"operationType": {
+											"Processing": 0,
+											"Setup":1
+										},
                                         "sequence": "7"
                                    }, 
                                    {
