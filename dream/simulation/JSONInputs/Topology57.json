@@ -27,11 +27,11 @@
                     "operationType": "MT-Load-Setup-Processing", 
                     "name": "Assembly 2"
                }, 
-               "MILL2": {
+               "OP1": {
                     "interruptions": {}, 
-                    "_class": "Dream.MachineManagedJob", 
-                    "name": "Milling 2", 
-                    "operationType": "MT-Load-Setup-Processing"
+                    "_class": "Dream.OperatorManagedJob", 
+                    "capacity": 1, 
+                    "name": "Operator1"
                }, 
                "Q0": {
                     "capacity": -1, 
@@ -48,16 +48,18 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 1.0
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "CAD1", 
                                              "CAD2"
                                         ], 
                                         "setupTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.5
+                                             "Fixed": {
+                                                  "mean": 0.5
+                                             }
                                         }
                                    }
                               ], 
@@ -80,16 +82,18 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "2"
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "CAM1", 
                                                        "CAM2"
                                                   ], 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.5"
+                                                       "Fixed": {
+                                                            "mean": "0.5"
+                                                       }
                                                   }
                                              }, 
                                              {
@@ -99,16 +103,18 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "2"
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "MILL1", 
                                                        "MILL2"
                                                   ], 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.5"
+                                                       "Fixed": {
+                                                            "mean": "0.5"
+                                                       }
                                                   }
                                              }, 
                                              {
@@ -118,15 +124,17 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "2"
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "EDM"
                                                   ], 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.5"
+                                                       "Fixed": {
+                                                            "mean": "0.5"
+                                                       }
                                                   }
                                              }, 
                                              {
@@ -161,16 +169,18 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "1"
+                                                       "Fixed": {
+                                                            "mean": "1"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "CAM1", 
                                                        "CAM2"
                                                   ], 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.6"
+                                                       "Fixed": {
+                                                            "mean": "0.6"
+                                                       }
                                                   }
                                              }, 
                                              {
@@ -180,16 +190,18 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "4"
+                                                       "Fixed": {
+                                                            "mean": "4"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "MILL1", 
                                                        "MILL2"
                                                   ], 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.4"
+                                                       "Fixed": {
+                                                            "mean": "0.4"
+                                                       }
                                                   }
                                              }, 
                                              {
@@ -199,15 +211,17 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "1"
+                                                       "Fixed": {
+                                                            "mean": "1"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "EDM"
                                                   ], 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.6"
+                                                       "Fixed": {
+                                                            "mean": "0.6"
+                                                       }
                                                   }
                                              }, 
                                              {
@@ -231,8 +245,9 @@
                                         "route": [
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "1"
+                                                       "Fixed": {
+                                                            "mean": "1"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "MA1", 
@@ -247,15 +262,17 @@
                                              }, 
                                              {
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "2"
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
                                                   }, 
                                                   "stationIdsList": [
                                                        "IM"
                                                   ], 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.5"
+                                                       "Fixed": {
+                                                            "mean": "0.5"
+                                                       }
                                                   }
                                              }, 
                                              {
@@ -291,12 +308,11 @@
                     "name": "CAM Design 1", 
                     "operationType": "MT-Load-Setup-Processing"
                }, 
-               "MA3": {
+               "MILL2": {
                     "interruptions": {}, 
-                    "_class": "Dream.MouldAssemblyManaged", 
-                    "id": "MA3", 
-                    "operationType": "MT-Load-Setup-Processing", 
-                    "name": "Assembly 3"
+                    "_class": "Dream.MachineManagedJob", 
+                    "name": "Milling 2", 
+                    "operationType": "MT-Load-Setup-Processing"
                }, 
                "MILL1": {
                     "interruptions": {}, 
@@ -317,6 +333,13 @@
                     "interruptions": {}, 
                     "_class": "Dream.MouldAssemblyBufferManaged", 
                     "id": "AB1"
+               }, 
+               "MA3": {
+                    "interruptions": {}, 
+                    "_class": "Dream.MouldAssemblyManaged", 
+                    "id": "MA3", 
+                    "operationType": "MT-Load-Setup-Processing", 
+                    "name": "Assembly 3"
                }, 
                "IM": {
                     "interruptions": {}, 
@@ -356,22 +379,16 @@
                     "interruptions": {}, 
                     "_class": "Dream.ExitJobShop", 
                     "name": "Exit"
-               }, 
-               "OP1": {
-                    "interruptions": {}, 
-                    "_class": "Dream.OperatorManagedJob", 
-                    "capacity": 1, 
-                    "name": "Operator1"
                }
           }, 
           "edge": {}
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }

@@ -111,10 +111,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "7", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "7", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }
