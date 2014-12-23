@@ -304,16 +304,13 @@ def createObjectInterruptions():
             G.FailureList.append(F)
         # if there are periodic maintenances assigned 
         # initiate them   
-        periodicMaintenance=element.get('periodicMaintenance', None)
+        periodicMaintenance=element.get('interruptions',{}).get('periodicMaintenance', None)
         if periodicMaintenance:
             distributionType=periodicMaintenance.get('distributionType', 'No')
-            if distributionType=='No':
-                pass
-            else:
-                victim=Globals.findObjectById(element['id'])
-                PM=PeriodicMaintenance(victim=victim, distribution=periodicMaintenance, repairman=victim.repairman)
-                G.ObjectInterruptionList.append(PM)
-                G.PeriodicMaintenanceList.append(PM)
+            victim=Globals.findObjectById(element['id'])
+            PM=PeriodicMaintenance(victim=victim, distribution=periodicMaintenance, repairman=victim.repairman)
+            G.ObjectInterruptionList.append(PM)
+            G.PeriodicMaintenanceList.append(PM)
         # if there is a shift pattern defined 
         # initiate them             
         shift=element.get('shift', {})
