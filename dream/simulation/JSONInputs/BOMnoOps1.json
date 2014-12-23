@@ -62,14 +62,7 @@
           }, 
           "edge": {}
      }, 
-     "general": {
-          "console": "No", 
-          "numberOfReplications": "1", 
-          "trace": "No", 
-          "confidenceLevel": "0.95", 
-          "maxSimTime": "-1", 
-          "_class": "Dream.Configuration"
-     }, 
+     "_class": "Dream.Simulation", 
      "BOM": {
           "productionOrders": [
                {
@@ -84,8 +77,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 1.0
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M0"
@@ -114,8 +108,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": "2"
+                                             "Fixed": {
+                                                  "mean": "2"
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M1", 
@@ -157,8 +152,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": "1"
+                                             "Fixed": {
+                                                  "mean": "1"
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M1", 
@@ -200,8 +196,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": "3"
+                                             "Fixed": {
+                                                  "mean": "3"
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M1", 
@@ -234,8 +231,9 @@
                               "route": [
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": "1"
+                                             "Fixed": {
+                                                  "mean": "1"
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "MA1"
@@ -260,5 +258,12 @@
                }
           ]
      }, 
-     "_class": "Dream.Simulation"
+     "general": {
+          "console": "No", 
+          "numberOfReplications": "1", 
+          "trace": "No", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "-1", 
+          "_class": "Dream.Configuration"
+     }
 }
