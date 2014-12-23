@@ -14,6 +14,31 @@
                     "isDummy": "0", 
                     "wip": [
                          {
+                              "name": "Order1", 
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q0"
+                                        ], 
+                                        "stepNumber": "0"
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "CAD1", 
+                                             "CAD2"
+                                        ], 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": "1"
+                                             }
+                                        }, 
+                                        "stepNumber": "1"
+                                   }
+                              ], 
+                              "id": "O1", 
+                              "priority": "1", 
+                              "manager": "OP1", 
+                              "_class": "Dream.Order", 
                               "componentsList": [
                                    {
                                         "componentType": "Basic", 
@@ -36,8 +61,9 @@
                                                        "CAM2"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "2"
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
                                                   }, 
                                                   "stepNumber": "2"
                                              }, 
@@ -53,12 +79,14 @@
                                                        "MILL2"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "2"
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
                                                   }, 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.5"
+                                                       "Fixed": {
+                                                            "mean": "0.5"
+                                                       }
                                                   }, 
                                                   "stepNumber": "4"
                                              }, 
@@ -73,12 +101,14 @@
                                                        "EDM"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "2"
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
                                                   }, 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.5"
+                                                       "Fixed": {
+                                                            "mean": "0.5"
+                                                       }
                                                   }, 
                                                   "stepNumber": "6"
                                              }, 
@@ -122,8 +152,9 @@
                                                        "CAM2"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "1"
+                                                       "Fixed": {
+                                                            "mean": "1"
+                                                       }
                                                   }, 
                                                   "stepNumber": "2"
                                              }, 
@@ -139,12 +170,14 @@
                                                        "MILL2"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "4"
+                                                       "Fixed": {
+                                                            "mean": "4"
+                                                       }
                                                   }, 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.4"
+                                                       "Fixed": {
+                                                            "mean": "0.4"
+                                                       }
                                                   }, 
                                                   "stepNumber": "4"
                                              }, 
@@ -159,12 +192,14 @@
                                                        "EDM"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "1"
+                                                       "Fixed": {
+                                                            "mean": "1"
+                                                       }
                                                   }, 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.6"
+                                                       "Fixed": {
+                                                            "mean": "0.6"
+                                                       }
                                                   }, 
                                                   "stepNumber": "6"
                                              }, 
@@ -196,8 +231,9 @@
                                                        "MA3"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "1"
+                                                       "Fixed": {
+                                                            "mean": "1"
+                                                       }
                                                   }, 
                                                   "stepNumber": "0"
                                              }, 
@@ -212,12 +248,14 @@
                                                        "IM"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "2"
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
                                                   }, 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.5"
+                                                       "Fixed": {
+                                                            "mean": "0.5"
+                                                       }
                                                   }, 
                                                   "stepNumber": "2"
                                              }, 
@@ -232,8 +270,10 @@
                                         "id": "M1O1", 
                                         "name": "Mould1 from Order1"
                                    }
-                              ], 
-                              "name": "Order1", 
+                              ]
+                         }, 
+                         {
+                              "name": "Order2", 
                               "route": [
                                    {
                                         "stationIdsList": [
@@ -247,18 +287,17 @@
                                              "CAD2"
                                         ], 
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": "1"
+                                             "Fixed": {
+                                                  "mean": "1.4"
+                                             }
                                         }, 
                                         "stepNumber": "1"
                                    }
                               ], 
-                              "priority": "1", 
+                              "id": "O2", 
+                              "priority": "2", 
                               "manager": "OP1", 
                               "_class": "Dream.Order", 
-                              "id": "O1"
-                         }, 
-                         {
                               "componentsList": [
                                    {
                                         "componentType": "Basic", 
@@ -281,8 +320,9 @@
                                                        "CAM2"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.3"
+                                                       "Fixed": {
+                                                            "mean": "0.3"
+                                                       }
                                                   }, 
                                                   "stepNumber": "2"
                                              }, 
@@ -298,12 +338,14 @@
                                                        "MILL2"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "3"
+                                                       "Fixed": {
+                                                            "mean": "3"
+                                                       }
                                                   }, 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "1.2"
+                                                       "Fixed": {
+                                                            "mean": "1.2"
+                                                       }
                                                   }, 
                                                   "stepNumber": "4"
                                              }, 
@@ -318,12 +360,14 @@
                                                        "EDM"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.9"
+                                                       "Fixed": {
+                                                            "mean": "0.9"
+                                                       }
                                                   }, 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.3"
+                                                       "Fixed": {
+                                                            "mean": "0.3"
+                                                       }
                                                   }, 
                                                   "stepNumber": "6"
                                              }, 
@@ -367,8 +411,9 @@
                                                        "CAM2"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.8"
+                                                       "Fixed": {
+                                                            "mean": "0.8"
+                                                       }
                                                   }, 
                                                   "stepNumber": "2"
                                              }, 
@@ -384,12 +429,14 @@
                                                        "MILL2"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.4"
+                                                       "Fixed": {
+                                                            "mean": "0.4"
+                                                       }
                                                   }, 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.1"
+                                                       "Fixed": {
+                                                            "mean": "0.1"
+                                                       }
                                                   }, 
                                                   "stepNumber": "4"
                                              }, 
@@ -404,12 +451,14 @@
                                                        "EDM"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "1.4"
+                                                       "Fixed": {
+                                                            "mean": "1.4"
+                                                       }
                                                   }, 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.3"
+                                                       "Fixed": {
+                                                            "mean": "0.3"
+                                                       }
                                                   }, 
                                                   "stepNumber": "6"
                                              }, 
@@ -441,8 +490,9 @@
                                                        "MA3"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "2"
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
                                                   }, 
                                                   "stepNumber": "0"
                                              }, 
@@ -457,12 +507,14 @@
                                                        "IM"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.7"
+                                                       "Fixed": {
+                                                            "mean": "0.7"
+                                                       }
                                                   }, 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.1"
+                                                       "Fixed": {
+                                                            "mean": "0.1"
+                                                       }
                                                   }, 
                                                   "stepNumber": "2"
                                              }, 
@@ -477,8 +529,10 @@
                                         "id": "M1O2", 
                                         "name": "Mould1 from Order2"
                                    }
-                              ], 
-                              "name": "Order2", 
+                              ]
+                         }, 
+                         {
+                              "name": "Order3", 
                               "route": [
                                    {
                                         "stationIdsList": [
@@ -492,18 +546,17 @@
                                              "CAD2"
                                         ], 
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": "1.4"
+                                             "Fixed": {
+                                                  "mean": "2.4"
+                                             }
                                         }, 
                                         "stepNumber": "1"
                                    }
                               ], 
+                              "id": "O3", 
                               "priority": "2", 
-                              "manager": "OP1", 
+                              "manager": "OP2", 
                               "_class": "Dream.Order", 
-                              "id": "O2"
-                         }, 
-                         {
                               "componentsList": [
                                    {
                                         "componentType": "Basic", 
@@ -526,8 +579,9 @@
                                                        "CAM2"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.8"
+                                                       "Fixed": {
+                                                            "mean": "0.8"
+                                                       }
                                                   }, 
                                                   "stepNumber": "2"
                                              }, 
@@ -543,12 +597,14 @@
                                                        "MILL2"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "2"
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
                                                   }, 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "2.2"
+                                                       "Fixed": {
+                                                            "mean": "2.2"
+                                                       }
                                                   }, 
                                                   "stepNumber": "4"
                                              }, 
@@ -563,12 +619,14 @@
                                                        "EDM"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.9"
+                                                       "Fixed": {
+                                                            "mean": "0.9"
+                                                       }
                                                   }, 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.3"
+                                                       "Fixed": {
+                                                            "mean": "0.3"
+                                                       }
                                                   }, 
                                                   "stepNumber": "6"
                                              }, 
@@ -612,8 +670,9 @@
                                                        "CAM2"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.2"
+                                                       "Fixed": {
+                                                            "mean": "0.2"
+                                                       }
                                                   }, 
                                                   "stepNumber": "2"
                                              }, 
@@ -629,12 +688,14 @@
                                                        "MILL2"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.8"
+                                                       "Fixed": {
+                                                            "mean": "0.8"
+                                                       }
                                                   }, 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.3"
+                                                       "Fixed": {
+                                                            "mean": "0.3"
+                                                       }
                                                   }, 
                                                   "stepNumber": "4"
                                              }, 
@@ -649,12 +710,14 @@
                                                        "EDM"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.4"
+                                                       "Fixed": {
+                                                            "mean": "0.4"
+                                                       }
                                                   }, 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "1.3"
+                                                       "Fixed": {
+                                                            "mean": "1.3"
+                                                       }
                                                   }, 
                                                   "stepNumber": "6"
                                              }, 
@@ -698,8 +761,9 @@
                                                        "CAM2"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.4"
+                                                       "Fixed": {
+                                                            "mean": "0.4"
+                                                       }
                                                   }, 
                                                   "stepNumber": "2"
                                              }, 
@@ -715,12 +779,14 @@
                                                        "MILL2"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.2"
+                                                       "Fixed": {
+                                                            "mean": "0.2"
+                                                       }
                                                   }, 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.1"
+                                                       "Fixed": {
+                                                            "mean": "0.1"
+                                                       }
                                                   }, 
                                                   "stepNumber": "4"
                                              }, 
@@ -735,12 +801,14 @@
                                                        "EDM"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.1"
+                                                       "Fixed": {
+                                                            "mean": "0.1"
+                                                       }
                                                   }, 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.3"
+                                                       "Fixed": {
+                                                            "mean": "0.3"
+                                                       }
                                                   }, 
                                                   "stepNumber": "6"
                                              }, 
@@ -772,8 +840,9 @@
                                                        "MA3"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "3"
+                                                       "Fixed": {
+                                                            "mean": "3"
+                                                       }
                                                   }, 
                                                   "stepNumber": "0"
                                              }, 
@@ -788,12 +857,14 @@
                                                        "IM"
                                                   ], 
                                                   "processingTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.3"
+                                                       "Fixed": {
+                                                            "mean": "0.3"
+                                                       }
                                                   }, 
                                                   "setupTime": {
-                                                       "distributionType": "Fixed", 
-                                                       "mean": "0.2"
+                                                       "Fixed": {
+                                                            "mean": "0.2"
+                                                       }
                                                   }, 
                                                   "stepNumber": "2"
                                              }, 
@@ -808,31 +879,7 @@
                                         "id": "M1O3", 
                                         "name": "Mould1 from Order3"
                                    }
-                              ], 
-                              "name": "Order3", 
-                              "route": [
-                                   {
-                                        "stationIdsList": [
-                                             "Q0"
-                                        ], 
-                                        "stepNumber": "0"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "CAD1", 
-                                             "CAD2"
-                                        ], 
-                                        "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": "2.4"
-                                        }, 
-                                        "stepNumber": "1"
-                                   }
-                              ], 
-                              "priority": "2", 
-                              "manager": "OP2", 
-                              "_class": "Dream.Order", 
-                              "id": "O3"
+                              ]
                          }
                     ], 
                     "interruptions": {}, 
@@ -965,10 +1012,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "_class": "Dream.Configuration", 
           "numberOfReplications": "1", 
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "confidenceLevel": "0.95"
      }
 }

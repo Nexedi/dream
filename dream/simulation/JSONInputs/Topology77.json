@@ -1,18 +1,19 @@
 {
      "graph": {
           "node": {
-               "CE1": {
+               "CB4": {
                     "interruptions": {}, 
-                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit", 
-                    "name": "SMFExit", 
-                    "nextCapacityStationBufferId": "CB2"
+                    "requireFullProject": 1, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer", 
+                    "name": "AssemblyBuffer", 
+                    "wip": []
                }, 
                "CSC": {
                     "interruptions": {}, 
-                    "start": "0", 
                     "_class": "dream.simulation.applications.CapacityStations.CapacityStationController.CapacityStationController", 
                     "name": "CSC", 
-                    "interval": "1"
+                    "interval": "1", 
+                    "start": "0"
                }, 
                "CB2": {
                     "interruptions": {}, 
@@ -26,15 +27,15 @@
                     "wip": [
                          {
                               "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity", 
+                              "requiredCapacity": 50, 
                               "capacityProjectId": "P1", 
-                              "name": "P1_CNC_50", 
-                              "requiredCapacity": 50
+                              "name": "P1_CNC_50"
                          }, 
                          {
                               "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity", 
+                              "requiredCapacity": 100, 
                               "capacityProjectId": "P2", 
-                              "name": "P2_CNC_100", 
-                              "requiredCapacity": 100
+                              "name": "P2_CNC_100"
                          }
                     ]
                }, 
@@ -45,15 +46,15 @@
                     "wip": [
                          {
                               "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity", 
+                              "requiredCapacity": 100, 
                               "capacityProjectId": "P1", 
-                              "name": "P1_SMF_100", 
-                              "requiredCapacity": 100
+                              "name": "P1_SMF_100"
                          }, 
                          {
                               "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity", 
+                              "requiredCapacity": 50, 
                               "capacityProjectId": "P2", 
-                              "name": "P2_SMF_50", 
-                              "requiredCapacity": 50
+                              "name": "P2_SMF_50"
                          }
                     ]
                }, 
@@ -69,12 +70,11 @@
                     "name": "WELDExit", 
                     "nextCapacityStationBufferId": "CB4"
                }, 
-               "CB4": {
-                    "wip": [], 
+               "CE1": {
                     "interruptions": {}, 
-                    "requireFullProject": 1, 
-                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer", 
-                    "name": "AssemblyBuffer"
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit", 
+                    "name": "SMFExit", 
+                    "nextCapacityStationBufferId": "CB2"
                }, 
                "CS4": {
                     "interruptions": {}, 
@@ -87,50 +87,6 @@
                          500, 
                          300, 
                          350
-                    ]
-               }, 
-               "CS2": {
-                    "interruptions": {}, 
-                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
-                    "name": "WELD", 
-                    "intervalCapacity": [
-                         150, 
-                         60, 
-                         350, 
-                         150, 
-                         60, 
-                         350
-                    ]
-               }, 
-               "CS1": {
-                    "interruptions": {}, 
-                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
-                    "name": "SMF", 
-                    "intervalCapacity": [
-                         100, 
-                         200, 
-                         300, 
-                         100, 
-                         200, 
-                         300
-                    ]
-               }, 
-               "CE4": {
-                    "interruptions": {}, 
-                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit", 
-                    "name": "AssemblyExit"
-               }, 
-               "CS3": {
-                    "interruptions": {}, 
-                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
-                    "name": "CNC", 
-                    "intervalCapacity": [
-                         50, 
-                         100, 
-                         150, 
-                         100, 
-                         100, 
-                         150
                     ]
                }, 
                "QD": {
@@ -163,6 +119,50 @@
                     "interruptions": {}, 
                     "_class": "Dream.Queue", 
                     "id": "QD"
+               }, 
+               "CS1": {
+                    "interruptions": {}, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
+                    "name": "SMF", 
+                    "intervalCapacity": [
+                         100, 
+                         200, 
+                         300, 
+                         100, 
+                         200, 
+                         300
+                    ]
+               }, 
+               "CE4": {
+                    "interruptions": {}, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit", 
+                    "name": "AssemblyExit"
+               }, 
+               "CS3": {
+                    "interruptions": {}, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
+                    "name": "CNC", 
+                    "intervalCapacity": [
+                         50, 
+                         100, 
+                         150, 
+                         100, 
+                         100, 
+                         150
+                    ]
+               }, 
+               "CS2": {
+                    "interruptions": {}, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
+                    "name": "WELD", 
+                    "intervalCapacity": [
+                         150, 
+                         60, 
+                         350, 
+                         150, 
+                         60, 
+                         350
+                    ]
                }
           }, 
           "edge": {
@@ -218,10 +218,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "numberOfReplications": "1"
      }
 }
