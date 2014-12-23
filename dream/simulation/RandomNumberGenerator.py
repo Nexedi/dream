@@ -56,6 +56,10 @@ class RandomNumberGenerator(object):
         self.distribution=distribution
         self.distributionType = distribution.keys()[0]
         parameters=distribution[self.distributionType]
+        # if a parameter is passed as None or empty string set it to 0
+        for key in parameters:
+            if parameters[key] in [None,'']:
+                parameters[key]=0.0
         self.mean = float(parameters.get('mean', 0))
         self.stdev = float(parameters.get('stdev', 0))
         self.min = float(parameters.get('min',0))
