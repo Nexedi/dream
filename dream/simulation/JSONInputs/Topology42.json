@@ -1,20 +1,10 @@
 {
      "graph": {
           "node": {
-               "M1": {
-                    "name": "Machine1", 
-                    "loadTime": {
-                         "distributionType": "Fixed", 
-                         "mean": 0.0
-                    }, 
-                    "processingTime": {
-                         "Fixed": {
-                              "mean": 17.0
-                         }
-                    }, 
-                    "operationType": "MT-Load-Processing", 
+               "E1": {
                     "interruptions": {}, 
-                    "_class": "Dream.Machine"
+                    "_class": "Dream.Exit", 
+                    "name": "Exit"
                }, 
                "S1": {
                     "interruptions": {}, 
@@ -28,10 +18,21 @@
                     "name": "Source", 
                     "entity": "Dream.Part"
                }, 
-               "E1": {
+               "M1": {
+                    "name": "Machine1", 
+                    "loadTime": {
+                         "Fixed": {
+                              "mean": 0.0
+                         }
+                    }, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 17.0
+                         }
+                    }, 
+                    "operationType": "MT-Load-Processing", 
                     "interruptions": {}, 
-                    "_class": "Dream.Exit", 
-                    "name": "Exit"
+                    "_class": "Dream.Machine"
                }, 
                "O1": {
                     "interruptions": {}, 
@@ -42,12 +43,14 @@
                "M2": {
                     "name": "Machine2", 
                     "loadTime": {
-                         "distributionType": "Fixed", 
-                         "mean": 0.0
+                         "Fixed": {
+                              "mean": 0.0
+                         }
                     }, 
                     "setupTime": {
-                         "distributionType": "Fixed", 
-                         "mean": 0.25
+                         "Fixed": {
+                              "mean": 0.25
+                         }
                     }, 
                     "processingTime": {
                          "Fixed": {
@@ -55,8 +58,8 @@
                          }
                     }, 
                     "operationType": "MT-Load-Setup-Processing", 
-                    "interruptions": {}, 
                     "failures": {}, 
+                    "interruptions": {}, 
                     "_class": "Dream.Machine"
                }
           }, 
@@ -95,10 +98,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "155", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "155", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }
