@@ -14,8 +14,9 @@
                               "_class": "Dream.Part", 
                               "id": "P1", 
                               "remainingProcessingTime": {
-                                   "distributionType": "Fixed", 
-                                   "mean": 2
+                                   "Fixed":{ 
+										"mean": 2
+								   }
                               }, 
                               "name": "Part1"
                          }
