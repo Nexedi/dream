@@ -24,12 +24,20 @@
                               "mean": 10
                          }
                     }, 
-                    "periodicMaintenance": {
-                         "MTTR": 2, 
-                         "MTTF": 8, 
-                         "distributionType": "Fixed"
+                    "interruptions": {
+                         "periodicMaintenance": {
+                              "TTR": {
+                                   "Fixed": {
+                                        "mean": 2
+                                   }
+                              }, 
+                              "TTF": {
+                                   "Fixed": {
+                                        "mean": 8
+                                   }
+                              }
+                         }
                     }, 
-                    "interruptions": {}, 
                     "_class": "Dream.Machine", 
                     "left": 0.5
                }, 
