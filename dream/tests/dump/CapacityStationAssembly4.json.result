@@ -304,17 +304,17 @@
      {
       "entranceTime": 0.0, 
       "exitTime": 1.0, 
+      "stationId": "CS2"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
       "stationId": "CS1"
      }, 
      {
       "entranceTime": 0.0, 
       "exitTime": 4.0, 
       "stationId": "CS3"
-     }, 
-     {
-      "entranceTime": 0.0, 
-      "exitTime": 1.0, 
-      "stationId": "CS2"
      }, 
      {
       "entranceTime": 1.0, 
