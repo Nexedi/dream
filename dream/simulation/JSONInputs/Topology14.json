@@ -7,7 +7,6 @@
                     "entity": "Dream.Frame", 
                     "interArrivalTime": {
                          "Fixed": {
-                              "distributionType": "Fixed", 
                               "mean": 2.0
                          }
                     }, 
@@ -21,7 +20,6 @@
                     "entity": "Dream.Part", 
                     "interArrivalTime": {
                          "Fixed": {
-                              "distributionType": "Fixed", 
                               "mean": 0.5
                          }
                     }, 
@@ -74,20 +72,7 @@
                               "mean": 0.2
                          }
                     }, 
-                    "interruptions": {
-                         "failure": {
-                              "TTR": {
-                                   "Fixed": {
-                                        "mean": 5
-                                   }
-                              }, 
-                              "TTF": {
-                                   "Fixed": {
-                                        "mean": 60
-                                   }
-                              }
-                         }
-                    }, 
+                    "interruptions": {}, 
                     "_class": "Dream.Machine", 
                     "left": 0.7857142857142857
                }, 
@@ -99,20 +84,7 @@
                               "mean": 1.0
                          }
                     }, 
-                    "interruptions": {
-                         "failure": {
-                              "TTR": {
-                                   "Fixed": {
-                                        "mean": 5
-                                   }
-                              }, 
-                              "TTF": {
-                                   "Fixed": {
-                                        "mean": 60
-                                   }
-                              }
-                         }
-                    }, 
+                    "interruptions": {}, 
                     "_class": "Dream.Machine", 
                     "left": 0.2142857142857143
                }, 
