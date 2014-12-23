@@ -2,9 +2,9 @@ from dream.simulation.imports import Machine, Source, Exit, Part, ShiftScheduler
 from dream.simulation.Globals import runSimulation
 
 #define the objects of the model 
-S=Source('S1','Source',interarrivalTime={'distributionType':'Fixed','mean':0.5}, entity='Dream.Part')
-M=Machine('M1','Machine', processingTime={'distributionType':'Fixed','mean':3})
-E=Exit('E1','Exit')  
+S=Source('S1','Source',interArrivalTime={'Fixed':{'mean':0.5}}, entity='Dream.Part')
+M=Machine('M1','Machine', processingTime={'Fixed':{'mean':3}})
+E=Exit('E1','Exit')   
 
 SS=ShiftScheduler(victim=M, shiftPattern=[[0,5],[10,15]], endUnfinished=True) 
 

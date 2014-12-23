@@ -3,13 +3,13 @@ from dream.simulation.Globals import runSimulation
 
 #define the objects of the model
 Frame.capacity=4 
-Sp=Source('SP','Parts', interarrivalTime={'distributionType':'Fixed','mean':0.5}, entity='Dream.Part')
-Sf=Source('SF','Frames', interarrivalTime={'distributionType':'Fixed','mean':2}, entity='Dream.Frame')
-M=Machine('M','Machine', processingTime={'distributionType':'Fixed','mean':0.25})
-A=Assembly('A','Assembly', processingTime={'distributionType':'Fixed','mean':2})
+Sp=Source('SP','Parts', interArrivalTime={'Fixed':{'mean':0.5}}, entity='Dream.Part')
+Sf=Source('SF','Frames', interArrivalTime={'Fixed':{'mean':2}}, entity='Dream.Frame')
+M=Machine('M','Machine', processingTime={'Fixed':{'mean':0.25}})
+A=Assembly('A','Assembly', processingTime={'Fixed':{'mean':2}})
 E=Exit('E1','Exit')  
 
-F=Failure(victim=M, distribution={'distributionType':'Fixed','MTTF':60,'MTTR':5})
+F=Failure(victim=M, distribution={'TTF':{'Fixed':{'mean':60.0}},'TTR':{'Fixed':{'mean':5.0}}})
 
 #define predecessors and successors for the objects    
 Sp.defineRouting([A])

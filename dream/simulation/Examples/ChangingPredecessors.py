@@ -26,7 +26,7 @@ def changeMachinePredecessor(machine, possiblePredecessors):
 #define the objects of the model 
 Q1=Queue('Q1','Queue1', capacity=float('inf'))
 Q2=Queue('Q2','Queue2', capacity=float('inf'))
-M=Machine('M1','Machine', processingTime={'distributionType':'Fixed','mean':3})
+M=Machine('M1','Machine', processingTime={'Fixed':{'mean':3}})
 E=Exit('E1','Exit')  
 P1=Part('P1', 'Part1', currentStation=Q1)
 entityList=[]

@@ -2,9 +2,9 @@ from dream.simulation.imports import Source, Queue, Machine, Exit
 from dream.simulation.Globals import runSimulation
 
 #define the objects of the model 
-S=Source('S1','Source',interarrivalTime={'distributionType':'Fixed','mean':0.5}, entity='Dream.Part')
+S=Source('S1','Source',interArrivalTime={'Fixed':{'mean':0.5}}, entity='Dream.Part')
 Q=Queue('Q1','Queue', capacity=1)
-M=Machine('M1','Machine', processingTime={'distributionType':'Fixed','mean':0.25})
+M=Machine('M1','Machine', processingTime={'Fixed':{'mean':0.25}})
 E=Exit('E1','Exit')  
 
 #define predecessors and successors for the objects    

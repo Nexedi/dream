@@ -12,11 +12,11 @@ E=ExitJobShop('E','Exit')
 
 #define the route of the Job in the system
 route=[{"stationIdsList": ["Q1"]},
-         {"stationIdsList": ["M1"],"processingTime":{"distributionType": "Fixed","mean": "1"}},
+         {"stationIdsList": ["M1"],"processingTime":{'Fixed':{'mean':1}}},
          {"stationIdsList": ["Q3"]},
-         {"stationIdsList": ["M3"],"processingTime":{"distributionType": "Fixed","mean": "3"}},
+         {"stationIdsList": ["M3"],"processingTime":{'Fixed':{'mean':3}}},
          {"stationIdsList": ["Q2"]},
-         {"stationIdsList": ["M2"],"processingTime":{"distributionType": "Fixed","mean": "2"}},
+         {"stationIdsList": ["M2"],"processingTime":{'Fixed':{'mean':2}}},
          {"stationIdsList": ["E"],}]
 #define the Jobs
 J=Job('J1','Job1',route=route)

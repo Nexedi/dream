@@ -26,7 +26,7 @@ def balanceQueue(buffer, refillLevel=1):
 
 #define the objects of the model 
 Q=Queue('Q1','Queue', capacity=float('inf'))
-M=Machine('M1','Machine', processingTime={'distributionType':'Fixed','mean':6})
+M=Machine('M1','Machine', processingTime={'Fixed':{'mean':6}})
 E=Exit('E1','Exit')
 EV=EventGenerator('EV', 'EntityCreator', start=0, stop=float('inf'), interval=20,method=balanceQueue, 
                   argumentDict={'buffer':Q, 'refillLevel':5})  
