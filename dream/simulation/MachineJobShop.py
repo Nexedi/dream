@@ -50,14 +50,14 @@ class MachineJobShop(Machine):
         # read the processing time from the corresponding remainingRoute entry
         processingTime=activeEntity.remainingRoute[0].get('processingTime',{})
         processingTime=self.getOperationTime(processingTime)
-        self.rng=RandomNumberGenerator(self, **processingTime)
+        self.rng=RandomNumberGenerator(self, processingTime)
         self.procTime=self.rng.generateNumber()
         # check if there is a need for manual processing
         self.checkForManualOperation(type='Processing',entity=activeEntity)
         # read the setup time from the corresponding remainingRoute entry
         setupTime=activeEntity.remainingRoute[0].get('setupTime',{})
         setupTime=self.getOperationTime(setupTime)
-        self.stpRng=RandomNumberGenerator(self, **setupTime)
+        self.stpRng=RandomNumberGenerator(self, setupTime)
         # check if there is a need for manual processing
         self.checkForManualOperation(type='Setup',entity=activeEntity)
         removedStep = activeEntity.remainingRoute.pop(0)      #remove data from the remaining route of the entity
@@ -228,7 +228,7 @@ class MachineJobShop(Machine):
         # read the load time from the corresponding remainingRoute entry
         loadTime=activeEntity.remainingRoute[0].get('loadTime',{})
         loadTime=self.getOperationTime(loadTime)
-        self.loadRng=RandomNumberGenerator(self, **loadTime)
+        self.loadRng=RandomNumberGenerator(self, loadTime)
     
     #===========================================================================
     # get the initial operationTypes (Setup/Processing) : manual or automatic
