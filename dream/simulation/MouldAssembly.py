@@ -240,7 +240,7 @@ class MouldAssembly(MachineJobShop):
             # normal processing operation
             processingTime=firstStep['processingTime']
             processingTime=self.getOperationTime(processingTime)
-            self.rng=RandomNumberGenerator(self, **processingTime)
+            self.rng=RandomNumberGenerator(self, processingTime)
             self.procTime=self.rng.generateNumber()
             # update the activeObject's processing time according to the readings in the mould's route
             processDistType=processingTime.get('distributionType','not found')
