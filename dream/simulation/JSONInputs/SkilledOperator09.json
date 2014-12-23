@@ -37,8 +37,9 @@
                "M1": {
                     "name": "Machine1", 
                     "loadTime": {
-                         "distributionType": "Fixed", 
-                         "mean": 0.0
+                         "Fixed": {
+                              "mean": 0.0
+                         }
                     }, 
                     "processingTime": {
                          "Fixed": {
@@ -59,31 +60,34 @@
                "M3": {
                     "name": "Machine3", 
                     "loadTime": {
-                         "distributionType": "Fixed", 
-                         "mean": 0.0
+                         "Fixed": {
+                              "mean": 0.0
+                         }
                     }, 
                     "processingTime": {
                          "Fixed": {
                               "mean": 11.0
                          }
                     }, 
+                    "failures": {}, 
                     "operationType": "MT-Load-Processing", 
                     "wip": [], 
                     "interruptions": {}, 
-                    "failures": {}, 
                     "_class": "Dream.Machine"
                }, 
                "M2": {
                     "name": "Machine2", 
                     "loadTime": {
-                         "distributionType": "Fixed", 
-                         "mean": 0.0
+                         "Fixed": {
+                              "mean": 0.0
+                         }
                     }, 
                     "processingTime": {
                          "Fixed": {
                               "mean": 8.0
                          }
                     }, 
+                    "failures": {}, 
                     "operationType": "MT-Load-Processing", 
                     "wip": [
                          {
@@ -93,7 +97,6 @@
                          }
                     ], 
                     "interruptions": {}, 
-                    "failures": {}, 
                     "_class": "Dream.Machine"
                }, 
                "EV": {
@@ -101,12 +104,12 @@
                     "argumentDict": "{}", 
                     "interval": 10, 
                     "stop": -1, 
-                    "id": "EV", 
+                    "method": "Dream.ManPyObject.requestAllocation", 
                     "start": 0, 
                     "interruptions": {}, 
                     "element_id": "DreamNode_6", 
                     "_class": "Dream.EventGenerator", 
-                    "method": "Dream.ManPyObject.requestAllocation"
+                    "id": "EV"
                }, 
                "E1": {
                     "interruptions": {}, 
