@@ -20,23 +20,23 @@ M3.defineRouting(predecessorList=[Q3])
 
 #define the routes of the Jobs in the system
 J1Route=[{"stationIdsList": ["Q1"]},
-         {"stationIdsList": ["M1"],"processingTime":{"distributionType": "Fixed","mean": "1"}},
+         {"stationIdsList": ["M1"],"processingTime":{'Fixed':{'mean':1}}},
          {"stationIdsList": ["Q3"]},
-         {"stationIdsList": ["M3"],"processingTime":{"distributionType": "Fixed","mean": "3"}},
+         {"stationIdsList": ["M3"],"processingTime":{'Fixed':{'mean':3}}},
          {"stationIdsList": ["Q2"]},
-         {"stationIdsList": ["M2"],"processingTime":{"distributionType": "Fixed","mean": "2"}},
+         {"stationIdsList": ["M2"],"processingTime":{'Fixed':{'mean':2}}},
          {"stationIdsList": ["E"],}]
 J2Route=[{"stationIdsList": ["Q1"]},
-         {"stationIdsList": ["M1"],"processingTime":{"distributionType": "Fixed","mean": "2"}},
+         {"stationIdsList": ["M1"],"processingTime":{'Fixed':{'mean':2}}},
          {"stationIdsList": ["Q2"]},
-         {"stationIdsList": ["M2"],"processingTime":{"distributionType": "Fixed","mean": "4"}},
+         {"stationIdsList": ["M2"],"processingTime":{'Fixed':{'mean':4}}},
          {"stationIdsList": ["Q3"]},
-         {"stationIdsList": ["M3"],"processingTime":{"distributionType": "Fixed","mean": "6"}},
+         {"stationIdsList": ["M3"],"processingTime":{'Fixed':{'mean':6}}},
          {"stationIdsList": ["E"],}]
 J3Route=[{"stationIdsList": ["Q1"]},
-         {"stationIdsList": ["M1"],"processingTime":{"distributionType": "Fixed","mean": "10"}},
+         {"stationIdsList": ["M1"],"processingTime":{'Fixed':{'mean':10}}},
          {"stationIdsList": ["Q3"]},
-         {"stationIdsList": ["M3"],"processingTime":{"distributionType": "Fixed","mean": "3"}},
+         {"stationIdsList": ["M3"],"processingTime":{'Fixed':{'mean':3}}},
          {"stationIdsList": ["E"],}]
 
 #define the Jobs

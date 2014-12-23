@@ -3,10 +3,10 @@ from dream.simulation.Globals import runSimulation, G
 
 #define the objects of the model 
 Q=Queue('Q1','Queue', capacity=1)
-M=Machine('M1','Machine', processingTime={'distributionType':'Fixed','mean':0.25})
+M=Machine('M1','Machine', processingTime={'Fixed':{'mean':0.25}})
 E=Exit('E1','Exit')  
 P1=Part('P1', 'Part1', currentStation=Q)
-P2=Part('P2', 'Part2', currentStation=M, remainingProcessingTime={'distributionType':'Fixed','mean':0.1})
+P2=Part('P2', 'Part2', currentStation=M, remainingProcessingTime={'Fixed':{'mean':0.1}})
 
 #define predecessors and successors for the objects    
 Q.defineRouting(successorList=[M])

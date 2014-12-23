@@ -3,7 +3,7 @@ from dream.simulation.Globals import runSimulation
 
 #define the objects of the model 
 NS=NonStarvingEntry('NS1','Entry',entityData={'_class':'Dream.Part'})
-M=Machine('M1','Machine', processingTime={'distributionType':'Fixed','mean':1})
+M=Machine('M1','Machine', processingTime={'Fixed':{'mean':1}})
 E=Exit('E1','Exit')  
 
 #define predecessors and successors for the objects    

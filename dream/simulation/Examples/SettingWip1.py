@@ -3,7 +3,7 @@ from dream.simulation.Globals import runSimulation, G
 
 #define the objects of the model 
 Q=Queue('Q1','Queue', capacity=1)
-M=Machine('M1','Machine', processingTime={'distributionType':'Fixed','mean':0.25})
+M=Machine('M1','Machine', processingTime={'Fixed':{'mean':0.25}})
 E=Exit('E1','Exit')  
 P1=Part('P1', 'Part1', currentStation=Q)
 
