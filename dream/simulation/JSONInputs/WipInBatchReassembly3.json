@@ -23,8 +23,9 @@
                               "name": "Batch1_SB1", 
                               "parentBatchName": "Batch1", 
                               "remainingProcessingTime": {
-                                   "distributionType": "Fixed", 
-                                   "mean": 20
+								 "Fixed": {
+									  "mean": 20
+								 }
                               }, 
                               "numberOfUnits": 30, 
                               "parentBatchId": "B1", 

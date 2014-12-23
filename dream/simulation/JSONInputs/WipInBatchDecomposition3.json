@@ -71,8 +71,9 @@
                               "numberOfUnits": "50", 
                               "name": "Batch1", 
                               "remainingProcessingTime": {
-                                   "distributionType": "Fixed", 
-                                   "mean": 0.5
+								 "Fixed": {
+									  "mean": 0.5
+								 }
                               }, 
                               "id": "B1"
                          }
