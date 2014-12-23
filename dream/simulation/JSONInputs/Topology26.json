@@ -11,8 +11,9 @@
                               "route": [
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.0
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "Q1"
@@ -20,8 +21,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 10.0
+                                             "Fixed": {
+                                                  "mean": 10.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M1"
@@ -29,8 +31,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.0
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "Q3"
@@ -38,8 +41,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 20.0
+                                             "Fixed": {
+                                                  "mean": 20.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M3"
@@ -69,8 +73,9 @@
                               "route": [
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.0
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "Q3"
@@ -78,8 +83,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 30.0
+                                             "Fixed": {
+                                                  "mean": 30.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M3"
@@ -87,8 +93,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.0
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "Q1"
@@ -96,8 +103,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 20.0
+                                             "Fixed": {
+                                                  "mean": 20.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M1"
@@ -127,8 +135,9 @@
                               "route": [
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.0
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "Q2"
@@ -136,8 +145,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 20.0
+                                             "Fixed": {
+                                                  "mean": 20.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M2"
@@ -145,8 +155,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 0.0
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "Q1"
@@ -154,8 +165,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "distributionType": "Fixed", 
-                                             "mean": 34.0
+                                             "Fixed": {
+                                                  "mean": 34.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M1"
@@ -178,41 +190,41 @@
                "M1": {
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0.9, 
                               "max": "1", 
                               "min": "0.1", 
-                              "stdev": "0.1"
+                              "stdev": "0.1", 
+                              "mean": 0.9
                          }
                     }, 
+                    "interruptions": {}, 
                     "_class": "Dream.MachineJobShop", 
-                    "name": "M1", 
-                    "interruptions": {}
+                    "name": "M1"
                }, 
                "M3": {
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0.9, 
                               "max": "1", 
                               "min": "0.1", 
-                              "stdev": "0.1"
+                              "stdev": "0.1", 
+                              "mean": 0.9
                          }
                     }, 
+                    "interruptions": {}, 
                     "_class": "Dream.MachineJobShop", 
-                    "name": "M3", 
-                    "interruptions": {}
+                    "name": "M3"
                }, 
                "M2": {
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0.9, 
                               "max": "1", 
                               "min": "0.1", 
-                              "stdev": "0.1"
+                              "stdev": "0.1", 
+                              "mean": 0.9
                          }
                     }, 
+                    "interruptions": {}, 
                     "_class": "Dream.MachineJobShop", 
-                    "name": "M2", 
-                    "interruptions": {}
+                    "name": "M2"
                }, 
                "E1": {
                     "interruptions": {}, 
