@@ -10,11 +10,10 @@
                     "name": "S1", 
                     "entity": "Dream.Part", 
                     "interArrivalTime": {
-                         "Fixed": {
+                         "Normal": {
                               "stdev": 0.5, 
                               "max": 2, 
                               "min": 1, 
-                              "distributionType": "Normal", 
                               "mean": 1.25
                          }
                     }, 
