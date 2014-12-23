@@ -57,8 +57,9 @@
                     "name": "Station1", 
                     "top": 0.5909090909090908, 
                     "scrapQuantity": {
-                         "distributionType": "Fixed", 
-                         "mean": "1"
+                         "Fixed": {
+                              "mean": 1.0
+                         }
                     }, 
                     "processingTime": {
                          "Fixed": {
@@ -74,8 +75,9 @@
                     "name": "Station3", 
                     "top": 0.5909090909090908, 
                     "scrapQuantity": {
-                         "distributionType": "Fixed", 
-                         "mean": "2"
+                         "Fixed": {
+                              "mean": 2.0
+                         }
                     }, 
                     "processingTime": {
                          "Fixed": {
@@ -91,9 +93,10 @@
                     "name": "Station2", 
                     "top": 0.5909090909090908, 
                     "scrapQuantity": {
-                         "distributionType": "Fixed", 
-                         "mean": "1"
-                    }, 
+                         "Fixed": {
+                              "mean": 1.0
+                         }                    
+					}, 
                     "processingTime": {
                          "Fixed": {
                               "mean": 0.2
