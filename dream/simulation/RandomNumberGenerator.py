@@ -38,7 +38,10 @@ class RandomNumberGenerator(object):
 #            ...
 #         },
     def __init__(self, obj, distribution):   
-        # check in case an inknown distrbution was given
+        # if the distribution is not given as a dictionary throw error
+        if not isinstance(distribution, dict):
+            raise ValueError("distribution must be given as a dict")             
+        # check in case an unknown distribution was given
         unknownDistribution=True
         for key in distribution.keys():
             if key in ['Fixed', 'Normal','Exp','Gamma','Logistic','Erlang',
