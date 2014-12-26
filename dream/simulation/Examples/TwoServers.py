@@ -3,14 +3,14 @@ from dream.simulation.Globals import runSimulation
 
 #define the objects of the model
 R=Repairman('R1', 'Bob')
-S=Source('S1','Source', interarrivalTime={'distributionType':'Fixed','mean':0.5}, entity='Dream.Part')
-M1=Machine('M1','Machine1', processingTime={'distributionType':'Fixed','mean':0.25})
+S=Source('S1','Source', interArrivalTime={'Fixed':{'mean':0.5}}, entity='Dream.Part')
+M1=Machine('M1','Machine1', processingTime={'Fixed':{'mean':0.25}})
 Q=Queue('Q1','Queue')
-M2=Machine('M2','Machine2', processingTime={'distributionType':'Fixed','mean':1.5})
+M2=Machine('M2','Machine2', processingTime={'Fixed':{'mean':1.5}})
 E=Exit('E1','Exit')  
 #create failures
-F1=Failure(victim=M1, distribution={'distributionType':'Fixed','MTTF':60,'MTTR':5}, repairman=R) 
-F2=Failure(victim=M2, distribution={'distributionType':'Fixed','MTTF':40,'MTTR':10}, repairman=R)
+F1=Failure(victim=M1, distribution={'TTF':{'Fixed':{'mean':60.0}},'TTR':{'Fixed':{'mean':5.0}}}, repairman=R) 
+F2=Failure(victim=M2, distribution={'TTF':{'Fixed':{'mean':40.0}},'TTR':{'Fixed':{'mean':10.0}}}, repairman=R)
 
 #define predecessors and successors for the objects    
 S.defineRouting([M1])

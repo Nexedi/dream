@@ -12,12 +12,12 @@ class SelectiveQueue(Queue):
         return None
         
 #define the objects of the model
-S=Source('S','Source', interarrivalTime={'distributionType':'Fixed','mean':0.5}, entity='Dream.Part')
+S=Source('S','Source', interArrivalTime={'Fixed':{'mean':0.5}}, entity='Dream.Part')
 Q=SelectiveQueue('Q','Queue', capacity=float("inf"))
-M1=Machine('M1','Milling1', processingTime={'distributionType':'Fixed','mean':0.25})
-M2=Machine('M2','Milling2', processingTime={'distributionType':'Fixed','mean':0.25})
+M1=Machine('M1','Milling1', processingTime={'Fixed':{'mean':0.25}})
+M2=Machine('M2','Milling2', processingTime={'Fixed':{'mean':0.25}})
 E=Exit('E1','Exit')  
-F=Failure(victim=M1, distribution={'distributionType':'Fixed','MTTF':60,'MTTR':5})
+F=Failure(victim=M1, distribution={'TTF':{'Fixed':{'mean':60.0}},'TTR':{'Fixed':{'mean':5.0}}})
 
 #define predecessors and successors for the objects    
 S.defineRouting([Q])
