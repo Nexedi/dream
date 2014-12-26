@@ -13,6 +13,27 @@
                     "_class": "Dream.Assembly", 
                     "left": 0.5
                }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "top": 0.07307692307692304, 
+                    "_class": "Dream.Exit", 
+                    "name": "Stock", 
+                    "left": 0.5
+               }, 
+               "S1": {
+                    "name": "Parts", 
+                    "top": 0.926923076923077, 
+                    "entity": "Dream.Part", 
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "distributionType": "Fixed", 
+                              "mean": 0.5
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "_class": "Dream.Source", 
+                    "left": 0.7857142857142857
+               }, 
                "M1": {
                     "name": "Moulding", 
                     "top": 0.35769230769230764, 
@@ -36,27 +57,6 @@
                          }
                     }, 
                     "_class": "Dream.Machine", 
-                    "left": 0.5
-               }, 
-               "S1": {
-                    "name": "Parts", 
-                    "top": 0.926923076923077, 
-                    "entity": "Dream.Part", 
-                    "interArrivalTime": {
-                         "Fixed": {
-                              "distributionType": "Fixed", 
-                              "mean": 0.5
-                         }
-                    }, 
-                    "interruptions": {}, 
-                    "_class": "Dream.Source", 
-                    "left": 0.7857142857142857
-               }, 
-               "E1": {
-                    "interruptions": {}, 
-                    "top": 0.07307692307692304, 
-                    "_class": "Dream.Exit", 
-                    "name": "Stock", 
                     "left": 0.5
                }, 
                "S2": {
@@ -103,10 +103,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "1440", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "1440", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }

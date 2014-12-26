@@ -126,9 +126,9 @@
           }
      }, 
      "general": {
-          "trace": "No", 
+          "maxSimTime": -1, 
           "console": "No", 
           "numberOfReplications": 1, 
-          "maxSimTime": -1
+          "trace": "No"
      }
 }

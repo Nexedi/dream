@@ -16,17 +16,11 @@
                     "_class": "Dream.Queue", 
                     "id": "Q1"
                }, 
-               "M1": {
-                    "name": "Machine1", 
-                    "processingTime": {
-                         "Fixed": {
-                              "mean": 0.25
-                         }
-                    }, 
+               "E1": {
                     "interruptions": {}, 
-                    "failures": {}, 
-                    "_class": "Dream.Machine", 
-                    "id": "M1"
+                    "_class": "Dream.Exit", 
+                    "id": "E1", 
+                    "name": "Stock"
                }, 
                "Q2": {
                     "capacity": 1, 
@@ -36,11 +30,17 @@
                     "_class": "Dream.Queue", 
                     "id": "Q2"
                }, 
-               "E1": {
+               "M1": {
+                    "name": "Machine1", 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.25
+                         }
+                    }, 
+                    "failures": {}, 
                     "interruptions": {}, 
-                    "_class": "Dream.Exit", 
-                    "id": "E1", 
-                    "name": "Stock"
+                    "_class": "Dream.Machine", 
+                    "id": "M1"
                }, 
                "M2": {
                     "name": "Machine2", 
@@ -49,8 +49,8 @@
                               "mean": 1.5
                          }
                     }, 
-                    "interruptions": {}, 
                     "failures": {}, 
+                    "interruptions": {}, 
                     "_class": "Dream.Machine", 
                     "id": "M2"
                }
@@ -84,10 +84,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }

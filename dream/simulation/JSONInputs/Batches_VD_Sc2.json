@@ -3,222 +3,225 @@
           "node": {
                "St7M0": {
                     "name": "Carding", 
-                    "shift": {
-                         "thresholdTimeIsOnShift": 0, 
-                         "receiveBeforeEndThreshold": 7, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   105
-                              ], 
-                              [
-                                   150, 
-                                   300
-                              ], 
-                              [
-                                   303, 
-                                   480
-                              ], 
-                              [
-                                   510, 
-                                   645
-                              ], 
-                              [
-                                   690, 
-                                   840
-                              ], 
-                              [
-                                   1200, 
-                                   1380
-                              ], 
-                              [
-                                   1410, 
-                                   1545
-                              ], 
-                              [
-                                   1590, 
-                                   1620
-                              ], 
-                              [
-                                   4080, 
-                                   4260
-                              ], 
-                              [
-                                   4290, 
-                                   4425
-                              ], 
-                              [
-                                   4470, 
-                                   4620
-                              ], 
-                              [
-                                   4623, 
-                                   4800
-                              ], 
-                              [
-                                   4830, 
-                                   4965
-                              ]
-                         ], 
-                         "endUnfinished": 1
-                    }, 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0.5, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0.5
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "thresholdTimeIsOnShift": 0, 
+                              "receiveBeforeEndThreshold": 7, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        105
+                                   ], 
+                                   [
+                                        150, 
+                                        300
+                                   ], 
+                                   [
+                                        303, 
+                                        480
+                                   ], 
+                                   [
+                                        510, 
+                                        645
+                                   ], 
+                                   [
+                                        690, 
+                                        840
+                                   ], 
+                                   [
+                                        1200, 
+                                        1380
+                                   ], 
+                                   [
+                                        1410, 
+                                        1545
+                                   ], 
+                                   [
+                                        1590, 
+                                        1620
+                                   ], 
+                                   [
+                                        4080, 
+                                        4260
+                                   ], 
+                                   [
+                                        4290, 
+                                        4425
+                                   ], 
+                                   [
+                                        4470, 
+                                        4620
+                                   ], 
+                                   [
+                                        4623, 
+                                        4800
+                                   ], 
+                                   [
+                                        4830, 
+                                        4965
+                                   ]
+                              ], 
+                              "endUnfinished": 1
+                         }
+                    }, 
                     "element_id": "DreamNode_44", 
                     "_class": "Dream.BatchScrapMachineAfterDecompose", 
                     "id": "St7M0"
                }, 
                "St5M0": {
                     "name": "Flag Labelling1", 
-                    "shift": {
-                         "thresholdTimeIsOnShift": 0, 
-                         "receiveBeforeEndThreshold": 7, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   105
-                              ], 
-                              [
-                                   150, 
-                                   300
-                              ], 
-                              [
-                                   303, 
-                                   480
-                              ], 
-                              [
-                                   510, 
-                                   645
-                              ], 
-                              [
-                                   690, 
-                                   840
-                              ], 
-                              [
-                                   1200, 
-                                   1380
-                              ], 
-                              [
-                                   1410, 
-                                   1545
-                              ], 
-                              [
-                                   1590, 
-                                   1620
-                              ], 
-                              [
-                                   4080, 
-                                   4260
-                              ], 
-                              [
-                                   4290, 
-                                   4425
-                              ], 
-                              [
-                                   4470, 
-                                   4620
-                              ], 
-                              [
-                                   4623, 
-                                   4800
-                              ], 
-                              [
-                                   4830, 
-                                   4965
-                              ]
-                         ], 
-                         "endUnfinished": 1
-                    }, 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0.1875, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0.1875
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "thresholdTimeIsOnShift": 0, 
+                              "receiveBeforeEndThreshold": 7, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        105
+                                   ], 
+                                   [
+                                        150, 
+                                        300
+                                   ], 
+                                   [
+                                        303, 
+                                        480
+                                   ], 
+                                   [
+                                        510, 
+                                        645
+                                   ], 
+                                   [
+                                        690, 
+                                        840
+                                   ], 
+                                   [
+                                        1200, 
+                                        1380
+                                   ], 
+                                   [
+                                        1410, 
+                                        1545
+                                   ], 
+                                   [
+                                        1590, 
+                                        1620
+                                   ], 
+                                   [
+                                        4080, 
+                                        4260
+                                   ], 
+                                   [
+                                        4290, 
+                                        4425
+                                   ], 
+                                   [
+                                        4470, 
+                                        4620
+                                   ], 
+                                   [
+                                        4623, 
+                                        4800
+                                   ], 
+                                   [
+                                        4830, 
+                                        4965
+                                   ]
+                              ], 
+                              "endUnfinished": 1
+                         }
+                    }, 
                     "element_id": "DreamNode_31", 
                     "_class": "Dream.BatchScrapMachine", 
                     "id": "St5M0"
                }, 
                "St5M1": {
                     "name": "Flag Labelling 2", 
-                    "shift": {
-                         "thresholdTimeIsOnShift": 0, 
-                         "receiveBeforeEndThreshold": 7, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   105
-                              ], 
-                              [
-                                   150, 
-                                   300
-                              ], 
-                              [
-                                   303, 
-                                   480
-                              ], 
-                              [
-                                   510, 
-                                   645
-                              ], 
-                              [
-                                   690, 
-                                   840
-                              ], 
-                              [
-                                   1200, 
-                                   1380
-                              ], 
-                              [
-                                   1410, 
-                                   1545
-                              ], 
-                              [
-                                   1590, 
-                                   1620
-                              ], 
-                              [
-                                   4080, 
-                                   4260
-                              ], 
-                              [
-                                   4290, 
-                                   4425
-                              ], 
-                              [
-                                   4470, 
-                                   4620
-                              ], 
-                              [
-                                   4623, 
-                                   4800
-                              ], 
-                              [
-                                   4830, 
-                                   4965
-                              ]
-                         ], 
-                         "endUnfinished": 1
-                    }, 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0.1875, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0.1875
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "thresholdTimeIsOnShift": 0, 
+                              "receiveBeforeEndThreshold": 7, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        105
+                                   ], 
+                                   [
+                                        150, 
+                                        300
+                                   ], 
+                                   [
+                                        303, 
+                                        480
+                                   ], 
+                                   [
+                                        510, 
+                                        645
+                                   ], 
+                                   [
+                                        690, 
+                                        840
+                                   ], 
+                                   [
+                                        1200, 
+                                        1380
+                                   ], 
+                                   [
+                                        1410, 
+                                        1545
+                                   ], 
+                                   [
+                                        1590, 
+                                        1620
+                                   ], 
+                                   [
+                                        4080, 
+                                        4260
+                                   ], 
+                                   [
+                                        4290, 
+                                        4425
+                                   ], 
+                                   [
+                                        4470, 
+                                        4620
+                                   ], 
+                                   [
+                                        4623, 
+                                        4800
+                                   ], 
+                                   [
+                                        4830, 
+                                        4965
+                                   ]
+                              ], 
+                              "endUnfinished": 1
+                         }
+                    }, 
                     "element_id": "DreamNode_32", 
                     "_class": "Dream.BatchScrapMachine", 
                     "id": "St5M1"
@@ -228,11 +231,11 @@
                     "entity": "Dream.Batch", 
                     "interArrivalTime": {
                          "Fixed": {
-                              "mean": 0.5, 
+                              "stdev": null, 
                               "max": null, 
                               "min": null, 
                               "distributionType": "Fixed", 
-                              "stdev": null
+                              "mean": 0.5
                          }
                     }, 
                     "batchNumberOfUnits": 80, 
@@ -261,145 +264,87 @@
                }, 
                "St6M1": {
                     "name": "Pressure_B", 
-                    "shift": {
-                         "thresholdTimeIsOnShift": 0, 
-                         "receiveBeforeEndThreshold": 7, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   105
-                              ], 
-                              [
-                                   150, 
-                                   300
-                              ], 
-                              [
-                                   303, 
-                                   480
-                              ], 
-                              [
-                                   510, 
-                                   645
-                              ], 
-                              [
-                                   690, 
-                                   840
-                              ], 
-                              [
-                                   1200, 
-                                   1380
-                              ], 
-                              [
-                                   1410, 
-                                   1545
-                              ], 
-                              [
-                                   1590, 
-                                   1620
-                              ], 
-                              [
-                                   4080, 
-                                   4260
-                              ], 
-                              [
-                                   4290, 
-                                   4425
-                              ], 
-                              [
-                                   4470, 
-                                   4620
-                              ], 
-                              [
-                                   4623, 
-                                   4800
-                              ], 
-                              [
-                                   4830, 
-                                   4965
-                              ]
-                         ], 
-                         "endUnfinished": 1
-                    }, 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 1, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 1
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "thresholdTimeIsOnShift": 0, 
+                              "receiveBeforeEndThreshold": 7, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        105
+                                   ], 
+                                   [
+                                        150, 
+                                        300
+                                   ], 
+                                   [
+                                        303, 
+                                        480
+                                   ], 
+                                   [
+                                        510, 
+                                        645
+                                   ], 
+                                   [
+                                        690, 
+                                        840
+                                   ], 
+                                   [
+                                        1200, 
+                                        1380
+                                   ], 
+                                   [
+                                        1410, 
+                                        1545
+                                   ], 
+                                   [
+                                        1590, 
+                                        1620
+                                   ], 
+                                   [
+                                        4080, 
+                                        4260
+                                   ], 
+                                   [
+                                        4290, 
+                                        4425
+                                   ], 
+                                   [
+                                        4470, 
+                                        4620
+                                   ], 
+                                   [
+                                        4623, 
+                                        4800
+                                   ], 
+                                   [
+                                        4830, 
+                                        4965
+                                   ]
+                              ], 
+                              "endUnfinished": 1
+                         }
+                    }, 
                     "element_id": "DreamNode_17", 
                     "_class": "Dream.M3", 
                     "id": "St6M1"
                }, 
                "St6M0": {
                     "name": "Pressure_A", 
-                    "shift": {
-                         "thresholdTimeIsOnShift": 0, 
-                         "receiveBeforeEndThreshold": 7, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   105
-                              ], 
-                              [
-                                   150, 
-                                   300
-                              ], 
-                              [
-                                   303, 
-                                   480
-                              ], 
-                              [
-                                   510, 
-                                   645
-                              ], 
-                              [
-                                   690, 
-                                   840
-                              ], 
-                              [
-                                   1200, 
-                                   1380
-                              ], 
-                              [
-                                   1410, 
-                                   1545
-                              ], 
-                              [
-                                   1590, 
-                                   1620
-                              ], 
-                              [
-                                   4080, 
-                                   4260
-                              ], 
-                              [
-                                   4290, 
-                                   4425
-                              ], 
-                              [
-                                   4470, 
-                                   4620
-                              ], 
-                              [
-                                   4623, 
-                                   4800
-                              ], 
-                              [
-                                   4830, 
-                                   4965
-                              ]
-                         ], 
-                         "endUnfinished": 1
-                    }, 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 1, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 1
                          }
                     }, 
                     "wip": [
@@ -413,7 +358,67 @@
                               "id": "4.0_SB4_step6.0"
                          }
                     ], 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "thresholdTimeIsOnShift": 0, 
+                              "receiveBeforeEndThreshold": 7, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        105
+                                   ], 
+                                   [
+                                        150, 
+                                        300
+                                   ], 
+                                   [
+                                        303, 
+                                        480
+                                   ], 
+                                   [
+                                        510, 
+                                        645
+                                   ], 
+                                   [
+                                        690, 
+                                        840
+                                   ], 
+                                   [
+                                        1200, 
+                                        1380
+                                   ], 
+                                   [
+                                        1410, 
+                                        1545
+                                   ], 
+                                   [
+                                        1590, 
+                                        1620
+                                   ], 
+                                   [
+                                        4080, 
+                                        4260
+                                   ], 
+                                   [
+                                        4290, 
+                                        4425
+                                   ], 
+                                   [
+                                        4470, 
+                                        4620
+                                   ], 
+                                   [
+                                        4623, 
+                                        4800
+                                   ], 
+                                   [
+                                        4830, 
+                                        4965
+                                   ]
+                              ], 
+                              "endUnfinished": 1
+                         }
+                    }, 
                     "element_id": "DreamNode_16", 
                     "_class": "Dream.M3", 
                     "id": "St6M0"
@@ -422,10 +427,10 @@
                     "name": "St8M0R", 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0
                          }
                     }, 
                     "outputResults": 1, 
@@ -475,10 +480,10 @@
                     "name": "St7M0D", 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0
                          }
                     }, 
                     "numberOfSubBatches": 8, 
@@ -507,74 +512,75 @@
                }, 
                "St8M1": {
                     "name": "Packaging_B", 
-                    "shift": {
-                         "thresholdTimeIsOnShift": 0, 
-                         "receiveBeforeEndThreshold": 7, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   105
-                              ], 
-                              [
-                                   150, 
-                                   300
-                              ], 
-                              [
-                                   303, 
-                                   480
-                              ], 
-                              [
-                                   510, 
-                                   645
-                              ], 
-                              [
-                                   690, 
-                                   840
-                              ], 
-                              [
-                                   1200, 
-                                   1380
-                              ], 
-                              [
-                                   1410, 
-                                   1545
-                              ], 
-                              [
-                                   1590, 
-                                   1620
-                              ], 
-                              [
-                                   4080, 
-                                   4260
-                              ], 
-                              [
-                                   4290, 
-                                   4425
-                              ], 
-                              [
-                                   4470, 
-                                   4620
-                              ], 
-                              [
-                                   4623, 
-                                   4800
-                              ], 
-                              [
-                                   4830, 
-                                   4965
-                              ]
-                         ], 
-                         "endUnfinished": 1
-                    }, 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 1, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 1
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "thresholdTimeIsOnShift": 0, 
+                              "receiveBeforeEndThreshold": 7, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        105
+                                   ], 
+                                   [
+                                        150, 
+                                        300
+                                   ], 
+                                   [
+                                        303, 
+                                        480
+                                   ], 
+                                   [
+                                        510, 
+                                        645
+                                   ], 
+                                   [
+                                        690, 
+                                        840
+                                   ], 
+                                   [
+                                        1200, 
+                                        1380
+                                   ], 
+                                   [
+                                        1410, 
+                                        1545
+                                   ], 
+                                   [
+                                        1590, 
+                                        1620
+                                   ], 
+                                   [
+                                        4080, 
+                                        4260
+                                   ], 
+                                   [
+                                        4290, 
+                                        4425
+                                   ], 
+                                   [
+                                        4470, 
+                                        4620
+                                   ], 
+                                   [
+                                        4623, 
+                                        4800
+                                   ], 
+                                   [
+                                        4830, 
+                                        4965
+                                   ]
+                              ], 
+                              "endUnfinished": 1
+                         }
+                    }, 
                     "element_id": "DreamNode_15", 
                     "_class": "Dream.M3", 
                     "id": "St8M1"
@@ -591,296 +597,300 @@
                }, 
                "St2M1": {
                     "name": "D_B_A_B", 
-                    "shift": {
-                         "thresholdTimeIsOnShift": 0, 
-                         "receiveBeforeEndThreshold": 7, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   105
-                              ], 
-                              [
-                                   150, 
-                                   300
-                              ], 
-                              [
-                                   303, 
-                                   480
-                              ], 
-                              [
-                                   510, 
-                                   645
-                              ], 
-                              [
-                                   690, 
-                                   840
-                              ], 
-                              [
-                                   1200, 
-                                   1380
-                              ], 
-                              [
-                                   1410, 
-                                   1545
-                              ], 
-                              [
-                                   1590, 
-                                   1620
-                              ], 
-                              [
-                                   4080, 
-                                   4260
-                              ], 
-                              [
-                                   4290, 
-                                   4425
-                              ], 
-                              [
-                                   4470, 
-                                   4620
-                              ], 
-                              [
-                                   4623, 
-                                   4800
-                              ], 
-                              [
-                                   4830, 
-                                   4965
-                              ]
-                         ], 
-                         "endUnfinished": 1
-                    }, 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0.75, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0.75
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "thresholdTimeIsOnShift": 0, 
+                              "receiveBeforeEndThreshold": 7, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        105
+                                   ], 
+                                   [
+                                        150, 
+                                        300
+                                   ], 
+                                   [
+                                        303, 
+                                        480
+                                   ], 
+                                   [
+                                        510, 
+                                        645
+                                   ], 
+                                   [
+                                        690, 
+                                        840
+                                   ], 
+                                   [
+                                        1200, 
+                                        1380
+                                   ], 
+                                   [
+                                        1410, 
+                                        1545
+                                   ], 
+                                   [
+                                        1590, 
+                                        1620
+                                   ], 
+                                   [
+                                        4080, 
+                                        4260
+                                   ], 
+                                   [
+                                        4290, 
+                                        4425
+                                   ], 
+                                   [
+                                        4470, 
+                                        4620
+                                   ], 
+                                   [
+                                        4623, 
+                                        4800
+                                   ], 
+                                   [
+                                        4830, 
+                                        4965
+                                   ]
+                              ], 
+                              "endUnfinished": 1
+                         }
+                    }, 
                     "element_id": "DreamNode_12", 
                     "_class": "Dream.M3", 
                     "id": "St2M1"
                }, 
                "St2M0": {
                     "name": "D_B_A_A", 
-                    "shift": {
-                         "thresholdTimeIsOnShift": 0, 
-                         "receiveBeforeEndThreshold": 7, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   105
-                              ], 
-                              [
-                                   150, 
-                                   300
-                              ], 
-                              [
-                                   303, 
-                                   480
-                              ], 
-                              [
-                                   510, 
-                                   645
-                              ], 
-                              [
-                                   690, 
-                                   840
-                              ], 
-                              [
-                                   1200, 
-                                   1380
-                              ], 
-                              [
-                                   1410, 
-                                   1545
-                              ], 
-                              [
-                                   1590, 
-                                   1620
-                              ], 
-                              [
-                                   4080, 
-                                   4260
-                              ], 
-                              [
-                                   4290, 
-                                   4425
-                              ], 
-                              [
-                                   4470, 
-                                   4620
-                              ], 
-                              [
-                                   4623, 
-                                   4800
-                              ], 
-                              [
-                                   4830, 
-                                   4965
-                              ]
-                         ], 
-                         "endUnfinished": 1
-                    }, 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0.75, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0.75
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "thresholdTimeIsOnShift": 0, 
+                              "receiveBeforeEndThreshold": 7, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        105
+                                   ], 
+                                   [
+                                        150, 
+                                        300
+                                   ], 
+                                   [
+                                        303, 
+                                        480
+                                   ], 
+                                   [
+                                        510, 
+                                        645
+                                   ], 
+                                   [
+                                        690, 
+                                        840
+                                   ], 
+                                   [
+                                        1200, 
+                                        1380
+                                   ], 
+                                   [
+                                        1410, 
+                                        1545
+                                   ], 
+                                   [
+                                        1590, 
+                                        1620
+                                   ], 
+                                   [
+                                        4080, 
+                                        4260
+                                   ], 
+                                   [
+                                        4290, 
+                                        4425
+                                   ], 
+                                   [
+                                        4470, 
+                                        4620
+                                   ], 
+                                   [
+                                        4623, 
+                                        4800
+                                   ], 
+                                   [
+                                        4830, 
+                                        4965
+                                   ]
+                              ], 
+                              "endUnfinished": 1
+                         }
+                    }, 
                     "element_id": "DreamNode_11", 
                     "_class": "Dream.M3", 
                     "id": "St2M0"
                }, 
                "St3M0": {
                     "name": "Cut & Bend", 
-                    "shift": {
-                         "thresholdTimeIsOnShift": 0, 
-                         "receiveBeforeEndThreshold": 7, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   105
-                              ], 
-                              [
-                                   150, 
-                                   300
-                              ], 
-                              [
-                                   303, 
-                                   480
-                              ], 
-                              [
-                                   510, 
-                                   645
-                              ], 
-                              [
-                                   690, 
-                                   840
-                              ], 
-                              [
-                                   1200, 
-                                   1380
-                              ], 
-                              [
-                                   1410, 
-                                   1545
-                              ], 
-                              [
-                                   1590, 
-                                   1620
-                              ], 
-                              [
-                                   4080, 
-                                   4260
-                              ], 
-                              [
-                                   4290, 
-                                   4425
-                              ], 
-                              [
-                                   4470, 
-                                   4620
-                              ], 
-                              [
-                                   4623, 
-                                   4800
-                              ], 
-                              [
-                                   4830, 
-                                   4965
-                              ]
-                         ], 
-                         "endUnfinished": 1
-                    }, 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0.1875, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0.1875
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "thresholdTimeIsOnShift": 0, 
+                              "receiveBeforeEndThreshold": 7, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        105
+                                   ], 
+                                   [
+                                        150, 
+                                        300
+                                   ], 
+                                   [
+                                        303, 
+                                        480
+                                   ], 
+                                   [
+                                        510, 
+                                        645
+                                   ], 
+                                   [
+                                        690, 
+                                        840
+                                   ], 
+                                   [
+                                        1200, 
+                                        1380
+                                   ], 
+                                   [
+                                        1410, 
+                                        1545
+                                   ], 
+                                   [
+                                        1590, 
+                                        1620
+                                   ], 
+                                   [
+                                        4080, 
+                                        4260
+                                   ], 
+                                   [
+                                        4290, 
+                                        4425
+                                   ], 
+                                   [
+                                        4470, 
+                                        4620
+                                   ], 
+                                   [
+                                        4623, 
+                                        4800
+                                   ], 
+                                   [
+                                        4830, 
+                                        4965
+                                   ]
+                              ], 
+                              "endUnfinished": 1
+                         }
+                    }, 
                     "element_id": "DreamNode_26", 
                     "_class": "Dream.BatchScrapMachine", 
                     "id": "St3M0"
                }, 
                "St4M0": {
                     "name": "Moulding", 
-                    "shift": {
-                         "thresholdTimeIsOnShift": 0, 
-                         "receiveBeforeEndThreshold": 7, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   105
-                              ], 
-                              [
-                                   150, 
-                                   300
-                              ], 
-                              [
-                                   303, 
-                                   480
-                              ], 
-                              [
-                                   510, 
-                                   645
-                              ], 
-                              [
-                                   690, 
-                                   840
-                              ], 
-                              [
-                                   1200, 
-                                   1380
-                              ], 
-                              [
-                                   1410, 
-                                   1545
-                              ], 
-                              [
-                                   1590, 
-                                   1620
-                              ], 
-                              [
-                                   4080, 
-                                   4260
-                              ], 
-                              [
-                                   4290, 
-                                   4425
-                              ], 
-                              [
-                                   4470, 
-                                   4620
-                              ], 
-                              [
-                                   4623, 
-                                   4800
-                              ], 
-                              [
-                                   4830, 
-                                   4965
-                              ]
-                         ], 
-                         "endUnfinished": 1
-                    }, 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0.375, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0.375
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "thresholdTimeIsOnShift": 0, 
+                              "receiveBeforeEndThreshold": 7, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        105
+                                   ], 
+                                   [
+                                        150, 
+                                        300
+                                   ], 
+                                   [
+                                        303, 
+                                        480
+                                   ], 
+                                   [
+                                        510, 
+                                        645
+                                   ], 
+                                   [
+                                        690, 
+                                        840
+                                   ], 
+                                   [
+                                        1200, 
+                                        1380
+                                   ], 
+                                   [
+                                        1410, 
+                                        1545
+                                   ], 
+                                   [
+                                        1590, 
+                                        1620
+                                   ], 
+                                   [
+                                        4080, 
+                                        4260
+                                   ], 
+                                   [
+                                        4290, 
+                                        4425
+                                   ], 
+                                   [
+                                        4470, 
+                                        4620
+                                   ], 
+                                   [
+                                        4623, 
+                                        4800
+                                   ], 
+                                   [
+                                        4830, 
+                                        4965
+                                   ]
+                              ], 
+                              "endUnfinished": 1
+                         }
+                    }, 
                     "element_id": "DreamNode_13", 
                     "_class": "Dream.M3", 
                     "id": "St4M0"
@@ -889,10 +899,10 @@
                     "name": "St6M1R", 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0
                          }
                     }, 
                     "outputResults": 1, 
@@ -971,10 +981,10 @@
                     "name": "Deco_A", 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0, 
                               "max": "", 
                               "min": "", 
-                              "stdev": ""
+                              "stdev": "", 
+                              "mean": 0
                          }
                     }, 
                     "numberOfSubBatches": 4, 
@@ -995,74 +1005,75 @@
                }, 
                "St8M0": {
                     "name": "Packaging_A", 
-                    "shift": {
-                         "thresholdTimeIsOnShift": 0, 
-                         "receiveBeforeEndThreshold": 7, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   105
-                              ], 
-                              [
-                                   150, 
-                                   300
-                              ], 
-                              [
-                                   303, 
-                                   480
-                              ], 
-                              [
-                                   510, 
-                                   645
-                              ], 
-                              [
-                                   690, 
-                                   840
-                              ], 
-                              [
-                                   1200, 
-                                   1380
-                              ], 
-                              [
-                                   1410, 
-                                   1545
-                              ], 
-                              [
-                                   1590, 
-                                   1620
-                              ], 
-                              [
-                                   4080, 
-                                   4260
-                              ], 
-                              [
-                                   4290, 
-                                   4425
-                              ], 
-                              [
-                                   4470, 
-                                   4620
-                              ], 
-                              [
-                                   4623, 
-                                   4800
-                              ], 
-                              [
-                                   4830, 
-                                   4965
-                              ]
-                         ], 
-                         "endUnfinished": 1
-                    }, 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 1, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 1
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "thresholdTimeIsOnShift": 0, 
+                              "receiveBeforeEndThreshold": 7, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        105
+                                   ], 
+                                   [
+                                        150, 
+                                        300
+                                   ], 
+                                   [
+                                        303, 
+                                        480
+                                   ], 
+                                   [
+                                        510, 
+                                        645
+                                   ], 
+                                   [
+                                        690, 
+                                        840
+                                   ], 
+                                   [
+                                        1200, 
+                                        1380
+                                   ], 
+                                   [
+                                        1410, 
+                                        1545
+                                   ], 
+                                   [
+                                        1590, 
+                                        1620
+                                   ], 
+                                   [
+                                        4080, 
+                                        4260
+                                   ], 
+                                   [
+                                        4290, 
+                                        4425
+                                   ], 
+                                   [
+                                        4470, 
+                                        4620
+                                   ], 
+                                   [
+                                        4623, 
+                                        4800
+                                   ], 
+                                   [
+                                        4830, 
+                                        4965
+                                   ]
+                              ], 
+                              "endUnfinished": 1
+                         }
+                    }, 
                     "element_id": "DreamNode_14", 
                     "_class": "Dream.M3", 
                     "id": "St8M0"
@@ -1071,10 +1082,10 @@
                     "name": "St4M0D", 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0
                          }
                     }, 
                     "numberOfSubBatches": 2, 
@@ -1118,10 +1129,10 @@
                     "name": "St6M0R", 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0
                          }
                     }, 
                     "outputResults": 1, 
@@ -1161,10 +1172,10 @@
                     "name": "St4M0R", 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0
                          }
                     }, 
                     "outputResults": 1, 
@@ -1178,10 +1189,10 @@
                     "name": "St6M1D", 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0
                          }
                     }, 
                     "numberOfSubBatches": 8, 
@@ -1204,10 +1215,10 @@
                     "name": "St8M1R", 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0
                          }
                     }, 
                     "outputResults": 1, 
@@ -1219,148 +1230,150 @@
                }, 
                "St1M0": {
                     "name": "P_B_A_A", 
-                    "shift": {
-                         "thresholdTimeIsOnShift": 0, 
-                         "receiveBeforeEndThreshold": 7, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   105
-                              ], 
-                              [
-                                   150, 
-                                   300
-                              ], 
-                              [
-                                   303, 
-                                   480
-                              ], 
-                              [
-                                   510, 
-                                   645
-                              ], 
-                              [
-                                   690, 
-                                   840
-                              ], 
-                              [
-                                   1200, 
-                                   1380
-                              ], 
-                              [
-                                   1410, 
-                                   1545
-                              ], 
-                              [
-                                   1590, 
-                                   1620
-                              ], 
-                              [
-                                   4080, 
-                                   4260
-                              ], 
-                              [
-                                   4290, 
-                                   4425
-                              ], 
-                              [
-                                   4470, 
-                                   4620
-                              ], 
-                              [
-                                   4623, 
-                                   4800
-                              ], 
-                              [
-                                   4830, 
-                                   4965
-                              ]
-                         ], 
-                         "endUnfinished": 1
-                    }, 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0.75, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0.75
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "thresholdTimeIsOnShift": 0, 
+                              "receiveBeforeEndThreshold": 7, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        105
+                                   ], 
+                                   [
+                                        150, 
+                                        300
+                                   ], 
+                                   [
+                                        303, 
+                                        480
+                                   ], 
+                                   [
+                                        510, 
+                                        645
+                                   ], 
+                                   [
+                                        690, 
+                                        840
+                                   ], 
+                                   [
+                                        1200, 
+                                        1380
+                                   ], 
+                                   [
+                                        1410, 
+                                        1545
+                                   ], 
+                                   [
+                                        1590, 
+                                        1620
+                                   ], 
+                                   [
+                                        4080, 
+                                        4260
+                                   ], 
+                                   [
+                                        4290, 
+                                        4425
+                                   ], 
+                                   [
+                                        4470, 
+                                        4620
+                                   ], 
+                                   [
+                                        4623, 
+                                        4800
+                                   ], 
+                                   [
+                                        4830, 
+                                        4965
+                                   ]
+                              ], 
+                              "endUnfinished": 1
+                         }
+                    }, 
                     "element_id": "DreamNode_9", 
                     "_class": "Dream.BatchScrapMachine", 
                     "id": "St1M0"
                }, 
                "St1M1": {
                     "name": "P_B_A_B", 
-                    "shift": {
-                         "thresholdTimeIsOnShift": 0, 
-                         "receiveBeforeEndThreshold": 7, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   105
-                              ], 
-                              [
-                                   150, 
-                                   300
-                              ], 
-                              [
-                                   303, 
-                                   480
-                              ], 
-                              [
-                                   510, 
-                                   645
-                              ], 
-                              [
-                                   690, 
-                                   840
-                              ], 
-                              [
-                                   1200, 
-                                   1380
-                              ], 
-                              [
-                                   1410, 
-                                   1545
-                              ], 
-                              [
-                                   1590, 
-                                   1620
-                              ], 
-                              [
-                                   4080, 
-                                   4260
-                              ], 
-                              [
-                                   4290, 
-                                   4425
-                              ], 
-                              [
-                                   4470, 
-                                   4620
-                              ], 
-                              [
-                                   4623, 
-                                   4800
-                              ], 
-                              [
-                                   4830, 
-                                   4965
-                              ]
-                         ], 
-                         "endUnfinished": 1
-                    }, 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0.75, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0.75
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "thresholdTimeIsOnShift": 0, 
+                              "receiveBeforeEndThreshold": 7, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        105
+                                   ], 
+                                   [
+                                        150, 
+                                        300
+                                   ], 
+                                   [
+                                        303, 
+                                        480
+                                   ], 
+                                   [
+                                        510, 
+                                        645
+                                   ], 
+                                   [
+                                        690, 
+                                        840
+                                   ], 
+                                   [
+                                        1200, 
+                                        1380
+                                   ], 
+                                   [
+                                        1410, 
+                                        1545
+                                   ], 
+                                   [
+                                        1590, 
+                                        1620
+                                   ], 
+                                   [
+                                        4080, 
+                                        4260
+                                   ], 
+                                   [
+                                        4290, 
+                                        4425
+                                   ], 
+                                   [
+                                        4470, 
+                                        4620
+                                   ], 
+                                   [
+                                        4623, 
+                                        4800
+                                   ], 
+                                   [
+                                        4830, 
+                                        4965
+                                   ]
+                              ], 
+                              "endUnfinished": 1
+                         }
+                    }, 
                     "element_id": "DreamNode_10", 
                     "_class": "Dream.BatchScrapMachine", 
                     "id": "St1M1"
@@ -1370,22 +1383,22 @@
                     "argumentDict": "{}", 
                     "interval": 1440, 
                     "stop": -1, 
-                    "id": "EV", 
+                    "method": "Globals.countIntervalThroughput", 
                     "start": 1440, 
                     "duration": 10, 
                     "interruptions": {}, 
                     "element_id": "DreamNode_6", 
                     "_class": "Dream.EventGenerator", 
-                    "method": "Globals.countIntervalThroughput"
+                    "id": "EV"
                }, 
                "St6M0D": {
                     "name": "St6M0D", 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0
                          }
                     }, 
                     "numberOfSubBatches": 8, 
@@ -1430,174 +1443,167 @@
                }, 
                "St0M1": {
                     "name": "RO_E_M_A_B", 
-                    "shift": {
-                         "thresholdTimeIsOnShift": 0, 
-                         "receiveBeforeEndThreshold": 7, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   105
-                              ], 
-                              [
-                                   150, 
-                                   300
-                              ], 
-                              [
-                                   303, 
-                                   480
-                              ], 
-                              [
-                                   510, 
-                                   645
-                              ], 
-                              [
-                                   690, 
-                                   840
-                              ], 
-                              [
-                                   1200, 
-                                   1380
-                              ], 
-                              [
-                                   1410, 
-                                   1545
-                              ], 
-                              [
-                                   1590, 
-                                   1620
-                              ], 
-                              [
-                                   4080, 
-                                   4260
-                              ], 
-                              [
-                                   4290, 
-                                   4425
-                              ], 
-                              [
-                                   4470, 
-                                   4620
-                              ], 
-                              [
-                                   4623, 
-                                   4800
-                              ], 
-                              [
-                                   4830, 
-                                   4965
-                              ]
-                         ], 
-                         "endUnfinished": 1
-                    }, 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0.75, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0.75
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "thresholdTimeIsOnShift": 0, 
+                              "receiveBeforeEndThreshold": 7, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        105
+                                   ], 
+                                   [
+                                        150, 
+                                        300
+                                   ], 
+                                   [
+                                        303, 
+                                        480
+                                   ], 
+                                   [
+                                        510, 
+                                        645
+                                   ], 
+                                   [
+                                        690, 
+                                        840
+                                   ], 
+                                   [
+                                        1200, 
+                                        1380
+                                   ], 
+                                   [
+                                        1410, 
+                                        1545
+                                   ], 
+                                   [
+                                        1590, 
+                                        1620
+                                   ], 
+                                   [
+                                        4080, 
+                                        4260
+                                   ], 
+                                   [
+                                        4290, 
+                                        4425
+                                   ], 
+                                   [
+                                        4470, 
+                                        4620
+                                   ], 
+                                   [
+                                        4623, 
+                                        4800
+                                   ], 
+                                   [
+                                        4830, 
+                                        4965
+                                   ]
+                              ], 
+                              "endUnfinished": 1
+                         }
+                    }, 
                     "element_id": "DreamNode_8", 
                     "_class": "Dream.BatchScrapMachineAfterDecompose", 
                     "id": "St0M1"
                }, 
                "St0M0": {
                     "name": "RO_E_M_A_A", 
-                    "shift": {
-                         "thresholdTimeIsOnShift": 0, 
-                         "receiveBeforeEndThreshold": 7, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   105
-                              ], 
-                              [
-                                   150, 
-                                   300
-                              ], 
-                              [
-                                   303, 
-                                   480
-                              ], 
-                              [
-                                   510, 
-                                   645
-                              ], 
-                              [
-                                   690, 
-                                   840
-                              ], 
-                              [
-                                   1200, 
-                                   1380
-                              ], 
-                              [
-                                   1410, 
-                                   1545
-                              ], 
-                              [
-                                   1590, 
-                                   1620
-                              ], 
-                              [
-                                   4080, 
-                                   4260
-                              ], 
-                              [
-                                   4290, 
-                                   4425
-                              ], 
-                              [
-                                   4470, 
-                                   4620
-                              ], 
-                              [
-                                   4623, 
-                                   4800
-                              ], 
-                              [
-                                   4830, 
-                                   4965
-                              ]
-                         ], 
-                         "endUnfinished": 1
-                    }, 
                     "processingTime": {
                          "Fixed": {
-                              "mean": 0.75, 
                               "max": null, 
                               "min": null, 
-                              "stdev": null
+                              "stdev": null, 
+                              "mean": 0.75
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "thresholdTimeIsOnShift": 0, 
+                              "receiveBeforeEndThreshold": 7, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        105
+                                   ], 
+                                   [
+                                        150, 
+                                        300
+                                   ], 
+                                   [
+                                        303, 
+                                        480
+                                   ], 
+                                   [
+                                        510, 
+                                        645
+                                   ], 
+                                   [
+                                        690, 
+                                        840
+                                   ], 
+                                   [
+                                        1200, 
+                                        1380
+                                   ], 
+                                   [
+                                        1410, 
+                                        1545
+                                   ], 
+                                   [
+                                        1590, 
+                                        1620
+                                   ], 
+                                   [
+                                        4080, 
+                                        4260
+                                   ], 
+                                   [
+                                        4290, 
+                                        4425
+                                   ], 
+                                   [
+                                        4470, 
+                                        4620
+                                   ], 
+                                   [
+                                        4623, 
+                                        4800
+                                   ], 
+                                   [
+                                        4830, 
+                                        4965
+                                   ]
+                              ], 
+                              "endUnfinished": 1
+                         }
+                    }, 
                     "element_id": "DreamNode_7", 
                     "_class": "Dream.BatchScrapMachineAfterDecompose", 
                     "id": "St0M0"
                }, 
-               "B9": {
-                    "capacity": 4, 
-                    "name": "B9", 
-                    "wip": [
-                         {
-                              "_class": "Dream.Batch", 
-                              "numberOfUnits": 80, 
-                              "name": "Batch7_WIP", 
-                              "id": "7"
-                         }, 
-                         {
-                              "_class": "Dream.Batch", 
-                              "numberOfUnits": 80, 
-                              "name": "Batch8_WIP", 
-                              "id": "8"
+               "BRB": {
+                    "name": "Assembly_B", 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0
                          }
-                    ], 
+                    }, 
+                    "outputResults": 1, 
+                    "numberOfSubBatches": 4, 
                     "interruptions": {}, 
-                    "element_id": "DreamNode_30", 
-                    "_class": "Dream.Queue", 
-                    "id": "B9", 
-                    "schedulingRule": "FIFO"
+                    "element_id": "DreamNode_4", 
+                    "_class": "Dream.BatchReassemblyBlocking", 
+                    "id": "BRB"
                }, 
                "B4": {
                     "capacity": 2, 
@@ -1830,19 +1836,28 @@
                     "id": "B8", 
                     "schedulingRule": "FIFO"
                }, 
-               "BRB": {
-                    "name": "Assembly_B", 
-                    "processingTime": {
-                         "Fixed": {
-                              "mean": 0
+               "B9": {
+                    "capacity": 4, 
+                    "name": "B9", 
+                    "wip": [
+                         {
+                              "_class": "Dream.Batch", 
+                              "numberOfUnits": 80, 
+                              "name": "Batch7_WIP", 
+                              "id": "7"
+                         }, 
+                         {
+                              "_class": "Dream.Batch", 
+                              "numberOfUnits": 80, 
+                              "name": "Batch8_WIP", 
+                              "id": "8"
                          }
-                    }, 
-                    "outputResults": 1, 
-                    "numberOfSubBatches": 4, 
+                    ], 
                     "interruptions": {}, 
-                    "element_id": "DreamNode_4", 
-                    "_class": "Dream.BatchReassemblyBlocking", 
-                    "id": "BRB"
+                    "element_id": "DreamNode_30", 
+                    "_class": "Dream.Queue", 
+                    "id": "B9", 
+                    "schedulingRule": "FIFO"
                }, 
                "BRA": {
                     "name": "Assembly_A", 
@@ -1948,9 +1963,9 @@
                     "data": {}, 
                     "_class": "Dream.Edge"
                }, 
-               "con_135": {
-                    "source": "B9", 
-                    "destination": "St5M1", 
+               "con_95": {
+                    "source": "St4M0", 
+                    "destination": "St4M0R", 
                     "data": {}, 
                     "_class": "Dream.Edge"
                }, 
@@ -1978,21 +1993,15 @@
                     "data": {}, 
                     "_class": "Dream.Edge"
                }, 
-               "con_235": {
-                    "source": "St8M0R", 
-                    "destination": "E1", 
+               "con_90": {
+                    "source": "St4M0D", 
+                    "destination": "St4M0", 
                     "data": {}, 
                     "_class": "Dream.Edge"
                }, 
-               "con_130": {
-                    "source": "B9", 
-                    "destination": "St5M0", 
-                    "data": {}, 
-                    "_class": "Dream.Edge"
-               }, 
-               "con_230": {
-                    "source": "St8M1R", 
-                    "destination": "E1", 
+               "con_195": {
+                    "source": "St6M1", 
+                    "destination": "St6M1R", 
                     "data": {}, 
                     "_class": "Dream.Edge"
                }, 
@@ -2014,15 +2023,15 @@
                     "data": {}, 
                     "_class": "Dream.Edge"
                }, 
-               "con_195": {
-                    "source": "St6M1", 
-                    "destination": "St6M1R", 
+               "con_230": {
+                    "source": "St8M1R", 
+                    "destination": "E1", 
                     "data": {}, 
                     "_class": "Dream.Edge"
                }, 
-               "con_190": {
-                    "source": "St6M0", 
-                    "destination": "St6M0R", 
+               "con_235": {
+                    "source": "St8M0R", 
+                    "destination": "E1", 
                     "data": {}, 
                     "_class": "Dream.Edge"
                }, 
@@ -2044,15 +2053,15 @@
                     "data": {}, 
                     "_class": "Dream.Edge"
                }, 
-               "con_95": {
-                    "source": "St4M0", 
-                    "destination": "St4M0R", 
+               "con_135": {
+                    "source": "B9", 
+                    "destination": "St5M1", 
                     "data": {}, 
                     "_class": "Dream.Edge"
                }, 
-               "con_90": {
-                    "source": "St4M0D", 
-                    "destination": "St4M0", 
+               "con_130": {
+                    "source": "B9", 
+                    "destination": "St5M0", 
                     "data": {}, 
                     "_class": "Dream.Edge"
                }, 
@@ -2131,6 +2140,12 @@
                "con_260": {
                     "source": "St7M0", 
                     "destination": "B12", 
+                    "data": {}, 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_190": {
+                    "source": "St6M0", 
+                    "destination": "St6M0R", 
                     "data": {}, 
                     "_class": "Dream.Edge"
                }

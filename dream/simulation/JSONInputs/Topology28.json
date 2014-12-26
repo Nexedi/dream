@@ -1,18 +1,11 @@
 {
      "graph": {
           "node": {
-               "M1": {
-                    "name": "Machine1", 
-                    "top": 0.5, 
-                    "processingTime": {
-                         "Fixed": {
-                              "mean": 17.0
-                         }
-                    }, 
-                    "operationType": "Processing", 
+               "E1": {
                     "interruptions": {}, 
-                    "_class": "Dream.Machine", 
-                    "left": 0.5625
+                    "top": 0.05688622754491013, 
+                    "_class": "Dream.Exit", 
+                    "left": 0.7083333333333333
                }, 
                "S1": {
                     "name": "Source", 
@@ -28,11 +21,18 @@
                     "_class": "Dream.Source", 
                     "left": 0.30208333333333337
                }, 
-               "E1": {
+               "M1": {
+                    "name": "Machine1", 
+                    "top": 0.5, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 17.0
+                         }
+                    }, 
+                    "operationType": "Processing", 
                     "interruptions": {}, 
-                    "top": 0.05688622754491013, 
-                    "_class": "Dream.Exit", 
-                    "left": 0.7083333333333333
+                    "_class": "Dream.Machine", 
+                    "left": 0.5625
                }, 
                "O1": {
                     "capacity": 1, 
@@ -53,8 +53,8 @@
                          }
                     }, 
                     "operationType": "Processing", 
-                    "interruptions": {}, 
                     "failures": {}, 
+                    "interruptions": {}, 
                     "_class": "Dream.Machine", 
                     "left": 0.7083333333333333
                }
@@ -94,10 +94,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "1440", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "1440", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }

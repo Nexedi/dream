@@ -63,8 +63,8 @@
                               "mean": 0.5
                          }
                     }, 
-                    "interruptions": {}, 
                     "failures": {}, 
+                    "interruptions": {}, 
                     "_class": "Dream.Machine", 
                     "left": 0.4414893617021277
                }, 

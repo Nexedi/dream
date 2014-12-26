@@ -9,13 +9,6 @@
                     "_class": "Dream.Queue", 
                     "left": 0.6968085106382979
                }, 
-               "E1": {
-                    "interruptions": {}, 
-                    "top": 0.045454545454545414, 
-                    "_class": "Dream.Exit", 
-                    "name": "Stock", 
-                    "left": 0.2978723404255319
-               }, 
                "M1": {
                     "name": "Station1", 
                     "top": 0.5909090909090908, 
@@ -24,22 +17,9 @@
                               "mean": 0.5
                          }
                     }, 
-                    "interruptions": {}, 
                     "failures": {}, 
-                    "_class": "Dream.Machine", 
-                    "left": 0.4414893617021277
-               }, 
-               "BD1": {
-                    "name": "Batch_Decomposition", 
-                    "top": 0.5909090909090908, 
-                    "processingTime": {
-                         "Fixed": {
-                              "mean": 1.0
-                         }
-                    }, 
-                    "numberOfSubBatches": 4, 
                     "interruptions": {}, 
-                    "_class": "Dream.BatchDecomposition", 
+                    "_class": "Dream.Machine", 
                     "left": 0.4414893617021277
                }, 
                "S1": {
@@ -56,6 +36,26 @@
                     "interruptions": {}, 
                     "_class": "Dream.BatchSource", 
                     "left": 0.6968085106382979
+               }, 
+               "BD1": {
+                    "name": "Batch_Decomposition", 
+                    "top": 0.5909090909090908, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.0
+                         }
+                    }, 
+                    "numberOfSubBatches": 4, 
+                    "interruptions": {}, 
+                    "_class": "Dream.BatchDecomposition", 
+                    "left": 0.4414893617021277
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "top": 0.045454545454545414, 
+                    "_class": "Dream.Exit", 
+                    "name": "Stock", 
+                    "left": 0.2978723404255319
                }
           }, 
           "edge": {
@@ -87,10 +87,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "1440", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "1440", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }

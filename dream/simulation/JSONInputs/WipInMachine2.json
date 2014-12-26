@@ -1,6 +1,13 @@
 {
      "graph": {
           "node": {
+               "E1": {
+                    "interruptions": {}, 
+                    "top": 0.10215053763440862, 
+                    "_class": "Dream.Exit", 
+                    "name": "Stock", 
+                    "left": 0.5
+               }, 
                "M1": {
                     "name": "Moulding", 
                     "top": 0.5, 
@@ -13,23 +20,16 @@
                          {
                               "_class": "Dream.Part", 
                               "id": "P1", 
+                              "name": "Part1", 
                               "remainingProcessingTime": {
-                                   "Fixed":{ 
-										"mean": 2
-								   }
-                              }, 
-                              "name": "Part1"
+                                   "Fixed": {
+                                        "mean": 2
+                                   }
+                              }
                          }
                     ], 
                     "interruptions": {}, 
                     "_class": "Dream.Machine", 
-                    "left": 0.5
-               }, 
-               "E1": {
-                    "interruptions": {}, 
-                    "top": 0.10215053763440862, 
-                    "_class": "Dream.Exit", 
-                    "name": "Stock", 
                     "left": 0.5
                }
           }, 
@@ -44,10 +44,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }

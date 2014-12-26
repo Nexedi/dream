@@ -23,7 +23,6 @@
                     "id": "S1"
                }, 
                "M1": {
-                    "name": "Machine1", 
                     "processingTime": {
                          "Fixed": {
                               "mean": 0.25
@@ -44,10 +43,10 @@
                          }
                     }, 
                     "_class": "Dream.Machine", 
+                    "name": "Machine1", 
                     "id": "M1"
                }, 
                "M2": {
-                    "name": "Machine2", 
                     "processingTime": {
                          "Fixed": {
                               "mean": 1.5
@@ -68,6 +67,7 @@
                          }
                     }, 
                     "_class": "Dream.Machine", 
+                    "name": "Machine2", 
                     "id": "M2"
                }, 
                "DummyQ": {
@@ -120,10 +120,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "1440", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "1440", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }

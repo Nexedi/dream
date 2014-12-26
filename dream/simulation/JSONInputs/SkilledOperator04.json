@@ -60,8 +60,8 @@
                          }
                     }, 
                     "operationType": "MT-Load-Processing", 
-                    "failures": {}, 
                     "interruptions": {}, 
+                    "failures": {}, 
                     "_class": "Dream.Machine"
                }, 
                "EV": {
@@ -69,12 +69,12 @@
                     "argumentDict": "{}", 
                     "interval": 10, 
                     "stop": -1, 
-                    "method": "Dream.ManPyObject.requestAllocation", 
+                    "id": "EV", 
                     "start": 0, 
                     "interruptions": {}, 
                     "element_id": "DreamNode_6", 
                     "_class": "Dream.EventGenerator", 
-                    "id": "EV"
+                    "method": "Dream.ManPyObject.requestAllocation"
                }, 
                "E1": {
                     "interruptions": {}, 

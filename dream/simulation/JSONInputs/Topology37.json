@@ -14,6 +14,7 @@
                     "isDummy": "0", 
                     "wip": [
                          {
+                              "id": "O1", 
                               "route": [
                                    {
                                         "processingTime": {
@@ -133,8 +134,7 @@
                                         "name": "Component2"
                                    }
                               ], 
-                              "name": "Order1", 
-                              "id": "O1"
+                              "name": "Order1"
                          }
                     ], 
                     "interruptions": {}, 
@@ -178,10 +178,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "numberOfReplications": "1"
      }
 }

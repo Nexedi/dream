@@ -88,6 +88,20 @@
                     "_class": "Dream.Machine", 
                     "left": 0.2142857142857143
                }, 
+               "E2": {
+                    "interruptions": {}, 
+                    "top": 0.04656862745098034, 
+                    "_class": "Dream.Exit", 
+                    "name": "Frames Stock", 
+                    "left": 0.7857142857142857
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "top": 0.04656862745098034, 
+                    "_class": "Dream.Exit", 
+                    "name": "Parts Stock", 
+                    "left": 0.2142857142857143
+               }, 
                "D1": {
                     "name": "Dismantle", 
                     "top": 0.40931372549019607, 
@@ -99,20 +113,6 @@
                     "interruptions": {}, 
                     "_class": "Dream.Dismantle", 
                     "left": 0.5
-               }, 
-               "E1": {
-                    "interruptions": {}, 
-                    "top": 0.04656862745098034, 
-                    "_class": "Dream.Exit", 
-                    "name": "Parts Stock", 
-                    "left": 0.2142857142857143
-               }, 
-               "E2": {
-                    "interruptions": {}, 
-                    "top": 0.04656862745098034, 
-                    "_class": "Dream.Exit", 
-                    "name": "Frames Stock", 
-                    "left": 0.7857142857142857
                }
           }, 
           "edge": {
@@ -180,10 +180,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "1440", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "1440", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }

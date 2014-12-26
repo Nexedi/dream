@@ -1,19 +1,18 @@
 {
      "graph": {
           "node": {
-               "CB4": {
+               "CE1": {
                     "interruptions": {}, 
-                    "requireFullProject": 1, 
-                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer", 
-                    "name": "AssemblyBuffer", 
-                    "wip": []
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit", 
+                    "name": "SMFExit", 
+                    "nextCapacityStationBufferId": "CB2"
                }, 
                "CSC": {
                     "interruptions": {}, 
                     "_class": "dream.simulation.applications.CapacityStations.CapacityStationController.CapacityStationController", 
                     "name": "CSC", 
-                    "interval": "1", 
-                    "start": "0"
+                    "start": "0", 
+                    "interval": "1"
                }, 
                "CB2": {
                     "interruptions": {}, 
@@ -27,15 +26,15 @@
                     "wip": [
                          {
                               "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity", 
-                              "requiredCapacity": 50, 
                               "capacityProjectId": "P1", 
-                              "name": "P1_CNC_50"
+                              "name": "P1_CNC_50", 
+                              "requiredCapacity": 50
                          }, 
                          {
                               "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity", 
-                              "requiredCapacity": 100, 
                               "capacityProjectId": "P2", 
-                              "name": "P2_CNC_100"
+                              "name": "P2_CNC_100", 
+                              "requiredCapacity": 100
                          }
                     ]
                }, 
@@ -46,15 +45,15 @@
                     "wip": [
                          {
                               "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity", 
-                              "requiredCapacity": 100, 
                               "capacityProjectId": "P1", 
-                              "name": "P1_SMF_100"
+                              "name": "P1_SMF_100", 
+                              "requiredCapacity": 100
                          }, 
                          {
                               "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity", 
-                              "requiredCapacity": 50, 
                               "capacityProjectId": "P2", 
-                              "name": "P2_SMF_50"
+                              "name": "P2_SMF_50", 
+                              "requiredCapacity": 50
                          }
                     ]
                }, 
@@ -70,11 +69,12 @@
                     "name": "WELDExit", 
                     "nextCapacityStationBufferId": "CB4"
                }, 
-               "CE1": {
+               "CB4": {
+                    "wip": [], 
                     "interruptions": {}, 
-                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit", 
-                    "name": "SMFExit", 
-                    "nextCapacityStationBufferId": "CB2"
+                    "requireFullProject": 1, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer", 
+                    "name": "AssemblyBuffer"
                }, 
                "CS4": {
                     "interruptions": {}, 
@@ -89,36 +89,18 @@
                          350
                     ]
                }, 
-               "QD": {
-                    "capacity": "-1", 
-                    "name": "DUMMY", 
-                    "wip": [
-                         {
-                              "capacityRequirementDict": {
-                                   "CS4": 50, 
-                                   "CS1": 100, 
-                                   "CS3": 50, 
-                                   "CS2": 50
-                              }, 
-                              "_class": "dream.simulation.applications.CapacityStations.CapacityProject.CapacityProject", 
-                              "id": "P1", 
-                              "name": "P1"
-                         }, 
-                         {
-                              "capacityRequirementDict": {
-                                   "CS4": 50, 
-                                   "CS1": 50, 
-                                   "CS3": 100, 
-                                   "CS2": 100
-                              }, 
-                              "_class": "dream.simulation.applications.CapacityStations.CapacityProject.CapacityProject", 
-                              "id": "P2", 
-                              "name": "P2"
-                         }
-                    ], 
+               "CS2": {
                     "interruptions": {}, 
-                    "_class": "Dream.Queue", 
-                    "id": "QD"
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
+                    "name": "WELD", 
+                    "intervalCapacity": [
+                         150, 
+                         60, 
+                         350, 
+                         150, 
+                         60, 
+                         350
+                    ]
                }, 
                "CS1": {
                     "interruptions": {}, 
@@ -151,18 +133,36 @@
                          150
                     ]
                }, 
-               "CS2": {
+               "QD": {
+                    "capacity": "-1", 
+                    "name": "DUMMY", 
+                    "wip": [
+                         {
+                              "capacityRequirementDict": {
+                                   "CS4": 50, 
+                                   "CS1": 100, 
+                                   "CS3": 50, 
+                                   "CS2": 50
+                              }, 
+                              "_class": "dream.simulation.applications.CapacityStations.CapacityProject.CapacityProject", 
+                              "id": "P1", 
+                              "name": "P1"
+                         }, 
+                         {
+                              "capacityRequirementDict": {
+                                   "CS4": 50, 
+                                   "CS1": 50, 
+                                   "CS3": 100, 
+                                   "CS2": 100
+                              }, 
+                              "_class": "dream.simulation.applications.CapacityStations.CapacityProject.CapacityProject", 
+                              "id": "P2", 
+                              "name": "P2"
+                         }
+                    ], 
                     "interruptions": {}, 
-                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
-                    "name": "WELD", 
-                    "intervalCapacity": [
-                         150, 
-                         60, 
-                         350, 
-                         150, 
-                         60, 
-                         350
-                    ]
+                    "_class": "Dream.Queue", 
+                    "id": "QD"
                }
           }, 
           "edge": {
@@ -218,10 +218,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }

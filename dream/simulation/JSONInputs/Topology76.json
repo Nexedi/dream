@@ -5,18 +5,13 @@
                     "interruptions": {}, 
                     "_class": "dream.simulation.applications.CapacityStations.CapacityStationController.CapacityStationController", 
                     "name": "CSC", 
-                    "interval": "1", 
-                    "start": "0"
+                    "start": "0", 
+                    "interval": "1"
                }, 
                "CB2": {
                     "interruptions": {}, 
                     "_class": "dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer", 
                     "name": "WELDBuffer"
-               }, 
-               "CE2": {
-                    "interruptions": {}, 
-                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit", 
-                    "name": "WELDExit"
                }, 
                "CB1": {
                     "interruptions": {}, 
@@ -25,16 +20,47 @@
                     "wip": [
                          {
                               "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity", 
-                              "requiredCapacity": 100, 
                               "capacityProjectId": "P1", 
-                              "name": "P1_SMF_100"
+                              "name": "P1_SMF_100", 
+                              "requiredCapacity": 100
                          }, 
                          {
                               "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity", 
-                              "requiredCapacity": 50, 
                               "capacityProjectId": "P2", 
-                              "name": "P2_SMF_50"
+                              "name": "P2_SMF_50", 
+                              "requiredCapacity": 50
                          }
+                    ]
+               }, 
+               "CE2": {
+                    "interruptions": {}, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit", 
+                    "name": "WELDExit"
+               }, 
+               "CE1": {
+                    "interruptions": {}, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit", 
+                    "name": "SMFExit", 
+                    "nextCapacityStationBufferId": "CB2"
+               }, 
+               "CS2": {
+                    "interruptions": {}, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
+                    "name": "WELD", 
+                    "intervalCapacity": [
+                         150, 
+                         60, 
+                         350
+                    ]
+               }, 
+               "CS1": {
+                    "interruptions": {}, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
+                    "name": "SMF", 
+                    "intervalCapacity": [
+                         100, 
+                         200, 
+                         300
                     ]
                }, 
                "QD": {
@@ -63,32 +89,6 @@
                     "interruptions": {}, 
                     "_class": "Dream.Queue", 
                     "id": "QD"
-               }, 
-               "CE1": {
-                    "interruptions": {}, 
-                    "_class": "dream.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit", 
-                    "name": "SMFExit", 
-                    "nextCapacityStationBufferId": "CB2"
-               }, 
-               "CS1": {
-                    "interruptions": {}, 
-                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
-                    "name": "SMF", 
-                    "intervalCapacity": [
-                         100, 
-                         200, 
-                         300
-                    ]
-               }, 
-               "CS2": {
-                    "interruptions": {}, 
-                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
-                    "name": "WELD", 
-                    "intervalCapacity": [
-                         150, 
-                         60, 
-                         350
-                    ]
                }
           }, 
           "edge": {
@@ -120,10 +120,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }

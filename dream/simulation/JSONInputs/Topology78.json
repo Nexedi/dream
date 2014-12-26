@@ -3,25 +3,26 @@
           "node": {
                "M1A": {
                     "name": "M1A", 
-                    "shift": {
-                         "endUnfinished": 0, 
-                         "shiftPattern": [
-                              [
-                                   360, 
-                                   780
-                              ], 
-                              [
-                                   1800, 
-                                   2220
-                              ]
-                         ]
-                    }, 
                     "processingTime": {
                          "Fixed": {
                               "mean": "0.1"
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "endUnfinished": 0, 
+                              "shiftPattern": [
+                                   [
+                                        360, 
+                                        780
+                                   ], 
+                                   [
+                                        1800, 
+                                        2220
+                                   ]
+                              ]
+                         }
+                    }, 
                     "failures": {}, 
                     "element_id": "DreamNode_6", 
                     "_class": "Dream.BatchScrapMachine"
@@ -46,25 +47,26 @@
                }, 
                "M1B": {
                     "name": "M1B", 
-                    "shift": {
-                         "endUnfinished": 0, 
-                         "shiftPattern": [
-                              [
-                                   360, 
-                                   1260
-                              ], 
-                              [
-                                   1800, 
-                                   2700
-                              ]
-                         ]
-                    }, 
                     "processingTime": {
                          "Fixed": {
                               "mean": "0.1"
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "endUnfinished": 0, 
+                              "shiftPattern": [
+                                   [
+                                        360, 
+                                        1260
+                                   ], 
+                                   [
+                                        1800, 
+                                        2700
+                                   ]
+                              ]
+                         }
+                    }, 
                     "failures": {}, 
                     "element_id": "DreamNode_7", 
                     "_class": "Dream.BatchScrapMachine"
@@ -101,17 +103,31 @@
                     "_class": "Dream.Queue", 
                     "schedulingRule": "FIFO"
                }, 
-               "BDA": {
-                    "name": "Deco_A", 
+               "PrA": {
+                    "name": "PrA", 
                     "processingTime": {
                          "Fixed": {
-                              "mean": "0"
+                              "mean": "0.1"
                          }
                     }, 
-                    "numberOfSubBatches": 4, 
-                    "interruptions": {}, 
-                    "element_id": "DreamNode_1", 
-                    "_class": "Dream.BatchDecompositionStartTime"
+                    "interruptions": {
+                         "shift": {
+                              "endUnfinished": 0, 
+                              "shiftPattern": [
+                                   [
+                                        360, 
+                                        780
+                                   ], 
+                                   [
+                                        1800, 
+                                        2220
+                                   ]
+                              ]
+                         }
+                    }, 
+                    "failures": {}, 
+                    "element_id": "DreamNode_15", 
+                    "_class": "Dream.BatchScrapMachine"
                }, 
                "QStart": {
                     "capacity": "1", 
@@ -122,64 +138,80 @@
                     "_class": "Dream.Queue", 
                     "schedulingRule": "FIFO"
                }, 
-               "BDB": {
-                    "name": "Deco_B", 
-                    "processingTime": {
-                         "Fixed": {
-                              "mean": "0"
-                         }
-                    }, 
-                    "numberOfSubBatches": 4, 
-                    "interruptions": {}, 
-                    "element_id": "DreamNode_2", 
-                    "_class": "Dream.BatchDecompositionStartTime"
-               }, 
-               "PaA": {
-                    "name": "PaA", 
-                    "shift": {
-                         "endUnfinished": 0, 
-                         "shiftPattern": [
-                              [
-                                   360, 
-                                   780
-                              ], 
-                              [
-                                   1800, 
-                                   2220
-                              ]
-                         ]
-                    }, 
+               "PrB": {
+                    "name": "PrA", 
                     "processingTime": {
                          "Fixed": {
                               "mean": "0.1"
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "endUnfinished": 0, 
+                              "shiftPattern": [
+                                   [
+                                        360, 
+                                        1260
+                                   ], 
+                                   [
+                                        1800, 
+                                        2700
+                                   ]
+                              ]
+                         }
+                    }, 
+                    "failures": {}, 
+                    "element_id": "DreamNode_16", 
+                    "_class": "Dream.BatchScrapMachine"
+               }, 
+               "PaA": {
+                    "name": "PaA", 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": "0.1"
+                         }
+                    }, 
+                    "interruptions": {
+                         "shift": {
+                              "endUnfinished": 0, 
+                              "shiftPattern": [
+                                   [
+                                        360, 
+                                        780
+                                   ], 
+                                   [
+                                        1800, 
+                                        2220
+                                   ]
+                              ]
+                         }
+                    }, 
                     "failures": {}, 
                     "element_id": "DreamNode_13", 
                     "_class": "Dream.BatchScrapMachine"
                }, 
                "PaB": {
                     "name": "PaB", 
-                    "shift": {
-                         "endUnfinished": 0, 
-                         "shiftPattern": [
-                              [
-                                   360, 
-                                   1260
-                              ], 
-                              [
-                                   1800, 
-                                   2700
-                              ]
-                         ]
-                    }, 
                     "processingTime": {
                          "Fixed": {
                               "mean": "0.1"
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "endUnfinished": 0, 
+                              "shiftPattern": [
+                                   [
+                                        360, 
+                                        1260
+                                   ], 
+                                   [
+                                        1800, 
+                                        2700
+                                   ]
+                              ]
+                         }
+                    }, 
                     "failures": {}, 
                     "element_id": "DreamNode_14", 
                     "_class": "Dream.BatchScrapMachine"
@@ -192,50 +224,52 @@
                }, 
                "M2A": {
                     "name": "M2A", 
-                    "shift": {
-                         "endUnfinished": 0, 
-                         "shiftPattern": [
-                              [
-                                   360, 
-                                   780
-                              ], 
-                              [
-                                   1800, 
-                                   2220
-                              ]
-                         ]
-                    }, 
                     "processingTime": {
                          "Fixed": {
                               "mean": "0.1"
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "endUnfinished": 0, 
+                              "shiftPattern": [
+                                   [
+                                        360, 
+                                        780
+                                   ], 
+                                   [
+                                        1800, 
+                                        2220
+                                   ]
+                              ]
+                         }
+                    }, 
                     "failures": {}, 
                     "element_id": "DreamNode_8", 
                     "_class": "Dream.BatchScrapMachine"
                }, 
                "M2B": {
                     "name": "M2B", 
-                    "shift": {
-                         "endUnfinished": 0, 
-                         "shiftPattern": [
-                              [
-                                   360, 
-                                   1260
-                              ], 
-                              [
-                                   1800, 
-                                   2700
-                              ]
-                         ]
-                    }, 
                     "processingTime": {
                          "Fixed": {
                               "mean": "0.1"
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "endUnfinished": 0, 
+                              "shiftPattern": [
+                                   [
+                                        360, 
+                                        1260
+                                   ], 
+                                   [
+                                        1800, 
+                                        2700
+                                   ]
+                              ]
+                         }
+                    }, 
                     "failures": {}, 
                     "element_id": "DreamNode_9", 
                     "_class": "Dream.BatchScrapMachine"
@@ -258,55 +292,29 @@
                     "_class": "Dream.LineClearance", 
                     "schedulingRule": "FIFO"
                }, 
-               "PrA": {
-                    "name": "PrA", 
-                    "shift": {
-                         "endUnfinished": 0, 
-                         "shiftPattern": [
-                              [
-                                   360, 
-                                   780
-                              ], 
-                              [
-                                   1800, 
-                                   2220
-                              ]
-                         ]
-                    }, 
+               "BDA": {
+                    "name": "Deco_A", 
                     "processingTime": {
                          "Fixed": {
-                              "mean": "0.1"
+                              "mean": "0"
                          }
                     }, 
+                    "numberOfSubBatches": 4, 
                     "interruptions": {}, 
-                    "failures": {}, 
-                    "element_id": "DreamNode_15", 
-                    "_class": "Dream.BatchScrapMachine"
+                    "element_id": "DreamNode_1", 
+                    "_class": "Dream.BatchDecompositionStartTime"
                }, 
-               "PrB": {
-                    "name": "PrA", 
-                    "shift": {
-                         "endUnfinished": 0, 
-                         "shiftPattern": [
-                              [
-                                   360, 
-                                   1260
-                              ], 
-                              [
-                                   1800, 
-                                   2700
-                              ]
-                         ]
-                    }, 
+               "BDB": {
+                    "name": "Deco_B", 
                     "processingTime": {
                          "Fixed": {
-                              "mean": "0.1"
+                              "mean": "0"
                          }
                     }, 
+                    "numberOfSubBatches": 4, 
                     "interruptions": {}, 
-                    "failures": {}, 
-                    "element_id": "DreamNode_16", 
-                    "_class": "Dream.BatchScrapMachine"
+                    "element_id": "DreamNode_2", 
+                    "_class": "Dream.BatchDecompositionStartTime"
                }, 
                "EV": {
                     "name": "attainment", 
@@ -319,87 +327,29 @@
                }, 
                "MM": {
                     "name": "MM", 
-                    "shift": {
-                         "endUnfinished": 0, 
-                         "shiftPattern": [
-                              [
-                                   360, 
-                                   1260
-                              ], 
-                              [
-                                   1800, 
-                                   2700
-                              ]
-                         ]
-                    }, 
                     "processingTime": {
                          "Fixed": {
                               "mean": "0.1"
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "endUnfinished": 0, 
+                              "shiftPattern": [
+                                   [
+                                        360, 
+                                        1260
+                                   ], 
+                                   [
+                                        1800, 
+                                        2700
+                                   ]
+                              ]
+                         }
+                    }, 
                     "failures": {}, 
                     "element_id": "DreamNode_12", 
                     "_class": "Dream.BatchScrapMachine"
-               }, 
-               "M3B": {
-                    "name": "M3B", 
-                    "shift": {
-                         "endUnfinished": 0, 
-                         "shiftPattern": [
-                              [
-                                   360, 
-                                   1260
-                              ], 
-                              [
-                                   1800, 
-                                   2700
-                              ]
-                         ]
-                    }, 
-                    "processingTime": {
-                         "Fixed": {
-                              "mean": "0.1"
-                         }
-                    }, 
-                    "interruptions": {}, 
-                    "failures": {}, 
-                    "element_id": "DreamNode_11", 
-                    "_class": "Dream.BatchScrapMachine"
-               }, 
-               "M3A": {
-                    "name": "M3A", 
-                    "shift": {
-                         "endUnfinished": 0, 
-                         "shiftPattern": [
-                              [
-                                   360, 
-                                   780
-                              ], 
-                              [
-                                   1800, 
-                                   2220
-                              ]
-                         ]
-                    }, 
-                    "processingTime": {
-                         "Fixed": {
-                              "mean": "0.1"
-                         }
-                    }, 
-                    "interruptions": {}, 
-                    "failures": {}, 
-                    "element_id": "DreamNode_10", 
-                    "_class": "Dream.BatchScrapMachine"
-               }, 
-               "QM": {
-                    "capacity": "3", 
-                    "name": "QM", 
-                    "isDummy": "0", 
-                    "interruptions": {}, 
-                    "element_id": "DreamNode_21", 
-                    "_class": "Dream.Queue", 
-                    "schedulingRule": "FIFO"
                }, 
                "BRB": {
                     "name": "Assembly_B", 
@@ -424,6 +374,67 @@
                     "interruptions": {}, 
                     "element_id": "DreamNode_3", 
                     "_class": "Dream.BatchReassembly"
+               }, 
+               "QM": {
+                    "capacity": "3", 
+                    "name": "QM", 
+                    "isDummy": "0", 
+                    "interruptions": {}, 
+                    "element_id": "DreamNode_21", 
+                    "_class": "Dream.Queue", 
+                    "schedulingRule": "FIFO"
+               }, 
+               "M3B": {
+                    "name": "M3B", 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": "0.1"
+                         }
+                    }, 
+                    "interruptions": {
+                         "shift": {
+                              "endUnfinished": 0, 
+                              "shiftPattern": [
+                                   [
+                                        360, 
+                                        1260
+                                   ], 
+                                   [
+                                        1800, 
+                                        2700
+                                   ]
+                              ]
+                         }
+                    }, 
+                    "failures": {}, 
+                    "element_id": "DreamNode_11", 
+                    "_class": "Dream.BatchScrapMachine"
+               }, 
+               "M3A": {
+                    "name": "M3A", 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": "0.1"
+                         }
+                    }, 
+                    "interruptions": {
+                         "shift": {
+                              "endUnfinished": 0, 
+                              "shiftPattern": [
+                                   [
+                                        360, 
+                                        780
+                                   ], 
+                                   [
+                                        1800, 
+                                        2220
+                                   ]
+                              ]
+                         }
+                    }, 
+                    "failures": {}, 
+                    "element_id": "DreamNode_10", 
+                    "_class": "Dream.BatchScrapMachine"
                }
           }, 
           "edge": {
@@ -591,6 +602,13 @@
                }
           }
      }, 
+     "general": {
+          "trace": "No", 
+          "processTimeout": "0.5", 
+          "numberOfReplications": "1", 
+          "maxSimTime": "2880", 
+          "confidenceLevel": "0.95"
+     }, 
      "spreadsheet": [
           [
                "Jobs", 
@@ -644,17 +662,17 @@
                     "top": 0.503401577672604, 
                     "left": 0.7908250350985949
                }, 
-               "BDA": {
-                    "top": 0.014751694583812569, 
-                    "left": 0.17522921311349376
+               "PrA": {
+                    "top": 0.6048194779363153, 
+                    "left": 0.8788983568729164
                }, 
                "QStart": {
                     "top": 0.09772997661775827, 
                     "left": 0.0972476261258133
                }, 
-               "BDB": {
-                    "top": 0.18992806776658683, 
-                    "left": 0.17064206093774784
+               "PrB": {
+                    "top": 0.5863798597065496, 
+                    "left": 0.6844031046212897
                }, 
                "PaA": {
                     "top": 0.7707760420042068, 
@@ -684,29 +702,17 @@
                     "top": 0.014751694583812569, 
                     "left": 0.569724300227642
                }, 
-               "PrA": {
-                    "top": 0.6048194779363153, 
-                    "left": 0.8788983568729164
+               "BDA": {
+                    "top": 0.014751694583812569, 
+                    "left": 0.17522921311349376
                }, 
-               "PrB": {
-                    "top": 0.5863798597065496, 
-                    "left": 0.6844031046212897
+               "BDB": {
+                    "top": 0.18992806776658683, 
+                    "left": 0.17064206093774784
                }, 
                "MM": {
                     "top": 0.34666482271959537, 
                     "left": 0.882568078613513
-               }, 
-               "M3B": {
-                    "top": 0.20836768599635255, 
-                    "left": 0.6495407480856209
-               }, 
-               "M3A": {
-                    "top": 0.023971503698695426, 
-                    "left": 0.6614673437425602
-               }, 
-               "QM": {
-                    "top": 0.1530488313070554, 
-                    "left": 0.8642194699105294
                }, 
                "BRB": {
                     "top": 0.2175874951112354, 
@@ -715,14 +721,19 @@
                "BRA": {
                     "top": 0.014751694583812569, 
                     "left": 0.7623846916089703
+               }, 
+               "QM": {
+                    "top": 0.1530488313070554, 
+                    "left": 0.8642194699105294
+               }, 
+               "M3B": {
+                    "top": 0.20836768599635255, 
+                    "left": 0.6495407480856209
+               }, 
+               "M3A": {
+                    "top": 0.023971503698695426, 
+                    "left": 0.6614673437425602
                }
           }
-     }, 
-     "general": {
-          "maxSimTime": "2880", 
-          "numberOfReplications": "1", 
-          "processTimeout": "0.5", 
-          "trace": "No", 
-          "confidenceLevel": "0.95"
      }
 }

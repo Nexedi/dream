@@ -24,41 +24,43 @@
                "M1A": {
                     "name": "Machine1A", 
                     "canDeliverOnInterruption": 1, 
-                    "shift": {
-                         "endUnfinished": 1, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   3
-                              ]
-                         ]
-                    }, 
                     "processingTime": {
                          "Fixed": {
                               "mean": 5
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "endUnfinished": 1, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        3
+                                   ]
+                              ]
+                         }
+                    }, 
                     "_class": "Dream.Machine"
                }, 
                "M1B": {
                     "name": "Machine1B", 
                     "canDeliverOnInterruption": 1, 
-                    "shift": {
-                         "endUnfinished": 1, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   3
-                              ]
-                         ]
-                    }, 
                     "processingTime": {
                          "Fixed": {
                               "mean": 5
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "endUnfinished": 1, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        3
+                                   ]
+                              ]
+                         }
+                    }, 
                     "_class": "Dream.Machine"
                }, 
                "Q2": {

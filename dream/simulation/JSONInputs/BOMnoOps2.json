@@ -2,10 +2,6 @@
      "graph": {
           "node": {
                "Q1": {
-                    "interruptions": {}, 
-                    "_class": "Dream.ConditionalBuffer", 
-                    "isDummy": "0", 
-                    "name": "Queue1", 
                     "wip": [
                          {
                               "id": "C1", 
@@ -19,7 +15,11 @@
                               "id": "C3", 
                               "sequence": "4"
                          }
-                    ]
+                    ], 
+                    "interruptions": {}, 
+                    "_class": "Dream.ConditionalBuffer", 
+                    "name": "Queue1", 
+                    "isDummy": "0"
                }, 
                "MA1": {
                     "interruptions": {}, 

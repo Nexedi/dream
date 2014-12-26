@@ -1,11 +1,34 @@
 {
      "graph": {
           "node": {
-               "E1": {
-                    "interruptions": {}, 
-                    "top": 0.10215053763440862, 
-                    "_class": "Dream.Exit", 
-                    "name": "Stock", 
+               "M1": {
+                    "name": "Moulding", 
+                    "top": 0.5, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.5
+                         }
+                    }, 
+                    "interruptions": {
+                         "shift": {
+                              "endUnfinished": 0, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        5
+                                   ], 
+                                   [
+                                        9, 
+                                        11
+                                   ], 
+                                   [
+                                        17, 
+                                        19
+                                   ]
+                              ]
+                         }
+                    }, 
+                    "_class": "Dream.Machine", 
                     "left": 0.5
                }, 
                "S1": {
@@ -22,33 +45,11 @@
                     "_class": "Dream.Source", 
                     "left": 0.5
                }, 
-               "M1": {
-                    "name": "Moulding", 
-                    "shift": {
-                         "endUnfinished": 0, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   5
-                              ], 
-                              [
-                                   9, 
-                                   11
-                              ], 
-                              [
-                                   17, 
-                                   19
-                              ]
-                         ]
-                    }, 
-                    "top": 0.5, 
-                    "processingTime": {
-                         "Fixed": {
-                              "mean": 1.5
-                         }
-                    }, 
+               "E1": {
                     "interruptions": {}, 
-                    "_class": "Dream.Machine", 
+                    "top": 0.10215053763440862, 
+                    "_class": "Dream.Exit", 
+                    "name": "Stock", 
                     "left": 0.5
                }
           }, 
@@ -69,10 +70,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "maxSimTime": "8", 
+          "trace": "No", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "trace": "No", 
+          "maxSimTime": "8", 
           "numberOfReplications": "1"
      }
 }

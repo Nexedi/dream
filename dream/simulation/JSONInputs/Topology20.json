@@ -8,7 +8,6 @@
                     "wip": [
                          {
                               "name": "Job1", 
-                              "orderDate": "0", 
                               "route": [
                                    {
                                         "processingTime": {
@@ -81,10 +80,11 @@
                                         ]
                                    }
                               ], 
-                              "dueDate": "15", 
+                              "orderDate": "0", 
                               "priority": "1", 
+                              "id": "J1", 
                               "_class": "Dream.Job", 
-                              "id": "J1"
+                              "dueDate": "15"
                          }
                     ], 
                     "interruptions": {}, 
@@ -106,7 +106,6 @@
                     "wip": [
                          {
                               "name": "Job2", 
-                              "orderDate": "-1", 
                               "route": [
                                    {
                                         "processingTime": {
@@ -179,14 +178,14 @@
                                         ]
                                    }
                               ], 
-                              "dueDate": "10", 
+                              "orderDate": "-1", 
                               "priority": "-7", 
+                              "id": "J2", 
                               "_class": "Dream.Job", 
-                              "id": "J2"
+                              "dueDate": "10"
                          }, 
                          {
                               "name": "Job3", 
-                              "orderDate": "2", 
                               "route": [
                                    {
                                         "processingTime": {
@@ -239,14 +238,14 @@
                                         ]
                                    }
                               ], 
-                              "dueDate": "6", 
+                              "orderDate": "2", 
                               "priority": "-12", 
+                              "id": "J3", 
                               "_class": "Dream.Job", 
-                              "id": "J3"
+                              "dueDate": "6"
                          }, 
                          {
                               "name": "Job4", 
-                              "orderDate": "1.5", 
                               "route": [
                                    {
                                         "processingTime": {
@@ -279,10 +278,11 @@
                                         ]
                                    }
                               ], 
-                              "dueDate": "9", 
+                              "orderDate": "1.5", 
                               "priority": "0", 
+                              "id": "J4", 
                               "_class": "Dream.Job", 
-                              "id": "J4"
+                              "dueDate": "9"
                          }
                     ], 
                     "interruptions": {}, 
@@ -314,10 +314,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "numberOfReplications": "1"
      }
 }

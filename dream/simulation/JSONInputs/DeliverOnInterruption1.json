@@ -16,24 +16,10 @@
                     "_class": "Dream.Queue", 
                     "left": 0.4414893617021277
                }, 
-               "M1": {
-                    "name": "Machine1", 
-                    "canDeliverOnInterruption": 1, 
-                    "shift": {
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   7
-                              ]
-                         ]
-                    }, 
-                    "processingTime": {
-                         "Fixed": {
-                              "mean": 5
-                         }
-                    }, 
+               "E1": {
                     "interruptions": {}, 
-                    "_class": "Dream.Machine"
+                    "_class": "Dream.Exit", 
+                    "name": "Exit"
                }, 
                "Q2": {
                     "capacity": 1, 
@@ -55,10 +41,25 @@
                     "_class": "Dream.Queue", 
                     "left": 0.4414893617021277
                }, 
-               "E1": {
-                    "interruptions": {}, 
-                    "_class": "Dream.Exit", 
-                    "name": "Exit"
+               "M1": {
+                    "name": "Machine1", 
+                    "canDeliverOnInterruption": 1, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 5
+                         }
+                    }, 
+                    "interruptions": {
+                         "shift": {
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        7
+                                   ]
+                              ]
+                         }
+                    }, 
+                    "_class": "Dream.Machine"
                }, 
                "M2": {
                     "processingTime": {

@@ -15,9 +15,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "Fixed":{ 
-												"mean": 1.0
-											 }
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M1"
@@ -30,9 +30,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "Fixed":{ 
-												"mean": 3.0
-											 }
+                                             "Fixed": {
+                                                  "mean": 3.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M3"
@@ -45,9 +45,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-                                             "Fixed":{ 
-												"mean": 2.0
-											 }
+                                             "Fixed": {
+                                                  "mean": 2.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M2"
@@ -107,10 +107,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }
