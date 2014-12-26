@@ -276,7 +276,7 @@ class Queue(CoreObject):
                 for step in entity.remainingRoute:
                     processingTime=step.get('processingTime',None)
                     if processingTime:
-                        RPT+=float(processingTime.get('mean',0))               
+                        RPT+=float(processingTime.get('Fixed',{}).get('mean',0))               
                 entity.remainingProcessingTime=RPT
             activeObjectQ.sort(key=lambda x: x.remainingProcessingTime, reverse=True)     
         #if the schedulingRule is to sort Entities according to longest processing time first in the next station
@@ -284,7 +284,7 @@ class Queue(CoreObject):
             for entity in activeObjectQ:
                 processingTime = entity.remainingRoute[0].get('processingTime',None)
                 if processingTime:
-                    entity.processingTimeInNextStation=float(processingTime.get('mean',0))
+                    entity.processingTimeInNextStation=float(processingTime.get('Fixed',{}).get('mean',0))
                 else:
                     entity.processingTimeInNextStation=0
             activeObjectQ.sort(key=lambda x: x.processingTimeInNextStation, reverse=True)             
@@ -293,7 +293,7 @@ class Queue(CoreObject):
             for entity in activeObjectQ:
                 processingTime = entity.remainingRoute[0].get('processingTime',None)
                 if processingTime:
-                    entity.processingTimeInNextStation=float(processingTime.get('mean',0))
+                    entity.processingTimeInNextStation=float(processingTime.get('Fixed',{}).get('mean',0))
                 else:
                     entity.processingTimeInNextStation=0
             activeObjectQ.sort(key=lambda x: x.processingTimeInNextStation) 
@@ -304,7 +304,7 @@ class Queue(CoreObject):
                 for step in entity.remainingRoute:
                     processingTime=step.get('processingTime',None)
                     if processingTime:
-                        RPT+=float(processingTime.get('mean',0))              
+                        RPT+=float(processingTime.get('Fixed',{}).get('mean',0))              
                 entity.remainingProcessingTime=RPT
             activeObjectQ.sort(key=lambda x: (x.dueDate-x.remainingProcessingTime))  
         #if the schedulingRule is to sort Entities based on the length of the following Queue
