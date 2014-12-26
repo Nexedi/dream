@@ -281,7 +281,7 @@ def createObjectInterruptions():
     from dream.simulation.ShiftScheduler import ShiftScheduler
     for (element_id, element) in nodes.iteritems():
         element['id'] = element_id
-        scheduledMaintenance=element.get('scheduledMaintenance', {})
+        scheduledMaintenance=element.get('interruptions',{}).get('scheduledMaintenance', {})
         # if there is a scheduled maintenance initiate it and append it
         # to the interruptions- and scheduled maintenances- list
         if len(scheduledMaintenance):
