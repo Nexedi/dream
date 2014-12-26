@@ -313,7 +313,7 @@ def createObjectInterruptions():
             G.PeriodicMaintenanceList.append(PM)
         # if there is a shift pattern defined 
         # initiate them             
-        shift=element.get('shift', {})
+        shift=element.get('interruptions',{}).get('shift', {})
         if len(shift):
             victim=Globals.findObjectById(element['id'])
             shiftPattern=list(shift.get('shiftPattern', []))
