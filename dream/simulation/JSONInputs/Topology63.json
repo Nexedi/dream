@@ -1,26 +1,6 @@
 {
      "graph": {
           "node": {
-               "E1": {
-                    "interruptions": {}, 
-                    "element_id": "DreamNode_2", 
-                    "_class": "Dream.Exit"
-               }, 
-               "S1": {
-                    "name": "S1", 
-                    "entity": "Dream.Part", 
-                    "interArrivalTime": {
-                         "Normal": {
-                              "stdev": 0.5, 
-                              "max": 2, 
-                              "min": 1, 
-                              "mean": 1.25
-                         }
-                    }, 
-                    "interruptions": {}, 
-                    "element_id": "DreamNode_1", 
-                    "_class": "Dream.Source"
-               }, 
                "M1": {
                     "processingTime": {
                          "Exp": {
@@ -31,6 +11,26 @@
                     "element_id": "DreamNode_3", 
                     "_class": "Dream.Machine", 
                     "name": "M1"
+               }, 
+               "S1": {
+                    "name": "S1", 
+                    "entity": "Dream.Part", 
+                    "interArrivalTime": {
+                         "Normal": {
+                              "mean": 1.25, 
+                              "max": 2, 
+                              "min": 1, 
+                              "stdev": 0.5
+                         }
+                    }, 
+                    "interruptions": {}, 
+                    "element_id": "DreamNode_1", 
+                    "_class": "Dream.Source"
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "element_id": "DreamNode_2", 
+                    "_class": "Dream.Exit"
                }
           }, 
           "edge": {
@@ -50,17 +50,17 @@
      }, 
      "preference": {
           "coordinates": {
-               "E1": {
-                    "top": 0.6177845249089259, 
-                    "left": 0.6390659970020633
+               "M1": {
+                    "top": 0.485131406063451, 
+                    "left": 0.07716052110571939
                }, 
                "S1": {
                     "top": 0.23709113629882006, 
                     "left": 0.24971235052621402
                }, 
-               "M1": {
-                    "top": 0.485131406063451, 
-                    "left": 0.07716052110571939
+               "E1": {
+                    "top": 0.6177845249089259, 
+                    "left": 0.6390659970020633
                }
           }
      }, 

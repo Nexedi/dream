@@ -40,34 +40,6 @@
                     "isDummy": "0", 
                     "wip": [
                          {
-                              "name": "Order1", 
-                              "route": [
-                                   {
-                                        "stationIdsList": [
-                                             "Q0"
-                                        ]
-                                   }, 
-                                   {
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 1.0
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "CAD1", 
-                                             "CAD2"
-                                        ], 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.5
-                                             }
-                                        }
-                                   }
-                              ], 
-                              "id": "O1", 
-                              "priority": "1", 
-                              "manager": "OP1", 
-                              "_class": "Dream.Order", 
                               "componentsList": [
                                    {
                                         "componentType": "Basic", 
@@ -287,10 +259,8 @@
                                         "id": "M1O1", 
                                         "name": "Mould1 from Order1"
                                    }
-                              ]
-                         }, 
-                         {
-                              "name": "Order2", 
+                              ], 
+                              "name": "Order1", 
                               "route": [
                                    {
                                         "stationIdsList": [
@@ -300,7 +270,7 @@
                                    {
                                         "processingTime": {
                                              "Fixed": {
-                                                  "mean": 1.4
+                                                  "mean": 1.0
                                              }
                                         }, 
                                         "stationIdsList": [
@@ -309,15 +279,17 @@
                                         ], 
                                         "setupTime": {
                                              "Fixed": {
-                                                  "mean": 0.7
+                                                  "mean": 0.5
                                              }
                                         }
                                    }
                               ], 
-                              "id": "O2", 
-                              "priority": "2", 
+                              "priority": "1", 
                               "manager": "OP1", 
                               "_class": "Dream.Order", 
+                              "id": "O1"
+                         }, 
+                         {
                               "componentsList": [
                                    {
                                         "componentType": "Basic", 
@@ -537,7 +509,35 @@
                                         "id": "M1O2", 
                                         "name": "Mould1 from Order2"
                                    }
-                              ]
+                              ], 
+                              "name": "Order2", 
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q0"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.4
+                                             }
+                                        }, 
+                                        "stationIdsList": [
+                                             "CAD1", 
+                                             "CAD2"
+                                        ], 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.7
+                                             }
+                                        }
+                                   }
+                              ], 
+                              "priority": "2", 
+                              "manager": "OP1", 
+                              "_class": "Dream.Order", 
+                              "id": "O2"
                          }
                     ], 
                     "interruptions": {}, 
@@ -637,10 +637,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "_class": "Dream.Configuration", 
           "numberOfReplications": "1", 
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "confidenceLevel": "0.95"
      }
 }

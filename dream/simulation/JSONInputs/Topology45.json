@@ -143,11 +143,11 @@
                     "_class": "Dream.QueueJobShop", 
                     "id": "Q4"
                }, 
-               "E1": {
+               "O3": {
                     "interruptions": {}, 
-                    "_class": "Dream.ExitJobShop", 
-                    "id": "E1", 
-                    "name": "Stock"
+                    "_class": "Dream.Operator", 
+                    "capacity": 1, 
+                    "name": "Operator3"
                }, 
                "M4": {
                     "name": "Machine4", 
@@ -158,8 +158,8 @@
                     }, 
                     "processingTime": {}, 
                     "operationType": "MT-Setup-Processing", 
-                    "failures": {}, 
                     "interruptions": {}, 
+                    "failures": {}, 
                     "_class": "Dream.MachineJobShop", 
                     "id": "M4"
                }, 
@@ -167,8 +167,8 @@
                     "name": "Machine1", 
                     "processingTime": {}, 
                     "operationType": "Processing", 
-                    "failures": {}, 
                     "interruptions": {}, 
+                    "failures": {}, 
                     "_class": "Dream.MachineJobShop", 
                     "id": "M1"
                }, 
@@ -176,8 +176,8 @@
                     "name": "Machine3", 
                     "processingTime": {}, 
                     "operationType": "Processing", 
-                    "failures": {}, 
                     "interruptions": {}, 
+                    "failures": {}, 
                     "_class": "Dream.MachineJobShop", 
                     "id": "M3"
                }, 
@@ -190,16 +190,16 @@
                     }, 
                     "processingTime": {}, 
                     "operationType": "MT-Setup-Processing", 
-                    "failures": {}, 
                     "interruptions": {}, 
+                    "failures": {}, 
                     "_class": "Dream.MachineJobShop", 
                     "id": "M2"
                }, 
-               "O3": {
+               "E1": {
                     "interruptions": {}, 
-                    "_class": "Dream.Operator", 
-                    "capacity": 1, 
-                    "name": "Operator3"
+                    "_class": "Dream.ExitJobShop", 
+                    "id": "E1", 
+                    "name": "Stock"
                }, 
                "O2": {
                     "interruptions": {}, 
@@ -243,10 +243,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "numberOfReplications": "1"
      }
 }

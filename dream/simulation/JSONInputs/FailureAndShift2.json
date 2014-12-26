@@ -1,43 +1,11 @@
 {
      "graph": {
           "node": {
-               "M1": {
-                    "name": "Moulding", 
-                    "shift": {
-                         "endUnfinished": 0, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   5
-                              ], 
-                              [
-                                   10, 
-                                   15
-                              ]
-                         ]
-                    }, 
-                    "top": 0.5, 
-                    "processingTime": {
-                         "Fixed": {
-                              "mean": 0.25
-                         }
-                    }, 
-                    "interruptions": {
-                         "failure": {
-                              "TTR": {
-                                   "Fixed": {
-                                        "mean": 1
-                                   }
-                              }, 
-                              "TTF": {
-                                   "Fixed": {
-                                        "mean": 7
-                                   }
-                              },
-							  "deteriorationType": "onShift"
-                         }
-                    }, 
-                    "_class": "Dream.Machine", 
+               "E1": {
+                    "interruptions": {}, 
+                    "top": 0.10215053763440862, 
+                    "_class": "Dream.Exit", 
+                    "name": "Stock", 
                     "left": 0.5
                }, 
                "S1": {
@@ -54,11 +22,43 @@
                     "_class": "Dream.Source", 
                     "left": 0.5
                }, 
-               "E1": {
-                    "interruptions": {}, 
-                    "top": 0.10215053763440862, 
-                    "_class": "Dream.Exit", 
-                    "name": "Stock", 
+               "M1": {
+                    "name": "Moulding", 
+                    "top": 0.5, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.25
+                         }
+                    }, 
+                    "interruptions": {
+                         "failure": {
+                              "TTR": {
+                                   "Fixed": {
+                                        "mean": 1
+                                   }
+                              }, 
+                              "deteriorationType": "onShift", 
+                              "TTF": {
+                                   "Fixed": {
+                                        "mean": 7
+                                   }
+                              }
+                         }, 
+                         "shift": {
+                              "endUnfinished": 0, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        5
+                                   ], 
+                                   [
+                                        10, 
+                                        15
+                                   ]
+                              ]
+                         }
+                    }, 
+                    "_class": "Dream.Machine", 
                     "left": 0.5
                }
           }, 
@@ -79,10 +79,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "20", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "20", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }

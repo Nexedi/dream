@@ -1,23 +1,6 @@
 {
      "graph": {
           "node": {
-               "E1": {
-                    "interruptions": {}, 
-                    "_class": "Dream.Exit", 
-                    "name": "Exit"
-               }, 
-               "S1": {
-                    "interruptions": {}, 
-                    "interArrivalTime": {
-                         "Fixed": {
-                              "distributionType": "Fixed", 
-                              "mean": 6.0
-                         }
-                    }, 
-                    "_class": "Dream.Source", 
-                    "name": "Source", 
-                    "entity": "Dream.Part"
-               }, 
                "M1": {
                     "name": "Machine1", 
                     "loadTime": {
@@ -33,6 +16,23 @@
                     "operationType": "MT-Load-Processing", 
                     "interruptions": {}, 
                     "_class": "Dream.Machine"
+               }, 
+               "S1": {
+                    "interruptions": {}, 
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "distributionType": "Fixed", 
+                              "mean": 6.0
+                         }
+                    }, 
+                    "_class": "Dream.Source", 
+                    "name": "Source", 
+                    "entity": "Dream.Part"
+               }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.Exit", 
+                    "name": "Exit"
                }, 
                "O1": {
                     "interruptions": {}, 
@@ -58,8 +58,8 @@
                          }
                     }, 
                     "operationType": "MT-Load-Setup-Processing", 
-                    "failures": {}, 
                     "interruptions": {}, 
+                    "failures": {}, 
                     "_class": "Dream.Machine"
                }
           }, 
@@ -98,10 +98,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "maxSimTime": "155", 
+          "trace": "No", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "trace": "No", 
+          "maxSimTime": "155", 
           "numberOfReplications": "1"
      }
 }

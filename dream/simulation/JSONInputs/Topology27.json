@@ -41,8 +41,8 @@
                               "mean": 0.75
                          }
                     }, 
-                    "interruptions": {}, 
                     "failures": {}, 
+                    "interruptions": {}, 
                     "_class": "Dream.Machine", 
                     "left": 0.4414893617021277
                }, 
@@ -54,8 +54,8 @@
                               "mean": 0.75
                          }
                     }, 
-                    "interruptions": {}, 
                     "failures": {}, 
+                    "interruptions": {}, 
                     "_class": "Dream.Machine", 
                     "left": 0.2978723404255319
                }, 
@@ -64,8 +64,8 @@
                     "argumentDict": {
                          "receiverId": "E1", 
                          "giverId": "Q2", 
-                         "safetyStock": 70, 
-                         "consumption": 20
+                         "consumption": 20, 
+                         "safetyStock": 70
                     }, 
                     "interval": "60", 
                     "start": "60", 
@@ -110,10 +110,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "400", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "400", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }

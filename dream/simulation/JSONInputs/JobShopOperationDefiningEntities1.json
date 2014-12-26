@@ -15,16 +15,16 @@
                                    }, 
                                    {
                                         "processingTime": {
-											"Fixed": {
-												"mean": 1
-											}
+                                             "Fixed": {
+                                                  "mean": 1
+                                             }
                                         }, 
-										"operationType": {
-											"Processing": 1
-										}, 
                                         "stationIdsList": [
                                              "M1"
-                                        ]
+                                        ], 
+                                        "operationType": {
+                                             "Processing": 1
+                                        }
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -33,16 +33,16 @@
                                    }, 
                                    {
                                         "processingTime": {
-											"Fixed": {
-												"mean": 3
-											}
+                                             "Fixed": {
+                                                  "mean": 3
+                                             }
                                         }, 
-										"operationType": {
-											"Processing": 0
-										}, 
                                         "stationIdsList": [
                                              "M3"
-                                        ]
+                                        ], 
+                                        "operationType": {
+                                             "Processing": 0
+                                        }
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -51,16 +51,16 @@
                                    }, 
                                    {
                                         "processingTime": {
-											"Fixed": {
-												"mean": 2
-											}
+                                             "Fixed": {
+                                                  "mean": 2
+                                             }
                                         }, 
-										"operationType": {
-											"Processing": 1
-										}, 
                                         "stationIdsList": [
                                              "M2"
-                                        ]
+                                        ], 
+                                        "operationType": {
+                                             "Processing": 1
+                                        }
                                    }, 
                                    {
                                         "stationIdsList": [

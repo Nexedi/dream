@@ -261,14 +261,7 @@
                }
           }
      }, 
-     "general": {
-          "console": "No", 
-          "numberOfReplications": "1", 
-          "trace": "No", 
-          "confidenceLevel": "0.95", 
-          "maxSimTime": "-1", 
-          "_class": "Dream.Configuration"
-     }, 
+     "_class": "Dream.Simulation", 
      "BOM": {
           "productionOrders": [
                {
@@ -283,26 +276,26 @@
                                         "sequence": "1"
                                    }, 
                                    {
-                                        "operator": "O1", 
+                                        "sequence": "1", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.5
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "CAD1", 
                                              "CAD2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 1
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.5
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "1"
+                                        "operator": "O1"
                                    }
                               ], 
                               "_class": "Dream.OrderDesign", 
@@ -325,26 +318,26 @@
                                         "sequence": "2"
                                    }, 
                                    {
-                                        "operator": "O1", 
+                                        "sequence": "2", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.5
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 2
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "CAM1", 
                                              "CAM2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 2
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.5
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "2"
+                                        "operator": "O1"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -353,26 +346,26 @@
                                         "sequence": "3"
                                    }, 
                                    {
-                                        "operator": "O1", 
+                                        "sequence": "3", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.5
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 2
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "MILL1", 
                                              "MILL2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 2
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.5
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "3"
+                                        "operator": "O1"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -381,25 +374,25 @@
                                         "sequence": "4"
                                    }, 
                                    {
-                                        "operator": "O1", 
+                                        "sequence": "4", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.5
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 2
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "EDM"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 2
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.5
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "4"
+                                        "operator": "O1"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -436,26 +429,26 @@
                                         "sequence": "3"
                                    }, 
                                    {
-                                        "operator": "O1", 
+                                        "sequence": "3", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.6
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "CAM1", 
                                              "CAM2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 1
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.6
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "3"
+                                        "operator": "O1"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -464,26 +457,26 @@
                                         "sequence": "4"
                                    }, 
                                    {
-                                        "operator": "O1", 
+                                        "sequence": "4", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.4
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 4
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "MILL1", 
                                              "MILL2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 4
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.4
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "4"
+                                        "operator": "O1"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -492,25 +485,25 @@
                                         "sequence": "5"
                                    }, 
                                    {
-                                        "operator": "O1", 
+                                        "sequence": "5", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.6
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "EDM"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 1
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.6
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										},  
-                                        "sequence": "5"
+                                        "operator": "O1"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -541,13 +534,13 @@
                                              "MA3"
                                         ], 
                                         "processingTime": {
-											"Fixed": {
-												"mean": 1
-											}
+                                             "Fixed": {
+                                                  "mean": 1
+                                             }
                                         }, 
-										"operationType": {
-											"Processing": 1
-										}, 
+                                        "operationType": {
+                                             "Processing": 1
+                                        }, 
                                         "sequence": "6"
                                    }, 
                                    {
@@ -557,25 +550,25 @@
                                         "sequence": "7"
                                    }, 
                                    {
-                                        "operator": "O1", 
+                                        "sequence": "7", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.5
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 2
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "IM"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 2
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 0
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.5
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 0,
-											"Setup":1
-										}, 
-                                        "sequence": "7"
+                                        "operator": "O1"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -605,26 +598,26 @@
                                         "sequence": "1"
                                    }, 
                                    {
-                                        "operator": "O2", 
+                                        "sequence": "1", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.7
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.4
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "CAD1", 
                                              "CAD2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 1.4
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.7
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "1"
+                                        "operator": "O2"
                                    }
                               ], 
                               "_class": "Dream.OrderDesign", 
@@ -647,26 +640,26 @@
                                         "sequence": "2"
                                    }, 
                                    {
-                                        "operator": "O2", 
+                                        "sequence": "2", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.1
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.3
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "CAM1", 
                                              "CAM2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 0.3
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.1
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "2"
+                                        "operator": "O2"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -675,26 +668,26 @@
                                         "sequence": "3"
                                    }, 
                                    {
-                                        "operator": "O2", 
+                                        "sequence": "3", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 1.2
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 3
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "MILL1", 
                                              "MILL2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 3
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 1.2
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "3"
+                                        "operator": "O2"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -703,25 +696,25 @@
                                         "sequence": "4"
                                    }, 
                                    {
-                                        "operator": "O2", 
+                                        "sequence": "4", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.3
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.9
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "EDM"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 0.9
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.3
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "4"
+                                        "operator": "O2"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -758,26 +751,26 @@
                                         "sequence": "3"
                                    }, 
                                    {
-                                        "operator": "O2", 
+                                        "sequence": "3", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.2
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.8
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "CAM1", 
                                              "CAM2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 0.8
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.2
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "3"
+                                        "operator": "O2"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -786,26 +779,26 @@
                                         "sequence": "4"
                                    }, 
                                    {
-                                        "operator": "O2", 
+                                        "sequence": "4", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.1
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.4
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "MILL1", 
                                              "MILL2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 0.4
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.1
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "4"
+                                        "operator": "O2"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -814,25 +807,25 @@
                                         "sequence": "5"
                                    }, 
                                    {
-                                        "operator": "O2", 
+                                        "sequence": "5", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.3
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.4
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "EDM"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 1.4
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.3
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "5"
+                                        "operator": "O2"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -863,13 +856,13 @@
                                              "MA3"
                                         ], 
                                         "processingTime": {
-											"Fixed": {
-												"mean": 2
-											}
+                                             "Fixed": {
+                                                  "mean": 2
+                                             }
                                         }, 
-										"operationType": {
-											"Processing": 1
-										}, 
+                                        "operationType": {
+                                             "Processing": 1
+                                        }, 
                                         "sequence": "7"
                                    }, 
                                    {
@@ -879,25 +872,25 @@
                                         "sequence": "8"
                                    }, 
                                    {
-                                        "operator": "O2", 
+                                        "sequence": "8", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.1
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.7
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "IM"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 0.7
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 0
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.1
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 0,
-											"Setup":1
-										}, 
-                                        "sequence": "8"
+                                        "operator": "O2"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -927,26 +920,26 @@
                                         "sequence": "1"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "1", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.7
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.4
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "CAD1", 
                                              "CAD2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 1.4
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.7
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "1"
+                                        "operator": "O3"
                                    }
                               ], 
                               "_class": "Dream.OrderDesign", 
@@ -969,26 +962,26 @@
                                         "sequence": "2"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "2", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.1
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.3
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "CAM1", 
                                              "CAM2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 0.3
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.1
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "2"
+                                        "operator": "O3"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -997,26 +990,26 @@
                                         "sequence": "3"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "3", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 1.2
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 3
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "MILL1", 
                                              "MILL2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 3
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 1.2
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "3"
+                                        "operator": "O3"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -1025,25 +1018,25 @@
                                         "sequence": "4"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "4", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.3
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.9
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "EDM"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 0.9
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.3
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "4"
+                                        "operator": "O3"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -1080,26 +1073,26 @@
                                         "sequence": "2"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "2", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.2
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.8
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "CAM1", 
                                              "CAM2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 0.8
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.2
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "2"
+                                        "operator": "O3"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -1108,26 +1101,26 @@
                                         "sequence": "3"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "3", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.1
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.4
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "MILL1", 
                                              "MILL2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 0.4
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.1
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "3"
+                                        "operator": "O3"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -1136,25 +1129,25 @@
                                         "sequence": "4"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "4", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.3
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.4
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "EDM"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 1.4
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.3
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "4"
+                                        "operator": "O3"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -1185,13 +1178,13 @@
                                              "MA3"
                                         ], 
                                         "processingTime": {
-											"Fixed": {
-												"mean": 2
-											}
+                                             "Fixed": {
+                                                  "mean": 2
+                                             }
                                         }, 
-										"operationType": {
-											"Processing": 1
-										}, 
+                                        "operationType": {
+                                             "Processing": 1
+                                        }, 
                                         "sequence": "5"
                                    }, 
                                    {
@@ -1201,25 +1194,25 @@
                                         "sequence": "6"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "6", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.1
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.7
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "IM"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 0.7
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 0
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.1
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 0,
-											"Setup":1
-										}, 
-                                        "sequence": "6"
+                                        "operator": "O3"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -1249,26 +1242,26 @@
                                         "sequence": "1"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "1", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.7
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.4
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "CAD1", 
                                              "CAD2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 1.4
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.7
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "1"
+                                        "operator": "O3"
                                    }
                               ], 
                               "_class": "Dream.OrderDesign", 
@@ -1291,26 +1284,26 @@
                                         "sequence": "2"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "2", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.1
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.3
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "CAM1", 
                                              "CAM2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 0.3
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.1
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "2"
+                                        "operator": "O3"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -1319,26 +1312,26 @@
                                         "sequence": "3"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "3", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 1.2
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 3
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "MILL1", 
                                              "MILL2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 3
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 1.2
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "3"
+                                        "operator": "O3"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -1347,25 +1340,25 @@
                                         "sequence": "4"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "4", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.3
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.9
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "EDM"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 0.9
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.3
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "4"
+                                        "operator": "O3"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -1402,26 +1395,26 @@
                                         "sequence": "2"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "2", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.2
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.8
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "CAM1", 
                                              "CAM2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 0.8
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.2
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "2"
+                                        "operator": "O3"
                                    }, 
                                    {
                                         "operator": "O3", 
@@ -1436,19 +1429,19 @@
                                              "MILL2"
                                         ], 
                                         "processingTime": {
-											"Fixed": {
-												"mean": 0.4
-											}
+                                             "Fixed": {
+                                                  "mean": 0.4
+                                             }
                                         }, 
                                         "setupTime": {
-											"Fixed": {
-												"mean": 0.1
-											}
+                                             "Fixed": {
+                                                  "mean": 0.1
+                                             }
                                         }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
+                                        }, 
                                         "sequence": "3"
                                    }, 
                                    {
@@ -1458,25 +1451,25 @@
                                         "sequence": "4"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "4", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.3
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.4
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "EDM"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 1.4
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.3
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "4"
+                                        "operator": "O3"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -1513,26 +1506,26 @@
                                         "sequence": "2"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "2", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.2
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.8
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "CAM1", 
                                              "CAM2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 0.8
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.2
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "2"
+                                        "operator": "O3"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -1541,26 +1534,26 @@
                                         "sequence": "3"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "3", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.1
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.4
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "MILL1", 
                                              "MILL2"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 0.4
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.1
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "3"
+                                        "operator": "O3"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -1569,25 +1562,25 @@
                                         "sequence": "4"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "4", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.3
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.4
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "EDM"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 1.4
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 1
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.3
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 1,
-											"Setup":1
-										}, 
-                                        "sequence": "4"
+                                        "operator": "O3"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -1618,13 +1611,13 @@
                                              "MA3"
                                         ], 
                                         "processingTime": {
-											"Fixed": {
-												"mean": 2
-											}
+                                             "Fixed": {
+                                                  "mean": 2
+                                             }
                                         }, 
-										"operationType": {
-											"Processing": 1
-										}, 
+                                        "operationType": {
+                                             "Processing": 1
+                                        }, 
                                         "sequence": "5"
                                    }, 
                                    {
@@ -1634,25 +1627,25 @@
                                         "sequence": "6"
                                    }, 
                                    {
-                                        "operator": "O3", 
+                                        "sequence": "6", 
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.1
+                                             }
+                                        }, 
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.7
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "IM"
                                         ], 
-                                        "processingTime": {
-											"Fixed": {
-												"mean": 0.7
-											}
+                                        "operationType": {
+                                             "Setup": 1, 
+                                             "Processing": 0
                                         }, 
-                                        "setupTime": {
-											"Fixed": {
-												"mean": 0.1
-											}
-                                        }, 
-										"operationType": {
-											"Processing": 0,
-											"Setup":1
-										},  
-                                        "sequence": "6"
+                                        "operator": "O3"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -1672,5 +1665,12 @@
                }
           ]
      }, 
-     "_class": "Dream.Simulation"
+     "general": {
+          "console": "No", 
+          "numberOfReplications": "1", 
+          "trace": "No", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "-1", 
+          "_class": "Dream.Configuration"
+     }
 }

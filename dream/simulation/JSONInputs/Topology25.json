@@ -66,8 +66,8 @@
                               "mean": 0.1
                          }
                     }, 
-                    "interruptions": {}, 
                     "failures": {}, 
+                    "interruptions": {}, 
                     "_class": "Dream.BatchScrapMachine", 
                     "left": 0.4414893617021277
                }, 
@@ -84,8 +84,8 @@
                               "mean": 0.25
                          }
                     }, 
-                    "interruptions": {}, 
                     "failures": {}, 
+                    "interruptions": {}, 
                     "_class": "Dream.BatchScrapMachine", 
                     "left": 0.4414893617021277
                }, 
@@ -95,15 +95,15 @@
                     "scrapQuantity": {
                          "Fixed": {
                               "mean": 1.0
-                         }                    
-					}, 
+                         }
+                    }, 
                     "processingTime": {
                          "Fixed": {
                               "mean": 0.2
                          }
                     }, 
-                    "interruptions": {}, 
                     "failures": {}, 
+                    "interruptions": {}, 
                     "_class": "Dream.BatchScrapMachine", 
                     "left": 0.4414893617021277
                }, 
@@ -187,10 +187,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "300", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "300", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }

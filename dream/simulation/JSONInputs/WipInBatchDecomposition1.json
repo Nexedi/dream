@@ -32,43 +32,6 @@
                     "_class": "Dream.BatchReassembly", 
                     "left": 0.4414893617021277
                }, 
-               "M1": {
-                    "name": "Station1", 
-                    "top": 0.5909090909090908, 
-                    "processingTime": {
-                         "Fixed": {
-                              "mean": 0.1
-                         }
-                    }, 
-                    "wip": [
-                         {
-                              "name": "Batch0_SB2", 
-                              "parentBatchName": "Batch0", 
-                              "unitsToProcess": 30, 
-                              "numberOfUnits": "40", 
-                              "parentBatchId": "B0", 
-                              "_class": "Dream.SubBatch", 
-                              "id": "SB2"
-                         }
-                    ], 
-                    "interruptions": {}, 
-                    "failures": {}, 
-                    "_class": "Dream.BatchScrapMachine", 
-                    "left": 0.4414893617021277
-               }, 
-               "M2": {
-                    "name": "Station2", 
-                    "top": 0.5909090909090908, 
-                    "processingTime": {
-                         "Fixed": {
-                              "mean": 0.2
-                         }
-                    }, 
-                    "interruptions": {}, 
-                    "failures": {}, 
-                    "_class": "Dream.BatchScrapMachine", 
-                    "left": 0.4414893617021277
-               }, 
                "BD1": {
                     "name": "Batch_Decomposition", 
                     "top": 0.5909090909090908, 
@@ -90,6 +53,43 @@
                     ], 
                     "interruptions": {}, 
                     "_class": "Dream.BatchDecomposition", 
+                    "left": 0.4414893617021277
+               }, 
+               "M2": {
+                    "name": "Station2", 
+                    "top": 0.5909090909090908, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.2
+                         }
+                    }, 
+                    "failures": {}, 
+                    "interruptions": {}, 
+                    "_class": "Dream.BatchScrapMachine", 
+                    "left": 0.4414893617021277
+               }, 
+               "M1": {
+                    "name": "Station1", 
+                    "top": 0.5909090909090908, 
+                    "wip": [
+                         {
+                              "name": "Batch0_SB2", 
+                              "parentBatchName": "Batch0", 
+                              "unitsToProcess": 30, 
+                              "numberOfUnits": "40", 
+                              "parentBatchId": "B0", 
+                              "_class": "Dream.SubBatch", 
+                              "id": "SB2"
+                         }
+                    ], 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.1
+                         }
+                    }, 
+                    "failures": {}, 
+                    "interruptions": {}, 
+                    "_class": "Dream.BatchScrapMachine", 
                     "left": 0.4414893617021277
                }, 
                "E1": {
@@ -141,10 +141,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }

@@ -24,29 +24,30 @@
                }, 
                "M1": {
                     "name": "Machine1", 
-                    "shift": {
-                         "endUnfinished": 1, 
-                         "shiftPattern": [
-                              [
-                                   0, 
-                                   4.75
-                              ], 
-                              [
-                                   9, 
-                                   11
-                              ], 
-                              [
-                                   17, 
-                                   19
-                              ]
-                         ]
-                    }, 
                     "processingTime": {
                          "Fixed": {
                               "mean": 0.5
                          }
                     }, 
-                    "interruptions": {}, 
+                    "interruptions": {
+                         "shift": {
+                              "endUnfinished": 1, 
+                              "shiftPattern": [
+                                   [
+                                        0, 
+                                        4.75
+                                   ], 
+                                   [
+                                        9, 
+                                        11
+                                   ], 
+                                   [
+                                        17, 
+                                        19
+                                   ]
+                              ]
+                         }
+                    }, 
                     "_class": "Dream.Machine", 
                     "id": "M1"
                }, 
@@ -111,10 +112,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "maxSimTime": "7", 
+          "trace": "No", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "trace": "No", 
+          "maxSimTime": "7", 
           "numberOfReplications": "1"
      }
 }

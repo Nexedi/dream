@@ -8,12 +8,13 @@
                     "wip": [
                          {
                               "name": "Job1", 
+                              "orderDate": "0", 
                               "route": [
                                    {
                                         "processingTime": {
-										   "Fixed":{ 
-												"mean": 3.0
-										   }
+                                             "Fixed": {
+                                                  "mean": 3.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M3"
@@ -21,9 +22,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-										   "Fixed":{ 
-												"mean": 0.0
-										   }
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "Q2"
@@ -31,9 +32,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-										   "Fixed":{ 
-												"mean": 4.0
-										   }
+                                             "Fixed": {
+                                                  "mean": 4.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M2"
@@ -41,9 +42,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-										   "Fixed":{ 
-												"mean": 0.0
-										   }
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "E1"
@@ -52,9 +53,8 @@
                               ], 
                               "dueDate": "15", 
                               "priority": "1", 
-                              "id": "J1", 
                               "_class": "Dream.Job", 
-                              "orderDate": "0"
+                              "id": "J1"
                          }
                     ], 
                     "interruptions": {}, 
@@ -76,12 +76,13 @@
                     "wip": [
                          {
                               "name": "Job2", 
+                              "orderDate": "-1", 
                               "route": [
                                    {
                                         "processingTime": {
-										   "Fixed":{ 
-												"mean": 3.0
-										   }
+                                             "Fixed": {
+                                                  "mean": 3.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M2"
@@ -89,9 +90,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-										   "Fixed":{ 
-												"mean": 0.0
-										   }
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "Q3"
@@ -99,9 +100,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-										   "Fixed":{ 
-												"mean": 1.0
-										   }
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M3"
@@ -109,9 +110,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-										   "Fixed":{ 
-												"mean": 7.0
-										   }
+                                             "Fixed": {
+                                                  "mean": 7.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "Q2"
@@ -119,9 +120,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-										   "Fixed":{ 
-												"mean": 7.0
-										   }
+                                             "Fixed": {
+                                                  "mean": 7.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M2"
@@ -129,9 +130,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-										   "Fixed":{ 
-												"mean": 0.0
-										   }
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "E1"
@@ -140,12 +141,12 @@
                               ], 
                               "dueDate": "10", 
                               "priority": "-7", 
-                              "id": "J2", 
                               "_class": "Dream.Job", 
-                              "orderDate": "-1"
+                              "id": "J2"
                          }, 
                          {
                               "name": "Job3", 
+                              "orderDate": "2", 
                               "route": [
                                    {
                                         "processingTime": {
@@ -158,9 +159,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-										   "Fixed":{ 
-												"mean": 2.0
-										   }
+                                             "Fixed": {
+                                                  "mean": 2.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M2"
@@ -168,9 +169,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-										   "Fixed":{ 
-												"mean": 0.0
-										   }
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "Q3"
@@ -178,9 +179,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-										   "Fixed":{ 
-												"mean": 1.0
-										   }
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M3"
@@ -188,9 +189,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-										   "Fixed":{ 
-												"mean": 0.0
-										   }
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "E1"
@@ -199,12 +200,12 @@
                               ], 
                               "dueDate": "6", 
                               "priority": "-12", 
-                              "id": "J3", 
                               "_class": "Dream.Job", 
-                              "orderDate": "2"
+                              "id": "J3"
                          }, 
                          {
                               "name": "Job4", 
+                              "orderDate": "1.5", 
                               "route": [
                                    {
                                         "processingTime": {
@@ -217,9 +218,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-										   "Fixed":{ 
-												"mean": 7.0
-										   }
+                                             "Fixed": {
+                                                  "mean": 7.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "M2"
@@ -227,9 +228,9 @@
                                    }, 
                                    {
                                         "processingTime": {
-										   "Fixed":{ 
-												"mean": 0.0
-										   }
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
                                         }, 
                                         "stationIdsList": [
                                              "E1"
@@ -238,9 +239,8 @@
                               ], 
                               "dueDate": "9", 
                               "priority": "0", 
-                              "id": "J4", 
                               "_class": "Dream.Job", 
-                              "orderDate": "1.5"
+                              "id": "J4"
                          }
                     ], 
                     "interruptions": {}, 
@@ -272,10 +272,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }

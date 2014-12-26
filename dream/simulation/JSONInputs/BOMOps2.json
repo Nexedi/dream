@@ -2,6 +2,10 @@
      "graph": {
           "node": {
                "Q1": {
+                    "interruptions": {}, 
+                    "_class": "Dream.ConditionalBuffer", 
+                    "isDummy": "0", 
+                    "name": "Queue1", 
                     "wip": [
                          {
                               "id": "C2", 
@@ -11,11 +15,7 @@
                               "id": "C3", 
                               "sequence": "4"
                          }
-                    ], 
-                    "interruptions": {}, 
-                    "_class": "Dream.ConditionalBuffer", 
-                    "name": "Queue1", 
-                    "isDummy": "0"
+                    ]
                }, 
                "MA1": {
                     "interruptions": {}, 
@@ -131,14 +131,7 @@
                }
           }
      }, 
-     "general": {
-          "console": "No", 
-          "numberOfReplications": "1", 
-          "trace": "No", 
-          "confidenceLevel": "0.95", 
-          "maxSimTime": "-1", 
-          "_class": "Dream.Configuration"
-     }, 
+     "_class": "Dream.Simulation", 
      "BOM": {
           "productionOrders": [
                {
@@ -153,17 +146,17 @@
                                    }, 
                                    {
                                         "operator": "O1", 
-										"processingTime": {
-											"Fixed": {
-												"mean": 1
-											}
-										},
-										"operationType": {
-											"Processing": 1
-										},
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "M0"
                                         ], 
+                                        "operationType": {
+                                             "Processing": 1
+                                        }, 
                                         "sequence": "1"
                                    }
                               ], 
@@ -188,18 +181,18 @@
                                    }, 
                                    {
                                         "operator": "O1", 
-										"processingTime": {
-											"Fixed": {
-												"mean": 2
-											}
-										},
-										"operationType": {
-											"Processing": 1
-										},
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 2
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "M1", 
                                              "M2"
                                         ], 
+                                        "operationType": {
+                                             "Processing": 1
+                                        }, 
                                         "sequence": "2"
                                    }, 
                                    {
@@ -236,18 +229,18 @@
                                    }, 
                                    {
                                         "operator": "O1", 
-										"processingTime": {
-											"Fixed": {
-												"mean": 1
-											}
-										},
-										"operationType": {
-											"Processing": 1
-										},
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "M1", 
                                              "M2"
                                         ], 
+                                        "operationType": {
+                                             "Processing": 1
+                                        }, 
                                         "sequence": "3"
                                    }, 
                                    {
@@ -283,24 +276,24 @@
                                         "sequence": "4"
                                    }, 
                                    {
-                                        "operator": "O1", 
-										"processingTime": {
-											"Fixed": {
-												"mean": 3
-											}
-										},
-										"operationType": {
-											"Processing": 1
-										},
-                                        "stationIdsList": [
-                                             "M1", 
-                                             "M2"
-                                        ], 
+                                        "sequence": "4", 
                                         "requiredParts": [
                                              "C2", 
                                              "C1"
                                         ], 
-                                        "sequence": "4"
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 3
+                                             }
+                                        }, 
+                                        "stationIdsList": [
+                                             "M1", 
+                                             "M2"
+                                        ], 
+                                        "operationType": {
+                                             "Processing": 1
+                                        }, 
+                                        "operator": "O1"
                                    }, 
                                    {
                                         "stationIdsList": [
@@ -323,17 +316,17 @@
                               "route": [
                                    {
                                         "operator": "O2", 
-										"processingTime": {
-											"Fixed": {
-												"mean": 1
-											}
-										},
-										"operationType": {
-											"Processing": 1
-										},
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1
+                                             }
+                                        }, 
                                         "stationIdsList": [
                                              "MA1"
                                         ], 
+                                        "operationType": {
+                                             "Processing": 1
+                                        }, 
                                         "sequence": "6"
                                    }, 
                                    {
@@ -354,5 +347,12 @@
                }
           ]
      }, 
-     "_class": "Dream.Simulation"
+     "general": {
+          "console": "No", 
+          "numberOfReplications": "1", 
+          "trace": "No", 
+          "confidenceLevel": "0.95", 
+          "maxSimTime": "-1", 
+          "_class": "Dream.Configuration"
+     }
 }

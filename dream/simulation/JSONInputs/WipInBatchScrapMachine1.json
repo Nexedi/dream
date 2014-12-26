@@ -10,6 +10,13 @@
                     "_class": "Dream.Queue", 
                     "left": 0.4414893617021277
                }, 
+               "E1": {
+                    "interruptions": {}, 
+                    "top": 0.10215053763440862, 
+                    "_class": "Dream.Exit", 
+                    "name": "Stock", 
+                    "left": 0.5
+               }, 
                "M1": {
                     "name": "Moulding", 
                     "top": 0.5, 
@@ -21,21 +28,14 @@
                     "wip": [
                          {
                               "unitsToProcess": 40, 
-                              "_class": "Dream.Batch", 
                               "numberOfUnits": 80, 
-                              "id": "B1", 
-                              "name": "Batch1"
+                              "_class": "Dream.Batch", 
+                              "name": "Batch1", 
+                              "id": "B1"
                          }
                     ], 
                     "interruptions": {}, 
                     "_class": "Dream.BatchScrapMachine", 
-                    "left": 0.5
-               }, 
-               "E1": {
-                    "interruptions": {}, 
-                    "top": 0.10215053763440862, 
-                    "_class": "Dream.Exit", 
-                    "name": "Stock", 
                     "left": 0.5
                }
           }, 
@@ -56,10 +56,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "numberOfReplications": "1"
      }
 }

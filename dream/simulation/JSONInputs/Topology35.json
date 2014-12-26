@@ -64,11 +64,17 @@
                     "_class": "Dream.QueueJobShop", 
                     "id": "Q1"
                }, 
-               "E1": {
+               "M1": {
+                    "name": "Machine1", 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.25
+                         }
+                    }, 
                     "interruptions": {}, 
-                    "_class": "Dream.ExitJobShop", 
-                    "id": "E1", 
-                    "name": "Stock"
+                    "failures": {}, 
+                    "_class": "Dream.MachineJobShop", 
+                    "id": "M1"
                }, 
                "Q2": {
                     "capacity": -1, 
@@ -113,17 +119,11 @@
                     "_class": "Dream.QueueJobShop", 
                     "id": "Q2"
                }, 
-               "M1": {
-                    "name": "Machine1", 
-                    "processingTime": {
-                         "Fixed": {
-                              "mean": 0.25
-                         }
-                    }, 
-                    "failures": {}, 
+               "E1": {
                     "interruptions": {}, 
-                    "_class": "Dream.MachineJobShop", 
-                    "id": "M1"
+                    "_class": "Dream.ExitJobShop", 
+                    "id": "E1", 
+                    "name": "Stock"
                }, 
                "M2": {
                     "preemption": {
@@ -145,10 +145,10 @@
      }, 
      "_class": "Dream.Simulation", 
      "general": {
-          "maxSimTime": "-1", 
+          "trace": "No", 
           "_class": "Dream.Configuration", 
           "confidenceLevel": "0.95", 
-          "trace": "No", 
+          "maxSimTime": "-1", 
           "numberOfReplications": "1"
      }
 }

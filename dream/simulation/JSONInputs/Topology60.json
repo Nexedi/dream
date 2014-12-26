@@ -7,7 +7,6 @@
                     "isDummy": "0", 
                     "wip": [
                          {
-                              "id": "J1", 
                               "route": [
                                    {
                                         "processingTime": {
@@ -57,11 +56,11 @@
                                    }
                               ], 
                               "_class": "Dream.Job", 
-                              "dueDate": 32, 
-                              "name": "J1"
+                              "id": "J1", 
+                              "name": "J1", 
+                              "dueDate": 32
                          }, 
                          {
-                              "id": "J2", 
                               "route": [
                                    {
                                         "processingTime": {
@@ -111,11 +110,65 @@
                                    }
                               ], 
                               "_class": "Dream.Job", 
-                              "dueDate": 31, 
-                              "name": "J2"
+                              "id": "J2", 
+                              "name": "J2", 
+                              "dueDate": 31
                          }, 
                          {
+                              "route": [
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
+                                        }, 
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 20.0
+                                             }
+                                        }, 
+                                        "stationIdsList": [
+                                             "M1", 
+                                             "M2"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
+                                        }, 
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ]
+                                   }, 
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 10.0
+                                             }
+                                        }, 
+                                        "stationIdsList": [
+                                             "EDM"
+                                        ]
+                                   }, 
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ], 
+                              "_class": "Dream.Job", 
                               "id": "J3", 
+                              "name": "J3", 
+                              "dueDate": 31
+                         }, 
+                         {
                               "route": [
                                    {
                                         "processingTime": {
@@ -130,7 +183,7 @@
                                    {
                                         "processingTime": {
                                              "Fixed": {
-                                                  "mean": 20.0
+                                                  "mean": 10.0
                                              }
                                         }, 
                                         "stationIdsList": [
@@ -151,7 +204,7 @@
                                    {
                                         "processingTime": {
                                              "Fixed": {
-                                                  "mean": 10.0
+                                                  "mean": 20.0
                                              }
                                         }, 
                                         "stationIdsList": [
@@ -165,65 +218,11 @@
                                    }
                               ], 
                               "_class": "Dream.Job", 
-                              "dueDate": 31, 
-                              "name": "J3"
-                         }, 
-                         {
                               "id": "J4", 
-                              "route": [
-                                   {
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.0
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "Q1"
-                                        ]
-                                   }, 
-                                   {
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 10.0
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "M1", 
-                                             "M2"
-                                        ]
-                                   }, 
-                                   {
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.0
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "Q3"
-                                        ]
-                                   }, 
-                                   {
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 20.0
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "EDM"
-                                        ]
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "E1"
-                                        ]
-                                   }
-                              ], 
-                              "_class": "Dream.Job", 
-                              "dueDate": 31, 
-                              "name": "J4"
+                              "name": "J4", 
+                              "dueDate": 31
                          }, 
                          {
-                              "id": "J5", 
                               "route": [
                                    {
                                         "processingTime": {
@@ -252,8 +251,9 @@
                                    }
                               ], 
                               "_class": "Dream.Job", 
-                              "dueDate": 31, 
-                              "name": "J5"
+                              "id": "J5", 
+                              "name": "J5", 
+                              "dueDate": 31
                          }
                     ], 
                     "interruptions": {}, 
@@ -282,10 +282,10 @@
                "EDM": {
                     "processingTime": {
                          "Fixed": {
+                              "mean": 0.9, 
                               "max": "1", 
-                              "min": "0.1", 
                               "stdev": "0.1", 
-                              "mean": 0.9
+                              "min": "0.1"
                          }
                     }, 
                     "interruptions": {}, 
@@ -296,10 +296,10 @@
                "M1": {
                     "processingTime": {
                          "Fixed": {
+                              "mean": 0.9, 
                               "max": "1", 
-                              "min": "0.1", 
                               "stdev": "0.1", 
-                              "mean": 0.9
+                              "min": "0.1"
                          }
                     }, 
                     "interruptions": {}, 
@@ -310,10 +310,10 @@
                "M2": {
                     "processingTime": {
                          "Fixed": {
+                              "mean": 0.9, 
                               "max": "1", 
-                              "min": "0.1", 
                               "stdev": "0.1", 
-                              "mean": 0.9
+                              "min": "0.1"
                          }
                     }, 
                     "interruptions": {}, 
@@ -396,10 +396,10 @@
           ]
      ], 
      "general": {
-          "numberOfAntsPerGenerations": "20", 
+          "numberOfGenerations": "10", 
           "numberOfReplications": "1", 
           "trace": "No", 
-          "numberOfGenerations": "10", 
+          "numberOfAntsPerGenerations": "20", 
           "processTimeout": "2000", 
           "numberOfSolutions": "4", 
           "confidenceLevel": "0.95", 

@@ -13,6 +13,7 @@
                     "isDummy": "0", 
                     "wip": [
                          {
+                              "id": "O1", 
                               "route": [
                                    {
                                         "stationIdsList": [
@@ -150,8 +151,7 @@
                                         "name": "Mould1"
                                    }
                               ], 
-                              "name": "Order1", 
-                              "id": "O1"
+                              "name": "Order1"
                          }
                     ], 
                     "interruptions": {}, 

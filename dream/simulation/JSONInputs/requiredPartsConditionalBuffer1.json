@@ -16,17 +16,17 @@
                                    }, 
                                    {
                                         "processingTime": {
-											"Fixed": {
-												"mean": 1.0
-											}
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
                                         }, 
-										"operationType": {
-											"Processing": 1
-										}, 
                                         "stationIdsList": [
                                              "M1"
                                         ], 
                                         "requiredParts": [], 
+                                        "operationType": {
+                                             "Processing": 1
+                                        }, 
                                         "sequence": 1
                                    }, 
                                    {
@@ -37,17 +37,17 @@
                                    }, 
                                    {
                                         "processingTime": {
-											"Fixed": {
-												"mean": 3.0
-											}
+                                             "Fixed": {
+                                                  "mean": 3.0
+                                             }
                                         }, 
-										"operationType": {
-											"Processing": 0
-										},
                                         "stationIdsList": [
                                              "M3"
                                         ], 
                                         "requiredParts": [], 
+                                        "operationType": {
+                                             "Processing": 0
+                                        }, 
                                         "sequence": 2
                                    }, 
                                    {
@@ -58,13 +58,10 @@
                                    }, 
                                    {
                                         "processingTime": {
-											"Fixed": {
-												"mean": 2.0
-											}
+                                             "Fixed": {
+                                                  "mean": 2.0
+                                             }
                                         }, 
-										"operationType": {
-											"Processing": 1
-										},
                                         "stationIdsList": [
                                              "M2"
                                         ], 
@@ -72,6 +69,9 @@
                                              "J2", 
                                              "J3"
                                         ], 
+                                        "operationType": {
+                                             "Processing": 1
+                                        }, 
                                         "sequence": 7
                                    }, 
                                    {
@@ -94,17 +94,17 @@
                                    }, 
                                    {
                                         "processingTime": {
-											"Fixed": {
-												"mean": 1.0
-											}
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
                                         }, 
-										"operationType": {
-											"Processing": 1
-										},
                                         "stationIdsList": [
                                              "M1"
                                         ], 
                                         "requiredParts": [], 
+                                        "operationType": {
+                                             "Processing": 1
+                                        }, 
                                         "sequence": 2
                                    }, 
                                    {
@@ -115,17 +115,17 @@
                                    }, 
                                    {
                                         "processingTime": {
-											"Fixed": {
-												"mean": 3.0
-											}
+                                             "Fixed": {
+                                                  "mean": 3.0
+                                             }
                                         }, 
-										"operationType": {
-											"Processing": 0
-										},
                                         "stationIdsList": [
                                              "M3"
                                         ], 
                                         "requiredParts": [], 
+                                        "operationType": {
+                                             "Processing": 0
+                                        }, 
                                         "sequence": 3
                                    }, 
                                    {
@@ -136,17 +136,17 @@
                                    }, 
                                    {
                                         "processingTime": {
-											"Fixed": {
-												"mean": 2.0
-											}
+                                             "Fixed": {
+                                                  "mean": 2.0
+                                             }
                                         }, 
-										"operationType": {
-											"Processing": 1
-										},
                                         "stationIdsList": [
                                              "M2"
                                         ], 
                                         "requiredParts": [], 
+                                        "operationType": {
+                                             "Processing": 1
+                                        }, 
                                         "sequence": 4
                                    }, 
                                    {
@@ -169,17 +169,17 @@
                                    }, 
                                    {
                                         "processingTime": {
-											"Fixed": {
-												"mean": 1.0
-											}
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
                                         }, 
-										"operationType": {
-											"Processing": 1
-										},
                                         "stationIdsList": [
                                              "M1"
                                         ], 
                                         "requiredParts": [], 
+                                        "operationType": {
+                                             "Processing": 1
+                                        }, 
                                         "sequence": 1
                                    }, 
                                    {
@@ -190,17 +190,17 @@
                                    }, 
                                    {
                                         "processingTime": {
-											"Fixed": {
-												"mean": 3.0
-											}
+                                             "Fixed": {
+                                                  "mean": 3.0
+                                             }
                                         }, 
-										"operationType": {
-											"Processing": 0
-										},
                                         "stationIdsList": [
                                              "M3"
                                         ], 
                                         "requiredParts": [], 
+                                        "operationType": {
+                                             "Processing": 0
+                                        }, 
                                         "sequence": 3
                                    }, 
                                    {
@@ -211,17 +211,17 @@
                                    }, 
                                    {
                                         "processingTime": {
-											"Fixed": {
-												"mean": 2.0
-											}
+                                             "Fixed": {
+                                                  "mean": 2.0
+                                             }
                                         }, 
-										"operationType": {
-											"Processing": 1
-										},
                                         "stationIdsList": [
                                              "M2"
                                         ], 
                                         "requiredParts": [], 
+                                        "operationType": {
+                                             "Processing": 1
+                                        }, 
                                         "sequence": 5
                                    }, 
                                    {

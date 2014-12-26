@@ -1,30 +1,11 @@
 {
      "graph": {
           "node": {
-               "M1": {
-                    "name": "Moulding", 
-                    "top": 0.5, 
-                    "processingTime": {
-                         "Fixed": {
-                              "mean": 0.5
-                         }
-                    }, 
-                    "interruptions": {
-                         "failure": {
-                              "TTR": {
-                                   "Fixed": {
-                                        "mean": 4
-                                   }
-                              }, 
-                              "TTF": {
-                                   "Fixed": {
-                                        "mean": 5
-                                   }
-                              },
-							  "deteriorationType": "working"
-                         }
-                    }, 
-                    "_class": "Dream.Machine", 
+               "E1": {
+                    "interruptions": {}, 
+                    "top": 0.10215053763440862, 
+                    "_class": "Dream.Exit", 
+                    "name": "Stock", 
                     "left": 0.5
                }, 
                "S1": {
@@ -41,11 +22,30 @@
                     "_class": "Dream.Source", 
                     "left": 0.5
                }, 
-               "E1": {
-                    "interruptions": {}, 
-                    "top": 0.10215053763440862, 
-                    "_class": "Dream.Exit", 
-                    "name": "Stock", 
+               "M1": {
+                    "name": "Moulding", 
+                    "top": 0.5, 
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.5
+                         }
+                    }, 
+                    "interruptions": {
+                         "failure": {
+                              "TTR": {
+                                   "Fixed": {
+                                        "mean": 4
+                                   }
+                              }, 
+                              "deteriorationType": "working", 
+                              "TTF": {
+                                   "Fixed": {
+                                        "mean": 5
+                                   }
+                              }
+                         }
+                    }, 
+                    "_class": "Dream.Machine", 
                     "left": 0.5
                }, 
                "M2": {

@@ -75,10 +75,10 @@
                               "mean": 11.0
                          }
                     }, 
-                    "failures": {}, 
                     "operationType": "MT-Load-Processing", 
                     "wip": [], 
                     "interruptions": {}, 
+                    "failures": {}, 
                     "_class": "Dream.Machine"
                }, 
                "M2": {
@@ -93,7 +93,6 @@
                               "mean": 8.0
                          }
                     }, 
-                    "failures": {}, 
                     "operationType": "MT-Load-Processing", 
                     "wip": [
                          {
@@ -103,6 +102,7 @@
                          }
                     ], 
                     "interruptions": {}, 
+                    "failures": {}, 
                     "_class": "Dream.Machine"
                }, 
                "EV": {
@@ -110,12 +110,12 @@
                     "argumentDict": "{}", 
                     "interval": 10, 
                     "stop": -1, 
-                    "method": "Dream.ManPyObject.requestAllocation", 
+                    "id": "EV", 
                     "start": 0, 
                     "interruptions": {}, 
                     "element_id": "DreamNode_6", 
                     "_class": "Dream.EventGenerator", 
-                    "id": "EV"
+                    "method": "Dream.ManPyObject.requestAllocation"
                }, 
                "E1": {
                     "interruptions": {}, 
