@@ -473,8 +473,8 @@
 							"required" : true
 						}
 					}
-				}
-			]
+				]
+			}
 		},
 		"Dream.Source" : {
 			"name" : "Source",
