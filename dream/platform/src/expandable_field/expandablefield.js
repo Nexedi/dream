@@ -67,6 +67,7 @@
       gadget.props.element.children[2].style.display = '';
       inputs = gadget.props.element.children[2]
                                    .getElementsByTagName("input");
+      // find the inputs that are direct children of the gadgets element
       for (i = 0; i <= inputs.length-1; i += 1) {
         if (inputs[i].parentNode.parentNode.parentNode ===
             gadget.props.element.children[2]) {
@@ -75,12 +76,14 @@
       }
       lbls = gadget.props.element.children[2]
                                    .getElementsByTagName("label");
+      // find the labels that are direct children of the gadgets element
       for (i = 0; i <= lbls.length-1; i += 1) {
         if (lbls[i].parentNode ===
             gadget.props.element.children[2]) {
           labels.push(lbls[i]);
         }
       }
+
       for (i = 0; i <= Object.keys(properties_dict).length-1; i += 1) {
         sub_title = Object.keys(properties_dict)[i];
         console.log("sub_title");
@@ -126,10 +129,13 @@
         }
 
 		default_value =  properties_dict[sub_title].default;
-        // previous value
+        // find previous value if any
         if (gadget.props.options.value[prop_name]) {
-          previous_value = gadget.props.options.value[prop_name][sub_title];
+          if (gadget.props.options.value[prop_name][sub_title]) {
+            previous_value = gadget.props.options.value[prop_name][sub_title];
+          }
 		}
+
         for (j = 0; j <= inps.length-1; j += 1) {
           // check if the input is one of a sub-gadget
           // do not proceed if yes
@@ -313,8 +319,8 @@
             gadget.props.field_gadget_list.push(sub_gadget);
           });
       }
-
-      function addListField(options) {
+      // update the listfield of the expandable field
+      function updateListField(options) {
         console.log("ADDLISTFIELD EXPANDABLEFIELDSET 1");
         var select = gadget.props.element.getElementsByTagName('select')[0],
           i,
@@ -335,7 +341,6 @@
         }
         select.innerHTML += tmp;
       }
-
       ////////////////////////////////////////////////////////////////
       // function that finds the different types of fields that are 
       //  requested and calculates how many times each one of them 
@@ -485,13 +490,23 @@
                   }
                 }
               }
+              for (ind = 0; ind <= oneOf_list.length - 1; ind += 1) {
+                if (oneOf_list[ind].title === string_value) {
+                  value
+                  = (gadget.props.options.value || {})[oneOf_list[ind].title]
+                    === undefined
+                    ? oneOf_list[ind].default
+                    : gadget.props.options.value[oneOf_list[ind].title];
+                  break;
+                }
+              }
               console.log("abstract_definition for " + index);
               console.log(ab_definition);
               // add a field with abstract definition
               addField(
                 ab_definition.title,
                 ab_definition,
-                "undefined"
+                value
               );
               // find out if the oneOf_list item should be initiated 
               // (if it is the selected one (string_value))
@@ -507,6 +522,7 @@
                     property_def : oneOf_list[ind],
                     value : value
                   };
+                  break;
                 }
               }
             } else {
@@ -526,7 +542,7 @@
                 === undefined
                 ? prop_definition.default
                 : gadget.props.options.value[prop_name];
-              addListField({
+              updateListField({
                 key: prop_name,
                 value: string_value,
                 property_definition: prop_definition
@@ -536,7 +552,6 @@
         });
       return queue;
     })
-
     // getContent of all subfields
     .declareMethod("getContent", function () {
       console.log("GETCONTENT EXPANDABLEFIELDSET 1");
