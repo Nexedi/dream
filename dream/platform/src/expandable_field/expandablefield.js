@@ -131,7 +131,8 @@
 		default_value =  properties_dict[sub_title].default;
         // find previous value if any
         if (gadget.props.options.value[prop_name]) {
-          if (gadget.props.options.value[prop_name][sub_title]) {
+          if (gadget.props.options.value[prop_name][sub_title] ||
+              gadget.props.options.value[prop_name][sub_title] === "") {
             previous_value = gadget.props.options.value[prop_name][sub_title];
           }
 		}
