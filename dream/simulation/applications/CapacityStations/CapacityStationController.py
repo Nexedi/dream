@@ -44,7 +44,8 @@ class CapacityStationController(EventGenerator):
         # attribute that shows if we prioritize entities that can finish work in this station in the next interval
         self.prioritizeIfCanFinish=bool(int(prioritizeIfCanFinish))
         # the total assemblySpace in the system
-        self.assemblySpace=float(G.extraPropertyDict.get('assemblySpace', float('inf')))
+        if hasattr(G, 'extraPropertyDict'):
+            self.assemblySpace=float(G.extraPropertyDict.get('assemblySpace', float('inf')))
         self.method=self.steps
         
     def initialize(self):
