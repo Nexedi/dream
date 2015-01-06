@@ -105,10 +105,10 @@
 						}
 					}
 				},
-				"_caucy" : {
+				"_cauchy" : {
 					"type" : "object",
-					"title" : "Caucy",
-					"description" : "Caucy",
+					"title" : "Cauchy",
+					"description" : "Cauchy",
 					"properties" : {
 						"location" : {
 							"type" : "number",
@@ -205,7 +205,7 @@
 						}
 					}, {
 						"oneOf" : [{
-								"$ref" : "#/definitions/distributionTypes/_fixedFailure"
+								"$ref" : "#/definitions/distributionTypes/_failure"
 							}, {
 								"$ref" : "#/definitions/distributionTypes/_no"
 							}
@@ -228,7 +228,7 @@
 									"Binomial",
 									"Poisson",
 									"Logistic",
-									"Caucy",
+									"Cauchy",
 									"Geometric",
 									"Gama",
 									"Weibull"
@@ -251,7 +251,7 @@
 							}, {
 								"$ref" : "#/definitions/distributionTypes/_logistic"
 							}, {
-								"$ref" : "#/definitions/distributionTypes/_caucy"
+								"$ref" : "#/definitions/distributionTypes/_cauchy"
 							}, {
 								"$ref" : "#/definitions/distributionTypes/_geometric"
 							}, {
@@ -418,10 +418,6 @@
 						"schedulingRule" : {
 							"$ref" : "#/definitions/_schedulingRule",
 							"required" : true
-						},
-						"isDummy" : {
-							"type" : "boolean",
-							"default" : false
 						}
 					}
 				}
@@ -650,7 +646,7 @@
 				}
 			},
 			"view_run_simulation" : {
-				"title" : "RunSiumulation",
+				"title" : "Run Simulation",
 				"type" : "object_view",
 				"gadget" : "Input_viewSimulation"
 			},
@@ -722,28 +718,28 @@
 		"general" : {
 			"properties" : {
 				"numberOfReplications" : {
-					"title" : "Numberofreplications",
+					"title" : "Number of replications",
 					"type" : "integer",
-					"description" : "Numberofreplicationstorun",
+					"description" : "Number of replications to run",
 					"default" : 10
 				},
 				"maxSimTime" : {
-					"title" : "LengthofExperiment",
-					"description" : "Lengthofthesimulationrun",
+					"title" : "Length of Experiment",
+					"description" : "Length of the simulation run",
 					"type" : "number",
 					"default" : 100
 				},
 				"confidenceLevel" : {
-					"title" : "Confidencelevel",
+					"title" : "Confidence level",
 					"type" : "number",
 					"default" : 0.95,
-					"description" : "Confidencelevelforstatisticalanalysisofstochasticexperiments"
+					"description" : "Confidence level for statistical analysis of stochastic experiments"
 				},
 				"processTimeout" : {
 					"title" : "ProcessTimeout",
 					"type" : "number",
 					"default" : 10,
-					"description" : "Numberofsecondsbeforethecalculationprocessisinterrupted"
+					"description" : "Number of seconds before the calculation process is interrupted"
 				},
 				"currentDate" : {
 					"default" : "2014/10/01",
@@ -753,26 +749,27 @@
 				},
 				"timeUnitPerDay" : {
 					"default" : 24,
-					"description" : "Used for input and reporting widgets. Forexample, 24 means that simulation clock time unit is one hour.",
-					"title" : "Numberoftimeunitsperday",
+					"description" : "Used for input and reporting widgets. For example, 24 means that simulation clock time unit is one hour.",
+					"title" : "Number of time units per day",
 					"type" : "number"
 				},
 				"trace" : {
-					"default" : false,
-					"description" : "Createanexceltracefile(trueorfalse)",
+					"default" : "No",
+					"enum" : ["No", "Yes"]
+					"description" : "Create an excel trace file (Yes or No)",
 					"title" : "OutputTrace",
-					"type" : "boolean"
+					"type" : "string"
 				},
 				"seed" : {
-					"default" : "",
+					"default" : 1,
 					"description" : "When using the same seed, the random number generator produce the same sequence of numbers",
-					"title" : "Seedforrandomnumbergenerator",
+					"title" : "Seed for random number generator",
 					"type" : "string"
 				},
 				"ke_url" : {
 					"default" : "http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
-					"description" : "TheURLforknowledgeextractiontoaccessitsdataforexamplehttp: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
-					"title" : "URLforKnowledgeExtractionSpreadsheet",
+					"description" : "The URL for knowledge extraction to access its data for example http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
+					"title" : "URL for Knowledge Extraction Spreadsheet",
 					"type" : "string"
 				}
 			}
