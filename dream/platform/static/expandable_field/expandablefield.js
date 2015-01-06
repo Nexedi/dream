@@ -9,15 +9,27 @@
     // Precompile the templates while loading the first gadget instance
     var gadget_klass = rJS(window), label_source = gadget_klass.__template_element.getElementById("expand-label-template").innerHTML, label_template = Handlebars.compile(label_source), option_source = gadget_klass.__template_element.getElementById("expand-option-template").innerHTML, option_template = Handlebars.compile(option_source), selected_option_source = gadget_klass.__template_element.getElementById("selected-expand-option-template").innerHTML, selected_option_template = Handlebars.compile(selected_option_source);
     function syncField(gadget) {
-        var i, properties_dict, sub_title, sub_type, in_type, default_value, previous_value, labels = [], lbls, inps = [], inputs, j, recent_occupied = [], recent_occupied_labels = [], prop_name = gadget.props.definition.property_def.title;
+        var i, properties_dict, sub_title, sub_type, in_type, default_value, previous_value, labels = [], lbls, inps = [], inputs, j, index, corresponding_input, sub_gadget_list = [], old_title, recent_occupied = [], recent_occupied_labels = [], prop_name = gadget.props.definition.property_def.title;
         console.log("for prop_name syncField");
         console.log(prop_name);
         // set the title of the field
         gadget.props.element.children[1].innerHTML = prop_name;
         gadget.props.element.children[1].setAttribute("for", prop_name);
         // sub fields set props.key correctly
+        // find any sub_sub_gadgets if any
         for (j = 0; j <= gadget.props.field_gadget_list.length - 1; j += 1) {
             gadget.props.field_gadget_list[j].props.key = prop_name;
+            if (gadget.props.field_gadget_list[j].props.field_gadget_list) {
+                for (i = 0; i <= gadget.props.field_gadget_list[j].props.field_gadget_list.length - 1; i += 1) {
+                    // if the sub-gadget has itself a field_gadget_list : 
+                    //  thus is a expandable field itself
+                    if (gadget.props.field_gadget_list[j].props.field_gadget_list[i].props) {
+                        if (gadget.props.field_gadget_list[j].props.field_gadget_list[i].props.field_gadget_list) {
+                            sub_gadget_list.push(gadget.props.field_gadget_list[j].props.field_gadget_list[i]);
+                        }
+                    }
+                }
+            }
         }
         // un-hide the title of the field
         gadget.props.element.children[1].style.display = "";
@@ -26,12 +38,14 @@
             properties_dict = gadget.props.definition.property_def.properties;
             gadget.props.element.children[2].style.display = "";
             inputs = gadget.props.element.children[2].getElementsByTagName("input");
+            // find the inputs that are direct children of the gadgets element
             for (i = 0; i <= inputs.length - 1; i += 1) {
                 if (inputs[i].parentNode.parentNode.parentNode === gadget.props.element.children[2]) {
                     inps.push(inputs[i]);
                 }
             }
             lbls = gadget.props.element.children[2].getElementsByTagName("label");
+            // find the labels that are direct children of the gadgets element
             for (i = 0; i <= lbls.length - 1; i += 1) {
                 if (lbls[i].parentNode === gadget.props.element.children[2]) {
                     labels.push(lbls[i]);
@@ -41,14 +55,32 @@
                 sub_title = Object.keys(properties_dict)[i];
                 console.log("sub_title");
                 console.log(sub_title);
-                sub_type = properties_dict[sub_title].type;
+                sub_type = properties_dict[sub_title].type || (properties_dict[sub_title].allOf ? "allOf" : undefined);
                 // if the gadget contains expandable inputs (allOf)
                 // find the labels of that inputs
                 if (properties_dict[sub_title].allOf) {
                     for (j = 0; j <= labels.length - 1; j += 1) {
-                        if (labels[j].getAttribute("for").split("_")[0] === "allOf") {
-                            if (!(recent_occupied_labels.indexOf(labels[j]) > -1)) {
+                        if (!(recent_occupied_labels.indexOf(labels[j]) > -1)) {
+                            // for that label, find if it is assigned to any input
+                            // proceed only if no input is assigned to it
+                            corresponding_input = false;
+                            for (index = 0; index <= inps.length - 1; index += 1) {
+                                if (labels[j].getAttribute("for") === inps[index].getAttribute("title")) {
+                                    corresponding_input = true;
+                                }
+                            }
+                            if (!corresponding_input) {
+                                old_title = JSON.parse(JSON.stringify(labels[j].getAttribute("for")));
+                                // if the old title of the label is the same with the key
+                                // of the subsubgadget then update the key of the subsubgadget
+                                for (index = 0; index <= sub_gadget_list.length - 1; index += 1) {
+                                    if (sub_gadget_list[index].props.key === old_title) {
+                                        sub_gadget_list[index].props.key = sub_title;
+                                        break;
+                                    }
+                                }
                                 labels[j].innerHTML = sub_title;
+                                labels[j].setAttribute("for", sub_title);
                                 recent_occupied_labels.push(labels[j]);
                                 break;
                             }
@@ -56,9 +88,11 @@
                     }
                 }
                 default_value = properties_dict[sub_title].default;
-                // previous value
+                // find previous value if any
                 if (gadget.props.options.value[prop_name]) {
-                    previous_value = gadget.props.options.value[prop_name][sub_title];
+                    if (gadget.props.options.value[prop_name][sub_title]) {
+                        previous_value = gadget.props.options.value[prop_name][sub_title];
+                    }
                 }
                 for (j = 0; j <= inps.length - 1; j += 1) {
                     // check if the input is one of a sub-gadget
@@ -83,6 +117,7 @@
                                     recent_occupied.push(inps[j]);
                                     // find the label for that input
                                     inps[j].parentNode.parentNode.previousSibling.previousSibling.innerHTML = sub_title;
+                                    inps[j].parentNode.parentNode.previousSibling.previousSibling.setAttribute("for", sub_title);
                                     recent_occupied_labels.push(inps[j].parentNode.parentNode.previousSibling.previousSibling);
                                     // present them
                                     inps[j].parentNode.parentNode.previousSibling.previousSibling.style.display = "";
@@ -202,7 +237,8 @@
                 gadget.props.field_gadget_list.push(sub_gadget);
             });
         }
-        function addListField(options) {
+        // update the listfield of the expandable field
+        function updateListField(options) {
             console.log("ADDLISTFIELD EXPANDABLEFIELDSET 1");
             var select = gadget.props.element.getElementsByTagName("select")[0], i, template, tmp = "";
             select.setAttribute("name", options.key);
@@ -343,10 +379,16 @@
                             }
                         }
                     }
+                    for (ind = 0; ind <= oneOf_list.length - 1; ind += 1) {
+                        if (oneOf_list[ind].title === string_value) {
+                            value = (gadget.props.options.value || {})[oneOf_list[ind].title] === undefined ? oneOf_list[ind].default : gadget.props.options.value[oneOf_list[ind].title];
+                            break;
+                        }
+                    }
                     console.log("abstract_definition for " + index);
                     console.log(ab_definition);
                     // add a field with abstract definition
-                    addField(ab_definition.title, ab_definition, "undefined");
+                    addField(ab_definition.title, ab_definition, value);
                     // find out if the oneOf_list item should be initiated 
                     // (if it is the selected one (string_value))
                     for (ind = 0; ind <= oneOf_list.length - 1; ind += 1) {
@@ -357,6 +399,7 @@
                                 property_def: oneOf_list[ind],
                                 value: value
                             };
+                            break;
                         }
                     }
                 } else {
@@ -367,7 +410,7 @@
                     prop_name = Object.keys(gadget.props.options.property_definition.allOf[index].properties)[0];
                     prop_definition = gadget.props.options.property_definition.allOf[index].properties[prop_name];
                     string_value = (gadget.props.options.value || {})[prop_name] === undefined ? prop_definition.default : gadget.props.options.value[prop_name];
-                    addListField({
+                    updateListField({
                         key: prop_name,
                         value: string_value,
                         property_definition: prop_definition
@@ -386,6 +429,7 @@
             return RSVP.all(promise_list);
         }).push(function(result_list) {
             console.log("Retrieving results from sub_fields");
+            console.log("[*](/)[*]");
             console.log(result_list);
             var name, result = {}, content = result;
             if (gadget.props.key) {
