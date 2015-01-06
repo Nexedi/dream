@@ -46,6 +46,8 @@ class CapacityStationController(EventGenerator):
         # the total assemblySpace in the system
         if hasattr(G, 'extraPropertyDict'):
             self.assemblySpace=float(G.extraPropertyDict.get('assemblySpace', float('inf')))
+        else:
+            self.assemblySpace=float('inf')
         self.method=self.steps
         
     def initialize(self):
