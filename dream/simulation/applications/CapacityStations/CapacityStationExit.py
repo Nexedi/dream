@@ -45,8 +45,12 @@ class CapacityStationExit(Exit):
                                                                         # means it is the end of the system.
         self.nextCapacityStationBuffer=None                             # the next buffer. If it is None it
         from dream.simulation.Globals import G
-        G.CapacityStationExitList.append(self)
-                                                           # means it is the end of the system.        
+        if hasattr(G, 'CapacityStationExitList'):
+            G.CapacityStationExitList.append(self)
+        else:
+            G.CapacityStationExitList=[]
+            G.CapacityStationExitList.append(self)
+               
     def initialize(self):
         Exit.initialize(self)
         self.isLocked=True

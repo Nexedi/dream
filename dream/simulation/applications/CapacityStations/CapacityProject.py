@@ -44,7 +44,11 @@ class CapacityProject(Entity):
         # the assembly space the project requires
         self.assemblySpaceRequirement=assemblySpaceRequirement
         from dream.simulation.Globals import G
-        G.CapacityProjectList.append(self)
+        if hasattr(G, 'CapacityProjectList'):
+            G.CapacityProjectList.append(self)
+        else:
+            G.CapacityProjectList=[]
+            G.CapacityProjectList.append(self)
         
     def initialize(self):
         self.projectSchedule=[]     # a list of dicts to keep the schedule

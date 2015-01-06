@@ -74,7 +74,11 @@ class CapacityStation(Queue):
         self.utilisationDict=[]     # a list of dicts for the utilization results
         self.detailedWorkPlan=[]    # a list of dicts to keep detailed data
         from dream.simulation.Globals import G
-        G.CapacityStationList.append(self)
+        if hasattr(G, 'CapacityStationList'):
+            G.CapacityStationList.append(self)
+        else:
+            G.CapacityStationList=[]
+            G.CapacityStationList.append(self)
 
     def canAccept(self, callerObject=None):
         if self.isLocked:

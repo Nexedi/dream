@@ -41,7 +41,11 @@ class CapacityStationBuffer(Queue):
         self.isLocked=True
         self.requireFullProject=requireFullProject       # flag that shows if here the whole project is assembled
         from dream.simulation.Globals import G
-        G.CapacityStationBufferList.append(self)
+        if hasattr(G, 'CapacityStationBufferList'):
+            G.CapacityStationBufferList.append(self)
+        else:
+            G.CapacityStationBufferList=[]
+            G.CapacityStationBufferList.append(self)
         self.notRequiredOperations=notRequiredOperations    # operations that are not required to be assembled
 
         
