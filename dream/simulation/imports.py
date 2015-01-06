@@ -87,3 +87,12 @@ from dream.simulation.Globals import G
 from dream.simulation.RandomNumberGenerator import RandomNumberGenerator
 import ExcelHandler
 import Globals
+
+# CapacityStation
+from dream.simulation.applications.CapacityStations.CapacityEntity import CapacityEntity
+from dream.simulation.applications.CapacityStations.CapacityProject import CapacityProject
+from dream.simulation.applications.CapacityStations.CapacityStationBuffer import CapacityStationBuffer
+from dream.simulation.applications.CapacityStations.CapacityStation import CapacityStation
+from dream.simulation.applications.CapacityStations.CapacityStationExit import CapacityStationExit
+from dream.simulation.applications.CapacityStations.CapacityStationController import CapacityStationController
+
