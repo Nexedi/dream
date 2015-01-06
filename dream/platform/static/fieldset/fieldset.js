@@ -71,13 +71,14 @@
             });
         }
         queue = new RSVP.Queue().push(function() {
+            var reserved_keys = [];
             if (node_id) {
                 addField("id", {
                     type: "string"
                 }, node_id);
             }
             Object.keys(options.property_definition.properties).forEach(function(property_name) {
-                var property_definition = options.property_definition.properties[property_name], value, i = 0, property;
+                var property_definition = options.property_definition.properties[property_name], value, i = 0, property, index;
                 if (property_definition) {
                     value = property_definition.default || {};
                     if (property_definition.allOf) {
@@ -98,6 +99,25 @@
                 console.log(options);
                 console.log(options.value);
                 console.log(property_name);
+                // XXX if the field is complex then the value may be complex 
+                // eg options.value > "time_to_failure":{},"time_to_repair":{}...
+                // while the property_names are abstract as allOf_1 corresponding
+                // to (for example) time_to_failure
+                if (options.property_definition.properties[property_name].allOf) {
+                    if ((options.value || {})[property_name] === undefined) {
+                        if (typeof options.value === "object") {
+                            if (Object.keys(options.value).length > 0) {
+                                for (index = 0; index < Object.keys(options.value).length - 1; index += 1) {
+                                    if (!(reserved_keys.indexOf(Object.keys(options.value)[index]) > -1)) {
+                                        reserved_keys.push(Object.keys(options.value)[index]);
+                                        value = options.value[Object.keys(options.value)[index]];
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 value = (options.value || {})[property_name] === undefined ? value : options.value[property_name];
                 if (property_name !== "coordinate" && property_name !== "_class" && property_name !== "id") {
                     console.log("ADDING FIELD FOR " + property_name + "!!!!!!!");
@@ -115,6 +135,8 @@
         return RSVP.Queue().push(function() {
             return RSVP.all(promise_list);
         }).push(function(result_list) {
+            console.log("(*)(/)(*)");
+            console.log(result_list);
             var name, result = {}, content = result;
             if (gadget.props.key) {
                 content = result[gadget.props.key] = {};
