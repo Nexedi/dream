@@ -416,10 +416,6 @@
 						"schedulingRule" : {
 							"$ref" : "#/definitions/_schedulingRule",
 							"required" : true
-						},
-						"isDummy" : {
-							"type" : "boolean",
-							"default" : false
 						}
 					}
 				}
