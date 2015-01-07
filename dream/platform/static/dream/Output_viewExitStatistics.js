@@ -16,8 +16,8 @@
             return a + b;
         }) / attainment_list.length * 100).toFixed(2);
     }
-    function calculate_exit_stat(data) {
-        var output_data = data.result, input_data = data.input, elementList = output_data.elementList, i, j, metric, metric_value, element, interval_value, interval_list, attainment_list, throughputTarget = input_data.general.throughputTarget, result = "";
+    function calculate_exit_stat(result_index, data) {
+        var output_data = data.result.result_list[result_index], elementList = output_data.elementList, i, j, metric, metric_value, element, interval_value, interval_list, attainment_list, throughputTarget = data.general.throughputTarget, result = "";
         for (i = 0; i < elementList.length; i += 1) {
             element = elementList[i];
             if (element.family === "Exit") {
@@ -93,7 +93,7 @@
             _id: gadget.props.jio_key,
             _attachment: "simulation.json"
         }).push(function(simulation_json) {
-            var result = calculate_exit_stat(JSON.parse(simulation_json)[gadget.props.result]);
+            var result = calculate_exit_stat(gadget.props.result, JSON.parse(simulation_json));
             gadget.props.element.innerHTML = result;
         });
     });
