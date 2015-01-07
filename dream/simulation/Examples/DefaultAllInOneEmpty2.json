@@ -703,17 +703,18 @@
 		},
 		"preprocessing" : {
 			"plugin_list" : [{
-					"plugin" : "Default",
+					"plugin" : "GatherWIPStat.GatherWIPStat",
+					"input_id" : "WIPStat"
+			}]
+		},
+		"processing" : {
+			"plugin_list" : [{
+					"plugin" : "plugin.DefaultExecutionPlugin",
 					"input_id" : "Simulation"
-			}, {
-					"plugin" : "ReadShiftFromSpreadsheet",
-					"input_id" : "ShiftSpreadsheet"
 			}]
 		},
 		"postprocessing" : {
-			"plugin_list" : [{
-				"plugin" : "CalculateConfidenceIntervals"
-			}]
+			"plugin_list" : []
 		},
 		"general" : {
 			"properties" : {
@@ -764,7 +765,7 @@
 					"default" : 1,
 					"description" : "When using the same seed, the random number generator produce the same sequence of numbers",
 					"title" : "Seed for random number generator",
-					"type" : "string"
+					"type" : "number"
 				},
 				"ke_url" : {
 					"default" : "http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
