@@ -11,9 +11,18 @@
             _id: gadget.props.jio_key,
             _attachment: "simulation.json"
         }).push(function(result_json) {
-            var result = JSON.parse(result_json);
-            gadget.props.element.querySelector(".json_input").textContent = JSON.stringify(result[gadget.props.result].input, undefined, " ");
-            gadget.props.element.querySelector(".json_output").textContent = JSON.stringify(result[gadget.props.result].result, undefined, " ");
+            var document = JSON.parse(result_json), result = document.result.result_list, input = {
+                input: document.input,
+                graph: document.graph,
+                general: document.general
+            }, configuration = {
+                application_configuration: document.application_configuration,
+                class_definition: document.class_definition,
+                constrains: document.constrains
+            };
+            gadget.props.element.querySelector(".json_input").textContent = JSON.stringify(input, undefined, " ");
+            gadget.props.element.querySelector(".json_output").textContent = JSON.stringify(result[gadget.props.result], undefined, " ");
+            gadget.props.element.querySelector(".json_configuration").textContent = JSON.stringify(configuration, undefined, " ");
         });
     });
 })(window, rJS, initGadgetMixin);
