@@ -13,10 +13,10 @@ setup(
         'SimPy>=3',
         'xlrd',
         'xlwt',
-        'pyparsing==1.5.7', # latest python2 compatible version
+        'pyparsing',
         'pydot',
         'numpy',
-        'rpy2>=2.3,<2.4', # 2.4.1 does not work for me
+        'rpy2'
     ],
     entry_points=("""
     [console_scripts]
