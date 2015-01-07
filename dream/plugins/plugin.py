@@ -79,10 +79,13 @@ class PluginRegistry(object):
     """
     for input_preparation in self.input_preparation_list:
         data = input_preparation.preprocess(deepcopy(data))
-
+    from DefaultWIPAlgorithm import preprocess as pp
+    data=pp(deepcopy(data))
+    
     data = self.execution_plugin.run(data)
 
     for output_preparation in self.output_preparation_list:
         data = output_preparation.postprocess(deepcopy(data))
 
-    return data
+    print '^'*100
+    print data['result']
