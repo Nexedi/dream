@@ -526,13 +526,13 @@
 							"required" : true
 						},
 						"interval" : {
-							"description" : "intervaltime",
+							"description" : "interval time",
 							"type" : "number",
 							"default" : 10,
 							"required" : true
 						},
 						"method" : {
-							"description" : "methodtobeperformed",
+							"description" : "method to be performed",
 							"type" : "string",
 							"default" : "Globals.countIntervalThroughput",
 							"required" : true
@@ -656,7 +656,7 @@
 		},
 		"output" : {
 			"view_station_utilization" : {
-				"title" : "StationUtilization",
+				"title" : "Station Utilization",
 				"type" : "object_view",
 				"gadget" : "Output_viewStationUtilisationGraph",
 				"configuration" : {
@@ -666,7 +666,7 @@
 				}
 			},
 			"view_queue_stats" : {
-				"title" : "QueueStatistics",
+				"title" : "Queue Statistics",
 				"type" : "object_view",
 				"gadget" : "Output_viewQueueStatGraph",
 				"configuration" : {
@@ -676,7 +676,7 @@
 				}
 			},
 			"view_exit_stats" : {
-				"title" : "ExitStatistics",
+				"title" : "Exit Statistics",
 				"type" : "object_view",
 				"gadget" : "Output_viewExitStatistics",
 				"configuration" : {
@@ -780,6 +780,8 @@
 		"edge" : {}
 	},
 	"input" : {},
-	"result" : {},
+	"result" : {
+		"result_list" : []
+	},
 	"constraints" : {}
 }
