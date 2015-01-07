@@ -42,7 +42,7 @@
           throw error;
         })
         .push(function (sim_json) {
-          var document_list = JSON.parse(sim_json),
+          var document_list = JSON.parse(sim_json).result.result_list,
             result_list = [],
             i;
           for (i = 0; i < document_list.length; i += 1) {

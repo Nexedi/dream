@@ -40,7 +40,8 @@
       })
         .push(function (simulation_json) {
           gadget.props.series = queue_stat_widget(
-            JSON.parse(simulation_json)[gadget.props.result].result
+            JSON.parse(simulation_json)
+                .result.result_list[gadget.props.result]
           );
         });
     })

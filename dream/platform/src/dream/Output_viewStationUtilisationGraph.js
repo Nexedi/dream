@@ -146,7 +146,8 @@
       })
         .push(function (simulation_json) {
           gadget.props.result_list = station_utilisation_graph_widget(
-            JSON.parse(simulation_json)[gadget.props.result].result
+            JSON.parse(simulation_json)
+                .result.result_list[gadget.props.result]
           );
         });
     })

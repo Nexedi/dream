@@ -38,9 +38,8 @@
     ) / attainment_list.length) * 100).toFixed(2);
   }
 
-  function calculate_exit_stat(data) {
-    var output_data = data.result,
-      input_data = data.input,
+  function calculate_exit_stat(result_index, data) {
+    var output_data = data.result.result_list[result_index],
       elementList = output_data.elementList,
       i,
       j,
@@ -50,7 +49,7 @@
       interval_value,
       interval_list,
       attainment_list,
-      throughputTarget = input_data.general.throughputTarget,
+      throughputTarget = data.general.throughputTarget,
       result = "";
 
     for (i = 0; i < elementList.length; i += 1) {
@@ -149,7 +148,7 @@
       })
         .push(function (simulation_json) {
           var result = calculate_exit_stat(
-            JSON.parse(simulation_json)[gadget.props.result]
+            gadget.props.result, JSON.parse(simulation_json)
           );
           gadget.props.element.innerHTML = result;
         });

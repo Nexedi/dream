@@ -295,7 +295,7 @@
           });
         })
         .push(function (sim_json) {
-          var document_list = JSON.parse(sim_json);
+          var document_list = JSON.parse(sim_json).result.result_list;
           return document_list[options.result].score + " " +
             document_list[options.result].key;
         });
