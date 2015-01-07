@@ -27,6 +27,11 @@ class Plugin(object):
 class ExecutionPlugin(Plugin):
   """Plugin to handle the execution of multiple simulation runs.
   """
+  def runOneScenario(self, data):
+    """default method for running one scenario
+    """
+    return json.loads(simulate_line_json(input_data=json.dumps(data)))
+
   def run(self, data):
     """General execution plugin.
     """
@@ -48,7 +53,13 @@ class DefaultExecutionPlugin(ExecutionPlugin):
   """Default Execution Plugin just executes one scenario.
   """
   def run(self, data):
-    return json.loads(simulate_line_json(input_data=json.dumps(data)))
+    """Run simulation and return result to the GUI.
+    """
+    data["result"]["result_list"].append(self.runOneScenario(data))
+    # data["result"] = self.runOneScenario(data)
+    data["result"]["result_list"][-1]["score"] = 0
+    data["result"]["result_list"][-1]["key"] = "default"
+    return data
 
 class PluginRegistry(object):
   """Registry of plugins.
@@ -69,10 +80,7 @@ class PluginRegistry(object):
     for input_preparation in self.input_preparation_list:
         data = input_preparation.preprocess(deepcopy(data))
 
-    print 1
-    data["result"] = self.execution_plugin.run(data)
-    print 2
-    print data
+    data = self.execution_plugin.run(data)
 
     for output_preparation in self.output_preparation_list:
         data = output_preparation.postprocess(deepcopy(data))
