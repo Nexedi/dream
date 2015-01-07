@@ -701,17 +701,18 @@
 		},
 		"preprocessing" : {
 			"plugin_list" : [{
-					"plugin" : "Default",
+					"plugin" : "GatherWIPStat.GatherWIPStat",
+					"input_id" : "WIPStat"
+			}]
+		},
+		"processing" : {
+			"plugin_list" : [{
+					"plugin" : "plugin.DefaultExecutionPlugin",
 					"input_id" : "Simulation"
-			},{
-					"plugin" : "ReadShiftFromSpreadsheet",
-					"input_id" : "ShiftSpreadsheet"
 			}]
 		},
 		"postprocessing" : {
-			"plugin_list" : [{
-				"plugin" : "CalculateConfidenceIntervals"
-			}]
+			"plugin_list" : []
 		},
 		"general" : {
 			"properties" : {
