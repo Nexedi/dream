@@ -28,6 +28,7 @@ import multiprocessing
 import Queue
 from dream.KnowledgeExtraction.DistributionFitting import DistFittest
 from dream.KnowledgeExtraction.ImportExceldata import Import_Excel
+from dream.plugins.plugin import PluginRegistry
 
 import os.path
 import logging
@@ -134,20 +135,35 @@ def runSimulation():
 
 def _runSimulation(parameter_dict):
   try:
-    return dict(success=True, data=getGUIInstance(parameter_dict).run(parameter_dict))
+    return dict(success=True, data=getPluginRestistry(parameter_dict).run(parameter_dict))
   except Exception, e:
     tb = traceback.format_exc()
     app.logger.error(tb)
     return dict(error=tb)
 
-def getGUIInstance(data):
-    # XXX do not instanciate each time!
-    klass_name = data["application_configuration"]["preprocessing"]["plugin_list"][0]["plugin"]
-    klass_name = 'dream.simulation.GUI.%s' % klass_name
+def getPluginNames(list):
+    plugin_name_list = []
+    plugins = list["plugin_list"]
+    for i in xrange(len(plugins)):
+        klass_name = plugins[i]["plugin"]
+        klass_name = "dream.plugins.%s" % klass_name
+        plugin_name_list.append(klass_name)
+    return plugin_name_list
 
-    klass = __import__(klass_name, globals(), {}, klass_name)
-    instance = klass.Simulation(logger=app.logger)
-    return instance
+def getPluginRestistry(data):
+    # input plugins
+    input_plugin_list = getPluginNames(data["application_configuration"]["preprocessing"])
+    # output plugins
+    output_plugin_list = getPluginNames(data["application_configuration"]["postprocessing"])
+    # executor plugin
+    executor_name = data["application_configuration"]["processing"]["plugin_list"][0]["plugin"]
+    executor_name = "dream.plugins.%s" % executor_name
+    # remove the executor plugin from the input plugins list
+    registry = PluginRegistry(logger=app.logger,
+                              input_preparation_class_list=input_plugin_list,
+                              output_preparation_class_list=output_plugin_list,
+                              execution_plugin_class=executor_name)
+    return registry
 
 @app.route("/runKnowledgeExtraction", methods=["POST", "OPTIONS"])
 def runKnowledgeExtraction():
