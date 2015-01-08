@@ -376,7 +376,7 @@
 			"shape" : "rectangle",
 			"description" : "A station where entities exits from the system",
 			"allOf" : [{
-					"$ref" : "#/class_definition/node"
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {
@@ -397,7 +397,7 @@
 			"_class" : "node",
 			"description" : "A buffer where entites can be hold until the next station is ready to process them",
 			"allOf" : [{
-					"$ref" : "#/class_definition/node"
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {
@@ -426,7 +426,7 @@
 			"description" : "A station processing items for some time given by a distribution",
 			"_class" : "node",
 			"allOf" : [{
-					"$ref" : "#/class_definition/node"
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {
@@ -461,7 +461,7 @@
 			"_class" : "node",
 			"description" : "A station creating entities",
 			"allOf" : [{
-					"$ref" : "#/class_definition/node"
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {
@@ -494,7 +494,7 @@
 			"_class" : "node",
 			"description" : "Attainment",
 			"allOf" : [{
-					"$ref" : "#/class_definition/node"
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {
@@ -552,7 +552,7 @@
 			"_class" : "node",
 			"description" : "A resource that repairs stations in failure",
 			"allOf" : [{
-					"$ref" : "#/class_definition/node"
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {

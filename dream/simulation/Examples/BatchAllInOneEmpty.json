@@ -360,7 +360,7 @@
 		"Dream.Edge" : {
 			"_class" : "edge",
 			"allOf" : [{
-					"$ref" : "#/class_definition/edge"
+					"$ref" : "#/edge"
 				}
 			],
 			"description" : "Connect stations together"
@@ -372,7 +372,7 @@
 			"shape" : "rectangle",
 			"description" : "A station where entities exits from the system",
 			"allOf" : [{
-					"$ref" : "#/class_definition/node"
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {
@@ -393,7 +393,7 @@
 			"_class" : "node",
 			"description" : "A buffer where entities can be hold until the next station is ready to process them",
 			"allOf" : [{
-					"$ref" : "#/class_definition/node"
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {
@@ -422,7 +422,7 @@
 			"_class" : "node",
 			"description" : "A buffer where entities of the same group can be held until the next station is ready to process them. Entities of other groups cannot be accepted",
 			"allOf" : [{
-					"$ref" : "#/class_definition/node"
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {
@@ -451,7 +451,7 @@
 			"_class" : "node",
 			"description" : "Attainment",
 			"allOf" : [{
-					"$ref" : "#/class_definition/node"
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {
@@ -509,7 +509,7 @@
 			"_class" : "node",
 			"description" : "A station creating batches",
 			"allOf" : [{
-					"$ref" : "#/class_definition/node"
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {
@@ -543,7 +543,7 @@
 			"description" : "A station that assembles sub-batches back into a parent batch ",
 			"_class" : "node",
 			"allOf" : [{
-					"$ref" : "#/class_definition/node"
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {
@@ -569,7 +569,7 @@
 			"name" : "Decomposition",
 			"description" : "A station that decomposes batches into sub-batches",
 			"allOf" : [{
-					"$ref" : "#/class_definition/node"
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {
@@ -595,7 +595,7 @@
 			"description" : "A station processing batches for some time given by a distribution provided by the entities that are processed. A random number of batch units is scrapped",
 			"_class" : "node",
 			"allOf" : [{
-					"$ref" : "#/class_definition/node"
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {
