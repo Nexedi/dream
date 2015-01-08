@@ -703,6 +703,9 @@
 			"plugin_list" : [{
 					"plugin" : "GatherWIPStat.GatherWIPStat",
 					"input_id" : "WIPStat"
+			}, {
+					"plugin" : "WIPSpreadsheet.WIPSpreadsheet",
+					"input_id" : "WIPdata"
 			}]
 		},
 		"processing" : {
