@@ -581,6 +581,11 @@
 				"type" : "object_view",
 				"gadget" : "Input_viewProductionLine"
 			},
+		    "view_management": {
+				"gadget": "Input_viewDocumentManagement",
+				"type": "object_view",
+				"title": "Manage document"
+			},
 			"view_machine_shift_spreadsheet" : {
 				"gadget" : "Input_viewSpreadsheet",
 				"type" : "object_view",
