@@ -372,7 +372,11 @@
 		"Dream.Exit" : {
 			"_class" : "node",
 			"name" : "Exit",
-			"colour" : "#F0F",
+			"css": {
+				"border" : "1px solid #ccb",
+				"background-color" : "#eef",
+				"background-image" : "linear-gradient(to bottom, #eef 0%, #dde 100%)"
+			},
 			"shape" : "rectangle",
 			"description" : "A station where entities exits from the system",
 			"allOf" : [{
@@ -395,6 +399,11 @@
 		"Dream.Queue" : {
 			"name" : "Queue",
 			"_class" : "node",
+			"css": {
+				"border": "1px solid #bcc",
+				"background-color":"#eff",
+				"background-image": "linear-gradient(to bottom, #eff 0%, #dee 100%)"
+			},
 			"description" : "A buffer where entites can be hold until the next station is ready to process them",
 			"allOf" : [{
 					"$ref" : "#/node"
@@ -425,6 +434,11 @@
 			"name" : "Machine",
 			"description" : "A station processing items for some time given by a distribution",
 			"_class" : "node",
+			"css": {
+				"order" : "1px solid #cbc",
+				"background-color" : "#fef",
+				"background-image" : "linear-gradient(to bottom, #fef 0%, #ede 100%)"
+			},
 			"allOf" : [{
 					"$ref" : "#/node"
 				}, {
@@ -459,6 +473,11 @@
 		"Dream.Source" : {
 			"name" : "Source",
 			"_class" : "node",
+			"css": {
+				"border" : "1px solid #bbc",
+				"background-color" : "#ffe",
+				"background-image": "linear-gradient(to bottom, #ffe 0%, #dde 100%)"
+			},
 			"description" : "A station creating entities",
 			"allOf" : [{
 					"$ref" : "#/node"
@@ -492,6 +511,11 @@
 		"Dream.EventGenerator" : {
 			"name" : "Attainment",
 			"_class" : "node",
+			"css": {
+				"border" : "1px solid #cba",
+				"background-color" : "#fdc",
+				"background-image" : "linear-gradient(to bottom, #fdc 0%, #ecb 100%)"
+			},
 			"description" : "Attainment",
 			"allOf" : [{
 					"$ref" : "#/node"
@@ -550,6 +574,11 @@
 		"Dream.Repairman" : {
 			"name" : "Repairman",
 			"_class" : "node",
+			"css": {
+				"border" : "1px solid #cbb",
+				"background-color" : "#fdd",
+				"background-image" : "linear-gradient(to bottom, #fdd 0%, #dcc 100%)"
+			},
 			"description" : "A resource that repairs stations in failure",
 			"allOf" : [{
 					"$ref" : "#/node"
