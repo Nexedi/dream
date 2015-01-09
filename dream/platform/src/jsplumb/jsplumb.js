@@ -241,7 +241,7 @@
       });
   }
 
-  function updateNodeStyle(gadget, element_id) {
+  function updateNodeStyle(gadget, element_id, class_definition) {
     // Update node size according to the zoom level
     // XXX does nothing for now
     var zoom_level = gadget.props.zoom_level * 1.1111,
@@ -251,6 +251,9 @@
       new_value = $(gadget.props.element).find('.dummy_window').css(j)
         .replace('px', '') * zoom_level + 'px';
       element.css(j, new_value);
+    });
+    Object.keys(class_definition.css || {}).forEach(function (k) {
+      element.css(k, class_definition.css[k]);
     });
   }
 
@@ -584,7 +587,7 @@
   function expandProperties(definition, expanded_class_def, fullSchema) {
     console.log("expanding properties");
     console.log(definition);
-    var property, temp1, temp2, i, subProp, temp3;//, coppy;
+    var property, temp1, temp2, i, subProp, temp3;
     for (property in definition.properties) {
       if (definition.properties.hasOwnProperty(property)) {
         console.log("...");
@@ -1013,7 +1016,7 @@
     );
     box.css("top", absolute_position[1]);
     box.css("left", absolute_position[0]);
-    updateNodeStyle(gadget, dom_element_id);
+    updateNodeStyle(gadget, dom_element_id, class_definition);
     draggable(gadget); // XXX make only this element draggable.
 
     // Add some flowchart endpoints

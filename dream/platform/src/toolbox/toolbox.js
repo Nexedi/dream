@@ -43,7 +43,7 @@
         var _class_object = data.class_definition[key], tool;
         // XXX "expand" the json schema "allOF" etc
         if (_class_object.allOf) {
-          if (_class_object.allOf[0].$ref === "#/class_definition/node") {
+          if (_class_object.allOf[0].$ref === "#/node") {
             tool = document.createElement('div');
             // XXX maybe allow to configure the class name ?
             tool.className = "tool " + key;
