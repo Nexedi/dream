@@ -374,8 +374,8 @@
 			"name" : "Exit",
 			"css": {
 				"border" : "1px solid #ccb",
-				"background-color" : "#eef",
-				"background-image" : "linear-gradient(to bottom, #eef 0%, #dde 100%)"
+				"backgroundColor" : "#eef",
+				"backgroundImage" : "linear-gradient(to bottom, #eef 0%, #dde 100%)"
 			},
 			"shape" : "rectangle",
 			"description" : "A station where entities exits from the system",
@@ -401,8 +401,8 @@
 			"_class" : "node",
 			"css": {
 				"border": "1px solid #bcc",
-				"background-color":"#eff",
-				"background-image": "linear-gradient(to bottom, #eff 0%, #dee 100%)"
+				"backgroundColor":"#eff",
+				"backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)"
 			},
 			"description" : "A buffer where entites can be hold until the next station is ready to process them",
 			"allOf" : [{
@@ -435,9 +435,9 @@
 			"description" : "A station processing items for some time given by a distribution",
 			"_class" : "node",
 			"css": {
-				"order" : "1px solid #cbc",
-				"background-color" : "#fef",
-				"background-image" : "linear-gradient(to bottom, #fef 0%, #ede 100%)"
+				"border" : "1px solid #cbc",
+				"backgroundColor" : "#fef",
+				"backgroundImage" : "linear-gradient(to bottom, #fef 0%, #ede 100%)"
 			},
 			"allOf" : [{
 					"$ref" : "#/node"
@@ -475,8 +475,8 @@
 			"_class" : "node",
 			"css": {
 				"border" : "1px solid #bbc",
-				"background-color" : "#ffe",
-				"background-image": "linear-gradient(to bottom, #ffe 0%, #dde 100%)"
+				"backgroundColor" : "#ffe",
+				"backgroundImage" : "linear-gradient(to bottom, #ffe 0%, #dde 100%)"
 			},
 			"description" : "A station creating entities",
 			"allOf" : [{
@@ -513,8 +513,8 @@
 			"_class" : "node",
 			"css": {
 				"border" : "1px solid #cba",
-				"background-color" : "#fdc",
-				"background-image" : "linear-gradient(to bottom, #fdc 0%, #ecb 100%)"
+				"backgroundColor" : "#fdc",
+				"backgroundImage" : "linear-gradient(to bottom, #fdc 0%, #ecb 100%)"
 			},
 			"description" : "Attainment",
 			"allOf" : [{
@@ -576,8 +576,8 @@
 			"_class" : "node",
 			"css": {
 				"border" : "1px solid #cbb",
-				"background-color" : "#fdd",
-				"background-image" : "linear-gradient(to bottom, #fdd 0%, #dcc 100%)"
+				"backgroundColor" : "#fdd",
+				"backgroundImage" : "linear-gradient(to bottom, #fdd 0%, #dcc 100%)"
 			},
 			"description" : "A resource that repairs stations in failure",
 			"allOf" : [{
