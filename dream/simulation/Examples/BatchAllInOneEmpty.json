@@ -368,7 +368,11 @@
 		"Dream.Exit" : {
 			"_class" : "node",
 			"name" : "Exit",
-			"colour" : "#F0F",
+			"css": {
+				"border" : "1px solid #ccb",
+				"backgroundColor" : "#eef",
+				"backgroundImage" : "linear-gradient(to bottom, #eef 0%, #dde 100%)"
+			},
 			"shape" : "rectangle",
 			"description" : "A station where entities exits from the system",
 			"allOf" : [{
@@ -391,6 +395,11 @@
 		"Dream.Queue" : {
 			"name" : "Queue",
 			"_class" : "node",
+			"css": {
+				"border": "1px solid #bcc",
+				"backgroundColor":"#eff",
+				"backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)"
+			},
 			"description" : "A buffer where entities can be hold until the next station is ready to process them",
 			"allOf" : [{
 					"$ref" : "#/node"
@@ -420,6 +429,11 @@
 		"Dream.LineClearance" : {
 			"name" : "Clearance",
 			"_class" : "node",
+			"css": {
+				"border": "1px solid #bcc",
+				"backgroundColor":"#eff",
+				"backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)"
+			},
 			"description" : "A buffer where entities of the same group can be held until the next station is ready to process them. Entities of other groups cannot be accepted",
 			"allOf" : [{
 					"$ref" : "#/node"
@@ -449,6 +463,11 @@
 		"Dream.EventGenerator" : {
 			"name" : "Attainment",
 			"_class" : "node",
+			"css": {
+				"border" : "1px solid #cba",
+				"backgroundColor" : "#fdc",
+				"backgroundImage" : "linear-gradient(to bottom, #fdc 0%, #ecb 100%)"
+			},
 			"description" : "Attainment",
 			"allOf" : [{
 					"$ref" : "#/node"
@@ -507,6 +526,11 @@
 		"Dream.NonStarvingEntry" : {
 			"name" : "Entry",
 			"_class" : "node",
+			"css": {
+				"border" : "1px solid #bbc",
+				"backgroundColor" : "#ffe",
+				"backgroundImage": "linear-gradient(to bottom, #ffe 0%, #dde 100%)"
+			},
 			"description" : "A station creating batches",
 			"allOf" : [{
 					"$ref" : "#/node"
@@ -540,6 +564,11 @@
 		},
 		"Dream.BatchReassembly" : {
 			"name" : "Reassembly",
+			"css": {
+				"border" : "1px solid #bcb",
+				"backgroundColor" : "#dfd",
+				"backgroundImage" : "linear-gradient(to bottom, #dfd 0%, #cec 100%)"
+			},
 			"description" : "A station that assembles sub-batches back into a parent batch ",
 			"_class" : "node",
 			"allOf" : [{
@@ -567,6 +596,11 @@
 		"Dream.BatchDecompositionStartTime" : {
 			"_class" : "Dream.BatchDecompositionStartTime",
 			"name" : "Decomposition",
+			"css": {
+				"border" : "1px solid #bcb",
+				"backgroundColor" : "#dfd",
+				"backgroundImage" : "linear-gradient(to bottom, #dfd 0%, #cec 100%)"
+			},
 			"description" : "A station that decomposes batches into sub-batches",
 			"allOf" : [{
 					"$ref" : "#/node"
@@ -592,6 +626,11 @@
 		},
 		"Dream.BatchScrapMachine" : {
 			"name" : "Machine",
+			"css": {
+				"border" : "1px solid #cbc",
+				"backgroundColor" : "#fef",
+				"backgroundImage" : "linear-gradient(to bottom, #fef 0%, #ede 100%)"
+			},
 			"description" : "A station processing batches for some time given by a distribution provided by the entities that are processed. A random number of batch units is scrapped",
 			"_class" : "node",
 			"allOf" : [{
