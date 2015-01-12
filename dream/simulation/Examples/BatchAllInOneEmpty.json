@@ -833,25 +833,23 @@
 		},
 		"preprocessing" : {
 			"plugin_list" : [{
-					"plugin" : "ReadShiftFromSpreadsheet",
+					"plugin" : "ReadShiftFromSpreadsheet.ReadShiftFromSpreadsheet",
 					"input_id" : "ShiftSpreadsheet"
 				}, {
-					"plugin" : "ReadWipFromSpreadsheet",
+					"plugin" : "BatchesWIPSpreadsheet.BatchesWIPSpreadsheet",
 					"input_id" : "WipSpreadsheet"
 				}
 			]
 		},
 		"processing" : {
 			"plugin_list" : [{
-					"plugin" : "plugin.PartJobShop",
+					"plugin" : "plugin.DefaultExecutionPlugin",
 					"input_id" : "Simulation"
 				}
 			]
 		},
 		"postprocessing" : {
-			"plugin_list" : [{
-					"plugin" : "CalculateConfidenceIntervals"
-				}
+			"plugin_list" : [
 			]
 		},
 		"general" : {
