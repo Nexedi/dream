@@ -16,7 +16,7 @@
 				},
 				"_exp" : {
 					"type" : "object",
-					"title": "Exp",
+					"title" : "Exp",
 					"description" : "Exponential",
 					"properties" : {
 						"mean" : {
@@ -105,10 +105,10 @@
 						}
 					}
 				},
-				"_caucy" : {
+				"_cauchy" : {
 					"type" : "object",
-					"title" : "Caucy",
-					"description" : "Caucy",
+					"title" : "Cauchy",
+					"description" : "Cauchy",
 					"properties" : {
 						"location" : {
 							"type" : "number",
@@ -166,22 +166,16 @@
 						}
 					}
 				},
-				"_fixedFailure" : {
+				"_failure" : {
 					"type" : "object",
-					"title" : "Fixed",
+					"title" : "Yes",
 					"description" : "Fixed",
 					"properties" : {
-						"MTTF" : {
-							"description" : "Mean Time To Failure",
-							"type" : "number",
-							"default" : 40,
-							"required" : true
+						"Time to Failure" : {
+							"$ref" : "#/definitions/_dist"
 						},
-						"MTTR" : {
-							"description" : "Mean Time To Repair",
-							"type" : "number",
-							"default" : 10,
-							"required" : true
+						"Time to Repair" : {
+							"$ref" : "#/definitions/_dist"
 						},
 						"repairman" : {
 							"description" : "Repairman",
@@ -194,35 +188,6 @@
 					"type" : "string",
 					"title" : "No",
 					"description" : "None"
-				},
-				"_availability" : {
-					"type" : "object",
-					"title" : "Availability",
-					"description" : "Availability",
-					"properties" : {
-						"MTTF" : {
-							"description" : "Mean Time To Failure",
-							"type" : "number",
-							"default" : 40,
-							"required" : true
-						},
-						"MTTR" : {
-							"description" : "Mean Time To Failure",
-							"default" : 10,
-							"type" : "number",
-							"required" : true
-						},
-						"availability" : {
-							"type" : "number",
-							"default" : 0,
-							"required" : true
-						},
-						"repairman" : {
-							"description" : "Repairman",
-							"type" : "string",
-							"required" : true
-						}
-					}
 				}
 			},
 			"_failureDist" : {
@@ -234,18 +199,15 @@
 								"default" : "No",
 								"enum" : [
 									"No",
-									"Fixed",
-									"Availability"
+									"Yes"
 								]
 							}
 						}
 					}, {
 						"oneOf" : [{
-								"$ref" : "#/definitions/distributionTypes/_fixedFailure"
+								"$ref" : "#/definitions/distributionTypes/_failure"
 							}, {
 								"$ref" : "#/definitions/distributionTypes/_no"
-							}, {
-								"$ref" : "#/definitions/distributionTypes/_availability"
 							}
 						]
 					}
@@ -266,7 +228,7 @@
 									"Binomial",
 									"Poisson",
 									"Logistic",
-									"Caucy",
+									"Cauchy",
 									"Geometric",
 									"Gama",
 									"Weibull"
@@ -289,7 +251,7 @@
 							}, {
 								"$ref" : "#/definitions/distributionTypes/_logistic"
 							}, {
-								"$ref" : "#/definitions/distributionTypes/_caucy"
+								"$ref" : "#/definitions/distributionTypes/_cauchy"
 							}, {
 								"$ref" : "#/definitions/distributionTypes/_geometric"
 							}, {
@@ -403,10 +365,14 @@
 			],
 			"description" : "Connect stations together"
 		},
-		"Dream.Exit":{
+		"Dream.Exit" : {
 			"_class" : "node",
 			"name" : "Exit",
-			"colour" : "#F0F",
+			"css": {
+				"border" : "1px solid #ccb",
+				"backgroundColor" : "#eef",
+				"backgroundImage" : "linear-gradient(to bottom, #eef 0%, #dde 100%)"
+			},
 			"shape" : "rectangle",
 			"description" : "A station where entities exits from the system",
 			"allOf" : [{
@@ -425,10 +391,15 @@
 					}
 				}
 			]
-		},	
-		"Dream.Queue":{
+		},
+		"Dream.Queue" : {
 			"name" : "Queue",
-			"_class":"node",
+			"_class" : "node",
+			"css": {
+				"border": "1px solid #bcc",
+				"backgroundColor":"#eff",
+				"backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)"
+			},
 			"description" : "A buffer where entities can be hold until the next station is ready to process them",
 			"allOf" : [{
 					"$ref" : "#/node"
@@ -450,31 +421,32 @@
 						"schedulingRule" : {
 							"$ref" : "#/definitions/_schedulingRule",
 							"required" : true
-						},
-						"isDummy" : {
-							"type" : "boolean",
-							"default" : false
 						}
 					}
 				}
 			]
-		},		
-		"Dream.LineClearance":{
+		},
+		"Dream.LineClearance" : {
 			"name" : "Clearance",
-			"_class":"node",
+			"_class" : "node",
+			"css": {
+				"border": "1px solid #bcc",
+				"backgroundColor":"#eff",
+				"backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)"
+			},
 			"description" : "A buffer where entities of the same group can be held until the next station is ready to process them. Entities of other groups cannot be accepted",
 			"allOf" : [{
-					"$ref":"#Dream.Queue",
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {
 						"name" : {
 							"type" : "string",
-							"default" : "Clearence"
+							"default" : "Clearance"
 						},
 						"id" : {
 							"type" : "string",
-							"default" : "c"
+							"default" : "C"
 						},
 						"capacity" : {
 							"$ref" : "#/definitions/_capacity",
@@ -483,21 +455,22 @@
 						"schedulingRule" : {
 							"$ref" : "#/definitions/_schedulingRule",
 							"required" : true
-						},
-						"isDummy" : {
-							"type" : "boolean",
-							"default" : false
 						}
 					}
 				}
 			]
-		},	
+		},
 		"Dream.EventGenerator" : {
 			"name" : "Attainment",
 			"_class" : "node",
+			"css": {
+				"border" : "1px solid #cba",
+				"backgroundColor" : "#fdc",
+				"backgroundImage" : "linear-gradient(to bottom, #fdc 0%, #ecb 100%)"
+			},
 			"description" : "Attainment",
 			"allOf" : [{
-					"$ref" : "#/class_definition/node"
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {
@@ -511,13 +484,13 @@
 							"required" : true
 						},
 						"start" : {
-							"description" : "Starttime",
+							"description" : "Start time",
 							"type" : "number",
 							"default" : 1,
 							"required" : true
 						},
 						"stop" : {
-							"description" : "Stoptime",
+							"description" : "Stop time",
 							"type" : "number",
 							"default" : -1,
 							"required" : true
@@ -529,7 +502,7 @@
 							"required" : true
 						},
 						"interval" : {
-							"description" : "intervaltime",
+							"description" : "interval time",
 							"type" : "number",
 							"default" : 10,
 							"required" : true
@@ -549,10 +522,15 @@
 					}
 				}
 			]
-		},		
-		"Dream.BatchSource" : {
-			"name" : "BatchSource",
+		},
+		"Dream.NonStarvingEntry" : {
+			"name" : "Entry",
 			"_class" : "node",
+			"css": {
+				"border" : "1px solid #bbc",
+				"backgroundColor" : "#ffe",
+				"backgroundImage": "linear-gradient(to bottom, #ffe 0%, #dde 100%)"
+			},
 			"description" : "A station creating batches",
 			"allOf" : [{
 					"$ref" : "#/node"
@@ -561,57 +539,98 @@
 					"properties" : {
 						"name" : {
 							"type" : "string",
-							"default" : "Source"
+							"default" : "Entry"
 						},
 						"id" : {
 							"type" : "string",
-							"default" : "S",
-							"required" : true
-						},
-						"interArrivalTime" : {
-							"description" : "Inter-arrival time",
-							"$ref" : "#/definitions/_dist",
+							"default" : "E",
 							"required" : true
 						},
 						"entity" : {
 							"type" : "string",
 							"description" : "Entity Class",
-							"default" : "Dream.Part",
+							"default" : "Dream.Batch",
 							"required" : true
 						},
-						"batchNumberOfUnits" : {
-							"description": "Number of units of the created batch", 
-							"type":"number",
-							"default":80,
+						"NumberOfUnits" : {
+							"description" : "Number of units per batch",
+							"type" : "number",
+							"default" : 80,
 							"required" : true
-						},
-					}
-				}
-			]
-		},
-		"Dream.BatchDecompositionStartTime":{
-			"_class":"Dream.BatchDecompositionStartTime",
-			"name": "Batch Decomposition",
-			"description" : "A station that decomposes batches into sub-batches",
-			"allOf": [{
-					"$ref":"#/Dream.BatchReassembly"
-				}, {
-					"type" : "object",
-					"properties" : {
-						"name":{
-							"type":"string", 
-							"default":"Decomposition"
-						},
-						"id":{
-							"type":"string", 
-							"default":"D"
 						}
 					}
 				}
 			]
 		},
-		"Dream.BatchScrapMachine":{
+		"Dream.BatchReassembly" : {
+			"name" : "Reassembly",
+			"css": {
+				"border" : "1px solid #bcb",
+				"backgroundColor" : "#dfd",
+				"backgroundImage" : "linear-gradient(to bottom, #dfd 0%, #cec 100%)"
+			},
+			"description" : "A station that assembles sub-batches back into a parent batch ",
+			"_class" : "node",
+			"allOf" : [{
+					"$ref" : "#/node"
+				}, {
+					"type" : "object",
+					"properties" : {
+						"name" : {
+							"type" : "string",
+							"default" : "Reassembly"
+						},
+						"id" : {
+							"type" : "string",
+							"default" : "R"
+						},
+						"numberOfSubBatches" : {
+							"description" : "Number Of Sub-Batches",
+							"type" : "number",
+							"default" : 10
+						}
+					}
+				}
+			]
+		},
+		"Dream.BatchDecompositionStartTime" : {
+			"_class" : "Dream.BatchDecompositionStartTime",
+			"name" : "Decomposition",
+			"css": {
+				"border" : "1px solid #bcb",
+				"backgroundColor" : "#dfd",
+				"backgroundImage" : "linear-gradient(to bottom, #dfd 0%, #cec 100%)"
+			},
+			"description" : "A station that decomposes batches into sub-batches",
+			"allOf" : [{
+					"$ref" : "#/node"
+				}, {
+					"type" : "object",
+					"properties" : {
+						"name" : {
+							"type" : "string",
+							"default" : "Decomposition"
+						},
+						"id" : {
+							"type" : "string",
+							"default" : "D"
+						},
+						"numberOfSubBatches" : {
+							"description" : "Number Of Sub-Batches",
+							"type" : "number",
+							"default" : 10
+						}
+					}
+				}
+			]
+		},
+		"Dream.BatchScrapMachine" : {
 			"name" : "Machine",
+			"css": {
+				"border" : "1px solid #cbc",
+				"backgroundColor" : "#fef",
+				"backgroundImage" : "linear-gradient(to bottom, #fef 0%, #ede 100%)"
+			},
 			"description" : "A station processing batches for some time given by a distribution provided by the entities that are processed. A random number of batch units is scrapped",
 			"_class" : "node",
 			"allOf" : [{
@@ -632,36 +651,19 @@
 							"$ref" : "#/definitions/_dist",
 							"required" : true
 						},
-						"failures" : {
-							"$ref" : "#/definitions/_failureDist",
+						"interruption" : {
+							"type" : "object",
+							"properties" : {
+								"failure" : {
+									"$ref" : "#/definitions/_failureDist",
+									"required" : true
+								}
+							}
+						},
+						"scrapping" : {
+							"$ref" : "#/definitions/_dist",
 							"required" : true
 						}
-					}
-				}
-			]
-		},
-		"Dream.BatchReassembly":{
-			"name" : "Reassembly",
-			"description" : "A station that assembles sub-batches back into a parent batch ",
-			"_class":"node",
-			"allOf" : [{
-					"$ref" : "#/node"
-				}, {
-					"name":{
-						"type":"string",
-						"default":"Reassembly"
-					},
-					"id":{
-						"type":"string",
-						"default":"R"
-					},
-					"processingTime":{
-						"$ref":"#/definitions/_dist"
-					},
-					"numberOfSubBatches":{ 
-						"description":"Number Of Sub-Batches",
-						"type":"number",
-						"default":10
 					}
 				}
 			]
@@ -674,43 +676,10 @@
 				"type" : "object_view",
 				"gadget" : "Input_viewProductionLine"
 			},
-			"view_parent_entities_spreadsheet" : {
-				"gadget" : "Input_viewSpreadsheet",
-				"type" : "object_view",
-				"title" : "Batches Spreadsheet",
-				"configuration" : {
-					"columns" : [{
-							"name":"Batch ID",
-							"type":"string"
-						}, {
-							"name":"Priority",
-							"type":"number",
-							"default":1
-						}, {
-							"name":"Number of sub-batches",
-							"type":"number",
-							"default":4
-						}, {
-							"name":"Sub-Batch IDs",
-							"type":"string"
-						}
-					]
-				}
-			},
-			"view_child_components_spreadsheet" : {
-				"gadget" : "Input_viewSpreadsheet",
-				"type" : "object_view",
-				"title" : "Sub-Batches Spreadsheet",
-				"configuration" : {
-					"columns" : [{
-							"name":"Sub-batch ID",
-							"type":"string"
-						}, {
-							"name":"Batch ID",
-							"type":"string"
-						}
-					]
-				}
+			"view_management": {
+				"gadget": "Input_viewDocumentManagement",
+				"type": "object_view",
+				"title": "Manage document"
 			},
 			"view_machine_shift_spreadsheet" : {
 				"gadget" : "Input_viewSpreadsheet",
@@ -737,14 +706,14 @@
 			"view_operator_shift_spreadsheet" : {
 				"gadget" : "Input_viewSpreadsheet",
 				"type" : "object_view",
-				"title" : "Operators Shifts Spreadsheet",
+				"title" : "Product Builder Shifts Spreadsheet",
 				"configuration" : {
 					"columns" : [{
 							"name" : "Date",
 							"type" : "string",
 							"format" : "date-time"
 						}, {
-							"name" : "Repairman",
+							"name" : "Product Builder",
 							"type" : "string"
 						}, {
 							"name" : "Start",
@@ -756,23 +725,41 @@
 					]
 				}
 			},
+			"view_operator_skill_spreadsheet" : {
+				"gadget" : "Input_viewSpreadsheet",
+				"type" : "object_view",
+				"title" : "Product Builder Skills",
+				"configuration" : {
+					"columns" : [{
+							"name" : "Product Builder",
+							"type" : "string"
+						}, {
+							"name" : "Skills",
+							"type" : "array"
+						}
+					]
+				}
+			},
 			"view_wip_spreadsheet" : {
 				"gadget" : "Input_viewSpreadsheet",
 				"type" : "object_view",
 				"title" : "WIP Spreadsheet",
 				"configuration" : {
 					"columns" : [{
-							"name" : "entity ID",
+							"name" : "ID",
 							"type" : "string"
 						}, {
 							"name" : "StationID",
 							"type" : "string"
-						}, { // do we need sequence 
-							"name":"Sequence",
-							"type":"string"
 						}, {
-							"name" : "Remaining Processing Time",
+							"name" : "Remaining Units",
 							"type" : "number"
+						}, {
+							"name" : "Type",
+							"type" : "string"
+						}, {
+							"name" : "Batch ID",
+							"type" : "string"
 						}
 					]
 				}
@@ -782,10 +769,10 @@
 				"type" : "object_view",
 				"gadget" : "Input_viewSimulation"
 			},
-			"view_result": {
-				"gadget": "Input_viewResultList",
-				"type": "object_view",
-				"title": "Results"
+			"view_result" : {
+				"gadget" : "Input_viewResultList",
+				"type" : "object_view",
+				"title" : "Results"
 			}
 		},
 		"output" : {
@@ -798,7 +785,7 @@
 				}
 			},
 			"view_queue_stats" : {
-				"title" : "QueueStatistics",
+				"title" : "Queue Statistics",
 				"type" : "object_view",
 				"gadget" : "Output_viewQueueStatGraph",
 				"configuration" : {
@@ -808,7 +795,7 @@
 				}
 			},
 			"view_exit_stats" : {
-				"title" : "ExitStatistics",
+				"title" : "Exit Statistics",
 				"type" : "object_view",
 				"gadget" : "Output_viewExitStatistics",
 				"configuration" : {
@@ -841,9 +828,6 @@
 		},
 		"preprocessing" : {
 			"plugin_list" : [{
-					"plugin" : "PartJobShop",
-					"input_id" : "Simulation"
-				}, {
 					"plugin" : "ReadShiftFromSpreadsheet",
 					"input_id" : "ShiftSpreadsheet"
 				}, {
@@ -852,10 +836,18 @@
 				}
 			]
 		},
+		"processing" : {
+			"plugin_list" : [{
+					"plugin" : "plugin.PartJobShop",
+					"input_id" : "Simulation"
+				}
+			]
+		},
 		"postprocessing" : {
 			"plugin_list" : [{
-				"plugin" : "CalculateConfidenceIntervals"
-			}]
+					"plugin" : "CalculateConfidenceIntervals"
+				}
+			]
 		},
 		"general" : {
 			"properties" : {
@@ -896,28 +888,29 @@
 					"type" : "number"
 				},
 				"trace" : {
-					"default" : false,
-					"description" : "Create an excel trace file (true or false)",
-					"title" : "Output Trace",
-					"type" : "boolean"
-				},
-				"seed" : {
-					"default" : "",
-					"description" : "When using the same seed, the random number generator produce the same sequence of numbers",
-					"title" : "Seed for random number generator",
+					"default" : "No",
+					"enum" : ["No", "Yes"],
+					"description" : "Create an excel trace file (Yes or No)",
+					"title" : "OutputTrace",
 					"type" : "string"
 				},
-				"ke_url":{
-					"default": "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
-					"description": "The URL for knowledge extraction to access its data for example http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
-					"title": "URL for Knowledge Extraction Spreadsheet", 
-					"type": "string"
+				"seed" : {
+					"default" : "1",
+					"description" : "When using the same seed, the random number generator produce the same sequence of numbers",
+					"title" : "Seed for random number generator",
+					"type" : "number"
 				},
-				"throughputTarget":{
-					"default": 10,
-					"description": "The daily throughput target in units.", 
-					"title": "Daily Throughput Target", 
-					"type": "number"
+				"ke_url" : {
+					"default" : "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
+					"description" : "The URL for knowledge extraction to access its data for example http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
+					"title" : "URL for Knowledge Extraction Spreadsheet",
+					"type" : "string"
+				},
+				"throughputTarget" : {
+					"default" : 10,
+					"description" : "The daily throughput target in units.",
+					"title" : "Daily Throughput Target",
+					"type" : "number"
 				}
 			}
 		}
@@ -928,6 +921,8 @@
 		"edge" : {}
 	},
 	"input" : {},
-	"result" : {},
+	"result" : {
+		"result_list" : []
+	},
 	"constraints" : {}
 }
