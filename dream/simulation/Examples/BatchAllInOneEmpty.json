@@ -751,7 +751,12 @@
 						}, {
 							"name" : "StationID",
 							"type" : "string"
-						}, {
+						}, 
+						{
+							"name" : "Number of Units",
+							"type" : "number"
+						},
+						{
 							"name" : "Remaining Units",
 							"type" : "number"
 						}, {
