@@ -838,6 +838,10 @@
 				}, {
 					"plugin" : "BatchesWIPSpreadsheet.BatchesWIPSpreadsheet",
 					"input_id" : "WipSpreadsheet"
+				},
+{
+					"plugin" : "ReadSkilledOperators.ReadSkilledOperators",
+					"input_id" : "SkilledOperatorsSpreadsheet"
 				}
 			]
 		},
