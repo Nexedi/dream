@@ -21,7 +21,12 @@
             }
             throw error;
         }).push(function(sim_json) {
-            var document_list = JSON.parse(sim_json).result.result_list, result_list = [], i;
+            var document = JSON.parse(sim_json), document_list = [], result_list = [], i;
+            if (document.result) {
+                if (document.result.result_list) {
+                    document_list = document.result.result_list;
+                }
+            }
             for (i = 0; i < document_list.length; i += 1) {
                 result_list.push(RSVP.all([ gadget.whoWantsToDisplayThisResult(gadget.props.jio_key, i), document_list[i].score, document_list[i].key ]));
             }

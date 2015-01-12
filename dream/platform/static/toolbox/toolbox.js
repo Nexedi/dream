@@ -1,4 +1,4 @@
-/*global window, document, RSVP, rJS, initGadgetMixin*/
+/*global window, document, RSVP, rJS, initGadgetMixin, console*/
 (function(window, document, RSVP, rJS, initGadgetMixin) {
     "use strict";
     /*jslint nomen: true*/
@@ -29,11 +29,15 @@
         /* display all nodes in the palette.
        */
         tools_container.className = "tools-container";
+        console.log("rendering toolbox");
         Object.keys(data.class_definition).forEach(function(key) {
             var _class_object = data.class_definition[key], tool;
+            console.log("key");
+            console.log(key);
+            console.log(_class_object);
             // XXX "expand" the json schema "allOF" etc
             if (_class_object.allOf) {
-                if (_class_object.allOf[0].$ref === "#/class_definition/node") {
+                if (_class_object.allOf[0].$ref === "#/node") {
                     tool = document.createElement("div");
                     // XXX maybe allow to configure the class name ?
                     tool.className = "tool " + key;
@@ -41,8 +45,13 @@
                     tool.draggable = true;
                     tool.dataset.class_name = JSON.stringify(key);
                     Object.keys(_class_object.css || {}).forEach(function(k) {
+                        console.log("<>");
+                        console.log(k);
+                        console.log(_class_object.css[k]);
                         tool.style[k] = _class_object.css[k];
                     });
+                    console.log("tool style");
+                    console.log(tool.style);
                     tools_container.appendChild(tool);
                 }
             }
