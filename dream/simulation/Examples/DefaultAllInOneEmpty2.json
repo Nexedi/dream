@@ -694,9 +694,16 @@
 				"type" : "object_view",
 				"gadget" : "Output_viewStationUtilisationGraph",
 				"configuration" : {
-					"columns" : [
-
-					]
+					"data" : {
+						"working" : [
+							"working_ratio",
+							"setup_ratio",
+							"load_ratio"
+						],
+						"blockage" : ["blockage_ratio"],
+						"waiting" : ["waiting_ratio"],
+						"failure" : ["failure_ratio"]
+					}
 				}
 			},
 			"view_queue_stats" : {
