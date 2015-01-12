@@ -46,7 +46,10 @@ class BatchScrapMachine(Machine):
     def __init__(self, id, name, capacity=1, \
                  processingTime=None, repairman='None',\
                  scrapQuantity={},
-                 canDeliverOnInterruption=False, **kw):
+                 operatorPool='None',operationType='None',\
+                 setupTime=None, loadTime=None,
+                 canDeliverOnInterruption=False, 
+                 **kw):
         if not processingTime:
           processingTime = {'distributionType': 'Fixed',
                             'mean': 1}
@@ -55,7 +58,10 @@ class BatchScrapMachine(Machine):
                                     capacity=capacity,\
                                     processingTime=processingTime,
                                     repairman=repairman,
-                                    canDeliverOnInterruption=canDeliverOnInterruption)
+                                    canDeliverOnInterruption=canDeliverOnInterruption,
+                                    operatorPool=operatorPool,operationType=operationType,\
+                                    setupTime=setupTime, loadTime=loadTime,                   
+                                    )
 
         # set the attributes of the scrap quantity distribution
         if not scrapQuantity:
