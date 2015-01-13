@@ -2,81 +2,65 @@
 /*jslint unparam: true */
 (function(window, rJS, $, initGadgetMixin) {
     "use strict";
-    function station_utilisation_graph_widget(output_data) {
-        var blockage_data = [], waiting_data = [], failure_data = [], working_data = [], ticks = [], counter = 1, series, options;
+    function getRequestedValue(object, key) {
+        var value = 0;
+        if (object.results[key] !== undefined) {
+            if (object.results[key].avg !== undefined) {
+                value = object.results[key].avg;
+            } else {
+                value = object.results[key];
+            }
+        }
+        return value;
+    }
+    function station_utilisation_graph_widget(output_data, config) {
+        var data = {}, ticks = [], counter = 1, key, series = [], options;
+        // initialize the data dict holding the properties requested
+        for (key in config) {
+            if (config.hasOwnProperty(key)) {
+                data[key] = [];
+            }
+        }
         // XXX output is still elementList ???
         $.each(output_data.elementList.sort(function(a, b) {
             return a.id < b.id ? -1 : 1;
         }), function(idx, obj) {
-            // add each object that has a working ratio
-            if (obj.results !== undefined && obj.results.working_ratio !== undefined) {
-                /* when there is only one replication, the ratio is given as a float,
-              otherwise we have a mapping avg, ub lb */
-                var blockage_ratio = 0, working_ratio = 0, waiting_ratio = 0, failure_ratio = 0;
-                if (obj.results.blockage_ratio !== undefined) {
-                    if (obj.results.blockage_ratio.avg !== undefined) {
-                        blockage_ratio = obj.results.blockage_ratio.avg;
-                    } else {
-                        blockage_ratio = obj.results.blockage_ratio;
+            var ctrl_flag = false, reqKey, request, i;
+            // determine weather the current 
+            // obj has the requested key
+            for (reqKey in config) {
+                if (config.hasOwnProperty(reqKey)) {
+                    if (obj.results !== undefined && obj.results[config[reqKey][0]] !== undefined) {
+                        // control flag, if the results contain 
+                        // entities that have working ratios
+                        ctrl_flag = true;
+                        break;
                     }
                 }
-                blockage_data.push([ counter, blockage_ratio ]);
-                // XXX merge setup & loading ratio in working ratio for now
-                if (obj.results.setup_ratio !== undefined) {
-                    if (obj.results.setup_ratio.avg !== undefined) {
-                        working_ratio += obj.results.setup_ratio.avg;
-                    } else {
-                        working_ratio += obj.results.setup_ratio;
+            }
+            // if the obj contains the requested key
+            if (ctrl_flag === true) {
+                for (reqKey in config) {
+                    if (config.hasOwnProperty(reqKey)) {
+                        request = 0;
+                        for (i = 0; i <= config[reqKey].length - 1; i += 1) {
+                            request += getRequestedValue(obj, config[reqKey][i]);
+                        }
+                        data[reqKey].push([ counter, request ]);
                     }
                 }
-                if (obj.results.loading_ratio !== undefined) {
-                    if (obj.results.loading_ratio.avg !== undefined) {
-                        working_ratio += obj.results.loading_ratio.avg;
-                    } else {
-                        working_ratio += obj.results.loading_ratio;
-                    }
-                }
-                if (obj.results.working_ratio !== undefined) {
-                    if (obj.results.working_ratio.avg !== undefined) {
-                        working_ratio += obj.results.working_ratio.avg;
-                    } else {
-                        working_ratio += obj.results.working_ratio;
-                    }
-                }
-                working_data.push([ counter, working_ratio ]);
-                if (obj.results.waiting_ratio !== undefined) {
-                    if (obj.results.waiting_ratio.avg !== undefined) {
-                        waiting_ratio = obj.results.waiting_ratio.avg;
-                    } else {
-                        waiting_ratio = obj.results.waiting_ratio;
-                    }
-                }
-                waiting_data.push([ counter, waiting_ratio ]);
-                if (obj.results.failure_ratio !== undefined) {
-                    if (obj.results.failure_ratio.avg !== undefined) {
-                        failure_ratio = obj.results.failure_ratio.avg;
-                    } else {
-                        failure_ratio = obj.results.failure_ratio;
-                    }
-                }
-                failure_data.push([ counter, failure_ratio ]);
                 ticks.push([ counter, obj.id ]);
                 counter += 1;
             }
         });
-        series = [ {
-            label: "Working",
-            data: working_data
-        }, {
-            label: "Waiting",
-            data: waiting_data
-        }, {
-            label: "Failures",
-            data: failure_data
-        }, {
-            label: "Blockage",
-            data: blockage_data
-        } ];
+        for (key in data) {
+            if (data.hasOwnProperty(key)) {
+                series.push({
+                    label: key,
+                    data: data[key]
+                });
+            }
+        }
         options = {
             xaxis: {
                 minTickSize: 1,
@@ -88,7 +72,7 @@
             series: {
                 bars: {
                     show: true,
-                    barWidth: .8,
+                    barWidth: .7,
                     align: "center"
                 },
                 stack: true
@@ -106,7 +90,8 @@
             _id: gadget.props.jio_key,
             _attachment: "simulation.json"
         }).push(function(simulation_json) {
-            gadget.props.result_list = station_utilisation_graph_widget(JSON.parse(simulation_json).result.result_list[gadget.props.result]);
+            var json_data = JSON.parse(simulation_json), config = json_data.application_configuration.output[options.action].configuration.data;
+            gadget.props.result_list = station_utilisation_graph_widget(json_data.result.result_list[gadget.props.result], config);
         });
     }).declareMethod("startService", function() {
         // XXX Manually calculate width and height when resizing
