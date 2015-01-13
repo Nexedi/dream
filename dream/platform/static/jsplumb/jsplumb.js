@@ -180,15 +180,9 @@
         var zoom_level = gadget.props.zoom_level * 1.1111, element = $(gadget.props.element).find("#" + element_id), new_value;
         $.each(gadget.props.style_attr_list, function(i, j) {
             new_value = $(gadget.props.element).find(".dummy_window").css(j).replace("px", "") * zoom_level + "px";
-            console.log(new_value);
             element.css(j, new_value);
         });
-        console.log("extra box style");
-        console.log(element[0]);
         Object.keys(class_definition.css || {}).forEach(function(k) {
-            console.log("<>");
-            console.log(k);
-            console.log(class_definition.css[k]);
             element.css(k, class_definition.css[k]);
         });
     }
@@ -752,8 +746,6 @@
     function addNode(gadget, node_id, node_data) {
         console.log("addNODE 0");
         var render_element = $(gadget.props.main), class_definition = gadget.props.data.class_definition[node_data._class], coordinate = node_data.coordinate, dom_element_id, box, absolute_position, domElement;
-        console.log("addnode class_definition");
-        console.log(class_definition);
         dom_element_id = generateDomElementId(gadget.props.element);
         gadget.props.node_id_to_dom_element_id[node_id] = dom_element_id;
         node_data.name = node_data.name || class_definition.name;
@@ -774,8 +766,6 @@
             title: node_data.name || node_data.id,
             name: node_data.name || node_data.id
         }), "text/html").querySelector(".window");
-        console.log("dom element");
-        console.log(domElement);
         render_element.append(domElement);
         waitForNodeClick(gadget, domElement);
         //waitForNodeClick(gadget, domElement, class_definition);
@@ -783,10 +773,6 @@
         absolute_position = convertToAbsolutePosition(gadget, coordinate.left, coordinate.top);
         box.css("top", absolute_position[1]);
         box.css("left", absolute_position[0]);
-        console.log("box " + dom_element_id);
-        console.log(box);
-        console.log("gadget");
-        console.log(gadget);
         updateNodeStyle(gadget, dom_element_id, class_definition);
         draggable(gadget);
         // XXX make only this element draggable.
