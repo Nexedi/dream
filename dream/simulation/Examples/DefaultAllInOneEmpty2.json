@@ -692,8 +692,10 @@
 			"view_station_utilization" : {
 				"title" : "Station Utilization",
 				"type" : "object_view",
-				"gadget" : "Output_viewStationUtilisationGraph",
+				"gadget" : "Output_viewGraph",
 				"configuration" : {
+                    "family" : "Server",
+					"plot" : "bars",
 					"data" : {
 						"working" : [
 							"working_ratio",
@@ -707,13 +709,15 @@
 				}
 			},
 			"view_queue_stats" : {
-				"title" : "Queue Statistics",
+				"title" : "Queue Utilization Graph",
 				"type" : "object_view",
-				"gadget" : "Output_viewQueueStatGraph",
+				"gadget" : "Output_viewGraph",
 				"configuration" : {
-					"columns" : [
-
-					]
+					"family" : "Buffer",
+					"plot" : "line",
+					"data" : {
+						"queue_stat" : ["wip_stat_list"]
+					}
 				}
 			},
 			"view_exit_stats" : {
