@@ -782,21 +782,34 @@
 		},
 		"output" : {
 			"view_station_utilization" : {
-				"title" : "StationUtilization",
+				"title" : "Station Utilization",
 				"type" : "object_view",
-				"gadget" : "Output_viewStationUtilisationGraph",
+				"gadget" : "Output_viewGraph",
 				"configuration" : {
-					"columns" : []
+                    "family" : "Server",
+					"plot" : "bars",
+					"data" : {
+						"working" : [
+							"working_ratio",
+							"setup_ratio",
+							"load_ratio"
+						],
+						"blockage" : ["blockage_ratio"],
+						"waiting" : ["waiting_ratio"],
+						"failure" : ["failure_ratio"]
+					}
 				}
 			},
 			"view_queue_stats" : {
-				"title" : "Queue Statistics",
+				"title" : "Queue Utilization Graph",
 				"type" : "object_view",
-				"gadget" : "Output_viewQueueStatGraph",
+				"gadget" : "Output_viewGraph",
 				"configuration" : {
-					"columns" : [
-
-					]
+					"family" : "Buffer",
+					"plot" : "line",
+					"data" : {
+						"queue_stat" : ["wip_stat_list"]
+					}
 				}
 			},
 			"view_exit_stats" : {
@@ -833,13 +846,15 @@
 		},
 		"preprocessing" : {
 			"plugin_list" : [{
+					"plugin" : "GatherWIPStat.GatherWIPStat",
+					"input_id" : "WIPStat"
+				}, {
 					"plugin" : "ReadShiftFromSpreadsheet.ReadShiftFromSpreadsheet",
 					"input_id" : "ShiftSpreadsheet"
 				}, {
 					"plugin" : "BatchesWIPSpreadsheet.BatchesWIPSpreadsheet",
 					"input_id" : "WipSpreadsheet"
-				},
-{
+				}, {
 					"plugin" : "ReadSkilledOperators.ReadSkilledOperators",
 					"input_id" : "SkilledOperatorsSpreadsheet"
 				}
