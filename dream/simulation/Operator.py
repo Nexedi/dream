@@ -336,7 +336,7 @@ class Operator(ObjectResource):
             if self.schedule:
                 json['results']['schedule']=[]
                 for record in self.schedule:
-                    json['results']['schedule'].append({'stationId':record[0].id,'time':record[1]})
+                    json['results']['schedule'].append({'stationId':record[0].id,'entranceTime':record[1]})
         G.outputJSON['elementList'].append(json)
     
     #===========================================================================
