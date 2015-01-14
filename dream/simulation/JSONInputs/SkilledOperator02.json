@@ -82,7 +82,8 @@
                     "interruptions": {}, 
                     "_class": "Dream.Operator", 
                     "capacity": 1, 
-                    "name": "Operator1"
+                    "name": "Operator1",
+					"ouputSchedule":1
                }
           }, 
           "edge": {

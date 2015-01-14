@@ -40,6 +40,16 @@
    "family": "Operator", 
    "id": "O1", 
    "results": {
+    "schedule": [
+     {
+      "stationId": "M1", 
+      "time": 0
+     }, 
+     {
+      "stationId": "M2", 
+      "time": 20.0
+     }
+    ], 
     "waiting_ratio": 81.0, 
     "working_ratio": 19.0
    }
