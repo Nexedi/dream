@@ -37,7 +37,7 @@ from ObjectResource import ObjectResource
 class Operator(ObjectResource):
     family='Operator'  
     
-    def __init__(self, id, name, capacity=1, schedulingRule='FIFO', skills=[], available=True,**kw):
+    def __init__(self, id, name, capacity=1, schedulingRule='FIFO', skills=[], available=True,ouputSchedule=False,**kw):
         ObjectResource.__init__(self,id=id, name=name)
         self.objName=name
         self.capacity=int(capacity)      # repairman is an instance of resource
@@ -83,6 +83,8 @@ class Operator(ObjectResource):
         self.available=available
         from Globals import G
         G.OperatorsList.append(self) 
+        # flag to show if the operator will output his schedule in the results
+        self.ouputSchedule=ouputSchedule
         
     def initialize(self):
         ObjectResource.initialize(self)
@@ -330,6 +332,11 @@ class Operator(ObjectResource):
             json['results']['working_ratio'] = getConfidenceIntervals(self.Working)
             json['results']['waiting_ratio'] = getConfidenceIntervals(self.Waiting)
             json['results']['off_shift_ratio'] = getConfidenceIntervals(self.OffShift)
+        if self.ouputSchedule:
+            if self.schedule:
+                json['results']['schedule']=[]
+                for record in self.schedule:
+                    json['results']['schedule'].append({'stationId':record[0].id,'time':record[1]})
         G.outputJSON['elementList'].append(json)
     
     #===========================================================================
