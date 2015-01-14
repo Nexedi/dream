@@ -861,14 +861,15 @@
 					"plugin" : "ReadEntryData.ReadEntryData",
 					"input_id" : "EntryData"
 				}, {
-					"plugin" : "ReadShiftFromSpreadsheet.ReadShiftFromSpreadsheet",
-					"input_id" : "ShiftSpreadsheet"
-				}, {
 					"plugin" : "BatchesWIPSpreadsheet.BatchesWIPSpreadsheet",
 					"input_id" : "WipSpreadsheet"
 				}, {
 					"plugin" : "ReadSkilledOperators.ReadSkilledOperators",
 					"input_id" : "SkilledOperatorsSpreadsheet"
+				},
+				{
+					"plugin" : "ReadShiftFromSpreadsheet.ReadShiftFromSpreadsheet",
+					"input_id" : "ShiftSpreadsheet"
 				}
 			]
 		},
