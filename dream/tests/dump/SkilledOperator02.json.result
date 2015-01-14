@@ -42,12 +42,12 @@
    "results": {
     "schedule": [
      {
-      "stationId": "M1", 
-      "time": 0
+      "entranceTime": 0, 
+      "stationId": "M1"
      }, 
      {
-      "stationId": "M2", 
-      "time": 20.0
+      "entranceTime": 20.0, 
+      "stationId": "M2"
      }
     ], 
     "waiting_ratio": 81.0, 
