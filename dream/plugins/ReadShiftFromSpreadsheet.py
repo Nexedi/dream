@@ -32,7 +32,6 @@ class ReadShiftFromSpreadsheet(plugin.InputPreparationPlugin):
             (start_time, stop_time) )
 
     for line in data['input']['operator_shift_spreadsheet'][1:]:
-      print line
       if line[1]:
         # Get the dates, and convert them to simulation clock time units.
         # In this class, time unit is a minute (XXX it can be an option)
