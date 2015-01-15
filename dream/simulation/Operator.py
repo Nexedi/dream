@@ -336,8 +336,6 @@ class Operator(ObjectResource):
             if self.schedule:
                 json['results']['schedule']=[]
                 for record in self.schedule:
-                    print record
-                    print "the length of the operator schedule is ", len(record)
                     if len(record)==3:
                         json['results']['schedule'].append({
                             'stationId':record[0].id,
