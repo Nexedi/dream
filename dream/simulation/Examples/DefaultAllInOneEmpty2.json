@@ -7,10 +7,6 @@
 					"title" : "Fixed",
 					"type" : "object",
 					"properties" : {
-                                                "distribution": {
-							"type" : "string",
-                                                        "enum": ["Fixed"]
-                                                },
 						"mean" : {
 							"type" : "number",
 							"default" : 0.75,
@@ -23,10 +19,6 @@
 					"title": "Exp",
 					"description" : "Exponential",
 					"properties" : {
-                                                "distribution": {
-							"type" : "string",
-                                                        "enum": ["Exp"]
-                                                },
 						"mean" : {
 							"type" : "number",
 							"default" : 0,
@@ -39,10 +31,6 @@
 					"title" : "Normal",
 					"description" : "Normal",
 					"properties" : {
-                                                "distribution": {
-							"type" : "string",
-                                                        "enum": ["Normal"]
-                                                },
 						"mean" : {
 							"type" : "number",
 							"default" : 0,
@@ -60,16 +48,14 @@
 					"title" : "Lognormal",
 					"description" : "Lognormal",
 					"properties" : {
-                                                "distribution": {
-							"type" : "string",
-                                                        "enum": ["Lognormal"]
-                                                },
 						"mean" : {
+							"_class" : "Dream.Property",
 							"name" : "Mean",
 							"type" : "number",
 							"default" : 0
 						},
 						"stdev" : {
+							"_class" : "Dream.Property",
 							"name" : "Standard Deviation",
 							"type" : "number",
 							"default" : 0
@@ -81,10 +67,6 @@
 					"title" : "Binomial",
 					"description" : "Binomial",
 					"properties" : {
-                                                "distribution": {
-							"type" : "string",
-                                                        "enum": ["Binomial"]
-                                                },
 						"mean" : {
 							"type" : "number",
 							"default" : 0
@@ -100,10 +82,6 @@
 					"title" : "Poisson",
 					"description" : "Poisson",
 					"properties" : {
-                                                "distribution": {
-							"type" : "string",
-                                                        "enum": ["Poisson"]
-                                                },
 						"lambda" : {
 							"type" : "number",
 							"default" : 0
@@ -115,10 +93,6 @@
 					"title" : "Logistic",
 					"description" : "Logistic",
 					"properties" : {
-                                                "distribution": {
-							"type" : "string",
-                                                        "enum": ["Logistic"]
-                                                },
 						"location" : {
 							"type" : "number",
 							"default" : 0,
@@ -136,10 +110,6 @@
 					"title" : "Caucy",
 					"description" : "Caucy",
 					"properties" : {
-                                                "distribution": {
-							"type" : "string",
-                                                        "enum": ["Caucy"]
-                                                },
 						"location" : {
 							"type" : "number",
 							"default" : 0
@@ -155,10 +125,6 @@
 					"title" : "Geometric",
 					"description" : "Geometric",
 					"properties" : {
-                                                "distribution": {
-							"type" : "string",
-                                                        "enum": ["Geometric"]
-                                                },
 						"probability" : {
 							"type" : "number",
 							"default" : 0,
@@ -171,10 +137,6 @@
 					"title" : "Gama",
 					"description" : "Gama",
 					"properties" : {
-                                                "distribution": {
-							"type" : "string",
-                                                        "enum": ["Gama"]
-                                                },
 						"shape" : {
 							"type" : "number",
 							"default" : 0,
@@ -192,10 +154,6 @@
 					"title" : "Weibull",
 					"description" : "Weibull",
 					"properties" : {
-                                                "distribution": {
-							"type" : "string",
-                                                        "enum": ["Weibull"]
-                                                },
 						"shape" : {
 							"type" : "number",
 							"default" : 0,
@@ -233,7 +191,7 @@
 					}
 				},
 				"_no" : {
-					"type" : "string",
+					"type" : "object",
 					"title" : "No",
 					"description" : "None"
 				},
@@ -291,33 +249,57 @@
 				]
 			},
 			"_dist" : {
-                            "oneOf" : [{
-                                            "$ref" : "#/definitions/distributionTypes/_fixed"
-                                    }, {
-                                            "$ref" : "#/definitions/distributionTypes/_exp"
-                                    }, {
-                                            "$ref" : "#/definitions/distributionTypes/_normal"
-                                    }, {
-                                            "$ref" : "#/definitions/distributionTypes/_lognormal"
-                                    }, {
-                                            "$ref" : "#/definitions/distributionTypes/_binomial"
-                                    }, {
-                                            "$ref" : "#/definitions/distributionTypes/_poisson"
-                                    }, {
-                                            "$ref" : "#/definitions/distributionTypes/_logistic"
-                                    }, {
-                                            "$ref" : "#/definitions/distributionTypes/_caucy"
-                                    }, {
-                                            "$ref" : "#/definitions/distributionTypes/_geometric"
-                                    }, {
-                                            "$ref" : "#/definitions/distributionTypes/_gama"
-                                    }, {
-                                            "$ref" : "#/definitions/distributionTypes/_weibull"
-                                    }
-                            ]
+				"allOf" : [{
+						"type" : "object",
+						"properties" : {
+							"distribution" : {
+								"type" : "string",
+								"default" : "Fixed",
+								"enum" : [
+									"Fixed",
+									"Exp",
+									"Normal",
+									"Longnormal",
+									"Binomial",
+									"Poisson",
+									"Logistic",
+									"Caucy",
+									"Geometric",
+									"Gama",
+									"Weibull"
+								]
+							}
+						}
+					}, {
+						"oneOf" : [{
+								"$ref" : "#/definitions/distributionTypes/_fixed"
+							}, {
+								"$ref" : "#/definitions/distributionTypes/_exp"
+							}, {
+								"$ref" : "#/definitions/distributionTypes/_normal"
+							}, {
+								"$ref" : "#/definitions/distributionTypes/_lognormal"
+							}, {
+								"$ref" : "#/definitions/distributionTypes/_binomial"
+							}, {
+								"$ref" : "#/definitions/distributionTypes/_poisson"
+							}, {
+								"$ref" : "#/definitions/distributionTypes/_logistic"
+							}, {
+								"$ref" : "#/definitions/distributionTypes/_caucy"
+							}, {
+								"$ref" : "#/definitions/distributionTypes/_geometric"
+							}, {
+								"$ref" : "#/definitions/distributionTypes/_gama"
+							}, {
+								"$ref" : "#/definitions/distributionTypes/_weibull"
+							}
+						]
+					}
+				]
 			},
 			"_schedulingRule" : {
-				"description" : "Scheduling Rule",
+				"description" : "Scheduling Rule, one of FIFO Priority EDD EOD NumStages RPC LPT SPT MS WINQ",
 				"type" : "string",
 				"default" : "FIFO",
 				"enum" : [
@@ -348,19 +330,24 @@
 				]
 			},
 			"_operationType" : {
+				"_class" : "Dream.PropertyList",
 				"name" : "Operation type",
 				"id" : "operationType",
 				"description" : "the type of operations that are performed manually in the machine",
-                                "type" : "string",
-                                "enum" : [
-                                        "Load",
-                                        "Setup",
-                                        "Processing",
-                                        "MT-Load",
-                                        "MT-Load-Setup",
-                                        "MT-Load-Setup-Processing",
-                                        "MT-Setup-Processing"
-                                ]
+				"properties" : {
+					"operationType" : {
+						"type" : "string",
+						"enum" : [
+							"Load",
+							"Setup",
+							"Processing",
+							"MT-Load",
+							"MT-Load-Setup",
+							"MT-Load-Setup-Processing",
+							"MT-Setup-Processing"
+						]
+					}
+				}
 			}
 		},
 		"edge" : {
@@ -420,14 +407,24 @@
 		"Dream.Exit" : {
 			"_class" : "node",
 			"name" : "Exit",
-			"css": {
-                          "color" : "#F0F"
-                        },
+			"colour" : "#F0F",
 			"shape" : "rectangle",
 			"description" : "A station where entities exits from the system",
 			"allOf" : [{
-				"$ref" : "#/node"
-		 	   }
+					"$ref" : "#/class_definition/node"
+				}, {
+					"type" : "object",
+					"properties" : {
+						"name" : {
+							"type" : "string",
+							"default" : "Exit"
+						},
+						"id" : {
+							"default" : "E",
+							"required" : true
+						}
+					}
+				}
 			]
 		},
 		"Dream.Queue" : {
@@ -435,10 +432,18 @@
 			"_class" : "node",
 			"description" : "A buffer where entites can be hold until the next station is ready to process them",
 			"allOf" : [{
-					"$ref" : "#/node"
+					"$ref" : "#/class_definition/node"
 				}, {
 					"type" : "object",
 					"properties" : {
+						"name" : {
+							"type" : "string",
+							"default" : "Queue"
+						},
+						"id" : {
+							"type" : "string",
+							"default" : "Q"
+						},
 						"capacity" : {
 							"$ref" : "#/definitions/_capacity",
 							"required" : true
@@ -460,10 +465,19 @@
 			"description" : "A station processing items for some time given by a distribution",
 			"_class" : "node",
 			"allOf" : [{
-					"$ref" : "#/node"
+					"$ref" : "#/class_definition/node"
 				}, {
 					"type" : "object",
 					"properties" : {
+						"name" : {
+							"type" : "string",
+							"default" : "Machine"
+						},
+						"id" : {
+							"type" : "string",
+							"default" : "M",
+							"required" : true
+						},
 						"processingTime" : {
 							"$ref" : "#/definitions/_dist",
 							"required" : true
@@ -473,18 +487,27 @@
 							"required" : true
 						}
 					}
-				]
-			}
+				}
+			]
 		},
 		"Dream.Source" : {
 			"name" : "Source",
 			"_class" : "node",
 			"description" : "A station creating entities",
 			"allOf" : [{
-					"$ref" : "#/node"
+					"$ref" : "#/class_definition/node"
 				}, {
 					"type" : "object",
 					"properties" : {
+						"name" : {
+							"type" : "string",
+							"default" : "Source"
+						},
+						"id" : {
+							"type" : "string",
+							"default" : "S",
+							"required" : true
+						},
 						"interArrivalTime" : {
 							"description" : "Inter-arrivaltime",
 							"$ref" : "#/definitions/_dist",
@@ -505,10 +528,19 @@
 			"_class" : "node",
 			"description" : "Attainment",
 			"allOf" : [{
-					"$ref" : "#/node"
+					"$ref" : "#/class_definition/node"
 				}, {
 					"type" : "object",
 					"properties" : {
+						"name" : {
+							"type" : "string",
+							"default" : "Attainment"
+						},
+						"id" : {
+							"type" : "string",
+							"default" : "A",
+							"required" : true
+						},
 						"start" : {
 							"description" : "Starttime",
 							"type" : "number",
@@ -554,10 +586,19 @@
 			"_class" : "node",
 			"description" : "A resource that repairs stations in failure",
 			"allOf" : [{
-					"$ref" : "#/node"
+					"$ref" : "#/class_definition/node"
 				}, {
 					"type" : "object",
 					"properties" : {
+						"name" : {
+							"type" : "string",
+							"default" : "Repairman"
+						},
+						"id" : {
+							"type" : "string",
+							"default" : "R",
+							"required" : true
+						},
 						"capacity" : {
 							"$ref" : "#/definitions/_capacity",
 							"required" : true
