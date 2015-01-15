@@ -16,6 +16,7 @@ setup(
         'pyparsing',
         'pydot',
         'numpy',
+        'zope.dottedname',
         'rpy2'
     ],
     entry_points=("""
