@@ -41,7 +41,9 @@
               'beforeend',
               label_template({
                 "for": property_id,
-                "name": (property_definition.name || property_definition.description || property_id)
+                "name": ( property_definition.name ||
+                          property_definition.description ||
+                          property_id )
               })
             );
             console.log("....................");
