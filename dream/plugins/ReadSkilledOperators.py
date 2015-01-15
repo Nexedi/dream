@@ -29,7 +29,8 @@ class ReadSkilledOperators(plugin.InputPreparationPlugin):
               "_class": "Dream.Operator",
               "capacity": 1,
               "name":PBId,
-              "skills":skills
+              "skills":skills,
+              "ouputSchedule" : 1
             }
             # for every station that has one or more skilled operators set operation type to MT-Load-Processing
             for stationId in skills:
