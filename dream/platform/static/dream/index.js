@@ -26,6 +26,7 @@
                 title: "Create Document"
             }
         },
+        // TODO: remove this once everything is merged.
         Input: {
             view: {
                 gadget: "Input_viewProductionLine",
@@ -35,50 +36,32 @@
             view_wip_part_spreadsheet: {
                 gadget: "Input_viewWipPartSpreadsheet",
                 type: "object_view",
-                title: "WIP Part Spreadsheet",
-                condition: function(gadget) {
-                    return gadget.props.configuration_dict["Dream-Configuration"].gui.wip_part_spreadsheet;
-                }
+                title: "WIP Part Spreadsheet"
             },
             view_shift_spreadsheet: {
                 gadget: "Input_viewShiftSpreadsheet",
                 type: "object_view",
-                title: "Shift Spreadsheet",
-                condition: function(gadget) {
-                    return gadget.props.configuration_dict["Dream-Configuration"].gui.shift_spreadsheet;
-                }
+                title: "Shift Spreadsheet"
             },
             view_available_capacity_spreadsheet: {
                 gadget: "Input_viewAvailableCapacitySpreadsheet",
                 type: "object_view",
-                title: "Available Capacity Spreadsheet",
-                condition: function(gadget) {
-                    return gadget.props.configuration_dict["Dream-Configuration"].gui.capacity_by_project_spreadsheet;
-                }
+                title: "Available Capacity Spreadsheet"
             },
             view_required_capacity_spreadsheet: {
                 gadget: "Input_viewRequiredCapacitySpreadsheet",
                 type: "object_view",
-                title: "Required Capacity Spreadsheet",
-                condition: function(gadget) {
-                    return gadget.props.configuration_dict["Dream-Configuration"].gui.capacity_by_station_spreadsheet;
-                }
+                title: "Required Capacity Spreadsheet"
             },
             view_dp_capacity_spreadsheet: {
                 gadget: "Input_viewDemandPlanningCapacitySpreadsheet",
                 type: "object_view",
-                title: "Demand Planning Required Capacity Spreadsheet",
-                condition: function(gadget) {
-                    return gadget.props.configuration_dict["Dream-Configuration"].gui.dp_capacity_spreadsheet;
-                }
+                title: "Demand Planning Required Capacity Spreadsheet"
             },
             view_dp_route_spreadsheet: {
                 gadget: "Input_viewDemandPlanningRouteSpreadsheet",
                 type: "object_view",
-                title: "Demand Planning Route Spreadsheet",
-                condition: function(gadget) {
-                    return gadget.props.configuration_dict["Dream-Configuration"].gui.dp_route_spreadsheet;
-                }
+                title: "Demand Planning Route Spreadsheet"
             },
             view_simu: {
                 gadget: "Input_viewSimulation",
@@ -100,66 +83,42 @@
             view: {
                 gadget: "Output_viewStationUtilisationGraph",
                 type: "object_view",
-                title: "Stations Utilization",
-                condition: function(gadget) {
-                    return gadget.props.configuration_dict["Dream-Configuration"].gui.station_utilisation_graph;
-                }
+                title: "Stations Utilization"
             },
             download_excel_spreadsheet: {
                 gadget: "Output_viewDownloadExcelSpreadsheet",
                 type: "object_view",
-                title: "Download Excel Spreadsheet",
-                condition: function(gadget) {
-                    return gadget.props.configuration_dict["Dream-Configuration"].gui.download_excel_spreadsheet;
-                }
+                title: "Download Excel Spreadsheet"
             },
             view_capacity_utilization: {
                 gadget: "Output_viewCapacityUtilisationGraph",
                 type: "object_view",
-                title: "Capacity Utilization",
-                condition: function(gadget) {
-                    return gadget.props.configuration_dict["Dream-Configuration"].gui.capacity_utilisation_graph;
-                }
+                title: "Capacity Utilization"
             },
             view_queue_stat: {
                 gadget: "Output_viewQueueStatGraph",
                 type: "object_view",
-                title: "Queues Statistics",
-                condition: function(gadget) {
-                    return gadget.props.configuration_dict["Dream-Configuration"].gui.queue_stat;
-                }
+                title: "Queues Statistics"
             },
             view_exit_stat: {
                 gadget: "Output_viewExitStatistics",
                 type: "object_view",
-                title: "Exit Statistics",
-                condition: function(gadget) {
-                    return gadget.props.configuration_dict["Dream-Configuration"].gui.exit_stat;
-                }
+                title: "Exit Statistics"
             },
             view_gantt: {
                 gadget: "Output_viewJobGantt",
                 type: "object_view",
-                title: "Job Gantt",
-                condition: function(gadget) {
-                    return gadget.props.configuration_dict["Dream-Configuration"].gui.job_gantt;
-                }
+                title: "Job Gantt"
             },
             view_schedule: {
                 gadget: "Output_viewJobScheduleSpreadsheet",
                 type: "object_view",
-                title: "Job Schedule",
-                condition: function(gadget) {
-                    return gadget.props.configuration_dict["Dream-Configuration"].gui.job_schedule_spreadsheet;
-                }
+                title: "Job Schedule"
             },
             view_debug: {
                 gadget: "Output_viewDebugJson",
                 type: "object_view",
-                title: "Debug JSON",
-                condition: function(gadget) {
-                    return gadget.props.configuration_dict["Dream-Configuration"].gui.debug_json;
-                }
+                title: "Debug JSON"
             }
         }
     }, panel_template, navigation_template, active_navigation_template, error_template, gadget_klass = rJS(window);
@@ -328,8 +287,6 @@
             id: param_list[0],
             result: param_list[1]
         });
-    }).allowPublicAcquisition("getConfigurationDict", function() {
-        return this.props.configuration_dict;
     }).ready(function() {
         if (panel_template === undefined) {
             // XXX Only works as root gadget
@@ -354,21 +311,12 @@
             $(panel).trigger("create");
         });
     }).ready(function(g) {
-        var jio_gadget;
         return g.getDeclaredGadget("jio").push(function(gadget) {
-            jio_gadget = gadget;
-            return jio_gadget.createJio({
+            return gadget.createJio({
                 type: "local",
                 username: "dream",
                 applicationname: "dream"
             });
-        }).push(function() {
-            // XXX Hardcoded relative URL
-            return jio_gadget.ajax({
-                url: "../../getConfigurationDict"
-            });
-        }).push(function(evt) {
-            g.props.configuration_dict = JSON.parse(evt.target.responseText);
         });
     }).declareMethod("render", function(options) {
         var gadget = this, back_kw = {
@@ -389,8 +337,24 @@
                 back_kw.id = options.id;
             }
         }
-        // Get the action information
-        return gadget.declareGadget(portal_types[portal_type][options.action].gadget + ".html").push(function(g) {
+        return gadget.getDeclaredGadget("jio").push(function(jio_gadget) {
+            if (options.id) {
+                return jio_gadget.getAttachment({
+                    _id: options.id,
+                    _attachment: "body.json"
+                });
+            }
+        }).push(function(result) {
+            var data;
+            if (result) {
+                data = JSON.parse(result);
+                gadget.props.data = data;
+                portal_types.Input = data.application_configuration.input;
+                portal_types.Output = data.application_configuration.output;
+            }
+            // Get the action information
+            return gadget.declareGadget(portal_types[portal_type][options.action].gadget + ".html");
+        }).push(function(g) {
             page_gadget = g;
             if (page_gadget.render !== undefined) {
                 return page_gadget.render(options);

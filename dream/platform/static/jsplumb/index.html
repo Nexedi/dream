@@ -3,13 +3,15 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="../lib/jquery-ui.css">
+    <link rel="stylesheet" href="../lib/jquerymobile.css">
     <link rel="stylesheet" href="jsplumb.css">
 
     <script src="../lib/jquery.js"></script>
     <script src="../lib/jquery-ui.js"></script>
+    <script src="../lib/jquerymobile.js"></script>
     <script src="../lib/rsvp.min.js"></script>
     <script src="../lib/renderjs.min.js"></script>
-    <script src="../lib/jquery.jsplumb.min.js"></script>
+    <script src="../lib/jquery.jsplumb.js"></script>
     <script src="../lib/handlebars.min.js"></script>
 
     <script id="node-template" type="text/x-handlebars-template">
@@ -22,9 +24,9 @@
     </script>
 
     <template id="popup-edit-template">
-      <div id="node-edit-popup" data-position-to="origin">
+      <div id="edit-popup" data-position-to="origin">
         <div data-role="header" data-theme="a">
-          <h1 class="node_class">Node edition</h1>
+          <h1 class="node_class">Edit properties</h1>
           <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
         </div>
         <br/>

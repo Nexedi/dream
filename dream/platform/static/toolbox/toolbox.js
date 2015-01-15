@@ -1,8 +1,8 @@
-/*global window, document, RSVP, rJS, Handlebars, initGadgetMixin*/
-(function(window, document, RSVP, rJS, Handlebars, initGadgetMixin) {
+/*global window, document, RSVP, rJS, initGadgetMixin*/
+(function(window, document, RSVP, rJS, initGadgetMixin) {
     "use strict";
     /*jslint nomen: true*/
-    var gadget_klass = rJS(window), tool_template_source = gadget_klass.__template_element.getElementById("tool-template").innerHTML, tool_template = Handlebars.compile(tool_template_source);
+    var gadget_klass = rJS(window);
     function waitForDragstart(tool) {
         var callback;
         function canceller() {
@@ -14,7 +14,7 @@
         function itsANonResolvableTrap(resolve, reject) {
             callback = function(evt) {
                 try {
-                    evt.dataTransfer.setData("text/html", tool.outerHTML);
+                    evt.dataTransfer.setData("application/json", tool.dataset.class_name);
                 } catch (e) {
                     reject(e);
                 }
@@ -24,22 +24,28 @@
         return new RSVP.Promise(itsANonResolvableTrap, canceller);
     }
     initGadgetMixin(gadget_klass);
-    gadget_klass.declareAcquiredMethod("getConfigurationDict", "getConfigurationDict").declareMethod("render", function() {
-        var g = this;
-        return g.getConfigurationDict().push(function(config_dict) {
-            var tools_container = document.createElement("div");
-            tools_container.className = "tools-container";
-            Object.keys(config_dict).forEach(function(key) {
-                var name = config_dict[key].name || key.split("-")[1];
-                if (key !== "Dream-Configuration") {
-                    tools_container.innerHTML += tool_template({
-                        key: key,
-                        name: name
-                    });
-                }
-            });
-            g.props.element.querySelector(".tools").appendChild(tools_container);
+    gadget_klass.declareMethod("render", function(json_data) {
+        var data = JSON.parse(json_data), tools_container = document.createElement("div");
+        /* display all nodes in the palette.
+       */
+        tools_container.className = "tools-container";
+        Object.keys(data.class_definition).forEach(function(key) {
+            var _class = data.class_definition[key], tool;
+            // XXX "expand" the json schema "allOF" etc
+            if (_class._class === "node") {
+                tool = document.createElement("div");
+                // XXX maybe allow to configure the class name ?
+                tool.className = "tool " + key;
+                tool.textContent = _class.name || key;
+                tool.draggable = true;
+                tool.dataset.class_name = JSON.stringify(key);
+                Object.keys(_class.css || {}).forEach(function(k) {
+                    tool.style[k] = _class.css[k];
+                });
+                tools_container.appendChild(tool);
+            }
         });
+        this.props.element.querySelector(".tools").appendChild(tools_container);
     }).declareMethod("startService", function() {
         var promiseArray = [];
         [].forEach.call(this.props.element.querySelectorAll(".tool"), function(tool) {
@@ -47,4 +53,4 @@
         });
         return RSVP.all(promiseArray);
     });
-})(window, document, RSVP, rJS, Handlebars, initGadgetMixin);
+})(window, document, RSVP, rJS, initGadgetMixin);
