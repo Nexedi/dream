@@ -17,6 +17,7 @@ class ReadSkilledOperators(plugin.InputPreparationPlugin):
     """
     PBData=data['input'].get('operator_skill_spreadsheet', None)
     node=data['graph']['node']
+    operatorPresent = False
     if PBData:
         PBData.pop(0)  # pop the column names
         for PBitem in PBData:
@@ -32,21 +33,23 @@ class ReadSkilledOperators(plugin.InputPreparationPlugin):
               "skills":skills,
               "ouputSchedule" : 1
             }
+            operatorPresent = True
             # for every station that has one or more skilled operators set operation type to MT-Load-Processing
             for stationId in skills:
                 node[stationId]["operationType"]="MT-Load-Processing"
         # add EventGenerator for the allocation every 10 minutes
-        node['EV123454321']={   #(random id)
-                    "name": "Allocator", 
-                    "argumentDict": "{}", 
-                    "interval": 10, 
-                    "stop": -1, 
-                    "id": "EV123454321", 
-                    "start": 0, 
-                    "interruptions": {}, 
-                    "_class": "Dream.EventGenerator", 
-                    "method": "Dream.ManPyObject.requestAllocation"      
-        }
+        if operatorPresent:
+          node['EV123454321']={   #(random id)
+                      "name": "Allocator", 
+                      "argumentDict": "{}", 
+                      "interval": 10, 
+                      "stop": -1, 
+                      "id": "EV123454321", 
+                      "start": 0, 
+                      "interruptions": {}, 
+                      "_class": "Dream.EventGenerator", 
+                      "method": "Dream.ManPyObject.requestAllocation"      
+          }
 #         print '---------------------------------'
 #         print data['graph']['node']
 #         print '---------------------------------'
