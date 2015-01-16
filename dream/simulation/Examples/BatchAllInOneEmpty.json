@@ -546,17 +546,24 @@
 							"default" : "E",
 							"required" : true
 						},
-						"entity" : {
-							"type" : "string",
-							"description" : "Entity Class",
-							"default" : "Dream.Batch",
-							"required" : true
-						},
-						"NumberOfUnits" : {
-							"description" : "Number of units per batch",
-							"type" : "number",
-							"default" : 80,
-							"required" : true
+						"entityData" : {
+							"type" : "object",
+							"description" : "Entity produced related information",
+							"required" : true,
+							"properties": {
+								"class" : {
+									"type" : "string",
+									"default" : "Dream.Batch",
+									"description" : "Entity class",
+									"required" : true
+								},
+								"numberOfUnits" : {
+									"description" : "Number of units per batch",
+									"type" : "number",
+									"default" : 80,
+									"required" : true
+								}
+							}
 						}
 					}
 				}
@@ -833,9 +840,11 @@
 			"view_operator_gantt" : {
 				"title" : "Operator Gantt",
 				"type" : "object_view",
-				"gadget" : "Output_viewJobGantt",
+				"gadget" : "Output_viewGantt",
 				"configuration" : {
-					"properties" : {}
+					"data" : {
+						"Operator" : []
+					}
 				}
 			},
 			"view_debug_json" : {
@@ -848,6 +857,9 @@
 			"plugin_list" : [{
 					"plugin" : "GatherWIPStat.GatherWIPStat",
 					"input_id" : "WIPStat"
+				}, {
+					"plugin" : "ReadEntryData.ReadEntryData",
+					"input_id" : "EntryData"
 				}, {
 					"plugin" : "ReadShiftFromSpreadsheet.ReadShiftFromSpreadsheet",
 					"input_id" : "ShiftSpreadsheet"
