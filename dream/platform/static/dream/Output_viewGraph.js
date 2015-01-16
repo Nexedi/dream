@@ -17,12 +17,16 @@
         /* FIXME: does not support more than one replic (Buffer family).
      * + see george email to integrate without the need of an EG
      */
-        var conf_data = config.data, ticks = [], counter = 1, series = [], options = {};
+        var conf_data = config.data, ticks = [], counter = 1, series = [], options = {}, key, data = {};
+        for (key in conf_data) {
+            if (conf_data.hasOwnProperty(key)) {
+                data[key] = [];
+            }
+        }
         $.each(output_data.elementList.sort(function(a, b) {
             return a.id < b.id ? -1 : 1;
         }), function(idx, obj) {
-            var reqKey, // ctrl_flag = false, 
-            request, i;
+            var reqKey, request, i;
             // if the obj is of the requested family
             if (obj.family === config.family) {
                 if (config.plot === "bars") {
@@ -32,10 +36,7 @@
                             for (i = 0; i <= conf_data[reqKey].length - 1; i += 1) {
                                 request += getRequestedValue(obj, conf_data[reqKey][i]);
                             }
-                            series.push({
-                                label: reqKey,
-                                data: [ [ counter, request ] ]
-                            });
+                            data[reqKey].push([ counter, request ]);
                         }
                     }
                     ticks.push([ counter, obj.id ]);
@@ -49,6 +50,14 @@
             }
         });
         if (config.plot === "bars") {
+            for (key in data) {
+                if (data.hasOwnProperty(key)) {
+                    series.push({
+                        label: key,
+                        data: data[key]
+                    });
+                }
+            }
             options = {
                 xaxis: {
                     minTickSize: 1,
