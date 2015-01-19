@@ -354,6 +354,8 @@ class CoreObject(ManPyObject):
             self.unAssignEntry()
         activeEntity=self.identifyEntityToGet()
         activeEntity.currentStation=self
+        # update the receiver of the giverObject
+        giverObject.receiver=self
         # remove entity from the giver
         activeEntity = giverObject.removeEntity(entity=self.identifyEntityToGet())
         # variable that holds the last giver; used in case of preemption
