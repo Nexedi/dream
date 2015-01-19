@@ -1,0 +1,163 @@
+{
+	"graph" : {
+		"node" : {
+			"Q1" : {
+				"capacity" : 3,
+				"name" : "Queue",
+				"coordinate" : {
+					"top" : 0.0902318282539581,
+					"left" : 0.12587286893668462
+				},
+				"_class" : "Dream.Queue",
+				"gatherWipStat" : 1,
+				"id" : "Q1",
+				"schedulingRule" : "FIFO"
+			},
+			"PB1" : {
+				"skills" : ["M1", "M2"],
+				"_class" : "Dream.Operator",
+				"capacity" : 1,
+				"name" : "PB1",
+				"ouputSchedule" : 1
+			},
+			"PB2" : {
+				"skills" : ["M2"],
+				"_class" : "Dream.Operator",
+				"capacity" : 1,
+				"name" : "PB2",
+				"ouputSchedule" : 1
+			},
+			"M1" : {
+				"interruption" : {
+					"failure" : {
+						"failureDistribution" : "No",
+						"No" : {}
+
+					}
+				},
+				"name" : "Machine",
+				"processingTime" : {
+					"distribution" : "Fixed",
+					"Fixed" : {
+						"mean" : 2
+					}
+				},
+				"scrapping" : {
+					"distribution" : "Fixed",
+					"Fixed" : {
+						"mean" : 0
+					}
+				},
+				"operationType" : "MT-Load-Processing",
+				"coordinate" : {
+					"top" : 0.038111458030607684,
+					"left" : 0.24008883867673392
+				},
+				"_class" : "Dream.BatchScrapMachine",
+				"id" : "M1"
+			},
+			"M2" : {
+				"interruption" : {
+					"failure" : {
+						"failureDistribution" : "No",
+						"No" : {}
+
+					}
+				},
+				"name" : "Machine",
+				"processingTime" : {
+					"distribution" : "Fixed",
+					"Fixed" : {
+						"mean" : 1
+					}
+				},
+				"scrapping" : {
+					"distribution" : "Fixed",
+					"Fixed" : {
+						"mean" : 0
+					}
+				},
+				"operationType" : "MT-Load-Processing",
+				"coordinate" : {
+					"top" : 0.24087463254128189,
+					"left" : 0.22802051300484316
+				},
+				"_class" : "Dream.BatchScrapMachine",
+				"id" : "M2"
+			},
+			"EV123454321" : {
+				"start" : 0,
+				"_class" : "Dream.EventGenerator",
+				"name" : "Allocator",
+				"interruptions" : {},
+				"argumentDict" : "{}",
+				"interval" : 10,
+				"stop" : -1,
+				"id" : "EV123454321",
+				"method" : "Dream.ManPyObject.requestAllocation"
+			},
+			"E1" : {
+				"coordinate" : {
+					"top" : 0.06860983133659855,
+					"left" : 0.018271647394538456
+				},
+				"id" : "E1",
+				"entityData" : {
+					"_class" : "Dream.Batch",
+					"numberOfUnits" : 80
+				},
+				"_class" : "Dream.NonStarvingEntry",
+				"name" : "Entry"
+			},
+			"E2" : {
+				"coordinate" : {
+					"top" : 0.14518812034708342,
+					"left" : 0.3968337111761783
+				},
+				"_class" : "Dream.Exit",
+				"name" : "Exit",
+				"id" : "E2"
+			}
+		},
+		"edge" : {
+			"con_43" : {
+				"source" : "M1",
+				"destination" : "E2",
+				"_class" : "Dream.Edge"
+			},
+			"con_95" : {
+				"source" : "E1",
+				"destination" : "Q1",
+				"_class" : "Dream.Edge"
+			},
+			"con_61" : {
+				"source" : "Q1",
+				"destination" : "M1",
+				"_class" : "Dream.Edge"
+			},
+			"con_29" : {
+				"source" : "M2",
+				"destination" : "E2",
+				"_class" : "Dream.Edge"
+			},
+			"con_79" : {
+				"source" : "Q1",
+				"destination" : "M2",
+				"_class" : "Dream.Edge"
+			}
+		}
+	},
+	"general" : {
+		"numberOfReplications" : "1",
+		"trace" : "Yes",
+		"console" : "No",
+		"ke_url" : "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
+		"processTimeout" : 10,
+		"seed" : 1,
+		"timeUnitPerDay" : 24,
+		"maxSimTime" : 120,
+		"currentDate" : "2014/10/01",
+		"throughputTarget" : 10,
+		"confidenceLevel" : 0.95
+	}
+}
