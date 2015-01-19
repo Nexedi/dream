@@ -70,9 +70,10 @@ class NonStarvingEntry(Queue):
         extraArgs=dict(self.entityData)
         extraArgs.pop('_class')
         assert entityType, 'the entity type of the non starving buffer could not be identified'
+        entityTypeName=entityType.split('.')[-1]
         entityType=Globals.getClassFromName(entityType)
-        Eargs={'id':G.numberOfEntities,
-               'name':str(entityType)+str(G.numberOfEntities),
+        Eargs={'id':entityTypeName+str(G.numberOfEntities),
+               'name':entityTypeName+str(G.numberOfEntities),
                'currentStation':self
                }
         Eargs.update(extraArgs)
