@@ -607,6 +607,11 @@
 				"type" : "object_view",
 				"gadget" : "Input_viewProductionLine"
 			},
+      "view_management": {
+        "gadget": "Input_viewDocumentManagement",
+        "type": "object_view",
+        "title": "Manage document"
+      },
 			"view_old_style_part_jobshop_spreadsheet" : {
 				"gadget" : "Input_viewSpreadsheet",
 				"type" : "object_view",
@@ -736,6 +741,12 @@
 			"plugin_list" : [{
 					"plugin" : "PartJobShop",
 					"input_id" : "Simulation"
+				}
+			]
+		},
+		"processing" : {
+			"plugin_list" : [{
+					"plugin" : "ACO"
 				}
 			]
 		},
