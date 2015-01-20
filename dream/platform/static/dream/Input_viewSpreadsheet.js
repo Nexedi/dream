@@ -1,4 +1,4 @@
-/*global rJS, RSVP, initGadgetMixin, loopEventListener, console */
+/*global rJS, RSVP, initGadgetMixin, loopEventListener */
 (function(window, rJS, RSVP, initGadgetMixin, loopEventListener) {
     "use strict";
     function saveSpreadsheet(evt) {
@@ -42,7 +42,6 @@
     var gadget_klass = rJS(window);
     initGadgetMixin(gadget_klass);
     gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareAcquiredMethod("aq_putAttachment", "jio_putAttachment").declareMethod("render", function(options) {
-        console.log("generic spreadsheet RENDER1");
         var jio_key = options.id, gadget = this;
         gadget.props.jio_key = jio_key;
         // view_##### is the formulatino of the names
