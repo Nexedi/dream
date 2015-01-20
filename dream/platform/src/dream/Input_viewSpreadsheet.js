@@ -1,4 +1,4 @@
-/*global rJS, RSVP, initGadgetMixin, loopEventListener, console */
+/*global rJS, RSVP, initGadgetMixin, loopEventListener */
 (function (window, rJS, RSVP, initGadgetMixin, loopEventListener) {
   "use strict";
 
@@ -68,7 +68,6 @@
     // declared methods
     /////////////////////////////////////////////////////////////////
     .declareMethod("render", function (options) {
-      console.log("generic spreadsheet RENDER1");
       var jio_key = options.id,
         gadget = this;
       gadget.props.jio_key = jio_key;
