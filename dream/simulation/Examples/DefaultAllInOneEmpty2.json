@@ -384,7 +384,7 @@
       "_class": "edge",
       "allOf": [
         {
-          "$ref": "#/class_defintion/edge"
+          "$ref": "#/edge"
         }
       ],
       "description": "Connect stations together"
