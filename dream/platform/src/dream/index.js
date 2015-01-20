@@ -281,7 +281,7 @@
           });
         })
         .push(function (sim_json) {
-          var document_list = JSON.parse(sim_json);
+          var document_list = JSON.parse(sim_json).result.result_list;
           return document_list[options.result].score + " " +
             document_list[options.result].key;
         });
@@ -409,6 +409,7 @@
         for (action_id in portal_types.Output) {
           if (portal_types.Output.hasOwnProperty(action_id)) {
             action_info = portal_types.Output[action_id];
+            // XXX condition not needed
             if ((action_info.condition === undefined) ||
                 (action_info.condition(this))) {
               action = action_id;

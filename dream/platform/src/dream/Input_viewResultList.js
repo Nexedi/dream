@@ -42,13 +42,12 @@
           throw error;
         })
         .push(function (sim_json) {
-          var document_list = JSON.parse(sim_json),
+          var result = JSON.parse(sim_json).result,
             result_list = [],
+            document_list = [],
             i;
-          if (document.result) {
-            if (document.result.result_list) {
-              document_list = document.result.result_list;
-            }
+          if (result) {
+            document_list = result.result_list;
           }
           for (i = 0; i < document_list.length; i += 1) {
             result_list.push(RSVP.all([
