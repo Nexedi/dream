@@ -42,8 +42,7 @@
           throw error;
         })
         .push(function (sim_json) {
-          var document = JSON.parse(sim_json),
-            document_list = [],
+          var document_list = JSON.parse(sim_json),
             result_list = [],
             i;
           if (document.result) {
