@@ -68,6 +68,6 @@ class RandomNumberGeneratorTestCase(TestCase):
         self.assertRaises(ValueError, rng.generateNumber)
 
     def testUnknownDistribution(self):
-        rng = RandomNumberGenerator(obj, distribution='Unknown')
-        self.assertRaises(ValueError, rng.generateNumber)
+        self.assertRaises(ValueError, RandomNumberGenerator,
+            obj, distribution='Unknown')
 
