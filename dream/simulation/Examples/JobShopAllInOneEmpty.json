@@ -343,7 +343,7 @@
 						"enum" : [
 							"MT-Load",
 							"MT-Load-Setup",
-							"MT-Load-Setup-Processing",
+							"MT-Load-Setup-Processing"
 						]
 					}
 				}
@@ -427,9 +427,9 @@
 			]
 		},
 		"Dream.ConditionalBuffer":{
-			"name" : "ConditionalBuffer"
+			"name" : "ConditionalBuffer",
 			"_class":"node",
-            "description" : "A buffer where entities can be hold until the next station is ready to process them and a certain condition is met",
+                        "description" : "A buffer where entities can be hold until the next station is ready to process them and a certain condition is met",
 			"allOf" : [{
 					"$ref" : "#/node"
 				}, {
@@ -517,7 +517,7 @@
 							"required" : true
 						},
 						"operationType" : {
-							"$ref" : "#/definitions/_operationType"
+							"$ref" : "#/definitions/_operationType",
 							"required" : true
 						}
 					}
@@ -562,8 +562,8 @@
 						},
 						"schedulingRule" : {
 							"$ref" : "#/definitions/_schedulingRule",
-							"required" : true
-							"default":"WT" // consider how to do it
+							"required" : true,
+							"default": "WT"
 						}
 					}
 				}
@@ -633,7 +633,7 @@
 							"type":"string"
 						}, {
 							"name":"Sequence Number",
-							"type":"string",
+							"type":"string"
 						}, {
 							"name":"Station Id",
 							"type":"string"
