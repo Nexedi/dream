@@ -406,9 +406,13 @@
 		"Dream.ExitJobShop":{
 			"_class" : "node",
 			"name" : "Exit",
-			"colour" : "#F0F",
-			"shape" : "rectangle",
 			"description" : "A station where entities exits from the system",
+                        "css": {
+                          "border": "1px solid #ccb",
+                          "backgroundColor": "#eef",
+                          "backgroundImage": "linear-gradient(to bottom, #eef 0%, #dde 100%)"
+                        },
+                        "shape": "rectangle",
 			"allOf" : [{
 					"$ref" : "#/node"
 				}, {
@@ -430,6 +434,11 @@
 			"name" : "ConditionalBuffer",
 			"_class":"node",
                         "description" : "A buffer where entities can be hold until the next station is ready to process them and a certain condition is met",
+                        "css": {
+                          "border": "1px solid #bcc",
+                          "backgroundColor": "#eff",
+                          "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)"
+                        },
 			"allOf" : [{
 					"$ref" : "#/node"
 				}, {
@@ -459,6 +468,11 @@
 			"name":"Assembly Queue",
 			"_class":"node",
 			"description" : "A buffer where entities can be hold until the next assembly is ready to process all the entities from the same production-order",
+                        "css": {
+                          "border": "1px solid #bcc",
+                          "backgroundColor": "#eff",
+                          "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)"
+                        },
 			"allOf" : [{
 					"$ref" : "#/Dream.ConditionalBuffer"
 				}, {
@@ -480,6 +494,11 @@
 			"name":"Decomposition",
 			"_class":"node",
 			"description" : "A station where production-orders are decomposed into components ",
+      "css": {
+        "border": "1px solid #cbc",
+        "backgroundColor": "#fef",
+        "backgroundImage": "linear-gradient(to bottom, #fef 0%, #ede 100%)"
+      },
 			"allOf" : [{
 					"$ref" : "#/node"
 				}, {
@@ -497,6 +516,11 @@
 		"Dream.MachineJobShop":{
 			"name" : "Machine",
 			"description" : "A station processing items for some time given by a distribution provided by the entities that are processed",
+      "css": {
+        "border": "1px solid #cbc",
+        "backgroundColor": "#fef",
+        "backgroundImage": "linear-gradient(to bottom, #fef 0%, #ede 100%)"
+      },
 			"_class" : "node",
 			"allOf" : [{
 					"$ref" : "#/class_definition/node"
@@ -521,6 +545,11 @@
 			]
 		},
 		"Dream.MouldAssembly":{
+      "css": {
+        "border": "1px solid #cbc",
+        "backgroundColor": "#fef",
+        "backgroundImage": "linear-gradient(to bottom, #fef 0%, #ede 100%)"
+      },
 			"name" : "Assembly",
 			"description" : "A station that assembles different components of the same production order into a single entity",
 			"_class":"node",
@@ -542,6 +571,11 @@
 			"name" : "Operator",
 			"_class" : "node",
 			"description" : "A resource that operates stations",
+      "css": {
+        "border": "1px solid #cbb",
+        "backgroundColor": "#fdd",
+        "backgroundImage": "linear-gradient(to bottom, #fdd 0%, #dcc 100%)"
+      },
 			"allOf" : [{
 					"$ref" : "#/class_definition/node"
 				}, {
