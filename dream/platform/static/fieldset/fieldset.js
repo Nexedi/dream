@@ -7,7 +7,7 @@
     // Handlebars
     /////////////////////////////////////////////////////////////////
     // Precompile the templates while loading the first gadget instance
-    var gadget_klass = rJS(window), source = gadget_klass.__template_element.getElementById("label-template").innerHTML, label_template = Handlebars.compile(source);
+    var i, gadget_klass = rJS(window), source = gadget_klass.__template_element.getElementById("label-template").innerHTML, label_template = Handlebars.compile(source);
     initGadgetMixin(gadget_klass);
     gadget_klass.declareMethod("render", function(options, node_id) {
         // XXX node_id is added like a property so that one can change the node
@@ -18,6 +18,7 @@
         gadget.props.field_gadget_list = [];
         function addField(property_id, property_definition, value) {
             var sub_gadget;
+            console.log("addField", property_id, property_definition, value);
             queue.push(function() {
                 // XXX this is incorrect for recursive fieldsets.
                 // we should use nested fieldset with legend
@@ -25,6 +26,15 @@
                     "for": property_id,
                     name: property_definition.name || property_definition.description || property_id
                 }));
+                //console.log("PD", property_definition);
+                if (property_definition.oneOf) {
+                    // if we got a oneOf, then we use the first one that matches our
+                    // data.
+                    console.log(value);
+                    for (i = 0; i < property_definition.oneOf.length; i += 1) {
+                        console.log(property_definition.oneOf[i]);
+                    }
+                }
                 if (property_definition.type === "object") {
                     // Create a recursive fieldset for this key.
                     return gadget.declareGadget("../fieldset/index.html");
@@ -56,8 +66,10 @@
                     type: "string"
                 }, node_id);
             }
+            console.log(options.property_definition);
             Object.keys(options.property_definition.properties).forEach(function(property_name) {
                 var property_definition = options.property_definition.properties[property_name], value = (options.value || {})[property_name] === undefined ? property_definition._default : options.value[property_name];
+                //console.log(property_name, property_definition);
                 // XXX some properties are not editable
                 // XXX should not be defined here
                 if (property_name !== "coordinate" && property_name !== "_class") {
@@ -66,6 +78,8 @@
             });
         });
         return queue;
+    }).declareMethod("notifyDataChanged", function() {
+        console.log("content changed");
     }).declareMethod("getContent", function() {
         var i, promise_list = [], gadget = this;
         for (i = 0; i < this.props.field_gadget_list.length; i += 1) {
