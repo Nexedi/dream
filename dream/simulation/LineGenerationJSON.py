@@ -661,7 +661,6 @@ def main(argv=[], input_data=None):
             ExcelHandler.outputTrace('trace'+str(i))  
             ExcelHandler.resetTrace()
     
-    G.outputJSONFile=open('outputJSON.json', mode='w')
     G.outputJSON['_class'] = 'Dream.Simulation';
     G.outputJSON['general'] ={};
     G.outputJSON['general']['_class'] = 'Dream.Configuration';
@@ -674,16 +673,24 @@ def main(argv=[], input_data=None):
         object.outputResultsJSON()
                         
     outputJSONString=json.dumps(G.outputJSON, indent=True)
-    G.outputJSONFile.write(outputJSONString)
+    if 0:
+      G.outputJSONFile=open('outputJSON.json', mode='w')
+      G.outputJSONFile.write(outputJSONString)
 
+    if not input_data:
+      # Output on stdout
+      print outputJSONString
+      # XXX I am not sure we still need this case
+      return
+
+    print G.JSONData
+    # XXX result_list is not needed here, we could replace result by result_list
+    G.JSONData['result'] = {'result_list': [G.outputJSON]}
     #logger.info("execution time="+str(time.time()-start))
-    if input_data:
-      return outputJSONString
 
-    # Output on stdout
-    print outputJSONString
-    
+    return json.dumps(G.JSONData, indent=True)
+
+
 if __name__ == '__main__':
 #     cProfile.run('main()')
     main()
-
