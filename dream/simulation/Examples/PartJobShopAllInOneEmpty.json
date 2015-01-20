@@ -468,6 +468,42 @@
           "properties": {
             "name": {
               "type": "string",
+              "default": "Cam Queue"
+            },
+            "id": {
+              "type": "string",
+              "default": "B"
+            },
+            "capacity": {
+              "$ref": "#/definitions/_capacity",
+              "required": true
+            },
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule",
+              "required": true
+            }
+          }
+        }
+      ]
+    },
+    "Dream.QueueManagedJob": {
+      "name": "Queue",
+      "_class": "node",
+      "description": "A queue for jobs",
+      "css": {
+        "border": "1px solid #bcc",
+        "backgroundColor": "#eff",
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)"
+      },
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
               "default": "Queue"
             },
             "id": {
@@ -539,7 +575,7 @@
         }
       ]
     },
-    "Dream.MachineJobShop": {
+    "Dream.MachineManagedJob": {
       "name": "Machine",
       "description": "A station processing items for some time given by a distribution provided by the entities that are processed",
       "css": {
@@ -583,7 +619,7 @@
       "_class": "node",
       "allOf": [
         {
-          "$ref": "#/Dream.MachineJobShop"
+          "$ref": "#/Dream.MachineManagedJob"
         },
         {
           "name": {
@@ -880,10 +916,502 @@
     "numberOfAntsPerGenerations": "1",
     "numberOfSolutions": "10"
   },
-  "graph": {
-    "node": {},
-    "edge": {}
-  },
+      "graph": {
+        "edge": {
+            "con_10": {
+                "_class": "Dream.Edge",
+                "destination": "QCAM",
+                "source": "Decomposition"
+            },
+            "con_15": {
+                "_class": "Dream.Edge",
+                "destination": "MILL2",
+                "source": "QMILL"
+            },
+            "con_20": {
+                "_class": "Dream.Edge",
+                "destination": "MILL1",
+                "source": "QMILL"
+            },
+            "con_25": {
+                "_class": "Dream.Edge",
+                "destination": "CAD2",
+                "source": "QStart"
+            },
+            "con_30": {
+                "_class": "Dream.Edge",
+                "destination": "CAM1",
+                "source": "QCAM"
+            },
+            "con_35": {
+                "_class": "Dream.Edge",
+                "destination": "CAM2",
+                "source": "QCAM"
+            },
+            "con_40": {
+                "_class": "Dream.Edge",
+                "destination": "CAD1",
+                "source": "QStart"
+            },
+            "con_45": {
+                "_class": "Dream.Edge",
+                "destination": "Decomposition",
+                "source": "CAD1"
+            },
+            "con_5": {
+                "_class": "Dream.Edge",
+                "destination": "Decomposition",
+                "source": "CAD2"
+            },
+            "con_50": {
+                "_class": "Dream.Edge",
+                "destination": "EDM",
+                "source": "QEDM"
+            },
+            "con_55": {
+                "_class": "Dream.Edge",
+                "destination": "IM1",
+                "source": "QIM"
+            },
+            "con_60": {
+                "_class": "Dream.Edge",
+                "destination": "IM2",
+                "source": "QIM"
+            },
+            "con_65": {
+                "_class": "Dream.Edge",
+                "destination": "QIM",
+                "source": "MASS3"
+            },
+            "con_70": {
+                "_class": "Dream.Edge",
+                "destination": "QIM",
+                "source": "MASS2"
+            },
+            "con_75": {
+                "_class": "Dream.Edge",
+                "destination": "QIM",
+                "source": "MASS1"
+            },
+            "con_80": {
+                "_class": "Dream.Edge",
+                "destination": "MASS1",
+                "source": "QMASS"
+            },
+            "con_85": {
+                "_class": "Dream.Edge",
+                "destination": "MASS2",
+                "source": "QMASS"
+            },
+            "con_90": {
+                "_class": "Dream.Edge",
+                "destination": "MASS3",
+                "source": "QMASS"
+            }
+        },
+        "node": {
+            "CAD1": {
+                "_class": "Dream.MachineManagedJob",
+                "coordinate": {
+                    "left": 0.32935725427514356,
+                    "top": 0.2673741799067207
+                },
+                "element_id": "DreamNode_1",
+                "failures": {
+                    "MTTF": 40,
+                    "MTTR": 10,
+                    "failureDistribution": "No",
+                    "repairman": "None"
+                },
+                "id": "CAD1",
+                "name": "CAD1",
+                "operationType": "MT-Load-Processing",
+                "processingTime": {
+                    "distributionType": "Fixed",
+                    "max": 1,
+                    "mean": 0.9,
+                    "min": 0.1,
+                    "stdev": 0.1
+                }
+            },
+            "CAD2": {
+                "_class": "Dream.MachineManagedJob",
+                "coordinate": {
+                    "left": 0.358715003959836,
+                    "top": 0.02212751833710792
+                },
+                "element_id": "DreamNode_2",
+                "failures": {
+                    "MTTF": 40,
+                    "MTTR": 10,
+                    "failureDistribution": "No",
+                    "repairman": "None"
+                },
+                "id": "CAD2",
+                "name": "CAD2",
+                "operationType": "MT-Load-Processing",
+                "processingTime": {
+                    "distributionType": "Fixed",
+                    "max": 1,
+                    "mean": 0.9,
+                    "min": 0.1,
+                    "stdev": 0.1
+                }
+            },
+            "CAM1": {
+                "_class": "Dream.MachineManagedJob",
+                "coordinate": {
+                    "left": 0.8156850502215475,
+                    "top": 0.03770447816866011
+                },
+                "element_id": "DreamNode_3",
+                "failures": {
+                    "MTTF": 40,
+                    "MTTR": 10,
+                    "failureDistribution": "No",
+                    "repairman": "None"
+                },
+                "id": "CAM1",
+                "name": "CAM1",
+                "operationType": "MT-Load-Processing",
+                "processingTime": {
+                    "distributionType": "Fixed",
+                    "max": 1,
+                    "mean": 0.9,
+                    "min": 0.1,
+                    "stdev": 0.1
+                }
+            },
+            "CAM2": {
+                "_class": "Dream.MachineManagedJob",
+                "coordinate": {
+                    "left": 0.796328960197283,
+                    "top": 0.3079412968580852
+                },
+                "element_id": "DreamNode_4",
+                "failures": {
+                    "MTTF": 40,
+                    "MTTR": 10,
+                    "failureDistribution": "No",
+                    "repairman": "None"
+                },
+                "id": "CAM2",
+                "name": "CAM2",
+                "operationType": "MT-Load-Processing",
+                "processingTime": {
+                    "distributionType": "Fixed",
+                    "max": 1,
+                    "mean": 0.9,
+                    "min": 0.1,
+                    "stdev": 0.1
+                }
+            },
+            "Decomposition": {
+                "_class": "Dream.OrderDecomposition",
+                "coordinate": {
+                    "left": 0.5277238535086819,
+                    "top": 0.10475955623433687
+                },
+                "element_id": "DreamNode_5",
+                "id": "Decomposition",
+                "name": "Decomposition"
+            },
+            "E1": {
+                "_class": "Dream.ExitJobShop",
+                "coordinate": {
+                    "left": 0.967876137039781,
+                    "top": 0.39355726466863505
+                },
+                "element_id": "DreamNode_6",
+                "id": "E1",
+                "name": "Exit"
+            },
+            "EDM": {
+                "_class": "Dream.MachineManagedJob",
+                "coordinate": {
+                    "left": 0.18899051359520772,
+                    "top": 0.92197993071283
+                },
+                "element_id": "DreamNode_7",
+                "failures": {
+                    "MTTF": 40,
+                    "MTTR": 10,
+                    "failureDistribution": "No",
+                    "repairman": "None"
+                },
+                "id": "EDM",
+                "name": "EDM",
+                "operationType": "MT-Load-Setup",
+                "processingTime": {
+                    "distributionType": "Fixed",
+                    "max": 1,
+                    "mean": 0.9,
+                    "min": 0.1,
+                    "stdev": 0.1
+                }
+            },
+            "IM1": {
+                "_class": "Dream.MachineManagedJob",
+                "coordinate": {
+                    "left": 0.8743104827972474,
+                    "top": 0.6048188345476164
+                },
+                "element_id": "DreamNode_8",
+                "failures": {
+                    "MTTF": 40,
+                    "MTTR": 10,
+                    "failureDistribution": "No",
+                    "repairman": "None"
+                },
+                "id": "IM1",
+                "name": "IM1",
+                "operationType": "MT-Load-Setup",
+                "processingTime": {
+                    "distributionType": "Fixed",
+                    "max": 1,
+                    "mean": 0.9,
+                    "min": 0.1,
+                    "stdev": 0.1
+                }
+            },
+            "IM2": {
+                "_class": "Dream.MachineManagedJob",
+                "coordinate": {
+                    "left": 0.8845462397808385,
+                    "top": 0.8560412718675537
+                },
+                "element_id": "DreamNode_9",
+                "failures": {
+                    "MTTF": 40,
+                    "MTTR": 10,
+                    "failureDistribution": "No",
+                    "repairman": "None"
+                },
+                "id": "IM2",
+                "name": "IM2",
+                "operationType": "MT-Load-Setup",
+                "processingTime": {
+                    "distributionType": "Fixed",
+                    "max": 1,
+                    "mean": 0.9,
+                    "min": 0.1,
+                    "stdev": 0.1
+                }
+            },
+            "MASS1": {
+                "_class": "Dream.MouldAssembly",
+                "coordinate": {
+                    "left": 0.5486473277825593,
+                    "top": 0.5247930837013548
+                },
+                "element_id": "DreamNode_10",
+                "failures": {
+                    "MTTF": 40,
+                    "MTTR": 10,
+                    "failureDistribution": "No",
+                    "repairman": "None"
+                },
+                "id": "MASS1",
+                "name": "MASS1",
+                "operationType": "MT-Load-Processing",
+                "processingTime": {
+                    "distributionType": "Fixed",
+                    "max": 1,
+                    "mean": 0.9,
+                    "min": 0.1,
+                    "stdev": 0.1
+                }
+            },
+            "MASS2": {
+                "_class": "Dream.MouldAssembly",
+                "coordinate": {
+                    "left": 0.5441103624829352,
+                    "top": 0.7115787006319392
+                },
+                "element_id": "DreamNode_11",
+                "failures": {
+                    "MTTF": 40,
+                    "MTTR": 10,
+                    "failureDistribution": "No",
+                    "repairman": "None"
+                },
+                "id": "MASS2",
+                "name": "MASS2",
+                "operationType": "MT-Load-Processing",
+                "processingTime": {
+                    "distributionType": "Fixed",
+                    "max": 1,
+                    "mean": 0.9,
+                    "min": 0.1,
+                    "stdev": 0.1
+                }
+            },
+            "MASS3": {
+                "_class": "Dream.MouldAssembly",
+                "coordinate": {
+                    "left": 0.5495403769103371,
+                    "top": 0.9090722116828504
+                },
+                "element_id": "DreamNode_12",
+                "failures": {
+                    "MTTF": 40,
+                    "MTTR": 10,
+                    "failureDistribution": "No",
+                    "repairman": "None"
+                },
+                "id": "MASS3",
+                "name": "MASS3",
+                "operationType": "MT-Load-Processing",
+                "processingTime": {
+                    "distributionType": "Fixed",
+                    "max": 1,
+                    "mean": 0.9,
+                    "min": 0.1,
+                    "stdev": 0.1
+                }
+            },
+            "MILL1": {
+                "_class": "Dream.MachineManagedJob",
+                "coordinate": {
+                    "left": 0.1877564659501795,
+                    "top": 0.6841812972040019
+                },
+                "element_id": "DreamNode_13",
+                "failures": {
+                    "MTTF": 40,
+                    "MTTR": 10,
+                    "failureDistribution": "No",
+                    "repairman": "None"
+                },
+                "id": "MILL1",
+                "name": "MILL1",
+                "operationType": "MT-Load-Setup",
+                "processingTime": {
+                    "distributionType": "Fixed",
+                    "max": 1,
+                    "mean": 0.9,
+                    "min": 0.1,
+                    "stdev": 0.1
+                }
+            },
+            "MILL2": {
+                "_class": "Dream.MachineManagedJob",
+                "coordinate": {
+                    "left": 0.18401596464596484,
+                    "top": 0.44453459509694726
+                },
+                "element_id": "DreamNode_14",
+                "failures": {
+                    "MTTF": 40,
+                    "MTTR": 10,
+                    "failureDistribution": "No",
+                    "repairman": "None"
+                },
+                "id": "MILL2",
+                "name": "MILL2",
+                "operationType": "MT-Load-Setup",
+                "processingTime": {
+                    "distributionType": "Fixed",
+                    "max": 1,
+                    "mean": 0.9,
+                    "min": 0.1,
+                    "stdev": 0.1
+                }
+            },
+            "PM1": {
+                "_class": "Dream.OperatorManagedJob",
+                "coordinate": {
+                    "left": 0.001216264249816622,
+                    "top": 0.021371774115389482
+                },
+                "element_id": "DreamNode_15",
+                "id": "PM1",
+                "name": "PM1"
+            },
+            "PM2": {
+                "_class": "Dream.OperatorManagedJob",
+                "coordinate": {
+                    "left": 0.002151852134290946,
+                    "top": 0.2275242854939252
+                },
+                "element_id": "DreamNode_16",
+                "id": "PM2",
+                "name": "PM2"
+            },
+            "QCAM": {
+                "_class": "Dream.ConditionalBuffer",
+                "capacity": 1.0,
+                "coordinate": {
+                    "left": 0.6798946482505993,
+                    "top": 0.04336252204503648
+                },
+                "element_id": "DreamNode_17",
+                "id": "QCAM",
+                "name": "QCAM",
+                "schedulingRule": "FIFO"
+            },
+            "QEDM": {
+                "_class": "Dream.QueueManagedJob",
+                "capacity": 1.0,
+                "coordinate": {
+                    "left": 0.05041752133280548,
+                    "top": 0.9193157852349616
+                },
+                "element_id": "DreamNode_18",
+                "id": "QEDM",
+                "name": "QEDM",
+                "schedulingRule": "FIFO"
+            },
+            "QIM": {
+                "_class": "Dream.QueueManagedJob",
+                "capacity": -1.0,
+                "coordinate": {
+                    "left": 0.7084640625588505,
+                    "top": 0.7069073434280151
+                },
+                "element_id": "DreamNode_19",
+                "id": "QIM",
+                "name": "QIM",
+                "schedulingRule": "FIFO"
+            },
+            "QMASS": {
+                "_class": "Dream.MouldAssemblyBuffer",
+                "capacity": -1.0,
+                "coordinate": {
+                    "left": 0.39359833360679664,
+                    "top": 0.7621221762426658
+                },
+                "element_id": "DreamNode_20",
+                "id": "QMASS",
+                "name": "QMASS",
+                "schedulingRule": "FIFO"
+            },
+            "QMILL": {
+                "_class": "Dream.QueueManagedJob",
+                "capacity": -1.0,
+                "coordinate": {
+                    "left": 0.024330940806924675,
+                    "top": 0.571934442232598
+                },
+                "element_id": "DreamNode_21",
+                "id": "QMILL",
+                "name": "QMILL",
+                "schedulingRule": "FIFO"
+            },
+            "QStart": {
+                "_class": "Dream.QueueManagedJob",
+                "capacity": 1.0,
+                "coordinate": {
+                    "left": 0.15404040948036557,
+                    "top": 0.05376099760119495
+                },
+                "element_id": "DreamNode_22",
+                "id": "QStart",
+                "name": "QStart",
+                "schedulingRule": "FIFO"
+            }
+        }
+    },
   "input": {
     "old_style_part_jobshop_spreadsheet": [
       [
