@@ -523,7 +523,7 @@
       },
 			"_class" : "node",
 			"allOf" : [{
-					"$ref" : "#/class_definition/node"
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {
@@ -577,7 +577,7 @@
         "backgroundImage": "linear-gradient(to bottom, #fdd 0%, #dcc 100%)"
       },
 			"allOf" : [{
-					"$ref" : "#/class_definition/node"
+					"$ref" : "#/node"
 				}, {
 					"type" : "object",
 					"properties" : {
@@ -603,7 +603,7 @@
 	"application_configuration" : {
 		"input" : {
 			"view" : {
-				"title" : "ProductionLine",
+				"title" : "Production Line",
 				"type" : "object_view",
 				"gadget" : "Input_viewProductionLine"
 			},
