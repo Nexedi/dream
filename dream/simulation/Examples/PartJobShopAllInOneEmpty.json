@@ -49,13 +49,11 @@
           "description": "Lognormal",
           "properties": {
             "mean": {
-              "_class": "Dream.Property",
               "name": "Mean",
               "type": "number",
               "default": 0
             },
             "stdev": {
-              "_class": "Dream.Property",
               "name": "Standard Deviation",
               "type": "number",
               "default": 0
@@ -353,7 +351,6 @@
         ]
       },
       "_operationType": {
-        "_class": "Dream.PropertyList",
         "name": "Operation type",
         "id": "operationType",
         "description": "the type of operations that are performed manually in the machine",
@@ -803,7 +800,7 @@
       "properties": {
         "numberOfReplications": {
           "title": "Number of replications",
-          "type": "integer",
+          "type": "number",
           "description": "Number of replications to run",
           "default": 10
         },
@@ -853,19 +850,19 @@
           "default": 10,
           "title": "Number of generations",
           "description": "The number of Generations",
-          "type": "integer"
+          "type": "number"
         },
         "numberOfAntsPerGenerations": {
           "default": 20,
           "title": "Number of ants per generation",
           "description": "Number of ants per generation",
-          "type": "integer"
+          "type": "number"
         },
         "numberOfSolutions": {
           "default": 4,
           "name": "Number of solutions",
           "description": "Number of solutions",
-          "type": "integer"
+          "type": "number"
         }
       }
     }
