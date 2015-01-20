@@ -785,28 +785,24 @@
         "gadget": "Output_viewDebugJson"
       }
     },
-    "preprocessing": {
-      "plugin_list": [
+    "preprocessing_plugin_list": [
         {
-          "plugin": "PartJobShop",
+          "plugin": "dream.plugins.Debug.Debug",
+          "argument": "Argument Value"
+        },
+        {
+          "plugin": "dream.plugins.OldStylePartJobShopWIP.OldStylePartJobShopWIP",
           "input_id": "Simulation"
         }
-      ]
+    ],
+    "processing_plugin": {
+      "plugin": "ACO"
     },
-    "processing": {
-      "plugin_list": [
-        {
-          "plugin": "ACO"
-        }
-      ]
-    },
-    "postprocessing": {
-      "plugin_list": [
-        {
-          "plugin": "CalculateConfidenceIntervals"
-        }
-      ]
-    },
+    "postprocessing_plugin_list": [
+      {
+        "plugin": "CalculateConfidenceIntervals"
+      }
+    ],
     "general": {
       "properties": {
         "numberOfReplications": {

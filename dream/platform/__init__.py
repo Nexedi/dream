@@ -139,23 +139,13 @@ def _runSimulation(parameter_dict):
     app.logger.error(tb)
     return dict(error=tb)
 
-def getPluginNames(list):
-    plugin_name_list = []
-    plugins = list["plugin_list"]
-    for i in xrange(len(plugins)):
-        klass_name = plugins[i]["plugin"]
-        klass_name = "dream.plugins.%s" % klass_name
-        plugin_name_list.append(klass_name)
-    return plugin_name_list
-
 def getPluginRestistry(data):
     # input plugins
-    input_plugin_list = getPluginNames(data["application_configuration"]["preprocessing"])
+    input_plugin_list = data["application_configuration"]["preprocessing_plugin_list"]
     # output plugins
-    output_plugin_list = getPluginNames(data["application_configuration"]["postprocessing"])
+    output_plugin_list = data["application_configuration"]["postprocessing_plugin_list"]
     # executor plugin
-    executor_name = data["application_configuration"]["processing"]["plugin_list"][0]["plugin"]
-    executor_name = "dream.plugins.%s" % executor_name
+    executor_name = data["application_configuration"]["processing_plugin"] # XXX default value ?
     # remove the executor plugin from the input plugins list
     registry = PluginRegistry(logger=app.logger,
                               input_preparation_class_list=input_plugin_list,
