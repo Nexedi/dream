@@ -97,10 +97,34 @@ def format(m):
 
   return m
 
+
+def migrate_to_new_format(graph):
+  new_graph = {'graph': {'edge': {}}}
+  for node_id, node_data in graph['nodes'].items():
+    # some cleanups
+    if node_data.get('capacity'):
+      node_data['capacity'] = float(node_data['capacity'])
+    node_data.pop('isDummy', None)
+    node_data.pop('id', None)
+    node_data.pop('element_id', None)
+    coordinate = graph['preference']['coordinates'].get(node_id)
+    node_data['coordinate'] = coordinate
+    print node_data['_class']
+    # TODO: discuss the new processing time data structure !
+
+
+  new_graph['graph']['node'] = graph['nodes']
+  for edge_id, (source, destination, data) in graph['edges'].items():
+    data['_class'] = 'Dream.Edge'
+    data['source'] = source
+    data['destination'] = destination
+    new_graph['graph']['edge'][edge_id] = data
+  return new_graph
+
 with open(sys.argv[1]) as infile:
   m = json.load(infile)
 
-m.update(format(m))
+m = migrate_to_new_format(m)
 #m.update(preferences=positionGraph(m))
 
 with open(sys.argv[1], "w") as outfile:
