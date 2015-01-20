@@ -21,8 +21,9 @@ def getConfigurationDict(self):
 class Plugin(object):
   """Base class for pre-post processing Plugin.
   """
-  def __init__(self, logger=None):
+  def __init__(self, logger, configuration_dict):
     self.logger = logger
+    self.configuration_dict = configuration_dict
 
 class ExecutionPlugin(Plugin):
   """Plugin to handle the execution of multiple simulation runs.
@@ -64,22 +65,25 @@ class DefaultExecutionPlugin(ExecutionPlugin):
 class PluginRegistry(object):
   """Registry of plugins.
   """
-  def __init__(self, logger,
-               input_preparation_class_list,
-               output_preparation_class_list,
-               execution_plugin_class):
-    self.input_preparation_list = tuple([resolve(name)(logger) for name in
-        input_preparation_class_list])
-    self.output_preparation_list = tuple([resolve(name)(logger) for name in
-        output_preparation_class_list])
-    self.execution_plugin = resolve(execution_plugin_class)(logger)
+  def __init__(self, logger, data):
+
+    self.input_preparation_list = []
+    for plugin_data in data['application_configuration']['pre_processing_plugin_list']:
+      self.input_preparation_list.append(resolve(plugin_data['_class'])(logger, plugin_data))
+
+    self.output_preparation_list = []
+    for plugin_data in data['application_configuration']['post_processing_plugin_list']:
+      self.output_preparation_list.append(resolve(plugin_data['_class'])(logger, plugin_data))
+
+    plugin_data = data['application_configuration']['processing_plugin']
+    self.execution_plugin = resolve(plugin_data['_class'])(logger, plugin_data)
 
   def run(self, data):
     """Preprocess, execute & postprocess.
     """
     for input_preparation in self.input_preparation_list:
         data = input_preparation.preprocess(deepcopy(data))
-    
+
     data = self.execution_plugin.run(data)
 
     for output_preparation in self.output_preparation_list:
