@@ -49,7 +49,13 @@ class RandomNumberGenerator(object):
                 unknownDistribution=False
                 break
         if unknownDistribution:
-            raise ValueError("Unknown distribution %r used in %s %s" %
+            # XXX accept old format ??
+            if 'distributionType' in distribution:
+                from copy import copy
+                distribution = copy(distribution) # we do not store this in json !
+                distribution[distribution.pop('distributionType')] = (distribution)
+            else:
+                raise ValueError("Unknown distribution %r used in %s %s" %
                             (distribution, obj.__class__, obj.id)) 
         # pop irrelevant keys
         for key in distribution.keys():
