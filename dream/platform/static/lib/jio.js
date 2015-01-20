@@ -2915,9 +2915,6 @@ function restCommandRejecter(param, args) {
       if (arg.columnNumber !== undefined && arg.columnNumber !== null) {
         current_priority.columnNumber = arg.columnNumber;
       }
-      if (arg.fileName !== undefined && arg.fileName !== null) {
-        current_priority.fileName = arg.fileName;
-      }
       if (arg.filename !== undefined && arg.filename !== null) {
         current_priority.filename = arg.filename;
       }
@@ -4150,28 +4147,8 @@ function enableRestParamChecker(jio, shared) {
     }
   });
 
-  ["removeAttachment"].forEach(function (method) {
+  ["getAttachment", "removeAttachment"].forEach(function (method) {
     shared.on(method, function (param) {
-      if (!checkId(param)) {
-        checkAttachmentId(param);
-      }
-    });
-  });
-
-
-  ["getAttachment"].forEach(function (method) {
-    shared.on(method, function (param) {
-      if (param.storage_spec.type !== "indexeddb" &&
-          param.storage_spec.type !== "dav" &&
-          (param.kwargs._start !== undefined
-           || param.kwargs._end !== undefined)) {
-        restCommandRejecter(param, [
-          'bad_request',
-          'unsupport',
-          '_start, _end not support'
-        ]);
-        return false;
-      }
       if (!checkId(param)) {
         checkAttachmentId(param);
       }
