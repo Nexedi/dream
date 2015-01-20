@@ -133,25 +133,12 @@ def runSimulation():
 
 def _runSimulation(parameter_dict):
   try:
-    return dict(success=True, data=getPluginRestistry(parameter_dict).run(parameter_dict))
+    registry = PluginRegistry(app.logger, parameter_dict)
+    return dict(success=True, data=registry.run(parameter_dict))
   except Exception, e:
     tb = traceback.format_exc()
     app.logger.error(tb)
     return dict(error=tb)
-
-def getPluginRestistry(data):
-    # input plugins
-    input_plugin_list = data["application_configuration"]["preprocessing_plugin_list"]
-    # output plugins
-    output_plugin_list = data["application_configuration"]["postprocessing_plugin_list"]
-    # executor plugin
-    executor_name = data["application_configuration"]["processing_plugin"] # XXX default value ?
-    # remove the executor plugin from the input plugins list
-    registry = PluginRegistry(logger=app.logger,
-                              input_preparation_class_list=input_plugin_list,
-                              output_preparation_class_list=output_plugin_list,
-                              execution_plugin_class=executor_name)
-    return registry
 
 @app.route("/runKnowledgeExtraction", methods=["POST", "OPTIONS"])
 def runKnowledgeExtraction():
