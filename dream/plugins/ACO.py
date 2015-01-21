@@ -19,9 +19,9 @@ class ACO(plugin.ExecutionPlugin):
     result, = ant['result']['result_list']  #read the result as JSON
     #loop through the elements
     for element in result['elementList']:
-        elementClass=element['_class']  #get the class
+        element_family = element['family']
         #id the class is Job
-        if elementClass=='Dream.Job':
+        if element_family == 'Job':
             results=element['results']
             delay = float(results.get('delay', "0"))
             # A negative delay would mean we are ahead of schedule. This
