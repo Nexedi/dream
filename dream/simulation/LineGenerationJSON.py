@@ -683,7 +683,6 @@ def main(argv=[], input_data=None):
       # XXX I am not sure we still need this case
       return
 
-    print G.JSONData
     # XXX result_list is not needed here, we could replace result by result_list
     G.JSONData['result'] = {'result_list': [G.outputJSON]}
     #logger.info("execution time="+str(time.time()-start))

@@ -52,6 +52,7 @@ class ACO(plugin.ExecutionPlugin):
     assert collated
 
     max_results = data['general']['numberOfSolutions']
+    assert max_results >= 1
 
     ants = [] #list of ants for keeping track of their performance
 
@@ -141,6 +142,5 @@ class ACO(plugin.ExecutionPlugin):
       result['key'] = ant['key']
       result_list.append(result)
 
-    print data['result']['result_list']
     self.logger.info("ACO finished, execution time %0.2fs" % (time.time() - start))
     return data
