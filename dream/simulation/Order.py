@@ -106,7 +106,7 @@ class Order(Job):
     #===========================================================================
     def findAssemblyComponents(self):
         for child in self.getActiveComponents():
-            if child.componentType in self.assemblyValidTypes:
+            if getattr(child, 'componentType', None) in self.assemblyValidTypes:
                 if not child in self.assemblyComponents:
                     self.assemblyComponents.append(child)
     
