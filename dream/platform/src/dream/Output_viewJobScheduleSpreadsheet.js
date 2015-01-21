@@ -3,11 +3,11 @@
 (function (window, rJS, RSVP, moment, initGadgetMixin) {
   "use strict";
 
-  function job_schedule_spreadsheet_widget(all_data) {
+  function job_schedule_spreadsheet_widget(data, result_id) {
     var now = new Date(),
       name,
-      input_data = all_data.input,
-      output_data = all_data.result,
+      input_data = data,
+      output_data = data.result.result_list[result_id],
       spreadsheet_data = [],
       spreadsheet_header = [[
         "Jobs",
@@ -56,9 +56,9 @@
 
         // find the input order and order component for this job
         // XXX this has no real meaning with capacity project
-        for (node_id in input_data.nodes) {
-          if (input_data.nodes.hasOwnProperty(node_id)) {
-            node = input_data.nodes[node_id];
+        for (node_id in input_data.graph.node) {
+          if (input_data.graph.node.hasOwnProperty(node_id)) {
+            node = input_data.graph.node[node_id];
             if (node.wip) {
               for (j = 0; j < node.wip.length; j += 1) {
                 order = node.wip[j];
@@ -204,7 +204,7 @@
           return result_list[1].render(
             JSON.stringify(
               job_schedule_spreadsheet_widget(
-                JSON.parse(result_list[0])[gadget.props.result]
+                JSON.parse(result_list[0]), gadget.props.result
               )
             )
           );
