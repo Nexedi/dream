@@ -825,7 +825,7 @@
       },
       {
         "_class": "dream.plugins.OldStylePartJobShopWIP.OldStylePartJobShopWIP",
-        "input_id": "Simulation"
+        "input_id": "old_style_part_jobshop_spreadsheet"
       }
     ],
     "processing_plugin": {
