@@ -2,10 +2,10 @@
 /*jslint unparam: true */
 (function(window, rJS, $, initGadgetMixin) {
     "use strict";
-    function capacity_utilisation_graph_widget(all_data) {
-        var available_capacity_by_station = {}, station_id, series, graph_list = [], options, capacity_usage_by_station = {}, input_data = all_data.input, output_data = all_data.result;
+    function capacity_utilisation_graph_widget(data, result_id) {
+        var available_capacity_by_station = {}, station_id, series, graph_list = [], options, capacity_usage_by_station = {}, input_data = data, output_data = data.result.result_list[result_id];
         // Compute availability by station
-        $.each(input_data.nodes, function(idx, obj) {
+        $.each(input_data.graph.node, function(idx, obj) {
             var available_capacity = [];
             if (obj.intervalCapacity !== undefined) {
                 $.each(obj.intervalCapacity, function(i, capacity) {
@@ -56,7 +56,7 @@
                         }
                     }
                 };
-                graph_list.push([ input_data.nodes[station_id].name || station_id, series, options ]);
+                graph_list.push([ input_data.graph.node[station_id].name || station_id, series, options ]);
             }
         }
         return graph_list;
@@ -71,7 +71,7 @@
             _id: gadget.props.jio_key,
             _attachment: "simulation.json"
         }).push(function(simulation_json) {
-            gadget.props.result_list = capacity_utilisation_graph_widget(JSON.parse(simulation_json)[gadget.props.result]);
+            gadget.props.result_list = capacity_utilisation_graph_widget(JSON.parse(simulation_json), gadget.props.result);
         });
     }).declareMethod("startService", function() {
         var element = $(this.props.element), graph;

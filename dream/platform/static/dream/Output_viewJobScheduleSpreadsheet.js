@@ -2,8 +2,8 @@
 /*jslint nomen: true */
 (function(window, rJS, RSVP, moment, initGadgetMixin) {
     "use strict";
-    function job_schedule_spreadsheet_widget(all_data) {
-        var now = new Date(), name, input_data = all_data.input, output_data = all_data.result, spreadsheet_data = [], spreadsheet_header = [ [ "Jobs", "ID", "Project Manager", "Due Date", "Priority", "Entrance Time", "Processing Time", "Station ID", "Step No." ] ], simulation_start_date = new Date(input_data.general.currentDate || now.getTime()), i, j, k, obj, node, component, order, node_id, due_date, entrance_date, duration, schedule, input_job = null, input_order = null;
+    function job_schedule_spreadsheet_widget(data, result_id) {
+        var now = new Date(), name, input_data = data, output_data = data.result.result_list[result_id], spreadsheet_data = [], spreadsheet_header = [ [ "Jobs", "ID", "Project Manager", "Due Date", "Priority", "Entrance Time", "Processing Time", "Station ID", "Step No." ] ], simulation_start_date = new Date(input_data.general.currentDate || now.getTime()), i, j, k, obj, node, component, order, node_id, due_date, entrance_date, duration, schedule, input_job = null, input_order = null;
         // XXX why ?
         now.setHours(0);
         now.setMinutes(0);
@@ -18,9 +18,9 @@
                 input_order = null;
                 // find the input order and order component for this job
                 // XXX this has no real meaning with capacity project
-                for (node_id in input_data.nodes) {
-                    if (input_data.nodes.hasOwnProperty(node_id)) {
-                        node = input_data.nodes[node_id];
+                for (node_id in input_data.graph.node) {
+                    if (input_data.graph.node.hasOwnProperty(node_id)) {
+                        node = input_data.graph.node[node_id];
                         if (node.wip) {
                             for (j = 0; j < node.wip.length; j += 1) {
                                 order = node.wip[j];
@@ -120,7 +120,7 @@
                 _attachment: "simulation.json"
             }), gadget.getDeclaredGadget("tableeditor") ]);
         }).push(function(result_list) {
-            return result_list[1].render(JSON.stringify(job_schedule_spreadsheet_widget(JSON.parse(result_list[0])[gadget.props.result])));
+            return result_list[1].render(JSON.stringify(job_schedule_spreadsheet_widget(JSON.parse(result_list[0]), gadget.props.result)));
         });
     }).declareMethod("startService", function() {
         return this.getDeclaredGadget("tableeditor").push(function(tableeditor) {

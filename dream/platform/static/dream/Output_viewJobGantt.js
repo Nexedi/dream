@@ -6,7 +6,7 @@
     gantt.templates.task_class = function(start, end, obj) {
         return obj.parent ? "sub_task" : "";
     };
-    function job_gantt_widget(all_data) {
+    function job_gantt_widget(data, result_id) {
         // XXX: use dhx_gantt zoom level feature (
         // http://dhtmlx.com/docs/products/dhtmlxGantt/02_features.html )
         var now = new Date(), start_date, gantt_data = {
@@ -26,7 +26,7 @@
                 open: true
             } ],
             link: []
-        }, input_data = all_data.input, output_data = all_data.result;
+        }, input_data = data, output_data = data.result.result_list[result_id];
         // temporary hack
         now.setHours(0);
         now.setMinutes(0);
@@ -40,7 +40,7 @@
         function isVisibleStation(station) {
             // we should be able to define in the backend which
             // station is visible
-            return input_data.nodes[station].family !== "Buffer" && input_data.nodes[station].family !== "Exit";
+            return input_data.graph.node[station].family !== "Buffer" && input_data.graph.node[station].family !== "Exit";
         }
         $.each(output_data.elementList.sort(function(a, b) {
             return a.id < b.id ? -1 : 1;
@@ -49,9 +49,9 @@
             if (obj.family === "Job") {
                 // find the corresponding input
                 // find the input order and order component for this job
-                for (node_key in input_data.nodes) {
-                    if (input_data.nodes.hasOwnProperty(node_key)) {
-                        node = input_data.nodes[node_key];
+                for (node_key in input_data.graph.node) {
+                    if (input_data.graph.node.hasOwnProperty(node_key)) {
+                        node = input_data.graph.node[node_key];
                         if (node.wip) {
                             for (i = 0; i < node.wip.length; i += 1) {
                                 order = node.wip[i];
@@ -173,7 +173,7 @@
             _id: gadget.props.jio_key,
             _attachment: "simulation.json"
         }).push(function(simulation_json) {
-            gadget.props.result = job_gantt_widget(JSON.parse(simulation_json)[gadget.props.result]);
+            gadget.props.result = job_gantt_widget(JSON.parse(simulation_json), gadget.props.result);
         });
     }).declareMethod("startService", function() {
         $(this.props.element).find(".gant_container").dhx_gantt({
