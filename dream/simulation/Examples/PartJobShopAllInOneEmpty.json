@@ -772,14 +772,6 @@
           "properties": {}
         }
       },
-      "view_operator_gantt": {
-        "title": "Operator Gantt",
-        "type": "object_view",
-        "gadget": "Output_viewJobGantt",
-        "configuration": {
-          "properties": {}
-        }
-      },
       "view_component_schedule_spreadsheet": {
         "title": "Component Schedule",
         "type": "object_view",
