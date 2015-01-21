@@ -253,7 +253,7 @@ class MouldAssembly(MachineJobShop):
                 setupTime=self.getOperationTime(setupTime)
                 self.stpRng=RandomNumberGenerator(self, setupTime)
                 # update the activeObject's processing time according to the readings in the mould's route
-                setupDistType=setupTime.getkeys()[0]
+                setupDistType=setupTime.keys()[0]
                 setTime=float(setupTime[setupDistType].get('mean', 0))
                 setupOpType=firstStep.get('operationType',{}).get('Setup','not found') # can be manual/automatic
                 # update the first step of the route with the activeObjects id as sole element of the stationIdsList
