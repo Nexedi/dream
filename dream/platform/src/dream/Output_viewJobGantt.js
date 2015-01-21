@@ -9,7 +9,7 @@
     return obj.parent ? "sub_task" : "";
   };
 
-  function job_gantt_widget(all_data) {
+  function job_gantt_widget(data, result_id) {
   // XXX: use dhx_gantt zoom level feature (
   // http://dhtmlx.com/docs/products/dhtmlxGantt/02_features.html )
 
@@ -36,8 +36,8 @@
         ],
         link: []
       },
-      input_data = all_data.input,
-      output_data = all_data.result;
+      input_data = data,
+      output_data = data.result.result_list[result_id];
 
     // temporary hack
     now.setHours(0);
@@ -54,8 +54,8 @@
     function isVisibleStation(station) {
       // we should be able to define in the backend which
       // station is visible
-      return (input_data.nodes[station].family !== 'Buffer' &&
-          input_data.nodes[station].family !== 'Exit');
+      return (input_data.graph.node[station].family !== 'Buffer' &&
+          input_data.graph.node[station].family !== 'Exit');
     }
 
     $.each(
@@ -77,9 +77,9 @@
         if (obj.family === 'Job') {
           // find the corresponding input
           // find the input order and order component for this job
-          for (node_key in input_data.nodes) {
-            if (input_data.nodes.hasOwnProperty(node_key)) {
-              node = input_data.nodes[node_key];
+          for (node_key in input_data.graph.node) {
+            if (input_data.graph.node.hasOwnProperty(node_key)) {
+              node = input_data.graph.node[node_key];
               if (node.wip) {
                 for (i = 0; i < node.wip.length; i += 1) {
                   order = node.wip[i];
@@ -226,7 +226,7 @@
       })
         .push(function (simulation_json) {
           gadget.props.result = job_gantt_widget(
-            JSON.parse(simulation_json)[gadget.props.result]
+            JSON.parse(simulation_json), gadget.props.result
           );
         });
     })
