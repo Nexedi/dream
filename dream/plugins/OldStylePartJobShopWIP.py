@@ -88,7 +88,9 @@ class OldStylePartJobShopWIP(plugin.InputPreparationPlugin):
     """
     self.data = copy(data)
 
-    now = datetime.now()
+    strptime = datetime.strptime
+    # XXX this format is incorrect we need to include hour too
+    now = strptime(data['general']['currentDate'], '%Y/%m/%d')
 
     input_id = self.configuration_dict['input_id']
     wip_list = []
