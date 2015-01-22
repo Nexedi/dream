@@ -41,7 +41,7 @@
       tools_container.className = 'tools-container';
       Object.keys(data.class_definition).forEach(function (key) {
         var _class = data.class_definition[key], tool;
-        // XXX "expand" the json schema "allOF" etc
+        // XXX "expand" the json schema "allOf" etc
         if (_class._class === 'node') {
           tool = document.createElement('div');
           // XXX maybe allow to configure the class name ?
@@ -49,6 +49,9 @@
           tool.textContent = _class.name || key;
           tool.draggable = true;
           tool.dataset.class_name = JSON.stringify(key);
+          if (_class.description) {
+            tool.title = _class.description;
+          }
           Object.keys(_class.css || {}).forEach(function (k) {
             tool.style[k] = _class.css[k];
           });
