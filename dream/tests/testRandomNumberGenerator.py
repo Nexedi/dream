@@ -56,6 +56,19 @@ class RandomNumberGeneratorTestCase(TestCase):
             self.assertTrue(number >= 0)
             self.assertTrue(number <= 3)
 
+    def testTriangular(self):
+        rng = RandomNumberGenerator(obj,
+            distribution={'Triangular':
+            {              
+            'min':1,
+            'max':3,
+            'mean':2}
+            })
+        for i in range(10):
+            number = rng.generateNumber()
+            self.assertTrue(number >= 1)
+            self.assertTrue(number <= 3)
+
     def testNormalWrongParameter(self):
         rng = RandomNumberGenerator(obj,
             distribution={'Normal':
