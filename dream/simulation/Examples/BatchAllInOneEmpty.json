@@ -635,6 +635,45 @@
       "description": "A buffer where entities can be hold until the next station is ready to process them",
       "name": "Queue"
     },
+    "Dream.BatchSource": {
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "properties": {
+            "entity": {
+              "default": "Dream.Part",
+              "description": "Manpy class for entities",
+              "name": "Entity Class",
+              "required": true,
+              "type": "string"
+            },
+            "id": {
+              "default": "S",
+              "name": "ID",
+              "required": true,
+              "type": "string"
+            },
+            "interArrivalTime": {
+              "$ref": "#/definitions/_dist",
+              "description": "Inter-arrival time",
+              "name": "Inter-arrival time",
+              "required": true
+            },
+            "name": {
+              "default": "Source",
+              "name": "Name",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "description": "A station creating entities",
+      "name": "Source"
+    },
     "definitions": {
       "_capacity": {
         "default": 1,
