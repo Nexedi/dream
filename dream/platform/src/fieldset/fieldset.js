@@ -93,7 +93,7 @@
             var property_definition =
               options.property_definition.properties[property_name],
               value = (options.value || {})[property_name] === undefined
-              ? property_definition._default : options.value[property_name];
+              ? property_definition.default : options.value[property_name];
             //console.log(property_name, property_definition);
             // XXX some properties are not editable
             // XXX should not be defined here
