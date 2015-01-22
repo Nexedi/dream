@@ -17,7 +17,7 @@ class ReadShiftFromSpreadsheet(plugin.InputPreparationPlugin):
     now = strptime(data['general']['currentDate'], '%Y/%m/%d')
 
     shift_by_station = {}
-    
+    # XXX machine_shift_spreadsheet should be configuration
     for line in data['input']['machine_shift_spreadsheet'][1:]:
       if line[1]:
         # Get the dates, and convert them to simulation clock time units.
@@ -31,7 +31,8 @@ class ReadShiftFromSpreadsheet(plugin.InputPreparationPlugin):
           shift_by_station.setdefault(station, []).append(
             (start_time, stop_time) )
 
-    if data['input']['operator_shift_spreadsheet']:
+    # XXX operator_shift_spreadsheet should be configuration
+    if data['input'].get('operator_shift_spreadsheet', None):
       for line in data['input']['operator_shift_spreadsheet'][1:]:
         if line[1]:
           # Get the dates, and convert them to simulation clock time units.
