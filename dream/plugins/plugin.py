@@ -5,19 +5,6 @@ from zope.dottedname.resolve import resolve
 
 from dream.simulation.LineGenerationJSON import main as simulate_line_json
 
-# helper function to overload a property
-def overloaded_property(prop, overload):
-  prop = deepcopy(prop)
-  prop.update(overload)
-  return prop
-
-# helper function to return a default configuration dictionary
-def getConfigurationDict(self):
-  """Returns the possible nodes to use in the graph editor, and the global
-  configuration.
-  """
-  return NotImplementedError
-
 class Plugin(object):
   """Base class for pre-post processing Plugin.
   """
