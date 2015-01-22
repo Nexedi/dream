@@ -269,28 +269,28 @@
     "post_processing_plugin_list": [],
     "pre_processing_plugin_list": [
       {
-        "_class": "GatherWIPStat.GatherWIPStat",
+        "_class": "dream.plugins.GatherWIPStat.GatherWIPStat",
         "input_id": "WIPStat"
       },
       {
-        "_class": "ReadEntryData.ReadEntryData",
+        "_class": "dream.plugins.ReadEntryData.ReadEntryData",
         "input_id": "EntryData"
       },
       {
-        "_class": "BatchesWIPSpreadsheet.BatchesWIPSpreadsheet",
+        "_class": "dream.plugins.BatchesWIPSpreadsheet.BatchesWIPSpreadsheet",
         "input_id": "WipSpreadsheet"
       },
       {
-        "_class": "ReadSkilledOperators.ReadSkilledOperators",
+        "_class": "dream.plugins.ReadSkilledOperators.ReadSkilledOperators",
         "input_id": "SkilledOperatorsSpreadsheet"
       },
       {
-        "_class": "ReadShiftFromSpreadsheet.ReadShiftFromSpreadsheet",
+        "_class": "dream.plugins.ReadShiftFromSpreadsheet.ReadShiftFromSpreadsheet",
         "input_id": "ShiftSpreadsheet"
       }
     ],
     "processing_plugin": {
-      "_class": "plugin.DefaultExecutionPlugin"
+      "_class": "dream.plugins.plugin.DefaultExecutionPlugin"
     }
   },
   "class_definition": {
