@@ -156,7 +156,7 @@ def getClassFromName(dotted_name):
     if dotted_name.startswith('Dream'):
         class_name = dotted_name.split('.')[-1]
         new_dotted_name = 'dream.simulation.%s.%s' % (class_name, class_name)
-        logger.info(("Old style name %s used, using %s instead" % (dotted_name, new_dotted_name)))
+        #logger.info(("Old style name %s used, using %s instead" % (dotted_name, new_dotted_name)))
         dotted_name = new_dotted_name
     return resolve(dotted_name)
 
