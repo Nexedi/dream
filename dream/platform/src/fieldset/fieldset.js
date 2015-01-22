@@ -97,7 +97,9 @@
             //console.log(property_name, property_definition);
             // XXX some properties are not editable
             // XXX should not be defined here
-            if (property_name !== 'coordinate' && property_name !== '_class') {
+            if (property_name !== 'coordinate' &&
+                property_name !== '_class' &&
+                property_name !== 'id') {
               addField(property_name, property_definition, value);
             }
           });
