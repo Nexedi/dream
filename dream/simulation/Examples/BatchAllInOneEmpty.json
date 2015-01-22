@@ -214,7 +214,7 @@
           "family": "Server",
           "plot": "bars"
         },
-        "gadget": "Output_viewGraph",
+        "gadget": "Output_viewStationUtilisationGraph",
         "title": "Station Utilization",
         "type": "object_view"
       },
@@ -256,7 +256,7 @@
           "family": "Buffer",
           "plot": "line"
         },
-        "gadget": "Output_viewGraph",
+        "gadget": "Output_viewQueueStatGraph",
         "title": "Queue Utilization Graph",
         "type": "object_view"
       },
