@@ -32,6 +32,7 @@ from dream.plugins.plugin import PluginRegistry
 
 import os.path
 import logging
+import simpy
 
 from flask import Flask, jsonify, redirect, url_for
 from flask import request
@@ -135,8 +136,14 @@ def _runSimulation(parameter_dict):
   try:
     registry = PluginRegistry(app.logger, parameter_dict)
     return dict(success=True, data=registry.run(parameter_dict))
-  except Exception, e:
-    tb = traceback.format_exc()
+  except Exception:
+    # Use simpy._compat to format exception chain in python2
+    if hasattr(simpy._compat, 'format_chain'):
+      exc_type, exc_value, exc_traceback = sys.exc_info()
+      tb = ''.join(simpy._compat.format_chain(exc_type, exc_value, exc_traceback))
+    else:
+      assert sys.version_info[0] == 3
+      tb = traceback.format_exc()
     app.logger.error(tb)
     return dict(error=tb)
 
