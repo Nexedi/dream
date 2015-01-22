@@ -45,7 +45,7 @@ class RandomNumberGenerator(object):
         unknownDistribution=True
         for key in distribution.keys():
             if key in ['Fixed', 'Normal','Exp','Gamma','Logistic','Erlang',
-                           'Geometric','Lognormal','Weibull','Cauchy']:
+                           'Geometric','Lognormal','Weibull','Cauchy', 'Triangular']:
                 unknownDistribution=False
                 break
         if unknownDistribution:
@@ -60,7 +60,7 @@ class RandomNumberGenerator(object):
         # pop irrelevant keys
         for key in distribution.keys():
             if key not in ['Fixed', 'Normal','Exp','Gamma','Logistic','Erlang',
-                           'Geometric','Lognormal','Weibull','Cauchy']:
+                           'Geometric','Lognormal','Weibull','Cauchy', 'Triangular']:
                 distribution.pop(key, None)
         self.distribution=distribution
         self.distributionType = distribution.keys()[0]
@@ -138,6 +138,8 @@ class RandomNumberGenerator(object):
                     return number
                 else:
                     continue
+        elif(self.distributionType=="Triangular"):     #if the distribution is Triangular
+            return G.numpyRnd.random.triangular(left=self.min, right=self.max, mode=self.mean)
         else:
             raise ValueError("Unknown distribution %r used in %s %s" %
                             (self.distributionType, self.obj.__class__, self.obj.id))
