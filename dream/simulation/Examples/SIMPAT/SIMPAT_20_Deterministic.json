@@ -1,0 +1,5375 @@
+{
+  "class_definition": {
+    "definitions": {
+      "distributionTypes": {
+        "_fixed": {
+          "description": "Fixed",
+          "name": "Fixed",
+          "type": "object",
+          "properties": {
+            "mean": {
+              "type": "number",
+              "default": 0.75,
+              "required": true
+            }
+          }
+        },
+        "_exp": {
+          "type": "object",
+          "name": "Exp",
+          "description": "Exponential",
+          "properties": {
+            "mean": {
+              "type": "number",
+              "default": 0,
+              "required": true
+            }
+          }
+        },
+        "_normal": {
+          "type": "object",
+          "name": "Normal",
+          "description": "Normal",
+          "properties": {
+            "mean": {
+              "type": "number",
+              "default": 0,
+              "required": true
+            },
+            "stdev": {
+              "type": "number",
+              "default": 0,
+              "required": true
+            }
+          }
+        },
+        "_lognormal": {
+          "type": "object",
+          "name": "Lognormal",
+          "description": "Lognormal",
+          "properties": {
+            "mean": {
+              "name": "Mean",
+              "type": "number",
+              "default": 0
+            },
+            "stdev": {
+              "name": "Standard Deviation",
+              "type": "number",
+              "default": 0
+            }
+          }
+        },
+        "_binomial": {
+          "type": "object",
+          "name": "Binomial",
+          "description": "Binomial",
+          "properties": {
+            "mean": {
+              "type": "number",
+              "default": 0
+            },
+            "size": {
+              "type": "number",
+              "default": 0
+            }
+          }
+        },
+        "_poisson": {
+          "type": "object",
+          "name": "Poisson",
+          "description": "Poisson",
+          "properties": {
+            "lambda": {
+              "type": "number",
+              "default": 0
+            }
+          }
+        },
+        "_logistic": {
+          "type": "object",
+          "name": "Logistic",
+          "description": "Logistic",
+          "properties": {
+            "location": {
+              "type": "number",
+              "default": 0,
+              "required": true
+            },
+            "scale": {
+              "type": "number",
+              "default": 0,
+              "required": true
+            }
+          }
+        },
+        "_caucy": {
+          "type": "object",
+          "name": "Caucy",
+          "description": "Caucy",
+          "properties": {
+            "location": {
+              "type": "number",
+              "default": 0
+            },
+            "scale": {
+              "type": "number",
+              "default": 0
+            }
+          }
+        },
+        "_geometric": {
+          "type": "object",
+          "name": "Geometric",
+          "description": "Geometric",
+          "properties": {
+            "probability": {
+              "type": "number",
+              "default": 0,
+              "required": true
+            }
+          }
+        },
+        "_gama": {
+          "type": "object",
+          "name": "Gama",
+          "description": "Gama",
+          "properties": {
+            "shape": {
+              "type": "number",
+              "default": 0,
+              "required": true
+            },
+            "rate": {
+              "type": "number",
+              "default": 0,
+              "required": true
+            }
+          }
+        },
+        "_weibull": {
+          "type": "object",
+          "name": "Weibull",
+          "description": "Weibull",
+          "properties": {
+            "shape": {
+              "type": "number",
+              "default": 0,
+              "required": true
+            },
+            "scale": {
+              "type": "number",
+              "default": 0,
+              "required": true
+            }
+          }
+        },
+        "_fixedFailure": {
+          "type": "object",
+          "name": "Fixed",
+          "description": "Fixed",
+          "properties": {
+            "MTTF": {
+              "description": "Mean Time To Failure",
+              "type": "number",
+              "default": 40,
+              "required": true
+            },
+            "MTTR": {
+              "description": "Mean Time To Repair",
+              "type": "number",
+              "default": 10,
+              "required": true
+            },
+            "repairman": {
+              "description": "Repairman",
+              "type": "string",
+              "required": true
+            }
+          }
+        },
+        "_no": {
+          "type": "string",
+          "name": "No",
+          "description": "None"
+        },
+        "_availability": {
+          "type": "object",
+          "name": "Availability",
+          "description": "Availability",
+          "properties": {
+            "MTTF": {
+              "description": "Mean Time To Failure",
+              "type": "number",
+              "default": 40,
+              "required": true
+            },
+            "MTTR": {
+              "description": "Mean Time To Failure",
+              "default": 10,
+              "type": "number",
+              "required": true
+            },
+            "availability": {
+              "type": "number",
+              "default": 0,
+              "required": true
+            },
+            "repairman": {
+              "description": "Repairman",
+              "type": "string",
+              "required": true
+            }
+          }
+        }
+      },
+      "_failureDist": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "failureDistribution": {
+                "type": "string",
+                "default": "No",
+                "enum": [
+                  "No",
+                  "Fixed",
+                  "Availability"
+                ]
+              }
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/distributionTypes/_fixedFailure"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_no"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_availability"
+              }
+            ]
+          }
+        ]
+      },
+      "_dist": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "distribution": {
+                "type": "string",
+                "default": "Fixed",
+                "enum": [
+                  "Fixed",
+                  "Exp",
+                  "Normal",
+                  "Lognormal",
+                  "Binomial",
+                  "Poisson",
+                  "Logistic",
+                  "Caucy",
+                  "Geometric",
+                  "Gama",
+                  "Weibull"
+                ]
+              }
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/distributionTypes/_fixed"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_exp"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_normal"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_lognormal"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_binomial"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_poisson"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_logistic"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_caucy"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_geometric"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_gama"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_weibull"
+              }
+            ]
+          }
+        ]
+      },
+      "_schedulingRule": {
+        "description": "Scheduling Rule, one of FIFO Priority EDD EOD NumStages RPC LPT SPT MS WINQ",
+        "type": "string",
+        "default": "FIFO",
+        "enum": [
+          "FIFO",
+          "Priority",
+          "EDD",
+          "EOD",
+          "NumStages",
+          "RPC",
+          "LPT",
+          "SPT",
+          "MS",
+          "WINQ",
+          "WT"
+        ]
+      },
+      "_capacity": {
+        "description": "capacity of the queue. -1 means infinite",
+        "type": "number",
+        "default": 1,
+        "oneOf": [
+          {
+            "enum": [
+              -1
+            ]
+          },
+          {
+            "multipleOf": 1
+          }
+        ]
+      },
+      "_operationType": {
+        "name": "Operation type",
+        "id": "operationType",
+        "description": "the type of operations that are performed manually in the machine",
+        "properties": {
+          "operationType": {
+            "type": "string",
+            "enum": [
+              "MT-Load",
+              "MT-Load-Setup",
+              "MT-Load-Setup-Processing"
+            ]
+          }
+        }
+      }
+    },
+    "edge": {
+      "description": "Base definition for edge",
+      "properties": {
+        "_class": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "destination": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_class",
+        "source",
+        "destination"
+      ],
+      "type": "object"
+    },
+    "node": {
+      "description": "Base definition for node",
+      "properties": {
+        "_class": {
+          "type": "string"
+        },
+        "coordinate": {
+          "properties": {
+            "left": "number",
+            "top": "number"
+          },
+          "type": "object"
+        },
+        "name": {
+          "type": "string",
+          "default": "Machine"
+        },
+        "id": {
+          "type": "string",
+          "default": "M",
+          "required": true
+        },
+        "schedulingRule": {
+          "$ref": "#/definitions/_schedulingRule",
+          "required": true
+        },
+        "capacity": {
+          "$ref": "#/definitions/_capacity",
+          "required": true
+        },
+        "operationType": {
+          "$ref": "#/definitions/_operationType",
+          "required": true
+        }
+      },
+      "required": [
+        "name",
+        "_class"
+      ],
+      "type": "object"
+    },
+    "Dream.Edge": {
+      "_class": "edge",
+      "allOf": [
+        {
+          "$ref": "#/edge"
+        }
+      ],
+      "description": "Connect stations together"
+    },
+    "Dream.ExitJobShop": {
+      "_class": "node",
+      "name": "Exit",
+      "description": "A station where entities exits from the system",
+      "css": {
+        "border": "1px solid #ccb",
+        "backgroundColor": "#eef",
+        "backgroundImage": "linear-gradient(to bottom, #eef 0%, #dde 100%)"
+      },
+      "shape": "rectangle",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "Exit"
+            },
+            "id": {
+              "default": "E",
+              "required": true
+            }
+          }
+        }
+      ]
+    },
+    "Dream.ConditionalBuffer": {
+      "name": "Cam Queue",
+      "_class": "node",
+      "description": "A buffer where entities can be hold until the next station is ready to process them and a certain condition is met",
+      "css": {
+        "border": "1px solid #bcc",
+        "backgroundColor": "#eff",
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)"
+      },
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "Cam Queue"
+            },
+            "id": {
+              "type": "string",
+              "default": "B"
+            },
+            "capacity": {
+              "$ref": "#/definitions/_capacity",
+              "required": true
+            },
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule",
+              "required": true
+            }
+          }
+        }
+      ]
+    },
+    "Dream.QueueJobShop": {
+      "name": "Queue",
+      "_class": "node",
+      "description": "A queue for jobs",
+      "css": {
+        "border": "1px solid #bcc",
+        "backgroundColor": "#eff",
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)"
+      },
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "Queue"
+            },
+            "id": {
+              "type": "string",
+              "default": "Q"
+            },
+            "capacity": {
+              "$ref": "#/definitions/_capacity",
+              "required": true
+            },
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule",
+              "required": true
+            }
+          }
+        }
+      ]
+    },
+    "Dream.MouldAssemblyBuffer": {
+      "name": "Assembly Queue",
+      "_class": "node",
+      "description": "A buffer where entities can be hold until the next assembly is ready to process all the entities from the same production-order",
+      "css": {
+        "border": "1px solid #bcc",
+        "backgroundColor": "#eff",
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)"
+      },
+      "allOf": [
+        {
+          "$ref": "#/Dream.ConditionalBuffer"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "Assembly Queue"
+            },
+            "id": {
+              "type": "string",
+              "default": "AB"
+            }
+          }
+        }
+      ]
+    },
+    "Dream.OrderDecomposition": {
+      "name": "Decomposition",
+      "_class": "node",
+      "description": "A station where production-orders are decomposed into components ",
+      "css": {
+        "border": "1px solid #bcc",
+        "backgroundColor": "#eff",
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)"
+      },
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "name": {
+            "type": "string",
+            "default": "Decomposition"
+          },
+          "id": {
+            "type": "string",
+            "default": "D"
+          }
+        }
+      ]
+    },
+    "Dream.MachineJobShop": {
+      "name": "Machine",
+      "description": "A station processing items for some time given by a distribution provided by the entities that are processed",
+      "css": {
+        "border": "1px solid #cbc",
+        "backgroundColor": "#fef",
+        "backgroundImage": "linear-gradient(to bottom, #fef 0%, #ede 100%)"
+      },
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "Machine"
+            },
+            "id": {
+              "type": "string",
+              "default": "M",
+              "required": true
+            },
+            "operationType": {
+              "$ref": "#/definitions/_operationType",
+              "required": true
+            }
+          }
+        }
+      ]
+    },
+    "Dream.MouldAssembly": {
+      "css": {
+        "border": "1px solid #cbc",
+        "backgroundColor": "#fef",
+        "backgroundImage": "linear-gradient(to bottom, #fef 0%, #ede 100%)"
+      },
+      "name": "Assembly",
+      "description": "A station that assembles different components of the same production order into a single entity",
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#/Dream.MachineJobShop"
+        },
+        {
+          "name": {
+            "type": "string",
+            "default": "Assembly"
+          },
+          "id": {
+            "type": "string",
+            "default": "MA"
+          }
+        }
+      ]
+    },
+    "Dream.OperatorManagedJob": {
+      "name": "Operator",
+      "_class": "node",
+      "description": "A resource that operates stations",
+      "css": {
+        "border": "1px solid #cbb",
+        "backgroundColor": "#fdd",
+        "backgroundImage": "linear-gradient(to bottom, #fdd 0%, #dcc 100%)"
+      },
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "Operator"
+            },
+            "id": {
+              "type": "string",
+              "default": "PM",
+              "required": true
+            },
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule",
+              "required": true,
+              "default": "WT"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "application_configuration": {
+    "input": {
+      "view": {
+        "title": "Production Line",
+        "type": "object_view",
+        "gadget": "Input_viewProductionLine"
+      },
+      "view_management": {
+        "gadget": "Input_viewDocumentManagement",
+        "type": "object_view",
+        "title": "Manage document"
+      },
+      "view_old_style_part_jobshop_spreadsheet": {
+        "gadget": "Input_viewSpreadsheet",
+        "type": "object_view",
+        "title": "WIP Parts Spreadsheet",
+        "configuration": {
+          "columns": [
+            {
+              "name": "Order ID",
+              "type": "string"
+            },
+            {
+              "name": "Due Date",
+              "type": "string"
+            },
+            {
+              "name": "Priority",
+              "type": "number",
+              "default": 1
+            },
+            {
+              "name": "Project Manager",
+              "type": "string"
+            },
+            {
+              "name": "Part",
+              "type": "string"
+            },
+            {
+              "name": "Part Type",
+              "type": "string"
+            },
+            {
+              "name": "Sequence",
+              "type": "string"
+            },
+            {
+              "name": "Processing Times",
+              "type": "string"
+            },
+            {
+              "name": "Prerequisites Parts",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "view_run_simulation": {
+        "title": "Run Simulation",
+        "type": "object_view",
+        "gadget": "Input_viewSimulation"
+      },
+      "view_result": {
+        "gadget": "Input_viewResultList",
+        "type": "object_view",
+        "title": "Results"
+      }
+    },
+    "output": {
+      "view_station_utilization": {
+        "title": "Station Utilization",
+        "type": "object_view",
+        "gadget": "Output_viewStationUtilisationGraph",
+        "configuration": {
+          "columns": []
+        }
+      },
+      "view_exit_stats": {
+        "title": "Exit Statistics",
+        "type": "object_view",
+        "gadget": "Output_viewExitStatistics",
+        "configuration": {
+          "properties": {
+            "throughput": {
+              "type": "number"
+            },
+            "taktTime": {
+              "type": "number"
+            },
+            "lifespan": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "view_component_gantt": {
+        "title": "Component Gantt",
+        "type": "object_view",
+        "gadget": "Output_viewJobGantt",
+        "configuration": {
+          "properties": {}
+        }
+      },
+      "view_operator_gantt": {
+        "title": "Operator Gantt",
+        "type": "object_view",
+        "gadget": "Output_viewJobGantt",
+        "configuration": {
+          "properties": {}
+        }
+      },
+      "view_component_schedule_spreadsheet": {
+        "title": "Component Schedule",
+        "type": "object_view",
+        "gadget": "Output_viewJobScheduleSpreadsheet",
+        "configuration": {
+          "columns": [
+            {
+              "name": "Component ID",
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "name": "Sequence",
+              "type": "string"
+            },
+            {
+              "name": "Station",
+              "type": "string"
+            },
+            {
+              "name": "Entry",
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "name": "Exit",
+              "type": "string",
+              "format": "date-time"
+            }
+          ]
+        }
+      },
+      "view_debug_json": {
+        "title": "Debug Json",
+        "type": "object_view",
+        "gadget": "Output_viewDebugJson"
+      }
+    },
+    "pre_processing_plugin_list": [
+      {
+        "_class": "dream.plugins.Debug.Debug",
+        "argument": "Argument Value"
+      },
+      {
+        "_class": "dream.plugins.OldStylePartJobShopWIP.OldStylePartJobShopWIP",
+        "input_id": "old_style_part_jobshop_spreadsheet"
+      }
+    ],
+    "processing_plugin": {
+      "_class": "dream.plugins.ACO.ACO"
+    },
+    "post_processing_plugin_list": [],
+    "general": {
+      "properties": {
+        "numberOfReplications": {
+          "name": "Number of replications",
+          "type": "number",
+          "description": "Number of replications to run",
+          "default": 10
+        },
+        "maxSimTime": {
+          "name": "Length of experiment",
+          "description": "Length of the simulation run",
+          "type": "number",
+          "default": 100
+        },
+        "confidenceLevel": {
+          "name": "Confidence level",
+          "type": "number",
+          "default": 0.95,
+          "description": "Confidence level for statistical analysis of stochastic experiments"
+        },
+        "processTimeout": {
+          "name": "Process timeout",
+          "type": "number",
+          "default": 10,
+          "description": "Number of seconds before the calculation process is interrupted"
+        },
+        "currentDate": {
+          "default": "2014/10/01",
+          "description": "The day the experiment starts, in YYYY/MM/DD format",
+          "name": "Simulation start time",
+          "type": "string"
+        },
+        "timeUnitPerDay": {
+          "default": 24,
+          "description": "Used for input and reporting widgets. Forexample, 24 means that simulation clock time unit is one hour.",
+          "name": "Number of time units per day",
+          "type": "number"
+        },
+        "trace": {
+          "default": false,
+          "description": "Create an excel trace file (true or false)",
+          "name": "Output trace",
+          "type": "boolean"
+        },
+        "seed": {
+          "default": "",
+          "description": "When using the same seed, the random number generator produce the same sequence of numbers",
+          "name": "Seed for random number generator",
+          "type": "string"
+        },
+        "numberOfGenerations": {
+          "default": 10,
+          "name": "Number of generations",
+          "description": "The number of generations",
+          "type": "number"
+        },
+        "numberOfAntsPerGenerations": {
+          "default": 20,
+          "name": "Number of ants per generation",
+          "description": "Number of ants per generation",
+          "type": "number"
+        },
+        "numberOfSolutions": {
+          "default": 4,
+          "name": "Number of solutions",
+          "description": "Number of solutions",
+          "type": "number"
+        },
+        "distributorURL": {
+          "default": "",
+          "name": "Distributor URL",
+          "description": "URL of distributor",
+          "type": "string"
+        },
+        "max_slave_count": {
+          "name": "Number of simulation nodes",
+          "description": "Maximum number of nodes to use",
+          "type": "number"
+        },
+        "name": {
+          "default": "",
+          "name": "Name of the Scenario",
+          "description": "The name that will appear in the interface",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "general": {
+    "numberOfReplications": 1,
+    "maxSimTime": -1,
+    "confidenceLevel": 0.95,
+    "processTimeout": 60,
+    "currentDate": "2015/01/01",
+    "timeUnitPerDay": 24,
+    "trace": "false",
+    "seed": "",
+    "numberOfGenerations": 1,
+    "numberOfAntsPerGenerations": 20,
+    "numberOfSolutions": 10,
+    "distributorURL": "",
+    "max_slave_count": 1,
+    "name": "SIMPAT_20_orders_20_ants_Deterministic"
+  },
+  "graph": {
+    "edge": {
+      "con_10": {
+        "_class": "Dream.Edge",
+        "destination": "QCAM",
+        "source": "Decomposition"
+      },
+      "con_15": {
+        "_class": "Dream.Edge",
+        "destination": "MILL2",
+        "source": "QMILL"
+      },
+      "con_20": {
+        "_class": "Dream.Edge",
+        "destination": "MILL1",
+        "source": "QMILL"
+      },
+      "con_25": {
+        "_class": "Dream.Edge",
+        "destination": "CAD2",
+        "source": "QStart"
+      },
+      "con_30": {
+        "_class": "Dream.Edge",
+        "destination": "CAM1",
+        "source": "QCAM"
+      },
+      "con_35": {
+        "_class": "Dream.Edge",
+        "destination": "CAM2",
+        "source": "QCAM"
+      },
+      "con_40": {
+        "_class": "Dream.Edge",
+        "destination": "CAD1",
+        "source": "QStart"
+      },
+      "con_45": {
+        "_class": "Dream.Edge",
+        "destination": "Decomposition",
+        "source": "CAD1"
+      },
+      "con_5": {
+        "_class": "Dream.Edge",
+        "destination": "Decomposition",
+        "source": "CAD2"
+      },
+      "con_50": {
+        "_class": "Dream.Edge",
+        "destination": "EDM",
+        "source": "QEDM"
+      },
+      "con_55": {
+        "_class": "Dream.Edge",
+        "destination": "IM1",
+        "source": "QIM"
+      },
+      "con_60": {
+        "_class": "Dream.Edge",
+        "destination": "IM2",
+        "source": "QIM"
+      },
+      "con_65": {
+        "_class": "Dream.Edge",
+        "destination": "QIM",
+        "source": "MASS3"
+      },
+      "con_70": {
+        "_class": "Dream.Edge",
+        "destination": "QIM",
+        "source": "MASS2"
+      },
+      "con_75": {
+        "_class": "Dream.Edge",
+        "destination": "QIM",
+        "source": "MASS1"
+      },
+      "con_80": {
+        "_class": "Dream.Edge",
+        "destination": "MASS1",
+        "source": "QMASS"
+      },
+      "con_85": {
+        "_class": "Dream.Edge",
+        "destination": "MASS2",
+        "source": "QMASS"
+      },
+      "con_90": {
+        "_class": "Dream.Edge",
+        "destination": "MASS3",
+        "source": "QMASS"
+      },
+      "con_199": {
+        "_class": "Dream.Edge",
+        "source": "QTURN",
+        "destination": "TURN1"
+      }
+    },
+    "node": {
+      "CAD1": {
+        "_class": "Dream.MachineJobShop",
+        "coordinate": {
+          "left": 0.32935725427514356,
+          "top": 0.2673741799067207
+        },
+        "element_id": "DreamNode_1",
+        "failures": {
+          "MTTF": 40,
+          "MTTR": 10,
+          "failureDistribution": "No",
+          "repairman": "None"
+        },
+        "id": "CAD1",
+        "name": "CAD1",
+        "operationType": "MT-Load-Processing",
+        "processingTime": {
+          "distributionType": "Fixed",
+          "max": 1,
+          "mean": 0.9,
+          "min": 0.1,
+          "stdev": 0.1
+        }
+      },
+      "CAD2": {
+        "_class": "Dream.MachineJobShop",
+        "coordinate": {
+          "left": 0.358715003959836,
+          "top": 0.02212751833710792
+        },
+        "element_id": "DreamNode_2",
+        "failures": {
+          "MTTF": 40,
+          "MTTR": 10,
+          "failureDistribution": "No",
+          "repairman": "None"
+        },
+        "id": "CAD2",
+        "name": "CAD2",
+        "operationType": "MT-Load-Processing",
+        "processingTime": {
+          "distributionType": "Fixed",
+          "max": 1,
+          "mean": 0.9,
+          "min": 0.1,
+          "stdev": 0.1
+        }
+      },
+      "CAM1": {
+        "_class": "Dream.MachineJobShop",
+        "coordinate": {
+          "left": 0.8156850502215475,
+          "top": 0.03770447816866011
+        },
+        "element_id": "DreamNode_3",
+        "failures": {
+          "MTTF": 40,
+          "MTTR": 10,
+          "failureDistribution": "No",
+          "repairman": "None"
+        },
+        "id": "CAM1",
+        "name": "CAM1",
+        "operationType": "MT-Load-Processing",
+        "processingTime": {
+          "distributionType": "Fixed",
+          "max": 1,
+          "mean": 0.9,
+          "min": 0.1,
+          "stdev": 0.1
+        }
+      },
+      "CAM2": {
+        "_class": "Dream.MachineJobShop",
+        "coordinate": {
+          "left": 0.796328960197283,
+          "top": 0.3079412968580852
+        },
+        "element_id": "DreamNode_4",
+        "failures": {
+          "MTTF": 40,
+          "MTTR": 10,
+          "failureDistribution": "No",
+          "repairman": "None"
+        },
+        "id": "CAM2",
+        "name": "CAM2",
+        "operationType": "MT-Load-Processing",
+        "processingTime": {
+          "distributionType": "Fixed",
+          "max": 1,
+          "mean": 0.9,
+          "min": 0.1,
+          "stdev": 0.1
+        }
+      },
+      "Decomposition": {
+        "_class": "Dream.OrderDecomposition",
+        "coordinate": {
+          "left": 0.5277238535086819,
+          "top": 0.10475955623433687
+        },
+        "element_id": "DreamNode_5",
+        "id": "Decomposition",
+        "name": "Decomposition"
+      },
+      "E1": {
+        "_class": "Dream.ExitJobShop",
+        "coordinate": {
+          "left": 0.967876137039781,
+          "top": 0.39355726466863505
+        },
+        "element_id": "DreamNode_6",
+        "id": "E1",
+        "name": "Exit"
+      },
+      "EDM": {
+        "_class": "Dream.MachineJobShop",
+        "coordinate": {
+          "left": 0.18899051359520772,
+          "top": 0.92197993071283
+        },
+        "element_id": "DreamNode_7",
+        "failures": {
+          "MTTF": 40,
+          "MTTR": 10,
+          "failureDistribution": "No",
+          "repairman": "None"
+        },
+        "id": "EDM",
+        "name": "EDM",
+        "operationType": "MT-Load-Setup",
+        "processingTime": {
+          "distributionType": "Fixed",
+          "max": 1,
+          "mean": 0.9,
+          "min": 0.1,
+          "stdev": 0.1
+        }
+      },
+      "IM1": {
+        "_class": "Dream.MachineJobShop",
+        "coordinate": {
+          "left": 0.8743104827972474,
+          "top": 0.6048188345476164
+        },
+        "element_id": "DreamNode_8",
+        "failures": {
+          "MTTF": 40,
+          "MTTR": 10,
+          "failureDistribution": "No",
+          "repairman": "None"
+        },
+        "id": "IM1",
+        "name": "IM1",
+        "operationType": "MT-Load-Setup",
+        "processingTime": {
+          "distributionType": "Fixed",
+          "max": 1,
+          "mean": 0.9,
+          "min": 0.1,
+          "stdev": 0.1
+        }
+      },
+      "IM2": {
+        "_class": "Dream.MachineJobShop",
+        "coordinate": {
+          "left": 0.8845462397808385,
+          "top": 0.8560412718675537
+        },
+        "element_id": "DreamNode_9",
+        "failures": {
+          "MTTF": 40,
+          "MTTR": 10,
+          "failureDistribution": "No",
+          "repairman": "None"
+        },
+        "id": "IM2",
+        "name": "IM2",
+        "operationType": "MT-Load-Setup",
+        "processingTime": {
+          "distributionType": "Fixed",
+          "max": 1,
+          "mean": 0.9,
+          "min": 0.1,
+          "stdev": 0.1
+        }
+      },
+      "MASS1": {
+        "_class": "Dream.MouldAssembly",
+        "coordinate": {
+          "left": 0.5486473277825593,
+          "top": 0.5247930837013548
+        },
+        "element_id": "DreamNode_10",
+        "failures": {
+          "MTTF": 40,
+          "MTTR": 10,
+          "failureDistribution": "No",
+          "repairman": "None"
+        },
+        "id": "MASS1",
+        "name": "MASS1",
+        "operationType": "MT-Load-Processing",
+        "processingTime": {
+          "distributionType": "Fixed",
+          "max": 1,
+          "mean": 0.9,
+          "min": 0.1,
+          "stdev": 0.1
+        }
+      },
+      "MASS2": {
+        "_class": "Dream.MouldAssembly",
+        "coordinate": {
+          "left": 0.5441103624829352,
+          "top": 0.7115787006319392
+        },
+        "element_id": "DreamNode_11",
+        "failures": {
+          "MTTF": 40,
+          "MTTR": 10,
+          "failureDistribution": "No",
+          "repairman": "None"
+        },
+        "id": "MASS2",
+        "name": "MASS2",
+        "operationType": "MT-Load-Processing",
+        "processingTime": {
+          "distributionType": "Fixed",
+          "max": 1,
+          "mean": 0.9,
+          "min": 0.1,
+          "stdev": 0.1
+        }
+      },
+      "MASS3": {
+        "_class": "Dream.MouldAssembly",
+        "coordinate": {
+          "left": 0.5495403769103371,
+          "top": 0.9090722116828504
+        },
+        "element_id": "DreamNode_12",
+        "failures": {
+          "MTTF": 40,
+          "MTTR": 10,
+          "failureDistribution": "No",
+          "repairman": "None"
+        },
+        "id": "MASS3",
+        "name": "MASS3",
+        "operationType": "MT-Load-Processing",
+        "processingTime": {
+          "distributionType": "Fixed",
+          "max": 1,
+          "mean": 0.9,
+          "min": 0.1,
+          "stdev": 0.1
+        }
+      },
+      "MILL1": {
+        "_class": "Dream.MachineJobShop",
+        "coordinate": {
+          "left": 0.1877564659501795,
+          "top": 0.6841812972040019
+        },
+        "element_id": "DreamNode_13",
+        "failures": {
+          "MTTF": 40,
+          "MTTR": 10,
+          "failureDistribution": "No",
+          "repairman": "None"
+        },
+        "id": "MILL1",
+        "name": "MILL1",
+        "operationType": "MT-Load-Setup",
+        "processingTime": {
+          "distributionType": "Fixed",
+          "max": 1,
+          "mean": 0.9,
+          "min": 0.1,
+          "stdev": 0.1
+        }
+      },
+      "MILL2": {
+        "_class": "Dream.MachineJobShop",
+        "coordinate": {
+          "left": 0.18401596464596484,
+          "top": 0.44453459509694726
+        },
+        "element_id": "DreamNode_14",
+        "failures": {
+          "MTTF": 40,
+          "MTTR": 10,
+          "failureDistribution": "No",
+          "repairman": "None"
+        },
+        "id": "MILL2",
+        "name": "MILL2",
+        "operationType": "MT-Load-Setup",
+        "processingTime": {
+          "distributionType": "Fixed",
+          "max": 1,
+          "mean": 0.9,
+          "min": 0.1,
+          "stdev": 0.1
+        }
+      },
+      "PM1": {
+        "_class": "Dream.OperatorManagedJob",
+        "coordinate": {
+          "left": 0.001216264249816622,
+          "top": 0.021371774115389482
+        },
+        "element_id": "DreamNode_15",
+        "id": "PM1",
+        "name": "PM1"
+      },
+      "PM2": {
+        "_class": "Dream.OperatorManagedJob",
+        "coordinate": {
+          "left": 0.001100243153736976,
+          "top": 0.22693812677592085
+        },
+        "element_id": "DreamNode_16",
+        "id": "PM2",
+        "name": "PM2"
+      },
+      "QCAM": {
+        "_class": "Dream.ConditionalBuffer",
+        "capacity": 1,
+        "coordinate": {
+          "left": 0.6798946482505993,
+          "top": 0.04336252204503648
+        },
+        "element_id": "DreamNode_17",
+        "id": "QCAM",
+        "name": "QCAM",
+        "schedulingRule": "FIFO"
+      },
+      "QEDM": {
+        "_class": "Dream.QueueJobShop",
+        "capacity": 1,
+        "coordinate": {
+          "left": 0.05041752133280548,
+          "top": 0.9193157852349616
+        },
+        "element_id": "DreamNode_18",
+        "id": "QEDM",
+        "name": "QEDM",
+        "schedulingRule": "FIFO"
+      },
+      "QIM": {
+        "_class": "Dream.QueueJobShop",
+        "capacity": -1,
+        "coordinate": {
+          "left": 0.7084640625588505,
+          "top": 0.7069073434280151
+        },
+        "element_id": "DreamNode_19",
+        "id": "QIM",
+        "name": "QIM",
+        "schedulingRule": "FIFO"
+      },
+      "QMASS": {
+        "_class": "Dream.MouldAssemblyBuffer",
+        "capacity": -1,
+        "coordinate": {
+          "left": 0.39359833360679664,
+          "top": 0.7621221762426658
+        },
+        "element_id": "DreamNode_20",
+        "id": "QMASS",
+        "name": "QMASS",
+        "schedulingRule": "FIFO"
+      },
+      "QMILL": {
+        "_class": "Dream.QueueJobShop",
+        "capacity": -1,
+        "coordinate": {
+          "left": 0.024330940806924675,
+          "top": 0.571934442232598
+        },
+        "element_id": "DreamNode_21",
+        "id": "QMILL",
+        "name": "QMILL",
+        "schedulingRule": "FIFO"
+      },
+      "QStart": {
+        "_class": "Dream.QueueJobShop",
+        "capacity": 1,
+        "coordinate": {
+          "left": 0.15404040948036557,
+          "top": 0.05376099760119495
+        },
+        "element_id": "DreamNode_22",
+        "id": "QStart",
+        "name": "QStart",
+        "schedulingRule": "FIFO"
+      },
+      "PM3": {
+        "coordinate": {
+          "left": 0.008801945229895808,
+          "top": 0.39714172185786145
+        },
+        "_class": "Dream.OperatorManagedJob",
+        "name": "PM3",
+        "schedulingRule": "WT"
+      },
+      "QTURN": {
+        "coordinate": {
+          "left": 0.4731045561068996,
+          "top": 0.3177133774862892
+        },
+        "_class": "Dream.QueueJobShop",
+        "name": "QTURN",
+        "capacity": "-1",
+        "schedulingRule": "FIFO"
+      },
+      "TURN1": {
+        "coordinate": {
+          "left": 0.6172364092464435,
+          "top": 0.33662488805094926
+        },
+        "_class": "Dream.MachineJobShop",
+        "name": "TURN1",
+        "operationType": "MT-Load-Setup"
+      }
+    }
+  },
+  "input": {
+    "old_style_part_jobshop_spreadsheet": [
+      [
+        "Order ID",
+        "Due Date",
+        "Priority",
+        "Project Manager",
+        "Part",
+        "Part Type",
+        "Sequence",
+        "Processing Times",
+        "Prerequisites Parts"
+      ],
+      [
+        "Gelenkstangen 50/0/180",
+        "2014/01/22",
+        "1",
+        "PM1",
+        "PE001068A-DESIGN",
+        "Design",
+        "CAD",
+        "4.5",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "PE001068A-01",
+        "Basic",
+        "CAM-MILL-MASS",
+        "2-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "PE001068A-02",
+        "Basic",
+        "CAM-MILL-MASS",
+        "1.25-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "PE001068A-03",
+        "Secondary",
+        "CAM-MILL-TURN-MASS",
+        "1-2-0.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "PE001068A-MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.25-8",
+        ""
+      ],
+      [
+        "Spalttopf C80",
+        "2014/01/31",
+        "1",
+        "PM2",
+        "3.122.052.01.00 - DESIGN",
+        "Design",
+        "CAD",
+        "4.5",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-01",
+        "Basic",
+        "CAM-MILL-MASS",
+        "1.5-5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "2.25-4-0.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-03",
+        "Secondary",
+        "CAM-MILL-EDM-MASS",
+        "2.75-4.75-1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-05",
+        "Secondary",
+        "CAM-MILL-CAM-MILL-MASS",
+        "1.25-0.5-0.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "2.25-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.75-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-12",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-13",
+        "Secondary",
+        "TURN-MASS",
+        "1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-2.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00 - MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.75-4",
+        ""
+      ],
+      [
+        "Pumpenkopf C80",
+        "2014/01/31",
+        "1",
+        "PM3",
+        "3.116.017.01-DESIGN",
+        "Design",
+        "CAD",
+        "27",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-01",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "5.75-8.5-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "4.75-5.5-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-05",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-2-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "4.25-3.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01-MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.25-10.25",
+        ""
+      ],
+      [
+        "Pumpenkopf C81",
+        "2014/02/15",
+        "1",
+        "PM2",
+        "3.116.017.01-DESIGN",
+        "Design",
+        "CAD",
+        "27",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-01",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "5.75-8.5-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "4.75-5.5-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-05",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-2-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "4.25-3.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01-MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.25-10.25",
+        ""
+      ],
+      [
+        "Pumpenkopf C82",
+        "2014/02/15",
+        "1",
+        "PM1",
+        "3.116.017.01-DESIGN",
+        "Design",
+        "CAD",
+        "27",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-01",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "5.75-8.5-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "4.75-5.5-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-05",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-2-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "4.25-3.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01-MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.25-10.25",
+        ""
+      ],
+      [
+        "Spalttopf C81",
+        "2014/02/15",
+        "1",
+        "PM1",
+        "3.122.052.01.00 - DESIGN",
+        "Design",
+        "CAD",
+        "24",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-01",
+        "Basic",
+        "CAM-MILL-MASS",
+        "1.5-5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "2.25-4-0.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-03",
+        "Secondary",
+        "CAM-MILL-EDM-MASS",
+        "2.75-4.75-1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-05",
+        "Secondary",
+        "CAM-MILL-CAM-MILL-MASS",
+        "1.25-0.5-0.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "2.25-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.75-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-12",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-13",
+        "Secondary",
+        "TURN-MASS",
+        "1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-2.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00 - MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.75-4",
+        ""
+      ],
+      [
+        "Spalttopf C82",
+        "2014/01/31",
+        "1",
+        "PM3",
+        "3.122.052.01.00 - DESIGN",
+        "Design",
+        "CAD",
+        "24",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-01",
+        "Basic",
+        "CAM-MILL-MASS",
+        "1.5-5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "2.25-4-0.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-03",
+        "Secondary",
+        "CAM-MILL-EDM-MASS",
+        "2.75-4.75-1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-05",
+        "Secondary",
+        "CAM-MILL-CAM-MILL-MASS",
+        "1.25-0.5-0.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "2.25-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.75-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-12",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-13",
+        "Secondary",
+        "TURN-MASS",
+        "1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-2.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00 - MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.75-4",
+        ""
+      ],
+      [
+        "Spalttopf C83",
+        "2014/03/30",
+        "1",
+        "PM3",
+        "3.122.052.01.00 - DESIGN",
+        "Design",
+        "CAD",
+        "24",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-01",
+        "Basic",
+        "CAM-MILL-MASS",
+        "1.5-5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "2.25-4-0.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-03",
+        "Secondary",
+        "CAM-MILL-EDM-MASS",
+        "2.75-4.75-1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-05",
+        "Secondary",
+        "CAM-MILL-CAM-MILL-MASS",
+        "1.25-0.5-0.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "2.25-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.75-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-12",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-13",
+        "Secondary",
+        "TURN-MASS",
+        "1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-2.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00 - MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.75-4",
+        ""
+      ],
+      [
+        "Pumpenkopf C83",
+        "2014/06/10",
+        "1",
+        "PM3",
+        "3.116.017.01-DESIGN",
+        "Design",
+        "CAD",
+        "24",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-01",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "5.75-8.5-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "4.75-5.5-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-05",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-2-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "4.25-3.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01-MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.25-10.25",
+        ""
+      ],
+      [
+        "Pumpenkopf C84",
+        "2014/02/15",
+        "1",
+        "PM2",
+        "3.116.017.01-DESIGN",
+        "Design",
+        "CAD",
+        "24",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-01",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "5.75-8.5-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "4.75-5.5-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-05",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-2-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "4.25-3.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01-MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.25-10.25",
+        ""
+      ],
+      [
+        "Spalttopf C83",
+        "2014/02/15",
+        "1",
+        "PM1",
+        "3.122.052.01.00 - DESIGN",
+        "Design",
+        "CAD",
+        "24",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-01",
+        "Basic",
+        "CAM-MILL-MASS",
+        "1.5-5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "2.25-4-0.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-03",
+        "Secondary",
+        "CAM-MILL-EDM-MASS",
+        "2.75-4.75-1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-05",
+        "Secondary",
+        "CAM-MILL-CAM-MILL-MASS",
+        "1.25-0.5-0.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "2.25-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.75-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-12",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-13",
+        "Secondary",
+        "TURN-MASS",
+        "1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-2.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00 - MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.75-4",
+        ""
+      ],
+      [
+        "Spalttopf C84",
+        "2014/04/01",
+        "1",
+        "PM2",
+        "3.122.052.01.00 - DESIGN",
+        "Design",
+        "CAD",
+        "24",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-01",
+        "Basic",
+        "CAM-MILL-MASS",
+        "1.5-5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "2.25-4-0.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-03",
+        "Secondary",
+        "CAM-MILL-EDM-MASS",
+        "2.75-4.75-1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-05",
+        "Secondary",
+        "CAM-MILL-CAM-MILL-MASS",
+        "1.25-0.5-0.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "2.25-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.75-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-12",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-13",
+        "Secondary",
+        "TURN-MASS",
+        "1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-2.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00 - MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.75-4",
+        ""
+      ],
+      [
+        "Pumpenkopf C85",
+        "2014/06/10",
+        "1",
+        "PM3",
+        "3.116.017.01-DESIGN",
+        "Design",
+        "CAD",
+        "24",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-01",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "5.75-8.5-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "4.75-5.5-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-05",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-2-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "4.25-3.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01-MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.25-10.25",
+        ""
+      ],
+      [
+        "Pumpenkopf C86",
+        "2014/02/15",
+        "1",
+        "PM2",
+        "3.116.017.01-DESIGN",
+        "Design",
+        "CAD",
+        "24",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-01",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "5.75-8.5-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "4.75-5.5-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-05",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-2-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "4.25-3.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01-MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.25-10.25",
+        ""
+      ],
+      [
+        "Pumpenkopf C87",
+        "2014/06/10",
+        "1",
+        "PM3",
+        "3.116.017.01-DESIGN",
+        "Design",
+        "CAD",
+        "24",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-01",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "5.75-8.5-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "4.75-5.5-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-05",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-2-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "4.25-3.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01-MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.25-10.25",
+        ""
+      ],
+      [
+        "Pumpenkopf C88",
+        "2014/02/15",
+        "1",
+        "PM1",
+        "3.116.017.01-DESIGN",
+        "Design",
+        "CAD",
+        "24",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-01",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "5.75-8.5-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "4.75-5.5-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-05",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-2-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "4.25-3.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01-MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.25-10.25",
+        ""
+      ],
+      [
+        "Spalttopf C85",
+        "2014/02/15",
+        "1",
+        "PM3",
+        "3.122.052.01.00 - DESIGN",
+        "Design",
+        "CAD",
+        "24",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-01",
+        "Basic",
+        "CAM-MILL-MASS",
+        "1.5-5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "2.25-4-0.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-03",
+        "Secondary",
+        "CAM-MILL-EDM-MASS",
+        "2.75-4.75-1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-05",
+        "Secondary",
+        "CAM-MILL-CAM-MILL-MASS",
+        "1.25-0.5-0.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "2.25-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.75-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-12",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-13",
+        "Secondary",
+        "TURN-MASS",
+        "1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-2.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00 - MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.75-4",
+        ""
+      ],
+      [
+        "Spalttopf C86",
+        "2014/04/22",
+        "1",
+        "PM2",
+        "3.122.052.01.00 - DESIGN",
+        "Design",
+        "CAD",
+        "24",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-01",
+        "Basic",
+        "CAM-MILL-MASS",
+        "1.5-5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "2.25-4-0.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-03",
+        "Secondary",
+        "CAM-MILL-EDM-MASS",
+        "2.75-4.75-1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-05",
+        "Secondary",
+        "CAM-MILL-CAM-MILL-MASS",
+        "1.25-0.5-0.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "2.25-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.75-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-12",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-13",
+        "Secondary",
+        "TURN-MASS",
+        "1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-2.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00 - MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.75-4",
+        ""
+      ],
+      [
+        "Spalttopf C87",
+        "2014/02/15",
+        "1",
+        "PM3",
+        "3.122.052.01.00 - DESIGN",
+        "Design",
+        "CAD",
+        "24",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-01",
+        "Basic",
+        "CAM-MILL-MASS",
+        "1.5-5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "2.25-4-0.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-03",
+        "Secondary",
+        "CAM-MILL-EDM-MASS",
+        "2.75-4.75-1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-05",
+        "Secondary",
+        "CAM-MILL-CAM-MILL-MASS",
+        "1.25-0.5-0.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "2.25-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.75-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-12",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-13",
+        "Secondary",
+        "TURN-MASS",
+        "1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-2.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00 - MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.75-4",
+        ""
+      ],
+      [
+        "Spalttopf C88",
+        "2014/04/22",
+        "1",
+        "PM1",
+        "3.122.052.01.00 - DESIGN",
+        "Design",
+        "CAD",
+        "24",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-01",
+        "Basic",
+        "CAM-MILL-MASS",
+        "1.5-5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "2.25-4-0.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-03",
+        "Secondary",
+        "CAM-MILL-EDM-MASS",
+        "2.75-4.75-1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-05",
+        "Secondary",
+        "CAM-MILL-CAM-MILL-MASS",
+        "1.25-0.5-0.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "2.25-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.75-3.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-12",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-13",
+        "Secondary",
+        "TURN-MASS",
+        "1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-2.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.122.052.01.00 - MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.75-4",
+        ""
+      ],
+      [
+        "Pumpenkopf C89",
+        "2014/06/10",
+        "1",
+        "PM2",
+        "3.116.017.01-DESIGN",
+        "Design",
+        "CAD",
+        "24",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-01",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "5.75-8.5-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "4.75-5.5-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-05",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-2-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "4.25-3.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01-MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.25-10.25",
+        ""
+      ],
+      [
+        "Pumpenkopf C90",
+        "2014/02/15",
+        "1",
+        "PM1",
+        "3.116.017.01-DESIGN",
+        "Design",
+        "CAD",
+        "24",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-01",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "5.75-8.5-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-02",
+        "Basic",
+        "CAM-MILL-EDM-MASS",
+        "4.75-5.5-2.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.5-3.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-04",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-05",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-06",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "1.25-1.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-07",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-2-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-08",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "4.25-3.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-09",
+        "Secondary",
+        "MILL-MASS",
+        "1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-10",
+        "Secondary",
+        "MILL-MASS",
+        "1.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-11",
+        "Secondary",
+        "TURN-MASS",
+        "1.75-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E01",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-0.25-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E02",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.75-0.5-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01.00-E03",
+        "Secondary",
+        "CAM-MILL-MASS",
+        "0.5-1-0",
+        ""
+      ],
+      [
+        "",
+        "",
+        "",
+        "",
+        "3.116.017.01-MOULD",
+        "Mould",
+        "MASS-IM",
+        "1.25-10.25",
+        ""
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  "result": {},
+  "constraints": {}
+}
