@@ -90,10 +90,12 @@ class ACO(plugin.ExecutionPlugin):
                 ant['result'] = self.runOneScenario(ant['input'])['result']
 
         else: # asynchronous
+            self.logger.info("Registering a job for %s scenarios" % len(scenario_list))
+            start_register = time.time()
             job_id = distributor.requestSimulationRun(
                 [json.dumps(x).encode('zlib').encode('base64') for x in scenario_list])
+            self.logger.info("Job registered as %s (took %0.2fs)" % (job_id, time.time() - start_register ))
 
-            self.logger.info("Job registered: %s" % job_id)
             while True:
                 time.sleep(1.)
                 result_list = distributor.getJobResult(job_id)
