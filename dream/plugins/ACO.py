@@ -91,7 +91,7 @@ class ACO(plugin.ExecutionPlugin):
 
         else: # asynchronous
             job_id = distributor.requestSimulationRun(
-                [json.dumps(x) for x in scenario_list])
+                [json.dumps(x).encode('zlib').encode('base64') for x in scenario_list])
 
             self.logger.info("Job registered: %s" % job_id)
             while True:
