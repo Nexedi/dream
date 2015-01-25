@@ -163,4 +163,5 @@ class OldStylePartJobShopWIP(plugin.InputPreparationPlugin):
           i+=1
         order_dict["componentsList"] = component_list
     data['graph']["node"]["QStart"]["wip"] = wip_list
+    del data['input'][input_id]
     return data
