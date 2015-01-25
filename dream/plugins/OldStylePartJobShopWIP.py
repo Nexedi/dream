@@ -24,6 +24,8 @@ class OldStylePartJobShopWIP(plugin.InputPreparationPlugin):
     for machine_name in self.data['graph']["node"].keys():
       if machine_name.startswith(step_name):
         machine_name_set.add(machine_name)
+    if not machine_name_set:
+      raise ValueError("No machine found for step %s" % step_name)
     return machine_name_set
 
   def getNotMachineNodePredecessorList(self, step_name):
