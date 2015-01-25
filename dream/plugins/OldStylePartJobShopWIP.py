@@ -73,6 +73,19 @@ class OldStylePartJobShopWIP(plugin.InputPreparationPlugin):
                 "setupTime": {"Fixed": {
                               "mean": .5}}, # XXX hardcoded value
               }
+
+      # XXX Quick and dirty way to change to stochastic
+      if 'Stochastic' in self.data['general']['name']:
+          input_processing_time = float(processing_time_list[j])
+          route = {"stationIdsList": list(self.getMachineNameSet(sequence_step)),
+                    "processingTime": {"Triangular": {
+                                       "mean": input_processing_time,
+                                       "min": max(input_processing_time - 2, 0),
+                                       "max": input_processing_time + 2,
+                                       }},
+                    "setupTime": {"Fixed": {
+                                  "mean": .5}}, # XXX hardcoded value
+                  }
       if prerequisite_list:
         route["prerequisites"] = prerequisite_list
       route_list.append(route)
