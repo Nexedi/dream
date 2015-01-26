@@ -546,6 +546,8 @@
       delete_promise;
     
     // If we have no definition for this, we do not allow edition.
+    // XXX incorrect, we need to display this dialog to be able
+    // to delete a node
     if ( gadget.props.data.class_definition[node_data._class] === undefined ) {
       return;
     }
