@@ -473,9 +473,14 @@
       return g.getDeclaredGadget("jio")
         .push(function (gadget) {
           return gadget.createJio({
-            type: "local",
-            username: "dream",
-            applicationname: "dream"
+            type: "query",
+            sub_storage: {
+              type: "document",
+              document_id: "/",
+              sub_storage: {
+                type: "local"
+              }
+            }
           });
         });
     })
