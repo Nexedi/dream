@@ -44,7 +44,7 @@
       .getElementById('node-template').innerHTML,
     node_template = Handlebars.compile(node_template_source),
     popup_edit_template = gadget_klass.__template_element
-       .getElementById('popup-edit-template'),
+       .getElementById('popup-edit-template').innerHTML,
     domParser = new DOMParser();
 
   function loopJsplumbBind(gadget, type, callback) {
@@ -515,9 +515,9 @@
     delete schema.properties.source;
     delete schema.properties.destination;
 
-    gadget.props.element.appendChild(
-      document.importNode(popup_edit_template.content, true).children[0]
-    );
+    gadget.props.element.insertAdjacentHTML(
+      'beforeend',
+      popup_edit_template);
     edit_popup = $(gadget.props.element).find('#edit-popup');
     edit_popup.find('.node_class').text(connection._class);
     fieldset_element = edit_popup.find('fieldset')[0];
@@ -621,9 +621,10 @@
       node_edit_popup.remove();
     }
 
-    gadget.props.element.appendChild(
-      document.importNode(popup_edit_template.content, true).children[0]
-    );
+    gadget.props.element.insertAdjacentHTML(
+      'beforeend',
+      popup_edit_template);
+
     node_edit_popup = $(gadget.props.element).find('#edit-popup');
     // Set the name of the popup to the node class
     node_edit_popup.find('.node_class').text(node_data._class);
