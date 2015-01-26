@@ -8,7 +8,7 @@
   // Handlebars
   /////////////////////////////////////////////////////////////////
   // Precompile the templates while loading the first gadget instance
-  var i, gadget_klass = rJS(window),
+  var gadget_klass = rJS(window),
     source = gadget_klass.__template_element
                          .getElementById("label-template")
                          .innerHTML,
@@ -28,7 +28,7 @@
 
       function addField(property_id, property_definition, value) {
         var sub_gadget;
-        console.log("addField", property_id, property_definition, value);
+        //console.log("addField", property_id, property_definition, value);
         queue
           .push(function () {
             // XXX this is incorrect for recursive fieldsets.
@@ -43,16 +43,6 @@
               })
             );
 
-            //console.log("PD", property_definition);
-            if (property_definition.oneOf) {
-              // if we got a oneOf, then we use the first one that matches our
-              // data.
-                console.log(value);
-              for (i = 0; i < property_definition.oneOf.length; i += 1) {
-                console.log(property_definition.oneOf[i]);
-
-              };
-            }
             if (property_definition.type === "object") {
               // Create a recursive fieldset for this key.
               return gadget.declareGadget("../fieldset/index.html");
@@ -87,7 +77,7 @@
           if (node_id) {
             addField('id', {'type': 'string'}, node_id);
           }
-          console.log(options.property_definition);
+          //console.log(options.property_definition);
           Object.keys(options.property_definition.properties
             ).forEach(function (property_name) {
             var property_definition =
@@ -105,10 +95,6 @@
           });
         });
       return queue;
-    })
-
-    .declareMethod("notifyDataChanged", function () {
-      console.log("content changed");
     })
 
     // getContent of all subfields
