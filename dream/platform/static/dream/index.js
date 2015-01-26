@@ -314,9 +314,14 @@
     }).ready(function(g) {
         return g.getDeclaredGadget("jio").push(function(gadget) {
             return gadget.createJio({
-                type: "local",
-                username: "dream",
-                applicationname: "dream"
+                type: "query",
+                sub_storage: {
+                    type: "document",
+                    document_id: "/",
+                    sub_storage: {
+                        type: "local"
+                    }
+                }
             });
         });
     }).declareMethod("render", function(options) {
@@ -398,7 +403,7 @@
             if (error instanceof RSVP.CancellationError) {
                 throw error;
             }
-            console.error(error);
+            console.error(error.stack);
             document.querySelector("article[class='gadget_container']").innerHTML = error_template({
                 error: error
             });

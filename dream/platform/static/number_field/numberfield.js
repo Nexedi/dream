@@ -9,7 +9,7 @@
         var input = this.element.querySelector("input");
         input.setAttribute("value", options.value);
         input.setAttribute("name", options.key);
-        input.setAttribute("title", options.title || options.key);
+        input.setAttribute("title", options.property_definition.description);
     }).declareMethod("getContent", function() {
         var input = this.element.querySelector("input"), result = {};
         if (input.value !== "") {

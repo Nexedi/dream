@@ -14,6 +14,10 @@
     <script src="../lib/jquery.jsplumb.js"></script>
     <script src="../lib/handlebars.min.js"></script>
 
+    <script src="../dream/mixin_gadget.js"></script>
+    <script src="../dream/mixin_promise.js"></script>
+    <script src="jsplumb.js"></script>
+
     <script id="node-template" type="text/x-handlebars-template">
       <div class="window {{class}}"
            id="{{element_id}}"
@@ -22,8 +26,7 @@
         <div class="ep"></div>
       </div>
     </script>
-
-    <template id="popup-edit-template">
+    <script id="popup-edit-template" type="text/x-handlebars-template">
       <div id="edit-popup" data-position-to="origin">
         <div data-role="header" data-theme="a">
           <h1 class="node_class">Edit properties</h1>
@@ -36,12 +39,7 @@
           <input type="submit" value="Validate">
         </form>
       </div>
-    </template>
-
-    <script src="../dream/mixin_gadget.js"></script>
-    <script src="../dream/mixin_promise.js"></script>
-
-    <script src="jsplumb.js"></script>
+    </script>
   </head>
   <body>
     <div id="main"></div>

@@ -24,7 +24,9 @@
             name = file.name;
             return promiseReadAsText(file);
         }).push(function(json) {
-            json_data = json;
+            var data = JSON.parse(json);
+            data.general.name = name;
+            json_data = JSON.stringify(data);
             return createDocument(gadget, name);
         }).push(function(jio_document) {
             // Add JSON as attachment
