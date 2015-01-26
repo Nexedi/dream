@@ -15,7 +15,7 @@
             _id: gadget.props.jio_key,
             _attachment: "simulation.json"
         }).push(undefined, function(error) {
-            if (error.status === 404) {
+            if (error.status_code === 404) {
                 // Simulation not yet generated
                 return JSON.stringify([]);
             }

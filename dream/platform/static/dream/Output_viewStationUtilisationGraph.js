@@ -2,10 +2,10 @@
 /*jslint unparam: true */
 (function(window, rJS, $, initGadgetMixin) {
     "use strict";
-    function station_utilisation_graph_widget(output_data) {
+    function station_utilisation_graph_widget(data, result_id) {
         var blockage_data = [], waiting_data = [], failure_data = [], working_data = [], ticks = [], counter = 1, series, options;
         // XXX output is still elementList ???
-        $.each(output_data.elementList.sort(function(a, b) {
+        $.each(data.result.result_list[result_id].elementList.sort(function(a, b) {
             return a.id < b.id ? -1 : 1;
         }), function(idx, obj) {
             // add each object that has a working ratio
@@ -106,7 +106,7 @@
             _id: gadget.props.jio_key,
             _attachment: "simulation.json"
         }).push(function(simulation_json) {
-            gadget.props.result_list = station_utilisation_graph_widget(JSON.parse(simulation_json).result.result_list[gadget.props.result]);
+            gadget.props.result_list = station_utilisation_graph_widget(JSON.parse(simulation_json), gadget.props.result);
         });
     }).declareMethod("startService", function() {
         // XXX Manually calculate width and height when resizing

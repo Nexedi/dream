@@ -13,23 +13,36 @@
         return storage.allDocs.apply(storage, arguments);
     }).declareMethod("get", function() {
         var storage = this.state_parameter_dict.jio_storage;
-        return storage.get.apply(storage, arguments);
+        return storage.get.apply(storage, arguments).push(function(result) {
+            return {
+                data: result
+            };
+        });
     }).declareMethod("remove", function() {
         var storage = this.state_parameter_dict.jio_storage;
         return storage.remove.apply(storage, arguments);
     }).declareMethod("getAttachment", function() {
         var storage = this.state_parameter_dict.jio_storage;
         return storage.getAttachment.apply(storage, arguments).then(function(response) {
-            return jIO.util.readBlobAsText(response.data);
+            return jIO.util.readBlobAsText(response);
         }).then(function(lala) {
             return lala.target.result;
         });
     }).declareMethod("putAttachment", function() {
-        var storage = this.state_parameter_dict.jio_storage;
-        return storage.putAttachment.apply(storage, arguments);
+        var storage = this.state_parameter_dict.jio_storage, argument_list = arguments;
+        return storage.putAttachment.apply(storage, arguments).push(function() {
+            return {
+                id: argument_list[0]._id,
+                attachment: argument_list[0]._attachment
+            };
+        });
     }).declareMethod("post", function() {
         // XXX set modified value
         var storage = this.state_parameter_dict.jio_storage;
-        return storage.post.apply(storage, arguments);
+        return storage.post.apply(storage, arguments).push(function(id) {
+            return {
+                id: id
+            };
+        });
     });
 })(rJS, jIO);

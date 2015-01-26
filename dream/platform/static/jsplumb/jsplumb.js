@@ -35,7 +35,7 @@
  * factorize node & edge popup edition
  */
     /*jslint nomen: true */
-    var gadget_klass = rJS(window), node_template_source = gadget_klass.__template_element.getElementById("node-template").innerHTML, node_template = Handlebars.compile(node_template_source), popup_edit_template = gadget_klass.__template_element.getElementById("popup-edit-template"), domParser = new DOMParser();
+    var gadget_klass = rJS(window), node_template_source = gadget_klass.__template_element.getElementById("node-template").innerHTML, node_template = Handlebars.compile(node_template_source), popup_edit_template = gadget_klass.__template_element.getElementById("popup-edit-template").innerHTML, domParser = new DOMParser();
     function loopJsplumbBind(gadget, type, callback) {
         //////////////////////////
         // Infinite event listener (promise is never resolved)
@@ -290,7 +290,7 @@
     function resolveReference(ref, schema) {
         // 2 here is for #/
         var i, ref_path = ref.substr(2, ref.length), parts = ref_path.split("/");
-        for (i = 0; i < parts.length; i++) {
+        for (i = 0; i < parts.length; i += 1) {
             schema = schema[parts[i]];
         }
         return schema;
@@ -300,37 +300,17 @@
         // references
         // XXX this should probably be moved to fieldset ( and not handle
         // class_definition here)
-        // XXX known limitation: we do not expand refs inside oneOf
-        var property, referenced, i, expanded_class_definition = {
+        var referenced, i, expanded_class_definition = {
             properties: class_definition.properties || {}
         };
-        console.log("expandSchema", class_definition);
         // expand direct ref
         if (class_definition.$ref) {
-            console.log("DI", class_definition.$ref);
             referenced = expandSchema(resolveReference(class_definition.$ref, full_schema.class_definition), full_schema);
             if (referenced.properties) {
                 delete referenced.properties;
             }
             $.extend(expanded_class_definition, referenced);
-            console.log("after direct expand", Object.create(referenced));
         }
-        /*
-    // expand refs inside properties
-    for (property in expanded_class_definition.properties) {
-      if (expanded_class_definition.properties.hasOwnProperty(property)) {
-        referenced = expanded_class_definition.properties[property];
-        if (referenced.$ref) {
-          if (!expanded_class_definition.properties[property]){
-            expanded_class_definition.properties[property] = {};
-          }
-          $.extend(expanded_class_definition.properties[property], expandSchema(
-            resolveReference(referenced.$ref, full_schema.class_definition),
-            full_schema));
-        }
-      }
-    }
-*/
         if (class_definition.oneOf) {
             expanded_class_definition.oneOf = [];
             for (i = 0; i < class_definition.oneOf.length; i += 1) {
@@ -350,38 +330,7 @@
         if (expanded_class_definition.$ref) {
             delete expanded_class_definition.$ref;
         }
-        console.log("R", expanded_class_definition);
         return Object.create(expanded_class_definition);
-        // expand refs directly in allOf
-        if (class_definition.xallOf) {
-            for (i = 0; i < class_definition.allOf.length; i += 1) {
-                referenced = class_definition.allOf[i];
-                if (referenced.$ref) {
-                    referenced = Object.create(referenced);
-                    $.extend(referenced, expandSchema(resolveReference(referenced.$ref, full_schema.class_definition), full_schema));
-                }
-                if (referenced.properties) {
-                    for (property in referenced.properties) {
-                        if (referenced.properties.hasOwnProperty(property)) {
-                            //console.log('property2', property, referenced.properties[property]);
-                            // and in allOf references. XXX I guess this can be merged with
-                            // "expand ref inside properties"
-                            if (referenced.properties[property].$ref) {
-                                expanded_class_definition.properties[property] = referenced.properties[property];
-                                $.extend(expanded_class_definition.properties[property], expandSchema(resolveReference(referenced.properties[property].$ref, full_schema.class_definition), full_schema));
-                            }
-                            if (referenced.properties[property].type) {
-                                if (!expanded_class_definition.properties[property]) {
-                                    expanded_class_definition.properties[property] = {};
-                                }
-                                $.extend(expanded_class_definition.properties[property], referenced.properties[property]);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return expanded_class_definition;
     }
     function openEdgeEditionDialog(gadget, connection) {
         var edge_id = connection.id, edge_data = gadget.props.data.graph.edge[edge_id], edit_popup = $(gadget.props.element).find("#popup-edit-template"), schema, fieldset_element, delete_promise;
@@ -389,7 +338,7 @@
         // We do not edit source & destination on edge this way.
         delete schema.properties.source;
         delete schema.properties.destination;
-        gadget.props.element.appendChild(document.importNode(popup_edit_template.content, true).children[0]);
+        gadget.props.element.insertAdjacentHTML("beforeend", popup_edit_template);
         edit_popup = $(gadget.props.element).find("#edit-popup");
         edit_popup.find(".node_class").text(connection._class);
         fieldset_element = edit_popup.find("fieldset")[0];
@@ -449,15 +398,16 @@
     function openNodeEditionDialog(gadget, element) {
         var node_id = getNodeId(gadget, element.id), node_data = gadget.props.data.graph.node[node_id], node_edit_popup = $(gadget.props.element).find("#popup-edit-template"), schema, fieldset_element, delete_promise;
         // If we have no definition for this, we do not allow edition.
+        // XXX incorrect, we need to display this dialog to be able
+        // to delete a node
         if (gadget.props.data.class_definition[node_data._class] === undefined) {
             return;
         }
         schema = expandSchema(gadget.props.data.class_definition[node_data._class], gadget.props.data);
-        console.log("editing node with", schema);
         if (node_edit_popup.length !== 0) {
             node_edit_popup.remove();
         }
-        gadget.props.element.appendChild(document.importNode(popup_edit_template.content, true).children[0]);
+        gadget.props.element.insertAdjacentHTML("beforeend", popup_edit_template);
         node_edit_popup = $(gadget.props.element).find("#edit-popup");
         // Set the name of the popup to the node class
         node_edit_popup.find(".node_class").text(node_data._class);
