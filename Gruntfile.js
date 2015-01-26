@@ -14,7 +14,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks("grunt-contrib-uglify");
   grunt.loadNpmTasks('grunt-contrib-watch');
 //   grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-curl');
@@ -74,24 +73,6 @@ module.exports = function (grunt) {
           "<%= global_config.dest %>/toolbox/toolbox.css":
             "<%= global_config.src %>/toolbox/toolbox.css"
         }
-      }
-    },
-
-    concat: {
-      options: {
-        separator: ';'
-      },
-      jio: {
-        src: [
-          'node_modules/jio/src/sha1.amd.js',
-          'node_modules/jio/src/sha2.amd.js',
-          'node_modules/jio/src/sha256.amd.js',
-          'node_modules/jio/jio.js',
-          'node_modules/jio/complex_queries.js',
-          'node_modules/jio/src/jio.storage/localstorage.js'
-        ],
-        relative_dest: "lib/jio.js",
-        dest: "<%= global_config.dest %>/<%= concat.jio.relative_dest %>"
       }
     },
 
@@ -303,6 +284,6 @@ module.exports = function (grunt) {
   grunt.registerTask('lint', ['jslint']);
   grunt.registerTask('dep', ['curl', 'unzip']);
 //   grunt.registerTask('test', ['qunit']);
-  grunt.registerTask('build', ['concat', 'copy', 'uglify', 'less']);
+  grunt.registerTask('build', ['copy', 'uglify', 'less']);
 
 };
