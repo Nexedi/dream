@@ -1,4180 +1,3400 @@
-(function (dependencies, module) {
-  if (typeof define === 'function' && define.amd) {
-    return define(dependencies, module);
-  }
-  if (typeof exports === 'object') {
-    return module(exports);
-  }
-  module(window);
-}(['exports'], function (exports) {
-/*
- * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
- * in FIPS PUB 180-1
- * Version 2.1a Copyright Paul Johnston 2000 - 2002.
- * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
- * Distributed under the BSD License
- * See http://pajhome.org.uk/crypt/md5 for details.
- */
+/*! URI.js v1.12.0 http://medialize.github.com/URI.js/ */
+/* build contains: IPv6.js, punycode.js, SecondLevelDomains.js, URI.js, URI.fragmentQuery.js */
+(function(e,k){"object"===typeof exports?module.exports=k():"function"===typeof define&&define.amd?define(k):e.IPv6=k(e)})(this,function(e){var k=e&&e.IPv6;return{best:function(e){e=e.toLowerCase().split(":");var k=e.length,d=8;""===e[0]&&""===e[1]&&""===e[2]?(e.shift(),e.shift()):""===e[0]&&""===e[1]?e.shift():""===e[k-1]&&""===e[k-2]&&e.pop();k=e.length;-1!==e[k-1].indexOf(".")&&(d=7);var g;for(g=0;g<k&&""!==e[g];g++);if(g<d)for(e.splice(g,1,"0000");e.length<d;)e.splice(g,0,"0000");for(g=0;g<d;g++){for(var k=
+e[g].split(""),q=0;3>q;q++)if("0"===k[0]&&1<k.length)k.splice(0,1);else break;e[g]=k.join("")}var k=-1,l=q=0,r=-1,z=!1;for(g=0;g<d;g++)z?"0"===e[g]?l+=1:(z=!1,l>q&&(k=r,q=l)):"0"==e[g]&&(z=!0,r=g,l=1);l>q&&(k=r,q=l);1<q&&e.splice(k,q,"");k=e.length;d="";""===e[0]&&(beststr=":");for(g=0;g<k;g++){d+=e[g];if(g===k-1)break;d+=":"}""===e[k-1]&&(d+=":");return d},noConflict:function(){e.IPv6===this&&(e.IPv6=k);return this}}});
+(function(e){function k(a){throw RangeError(p[a]);}function u(a,b){for(var c=a.length;c--;)a[c]=b(a[c]);return a}function m(a,b){return u(a.split(h),b).join(".")}function d(a){for(var b=[],c=0,d=a.length,h,p;c<d;)h=a.charCodeAt(c++),55296<=h&&56319>=h&&c<d?(p=a.charCodeAt(c++),56320==(p&64512)?b.push(((h&1023)<<10)+(p&1023)+65536):(b.push(h),c--)):b.push(h);return b}function g(a){return u(a,function(a){var b="";65535<a&&(a-=65536,b+=x(a>>>10&1023|55296),a=56320|a&1023);return b+=x(a)}).join("")}function q(a,
+b){return a+22+75*(26>a)-((0!=b)<<5)}function l(a,b,c){var d=0;a=c?A(a/H):a>>1;for(a+=A(a/b);a>n*y>>1;d+=s)a=A(a/n);return A(d+(n+1)*a/(a+I))}function r(b){var c=[],d=b.length,h,p=0,e=F,f=G,n,x,q,t,m;n=b.lastIndexOf(a);0>n&&(n=0);for(x=0;x<n;++x)128<=b.charCodeAt(x)&&k("not-basic"),c.push(b.charCodeAt(x));for(n=0<n?n+1:0;n<d;){x=p;h=1;for(q=s;;q+=s){n>=d&&k("invalid-input");t=b.charCodeAt(n++);t=10>t-48?t-22:26>t-65?t-65:26>t-97?t-97:s;(t>=s||t>A((w-p)/h))&&k("overflow");p+=t*h;m=q<=f?v:q>=f+y?y:
+q-f;if(t<m)break;t=s-m;h>A(w/t)&&k("overflow");h*=t}h=c.length+1;f=l(p-x,h,0==x);A(p/h)>w-e&&k("overflow");e+=A(p/h);p%=h;c.splice(p++,0,e)}return g(c)}function z(b){var c,h,p,e,f,n,g,m,r,t=[],B,u,z;b=d(b);B=b.length;c=F;h=0;f=G;for(n=0;n<B;++n)r=b[n],128>r&&t.push(x(r));for((p=e=t.length)&&t.push(a);p<B;){g=w;for(n=0;n<B;++n)r=b[n],r>=c&&r<g&&(g=r);u=p+1;g-c>A((w-h)/u)&&k("overflow");h+=(g-c)*u;c=g;for(n=0;n<B;++n)if(r=b[n],r<c&&++h>w&&k("overflow"),r==c){m=h;for(g=s;;g+=s){r=g<=f?v:g>=f+y?y:g-f;
+if(m<r)break;z=m-r;m=s-r;t.push(x(q(r+z%m,0)));m=A(z/m)}t.push(x(q(m,0)));f=l(h,u,p==e);h=0;++p}++h;++c}return t.join("")}var D="object"==typeof exports&&exports,E="object"==typeof module&&module&&module.exports==D&&module,C="object"==typeof global&&global;if(C.global===C||C.window===C)e=C;var f,w=2147483647,s=36,v=1,y=26,I=38,H=700,G=72,F=128,a="-",b=/^xn--/,c=/[^ -~]/,h=/\x2E|\u3002|\uFF0E|\uFF61/g,p={overflow:"Overflow: input needs wider integers to process","not-basic":"Illegal input >= 0x80 (not a basic code point)",
+"invalid-input":"Invalid input"},n=s-v,A=Math.floor,x=String.fromCharCode,B;f={version:"1.2.3",ucs2:{decode:d,encode:g},decode:r,encode:z,toASCII:function(a){return m(a,function(a){return c.test(a)?"xn--"+z(a):a})},toUnicode:function(a){return m(a,function(a){return b.test(a)?r(a.slice(4).toLowerCase()):a})}};if("function"==typeof define&&"object"==typeof define.amd&&define.amd)define(function(){return f});else if(D&&!D.nodeType)if(E)E.exports=f;else for(B in f)f.hasOwnProperty(B)&&(D[B]=f[B]);else e.punycode=
+f})(this);
+(function(e,k){"object"===typeof exports?module.exports=k():"function"===typeof define&&define.amd?define(k):e.SecondLevelDomains=k(e)})(this,function(e){var k=e&&e.SecondLevelDomains,u=Object.prototype.hasOwnProperty,m={list:{ac:"com|gov|mil|net|org",ae:"ac|co|gov|mil|name|net|org|pro|sch",af:"com|edu|gov|net|org",al:"com|edu|gov|mil|net|org",ao:"co|ed|gv|it|og|pb",ar:"com|edu|gob|gov|int|mil|net|org|tur",at:"ac|co|gv|or",au:"asn|com|csiro|edu|gov|id|net|org",ba:"co|com|edu|gov|mil|net|org|rs|unbi|unmo|unsa|untz|unze",bb:"biz|co|com|edu|gov|info|net|org|store|tv",
+bh:"biz|cc|com|edu|gov|info|net|org",bn:"com|edu|gov|net|org",bo:"com|edu|gob|gov|int|mil|net|org|tv",br:"adm|adv|agr|am|arq|art|ato|b|bio|blog|bmd|cim|cng|cnt|com|coop|ecn|edu|eng|esp|etc|eti|far|flog|fm|fnd|fot|fst|g12|ggf|gov|imb|ind|inf|jor|jus|lel|mat|med|mil|mus|net|nom|not|ntr|odo|org|ppg|pro|psc|psi|qsl|rec|slg|srv|tmp|trd|tur|tv|vet|vlog|wiki|zlg",bs:"com|edu|gov|net|org",bz:"du|et|om|ov|rg",ca:"ab|bc|mb|nb|nf|nl|ns|nt|nu|on|pe|qc|sk|yk",ck:"biz|co|edu|gen|gov|info|net|org",cn:"ac|ah|bj|com|cq|edu|fj|gd|gov|gs|gx|gz|ha|hb|he|hi|hl|hn|jl|js|jx|ln|mil|net|nm|nx|org|qh|sc|sd|sh|sn|sx|tj|tw|xj|xz|yn|zj",
+co:"com|edu|gov|mil|net|nom|org",cr:"ac|c|co|ed|fi|go|or|sa",cy:"ac|biz|com|ekloges|gov|ltd|name|net|org|parliament|press|pro|tm","do":"art|com|edu|gob|gov|mil|net|org|sld|web",dz:"art|asso|com|edu|gov|net|org|pol",ec:"com|edu|fin|gov|info|med|mil|net|org|pro",eg:"com|edu|eun|gov|mil|name|net|org|sci",er:"com|edu|gov|ind|mil|net|org|rochest|w",es:"com|edu|gob|nom|org",et:"biz|com|edu|gov|info|name|net|org",fj:"ac|biz|com|info|mil|name|net|org|pro",fk:"ac|co|gov|net|nom|org",fr:"asso|com|f|gouv|nom|prd|presse|tm",
+gg:"co|net|org",gh:"com|edu|gov|mil|org",gn:"ac|com|gov|net|org",gr:"com|edu|gov|mil|net|org",gt:"com|edu|gob|ind|mil|net|org",gu:"com|edu|gov|net|org",hk:"com|edu|gov|idv|net|org",id:"ac|co|go|mil|net|or|sch|web",il:"ac|co|gov|idf|k12|muni|net|org","in":"ac|co|edu|ernet|firm|gen|gov|i|ind|mil|net|nic|org|res",iq:"com|edu|gov|i|mil|net|org",ir:"ac|co|dnssec|gov|i|id|net|org|sch",it:"edu|gov",je:"co|net|org",jo:"com|edu|gov|mil|name|net|org|sch",jp:"ac|ad|co|ed|go|gr|lg|ne|or",ke:"ac|co|go|info|me|mobi|ne|or|sc",
+kh:"com|edu|gov|mil|net|org|per",ki:"biz|com|de|edu|gov|info|mob|net|org|tel",km:"asso|com|coop|edu|gouv|k|medecin|mil|nom|notaires|pharmaciens|presse|tm|veterinaire",kn:"edu|gov|net|org",kr:"ac|busan|chungbuk|chungnam|co|daegu|daejeon|es|gangwon|go|gwangju|gyeongbuk|gyeonggi|gyeongnam|hs|incheon|jeju|jeonbuk|jeonnam|k|kg|mil|ms|ne|or|pe|re|sc|seoul|ulsan",kw:"com|edu|gov|net|org",ky:"com|edu|gov|net|org",kz:"com|edu|gov|mil|net|org",lb:"com|edu|gov|net|org",lk:"assn|com|edu|gov|grp|hotel|int|ltd|net|ngo|org|sch|soc|web",
+lr:"com|edu|gov|net|org",lv:"asn|com|conf|edu|gov|id|mil|net|org",ly:"com|edu|gov|id|med|net|org|plc|sch",ma:"ac|co|gov|m|net|org|press",mc:"asso|tm",me:"ac|co|edu|gov|its|net|org|priv",mg:"com|edu|gov|mil|nom|org|prd|tm",mk:"com|edu|gov|inf|name|net|org|pro",ml:"com|edu|gov|net|org|presse",mn:"edu|gov|org",mo:"com|edu|gov|net|org",mt:"com|edu|gov|net|org",mv:"aero|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro",mw:"ac|co|com|coop|edu|gov|int|museum|net|org",mx:"com|edu|gob|net|org",my:"com|edu|gov|mil|name|net|org|sch",
+nf:"arts|com|firm|info|net|other|per|rec|store|web",ng:"biz|com|edu|gov|mil|mobi|name|net|org|sch",ni:"ac|co|com|edu|gob|mil|net|nom|org",np:"com|edu|gov|mil|net|org",nr:"biz|com|edu|gov|info|net|org",om:"ac|biz|co|com|edu|gov|med|mil|museum|net|org|pro|sch",pe:"com|edu|gob|mil|net|nom|org|sld",ph:"com|edu|gov|i|mil|net|ngo|org",pk:"biz|com|edu|fam|gob|gok|gon|gop|gos|gov|net|org|web",pl:"art|bialystok|biz|com|edu|gda|gdansk|gorzow|gov|info|katowice|krakow|lodz|lublin|mil|net|ngo|olsztyn|org|poznan|pwr|radom|slupsk|szczecin|torun|warszawa|waw|wroc|wroclaw|zgora",
+pr:"ac|biz|com|edu|est|gov|info|isla|name|net|org|pro|prof",ps:"com|edu|gov|net|org|plo|sec",pw:"belau|co|ed|go|ne|or",ro:"arts|com|firm|info|nom|nt|org|rec|store|tm|www",rs:"ac|co|edu|gov|in|org",sb:"com|edu|gov|net|org",sc:"com|edu|gov|net|org",sh:"co|com|edu|gov|net|nom|org",sl:"com|edu|gov|net|org",st:"co|com|consulado|edu|embaixada|gov|mil|net|org|principe|saotome|store",sv:"com|edu|gob|org|red",sz:"ac|co|org",tr:"av|bbs|bel|biz|com|dr|edu|gen|gov|info|k12|name|net|org|pol|tel|tsk|tv|web",tt:"aero|biz|cat|co|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel",
+tw:"club|com|ebiz|edu|game|gov|idv|mil|net|org",mu:"ac|co|com|gov|net|or|org",mz:"ac|co|edu|gov|org",na:"co|com",nz:"ac|co|cri|geek|gen|govt|health|iwi|maori|mil|net|org|parliament|school",pa:"abo|ac|com|edu|gob|ing|med|net|nom|org|sld",pt:"com|edu|gov|int|net|nome|org|publ",py:"com|edu|gov|mil|net|org",qa:"com|edu|gov|mil|net|org",re:"asso|com|nom",ru:"ac|adygeya|altai|amur|arkhangelsk|astrakhan|bashkiria|belgorod|bir|bryansk|buryatia|cbg|chel|chelyabinsk|chita|chukotka|chuvashia|com|dagestan|e-burg|edu|gov|grozny|int|irkutsk|ivanovo|izhevsk|jar|joshkar-ola|kalmykia|kaluga|kamchatka|karelia|kazan|kchr|kemerovo|khabarovsk|khakassia|khv|kirov|koenig|komi|kostroma|kranoyarsk|kuban|kurgan|kursk|lipetsk|magadan|mari|mari-el|marine|mil|mordovia|mosreg|msk|murmansk|nalchik|net|nnov|nov|novosibirsk|nsk|omsk|orenburg|org|oryol|penza|perm|pp|pskov|ptz|rnd|ryazan|sakhalin|samara|saratov|simbirsk|smolensk|spb|stavropol|stv|surgut|tambov|tatarstan|tom|tomsk|tsaritsyn|tsk|tula|tuva|tver|tyumen|udm|udmurtia|ulan-ude|vladikavkaz|vladimir|vladivostok|volgograd|vologda|voronezh|vrn|vyatka|yakutia|yamal|yekaterinburg|yuzhno-sakhalinsk",
+rw:"ac|co|com|edu|gouv|gov|int|mil|net",sa:"com|edu|gov|med|net|org|pub|sch",sd:"com|edu|gov|info|med|net|org|tv",se:"a|ac|b|bd|c|d|e|f|g|h|i|k|l|m|n|o|org|p|parti|pp|press|r|s|t|tm|u|w|x|y|z",sg:"com|edu|gov|idn|net|org|per",sn:"art|com|edu|gouv|org|perso|univ",sy:"com|edu|gov|mil|net|news|org",th:"ac|co|go|in|mi|net|or",tj:"ac|biz|co|com|edu|go|gov|info|int|mil|name|net|nic|org|test|web",tn:"agrinet|com|defense|edunet|ens|fin|gov|ind|info|intl|mincom|nat|net|org|perso|rnrt|rns|rnu|tourism",tz:"ac|co|go|ne|or",
+ua:"biz|cherkassy|chernigov|chernovtsy|ck|cn|co|com|crimea|cv|dn|dnepropetrovsk|donetsk|dp|edu|gov|if|in|ivano-frankivsk|kh|kharkov|kherson|khmelnitskiy|kiev|kirovograd|km|kr|ks|kv|lg|lugansk|lutsk|lviv|me|mk|net|nikolaev|od|odessa|org|pl|poltava|pp|rovno|rv|sebastopol|sumy|te|ternopil|uzhgorod|vinnica|vn|zaporizhzhe|zhitomir|zp|zt",ug:"ac|co|go|ne|or|org|sc",uk:"ac|bl|british-library|co|cym|gov|govt|icnet|jet|lea|ltd|me|mil|mod|national-library-scotland|nel|net|nhs|nic|nls|org|orgn|parliament|plc|police|sch|scot|soc",
+us:"dni|fed|isa|kids|nsn",uy:"com|edu|gub|mil|net|org",ve:"co|com|edu|gob|info|mil|net|org|web",vi:"co|com|k12|net|org",vn:"ac|biz|com|edu|gov|health|info|int|name|net|org|pro",ye:"co|com|gov|ltd|me|net|org|plc",yu:"ac|co|edu|gov|org",za:"ac|agric|alt|bourse|city|co|cybernet|db|edu|gov|grondar|iaccess|imt|inca|landesign|law|mil|net|ngo|nis|nom|olivetti|org|pix|school|tm|web",zm:"ac|co|com|edu|gov|net|org|sch"},has_expression:null,is_expression:null,has:function(d){return!!d.match(m.has_expression)},
+is:function(d){return!!d.match(m.is_expression)},get:function(d){return(d=d.match(m.has_expression))&&d[1]||null},noConflict:function(){e.SecondLevelDomains===this&&(e.SecondLevelDomains=k);return this},init:function(){var d="",e;for(e in m.list)u.call(m.list,e)&&(d+="|("+("("+m.list[e]+")."+e)+")");m.has_expression=RegExp("\\.("+d.substr(1)+")$","i");m.is_expression=RegExp("^("+d.substr(1)+")$","i")}};m.init();return m});
+(function(e,k){"object"===typeof exports?module.exports=k(require("./punycode"),require("./IPv6"),require("./SecondLevelDomains")):"function"===typeof define&&define.amd?define(["./punycode","./IPv6","./SecondLevelDomains"],k):e.URI=k(e.punycode,e.IPv6,e.SecondLevelDomains,e)})(this,function(e,k,u,m){function d(a,b){if(!(this instanceof d))return new d(a,b);void 0===a&&(a="undefined"!==typeof location?location.href+"":"");this.href(a);return void 0!==b?this.absoluteTo(b):this}function g(a){return a.replace(/([.*+?^=!:${}()|[\]\/\\])/g,
+"\\$1")}function q(a){return void 0===a?"Undefined":String(Object.prototype.toString.call(a)).slice(8,-1)}function l(a){return"Array"===q(a)}function r(a,b){var c,d;if(l(b)){c=0;for(d=b.length;c<d;c++)if(!r(a,b[c]))return!1;return!0}var p=q(b);c=0;for(d=a.length;c<d;c++)if("RegExp"===p){if("string"===typeof a[c]&&a[c].match(b))return!0}else if(a[c]===b)return!0;return!1}function z(a,b){if(!l(a)||!l(b)||a.length!==b.length)return!1;a.sort();b.sort();for(var c=0,d=a.length;c<d;c++)if(a[c]!==b[c])return!1;
+return!0}function D(a){return escape(a)}function E(a){return encodeURIComponent(a).replace(/[!'()*]/g,D).replace(/\*/g,"%2A")}var C=m&&m.URI;d.version="1.12.0";var f=d.prototype,w=Object.prototype.hasOwnProperty;d._parts=function(){return{protocol:null,username:null,password:null,hostname:null,urn:null,port:null,path:null,query:null,fragment:null,duplicateQueryParameters:d.duplicateQueryParameters,escapeQuerySpace:d.escapeQuerySpace}};d.duplicateQueryParameters=!1;d.escapeQuerySpace=!0;d.protocol_expression=
+/^[a-z][a-z0-9.+-]*$/i;d.idn_expression=/[^a-z0-9\.-]/i;d.punycode_expression=/(xn--)/i;d.ip4_expression=/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;d.ip6_expression=/^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
+d.find_uri_expression=/\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?\u00ab\u00bb\u201c\u201d\u2018\u2019]))/ig;d.findUri={start:/\b(?:([a-z][a-z0-9.+-]*:\/\/)|www\.)/gi,end:/[\s\r\n]|$/,trim:/[`!()\[\]{};:'".,<>?\u00ab\u00bb\u201c\u201d\u201e\u2018\u2019]+$/};d.defaultPorts={http:"80",https:"443",ftp:"21",gopher:"70",ws:"80",wss:"443"};d.invalid_hostname_characters=
+/[^a-zA-Z0-9\.-]/;d.domAttributes={a:"href",blockquote:"cite",link:"href",base:"href",script:"src",form:"action",img:"src",area:"href",iframe:"src",embed:"src",source:"src",track:"src",input:"src"};d.getDomAttribute=function(a){if(a&&a.nodeName){var b=a.nodeName.toLowerCase();return"input"===b&&"image"!==a.type?void 0:d.domAttributes[b]}};d.encode=E;d.decode=decodeURIComponent;d.iso8859=function(){d.encode=escape;d.decode=unescape};d.unicode=function(){d.encode=E;d.decode=decodeURIComponent};d.characters=
+{pathname:{encode:{expression:/%(24|26|2B|2C|3B|3D|3A|40)/ig,map:{"%24":"$","%26":"&","%2B":"+","%2C":",","%3B":";","%3D":"=","%3A":":","%40":"@"}},decode:{expression:/[\/\?#]/g,map:{"/":"%2F","?":"%3F","#":"%23"}}},reserved:{encode:{expression:/%(21|23|24|26|27|28|29|2A|2B|2C|2F|3A|3B|3D|3F|40|5B|5D)/ig,map:{"%3A":":","%2F":"/","%3F":"?","%23":"#","%5B":"[","%5D":"]","%40":"@","%21":"!","%24":"$","%26":"&","%27":"'","%28":"(","%29":")","%2A":"*","%2B":"+","%2C":",","%3B":";","%3D":"="}}}};d.encodeQuery=
+function(a,b){var c=d.encode(a+"");return b?c.replace(/%20/g,"+"):c};d.decodeQuery=function(a,b){a+="";try{return d.decode(b?a.replace(/\+/g,"%20"):a)}catch(c){return a}};d.recodePath=function(a){a=(a+"").split("/");for(var b=0,c=a.length;b<c;b++)a[b]=d.encodePathSegment(d.decode(a[b]));return a.join("/")};d.decodePath=function(a){a=(a+"").split("/");for(var b=0,c=a.length;b<c;b++)a[b]=d.decodePathSegment(a[b]);return a.join("/")};var s={encode:"encode",decode:"decode"},v,y=function(a,b){return function(c){return d[b](c+
+"").replace(d.characters[a][b].expression,function(c){return d.characters[a][b].map[c]})}};for(v in s)d[v+"PathSegment"]=y("pathname",s[v]);d.encodeReserved=y("reserved","encode");d.parse=function(a,b){var c;b||(b={});c=a.indexOf("#");-1<c&&(b.fragment=a.substring(c+1)||null,a=a.substring(0,c));c=a.indexOf("?");-1<c&&(b.query=a.substring(c+1)||null,a=a.substring(0,c));"//"===a.substring(0,2)?(b.protocol=null,a=a.substring(2),a=d.parseAuthority(a,b)):(c=a.indexOf(":"),-1<c&&(b.protocol=a.substring(0,
+c)||null,b.protocol&&!b.protocol.match(d.protocol_expression)?b.protocol=void 0:"file"===b.protocol?a=a.substring(c+3):"//"===a.substring(c+1,c+3)?(a=a.substring(c+3),a=d.parseAuthority(a,b)):(a=a.substring(c+1),b.urn=!0)));b.path=a;return b};d.parseHost=function(a,b){var c=a.indexOf("/"),d;-1===c&&(c=a.length);"["===a.charAt(0)?(d=a.indexOf("]"),b.hostname=a.substring(1,d)||null,b.port=a.substring(d+2,c)||null):a.indexOf(":")!==a.lastIndexOf(":")?(b.hostname=a.substring(0,c)||null,b.port=null):(d=
+a.substring(0,c).split(":"),b.hostname=d[0]||null,b.port=d[1]||null);b.hostname&&"/"!==a.substring(c).charAt(0)&&(c++,a="/"+a);return a.substring(c)||"/"};d.parseAuthority=function(a,b){a=d.parseUserinfo(a,b);return d.parseHost(a,b)};d.parseUserinfo=function(a,b){var c=a.indexOf("/"),h=-1<c?a.lastIndexOf("@",c):a.indexOf("@");-1<h&&(-1===c||h<c)?(c=a.substring(0,h).split(":"),b.username=c[0]?d.decode(c[0]):null,c.shift(),b.password=c[0]?d.decode(c.join(":")):null,a=a.substring(h+1)):(b.username=null,
+b.password=null);return a};d.parseQuery=function(a,b){if(!a)return{};a=a.replace(/&+/g,"&").replace(/^\?*&*|&+$/g,"");if(!a)return{};for(var c={},h=a.split("&"),p=h.length,n,e,f=0;f<p;f++)n=h[f].split("="),e=d.decodeQuery(n.shift(),b),n=n.length?d.decodeQuery(n.join("="),b):null,c[e]?("string"===typeof c[e]&&(c[e]=[c[e]]),c[e].push(n)):c[e]=n;return c};d.build=function(a){var b="";a.protocol&&(b+=a.protocol+":");a.urn||!b&&!a.hostname||(b+="//");b+=d.buildAuthority(a)||"";"string"===typeof a.path&&
+("/"!==a.path.charAt(0)&&"string"===typeof a.hostname&&(b+="/"),b+=a.path);"string"===typeof a.query&&a.query&&(b+="?"+a.query);"string"===typeof a.fragment&&a.fragment&&(b+="#"+a.fragment);return b};d.buildHost=function(a){var b="";if(a.hostname)d.ip6_expression.test(a.hostname)?b=a.port?b+("["+a.hostname+"]:"+a.port):b+a.hostname:(b+=a.hostname,a.port&&(b+=":"+a.port));else return"";return b};d.buildAuthority=function(a){return d.buildUserinfo(a)+d.buildHost(a)};d.buildUserinfo=function(a){var b=
+"";a.username&&(b+=d.encode(a.username),a.password&&(b+=":"+d.encode(a.password)),b+="@");return b};d.buildQuery=function(a,b,c){var h="",p,e,f,k;for(e in a)if(w.call(a,e)&&e)if(l(a[e]))for(p={},f=0,k=a[e].length;f<k;f++)void 0!==a[e][f]&&void 0===p[a[e][f]+""]&&(h+="&"+d.buildQueryParameter(e,a[e][f],c),!0!==b&&(p[a[e][f]+""]=!0));else void 0!==a[e]&&(h+="&"+d.buildQueryParameter(e,a[e],c));return h.substring(1)};d.buildQueryParameter=function(a,b,c){return d.encodeQuery(a,c)+(null!==b?"="+d.encodeQuery(b,
+c):"")};d.addQuery=function(a,b,c){if("object"===typeof b)for(var h in b)w.call(b,h)&&d.addQuery(a,h,b[h]);else if("string"===typeof b)void 0===a[b]?a[b]=c:("string"===typeof a[b]&&(a[b]=[a[b]]),l(c)||(c=[c]),a[b]=a[b].concat(c));else throw new TypeError("URI.addQuery() accepts an object, string as the name parameter");};d.removeQuery=function(a,b,c){var h;if(l(b))for(c=0,h=b.length;c<h;c++)a[b[c]]=void 0;else if("object"===typeof b)for(h in b)w.call(b,h)&&d.removeQuery(a,h,b[h]);else if("string"===
+typeof b)if(void 0!==c)if(a[b]===c)a[b]=void 0;else{if(l(a[b])){h=a[b];var p={},e,f;if(l(c))for(e=0,f=c.length;e<f;e++)p[c[e]]=!0;else p[c]=!0;e=0;for(f=h.length;e<f;e++)void 0!==p[h[e]]&&(h.splice(e,1),f--,e--);a[b]=h}}else a[b]=void 0;else throw new TypeError("URI.addQuery() accepts an object, string as the first parameter");};d.hasQuery=function(a,b,c,h){if("object"===typeof b){for(var e in b)if(w.call(b,e)&&!d.hasQuery(a,e,b[e]))return!1;return!0}if("string"!==typeof b)throw new TypeError("URI.hasQuery() accepts an object, string as the name parameter");
+switch(q(c)){case "Undefined":return b in a;case "Boolean":return a=Boolean(l(a[b])?a[b].length:a[b]),c===a;case "Function":return!!c(a[b],b,a);case "Array":return l(a[b])?(h?r:z)(a[b],c):!1;case "RegExp":return l(a[b])?h?r(a[b],c):!1:Boolean(a[b]&&a[b].match(c));case "Number":c=String(c);case "String":return l(a[b])?h?r(a[b],c):!1:a[b]===c;default:throw new TypeError("URI.hasQuery() accepts undefined, boolean, string, number, RegExp, Function as the value parameter");}};d.commonPath=function(a,b){var c=
+Math.min(a.length,b.length),d;for(d=0;d<c;d++)if(a.charAt(d)!==b.charAt(d)){d--;break}if(1>d)return a.charAt(0)===b.charAt(0)&&"/"===a.charAt(0)?"/":"";if("/"!==a.charAt(d)||"/"!==b.charAt(d))d=a.substring(0,d).lastIndexOf("/");return a.substring(0,d+1)};d.withinString=function(a,b,c){c||(c={});var h=c.start||d.findUri.start,e=c.end||d.findUri.end,f=c.trim||d.findUri.trim,k=/[a-z0-9-]=["']?$/i;for(h.lastIndex=0;;){var g=h.exec(a);if(!g)break;g=g.index;if(c.ignoreHtml){var l=a.slice(Math.max(g-3,0),
+g);if(l&&k.test(l))continue}var l=g+a.slice(g).search(e),q=a.slice(g,l).replace(f,"");c.ignore&&c.ignore.test(q)||(l=g+q.length,q=b(q,g,l,a),a=a.slice(0,g)+q+a.slice(l),h.lastIndex=g+q.length)}h.lastIndex=0;return a};d.ensureValidHostname=function(a){if(a.match(d.invalid_hostname_characters)){if(!e)throw new TypeError("Hostname '"+a+"' contains characters other than [A-Z0-9.-] and Punycode.js is not available");if(e.toASCII(a).match(d.invalid_hostname_characters))throw new TypeError("Hostname '"+
+a+"' contains characters other than [A-Z0-9.-]");}};d.noConflict=function(a){if(a)return a={URI:this.noConflict()},URITemplate&&"function"==typeof URITemplate.noConflict&&(a.URITemplate=URITemplate.noConflict()),k&&"function"==typeof k.noConflict&&(a.IPv6=k.noConflict()),SecondLevelDomains&&"function"==typeof SecondLevelDomains.noConflict&&(a.SecondLevelDomains=SecondLevelDomains.noConflict()),a;m.URI===this&&(m.URI=C);return this};f.build=function(a){if(!0===a)this._deferred_build=!0;else if(void 0===
+a||this._deferred_build)this._string=d.build(this._parts),this._deferred_build=!1;return this};f.clone=function(){return new d(this)};f.valueOf=f.toString=function(){return this.build(!1)._string};s={protocol:"protocol",username:"username",password:"password",hostname:"hostname",port:"port"};y=function(a){return function(b,c){if(void 0===b)return this._parts[a]||"";this._parts[a]=b||null;this.build(!c);return this}};for(v in s)f[v]=y(s[v]);s={query:"?",fragment:"#"};y=function(a,b){return function(c,
+d){if(void 0===c)return this._parts[a]||"";null!==c&&(c+="",c.charAt(0)===b&&(c=c.substring(1)));this._parts[a]=c;this.build(!d);return this}};for(v in s)f[v]=y(v,s[v]);s={search:["?","query"],hash:["#","fragment"]};y=function(a,b){return function(c,d){var e=this[a](c,d);return"string"===typeof e&&e.length?b+e:e}};for(v in s)f[v]=y(s[v][1],s[v][0]);f.pathname=function(a,b){if(void 0===a||!0===a){var c=this._parts.path||(this._parts.hostname?"/":"");return a?d.decodePath(c):c}this._parts.path=a?d.recodePath(a):
+"/";this.build(!b);return this};f.path=f.pathname;f.href=function(a,b){var c;if(void 0===a)return this.toString();this._string="";this._parts=d._parts();var h=a instanceof d,e="object"===typeof a&&(a.hostname||a.path||a.pathname);a.nodeName&&(e=d.getDomAttribute(a),a=a[e]||"",e=!1);!h&&e&&void 0!==a.pathname&&(a=a.toString());if("string"===typeof a)this._parts=d.parse(a,this._parts);else if(h||e)for(c in h=h?a._parts:a,h)w.call(this._parts,c)&&(this._parts[c]=h[c]);else throw new TypeError("invalid input");
+this.build(!b);return this};f.is=function(a){var b=!1,c=!1,h=!1,e=!1,f=!1,g=!1,k=!1,l=!this._parts.urn;this._parts.hostname&&(l=!1,c=d.ip4_expression.test(this._parts.hostname),h=d.ip6_expression.test(this._parts.hostname),b=c||h,f=(e=!b)&&u&&u.has(this._parts.hostname),g=e&&d.idn_expression.test(this._parts.hostname),k=e&&d.punycode_expression.test(this._parts.hostname));switch(a.toLowerCase()){case "relative":return l;case "absolute":return!l;case "domain":case "name":return e;case "sld":return f;
+case "ip":return b;case "ip4":case "ipv4":case "inet4":return c;case "ip6":case "ipv6":case "inet6":return h;case "idn":return g;case "url":return!this._parts.urn;case "urn":return!!this._parts.urn;case "punycode":return k}return null};var I=f.protocol,H=f.port,G=f.hostname;f.protocol=function(a,b){if(void 0!==a&&a&&(a=a.replace(/:(\/\/)?$/,""),!a.match(d.protocol_expression)))throw new TypeError("Protocol '"+a+"' contains characters other than [A-Z0-9.+-] or doesn't start with [A-Z]");return I.call(this,
+a,b)};f.scheme=f.protocol;f.port=function(a,b){if(this._parts.urn)return void 0===a?"":this;if(void 0!==a&&(0===a&&(a=null),a&&(a+="",":"===a.charAt(0)&&(a=a.substring(1)),a.match(/[^0-9]/))))throw new TypeError("Port '"+a+"' contains characters other than [0-9]");return H.call(this,a,b)};f.hostname=function(a,b){if(this._parts.urn)return void 0===a?"":this;if(void 0!==a){var c={};d.parseHost(a,c);a=c.hostname}return G.call(this,a,b)};f.host=function(a,b){if(this._parts.urn)return void 0===a?"":this;
+if(void 0===a)return this._parts.hostname?d.buildHost(this._parts):"";d.parseHost(a,this._parts);this.build(!b);return this};f.authority=function(a,b){if(this._parts.urn)return void 0===a?"":this;if(void 0===a)return this._parts.hostname?d.buildAuthority(this._parts):"";d.parseAuthority(a,this._parts);this.build(!b);return this};f.userinfo=function(a,b){if(this._parts.urn)return void 0===a?"":this;if(void 0===a){if(!this._parts.username)return"";var c=d.buildUserinfo(this._parts);return c.substring(0,
+c.length-1)}"@"!==a[a.length-1]&&(a+="@");d.parseUserinfo(a,this._parts);this.build(!b);return this};f.resource=function(a,b){var c;if(void 0===a)return this.path()+this.search()+this.hash();c=d.parse(a);this._parts.path=c.path;this._parts.query=c.query;this._parts.fragment=c.fragment;this.build(!b);return this};f.subdomain=function(a,b){if(this._parts.urn)return void 0===a?"":this;if(void 0===a){if(!this._parts.hostname||this.is("IP"))return"";var c=this._parts.hostname.length-this.domain().length-
+1;return this._parts.hostname.substring(0,c)||""}c=this._parts.hostname.length-this.domain().length;c=this._parts.hostname.substring(0,c);c=RegExp("^"+g(c));a&&"."!==a.charAt(a.length-1)&&(a+=".");a&&d.ensureValidHostname(a);this._parts.hostname=this._parts.hostname.replace(c,a);this.build(!b);return this};f.domain=function(a,b){if(this._parts.urn)return void 0===a?"":this;"boolean"===typeof a&&(b=a,a=void 0);if(void 0===a){if(!this._parts.hostname||this.is("IP"))return"";var c=this._parts.hostname.match(/\./g);
+if(c&&2>c.length)return this._parts.hostname;c=this._parts.hostname.length-this.tld(b).length-1;c=this._parts.hostname.lastIndexOf(".",c-1)+1;return this._parts.hostname.substring(c)||""}if(!a)throw new TypeError("cannot set domain empty");d.ensureValidHostname(a);!this._parts.hostname||this.is("IP")?this._parts.hostname=a:(c=RegExp(g(this.domain())+"$"),this._parts.hostname=this._parts.hostname.replace(c,a));this.build(!b);return this};f.tld=function(a,b){if(this._parts.urn)return void 0===a?"":
+this;"boolean"===typeof a&&(b=a,a=void 0);if(void 0===a){if(!this._parts.hostname||this.is("IP"))return"";var c=this._parts.hostname.lastIndexOf("."),c=this._parts.hostname.substring(c+1);return!0!==b&&u&&u.list[c.toLowerCase()]?u.get(this._parts.hostname)||c:c}if(a)if(a.match(/[^a-zA-Z0-9-]/))if(u&&u.is(a))c=RegExp(g(this.tld())+"$"),this._parts.hostname=this._parts.hostname.replace(c,a);else throw new TypeError("TLD '"+a+"' contains characters other than [A-Z0-9]");else{if(!this._parts.hostname||
+this.is("IP"))throw new ReferenceError("cannot set TLD on non-domain host");c=RegExp(g(this.tld())+"$");this._parts.hostname=this._parts.hostname.replace(c,a)}else throw new TypeError("cannot set TLD empty");this.build(!b);return this};f.directory=function(a,b){if(this._parts.urn)return void 0===a?"":this;if(void 0===a||!0===a){if(!this._parts.path&&!this._parts.hostname)return"";if("/"===this._parts.path)return"/";var c=this._parts.path.length-this.filename().length-1,c=this._parts.path.substring(0,
+c)||(this._parts.hostname?"/":"");return a?d.decodePath(c):c}c=this._parts.path.length-this.filename().length;c=this._parts.path.substring(0,c);c=RegExp("^"+g(c));this.is("relative")||(a||(a="/"),"/"!==a.charAt(0)&&(a="/"+a));a&&"/"!==a.charAt(a.length-1)&&(a+="/");a=d.recodePath(a);this._parts.path=this._parts.path.replace(c,a);this.build(!b);return this};f.filename=function(a,b){if(this._parts.urn)return void 0===a?"":this;if(void 0===a||!0===a){if(!this._parts.path||"/"===this._parts.path)return"";
+var c=this._parts.path.lastIndexOf("/"),c=this._parts.path.substring(c+1);return a?d.decodePathSegment(c):c}c=!1;"/"===a.charAt(0)&&(a=a.substring(1));a.match(/\.?\//)&&(c=!0);var h=RegExp(g(this.filename())+"$");a=d.recodePath(a);this._parts.path=this._parts.path.replace(h,a);c?this.normalizePath(b):this.build(!b);return this};f.suffix=function(a,b){if(this._parts.urn)return void 0===a?"":this;if(void 0===a||!0===a){if(!this._parts.path||"/"===this._parts.path)return"";var c=this.filename(),h=c.lastIndexOf(".");
+if(-1===h)return"";c=c.substring(h+1);c=/^[a-z0-9%]+$/i.test(c)?c:"";return a?d.decodePathSegment(c):c}"."===a.charAt(0)&&(a=a.substring(1));if(c=this.suffix())h=a?RegExp(g(c)+"$"):RegExp(g("."+c)+"$");else{if(!a)return this;this._parts.path+="."+d.recodePath(a)}h&&(a=d.recodePath(a),this._parts.path=this._parts.path.replace(h,a));this.build(!b);return this};f.segment=function(a,b,c){var d=this._parts.urn?":":"/",e=this.path(),f="/"===e.substring(0,1),e=e.split(d);void 0!==a&&"number"!==typeof a&&
+(c=b,b=a,a=void 0);if(void 0!==a&&"number"!==typeof a)throw Error("Bad segment '"+a+"', must be 0-based integer");f&&e.shift();0>a&&(a=Math.max(e.length+a,0));if(void 0===b)return void 0===a?e:e[a];if(null===a||void 0===e[a])if(l(b)){e=[];a=0;for(var g=b.length;a<g;a++)if(b[a].length||e.length&&e[e.length-1].length)e.length&&!e[e.length-1].length&&e.pop(),e.push(b[a])}else{if(b||"string"===typeof b)""===e[e.length-1]?e[e.length-1]=b:e.push(b)}else b||"string"===typeof b&&b.length?e[a]=b:e.splice(a,
+1);f&&e.unshift("");return this.path(e.join(d),c)};f.segmentCoded=function(a,b,c){var e,f;"number"!==typeof a&&(c=b,b=a,a=void 0);if(void 0===b){a=this.segment(a,b,c);if(l(a))for(e=0,f=a.length;e<f;e++)a[e]=d.decode(a[e]);else a=void 0!==a?d.decode(a):void 0;return a}if(l(b))for(e=0,f=b.length;e<f;e++)b[e]=d.decode(b[e]);else b="string"===typeof b?d.encode(b):b;return this.segment(a,b,c)};var F=f.query;f.query=function(a,b){if(!0===a)return d.parseQuery(this._parts.query,this._parts.escapeQuerySpace);
+if("function"===typeof a){var c=d.parseQuery(this._parts.query,this._parts.escapeQuerySpace),e=a.call(this,c);this._parts.query=d.buildQuery(e||c,this._parts.duplicateQueryParameters,this._parts.escapeQuerySpace);this.build(!b);return this}return void 0!==a&&"string"!==typeof a?(this._parts.query=d.buildQuery(a,this._parts.duplicateQueryParameters,this._parts.escapeQuerySpace),this.build(!b),this):F.call(this,a,b)};f.setQuery=function(a,b,c){var e=d.parseQuery(this._parts.query,this._parts.escapeQuerySpace);
+if("object"===typeof a)for(var f in a)w.call(a,f)&&(e[f]=a[f]);else if("string"===typeof a)e[a]=void 0!==b?b:null;else throw new TypeError("URI.addQuery() accepts an object, string as the name parameter");this._parts.query=d.buildQuery(e,this._parts.duplicateQueryParameters,this._parts.escapeQuerySpace);"string"!==typeof a&&(c=b);this.build(!c);return this};f.addQuery=function(a,b,c){var e=d.parseQuery(this._parts.query,this._parts.escapeQuerySpace);d.addQuery(e,a,void 0===b?null:b);this._parts.query=
+d.buildQuery(e,this._parts.duplicateQueryParameters,this._parts.escapeQuerySpace);"string"!==typeof a&&(c=b);this.build(!c);return this};f.removeQuery=function(a,b,c){var e=d.parseQuery(this._parts.query,this._parts.escapeQuerySpace);d.removeQuery(e,a,b);this._parts.query=d.buildQuery(e,this._parts.duplicateQueryParameters,this._parts.escapeQuerySpace);"string"!==typeof a&&(c=b);this.build(!c);return this};f.hasQuery=function(a,b,c){var e=d.parseQuery(this._parts.query,this._parts.escapeQuerySpace);
+return d.hasQuery(e,a,b,c)};f.setSearch=f.setQuery;f.addSearch=f.addQuery;f.removeSearch=f.removeQuery;f.hasSearch=f.hasQuery;f.normalize=function(){return this._parts.urn?this.normalizeProtocol(!1).normalizeQuery(!1).normalizeFragment(!1).build():this.normalizeProtocol(!1).normalizeHostname(!1).normalizePort(!1).normalizePath(!1).normalizeQuery(!1).normalizeFragment(!1).build()};f.normalizeProtocol=function(a){"string"===typeof this._parts.protocol&&(this._parts.protocol=this._parts.protocol.toLowerCase(),
+this.build(!a));return this};f.normalizeHostname=function(a){this._parts.hostname&&(this.is("IDN")&&e?this._parts.hostname=e.toASCII(this._parts.hostname):this.is("IPv6")&&k&&(this._parts.hostname=k.best(this._parts.hostname)),this._parts.hostname=this._parts.hostname.toLowerCase(),this.build(!a));return this};f.normalizePort=function(a){"string"===typeof this._parts.protocol&&this._parts.port===d.defaultPorts[this._parts.protocol]&&(this._parts.port=null,this.build(!a));return this};f.normalizePath=
+function(a){if(this._parts.urn||!this._parts.path||"/"===this._parts.path)return this;var b,c=this._parts.path,e="",f,g;"/"!==c.charAt(0)&&(b=!0,c="/"+c);c=c.replace(/(\/(\.\/)+)|(\/\.$)/g,"/").replace(/\/{2,}/g,"/");b&&(e=c.substring(1).match(/^(\.\.\/)+/)||"")&&(e=e[0]);for(;;){f=c.indexOf("/..");if(-1===f)break;else if(0===f){c=c.substring(3);continue}g=c.substring(0,f).lastIndexOf("/");-1===g&&(g=f);c=c.substring(0,g)+c.substring(f+3)}b&&this.is("relative")&&(c=e+c.substring(1));c=d.recodePath(c);
+this._parts.path=c;this.build(!a);return this};f.normalizePathname=f.normalizePath;f.normalizeQuery=function(a){"string"===typeof this._parts.query&&(this._parts.query.length?this.query(d.parseQuery(this._parts.query,this._parts.escapeQuerySpace)):this._parts.query=null,this.build(!a));return this};f.normalizeFragment=function(a){this._parts.fragment||(this._parts.fragment=null,this.build(!a));return this};f.normalizeSearch=f.normalizeQuery;f.normalizeHash=f.normalizeFragment;f.iso8859=function(){var a=
+d.encode,b=d.decode;d.encode=escape;d.decode=decodeURIComponent;this.normalize();d.encode=a;d.decode=b;return this};f.unicode=function(){var a=d.encode,b=d.decode;d.encode=E;d.decode=unescape;this.normalize();d.encode=a;d.decode=b;return this};f.readable=function(){var a=this.clone();a.username("").password("").normalize();var b="";a._parts.protocol&&(b+=a._parts.protocol+"://");a._parts.hostname&&(a.is("punycode")&&e?(b+=e.toUnicode(a._parts.hostname),a._parts.port&&(b+=":"+a._parts.port)):b+=a.host());
+a._parts.hostname&&a._parts.path&&"/"!==a._parts.path.charAt(0)&&(b+="/");b+=a.path(!0);if(a._parts.query){for(var c="",f=0,g=a._parts.query.split("&"),k=g.length;f<k;f++){var l=(g[f]||"").split("="),c=c+("&"+d.decodeQuery(l[0],this._parts.escapeQuerySpace).replace(/&/g,"%26"));void 0!==l[1]&&(c+="="+d.decodeQuery(l[1],this._parts.escapeQuerySpace).replace(/&/g,"%26"))}b+="?"+c.substring(1)}return b+=d.decodeQuery(a.hash(),!0)};f.absoluteTo=function(a){var b=this.clone(),c=["protocol","username",
+"password","hostname","port"],e,f;if(this._parts.urn)throw Error("URNs do not have any generally defined hierarchical components");a instanceof d||(a=new d(a));b._parts.protocol||(b._parts.protocol=a._parts.protocol);if(this._parts.hostname)return b;for(e=0;f=c[e];e++)b._parts[f]=a._parts[f];b._parts.path?".."===b._parts.path.substring(-2)&&(b._parts.path+="/"):(b._parts.path=a._parts.path,b._parts.query||(b._parts.query=a._parts.query));"/"!==b.path().charAt(0)&&(a=a.directory(),b._parts.path=(a?
+a+"/":"")+b._parts.path,b.normalizePath());b.build();return b};f.relativeTo=function(a){var b=this.clone().normalize(),c,e,f,g;if(b._parts.urn)throw Error("URNs do not have any generally defined hierarchical components");a=(new d(a)).normalize();c=b._parts;e=a._parts;f=b.path();g=a.path();if("/"!==f.charAt(0))throw Error("URI is already relative");if("/"!==g.charAt(0))throw Error("Cannot calculate a URI relative to another relative URI");c.protocol===e.protocol&&(c.protocol=null);if(c.username===
+e.username&&c.password===e.password&&null===c.protocol&&null===c.username&&null===c.password&&c.hostname===e.hostname&&c.port===e.port)c.hostname=null,c.port=null;else return b.build();if(f===g)return c.path="",b.build();a=d.commonPath(b.path(),a.path());if(!a)return b.build();e=e.path.substring(a.length).replace(/[^\/]*$/,"").replace(/.*?\//g,"../");c.path=e+c.path.substring(a.length);return b.build()};f.equals=function(a){var b=this.clone();a=new d(a);var c={},e={},f={},g;b.normalize();a.normalize();
+if(b.toString()===a.toString())return!0;c=b.query();e=a.query();b.query("");a.query("");if(b.toString()!==a.toString()||c.length!==e.length)return!1;c=d.parseQuery(c,this._parts.escapeQuerySpace);e=d.parseQuery(e,this._parts.escapeQuerySpace);for(g in c)if(w.call(c,g)){if(!l(c[g])){if(c[g]!==e[g])return!1}else if(!z(c[g],e[g]))return!1;f[g]=!0}for(g in e)if(w.call(e,g)&&!f[g])return!1;return!0};f.duplicateQueryParameters=function(a){this._parts.duplicateQueryParameters=!!a;return this};f.escapeQuerySpace=
+function(a){this._parts.escapeQuerySpace=!!a;return this};return d});
+(function(e,k){"object"===typeof exports?module.exports=k(require("./URI")):"function"===typeof define&&define.amd?define(["./URI"],k):k(e.URI)})(this,function(e){var k=e.prototype,u=k.fragment;e.fragmentPrefix="?";var m=e._parts;e._parts=function(){var d=m();d.fragmentPrefix=e.fragmentPrefix;return d};k.fragmentPrefix=function(d){this._parts.fragmentPrefix=d;return this};k.fragment=function(d,g){var k=this._parts.fragmentPrefix,l=this._parts.fragment||"";return!0===d?l.substring(0,k.length)!==k?
+{}:e.parseQuery(l.substring(k.length)):void 0!==d&&"string"!==typeof d?(this._parts.fragment=k+e.buildQuery(d),this.build(!g),this):u.call(this,d,g)};k.addFragment=function(d,g,k){var l=this._parts.fragmentPrefix,m=e.parseQuery((this._parts.fragment||"").substring(l.length));e.addQuery(m,d,g);this._parts.fragment=l+e.buildQuery(m);"string"!==typeof d&&(k=g);this.build(!k);return this};k.removeFragment=function(d,g,k){var l=this._parts.fragmentPrefix,m=e.parseQuery((this._parts.fragment||"").substring(l.length));
+e.removeQuery(m,d,g);this._parts.fragment=l+e.buildQuery(m);"string"!==typeof d&&(k=g);this.build(!k);return this};k.addHash=k.addFragment;k.removeHash=k.removeFragment;return{}});
+;/*global unescape, module, define, window, global*/
 
 /*
- * Configurable variables. You may need to tweak these to be compatible with
- * the server-side, but the defaults work in most cases.
- */
+ UriTemplate Copyright (c) 2012-2013 Franz Antesberger. All Rights Reserved.
+ Available via the MIT license.
+*/
 
-var hexcase = 0;  /* hex output format. 0 - lowercase; 1 - uppercase        */
-var b64pad  = "="; /* base-64 pad character. "=" for strict RFC compliance   */
-var chrsz   = 8;  /* bits per input character. 8 - ASCII; 16 - Unicode      */
+(function (exportCallback) {
+    "use strict";
 
-/*
- * These are the functions you'll usually want to call
- * They take string arguments and return either hex or base-64 encoded strings
- */
-function hex_sha1(s){return binb2hex(core_sha1(str2binb(s),s.length * chrsz));}
-function b64_sha1(s){return binb2b64(core_sha1(str2binb(s),s.length * chrsz));}
-function str_sha1(s){return binb2str(core_sha1(str2binb(s),s.length * chrsz));}
-function hex_hmac_sha1(key, data){ return binb2hex(core_hmac_sha1(key, data));}
-function b64_hmac_sha1(key, data){ return binb2b64(core_hmac_sha1(key, data));}
-function str_hmac_sha1(key, data){ return binb2str(core_hmac_sha1(key, data));}
+var UriTemplateError = (function () {
 
-/*
- * Perform a simple self-test to see if the VM is working
- */
-function sha1_vm_test()
-{
-  return hex_sha1("abc") == "a9993e364706816aba3e25717850c26c9cd0d89d";
-}
-
-/*
- * Calculate the SHA-1 of an array of big-endian words, and a bit length
- */
-function core_sha1(x, len)
-{
-  /* append padding */
-  x[len >> 5] |= 0x80 << (24 - len % 32);
-  x[((len + 64 >> 9) << 4) + 15] = len;
-
-  var w = Array(80);
-  var a =  1732584193;
-  var b = -271733879;
-  var c = -1732584194;
-  var d =  271733878;
-  var e = -1009589776;
-
-  for(var i = 0; i < x.length; i += 16)
-  {
-    var olda = a;
-    var oldb = b;
-    var oldc = c;
-    var oldd = d;
-    var olde = e;
-
-    for(var j = 0; j < 80; j++)
-    {
-      if(j < 16) w[j] = x[i + j];
-      else w[j] = rol(w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16], 1);
-      var t = safe_add(safe_add(rol(a, 5), sha1_ft(j, b, c, d)),
-                       safe_add(safe_add(e, w[j]), sha1_kt(j)));
-      e = d;
-      d = c;
-      c = rol(b, 30);
-      b = a;
-      a = t;
+    function UriTemplateError (options) {
+        this.options = options;
     }
 
-    a = safe_add(a, olda);
-    b = safe_add(b, oldb);
-    c = safe_add(c, oldc);
-    d = safe_add(d, oldd);
-    e = safe_add(e, olde);
-  }
-  return Array(a, b, c, d, e);
-
-}
-
-/*
- * Perform the appropriate triplet combination function for the current
- * iteration
- */
-function sha1_ft(t, b, c, d)
-{
-  if(t < 20) return (b & c) | ((~b) & d);
-  if(t < 40) return b ^ c ^ d;
-  if(t < 60) return (b & c) | (b & d) | (c & d);
-  return b ^ c ^ d;
-}
-
-/*
- * Determine the appropriate additive constant for the current iteration
- */
-function sha1_kt(t)
-{
-  return (t < 20) ?  1518500249 : (t < 40) ?  1859775393 :
-         (t < 60) ? -1894007588 : -899497514;
-}
-
-/*
- * Calculate the HMAC-SHA1 of a key and some data
- */
-function core_hmac_sha1(key, data)
-{
-  var bkey = str2binb(key);
-  if(bkey.length > 16) bkey = core_sha1(bkey, key.length * chrsz);
-
-  var ipad = Array(16), opad = Array(16);
-  for(var i = 0; i < 16; i++)
-  {
-    ipad[i] = bkey[i] ^ 0x36363636;
-    opad[i] = bkey[i] ^ 0x5C5C5C5C;
-  }
-
-  var hash = core_sha1(ipad.concat(str2binb(data)), 512 + data.length * chrsz);
-  return core_sha1(opad.concat(hash), 512 + 160);
-}
-
-/*
- * Add integers, wrapping at 2^32. This uses 16-bit operations internally
- * to work around bugs in some JS interpreters.
- */
-function safe_add(x, y)
-{
-  var lsw = (x & 0xFFFF) + (y & 0xFFFF);
-  var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
-  return (msw << 16) | (lsw & 0xFFFF);
-}
-
-/*
- * Bitwise rotate a 32-bit number to the left.
- */
-function rol(num, cnt)
-{
-  return (num << cnt) | (num >>> (32 - cnt));
-}
-
-/*
- * Convert an 8-bit or 16-bit string to an array of big-endian words
- * In 8-bit function, characters >255 have their hi-byte silently ignored.
- */
-function str2binb(str)
-{
-  var bin = Array();
-  var mask = (1 << chrsz) - 1;
-  for(var i = 0; i < str.length * chrsz; i += chrsz)
-    bin[i>>5] |= (str.charCodeAt(i / chrsz) & mask) << (32 - chrsz - i%32);
-  return bin;
-}
-
-/*
- * Convert an array of big-endian words to a string
- */
-function binb2str(bin)
-{
-  var str = "";
-  var mask = (1 << chrsz) - 1;
-  for(var i = 0; i < bin.length * 32; i += chrsz)
-    str += String.fromCharCode((bin[i>>5] >>> (32 - chrsz - i%32)) & mask);
-  return str;
-}
-
-/*
- * Convert an array of big-endian words to a hex string.
- */
-function binb2hex(binarray)
-{
-  var hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
-  var str = "";
-  for(var i = 0; i < binarray.length * 4; i++)
-  {
-    str += hex_tab.charAt((binarray[i>>2] >> ((3 - i%4)*8+4)) & 0xF) +
-           hex_tab.charAt((binarray[i>>2] >> ((3 - i%4)*8  )) & 0xF);
-  }
-  return str;
-}
-
-/*
- * Convert an array of big-endian words to a base-64 string
- */
-function binb2b64(binarray)
-{
-  var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-  var str = "";
-  for(var i = 0; i < binarray.length * 4; i += 3)
-  {
-    var triplet = (((binarray[i   >> 2] >> 8 * (3 -  i   %4)) & 0xFF) << 16)
-                | (((binarray[i+1 >> 2] >> 8 * (3 - (i+1)%4)) & 0xFF) << 8 )
-                |  ((binarray[i+2 >> 2] >> 8 * (3 - (i+2)%4)) & 0xFF);
-    for(var j = 0; j < 4; j++)
-    {
-      if(i * 8 + j * 6 > binarray.length * 32) str += b64pad;
-      else str += tab.charAt((triplet >> 6*(3-j)) & 0x3F);
-    }
-  }
-  return str;
-}
-
-  exports.hex_sha1 = hex_sha1;
-  exports.b64_sha1 = b64_sha1;
-  exports.str_sha1 = str_sha1;
-  exports.hex_hmac_sha1 = hex_hmac_sha1;
-  exports.b64_hmac_sha1 = b64_hmac_sha1;
-  exports.str_hmac_sha1 = str_hmac_sha1;
-}));
-;(function (dependencies, module) {
-    if (typeof define === 'function' && define.amd) {
-        return define(dependencies, module);
-    }
-    if (typeof exports === 'object') {
-        return module(exports);
-    }
-    module(window);
-}(['exports'], function (window) {
-/* A JavaScript implementation of the Secure Hash Standard
- * Version 0.3 Copyright Angel Marin 2003-2004 - http://anmar.eu.org/
- * Distributed under the BSD License
- * Some bits taken from Paul Johnston's SHA-1 implementation
- */
-(function () {
-    var chrsz   = 8;/* bits per input character. 8 - ASCII; 16 - Unicode */
-    var hexcase = 0;/* hex output format. 0 - lowercase; 1 - uppercase */
-
-    function safe_add (x, y) {
-        var lsw = (x & 0xFFFF) + (y & 0xFFFF);
-        var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
-        return (msw << 16) | (lsw & 0xFFFF);
-    }
-
-    function S (X, n) {return ( X >>> n ) | (X << (32 - n));}
-
-    function R (X, n) {return ( X >>> n );}
-
-    function Ch(x, y, z) {return ((x & y) ^ ((~x) & z));}
-
-    function Maj(x, y, z) {return ((x & y) ^ (x & z) ^ (y & z));}
-
-    function Sigma0256(x) {return (S(x, 2) ^ S(x, 13) ^ S(x, 22));}
-
-    function Sigma1256(x) {return (S(x, 6) ^ S(x, 11) ^ S(x, 25));}
-
-    function Gamma0256(x) {return (S(x, 7) ^ S(x, 18) ^ R(x, 3));}
-
-    function Gamma1256(x) {return (S(x, 17) ^ S(x, 19) ^ R(x, 10));}
-
-    function Sigma0512(x) {return (S(x, 28) ^ S(x, 34) ^ S(x, 39));}
-
-    function Sigma1512(x) {return (S(x, 14) ^ S(x, 18) ^ S(x, 41));}
-
-    function Gamma0512(x) {return (S(x, 1) ^ S(x, 8) ^ R(x, 7));}
-
-    function Gamma1512(x) {return (S(x, 19) ^ S(x, 61) ^ R(x, 6));}
-
-    function newArray (n) {
-        var a = [];
-        for (;n>0;n--) {
-            a.push(undefined);
+    UriTemplateError.prototype.toString = function () {
+        if (JSON && JSON.stringify) {
+            return JSON.stringify(this.options);
         }
-        return a;
-    }
-
-    function core_sha256 (m, l) {
-        var K = [0x428A2F98,0x71374491,0xB5C0FBCF,0xE9B5DBA5,0x3956C25B,0x59F111F1,0x923F82A4,0xAB1C5ED5,0xD807AA98,0x12835B01,0x243185BE,0x550C7DC3,0x72BE5D74,0x80DEB1FE,0x9BDC06A7,0xC19BF174,0xE49B69C1,0xEFBE4786,0xFC19DC6,0x240CA1CC,0x2DE92C6F,0x4A7484AA,0x5CB0A9DC,0x76F988DA,0x983E5152,0xA831C66D,0xB00327C8,0xBF597FC7,0xC6E00BF3,0xD5A79147,0x6CA6351,0x14292967,0x27B70A85,0x2E1B2138,0x4D2C6DFC,0x53380D13,0x650A7354,0x766A0ABB,0x81C2C92E,0x92722C85,0xA2BFE8A1,0xA81A664B,0xC24B8B70,0xC76C51A3,0xD192E819,0xD6990624,0xF40E3585,0x106AA070,0x19A4C116,0x1E376C08,0x2748774C,0x34B0BCB5,0x391C0CB3,0x4ED8AA4A,0x5B9CCA4F,0x682E6FF3,0x748F82EE,0x78A5636F,0x84C87814,0x8CC70208,0x90BEFFFA,0xA4506CEB,0xBEF9A3F7,0xC67178F2];
-        var HASH = [0x6A09E667, 0xBB67AE85, 0x3C6EF372, 0xA54FF53A, 0x510E527F, 0x9B05688C, 0x1F83D9AB, 0x5BE0CD19];
-        var W = newArray(64);
-        var a, b, c, d, e, f, g, h, i, j;
-        var T1, T2;
-
-        /* append padding */
-        m[l >> 5] |= 0x80 << (24 - l % 32);
-        m[((l + 64 >> 9) << 4) + 15] = l;
-
-        for ( var i = 0; i<m.length; i+=16 ) {
-            a = HASH[0];
-            b = HASH[1];
-            c = HASH[2];
-            d = HASH[3];
-            e = HASH[4];
-            f = HASH[5];
-            g = HASH[6];
-            h = HASH[7];
-
-            for ( var j = 0; j<64; j++) {
-                if (j < 16) {
-                    W[j] = m[j + i];
-                } else {
-                    W[j] = safe_add(safe_add(safe_add(Gamma1256(
-                        W[j - 2]),W[j - 7]),Gamma0256(W[j - 15])), W[j - 16]);
-                }
-
-                T1 = safe_add(safe_add(safe_add(safe_add(
-                    h, Sigma1256(e)), Ch(e, f, g)), K[j]), W[j]);
-                T2 = safe_add(Sigma0256(a), Maj(a, b, c));
-
-                h = g;
-                g = f;
-                f = e;
-                e = safe_add(d, T1);
-                d = c;
-                c = b;
-                b = a;
-                a = safe_add(T1, T2);
-            }
-
-            HASH[0] = safe_add(a, HASH[0]);
-            HASH[1] = safe_add(b, HASH[1]);
-            HASH[2] = safe_add(c, HASH[2]);
-            HASH[3] = safe_add(d, HASH[3]);
-            HASH[4] = safe_add(e, HASH[4]);
-            HASH[5] = safe_add(f, HASH[5]);
-            HASH[6] = safe_add(g, HASH[6]);
-            HASH[7] = safe_add(h, HASH[7]);
+        else {
+            return this.options;
         }
-        return HASH;
-    }
-
-    function core_sha512 (m, l) {
-        var K = [0x428a2f98d728ae22, 0x7137449123ef65cd, 0xb5c0fbcfec4d3b2f, 0xe9b5dba58189dbbc, 0x3956c25bf348b538, 0x59f111f1b605d019, 0x923f82a4af194f9b, 0xab1c5ed5da6d8118, 0xd807aa98a3030242, 0x12835b0145706fbe, 0x243185be4ee4b28c, 0x550c7dc3d5ffb4e2, 0x72be5d74f27b896f, 0x80deb1fe3b1696b1, 0x9bdc06a725c71235, 0xc19bf174cf692694, 0xe49b69c19ef14ad2, 0xefbe4786384f25e3, 0x0fc19dc68b8cd5b5, 0x240ca1cc77ac9c65, 0x2de92c6f592b0275, 0x4a7484aa6ea6e483, 0x5cb0a9dcbd41fbd4, 0x76f988da831153b5, 0x983e5152ee66dfab, 0xa831c66d2db43210, 0xb00327c898fb213f, 0xbf597fc7beef0ee4, 0xc6e00bf33da88fc2, 0xd5a79147930aa725, 0x06ca6351e003826f, 0x142929670a0e6e70, 0x27b70a8546d22ffc, 0x2e1b21385c26c926, 0x4d2c6dfc5ac42aed, 0x53380d139d95b3df, 0x650a73548baf63de, 0x766a0abb3c77b2a8, 0x81c2c92e47edaee6, 0x92722c851482353b, 0xa2bfe8a14cf10364, 0xa81a664bbc423001, 0xc24b8b70d0f89791, 0xc76c51a30654be30, 0xd192e819d6ef5218, 0xd69906245565a910, 0xf40e35855771202a, 0x106aa07032bbd1b8, 0x19a4c116b8d2d0c8, 0x1e376c085141ab53, 0x2748774cdf8eeb99, 0x34b0bcb5e19b48a8, 0x391c0cb3c5c95a63, 0x4ed8aa4ae3418acb, 0x5b9cca4f7763e373, 0x682e6ff3d6b2b8a3, 0x748f82ee5defb2fc, 0x78a5636f43172f60, 0x84c87814a1f0ab72, 0x8cc702081a6439ec, 0x90befffa23631e28, 0xa4506cebde82bde9, 0xbef9a3f7b2c67915, 0xc67178f2e372532b, 0xca273eceea26619c, 0xd186b8c721c0c207, 0xeada7dd6cde0eb1e, 0xf57d4f7fee6ed178, 0x06f067aa72176fba, 0x0a637dc5a2c898a6, 0x113f9804bef90dae, 0x1b710b35131c471b, 0x28db77f523047d84, 0x32caab7b40c72493, 0x3c9ebe0a15c9bebc, 0x431d67c49c100d4c, 0x4cc5d4becb3e42b6, 0x597f299cfc657e2a, 0x5fcb6fab3ad6faec, 0x6c44198c4a475817];
-        var HASH = [0x6a09e667f3bcc908, 0xbb67ae8584caa73b, 0x3c6ef372fe94f82b, 0xa54ff53a5f1d36f1, 0x510e527fade682d1, 0x9b05688c2b3e6c1f, 0x1f83d9abfb41bd6b, 0x5be0cd19137e2179];
-        var W = newArray(80);
-        var a, b, c, d, e, f, g, h, i, j;
-        var T1, T2;
-
-    }
-
-    function str2binb (str) {
-        var bin = Array();
-        var mask = (1 << chrsz) - 1;
-        for(var i = 0; i < str.length * chrsz; i += chrsz)
-            bin[i>>5] |= (str.charCodeAt(i / chrsz) & mask) << (24 - i%32);
-        return bin;
-    }
-
-    function binb2str (bin) {
-        var str = "";
-        var mask = (1 << chrsz) - 1;
-        for(var i = 0; i < bin.length * 32; i += chrsz)
-            str += String.fromCharCode((bin[i>>5] >>> (24 - i%32)) & mask);
-        return str;
-    }
-
-    function binb2hex (binarray) {
-        var hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
-        var str = "";
-        for(var i = 0; i < binarray.length * 4; i++)
-        {
-            str += hex_tab.charAt((binarray[i>>2] >> ((3 - i%4)*8+4)) & 0xF) +
-                hex_tab.charAt((binarray[i>>2] >> ((3 - i%4)*8  )) & 0xF);
-        }
-        return str;
-    }
-
-    function binb2b64 (binarray) {
-        var tab =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-        var str = "";
-        for(var i = 0; i < binarray.length * 4; i += 3) {
-            var triplet = (((binarray[i >> 2] >> 8 * (3- i %4)) & 0xFF) << 16) |
-                (((binarray[i+1 >> 2] >> 8 * (3 - (i+1)%4)) & 0xFF) << 8 ) |
-                ((binarray[i+2 >> 2] >> 8 * (3 - (i+2)%4)) & 0xFF);
-            for(var j = 0; j < 4; j++) {
-                if(i * 8 + j * 6 > binarray.length * 32) { str += b64pad; }
-                else {str += tab.charAt((triplet >> 6*(3-j)) & 0x3F);}
-            }
-        }
-        return str;
-    }
-
-    function hex_sha256(s){
-        return binb2hex(core_sha256(str2binb(s),s.length * chrsz));
-    }
-    function b64_sha256(s){
-        return binb2b64(core_sha256(str2binb(s),s.length * chrsz));
-    }
-    function str_sha256(s){
-        return binb2str(core_sha256(str2binb(s),s.length * chrsz));
-    }
-    window.hex_sha256 = hex_sha256;
-    window.b64_sha256 = b64_sha256;
-    window.str_sha256 = str_sha256;
-}());
-}));
-;(function (dependencies, module) {
-    if (typeof define === 'function' && define.amd) {
-        return define(dependencies, module);
-    }
-    if (typeof exports === 'object') {
-        return module(exports);
-    }
-    module(window);
-}(['exports'], function (window) {
-/* A JavaScript implementation of the Secure Hash Algorithm, SHA-256
- * Version 0.3 Copyright Angel Marin 2003-2004 - http://anmar.eu.org/
- * Distributed under the BSD License
- * Some bits taken from Paul Johnston's SHA-1 implementation
- */
-(function () {
-    var chrsz = 8;  /* bits per input character. 8 - ASCII; 16 - Unicode  */
-    function safe_add (x, y) {
-        var lsw = (x & 0xFFFF) + (y & 0xFFFF);
-        var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
-        return (msw << 16) | (lsw & 0xFFFF);
-    }
-    function S (X, n) {return ( X >>> n ) | (X << (32 - n));}
-    function R (X, n) {return ( X >>> n );}
-    function Ch(x, y, z) {return ((x & y) ^ ((~x) & z));}
-    function Maj(x, y, z) {return ((x & y) ^ (x & z) ^ (y & z));}
-    function Sigma0256(x) {return (S(x, 2) ^ S(x, 13) ^ S(x, 22));}
-    function Sigma1256(x) {return (S(x, 6) ^ S(x, 11) ^ S(x, 25));}
-    function Gamma0256(x) {return (S(x, 7) ^ S(x, 18) ^ R(x, 3));}
-    function Gamma1256(x) {return (S(x, 17) ^ S(x, 19) ^ R(x, 10));}
-    function newArray (n) {
-        var a = [];
-        for (;n>0;n--) {
-            a.push(undefined);
-        }
-        return a;
-    }
-    function core_sha256 (m, l) {
-        var K = [0x428A2F98,0x71374491,0xB5C0FBCF,0xE9B5DBA5,0x3956C25B,0x59F111F1,0x923F82A4,0xAB1C5ED5,0xD807AA98,0x12835B01,0x243185BE,0x550C7DC3,0x72BE5D74,0x80DEB1FE,0x9BDC06A7,0xC19BF174,0xE49B69C1,0xEFBE4786,0xFC19DC6,0x240CA1CC,0x2DE92C6F,0x4A7484AA,0x5CB0A9DC,0x76F988DA,0x983E5152,0xA831C66D,0xB00327C8,0xBF597FC7,0xC6E00BF3,0xD5A79147,0x6CA6351,0x14292967,0x27B70A85,0x2E1B2138,0x4D2C6DFC,0x53380D13,0x650A7354,0x766A0ABB,0x81C2C92E,0x92722C85,0xA2BFE8A1,0xA81A664B,0xC24B8B70,0xC76C51A3,0xD192E819,0xD6990624,0xF40E3585,0x106AA070,0x19A4C116,0x1E376C08,0x2748774C,0x34B0BCB5,0x391C0CB3,0x4ED8AA4A,0x5B9CCA4F,0x682E6FF3,0x748F82EE,0x78A5636F,0x84C87814,0x8CC70208,0x90BEFFFA,0xA4506CEB,0xBEF9A3F7,0xC67178F2];
-        var HASH = [0x6A09E667, 0xBB67AE85, 0x3C6EF372, 0xA54FF53A, 0x510E527F, 0x9B05688C, 0x1F83D9AB, 0x5BE0CD19];
-        var W = newArray(64);
-        var a, b, c, d, e, f, g, h, i, j;
-        var T1, T2;
-        /* append padding */
-        m[l >> 5] |= 0x80 << (24 - l % 32);
-        m[((l + 64 >> 9) << 4) + 15] = l;
-        for ( var i = 0; i<m.length; i+=16 ) {
-            a = HASH[0]; b = HASH[1]; c = HASH[2]; d = HASH[3];
-            e = HASH[4]; f = HASH[5]; g = HASH[6]; h = HASH[7];
-            for ( var j = 0; j<64; j++) {
-                if (j < 16) {
-                    W[j] = m[j + i];
-                } else {
-                    W[j] = safe_add(safe_add(safe_add(Gamma1256(
-                        W[j - 2]), W[j - 7]), Gamma0256(W[j - 15])), W[j - 16]);
-                }
-                T1 = safe_add(safe_add(safe_add(
-                    safe_add(h, Sigma1256(e)), Ch(e, f, g)), K[j]), W[j]);
-                T2 = safe_add(Sigma0256(a), Maj(a, b, c));
-                h = g; g = f; f = e; e = safe_add(d, T1);
-                d = c; c = b; b = a; a = safe_add(T1, T2);
-            }
-            HASH[0] = safe_add(a, HASH[0]); HASH[1] = safe_add(b, HASH[1]);
-            HASH[2] = safe_add(c, HASH[2]); HASH[3] = safe_add(d, HASH[3]);
-            HASH[4] = safe_add(e, HASH[4]); HASH[5] = safe_add(f, HASH[5]);
-            HASH[6] = safe_add(g, HASH[6]); HASH[7] = safe_add(h, HASH[7]);
-        }
-        return HASH;
-    }
-    function str2binb (str) {
-        var bin = Array();
-        var mask = (1 << chrsz) - 1;
-        for(var i = 0; i < str.length * chrsz; i += chrsz)
-            bin[i>>5] |= (str.charCodeAt(i / chrsz) & mask) << (24 - i%32);
-        return bin;
-    }
-    function binb2hex (binarray) {
-        var hexcase = 0; /* hex output format. 0 - lowercase; 1 - uppercase */
-        var hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
-        var str = "";
-        for (var i = 0; i < binarray.length * 4; i++) {
-            str += hex_tab.charAt((binarray[i>>2] >> ((3 - i%4)*8+4)) & 0xF) +
-                hex_tab.charAt((binarray[i>>2] >> ((3 - i%4)*8  )) & 0xF);
-        }
-        return str;
-    }
-    function hex_sha256(s){
-        return binb2hex(core_sha256(str2binb(s),s.length * chrsz));
-    }
-    window.hex_sha256 = hex_sha256;
-}());
-}));
-;(function (dependencies, module) {
-  "use strict";
-  if (typeof define === 'function' && define.amd) {
-    return define(dependencies, module);
-  }
-  window.jIO = {};
-  module(window.jIO, RSVP, {hex_sha256: hex_sha256});
-}(['exports', 'rsvp', 'sha256'], function (exports, RSVP, sha256) {
-  "use strict";
-
-  var hex_sha256 = sha256.hex_sha256;
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
-/*global uniqueJSONStringify, methodType */
-
-var defaults = {}, constants = {};
-
-defaults.storage_types = {};
-
-constants.dcmi_types = {
-  'Collection': 'Collection',
-  'Dataset': 'Dataset',
-  'Event': 'Event',
-  'Image': 'Image',
-  'InteractiveResource': 'InteractiveResource',
-  'MovingImage': 'MovingImage',
-  'PhysicalObject': 'PhysicalObject',
-  'Service': 'Service',
-  'Software': 'Software',
-  'Sound': 'Sound',
-  'StillImage': 'StillImage',
-  'Text': 'Text'
-};
-// if (dcmi_types.Collection === 'Collection') { is a DCMI type }
-// if (typeof dcmi_types[name] === 'string')   { is a DCMI type }
-
-constants.http_status_text = {
-  "0": "Unknown",
-  "550": "Internal JIO Error",
-  "551": "Internal Storage Error",
-  "555": "Cancelled",
-  "Unknown": "Unknown",
-  "Internal JIO Error": "Internal JIO Error",
-  "Internal Storage Error": "Internal Storage Error",
-  "Cancelled": "Cancelled",
-  "unknown": "Unknown",
-  "internal_jio_error": "Internal JIO Error",
-  "internal_storage_error": "Internal Storage Error",
-  "cancelled": "Cancelled",
-
-  "200": "Ok",
-  "201": "Created",
-  "204": "No Content",
-  "205": "Reset Content",
-  "206": "Partial Content",
-  "304": "Not Modified",
-  "400": "Bad Request",
-  "401": "Unauthorized",
-  "402": "Payment Required",
-  "403": "Forbidden",
-  "404": "Not Found",
-  "405": "Method Not Allowed",
-  "406": "Not Acceptable",
-  "407": "Proxy Authentication Required",
-  "408": "Request Timeout",
-  "409": "Conflict",
-  "410": "Gone",
-  "411": "Length Required",
-  "412": "Precondition Failed",
-  "413": "Request Entity Too Large",
-  "414": "Request-URI Too Long",
-  "415": "Unsupported Media Type",
-  "416": "Requested Range Not Satisfiable",
-  "417": "Expectation Failed",
-  "418": "I'm a teapot",
-  "419": "Authentication Timeout",
-  "500": "Internal Server Error",
-  "501": "Not Implemented",
-  "502": "Bad Gateway",
-  "503": "Service Unavailable",
-  "504": "Gateway Timeout",
-  "507": "Insufficient Storage",
-
-  "Ok": "Ok",
-  "OK": "Ok",
-  "Created": "Created",
-  "No Content": "No Content",
-  "Reset Content": "Reset Content",
-  "Partial Content": "Partial Content",
-  "Not Modified": "Not Modified",
-  "Bad Request": "Bad Request",
-  "Unauthorized": "Unauthorized",
-  "Payment Required": "Payment Required",
-  "Forbidden": "Forbidden",
-  "Not Found": "Not Found",
-  "Method Not Allowed": "Method Not Allowed",
-  "Not Acceptable": "Not Acceptable",
-  "Proxy Authentication Required": "Proxy Authentication Required",
-  "Request Timeout": "Request Timeout",
-  "Conflict": "Conflict",
-  "Gone": "Gone",
-  "Length Required": "Length Required",
-  "Precondition Failed": "Precondition Failed",
-  "Request Entity Too Large": "Request Entity Too Large",
-  "Request-URI Too Long": "Request-URI Too Long",
-  "Unsupported Media Type": "Unsupported Media Type",
-  "Requested Range Not Satisfiable": "Requested Range Not Satisfiable",
-  "Expectation Failed": "Expectation Failed",
-  "I'm a teapot": "I'm a teapot",
-  "Authentication Timeout": "Authentication Timeout",
-  "Internal Server Error": "Internal Server Error",
-  "Not Implemented": "Not Implemented",
-  "Bad Gateway": "Bad Gateway",
-  "Service Unavailable": "Service Unavailable",
-  "Gateway Timeout": "Gateway Timeout",
-  "Insufficient Storage": "Insufficient Storage",
-
-  "ok": "Ok",
-  "created": "Created",
-  "no_content": "No Content",
-  "reset_content": "Reset Content",
-  "partial_content": "Partial Content",
-  "not_modified": "Not Modified",
-  "bad_request": "Bad Request",
-  "unauthorized": "Unauthorized",
-  "payment_required": "Payment Required",
-  "forbidden": "Forbidden",
-  "not_found": "Not Found",
-  "method_not_allowed": "Method Not Allowed",
-  "not_acceptable": "Not Acceptable",
-  "proxy_authentication_required": "Proxy Authentication Required",
-  "request_timeout": "Request Timeout",
-  "conflict": "Conflict",
-  "gone": "Gone",
-  "length_required": "Length Required",
-  "precondition_failed": "Precondition Failed",
-  "request_entity_too_large": "Request Entity Too Large",
-  "request-uri_too_long": "Request-URI Too Long",
-  "unsupported_media_type": "Unsupported Media Type",
-  "requested_range_not_satisfiable": "Requested Range Not Satisfiable",
-  "expectation_failed": "Expectation Failed",
-  "im_a_teapot": "I'm a teapot",
-  "authentication_timeout": "Authentication Timeout",
-  "internal_server_error": "Internal Server Error",
-  "not_implemented": "Not Implemented",
-  "bad_gateway": "Bad Gateway",
-  "service_unavailable": "Service Unavailable",
-  "gateway_timeout": "Gateway Timeout",
-  "insufficient_storage": "Insufficient Storage"
-};
-
-constants.http_status = {
-  "0": 0,
-  "550": 550,
-  "551": 551,
-  "555": 555,
-  "Unknown": 0,
-  "Internal JIO Error": 550,
-  "Internal Storage Error": 551,
-  "Cancelled": 555,
-  "unknown": 0,
-  "internal_jio_error": 550,
-  "internal_storage_error": 551,
-  "cancelled": 555,
-
-  "200": 200,
-  "201": 201,
-  "204": 204,
-  "205": 205,
-  "206": 206,
-  "304": 304,
-  "400": 400,
-  "401": 401,
-  "402": 402,
-  "403": 403,
-  "404": 404,
-  "405": 405,
-  "406": 406,
-  "407": 407,
-  "408": 408,
-  "409": 409,
-  "410": 410,
-  "411": 411,
-  "412": 412,
-  "413": 413,
-  "414": 414,
-  "415": 415,
-  "416": 416,
-  "417": 417,
-  "418": 418,
-  "419": 419,
-  "500": 500,
-  "501": 501,
-  "502": 502,
-  "503": 503,
-  "504": 504,
-  "507": 507,
-
-  "Ok": 200,
-  "OK": 200,
-  "Created": 201,
-  "No Content": 204,
-  "Reset Content": 205,
-  "Partial Content": 206,
-  "Not Modified": 304,
-  "Bad Request": 400,
-  "Unauthorized": 401,
-  "Payment Required": 402,
-  "Forbidden": 403,
-  "Not Found": 404,
-  "Method Not Allowed": 405,
-  "Not Acceptable": 406,
-  "Proxy Authentication Required": 407,
-  "Request Timeout": 408,
-  "Conflict": 409,
-  "Gone": 410,
-  "Length Required": 411,
-  "Precondition Failed": 412,
-  "Request Entity Too Large": 413,
-  "Request-URI Too Long": 414,
-  "Unsupported Media Type": 415,
-  "Requested Range Not Satisfiable": 416,
-  "Expectation Failed": 417,
-  "I'm a teapot": 418,
-  "Authentication Timeout": 419,
-  "Internal Server Error": 500,
-  "Not Implemented": 501,
-  "Bad Gateway": 502,
-  "Service Unavailable": 503,
-  "Gateway Timeout": 504,
-  "Insufficient Storage": 507,
-
-  "ok": 200,
-  "created": 201,
-  "no_content": 204,
-  "reset_content": 205,
-  "partial_content": 206,
-  "not_modified": 304,
-  "bad_request": 400,
-  "unauthorized": 401,
-  "payment_required": 402,
-  "forbidden": 403,
-  "not_found": 404,
-  "method_not_allowed": 405,
-  "not_acceptable": 406,
-  "proxy_authentication_required": 407,
-  "request_timeout": 408,
-  "conflict": 409,
-  "gone": 410,
-  "length_required": 411,
-  "precondition_failed": 412,
-  "request_entity_too_large": 413,
-  "request-uri_too_long": 414,
-  "unsupported_media_type": 415,
-  "requested_range_not_satisfiable": 416,
-  "expectation_failed": 417,
-  "im_a_teapot": 418,
-  "authentication_timeout": 419,
-  "internal_server_error": 500,
-  "not_implemented": 501,
-  "bad_gateway": 502,
-  "service_unavailable": 503,
-  "gateway_timeout": 504,
-  "insufficient_storage": 507
-};
-
-constants.http_action = {
-  "0": "error",
-  "550": "error",
-  "551": "error",
-  "555": "error",
-  "Unknown": "error",
-  "Internal JIO Error": "error",
-  "Internal Storage Error": "error",
-  "Cancelled": "error",
-  "unknown": "error",
-  "internal_jio_error": "error",
-  "internal_storage_error": "error",
-  "cancelled": "error",
-
-  "200": "success",
-  "201": "success",
-  "204": "success",
-  "205": "success",
-  "206": "success",
-  "304": "success",
-  "400": "error",
-  "401": "error",
-  "402": "error",
-  "403": "error",
-  "404": "error",
-  "405": "error",
-  "406": "error",
-  "407": "error",
-  "408": "error",
-  "409": "error",
-  "410": "error",
-  "411": "error",
-  "412": "error",
-  "413": "error",
-  "414": "error",
-  "415": "error",
-  "416": "error",
-  "417": "error",
-  "418": "error",
-  "419": "retry",
-  "500": "retry",
-  "501": "error",
-  "502": "error",
-  "503": "retry",
-  "504": "retry",
-  "507": "error",
-
-  "Ok": "success",
-  "OK": "success",
-  "Created": "success",
-  "No Content": "success",
-  "Reset Content": "success",
-  "Partial Content": "success",
-  "Not Modified": "success",
-  "Bad Request": "error",
-  "Unauthorized": "error",
-  "Payment Required": "error",
-  "Forbidden": "error",
-  "Not Found": "error",
-  "Method Not Allowed": "error",
-  "Not Acceptable": "error",
-  "Proxy Authentication Required": "error",
-  "Request Timeout": "error",
-  "Conflict": "error",
-  "Gone": "error",
-  "Length Required": "error",
-  "Precondition Failed": "error",
-  "Request Entity Too Large": "error",
-  "Request-URI Too Long": "error",
-  "Unsupported Media Type": "error",
-  "Requested Range Not Satisfiable": "error",
-  "Expectation Failed": "error",
-  "I'm a teapot": "error",
-  "Authentication Timeout": "retry",
-  "Internal Server Error": "retry",
-  "Not Implemented": "error",
-  "Bad Gateway": "error",
-  "Service Unavailable": "retry",
-  "Gateway Timeout": "retry",
-  "Insufficient Storage": "error",
-
-  "ok": "success",
-  "created": "success",
-  "no_content": "success",
-  "reset_content": "success",
-  "partial_content": "success",
-  "not_modified": "success",
-  "bad_request": "error",
-  "unauthorized": "error",
-  "payment_required": "error",
-  "forbidden": "error",
-  "not_found": "error",
-  "method_not_allowed": "error",
-  "not_acceptable": "error",
-  "proxy_authentication_required": "error",
-  "request_timeout": "error",
-  "conflict": "error",
-  "gone": "error",
-  "length_required": "error",
-  "precondition_failed": "error",
-  "request_entity_too_large": "error",
-  "request-uri_too_long": "error",
-  "unsupported_media_type": "error",
-  "requested_range_not_satisfiable": "error",
-  "expectation_failed": "error",
-  "im_a_teapot": "error",
-  "authentication_timeout": "retry",
-  "internal_server_error": "retry",
-  "not_implemented": "error",
-  "bad_gateway": "error",
-  "service_unavailable": "retry",
-  "gateway_timeout": "retry",
-  "insufficient_storage": "error"
-};
-
-constants.content_type_re =
-  /^([a-z]+\/[a-zA-Z0-9\+\-\.]+)(?:\s*;\s*charset\s*=\s*([a-zA-Z0-9\-]+))?$/;
-
-/**
- * Function that does nothing
- */
-constants.emptyFunction = function () {
-  return;
-};
-
-defaults.job_rule_conditions = {};
-
-/**
- * Adds some job rule conditions
- */
-(function () {
-
-  /**
-   * Compare two jobs and test if they use the same storage description
-   *
-   * @param  {Object} a The first job to compare
-   * @param  {Object} b The second job to compare
-   * @return {Boolean} True if equal, else false
-   */
-  function sameStorageDescription(a, b) {
-    return uniqueJSONStringify(a.storage_spec) ===
-      uniqueJSONStringify(b.storage_spec);
-  }
-
-  /**
-   * Compare two jobs and test if they are writers
-   *
-   * @param  {Object} a The first job to compare
-   * @param  {Object} b The second job to compare
-   * @return {Boolean} True if equal, else false
-   */
-  function areWriters(a, b) {
-    return methodType(a.method) === 'writer' &&
-      methodType(b.method) === 'writer';
-  }
-
-  /**
-   * Compare two jobs and test if they use metadata only
-   *
-   * @param  {Object} a The first job to compare
-   * @param  {Object} b The second job to compare
-   * @return {Boolean} True if equal, else false
-   */
-  function useMetadataOnly(a, b) {
-    if (['post', 'put', 'get', 'remove', 'allDocs'].indexOf(a.method) === -1) {
-      return false;
-    }
-    if (['post', 'put', 'get', 'remove', 'allDocs'].indexOf(b.method) === -1) {
-      return false;
-    }
-    return true;
-  }
-
-  /**
-   * Compare two jobs and test if they are readers
-   *
-   * @param  {Object} a The first job to compare
-   * @param  {Object} b The second job to compare
-   * @return {Boolean} True if equal, else false
-   */
-  function areReaders(a, b) {
-    return methodType(a.method) === 'reader' &&
-      methodType(b.method) === 'reader';
-  }
-
-  /**
-   * Compare two jobs and test if their methods are the same
-   *
-   * @param  {Object} a The first job to compare
-   * @param  {Object} b The second job to compare
-   * @return {Boolean} True if equal, else false
-   */
-  function sameMethod(a, b) {
-    return a.method === b.method;
-  }
-
-  /**
-   * Compare two jobs and test if their document ids are the same
-   *
-   * @param  {Object} a The first job to compare
-   * @param  {Object} b The second job to compare
-   * @return {Boolean} True if equal, else false
-   */
-  function sameDocumentId(a, b) {
-    return a.kwargs._id === b.kwargs._id;
-  }
-
-  /**
-   * Test if the jobs have a document id.
-   *
-   * @param  {Object} a The first job to test
-   * @param  {Object} b The second job to test
-   * @return {Boolean} True if ids exist, else false
-   */
-  function haveDocumentIds(a, b) {
-    if (typeof a.kwargs._id !== "string" || a.kwargs._id === "") {
-      return false;
-    }
-    if (typeof b.kwargs._id !== "string" || b.kwargs._id === "") {
-      return false;
-    }
-    return true;
-  }
-
-  /**
-   * Compare two jobs and test if their kwargs are equal
-   *
-   * @param  {Object} a The first job to compare
-   * @param  {Object} b The second job to compare
-   * @return {Boolean} True if equal, else false
-   */
-  function sameParameters(a, b) {
-    return uniqueJSONStringify(a.kwargs) ===
-      uniqueJSONStringify(b.kwargs);
-  }
-
-  /**
-   * Compare two jobs and test if their options are equal
-   *
-   * @param  {Object} a The first job to compare
-   * @param  {Object} b The second job to compare
-   * @return {Boolean} True if equal, else false
-   */
-  function sameOptions(a, b) {
-    return uniqueJSONStringify(a.options) ===
-      uniqueJSONStringify(b.options);
-  }
-
-  defaults.job_rule_conditions = {
-    "sameStorageDescription": sameStorageDescription,
-    "areWriters": areWriters,
-    "areReaders": areReaders,
-    "useMetadataOnly": useMetadataOnly,
-    "sameMethod": sameMethod,
-    "sameDocumentId": sameDocumentId,
-    "sameParameters": sameParameters,
-    "sameOptions": sameOptions,
-    "haveDocumentIds": haveDocumentIds
-  };
-
-}());
-
-/*jslint indent: 2, maxlen: 80, nomen: true, sloppy: true */
-/*global exports, Blob, FileReader, RSVP, hex_sha256, XMLHttpRequest,
-  constants */
-
-/**
- * Do not exports these tools unless they are not writable, not configurable.
- */
-
-exports.util = {};
-
-/**
- * Inherits the prototype methods from one constructor into another. The
- * prototype of `constructor` will be set to a new object created from
- * `superConstructor`.
- *
- * @param  {Function} constructor The constructor which inherits the super
- *   one
- * @param  {Function} superConstructor The super constructor
- */
-function inherits(constructor, superConstructor) {
-  constructor.super_ = superConstructor;
-  constructor.prototype = Object.create(superConstructor.prototype, {
-    "constructor": {
-      "configurable": true,
-      "enumerable": false,
-      "writable": true,
-      "value": constructor
-    }
-  });
-}
-
-/**
- * Clones jsonable object in depth
- *
- * @param  {A} object The jsonable object to clone
- * @return {A} The cloned object
- */
-function jsonDeepClone(object) {
-  var tmp = JSON.stringify(object);
-  if (tmp === undefined) {
-    return undefined;
-  }
-  return JSON.parse(tmp);
-}
-exports.util.jsonDeepClone = jsonDeepClone;
-
-/**
- * Clones all native object in deep. Managed types: Object, Array, String,
- * Number, Boolean, Function, null.
- *
- * It can also clone object which are serializable, like Date.
- *
- * To make a class serializable, you need to implement the `toJSON` function
- * which returns a JSON representation of the object. The returned value is used
- * as first parameter of the object constructor.
- *
- * @param  {A} object The object to clone
- * @return {A} The cloned object
- */
-function deepClone(object) {
-  var i, cloned;
-  if (Array.isArray(object)) {
-    cloned = [];
-    for (i = 0; i < object.length; i += 1) {
-      cloned[i] = deepClone(object[i]);
-    }
-    return cloned;
-  }
-  if (object === null) {
-    return null;
-  }
-  if (typeof object === 'object') {
-    if (Object.getPrototypeOf(object) === Object.prototype) {
-      cloned = {};
-      for (i in object) {
-        if (object.hasOwnProperty(i)) {
-          cloned[i] = deepClone(object[i]);
-        }
-      }
-      return cloned;
-    }
-    if (object instanceof Date) {
-      // XXX this block is to enable phantomjs and browsers compatibility with
-      // Date.prototype.toJSON when it is an invalid date. In phantomjs, it
-      // returns `"Invalid Date"` but in browsers it returns `null`. In
-      // browsers, giving `null` as parameter to `new Date()` doesn't return an
-      // invalid date.
-
-      // Cloning a date with `return new Date(object)` has problems on Firefox.
-      // I don't know why...  (Tested on Firefox 23)
-
-      if (isFinite(object.getTime())) {
-        return new Date(object.toJSON());
-      }
-      return new Date("Invalid Date");
-    }
-    // clone serializable objects
-    if (typeof object.toJSON === 'function') {
-      return new (Object.getPrototypeOf(object).constructor)(object.toJSON());
-    }
-    // cannot clone
-    return object;
-  }
-  return object;
-}
-exports.util.deepClone = deepClone;
-
-/**
- * Update a dictionary by adding/replacing key values from another dict.
- * Enumerable values equal to undefined are also used.
- *
- * @param  {Object} original The dict to update
- * @param  {Object} other The other dict
- * @return {Object} The updated original dict
- */
-function dictUpdate(original, other) {
-  var k;
-  for (k in other) {
-    if (other.hasOwnProperty(k)) {
-      original[k] = other[k];
-    }
-  }
-  return original;
-}
-exports.util.dictUpdate = dictUpdate;
-
-/**
- * Like 'dict.clear()' in python. Delete all dict entries.
- *
- * @method dictClear
- * @param  {Object} self The dict to clear
- */
-function dictClear(dict) {
-  var i;
-  for (i in dict) {
-    if (dict.hasOwnProperty(i)) {
-      delete dict[i];
-      // dictClear(dict);
-      // break;
-    }
-  }
-}
-exports.util.dictClear = dictClear;
-
-/**
- * Filter a dict to keep only values which keys are in `keys` list.
- *
- * @param  {Object} dict The dict to filter
- * @param  {Array} keys The key list to keep
- */
-function dictFilter(dict, keys) {
-  var i, buffer = [];
-  for (i = 0; i < keys.length; i += 1) {
-    buffer[i] = dict[keys[i]];
-  }
-  dictClear(dict);
-  for (i = 0; i < buffer.length; i += 1) {
-    dict[keys[i]] = buffer[i];
-  }
-}
-exports.util.dictFilter = dictFilter;
-
-/**
- * Gets all elements of an array and classifies them in a dict of array.
- * Dict keys are element types, and values are list of element of type 'key'.
- *
- * @param  {Array} array The array of elements to pop
- * @return {Object} The type dict
- */
-function arrayValuesToTypeDict(array) {
-  var i, l, type_object = {}, type, v;
-  for (i = 0, l = array.length; i < l; i += 1) {
-    v = array[i];
-    type = Array.isArray(v) ? "array" : typeof v;
-    /*jslint ass: true */
-    (type_object[type] = type_object[type] || []).push(v);
-  }
-  return type_object;
-}
-
-/**
- * An Universal Unique ID generator
- *
- * @return {String} The new UUID.
- */
-function generateUuid() {
-  function S4() {
-    return ('0000' + Math.floor(
-      Math.random() * 0x10000 /* 65536 */
-    ).toString(16)).slice(-4);
-  }
-  return S4() + S4() + "-" +
-    S4() + "-" +
-    S4() + "-" +
-    S4() + "-" +
-    S4() + S4() + S4();
-}
-exports.util.generateUuid = generateUuid;
-
-/**
- * Concatenate a `string` `n` times.
- *
- * @param  {String} string The string to concat
- * @param  {Number} n The number of time to concat
- * @return {String} The concatenated string
- */
-function concatStringNTimes(string, n) {
-  /*jslint plusplus: true */
-  var res = "";
-  while (--n >= 0) { res += string; }
-  return res;
-}
-
-/**
- * JSON stringify a value. Object keys are sorted in order to make a kind of
- * deepEqual thanks to a simple string comparison.
- *
- *     JSON.stringify({"a": "b", "c": "d"}) ===
- *       JSON.stringify({"c": "d", "a": "b"})                 // false
- *
- *     deepEqual({"a": "b", "c": "d"}, {"c": "d", "a": "b"}); // true
- *
- *     uniqueJSONStringify({"a": "b", "c": "d"}) ===
- *       uniqueJSONStringify({"c": "d", "a": "b"})            // true
- *
- * @param  {Any} value The value to stringify
- * @param  {Function,Array} [replacer] A function to replace values during parse
- * @param  {String,Number} [space] Causes the result to be pretty-printed
- * @return {String} The unique JSON stringified value
- */
-function uniqueJSONStringify(value, replacer, space) {
-  var indent, key_value_space = "";
-  if (typeof space === "string") {
-    if (space !== "") {
-      indent = space;
-      key_value_space = " ";
-    }
-  } else if (typeof space === "number") {
-    if (isFinite(space) && space > 0) {
-      indent = concatStringNTimes(" ", space);
-      key_value_space = " ";
-    }
-  }
-
-  function uniqueJSONStringifyRec(key, value, deep) {
-    var i, l, res, my_space;
-    if (value && typeof value.toJSON === "function") {
-      value = value.toJSON();
-    }
-    if (typeof replacer === "function") {
-      value = replacer(key, value);
-    }
-
-    if (indent) {
-      my_space = concatStringNTimes(indent, deep);
-    }
-    if (Array.isArray(value)) {
-      res = [];
-      for (i = 0; i < value.length; i += 1) {
-        res[res.length] = uniqueJSONStringifyRec(i, value[i], deep + 1);
-        if (res[res.length - 1] === undefined) {
-          res[res.length - 1] = "null";
-        }
-      }
-      if (res.length === 0) { return "[]"; }
-      if (indent) {
-        return "[\n" + my_space + indent +
-          res.join(",\n" + my_space + indent) +
-          "\n" + my_space + "]";
-      }
-      return "[" + res.join(",") + "]";
-    }
-    if (typeof value === "object" && value !== null) {
-      if (Array.isArray(replacer)) {
-        res = replacer.reduce(function (p, c) {
-          p.push(c);
-          return p;
-        }, []);
-      } else {
-        res = Object.keys(value);
-      }
-      res.sort();
-      for (i = 0, l = res.length; i < l; i += 1) {
-        key = res[i];
-        res[i] = uniqueJSONStringifyRec(key, value[key], deep + 1);
-        if (res[i] !== undefined) {
-          res[i] = JSON.stringify(key) + ":" + key_value_space + res[i];
-        } else {
-          res.splice(i, 1);
-          l -= 1;
-          i -= 1;
-        }
-      }
-      if (res.length === 0) { return "{}"; }
-      if (indent) {
-        return "{\n" + my_space + indent +
-          res.join(",\n" + my_space + indent) +
-          "\n" + my_space + "}";
-      }
-      return "{" + res.join(",") + "}";
-    }
-    return JSON.stringify(value);
-  }
-  return uniqueJSONStringifyRec("", value, 0);
-}
-exports.util.uniqueJSONStringify = uniqueJSONStringify;
-
-function makeBinaryStringDigest(string) {
-  return 'sha256-' + hex_sha256(string);
-}
-exports.util.makeBinaryStringDigest = makeBinaryStringDigest;
-
-function readBlobAsBinaryString(blob) {
-  var fr = new FileReader();
-  return new RSVP.Promise(function (resolve, reject, notify) {
-    fr.addEventListener("load", resolve);
-    fr.addEventListener("error", reject);
-    fr.addEventListener("progress", notify);
-    fr.readAsBinaryString(blob);
-  }, function () {
-    fr.abort();
-  });
-}
-exports.util.readBlobAsBinaryString = readBlobAsBinaryString;
-
-function readBlobAsArrayBuffer(blob) {
-  var fr = new FileReader();
-  return new RSVP.Promise(function (resolve, reject, notify) {
-    fr.addEventListener("load", resolve);
-    fr.addEventListener("error", reject);
-    fr.addEventListener("progress", notify);
-    fr.readAsArrayBuffer(blob);
-  }, function () {
-    fr.abort();
-  });
-}
-exports.util.readBlobAsArrayBuffer = readBlobAsArrayBuffer;
-
-function readBlobAsText(blob) {
-  var fr = new FileReader();
-  return new RSVP.Promise(function (resolve, reject, notify) {
-    fr.addEventListener("load", resolve);
-    fr.addEventListener("error", reject);
-    fr.addEventListener("progress", notify);
-    fr.readAsText(blob);
-  }, function () {
-    fr.abort();
-  });
-}
-exports.util.readBlobAsText = readBlobAsText;
-
-/**
- * Send request with XHR and return a promise. xhr.onload: The promise is
- * resolved when the status code is lower than 400 with the xhr object as first
- * parameter. xhr.onerror: reject with xhr object as first
- * parameter. xhr.onprogress: notifies the xhr object.
- *
- * @param  {Object} param The parameters
- * @param  {String} [param.type="GET"] The request method
- * @param  {String} [param.dataType=""] The data type to retrieve
- * @param  {String} param.url The url
- * @param  {Any} [param.data] The data to send
- * @param  {Function} [param.beforeSend] A function called just before the send
- *   request. The first parameter of this function is the XHR object.
- * @return {Promise} The promise
- */
-function ajax(param) {
-  var xhr = new XMLHttpRequest();
-  return new RSVP.Promise(function (resolve, reject, notify) {
-    var k;
-    xhr.open(param.type || "GET", param.url, true);
-    xhr.responseType = param.dataType || "";
-    if (typeof param.headers === 'object' && param.headers !== null) {
-      for (k in param.headers) {
-        if (param.headers.hasOwnProperty(k)) {
-          xhr.setRequestHeader(k, param.headers[k]);
-        }
-      }
-    }
-    xhr.addEventListener("load", function (e) {
-      if (e.target.status >= 400) {
-        return reject(e);
-      }
-      resolve(e);
-    });
-    xhr.addEventListener("error", reject);
-    xhr.addEventListener("progress", notify);
-    if (typeof param.xhrFields === 'object' && param.xhrFields !== null) {
-      for (k in param.xhrFields) {
-        if (param.xhrFields.hasOwnProperty(k)) {
-          xhr[k] = param.xhrFields[k];
-        }
-      }
-    }
-    if (typeof param.beforeSend === 'function') {
-      param.beforeSend(xhr);
-    }
-    xhr.send(param.data);
-  }, function () {
-    xhr.abort();
-  });
-}
-exports.util.ajax = ajax;
-
-/**
- * Acts like `Array.prototype.concat` but does not create a copy of the original
- * array. It extends the original array and return it.
- *
- * @param  {Array} array The array to extend
- * @param  {Any} [args]* Values to add in the array
- * @return {Array} The original array
- */
-function arrayExtend(array) { // args*
-  var i, j;
-  for (i = 1; i < arguments.length; i += 1) {
-    if (Array.isArray(arguments[i])) {
-      for (j = 0; j < arguments[i].length; j += 1) {
-        array[array.length] = arguments[i][j];
-      }
-    } else {
-      array[array.length] = arguments[i];
-    }
-  }
-  return array;
-}
-exports.util.arrayExtend = arrayExtend;
-
-/**
- * Acts like `Array.prototype.concat` but does not create a copy of the original
- * array. It extends the original array from a specific position and return it.
- *
- * @param  {Array} array The array to extend
- * @param  {Number} position The position where to extend
- * @param  {Any} [args]* Values to add in the array
- * @return {Array} The original array
- */
-function arrayInsert(array, position) { // args*
-  var array_part = array.splice(position, array.length - position);
-  arrayExtend.apply(null, arrayExtend([
-  ], [array], Array.prototype.slice.call(arguments, 2)));
-  return arrayExtend(array, array_part);
-}
-exports.util.arrayInsert = arrayInsert;
-
-/**
- * Guess if the method is a writer or a reader.
- *
- * @param  {String} method The method name
- * @return {String} "writer", "reader" or "unknown"
- */
-function methodType(method) {
-  switch (method) {
-  case "post":
-  case "put":
-  case "putAttachment":
-  case "remove":
-  case "removeAttachment":
-  case "repair":
-    return 'writer';
-  case "get":
-  case "getAttachment":
-  case "allDocs":
-  case "check":
-    return 'reader';
-  default:
-    return 'unknown';
-  }
-}
-
-/**
- *     forEach(array, callback[, thisArg]): Promise
- *
- * It executes the provided `callback` once for each element of the array with
- * an assigned value asynchronously. If the `callback` returns a promise, then
- * the function will wait for its fulfillment before executing the next
- * iteration.
- *
- * `callback` is invoked with three arguments:
- *
- * - the element value
- * - the element index
- * - the array being traversed
- *
- * If a `thisArg` parameter is provided to `forEach`, it will be passed to
- * `callback` when invoked, for use as its `this` value.  Otherwise, the value
- * `undefined` will be passed for use as its `this` value.
- *
- * Unlike `Array.prototype.forEach`, you can stop the iteration by throwing
- * something, or by doing a `cancel` to the returned promise if it is
- * cancellable promise.
- *
- * Inspired by `Array.prototype.forEach` from Mozilla Developer Network.
- *
- * @param  {Array} array The array to parse
- * @param  {Function} callback Function to execute for each element.
- * @param  {Any} [thisArg] Value to use as `this` when executing `callback`.
- * @param  {Promise} A new promise.
- */
-function forEach(array, fn, thisArg) {
-  if (arguments.length === 0) {
-    throw new TypeError("missing argument 0 when calling function forEach");
-  }
-  if (!Array.isArray(array)) {
-    throw new TypeError(array + " is not an array");
-  }
-  if (arguments.length === 1) {
-    throw new TypeError("missing argument 1 when calling function forEach");
-  }
-  if (typeof fn !== "function") {
-    throw new TypeError(fn + " is not a function");
-  }
-  var cancelled, current_promise = RSVP.resolve();
-  return new RSVP.Promise(function (done, fail, notify) {
-    var i = 0;
-    function next() {
-      if (cancelled) {
-        fail(new Error("Cancelled"));
-        return;
-      }
-      if (i < array.length) {
-        current_promise =
-          current_promise.then(fn.bind(thisArg, array[i], i, array));
-        current_promise.then(next, fail, notify);
-        i += 1;
-        return;
-      }
-      done();
-    }
-    next();
-  }, function () {
-    cancelled = true;
-    if (typeof current_promise.cancel === "function") {
-      current_promise.cancel();
-    }
-  });
-}
-exports.util.forEach = forEach;
-
-/**
- *     range(stop, callback): Promise
- *     range(start, stop[, step], callback): Promise
- *
- * It executes the provided `callback` once for each step between `start` and
- * `stop`. If the `callback` returns a promise, then the function will wait
- * for its fulfillment before executing the next iteration.
- *
- * `callback` is invoked with one argument:
- *
- * - the index of the step
- *
- * `start`, `stop` and `step` must be finite numbers. If `step` is not
- * provided, then the default step will be `1`. If `start` and `step` are not
- * provided, `start` will be `0` and `step` will be `1`.
- *
- * Inspired by `range()` from Python 3 built-in functions.
- *
- *     range(10, function (index) {
- *       return notifyIndex(index);
- *     }).then(onDone, onError, onNotify);
- *
- * @param  {Number} [start=0] The start index
- * @param  {Number} stop The stop index
- * @param  {Number} [step=1] One step
- * @param  {Function} callback Function to execute on each iteration.
- * @param  {Promise} A new promise with no fulfillment value.
- */
-function range(start, stop, step, callback) {
-  var type_object, cancelled, current_promise;
-  type_object = arrayValuesToTypeDict([start, stop, step, callback]);
-
-  if (type_object["function"].length !== 1) {
-    throw new TypeError("range(): only one callback is needed");
-  }
-  start = type_object.number.length;
-  if (start < 1) {
-    throw new TypeError("range(): 1, 2 or 3 numbers are needed");
-  }
-  if (start > 3) {
-    throw new TypeError("range(): only 1, 2 or 3 numbers are needed");
-  }
-
-  callback = type_object["function"][0];
-
-  if (start === 1) {
-    start = 0;
-    stop = type_object.number[0];
-    step = 1;
-  }
-
-  if (start === 2) {
-    start = type_object.number[0];
-    stop = type_object.number[1];
-    step = 1;
-  }
-
-  if (start === 3) {
-    start = type_object.number[0];
-    stop = type_object.number[1];
-    step = type_object.number[2];
-    if (step === 0) {
-      throw new TypeError("range(): step must not be zero");
-    }
-  }
-
-  type_object = undefined;
-  current_promise = RSVP.resolve();
-  return new RSVP.Promise(function (done, fail, notify) {
-    var i = start, test;
-    function next() {
-      if (cancelled) {
-        fail(new Error("Cancelled"));
-        return;
-      }
-      test = step > 0 ? i < stop : i > stop;
-      if (test) {
-        current_promise = current_promise.then(callback.bind(null, i));
-        current_promise.then(next, fail, notify);
-        i += step;
-        return;
-      }
-      done();
-    }
-    next();
-  }, function () {
-    cancelled = true;
-    if (typeof current_promise.cancel === "function") {
-      current_promise.cancel();
-    }
-  });
-}
-exports.util.range = range;
-
-/*jslint indent: 2, maxlen: 80, nomen: true, sloppy: true */
-/*global secureMethods, exports, console */
-
-/**
- * Inspired by nodejs EventEmitter class
- * http://nodejs.org/api/events.html
- *
- * When an EventEmitter instance experiences an error, the typical action is
- * to emit an 'error' event. Error events are treated as a special case in
- * node. If there is no listener for it, then the default action throws the
- * exception again.
- *
- * All EventEmitters emit the event 'newListener' when new listeners are added
- * and 'removeListener' when a listener is removed.
- *
- * @class EventEmitter
- * @constructor
- */
-function EventEmitter() {
-  this._events = {};
-  this._maxListeners = 10;
-}
-
-/**
- * Adds a listener to the end of the listeners array for the specified
- * event.
- *
- * @method addListener
- * @param  {String} event The event name
- * @param  {Function} listener The listener callback
- * @return {EventEmitter} This emitter
- */
-EventEmitter.prototype.addListener = function (event, listener) {
-  var listener_list;
-  if (typeof listener !== "function") {
-    return this;
-  }
-  this.emit("newListener", event, listener);
-  listener_list = this._events[event];
-  if (listener_list === undefined) {
-    this._events[event] = listener;
-    listener_list = listener;
-  } else if (typeof listener_list === "function") {
-    this._events[event] = [listener_list, listener];
-    listener_list = this._events[event];
-  } else {
-    listener_list[listener_list.length] = listener;
-  }
-  if (this._maxListeners > 0 &&
-      typeof listener_list !== "function" &&
-      listener_list.length > this._maxListeners &&
-      listener_list.warned !== true) {
-    console.warn("warning: possible EventEmitter memory leak detected. " +
-                 listener_list.length + " listeners added. " +
-                 "Use emitter.setMaxListeners() to increase limit.");
-    listener_list.warned = true;
-  }
-  return this;
-};
-
-/**
- * #crossLink "EventEmitter/addListener:method"
- *
- * @method on
- */
-EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-
-/**
- * Adds a one time listener for the event. This listener is invoked only the
- * next time the event is fired, after which it is removed.
- *
- * @method once
- * @param  {String} event The event name
- * @param  {Function} listener The listener callback
- * @return {EventEmitter} This emitter
- */
-EventEmitter.prototype.once = function (event, listener) {
-  var that = this, wrapper = function () {
-    that.removeListener(event, wrapper);
-    listener.apply(that, arguments);
-  };
-  wrapper.original = listener;
-  return that.on(event, wrapper);
-};
-
-/**
- * Remove a listener from the listener array for the specified event.
- * Caution: changes array indices in the listener array behind the listener
- *
- * @method removeListener
- * @param  {String} event The event name
- * @param  {Function} listener The listener callback
- * @return {EventEmitter} This emitter
- */
-EventEmitter.prototype.removeListener = function (event, listener) {
-  var listener_list = this._events[event], i;
-  if (listener_list) {
-    if (typeof listener_list === "function") {
-      if (listener_list === listener || listener_list.original === listener) {
-        delete this._events[event];
-      }
-      return this;
-    }
-    for (i = 0; i < listener_list.length; i += 1) {
-      if (listener_list[i] === listener ||
-          listener_list[i].original === listener) {
-        listener_list.splice(i, 1);
-        this.emit("removeListener", event, listener);
-        break;
-      }
-    }
-    if (listener_list.length === 1) {
-      this._events[event] = listener_list[0];
-    }
-    if (listener_list.length === 0) {
-      this._events[event] = undefined;
-    }
-  }
-  return this;
-};
-
-/**
- * Removes all listeners, or those of the specified event.
- *
- * @method removeAllListeners
- * @param  {String} event The event name (optional)
- * @return {EventEmitter} This emitter
- */
-EventEmitter.prototype.removeAllListeners = function (event) {
-  var key;
-  if (event === undefined) {
-    for (key in this._events) {
-      if (this._events.hasOwnProperty(key)) {
-        delete this._events[key];
-      }
-    }
-    return this;
-  }
-  delete this._events[event];
-  return this;
-};
-
-/**
- * By default EventEmitters will print a warning if more than 10 listeners
- * are added for a particular event. This is a useful default which helps
- * finding memory leaks. Obviously not all Emitters should be limited to 10.
- * This function allows that to be increased. Set to zero for unlimited.
- *
- * @method setMaxListeners
- * @param  {Number} max_listeners The maximum of listeners
- */
-EventEmitter.prototype.setMaxListeners = function (max_listeners) {
-  this._maxListeners = max_listeners;
-};
-
-/**
- * Execute each of the listeners in order with the supplied arguments.
- *
- * @method emit
- * @param  {String} event The event name
- * @param  {Any} [args]* The listener argument to give
- * @return {Boolean} true if event had listeners, false otherwise.
- */
-EventEmitter.prototype.emit = function (event) {
-  var i, argument_list, listener_list;
-  listener_list = this._events[event];
-  if (typeof listener_list === 'function') {
-    listener_list = [listener_list];
-  } else if (Array.isArray(listener_list)) {
-    listener_list = listener_list.slice();
-  } else {
-    return false;
-  }
-  argument_list = Array.prototype.slice.call(arguments, 1);
-  for (i = 0; i < listener_list.length; i += 1) {
-    try {
-      listener_list[i].apply(this, argument_list);
-    } catch (e) {
-      if (this.listeners("error").length > 0) {
-        this.emit("error", e);
-        break;
-      }
-      throw e;
-    }
-  }
-  return true;
-};
-
-/**
- * Returns an array of listeners for the specified event.
- *
- * @method listeners
- * @param  {String} event The event name
- * @return {Array} The array of listeners
- */
-EventEmitter.prototype.listeners = function (event) {
-  return (typeof this._events[event] === 'function' ?
-          [this._events[event]] : (this._events[event] || []).slice());
-};
-
-/**
- * Static method; Return the number of listeners for a given event.
- *
- * @method listenerCount
- * @static
- * @param  {EventEmitter} emitter The event emitter
- * @param  {String} event The event name
- * @return {Number} The number of listener
- */
-EventEmitter.listenerCount = function (emitter, event) {
-  return emitter.listeners(event).length;
-};
-
-exports.EventEmitter = EventEmitter;
-
-/*jslint indent: 2, maxlen: 80, nomen: true, sloppy: true */
-/*global EventEmitter, deepClone, inherits, exports */
-/*global enableRestAPI, enableRestParamChecker, enableJobMaker, enableJobRetry,
-  enableJobReference, enableJobChecker, enableJobQueue, enableJobRecovery,
-  enableJobTimeout, enableJobExecuter */
-
-function JIO(storage_spec, options) {
-  JIO.super_.call(this);
-  var shared = new EventEmitter();
-
-  shared.storage_spec = deepClone(storage_spec);
-
-  if (options === undefined) {
-    options = {};
-  } else if (typeof options !== 'object' || Array.isArray(options)) {
-    throw new TypeError("JIO(): Optional argument 2 is not of type 'object'");
-  }
-
-  enableRestAPI(this, shared, options);
-  enableRestParamChecker(this, shared, options);
-  enableJobMaker(this, shared, options);
-  enableJobReference(this, shared, options);
-  enableJobRetry(this, shared, options);
-  enableJobTimeout(this, shared, options);
-  enableJobChecker(this, shared, options);
-  enableJobQueue(this, shared, options);
-  enableJobRecovery(this, shared, options);
-  enableJobExecuter(this, shared, options);
-
-  shared.emit('load');
-}
-inherits(JIO, EventEmitter);
-
-JIO.createInstance = function (storage_spec, options) {
-  return new JIO(storage_spec, options);
-};
-
-exports.JIO = JIO;
-
-exports.createJIO = JIO.createInstance;
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
-/*global deepClone, dictFilter, uniqueJSONStringify */
-
-/**
- * Tool to manipulate a list of object containing at least one property: 'id'.
- * Id must be a number > 0.
- *
- * @class JobQueue
- * @constructor
- * @param  {Workspace} workspace The workspace where to store
- * @param  {String} namespace The namespace to use in the workspace
- * @param  {Array} job_keys An array of job keys to store
- * @param  {Array} [array] An array of object
- */
-function JobQueue(workspace, namespace, job_keys, array) {
-  this._workspace = workspace;
-  this._namespace = namespace;
-  this._job_keys = job_keys;
-  if (Array.isArray(array)) {
-    this._array = array;
-  } else {
-    this._array = [];
-  }
-}
-
-/**
- * Store the job queue into the workspace.
- *
- * @method save
- */
-JobQueue.prototype.save = function () {
-  var i, job_queue = deepClone(this._array);
-  for (i = 0; i < job_queue.length; i += 1) {
-    dictFilter(job_queue[i], this._job_keys);
-  }
-  if (this._array.length === 0) {
-    this._workspace.removeItem(this._namespace);
-  } else {
-    this._workspace.setItem(
-      this._namespace,
-      uniqueJSONStringify(job_queue)
-    );
-  }
-  return this;
-};
-
-/**
- * Loads the job queue from the workspace.
- *
- * @method load
- */
-JobQueue.prototype.load = function () {
-  var job_list;
-  try {
-    job_list = JSON.parse(this._workspace.getItem(this._namespace));
-  } catch (ignore) {}
-  if (!Array.isArray(job_list)) {
-    job_list = [];
-  }
-  this.clear();
-  new JobQueue(job_list).repair();
-  this.update(job_list);
-  return this;
-};
-
-/**
- * Returns the array version of the job queue
- *
- * @method asArray
- * @return {Array} The job queue as array
- */
-JobQueue.prototype.asArray = function () {
-  return this._array;
-};
-
-/**
- * Removes elements which are not objects containing at least 'id' property.
- *
- * @method repair
- */
-JobQueue.prototype.repair = function () {
-  var i, job;
-  for (i = 0; i < this._array.length; i += 1) {
-    job = this._array[i];
-    if (typeof job !== 'object' || Array.isArray(job) ||
-        typeof job.id !== 'number' || job.id <= 0) {
-      this._array.splice(i, 1);
-      i -= 1;
-    }
-  }
-};
-
-/**
- * Post an object and generate an id
- *
- * @method post
- * @param  {Object} job The job object
- * @return {Number} The generated id
- */
-JobQueue.prototype.post = function (job) {
-  var i, next = 1;
-  // get next id
-  for (i = 0; i < this._array.length; i += 1) {
-    if (this._array[i].id >= next) {
-      next = this._array[i].id + 1;
-    }
-  }
-  job.id = next;
-  this._array[this._array.length] = deepClone(job);
-  return this;
-};
-
-/**
- * Put an object to the list. If an object contains the same id, it is replaced
- * by the new one.
- *
- * @method put
- * @param  {Object} job The job object with an id
- */
-JobQueue.prototype.put = function (job) {
-  var i;
-  if (typeof job.id !== 'number' || job.id <= 0) {
-    throw new TypeError("JobQueue().put(): Job id should be a positive number");
-  }
-  for (i = 0; i < this._array.length; i += 1) {
-    if (this._array[i].id === job.id) {
-      break;
-    }
-  }
-  this._array[i] = deepClone(job);
-  return this;
-};
-
-/**
- * Puts some object into the list. Update object with the same id, and add
- * unreferenced one.
- *
- * @method update
- * @param  {Array} job_list A list of new jobs
- */
-JobQueue.prototype.update = function (job_list) {
-  var i, j = 0, j_max, index = {}, next = 1, job, post_list = [];
-  j_max = this._array.length;
-  for (i = 0; i < job_list.length; i += 1) {
-    if (typeof job_list[i].id !== 'number' || job_list[i].id <= 0) {
-      // this job has no id, it has to be post
-      post_list[post_list.length] = job_list[i];
-    } else {
-      job = deepClone(job_list[i]);
-      if (index[job.id] !== undefined) {
-        // this job is on the list, update
-        this._array[index[job.id]] = job;
-      } else if (j === j_max) {
-        // this job is not on the list, update
-        this._array[this._array.length] = job;
-      } else {
-        // don't if the job is there or not
-        // searching same job in the original list
-        while (j < j_max) {
-          // references visited job
-          index[this._array[j].id] = j;
-          if (this._array[j].id >= next) {
-            next = this._array[j].id + 1;
-          }
-          if (this._array[j].id === job.id) {
-            // found on the list, just update
-            this._array[j] = job;
-            break;
-          }
-          j += 1;
-        }
-        if (j === j_max) {
-          // not found on the list, add to the end
-          this._array[this._array.length] = job;
-        } else {
-          // found on the list, already updated
-          j += 1;
-        }
-      }
-      if (job.id >= next) {
-        next = job.id + 1;
-      }
-    }
-  }
-  for (i = 0; i < post_list.length; i += 1) {
-    // adding job without id
-    post_list[i].id = next;
-    next += 1;
-    this._array[this._array.length] = deepClone(post_list[i]);
-  }
-  return this;
-};
-
-/**
- * Get an object from an id. Returns undefined if not found
- *
- * @method get
- * @param  {Number} id The job id
- * @return {Object} The job or undefined
- */
-JobQueue.prototype.get = function (id) {
-  var i;
-  for (i = 0; i < this._array.length; i += 1) {
-    if (this._array[i].id === id) {
-      return deepClone(this._array[i]);
-    }
-  }
-};
-
-/**
- * Removes an object from an id
- *
- * @method remove
- * @param  {Number} id The job id
- */
-JobQueue.prototype.remove = function (id) {
-  var i;
-  for (i = 0; i < this._array.length; i += 1) {
-    if (this._array[i].id === id) {
-      this._array.splice(i, 1);
-      return true;
-    }
-  }
-  return false;
-};
-
-/**
- * Clears the list.
- *
- * @method clear
- */
-JobQueue.prototype.clear = function () {
-  this._array.length = 0;
-  return this;
-};
-
-
-/*jslint indent: 2, maxlen: 80, sloppy: true */
-/*global localStorage */
-
-// keywords: js, javascript, store on local storage as array
-
-function LocalStorageArray(namespace) {
-  var index, next;
-
-  function nextId() {
-    var i = next;
-    next += 1;
-    return i;
-  }
-
-  this.length = function () {
-    return index.length;
-  };
-
-  this.truncate = function (length) {
-    var i;
-    if (length === index.length) {
-      return this;
-    }
-    if (length > index.length) {
-      index.length = length;
-      localStorage[namespace + '.index'] = JSON.stringify(index);
-      return this;
-    }
-    while (length < index.length) {
-      i = index.pop();
-      if (i !== undefined && i !== null) {
-        delete localStorage[namespace + '.' + i];
-      }
-    }
-    localStorage[namespace + '.index'] = JSON.stringify(index);
-    return this;
-  };
-
-  this.get = function (i) {
-    return JSON.parse(localStorage[namespace + '.' + index[i]] || 'null');
-  };
-
-  this.set = function (i, value) {
-    if (index[i] === undefined || index[i] === null) {
-      index[i] = nextId();
-      localStorage[namespace + '.' + index[i]] = JSON.stringify(value);
-      localStorage[namespace + '.index'] = JSON.stringify(index);
-    } else {
-      localStorage[namespace + '.' + index[i]] = JSON.stringify(value);
-    }
-    return this;
-  };
-
-  this.append = function (value) {
-    index[index.length] = nextId();
-    localStorage[namespace + '.' + index[index.length - 1]] =
-      JSON.stringify(value);
-    localStorage[namespace + '.index'] = JSON.stringify(index);
-    return this;
-  };
-
-  this.pop = function (i) {
-    var value, key;
-    if (i === undefined || i === null) {
-      key = namespace + '.' + index[index.length - 1];
-      index.pop();
-    } else {
-      if (i < 0 || i >= index.length) {
-        return null;
-      }
-      key = namespace + '.' + i;
-      index.splice(i, 1);
-    }
-
-    value = localStorage[key];
-
-    if (index.length === 0) {
-      delete localStorage[namespace + '.index'];
-    } else {
-      localStorage[namespace + '.index'] = JSON.stringify(index);
-    }
-    delete localStorage[key];
-
-    return JSON.parse(value || 'null');
-  };
-
-  this.clear = function () {
-    var i;
-    for (i = 0; i < index.length; i += 1) {
-      delete localStorage[namespace + '.' + index[i]];
-    }
-    index = [];
-    delete localStorage[namespace + '.index'];
-    return this;
-  };
-
-  this.reload = function () {
-    var i;
-    index = JSON.parse(localStorage[namespace + '.index'] || '[]');
-    next = 0;
-    for (i = 0; i < index.length; i += 1) {
-      if (next < index[i]) {
-        next = index[i];
-      }
-    }
-    return this;
-  };
-
-  this.toArray = function () {
-    var i, list = [];
-    for (i = 0; i < index.length; i += 1) {
-      list[list.length] = this.get(i);
-    }
-    return list;
-  };
-
-  this.update = function (list) {
-    if (!Array.isArray(list)) {
-      throw new TypeError("LocalStorageArray().saveArray(): " +
-                          "Argument 1 is not of type 'array'");
-    }
-    var i, location;
-    // update previous values
-    for (i = 0; i < list.length; i += 1) {
-      location = index[i];
-      if (location === undefined || location === null) {
-        location = nextId();
-        index[i] = location;
-      }
-      localStorage[namespace + '.' + location] =
-        JSON.stringify(list[i]);
-    }
-    // remove last ones
-    while (list.length < index.length) {
-      location = index.pop();
-      if (location !== undefined && location !== null) {
-        delete localStorage[namespace + '.' + location];
-      }
-    }
-    // store index
-    localStorage[namespace + '.index'] = JSON.stringify(index);
-    return this;
-  };
-
-  this.reload();
-}
-
-LocalStorageArray.saveArray = function (namespace, list) {
-  if (!Array.isArray(list)) {
-    throw new TypeError("LocalStorageArray.saveArray(): " +
-                        "Argument 2 is not of type 'array'");
-  }
-  var local_storage_array = new LocalStorageArray(namespace).clear(), i;
-  for (i = 0; i < list.length; i += 1) {
-    local_storage_array.append(list[i]);
-  }
-};
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
-/*global exports, deepClone, jsonDeepClone */
-
-/**
- * A class to manipulate metadata
- *
- * @class Metadata
- * @constructor
- */
-function Metadata(metadata) {
-  if (arguments.length > 0) {
-    if (metadata === null || typeof metadata !== 'object' ||
-        Array.isArray(metadata)) {
-      throw new TypeError("Metadata(): Optional argument 1 is not an object");
-    }
-    this._dict = metadata;
-  } else {
-    this._dict = {};
-  }
-}
-
-Metadata.prototype.format = function () {
-  return this.update(this._dict);
-};
-
-Metadata.prototype.check = function () {
-  var k;
-  for (k in this._dict) {
-    if (this._dict.hasOwnProperty(k)) {
-      if (k[0] !== '_') {
-        if (!Metadata.checkValue(this._dict[k])) {
-          return false;
-        }
-      }
-    }
-  }
-  return true;
-};
-
-Metadata.prototype.update = function (metadata) {
-  var k;
-  for (k in metadata) {
-    if (metadata.hasOwnProperty(k)) {
-      if (k[0] === '_') {
-        this._dict[k] = jsonDeepClone(metadata[k]);
-      } else {
-        this._dict[k] = Metadata.normalizeValue(metadata[k]);
-      }
-      if (this._dict[k] === undefined) {
-        delete this._dict[k];
-      }
-    }
-  }
-  return this;
-};
-
-Metadata.prototype.get = function (key) {
-  return this._dict[key];
-};
-
-Metadata.prototype.add = function (key, value) {
-  var i;
-  if (key[0] === '_') {
-    return this;
-  }
-  if (this._dict[key] === undefined) {
-    this._dict[key] = Metadata.normalizeValue(value);
-    if (this._dict[key] === undefined) {
-      delete this._dict[key];
-    }
-    return this;
-  }
-  if (!Array.isArray(this._dict[key])) {
-    this._dict[key] = [this._dict[key]];
-  }
-  value = Metadata.normalizeValue(value);
-  if (value === undefined) {
-    return this;
-  }
-  if (!Array.isArray(value)) {
-    value = [value];
-  }
-  for (i = 0; i < value.length; i += 1) {
-    this._dict[key][this._dict[key].length] = value[i];
-  }
-  return this;
-};
-
-Metadata.prototype.set = function (key, value) {
-  if (key[0] === '_') {
-    this._dict[key] = JSON.parse(JSON.stringify(value));
-  } else {
-    this._dict[key] = Metadata.normalizeValue(value);
-  }
-  if (this._dict[key] === undefined) {
-    delete this._dict[key];
-  }
-  return this;
-};
-
-Metadata.prototype.remove = function (key) {
-  delete this._dict[key];
-  return this;
-};
-
-
-Metadata.prototype.forEach = function (key, fun) {
-  var k, i, value, that = this;
-  if (typeof key === 'function') {
-    fun = key;
-    key = undefined;
-  }
-  function forEach(key, fun) {
-    value = that._dict[key];
-    if (!Array.isArray(that._dict[key])) {
-      value = [value];
-    }
-    for (i = 0; i < value.length; i += 1) {
-      if (typeof value[i] === 'object') {
-        fun.call(that, key, deepClone(value[i]), i);
-      } else {
-        fun.call(that, key, {'content': value[i]}, i);
-      }
-    }
-  }
-  if (key === undefined) {
-    for (k in this._dict) {
-      if (this._dict.hasOwnProperty(k)) {
-        forEach(k, fun);
-      }
-    }
-  } else {
-    forEach(key, fun);
-  }
-  return this;
-};
-
-Metadata.prototype.toFullDict = function () {
-  var dict = {};
-  this.forEach(function (key, value, index) {
-    dict[key] = dict[key] || [];
-    dict[key][index] = value;
-  });
-  return dict;
-};
-
-Metadata.asJsonableValue = function (value) {
-  switch (typeof value) {
-  case 'string':
-  case 'boolean':
-    return value;
-  case 'number':
-    if (isFinite(value)) {
-      return value;
-    }
-    return null;
-  case 'object':
-    if (value === null) {
-      return null;
-    }
-    if (value instanceof Date) {
-      // XXX this block is to enable phantomjs and browsers compatibility with
-      // Date.prototype.toJSON when it is a invalid date. In phantomjs, it
-      // returns `"Invalid Date"` but in browsers it returns `null`. Here, the
-      // result will always be `null`.
-      if (isNaN(value.getTime())) {
-        return null;
-      }
-    }
-    if (typeof value.toJSON === 'function') {
-      return Metadata.asJsonableValue(value.toJSON());
-    }
-    return value; // dict, array
-  // case 'undefined':
-  default:
-    return null;
-  }
-};
-
-Metadata.isDict = function (o) {
-  return typeof o === 'object' &&
-    Object.getPrototypeOf(o || []) === Object.prototype;
-};
-
-Metadata.isContent = function (c) {
-  return typeof c === 'string' ||
-    (typeof c === 'number' && isFinite(c)) ||
-    typeof c === 'boolean';
-};
-
-Metadata.contentValue = function (value) {
-  if (Array.isArray(value)) {
-    return Metadata.contentValue(value[0]);
-  }
-  if (Metadata.isDict(value)) {
-    return value.content;
-  }
-  return value;
-};
-
-Metadata.normalizeArray = function (value) {
-  var i;
-  value = value.slice();
-  i = 0;
-  while (i < value.length) {
-    value[i] = Metadata.asJsonableValue(value[i]);
-    if (Metadata.isDict(value[i])) {
-      value[i] = Metadata.normalizeObject(value[i]);
-      if (value[i] === undefined) {
-        value.splice(i, 1);
-      } else {
-        i += 1;
-      }
-    } else if (Metadata.isContent(value[i])) {
-      i += 1;
-    } else {
-      value.splice(i, 1);
-    }
-  }
-  if (value.length === 0) {
-    return;
-  }
-  if (value.length === 1) {
-    return value[0];
-  }
-  return value;
-};
-
-Metadata.normalizeObject = function (value) {
-  var i, count = 0, ok = false, new_value = {};
-  for (i in value) {
-    if (value.hasOwnProperty(i)) {
-      value[i] = Metadata.asJsonableValue(value[i]);
-      if (Metadata.isContent(value[i])) {
-        new_value[i] = value[i];
-        if (new_value[i] === undefined) {
-          delete new_value[i];
-        }
-        count += 1;
-        if (i === 'content') {
-          ok = true;
-        }
-      }
-    }
-  }
-  if (ok === false) {
-    return;
-  }
-  if (count === 1) {
-    return new_value.content;
-  }
-  return new_value;
-};
-
-Metadata.normalizeValue = function (value) {
-  value = Metadata.asJsonableValue(value);
-  if (Metadata.isContent(value)) {
-    return value;
-  }
-  if (Array.isArray(value)) {
-    return Metadata.normalizeArray(value);
-  }
-  if (Metadata.isDict(value)) {
-    return Metadata.normalizeObject(value);
-  }
-};
-
-Metadata.checkArray = function (value) {
-  var i;
-  for (i = 0; i < value.length; i += 1) {
-    if (Metadata.isDict(value[i])) {
-      if (!Metadata.checkObject(value[i])) {
-        return false;
-      }
-    } else if (!Metadata.isContent(value[i])) {
-      return false;
-    }
-  }
-  return true;
-};
-
-Metadata.checkObject = function (value) {
-  var i, ok = false;
-  for (i in value) {
-    if (value.hasOwnProperty(i)) {
-      if (Metadata.isContent(value[i])) {
-        if (i === 'content') {
-          ok = true;
-        }
-      } else {
-        return false;
-      }
-    }
-  }
-  if (ok === false) {
-    return false;
-  }
-  return true;
-};
-
-Metadata.checkValue = function (value) {
-  if (Metadata.isContent(value)) {
-    return true;
-  }
-  if (Array.isArray(value)) {
-    return Metadata.checkArray(value);
-  }
-  if (Metadata.isDict(value)) {
-    return Metadata.checkObject(value);
-  }
-  return false;
-};
-
-exports.Metadata = Metadata;
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
-/*global */
-
-/**
- * An array that contain object (or array) references.
- *
- * @class ReferenceArray
- * @constructor
- * @param  {array} [array] The array where to work on
- */
-function ReferenceArray(array) {
-  if (Array.isArray(array)) {
-    this._array = array;
-  } else {
-    this._array = [];
-  }
-}
-
-/**
- * Returns the array version of the job queue
- *
- * @method asArray
- * @return {Array} The job queue as array
- */
-ReferenceArray.prototype.asArray = function () {
-  return this._array;
-};
-
-/**
- * Returns the index of the object
- *
- * @method indexOf
- * @param  {Object} object The object to search
- */
-ReferenceArray.prototype.indexOf = function (object) {
-  var i;
-  for (i = 0; i < this._array.length; i += 1) {
-    if (this._array[i] === object) {
-      return i;
-    }
-  }
-  return -1;
-};
-
-/**
- * Put an object to the list. If an object already exists, do nothing.
- *
- * @method put
- * @param  {Object} object The object to add
- */
-ReferenceArray.prototype.put = function (object) {
-  var i;
-  for (i = 0; i < this._array.length; i += 1) {
-    if (this._array[i] === object) {
-      return false;
-    }
-  }
-  this._array[i] = object;
-  return true;
-};
-
-/**
- * Removes an object from the list
- *
- * @method remove
- * @param  {Object} object The object to remove
- */
-ReferenceArray.prototype.remove = function (object) {
-  var i;
-  for (i = 0; i < this._array.length; i += 1) {
-    if (this._array[i] === object) {
-      this._array.splice(i, 1);
-      return true;
-    }
-  }
-  return false;
-};
-
-/**
- * Clears the list.
- *
- * @method clear
- */
-ReferenceArray.prototype.clear = function () {
-  this._array.length = 0;
-  return this;
-};
-
-/*jslint indent: 2, maxlen: 80, sloppy: true */
-/*global exports, defaults */
-
-function Storage() { // (storage_spec, util)
-  return undefined; // this is a constructor
-}
-// end Storage
-
-function createStorage(storage_spec, util) {
-  if (typeof storage_spec.type !== 'string') {
-    throw new TypeError("Invalid storage description");
-  }
-  if (!defaults.storage_types[storage_spec.type]) {
-    throw new TypeError("Unknown storage '" + storage_spec.type + "'");
-  }
-  return new defaults.storage_types[storage_spec.type](storage_spec, util);
-}
-
-function addStorage(type, Constructor) {
-  // var proto = {};
-  if (typeof type !== 'string') {
-    throw new TypeError("jIO.addStorage(): Argument 1 is not of type 'string'");
-  }
-  if (typeof Constructor !== 'function') {
-    throw new TypeError("jIO.addStorage(): " +
-                        "Argument 2 is not of type 'function'");
-  }
-  if (defaults.storage_types[type]) {
-    throw new TypeError("jIO.addStorage(): Storage type already exists");
-  }
-  // dictUpdate(proto, Constructor.prototype);
-  // inherits(Constructor, Storage);
-  // dictUpdate(Constructor.prototype, proto);
-  defaults.storage_types[type] = Constructor;
-}
-exports.addStorage = addStorage;
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
-/*global */
-
-/**
- * A class that acts like localStorage on a simple object.
- *
- * Like localStorage, the object will contain only strings.
- *
- * @class Workspace
- * @constructor
- */
-function Workspace(object) {
-  this._object = object;
-}
-
-// // Too dangerous, never use it
-// /**
-//  * Empty the entire space.
-//  *
-//  * @method clear
-//  */
-// Workspace.prototype.clear = function () {
-//   var k;
-//   for (k in this._object) {
-//     if (this._object.hasOwnProperty(k)) {
-//       delete this._object;
-//     }
-//   }
-//   return undefined;
-// };
-
-/**
- * Get an item from the space. If the value does not exists, it returns
- * null. Else, it returns the string value.
- *
- * @method getItem
- * @param  {String} key The location where to get the item
- * @return {String} The item
- */
-Workspace.prototype.getItem = function (key) {
-  return this._object[key] === undefined ? null : this._object[key];
-};
-
-/**
- * Set an item into the space. The value to store is converted to string before.
- *
- * @method setItem
- * @param  {String} key The location where to set the item
- * @param  {Any} value The value to store
- */
-Workspace.prototype.setItem = function (key, value) {
-  if (value === undefined) {
-    this._object[key] = 'undefined';
-  } else if (value === null) {
-    this._object[key] = 'null';
-  } else {
-    this._object[key] = value.toString();
-  }
-  return undefined;
-};
-
-/**
- * Removes an item from the space.
- *
- * @method removeItem
- * @param  {String} key The location where to remove the item
- */
-Workspace.prototype.removeItem = function (key) {
-  delete this._object[key];
-  return undefined;
-};
-
-/*jslint indent: 2, maxlen: 80, sloppy: true */
-/*global exports, defaults */
-
-// adds
-// - jIO.addJobRuleCondition(name, function)
-
-function addJobRuleCondition(name, method) {
-  if (typeof name !== 'string') {
-    throw new TypeError("jIO.addJobRuleAction(): " +
-                        "Argument 1 is not of type 'string'");
-  }
-  if (typeof method !== 'function') {
-    throw new TypeError("jIO.addJobRuleAction(): " +
-                        "Argument 2 is not of type 'function'");
-  }
-  if (defaults.job_rule_conditions[name]) {
-    throw new TypeError("jIO.addJobRuleAction(): Action already exists");
-  }
-  defaults.job_rule_conditions[name] = method;
-}
-exports.addJobRuleCondition = addJobRuleCondition;
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true, regexp: true */
-/*global constants, dictUpdate, deepClone, DOMException */
-
-function restCommandRejecter(param, args) {
-  // reject(status, reason, message, {"custom": "value"});
-  // reject(status, reason, {..});
-  // reject(status, {..});
-  var arg, current_priority, priority = [
-    // 0 - custom parameter values
-    {},
-    // 1 - default values
-    {
-      "status": constants.http_status.unknown,
-      "statusText": constants.http_status_text.unknown,
-      "message": "Command failed",
-      "reason": "unknown"
-    },
-    // 2 - status, reason, message properties
-    {},
-    // 3 - status, reason, message parameters
-    {},
-    // 4 - never change
-    {"result": "error", "method": param.method}
-  ];
-  args = Array.prototype.slice.call(args);
-  arg = args.shift();
-
-  // priority 4 - never change
-  current_priority = priority[4];
-  if (param.kwargs._id) {
-    current_priority.id = param.kwargs._id;
-  }
-  if (/Attachment$/.test(param.method)) {
-    current_priority.attachment = param.kwargs._attachment;
-  }
-
-  // priority 3 - status, reason, message parameters
-  current_priority = priority[3];
-  // parsing first parameter if is not an object
-  if (typeof arg !== 'object' || arg === null || Array.isArray(arg)) {
-    // first parameter is mandatory
-    current_priority.status = arg;
-    arg = args.shift();
-  }
-  // parsing second parameter if is not an object
-  if (typeof arg !== 'object' || arg === null || Array.isArray(arg)) {
-    if (arg !== undefined) {
-      current_priority.reason = arg;
-    }
-    arg = args.shift();
-  }
-  // parsing third parameter if is not an object
-  if (typeof arg !== 'object' || arg === null || Array.isArray(arg)) {
-    if (arg !== undefined) {
-      current_priority.message = arg;
-    }
-    arg = args.shift();
-  }
-
-  // parsing fourth parameter if is an object
-  if (typeof arg === 'object' && arg !== null && !Array.isArray(arg)) {
-    // priority 0 - custom values
-    dictUpdate(priority[0], arg);
-    // priority 2 - status, reason, message properties
-    current_priority = priority[2];
-    if (arg.hasOwnProperty('reason')) {
-      current_priority.reason = arg.reason;
-    }
-    if (arg.hasOwnProperty('message')) {
-      current_priority.message = arg.message;
-    }
-    if ((arg.statusText || arg.status >= 0)) {
-      current_priority.status = arg.statusText || arg.status;
-    }
-    if (arg instanceof Error || arg instanceof DOMException) {
-      if (arg.code !== undefined && arg.code !== null) {
-        current_priority.code = arg.code;
-      }
-      if (arg.lineNumber !== undefined && arg.lineNumber !== null) {
-        current_priority.lineNumber = arg.lineNumber;
-      }
-      if (arg.columnNumber !== undefined && arg.columnNumber !== null) {
-        current_priority.columnNumber = arg.columnNumber;
-      }
-      if (arg.filename !== undefined && arg.filename !== null) {
-        current_priority.filename = arg.filename;
-      }
-      if (arg.message !== undefined && arg.message !== null) {
-        current_priority.reason = arg.message;
-      }
-      current_priority.error = arg.name;
-    }
-  }
-
-  // merge priority dicts
-  for (current_priority = priority.length - 1;
-       current_priority > 0;
-       current_priority -= 1) {
-    dictUpdate(priority[current_priority - 1], priority[current_priority]);
-  }
-  priority = priority[0];
-
-  // check status
-  priority.statusText = constants.http_status_text[priority.status];
-  if (priority.statusText === undefined) {
-    return restCommandRejecter(param, [
-      // can create infernal loop if 'internal_storage_error' is not defined in
-      // the constants
-      'internal_storage_error',
-      'invalid response',
-      'Unknown status "' + priority.status + '"'
-    ]);
-  }
-  priority.status = constants.http_status[priority.statusText];
-
-  // set default priority error if not already set
-  if (priority.error === undefined) {
-    priority.error = priority.statusText.toLowerCase().replace(/ /g, '_').
-      replace(/[^_a-z]/g, '');
-  }
-  param.storage_response = priority;
-  return param.solver.reject(deepClone(priority));
-}
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
-/*global constants, methodType, dictUpdate, Blob, deepClone,
-  restCommandRejecter */
-
-function restCommandResolver(param, args) {
-  // resolve('ok', {"custom": "value"});
-  // resolve(200, {...});
-  // resolve({...});
-  var arg, current_priority, priority = [
-    // 0 - custom parameter values
-    {},
-    // 1 - default values
-    {},
-    // 2 - status property
-    {},
-    // 3 - status parameter
-    {},
-    // 4 - never change
-    {"result": "success", "method": param.method}
-  ];
-  args = Array.prototype.slice.call(args);
-  arg = args.shift();
-
-  // priority 4 - never change
-  current_priority = priority[4];
-  if (param.kwargs._id) {
-    current_priority.id = param.kwargs._id;
-  }
-  if (/Attachment$/.test(param.method)) {
-    current_priority.attachment = param.kwargs._attachment;
-  }
-
-  // priority 1 - default values
-  current_priority = priority[1];
-  if (param.method === 'post') {
-    current_priority.status = constants.http_status.created;
-    current_priority.statusText = constants.http_status_text.created;
-  } else if (methodType(param.method) === "writer" ||
-             param.method === "check") {
-    current_priority.status = constants.http_status.no_content;
-    current_priority.statusText = constants.http_status_text.no_content;
-  } else {
-    current_priority.status = constants.http_status.ok;
-    current_priority.statusText = constants.http_status_text.ok;
-  }
-
-  // priority 3 - status parameter
-  current_priority = priority[3];
-  // parsing first parameter if is not an object
-  if (typeof arg !== 'object' || arg === null || Array.isArray(arg)) {
-    if (arg !== undefined) {
-      current_priority.status = arg;
-    }
-    arg = args.shift();
-  }
-
-  // parsing second parameter if is an object
-  if (typeof arg === 'object' && arg !== null && !Array.isArray(arg)) {
-    // priority 0 - custom values
-    dictUpdate(current_priority, arg);
-    // priority 2 - status property
-    if (arg.hasOwnProperty("status") || arg.hasOwnProperty("statusText")) {
-      priority[2].status = arg.statusText || arg.status;
-    }
-  }
-
-  // merge priority dicts
-  for (current_priority = priority.length - 1;
-       current_priority > 0;
-       current_priority -= 1) {
-    dictUpdate(priority[current_priority - 1], priority[current_priority]);
-  }
-  priority = priority[0];
-
-  // check document id if post method
-  if (param.method === 'post' &&
-      (typeof priority.id !== 'string' || !priority.id)) {
-    return restCommandRejecter(param, [
-      'internal_storage_error',
-      'invalid response',
-      'New document id have to be specified'
-    ]);
-  }
-
-  // check status
-  priority.statusText = constants.http_status_text[priority.status];
-  if (priority.statusText === undefined) {
-    return restCommandRejecter(param, [
-      'internal_storage_error',
-      'invalid response',
-      'Unknown status "' + priority.status + '"'
-    ]);
-  }
-  priority.status = constants.http_status[priority.statusText];
-
-  // check data for get Attachment
-  if (param.method === 'getAttachment') {
-    if (typeof priority.data === 'string') {
-      priority.data = new Blob([priority.data], {
-        "type": priority.content_type || priority.mimetype || ""
-      });
-      delete priority.content_type;
-      delete priority.mimetype;
-    }
-    if (!(priority.data instanceof Blob)) {
-      return restCommandRejecter(param, [
-        'internal_storage_error',
-        'invalid response',
-        'getAttachment method needs a Blob as returned "data".'
-      ]);
-    }
-    // check data for readers (except check method)
-  } else if (methodType(param.method) === 'reader' &&
-             param.method !== 'check' &&
-             (typeof priority.data !== 'object' ||
-              priority.data === null ||
-              Object.getPrototypeOf(priority.data) !== Object.prototype)) {
-    return restCommandRejecter(param, [
-      'internal_storage_error',
-      'invalid response',
-      param.method + ' method needs a dict as returned "data".'
-    ]);
-  }
-
-  param.storage_response = priority;
-  return param.solver.resolve(deepClone(priority));
-}
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true, unparam: true */
-/*global arrayInsert, deepClone, defaults */
-
-// creates
-// - some defaults job rule actions
-
-function enableJobChecker(jio, shared, options) {
-
-  // dependencies
-  // - shared.jobs Object Array
-  // - param.promise Object
-
-  // creates
-  // - shared.job_rules Array
-
-  // uses 'job:new' event
-  // emits 'job:modified', 'job:start', 'job:resolved',
-  // 'job:end', 'job:reject' events
-
-  shared.job_rule_action_names = [undefined, "ok", "wait", "update", "deny"];
-
-  shared.job_rule_actions = {
-    wait: function (original_job, new_job) {
-      original_job.promise.always(function () {
-        new_job.state = 'ready';
-        new_job.modified = new Date();
-        shared.emit('job:modified', new_job);
-        shared.emit('job:start', new_job);
-      });
-      new_job.state = 'waiting';
-      new_job.modified = new Date();
-      shared.emit('job:modified', new_job);
-    },
-    update: function (original_job, new_job) {
-      if (!new_job.solver) {
-        // promise associated to the job
-        new_job.state = 'done';
-        shared.emit('job:resolved', new_job, []); // XXX why resolve?
-        shared.emit('job:end', new_job);
-      } else {
-        if (!original_job.solver) {
-          original_job.solver = new_job.solver;
-        } else {
-          original_job.promise.then(function () {
-            new_job.command.resolve(deepClone(original_job.storage_response));
-          }, function () {
-            new_job.command.reject(deepClone(original_job.storage_response));
-          }, new_job.command.notify);
-        }
-      }
-      new_job.state = 'running';
-      new_job.modified = new Date();
-      shared.emit('job:modified', new_job);
-    },
-    deny: function (original_job, new_job) {
-      new_job.state = "running";
-      shared.emit('job:reject', new_job, [
-        'precondition_failed',
-        'command denied',
-        'Command rejected by the job checker.'
-      ]);
-    }
-  };
-
-  function addJobRule(job_rule) {
-    var i, old_position, before_position, after_position;
-    // job_rule = {
-    //   code_name: string
-    //   conditions: [string, ...]
-    //   action: 'wait',
-    //   after: code_name
-    //   before: code_name
-    // }
-    if (typeof job_rule !== 'object' || job_rule === null) {
-      // wrong job rule
-      return;
-    }
-    if (typeof job_rule.code_name !== 'string') {
-      // wrong code name
-      return;
-    }
-    if (!Array.isArray(job_rule.conditions)) {
-      // wrong conditions
-      return;
-    }
-    if (job_rule.single !== undefined && typeof job_rule.single !== 'boolean') {
-      // wrong single property
-      return;
-    }
-    if (shared.job_rule_action_names.indexOf(job_rule.action) === -1) {
-      // wrong action
-      return;
-    }
-    if (job_rule.action !== 'deny' && job_rule.single === true) {
-      // only 'deny' action doesn't require original_job parameter
-      return;
-    }
-
-    if (typeof job_rule.after !== 'string') {
-      job_rule.after = '';
-    }
-    if (typeof job_rule.before !== 'string') {
-      job_rule.before = '';
-    }
-
-    for (i = 0; i < shared.job_rules.length; i += 1) {
-      if (shared.job_rules[i].code_name === job_rule.after) {
-        after_position = i + 1;
-      }
-      if (shared.job_rules[i].code_name === job_rule.before) {
-        before_position = i;
-      }
-      if (shared.job_rules[i].code_name === job_rule.code_name) {
-        old_position = i;
-      }
-    }
-
-    job_rule = {
-      "code_name": job_rule.code_name,
-      "conditions": job_rule.conditions,
-      "single": job_rule.single || false,
-      "action": job_rule.action || "ok"
     };
 
-    if (before_position === undefined) {
-      before_position = shared.job_rules.length;
-    }
-    if (after_position > before_position) {
-      before_position = undefined;
-    }
-    if (job_rule.action !== "ok" && before_position !== undefined) {
-      arrayInsert(shared.job_rules, before_position, job_rule);
-    }
-    if (old_position !== undefined) {
-      if (old_position >= before_position) {
-        old_position += 1;
-      }
-      shared.job_rules.splice(old_position, 1);
-    }
-  }
+    return UriTemplateError;
+}());
 
-  function jobsRespectConditions(original_job, new_job, conditions) {
-    var j;
-    // browsing conditions
-    for (j = 0; j < conditions.length; j += 1) {
-      if (defaults.job_rule_conditions[conditions[j]]) {
-        if (
-          !defaults.job_rule_conditions[conditions[j]](original_job, new_job)
-        ) {
-          return false;
+var objectHelper = (function () {
+    function isArray (value) {
+        return Object.prototype.toString.apply(value) === '[object Array]';
+    }
+
+    function isString (value) {
+        return Object.prototype.toString.apply(value) === '[object String]';
+    }
+    
+    function isNumber (value) {
+        return Object.prototype.toString.apply(value) === '[object Number]';
+    }
+    
+    function isBoolean (value) {
+        return Object.prototype.toString.apply(value) === '[object Boolean]';
+    }
+    
+    function join (arr, separator) {
+        var
+            result = '',
+            first = true,
+            index;
+        for (index = 0; index < arr.length; index += 1) {
+            if (first) {
+                first = false;
+            }
+            else {
+                result += separator;
+            }
+            result += arr[index];
         }
-      }
+        return result;
     }
-    return true;
-  }
 
-  function checkJob(job) {
-    var i, j;
-    if (job.state === 'ready') {
-      // browsing rules
-      for (i = 0; i < shared.job_rules.length; i += 1) {
-        if (shared.job_rules[i].single) {
-          // no browse
-          if (
-            jobsRespectConditions(
-              job,
-              undefined,
-              shared.job_rules[i].conditions
-            )
-          ) {
-            shared.job_rule_actions[shared.job_rules[i].action](
-              undefined,
-              job
-            );
-            return;
-          }
-        } else {
-          // browsing jobs
-          for (j = shared.jobs.length - 1; j >= 0; j -= 1) {
-            if (shared.jobs[j] !== job) {
-              if (
-                jobsRespectConditions(
-                  shared.jobs[j],
-                  job,
-                  shared.job_rules[i].conditions
-                )
-              ) {
-                shared.job_rule_actions[shared.job_rules[i].action](
-                  shared.jobs[j],
-                  job
-                );
-                return;
+    function map (arr, mapper) {
+        var
+            result = [],
+            index = 0;
+        for (; index < arr.length; index += 1) {
+            result.push(mapper(arr[index]));
+        }
+        return result;
+    }
+
+    function filter (arr, predicate) {
+        var
+            result = [],
+            index = 0;
+        for (; index < arr.length; index += 1) {
+            if (predicate(arr[index])) {
+                result.push(arr[index]);
+            }
+        }
+        return result;
+    }
+
+    function deepFreezeUsingObjectFreeze (object) {
+        if (typeof object !== "object" || object === null) {
+            return object;
+        }
+        Object.freeze(object);
+        var property, propertyName;
+        for (propertyName in object) {
+            if (object.hasOwnProperty(propertyName)) {
+                property = object[propertyName];
+                // be aware, arrays are 'object', too
+                if (typeof property === "object") {
+                    deepFreeze(property);
+                }
+            }
+        }
+        return object;
+    }
+
+    function deepFreeze (object) {
+        if (typeof Object.freeze === 'function') {
+            return deepFreezeUsingObjectFreeze(object);
+        }
+        return object;
+    }
+
+
+    return {
+        isArray: isArray,
+        isString: isString,
+        isNumber: isNumber,
+        isBoolean: isBoolean,
+        join: join,
+        map: map,
+        filter: filter,
+        deepFreeze: deepFreeze
+    };
+}());
+
+var charHelper = (function () {
+
+    function isAlpha (chr) {
+        return (chr >= 'a' && chr <= 'z') || ((chr >= 'A' && chr <= 'Z'));
+    }
+
+    function isDigit (chr) {
+        return chr >= '0' && chr <= '9';
+    }
+
+    function isHexDigit (chr) {
+        return isDigit(chr) || (chr >= 'a' && chr <= 'f') || (chr >= 'A' && chr <= 'F');
+    }
+
+    return {
+        isAlpha: isAlpha,
+        isDigit: isDigit,
+        isHexDigit: isHexDigit
+    };
+}());
+
+var pctEncoder = (function () {
+    var utf8 = {
+        encode: function (chr) {
+            // see http://ecmanaut.blogspot.de/2006/07/encoding-decoding-utf8-in-javascript.html
+            return unescape(encodeURIComponent(chr));
+        },
+        numBytes: function (firstCharCode) {
+            if (firstCharCode <= 0x7F) {
+                return 1;
+            }
+            else if (0xC2 <= firstCharCode && firstCharCode <= 0xDF) {
+                return 2;
+            }
+            else if (0xE0 <= firstCharCode && firstCharCode <= 0xEF) {
+                return 3;
+            }
+            else if (0xF0 <= firstCharCode && firstCharCode <= 0xF4) {
+                return 4;
+            }
+            // no valid first octet
+            return 0;
+        },
+        isValidFollowingCharCode: function (charCode) {
+            return 0x80 <= charCode && charCode <= 0xBF;
+        }
+    };
+
+    /**
+     * encodes a character, if needed or not.
+     * @param chr
+     * @return pct-encoded character
+     */
+    function encodeCharacter (chr) {
+        var
+            result = '',
+            octets = utf8.encode(chr),
+            octet,
+            index;
+        for (index = 0; index < octets.length; index += 1) {
+            octet = octets.charCodeAt(index);
+            result += '%' + (octet < 0x10 ? '0' : '') + octet.toString(16).toUpperCase();
+        }
+        return result;
+    }
+
+    /**
+     * Returns, whether the given text at start is in the form 'percent hex-digit hex-digit', like '%3F'
+     * @param text
+     * @param start
+     * @return {boolean|*|*}
+     */
+    function isPercentDigitDigit (text, start) {
+        return text.charAt(start) === '%' && charHelper.isHexDigit(text.charAt(start + 1)) && charHelper.isHexDigit(text.charAt(start + 2));
+    }
+
+    /**
+     * Parses a hex number from start with length 2.
+     * @param text a string
+     * @param start the start index of the 2-digit hex number
+     * @return {Number}
+     */
+    function parseHex2 (text, start) {
+        return parseInt(text.substr(start, 2), 16);
+    }
+
+    /**
+     * Returns whether or not the given char sequence is a correctly pct-encoded sequence.
+     * @param chr
+     * @return {boolean}
+     */
+    function isPctEncoded (chr) {
+        if (!isPercentDigitDigit(chr, 0)) {
+            return false;
+        }
+        var firstCharCode = parseHex2(chr, 1);
+        var numBytes = utf8.numBytes(firstCharCode);
+        if (numBytes === 0) {
+            return false;
+        }
+        for (var byteNumber = 1; byteNumber < numBytes; byteNumber += 1) {
+            if (!isPercentDigitDigit(chr, 3*byteNumber) || !utf8.isValidFollowingCharCode(parseHex2(chr, 3*byteNumber + 1))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Reads as much as needed from the text, e.g. '%20' or '%C3%B6'. It does not decode!
+     * @param text
+     * @param startIndex
+     * @return the character or pct-string of the text at startIndex
+     */
+    function pctCharAt(text, startIndex) {
+        var chr = text.charAt(startIndex);
+        if (!isPercentDigitDigit(text, startIndex)) {
+            return chr;
+        }
+        var utf8CharCode = parseHex2(text, startIndex + 1);
+        var numBytes = utf8.numBytes(utf8CharCode);
+        if (numBytes === 0) {
+            return chr;
+        }
+        for (var byteNumber = 1; byteNumber < numBytes; byteNumber += 1) {
+            if (!isPercentDigitDigit(text, startIndex + 3 * byteNumber) || !utf8.isValidFollowingCharCode(parseHex2(text, startIndex + 3 * byteNumber + 1))) {
+                return chr;
+            }
+        }
+        return text.substr(startIndex, 3 * numBytes);
+    }
+
+    return {
+        encodeCharacter: encodeCharacter,
+        isPctEncoded: isPctEncoded,
+        pctCharAt: pctCharAt
+    };
+}());
+
+var rfcCharHelper = (function () {
+
+    /**
+     * Returns if an character is an varchar character according 2.3 of rfc 6570
+     * @param chr
+     * @return (Boolean)
+     */
+    function isVarchar (chr) {
+        return charHelper.isAlpha(chr) || charHelper.isDigit(chr) || chr === '_' || pctEncoder.isPctEncoded(chr);
+    }
+
+    /**
+     * Returns if chr is an unreserved character according 1.5 of rfc 6570
+     * @param chr
+     * @return {Boolean}
+     */
+    function isUnreserved (chr) {
+        return charHelper.isAlpha(chr) || charHelper.isDigit(chr) || chr === '-' || chr === '.' || chr === '_' || chr === '~';
+    }
+
+    /**
+     * Returns if chr is an reserved character according 1.5 of rfc 6570
+     * or the percent character mentioned in 3.2.1.
+     * @param chr
+     * @return {Boolean}
+     */
+    function isReserved (chr) {
+        return chr === ':' || chr === '/' || chr === '?' || chr === '#' || chr === '[' || chr === ']' || chr === '@' || chr === '!' || chr === '$' || chr === '&' || chr === '(' ||
+            chr === ')' || chr === '*' || chr === '+' || chr === ',' || chr === ';' || chr === '=' || chr === "'";
+    }
+
+    return {
+        isVarchar: isVarchar,
+        isUnreserved: isUnreserved,
+        isReserved: isReserved
+    };
+
+}());
+
+/**
+ * encoding of rfc 6570
+ */
+var encodingHelper = (function () {
+
+    function encode (text, passReserved) {
+        var
+            result = '',
+            index,
+            chr = '';
+        if (typeof text === "number" || typeof text === "boolean") {
+            text = text.toString();
+        }
+        for (index = 0; index < text.length; index += chr.length) {
+            chr = text.charAt(index);
+            result += rfcCharHelper.isUnreserved(chr) || (passReserved && rfcCharHelper.isReserved(chr)) ? chr : pctEncoder.encodeCharacter(chr);
+        }
+        return result;
+    }
+
+    function encodePassReserved (text) {
+        return encode(text, true);
+    }
+
+    function encodeLiteralCharacter (literal, index) {
+        var chr = pctEncoder.pctCharAt(literal, index);
+        if (chr.length > 1) {
+            return chr;
+        }
+        else {
+            return rfcCharHelper.isReserved(chr) || rfcCharHelper.isUnreserved(chr) ? chr : pctEncoder.encodeCharacter(chr);
+        }
+    }
+
+    function encodeLiteral (literal) {
+        var
+            result = '',
+            index,
+            chr = '';
+        for (index = 0; index < literal.length; index += chr.length) {
+            chr = pctEncoder.pctCharAt(literal, index);
+            if (chr.length > 1) {
+                result += chr;
+            }
+            else {
+                result += rfcCharHelper.isReserved(chr) || rfcCharHelper.isUnreserved(chr) ? chr : pctEncoder.encodeCharacter(chr);
+            }
+        }
+        return result;
+    }
+
+    return {
+        encode: encode,
+        encodePassReserved: encodePassReserved,
+        encodeLiteral: encodeLiteral,
+        encodeLiteralCharacter: encodeLiteralCharacter
+    };
+
+}());
+
+
+// the operators defined by rfc 6570
+var operators = (function () {
+
+    var
+        bySymbol = {};
+
+    function create (symbol) {
+        bySymbol[symbol] = {
+            symbol: symbol,
+            separator: (symbol === '?') ? '&' : (symbol === '' || symbol === '+' || symbol === '#') ? ',' : symbol,
+            named: symbol === ';' || symbol === '&' || symbol === '?',
+            ifEmpty: (symbol === '&' || symbol === '?') ? '=' : '',
+            first: (symbol === '+' ) ? '' : symbol,
+            encode: (symbol === '+' || symbol === '#') ? encodingHelper.encodePassReserved : encodingHelper.encode,
+            toString: function () {
+                return this.symbol;
+            }
+        };
+    }
+
+    create('');
+    create('+');
+    create('#');
+    create('.');
+    create('/');
+    create(';');
+    create('?');
+    create('&');
+    return {
+        valueOf: function (chr) {
+            if (bySymbol[chr]) {
+                return bySymbol[chr];
+            }
+            if ("=,!@|".indexOf(chr) >= 0) {
+                return null;
+            }
+            return bySymbol[''];
+        }
+    };
+}());
+
+
+/**
+ * Detects, whether a given element is defined in the sense of rfc 6570
+ * Section 2.3 of the RFC makes clear defintions:
+ * * undefined and null are not defined.
+ * * the empty string is defined
+ * * an array ("list") is defined, if it is not empty (even if all elements are not defined)
+ * * an object ("map") is defined, if it contains at least one property with defined value
+ * @param object
+ * @return {Boolean}
+ */
+function isDefined (object) {
+    var
+        propertyName;
+    if (object === null || object === undefined) {
+        return false;
+    }
+    if (objectHelper.isArray(object)) {
+        // Section 2.3: A variable defined as a list value is considered undefined if the list contains zero members
+        return object.length > 0;
+    }
+    if (typeof object === "string" || typeof object === "number" || typeof object === "boolean") {
+        // falsy values like empty strings, false or 0 are "defined"
+        return true;
+    }
+    // else Object
+    for (propertyName in object) {
+        if (object.hasOwnProperty(propertyName) && isDefined(object[propertyName])) {
+            return true;
+        }
+    }
+    return false;
+}
+
+var LiteralExpression = (function () {
+    function LiteralExpression (literal) {
+        this.literal = encodingHelper.encodeLiteral(literal);
+    }
+
+    LiteralExpression.prototype.expand = function () {
+        return this.literal;
+    };
+
+    LiteralExpression.prototype.toString = LiteralExpression.prototype.expand;
+
+    return LiteralExpression;
+}());
+
+var parse = (function () {
+
+    function parseExpression (expressionText) {
+        var
+            operator,
+            varspecs = [],
+            varspec = null,
+            varnameStart = null,
+            maxLengthStart = null,
+            index,
+            chr = '';
+
+        function closeVarname () {
+            var varname = expressionText.substring(varnameStart, index);
+            if (varname.length === 0) {
+                throw new UriTemplateError({expressionText: expressionText, message: "a varname must be specified", position: index});
+            }
+            varspec = {varname: varname, exploded: false, maxLength: null};
+            varnameStart = null;
+        }
+
+        function closeMaxLength () {
+            if (maxLengthStart === index) {
+                throw new UriTemplateError({expressionText: expressionText, message: "after a ':' you have to specify the length", position: index});
+            }
+            varspec.maxLength = parseInt(expressionText.substring(maxLengthStart, index), 10);
+            maxLengthStart = null;
+        }
+
+        operator = (function (operatorText) {
+            var op = operators.valueOf(operatorText);
+            if (op === null) {
+                throw new UriTemplateError({expressionText: expressionText, message: "illegal use of reserved operator", position: index, operator: operatorText});
+            }
+            return op;
+        }(expressionText.charAt(0)));
+        index = operator.symbol.length;
+
+        varnameStart = index;
+
+        for (; index < expressionText.length; index += chr.length) {
+            chr = pctEncoder.pctCharAt(expressionText, index);
+
+            if (varnameStart !== null) {
+                // the spec says: varname =  varchar *( ["."] varchar )
+                // so a dot is allowed except for the first char
+                if (chr === '.') {
+                    if (varnameStart === index) {
+                        throw new UriTemplateError({expressionText: expressionText, message: "a varname MUST NOT start with a dot", position: index});
+                    }
+                    continue;
+                }
+                if (rfcCharHelper.isVarchar(chr)) {
+                    continue;
+                }
+                closeVarname();
+            }
+            if (maxLengthStart !== null) {
+                if (index === maxLengthStart && chr === '0') {
+                    throw new UriTemplateError({expressionText: expressionText, message: "A :prefix must not start with digit 0", position: index});
+                }
+                if (charHelper.isDigit(chr)) {
+                    if (index - maxLengthStart >= 4) {
+                        throw new UriTemplateError({expressionText: expressionText, message: "A :prefix must have max 4 digits", position: index});
+                    }
+                    continue;
+                }
+                closeMaxLength();
+            }
+            if (chr === ':') {
+                if (varspec.maxLength !== null) {
+                    throw new UriTemplateError({expressionText: expressionText, message: "only one :maxLength is allowed per varspec", position: index});
+                }
+                if (varspec.exploded) {
+                    throw new UriTemplateError({expressionText: expressionText, message: "an exploeded varspec MUST NOT be varspeced", position: index});
+                }
+                maxLengthStart = index + 1;
+                continue;
+            }
+            if (chr === '*') {
+                if (varspec === null) {
+                    throw new UriTemplateError({expressionText: expressionText, message: "exploded without varspec", position: index});
+                }
+                if (varspec.exploded) {
+                    throw new UriTemplateError({expressionText: expressionText, message: "exploded twice", position: index});
+                }
+                if (varspec.maxLength) {
+                    throw new UriTemplateError({expressionText: expressionText, message: "an explode (*) MUST NOT follow to a prefix", position: index});
+                }
+                varspec.exploded = true;
+                continue;
+            }
+            // the only legal character now is the comma
+            if (chr === ',') {
+                varspecs.push(varspec);
+                varspec = null;
+                varnameStart = index + 1;
+                continue;
+            }
+            throw new UriTemplateError({expressionText: expressionText, message: "illegal character", character: chr, position: index});
+        } // for chr
+        if (varnameStart !== null) {
+            closeVarname();
+        }
+        if (maxLengthStart !== null) {
+            closeMaxLength();
+        }
+        varspecs.push(varspec);
+        return new VariableExpression(expressionText, operator, varspecs);
+    }
+
+    function escape_regexp_string(string) {
+      // http://simonwillison.net/2006/Jan/20/escape/
+      return string.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&");
+    }
+
+    function parse (uriTemplateText) {
+        // assert filled string
+        var
+            index,
+            chr,
+            expressions = [],
+            expression,
+            braceOpenIndex = null,
+            regexp_string = '',
+            can_match = true,
+            literalStart = 0;
+        for (index = 0; index < uriTemplateText.length; index += 1) {
+            chr = uriTemplateText.charAt(index);
+            if (literalStart !== null) {
+                if (chr === '}') {
+                    throw new UriTemplateError({templateText: uriTemplateText, message: "unopened brace closed", position: index});
+                }
+                if (chr === '{') {
+                    if (literalStart < index) {
+                        expression = new LiteralExpression(uriTemplateText.substring(literalStart, index));
+                        expressions.push(expression);
+                        regexp_string += escape_regexp_string(
+                            expression.literal);
+                    }
+                    literalStart = null;
+                    braceOpenIndex = index;
+                }
+                continue;
+            }
+
+            if (braceOpenIndex !== null) {
+                // here just { is forbidden
+                if (chr === '{') {
+                    throw new UriTemplateError({templateText: uriTemplateText, message: "brace already opened", position: index});
+                }
+                if (chr === '}') {
+                    if (braceOpenIndex + 1 === index) {
+                        throw new UriTemplateError({templateText: uriTemplateText, message: "empty braces", position: braceOpenIndex});
+                    }
+                    try {
+                        expression = parseExpression(uriTemplateText.substring(braceOpenIndex + 1, index));
+                    }
+                    catch (error) {
+                        if (error.prototype === UriTemplateError.prototype) {
+                            throw new UriTemplateError({templateText: uriTemplateText, message: error.options.message, position: braceOpenIndex + error.options.position, details: error.options});
+                        }
+                        throw error;
+                    }
+                    expressions.push(expression);
+                    if (expression.operator.symbol.length === 0) {
+                      regexp_string += "([^/]+)";
+                    } else {
+                      can_match = false;
+                    }
+                    braceOpenIndex = null;
+                    literalStart = index + 1;
+                }
+                continue;
+            }
+            throw new Error('reached unreachable code');
+        }
+        if (braceOpenIndex !== null) {
+            throw new UriTemplateError({templateText: uriTemplateText, message: "unclosed brace", position: braceOpenIndex});
+        }
+        if (literalStart < uriTemplateText.length) {
+            expression = new LiteralExpression(uriTemplateText.substring(literalStart));
+            expressions.push(expression);
+            regexp_string += escape_regexp_string(expression.literal);
+        }
+        if (can_match === false) {
+          regexp_string = undefined;
+        }
+        return new UriTemplate(uriTemplateText, expressions, regexp_string);
+    }
+
+    return parse;
+}());
+
+var VariableExpression = (function () {
+    // helper function if JSON is not available
+    function prettyPrint (value) {
+        return (JSON && JSON.stringify) ? JSON.stringify(value) : value;
+    }
+
+    function isEmpty (value) {
+        if (!isDefined(value)) {
+            return true;
+        }
+        if (objectHelper.isString(value)) {
+            return value === '';
+        }
+        if (objectHelper.isNumber(value) || objectHelper.isBoolean(value)) {
+            return false;
+        }
+        if (objectHelper.isArray(value)) {
+            return value.length === 0;
+        }
+        for (var propertyName in value) {
+            if (value.hasOwnProperty(propertyName)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function propertyArray (object) {
+        var
+            result = [],
+            propertyName;
+        for (propertyName in object) {
+            if (object.hasOwnProperty(propertyName)) {
+                result.push({name: propertyName, value: object[propertyName]});
+            }
+        }
+        return result;
+    }
+
+    function VariableExpression (templateText, operator, varspecs) {
+        this.templateText = templateText;
+        this.operator = operator;
+        this.varspecs = varspecs;
+    }
+
+    VariableExpression.prototype.toString = function () {
+        return this.templateText;
+    };
+
+    function expandSimpleValue(varspec, operator, value) {
+        var result = '';
+        value = value.toString();
+        if (operator.named) {
+            result += encodingHelper.encodeLiteral(varspec.varname);
+            if (value === '') {
+                result += operator.ifEmpty;
+                return result;
+            }
+            result += '=';
+        }
+        if (varspec.maxLength !== null) {
+            value = value.substr(0, varspec.maxLength);
+        }
+        result += operator.encode(value);
+        return result;
+    }
+
+    function valueDefined (nameValue) {
+        return isDefined(nameValue.value);
+    }
+
+    function expandNotExploded(varspec, operator, value) {
+        var
+            arr = [],
+            result = '';
+        if (operator.named) {
+            result += encodingHelper.encodeLiteral(varspec.varname);
+            if (isEmpty(value)) {
+                result += operator.ifEmpty;
+                return result;
+            }
+            result += '=';
+        }
+        if (objectHelper.isArray(value)) {
+            arr = value;
+            arr = objectHelper.filter(arr, isDefined);
+            arr = objectHelper.map(arr, operator.encode);
+            result += objectHelper.join(arr, ',');
+        }
+        else {
+            arr = propertyArray(value);
+            arr = objectHelper.filter(arr, valueDefined);
+            arr = objectHelper.map(arr, function (nameValue) {
+                return operator.encode(nameValue.name) + ',' + operator.encode(nameValue.value);
+            });
+            result += objectHelper.join(arr, ',');
+        }
+        return result;
+    }
+
+    function expandExplodedNamed (varspec, operator, value) {
+        var
+            isArray = objectHelper.isArray(value),
+            arr = [];
+        if (isArray) {
+            arr = value;
+            arr = objectHelper.filter(arr, isDefined);
+            arr = objectHelper.map(arr, function (listElement) {
+                var tmp = encodingHelper.encodeLiteral(varspec.varname);
+                if (isEmpty(listElement)) {
+                    tmp += operator.ifEmpty;
+                }
+                else {
+                    tmp += '=' + operator.encode(listElement);
+                }
+                return tmp;
+            });
+        }
+        else {
+            arr = propertyArray(value);
+            arr = objectHelper.filter(arr, valueDefined);
+            arr = objectHelper.map(arr, function (nameValue) {
+                var tmp = encodingHelper.encodeLiteral(nameValue.name);
+                if (isEmpty(nameValue.value)) {
+                    tmp += operator.ifEmpty;
+                }
+                else {
+                    tmp += '=' + operator.encode(nameValue.value);
+                }
+                return tmp;
+            });
+        }
+        return objectHelper.join(arr, operator.separator);
+    }
+
+    function expandExplodedUnnamed (operator, value) {
+        var
+            arr = [],
+            result = '';
+        if (objectHelper.isArray(value)) {
+            arr = value;
+            arr = objectHelper.filter(arr, isDefined);
+            arr = objectHelper.map(arr, operator.encode);
+            result += objectHelper.join(arr, operator.separator);
+        }
+        else {
+            arr = propertyArray(value);
+            arr = objectHelper.filter(arr, function (nameValue) {
+                return isDefined(nameValue.value);
+            });
+            arr = objectHelper.map(arr, function (nameValue) {
+                return operator.encode(nameValue.name) + '=' + operator.encode(nameValue.value);
+            });
+            result += objectHelper.join(arr, operator.separator);
+        }
+        return result;
+    }
+
+
+    VariableExpression.prototype.expand = function (variables) {
+        var
+            expanded = [],
+            index,
+            varspec,
+            value,
+            valueIsArr,
+            oneExploded = false,
+            operator = this.operator;
+
+        // expand each varspec and join with operator's separator
+        for (index = 0; index < this.varspecs.length; index += 1) {
+            varspec = this.varspecs[index];
+            value = variables[varspec.varname];
+            // if (!isDefined(value)) {
+            // if (variables.hasOwnProperty(varspec.name)) {
+            if (value === null || value === undefined) {
+                continue;
+            }
+            if (varspec.exploded) {
+                oneExploded = true;
+            }
+            valueIsArr = objectHelper.isArray(value);
+            if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+                expanded.push(expandSimpleValue(varspec, operator, value));
+            }
+            else if (varspec.maxLength && isDefined(value)) {
+                // 2.4.1 of the spec says: "Prefix modifiers are not applicable to variables that have composite values."
+                throw new Error('Prefix modifiers are not applicable to variables that have composite values. You tried to expand ' + this + " with " + prettyPrint(value));
+            }
+            else if (!varspec.exploded) {
+                if (operator.named || !isEmpty(value)) {
+                    expanded.push(expandNotExploded(varspec, operator, value));
+                }
+            }
+            else if (isDefined(value)) {
+                if (operator.named) {
+                    expanded.push(expandExplodedNamed(varspec, operator, value));
+                }
+                else {
+                    expanded.push(expandExplodedUnnamed(operator, value));
+                }
+            }
+        }
+
+        if (expanded.length === 0) {
+            return "";
+        }
+        else {
+            return operator.first + objectHelper.join(expanded, operator.separator);
+        }
+    };
+
+    return VariableExpression;
+}());
+
+var UriTemplate = (function () {
+    function UriTemplate (templateText, expressions, regexp_string) {
+        this.templateText = templateText;
+        this.expressions = expressions;
+
+        if (regexp_string !== undefined) {
+          this.regexp = new RegExp("^" + regexp_string + "$");
+        }
+
+        objectHelper.deepFreeze(this);
+    }
+
+    UriTemplate.prototype.toString = function () {
+        return this.templateText;
+    };
+
+    UriTemplate.prototype.expand = function (variables) {
+        // this.expressions.map(function (expression) {return expression.expand(variables);}).join('');
+        var
+            index,
+            result = '';
+        for (index = 0; index < this.expressions.length; index += 1) {
+            result += this.expressions[index].expand(variables);
+        }
+        return result;
+    };
+
+    UriTemplate.prototype.extract = function (text) {
+      var expression_index,
+          extracted_index = 1,
+          expression,
+          varspec,
+          matched = true,
+          variables = {},
+          result;
+
+      if ((this.regexp !== undefined) && (this.regexp.test(text))) {
+        result = this.regexp.exec(text);
+        for (expression_index = 0; expression_index < this.expressions.length; expression_index += 1) {
+          expression = this.expressions[expression_index];
+          if (expression.literal === undefined) {
+            if ((expression.operator !== undefined) && (expression.operator.symbol.length === 0) && (expression.varspecs.length === 1)) {
+              varspec = expression.varspecs[0];
+              if ((varspec.exploded === false) && (varspec.maxLength === null)) {
+                if (result[extracted_index].indexOf(',') === -1) {
+                  variables[varspec.varname] = decodeURIComponent(result[extracted_index]);
+                  extracted_index += 1;
+                } else {
+                  matched = false;
+                }
+              } else {
+                matched = false;
               }
+            } else {
+              matched = false;
             }
           }
         }
-      }
-    }
-  }
-
-  var index;
-
-  if (options.job_management !== false) {
-
-    shared.job_rules = [{
-      "code_name": "readers update",
-      "conditions": [
-        "sameStorageDescription",
-        "areReaders",
-        "sameMethod",
-        "sameParameters",
-        "sameOptions"
-      ],
-      "action": "update"
-    }, {
-      "code_name": "metadata writers update",
-      "conditions": [
-        "sameStorageDescription",
-        "areWriters",
-        "useMetadataOnly",
-        "sameMethod",
-        "haveDocumentIds",
-        "sameParameters"
-      ],
-      "action": "update"
-    }, {
-      "code_name": "writers wait",
-      "conditions": [
-        "sameStorageDescription",
-        "areWriters",
-        "haveDocumentIds",
-        "sameDocumentId"
-      ],
-      "action": "wait"
-    }];
-
-    if (options.clear_job_rules === true) {
-      shared.job_rules.length = 0;
-    }
-
-    if (Array.isArray(options.job_rules)) {
-      for (index = 0; index < options.job_rules.length; index += 1) {
-        addJobRule(deepClone(options.job_rules[index]));
-      }
-    }
-
-    shared.on('job:new', checkJob);
-
-  }
-
-  jio.jobRules = function () {
-    return deepClone(shared.job_rules);
-  };
-
-}
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true, unparam: true */
-/*global setTimeout, Job, createStorage, deepClone, restCommandResolver,
-  restCommandRejecter */
-
-function enableJobExecuter(jio, shared) { // , options) {
-
-  // uses 'job:new' events
-  // uses actions 'job:resolve', 'job:reject' and 'job:notify'
-
-  // emits 'job:modified', 'job:started', 'job:resolved',
-  // 'job:rejected', 'job:notified' and 'job:end' events
-  // emits action 'job:start'
-
-  function startJobIfReady(job) {
-    if (job.state === 'ready') {
-      shared.emit('job:start', job);
-    }
-  }
-
-  function executeJobIfReady(param) {
-    var storage;
-    if (param.state === 'ready') {
-      param.tried += 1;
-      param.started = new Date();
-      param.state = 'running';
-      param.modified = new Date();
-      shared.emit('job:modified', param);
-      shared.emit('job:started', param);
-      try {
-        storage = createStorage(deepClone(param.storage_spec));
-      } catch (e) {
-        return param.command.reject(
-          'internal_storage_error',
-          'invalid description',
-          'Check if the storage description respects the ' +
-            'constraints provided by the storage designer. (' +
-            e.name + ": " + e.message + ')'
-        );
-      }
-      if (typeof storage[param.method] !== 'function') {
-        return param.command.reject(
-          'not_implemented',
-          'method missing',
-          'Storage "' + param.storage_spec.type + '", "' +
-            param.method + '" method is missing.'
-        );
-      }
-      setTimeout(function () {
-        storage[param.method](
-          deepClone(param.command),
-          deepClone(param.kwargs),
-          deepClone(param.options)
-        );
-      });
-    }
-  }
-
-  function endAndResolveIfRunning(job, args) {
-    if (job.state === 'running') {
-      job.state = 'done';
-      job.modified = new Date();
-      shared.emit('job:modified', job);
-      if (job.solver) {
-        restCommandResolver(job, args);
-      }
-      shared.emit('job:resolved', job, args);
-      shared.emit('job:end', job);
-    }
-  }
-
-  function endAndRejectIfRunning(job, args) {
-    if (job.state === 'running') {
-      job.state = 'fail';
-      job.modified = new Date();
-      shared.emit('job:modified', job);
-      if (job.solver) {
-        restCommandRejecter(job, args);
-      }
-      shared.emit('job:rejected', job, args);
-      shared.emit('job:end', job);
-    }
-  }
-
-  function notifyJobIfRunning(job, args) {
-    if (job.state === 'running' && job.solver) {
-      job.solver.notify(args[0]);
-      shared.emit('job:notified', job, args);
-    }
-  }
-
-  // listeners
-
-  shared.on('job:new', startJobIfReady);
-  shared.on('job:start', executeJobIfReady);
-
-  shared.on('job:resolve', endAndResolveIfRunning);
-  shared.on('job:reject', endAndRejectIfRunning);
-  shared.on('job:notify', notifyJobIfRunning);
-}
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true, unparam: true */
-/*global arrayExtend */
-
-function enableJobMaker(jio, shared, options) {
-
-  // dependencies
-  // - param.method
-  // - param.storage_spec
-  // - param.kwargs
-  // - param.options
-
-  // uses (Job)
-  // - param.created date
-  // - param.modified date
-  // - param.tried number >= 0
-  // - param.state string 'ready'
-  // - param.method string
-  // - param.storage_spec object
-  // - param.kwargs object
-  // - param.options object
-  // - param.command object
-
-  // list of job events:
-  // - Job existence -> new, end
-  // - Job execution -> started, stopped
-  // - Job resolution -> resolved, rejected, notified, cancelled
-  // - Job modification -> modified
-
-  // emits actions 'job:resolve', 'job:reject' and 'job:notify'
-
-  // uses `rest method` events
-  // emits 'job:new' event
-
-  shared.job_keys = arrayExtend(shared.job_keys || [], [
-    "created",
-    "modified",
-    "tried",
-    "state",
-    "method",
-    "storage_spec",
-    "kwargs",
-    "options"
-  ]);
-
-  function addCommandToJob(job) {
-    job.command = {};
-    job.command.resolve = function () {
-      shared.emit('job:resolve', job, arguments);
-    };
-    job.command.success = job.command.resolve;
-    job.command.reject = function () {
-      shared.emit('job:reject', job, arguments);
-    };
-    job.command.error = job.command.reject;
-    job.command.notify = function () {
-      shared.emit('job:notify', job, arguments);
-    };
-    job.command.storage = function () {
-      return shared.createRestApi.apply(null, arguments);
-    };
-    job.command.setCanceller = function (canceller) {
-      job.cancellers["command:canceller"] = canceller;
-    };
-    job.cancellers = job.cancellers || {};
-    job.cancellers["job:canceller"] = function () {
-      shared.emit("job:reject", job, ["cancelled"]);
-    };
-  }
-
-  function createJobFromRest(param) {
-    if (param.solver) {
-      // rest parameters are good
-      shared.emit('job:new', param);
-    }
-  }
-
-  function initJob(job) {
-    job.state = 'ready';
-    if (typeof job.tried !== 'number' || !isFinite(job.tried)) {
-      job.tried = 0;
-    }
-    if (!job.created) {
-      job.created = new Date();
-    }
-    addCommandToJob(job);
-    job.modified = new Date();
-  }
-
-  // listeners
-
-  shared.rest_method_names.forEach(function (method) {
-    shared.on(method, createJobFromRest);
-  });
-
-  shared.on('job:new', initJob);
-
-}
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true, unparam: true */
-/*global arrayExtend, localStorage, Workspace, uniqueJSONStringify, JobQueue,
-  constants, setTimeout, clearTimeout */
-
-function enableJobQueue(jio, shared, options) {
-
-  // dependencies
-  // - shared.storage_spec Object
-
-  // uses
-  // - options.workspace Workspace
-  // - shared.job_keys String Array
-
-  // creates
-  // - shared.storage_spec_str String
-  // - shared.workspace Workspace
-  // - shared.job_queue JobQueue
-
-  // uses 'job:new', 'job:started', 'job:stopped', 'job:modified',
-  // 'job:notified', 'job:end' events
-
-  // emits 'job:end' event
-
-  function postJobIfReady(param) {
-    if (!param.stored && param.state === 'ready') {
-      clearTimeout(param.queue_ident);
-      delete param.queue_ident;
-      shared.job_queue.load();
-      shared.job_queue.post(param);
-      shared.job_queue.save();
-      param.stored = true;
-    }
-  }
-
-  function deferredPutJob(param) {
-    if (param.queue_ident === undefined) {
-      param.queue_ident = setTimeout(function () {
-        delete param.queue_ident;
-        if (param.stored) {
-          shared.job_queue.load();
-          shared.job_queue.put(param);
-          shared.job_queue.save();
-        }
-      });
-    }
-  }
-
-  function removeJob(param) {
-    clearTimeout(param.queue_ident);
-    delete param.queue_ident;
-    if (param.stored) {
-      shared.job_queue.load();
-      shared.job_queue.remove(param.id);
-      shared.job_queue.save();
-      delete param.stored;
-      delete param.id;
-    }
-  }
-
-  function initJob(param) {
-    if (!param.command.end) {
-      param.command.end = function () {
-        shared.emit('job:end', param);
-      };
-    }
-  }
-
-  shared.on('job:new', initJob);
-
-  if (options.job_management !== false) {
-
-    shared.job_keys = arrayExtend(shared.job_keys || [], ["id"]);
-
-    if (typeof options.workspace !== 'object') {
-      shared.workspace = localStorage;
-    } else {
-      shared.workspace = new Workspace(options.workspace);
-    }
-
-    if (!shared.storage_spec_str) {
-      shared.storage_spec_str = uniqueJSONStringify(shared.storage_spec);
-    }
-
-    shared.job_queue = new JobQueue(
-      shared.workspace,
-      'jio/jobs/' + shared.storage_spec_str,
-      shared.job_keys
-    );
-
-    // Listeners
-
-    shared.on('job:new', postJobIfReady);
-
-    shared.on('job:started', deferredPutJob);
-    shared.on('job:stopped', deferredPutJob);
-    shared.on('job:modified', deferredPutJob);
-    shared.on('job:notified', deferredPutJob);
-
-    shared.on('job:end', removeJob);
-
-  }
-
-}
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true, unparam: true */
-/*global setTimeout, methodType */
-
-function enableJobRecovery(jio, shared, options) {
-
-  // dependencies
-  // - JobQueue enabled and before this
-
-  // uses
-  // - shared.job_queue JobQueue
-
-  // emits 'job:new' event
-
-  function numberOrDefault(number, default_value) {
-    return (typeof number === 'number' &&
-            isFinite(number) ? number : default_value);
-  }
-
-  function recoverJob(param) {
-    shared.job_queue.load();
-    shared.job_queue.remove(param.id);
-    delete param.id;
-    if (methodType(param.method) === 'writer' &&
-        (param.state === 'ready' ||
-         param.state === 'running' ||
-         param.state === 'waiting')) {
-      shared.job_queue.save();
-      shared.emit('job:new', param);
-    }
-  }
-
-  function jobWaiter(id, modified) {
-    return function () {
-      var job;
-      shared.job_queue.load();
-      job = shared.job_queue.get(id);
-      if (job && job.modified === modified) {
-        // job not modified, no one takes care of it
-        recoverJob(job);
-      }
-    };
-  }
-
-  var i, job_array, delay, deadline, recovery_delay;
-
-  // 1 m 30 s  ===  default firefox request timeout
-  recovery_delay = numberOrDefault(options.recovery_delay, 90000);
-  if (recovery_delay < 0) {
-    recovery_delay = 90000;
-  }
-
-  if (options.job_management !== false && options.job_recovery !== false) {
-
-    shared.job_queue.load();
-    job_array = shared.job_queue.asArray();
-
-    for (i = 0; i < job_array.length; i += 1) {
-      delay = numberOrDefault(job_array[i].timeout + recovery_delay,
-                              recovery_delay);
-      deadline = new Date(job_array[i].modified).getTime() + delay;
-      if (!isFinite(delay)) {
-        // 'modified' date is broken
-        recoverJob(job_array[i]);
-      } else if (deadline <= Date.now()) {
-        // deadline reached
-        recoverJob(job_array[i]);
-      } else {
-        // deadline not reached yet
-        // wait until deadline is reached then check job again
-        setTimeout(jobWaiter(job_array[i].id, job_array[i].modified),
-                   deadline - Date.now());
-      }
-    }
-
-  }
-}
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, unparam: true */
-/*global ReferenceArray */
-
-function enableJobReference(jio, shared, options) {
-
-  // creates
-  // - shared.jobs Object Array
-
-  // uses 'job:new' and 'job:end' events
-
-  shared.jobs = [];
-
-  var job_references = new ReferenceArray(shared.jobs);
-
-  shared.on('job:new', function (param) {
-    job_references.put(param);
-  });
-
-  shared.on('job:end', function (param) {
-    job_references.remove(param);
-  });
-}
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true, unparam: true */
-/*global arrayExtend, setTimeout, methodType, constants */
-
-function enableJobRetry(jio, shared, options) {
-
-  // dependencies
-  // - param.method
-  // - param.storage_spec
-  // - param.kwargs
-  // - param.options
-  // - param.command
-
-  // uses
-  // - options.default_writers_max_retry number >= 0 or null
-  // - options.default_readers_max_retry number >= 0 or null
-  // - options.default_max_retry number >= 0 or null
-  // - options.writers_max_retry number >= 0 or null
-  // - options.readers_max_retry number >= 0 or null
-  // - options.max_retry number >= 0 or null
-  // - param.modified date
-  // - param.tried number >= 0
-  // - param.max_retry >= 0 or undefined
-  // - param.state string 'ready' 'waiting'
-  // - param.method string
-  // - param.storage_spec object
-  // - param.kwargs object
-  // - param.options object
-  // - param.command object
-
-  // uses 'job:new' and 'job:retry' events
-  // emits action 'job:start' event
-  // emits 'job:retry', 'job:reject', 'job:modified' and 'job:stopped' events
-
-  shared.job_keys = arrayExtend(shared.job_keys || [], ["max_retry"]);
-
-  var writers_max_retry, readers_max_retry, max_retry;
-
-  function defaultMaxRetry(param) {
-    if (methodType(param.method) === 'writers') {
-      if (max_retry === undefined) {
-        return writers_max_retry;
-      }
-      return max_retry;
-    }
-    if (max_retry === undefined) {
-      return readers_max_retry;
-    }
-    return max_retry;
-  }
-
-  function positiveNumberOrDefault(number, default_value) {
-    return (typeof number === 'number' &&
-            number >= 0 ?
-            number : default_value);
-  }
-
-  function positiveNumberNullOrDefault(number, default_value) {
-    return ((typeof number === 'number' &&
-            number >= 0) || number === null ?
-            number : default_value);
-  }
-
-  max_retry = positiveNumberNullOrDefault(
-    options.max_retry || options.default_max_retry,
-    undefined
-  );
-  writers_max_retry = positiveNumberNullOrDefault(
-    options.writers_max_retry || options.default_writers_max_retry,
-    null
-  );
-  readers_max_retry = positiveNumberNullOrDefault(
-    options.readers_max_retry || options.default_readers_max_retry,
-    2
-  );
-
-  function initJob(param) {
-    if (typeof param.max_retry !== 'number' || param.max_retry < 0) {
-      param.max_retry = positiveNumberOrDefault(
-        param.options.max_retry,
-        defaultMaxRetry(param)
-      );
-    }
-    param.command.reject = function (status) {
-      if (constants.http_action[status || 0] === "retry") {
-        shared.emit('job:retry', param, arguments);
-      } else {
-        shared.emit('job:reject', param, arguments);
-      }
-    };
-    param.command.retry = function () {
-      shared.emit('job:retry', param, arguments);
-    };
-  }
-
-  function retryIfRunning(param, args) {
-    if (param.state === 'running') {
-      if (param.max_retry === undefined ||
-          param.max_retry === null ||
-          param.max_retry >= param.tried) {
-        param.state = 'waiting';
-        param.modified = new Date();
-        shared.emit('job:modified', param);
-        shared.emit('job:stopped', param);
-        setTimeout(function () {
-          param.state = 'ready';
-          param.modified = new Date();
-          shared.emit('job:modified', param);
-          shared.emit('job:start', param);
-        }, Math.min(10000, param.tried * 2000));
-      } else {
-        shared.emit('job:reject', param, args);
-      }
-    }
-  }
-
-  // listeners
-
-  shared.on('job:new', initJob);
-
-  shared.on('job:retry', retryIfRunning);
-}
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true, unparam: true */
-/*global arrayExtend, setTimeout, clearTimeout */
-
-function enableJobTimeout(jio, shared, options) {
-
-  // dependencies
-  // - param.tried number > 0
-  // - param.state string 'running'
-
-  // uses
-  // - param.tried number > 0
-  // - param.timeout number >= 0
-  // - param.timeout_ident Timeout
-  // - param.state string 'running'
-
-  // uses 'job:new', 'job:stopped', 'job:started',
-  // 'job:notified' and 'job:end' events
-  // emits 'job:modified' event
-
-  shared.job_keys = arrayExtend(shared.job_keys || [], ["timeout"]);
-
-  function positiveNumberOrDefault(number, default_value) {
-    return (typeof number === 'number' &&
-            number >= 0 ?
-            number : default_value);
-  }
-
-  // Infinity by default
-  var default_timeout = positiveNumberOrDefault(options.default_timeout, 0);
-
-  function timeoutReject(param) {
-    return function () {
-      param.command.reject(
-        'request_timeout',
-        'timeout',
-        'Operation canceled after around ' + (
-          Date.now() - param.modified.getTime()
-        ) + ' milliseconds of inactivity.'
-      );
-    };
-  }
-
-  function initJob(job) {
-    if (typeof job.timeout !== 'number' || !isFinite(job.timeout) ||
-        job.timeout < 0) {
-      job.timeout = positiveNumberOrDefault(
-        job.options.timeout,
-        default_timeout
-      );
-    }
-    job.modified = new Date();
-    shared.emit('job:modified', job);
-  }
-
-  function clearJobTimeout(job) {
-    clearTimeout(job.timeout_ident);
-    delete job.timeout_ident;
-  }
-
-  function restartJobTimeoutIfRunning(job) {
-    clearTimeout(job.timeout_ident);
-    if (job.state === 'running' && job.timeout > 0) {
-      job.timeout_ident = setTimeout(timeoutReject(job), job.timeout);
-      job.modified = new Date();
-    } else {
-      delete job.timeout_ident;
-    }
-  }
-
-  // listeners
-
-  shared.on('job:new', initJob);
-
-  shared.on("job:stopped", clearJobTimeout);
-  shared.on("job:end", clearJobTimeout);
-
-  shared.on("job:started", restartJobTimeoutIfRunning);
-  shared.on("job:notified", restartJobTimeoutIfRunning);
-}
-
-/*jslint indent: 2, maxlen: 80, sloppy: true */
-/*global arrayValuesToTypeDict, dictClear, RSVP, deepClone */
-
-// adds methods to JIO
-// - post
-// - put
-// - get
-// - remove
-// - allDocs
-// - putAttachment
-// - getAttachment
-// - removeAttachment
-// - check
-// - repair
-
-// event shared objet
-// - storage_spec object
-// - method string
-// - kwargs object
-// - options object
-// - solver object
-// - solver.resolve function
-// - solver.reject function
-// - solver.notify function
-// - cancellers object
-// - promise object
-
-function enableRestAPI(jio, shared) { // (jio, shared, options)
-
-  shared.rest_method_names = [
-    "post",
-    "put",
-    "get",
-    "remove",
-    "allDocs",
-    "putAttachment",
-    "getAttachment",
-    "removeAttachment",
-    "check",
-    "repair"
-  ];
-
-  function prepareParamAndEmit(method, storage_spec, args) {
-    var callback, type_dict, param = {};
-    type_dict = arrayValuesToTypeDict(Array.prototype.slice.call(args));
-    type_dict.object = type_dict.object || [];
-    if (method !== 'allDocs') {
-      param.kwargs = type_dict.object.shift();
-      if (param.kwargs === undefined) {
-        throw new TypeError("JIO()." + method +
-                            "(): Argument 1 is not of type 'object'");
-      }
-      param.kwargs = deepClone(param.kwargs);
-    } else {
-      param.kwargs = {};
-    }
-    param.solver = {};
-    param.options = deepClone(type_dict.object.shift()) || {};
-    param.promise = new RSVP.Promise(function (resolve, reject, notify) {
-      param.solver.resolve = resolve;
-      param.solver.reject = reject;
-      param.solver.notify = notify;
-    }, function () {
-      if (!param.cancellers) { return; }
-      var k;
-      for (k in param.cancellers) {
-        if (param.cancellers.hasOwnProperty(k)) {
-          param.cancellers[k]();
+        if (matched) {
+          return variables;
         }
       }
-    });
-    type_dict['function'] = type_dict['function'] || [];
-    if (type_dict['function'].length === 1) {
-      callback = type_dict['function'][0];
-      param.promise.then(function (answer) {
-        callback(undefined, answer);
-      }, function (answer) {
-        callback(answer, undefined);
-      });
-    } else if (type_dict['function'].length > 1) {
-      param.promise.then(type_dict['function'][0],
-                         type_dict['function'][1],
-                         type_dict['function'][2]);
-    }
-    type_dict = dictClear(type_dict);
-    param.storage_spec = storage_spec;
-    param.method = method;
-    shared.emit(method, param);
-    return param.promise;
-  }
-
-  shared.createRestApi = function (storage_spec, that) {
-    if (that === undefined) {
-      that = {};
-    }
-    shared.rest_method_names.forEach(function (method) {
-      that[method] = function () {
-        return prepareParamAndEmit(method, storage_spec, arguments);
-      };
-    });
-    return that;
-  };
-
-  shared.createRestApi(shared.storage_spec, jio);
-}
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true, unparam: true */
-/*global Blob, restCommandRejecter, Metadata */
-
-function enableRestParamChecker(jio, shared) {
-
-  // dependencies
-  // - param.solver
-  // - param.kwargs
-
-  // checks the kwargs and convert value if necessary
-
-  // which is a dict of method to use to announce that
-  // the command is finished
-
-
-  // tools
-
-  function checkId(param) {
-    if (typeof param.kwargs._id !== 'string' || param.kwargs._id === '') {
-      restCommandRejecter(param, [
-        'bad_request',
-        'wrong document id',
-        'Document id must be a non empty string.'
-      ]);
-      delete param.solver;
       return false;
-    }
-    return true;
-  }
+    };
 
-  function checkAttachmentId(param) {
-    if (typeof param.kwargs._attachment !== 'string' ||
-        param.kwargs._attachment === '') {
-      restCommandRejecter(param, [
-        'bad_request',
-        'wrong attachment id',
-        'Attachment id must be a non empty string.'
-      ]);
-      delete param.solver;
-      return false;
-    }
-    return true;
-  }
+    UriTemplate.parse = parse;
+    UriTemplate.UriTemplateError = UriTemplateError;
+    return UriTemplate;
+}());
 
-  // listeners
+    exportCallback(UriTemplate);
 
-  shared.on('post', function (param) {
-    if (param.kwargs._id !== undefined) {
-      if (!checkId(param)) {
-        return;
-      }
-    }
-    new Metadata(param.kwargs).format();
-  });
-
-  ["put", "get", "remove"].forEach(function (method) {
-    shared.on(method, function (param) {
-      if (!checkId(param)) {
-        return;
-      }
-      new Metadata(param.kwargs).format();
-    });
-  });
-
-  shared.on('putAttachment', function (param) {
-    if (!checkId(param) || !checkAttachmentId(param)) {
-      return;
-    }
-    if (!(param.kwargs._blob instanceof Blob) &&
-        typeof param.kwargs._data === 'string') {
-      param.kwargs._blob = new Blob([param.kwargs._data], {
-        "type": param.kwargs._content_type || param.kwargs._mimetype || ""
-      });
-      delete param.kwargs._data;
-      delete param.kwargs._mimetype;
-      delete param.kwargs._content_type;
-    } else if (param.kwargs._blob instanceof Blob) {
-      delete param.kwargs._data;
-      delete param.kwargs._mimetype;
-      delete param.kwargs._content_type;
-    } else if (param.kwargs._data instanceof Blob) {
-      param.kwargs._blob = param.kwargs._data;
-      delete param.kwargs._data;
-      delete param.kwargs._mimetype;
-      delete param.kwargs._content_type;
-    } else {
-      restCommandRejecter(param, [
-        'bad_request',
-        'wrong attachment',
-        'Attachment information must be like {"_id": document id, ' +
-          '"_attachment": attachment name, "_data": string, ["_mimetype": ' +
-          'content type]} or {"_id": document id, "_attachment": ' +
-          'attachment name, "_blob": Blob}'
-      ]);
-      delete param.solver;
-    }
-  });
-
-  ["getAttachment", "removeAttachment"].forEach(function (method) {
-    shared.on(method, function (param) {
-      if (!checkId(param)) {
-        checkAttachmentId(param);
-      }
-    });
-  });
-
-  ["check", "repair"].forEach(function (method) {
-    shared.on(method, function (param) {
-      if (param.kwargs._id !== undefined) {
-        if (!checkId(param)) {
-          return;
+}(function (UriTemplate) {
+        "use strict";
+        // export UriTemplate, when module is present, or pass it to window or global
+        if (typeof module !== "undefined") {
+            module.exports = UriTemplate;
         }
-      }
+        else if (typeof define === "function") {
+            define([],function() {
+                return UriTemplate;
+            });
+        }
+        else if (typeof window !== "undefined") {
+            window.UriTemplate = UriTemplate;
+        }
+        else {
+            global.UriTemplate = UriTemplate;
+        }
+    }
+));
+;//! moment.js
+//! version : 2.5.0
+//! authors : Tim Wood, Iskren Chernev, Moment.js contributors
+//! license : MIT
+//! momentjs.com
+
+(function (undefined) {
+
+    /************************************
+        Constants
+    ************************************/
+
+    var moment,
+        VERSION = "2.5.0",
+        global = this,
+        round = Math.round,
+        i,
+
+        YEAR = 0,
+        MONTH = 1,
+        DATE = 2,
+        HOUR = 3,
+        MINUTE = 4,
+        SECOND = 5,
+        MILLISECOND = 6,
+
+        // internal storage for language config files
+        languages = {},
+
+        // check for nodeJS
+        hasModule = (typeof module !== 'undefined' && module.exports && typeof require !== 'undefined'),
+
+        // ASP.NET json date format regex
+        aspNetJsonRegex = /^\/?Date\((\-?\d+)/i,
+        aspNetTimeSpanJsonRegex = /(\-)?(?:(\d*)\.)?(\d+)\:(\d+)(?:\:(\d+)\.?(\d{3})?)?/,
+
+        // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
+        // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
+        isoDurationRegex = /^(-)?P(?:(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?|([0-9,.]*)W)$/,
+
+        // format tokens
+        formattingTokens = /(\[[^\[]*\])|(\\)?(Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|mm?|ss?|S{1,4}|X|zz?|ZZ?|.)/g,
+        localFormattingTokens = /(\[[^\[]*\])|(\\)?(LT|LL?L?L?|l{1,4})/g,
+
+        // parsing token regexes
+        parseTokenOneOrTwoDigits = /\d\d?/, // 0 - 99
+        parseTokenOneToThreeDigits = /\d{1,3}/, // 0 - 999
+        parseTokenOneToFourDigits = /\d{1,4}/, // 0 - 9999
+        parseTokenOneToSixDigits = /[+\-]?\d{1,6}/, // -999,999 - 999,999
+        parseTokenDigits = /\d+/, // nonzero number of digits
+        parseTokenWord = /[0-9]*['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+|[\u0600-\u06FF\/]+(\s*?[\u0600-\u06FF]+){1,2}/i, // any word (or two) characters or numbers including two/three word month in arabic.
+        parseTokenTimezone = /Z|[\+\-]\d\d:?\d\d/gi, // +00:00 -00:00 +0000 -0000 or Z
+        parseTokenT = /T/i, // T (ISO separator)
+        parseTokenTimestampMs = /[\+\-]?\d+(\.\d{1,3})?/, // 123456789 123456789.123
+
+        //strict parsing regexes
+        parseTokenOneDigit = /\d/, // 0 - 9
+        parseTokenTwoDigits = /\d\d/, // 00 - 99
+        parseTokenThreeDigits = /\d{3}/, // 000 - 999
+        parseTokenFourDigits = /\d{4}/, // 0000 - 9999
+        parseTokenSixDigits = /[+\-]?\d{6}/, // -999,999 - 999,999
+
+        // iso 8601 regex
+        // 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
+        isoRegex = /^\s*\d{4}-(?:(\d\d-\d\d)|(W\d\d$)|(W\d\d-\d)|(\d\d\d))((T| )(\d\d(:\d\d(:\d\d(\.\d+)?)?)?)?([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?$/,
+
+        isoFormat = 'YYYY-MM-DDTHH:mm:ssZ',
+
+        isoDates = [
+            'YYYY-MM-DD',
+            'GGGG-[W]WW',
+            'GGGG-[W]WW-E',
+            'YYYY-DDD'
+        ],
+
+        // iso time formats and regexes
+        isoTimes = [
+            ['HH:mm:ss.SSSS', /(T| )\d\d:\d\d:\d\d\.\d{1,3}/],
+            ['HH:mm:ss', /(T| )\d\d:\d\d:\d\d/],
+            ['HH:mm', /(T| )\d\d:\d\d/],
+            ['HH', /(T| )\d\d/]
+        ],
+
+        // timezone chunker "+10:00" > ["10", "00"] or "-1530" > ["-15", "30"]
+        parseTimezoneChunker = /([\+\-]|\d\d)/gi,
+
+        // getter and setter names
+        proxyGettersAndSetters = 'Date|Hours|Minutes|Seconds|Milliseconds'.split('|'),
+        unitMillisecondFactors = {
+            'Milliseconds' : 1,
+            'Seconds' : 1e3,
+            'Minutes' : 6e4,
+            'Hours' : 36e5,
+            'Days' : 864e5,
+            'Months' : 2592e6,
+            'Years' : 31536e6
+        },
+
+        unitAliases = {
+            ms : 'millisecond',
+            s : 'second',
+            m : 'minute',
+            h : 'hour',
+            d : 'day',
+            D : 'date',
+            w : 'week',
+            W : 'isoWeek',
+            M : 'month',
+            y : 'year',
+            DDD : 'dayOfYear',
+            e : 'weekday',
+            E : 'isoWeekday',
+            gg: 'weekYear',
+            GG: 'isoWeekYear'
+        },
+
+        camelFunctions = {
+            dayofyear : 'dayOfYear',
+            isoweekday : 'isoWeekday',
+            isoweek : 'isoWeek',
+            weekyear : 'weekYear',
+            isoweekyear : 'isoWeekYear'
+        },
+
+        // format function strings
+        formatFunctions = {},
+
+        // tokens to ordinalize and pad
+        ordinalizeTokens = 'DDD w W M D d'.split(' '),
+        paddedTokens = 'M D H h m s w W'.split(' '),
+
+        formatTokenFunctions = {
+            M    : function () {
+                return this.month() + 1;
+            },
+            MMM  : function (format) {
+                return this.lang().monthsShort(this, format);
+            },
+            MMMM : function (format) {
+                return this.lang().months(this, format);
+            },
+            D    : function () {
+                return this.date();
+            },
+            DDD  : function () {
+                return this.dayOfYear();
+            },
+            d    : function () {
+                return this.day();
+            },
+            dd   : function (format) {
+                return this.lang().weekdaysMin(this, format);
+            },
+            ddd  : function (format) {
+                return this.lang().weekdaysShort(this, format);
+            },
+            dddd : function (format) {
+                return this.lang().weekdays(this, format);
+            },
+            w    : function () {
+                return this.week();
+            },
+            W    : function () {
+                return this.isoWeek();
+            },
+            YY   : function () {
+                return leftZeroFill(this.year() % 100, 2);
+            },
+            YYYY : function () {
+                return leftZeroFill(this.year(), 4);
+            },
+            YYYYY : function () {
+                return leftZeroFill(this.year(), 5);
+            },
+            YYYYYY : function () {
+                var y = this.year(), sign = y >= 0 ? '+' : '-';
+                return sign + leftZeroFill(Math.abs(y), 6);
+            },
+            gg   : function () {
+                return leftZeroFill(this.weekYear() % 100, 2);
+            },
+            gggg : function () {
+                return this.weekYear();
+            },
+            ggggg : function () {
+                return leftZeroFill(this.weekYear(), 5);
+            },
+            GG   : function () {
+                return leftZeroFill(this.isoWeekYear() % 100, 2);
+            },
+            GGGG : function () {
+                return this.isoWeekYear();
+            },
+            GGGGG : function () {
+                return leftZeroFill(this.isoWeekYear(), 5);
+            },
+            e : function () {
+                return this.weekday();
+            },
+            E : function () {
+                return this.isoWeekday();
+            },
+            a    : function () {
+                return this.lang().meridiem(this.hours(), this.minutes(), true);
+            },
+            A    : function () {
+                return this.lang().meridiem(this.hours(), this.minutes(), false);
+            },
+            H    : function () {
+                return this.hours();
+            },
+            h    : function () {
+                return this.hours() % 12 || 12;
+            },
+            m    : function () {
+                return this.minutes();
+            },
+            s    : function () {
+                return this.seconds();
+            },
+            S    : function () {
+                return toInt(this.milliseconds() / 100);
+            },
+            SS   : function () {
+                return leftZeroFill(toInt(this.milliseconds() / 10), 2);
+            },
+            SSS  : function () {
+                return leftZeroFill(this.milliseconds(), 3);
+            },
+            SSSS : function () {
+                return leftZeroFill(this.milliseconds(), 3);
+            },
+            Z    : function () {
+                var a = -this.zone(),
+                    b = "+";
+                if (a < 0) {
+                    a = -a;
+                    b = "-";
+                }
+                return b + leftZeroFill(toInt(a / 60), 2) + ":" + leftZeroFill(toInt(a) % 60, 2);
+            },
+            ZZ   : function () {
+                var a = -this.zone(),
+                    b = "+";
+                if (a < 0) {
+                    a = -a;
+                    b = "-";
+                }
+                return b + leftZeroFill(toInt(a / 60), 2) + leftZeroFill(toInt(a) % 60, 2);
+            },
+            z : function () {
+                return this.zoneAbbr();
+            },
+            zz : function () {
+                return this.zoneName();
+            },
+            X    : function () {
+                return this.unix();
+            },
+            Q : function () {
+                return this.quarter();
+            }
+        },
+
+        lists = ['months', 'monthsShort', 'weekdays', 'weekdaysShort', 'weekdaysMin'];
+
+    function padToken(func, count) {
+        return function (a) {
+            return leftZeroFill(func.call(this, a), count);
+        };
+    }
+    function ordinalizeToken(func, period) {
+        return function (a) {
+            return this.lang().ordinal(func.call(this, a), period);
+        };
+    }
+
+    while (ordinalizeTokens.length) {
+        i = ordinalizeTokens.pop();
+        formatTokenFunctions[i + 'o'] = ordinalizeToken(formatTokenFunctions[i], i);
+    }
+    while (paddedTokens.length) {
+        i = paddedTokens.pop();
+        formatTokenFunctions[i + i] = padToken(formatTokenFunctions[i], 2);
+    }
+    formatTokenFunctions.DDDD = padToken(formatTokenFunctions.DDD, 3);
+
+
+    /************************************
+        Constructors
+    ************************************/
+
+    function Language() {
+
+    }
+
+    // Moment prototype object
+    function Moment(config) {
+        checkOverflow(config);
+        extend(this, config);
+    }
+
+    // Duration Constructor
+    function Duration(duration) {
+        var normalizedInput = normalizeObjectUnits(duration),
+            years = normalizedInput.year || 0,
+            months = normalizedInput.month || 0,
+            weeks = normalizedInput.week || 0,
+            days = normalizedInput.day || 0,
+            hours = normalizedInput.hour || 0,
+            minutes = normalizedInput.minute || 0,
+            seconds = normalizedInput.second || 0,
+            milliseconds = normalizedInput.millisecond || 0;
+
+        // representation for dateAddRemove
+        this._milliseconds = +milliseconds +
+            seconds * 1e3 + // 1000
+            minutes * 6e4 + // 1000 * 60
+            hours * 36e5; // 1000 * 60 * 60
+        // Because of dateAddRemove treats 24 hours as different from a
+        // day when working around DST, we need to store them separately
+        this._days = +days +
+            weeks * 7;
+        // It is impossible translate months into days without knowing
+        // which months you are are talking about, so we have to store
+        // it separately.
+        this._months = +months +
+            years * 12;
+
+        this._data = {};
+
+        this._bubble();
+    }
+
+    /************************************
+        Helpers
+    ************************************/
+
+
+    function extend(a, b) {
+        for (var i in b) {
+            if (b.hasOwnProperty(i)) {
+                a[i] = b[i];
+            }
+        }
+
+        if (b.hasOwnProperty("toString")) {
+            a.toString = b.toString;
+        }
+
+        if (b.hasOwnProperty("valueOf")) {
+            a.valueOf = b.valueOf;
+        }
+
+        return a;
+    }
+
+    function absRound(number) {
+        if (number < 0) {
+            return Math.ceil(number);
+        } else {
+            return Math.floor(number);
+        }
+    }
+
+    // left zero fill a number
+    // see http://jsperf.com/left-zero-filling for performance comparison
+    function leftZeroFill(number, targetLength, forceSign) {
+        var output = Math.abs(number) + '',
+            sign = number >= 0;
+
+        while (output.length < targetLength) {
+            output = '0' + output;
+        }
+        return (sign ? (forceSign ? '+' : '') : '-') + output;
+    }
+
+    // helper function for _.addTime and _.subtractTime
+    function addOrSubtractDurationFromMoment(mom, duration, isAdding, ignoreUpdateOffset) {
+        var milliseconds = duration._milliseconds,
+            days = duration._days,
+            months = duration._months,
+            minutes,
+            hours;
+
+        if (milliseconds) {
+            mom._d.setTime(+mom._d + milliseconds * isAdding);
+        }
+        // store the minutes and hours so we can restore them
+        if (days || months) {
+            minutes = mom.minute();
+            hours = mom.hour();
+        }
+        if (days) {
+            mom.date(mom.date() + days * isAdding);
+        }
+        if (months) {
+            mom.month(mom.month() + months * isAdding);
+        }
+        if (milliseconds && !ignoreUpdateOffset) {
+            moment.updateOffset(mom);
+        }
+        // restore the minutes and hours after possibly changing dst
+        if (days || months) {
+            mom.minute(minutes);
+            mom.hour(hours);
+        }
+    }
+
+    // check if is an array
+    function isArray(input) {
+        return Object.prototype.toString.call(input) === '[object Array]';
+    }
+
+    function isDate(input) {
+        return  Object.prototype.toString.call(input) === '[object Date]' ||
+                input instanceof Date;
+    }
+
+    // compare two arrays, return the number of differences
+    function compareArrays(array1, array2, dontConvert) {
+        var len = Math.min(array1.length, array2.length),
+            lengthDiff = Math.abs(array1.length - array2.length),
+            diffs = 0,
+            i;
+        for (i = 0; i < len; i++) {
+            if ((dontConvert && array1[i] !== array2[i]) ||
+                (!dontConvert && toInt(array1[i]) !== toInt(array2[i]))) {
+                diffs++;
+            }
+        }
+        return diffs + lengthDiff;
+    }
+
+    function normalizeUnits(units) {
+        if (units) {
+            var lowered = units.toLowerCase().replace(/(.)s$/, '$1');
+            units = unitAliases[units] || camelFunctions[lowered] || lowered;
+        }
+        return units;
+    }
+
+    function normalizeObjectUnits(inputObject) {
+        var normalizedInput = {},
+            normalizedProp,
+            prop;
+
+        for (prop in inputObject) {
+            if (inputObject.hasOwnProperty(prop)) {
+                normalizedProp = normalizeUnits(prop);
+                if (normalizedProp) {
+                    normalizedInput[normalizedProp] = inputObject[prop];
+                }
+            }
+        }
+
+        return normalizedInput;
+    }
+
+    function makeList(field) {
+        var count, setter;
+
+        if (field.indexOf('week') === 0) {
+            count = 7;
+            setter = 'day';
+        }
+        else if (field.indexOf('month') === 0) {
+            count = 12;
+            setter = 'month';
+        }
+        else {
+            return;
+        }
+
+        moment[field] = function (format, index) {
+            var i, getter,
+                method = moment.fn._lang[field],
+                results = [];
+
+            if (typeof format === 'number') {
+                index = format;
+                format = undefined;
+            }
+
+            getter = function (i) {
+                var m = moment().utc().set(setter, i);
+                return method.call(moment.fn._lang, m, format || '');
+            };
+
+            if (index != null) {
+                return getter(index);
+            }
+            else {
+                for (i = 0; i < count; i++) {
+                    results.push(getter(i));
+                }
+                return results;
+            }
+        };
+    }
+
+    function toInt(argumentForCoercion) {
+        var coercedNumber = +argumentForCoercion,
+            value = 0;
+
+        if (coercedNumber !== 0 && isFinite(coercedNumber)) {
+            if (coercedNumber >= 0) {
+                value = Math.floor(coercedNumber);
+            } else {
+                value = Math.ceil(coercedNumber);
+            }
+        }
+
+        return value;
+    }
+
+    function daysInMonth(year, month) {
+        return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+    }
+
+    function daysInYear(year) {
+        return isLeapYear(year) ? 366 : 365;
+    }
+
+    function isLeapYear(year) {
+        return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+    }
+
+    function checkOverflow(m) {
+        var overflow;
+        if (m._a && m._pf.overflow === -2) {
+            overflow =
+                m._a[MONTH] < 0 || m._a[MONTH] > 11 ? MONTH :
+                m._a[DATE] < 1 || m._a[DATE] > daysInMonth(m._a[YEAR], m._a[MONTH]) ? DATE :
+                m._a[HOUR] < 0 || m._a[HOUR] > 23 ? HOUR :
+                m._a[MINUTE] < 0 || m._a[MINUTE] > 59 ? MINUTE :
+                m._a[SECOND] < 0 || m._a[SECOND] > 59 ? SECOND :
+                m._a[MILLISECOND] < 0 || m._a[MILLISECOND] > 999 ? MILLISECOND :
+                -1;
+
+            if (m._pf._overflowDayOfYear && (overflow < YEAR || overflow > DATE)) {
+                overflow = DATE;
+            }
+
+            m._pf.overflow = overflow;
+        }
+    }
+
+    function initializeParsingFlags(config) {
+        config._pf = {
+            empty : false,
+            unusedTokens : [],
+            unusedInput : [],
+            overflow : -2,
+            charsLeftOver : 0,
+            nullInput : false,
+            invalidMonth : null,
+            invalidFormat : false,
+            userInvalidated : false,
+            iso: false
+        };
+    }
+
+    function isValid(m) {
+        if (m._isValid == null) {
+            m._isValid = !isNaN(m._d.getTime()) &&
+                m._pf.overflow < 0 &&
+                !m._pf.empty &&
+                !m._pf.invalidMonth &&
+                !m._pf.nullInput &&
+                !m._pf.invalidFormat &&
+                !m._pf.userInvalidated;
+
+            if (m._strict) {
+                m._isValid = m._isValid &&
+                    m._pf.charsLeftOver === 0 &&
+                    m._pf.unusedTokens.length === 0;
+            }
+        }
+        return m._isValid;
+    }
+
+    function normalizeLanguage(key) {
+        return key ? key.toLowerCase().replace('_', '-') : key;
+    }
+
+    // Return a moment from input, that is local/utc/zone equivalent to model.
+    function makeAs(input, model) {
+        return model._isUTC ? moment(input).zone(model._offset || 0) :
+            moment(input).local();
+    }
+
+    /************************************
+        Languages
+    ************************************/
+
+
+    extend(Language.prototype, {
+
+        set : function (config) {
+            var prop, i;
+            for (i in config) {
+                prop = config[i];
+                if (typeof prop === 'function') {
+                    this[i] = prop;
+                } else {
+                    this['_' + i] = prop;
+                }
+            }
+        },
+
+        _months : "January_February_March_April_May_June_July_August_September_October_November_December".split("_"),
+        months : function (m) {
+            return this._months[m.month()];
+        },
+
+        _monthsShort : "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec".split("_"),
+        monthsShort : function (m) {
+            return this._monthsShort[m.month()];
+        },
+
+        monthsParse : function (monthName) {
+            var i, mom, regex;
+
+            if (!this._monthsParse) {
+                this._monthsParse = [];
+            }
+
+            for (i = 0; i < 12; i++) {
+                // make the regex if we don't have it already
+                if (!this._monthsParse[i]) {
+                    mom = moment.utc([2000, i]);
+                    regex = '^' + this.months(mom, '') + '|^' + this.monthsShort(mom, '');
+                    this._monthsParse[i] = new RegExp(regex.replace('.', ''), 'i');
+                }
+                // test the regex
+                if (this._monthsParse[i].test(monthName)) {
+                    return i;
+                }
+            }
+        },
+
+        _weekdays : "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),
+        weekdays : function (m) {
+            return this._weekdays[m.day()];
+        },
+
+        _weekdaysShort : "Sun_Mon_Tue_Wed_Thu_Fri_Sat".split("_"),
+        weekdaysShort : function (m) {
+            return this._weekdaysShort[m.day()];
+        },
+
+        _weekdaysMin : "Su_Mo_Tu_We_Th_Fr_Sa".split("_"),
+        weekdaysMin : function (m) {
+            return this._weekdaysMin[m.day()];
+        },
+
+        weekdaysParse : function (weekdayName) {
+            var i, mom, regex;
+
+            if (!this._weekdaysParse) {
+                this._weekdaysParse = [];
+            }
+
+            for (i = 0; i < 7; i++) {
+                // make the regex if we don't have it already
+                if (!this._weekdaysParse[i]) {
+                    mom = moment([2000, 1]).day(i);
+                    regex = '^' + this.weekdays(mom, '') + '|^' + this.weekdaysShort(mom, '') + '|^' + this.weekdaysMin(mom, '');
+                    this._weekdaysParse[i] = new RegExp(regex.replace('.', ''), 'i');
+                }
+                // test the regex
+                if (this._weekdaysParse[i].test(weekdayName)) {
+                    return i;
+                }
+            }
+        },
+
+        _longDateFormat : {
+            LT : "h:mm A",
+            L : "MM/DD/YYYY",
+            LL : "MMMM D YYYY",
+            LLL : "MMMM D YYYY LT",
+            LLLL : "dddd, MMMM D YYYY LT"
+        },
+        longDateFormat : function (key) {
+            var output = this._longDateFormat[key];
+            if (!output && this._longDateFormat[key.toUpperCase()]) {
+                output = this._longDateFormat[key.toUpperCase()].replace(/MMMM|MM|DD|dddd/g, function (val) {
+                    return val.slice(1);
+                });
+                this._longDateFormat[key] = output;
+            }
+            return output;
+        },
+
+        isPM : function (input) {
+            // IE8 Quirks Mode & IE7 Standards Mode do not allow accessing strings like arrays
+            // Using charAt should be more compatible.
+            return ((input + '').toLowerCase().charAt(0) === 'p');
+        },
+
+        _meridiemParse : /[ap]\.?m?\.?/i,
+        meridiem : function (hours, minutes, isLower) {
+            if (hours > 11) {
+                return isLower ? 'pm' : 'PM';
+            } else {
+                return isLower ? 'am' : 'AM';
+            }
+        },
+
+        _calendar : {
+            sameDay : '[Today at] LT',
+            nextDay : '[Tomorrow at] LT',
+            nextWeek : 'dddd [at] LT',
+            lastDay : '[Yesterday at] LT',
+            lastWeek : '[Last] dddd [at] LT',
+            sameElse : 'L'
+        },
+        calendar : function (key, mom) {
+            var output = this._calendar[key];
+            return typeof output === 'function' ? output.apply(mom) : output;
+        },
+
+        _relativeTime : {
+            future : "in %s",
+            past : "%s ago",
+            s : "a few seconds",
+            m : "a minute",
+            mm : "%d minutes",
+            h : "an hour",
+            hh : "%d hours",
+            d : "a day",
+            dd : "%d days",
+            M : "a month",
+            MM : "%d months",
+            y : "a year",
+            yy : "%d years"
+        },
+        relativeTime : function (number, withoutSuffix, string, isFuture) {
+            var output = this._relativeTime[string];
+            return (typeof output === 'function') ?
+                output(number, withoutSuffix, string, isFuture) :
+                output.replace(/%d/i, number);
+        },
+        pastFuture : function (diff, output) {
+            var format = this._relativeTime[diff > 0 ? 'future' : 'past'];
+            return typeof format === 'function' ? format(output) : format.replace(/%s/i, output);
+        },
+
+        ordinal : function (number) {
+            return this._ordinal.replace("%d", number);
+        },
+        _ordinal : "%d",
+
+        preparse : function (string) {
+            return string;
+        },
+
+        postformat : function (string) {
+            return string;
+        },
+
+        week : function (mom) {
+            return weekOfYear(mom, this._week.dow, this._week.doy).week;
+        },
+
+        _week : {
+            dow : 0, // Sunday is the first day of the week.
+            doy : 6  // The week that contains Jan 1st is the first week of the year.
+        },
+
+        _invalidDate: 'Invalid date',
+        invalidDate: function () {
+            return this._invalidDate;
+        }
     });
-  });
 
-}
+    // Loads a language definition into the `languages` cache.  The function
+    // takes a key and optionally values.  If not in the browser and no values
+    // are provided, it will load the language file module.  As a convenience,
+    // this function also returns the language values.
+    function loadLang(key, values) {
+        values.abbr = key;
+        if (!languages[key]) {
+            languages[key] = new Language();
+        }
+        languages[key].set(values);
+        return languages[key];
+    }
 
-/*jslint indent: 2, maxlen: 80, sloppy: true */
+    // Remove a language from the `languages` cache. Mostly useful in tests.
+    function unloadLang(key) {
+        delete languages[key];
+    }
+
+    // Determines which language definition to use and returns it.
+    //
+    // With no parameters, it will return the global language.  If you
+    // pass in a language key, such as 'en', it will return the
+    // definition for 'en', so long as 'en' has already been loaded using
+    // moment.lang.
+    function getLangDefinition(key) {
+        var i = 0, j, lang, next, split,
+            get = function (k) {
+                if (!languages[k] && hasModule) {
+                    try {
+                        require('./lang/' + k);
+                    } catch (e) { }
+                }
+                return languages[k];
+            };
+
+        if (!key) {
+            return moment.fn._lang;
+        }
+
+        if (!isArray(key)) {
+            //short-circuit everything else
+            lang = get(key);
+            if (lang) {
+                return lang;
+            }
+            key = [key];
+        }
+
+        //pick the language from the array
+        //try ['en-au', 'en-gb'] as 'en-au', 'en-gb', 'en', as in move through the list trying each
+        //substring from most specific to least, but move to the next array item if it's a more specific variant than the current root
+        while (i < key.length) {
+            split = normalizeLanguage(key[i]).split('-');
+            j = split.length;
+            next = normalizeLanguage(key[i + 1]);
+            next = next ? next.split('-') : null;
+            while (j > 0) {
+                lang = get(split.slice(0, j).join('-'));
+                if (lang) {
+                    return lang;
+                }
+                if (next && next.length >= j && compareArrays(split, next, true) >= j - 1) {
+                    //the next array item is better than a shallower substring of this one
+                    break;
+                }
+                j--;
+            }
+            i++;
+        }
+        return moment.fn._lang;
+    }
+
+    /************************************
+        Formatting
+    ************************************/
+
+
+    function removeFormattingTokens(input) {
+        if (input.match(/\[[\s\S]/)) {
+            return input.replace(/^\[|\]$/g, "");
+        }
+        return input.replace(/\\/g, "");
+    }
+
+    function makeFormatFunction(format) {
+        var array = format.match(formattingTokens), i, length;
+
+        for (i = 0, length = array.length; i < length; i++) {
+            if (formatTokenFunctions[array[i]]) {
+                array[i] = formatTokenFunctions[array[i]];
+            } else {
+                array[i] = removeFormattingTokens(array[i]);
+            }
+        }
+
+        return function (mom) {
+            var output = "";
+            for (i = 0; i < length; i++) {
+                output += array[i] instanceof Function ? array[i].call(mom, format) : array[i];
+            }
+            return output;
+        };
+    }
+
+    // format date using native date object
+    function formatMoment(m, format) {
+
+        if (!m.isValid()) {
+            return m.lang().invalidDate();
+        }
+
+        format = expandFormat(format, m.lang());
+
+        if (!formatFunctions[format]) {
+            formatFunctions[format] = makeFormatFunction(format);
+        }
+
+        return formatFunctions[format](m);
+    }
+
+    function expandFormat(format, lang) {
+        var i = 5;
+
+        function replaceLongDateFormatTokens(input) {
+            return lang.longDateFormat(input) || input;
+        }
+
+        localFormattingTokens.lastIndex = 0;
+        while (i >= 0 && localFormattingTokens.test(format)) {
+            format = format.replace(localFormattingTokens, replaceLongDateFormatTokens);
+            localFormattingTokens.lastIndex = 0;
+            i -= 1;
+        }
+
+        return format;
+    }
+
+
+    /************************************
+        Parsing
+    ************************************/
+
+
+    // get the regex to find the next token
+    function getParseRegexForToken(token, config) {
+        var a, strict = config._strict;
+        switch (token) {
+        case 'DDDD':
+            return parseTokenThreeDigits;
+        case 'YYYY':
+        case 'GGGG':
+        case 'gggg':
+            return strict ? parseTokenFourDigits : parseTokenOneToFourDigits;
+        case 'YYYYYY':
+        case 'YYYYY':
+        case 'GGGGG':
+        case 'ggggg':
+            return strict ? parseTokenSixDigits : parseTokenOneToSixDigits;
+        case 'S':
+            if (strict) { return parseTokenOneDigit; }
+            /* falls through */
+        case 'SS':
+            if (strict) { return parseTokenTwoDigits; }
+            /* falls through */
+        case 'SSS':
+        case 'DDD':
+            return strict ? parseTokenThreeDigits : parseTokenOneToThreeDigits;
+        case 'MMM':
+        case 'MMMM':
+        case 'dd':
+        case 'ddd':
+        case 'dddd':
+            return parseTokenWord;
+        case 'a':
+        case 'A':
+            return getLangDefinition(config._l)._meridiemParse;
+        case 'X':
+            return parseTokenTimestampMs;
+        case 'Z':
+        case 'ZZ':
+            return parseTokenTimezone;
+        case 'T':
+            return parseTokenT;
+        case 'SSSS':
+            return parseTokenDigits;
+        case 'MM':
+        case 'DD':
+        case 'YY':
+        case 'GG':
+        case 'gg':
+        case 'HH':
+        case 'hh':
+        case 'mm':
+        case 'ss':
+        case 'ww':
+        case 'WW':
+            return strict ? parseTokenTwoDigits : parseTokenOneOrTwoDigits;
+        case 'M':
+        case 'D':
+        case 'd':
+        case 'H':
+        case 'h':
+        case 'm':
+        case 's':
+        case 'w':
+        case 'W':
+        case 'e':
+        case 'E':
+            return strict ? parseTokenOneDigit : parseTokenOneOrTwoDigits;
+        default :
+            a = new RegExp(regexpEscape(unescapeFormat(token.replace('\\', '')), "i"));
+            return a;
+        }
+    }
+
+    function timezoneMinutesFromString(string) {
+        string = string || "";
+        var possibleTzMatches = (string.match(parseTokenTimezone) || []),
+            tzChunk = possibleTzMatches[possibleTzMatches.length - 1] || [],
+            parts = (tzChunk + '').match(parseTimezoneChunker) || ['-', 0, 0],
+            minutes = +(parts[1] * 60) + toInt(parts[2]);
+
+        return parts[0] === '+' ? -minutes : minutes;
+    }
+
+    // function to convert string input to date
+    function addTimeToArrayFromToken(token, input, config) {
+        var a, datePartArray = config._a;
+
+        switch (token) {
+        // MONTH
+        case 'M' : // fall through to MM
+        case 'MM' :
+            if (input != null) {
+                datePartArray[MONTH] = toInt(input) - 1;
+            }
+            break;
+        case 'MMM' : // fall through to MMMM
+        case 'MMMM' :
+            a = getLangDefinition(config._l).monthsParse(input);
+            // if we didn't find a month name, mark the date as invalid.
+            if (a != null) {
+                datePartArray[MONTH] = a;
+            } else {
+                config._pf.invalidMonth = input;
+            }
+            break;
+        // DAY OF MONTH
+        case 'D' : // fall through to DD
+        case 'DD' :
+            if (input != null) {
+                datePartArray[DATE] = toInt(input);
+            }
+            break;
+        // DAY OF YEAR
+        case 'DDD' : // fall through to DDDD
+        case 'DDDD' :
+            if (input != null) {
+                config._dayOfYear = toInt(input);
+            }
+
+            break;
+        // YEAR
+        case 'YY' :
+            datePartArray[YEAR] = toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
+            break;
+        case 'YYYY' :
+        case 'YYYYY' :
+        case 'YYYYYY' :
+            datePartArray[YEAR] = toInt(input);
+            break;
+        // AM / PM
+        case 'a' : // fall through to A
+        case 'A' :
+            config._isPm = getLangDefinition(config._l).isPM(input);
+            break;
+        // 24 HOUR
+        case 'H' : // fall through to hh
+        case 'HH' : // fall through to hh
+        case 'h' : // fall through to hh
+        case 'hh' :
+            datePartArray[HOUR] = toInt(input);
+            break;
+        // MINUTE
+        case 'm' : // fall through to mm
+        case 'mm' :
+            datePartArray[MINUTE] = toInt(input);
+            break;
+        // SECOND
+        case 's' : // fall through to ss
+        case 'ss' :
+            datePartArray[SECOND] = toInt(input);
+            break;
+        // MILLISECOND
+        case 'S' :
+        case 'SS' :
+        case 'SSS' :
+        case 'SSSS' :
+            datePartArray[MILLISECOND] = toInt(('0.' + input) * 1000);
+            break;
+        // UNIX TIMESTAMP WITH MS
+        case 'X':
+            config._d = new Date(parseFloat(input) * 1000);
+            break;
+        // TIMEZONE
+        case 'Z' : // fall through to ZZ
+        case 'ZZ' :
+            config._useUTC = true;
+            config._tzm = timezoneMinutesFromString(input);
+            break;
+        case 'w':
+        case 'ww':
+        case 'W':
+        case 'WW':
+        case 'd':
+        case 'dd':
+        case 'ddd':
+        case 'dddd':
+        case 'e':
+        case 'E':
+            token = token.substr(0, 1);
+            /* falls through */
+        case 'gg':
+        case 'gggg':
+        case 'GG':
+        case 'GGGG':
+        case 'GGGGG':
+            token = token.substr(0, 2);
+            if (input) {
+                config._w = config._w || {};
+                config._w[token] = input;
+            }
+            break;
+        }
+    }
+
+    // convert an array to a date.
+    // the array should mirror the parameters below
+    // note: all values past the year are optional and will default to the lowest possible value.
+    // [year, month, day , hour, minute, second, millisecond]
+    function dateFromConfig(config) {
+        var i, date, input = [], currentDate,
+            yearToUse, fixYear, w, temp, lang, weekday, week;
+
+        if (config._d) {
+            return;
+        }
+
+        currentDate = currentDateArray(config);
+
+        //compute day of the year from weeks and weekdays
+        if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
+            fixYear = function (val) {
+                var int_val = parseInt(val, 10);
+                return val ?
+                  (val.length < 3 ? (int_val > 68 ? 1900 + int_val : 2000 + int_val) : int_val) :
+                  (config._a[YEAR] == null ? moment().weekYear() : config._a[YEAR]);
+            };
+
+            w = config._w;
+            if (w.GG != null || w.W != null || w.E != null) {
+                temp = dayOfYearFromWeeks(fixYear(w.GG), w.W || 1, w.E, 4, 1);
+            }
+            else {
+                lang = getLangDefinition(config._l);
+                weekday = w.d != null ?  parseWeekday(w.d, lang) :
+                  (w.e != null ?  parseInt(w.e, 10) + lang._week.dow : 0);
+
+                week = parseInt(w.w, 10) || 1;
+
+                //if we're parsing 'd', then the low day numbers may be next week
+                if (w.d != null && weekday < lang._week.dow) {
+                    week++;
+                }
+
+                temp = dayOfYearFromWeeks(fixYear(w.gg), week, weekday, lang._week.doy, lang._week.dow);
+            }
+
+            config._a[YEAR] = temp.year;
+            config._dayOfYear = temp.dayOfYear;
+        }
+
+        //if the day of the year is set, figure out what it is
+        if (config._dayOfYear) {
+            yearToUse = config._a[YEAR] == null ? currentDate[YEAR] : config._a[YEAR];
+
+            if (config._dayOfYear > daysInYear(yearToUse)) {
+                config._pf._overflowDayOfYear = true;
+            }
+
+            date = makeUTCDate(yearToUse, 0, config._dayOfYear);
+            config._a[MONTH] = date.getUTCMonth();
+            config._a[DATE] = date.getUTCDate();
+        }
+
+        // Default to current date.
+        // * if no year, month, day of month are given, default to today
+        // * if day of month is given, default month and year
+        // * if month is given, default only year
+        // * if year is given, don't default anything
+        for (i = 0; i < 3 && config._a[i] == null; ++i) {
+            config._a[i] = input[i] = currentDate[i];
+        }
+
+        // Zero out whatever was not defaulted, including time
+        for (; i < 7; i++) {
+            config._a[i] = input[i] = (config._a[i] == null) ? (i === 2 ? 1 : 0) : config._a[i];
+        }
+
+        // add the offsets to the time to be parsed so that we can have a clean array for checking isValid
+        input[HOUR] += toInt((config._tzm || 0) / 60);
+        input[MINUTE] += toInt((config._tzm || 0) % 60);
+
+        config._d = (config._useUTC ? makeUTCDate : makeDate).apply(null, input);
+    }
+
+    function dateFromObject(config) {
+        var normalizedInput;
+
+        if (config._d) {
+            return;
+        }
+
+        normalizedInput = normalizeObjectUnits(config._i);
+        config._a = [
+            normalizedInput.year,
+            normalizedInput.month,
+            normalizedInput.day,
+            normalizedInput.hour,
+            normalizedInput.minute,
+            normalizedInput.second,
+            normalizedInput.millisecond
+        ];
+
+        dateFromConfig(config);
+    }
+
+    function currentDateArray(config) {
+        var now = new Date();
+        if (config._useUTC) {
+            return [
+                now.getUTCFullYear(),
+                now.getUTCMonth(),
+                now.getUTCDate()
+            ];
+        } else {
+            return [now.getFullYear(), now.getMonth(), now.getDate()];
+        }
+    }
+
+    // date from string and format string
+    function makeDateFromStringAndFormat(config) {
+
+        config._a = [];
+        config._pf.empty = true;
+
+        // This array is used to make a Date, either with `new Date` or `Date.UTC`
+        var lang = getLangDefinition(config._l),
+            string = '' + config._i,
+            i, parsedInput, tokens, token, skipped,
+            stringLength = string.length,
+            totalParsedInputLength = 0;
+
+        tokens = expandFormat(config._f, lang).match(formattingTokens) || [];
+
+        for (i = 0; i < tokens.length; i++) {
+            token = tokens[i];
+            parsedInput = (string.match(getParseRegexForToken(token, config)) || [])[0];
+            if (parsedInput) {
+                skipped = string.substr(0, string.indexOf(parsedInput));
+                if (skipped.length > 0) {
+                    config._pf.unusedInput.push(skipped);
+                }
+                string = string.slice(string.indexOf(parsedInput) + parsedInput.length);
+                totalParsedInputLength += parsedInput.length;
+            }
+            // don't parse if it's not a known token
+            if (formatTokenFunctions[token]) {
+                if (parsedInput) {
+                    config._pf.empty = false;
+                }
+                else {
+                    config._pf.unusedTokens.push(token);
+                }
+                addTimeToArrayFromToken(token, parsedInput, config);
+            }
+            else if (config._strict && !parsedInput) {
+                config._pf.unusedTokens.push(token);
+            }
+        }
+
+        // add remaining unparsed input length to the string
+        config._pf.charsLeftOver = stringLength - totalParsedInputLength;
+        if (string.length > 0) {
+            config._pf.unusedInput.push(string);
+        }
+
+        // handle am pm
+        if (config._isPm && config._a[HOUR] < 12) {
+            config._a[HOUR] += 12;
+        }
+        // if is 12 am, change hours to 0
+        if (config._isPm === false && config._a[HOUR] === 12) {
+            config._a[HOUR] = 0;
+        }
+
+        dateFromConfig(config);
+        checkOverflow(config);
+    }
+
+    function unescapeFormat(s) {
+        return s.replace(/\\(\[)|\\(\])|\[([^\]\[]*)\]|\\(.)/g, function (matched, p1, p2, p3, p4) {
+            return p1 || p2 || p3 || p4;
+        });
+    }
+
+    // Code from http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
+    function regexpEscape(s) {
+        return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    }
+
+    // date from string and array of format strings
+    function makeDateFromStringAndArray(config) {
+        var tempConfig,
+            bestMoment,
+
+            scoreToBeat,
+            i,
+            currentScore;
+
+        if (config._f.length === 0) {
+            config._pf.invalidFormat = true;
+            config._d = new Date(NaN);
+            return;
+        }
+
+        for (i = 0; i < config._f.length; i++) {
+            currentScore = 0;
+            tempConfig = extend({}, config);
+            initializeParsingFlags(tempConfig);
+            tempConfig._f = config._f[i];
+            makeDateFromStringAndFormat(tempConfig);
+
+            if (!isValid(tempConfig)) {
+                continue;
+            }
+
+            // if there is any input that was not parsed add a penalty for that format
+            currentScore += tempConfig._pf.charsLeftOver;
+
+            //or tokens
+            currentScore += tempConfig._pf.unusedTokens.length * 10;
+
+            tempConfig._pf.score = currentScore;
+
+            if (scoreToBeat == null || currentScore < scoreToBeat) {
+                scoreToBeat = currentScore;
+                bestMoment = tempConfig;
+            }
+        }
+
+        extend(config, bestMoment || tempConfig);
+    }
+
+    // date from iso format
+    function makeDateFromString(config) {
+        var i,
+            string = config._i,
+            match = isoRegex.exec(string);
+
+        if (match) {
+            config._pf.iso = true;
+            for (i = 4; i > 0; i--) {
+                if (match[i]) {
+                    // match[5] should be "T" or undefined
+                    config._f = isoDates[i - 1] + (match[6] || " ");
+                    break;
+                }
+            }
+            for (i = 0; i < 4; i++) {
+                if (isoTimes[i][1].exec(string)) {
+                    config._f += isoTimes[i][0];
+                    break;
+                }
+            }
+            if (string.match(parseTokenTimezone)) {
+                config._f += "Z";
+            }
+            makeDateFromStringAndFormat(config);
+        }
+        else {
+            config._d = new Date(string);
+        }
+    }
+
+    function makeDateFromInput(config) {
+        var input = config._i,
+            matched = aspNetJsonRegex.exec(input);
+
+        if (input === undefined) {
+            config._d = new Date();
+        } else if (matched) {
+            config._d = new Date(+matched[1]);
+        } else if (typeof input === 'string') {
+            makeDateFromString(config);
+        } else if (isArray(input)) {
+            config._a = input.slice(0);
+            dateFromConfig(config);
+        } else if (isDate(input)) {
+            config._d = new Date(+input);
+        } else if (typeof(input) === 'object') {
+            dateFromObject(config);
+        } else {
+            config._d = new Date(input);
+        }
+    }
+
+    function makeDate(y, m, d, h, M, s, ms) {
+        //can't just apply() to create a date:
+        //http://stackoverflow.com/questions/181348/instantiating-a-javascript-object-by-calling-prototype-constructor-apply
+        var date = new Date(y, m, d, h, M, s, ms);
+
+        //the date constructor doesn't accept years < 1970
+        if (y < 1970) {
+            date.setFullYear(y);
+        }
+        return date;
+    }
+
+    function makeUTCDate(y) {
+        var date = new Date(Date.UTC.apply(null, arguments));
+        if (y < 1970) {
+            date.setUTCFullYear(y);
+        }
+        return date;
+    }
+
+    function parseWeekday(input, language) {
+        if (typeof input === 'string') {
+            if (!isNaN(input)) {
+                input = parseInt(input, 10);
+            }
+            else {
+                input = language.weekdaysParse(input);
+                if (typeof input !== 'number') {
+                    return null;
+                }
+            }
+        }
+        return input;
+    }
+
+    /************************************
+        Relative Time
+    ************************************/
+
+
+    // helper function for moment.fn.from, moment.fn.fromNow, and moment.duration.fn.humanize
+    function substituteTimeAgo(string, number, withoutSuffix, isFuture, lang) {
+        return lang.relativeTime(number || 1, !!withoutSuffix, string, isFuture);
+    }
+
+    function relativeTime(milliseconds, withoutSuffix, lang) {
+        var seconds = round(Math.abs(milliseconds) / 1000),
+            minutes = round(seconds / 60),
+            hours = round(minutes / 60),
+            days = round(hours / 24),
+            years = round(days / 365),
+            args = seconds < 45 && ['s', seconds] ||
+                minutes === 1 && ['m'] ||
+                minutes < 45 && ['mm', minutes] ||
+                hours === 1 && ['h'] ||
+                hours < 22 && ['hh', hours] ||
+                days === 1 && ['d'] ||
+                days <= 25 && ['dd', days] ||
+                days <= 45 && ['M'] ||
+                days < 345 && ['MM', round(days / 30)] ||
+                years === 1 && ['y'] || ['yy', years];
+        args[2] = withoutSuffix;
+        args[3] = milliseconds > 0;
+        args[4] = lang;
+        return substituteTimeAgo.apply({}, args);
+    }
+
+
+    /************************************
+        Week of Year
+    ************************************/
+
+
+    // firstDayOfWeek       0 = sun, 6 = sat
+    //                      the day of the week that starts the week
+    //                      (usually sunday or monday)
+    // firstDayOfWeekOfYear 0 = sun, 6 = sat
+    //                      the first week is the week that contains the first
+    //                      of this day of the week
+    //                      (eg. ISO weeks use thursday (4))
+    function weekOfYear(mom, firstDayOfWeek, firstDayOfWeekOfYear) {
+        var end = firstDayOfWeekOfYear - firstDayOfWeek,
+            daysToDayOfWeek = firstDayOfWeekOfYear - mom.day(),
+            adjustedMoment;
+
+
+        if (daysToDayOfWeek > end) {
+            daysToDayOfWeek -= 7;
+        }
+
+        if (daysToDayOfWeek < end - 7) {
+            daysToDayOfWeek += 7;
+        }
+
+        adjustedMoment = moment(mom).add('d', daysToDayOfWeek);
+        return {
+            week: Math.ceil(adjustedMoment.dayOfYear() / 7),
+            year: adjustedMoment.year()
+        };
+    }
+
+    //http://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
+    function dayOfYearFromWeeks(year, week, weekday, firstDayOfWeekOfYear, firstDayOfWeek) {
+        // The only solid way to create an iso date from year is to use
+        // a string format (Date.UTC handles only years > 1900). Don't ask why
+        // it doesn't need Z at the end.
+        var d = new Date(leftZeroFill(year, 6, true) + '-01-01').getUTCDay(),
+            daysToAdd, dayOfYear;
+
+        weekday = weekday != null ? weekday : firstDayOfWeek;
+        daysToAdd = firstDayOfWeek - d + (d > firstDayOfWeekOfYear ? 7 : 0);
+        dayOfYear = 7 * (week - 1) + (weekday - firstDayOfWeek) + daysToAdd + 1;
+
+        return {
+            year: dayOfYear > 0 ? year : year - 1,
+            dayOfYear: dayOfYear > 0 ?  dayOfYear : daysInYear(year - 1) + dayOfYear
+        };
+    }
+
+    /************************************
+        Top Level Functions
+    ************************************/
+
+    function makeMoment(config) {
+        var input = config._i,
+            format = config._f;
+
+        if (typeof config._pf === 'undefined') {
+            initializeParsingFlags(config);
+        }
+
+        if (input === null) {
+            return moment.invalid({nullInput: true});
+        }
+
+        if (typeof input === 'string') {
+            config._i = input = getLangDefinition().preparse(input);
+        }
+
+        if (moment.isMoment(input)) {
+            config = extend({}, input);
+
+            config._d = new Date(+input._d);
+        } else if (format) {
+            if (isArray(format)) {
+                makeDateFromStringAndArray(config);
+            } else {
+                makeDateFromStringAndFormat(config);
+            }
+        } else {
+            makeDateFromInput(config);
+        }
+
+        return new Moment(config);
+    }
+
+    moment = function (input, format, lang, strict) {
+        if (typeof(lang) === "boolean") {
+            strict = lang;
+            lang = undefined;
+        }
+        return makeMoment({
+            _i : input,
+            _f : format,
+            _l : lang,
+            _strict : strict,
+            _isUTC : false
+        });
+    };
+
+    // creating with utc
+    moment.utc = function (input, format, lang, strict) {
+        var m;
+
+        if (typeof(lang) === "boolean") {
+            strict = lang;
+            lang = undefined;
+        }
+        m = makeMoment({
+            _useUTC : true,
+            _isUTC : true,
+            _l : lang,
+            _i : input,
+            _f : format,
+            _strict : strict
+        }).utc();
+
+        return m;
+    };
+
+    // creating with unix timestamp (in seconds)
+    moment.unix = function (input) {
+        return moment(input * 1000);
+    };
+
+    // duration
+    moment.duration = function (input, key) {
+        var duration = input,
+            // matching against regexp is expensive, do it on demand
+            match = null,
+            sign,
+            ret,
+            parseIso;
+
+        if (moment.isDuration(input)) {
+            duration = {
+                ms: input._milliseconds,
+                d: input._days,
+                M: input._months
+            };
+        } else if (typeof input === 'number') {
+            duration = {};
+            if (key) {
+                duration[key] = input;
+            } else {
+                duration.milliseconds = input;
+            }
+        } else if (!!(match = aspNetTimeSpanJsonRegex.exec(input))) {
+            sign = (match[1] === "-") ? -1 : 1;
+            duration = {
+                y: 0,
+                d: toInt(match[DATE]) * sign,
+                h: toInt(match[HOUR]) * sign,
+                m: toInt(match[MINUTE]) * sign,
+                s: toInt(match[SECOND]) * sign,
+                ms: toInt(match[MILLISECOND]) * sign
+            };
+        } else if (!!(match = isoDurationRegex.exec(input))) {
+            sign = (match[1] === "-") ? -1 : 1;
+            parseIso = function (inp) {
+                // We'd normally use ~~inp for this, but unfortunately it also
+                // converts floats to ints.
+                // inp may be undefined, so careful calling replace on it.
+                var res = inp && parseFloat(inp.replace(',', '.'));
+                // apply sign while we're at it
+                return (isNaN(res) ? 0 : res) * sign;
+            };
+            duration = {
+                y: parseIso(match[2]),
+                M: parseIso(match[3]),
+                d: parseIso(match[4]),
+                h: parseIso(match[5]),
+                m: parseIso(match[6]),
+                s: parseIso(match[7]),
+                w: parseIso(match[8])
+            };
+        }
+
+        ret = new Duration(duration);
+
+        if (moment.isDuration(input) && input.hasOwnProperty('_lang')) {
+            ret._lang = input._lang;
+        }
+
+        return ret;
+    };
+
+    // version number
+    moment.version = VERSION;
+
+    // default format
+    moment.defaultFormat = isoFormat;
+
+    // This function will be called whenever a moment is mutated.
+    // It is intended to keep the offset in sync with the timezone.
+    moment.updateOffset = function () {};
+
+    // This function will load languages and then set the global language.  If
+    // no arguments are passed in, it will simply return the current global
+    // language key.
+    moment.lang = function (key, values) {
+        var r;
+        if (!key) {
+            return moment.fn._lang._abbr;
+        }
+        if (values) {
+            loadLang(normalizeLanguage(key), values);
+        } else if (values === null) {
+            unloadLang(key);
+            key = 'en';
+        } else if (!languages[key]) {
+            getLangDefinition(key);
+        }
+        r = moment.duration.fn._lang = moment.fn._lang = getLangDefinition(key);
+        return r._abbr;
+    };
+
+    // returns language data
+    moment.langData = function (key) {
+        if (key && key._lang && key._lang._abbr) {
+            key = key._lang._abbr;
+        }
+        return getLangDefinition(key);
+    };
+
+    // compare moment object
+    moment.isMoment = function (obj) {
+        return obj instanceof Moment;
+    };
+
+    // for typechecking Duration objects
+    moment.isDuration = function (obj) {
+        return obj instanceof Duration;
+    };
+
+    for (i = lists.length - 1; i >= 0; --i) {
+        makeList(lists[i]);
+    }
+
+    moment.normalizeUnits = function (units) {
+        return normalizeUnits(units);
+    };
+
+    moment.invalid = function (flags) {
+        var m = moment.utc(NaN);
+        if (flags != null) {
+            extend(m._pf, flags);
+        }
+        else {
+            m._pf.userInvalidated = true;
+        }
+
+        return m;
+    };
+
+    moment.parseZone = function (input) {
+        return moment(input).parseZone();
+    };
+
+    /************************************
+        Moment Prototype
+    ************************************/
+
+
+    extend(moment.fn = Moment.prototype, {
+
+        clone : function () {
+            return moment(this);
+        },
+
+        valueOf : function () {
+            return +this._d + ((this._offset || 0) * 60000);
+        },
+
+        unix : function () {
+            return Math.floor(+this / 1000);
+        },
+
+        toString : function () {
+            return this.clone().lang('en').format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ");
+        },
+
+        toDate : function () {
+            return this._offset ? new Date(+this) : this._d;
+        },
+
+        toISOString : function () {
+            var m = moment(this).utc();
+            if (0 < m.year() && m.year() <= 9999) {
+                return formatMoment(m, 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
+            } else {
+                return formatMoment(m, 'YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
+            }
+        },
+
+        toArray : function () {
+            var m = this;
+            return [
+                m.year(),
+                m.month(),
+                m.date(),
+                m.hours(),
+                m.minutes(),
+                m.seconds(),
+                m.milliseconds()
+            ];
+        },
+
+        isValid : function () {
+            return isValid(this);
+        },
+
+        isDSTShifted : function () {
+
+            if (this._a) {
+                return this.isValid() && compareArrays(this._a, (this._isUTC ? moment.utc(this._a) : moment(this._a)).toArray()) > 0;
+            }
+
+            return false;
+        },
+
+        parsingFlags : function () {
+            return extend({}, this._pf);
+        },
+
+        invalidAt: function () {
+            return this._pf.overflow;
+        },
+
+        utc : function () {
+            return this.zone(0);
+        },
+
+        local : function () {
+            this.zone(0);
+            this._isUTC = false;
+            return this;
+        },
+
+        format : function (inputString) {
+            var output = formatMoment(this, inputString || moment.defaultFormat);
+            return this.lang().postformat(output);
+        },
+
+        add : function (input, val) {
+            var dur;
+            // switch args to support add('s', 1) and add(1, 's')
+            if (typeof input === 'string') {
+                dur = moment.duration(+val, input);
+            } else {
+                dur = moment.duration(input, val);
+            }
+            addOrSubtractDurationFromMoment(this, dur, 1);
+            return this;
+        },
+
+        subtract : function (input, val) {
+            var dur;
+            // switch args to support subtract('s', 1) and subtract(1, 's')
+            if (typeof input === 'string') {
+                dur = moment.duration(+val, input);
+            } else {
+                dur = moment.duration(input, val);
+            }
+            addOrSubtractDurationFromMoment(this, dur, -1);
+            return this;
+        },
+
+        diff : function (input, units, asFloat) {
+            var that = makeAs(input, this),
+                zoneDiff = (this.zone() - that.zone()) * 6e4,
+                diff, output;
+
+            units = normalizeUnits(units);
+
+            if (units === 'year' || units === 'month') {
+                // average number of days in the months in the given dates
+                diff = (this.daysInMonth() + that.daysInMonth()) * 432e5; // 24 * 60 * 60 * 1000 / 2
+                // difference in months
+                output = ((this.year() - that.year()) * 12) + (this.month() - that.month());
+                // adjust by taking difference in days, average number of days
+                // and dst in the given months.
+                output += ((this - moment(this).startOf('month')) -
+                        (that - moment(that).startOf('month'))) / diff;
+                // same as above but with zones, to negate all dst
+                output -= ((this.zone() - moment(this).startOf('month').zone()) -
+                        (that.zone() - moment(that).startOf('month').zone())) * 6e4 / diff;
+                if (units === 'year') {
+                    output = output / 12;
+                }
+            } else {
+                diff = (this - that);
+                output = units === 'second' ? diff / 1e3 : // 1000
+                    units === 'minute' ? diff / 6e4 : // 1000 * 60
+                    units === 'hour' ? diff / 36e5 : // 1000 * 60 * 60
+                    units === 'day' ? (diff - zoneDiff) / 864e5 : // 1000 * 60 * 60 * 24, negate dst
+                    units === 'week' ? (diff - zoneDiff) / 6048e5 : // 1000 * 60 * 60 * 24 * 7, negate dst
+                    diff;
+            }
+            return asFloat ? output : absRound(output);
+        },
+
+        from : function (time, withoutSuffix) {
+            return moment.duration(this.diff(time)).lang(this.lang()._abbr).humanize(!withoutSuffix);
+        },
+
+        fromNow : function (withoutSuffix) {
+            return this.from(moment(), withoutSuffix);
+        },
+
+        calendar : function () {
+            // We want to compare the start of today, vs this.
+            // Getting start-of-today depends on whether we're zone'd or not.
+            var sod = makeAs(moment(), this).startOf('day'),
+                diff = this.diff(sod, 'days', true),
+                format = diff < -6 ? 'sameElse' :
+                    diff < -1 ? 'lastWeek' :
+                    diff < 0 ? 'lastDay' :
+                    diff < 1 ? 'sameDay' :
+                    diff < 2 ? 'nextDay' :
+                    diff < 7 ? 'nextWeek' : 'sameElse';
+            return this.format(this.lang().calendar(format, this));
+        },
+
+        isLeapYear : function () {
+            return isLeapYear(this.year());
+        },
+
+        isDST : function () {
+            return (this.zone() < this.clone().month(0).zone() ||
+                this.zone() < this.clone().month(5).zone());
+        },
+
+        day : function (input) {
+            var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
+            if (input != null) {
+                input = parseWeekday(input, this.lang());
+                return this.add({ d : input - day });
+            } else {
+                return day;
+            }
+        },
+
+        month : function (input) {
+            var utc = this._isUTC ? 'UTC' : '',
+                dayOfMonth;
+
+            if (input != null) {
+                if (typeof input === 'string') {
+                    input = this.lang().monthsParse(input);
+                    if (typeof input !== 'number') {
+                        return this;
+                    }
+                }
+
+                dayOfMonth = this.date();
+                this.date(1);
+                this._d['set' + utc + 'Month'](input);
+                this.date(Math.min(dayOfMonth, this.daysInMonth()));
+
+                moment.updateOffset(this);
+                return this;
+            } else {
+                return this._d['get' + utc + 'Month']();
+            }
+        },
+
+        startOf: function (units) {
+            units = normalizeUnits(units);
+            // the following switch intentionally omits break keywords
+            // to utilize falling through the cases.
+            switch (units) {
+            case 'year':
+                this.month(0);
+                /* falls through */
+            case 'month':
+                this.date(1);
+                /* falls through */
+            case 'week':
+            case 'isoWeek':
+            case 'day':
+                this.hours(0);
+                /* falls through */
+            case 'hour':
+                this.minutes(0);
+                /* falls through */
+            case 'minute':
+                this.seconds(0);
+                /* falls through */
+            case 'second':
+                this.milliseconds(0);
+                /* falls through */
+            }
+
+            // weeks are a special case
+            if (units === 'week') {
+                this.weekday(0);
+            } else if (units === 'isoWeek') {
+                this.isoWeekday(1);
+            }
+
+            return this;
+        },
+
+        endOf: function (units) {
+            units = normalizeUnits(units);
+            return this.startOf(units).add((units === 'isoWeek' ? 'week' : units), 1).subtract('ms', 1);
+        },
+
+        isAfter: function (input, units) {
+            units = typeof units !== 'undefined' ? units : 'millisecond';
+            return +this.clone().startOf(units) > +moment(input).startOf(units);
+        },
+
+        isBefore: function (input, units) {
+            units = typeof units !== 'undefined' ? units : 'millisecond';
+            return +this.clone().startOf(units) < +moment(input).startOf(units);
+        },
+
+        isSame: function (input, units) {
+            units = units || 'ms';
+            return +this.clone().startOf(units) === +makeAs(input, this).startOf(units);
+        },
+
+        min: function (other) {
+            other = moment.apply(null, arguments);
+            return other < this ? this : other;
+        },
+
+        max: function (other) {
+            other = moment.apply(null, arguments);
+            return other > this ? this : other;
+        },
+
+        zone : function (input) {
+            var offset = this._offset || 0;
+            if (input != null) {
+                if (typeof input === "string") {
+                    input = timezoneMinutesFromString(input);
+                }
+                if (Math.abs(input) < 16) {
+                    input = input * 60;
+                }
+                this._offset = input;
+                this._isUTC = true;
+                if (offset !== input) {
+                    addOrSubtractDurationFromMoment(this, moment.duration(offset - input, 'm'), 1, true);
+                }
+            } else {
+                return this._isUTC ? offset : this._d.getTimezoneOffset();
+            }
+            return this;
+        },
+
+        zoneAbbr : function () {
+            return this._isUTC ? "UTC" : "";
+        },
+
+        zoneName : function () {
+            return this._isUTC ? "Coordinated Universal Time" : "";
+        },
+
+        parseZone : function () {
+            if (this._tzm) {
+                this.zone(this._tzm);
+            } else if (typeof this._i === 'string') {
+                this.zone(this._i);
+            }
+            return this;
+        },
+
+        hasAlignedHourOffset : function (input) {
+            if (!input) {
+                input = 0;
+            }
+            else {
+                input = moment(input).zone();
+            }
+
+            return (this.zone() - input) % 60 === 0;
+        },
+
+        daysInMonth : function () {
+            return daysInMonth(this.year(), this.month());
+        },
+
+        dayOfYear : function (input) {
+            var dayOfYear = round((moment(this).startOf('day') - moment(this).startOf('year')) / 864e5) + 1;
+            return input == null ? dayOfYear : this.add("d", (input - dayOfYear));
+        },
+
+        quarter : function () {
+            return Math.ceil((this.month() + 1.0) / 3.0);
+        },
+
+        weekYear : function (input) {
+            var year = weekOfYear(this, this.lang()._week.dow, this.lang()._week.doy).year;
+            return input == null ? year : this.add("y", (input - year));
+        },
+
+        isoWeekYear : function (input) {
+            var year = weekOfYear(this, 1, 4).year;
+            return input == null ? year : this.add("y", (input - year));
+        },
+
+        week : function (input) {
+            var week = this.lang().week(this);
+            return input == null ? week : this.add("d", (input - week) * 7);
+        },
+
+        isoWeek : function (input) {
+            var week = weekOfYear(this, 1, 4).week;
+            return input == null ? week : this.add("d", (input - week) * 7);
+        },
+
+        weekday : function (input) {
+            var weekday = (this.day() + 7 - this.lang()._week.dow) % 7;
+            return input == null ? weekday : this.add("d", input - weekday);
+        },
+
+        isoWeekday : function (input) {
+            // behaves the same as moment#day except
+            // as a getter, returns 7 instead of 0 (1-7 range instead of 0-6)
+            // as a setter, sunday should belong to the previous week.
+            return input == null ? this.day() || 7 : this.day(this.day() % 7 ? input : input - 7);
+        },
+
+        get : function (units) {
+            units = normalizeUnits(units);
+            return this[units]();
+        },
+
+        set : function (units, value) {
+            units = normalizeUnits(units);
+            if (typeof this[units] === 'function') {
+                this[units](value);
+            }
+            return this;
+        },
+
+        // If passed a language key, it will set the language for this
+        // instance.  Otherwise, it will return the language configuration
+        // variables for this instance.
+        lang : function (key) {
+            if (key === undefined) {
+                return this._lang;
+            } else {
+                this._lang = getLangDefinition(key);
+                return this;
+            }
+        }
+    });
+
+    // helper for adding shortcuts
+    function makeGetterAndSetter(name, key) {
+        moment.fn[name] = moment.fn[name + 's'] = function (input) {
+            var utc = this._isUTC ? 'UTC' : '';
+            if (input != null) {
+                this._d['set' + utc + key](input);
+                moment.updateOffset(this);
+                return this;
+            } else {
+                return this._d['get' + utc + key]();
+            }
+        };
+    }
+
+    // loop through and add shortcuts (Month, Date, Hours, Minutes, Seconds, Milliseconds)
+    for (i = 0; i < proxyGettersAndSetters.length; i ++) {
+        makeGetterAndSetter(proxyGettersAndSetters[i].toLowerCase().replace(/s$/, ''), proxyGettersAndSetters[i]);
+    }
+
+    // add shortcut for year (uses different syntax than the getter/setter 'year' == 'FullYear')
+    makeGetterAndSetter('year', 'FullYear');
+
+    // add plural methods
+    moment.fn.days = moment.fn.day;
+    moment.fn.months = moment.fn.month;
+    moment.fn.weeks = moment.fn.week;
+    moment.fn.isoWeeks = moment.fn.isoWeek;
+
+    // add aliased format methods
+    moment.fn.toJSON = moment.fn.toISOString;
+
+    /************************************
+        Duration Prototype
+    ************************************/
+
+
+    extend(moment.duration.fn = Duration.prototype, {
+
+        _bubble : function () {
+            var milliseconds = this._milliseconds,
+                days = this._days,
+                months = this._months,
+                data = this._data,
+                seconds, minutes, hours, years;
+
+            // The following code bubbles up values, see the tests for
+            // examples of what that means.
+            data.milliseconds = milliseconds % 1000;
+
+            seconds = absRound(milliseconds / 1000);
+            data.seconds = seconds % 60;
+
+            minutes = absRound(seconds / 60);
+            data.minutes = minutes % 60;
+
+            hours = absRound(minutes / 60);
+            data.hours = hours % 24;
+
+            days += absRound(hours / 24);
+            data.days = days % 30;
+
+            months += absRound(days / 30);
+            data.months = months % 12;
+
+            years = absRound(months / 12);
+            data.years = years;
+        },
+
+        weeks : function () {
+            return absRound(this.days() / 7);
+        },
+
+        valueOf : function () {
+            return this._milliseconds +
+              this._days * 864e5 +
+              (this._months % 12) * 2592e6 +
+              toInt(this._months / 12) * 31536e6;
+        },
+
+        humanize : function (withSuffix) {
+            var difference = +this,
+                output = relativeTime(difference, !withSuffix, this.lang());
+
+            if (withSuffix) {
+                output = this.lang().pastFuture(difference, output);
+            }
+
+            return this.lang().postformat(output);
+        },
+
+        add : function (input, val) {
+            // supports only 2.0-style add(1, 's') or add(moment)
+            var dur = moment.duration(input, val);
+
+            this._milliseconds += dur._milliseconds;
+            this._days += dur._days;
+            this._months += dur._months;
+
+            this._bubble();
+
+            return this;
+        },
+
+        subtract : function (input, val) {
+            var dur = moment.duration(input, val);
+
+            this._milliseconds -= dur._milliseconds;
+            this._days -= dur._days;
+            this._months -= dur._months;
+
+            this._bubble();
+
+            return this;
+        },
+
+        get : function (units) {
+            units = normalizeUnits(units);
+            return this[units.toLowerCase() + 's']();
+        },
+
+        as : function (units) {
+            units = normalizeUnits(units);
+            return this['as' + units.charAt(0).toUpperCase() + units.slice(1) + 's']();
+        },
+
+        lang : moment.fn.lang,
+
+        toIsoString : function () {
+            // inspired by https://github.com/dordille/moment-isoduration/blob/master/moment.isoduration.js
+            var years = Math.abs(this.years()),
+                months = Math.abs(this.months()),
+                days = Math.abs(this.days()),
+                hours = Math.abs(this.hours()),
+                minutes = Math.abs(this.minutes()),
+                seconds = Math.abs(this.seconds() + this.milliseconds() / 1000);
+
+            if (!this.asSeconds()) {
+                // this is the same as C#'s (Noda) and python (isodate)...
+                // but not other JS (goog.date)
+                return 'P0D';
+            }
+
+            return (this.asSeconds() < 0 ? '-' : '') +
+                'P' +
+                (years ? years + 'Y' : '') +
+                (months ? months + 'M' : '') +
+                (days ? days + 'D' : '') +
+                ((hours || minutes || seconds) ? 'T' : '') +
+                (hours ? hours + 'H' : '') +
+                (minutes ? minutes + 'M' : '') +
+                (seconds ? seconds + 'S' : '');
+        }
+    });
+
+    function makeDurationGetter(name) {
+        moment.duration.fn[name] = function () {
+            return this._data[name];
+        };
+    }
+
+    function makeDurationAsGetter(name, factor) {
+        moment.duration.fn['as' + name] = function () {
+            return +this / factor;
+        };
+    }
+
+    for (i in unitMillisecondFactors) {
+        if (unitMillisecondFactors.hasOwnProperty(i)) {
+            makeDurationAsGetter(i, unitMillisecondFactors[i]);
+            makeDurationGetter(i.toLowerCase());
+        }
+    }
+
+    makeDurationAsGetter('Weeks', 6048e5);
+    moment.duration.fn.asMonths = function () {
+        return (+this - this.years() * 31536e6) / 2592e6 + this.years() * 12;
+    };
+
+
+    /************************************
+        Default Lang
+    ************************************/
+
+
+    // Set default language, other languages will inherit from English.
+    moment.lang('en', {
+        ordinal : function (number) {
+            var b = number % 10,
+                output = (toInt(number % 100 / 10) === 1) ? 'th' :
+                (b === 1) ? 'st' :
+                (b === 2) ? 'nd' :
+                (b === 3) ? 'rd' : 'th';
+            return number + output;
+        }
+    });
+
+    /* EMBED_LANGUAGES */
+
+    /************************************
+        Exposing Moment
+    ************************************/
+
+    function makeGlobal(deprecate) {
+        var warned = false, local_moment = moment;
+        /*global ender:false */
+        if (typeof ender !== 'undefined') {
+            return;
+        }
+        // here, `this` means `window` in the browser, or `global` on the server
+        // add `moment` as a global object via a string identifier,
+        // for Closure Compiler "advanced" mode
+        if (deprecate) {
+            global.moment = function () {
+                if (!warned && console && console.warn) {
+                    warned = true;
+                    console.warn(
+                            "Accessing Moment through the global scope is " +
+                            "deprecated, and will be removed in an upcoming " +
+                            "release.");
+                }
+                return local_moment.apply(null, arguments);
+            };
+            extend(global.moment, local_moment);
+        } else {
+            global['moment'] = moment;
+        }
+    }
+
+    // CommonJS module is defined
+    if (hasModule) {
+        module.exports = moment;
+        makeGlobal(true);
+    } else if (typeof define === "function" && define.amd) {
+        define("moment", function (require, exports, module) {
+            if (module.config && module.config() && module.config().noGlobal !== true) {
+                // If user provided noGlobal, he is aware of global
+                makeGlobal(module.config().noGlobal === undefined);
+            }
+
+            return moment;
+        });
+    } else {
+        makeGlobal();
+    }
+}).call(this);
+;/*jslint indent: 2, maxlen: 80, sloppy: true */
 
 var query_class_dict = {};
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
+;/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
 /*global parseStringToObject: true, emptyFunction: true, sortOn: true, limit:
-  true, select: true, exports, stringEscapeRegexpCharacters: true,
-  deepClone, RSVP, sequence */
+  true, select: true, window, stringEscapeRegexpCharacters: true,
+  deepClone, RSVP*/
 
 /**
  * The query to use to filter a list of objects.
@@ -4254,27 +3474,32 @@ Query.prototype.exec = function (item_list, option) {
       promises.push(this.match(item_list[i]));
     }
   }
-  return sequence([function () {
-    return RSVP.all(promises);
-  }, function (answers) {
-    var j;
-    for (j = answers.length - 1; j >= 0; j -= 1) {
-      if (!answers[j]) {
-        item_list.splice(j, 1);
+  return new RSVP.Queue()
+    .push(function () {
+      return RSVP.all(promises);
+    })
+    .push(function (answers) {
+      var j;
+      for (j = answers.length - 1; j >= 0; j -= 1) {
+        if (!answers[j]) {
+          item_list.splice(j, 1);
+        }
       }
-    }
-    if (option.sort_on) {
-      return sortOn(option.sort_on, item_list);
-    }
-  }, function () {
-    if (option.limit) {
-      return limit(option.limit, item_list);
-    }
-  }, function () {
-    return select(option.select_list || [], item_list);
-  }, function () {
-    return item_list;
-  }]);
+      if (option.sort_on) {
+        return sortOn(option.sort_on, item_list);
+      }
+    })
+    .push(function () {
+      if (option.limit) {
+        return limit(option.limit, item_list);
+      }
+    })
+    .push(function () {
+      return select(option.select_list || [], item_list);
+    })
+    .push(function () {
+      return item_list;
+    });
 };
 
 /**
@@ -4302,7 +3527,8 @@ Query.prototype.match = function () {
  * @return {Any} The parse result
  */
 Query.prototype.parse = function (option) {
-  var that = this, object;
+  var that = this,
+    object;
   /**
    * The recursive parser.
    *
@@ -4311,39 +3537,56 @@ Query.prototype.parse = function (option) {
    * @return {Any} The parser result
    */
   function recParse(object, option) {
-    var query = object.parsed;
+    var query = object.parsed,
+      queue = new RSVP.Queue(),
+      i;
+
+    function enqueue(j) {
+      queue
+        .push(function () {
+          object.parsed = query.query_list[j];
+          return recParse(object, option);
+        })
+        .push(function () {
+          query.query_list[j] = object.parsed;
+        });
+    }
+
     if (query.type === "complex") {
-      return sequence([function () {
-        return sequence(query.query_list.map(function (v, i) {
-          /*jslint unparam: true */
-          return function () {
-            return sequence([function () {
-              object.parsed = query.query_list[i];
-              return recParse(object, option);
-            }, function () {
-              query.query_list[i] = object.parsed;
-            }]);
-          };
-        }));
-      }, function () {
-        object.parsed = query;
-        return that.onParseComplexQuery(object, option);
-      }]);
+
+
+      for (i = 0; i < query.query_list.length; i += 1) {
+        enqueue(i);
+      }
+
+      return queue
+        .push(function () {
+          object.parsed = query;
+          return that.onParseComplexQuery(object, option);
+        });
+
     }
     if (query.type === "simple") {
       return that.onParseSimpleQuery(object, option);
     }
   }
-  object = {"parsed": JSON.parse(JSON.stringify(that.serialized()))};
-  return sequence([function () {
-    return that.onParseStart(object, option);
-  }, function () {
-    return recParse(object, option);
-  }, function () {
-    return that.onParseEnd(object, option);
-  }, function () {
-    return object.parsed;
-  }]);
+  object = {
+    parsed: JSON.parse(JSON.stringify(that.serialized()))
+  };
+  return new RSVP.Queue()
+    .push(function () {
+      return that.onParseStart(object, option);
+    })
+    .push(function () {
+      return recParse(object, option);
+    })
+    .push(function () {
+      return that.onParseEnd(object, option);
+    })
+    .push(function () {
+      return object.parsed;
+    });
+
 };
 
 /**
@@ -4367,17 +3610,15 @@ Query.prototype.serialized = function () {
   return undefined;
 };
 
-exports.Query = Query;
-
-/**
+window.Query = Query;
+;/**
  * Parse a text request to a json query object tree
  *
  * @param  {String} string The string to parse
  * @return {Object} The json query tree
  */
 function parseStringToObject(string) {
-
-
+;
 /*
 	Default template driver for JS/CC generated parsers running as
 	browser-based JavaScript/ECMAScript applications.
@@ -5070,15 +4311,13 @@ if ((error_count = __NODEJS_parse(string, error_offsets, error_lookaheads)) > 0)
   }
 }
 
-
-  return result;
+;  return result;
 } // parseStringToObject
 
 Query.parseStringToObject = parseStringToObject;
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
+;/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
 /*global Query: true, query_class_dict: true, inherits: true,
-         exports, QueryFactory, RSVP, sequence */
+         window, QueryFactory, RSVP */
 
 /**
  * The ComplexQuery inherits from Query, and compares one or several metadata
@@ -5185,41 +4424,30 @@ ComplexQuery.prototype.toJSON = ComplexQuery.prototype.serialized;
  * @return {Boolean} true if all match, false otherwise
  */
 ComplexQuery.prototype.AND = function (item) {
-  var j, promises = [];
-  for (j = 0; j < this.query_list.length; j += 1) {
-    promises.push(this.query_list[j].match(item));
+  var queue = new RSVP.Queue(),
+    context = this,
+    i = 0;
+
+  function executeNextIfNotFalse(result) {
+    if (result === false) {
+      // No need to evaluate the other elements, as one is false
+      return result;
+    }
+    if (context.query_list.length === i) {
+      // No new element to loop on
+      return true;
+    }
+    queue
+      .push(function () {
+        var sub_result = context.query_list[i].match(item);
+        i += 1;
+        return sub_result;
+      })
+      .push(executeNextIfNotFalse);
   }
 
-  function cancel() {
-    var i;
-    for (i = 0; i < promises.length; i += 1) {
-      if (typeof promises.cancel === 'function') {
-        promises.cancel();
-      }
-    }
-  }
-
-  return new RSVP.Promise(function (resolve, reject) {
-    var i, count = 0;
-    function resolver(value) {
-      if (!value) {
-        resolve(false);
-      }
-      count += 1;
-      if (count === promises.length) {
-        resolve(true);
-      }
-    }
-
-    function rejecter(err) {
-      reject(err);
-      cancel();
-    }
-
-    for (i = 0; i < promises.length; i += 1) {
-      promises[i].then(resolver, rejecter);
-    }
-  }, cancel);
+  executeNextIfNotFalse(true);
+  return queue;
 };
 
 /**
@@ -5231,41 +4459,30 @@ ComplexQuery.prototype.AND = function (item) {
  * @return {Boolean} true if one match, false otherwise
  */
 ComplexQuery.prototype.OR =  function (item) {
-  var j, promises = [];
-  for (j = 0; j < this.query_list.length; j += 1) {
-    promises.push(this.query_list[j].match(item));
+  var queue = new RSVP.Queue(),
+    context = this,
+    i = 0;
+
+  function executeNextIfNotTrue(result) {
+    if (result === true) {
+      // No need to evaluate the other elements, as one is true
+      return result;
+    }
+    if (context.query_list.length === i) {
+      // No new element to loop on
+      return false;
+    }
+    queue
+      .push(function () {
+        var sub_result = context.query_list[i].match(item);
+        i += 1;
+        return sub_result;
+      })
+      .push(executeNextIfNotTrue);
   }
 
-  function cancel() {
-    var i;
-    for (i = 0; i < promises.length; i += 1) {
-      if (typeof promises.cancel === 'function') {
-        promises.cancel();
-      }
-    }
-  }
-
-  return new RSVP.Promise(function (resolve, reject) {
-    var i, count = 0;
-    function resolver(value) {
-      if (value) {
-        resolve(true);
-      }
-      count += 1;
-      if (count === promises.length) {
-        resolve(false);
-      }
-    }
-
-    function rejecter(err) {
-      reject(err);
-      cancel();
-    }
-
-    for (i = 0; i < promises.length; i += 1) {
-      promises[i].then(resolver, rejecter);
-    }
-  }, cancel);
+  executeNextIfNotTrue(false);
+  return queue;
 };
 
 /**
@@ -5277,19 +4494,20 @@ ComplexQuery.prototype.OR =  function (item) {
  * @return {Boolean} true if one match, false otherwise
  */
 ComplexQuery.prototype.NOT = function (item) {
-  return sequence([function () {
-    return this.query_list[0].match(item);
-  }, function (answer) {
-    return !answer;
-  }]);
+  return new RSVP.Queue()
+    .push(function () {
+      return this.query_list[0].match(item);
+    })
+    .push(function (answer) {
+      return !answer;
+    });
 };
 
 query_class_dict.complex = ComplexQuery;
 
-exports.ComplexQuery = ComplexQuery;
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
-/*global exports, ComplexQuery, SimpleQuery, Query, parseStringToObject,
+window.ComplexQuery = ComplexQuery;
+;/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
+/*global window, ComplexQuery, SimpleQuery, Query, parseStringToObject,
   query_class_dict */
 
 /**
@@ -5326,9 +4544,8 @@ QueryFactory.create = function (object, key_schema) {
                       "Argument 1 is not a search text or a parsable object");
 };
 
-exports.QueryFactory = QueryFactory;
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
+window.QueryFactory = QueryFactory;
+;/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
 /*global Query, exports */
 
 function objectToSearchText(query) {
@@ -5350,9 +4567,8 @@ function objectToSearchText(query) {
   throw new TypeError("This object is not a query");
 }
 Query.objectToSearchText = objectToSearchText;
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
-/*global Query, inherits, query_class_dict, exports,
+;/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
+/*global Query, inherits, query_class_dict, window,
   searchTextToRegExp, RSVP */
 
 var checkKeySchema = function (key_schema) {
@@ -5747,9 +4963,8 @@ SimpleQuery.prototype[">="] = function (object_value, comparison_value) {
 
 query_class_dict.simple = SimpleQuery;
 
-exports.SimpleQuery = SimpleQuery;
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
+window.SimpleQuery = SimpleQuery;
+;/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
 /*global Query, RSVP, deepClone */
 
 /**
@@ -5803,56 +5018,37 @@ function metadataValueToStringArray(value) {
  * @return {Function} The sort function
  */
 function sortFunction(key, way) {
+  var result;
   if (way === 'descending') {
-    return function (a, b) {
-      // this comparison is 5 times faster than json comparison
-      var i, l;
-      a = metadataValueToStringArray(a[key]) || [];
-      b = metadataValueToStringArray(b[key]) || [];
-      l = a.length > b.length ? a.length : b.length;
-      for (i = 0; i < l; i += 1) {
-        if (a[i] === undefined) {
-          return 1;
-        }
-        if (b[i] === undefined) {
-          return -1;
-        }
-        if (a[i] > b[i]) {
-          return -1;
-        }
-        if (a[i] < b[i]) {
-          return 1;
-        }
-      }
-      return 0;
-    };
+    result = 1;
+  } else if (way === 'ascending') {
+    result = -1;
+  } else {
+    throw new TypeError("Query.sortFunction(): " +
+                        "Argument 2 must be 'ascending' or 'descending'");
   }
-  if (way === 'ascending') {
-    return function (a, b) {
-      // this comparison is 5 times faster than json comparison
-      var i, l;
-      a = metadataValueToStringArray(a[key]) || [];
-      b = metadataValueToStringArray(b[key]) || [];
-      l = a.length > b.length ? a.length : b.length;
-      for (i = 0; i < l; i += 1) {
-        if (a[i] === undefined) {
-          return -1;
-        }
-        if (b[i] === undefined) {
-          return 1;
-        }
-        if (a[i] > b[i]) {
-          return 1;
-        }
-        if (a[i] < b[i]) {
-          return -1;
-        }
+  return function (a, b) {
+    // this comparison is 5 times faster than json comparison
+    var i, l;
+    a = metadataValueToStringArray(a[key]) || [];
+    b = metadataValueToStringArray(b[key]) || [];
+    l = a.length > b.length ? a.length : b.length;
+    for (i = 0; i < l; i += 1) {
+      if (a[i] === undefined) {
+        return result;
       }
-      return 0;
-    };
-  }
-  throw new TypeError("Query.sortFunction(): " +
-                      "Argument 2 must be 'ascending' or 'descending'");
+      if (b[i] === undefined) {
+        return -result;
+      }
+      if (a[i] > b[i]) {
+        return -result;
+      }
+      if (a[i] < b[i]) {
+        return result;
+      }
+    }
+    return 0;
+  };
 }
 
 /**
@@ -6008,1988 +5204,665 @@ function searchTextToRegExp(string, use_wildcard_characters) {
 }
 
 Query.searchTextToRegExp = searchTextToRegExp;
-
-/**
- * sequence(thens): Promise
- *
- * Executes a sequence of *then* callbacks. It acts like
- * `smth().then(callback).then(callback)...`. The first callback is called with
- * no parameter.
- *
- * Elements of `thens` array can be a function or an array contaning at most
- * three *then* callbacks: *onFulfilled*, *onRejected*, *onNotified*.
- *
- * When `cancel()` is executed, each then promises are cancelled at the same
- * time.
- *
- * @param  {Array} thens An array of *then* callbacks
- * @return {Promise} A new promise
- */
-function sequence(thens) {
-  var promises = [];
-  return new RSVP.Promise(function (resolve, reject, notify) {
-    var i;
-    promises[0] = new RSVP.Promise(function (resolve) {
-      resolve();
-    });
-    for (i = 0; i < thens.length; i += 1) {
-      if (Array.isArray(thens[i])) {
-        promises[i + 1] = promises[i].
-          then(thens[i][0], thens[i][1], thens[i][2]);
-      } else {
-        promises[i + 1] = promises[i].then(thens[i]);
-      }
-    }
-    promises[i].then(resolve, reject, notify);
-  }, function () {
-    var i;
-    for (i = 0; i < promises.length; i += 1) {
-      promises[i].cancel();
-    }
-  });
-}
-
-}));
-;/*
-* Copyright 2013, Nexedi SA
-* Released under the LGPL license.
-* http://www.gnu.org/licenses/lgpl.html
-*/
-
-/**
- * Provides some function to use complex queries with item list
- *
- * @module complex_queries
- */
-// define([module_name], [dependencies], module);
-(function (dependencies, module) {
-  "use strict";
-  if (typeof define === 'function' && define.amd) {
-    return define(dependencies, module);
-  }
-  if (typeof exports === 'object') {
-    return module(exports);
-  }
-  window.complex_queries = {};
-  module(window.complex_queries, RSVP);
-}(['exports', 'rsvp'], function (to_export, RSVP) {
+;/*global window, moment */
+/*jslint nomen: true, maxlen: 200*/
+(function (window, moment) {
   "use strict";
 
+//   /**
+//    * Add a secured (write permission denied) property to an object.
+//    *
+//    * @param  {Object} object The object to fill
+//    * @param  {String} key The object key where to store the property
+//    * @param  {Any} value The value to store
+//    */
+//   function _export(key, value) {
+//     Object.defineProperty(to_export, key, {
+//       "configurable": false,
+//       "enumerable": true,
+//       "writable": false,
+//       "value": value
+//     });
+//   }
+
+  var YEAR = 'year',
+    MONTH = 'month',
+    DAY = 'day',
+    HOUR = 'hour',
+    MIN = 'minute',
+    SEC = 'second',
+    MSEC = 'millisecond',
+    precision_grade = {
+      'year': 0,
+      'month': 1,
+      'day': 2,
+      'hour': 3,
+      'minute': 4,
+      'second': 5,
+      'millisecond': 6
+    },
+    lesserPrecision = function (p1, p2) {
+      return (precision_grade[p1] < precision_grade[p2]) ? p1 : p2;
+    },
+    JIODate;
+
+
+  JIODate = function (str) {
+    // in case of forgotten 'new'
+    if (!(this instanceof JIODate)) {
+      return new JIODate(str);
+    }
+
+    if (str instanceof JIODate) {
+      this.mom = str.mom.clone();
+      this._precision = str._precision;
+      return;
+    }
+
+    if (str === undefined) {
+      this.mom = moment();
+      this.setPrecision(MSEC);
+      return;
+    }
+
+    this.mom = null;
+    this._str = str;
+
+    // http://www.w3.org/TR/NOTE-datetime
+    // http://dotat.at/tmp/ISO_8601-2004_E.pdf
+
+    // XXX these regexps fail to detect many invalid dates.
+
+    if (str.match(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+\-][0-2]\d:[0-5]\d|Z)/)
+          || str.match(/\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\.\d\d\d/)) {
+      // ISO, milliseconds
+      this.mom = moment(str);
+      this.setPrecision(MSEC);
+    } else if (str.match(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+\-][0-2]\d:[0-5]\d|Z)/)
+          || str.match(/\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d/)) {
+      // ISO, seconds
+      this.mom = moment(str);
+      this.setPrecision(SEC);
+    } else if (str.match(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+\-][0-2]\d:[0-5]\d|Z)/)
+          || str.match(/\d\d\d\d-\d\d-\d\d \d\d:\d\d/)) {
+      // ISO, minutes
+      this.mom = moment(str);
+      this.setPrecision(MIN);
+    } else if (str.match(/\d\d\d\d-\d\d-\d\d \d\d/)) {
+      this.mom = moment(str);
+      this.setPrecision(HOUR);
+    } else if (str.match(/\d\d\d\d-\d\d-\d\d/)) {
+      this.mom = moment(str);
+      this.setPrecision(DAY);
+    } else if (str.match(/\d\d\d\d-\d\d/)) {
+      this.mom = moment(str);
+      this.setPrecision(MONTH);
+    } else if (str.match(/\d\d\d\d/)) {
+      this.mom = moment(str);
+      this.setPrecision(YEAR);
+    }
+
+    if (!this.mom) {
+      throw new Error("Cannot parse: " + str);
+    }
+
+  };
+
+
+  JIODate.prototype.setPrecision = function (prec) {
+    this._precision = prec;
+  };
+
+
+  JIODate.prototype.getPrecision = function () {
+    return this._precision;
+  };
+
+
+  JIODate.prototype.cmp = function (other) {
+    var m1 = this.mom,
+      m2 = other.mom,
+      p = lesserPrecision(this._precision, other._precision);
+    return m1.isBefore(m2, p) ? -1 : (m1.isSame(m2, p) ? 0 : +1);
+  };
+
+
+  JIODate.prototype.toPrecisionString = function (precision) {
+    var fmt;
+
+    precision = precision || this._precision;
+
+    fmt = {
+      'millisecond': 'YYYY-MM-DD HH:mm:ss.SSS',
+      'second': 'YYYY-MM-DD HH:mm:ss',
+      'minute': 'YYYY-MM-DD HH:mm',
+      'hour': 'YYYY-MM-DD HH',
+      'day': 'YYYY-MM-DD',
+      'month': 'YYYY-MM',
+      'year': 'YYYY'
+    }[precision];
+
+    if (!fmt) {
+      throw new TypeError("Unsupported precision value '" + precision + "'");
+    }
+
+    return this.mom.format(fmt);
+  };
+
+
+  JIODate.prototype.toString = function () {
+    return this._str;
+  };
+
+
+//   _export('JIODate', JIODate);
+// 
+//   _export('YEAR', YEAR);
+//   _export('MONTH', MONTH);
+//   _export('DAY', DAY);
+//   _export('HOUR', HOUR);
+//   _export('MIN', MIN);
+//   _export('SEC', SEC);
+//   _export('MSEC', MSEC);
+
+  window.jiodate = {
+    JIODate: JIODate,
+    YEAR: YEAR,
+    MONTH: MONTH,
+    DAY: DAY,
+    HOUR: HOUR,
+    MIN: MIN,
+    SEC: SEC,
+    MSEC: MSEC
+  };
+}(window, moment));
+;/*jslint maxlen: 200*/
+/*global window, RSVP, Blob, XMLHttpRequest, QueryFactory, Query, console, FileReader */
+(function (window, RSVP, Blob, QueryFactory, Query, FileReader) {
+  "use strict";
+
+  var util = {},
+    jIO;
+
+  function jIOError(message, status_code) {
+    if ((message !== undefined) && (typeof message !== "string")) {
+      throw new TypeError('You must pass a string.');
+    }
+    this.message = message || "Default Message";
+    this.status_code = status_code || 500;
+  }
+  jIOError.prototype = new Error();
+  jIOError.prototype.constructor = jIOError;
+  util.jIOError = jIOError;
+
   /**
-   * Add a secured (write permission denied) property to an object.
+   * Send request with XHR and return a promise. xhr.onload: The promise is
+   * resolved when the status code is lower than 400 with the xhr object as first
+   * parameter. xhr.onerror: reject with xhr object as first
+   * parameter. xhr.onprogress: notifies the xhr object.
    *
-   * @param  {Object} object The object to fill
-   * @param  {String} key The object key where to store the property
-   * @param  {Any} value The value to store
+   * @param  {Object} param The parameters
+   * @param  {String} [param.type="GET"] The request method
+   * @param  {String} [param.dataType=""] The data type to retrieve
+   * @param  {String} param.url The url
+   * @param  {Any} [param.data] The data to send
+   * @param  {Function} [param.beforeSend] A function called just before the send
+   *   request. The first parameter of this function is the XHR object.
+   * @return {Promise} The promise
    */
-  function _export(key, value) {
-    Object.defineProperty(to_export, key, {
-      "configurable": false,
-      "enumerable": true,
-      "writable": false,
-      "value": value
+  function ajax(param) {
+    var xhr = new XMLHttpRequest();
+    return new RSVP.Promise(function (resolve, reject, notify) {
+      var k;
+      xhr.open(param.type || "GET", param.url, true);
+      xhr.responseType = param.dataType || "";
+      if (typeof param.headers === 'object' && param.headers !== null) {
+        for (k in param.headers) {
+          if (param.headers.hasOwnProperty(k)) {
+            xhr.setRequestHeader(k, param.headers[k]);
+          }
+        }
+      }
+      xhr.addEventListener("load", function (e) {
+        if (e.target.status >= 400) {
+          return reject(e);
+        }
+        resolve(e);
+      });
+      xhr.addEventListener("error", reject);
+      xhr.addEventListener("progress", notify);
+      if (typeof param.xhrFields === 'object' && param.xhrFields !== null) {
+        for (k in param.xhrFields) {
+          if (param.xhrFields.hasOwnProperty(k)) {
+            xhr[k] = param.xhrFields[k];
+          }
+        }
+      }
+      if (typeof param.beforeSend === 'function') {
+        param.beforeSend(xhr);
+      }
+      xhr.send(param.data);
+    }, function () {
+      xhr.abort();
     });
   }
-
-/**
- * Parse a text request to a json query object tree
- *
- * @param  {String} string The string to parse
- * @return {Object} The json query tree
- */
-function parseStringToObject(string) {
-
-
-/*
-	Default template driver for JS/CC generated parsers running as
-	browser-based JavaScript/ECMAScript applications.
-	
-	WARNING: 	This parser template will not run as console and has lesser
-				features for debugging than the console derivates for the
-				various JavaScript platforms.
-	
-	Features:
-	- Parser trace messages
-	- Integrated panic-mode error recovery
-	
-	Written 2007, 2008 by Jan Max Meyer, J.M.K S.F. Software Technologies
-	
-	This is in the public domain.
-*/
-
-var NODEJS__dbg_withtrace		= false;
-var NODEJS__dbg_string			= new String();
-
-function __NODEJS_dbg_print( text )
-{
-	NODEJS__dbg_string += text + "\n";
-}
-
-function __NODEJS_lex( info )
-{
-	var state		= 0;
-	var match		= -1;
-	var match_pos	= 0;
-	var start		= 0;
-	var pos			= info.offset + 1;
-
-	do
-	{
-		pos--;
-		state = 0;
-		match = -2;
-		start = pos;
-
-		if( info.src.length <= start )
-			return 19;
-
-		do
-		{
-
-switch( state )
-{
-	case 0:
-		if( ( info.src.charCodeAt( pos ) >= 0 && info.src.charCodeAt( pos ) <= 8 ) || ( info.src.charCodeAt( pos ) >= 10 && info.src.charCodeAt( pos ) <= 31 ) || ( info.src.charCodeAt( pos ) >= 35 && info.src.charCodeAt( pos ) <= 39 ) || ( info.src.charCodeAt( pos ) >= 42 && info.src.charCodeAt( pos ) <= 57 ) || info.src.charCodeAt( pos ) == 59 || ( info.src.charCodeAt( pos ) >= 63 && info.src.charCodeAt( pos ) <= 64 ) || ( info.src.charCodeAt( pos ) >= 66 && info.src.charCodeAt( pos ) <= 77 ) || ( info.src.charCodeAt( pos ) >= 80 && info.src.charCodeAt( pos ) <= 254 ) ) state = 1;
-		else if( info.src.charCodeAt( pos ) == 9 ) state = 2;
-		else if( info.src.charCodeAt( pos ) == 40 ) state = 3;
-		else if( info.src.charCodeAt( pos ) == 41 ) state = 4;
-		else if( info.src.charCodeAt( pos ) == 60 || info.src.charCodeAt( pos ) == 62 ) state = 5;
-		else if( info.src.charCodeAt( pos ) == 33 ) state = 11;
-		else if( info.src.charCodeAt( pos ) == 79 ) state = 12;
-		else if( info.src.charCodeAt( pos ) == 32 ) state = 13;
-		else if( info.src.charCodeAt( pos ) == 61 ) state = 14;
-		else if( info.src.charCodeAt( pos ) == 34 ) state = 15;
-		else if( info.src.charCodeAt( pos ) == 65 ) state = 19;
-		else if( info.src.charCodeAt( pos ) == 78 ) state = 20;
-		else state = -1;
-		break;
-
-	case 1:
-		if( ( info.src.charCodeAt( pos ) >= 0 && info.src.charCodeAt( pos ) <= 31 ) || info.src.charCodeAt( pos ) == 33 || ( info.src.charCodeAt( pos ) >= 35 && info.src.charCodeAt( pos ) <= 39 ) || ( info.src.charCodeAt( pos ) >= 42 && info.src.charCodeAt( pos ) <= 57 ) || ( info.src.charCodeAt( pos ) >= 59 && info.src.charCodeAt( pos ) <= 254 ) ) state = 1;
-		else if( info.src.charCodeAt( pos ) == 58 ) state = 6;
-		else state = -1;
-		match = 10;
-		match_pos = pos;
-		break;
-
-	case 2:
-		if( ( info.src.charCodeAt( pos ) >= 0 && info.src.charCodeAt( pos ) <= 31 ) || info.src.charCodeAt( pos ) == 33 || ( info.src.charCodeAt( pos ) >= 35 && info.src.charCodeAt( pos ) <= 39 ) || ( info.src.charCodeAt( pos ) >= 42 && info.src.charCodeAt( pos ) <= 57 ) || ( info.src.charCodeAt( pos ) >= 59 && info.src.charCodeAt( pos ) <= 254 ) ) state = 1;
-		else if( info.src.charCodeAt( pos ) == 58 ) state = 6;
-		else state = -1;
-		match = 1;
-		match_pos = pos;
-		break;
-
-	case 3:
-		state = -1;
-		match = 3;
-		match_pos = pos;
-		break;
-
-	case 4:
-		state = -1;
-		match = 4;
-		match_pos = pos;
-		break;
-
-	case 5:
-		if( info.src.charCodeAt( pos ) == 61 ) state = 14;
-		else state = -1;
-		match = 11;
-		match_pos = pos;
-		break;
-
-	case 6:
-		state = -1;
-		match = 8;
-		match_pos = pos;
-		break;
-
-	case 7:
-		state = -1;
-		match = 9;
-		match_pos = pos;
-		break;
-
-	case 8:
-		if( ( info.src.charCodeAt( pos ) >= 0 && info.src.charCodeAt( pos ) <= 31 ) || info.src.charCodeAt( pos ) == 33 || ( info.src.charCodeAt( pos ) >= 35 && info.src.charCodeAt( pos ) <= 39 ) || ( info.src.charCodeAt( pos ) >= 42 && info.src.charCodeAt( pos ) <= 57 ) || ( info.src.charCodeAt( pos ) >= 59 && info.src.charCodeAt( pos ) <= 254 ) ) state = 1;
-		else if( info.src.charCodeAt( pos ) == 58 ) state = 6;
-		else state = -1;
-		match = 6;
-		match_pos = pos;
-		break;
-
-	case 9:
-		if( ( info.src.charCodeAt( pos ) >= 0 && info.src.charCodeAt( pos ) <= 31 ) || info.src.charCodeAt( pos ) == 33 || ( info.src.charCodeAt( pos ) >= 35 && info.src.charCodeAt( pos ) <= 39 ) || ( info.src.charCodeAt( pos ) >= 42 && info.src.charCodeAt( pos ) <= 57 ) || ( info.src.charCodeAt( pos ) >= 59 && info.src.charCodeAt( pos ) <= 254 ) ) state = 1;
-		else if( info.src.charCodeAt( pos ) == 58 ) state = 6;
-		else state = -1;
-		match = 5;
-		match_pos = pos;
-		break;
-
-	case 10:
-		if( ( info.src.charCodeAt( pos ) >= 0 && info.src.charCodeAt( pos ) <= 31 ) || info.src.charCodeAt( pos ) == 33 || ( info.src.charCodeAt( pos ) >= 35 && info.src.charCodeAt( pos ) <= 39 ) || ( info.src.charCodeAt( pos ) >= 42 && info.src.charCodeAt( pos ) <= 57 ) || ( info.src.charCodeAt( pos ) >= 59 && info.src.charCodeAt( pos ) <= 254 ) ) state = 1;
-		else if( info.src.charCodeAt( pos ) == 58 ) state = 6;
-		else state = -1;
-		match = 7;
-		match_pos = pos;
-		break;
-
-	case 11:
-		if( info.src.charCodeAt( pos ) == 61 ) state = 14;
-		else state = -1;
-		break;
-
-	case 12:
-		if( ( info.src.charCodeAt( pos ) >= 0 && info.src.charCodeAt( pos ) <= 31 ) || info.src.charCodeAt( pos ) == 33 || ( info.src.charCodeAt( pos ) >= 35 && info.src.charCodeAt( pos ) <= 39 ) || ( info.src.charCodeAt( pos ) >= 42 && info.src.charCodeAt( pos ) <= 57 ) || ( info.src.charCodeAt( pos ) >= 59 && info.src.charCodeAt( pos ) <= 81 ) || ( info.src.charCodeAt( pos ) >= 83 && info.src.charCodeAt( pos ) <= 254 ) ) state = 1;
-		else if( info.src.charCodeAt( pos ) == 58 ) state = 6;
-		else if( info.src.charCodeAt( pos ) == 82 ) state = 8;
-		else state = -1;
-		match = 10;
-		match_pos = pos;
-		break;
-
-	case 13:
-		state = -1;
-		match = 1;
-		match_pos = pos;
-		break;
-
-	case 14:
-		state = -1;
-		match = 11;
-		match_pos = pos;
-		break;
-
-	case 15:
-		if( info.src.charCodeAt( pos ) == 34 ) state = 7;
-		else if( ( info.src.charCodeAt( pos ) >= 0 && info.src.charCodeAt( pos ) <= 33 ) || ( info.src.charCodeAt( pos ) >= 35 && info.src.charCodeAt( pos ) <= 91 ) || ( info.src.charCodeAt( pos ) >= 93 && info.src.charCodeAt( pos ) <= 254 ) ) state = 15;
-		else if( info.src.charCodeAt( pos ) == 92 ) state = 17;
-		else state = -1;
-		break;
-
-	case 16:
-		if( ( info.src.charCodeAt( pos ) >= 0 && info.src.charCodeAt( pos ) <= 31 ) || info.src.charCodeAt( pos ) == 33 || ( info.src.charCodeAt( pos ) >= 35 && info.src.charCodeAt( pos ) <= 39 ) || ( info.src.charCodeAt( pos ) >= 42 && info.src.charCodeAt( pos ) <= 57 ) || ( info.src.charCodeAt( pos ) >= 59 && info.src.charCodeAt( pos ) <= 67 ) || ( info.src.charCodeAt( pos ) >= 69 && info.src.charCodeAt( pos ) <= 254 ) ) state = 1;
-		else if( info.src.charCodeAt( pos ) == 58 ) state = 6;
-		else if( info.src.charCodeAt( pos ) == 68 ) state = 9;
-		else state = -1;
-		match = 10;
-		match_pos = pos;
-		break;
-
-	case 17:
-		if( ( info.src.charCodeAt( pos ) >= 0 && info.src.charCodeAt( pos ) <= 254 ) ) state = 15;
-		else state = -1;
-		break;
-
-	case 18:
-		if( ( info.src.charCodeAt( pos ) >= 0 && info.src.charCodeAt( pos ) <= 31 ) || info.src.charCodeAt( pos ) == 33 || ( info.src.charCodeAt( pos ) >= 35 && info.src.charCodeAt( pos ) <= 39 ) || ( info.src.charCodeAt( pos ) >= 42 && info.src.charCodeAt( pos ) <= 57 ) || ( info.src.charCodeAt( pos ) >= 59 && info.src.charCodeAt( pos ) <= 83 ) || ( info.src.charCodeAt( pos ) >= 85 && info.src.charCodeAt( pos ) <= 254 ) ) state = 1;
-		else if( info.src.charCodeAt( pos ) == 58 ) state = 6;
-		else if( info.src.charCodeAt( pos ) == 84 ) state = 10;
-		else state = -1;
-		match = 10;
-		match_pos = pos;
-		break;
-
-	case 19:
-		if( ( info.src.charCodeAt( pos ) >= 0 && info.src.charCodeAt( pos ) <= 31 ) || info.src.charCodeAt( pos ) == 33 || ( info.src.charCodeAt( pos ) >= 35 && info.src.charCodeAt( pos ) <= 39 ) || ( info.src.charCodeAt( pos ) >= 42 && info.src.charCodeAt( pos ) <= 57 ) || ( info.src.charCodeAt( pos ) >= 59 && info.src.charCodeAt( pos ) <= 77 ) || ( info.src.charCodeAt( pos ) >= 79 && info.src.charCodeAt( pos ) <= 254 ) ) state = 1;
-		else if( info.src.charCodeAt( pos ) == 58 ) state = 6;
-		else if( info.src.charCodeAt( pos ) == 78 ) state = 16;
-		else state = -1;
-		match = 10;
-		match_pos = pos;
-		break;
-
-	case 20:
-		if( ( info.src.charCodeAt( pos ) >= 0 && info.src.charCodeAt( pos ) <= 31 ) || info.src.charCodeAt( pos ) == 33 || ( info.src.charCodeAt( pos ) >= 35 && info.src.charCodeAt( pos ) <= 39 ) || ( info.src.charCodeAt( pos ) >= 42 && info.src.charCodeAt( pos ) <= 57 ) || ( info.src.charCodeAt( pos ) >= 59 && info.src.charCodeAt( pos ) <= 78 ) || ( info.src.charCodeAt( pos ) >= 80 && info.src.charCodeAt( pos ) <= 254 ) ) state = 1;
-		else if( info.src.charCodeAt( pos ) == 58 ) state = 6;
-		else if( info.src.charCodeAt( pos ) == 79 ) state = 18;
-		else state = -1;
-		match = 10;
-		match_pos = pos;
-		break;
-
-}
-
-
-			pos++;
-
-		}
-		while( state > -1 );
-
-	}
-	while( 1 > -1 && match == 1 );
-
-	if( match > -1 )
-	{
-		info.att = info.src.substr( start, match_pos - start );
-		info.offset = match_pos;
-		
-
-	}
-	else
-	{
-		info.att = new String();
-		match = -1;
-	}
-
-	return match;
-}
-
-
-function __NODEJS_parse( src, err_off, err_la )
-{
-	var		sstack			= new Array();
-	var		vstack			= new Array();
-	var 	err_cnt			= 0;
-	var		act;
-	var		go;
-	var		la;
-	var		rval;
-	var 	parseinfo		= new Function( "", "var offset; var src; var att;" );
-	var		info			= new parseinfo();
-	
-/* Pop-Table */
-var pop_tab = new Array(
-	new Array( 0/* begin' */, 1 ),
-	new Array( 13/* begin */, 1 ),
-	new Array( 12/* search_text */, 1 ),
-	new Array( 12/* search_text */, 2 ),
-	new Array( 12/* search_text */, 3 ),
-	new Array( 14/* and_expression */, 1 ),
-	new Array( 14/* and_expression */, 3 ),
-	new Array( 15/* boolean_expression */, 2 ),
-	new Array( 15/* boolean_expression */, 1 ),
-	new Array( 16/* expression */, 3 ),
-	new Array( 16/* expression */, 2 ),
-	new Array( 16/* expression */, 1 ),
-	new Array( 17/* value */, 2 ),
-	new Array( 17/* value */, 1 ),
-	new Array( 18/* string */, 1 ),
-	new Array( 18/* string */, 1 )
-);
-
-/* Action-Table */
-var act_tab = new Array(
-	/* State 0 */ new Array( 7/* "NOT" */,5 , 3/* "LEFT_PARENTHESE" */,7 , 8/* "COLUMN" */,8 , 11/* "OPERATOR" */,10 , 10/* "WORD" */,12 , 9/* "STRING" */,13 ),
-	/* State 1 */ new Array( 19/* "$" */,0 ),
-	/* State 2 */ new Array( 19/* "$" */,-1 ),
-	/* State 3 */ new Array( 6/* "OR" */,14 , 7/* "NOT" */,5 , 3/* "LEFT_PARENTHESE" */,7 , 8/* "COLUMN" */,8 , 11/* "OPERATOR" */,10 , 10/* "WORD" */,12 , 9/* "STRING" */,13 , 19/* "$" */,-2 , 4/* "RIGHT_PARENTHESE" */,-2 ),
-	/* State 4 */ new Array( 5/* "AND" */,16 , 19/* "$" */,-5 , 7/* "NOT" */,-5 , 3/* "LEFT_PARENTHESE" */,-5 , 8/* "COLUMN" */,-5 , 11/* "OPERATOR" */,-5 , 10/* "WORD" */,-5 , 9/* "STRING" */,-5 , 6/* "OR" */,-5 , 4/* "RIGHT_PARENTHESE" */,-5 ),
-	/* State 5 */ new Array( 3/* "LEFT_PARENTHESE" */,7 , 8/* "COLUMN" */,8 , 11/* "OPERATOR" */,10 , 10/* "WORD" */,12 , 9/* "STRING" */,13 ),
-	/* State 6 */ new Array( 19/* "$" */,-8 , 7/* "NOT" */,-8 , 3/* "LEFT_PARENTHESE" */,-8 , 8/* "COLUMN" */,-8 , 11/* "OPERATOR" */,-8 , 10/* "WORD" */,-8 , 9/* "STRING" */,-8 , 6/* "OR" */,-8 , 5/* "AND" */,-8 , 4/* "RIGHT_PARENTHESE" */,-8 ),
-	/* State 7 */ new Array( 7/* "NOT" */,5 , 3/* "LEFT_PARENTHESE" */,7 , 8/* "COLUMN" */,8 , 11/* "OPERATOR" */,10 , 10/* "WORD" */,12 , 9/* "STRING" */,13 ),
-	/* State 8 */ new Array( 3/* "LEFT_PARENTHESE" */,7 , 8/* "COLUMN" */,8 , 11/* "OPERATOR" */,10 , 10/* "WORD" */,12 , 9/* "STRING" */,13 ),
-	/* State 9 */ new Array( 19/* "$" */,-11 , 7/* "NOT" */,-11 , 3/* "LEFT_PARENTHESE" */,-11 , 8/* "COLUMN" */,-11 , 11/* "OPERATOR" */,-11 , 10/* "WORD" */,-11 , 9/* "STRING" */,-11 , 6/* "OR" */,-11 , 5/* "AND" */,-11 , 4/* "RIGHT_PARENTHESE" */,-11 ),
-	/* State 10 */ new Array( 10/* "WORD" */,12 , 9/* "STRING" */,13 ),
-	/* State 11 */ new Array( 19/* "$" */,-13 , 7/* "NOT" */,-13 , 3/* "LEFT_PARENTHESE" */,-13 , 8/* "COLUMN" */,-13 , 11/* "OPERATOR" */,-13 , 10/* "WORD" */,-13 , 9/* "STRING" */,-13 , 6/* "OR" */,-13 , 5/* "AND" */,-13 , 4/* "RIGHT_PARENTHESE" */,-13 ),
-	/* State 12 */ new Array( 19/* "$" */,-14 , 7/* "NOT" */,-14 , 3/* "LEFT_PARENTHESE" */,-14 , 8/* "COLUMN" */,-14 , 11/* "OPERATOR" */,-14 , 10/* "WORD" */,-14 , 9/* "STRING" */,-14 , 6/* "OR" */,-14 , 5/* "AND" */,-14 , 4/* "RIGHT_PARENTHESE" */,-14 ),
-	/* State 13 */ new Array( 19/* "$" */,-15 , 7/* "NOT" */,-15 , 3/* "LEFT_PARENTHESE" */,-15 , 8/* "COLUMN" */,-15 , 11/* "OPERATOR" */,-15 , 10/* "WORD" */,-15 , 9/* "STRING" */,-15 , 6/* "OR" */,-15 , 5/* "AND" */,-15 , 4/* "RIGHT_PARENTHESE" */,-15 ),
-	/* State 14 */ new Array( 7/* "NOT" */,5 , 3/* "LEFT_PARENTHESE" */,7 , 8/* "COLUMN" */,8 , 11/* "OPERATOR" */,10 , 10/* "WORD" */,12 , 9/* "STRING" */,13 ),
-	/* State 15 */ new Array( 19/* "$" */,-3 , 4/* "RIGHT_PARENTHESE" */,-3 ),
-	/* State 16 */ new Array( 7/* "NOT" */,5 , 3/* "LEFT_PARENTHESE" */,7 , 8/* "COLUMN" */,8 , 11/* "OPERATOR" */,10 , 10/* "WORD" */,12 , 9/* "STRING" */,13 ),
-	/* State 17 */ new Array( 19/* "$" */,-7 , 7/* "NOT" */,-7 , 3/* "LEFT_PARENTHESE" */,-7 , 8/* "COLUMN" */,-7 , 11/* "OPERATOR" */,-7 , 10/* "WORD" */,-7 , 9/* "STRING" */,-7 , 6/* "OR" */,-7 , 5/* "AND" */,-7 , 4/* "RIGHT_PARENTHESE" */,-7 ),
-	/* State 18 */ new Array( 4/* "RIGHT_PARENTHESE" */,23 ),
-	/* State 19 */ new Array( 19/* "$" */,-10 , 7/* "NOT" */,-10 , 3/* "LEFT_PARENTHESE" */,-10 , 8/* "COLUMN" */,-10 , 11/* "OPERATOR" */,-10 , 10/* "WORD" */,-10 , 9/* "STRING" */,-10 , 6/* "OR" */,-10 , 5/* "AND" */,-10 , 4/* "RIGHT_PARENTHESE" */,-10 ),
-	/* State 20 */ new Array( 19/* "$" */,-12 , 7/* "NOT" */,-12 , 3/* "LEFT_PARENTHESE" */,-12 , 8/* "COLUMN" */,-12 , 11/* "OPERATOR" */,-12 , 10/* "WORD" */,-12 , 9/* "STRING" */,-12 , 6/* "OR" */,-12 , 5/* "AND" */,-12 , 4/* "RIGHT_PARENTHESE" */,-12 ),
-	/* State 21 */ new Array( 19/* "$" */,-4 , 4/* "RIGHT_PARENTHESE" */,-4 ),
-	/* State 22 */ new Array( 19/* "$" */,-6 , 7/* "NOT" */,-6 , 3/* "LEFT_PARENTHESE" */,-6 , 8/* "COLUMN" */,-6 , 11/* "OPERATOR" */,-6 , 10/* "WORD" */,-6 , 9/* "STRING" */,-6 , 6/* "OR" */,-6 , 4/* "RIGHT_PARENTHESE" */,-6 ),
-	/* State 23 */ new Array( 19/* "$" */,-9 , 7/* "NOT" */,-9 , 3/* "LEFT_PARENTHESE" */,-9 , 8/* "COLUMN" */,-9 , 11/* "OPERATOR" */,-9 , 10/* "WORD" */,-9 , 9/* "STRING" */,-9 , 6/* "OR" */,-9 , 5/* "AND" */,-9 , 4/* "RIGHT_PARENTHESE" */,-9 )
-);
-
-/* Goto-Table */
-var goto_tab = new Array(
-	/* State 0 */ new Array( 13/* begin */,1 , 12/* search_text */,2 , 14/* and_expression */,3 , 15/* boolean_expression */,4 , 16/* expression */,6 , 17/* value */,9 , 18/* string */,11 ),
-	/* State 1 */ new Array(  ),
-	/* State 2 */ new Array(  ),
-	/* State 3 */ new Array( 12/* search_text */,15 , 14/* and_expression */,3 , 15/* boolean_expression */,4 , 16/* expression */,6 , 17/* value */,9 , 18/* string */,11 ),
-	/* State 4 */ new Array(  ),
-	/* State 5 */ new Array( 16/* expression */,17 , 17/* value */,9 , 18/* string */,11 ),
-	/* State 6 */ new Array(  ),
-	/* State 7 */ new Array( 12/* search_text */,18 , 14/* and_expression */,3 , 15/* boolean_expression */,4 , 16/* expression */,6 , 17/* value */,9 , 18/* string */,11 ),
-	/* State 8 */ new Array( 16/* expression */,19 , 17/* value */,9 , 18/* string */,11 ),
-	/* State 9 */ new Array(  ),
-	/* State 10 */ new Array( 18/* string */,20 ),
-	/* State 11 */ new Array(  ),
-	/* State 12 */ new Array(  ),
-	/* State 13 */ new Array(  ),
-	/* State 14 */ new Array( 12/* search_text */,21 , 14/* and_expression */,3 , 15/* boolean_expression */,4 , 16/* expression */,6 , 17/* value */,9 , 18/* string */,11 ),
-	/* State 15 */ new Array(  ),
-	/* State 16 */ new Array( 14/* and_expression */,22 , 15/* boolean_expression */,4 , 16/* expression */,6 , 17/* value */,9 , 18/* string */,11 ),
-	/* State 17 */ new Array(  ),
-	/* State 18 */ new Array(  ),
-	/* State 19 */ new Array(  ),
-	/* State 20 */ new Array(  ),
-	/* State 21 */ new Array(  ),
-	/* State 22 */ new Array(  ),
-	/* State 23 */ new Array(  )
-);
-
-
-
-/* Symbol labels */
-var labels = new Array(
-	"begin'" /* Non-terminal symbol */,
-	"WHITESPACE" /* Terminal symbol */,
-	"WHITESPACE" /* Terminal symbol */,
-	"LEFT_PARENTHESE" /* Terminal symbol */,
-	"RIGHT_PARENTHESE" /* Terminal symbol */,
-	"AND" /* Terminal symbol */,
-	"OR" /* Terminal symbol */,
-	"NOT" /* Terminal symbol */,
-	"COLUMN" /* Terminal symbol */,
-	"STRING" /* Terminal symbol */,
-	"WORD" /* Terminal symbol */,
-	"OPERATOR" /* Terminal symbol */,
-	"search_text" /* Non-terminal symbol */,
-	"begin" /* Non-terminal symbol */,
-	"and_expression" /* Non-terminal symbol */,
-	"boolean_expression" /* Non-terminal symbol */,
-	"expression" /* Non-terminal symbol */,
-	"value" /* Non-terminal symbol */,
-	"string" /* Non-terminal symbol */,
-	"$" /* Terminal symbol */
-);
-
-
-	
-	info.offset = 0;
-	info.src = src;
-	info.att = new String();
-	
-	if( !err_off )
-		err_off	= new Array();
-	if( !err_la )
-	err_la = new Array();
-	
-	sstack.push( 0 );
-	vstack.push( 0 );
-	
-	la = __NODEJS_lex( info );
-
-	while( true )
-	{
-		act = 25;
-		for( var i = 0; i < act_tab[sstack[sstack.length-1]].length; i+=2 )
-		{
-			if( act_tab[sstack[sstack.length-1]][i] == la )
-			{
-				act = act_tab[sstack[sstack.length-1]][i+1];
-				break;
-			}
-		}
-
-		if( NODEJS__dbg_withtrace && sstack.length > 0 )
-		{
-			__NODEJS_dbg_print( "\nState " + sstack[sstack.length-1] + "\n" +
-							"\tLookahead: " + labels[la] + " (\"" + info.att + "\")\n" +
-							"\tAction: " + act + "\n" + 
-							"\tSource: \"" + info.src.substr( info.offset, 30 ) + ( ( info.offset + 30 < info.src.length ) ?
-									"..." : "" ) + "\"\n" +
-							"\tStack: " + sstack.join() + "\n" +
-							"\tValue stack: " + vstack.join() + "\n" );
-		}
-		
-			
-		//Panic-mode: Try recovery when parse-error occurs!
-		if( act == 25 )
-		{
-			if( NODEJS__dbg_withtrace )
-				__NODEJS_dbg_print( "Error detected: There is no reduce or shift on the symbol " + labels[la] );
-			
-			err_cnt++;
-			err_off.push( info.offset - info.att.length );			
-			err_la.push( new Array() );
-			for( var i = 0; i < act_tab[sstack[sstack.length-1]].length; i+=2 )
-				err_la[err_la.length-1].push( labels[act_tab[sstack[sstack.length-1]][i]] );
-			
-			//Remember the original stack!
-			var rsstack = new Array();
-			var rvstack = new Array();
-			for( var i = 0; i < sstack.length; i++ )
-			{
-				rsstack[i] = sstack[i];
-				rvstack[i] = vstack[i];
-			}
-			
-			while( act == 25 && la != 19 )
-			{
-				if( NODEJS__dbg_withtrace )
-					__NODEJS_dbg_print( "\tError recovery\n" +
-									"Current lookahead: " + labels[la] + " (" + info.att + ")\n" +
-									"Action: " + act + "\n\n" );
-				if( la == -1 )
-					info.offset++;
-					
-				while( act == 25 && sstack.length > 0 )
-				{
-					sstack.pop();
-					vstack.pop();
-					
-					if( sstack.length == 0 )
-						break;
-						
-					act = 25;
-					for( var i = 0; i < act_tab[sstack[sstack.length-1]].length; i+=2 )
-					{
-						if( act_tab[sstack[sstack.length-1]][i] == la )
-						{
-							act = act_tab[sstack[sstack.length-1]][i+1];
-							break;
-						}
-					}
-				}
-				
-				if( act != 25 )
-					break;
-				
-				for( var i = 0; i < rsstack.length; i++ )
-				{
-					sstack.push( rsstack[i] );
-					vstack.push( rvstack[i] );
-				}
-				
-				la = __NODEJS_lex( info );
-			}
-			
-			if( act == 25 )
-			{
-				if( NODEJS__dbg_withtrace )
-					__NODEJS_dbg_print( "\tError recovery failed, terminating parse process..." );
-				break;
-			}
-
-
-			if( NODEJS__dbg_withtrace )
-				__NODEJS_dbg_print( "\tError recovery succeeded, continuing" );
-		}
-		
-		/*
-		if( act == 25 )
-			break;
-		*/
-		
-		
-		//Shift
-		if( act > 0 )
-		{			
-			if( NODEJS__dbg_withtrace )
-				__NODEJS_dbg_print( "Shifting symbol: " + labels[la] + " (" + info.att + ")" );
-		
-			sstack.push( act );
-			vstack.push( info.att );
-			
-			la = __NODEJS_lex( info );
-			
-			if( NODEJS__dbg_withtrace )
-				__NODEJS_dbg_print( "\tNew lookahead symbol: " + labels[la] + " (" + info.att + ")" );
-		}
-		//Reduce
-		else
-		{		
-			act *= -1;
-			
-			if( NODEJS__dbg_withtrace )
-				__NODEJS_dbg_print( "Reducing by producution: " + act );
-			
-			rval = void(0);
-			
-			if( NODEJS__dbg_withtrace )
-				__NODEJS_dbg_print( "\tPerforming semantic action..." );
-			
-switch( act )
-{
-	case 0:
-	{
-		rval = vstack[ vstack.length - 1 ];
-	}
-	break;
-	case 1:
-	{
-		 result = vstack[ vstack.length - 1 ]; 
-	}
-	break;
-	case 2:
-	{
-		 rval = vstack[ vstack.length - 1 ]; 
-	}
-	break;
-	case 3:
-	{
-		 rval = mkComplexQuery('OR',[vstack[ vstack.length - 2 ],vstack[ vstack.length - 1 ]]); 
-	}
-	break;
-	case 4:
-	{
-		 rval = mkComplexQuery('OR',[vstack[ vstack.length - 3 ],vstack[ vstack.length - 1 ]]); 
-	}
-	break;
-	case 5:
-	{
-		 rval = vstack[ vstack.length - 1 ] ; 
-	}
-	break;
-	case 6:
-	{
-		 rval = mkComplexQuery('AND',[vstack[ vstack.length - 3 ],vstack[ vstack.length - 1 ]]); 
-	}
-	break;
-	case 7:
-	{
-		 rval = mkNotQuery(vstack[ vstack.length - 1 ]); 
-	}
-	break;
-	case 8:
-	{
-		 rval = vstack[ vstack.length - 1 ]; 
-	}
-	break;
-	case 9:
-	{
-		 rval = vstack[ vstack.length - 2 ]; 
-	}
-	break;
-	case 10:
-	{
-		 simpleQuerySetKey(vstack[ vstack.length - 1 ],vstack[ vstack.length - 2 ].split(':').slice(0,-1).join(':')); rval = vstack[ vstack.length - 1 ]; 
-	}
-	break;
-	case 11:
-	{
-		 rval = vstack[ vstack.length - 1 ]; 
-	}
-	break;
-	case 12:
-	{
-		 vstack[ vstack.length - 1 ].operator = vstack[ vstack.length - 2 ] ; rval = vstack[ vstack.length - 1 ]; 
-	}
-	break;
-	case 13:
-	{
-		 rval = vstack[ vstack.length - 1 ]; 
-	}
-	break;
-	case 14:
-	{
-		 rval = mkSimpleQuery('',vstack[ vstack.length - 1 ]); 
-	}
-	break;
-	case 15:
-	{
-		 rval = mkSimpleQuery('',vstack[ vstack.length - 1 ].split('"').slice(1,-1).join('"')); 
-	}
-	break;
-}
-
-
-
-			if( NODEJS__dbg_withtrace )
-				__NODEJS_dbg_print( "\tPopping " + pop_tab[act][1] + " off the stack..." );
-				
-			for( var i = 0; i < pop_tab[act][1]; i++ )
-			{
-				sstack.pop();
-				vstack.pop();
-			}
-									
-			go = -1;
-			for( var i = 0; i < goto_tab[sstack[sstack.length-1]].length; i+=2 )
-			{
-				if( goto_tab[sstack[sstack.length-1]][i] == pop_tab[act][0] )
-				{
-					go = goto_tab[sstack[sstack.length-1]][i+1];
-					break;
-				}
-			}
-			
-			if( act == 0 )
-				break;
-				
-			if( NODEJS__dbg_withtrace )
-				__NODEJS_dbg_print( "\tPushing non-terminal " + labels[ pop_tab[act][0] ] );
-				
-			sstack.push( go );
-			vstack.push( rval );			
-		}
-		
-		if( NODEJS__dbg_withtrace )
-		{		
-			alert( NODEJS__dbg_string );
-			NODEJS__dbg_string = new String();
-		}
-	}
-
-	if( NODEJS__dbg_withtrace )
-	{
-		__NODEJS_dbg_print( "\nParse complete." );
-		alert( NODEJS__dbg_string );
-	}
-	
-	return err_cnt;
-}
-
-
-
-var arrayExtend = function () {
-  var j, i, newlist = [], list_list = arguments;
-  for (j = 0; j < list_list.length; j += 1) {
-    for (i = 0; i < list_list[j].length; i += 1) {
-      newlist.push(list_list[j][i]);
-    }
-  }
-  return newlist;
-
-}, mkSimpleQuery = function (key, value, operator) {
-  var object = {"type": "simple", "key": key, "value": value};
-  if (operator !== undefined) {
-    object.operator = operator;
-  }
-  return object;
-
-}, mkNotQuery = function (query) {
-  if (query.operator === "NOT") {
-    return query.query_list[0];
-  }
-  return {"type": "complex", "operator": "NOT", "query_list": [query]};
-
-}, mkComplexQuery = function (operator, query_list) {
-  var i, query_list2 = [];
-  for (i = 0; i < query_list.length; i += 1) {
-    if (query_list[i].operator === operator) {
-      query_list2 = arrayExtend(query_list2, query_list[i].query_list);
-    } else {
-      query_list2.push(query_list[i]);
-    }
-  }
-  return {type:"complex",operator:operator,query_list:query_list2};
-
-}, simpleQuerySetKey = function (query, key) {
-  var i;
-  if (query.type === "complex") {
-    for (i = 0; i < query.query_list.length; ++i) {
-      simpleQuerySetKey (query.query_list[i],key);
-    }
-    return true;
-  }
-  if (query.type === "simple" && !query.key) {
-    query.key = key;
-    return true;
-  }
-  return false;
-},
-  error_offsets = [],
-  error_lookaheads = [],
-  error_count = 0,
-  result;
-
-if ((error_count = __NODEJS_parse(string, error_offsets, error_lookaheads)) > 0) {
-  var i;
-  for (i = 0; i < error_count; i += 1) {
-    throw new Error("Parse error near \"" +
-                    string.substr(error_offsets[i]) +
-                    "\", expecting \"" +
-                    error_lookaheads[i].join() + "\"");
-  }
-}
-
-
-  return result;
-} // parseStringToObject
-
-_export('parseStringToObject', parseStringToObject);
-
-/*jslint indent: 2, maxlen: 80, sloppy: true */
-
-var query_class_dict = {};
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
-/*global Query: true, query_class_dict: true, inherits: true,
-         _export, QueryFactory, RSVP, sequence */
-
-/**
- * The ComplexQuery inherits from Query, and compares one or several metadata
- * values.
- *
- * @class ComplexQuery
- * @extends Query
- * @param  {Object} [spec={}] The specifications
- * @param  {String} [spec.operator="AND"] The compare method to use
- * @param  {String} spec.key The metadata key
- * @param  {String} spec.value The value of the metadata to compare
- */
-function ComplexQuery(spec, key_schema) {
-  Query.call(this);
+  util.ajax = ajax;
 
   /**
-   * Logical operator to use to compare object values
+   * Clones all native object in deep. Managed types: Object, Array, String,
+   * Number, Boolean, Function, null.
    *
-   * @attribute operator
-   * @type String
-   * @default "AND"
-   * @optional
-   */
-  this.operator = spec.operator || "AND";
-
-  /**
-   * The sub Query list which are used to query an item.
+   * It can also clone object which are serializable, like Date.
    *
-   * @attribute query_list
-   * @type Array
-   * @default []
-   * @optional
-   */
-  this.query_list = spec.query_list || [];
-  /*jslint unparam: true*/
-  this.query_list = this.query_list.map(
-    // decorate the map to avoid sending the index as key_schema argument
-    function (o, i) { return QueryFactory.create(o, key_schema); }
-  );
-  /*jslint unparam: false*/
-
-}
-inherits(ComplexQuery, Query);
-
-/**
- * #crossLink "Query/match:method"
- */
-ComplexQuery.prototype.match = function (item) {
-  var operator = this.operator;
-  if (!(/^(?:AND|OR|NOT)$/i.test(operator))) {
-    operator = "AND";
-  }
-  return this[operator.toUpperCase()](item);
-};
-
-/**
- * #crossLink "Query/toString:method"
- */
-ComplexQuery.prototype.toString = function () {
-  var str_list = ["("], this_operator = this.operator;
-  this.query_list.forEach(function (query) {
-    str_list.push(query.toString());
-    str_list.push(this_operator);
-  });
-  str_list[str_list.length - 1] = ")"; // replace last operator
-  return str_list.join(" ");
-};
-
-/**
- * #crossLink "Query/serialized:method"
- */
-ComplexQuery.prototype.serialized = function () {
-  var s = {
-    "type": "complex",
-    "operator": this.operator,
-    "query_list": []
-  };
-  this.query_list.forEach(function (query) {
-    s.query_list.push(query.serialized());
-  });
-  return s;
-};
-ComplexQuery.prototype.toJSON = ComplexQuery.prototype.serialized;
-
-/**
- * Comparison operator, test if all sub queries match the
- * item value
- *
- * @method AND
- * @param  {Object} item The item to match
- * @return {Boolean} true if all match, false otherwise
- */
-ComplexQuery.prototype.AND = function (item) {
-  var j, promises = [];
-  for (j = 0; j < this.query_list.length; j += 1) {
-    promises.push(this.query_list[j].match(item));
-  }
-
-  function cancel() {
-    var i;
-    for (i = 0; i < promises.length; i += 1) {
-      if (typeof promises.cancel === 'function') {
-        promises.cancel();
-      }
-    }
-  }
-
-  return new RSVP.Promise(function (resolve, reject) {
-    var i, count = 0;
-    function resolver(value) {
-      if (!value) {
-        resolve(false);
-      }
-      count += 1;
-      if (count === promises.length) {
-        resolve(true);
-      }
-    }
-
-    function rejecter(err) {
-      reject(err);
-      cancel();
-    }
-
-    for (i = 0; i < promises.length; i += 1) {
-      promises[i].then(resolver, rejecter);
-    }
-  }, cancel);
-};
-
-/**
- * Comparison operator, test if one of the sub queries matches the
- * item value
- *
- * @method OR
- * @param  {Object} item The item to match
- * @return {Boolean} true if one match, false otherwise
- */
-ComplexQuery.prototype.OR =  function (item) {
-  var j, promises = [];
-  for (j = 0; j < this.query_list.length; j += 1) {
-    promises.push(this.query_list[j].match(item));
-  }
-
-  function cancel() {
-    var i;
-    for (i = 0; i < promises.length; i += 1) {
-      if (typeof promises.cancel === 'function') {
-        promises.cancel();
-      }
-    }
-  }
-
-  return new RSVP.Promise(function (resolve, reject) {
-    var i, count = 0;
-    function resolver(value) {
-      if (value) {
-        resolve(true);
-      }
-      count += 1;
-      if (count === promises.length) {
-        resolve(false);
-      }
-    }
-
-    function rejecter(err) {
-      reject(err);
-      cancel();
-    }
-
-    for (i = 0; i < promises.length; i += 1) {
-      promises[i].then(resolver, rejecter);
-    }
-  }, cancel);
-};
-
-/**
- * Comparison operator, test if the sub query does not match the
- * item value
- *
- * @method NOT
- * @param  {Object} item The item to match
- * @return {Boolean} true if one match, false otherwise
- */
-ComplexQuery.prototype.NOT = function (item) {
-  return sequence([function () {
-    return this.query_list[0].match(item);
-  }, function (answer) {
-    return !answer;
-  }]);
-};
-
-query_class_dict.complex = ComplexQuery;
-
-_export("ComplexQuery", ComplexQuery);
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
-/*global parseStringToObject: true, emptyFunction: true, sortOn: true, limit:
-  true, select: true, _export: true, stringEscapeRegexpCharacters: true,
-  deepClone, RSVP, sequence */
-
-/**
- * The query to use to filter a list of objects.
- * This is an abstract class.
- *
- * @class Query
- * @constructor
- */
-function Query() {
-
-  /**
-   * Called before parsing the query. Must be overridden!
+   * To make a class serializable, you need to implement the `toJSON` function
+   * which returns a JSON representation of the object. The returned value is used
+   * as first parameter of the object constructor.
    *
-   * @method onParseStart
-   * @param  {Object} object The object shared in the parse process
-   * @param  {Object} option Some option gave in parse()
+   * @param  {A} object The object to clone
+   * @return {A} The cloned object
    */
-  this.onParseStart = emptyFunction;
-
-  /**
-   * Called when parsing a simple query. Must be overridden!
-   *
-   * @method onParseSimpleQuery
-   * @param  {Object} object The object shared in the parse process
-   * @param  {Object} option Some option gave in parse()
-   */
-  this.onParseSimpleQuery = emptyFunction;
-
-  /**
-   * Called when parsing a complex query. Must be overridden!
-   *
-   * @method onParseComplexQuery
-   * @param  {Object} object The object shared in the parse process
-   * @param  {Object} option Some option gave in parse()
-   */
-  this.onParseComplexQuery = emptyFunction;
-
-  /**
-   * Called after parsing the query. Must be overridden!
-   *
-   * @method onParseEnd
-   * @param  {Object} object The object shared in the parse process
-   * @param  {Object} option Some option gave in parse()
-   */
-  this.onParseEnd = emptyFunction;
-
-}
-
-/**
- * Filter the item list with matching item only
- *
- * @method exec
- * @param  {Array} item_list The list of object
- * @param  {Object} [option] Some operation option
- * @param  {Array} [option.select_list] A object keys to retrieve
- * @param  {Array} [option.sort_on] Couples of object keys and "ascending"
- *                 or "descending"
- * @param  {Array} [option.limit] Couple of integer, first is an index and
- *                 second is the length.
- */
-Query.prototype.exec = function (item_list, option) {
-  var i, promises = [];
-  if (!Array.isArray(item_list)) {
-    throw new TypeError("Query().exec(): Argument 1 is not of type 'array'");
-  }
-  if (option === undefined) {
-    option = {};
-  }
-  if (typeof option !== 'object') {
-    throw new TypeError("Query().exec(): " +
-                        "Optional argument 2 is not of type 'object'");
-  }
-  for (i = 0; i < item_list.length; i += 1) {
-    if (!item_list[i]) {
-      promises.push(RSVP.resolve(false));
-    } else {
-      promises.push(this.match(item_list[i]));
-    }
-  }
-  return sequence([function () {
-    return RSVP.all(promises);
-  }, function (answers) {
-    var j;
-    for (j = answers.length - 1; j >= 0; j -= 1) {
-      if (!answers[j]) {
-        item_list.splice(j, 1);
-      }
-    }
-    if (option.sort_on) {
-      return sortOn(option.sort_on, item_list);
-    }
-  }, function () {
-    if (option.limit) {
-      return limit(option.limit, item_list);
-    }
-  }, function () {
-    return select(option.select_list || [], item_list);
-  }, function () {
-    return item_list;
-  }]);
-};
-
-/**
- * Test if an item matches this query
- *
- * @method match
- * @param  {Object} item The object to test
- * @return {Boolean} true if match, false otherwise
- */
-Query.prototype.match = function () {
-  return RSVP.resolve(true);
-};
-
-
-/**
- * Browse the Query in deep calling parser method in each step.
- *
- * `onParseStart` is called first, on end `onParseEnd` is called.
- * It starts from the simple queries at the bottom of the tree calling the
- * parser method `onParseSimpleQuery`, and go up calling the
- * `onParseComplexQuery` method.
- *
- * @method parse
- * @param  {Object} option Any options you want (except 'parsed')
- * @return {Any} The parse result
- */
-Query.prototype.parse = function (option) {
-  var that = this, object;
-  /**
-   * The recursive parser.
-   *
-   * @param  {Object} object The object shared in the parse process
-   * @param  {Object} options Some options usable in the parseMethods
-   * @return {Any} The parser result
-   */
-  function recParse(object, option) {
-    var query = object.parsed;
-    if (query.type === "complex") {
-      return sequence([function () {
-        return sequence(query.query_list.map(function (v, i) {
-          /*jslint unparam: true */
-          return function () {
-            sequence([function () {
-              object.parsed = query.query_list[i];
-              return recParse(object, option);
-            }, function () {
-              query.query_list[i] = object.parsed;
-            }]);
-          };
-        }));
-      }, function () {
-        object.parsed = query;
-        return that.onParseComplexQuery(object, option);
-      }]);
-    }
-    if (query.type === "simple") {
-      return that.onParseSimpleQuery(object, option);
-    }
-  }
-  object = {"parsed": JSON.parse(JSON.stringify(that.serialized()))};
-  return sequence([function () {
-    return that.onParseStart(object, option);
-  }, function () {
-    return recParse(object, option);
-  }, function () {
-    return that.onParseEnd(object, option);
-  }, function () {
-    return object.parsed;
-  }]);
-};
-
-/**
- * Convert this query to a parsable string.
- *
- * @method toString
- * @return {String} The string version of this query
- */
-Query.prototype.toString = function () {
-  return "";
-};
-
-/**
- * Convert this query to an jsonable object in order to be remake thanks to
- * QueryFactory class.
- *
- * @method serialized
- * @return {Object} The jsonable object
- */
-Query.prototype.serialized = function () {
-  return undefined;
-};
-
-_export("Query", Query);
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
-/*global _export, ComplexQuery, SimpleQuery, Query, parseStringToObject,
-  query_class_dict */
-
-/**
- * Provides static methods to create Query object
- *
- * @class QueryFactory
- */
-function QueryFactory() {
-  return;
-}
-
-/**
- * Creates Query object from a search text string or a serialized version
- * of a Query.
- *
- * @method create
- * @static
- * @param  {Object,String} object The search text or the serialized version
- *         of a Query
- * @return {Query} A Query object
- */
-QueryFactory.create = function (object, key_schema) {
-  if (object === "") {
-    return new Query();
-  }
-  if (typeof object === "string") {
-    object = parseStringToObject(object);
-  }
-  if (typeof (object || {}).type === "string" &&
-      query_class_dict[object.type]) {
-    return new query_class_dict[object.type](object, key_schema);
-  }
-  throw new TypeError("QueryFactory.create(): " +
-                      "Argument 1 is not a search text or a parsable object");
-};
-
-_export("QueryFactory", QueryFactory);
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
-/*global _export: true */
-
-function objectToSearchText(query) {
-  var str_list = [];
-  if (query.type === "complex") {
-    str_list.push("(");
-    (query.query_list || []).forEach(function (sub_query) {
-      str_list.push(objectToSearchText(sub_query));
-      str_list.push(query.operator);
-    });
-    str_list.length -= 1;
-    str_list.push(")");
-    return str_list.join(" ");
-  }
-  if (query.type === "simple") {
-    return (query.key ? query.key + ": " : "") +
-      (query.operator || "") + ' "' + query.value + '"';
-  }
-  throw new TypeError("This object is not a query");
-}
-_export("objectToSearchText", objectToSearchText);
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
-/*global Query: true, inherits: true, query_class_dict: true, _export: true,
-  searchTextToRegExp, RSVP */
-
-var checkKeySchema = function (key_schema) {
-  var prop;
-
-  if (key_schema !== undefined) {
-    if (typeof key_schema !== 'object') {
-      throw new TypeError("SimpleQuery().create(): " +
-                          "key_schema is not of type 'object'");
-    }
-    // key_set is mandatory
-    if (key_schema.key_set === undefined) {
-      throw new TypeError("SimpleQuery().create(): " +
-                          "key_schema has no 'key_set' property");
-    }
-    for (prop in key_schema) {
-      if (key_schema.hasOwnProperty(prop)) {
-        switch (prop) {
-        case 'key_set':
-        case 'cast_lookup':
-        case 'match_lookup':
-          break;
-        default:
-          throw new TypeError("SimpleQuery().create(): " +
-                             "key_schema has unknown property '" + prop + "'");
-        }
-      }
-    }
-  }
-};
-
-
-/**
- * The SimpleQuery inherits from Query, and compares one metadata value
- *
- * @class SimpleQuery
- * @extends Query
- * @param  {Object} [spec={}] The specifications
- * @param  {String} [spec.operator="="] The compare method to use
- * @param  {String} spec.key The metadata key
- * @param  {String} spec.value The value of the metadata to compare
- */
-function SimpleQuery(spec, key_schema) {
-  Query.call(this);
-
-  checkKeySchema(key_schema);
-
-  this._key_schema = key_schema || {};
-
-  /**
-   * Operator to use to compare object values
-   *
-   * @attribute operator
-   * @type String
-   * @optional
-   */
-  this.operator = spec.operator;
-
-  /**
-   * Key of the object which refers to the value to compare
-   *
-   * @attribute key
-   * @type String
-   */
-  this.key = spec.key;
-
-  /**
-   * Value is used to do the comparison with the object value
-   *
-   * @attribute value
-   * @type String
-   */
-  this.value = spec.value;
-
-}
-inherits(SimpleQuery, Query);
-
-
-var checkKey = function (key) {
-  var prop;
-
-  if (key.read_from === undefined) {
-    throw new TypeError("Custom key is missing the read_from property");
-  }
-
-  for (prop in key) {
-    if (key.hasOwnProperty(prop)) {
-      switch (prop) {
-      case 'read_from':
-      case 'cast_to':
-      case 'equal_match':
-        break;
-      default:
-        throw new TypeError("Custom key has unknown property '" +
-                            prop + "'");
-      }
-    }
-  }
-};
-
-
-/**
- * #crossLink "Query/match:method"
- */
-SimpleQuery.prototype.match = function (item) {
-  var object_value = null,
-    equal_match = null,
-    cast_to = null,
-    matchMethod = null,
-    operator = this.operator,
-    value = null,
-    key = this.key;
-
-  /*jslint regexp: true */
-  if (!(/^(?:!?=|<=?|>=?)$/i.test(operator))) {
-    // `operator` is not correct, we have to change it to "like" or "="
-    if (/%/.test(this.value)) {
-      // `value` contains a non escaped `%`
-      operator = "like";
-    } else {
-      // `value` does not contain non escaped `%`
-      operator = "=";
-    }
-  }
-
-  matchMethod = this[operator];
-
-  if (this._key_schema.key_set && this._key_schema.key_set[key] !== undefined) {
-    key = this._key_schema.key_set[key];
-  }
-
-  if (typeof key === 'object') {
-    checkKey(key);
-    object_value = item[key.read_from];
-
-    equal_match = key.equal_match;
-
-    // equal_match can be a string
-    if (typeof equal_match === 'string') {
-      // XXX raise error if equal_match not in match_lookup
-      equal_match = this._key_schema.match_lookup[equal_match];
-    }
-
-    // equal_match overrides the default '=' operator
-    if (equal_match !== undefined) {
-      matchMethod = (operator === "=" || operator === "like" ?
-                     equal_match : matchMethod);
-    }
-
-    value = this.value;
-    cast_to = key.cast_to;
-    if (cast_to) {
-      // cast_to can be a string
-      if (typeof cast_to === 'string') {
-        // XXX raise error if cast_to not in cast_lookup
-        cast_to = this._key_schema.cast_lookup[cast_to];
-      }
-
-      value = cast_to(value);
-      object_value = cast_to(object_value);
-    }
-  } else {
-    object_value = item[key];
-    value = this.value;
-  }
-  if (object_value === undefined || value === undefined) {
-    return RSVP.resolve(false);
-  }
-  return matchMethod(object_value, value);
-};
-
-/**
- * #crossLink "Query/toString:method"
- */
-SimpleQuery.prototype.toString = function () {
-  return (this.key ? this.key + ":" : "") +
-    (this.operator ? " " + this.operator : "") + ' "' + this.value + '"';
-};
-
-/**
- * #crossLink "Query/serialized:method"
- */
-SimpleQuery.prototype.serialized = function () {
-  var object = {
-    "type": "simple",
-    "key": this.key,
-    "value": this.value
-  };
-  if (this.operator !== undefined) {
-    object.operator = this.operator;
-  }
-  return object;
-};
-SimpleQuery.prototype.toJSON = SimpleQuery.prototype.serialized;
-
-/**
- * Comparison operator, test if this query value matches the item value
- *
- * @method =
- * @param  {String} object_value The value to compare
- * @param  {String} comparison_value The comparison value
- * @return {Boolean} true if match, false otherwise
- */
-SimpleQuery.prototype["="] = function (object_value, comparison_value) {
-  var value, i;
-  if (!Array.isArray(object_value)) {
-    object_value = [object_value];
-  }
-  for (i = 0; i < object_value.length; i += 1) {
-    value = object_value[i];
-    if (typeof value === 'object' && value.hasOwnProperty('content')) {
-      value = value.content;
-    }
-    if (typeof value.cmp === "function") {
-      return RSVP.resolve(value.cmp(comparison_value) === 0);
-    }
-    if (
-      searchTextToRegExp(comparison_value.toString(), false).
-        test(value.toString())
-    ) {
-      return RSVP.resolve(true);
-    }
-  }
-  return RSVP.resolve(false);
-};
-
-/**
- * Comparison operator, test if this query value matches the item value
- *
- * @method like
- * @param  {String} object_value The value to compare
- * @param  {String} comparison_value The comparison value
- * @return {Boolean} true if match, false otherwise
- */
-SimpleQuery.prototype.like = function (object_value, comparison_value) {
-  var value, i;
-  if (!Array.isArray(object_value)) {
-    object_value = [object_value];
-  }
-  for (i = 0; i < object_value.length; i += 1) {
-    value = object_value[i];
-    if (typeof value === 'object' && value.hasOwnProperty('content')) {
-      value = value.content;
-    }
-    if (typeof value.cmp === "function") {
-      return RSVP.resolve(value.cmp(comparison_value) === 0);
-    }
-    if (
-      searchTextToRegExp(comparison_value.toString()).test(value.toString())
-    ) {
-      return RSVP.resolve(true);
-    }
-  }
-  return RSVP.resolve(false);
-};
-
-/**
- * Comparison operator, test if this query value does not match the item value
- *
- * @method !=
- * @param  {String} object_value The value to compare
- * @param  {String} comparison_value The comparison value
- * @return {Boolean} true if not match, false otherwise
- */
-SimpleQuery.prototype["!="] = function (object_value, comparison_value) {
-  var value, i;
-  if (!Array.isArray(object_value)) {
-    object_value = [object_value];
-  }
-  for (i = 0; i < object_value.length; i += 1) {
-    value = object_value[i];
-    if (typeof value === 'object' && value.hasOwnProperty('content')) {
-      value = value.content;
-    }
-    if (typeof value.cmp === "function") {
-      return RSVP.resolve(value.cmp(comparison_value) !== 0);
-    }
-    if (
-      searchTextToRegExp(comparison_value.toString(), false).
-        test(value.toString())
-    ) {
-      return RSVP.resolve(false);
-    }
-  }
-  return RSVP.resolve(true);
-};
-
-/**
- * Comparison operator, test if this query value is lower than the item value
- *
- * @method <
- * @param  {Number, String} object_value The value to compare
- * @param  {Number, String} comparison_value The comparison value
- * @return {Boolean} true if lower, false otherwise
- */
-SimpleQuery.prototype["<"] = function (object_value, comparison_value) {
-  var value;
-  if (!Array.isArray(object_value)) {
-    object_value = [object_value];
-  }
-  value = object_value[0];
-  if (typeof value === 'object' && value.hasOwnProperty('content')) {
-    value = value.content;
-  }
-  if (typeof value.cmp === "function") {
-    return RSVP.resolve(value.cmp(comparison_value) < 0);
-  }
-  return RSVP.resolve(value < comparison_value);
-};
-
-/**
- * Comparison operator, test if this query value is equal or lower than the
- * item value
- *
- * @method <=
- * @param  {Number, String} object_value The value to compare
- * @param  {Number, String} comparison_value The comparison value
- * @return {Boolean} true if equal or lower, false otherwise
- */
-SimpleQuery.prototype["<="] = function (object_value, comparison_value) {
-  var value;
-  if (!Array.isArray(object_value)) {
-    object_value = [object_value];
-  }
-  value = object_value[0];
-  if (typeof value === 'object' && value.hasOwnProperty('content')) {
-    value = value.content;
-  }
-  if (typeof value.cmp === "function") {
-    return RSVP.resolve(value.cmp(comparison_value) <= 0);
-  }
-  return RSVP.resolve(value <= comparison_value);
-};
-
-/**
- * Comparison operator, test if this query value is greater than the item
- * value
- *
- * @method >
- * @param  {Number, String} object_value The value to compare
- * @param  {Number, String} comparison_value The comparison value
- * @return {Boolean} true if greater, false otherwise
- */
-SimpleQuery.prototype[">"] = function (object_value, comparison_value) {
-  var value;
-  if (!Array.isArray(object_value)) {
-    object_value = [object_value];
-  }
-  value = object_value[0];
-  if (typeof value === 'object' && value.hasOwnProperty('content')) {
-    value = value.content;
-  }
-  if (typeof value.cmp === "function") {
-    return RSVP.resolve(value.cmp(comparison_value) > 0);
-  }
-  return RSVP.resolve(value > comparison_value);
-};
-
-/**
- * Comparison operator, test if this query value is equal or greater than the
- * item value
- *
- * @method >=
- * @param  {Number, String} object_value The value to compare
- * @param  {Number, String} comparison_value The comparison value
- * @return {Boolean} true if equal or greater, false otherwise
- */
-SimpleQuery.prototype[">="] = function (object_value, comparison_value) {
-  var value;
-  if (!Array.isArray(object_value)) {
-    object_value = [object_value];
-  }
-  value = object_value[0];
-  if (typeof value === 'object' && value.hasOwnProperty('content')) {
-    value = value.content;
-  }
-  if (typeof value.cmp === "function") {
-    return RSVP.resolve(value.cmp(comparison_value) >= 0);
-  }
-  return RSVP.resolve(value >= comparison_value);
-};
-
-query_class_dict.simple = SimpleQuery;
-
-_export("SimpleQuery", SimpleQuery);
-
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true */
-/*global _export, RSVP */
-
-/**
- * Escapes regexp special chars from a string.
- *
- * @param  {String} string The string to escape
- * @return {String} The escaped string
- */
-function stringEscapeRegexpCharacters(string) {
-  if (typeof string === "string") {
-    return string.replace(/([\\\.\$\[\]\(\)\{\}\^\?\*\+\-])/g, "\\$1");
-  }
-  throw new TypeError("complex_queries.stringEscapeRegexpCharacters(): " +
-                      "Argument no 1 is not of type 'string'");
-}
-
-_export("stringEscapeRegexpCharacters", stringEscapeRegexpCharacters);
-
-/**
- * Convert metadata values to array of strings. ex:
- *
- *     "a" -> ["a"],
- *     {"content": "a"} -> ["a"]
- *
- * @param  {Any} value The metadata value
- * @return {Array} The value in string array format
- */
-function metadataValueToStringArray(value) {
-  var i, new_value = [];
-  if (value === undefined) {
-    return undefined;
-  }
-  if (!Array.isArray(value)) {
-    value = [value];
-  }
-  for (i = 0; i < value.length; i += 1) {
-    if (typeof value[i] === 'object') {
-      new_value[i] = value[i].content;
-    } else {
-      new_value[i] = value[i];
-    }
-  }
-  return new_value;
-}
-
-/**
- * A sort function to sort items by key
- *
- * @param  {String} key The key to sort on
- * @param  {String} [way="ascending"] 'ascending' or 'descending'
- * @return {Function} The sort function
- */
-function sortFunction(key, way) {
-  if (way === 'descending') {
-    return function (a, b) {
-      // this comparison is 5 times faster than json comparison
-      var i, l;
-      a = metadataValueToStringArray(a[key]) || [];
-      b = metadataValueToStringArray(b[key]) || [];
-      l = a.length > b.length ? a.length : b.length;
-      for (i = 0; i < l; i += 1) {
-        if (a[i] === undefined) {
-          return 1;
-        }
-        if (b[i] === undefined) {
-          return -1;
-        }
-        if (a[i] > b[i]) {
-          return -1;
-        }
-        if (a[i] < b[i]) {
-          return 1;
-        }
-      }
-      return 0;
-    };
-  }
-  if (way === 'ascending') {
-    return function (a, b) {
-      // this comparison is 5 times faster than json comparison
-      var i, l;
-      a = metadataValueToStringArray(a[key]) || [];
-      b = metadataValueToStringArray(b[key]) || [];
-      l = a.length > b.length ? a.length : b.length;
-      for (i = 0; i < l; i += 1) {
-        if (a[i] === undefined) {
-          return -1;
-        }
-        if (b[i] === undefined) {
-          return 1;
-        }
-        if (a[i] > b[i]) {
-          return 1;
-        }
-        if (a[i] < b[i]) {
-          return -1;
-        }
-      }
-      return 0;
-    };
-  }
-  throw new TypeError("complex_queries.sortFunction(): " +
-                      "Argument 2 must be 'ascending' or 'descending'");
-}
-
-/**
- * Clones all native object in deep. Managed types: Object, Array, String,
- * Number, Boolean, null.
- *
- * @param  {A} object The object to clone
- * @return {A} The cloned object
- */
-function deepClone(object) {
-  var i, cloned;
-  if (Array.isArray(object)) {
-    cloned = [];
-    for (i = 0; i < object.length; i += 1) {
-      cloned[i] = deepClone(object[i]);
-    }
-    return cloned;
-  }
-  if (typeof object === "object") {
-    cloned = {};
-    for (i in object) {
-      if (object.hasOwnProperty(i)) {
+  function deepClone(object) {
+    var i, cloned;
+    if (Array.isArray(object)) {
+      cloned = [];
+      for (i = 0; i < object.length; i += 1) {
         cloned[i] = deepClone(object[i]);
       }
+      return cloned;
     }
-    return cloned;
-  }
-  return object;
-}
-
-/**
- * Inherits the prototype methods from one constructor into another. The
- * prototype of `constructor` will be set to a new object created from
- * `superConstructor`.
- *
- * @param  {Function} constructor The constructor which inherits the super one
- * @param  {Function} superConstructor The super constructor
- */
-function inherits(constructor, superConstructor) {
-  constructor.super_ = superConstructor;
-  constructor.prototype = Object.create(superConstructor.prototype, {
-    "constructor": {
-      "configurable": true,
-      "enumerable": false,
-      "writable": true,
-      "value": constructor
+    if (object === null) {
+      return null;
     }
-  });
-}
-
-/**
- * Does nothing
- */
-function emptyFunction() {
-  return;
-}
-
-/**
- * Filter a list of items, modifying them to select only wanted keys. If
- * `clone` is true, then the method will act on a cloned list.
- *
- * @param  {Array} select_option Key list to keep
- * @param  {Array} list The item list to filter
- * @param  {Boolean} [clone=false] If true, modifies a clone of the list
- * @return {Array} The filtered list
- */
-function select(select_option, list, clone) {
-  var i, j, new_item;
-  if (!Array.isArray(select_option)) {
-    throw new TypeError("complex_queries.select(): " +
-                        "Argument 1 is not of type Array");
-  }
-  if (!Array.isArray(list)) {
-    throw new TypeError("complex_queries.select(): " +
-                        "Argument 2 is not of type Array");
-  }
-  if (clone === true) {
-    list = deepClone(list);
-  }
-  for (i = 0; i < list.length; i += 1) {
-    new_item = {};
-    for (j = 0; j < select_option.length; j += 1) {
-      if (list[i].hasOwnProperty([select_option[j]])) {
-        new_item[select_option[j]] = list[i][select_option[j]];
+    if (typeof object === 'object') {
+      if (Object.getPrototypeOf(object) === Object.prototype) {
+        cloned = {};
+        for (i in object) {
+          if (object.hasOwnProperty(i)) {
+            cloned[i] = deepClone(object[i]);
+          }
+        }
+        return cloned;
       }
-    }
-    for (j in new_item) {
-      if (new_item.hasOwnProperty(j)) {
-        list[i] = new_item;
-        break;
+      if (object instanceof Date) {
+        // XXX this block is to enable phantomjs and browsers compatibility with
+        // Date.prototype.toJSON when it is an invalid date. In phantomjs, it
+        // returns `"Invalid Date"` but in browsers it returns `null`. In
+        // browsers, giving `null` as parameter to `new Date()` doesn't return an
+        // invalid date.
+
+        // Cloning a date with `return new Date(object)` has problems on Firefox.
+        // I don't know why...  (Tested on Firefox 23)
+
+        if (isFinite(object.getTime())) {
+          return new Date(object.toJSON());
+        }
+        return new Date("Invalid Date");
       }
+      // clone serializable objects
+      if (typeof object.toJSON === 'function') {
+        return new (Object.getPrototypeOf(object).constructor)(object.toJSON());
+      }
+      // cannot clone
+      return object;
     }
+    return object;
   }
-  return list;
-}
+  util.deepClone = deepClone;
 
-_export('select', select);
+  /**
+   * An Universal Unique ID generator
+   *
+   * @return {String} The new UUID.
+   */
+  function generateUuid() {
+    function S4() {
+      return ('0000' + Math.floor(
+        Math.random() * 0x10000 /* 65536 */
+      ).toString(16)).slice(-4);
+    }
+    return S4() + S4() + "-" +
+      S4() + "-" +
+      S4() + "-" +
+      S4() + "-" +
+      S4() + S4() + S4();
+  }
+  util.generateUuid = generateUuid;
 
-/**
- * Sort a list of items, according to keys and directions. If `clone` is true,
- * then the method will act on a cloned list.
- *
- * @param  {Array} sort_on_option List of couples [key, direction]
- * @param  {Array} list The item list to sort
- * @param  {Boolean} [clone=false] If true, modifies a clone of the list
- * @return {Array} The filtered list
- */
-function sortOn(sort_on_option, list, clone) {
-  var sort_index;
-  if (!Array.isArray(sort_on_option)) {
-    throw new TypeError("complex_queries.sortOn(): " +
-                        "Argument 1 is not of type 'array'");
-  }
-  if (clone) {
-    list = deepClone(list);
-  }
-  for (sort_index = sort_on_option.length - 1; sort_index >= 0;
-       sort_index -= 1) {
-    list.sort(sortFunction(
-      sort_on_option[sort_index][0],
-      sort_on_option[sort_index][1]
-    ));
-  }
-  return list;
-}
 
-_export('sortOn', sortOn);
 
-/**
- * Limit a list of items, according to index and length. If `clone` is true,
- * then the method will act on a cloned list.
- *
- * @param  {Array} limit_option A couple [from, length]
- * @param  {Array} list The item list to limit
- * @param  {Boolean} [clone=false] If true, modifies a clone of the list
- * @return {Array} The filtered list
- */
-function limit(limit_option, list, clone) {
-  if (!Array.isArray(limit_option)) {
-    throw new TypeError("complex_queries.limit(): " +
-                        "Argument 1 is not of type 'array'");
-  }
-  if (!Array.isArray(list)) {
-    throw new TypeError("complex_queries.limit(): " +
-                        "Argument 2 is not of type 'array'");
-  }
-  if (clone) {
-    list = deepClone(list);
-  }
-  list.splice(0, limit_option[0]);
-  if (limit_option[1]) {
-    list.splice(limit_option[1]);
-  }
-  return list;
-}
-
-_export('limit', limit);
-
-/**
- * Convert a search text to a regexp.
- *
- * @param  {String} string The string to convert
- * @param  {Boolean} [use_wildcard_character=true] Use wildcard "%" and "_"
- * @return {RegExp} The search text regexp
- */
-function searchTextToRegExp(string, use_wildcard_characters) {
-  if (typeof string !== 'string') {
-    throw new TypeError("complex_queries.searchTextToRegExp(): " +
-                        "Argument 1 is not of type 'string'");
-  }
-  if (use_wildcard_characters === false) {
-    return new RegExp("^" + stringEscapeRegexpCharacters(string) + "$");
-  }
-  return new RegExp("^" + stringEscapeRegexpCharacters(string).replace(
-    /%/g,
-    ".*"
-  ).replace(
-    /_/g,
-    "."
-  ) + "$");
-}
-
-_export("searchTextToRegExp", searchTextToRegExp);
-
-/**
- * sequence(thens): Promise
- *
- * Executes a sequence of *then* callbacks. It acts like
- * `smth().then(callback).then(callback)...`. The first callback is called with
- * no parameter.
- *
- * Elements of `thens` array can be a function or an array contaning at most
- * three *then* callbacks: *onFulfilled*, *onRejected*, *onNotified*.
- *
- * When `cancel()` is executed, each then promises are cancelled at the same
- * time.
- *
- * @param  {Array} thens An array of *then* callbacks
- * @return {Promise} A new promise
- */
-function sequence(thens) {
-  var promises = [];
-  return new RSVP.Promise(function (resolve, reject, notify) {
-    var i;
-    promises[0] = new RSVP.Promise(function (resolve) {
-      resolve();
+  function readBlobAsText(blob) {
+    var fr = new FileReader();
+    return new RSVP.Promise(function (resolve, reject, notify) {
+      fr.addEventListener("load", resolve);
+      fr.addEventListener("error", reject);
+      fr.addEventListener("progress", notify);
+      fr.readAsText(blob);
+    }, function () {
+      fr.abort();
     });
-    for (i = 0; i < thens.length; i += 1) {
-      if (Array.isArray(thens[i])) {
-        promises[i + 1] = promises[i].
-          then(thens[i][0], thens[i][1], thens[i][2]);
-      } else {
-        promises[i + 1] = promises[i].then(thens[i]);
-      }
+  }
+  util.readBlobAsText = readBlobAsText;
+
+  function readBlobAsArrayBuffer(blob) {
+    var fr = new FileReader();
+    return new RSVP.Promise(function (resolve, reject, notify) {
+      fr.addEventListener("load", resolve);
+      fr.addEventListener("error", reject);
+      fr.addEventListener("progress", notify);
+      fr.readAsArrayBuffer(blob);
+    }, function () {
+      fr.abort();
+    });
+  }
+  util.readBlobAsArrayBuffer = readBlobAsArrayBuffer;
+
+
+
+
+
+
+
+
+
+//
+// //   // XXX What is "jio"?
+// //   var rest_method_names = [
+// //     "remove",
+// //     "allDocs",
+// //     "removeAttachment",
+// //     "check",
+// //     "repair"
+// //   ],
+// //     i,
+// //     len = rest_method_names.length;
+// //
+// //   for (i = 0; i < len; i += 1) {
+// //     declareMethod(rest_method_names[i]);
+// //   }
+
+// //   ["removeAttachment"].forEach(function (method) {
+// //     shared.on(method, function (param) {
+// //       if (!checkId(param)) {
+// //         checkAttachmentId(param);
+// //       }
+// //     });
+// //   });
+// //
+// //
+// //   ["check", "repair"].forEach(function (method) {
+// //     shared.on(method, function (param) {
+// //       if (param.kwargs._id !== undefined) {
+// //         if (!checkId(param)) {
+// //           return;
+// //         }
+// //       }
+// //     });
+// //   });
+
+
+
+
+
+
+
+  // tools
+  function checkId(param, storage, method_name) {
+    if (typeof param._id !== 'string' || param._id === '') {
+      throw new jIO.util.jIOError("Document id must be a non empty string on '" + storage.__type + "." + method_name + "'.",
+                                  400);
     }
-    promises[i].then(resolve, reject, notify);
-  }, function () {
-    var i;
-    for (i = 0; i < promises.length; i += 1) {
-      promises[i].cancel();
+  }
+
+  function checkAttachmentId(param, storage, method_name) {
+    if (typeof param._attachment !== 'string' || param._attachment === '') {
+      throw new jIO.util.jIOError(
+        "Attachment id must be a non empty string on '" + storage.__type + "." + method_name + "'.",
+        400
+      );
+    }
+  }
+
+  function declareMethod(klass, name, precondition_function, post_function) {
+    klass.prototype[name] = function () {
+      var argument_list = arguments,
+        context = this;
+
+      return new RSVP.Queue()
+        .push(function () {
+          if (precondition_function !== undefined) {
+            return precondition_function.apply(
+              context.__storage,
+              [argument_list[0], context, name]
+            );
+          }
+        })
+        .push(function () {
+          var storage_method = context.__storage[name];
+          if (storage_method === undefined) {
+            throw new jIO.util.jIOError(
+              "Capacity '" + name + "' is not implemented on '" + context.__type + "'",
+              501
+            );
+          }
+          return storage_method.apply(
+            context.__storage,
+            argument_list
+          );
+        })
+        .push(function (result) {
+          if (post_function !== undefined) {
+            return post_function.call(
+              context.__storage,
+              argument_list,
+              result
+            );
+          }
+          return result;
+        });
+    };
+    // Allow chain
+    return this;
+  }
+
+
+
+
+  /////////////////////////////////////////////////////////////////
+  // jIO Storage Proxy
+  /////////////////////////////////////////////////////////////////
+  function JioProxyStorage(type, storage) {
+    if (!(this instanceof JioProxyStorage)) {
+      return new JioProxyStorage();
+    }
+    this.__type = type;
+    this.__storage = storage;
+  }
+
+  declareMethod(JioProxyStorage, "put", checkId);
+  declareMethod(JioProxyStorage, "get", checkId, function (argument_list, result) {
+    // Put _id properties to the result
+    result._id = argument_list[0]._id;
+    return result;
+  });
+  declareMethod(JioProxyStorage, "remove", checkId);
+
+  // listeners
+  declareMethod(JioProxyStorage, "post", function (param, storage, method_name) {
+    if (param._id !== undefined) {
+      return checkId(param, storage, method_name);
     }
   });
-}
 
+  declareMethod(JioProxyStorage, 'putAttachment', function (param, storage, method_name) {
+    checkId(param, storage, method_name);
+    checkAttachmentId(param, storage, method_name);
 
-  return to_export;
-}));
+    if (!(param._blob instanceof Blob) &&
+        typeof param._data === 'string') {
+      param._blob = new Blob([param._data], {
+        "type": param._content_type || param._mimetype || ""
+      });
+      delete param._data;
+      delete param._mimetype;
+      delete param._content_type;
+    } else if (param._blob instanceof Blob) {
+      delete param._data;
+      delete param._mimetype;
+      delete param._content_type;
+    } else if (param._data instanceof Blob) {
+      param._blob = param._data;
+      delete param._data;
+      delete param._mimetype;
+      delete param._content_type;
+    } else {
+      throw new jIO.util.jIOError(
+        'Attachment information must be like {"_id": document id, ' +
+          '"_attachment": attachment name, "_data": string, ["_mimetype": ' +
+          'content type]} or {"_id": document id, "_attachment": ' +
+          'attachment name, "_blob": Blob}',
+        400
+      );
+    }
+  });
+
+  declareMethod(JioProxyStorage, 'removeAttachment', function (param, storage, method_name) {
+    checkId(param, storage, method_name);
+    checkAttachmentId(param);
+  });
+
+  declareMethod(JioProxyStorage, 'getAttachment', function (param, storage, method_name) {
+//     if (param.storage_spec.type !== "indexeddb" &&
+//         param.storage_spec.type !== "dav" &&
+//         (param.kwargs._start !== undefined
+//          || param.kwargs._end !== undefined)) {
+//       restCommandRejecter(param, [
+//         'bad_request',
+//         'unsupport',
+//         '_start, _end not support'
+//       ]);
+//       return false;
+//     }
+    checkId(param, storage, method_name);
+    checkAttachmentId(param);
+  });
+
+  JioProxyStorage.prototype.buildQuery = function () {
+    var storage_method = this.__storage.buildQuery,
+      context = this,
+      argument_list = arguments;
+    if (storage_method === undefined) {
+      throw new jIO.util.jIOError(
+        "Capacity 'buildQuery' is not implemented on '" + this.__type + "'",
+        501
+      );
+    }
+    return new RSVP.Queue()
+      .push(function () {
+        return storage_method.apply(
+          context.__storage,
+          argument_list
+        );
+      });
+  };
+
+  JioProxyStorage.prototype.hasCapacity = function (name) {
+    var storage_method = this.__storage.hasCapacity;
+    if ((storage_method === undefined) || !storage_method.apply(this.__storage, arguments)) {
+      throw new jIO.util.jIOError(
+        "Capacity '" + name + "' is not implemented on '" + this.__type + "'",
+        501
+      );
+    }
+    return true;
+  };
+
+  JioProxyStorage.prototype.allDocs = function (options) {
+    var context = this;
+    if (options === undefined) {
+      options = {};
+    }
+    return new RSVP.Queue()
+      .push(function () {
+        if (context.hasCapacity("list") &&
+            ((options.query === undefined) || context.hasCapacity("query")) &&
+            ((options.sort_on === undefined) || context.hasCapacity("sort")) &&
+            ((options.select_list === undefined) || context.hasCapacity("select")) &&
+            ((options.include_docs === undefined) || context.hasCapacity("include")) &&
+            ((options.limit === undefined) || context.hasCapacity("limit"))) {
+          return context.buildQuery(options);
+        }
+      })
+      .push(function (result) {
+        return {
+          data: {
+            rows: result,
+            total_rows: result.length
+          }
+        };
+      });
+  };
+
+  /////////////////////////////////////////////////////////////////
+  // Storage builder
+  /////////////////////////////////////////////////////////////////
+  function JioBuilder() {
+    if (!(this instanceof JioBuilder)) {
+      return new JioBuilder();
+    }
+    this.__storage_types = {};
+  }
+
+  JioBuilder.prototype.createJIO = function (storage_spec, util) {
+
+    if (typeof storage_spec.type !== 'string') {
+      throw new TypeError("Invalid storage description");
+    }
+    if (!this.__storage_types[storage_spec.type]) {
+      throw new TypeError("Unknown storage '" + storage_spec.type + "'");
+    }
+
+    return new JioProxyStorage(
+      storage_spec.type,
+      new this.__storage_types[storage_spec.type](storage_spec, util)
+    );
+
+  };
+
+  JioBuilder.prototype.addStorage = function (type, Constructor) {
+    if (typeof type !== 'string') {
+      throw new TypeError(
+        "jIO.addStorage(): Argument 1 is not of type 'string'"
+      );
+    }
+    if (typeof Constructor !== 'function') {
+      throw new TypeError("jIO.addStorage(): " +
+                          "Argument 2 is not of type 'function'");
+    }
+    if (this.__storage_types[type] !== undefined) {
+      throw new TypeError("jIO.addStorage(): Storage type already exists");
+    }
+    this.__storage_types[type] = Constructor;
+  };
+
+  JioBuilder.prototype.util = util;
+  JioBuilder.prototype.QueryFactory = QueryFactory;
+  JioBuilder.prototype.Query = Query;
+
+  /////////////////////////////////////////////////////////////////
+  // global
+  /////////////////////////////////////////////////////////////////
+  jIO = new JioBuilder();
+  window.jIO = jIO;
+
+}(window, RSVP, Blob, QueryFactory, Query, FileReader));
 ;/*
  * Copyright 2013, Nexedi SA
  * Released under the LGPL license.
  * http://www.gnu.org/licenses/lgpl.html
  */
 
-/*jslint indent: 2, maxlen: 80, sloppy: true, nomen: true, regexp: true */
-/*global jIO, localStorage, setTimeout, window, define, Blob, Uint8Array,
-  exports, require */
+/*jslint nomen: true */
+/*global jIO, localStorage, window, Blob, Uint8Array, RSVP */
 
 /**
  * JIO Local Storage. Type = 'local'.
@@ -7998,732 +5871,1279 @@ function sequence(thens) {
  * Storage Description:
  *
  *     {
- *       "type": "local",
- *       "mode": <string>,
- *         // - "localStorage" // default
- *         // - "memory"
- *       "username": <non empty string>, // to define user space
- *       "application_name": <string> // default 'untitled'
+ *       "type": "local"
  *     }
- *
- * Document are stored in path
- * 'jio/localstorage/username/application_name/document_id' like this:
- *
- *     {
- *       "_id": "document_id",
- *       "_attachments": {
- *         "attachment_name": {
- *           "length": data_length,
- *           "digest": "md5-XXX",
- *           "content_type": "mime/type"
- *         },
- *         "attachment_name2": {..}, ...
- *       },
- *       "metadata_name": "metadata_value"
- *       "metadata_name2": ...
- *       ...
- *     }
- *
- * Only "_id" and "_attachments" are specific metadata keys, other one can be
- * added without loss.
  *
  * @class LocalStorage
  */
 
-// define([module_name], [dependencies], module);
-(function (dependencies, module) {
-  "use strict";
-  if (typeof define === 'function' && define.amd) {
-    return define(dependencies, module);
-  }
-  if (typeof exports === 'object') {
-    return module(exports, require('jio'));
-  }
-  window.local_storage = {};
-  module(window.local_storage, jIO);
-}([
-  'exports',
-  'jio'
-], function (exports, jIO) {
+(function (jIO) {
   "use strict";
 
-  /**
-   * Checks if an object has no enumerable keys
-   *
-   * @param  {Object} obj The object
-   * @return {Boolean} true if empty, else false
-   */
-  function objectIsEmpty(obj) {
-    var k;
-    for (k in obj) {
-      if (obj.hasOwnProperty(k)) {
-        return false;
-      }
-    }
-    return true;
+  function LocalStorage() {
+    return;
   }
 
-  var ram = {}, memorystorage, localstorage;
-
-  /*
-   * Wrapper for the localStorage used to simplify instion of any kind of
-   * values
-   */
-  localstorage = {
-    getItem: function (item) {
-      var value = localStorage.getItem(item);
-      return value === null ? null : JSON.parse(value);
-    },
-    setItem: function (item, value) {
-      return localStorage.setItem(item, JSON.stringify(value));
-    },
-    removeItem: function (item) {
-      return localStorage.removeItem(item);
-    }
-  };
-
-  /*
-   * Wrapper for the localStorage used to simplify instion of any kind of
-   * values
-   */
-  memorystorage = {
-    getItem: function (item) {
-      var value = ram[item];
-      return value === undefined ? null : JSON.parse(value);
-    },
-    setItem: function (item, value) {
-      ram[item] = JSON.stringify(value);
-    },
-    removeItem: function (item) {
-      delete ram[item];
-    }
-  };
-
-  /**
-   * The JIO LocalStorage extension
-   *
-   * @class LocalStorage
-   * @constructor
-   */
-  function LocalStorage(spec) {
-    if (typeof spec.username !== 'string' || spec.username === '') {
-      throw new TypeError("LocalStorage 'username' must be a non-empty string");
-    }
-    this._localpath = 'jio/localstorage/' + spec.username + '/' + (
-      spec.application_name === null || spec.application_name ===
-        undefined ? 'untitled' : spec.application_name.toString()
-    );
-    switch (spec.mode) {
-    case "memory":
-      this._database = ram;
-      this._storage = memorystorage;
-      this._mode = "memory";
-      break;
-    default:
-      this._database = localStorage;
-      this._storage = localstorage;
-      this._mode = "localStorage";
-      this._key_schema = spec.key_schema;
-      break;
+  function restrictDocumentId(id) {
+    if (id !== "/") {
+      throw new jIO.util.jIOError("id " + id + " is forbidden (!== /)",
+                                  400);
     }
   }
-
-
-  /**
-   * Create a document in local storage.
-   *
-   * @method post
-   * @param  {Object} command The JIO command
-   * @param  {Object} metadata The metadata to store
-   * @param  {Object} options The command options
-   */
-  LocalStorage.prototype.post = function (command, metadata) {
-    var doc, doc_id = metadata._id;
-    if (!doc_id) {
-      doc_id = jIO.util.generateUuid();
-    }
-    doc = this._storage.getItem(this._localpath + "/" + doc_id);
-    if (doc === null) {
-      // the document does not exist
-      doc = jIO.util.deepClone(metadata);
-      doc._id = doc_id;
-      delete doc._attachments;
-      this._storage.setItem(this._localpath + "/" + doc_id, doc);
-      command.success({"id": doc_id});
-    } else {
-      // the document already exists
-      command.error(
-        "conflict",
-        "document exists",
-        "Cannot create a new document"
-      );
-    }
-  };
-
-  /**
-   * Create or update a document in local storage.
-   *
-   * @method put
-   * @param  {Object} command The JIO command
-   * @param  {Object} metadata The metadata to store
-   * @param  {Object} options The command options
-   */
-  LocalStorage.prototype.put = function (command, metadata) {
-    var doc, tmp, status;
-    doc = this._storage.getItem(this._localpath + "/" + metadata._id);
-    if (doc === null) {
-      //  the document does not exist
-      doc = jIO.util.deepClone(metadata);
-      delete doc._attachments;
-      status = "created";
-    } else {
-      // the document already exists
-      tmp = jIO.util.deepClone(metadata);
-      tmp._attachments = doc._attachments;
-      doc = tmp;
-      status = "no_content";
-    }
-    // write
-    this._storage.setItem(this._localpath + "/" + metadata._id, doc);
-    command.success(status);
-  };
-
-  /**
-   * Add an attachment to a document
-   *
-   * @method putAttachment
-   * @param  {Object} command The JIO command
-   * @param  {Object} param The given parameters
-   * @param  {Object} options The command options
-   */
-  LocalStorage.prototype.putAttachment = function (command, param) {
-    var that = this, doc, status = "created";
-    doc = this._storage.getItem(this._localpath + "/" + param._id);
-    if (doc === null) {
-      //  the document does not exist
-      return command.error(
-        "not_found",
-        "missing",
-        "Impossible to add attachment"
-      );
-    }
-
-    // the document already exists
-    // download data
-    jIO.util.readBlobAsBinaryString(param._blob).then(function (e) {
-      doc._attachments = doc._attachments || {};
-      if (doc._attachments[param._attachment]) {
-        status = "no_content";
-      }
-      doc._attachments[param._attachment] = {
-        "content_type": param._blob.type,
-        "digest": jIO.util.makeBinaryStringDigest(e.target.result),
-        "length": param._blob.size
-      };
-
-      that._storage.setItem(that._localpath + "/" + param._id + "/" +
-                            param._attachment, e.target.result);
-      that._storage.setItem(that._localpath + "/" + param._id, doc);
-      command.success(status,
-                      {"digest": doc._attachments[param._attachment].digest});
-    }, function (e) {
-      command.error(
-        "request_timeout",
-        "blob error",
-        "Error " + e.status + ", unable to get blob content"
-      );
-    }, function (e) {
-      command.notify((e.loaded / e.total) * 100);
-    });
-  };
 
   /**
    * Get a document
    *
    * @method get
-   * @param  {Object} command The JIO command
    * @param  {Object} param The given parameters
    * @param  {Object} options The command options
    */
-  LocalStorage.prototype.get = function (command, param) {
-    var doc = this._storage.getItem(
-      this._localpath + "/" + param._id
-    );
-    if (doc !== null) {
-      command.success({"data": doc});
-    } else {
-      command.error(
-        "not_found",
-        "missing",
-        "Cannot find document"
-      );
+  LocalStorage.prototype.get = function (param) {
+    restrictDocumentId(param._id);
+
+    var doc = {},
+      attachments = {},
+      key;
+
+    for (key in localStorage) {
+      if (localStorage.hasOwnProperty(key)) {
+        attachments[key] = {};
+      }
     }
+    if (attachments.length !== 0) {
+      doc._attachments = attachments;
+    }
+    return doc;
   };
 
   /**
    * Get an attachment
    *
    * @method getAttachment
-   * @param  {Object} command The JIO command
    * @param  {Object} param The given parameters
    * @param  {Object} options The command options
    */
-  LocalStorage.prototype.getAttachment = function (command, param) {
-    var doc, i, uint8array, binarystring;
-    doc = this._storage.getItem(this._localpath + "/" + param._id);
-    if (doc === null) {
-      return command.error(
-        "not_found",
-        "missing document",
-        "Cannot find document"
-      );
-    }
+  LocalStorage.prototype.getAttachment = function (param) {
+    restrictDocumentId(param._id);
 
-    if (typeof doc._attachments !== 'object' ||
-        typeof doc._attachments[param._attachment] !== 'object') {
-      return command.error(
-        "not_found",
-        "missing attachment",
-        "Cannot find attachment"
-      );
-    }
+    var textstring = localStorage.getItem(param._attachment);
 
-    // Storing data twice in binarystring and in uint8array (in memory)
-    // is not a problem here because localStorage <= 5MB
-    binarystring = this._storage.getItem(
-      this._localpath + "/" + param._id + "/" + param._attachment
-    ) || "";
-    uint8array = new Uint8Array(binarystring.length);
-    for (i = 0; i < binarystring.length; i += 1) {
-      uint8array[i] = binarystring.charCodeAt(i); // mask `& 0xFF` not necessary
+    if (textstring === null) {
+      throw new jIO.util.jIOError("Cannot find attachment", 404);
     }
-    uint8array = new Blob([uint8array.buffer], {
-      "type": doc._attachments[param._attachment].content_type || ""
-    });
-
-    command.success({
-      "data": uint8array,
-      "digest": doc._attachments[param._attachment].digest
-    });
+    return new Blob([textstring]);
   };
 
-  /**
-   * Remove a document
-   *
-   * @method remove
-   * @param  {Object} command The JIO command
-   * @param  {Object} param The given parameters
-   * @param  {Object} options The command options
-   */
-  LocalStorage.prototype.remove = function (command, param) {
-    var doc, i, attachment_list;
-    doc = this._storage.getItem(this._localpath + "/" + param._id);
-    attachment_list = [];
-    if (doc !== null && typeof doc === "object") {
-      if (typeof doc._attachments === "object") {
-        // prepare list of attachments
-        for (i in doc._attachments) {
-          if (doc._attachments.hasOwnProperty(i)) {
-            attachment_list.push(i);
-          }
-        }
-      }
-    } else {
-      return command.error(
-        "not_found",
-        "missing",
-        "Document not found"
-      );
-    }
-    this._storage.removeItem(this._localpath + "/" + param._id);
-    // delete all attachments
-    for (i = 0; i < attachment_list.length; i += 1) {
-      this._storage.removeItem(this._localpath + "/" + param._id +
-                               "/" + attachment_list[i]);
-    }
-    command.success();
+  LocalStorage.prototype.putAttachment = function (param) {
+    restrictDocumentId(param._id);
+
+    // the document already exists
+    // download data
+    return new RSVP.Queue()
+      .push(function () {
+        return jIO.util.readBlobAsText(param._blob);
+      })
+      .push(function (e) {
+        localStorage.setItem(param._attachment, e.target.result);
+      });
   };
 
-  /**
-   * Remove an attachment
-   *
-   * @method removeAttachment
-   * @param  {Object} command The JIO command
-   * @param  {Object} param The given parameters
-   * @param  {Object} options The command options
-   */
-  LocalStorage.prototype.removeAttachment = function (command, param) {
-    var doc = this._storage.getItem(this._localpath + "/" + param._id);
-    if (typeof doc !== 'object' || doc === null) {
-      return command.error(
-        "not_found",
-        "missing document",
-        "Document not found"
-      );
-    }
-    if (typeof doc._attachments !== "object" ||
-        typeof doc._attachments[param._attachment] !== "object") {
-      return command.error(
-        "not_found",
-        "missing attachment",
-        "Attachment not found"
-      );
-    }
-
-    delete doc._attachments[param._attachment];
-    if (objectIsEmpty(doc._attachments)) {
-      delete doc._attachments;
-    }
-    this._storage.setItem(this._localpath + "/" + param._id, doc);
-    this._storage.removeItem(this._localpath + "/" + param._id +
-                             "/" + param._attachment);
-    command.success();
+  LocalStorage.prototype.removeAttachment = function (param) {
+    restrictDocumentId(param._id);
+    return localStorage.removeItem(param._attachment);
   };
 
-  /**
-   * Get all filenames belonging to a user from the document index
-   *
-   * @method allDocs
-   * @param  {Object} command The JIO command
-   * @param  {Object} param The given parameters
-   * @param  {Object} options The command options
-   */
-  LocalStorage.prototype.allDocs = function (command, param, options) {
-    var i, row, path_re, rows, document_list, document_object, delete_id;
-    param.unused = true;
-    rows = [];
-    document_list = [];
-    path_re = new RegExp(
-      "^" + jIO.Query.stringEscapeRegexpCharacters(this._localpath) +
-        "/[^/]+$"
-    );
-    if (options.query === undefined && options.sort_on === undefined &&
-        options.select_list === undefined &&
-        options.include_docs === undefined) {
-      rows = [];
-      for (i in this._database) {
-        if (this._database.hasOwnProperty(i)) {
-          // filter non-documents
-          if (path_re.test(i)) {
-            row = { value: {} };
-            row.id = i.split('/').slice(-1)[0];
-            row.key = row.id;
-            if (options.include_docs) {
-              row.doc = JSON.parse(this._storage.getItem(i));
-            }
-            rows.push(row);
-          }
-        }
-      }
-      command.success({"data": {"rows": rows, "total_rows": rows.length}});
-    } else {
-      // create jio query object from returned results
-      for (i in this._database) {
-        if (this._database.hasOwnProperty(i)) {
-          if (path_re.test(i)) {
-            document_list.push(this._storage.getItem(i));
-          }
-        }
-      }
-      options.select_list = options.select_list || [];
-      if (options.select_list.indexOf("_id") === -1) {
-        options.select_list.push("_id");
-        delete_id = true;
-      }
-      if (options.include_docs === true) {
-        document_object = {};
-        document_list.forEach(function (meta) {
-          document_object[meta._id] = meta;
-        });
-      }
-      jIO.QueryFactory.create(options.query || "",
-                              this._key_schema).
-        exec(document_list, options).then(function () {
-          document_list = document_list.map(function (value) {
-            var o = {
-              "id": value._id,
-              "key": value._id
-            };
-            if (options.include_docs === true) {
-              o.doc = document_object[value._id];
-              delete document_object[value._id];
-            }
-            if (delete_id) {
-              delete value._id;
-            }
-            o.value = value;
-            return o;
-          });
-          command.success({"data": {
-            "total_rows": document_list.length,
-            "rows": document_list
-          }});
-        });
-    }
+
+  LocalStorage.prototype.hasCapacity = function (name) {
+    return (name === "list");
   };
 
-  /**
-   * Check the storage or a specific document
-   *
-   * @method check
-   * @param  {Object} command The JIO command
-   * @param  {Object} param The command parameters
-   * @param  {Object} options The command options
-   */
-  LocalStorage.prototype.check = function (command, param) {
-    this.genericRepair(command, param, false);
-  };
-
-  /**
-   * Repair the storage or a specific document
-   *
-   * @method repair
-   * @param  {Object} command The JIO command
-   * @param  {Object} param The command parameters
-   * @param  {Object} options The command options
-   */
-  LocalStorage.prototype.repair = function (command, param) {
-    this.genericRepair(command, param, true);
-  };
-
-  /**
-   * A generic method that manage check or repair command
-   *
-   * @method genericRepair
-   * @param  {Object} command The JIO command
-   * @param  {Object} param The command parameters
-   * @param  {Boolean} repair If true then repair else just check
-   */
-  LocalStorage.prototype.genericRepair = function (command, param, repair) {
-
-    var that = this, final_result;
-
-    function referenceAttachment(param, attachment) {
-      if (param.referenced_attachments.indexOf(attachment) !== -1) {
-        return;
-      }
-      var i = param.unreferenced_attachments.indexOf(attachment);
-      if (i !== -1) {
-        param.unreferenced_attachments.splice(i, 1);
-      }
-      param.referenced_attachments[param.referenced_attachments.length] =
-        attachment;
-    }
-
-    function attachmentFound(param, attachment) {
-      if (param.referenced_attachments.indexOf(attachment) !== -1) {
-        return;
-      }
-      if (param.unreferenced_attachments.indexOf(attachment) !== -1) {
-        return;
-      }
-      param.unreferenced_attachments[param.unreferenced_attachments.length] =
-        attachment;
-    }
-
-    function repairOne(param, repair) {
-      var i, doc, modified;
-      doc = that._storage.getItem(that._localpath + "/" + param._id);
-      if (doc === null) {
-        return; // OK
-      }
-
-      // check document type
-      if (typeof doc !== 'object' || doc === null) {
-        // wrong document
-        if (!repair) {
-          return {"error": true, "answers": [
-            "conflict",
-            "corrupted",
-            "Document is unrecoverable"
-          ]};
-        }
-        // delete the document
-        that._storage.removeItem(that._localpath + "/" + param._id);
-        return; // OK
-      }
-      // good document type
-      // repair json document
-      if (!repair) {
-        if (!(new jIO.Metadata(doc).check())) {
-          return {"error": true, "answers": [
-            "conflict",
-            "corrupted",
-            "Some metadata might be lost"
-          ]};
-        }
-      } else {
-        modified = jIO.util.uniqueJSONStringify(doc) !==
-          jIO.util.uniqueJSONStringify(new jIO.Metadata(doc).format()._dict);
-      }
-      if (doc._attachments !== undefined) {
-        if (typeof doc._attachments !== 'object') {
-          if (!repair) {
-            return {"error": true, "answers": [
-              "conflict",
-              "corrupted",
-              "Attachments are unrecoverable"
-            ]};
-          }
-          delete doc._attachments;
-          that._storage.setItem(that._localpath + "/" + param._id, doc);
-          return; // OK
-        }
-        for (i in doc._attachments) {
-          if (doc._attachments.hasOwnProperty(i)) {
-            // check attachment existence
-            if (that._storage.getItem(that._localpath + "/" + param._id + "/" +
-                                      i) !== 'string') {
-              if (!repair) {
-                return {"error": true, "answers": [
-                  "conflict",
-                  "missing attachment",
-                  "Attachment \"" + i + "\" of \"" + param._id + "\" is missing"
-                ]};
-              }
-              delete doc._attachments[i];
-              if (objectIsEmpty(doc._attachments)) {
-                delete doc._attachments;
-              }
-              modified = true;
-            } else {
-              // attachment exists
-              // check attachment metadata
-              // check length
-              referenceAttachment(param, param._id + "/" + doc._attachments[i]);
-              if (doc._attachments[i].length !== undefined &&
-                  typeof doc._attachments[i].length !== 'number') {
-                if (!repair) {
-                  return {"error": true, "answers": [
-                    "conflict",
-                    "corrupted",
-                    "Attachment metadata length corrupted"
-                  ]};
-                }
-                // It could take a long time to get the length, no repair.
-                // length can be omited
-                delete doc._attachments[i].length;
-              }
-              // It could take a long time to regenerate the hash, no check.
-              // Impossible to discover the attachment content type.
-            }
-          }
-        }
-      }
-      if (modified) {
-        that._storage.setItem(that._localpath + "/" + param._id, doc);
-      }
-      // OK
-    }
-
-    function repairAll(param, repair) {
-      var i, result;
-      for (i in that._database) {
-        if (that._database.hasOwnProperty(i)) {
-          // browsing every entry
-          if (i.slice(0, that._localpath.length) === that._localpath) {
-            // is part of the user space
-            if (/^[^\/]+\/[^\/]+$/.test(i.slice(that._localpath.length + 1))) {
-              // this is an attachment
-              attachmentFound(param, i.slice(that._localpath.length + 1));
-            } else if (/^[^\/]+$/.test(i.slice(that._localpath.length + 1))) {
-              // this is a document
-              param._id = i.slice(that._localpath.length + 1);
-              result = repairOne(param, repair);
-              if (result) {
-                return result;
-              }
-            } else {
-              // this is pollution
-              that._storage.removeItem(i);
-            }
-          }
-        }
-      }
-      // remove unreferenced attachments
-      for (i = 0; i < param.unreferenced_attachments.length; i += 1) {
-        that._storage.removeItem(that._localpath + "/" +
-                                 param.unreferenced_attachments[i]);
-      }
-    }
-
-    param.referenced_attachments = [];
-    param.unreferenced_attachments = [];
-    if (typeof param._id === 'string') {
-      final_result = repairOne(param, repair) || {};
-    } else {
-      final_result = repairAll(param, repair) || {};
-    }
-    if (final_result.error) {
-      return command.error.apply(command, final_result.answers || []);
-    }
-    command.success.apply(command, final_result.answers || []);
+  LocalStorage.prototype.buildQuery = function () {
+    return [{
+      id: "/",
+      value: {}
+    }];
   };
 
   jIO.addStorage('local', LocalStorage);
 
-  //////////////////////////////////////////////////////////////////////
-  // Tools
+}(jIO));
+;/*
+ * Copyright 2013, Nexedi SA
+ * Released under the LGPL license.
+ * http://www.gnu.org/licenses/lgpl.html
+ */
 
-  function createLocalDescription(username, application_name) {
-    if (typeof username !== 'string') {
-      throw new TypeError("LocalStorage username must be a string");
+/*jslint nomen: true*/
+/*global window, jIO, RSVP, btoa, DOMParser, Blob, console*/
+
+// JIO Dav Storage Description :
+// {
+//   type: "dav",
+//   url: {string}
+//   // No Authentication Here
+// }
+
+// {
+//   type: "dav",
+//   url: {string},
+//   basic_login: {string} // Basic authentication
+// }
+
+// NOTE: to get the authentication type ->
+// curl --verbose  -X OPTION http://domain/
+// In the headers: "WWW-Authenticate: Basic realm="DAV-upload"
+
+(function (jIO) {
+  "use strict";
+
+  function ajax(storage, options) {
+    if (options === undefined) {
+      options = {};
     }
-    var description = {
-      "type": "local",
-      "username": username
-    };
-    if (typeof application_name === 'string') {
-      description.application_name = application_name;
+    if (storage._authorization !== undefined) {
+      if (options.headers === undefined) {
+        options.headers = {};
+      }
+      options.headers.Authorization = storage._authorization;
     }
-    return description;
+//       if (start !== undefined) {
+//         if (end !== undefined) {
+//           headers.Range = "bytes=" + start + "-" + end;
+//         } else {
+//           headers.Range = "bytes=" + start + "-";
+//         }
+//       }
+    return new RSVP.Queue()
+      .push(function () {
+        return jIO.util.ajax(options);
+      });
   }
 
-  function createMemoryDescription(username, application_name) {
-    var description = createLocalDescription(username, application_name);
-    description.mode = "memory";
-    return description;
+  function restrictDocumentId(id) {
+    if (id.indexOf("/") !== 0) {
+      throw new jIO.util.jIOError("id " + id + " is forbidden (no begin /)",
+                                  400);
+    }
+    if (id.lastIndexOf("/") !== (id.length - 1)) {
+      throw new jIO.util.jIOError("id " + id + " is forbidden (no end /)",
+                                  400);
+    }
+    return id;
+  }
+
+  function restrictAttachmentId(id) {
+    if (id.indexOf("/") !== -1) {
+      throw new jIO.util.jIOError("attachment " + id + " is forbidden",
+                                  400);
+    }
   }
 
   /**
-   * Tool to help users to create local storage description for JIO
+   * The JIO WebDAV Storage extension
    *
-   * @param  {String} username The username
-   * @param  {String} [application_name] The application_name
-   * @param  {String} [mode="localStorage"] Use localStorage or memory
-   * @return {Object} The storage description
+   * @class DavStorage
+   * @constructor
    */
-  function createDescription(username, application_name, mode) {
-    if (mode === undefined || mode.toString() === 'localStorage') {
-      return createLocalDescription(username, application_name);
+  function DavStorage(spec) {
+    if (typeof spec.url !== 'string') {
+      throw new TypeError("DavStorage 'url' is not of type string");
     }
-    if (mode.toString() === 'memory') {
-      return createMemoryDescription(username, application_name);
+    // Remove last slash
+    this._url = spec.url.replace(/\/$/, '');
+    // XXX digest login
+    if (typeof spec.basic_login === 'string') {
+//       this._auth_type = 'basic';
+      this._authorization = "Basic " + spec.basic_login;
+//     } else {
+//       this._auth_type = 'none';
     }
-    throw new TypeError("Unknown LocalStorage '" + mode.toString() + "' mode");
+
   }
 
-  exports.createDescription = createDescription;
-  exports.createLocalDescription = createLocalDescription;
-  exports.createMemoryDescription = createMemoryDescription;
+  DavStorage.prototype.put = function (param) {
+    // XXX Reject if param has other properties than _id
+    return ajax(this, {
+      type: "MKCOL",
+      url: this._url + param._id
+    });
+  };
 
-  function clearLocalStorage() {
-    var k;
-    for (k in localStorage) {
-      if (localStorage.hasOwnProperty(k)) {
-        if (/^jio\/localstorage\//.test(k)) {
-          localStorage.removeItem(k);
+  DavStorage.prototype.get = function (param) {
+
+    var id = restrictDocumentId(param._id),
+      context = this;
+
+    return new RSVP.Queue()
+      .push(function () {
+        return ajax(context, {
+          type: "PROPFIND",
+          url: context._url + id,
+          dataType: "text",
+          headers: {
+            Depth: "1"
+          }
+        });
+      })
+
+
+      .push(function (response) {
+        // Extract all meta informations and return them to JSON
+
+        var i,
+          result = {
+            "title": param._id
+          },
+          attachment = {},
+          id,
+          attachment_list = new DOMParser().parseFromString(
+            response.target.responseText,
+            "text/xml"
+          ).querySelectorAll(
+            "D\\:response, response"
+          );
+
+        // exclude parent folder and browse
+        for (i = 1; i < attachment_list.length; i += 1) {
+          // XXX Only get files for now
+          id = attachment_list[i].querySelector("D\\:href, href").
+            textContent.split('/').slice(-1)[0];
+          // XXX Ugly
+          if ((id !== undefined) && (id !== "")) {
+            attachment[id] = {};
+          }
+        }
+        if (attachment.length !== 0) {
+          result._attachments = attachment;
+        }
+        return result;
+
+      }, function (error) {
+        if ((error.target !== undefined) &&
+            (error.target.status === 404)) {
+          throw new jIO.util.jIOError("Cannot find document", 404);
+        }
+        throw error;
+      });
+
+  };
+
+
+  DavStorage.prototype.putAttachment = function (param) {
+    var id = restrictDocumentId(param._id);
+    restrictAttachmentId(param._attachment);
+
+    return ajax(this, {
+      type: "PUT",
+      url: this._url + id + param._attachment,
+      data: param._blob
+    })
+      .push(undefined, function (error) {
+        if ((error.target !== undefined) &&
+            (error.target.status === 403)) {
+          throw new jIO.util.jIOError("Cannot find document", 404);
+        }
+        throw error;
+      });
+
+  };
+
+  DavStorage.prototype.getAttachment = function (param) {
+    var id = restrictDocumentId(param._id),
+      context = this;
+    restrictAttachmentId(param._attachment);
+
+    return new RSVP.Queue()
+      .push(function () {
+        return ajax(context, {
+          type: "GET",
+          url: context._url + id + param._attachment,
+          dataType: "blob"
+        });
+      })
+      .push(function (response) {
+        return new Blob(
+          [response.target.response],
+          {"type": response.target.getResponseHeader('Content-Type') ||
+                   "application/octet-stream"}
+        );
+      }, function (error) {
+        if ((error.target !== undefined) &&
+            (error.target.status === 404)) {
+          throw new jIO.util.jIOError("Cannot find document", 404);
+        }
+        throw error;
+      });
+
+  };
+
+  DavStorage.prototype.removeAttachment = function (param) {
+    var id = restrictDocumentId(param._id),
+      context = this;
+    restrictAttachmentId(param._attachment);
+
+    return new RSVP.Queue()
+      .push(function () {
+        return ajax(context, {
+          type: "DELETE",
+          url: context._url + id + param._attachment
+        });
+      })
+      .push(undefined, function (error) {
+        if ((error.target !== undefined) &&
+            (error.target.status === 404)) {
+          throw new jIO.util.jIOError("Cannot find document", 404);
+        }
+        throw error;
+      });
+  };
+
+  // JIO COMMANDS //
+
+  // wedDav methods rfc4918 (short summary)
+  // COPY     Reproduces single resources (files) and collections (directory
+  //          trees). Will overwrite files (if specified by request) but will
+  //          respond 209 (Conflict) if it would overwrite a tree
+  // DELETE   deletes files and directory trees
+  // GET      just the vanilla HTTP/1.1 behaviour
+  // HEAD     ditto
+  // LOCK     locks a resources
+  // MKCOL    creates a directory
+  // MOVE     Moves (rename or copy) a file or a directory tree. Will
+  //          'overwrite' files (if specified by the request) but will respond
+  //          209 (Conflict) if it would overwrite a tree.
+  // OPTIONS  If WebDAV is enabled and available for the path this reports the
+  //          WebDAV extension methods
+  // PROPFIND Retrieves the requested file characteristics, DAV lock status
+  //          and 'dead' properties for individual files, a directory and its
+  //          child files, or a directory tree
+  // PROPPATCHset and remove 'dead' meta-data properties
+  // PUT      Update or create resource or collections
+  // UNLOCK   unlocks a resource
+
+  // Notes: all Ajax requests should be CORS (cross-domain)
+  // adding custom headers triggers preflight OPTIONS request!
+  // http://remysharp.com/2011/04/21/getting-cors-working/
+
+  jIO.addStorage('dav', DavStorage);
+
+}(jIO));
+;/*jslint nomen: true */
+/*global RSVP*/
+
+/**
+ * JIO Union Storage. Type = 'union'.
+ * This provide a unified access other multiple storage.
+ * New document are created in the first sub storage.
+ * Document are searched in each sub storage until it is found.
+ * 
+ *
+ * Storage Description:
+ *
+ *     {
+ *       "type": "union",
+ *       "storage_list": [
+ *         sub_storage_description_1,
+ *         sub_storage_description_2,
+ *
+ *         sub_storage_description_X,
+ *       ]
+ *     }
+ *
+ * @class UnionStorage
+ */
+
+(function (jIO) {
+  "use strict";
+
+  /**
+   * The JIO UnionStorage extension
+   *
+   * @class UnionStorage
+   * @constructor
+   */
+  function UnionStorage(spec) {
+    if (!Array.isArray(spec.storage_list)) {
+      throw new jIO.util.jIOError("storage_list is not an Array", 400);
+    }
+    var i;
+    this._storage_list = [];
+    for (i = 0; i < spec.storage_list.length; i += 1) {
+      this._storage_list.push(jIO.createJIO(spec.storage_list[i]));
+    }
+  }
+
+  UnionStorage.prototype._getWithStorageIndex = function () {
+    var i,
+      index = 0,
+      context = this,
+      arg = arguments,
+      result = this._storage_list[0].get.apply(this._storage_list[0], arg);
+
+    function handle404(j) {
+      result
+        .push(undefined, function (error) {
+          if ((error instanceof jIO.util.jIOError) &&
+              (error.status_code === 404)) {
+            return context._storage_list[j].get.apply(context._storage_list[j],
+                                                      arg)
+              .push(function (doc) {
+                index = j;
+                return doc;
+              });
+          }
+          throw error;
+        });
+    }
+
+    for (i = 1; i < this._storage_list.length; i += 1) {
+      handle404(i);
+    }
+    return result
+      .push(function (doc) {
+        return [index, doc];
+      });
+  };
+
+  /*
+   * Get a document
+   * Try on each substorage on after the other
+   */
+  UnionStorage.prototype.get = function () {
+    return this._getWithStorageIndex.apply(this, arguments)
+      .push(function (result) {
+        return result[1];
+      });
+  };
+
+  /*
+   * Post a document
+   * Simply store on the first substorage
+   */
+  UnionStorage.prototype.post = function () {
+    return this._storage_list[0].post.apply(this._storage_list[0], arguments);
+  };
+
+  /*
+   * Put a document
+   * Search the document location, and modify it in its storage.
+   */
+  UnionStorage.prototype.put = function () {
+    var arg = arguments,
+      context = this;
+    return this._getWithStorageIndex({"_id": arg[0]._id})
+      .push(function (result) {
+        // Storage found, modify in it directly
+        var sub_storage = context._storage_list[result[0]];
+        return sub_storage.put.apply(sub_storage, arg);
+      });
+  };
+
+  /*
+   * Remove a document
+   * Search the document location, and remove it from its storage.
+   */
+  UnionStorage.prototype.remove = function () {
+    var arg = arguments,
+      context = this;
+    return this._getWithStorageIndex({"_id": arg[0]._id})
+      .push(function (result) {
+        // Storage found, remove from it directly
+        var sub_storage = context._storage_list[result[0]];
+        return sub_storage.remove.apply(sub_storage, arg);
+      });
+  };
+
+  UnionStorage.prototype.buildQuery = function () {
+    var promise_list = [],
+      i,
+      id_dict = {},
+      len = this._storage_list.length,
+      sub_storage;
+    for (i = 0; i < len; i += 1) {
+      sub_storage = this._storage_list[i];
+      promise_list.push(sub_storage.buildQuery.apply(sub_storage, arguments));
+    }
+    return new RSVP.Queue()
+      .push(function () {
+        return RSVP.all(promise_list);
+      })
+      .push(function (result_list) {
+        var result = [],
+          sub_result,
+          sub_result_len,
+          j;
+        len = result_list.length;
+        for (i = 0; i < len; i += 1) {
+          sub_result = result_list[i];
+          sub_result_len = sub_result.length;
+          for (j = 0; j < sub_result_len; j += 1) {
+            if (!id_dict.hasOwnProperty(sub_result[j].id)) {
+              id_dict[sub_result[j].id] = null;
+              result.push(sub_result[j]);
+            }
+          }
+        }
+        return result;
+      });
+  };
+
+  UnionStorage.prototype.hasCapacity = function (name) {
+    var i,
+      len,
+      result,
+      sub_storage;
+    if ((name === "list") ||
+            (name === "query") ||
+            (name === "select")) {
+      result = true;
+      len = this._storage_list.length;
+      for (i = 0; i < len; i += 1) {
+        sub_storage = this._storage_list[i];
+        result = result && sub_storage.hasCapacity(name);
+      }
+      return result;
+    }
+    return false;
+  };
+
+  jIO.addStorage('union', UnionStorage);
+
+}(jIO));
+;/*jslint nomen: true, maxlen: 200*/
+/*global RSVP*/
+(function (jIO) {
+  "use strict";
+
+  /**
+   * The jIO QueryStorage extension
+   *
+   * @class QueryStorage
+   * @constructor
+   */
+  function QueryStorage(spec) {
+    this._sub_storage = jIO.createJIO(spec.sub_storage);
+    this._key_schema = spec.key_schema;
+  }
+
+  QueryStorage.prototype.get = function () {
+    return this._sub_storage.get.apply(this._sub_storage, arguments);
+  };
+  QueryStorage.prototype.post = function () {
+    return this._sub_storage.post.apply(this._sub_storage, arguments);
+  };
+  QueryStorage.prototype.put = function () {
+    return this._sub_storage.put.apply(this._sub_storage, arguments);
+  };
+  QueryStorage.prototype.remove = function () {
+    return this._sub_storage.remove.apply(this._sub_storage, arguments);
+  };
+  QueryStorage.prototype.getAttachment = function () {
+    return this._sub_storage.getAttachment.apply(this._sub_storage, arguments);
+  };
+  QueryStorage.prototype.putAttachment = function () {
+    return this._sub_storage.putAttachment.apply(this._sub_storage, arguments);
+  };
+  QueryStorage.prototype.removeAttachment = function () {
+    return this._sub_storage.removeAttachment.apply(this._sub_storage, arguments);
+  };
+
+  /**
+   * Retrieve documents.
+   * This method performs an .allDocs() call on the substorage,
+   * retrieving everything, then runs a query on the result.
+   *
+   * @method allDocs
+   * @param  {Object} command The given parameters
+   * @param  {Object} options The command options
+   */
+  QueryStorage.prototype.hasCapacity = function (name) {
+    if (name === "list") {
+      return this._sub_storage.hasCapacity(name);
+    }
+    return true;
+  };
+  QueryStorage.prototype.buildQuery = function (options) {
+    var substorage = this._sub_storage,
+      context = this,
+//       sub_query_result,
+      sub_options = {},
+      is_manual_query_needed = false,
+      is_manual_include_needed = false;
+
+    if (substorage.hasCapacity("list")) {
+
+      // Can substorage handle the queries if needed?
+      try {
+        if (((options.query === undefined) || (substorage.hasCapacity("query"))) &&
+            ((options.sort_on === undefined) || (substorage.hasCapacity("sort"))) &&
+            ((options.select_list === undefined) || (substorage.hasCapacity("select"))) &&
+            ((options.limit === undefined) || (substorage.hasCapacity("limit")))) {
+          sub_options.query = options.query;
+          sub_options.sort_on = options.sort_on;
+          sub_options.select_list = options.select_list;
+          sub_options.limit = options.limit;
+        }
+      } catch (error) {
+        if ((error instanceof jIO.util.jIOError) && (error.status_code === 501)) {
+          is_manual_query_needed = true;
+        } else {
+          throw error;
         }
       }
+
+      // Can substorage include the docs if needed?
+      try {
+        if ((is_manual_query_needed || (options.include_docs === true)) && (!substorage.hasCapacity("include"))) {
+          sub_options.include_docs = options.include_docs;
+        }
+      } catch (error) {
+        if ((error instanceof jIO.util.jIOError) && (error.status_code === 501)) {
+          is_manual_include_needed = true;
+        } else {
+          throw error;
+        }
+      }
+
+
+      return substorage.buildQuery(sub_options)
+
+        // Include docs if needed
+        .push(function (result) {
+          var include_query_list = [result],
+            len,
+            i;
+
+          function safeGet(j) {
+            return substorage.get({"_id": result[j].id})
+              .push(undefined, function (error) {
+                // Document may have been dropped after listing
+                if ((error instanceof jIO.util.jIOError) && (error.status_code === 404)) {
+                  return;
+                }
+                throw error;
+              });
+          }
+
+          if (is_manual_include_needed) {
+            len = result.length;
+            for (i = 0; i < len; i += 1) {
+              include_query_list.push(safeGet(i));
+            }
+            result = RSVP.all(include_query_list);
+          }
+          return result;
+        })
+        .push(function (result) {
+          var original_result,
+            len,
+            i;
+          if (is_manual_include_needed) {
+            original_result = result[0];
+            len = original_result.length;
+            for (i = 0; i < len; i += 1) {
+              original_result[i].doc = result[i + 1];
+            }
+            result = original_result;
+          }
+          return result;
+        })
+
+        // Manual query if needed
+        .push(function (result) {
+          var data_rows = [],
+            len,
+            i;
+          if (is_manual_query_needed) {
+//             sub_query_result = result;
+            len = result.length;
+            for (i = 0; i < len; i += 1) {
+              data_rows.push(result[i].doc);
+            }
+            if (options.select_list) {
+              options.select_list.push("_id");
+            }
+            result = jIO.QueryFactory.create(options.query || "", context._key_schema).
+              exec(data_rows, options);
+          }
+          return result;
+        })
+
+        // reconstruct filtered rows, preserving the order from docs
+        .push(function (result) {
+          var new_result = [],
+            element,
+            len,
+            i;
+          if (is_manual_query_needed) {
+            len = result.length;
+            for (i = 0; i < len; i += 1) {
+              element = {
+                id: result[i]._id,
+                value: options.select_list ? result[i] : {},
+                doc: {}
+              };
+              if (options.select_list) {
+                // Does not work if user manually request _id
+                delete element.value._id;
+              }
+              if (options.include_docs) {
+                // XXX To implement
+                throw new Error("QueryStorage does not support include docs");
+              }
+              new_result.push(element);
+            }
+            result = new_result;
+          }
+          return result;
+        });
+
+//           if (options.include_docs) {
+//             for (i = 0, l = filtered_docs.length; i < l; i += 1) {
+//               filtered_docs[i] = {
+//                 "id": filtered_docs[i]._id,
+//                 "doc": docs[filtered_docs[i]._id],
+//                 "value": options.select_list ? filtered_docs[i] : {}
+//               };
+//               delete filtered_docs[i].value._id;
+//             }
+//           } else {
+//             for (i = 0, l = filtered_docs.length; i < l; i += 1) {
+//               filtered_docs[i] = {
+//                 "id": filtered_docs[i]._id,
+//                 "value": options.select_list ? filtered_docs[i] : {}
+//               };
+//               delete filtered_docs[i].value._id;
+//             }
+//           }
+//           response.data.rows = filtered_docs;
+//           response.data.total_rows = filtered_docs.length;
+//           return response;
+//         });
+
+//       return jIO.QueryFactory.create(options.query || "", that._key_schema).
+//         exec(data_rows, options).
+//         then(function (filtered_docs) {
+//           // reconstruct filtered rows, preserving the order from docs
+//           if (options.include_docs) {
+//             for (i = 0, l = filtered_docs.length; i < l; i += 1) {
+//               filtered_docs[i] = {
+//                 "id": filtered_docs[i]._id,
+//                 "doc": docs[filtered_docs[i]._id],
+//                 "value": options.select_list ? filtered_docs[i] : {}
+//               };
+//               delete filtered_docs[i].value._id;
+//             }
+//           } else {
+//             for (i = 0, l = filtered_docs.length; i < l; i += 1) {
+//               filtered_docs[i] = {
+//                 "id": filtered_docs[i]._id,
+//                 "value": options.select_list ? filtered_docs[i] : {}
+//               };
+//               delete filtered_docs[i].value._id;
+//             }
+//           }
+//           response.data.rows = filtered_docs;
+//           response.data.total_rows = filtered_docs.length;
+//           return response;
+//         });
+
     }
+
+//       }).then(function (response) {
+// 
+//         ((options.include_docs === undefined) || context.hasCapacity("include")) &&
+//     }
+// 
+//       return context.buildQuery.apply(context, arguments);
+//     }
+// 
+// //       // we need the full documents in order to perform the query, will
+// //       // remove them later if they were not required.
+// //       include_docs = (options.include_docs || options.query) ? true : false;
+// 
+//     console.log("QueryStorage: calling substorage buildQuery");
+//     return substorage.buildQuery.apply(substorage, arguments);
+
+
+//     return substorage.buildQuery.apply(substorage, arguments)
+//       .push(function (result) {
+//       });
+
+//     substorage.allDocs({
+//       "include_docs": include_docs
+//     }).then(function (response) {
+// 
+//       var data_rows = response.data.rows, docs = {}, row, i, l;
+// 
+//       if (!include_docs) {
+//         return response;
+//       }
+// 
+//       if (options.include_docs) {
+//         for (i = 0, l = data_rows.length; i < l; i += 1) {
+//           row = data_rows[i];
+//           docs[row.id] = JSON.parse(JSON.stringify(row.doc));
+//           row.doc._id = row.id;
+//           data_rows[i] = row.doc;
+//         }
+//       } else {
+//         for (i = 0, l = data_rows.length; i < l; i += 1) {
+//           row = data_rows[i];
+//           row.doc._id = row.id;
+//           data_rows[i] = row.doc;
+//         }
+//       }
+// 
+//       if (options.select_list) {
+//         options.select_list.push("_id");
+//       }
+// 
+//       return jIO.QueryFactory.create(options.query || "", that._key_schema).
+//         exec(data_rows, options).
+//         then(function (filtered_docs) {
+//           // reconstruct filtered rows, preserving the order from docs
+//           if (options.include_docs) {
+//             for (i = 0, l = filtered_docs.length; i < l; i += 1) {
+//               filtered_docs[i] = {
+//                 "id": filtered_docs[i]._id,
+//                 "doc": docs[filtered_docs[i]._id],
+//                 "value": options.select_list ? filtered_docs[i] : {}
+//               };
+//               delete filtered_docs[i].value._id;
+//             }
+//           } else {
+//             for (i = 0, l = filtered_docs.length; i < l; i += 1) {
+//               filtered_docs[i] = {
+//                 "id": filtered_docs[i]._id,
+//                 "value": options.select_list ? filtered_docs[i] : {}
+//               };
+//               delete filtered_docs[i].value._id;
+//             }
+//           }
+//           response.data.rows = filtered_docs;
+//           response.data.total_rows = filtered_docs.length;
+//           return response;
+//         });
+// 
+//     }).then(command.success, command.error, command.notify);
+  };
+
+  jIO.addStorage('query', QueryStorage);
+
+}(jIO));
+;/*jslint nomen: true, maxlen: 200*/
+/*global console, RSVP, Blob*/
+(function (jIO) {
+  "use strict";
+
+  /**
+   * The jIO FileSystemBridgeStorage extension
+   *
+   * @class FileSystemBridgeStorage
+   * @constructor
+   */
+  function FileSystemBridgeStorage(spec) {
+    this._sub_storage = jIO.createJIO(spec.sub_storage);
+    this._document_key = "/.jio_documents/";
+    this._attachment_key = "/.jio_attachments/";
+  }
+  var DOCUMENT_EXTENSION = ".json",
+    ROOT = "/";
+
+  FileSystemBridgeStorage.prototype.get = function (param) {
+    var context = this,
+      json_document,
+      explicit_document = false;
+    return new RSVP.Queue()
+
+      // First, try to get explicit reference to the document
+
+      .push(function () {
+        // First get the document itself if it exists
+        return context._sub_storage.getAttachment({
+          "_id": context._document_key,
+          "_attachment": param._id + DOCUMENT_EXTENSION
+        });
+      })
+      .push(function (blob) {
+        return new RSVP.Queue()
+          .push(function () {
+            return jIO.util.readBlobAsText(blob);
+          })
+          .push(function (text) {
+            explicit_document = true;
+            return JSON.parse(text.target.result);
+          });
+      }, function (error) {
+        if ((error instanceof jIO.util.jIOError) && (error.status_code === 404)) {
+          return {};
+        }
+        throw error;
+      })
+
+      // Second, try to get default attachment
+
+      .push(function (result) {
+        json_document = result;
+
+        return context._sub_storage.get({
+          "_id": ROOT
+        });
+      })
+
+      .push(function (directory_document) {
+        if (directory_document._attachments.hasOwnProperty(param._id)) {
+          json_document._attachments = {
+            enclosure: {}
+          };
+        } else {
+          if (!explicit_document) {
+            throw new jIO.util.jIOError("Cannot find document", 404);
+          }
+        }
+        return json_document;
+      });
+
+  };
+
+  FileSystemBridgeStorage.prototype.post = function (param) {
+    var doc_id = param._id;
+
+    if (doc_id === undefined) {
+      doc_id = jIO.util.generateUuid();
+    }
+
+    param._id = doc_id;
+    return this.put(param);
+  };
+
+  FileSystemBridgeStorage.prototype.put = function (param) {
+    var context = this,
+      doc_id = param._id;
+    // XXX Handle conflict!
+    // XXX Put empty enclosure directly if json is empty
+
+    return context._sub_storage.putAttachment({
+      "_id": context._document_key,
+      "_attachment": doc_id + DOCUMENT_EXTENSION,
+      "_blob": new Blob([JSON.stringify(param)], {type: "application/json"})
+    })
+      .push(undefined, function (error) {
+        if ((error instanceof jIO.util.jIOError) && (error.status_code === 404)) {
+          return context._sub_storage.put({
+            "_id": context._document_key
+          })
+            .push(function () {
+              return context._sub_storage.putAttachment({
+                "_id": context._document_key,
+                "_attachment": doc_id + DOCUMENT_EXTENSION,
+                "_blob": new Blob([JSON.stringify(param)], {type: "application/json"})
+              });
+            });
+        }
+        throw error;
+      })
+      .push(function () {
+        return doc_id;
+      });
+
+  };
+
+  FileSystemBridgeStorage.prototype.remove = function (param) {
+    var context = this,
+      got_error = false,
+      doc_id = param._id;
+    return new RSVP.Queue()
+
+      // First, try to remove enclosure
+      .push(function () {
+        return context._sub_storage.removeAttachment({
+          "_id": ROOT,
+          "_attachment": doc_id
+        });
+      })
+
+      .push(undefined, function (error) {
+        if ((error instanceof jIO.util.jIOError) && (error.status_code === 404)) {
+          got_error = true;
+          return;
+        }
+        throw error;
+      })
+
+      // Second, try to remove explicit doc
+      .push(function () {
+        return context._sub_storage.removeAttachment({
+          "_id": context._document_key,
+          "_attachment": doc_id + DOCUMENT_EXTENSION
+        });
+      })
+
+      .push(undefined, function (error) {
+        if ((!got_error) && (error instanceof jIO.util.jIOError) && (error.status_code === 404)) {
+          return;
+        }
+        throw error;
+      });
+
+  };
+
+  FileSystemBridgeStorage.prototype.hasCapacity = function (capacity) {
+    if (capacity === "list") {
+      return true;
+    }
+    return false;
+  };
+
+  FileSystemBridgeStorage.prototype.buildQuery = function () {
+    var result_dict = {},
+      context = this;
+    return new RSVP.Queue()
+
+      // First, get list of explicit documents
+
+      .push(function () {
+        return context._sub_storage.get({
+          "_id": context._document_key
+        });
+      })
+      .push(function (result) {
+        var key;
+        for (key in result._attachments) {
+          if (result._attachments.hasOwnProperty(key)) {
+            result_dict[key.slice(0, key.length - DOCUMENT_EXTENSION.length)] = null;
+          }
+        }
+      }, function (error) {
+        if ((error instanceof jIO.util.jIOError) && (error.status_code === 404)) {
+          return;
+        }
+        throw error;
+      })
+
+      // Second, get list of enclosure
+
+      .push(function () {
+        return context._sub_storage.get({
+          "_id": ROOT
+        });
+      })
+      .push(function (result) {
+        var key;
+        for (key in result._attachments) {
+          if (result._attachments.hasOwnProperty(key)) {
+            result_dict[key] = null;
+          }
+        }
+      })
+
+      // Finally, build the result
+
+      .push(function () {
+        var result = [],
+          key;
+        for (key in result_dict) {
+          if (result_dict.hasOwnProperty(key)) {
+            result.push({
+              id: key,
+              value: {}
+            });
+          }
+        }
+        return result;
+      });
+
+  };
+
+  FileSystemBridgeStorage.prototype.getAttachment = function (param) {
+    if (param._attachment !== "enclosure") {
+      throw new Error("Only support 'enclosure' attachment");
+    }
+
+    return this._sub_storage.getAttachment({
+      "_id": ROOT,
+      "_attachment": param._id
+    });
+  };
+
+  FileSystemBridgeStorage.prototype.putAttachment = function (param) {
+    if (param._attachment !== "enclosure") {
+      throw new Error("Only support 'enclosure' attachment");
+    }
+
+    return this._sub_storage.putAttachment({
+      "_id": ROOT,
+      "_attachment": param._id,
+      "_blob": param._blob
+    });
+  };
+
+  FileSystemBridgeStorage.prototype.removeAttachment = function (param) {
+    if (param._attachment !== "enclosure") {
+      throw new Error("Only support 'enclosure' attachment");
+    }
+
+    return this._sub_storage.removeAttachment({
+      "_id": ROOT,
+      "_attachment": param._id
+    });
+  };
+
+  jIO.addStorage('drivetojiomapping', FileSystemBridgeStorage);
+
+}(jIO));
+;/*jslint nomen: true*/
+/*global console, Blob, atob, btoa*/
+(function (jIO, Blob, atob, btoa) {
+  "use strict";
+
+  /**
+   * The jIO DocumentStorage extension
+   *
+   * @class DocumentStorage
+   * @constructor
+   */
+  function DocumentStorage(spec) {
+    this._sub_storage = jIO.createJIO(spec.sub_storage);
+    this._document_id = spec.document_id;
   }
 
-  function clearMemoryStorage() {
-    jIO.util.dictClear(ram);
+  var DOCUMENT_EXTENSION = ".json",
+    DOCUMENT_REGEXP = new RegExp("^jio_document/([\\w=]+)" +
+                                 DOCUMENT_EXTENSION + "$"),
+    ATTACHMENT_REGEXP = new RegExp("^jio_attachment/([\\w=]+)/([\\w=]+)$");
+
+  function getSubAttachmentIdFromParam(param) {
+    if (param._attachment === undefined) {
+      return 'jio_document/' + btoa(param._id) + DOCUMENT_EXTENSION;
+    }
+    return 'jio_attachment/' + btoa(param._id) + "/" + btoa(param._attachment);
   }
 
-  exports.clear = clearLocalStorage;
-  exports.clearLocalStorage = clearLocalStorage;
-  exports.clearMemoryStorage = clearMemoryStorage;
+  DocumentStorage.prototype.get = function (param) {
 
-}));
+    var result,
+      context = this;
+    return this._sub_storage.getAttachment({
+      "_id": this._document_id,
+      "_attachment": getSubAttachmentIdFromParam(param)
+    })
+      .push(function (blob) {
+        return jIO.util.readBlobAsText(blob);
+      })
+      .push(function (text) {
+        return JSON.parse(text.target.result);
+      })
+      .push(function (json) {
+        result = json;
+        return context._sub_storage.get({
+          "_id": context._document_id
+        });
+      })
+      .push(function (document) {
+        var attachments = {},
+          exec,
+          key;
+        for (key in document._attachments) {
+          if (document._attachments.hasOwnProperty(key)) {
+            if (ATTACHMENT_REGEXP.test(key)) {
+              exec = ATTACHMENT_REGEXP.exec(key);
+              if (atob(exec[1]) === param._id) {
+                attachments[atob(exec[2])] = {};
+              }
+            }
+          }
+        }
+        if (Object.getOwnPropertyNames(attachments).length > 0) {
+          result._attachments = attachments;
+        }
+        return result;
+      });
+  };
+
+  DocumentStorage.prototype.post = function (param) {
+    var doc_id = param._id;
+
+    if (doc_id === undefined) {
+      doc_id = jIO.util.generateUuid();
+    }
+
+    param._id = doc_id;
+    return this.put(param);
+  };
+
+  DocumentStorage.prototype.put = function (param) {
+    var doc_id = param._id;
+
+    return this._sub_storage.putAttachment({
+      "_id": this._document_id,
+      "_attachment": getSubAttachmentIdFromParam(param),
+      "_blob": new Blob([JSON.stringify(param)], {type: "application/json"})
+    })
+      .push(function () {
+        return doc_id;
+      });
+
+  };
+
+  DocumentStorage.prototype.remove = function (param) {
+    return this._sub_storage.removeAttachment({
+      "_id": this._document_id,
+      "_attachment": getSubAttachmentIdFromParam(param)
+    })
+      .push(function () {
+        return param._id;
+      });
+  };
+
+  DocumentStorage.prototype.hasCapacity = function (capacity) {
+    return (capacity === "list");
+  };
+
+  DocumentStorage.prototype.buildQuery = function () {
+    return this._sub_storage.get({
+      "_id": this._document_id
+    })
+      .push(function (document) {
+        var result = [],
+          key;
+        for (key in document._attachments) {
+          if (document._attachments.hasOwnProperty(key)) {
+            if (DOCUMENT_REGEXP.test(key)) {
+              result.push({
+                id: atob(DOCUMENT_REGEXP.exec(key)[1]),
+                value: {}
+              });
+            }
+          }
+        }
+        return result;
+      });
+  };
+
+  DocumentStorage.prototype.getAttachment = function (param) {
+    return this._sub_storage.getAttachment({
+      "_id": this._document_id,
+      "_attachment": getSubAttachmentIdFromParam(param)
+    });
+  };
+
+  DocumentStorage.prototype.putAttachment = function (param) {
+    return this._sub_storage.putAttachment({
+      "_id": this._document_id,
+      "_attachment": getSubAttachmentIdFromParam(param),
+      "_blob": param._blob
+    });
+  };
+
+  DocumentStorage.prototype.removeAttachment = function (param) {
+    return this._sub_storage.removeAttachment({
+      "_id": this._document_id,
+      "_attachment": getSubAttachmentIdFromParam(param)
+    });
+  };
+
+  jIO.addStorage('document', DocumentStorage);
+
+}(jIO, Blob, atob, btoa));
