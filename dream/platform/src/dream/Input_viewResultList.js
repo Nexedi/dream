@@ -35,7 +35,7 @@
         "_attachment": "simulation.json"
       })
         .push(undefined, function (error) {
-          if (error.status === 404) {
+          if (error.status_code === 404) {
             // Simulation not yet generated
             return JSON.stringify([]);
           }
