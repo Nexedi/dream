@@ -597,7 +597,7 @@
           if (error instanceof RSVP.CancellationError) {
             throw error;
           }
-          console.error(error);
+          console.error(error.stack);
           document.querySelector("article[class='gadget_container']")
             .innerHTML = error_template({ error: error });
         });
