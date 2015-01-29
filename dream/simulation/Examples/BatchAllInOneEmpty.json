@@ -854,6 +854,7 @@
 			}
 		},
 		"preprocessing" : {
+			"description" : " ",
 			"plugin_list" : [{
 					"plugin" : "GatherWIPStat.GatherWIPStat",
 					"input_id" : "WIPStat"
@@ -874,6 +875,7 @@
 			]
 		},
 		"processing" : {
+			"description" : " ",
 			"plugin_list" : [{
 					"plugin" : "plugin.DefaultExecutionPlugin",
 					"input_id" : "Simulation"
@@ -881,6 +883,7 @@
 			]
 		},
 		"postprocessing" : {
+			"description" : " ",
 			"plugin_list" : [
 			]
 		},
