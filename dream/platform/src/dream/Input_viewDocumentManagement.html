@@ -15,6 +15,10 @@
   </head>
   <body>
     <a class="export_link ui-btn ui-btn-inline ui-icon-action ui-btn-icon-right">Export</a>
+    <form id="export_form" style="display:none" method="post" action="../../postJSONData">
+      <textarea id="export_json" name="data"></textarea>
+    </form>
+
     <form class="knowledge_form">
       <button type="submit" class="ui-btn ui-btn-b ui-btn-inline
       ui-icon-refresh ui-btn-icon-right">Run Knowledge Extraction Tool</button>

@@ -4,14 +4,6 @@
            initGadgetMixin) {
   "use strict";
 
-  function datatouri(data, mime_type) {
-    var result = "data:";
-    if (mime_type !== undefined) {
-      result += mime_type;
-    }
-    return result + ";base64," + window.btoa(data);
-  }
-
   function disableAllButtons(gadget) {
     // Prevent double click
     var i,
@@ -141,8 +133,12 @@
         })
         .push(function (result_list) {
           var export_link = gadget.props.element.querySelector(".export_link");
-          export_link.download = result_list[0].data.title;
-          export_link.href = datatouri(result_list[1], "application/json");
+          // XXX this breaks promise chain
+          $(export_link).click(
+            function() {
+              $('#export_json').val(result_list[1]);
+              return $('#export_form').submit();
+          });
         });
     })
 
