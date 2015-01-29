@@ -75,7 +75,7 @@
 
       return new RSVP.Queue()
         .push(function () {
-          return waitForNew(gadget);
+          return waitForImport(gadget);
         })
         .push(function (result) {
           return gadget.whoWantsToDisplayThisDocument(result.id);
