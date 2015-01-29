@@ -400,18 +400,41 @@
     // references
     // XXX this should probably be moved to fieldset ( and not handle
     // class_definition here)
-    var referenced, i,
-      expanded_class_definition = {properties:
-        class_definition.properties || {}};
+    var referenced, i, property,
+      class_definition = clone(class_definition),
+      expanded_class_definition = clone(class_definition) || {};
 
-    // expand direct ref
-    if (class_definition.$ref) {
-      referenced = expandSchema(resolveReference(class_definition.$ref,
-                                                 full_schema.class_definition),
-                                full_schema);
-     $.extend(expanded_class_definition, referenced);
+    if (!expanded_class_definition.properties) {
+      expanded_class_definition.properties = {};
     }
     
+    // expand direct ref
+    if (class_definition.$ref) {
+      referenced = expandSchema(
+        resolveReference(
+          class_definition.$ref,
+          full_schema.class_definition),
+        full_schema);
+      $.extend(expanded_class_definition, referenced);
+     delete expanded_class_definition.$ref;
+    }
+    
+    // expand ref in properties
+    for (property in class_definition.properties) {
+      if (class_definition.properties.hasOwnProperty(property)) {
+        if (class_definition.properties[property].$ref) {
+          referenced = expandSchema(
+            resolveReference(
+              class_definition.properties[property].$ref,
+              full_schema.class_definition),
+            full_schema);
+          //expanded_class_definition.properties[property] = referenced;
+          $.extend(expanded_class_definition.properties[property], referenced);
+          delete expanded_class_definition.properties[property].$ref;
+        }
+      }
+    }
+
     if (class_definition.oneOf) {
       expanded_class_definition.oneOf = [];
       for (i = 0; i < class_definition.oneOf.length; i += 1) {
@@ -430,6 +453,9 @@
           delete referenced.properties;
         }
         $.extend(expanded_class_definition, referenced);
+      }
+      if (expanded_class_definition.allOf) {
+        delete expanded_class_definition.allOf;
       }
     }
     if (expanded_class_definition.$ref) {
