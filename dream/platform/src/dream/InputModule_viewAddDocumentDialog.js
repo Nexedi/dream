@@ -55,68 +55,6 @@
       });
   }
 
-  function waitForNew(gadget) {
-    var json_data = {
-      nodes: {},
-      edges: {},
-      preference: {},
-      general: {},
-      wip_part_spreadsheet: [[
-        "Order ID",
-        "Due Date",
-        "Priority",
-        "Project Manager",
-        "Part",
-        "Part Type",
-        "Sequence",
-        "Processing Times",
-        "Prerequisites Parts"
-      ]],
-      shift_spreadsheet: [[
-        "Day",
-        "Machines", // XXX more generic name ?
-        "Start",
-        "End"
-      ]],
-      capacity_by_project_spreadsheet: [[
-        "Project Name",
-        "Sequence",
-        "Capacity Requirements"
-      ]],
-      capacity_by_station_spreadsheet: [[
-        "Day",
-        "CS1"
-      ]],
-      dp_capacity_spreadsheet: [[ ]],
-      dp_route_spreadsheet: [[ ]]
-    },
-      name = "Untitled";
-
-    return new RSVP.Queue()
-      .push(function () {
-        return promiseEventListener(
-          gadget.props.element.getElementsByClassName("new_form")[0],
-          'submit',
-          false
-        );
-      })
-      .push(function (evt) {
-        // Prevent double click
-        evt.target
-           .getElementsByClassName("ui-btn")[0].disabled = true;
-        return createDocument(gadget, name);
-      })
-      .push(function (jio_document) {
-        // Add JSON as attachment
-        return gadget.aq_putAttachment({
-          "_id": jio_document.id,
-          "_attachment": "body.json",
-          "_data": JSON.stringify(json_data),
-          "_mimetype": "application/json"
-        });
-      });
-  }
-
   var gadget_klass = rJS(window);
   initGadgetMixin(gadget_klass);
   gadget_klass
@@ -137,10 +75,7 @@
 
       return new RSVP.Queue()
         .push(function () {
-          return RSVP.any([
-            waitForImport(gadget),
-            waitForNew(gadget)
-          ]);
+          return waitForNew(gadget);
         })
         .push(function (result) {
           return gadget.whoWantsToDisplayThisDocument(result.id);
