@@ -391,6 +391,10 @@
     return schema;
   }
 
+  function clone(obj) {
+    return JSON.parse(JSON.stringify(obj));
+  }
+
   function expandSchema(class_definition, full_schema) {
     // minimal expanding of json schema, supports merging allOf and $ref
     // references
@@ -405,10 +409,7 @@
       referenced = expandSchema(resolveReference(class_definition.$ref,
                                                  full_schema.class_definition),
                                 full_schema);
-      if (referenced.properties) {
-        delete referenced.properties;
-      }
-      $.extend(expanded_class_definition, referenced);
+     $.extend(expanded_class_definition, referenced);
     }
     
     if (class_definition.oneOf) {
@@ -434,7 +435,7 @@
     if (expanded_class_definition.$ref) {
       delete expanded_class_definition.$ref;
     }
-    return Object.create(expanded_class_definition);
+    return clone(expanded_class_definition);
   }
 
   function openEdgeEditionDialog(gadget, connection) {
