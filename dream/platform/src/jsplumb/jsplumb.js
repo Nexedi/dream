@@ -752,7 +752,7 @@
       callback = function (evt) {
         try {
           var class_name = JSON.parse(
-              evt.dataTransfer.getData('application/json')
+              evt.dataTransfer.getData('text')
             ),
             offset = $(gadget.props.main).offset(),
             relative_position = convertToRelativePosition(
