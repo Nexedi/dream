@@ -118,6 +118,14 @@ def _runWithTimeout(queue, func, args, kw):
 
   queue.put(func(*args, **kw))
 
+@app.route("/postJSONData", methods=["POST", "OPTIONS"])
+def postJSONData():
+  """Returns posted JSON data as it is for Export button"""
+  data = json.loads(request.form.get('data'))
+  response = jsonify(data)
+  response.headers['Content-Disposition'] = 'attachment; filename=dream.json'
+  return response
+
 @app.route("/runSimulation", methods=["POST", "OPTIONS"])
 def runSimulation():
   parameter_dict = request.json
