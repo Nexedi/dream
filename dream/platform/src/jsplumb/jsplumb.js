@@ -548,6 +548,10 @@
         edit_popup.popup('open');
         return fieldset_gadget[0];
       })
+      .push(function (fieldset_gadget){
+        fieldset_gadget.startService();
+        return fieldset_gadget;
+      })
       .push(function (fieldset_gadget) {
         // Expose the dialog handling promise so that we can wait for it in
         // test.
@@ -648,6 +652,10 @@
         node_edit_popup.enhanceWithin();
         node_edit_popup.popup('open');
         return fieldset_gadget[0];
+      })
+      .push(function (fieldset_gadget){
+        fieldset_gadget.startService();
+        return fieldset_gadget;
       })
       .push(function (fieldset_gadget) {
         // Expose the dialog handling promise so that we can wait for it in
