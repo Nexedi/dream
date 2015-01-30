@@ -9,7 +9,7 @@ from dream.plugins import plugin
 
 class AvailableCapacitySpreadsheet(plugin.InputPreparationPlugin):
     """ Input prepration 
-        read wip-srpeadsheet data and update the wip property of the stations.
+        read capacity data and update the capacity property of the stations.
     """
 
     def preprocess(self, data):
