@@ -130,7 +130,7 @@
 
 		default_value =  properties_dict[sub_title].default;
         // find previous value if any
-        if (gadget.props.options.value[prop_name]) {
+        if (gadget.props.options.value && gadget.props.options.value[prop_name]) {
           if (gadget.props.options.value[prop_name][sub_title] ||
               gadget.props.options.value[prop_name][sub_title] === "") {
             previous_value = gadget.props.options.value[prop_name][sub_title];
@@ -204,7 +204,15 @@
     }
   }
 
-  function handleSelectChange() { //evt) {
+  function handleSelectChange() {
+    try {
+      return  _handleSelectChange.bind(this)();
+    } catch (e) {
+      console.log("ERROR in handleSelectChange", e);
+      console.log(e.stack);
+    }
+  }
+  function _handleSelectChange() { //evt) {
     console.log("UPDATING FIELDS DUE TO SELECTION CHANGE");
     var gadget = this, oneOf_list, i,
       prop_name = gadget.props.definition.property_def.title,
@@ -676,9 +684,9 @@
           }
           console.log("thr r " + promise_list.length + " subgadget promises");
           return RSVP.all(promise_list);
-        })
-        .push(function () {
-          waitForListFieldSelection(gadget);
+        }).push(function() {
+           // XXX return is required so that we see errors, but it blocks everything
+           /* return */ waitForListFieldSelection(gadget);
         });
     });
 }(window, rJS, RSVP, Handlebars, initGadgetMixin, loopEventListener));
