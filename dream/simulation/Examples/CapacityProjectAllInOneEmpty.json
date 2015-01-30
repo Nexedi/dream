@@ -1,0 +1,736 @@
+{
+    "class_definition": {
+        "definitions": {
+            "distributionTypes": {
+                "_fixed": {
+                    "description": "Fixed",
+                    "title": "Fixed",
+                    "type": "object",
+                    "properties": {
+                        "mean": {
+                            "type": "number",
+                            "default": 0.75,
+                            "required": true
+                        }
+                    }
+                },
+                "_exp": {
+                    "type": "object",
+                    "title": "Exp",
+                    "description": "Exponential",
+                    "properties": {
+                        "mean": {
+                            "type": "number",
+                            "default": 0,
+                            "required": true
+                        }
+                    }
+                },
+                "_normal": {
+                    "type": "object",
+                    "title": "Normal",
+                    "description": "Normal",
+                    "properties": {
+                        "mean": {
+                            "type": "number",
+                            "default": 0,
+                            "required": true
+                        },
+                        "stdev": {
+                            "type": "number",
+                            "default": 0,
+                            "required": true
+                        }
+                    }
+                },
+                "_lognormal": {
+                    "type": "object",
+                    "title": "Lognormal",
+                    "description": "Lognormal",
+                    "properties": {
+                        "mean": {
+                            "_class": "Dream.Property",
+                            "name": "Mean",
+                            "type": "number",
+                            "default": 0
+                        },
+                        "stdev": {
+                            "_class": "Dream.Property",
+                            "name": "Standard Deviation",
+                            "type": "number",
+                            "default": 0
+                        }
+                    }
+                },
+                "_binomial": {
+                    "type": "object",
+                    "title": "Binomial",
+                    "description": "Binomial",
+                    "properties": {
+                        "mean": {
+                            "type": "number",
+                            "default": 0
+                        },
+                        "size": {
+                            "type": "number",
+                            "default": 0
+                        }
+                    }
+                },
+                "_poisson": {
+                    "type": "object",
+                    "title": "Poisson",
+                    "description": "Poisson",
+                    "properties": {
+                        "lambda": {
+                            "type": "number",
+                            "default": 0
+                        }
+                    }
+                },
+                "_logistic": {
+                    "type": "object",
+                    "title": "Logistic",
+                    "description": "Logistic",
+                    "properties": {
+                        "location": {
+                            "type": "number",
+                            "default": 0,
+                            "required": true
+                        },
+                        "scale": {
+                            "type": "number",
+                            "default": 0,
+                            "required": true
+                        }
+                    }
+                },
+                "_cauchy": {
+                    "type": "object",
+                    "title": "Cauchy",
+                    "description": "Cauchy",
+                    "properties": {
+                        "location": {
+                            "type": "number",
+                            "default": 0
+                        },
+                        "scale": {
+                            "type": "number",
+                            "default": 0
+                        }
+                    }
+                },
+                "_geometric": {
+                    "type": "object",
+                    "title": "Geometric",
+                    "description": "Geometric",
+                    "properties": {
+                        "probability": {
+                            "type": "number",
+                            "default": 0,
+                            "required": true
+                        }
+                    }
+                },
+                "_gama": {
+                    "type": "object",
+                    "title": "Gama",
+                    "description": "Gama",
+                    "properties": {
+                        "shape": {
+                            "type": "number",
+                            "default": 0,
+                            "required": true
+                        },
+                        "rate": {
+                            "type": "number",
+                            "default": 0,
+                            "required": true
+                        }
+                    }
+                },
+                "_weibull": {
+                    "type": "object",
+                    "title": "Weibull",
+                    "description": "Weibull",
+                    "properties": {
+                        "shape": {
+                            "type": "number",
+                            "default": 0,
+                            "required": true
+                        },
+                        "scale": {
+                            "type": "number",
+                            "default": 0,
+                            "required": true
+                        }
+                    }
+                },
+                "_failure": {
+                    "type": "object",
+                    "title": "Yes",
+                    "description": "Fixed",
+                    "properties": {
+                        "Time to Failure": {
+                            "$ref": "#/definitions/_dist"
+                        },
+                        "Time to Repair": {
+                            "$ref": "#/definitions/_dist"
+                        },
+                        "repairman": {
+                            "description": "Repairman",
+                            "type": "string",
+                            "required": true
+                        }
+                    }
+                },
+                "_no": {
+                    "type": "string",
+                    "title": "No",
+                    "description": "None"
+                }
+            },
+            "_failureDist": {
+                "allOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "failureDistribution": {
+                                "type": "string",
+                                "default": "No",
+                                "enum": [
+                                    "No",
+                                    "Yes"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "oneOf": [
+                            {
+                                "$ref": "#/definitions/distributionTypes/_failure"
+                            },
+                            {
+                                "$ref": "#/definitions/distributionTypes/_no"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "_dist": {
+                "allOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "distribution": {
+                                "type": "string",
+                                "default": "Fixed",
+                                "enum": [
+                                    "Fixed",
+                                    "Exp",
+                                    "Normal",
+                                    "Lognormal",
+                                    "Binomial",
+                                    "Poisson",
+                                    "Logistic",
+                                    "Cauchy",
+                                    "Geometric",
+                                    "Gama",
+                                    "Weibull"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "oneOf": [
+                            {
+                                "$ref": "#/definitions/distributionTypes/_fixed"
+                            },
+                            {
+                                "$ref": "#/definitions/distributionTypes/_exp"
+                            },
+                            {
+                                "$ref": "#/definitions/distributionTypes/_normal"
+                            },
+                            {
+                                "$ref": "#/definitions/distributionTypes/_lognormal"
+                            },
+                            {
+                                "$ref": "#/definitions/distributionTypes/_binomial"
+                            },
+                            {
+                                "$ref": "#/definitions/distributionTypes/_poisson"
+                            },
+                            {
+                                "$ref": "#/definitions/distributionTypes/_logistic"
+                            },
+                            {
+                                "$ref": "#/definitions/distributionTypes/_cauchy"
+                            },
+                            {
+                                "$ref": "#/definitions/distributionTypes/_geometric"
+                            },
+                            {
+                                "$ref": "#/definitions/distributionTypes/_gama"
+                            },
+                            {
+                                "$ref": "#/definitions/distributionTypes/_weibull"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "_schedulingRule": {
+                "description": "Scheduling Rule, one of FIFO Priority EDD EOD NumStages RPC LPT SPT MS WINQ",
+                "type": "string",
+                "default": "FIFO",
+                "enum": [
+                    "FIFO",
+                    "Priority",
+                    "EDD",
+                    "EOD",
+                    "NumStages",
+                    "RPC",
+                    "LPT",
+                    "SPT",
+                    "MS",
+                    "WINQ",
+                    "WT"
+                ]
+            },
+            "_capacity": {
+                "description": "capacity of the queue. -1 means infinite",
+                "type": "number",
+                "default": 1,
+                "oneOf": [
+                    {
+                        "enum": [
+                            -1
+                        ]
+                    },
+                    {
+                        "multipleOf": 1
+                    }
+                ]
+            },
+            "_operationType": {
+                "description": "the type of operations that are performed manually in the machine",
+                "default": "Automatic",
+                "type": "string",
+                "enum": [
+                    "Automatic",
+                    "Manual"
+                ]
+            }
+        },
+        "edge": {
+            "description": "Base definition for edge",
+            "properties": {
+                "_class": {
+                    "type": "string"
+                },
+                "source": {
+                    "type": "string"
+                },
+                "destination": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "_class",
+                "source",
+                "destination"
+            ],
+            "type": "object"
+        },
+        "node": {
+            "description": "Base definition for node",
+            "properties": {
+                "_class": {
+                    "type": "string"
+                },
+                "coordinate": {
+                    "properties": {
+                        "left": "number",
+                        "top": "number"
+                    },
+                    "type": "object"
+                },
+                "name": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "_class"
+            ],
+            "type": "object"
+        },
+        "Dream.Edge": {
+            "_class": "edge",
+            "allOf": [
+                {
+                    "$ref": "#/class_defintion/edge"
+                }
+            ],
+            "description": "Connect stations together"
+        },
+        "Dream.Dream.AbstractCapacityStation": {
+            "name": "Machine",
+            "description": "A station processing items for some time given by a distribution",
+            "_class": "node",
+            "css": {
+                "border": "1px solid #cbc",
+                "backgroundColor": "#fef",
+                "backgroundImage": "linear-gradient(to bottom, #fef 0%, #ede 100%)"
+            },
+            "allOf": [
+                {
+                    "$ref": "#/node"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "default": "Machine"
+                        },
+                        "id": {
+                            "type": "string",
+                            "default": "M",
+                            "required": true
+                        },
+                        "Is an assembly station?": {
+                            "_default": 0,
+                            "description": "Is this station an assembly ? Yes: 1, No: 0",
+                            "type": "number",
+                            "required": true
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    "application_configuration": {
+        "input": {
+            "view": {
+                "title": "ProductionLine",
+                "type": "object_view",
+                "gadget": "Input_viewProductionLine"
+            },
+            "view_management": {
+                "gadget": "Input_viewDocumentManagement",
+                "type": "object_view",
+                "title": "Manage document"
+            },
+            "view_available_capacity_spreadsheet": {
+                "gadget": "Input_viewSpreadsheet",
+                "type": "object_view",
+                "title": "Available Capacity Spreadsheet",
+                "configuration": {
+                    "extend": [
+                        "x",
+                        "y"
+                    ],
+                    "columns": [
+                        {
+                            "name": "Day",
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        {
+                            "name": "Station 1 (Rename)",
+                            "type": "string"
+                        },
+                        {
+                            "name": "Station 2 (Rename)",
+                            "type": "string"
+                        }
+                    ]
+                }
+            },
+            "view_projects_spreadsheet": {
+                "gadget": "Input_viewSpreadsheet",
+                "type": "object_view",
+                "title": "Projects Spreadsheet",
+                "configuration": {
+                    "extend": [
+                        "y"
+                    ],
+                    "columns": [
+                        {
+                            "name": "Project ID",
+                            "type": "string"
+                        },
+                        {
+                            "name": "Due Date",
+                            "type": "string",
+                            "format": "date"
+                        },
+                        {
+                            "name": "Assembly Space",
+                            "type": "number"
+                        },
+                        {
+                            "name": "Operation",
+                            "type": "string"
+                        },
+                        {
+                            "name": "Capacity Requirement",
+                            "type": "number"
+                        },
+                        {
+                            "name": "Earliest Start Date",
+                            "type": "string",
+                            "format": "date"
+                        }
+                    ]
+                }
+            },
+            "view_wip_spreadsheet": {
+                "gadget": "Input_viewSpreadsheet",
+                "type": "object_view",
+                "title": "Work in Progress Spreadsheet",
+                "configuration": {
+                    "extend": [
+                        "x",
+                        "y"
+                    ],
+                    "columns": [
+                        {
+                            "name": "Operation",
+                            "type": "string"
+                        },
+                        {
+                            "name": "Project1 (Rename)",
+                            "type": "string"
+                        },
+                        {
+                            "name": "Project2 (Rename)",
+                            "type": "string"
+                        }
+                    ]
+                }
+            },
+            "view_run_simulation": {
+                "title": "Run Simulation",
+                "type": "object_view",
+                "gadget": "Input_viewSimulation"
+            },
+            "view_result": {
+                "gadget": "Input_viewResultList",
+                "type": "object_view",
+                "title": "Results"
+            }
+        },
+        "output": {
+            "view_mean_capacity_utilization": {
+                "title": "Average Capacity Utilization",
+                "type": "object_view",
+                "gadget": "Output_viewBarGraph",
+                "configuration": {
+                    "family": "capacityStation",
+                    "plot": "bar",
+                    "group": [],
+                    "data": {
+                        "utilization": [
+                            "meanUtilization"
+                        ]
+                    }
+                }
+            },
+            "view_capacity_utilization": {
+                "title": "Capacity Utilization",
+                "type": "object_view",
+                "gadget": "Output_viewLineGraph",
+                "configuration": {
+                    "family": "capacityStation",
+                    "plot": "lines",
+                    "group": [
+                        "id"
+                    ],
+                    "data": {
+                        "Capacity": [
+                            "capacity_level"
+                        ],
+                        "Utilization": [
+                            "utilization_level"
+                        ]
+                    }
+                }
+            },
+            "view_expencted_delivery_date": {
+                "title": "Expected Delivery Date",
+                "type": "object_view",
+                "gadget": "Input_viewSpreadSheet",
+                "configuration": {
+                    "type": "output",
+                    "extend": [],
+                    "columns": [
+                        {
+                            "name": "Project ID",
+                            "type": "string"
+                        },
+                        {
+                            "name": "Delivery Date",
+                            "type": "string",
+                            "format": "date"
+                        }
+                    ]
+                }
+            },
+            "view_job_gantt": {
+                "title": "Job Gantt",
+                "type": "object_view",
+                "gadget": "Output_viewGantt",
+                "configuration": {
+                    "family": "??"
+                }
+            },
+            "view_job_schedule": {
+                "title": "Job Schedule",
+                "type": "object_view",
+                "gadget": "Input_viewSpreadSheet",
+                "configuration": {
+                    "type": "output",
+                    "extend": [],
+                    "columns": [
+                        {
+                            "name": "Project ID",
+                            "type": "string"
+                        },
+                        {
+                            "name": "Due Date",
+                            "type": "string",
+                            "format": "date"
+                        },
+                        {
+                            "name": "Assembly Space",
+                            "type": "number"
+                        },
+                        {
+                            "name": "Operation",
+                            "type": "string"
+                        },
+                        {
+                            "name": "Capacity Requirement",
+                            "type": "number"
+                        },
+                        {
+                            "name": "Earliest Start Date",
+                            "type": "string",
+                            "format": "date"
+                        }
+                    ]
+                }
+            },
+            "view_debug_json": {
+                "title": "DebugJson",
+                "type": "object_view",
+                "gadget": "Output_viewDebugJson"
+            }
+        },
+        "preprocessing": {
+            "plugin_list": [
+                {
+                    "plugin": "Read Capacity of the stations",
+                    "input_id": "WIPStat"
+                },
+                {
+                    "plugin": "Read Projects",
+                    "input_id": "WIPdata"
+                },
+                {
+                    "plugin": "Read WIP",
+                    "input_id": "WIPdata"
+                }
+            ]
+        },
+        "processing": {
+            "plugin_list": [
+                {
+                    "plugin": "plugin.DefaultExecutionPlugin",
+                    "input_id": "Simulation"
+                }
+            ]
+        },
+        "postprocessing": {
+            "plugin_list": []
+        },
+        "general": {
+            "properties": {
+                "numberOfReplications": {
+                    "title": "Number of replications",
+                    "type": "integer",
+                    "description": "Number of replications to run",
+                    "default": 10
+                },
+                "maxSimTime": {
+                    "title": "Length of Experiment",
+                    "description": "Length of the simulation run",
+                    "type": "number",
+                    "default": 100
+                },
+                "confidenceLevel": {
+                    "title": "Confidence level",
+                    "type": "number",
+                    "default": 0.95,
+                    "description": "Confidence level for statistical analysis of stochastic experiments"
+                },
+                "processTimeout": {
+                    "title": "ProcessTimeout",
+                    "type": "number",
+                    "default": 10,
+                    "description": "Number of seconds before the calculation process is interrupted"
+                },
+                "currentDate": {
+                    "default": "2014/10/01",
+                    "description": "The day the experiment starts, in YYYY/MM/DD format",
+                    "title": "SimulationStartTime",
+                    "type": "string"
+                },
+                "timeUnitPerDay": {
+                    "default": 24,
+                    "description": "Used for input and reporting widgets. For example, 24 means that simulation clock time unit is one hour.",
+                    "title": "Number of time units per day",
+                    "type": "number"
+                },
+                "trace": {
+                    "default": "No",
+                    "enum": [
+                        "No",
+                        "Yes"
+                    ],
+                    "description": "Create an excel trace file (Yes or No)",
+                    "title": "OutputTrace",
+                    "type": "string"
+                },
+                "seed": {
+                    "default": "1",
+                    "description": "When using the same seed, the random number generator produce the same sequence of numbers",
+                    "title": "Seed for random number generator",
+                    "type": "number"
+                },
+                "ke_url": {
+                    "default": "http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
+                    "description": "The URL for knowledge extraction to access its data for example http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
+                    "title": "URL for Knowledge Extraction Spreadsheet",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "general": {},
+    "graph": {
+        "node": {},
+        "edge": {}
+    },
+    "input": {},
+    "result": {
+        "result_list": []
+    },
+    "constraints": {}
+}
