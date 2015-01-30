@@ -466,6 +466,11 @@
                             "type": "string"
                         },
                         {
+                            "name": "Order Date",
+                            "type": "string",
+                            "format": "date"
+                        },
+                        {
                             "name": "Due Date",
                             "type": "string",
                             "format": "date"
@@ -638,6 +643,10 @@
                 {
                     "_class": "dream.plugins.AvailableCapacitySpreadsheet.AvailableCapacitySpreadsheet",
                     "input_id": "availableCapacity"
+                },
+                {
+                    "_class": "dream.plugins.CapacityProjectSpreadsheet.CapacityProjectSpreadsheet",
+                    "input_id": "capacityProject"
                 }
             ]
         },
