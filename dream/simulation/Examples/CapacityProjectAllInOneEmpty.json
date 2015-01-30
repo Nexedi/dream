@@ -634,7 +634,12 @@
             }
         },
         "pre_processing": {
-            "plugin_list": []
+            "plugin_list": [
+                {
+                    "_class": "dream.plugins.AvailableCapacitySpreadsheet.AvailableCapacitySpreadsheet",
+                    "input_id": "availableCapacity"
+                }
+            ]
         },
         "processing_plugin": {
             "_class": "dream.plugins.plugin.DefaultExecutionPlugin",
