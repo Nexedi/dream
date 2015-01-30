@@ -468,17 +468,25 @@
               "default": "M",
               "required": true
             },
-            "loadType": {
-              "$ref": "#/definitions/_operationType",
-              "required": true
-            },
-            "setupType": {
-              "$ref": "#/definitions/_operationType",
-              "required": true
-            },
-            "processingType": {
-              "$ref": "#/definitions/_operationType",
-              "required": true
+            "operationType": {
+              "description": "Type Of Operation",
+              "name" : "Operation Type",
+              "type": "object",
+			  "properties" : {
+                "load": {
+                  "description": "Operation type for loading",
+                  "$ref": "#/definitions/_operationType"
+                },
+                "setup": {
+                  "description": "Operation type for setup",
+                  "$ref": "#/definitions/_operationType",
+                },
+                "processing": {
+                  "description": "Operation type for processing",
+                  "$ref": "#/definitions/_operationType",
+                }
+              }
+              "required" : ["load", "setup", "processing"]
             },
             "loadTime": {
               "$ref": "#/definitions/_dist",
