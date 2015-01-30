@@ -54,11 +54,11 @@ class PluginRegistry(object):
   def __init__(self, logger, data):
 
     self.input_preparation_list = []
-    for plugin_data in data['application_configuration']['pre_processing_plugin_list']:
+    for plugin_data in data['application_configuration']['pre_processing']['plugin_list']:
       self.input_preparation_list.append(resolve(plugin_data['_class'])(logger, plugin_data))
 
     self.output_preparation_list = []
-    for plugin_data in data['application_configuration']['post_processing_plugin_list']:
+    for plugin_data in data['application_configuration']['post_processing']['plugin_list']:
       self.output_preparation_list.append(resolve(plugin_data['_class'])(logger, plugin_data))
 
     plugin_data = data['application_configuration']['processing_plugin']

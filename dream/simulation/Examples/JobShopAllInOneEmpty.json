@@ -838,25 +838,32 @@
 				}
 			}
 		},
-		"preprocessing" : {
+		"pre_processing" : {
+			"description" : "",
 			"plugin_list" : [{
-					"plugin" : "PartJobShop",
+					"_class" : "dream.plugins.PartJobShop.PartJobShop",
 					"input_id" : "Simulation"
 				}, {
-					"plugin" : "ReadShiftFromSpreadsheet",
+					"_class" : "dream.plugins.ReadShiftFromSpreadsheet.ReadShiftFromSpreadsheet",
 					"input_id" : "ShiftSpreadsheet"
 				}, {
-					"plugin" : "ReadWipFromSpreadsheet",
+					"_class" : "dream.plugins.ReadWipFromSpreadsheet.ReadWipFromSpreadsheet",
 					"input_id" : "WipSpreadsheet"
 				}, {
-					"plugin" : "ReadRouteFromSpreadsheet",
+					"_class" : "dream.plugins.ReadRouteFromSpreadsheet.ReadRouteFromSpreadsheet",
 					"input_id" : "RouteSpreadsheet"
 				}
 			]
 		},
-		"postprocessing" : {
+		"processing_plugin" : {
+			"description" : "",
+			"_class" : "",
+			"input_id" : ""
+		}
+		"post_processing" : {
+			"description" : "",
 			"plugin_list" : [{
-				"plugin" : "CalculateConfidenceIntervals"
+				"_class" : "dream.plugins.CalculateConfidenceIntervals.CalculateConfidenceIntervals"
 			}]
 		},
 		"general" : {
