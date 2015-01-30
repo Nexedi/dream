@@ -295,21 +295,34 @@
         }
         return schema;
     }
+    function clone(obj) {
+        return JSON.parse(JSON.stringify(obj));
+    }
     function expandSchema(class_definition, full_schema) {
         // minimal expanding of json schema, supports merging allOf and $ref
         // references
         // XXX this should probably be moved to fieldset ( and not handle
         // class_definition here)
-        var referenced, i, expanded_class_definition = {
-            properties: class_definition.properties || {}
-        };
+        var referenced, i, property, class_definition = clone(class_definition), expanded_class_definition = clone(class_definition) || {};
+        if (!expanded_class_definition.properties) {
+            expanded_class_definition.properties = {};
+        }
         // expand direct ref
         if (class_definition.$ref) {
             referenced = expandSchema(resolveReference(class_definition.$ref, full_schema.class_definition), full_schema);
-            if (referenced.properties) {
-                delete referenced.properties;
-            }
             $.extend(expanded_class_definition, referenced);
+            delete expanded_class_definition.$ref;
+        }
+        // expand ref in properties
+        for (property in class_definition.properties) {
+            if (class_definition.properties.hasOwnProperty(property)) {
+                if (class_definition.properties[property].$ref) {
+                    referenced = expandSchema(resolveReference(class_definition.properties[property].$ref, full_schema.class_definition), full_schema);
+                    //expanded_class_definition.properties[property] = referenced;
+                    $.extend(expanded_class_definition.properties[property], referenced);
+                    delete expanded_class_definition.properties[property].$ref;
+                }
+            }
         }
         if (class_definition.oneOf) {
             expanded_class_definition.oneOf = [];
@@ -326,11 +339,14 @@
                 }
                 $.extend(expanded_class_definition, referenced);
             }
+            if (expanded_class_definition.allOf) {
+                delete expanded_class_definition.allOf;
+            }
         }
         if (expanded_class_definition.$ref) {
             delete expanded_class_definition.$ref;
         }
-        return Object.create(expanded_class_definition);
+        return clone(expanded_class_definition);
     }
     function openEdgeEditionDialog(gadget, connection) {
         var edge_id = connection.id, edge_data = gadget.props.data.graph.edge[edge_id], edit_popup = $(gadget.props.element).find("#popup-edit-template"), schema, fieldset_element, delete_promise;
@@ -384,6 +400,9 @@
             edit_popup.enhanceWithin();
             edit_popup.popup("open");
             return fieldset_gadget[0];
+        }).push(function(fieldset_gadget) {
+            fieldset_gadget.startService();
+            return fieldset_gadget;
         }).push(function(fieldset_gadget) {
             // Expose the dialog handling promise so that we can wait for it in
             // test.
@@ -447,6 +466,9 @@
             node_edit_popup.enhanceWithin();
             node_edit_popup.popup("open");
             return fieldset_gadget[0];
+        }).push(function(fieldset_gadget) {
+            fieldset_gadget.startService();
+            return fieldset_gadget;
         }).push(function(fieldset_gadget) {
             // Expose the dialog handling promise so that we can wait for it in
             // test.
@@ -541,7 +563,7 @@
         function resolver(resolve, reject) {
             callback = function(evt) {
                 try {
-                    var class_name = JSON.parse(evt.dataTransfer.getData("application/json")), offset = $(gadget.props.main).offset(), relative_position = convertToRelativePosition(gadget, evt.clientX - offset.left + "px", evt.clientY - offset.top + "px");
+                    var class_name = JSON.parse(evt.dataTransfer.getData("text")), offset = $(gadget.props.main).offset(), relative_position = convertToRelativePosition(gadget, evt.clientX - offset.left + "px", evt.clientY - offset.top + "px");
                     addNode(gadget, generateNodeId(gadget, {
                         _class: class_name
                     }), {

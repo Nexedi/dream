@@ -14,7 +14,7 @@
         function itsANonResolvableTrap(resolve, reject) {
             callback = function(evt) {
                 try {
-                    evt.dataTransfer.setData("application/json", tool.dataset.class_name);
+                    evt.dataTransfer.setData("text", tool.dataset.class_name);
                 } catch (e) {
                     reject(e);
                 }
