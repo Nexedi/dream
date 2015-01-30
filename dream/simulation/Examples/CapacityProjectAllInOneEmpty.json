@@ -633,31 +633,14 @@
                 "gadget": "Output_viewDebugJson"
             }
         },
-        "preprocessing": {
-            "plugin_list": [
-                {
-                    "plugin": "Read Capacity of the stations",
-                    "input_id": "WIPStat"
-                },
-                {
-                    "plugin": "Read Projects",
-                    "input_id": "WIPdata"
-                },
-                {
-                    "plugin": "Read WIP",
-                    "input_id": "WIPdata"
-                }
-            ]
+        "pre_processing": {
+            "plugin_list": []
         },
-        "processing": {
-            "plugin_list": [
-                {
-                    "plugin": "plugin.DefaultExecutionPlugin",
-                    "input_id": "Simulation"
-                }
-            ]
+        "processing_plugin": {
+            "_class": "dream.plugins.plugin.DefaultExecutionPlugin",
+            "input_id": "Simulation"
         },
-        "postprocessing": {
+        "post_processing": {
             "plugin_list": []
         },
         "general": {
