@@ -31,9 +31,7 @@
         //console.log("addField", property_id, property_definition, value);
         queue
           .push(function () {
-            // XXX this is incorrect for recursive fieldsets.
-            // we should use nested fieldset with legend
-            gadget.props.element.insertAdjacentHTML(
+            gadget.props.fieldset_element.insertAdjacentHTML(
               'beforeend',
               label_template({
                 "for": property_id,
@@ -73,24 +71,29 @@
             return sub_gadget.getElement();
           })
           .push(function (sub_element) {
-            gadget.props.element.appendChild(sub_element);
+            gadget.props.fieldset_element.appendChild(sub_element);
             gadget.props.field_gadget_list.push(sub_gadget);
           });
       }
 
       queue = new RSVP.Queue()
         .push(function () {
+          //gadget.props.fieldset_element = document.createElement("fieldset");
+          //gadget.props.element.appendChild(gadget.props.fieldset_element);
+          gadget.props.fieldset_element = gadget.props.element;
+          if (gadget.props.key) {
+            // style only recursive fieldsets
+            gadget.props.fieldset_element.style["border-width"] = "1px";
+          }
           if (node_id) {
             addField('id', {'type': 'string'}, node_id);
           }
-          //console.log(options.property_definition);
           Object.keys(options.property_definition.properties
             ).forEach(function (property_name) {
             var property_definition =
               options.property_definition.properties[property_name],
               value = (options.value || {})[property_name] === undefined
               ? property_definition.default : options.value[property_name];
-            //console.log(property_name, property_definition);
             // XXX some properties are not editable
             // XXX should not be defined here
             if (property_name !== 'coordinate' &&
