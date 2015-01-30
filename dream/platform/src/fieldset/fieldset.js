@@ -42,7 +42,13 @@
                           property_id )
               })
             );
-
+            // use expandable field if we have a oneOf in the schema
+            if (property_definition.oneOf) {
+              property_definition = {
+                allOf: [{properties: property_definition.properties},
+                        { oneOf: property_definition.oneOf} ] };
+              return gadget.declareGadget("../expandable_field/index.html");
+            }
             if (property_definition.type === "object") {
               // Create a recursive fieldset for this key.
               return gadget.declareGadget("../fieldset/index.html");
