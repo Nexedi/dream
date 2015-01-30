@@ -20,12 +20,21 @@
             var sub_gadget;
             //console.log("addField", property_id, property_definition, value);
             queue.push(function() {
-                // XXX this is incorrect for recursive fieldsets.
-                // we should use nested fieldset with legend
-                gadget.props.element.insertAdjacentHTML("beforeend", label_template({
+                gadget.props.fieldset_element.insertAdjacentHTML("beforeend", label_template({
                     "for": property_id,
                     name: property_definition.name || property_definition.description || property_id
                 }));
+                // use expandable field if we have a oneOf in the schema
+                if (property_definition.oneOf) {
+                    property_definition = {
+                        allOf: [ {
+                            properties: property_definition.properties
+                        }, {
+                            oneOf: property_definition.oneOf
+                        } ]
+                    };
+                    return gadget.declareGadget("../expandable_field/index.html");
+                }
                 if (property_definition.type === "object") {
                     // Create a recursive fieldset for this key.
                     return gadget.declareGadget("../fieldset/index.html");
@@ -47,20 +56,25 @@
             }).push(function() {
                 return sub_gadget.getElement();
             }).push(function(sub_element) {
-                gadget.props.element.appendChild(sub_element);
+                gadget.props.fieldset_element.appendChild(sub_element);
                 gadget.props.field_gadget_list.push(sub_gadget);
             });
         }
         queue = new RSVP.Queue().push(function() {
+            //gadget.props.fieldset_element = document.createElement("fieldset");
+            //gadget.props.element.appendChild(gadget.props.fieldset_element);
+            gadget.props.fieldset_element = gadget.props.element;
+            if (gadget.props.key) {
+                // style only recursive fieldsets
+                gadget.props.fieldset_element.style["border-width"] = "1px";
+            }
             if (node_id) {
                 addField("id", {
                     type: "string"
                 }, node_id);
             }
-            //console.log(options.property_definition);
             Object.keys(options.property_definition.properties).forEach(function(property_name) {
                 var property_definition = options.property_definition.properties[property_name], value = (options.value || {})[property_name] === undefined ? property_definition.default : options.value[property_name];
-                //console.log(property_name, property_definition);
                 // XXX some properties are not editable
                 // XXX should not be defined here
                 if (property_name !== "coordinate" && property_name !== "_class" && property_name !== "id") {
@@ -69,6 +83,14 @@
             });
         });
         return queue;
+    }).declareMethod("startService", function() {
+        var i, gadget = this, promise_list = [];
+        for (i = 0; i < gadget.props.field_gadget_list.length; i += 1) {
+            if (gadget.props.field_gadget_list[i].startService) {
+                promise_list.push(gadget.props.field_gadget_list[i].startService());
+            }
+        }
+        return RSVP.all(promise_list);
     }).declareMethod("getContent", function() {
         var i, promise_list = [], gadget = this;
         for (i = 0; i < this.props.field_gadget_list.length; i += 1) {
