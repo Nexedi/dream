@@ -772,27 +772,26 @@
         "gadget": "Output_viewDebugJson"
       }
     },
-    "preprocessing": {
+    "pre_processing": {
+      "description" : "",
       "plugin_list": [
         {
-          "plugin": "GatherWIPStat.GatherWIPStat",
+          "_class": "dream.plugins.GatherWIPStat.GatherWIPStat",
           "input_id": "WIPStat"
         },
         {
-          "plugin": "WIPSpreadsheet.WIPSpreadsheet",
+          "_class": "dream.plugins.WIPSpreadsheet.WIPSpreadsheet",
           "input_id": "WIPdata"
         }
       ]
     },
-    "processing": {
-      "plugin_list": [
-        {
-          "plugin": "plugin.DefaultExecutionPlugin",
-          "input_id": "Simulation"
-        }
-      ]
+    "processing_plugin": {
+      "description" : "",
+      "_class": "dream.plugins.plugin.DefaultExecutionPlugin",
+      "input_id": "Simulation"
     },
-    "postprocessing": {
+    "post_processing": {
+      "description" : "",
       "plugin_list": []
     },
     "general": {
