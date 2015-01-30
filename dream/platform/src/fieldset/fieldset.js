@@ -96,7 +96,18 @@
         });
       return queue;
     })
-
+    .declareMethod("startService", function () {
+        var i, gadget=this,
+        promise_list = [];
+        for (i = 0; i < gadget.props.field_gadget_list.length; i += 1) {
+          if (gadget.props.field_gadget_list[i].startService) {
+            promise_list.push(
+              gadget.props.field_gadget_list[i].startService()
+            );
+          }
+        }
+        return RSVP.all(promise_list);
+    })
     // getContent of all subfields
     .declareMethod("getContent", function () {
       var i, promise_list = [], gadget = this;
