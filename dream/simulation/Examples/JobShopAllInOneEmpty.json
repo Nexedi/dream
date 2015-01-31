@@ -836,11 +836,6 @@
 						}
 					]
 				}
-			},
-			"view_debug_json" : {
-				"title" : "Debug Json",
-				"type" : "object_view",
-				"gadget" : "Output_viewDebugJson"
 			}
 		},
 		"preprocessing" : {

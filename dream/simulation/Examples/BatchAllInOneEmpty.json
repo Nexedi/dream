@@ -259,11 +259,6 @@
         "gadget": "Output_viewQueueStatGraph",
         "title": "Queue Utilization Graph",
         "type": "object_view"
-      },
-      "view_debug_json": {
-        "gadget": "Output_viewDebugJson",
-        "title": "Debug Json",
-        "type": "object_view"
       }
     },
     "post_processing_plugin_list": [],

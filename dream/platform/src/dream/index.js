@@ -181,16 +181,6 @@
                         .gui.job_schedule_spreadsheet);
         }
         */
-      },
-      "view_debug": {
-        "gadget": "Output_viewDebugJson",
-        "type": "object_view",
-        "title": "Debug JSON" /* ,
-        "condition": function (gadget) {
-          return (gadget.props.configuration_dict['Dream-Configuration']
-                        .gui.debug_json);
-        }
-        */
       }
     }
   },

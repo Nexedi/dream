@@ -707,11 +707,6 @@
 						}
 					}
 				}
-			},
-			"view_debug_json" : {
-				"title" : "DebugJson",
-				"type" : "object_view",
-				"gadget" : "Output_viewDebugJson"
 			}
 		},
 		"preprocessing_plugin_list" : [{
