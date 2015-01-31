@@ -48,6 +48,9 @@
         gadget.props.codemirror = CodeMirror.fromTextArea(jsonTextArea, {
           lineNumbers: true,
           mode: {name: 'javascript', json: true},
+          foldGutter: true,
+          lint: true,
+          gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
           extraKeys: {
             "Ctrl-S": function(instance) {
               // XXX this is outside of promise chain.
