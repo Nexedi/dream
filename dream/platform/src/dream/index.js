@@ -370,6 +370,7 @@
             portal_types.Input = data.application_configuration.input;
             portal_types.Output = data.application_configuration.output;
           }
+          options.action_definition = portal_types[portal_type][options.action];
           // Get the action information
           return gadget.declareGadget(
             portal_types[portal_type][options.action].gadget + ".html"
