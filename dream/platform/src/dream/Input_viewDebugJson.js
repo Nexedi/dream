@@ -1,5 +1,5 @@
-/*global rJS, initGadgetMixin */
-(function (window, rJS, initGadgetMixin) {
+/*global rJS, promiseEventListener, initGadgetMixin */
+(function (window, rJS, promiseEventListener, initGadgetMixin) {
   "use strict";
 
   var gadget_klass = rJS(window);
@@ -9,10 +9,29 @@
     // Acquired methods
     /////////////////////////////////////////////////////////////////
     .declareAcquiredMethod("aq_getAttachment", "jio_getAttachment")
+    .declareAcquiredMethod("aq_putAttachment", "jio_putAttachment")
 
     /////////////////////////////////////////////////////////////////
     // declared methods
     /////////////////////////////////////////////////////////////////
+    .declareMethod("startService", function () {
+      var gadget = this;
+      return new RSVP.Queue()
+      .push(function () {
+        return promiseEventListener(
+          gadget.props.element.querySelector(".save_button"),
+          'click',
+          false
+        );
+      })
+      .push(function () {
+        return gadget.aq_putAttachment({
+          "_id": gadget.props.jio_key,
+         "_attachment": "body.json",
+         "_data": gadget.props.codemirror.getValue()
+        })
+      });
+    })
     .declareMethod("render", function (options) {
       var gadget = this;
       this.props.jio_key = options.id;
@@ -22,12 +41,24 @@
         "_id": gadget.props.jio_key,
         "_attachment": "body.json"
       })
-        .push(function (result_json) {
-          var document = JSON.parse(result_json);
-          gadget.props.element.querySelector(".json").textContent =
-            JSON.stringify(document, undefined, " ");
+      .push(function (result_json) {
+        var jsonTextArea = gadget.props.element.querySelector(".json"),
+          document = JSON.parse(result_json);
+        jsonTextArea.textContent = JSON.stringify(document, undefined, " ");
+        gadget.props.codemirror = CodeMirror.fromTextArea(jsonTextArea, {
+          lineNumbers: true,
+          mode: {name: 'javascript', json: true},
+          extraKeys: {
+            "Ctrl-S": function(instance) {
+              // XXX this is outside of promise chain.
+              return gadget.aq_putAttachment({
+                "_id": gadget.props.jio_key,
+                "_attachment": "body.json",
+                "_data": gadget.props.codemirror.getValue()
+              });
+            },
+          }
         });
-
+      });
     });
-
-}(window, rJS, initGadgetMixin));
+}(window, rJS, promiseEventListener, initGadgetMixin));
