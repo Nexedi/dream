@@ -17,7 +17,8 @@ setup(
         'pydot',
         'numpy',
         'zope.dottedname',
-        'rpy2'
+        'rpy2',
+        'pulp',
     ],
     entry_points=("""
     [console_scripts]
