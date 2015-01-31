@@ -285,11 +285,6 @@
         "title": "Exit Statistics",
         "type": "object_view",
         "gadget": "Output_viewExitStatistics"
-      },
-      "view_debug_json": {
-        "title": "Debug Json",
-        "type": "object_view",
-        "gadget": "Output_viewDebugJson"
       }
     },
     "preprocessing_plugin_list": [
