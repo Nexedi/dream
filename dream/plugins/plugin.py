@@ -43,8 +43,7 @@ class DefaultExecutionPlugin(ExecutionPlugin):
   def run(self, data):
     """Run simulation and return result to the GUI.
     """
-    data["result"]["result_list"].append(self.runOneScenario(data))
-    # data["result"] = self.runOneScenario(data)
+    data["result"]["result_list"] = self.runOneScenario(data)['result']['result_list']
     data["result"]["result_list"][-1]["score"] = 0
     data["result"]["result_list"][-1]["key"] = "default"
     return data
