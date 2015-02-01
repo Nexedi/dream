@@ -76,7 +76,7 @@
         .push(function (jio_gadget) {
           return jio_gadget.getAttachment({
             _id: options.id,
-            "_attachment": "simulation.json"
+            "_attachment": "body.json"
           });
         })
         .push(function (sim_json) {
@@ -113,7 +113,7 @@
         .push(function (jio_gadget) {
           return jio_gadget.getAttachment({
             _id: options.id,
-            "_attachment": "simulation.json"
+            "_attachment": "body.json"
           });
         })
         .push(function (sim_json) {

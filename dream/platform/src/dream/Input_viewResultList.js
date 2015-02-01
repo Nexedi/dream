@@ -32,7 +32,7 @@
 
       return gadget.aq_getAttachment({
         "_id": gadget.props.jio_key,
-        "_attachment": "simulation.json"
+        "_attachment": "body.json"
       })
         .push(undefined, function (error) {
           if (error.status_code === 404) {
@@ -46,7 +46,7 @@
             result_list = [],
             document_list = [],
             i;
-          if (result) {
+          if (result && result.result_list) {
             document_list = result.result_list;
           }
           for (i = 0; i < document_list.length; i += 1) {

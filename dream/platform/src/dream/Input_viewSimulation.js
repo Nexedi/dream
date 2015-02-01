@@ -30,6 +30,7 @@
   }
 
   function runSimulation(gadget) {
+    var result_json;
     return new RSVP.Queue()
       .push(function () {
         return gadget.aq_getAttachment({
@@ -38,25 +39,42 @@
         });
       })
       .push(function (body_json) {
+        // do not send previous results to simulation engine
+        var json_without_result = JSON.parse(body_json);
+        json_without_result.result.result_list = [];
         // XXX Hardcoded relative URL
         return gadget.aq_ajax({
           url: "../../runSimulation",
           type: "POST",
-          data: body_json,
+          data: JSON.stringify(json_without_result),
           headers: {
             "Content-Type": 'application/json'
           }
         });
       })
       .push(function (evt) {
-        var json_data = JSON.parse(evt.target.responseText);
-        if (json_data.success !== true) {
-          throw new Error(json_data.error);
+        result_json = JSON.parse(evt.target.responseText);
+        if (result_json.success !== true) {
+          throw new Error(result_json.error);
         }
+        // get latest version
+        return gadget.aq_getAttachment({
+          "_id": gadget.props.jio_key,
+          "_attachment": "body.json"
+        });
+      }).push(function(data){
+        data = JSON.parse(data);
+        // XXX option to always add ?
+        if (data.general.reset_result_list) {
+          data.result.result_list = [];
+        }
+        data.result.result_list = data.result.result_list.concat(
+          result_json.data.result.result_list
+        );
         return gadget.aq_putAttachment({
           "_id": gadget.props.jio_key,
-          "_attachment": "simulation.json",
-          "_data": JSON.stringify(json_data.data, null, 2),
+          "_attachment": "body.json",
+          "_data": JSON.stringify(data, null, 2),
           "_mimetype": "application/json"
         });
       })

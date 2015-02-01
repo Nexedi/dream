@@ -222,7 +222,7 @@
 
       return gadget.aq_getAttachment({
         "_id": gadget.props.jio_key,
-        "_attachment": "simulation.json"
+        "_attachment": "body.json"
       })
         .push(function (simulation_json) {
           gadget.props.result = job_gantt_widget(

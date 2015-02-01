@@ -144,7 +144,7 @@
 
       return gadget.aq_getAttachment({
         "_id": gadget.props.jio_key,
-        "_attachment": "simulation.json"
+        "_attachment": "body.json"
       })
         .push(function (simulation_json) {
           var result = calculate_exit_stat(

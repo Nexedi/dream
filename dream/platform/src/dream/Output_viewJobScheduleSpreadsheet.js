@@ -195,7 +195,7 @@
           return RSVP.all([
             gadget.aq_getAttachment({
               "_id": jio_key,
-              "_attachment": "simulation.json"
+              "_attachment": "body.json"
             }),
             gadget.getDeclaredGadget("tableeditor")
           ]);
