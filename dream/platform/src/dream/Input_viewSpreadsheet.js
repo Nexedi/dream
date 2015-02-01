@@ -71,8 +71,15 @@
       var jio_key = options.id,
         gadget = this;
       gadget.props.jio_key = jio_key;
+      
       // view_##### is the formulatino of the names
       gadget.props.name = options.action.substr(5, options.action.length);
+      // Use input_id from action definition
+      if (options.action_definition.configuration.input_id){
+        gadget.props.name = options.action_definition.configuration.input_id;
+      }
+      gadget.props.configuration = options.action_definition.configuration;
+      
       return new RSVP.Queue()
         .push(function () {
           return RSVP.all([
@@ -91,12 +98,7 @@
           if (result.input[gadget.props.name]) {
             content = result.input[gadget.props.name];
           } else {
-            // otherwise use the clean configuration
-            for (i = 0; i <= Object.keys(config).length; i += 1) {
-              if (Object.keys(config)[i] === options.action) {
-                content = config[options.action].configuration.columns;
-              }
-            }
+            content = options.action_definition.configuration.columns;
           }
           // application_configuration.input.view_???_spreasheet.configuration
           return result_list[1].render(
