@@ -88,4 +88,18 @@
     });
   };
 
+  window.promiseReadAsDataURL = function (file) {
+    return new RSVP.Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function (evt) {
+        resolve(evt.target.result);
+      };
+      reader.onerror = function (evt) {
+        reject(evt);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+
 }(window, RSVP, FileReader));
