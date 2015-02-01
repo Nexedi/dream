@@ -43,7 +43,7 @@
             // use expandable field if we have a oneOf in the schema
             if (property_definition.oneOf &&
                 property_definition.properties &&
-                property_definition.properties.length === 1) {
+                Object.keys(property_definition.properties).length === 1) {
               property_definition = {
                 allOf: [{properties: property_definition.properties},
                         { oneOf: property_definition.oneOf} ] };
