@@ -37,7 +37,7 @@ from ObjectResource import ObjectResource
 class Operator(ObjectResource):
     family='Operator'  
     
-    def __init__(self, id, name, capacity=1, schedulingRule='FIFO', skills=[], available=True,ouputSchedule=False,**kw):
+    def __init__(self, id, name, capacity=1, schedulingRule='FIFO', skillDict={}, skills=[], available=True,ouputSchedule=False,**kw):
         ObjectResource.__init__(self,id=id, name=name)
         self.objName=name
         self.capacity=int(capacity)      # repairman is an instance of resource
@@ -79,6 +79,8 @@ class Operator(ObjectResource):
         self.alias=self.id
         # list attribute that describes the skills of the operator in terms of stations he can operate
         self.skillsList=skills
+        # skils dict (defining also if the skill is regarding different operations on the same technology)
+        self.skillDict = skillDict
         # flag to show if the resource is available at the start of simulation
         self.available=available
         from Globals import G
