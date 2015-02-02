@@ -51,7 +51,6 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
                     "data": {}, 
                     "_class": "Dream.Edge"
                  }
-        print '--->',(data['graph']['node'])       
         return data
     
     # gets the data and the stationId
