@@ -694,8 +694,22 @@ class Machine(CoreObject):
             # # release a resource at the end of setup
             #===================================================================
             if self.shouldYield(operationTypes={"Setup":1,"Load":1,"Processing":0},methods={'isOperated':1}):
-                yield self.env.process(self.release()) 
-                        
+                yield self.env.process(self.release())
+            elif (self.currentOperator):
+                if self.currentOperator.skillDict:
+                    if not self.id in self.currentOperator.skillDict["process"]:
+                        yield self.env.process(self.release())
+
+            #===================================================================
+            # # request a resource if it is not already assigned an Operator
+            #===================================================================
+            if self.shouldYield(operationTypes={"Processing":1}, methods={"isOperated":0}):
+                self.timeWaitForOperatorStarted = self.env.now
+                yield self.env.process(self.request())
+                self.timeWaitForOperatorEnded = self.env.now
+                self.operatorWaitTimeCurrentEntity += self.timeWaitForOperatorEnded-self.timeWaitForOperatorStarted
+            
+            
             #===================================================================
             #===================================================================
             #===================================================================
