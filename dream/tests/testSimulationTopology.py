@@ -55,9 +55,9 @@ class SimulationTopology(TestCase):
     result = LineGenerationJSON.main(input_data=input_data)
     result_data = json.loads(result)
     # Slightly change the output to make it stable
-    del result_data["general"]["totalExecutionTime"]
-    result_data["elementList"].sort(key=lambda x: x["id"])
-    stable_result = json.dumps(result_data, indent=True, sort_keys=True)
+    del result_data['result']['result_list'][0]["general"]["totalExecutionTime"]
+    result_data['result']['result_list'][0]["elementList"].sort(key=lambda x: x["id"])
+    stable_result = json.dumps(result_data['result']['result_list'][0], indent=True, sort_keys=True)
     dump_path = os.path.join(self.dump_folder_path, "%s.result" % filename)
     if bool(os.environ.get("dump", False)):
       dump_file = open(dump_path, 'w')
