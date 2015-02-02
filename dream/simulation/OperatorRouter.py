@@ -311,8 +311,14 @@ class Router(ObjectInterruption):
             candidateOperators=station.operatorPool.availableOperators()
             if candidateOperators:	# if there was an operator found append the Machine on his candidateStations
                 for candidateOperator in candidateOperators:
-                    if not station in candidateOperator.candidateStations:
-                        candidateOperator.candidateStations.append(station)
+                    # XXX not generic enough - find an other way to initiate skilledRouter and incorporate also setup and load
+                    if candidateOperator.skillDict:
+                        if station.id in candidateOperator.skillDict["process"]:
+                            if not station in candidateOperator.candidateStations:
+                                candidateOperator.candidateStations.append(station)
+                    else: 
+                        if not station in candidateOperator.candidateStations:
+                            candidateOperator.candidateStations.append(station)
                     if not candidateOperator in self.candidateOperators:
                         self.candidateOperators.append(candidateOperator)
         # if there are critical pending entities then populate the candidateOperators list with preemptiveOperators
