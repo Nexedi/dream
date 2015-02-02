@@ -313,7 +313,8 @@ class Router(ObjectInterruption):
                 for candidateOperator in candidateOperators:
                     # XXX not generic enough - find an other way to initiate skilledRouter and incorporate also setup and load
                     if candidateOperator.skillDict:
-                        if station.id in candidateOperator.skillDict["process"]:
+                        if (station.id in candidateOperator.skillDict["process"] and station in self.pendingMachines) or\
+                           (station.id in candidateOperator.skillDict["setup"] and station in candidateMachines):
                             if not station in candidateOperator.candidateStations:
                                 candidateOperator.candidateStations.append(station)
                     else: 
