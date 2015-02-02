@@ -378,7 +378,7 @@
             ],
             "description": "Connect stations together"
         },
-        "Dream.Dream.AbstractCapacityStation": {
+        "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation": {
             "name": "Machine",
             "description": "A station processing items for some time given by a distribution",
             "_class": "node",
@@ -403,9 +403,9 @@
                             "default": "M",
                             "required": true
                         },
-                        "Is an assembly station?": {
+                        "requireFullProject": {
                             "_default": 0,
-                            "description": "Is this station an assembly ? Yes: 1, No: 0",
+                            "description": "Is this station an assembly? Yes: 1, No: 0",
                             "type": "number",
                             "required": true
                         }
@@ -647,6 +647,10 @@
                 {
                     "_class": "dream.plugins.CapacityProjectSpreadsheet.CapacityProjectSpreadsheet",
                     "input_id": "capacityProject"
+                },
+                {
+                    "_class": "dream.plugins.CreateCapacityStations.CreateCapacityStations",
+                    "input_id": "createCapacityStations"
                 }
             ]
         },
