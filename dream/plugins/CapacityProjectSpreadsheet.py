@@ -59,7 +59,6 @@ class CapacityProjectSpreadsheet(plugin.InputPreparationPlugin):
                          'capacityRequirementDict':capacityRequirementDict,
                          'earliestStartDict':earliestStartDict
                      }
-        print data['input']['BOM']
         return data
     
     
