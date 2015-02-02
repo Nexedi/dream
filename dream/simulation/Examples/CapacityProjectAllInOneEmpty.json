@@ -651,6 +651,10 @@
                 {
                     "_class": "dream.plugins.CreateCapacityStations.CreateCapacityStations",
                     "input_id": "createCapacityStations"
+                },
+                {
+                    "_class": "dream.plugins.CapacityStationWIPSpreadsheet.CapacityStationWIPSpreadsheet",
+                    "input_id": "createCapacityStationWIP"
                 }
             ]
         },
