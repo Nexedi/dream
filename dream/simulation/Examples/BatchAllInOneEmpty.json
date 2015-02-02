@@ -261,30 +261,37 @@
         "type": "object_view"
       }
     },
-    "post_processing_plugin_list": [],
-    "pre_processing_plugin_list": [
-      {
-        "_class": "dream.plugins.GatherWIPStat.GatherWIPStat",
-        "input_id": "WIPStat"
-      },
-      {
-        "_class": "dream.plugins.ReadEntryData.ReadEntryData",
-        "input_id": "EntryData"
-      },
-      {
-        "_class": "dream.plugins.BatchesWIPSpreadsheet.BatchesWIPSpreadsheet",
-        "input_id": "WipSpreadsheet"
-      },
-      {
-        "_class": "dream.plugins.ReadSkilledOperators.ReadSkilledOperators",
-        "input_id": "SkilledOperatorsSpreadsheet"
-      },
-      {
-        "_class": "dream.plugins.ReadShiftFromSpreadsheet.ReadShiftFromSpreadsheet",
-        "input_id": "ShiftSpreadsheet"
-      }
-    ],
+    "post_processing": {
+      "description" : "",
+      "plugin_list" : []
+    },
+    "pre_processing": {
+      "description" : "",
+      "plugin_list" : [
+        {
+          "_class": "dream.plugins.GatherWIPStat.GatherWIPStat",
+          "input_id": "WIPStat"
+        },
+        {
+          "_class": "dream.plugins.ReadEntryData.ReadEntryData",
+          "input_id": "EntryData"
+        },
+        {
+          "_class": "dream.plugins.BatchesWIPSpreadsheet.BatchesWIPSpreadsheet",
+          "input_id": "WipSpreadsheet"
+        },
+        {
+          "_class": "dream.plugins.ReadSkilledOperators.ReadSkilledOperators",
+          "input_id": "SkilledOperatorsSpreadsheet"
+        },
+        {
+          "_class": "dream.plugins.ReadShiftFromSpreadsheet.ReadShiftFromSpreadsheet",
+          "input_id": "ShiftSpreadsheet"
+        }
+      ]
+    },
     "processing_plugin": {
+      "description" : "",
       "_class": "dream.plugins.plugin.DefaultExecutionPlugin"
     }
   },

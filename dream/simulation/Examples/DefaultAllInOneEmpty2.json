@@ -314,24 +314,13 @@
         ]
       },
       "_operationType": {
-        "_class": "Dream.PropertyList",
-        "name": "Operation type",
-        "id": "operationType",
         "description": "the type of operations that are performed manually in the machine",
-        "properties": {
-          "operationType": {
-            "type": "string",
-            "enum": [
-              "Load",
-              "Setup",
-              "Processing",
-              "MT-Load",
-              "MT-Load-Setup",
-              "MT-Load-Setup-Processing",
-              "MT-Setup-Processing"
-            ]
-          }
-        }
+        "default": "Automatic",
+        "type": "string",
+        "enum" : [
+          "Automatic",
+          "Manual"
+        ]
       }
     },
     "edge": {
@@ -477,6 +466,34 @@
             "id": {
               "type": "string",
               "default": "M",
+              "required": true
+            },
+            "operationType": {
+              "description": "Type Of Operation",
+              "name" : "Operation Type",
+              "type": "object",
+			  "properties" : {
+                "load": {
+                  "description": "Operation type for loading",
+                  "$ref": "#/definitions/_operationType"
+                },
+                "setup": {
+                  "description": "Operation type for setup",
+                  "$ref": "#/definitions/_operationType",
+                },
+                "processing": {
+                  "description": "Operation type for processing",
+                  "$ref": "#/definitions/_operationType",
+                }
+              }
+              "required" : ["load", "setup", "processing"]
+            },
+            "loadTime": {
+              "$ref": "#/definitions/_dist",
+              "required": true
+            },
+            "setupTime": {
+              "$ref": "#/definitions/_dist",
               "required": true
             },
             "processingTime": {
@@ -772,27 +789,26 @@
         }
       }
     },
-    "preprocessing": {
+    "pre_processing": {
+      "description" : "",
       "plugin_list": [
         {
-          "plugin": "GatherWIPStat.GatherWIPStat",
+          "_class": "dream.plugins.GatherWIPStat.GatherWIPStat",
           "input_id": "WIPStat"
         },
         {
-          "plugin": "WIPSpreadsheet.WIPSpreadsheet",
+          "_class": "dream.plugins.WIPSpreadsheet.WIPSpreadsheet",
           "input_id": "WIPdata"
         }
       ]
     },
-    "processing": {
-      "plugin_list": [
-        {
-          "plugin": "plugin.DefaultExecutionPlugin",
-          "input_id": "Simulation"
-        }
-      ]
+    "processing_plugin": {
+      "description" : "",
+      "_class": "dream.plugins.plugin.DefaultExecutionPlugin",
+      "input_id": "Simulation"
     },
-    "postprocessing": {
+    "post_processing": {
+      "description" : "",
       "plugin_list": []
     },
     "general": {
