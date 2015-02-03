@@ -436,7 +436,7 @@
           }
           console.error(error.stack);
           document.querySelector("article[class='gadget_container']")
-            .innerHTML = error_template({ error: error });
+            .innerHTML = error_template({ error: error, error_stack: error.stack});
         });
     });
 }(window, jQuery, rJS, RSVP, Handlebars, initGadgetMixin));
