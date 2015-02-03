@@ -204,14 +204,6 @@
     }
   }
 
-  function handleSelectChange() {
-    try {
-      return  _handleSelectChange.bind(this)();
-    } catch (e) {
-      console.log("ERROR in handleSelectChange", e);
-      console.log(e.stack);
-    }
-  }
   function _handleSelectChange() { //evt) {
     console.log("UPDATING FIELDS DUE TO SELECTION CHANGE");
     var gadget = this, oneOf_list, i,
@@ -246,7 +238,16 @@
     }
     syncField(gadget);
   }
-
+  
+  function handleSelectChange() {
+    try {
+      return  _handleSelectChange.bind(this)();
+    } catch (e) {
+      console.log("ERROR in handleSelectChange", e);
+      console.log(e.stack);
+    }
+  }
+  
   function waitForListFieldSelection(gadget) {
     var element = gadget.props.element.getElementsByTagName('select')[0];
     console.log("INITIATING A LOOP EVENT LISTENER FOR OPTION CHANGE");
