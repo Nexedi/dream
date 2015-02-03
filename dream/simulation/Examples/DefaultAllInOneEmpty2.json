@@ -479,13 +479,13 @@
                 },
                 "setup": {
                   "description": "Operation type for setup",
-                  "$ref": "#/definitions/_operationType",
+                  "$ref": "#/definitions/_operationType"
                 },
                 "processing": {
                   "description": "Operation type for processing",
-                  "$ref": "#/definitions/_operationType",
+                  "$ref": "#/definitions/_operationType"
                 }
-              }
+              },
               "required" : ["load", "setup", "processing"]
             },
             "loadTime": {
