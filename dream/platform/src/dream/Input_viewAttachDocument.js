@@ -55,7 +55,6 @@
       });
     })
     .declareMethod("render", function (options) {
-      var gadget = this;
       this.props.jio_key = options.id;
       this.props.action_definition = options.action_definition;
     });
