@@ -91,9 +91,9 @@
           ]);
         })
         .push(function (result_list) {
-          var i, content,
-            result = JSON.parse(result_list[0]),
-            config = result.application_configuration.input;
+          var content,
+            result = JSON.parse(result_list[0]);
+
           // if there are previously stored data in input for this sprSheet
           if (result.input[gadget.props.name]) {
             content = result.input[gadget.props.name];
