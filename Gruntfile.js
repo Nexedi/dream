@@ -29,7 +29,7 @@ module.exports = function (grunt) {
       config: {
         src: ['package.json', 'Gruntfile.js'],
         directives: {
-          maxlen: 120,
+          maxlen: Infinity,
           indent: 2,
           maxerr: 3,
           predef: [
@@ -40,7 +40,7 @@ module.exports = function (grunt) {
       gadget: {
         src: ["<%= global_config.src %>/**/*.js"],
         directives: {
-          maxlen: 79,
+          maxlen: Infinity,
           indent: 2,
           maxerr: 5,
           todo: true,
