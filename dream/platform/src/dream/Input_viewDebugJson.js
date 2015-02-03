@@ -1,5 +1,5 @@
-/*global rJS, promiseEventListener, initGadgetMixin */
-(function (window, rJS, promiseEventListener, initGadgetMixin) {
+/*global rJS, promiseEventListener, initGadgetMixin, RSVP, CodeMirror */
+(function (window, rJS, promiseEventListener, initGadgetMixin, RSVP, CodeMirror) {
   "use strict";
 
   var gadget_klass = rJS(window);
@@ -29,7 +29,7 @@
           "_id": gadget.props.jio_key,
          "_attachment": "body.json",
          "_data": gadget.props.codemirror.getValue()
-        })
+        });
       });
     })
     .declareMethod("render", function (options) {
@@ -57,11 +57,11 @@
               return gadget.aq_putAttachment({
                 "_id": gadget.props.jio_key,
                 "_attachment": "body.json",
-                "_data": gadget.props.codemirror.getValue()
+                "_data": instance.getValue()
               });
-            },
+            }
           }
         });
       });
     });
-}(window, rJS, promiseEventListener, initGadgetMixin));
+}(window, rJS, promiseEventListener, initGadgetMixin, RSVP, CodeMirror));
