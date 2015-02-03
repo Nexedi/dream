@@ -17,8 +17,16 @@
 
       callback = function (evt) {
         try {
-          evt.dataTransfer.setData('text',
-            tool.dataset.class_name);
+          // Internet explorer only accepts text and URI as types for dataTranser
+          // but firefox will replace location.href with the data if type is set to
+          // text or URI. We try to use application/json as type, and if it fails
+          // fallback to text.
+          try {
+            // IE will raise an error setting this.
+            evt.dataTransfer.setData('application/json', tool.dataset.class_name);
+          } catch (e) {
+            evt.dataTransfer.setData('text', tool.dataset.class_name);
+          }
         } catch (e) {
           reject(e);
         }

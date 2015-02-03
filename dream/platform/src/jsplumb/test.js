@@ -184,8 +184,8 @@
             e.dataTransfer = {
               getData: function(type){
                  // make sure we are called properly
-                 equal('text', type,
-             "The drag&dropped element must have data type text");
+                 equal('application/json', type,
+             "The drag&dropped element must have data type application/json");
                  return JSON.stringify("Example.Node");
               }
             };
@@ -545,8 +545,8 @@
             e.dataTransfer = {
               getData: function(type){
                  // make sure we are called properly
-                 equal('text', type,
-             "The drag&dropped element must have data type text");
+                 equal('application/json', type,
+             "The drag&dropped element must have data type application/json");
                  return JSON.stringify("Example.Node");
               }
             };
@@ -647,8 +647,8 @@
             e.dataTransfer = {
               getData: function(type){
                  // make sure we are called properly
-                 equal('text', type,
-             "The drag&dropped element must have data type text");
+                 equal('application/json', type,
+             "The drag&dropped element must have data type application/json");
                  return JSON.stringify("Example.Node");
               }
             };
