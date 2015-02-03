@@ -4,16 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Debug JSON</title>
+    <link rel="stylesheet" href="../lib/codemirror.css"></link>
     <script src="../lib/rsvp.min.js" type="text/javascript"></script>
     <script src="../lib/renderjs.min.js" type="text/javascript"></script>
+    <script src="../lib/codemirror-compressed.js" type="text/javascript"></script>
+    <script src="../lib/jsonlint.js" type="text/javascript"></script>
     <script src="mixin_gadget.js" type="text/javascript"></script>
+    <script src="mixin_promise.js" type="text/javascript"></script>
     <script src="Input_viewDebugJson.js" type="text/javascript"></script>
   </head>
   <body>
-    <div xdata-gadget-url="https://softinst52398.node.vifib.com/gadget_codemirror.html" 
-         data-gadget-scope="editor"
-         data-gadget-sandbox="iframe"></div>
-    <label for="json">JSON</label>
+    <a class="save_button ui-btn ui-btn-b ui-btn-inline
+              ui-icon-refresh ui-btn-icon-right">Save</a>
     <textarea spellcheck="false" rows="20" name="json" class="json"></textarea>
   </body>
 </html>

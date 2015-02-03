@@ -303,7 +303,7 @@
         // references
         // XXX this should probably be moved to fieldset ( and not handle
         // class_definition here)
-        var referenced, i, property, class_definition = clone(class_definition), expanded_class_definition = clone(class_definition) || {};
+        var referenced, i, property, expanded_class_definition = clone(class_definition) || {};
         if (!expanded_class_definition.properties) {
             expanded_class_definition.properties = {};
         }
@@ -563,7 +563,14 @@
         function resolver(resolve, reject) {
             callback = function(evt) {
                 try {
-                    var class_name = JSON.parse(evt.dataTransfer.getData("text")), offset = $(gadget.props.main).offset(), relative_position = convertToRelativePosition(gadget, evt.clientX - offset.left + "px", evt.clientY - offset.top + "px");
+                    var class_name, offset = $(gadget.props.main).offset(), relative_position = convertToRelativePosition(gadget, evt.clientX - offset.left + "px", evt.clientY - offset.top + "px");
+                    try {
+                        // html5 compliant browser
+                        class_name = JSON.parse(evt.dataTransfer.getData("application/json"));
+                    } catch (e) {
+                        // internet explorer
+                        class_name = JSON.parse(evt.dataTransfer.getData("text"));
+                    }
                     addNode(gadget, generateNodeId(gadget, {
                         _class: class_name
                     }), {
