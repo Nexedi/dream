@@ -785,15 +785,21 @@
     function resolver(resolve, reject) {
       callback = function (evt) {
         try {
-          var class_name = JSON.parse(
-              evt.dataTransfer.getData('text')
-            ),
-            offset = $(gadget.props.main).offset(),
-            relative_position = convertToRelativePosition(
-              gadget,
-              evt.clientX - offset.left + "px",
-              evt.clientY - offset.top + "px"
-            );
+            var class_name,
+              offset = $(gadget.props.main).offset(),
+              relative_position = convertToRelativePosition(
+                gadget,
+                evt.clientX - offset.left + "px",
+                evt.clientY - offset.top + "px"
+              );
+            try {
+              // html5 compliant browser
+              class_name = JSON.parse(evt.dataTransfer.getData('application/json'));
+            } catch (e) {
+              // internet explorer
+              class_name = JSON.parse(evt.dataTransfer.getData('text'));
+            }
+
           addNode(gadget,
             generateNodeId(gadget, {_class: class_name}),
             {
