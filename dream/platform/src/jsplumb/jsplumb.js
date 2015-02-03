@@ -401,7 +401,6 @@
     // XXX this should probably be moved to fieldset ( and not handle
     // class_definition here)
     var referenced, i, property,
-      class_definition = clone(class_definition),
       expanded_class_definition = clone(class_definition) || {};
 
     if (!expanded_class_definition.properties) {
