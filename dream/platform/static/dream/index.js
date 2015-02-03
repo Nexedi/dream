@@ -25,101 +25,6 @@
                 type: "object_fast_input",
                 title: "Create Document"
             }
-        },
-        // TODO: remove this once everything is merged.
-        Input: {
-            view: {
-                gadget: "Input_viewProductionLine",
-                type: "object_view",
-                title: "Production Line"
-            },
-            view_wip_part_spreadsheet: {
-                gadget: "Input_viewWipPartSpreadsheet",
-                type: "object_view",
-                title: "WIP Part Spreadsheet"
-            },
-            view_shift_spreadsheet: {
-                gadget: "Input_viewShiftSpreadsheet",
-                type: "object_view",
-                title: "Shift Spreadsheet"
-            },
-            view_available_capacity_spreadsheet: {
-                gadget: "Input_viewAvailableCapacitySpreadsheet",
-                type: "object_view",
-                title: "Available Capacity Spreadsheet"
-            },
-            view_required_capacity_spreadsheet: {
-                gadget: "Input_viewRequiredCapacitySpreadsheet",
-                type: "object_view",
-                title: "Required Capacity Spreadsheet"
-            },
-            view_dp_capacity_spreadsheet: {
-                gadget: "Input_viewDemandPlanningCapacitySpreadsheet",
-                type: "object_view",
-                title: "Demand Planning Required Capacity Spreadsheet"
-            },
-            view_dp_route_spreadsheet: {
-                gadget: "Input_viewDemandPlanningRouteSpreadsheet",
-                type: "object_view",
-                title: "Demand Planning Route Spreadsheet"
-            },
-            view_simu: {
-                gadget: "Input_viewSimulation",
-                type: "object_view",
-                title: "Run simulation"
-            },
-            view_management: {
-                gadget: "Input_viewDocumentManagement",
-                type: "object_view",
-                title: "Manage document"
-            },
-            view_result: {
-                gadget: "Input_viewResultList",
-                type: "object_view",
-                title: "Results"
-            }
-        },
-        Output: {
-            view: {
-                gadget: "Output_viewStationUtilisationGraph",
-                type: "object_view",
-                title: "Stations Utilization"
-            },
-            download_excel_spreadsheet: {
-                gadget: "Output_viewDownloadExcelSpreadsheet",
-                type: "object_view",
-                title: "Download Excel Spreadsheet"
-            },
-            view_capacity_utilization: {
-                gadget: "Output_viewCapacityUtilisationGraph",
-                type: "object_view",
-                title: "Capacity Utilization"
-            },
-            view_queue_stat: {
-                gadget: "Output_viewQueueStatGraph",
-                type: "object_view",
-                title: "Queues Statistics"
-            },
-            view_exit_stat: {
-                gadget: "Output_viewExitStatistics",
-                type: "object_view",
-                title: "Exit Statistics"
-            },
-            view_gantt: {
-                gadget: "Output_viewJobGantt",
-                type: "object_view",
-                title: "Job Gantt"
-            },
-            view_schedule: {
-                gadget: "Output_viewJobScheduleSpreadsheet",
-                type: "object_view",
-                title: "Job Schedule"
-            },
-            view_debug: {
-                gadget: "Output_viewDebugJson",
-                type: "object_view",
-                title: "Debug JSON"
-            }
         }
     }, panel_template, navigation_template, active_navigation_template, error_template, gadget_klass = rJS(window);
     function calculateTabHTML(gadget, options, key, title, active) {
@@ -358,6 +263,7 @@
                 portal_types.Input = data.application_configuration.input;
                 portal_types.Output = data.application_configuration.output;
             }
+            options.action_definition = portal_types[portal_type][options.action];
             // Get the action information
             return gadget.declareGadget(portal_types[portal_type][options.action].gadget + ".html");
         }).push(function(g) {
@@ -405,7 +311,8 @@
             }
             console.error(error.stack);
             document.querySelector("article[class='gadget_container']").innerHTML = error_template({
-                error: error
+                error: error,
+                error_stack: error.stack
             });
         });
     });

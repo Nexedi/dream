@@ -25,7 +25,7 @@
                     name: property_definition.name || property_definition.description || property_id
                 }));
                 // use expandable field if we have a oneOf in the schema
-                if (property_definition.oneOf) {
+                if (property_definition.oneOf && property_definition.properties && Object.keys(property_definition.properties).length === 1) {
                     property_definition = {
                         allOf: [ {
                             properties: property_definition.properties
