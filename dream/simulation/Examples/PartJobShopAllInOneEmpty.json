@@ -2,227 +2,193 @@
   "class_definition": {
     "definitions": {
       "distributionTypes": {
-        "_fixed": {
-          "description": "Fixed",
-          "name": "Fixed",
-          "type": "object",
-          "properties": {
-            "mean": {
-              "type": "number",
-              "default": 0.75,
-              "required": true
-            }
-          }
-        },
-        "_exp": {
-          "type": "object",
-          "name": "Exp",
-          "description": "Exponential",
-          "properties": {
-            "mean": {
-              "type": "number",
-              "default": 0,
-              "required": true
-            }
-          }
-        },
-        "_normal": {
-          "type": "object",
-          "name": "Normal",
-          "description": "Normal",
-          "properties": {
-            "mean": {
-              "type": "number",
-              "default": 0,
-              "required": true
-            },
-            "stdev": {
-              "type": "number",
-              "default": 0,
-              "required": true
-            }
-          }
-        },
-        "_lognormal": {
-          "type": "object",
-          "name": "Lognormal",
-          "description": "Lognormal",
-          "properties": {
-            "mean": {
-              "name": "Mean",
-              "type": "number",
-              "default": 0
-            },
-            "stdev": {
-              "name": "Standard Deviation",
-              "type": "number",
-              "default": 0
-            }
-          }
-        },
         "_binomial": {
-          "type": "object",
-          "name": "Binomial",
           "description": "Binomial",
           "properties": {
             "mean": {
-              "type": "number",
-              "default": 0
+              "default": 0,
+              "type": "number"
             },
             "size": {
-              "type": "number",
-              "default": 0
+              "default": 0,
+              "type": "number"
             }
-          }
+          },
+          "title": "Binomial",
+          "type": "object"
         },
-        "_poisson": {
-          "type": "object",
-          "name": "Poisson",
-          "description": "Poisson",
-          "properties": {
-            "lambda": {
-              "type": "number",
-              "default": 0
-            }
-          }
-        },
-        "_logistic": {
-          "type": "object",
-          "name": "Logistic",
-          "description": "Logistic",
+        "_cauchy": {
+          "description": "Cauchy",
           "properties": {
             "location": {
-              "type": "number",
               "default": 0,
-              "required": true
+              "type": "number"
             },
             "scale": {
-              "type": "number",
               "default": 0,
-              "required": true
+              "type": "number"
             }
-          }
+          },
+          "title": "Cauchy",
+          "type": "object"
         },
-        "_caucy": {
-          "type": "object",
-          "name": "Caucy",
-          "description": "Caucy",
+        "_exp": {
+          "description": "Exponential",
           "properties": {
-            "location": {
-              "type": "number",
-              "default": 0
-            },
-            "scale": {
-              "type": "number",
-              "default": 0
+            "mean": {
+              "default": 0,
+              "required": true,
+              "type": "number"
             }
-          }
+          },
+          "title": "Exp",
+          "type": "object"
+        },
+        "_failure": {
+          "properties": {
+            "Time to Failure": {
+              "$ref": "#/definitions/_dist"
+            },
+            "Time to Repair": {
+              "$ref": "#/definitions/_dist"
+            },
+            "repairman": {
+              "description": "Repairman",
+              "required": true,
+              "type": "string"
+            }
+          },
+          "title": "Yes",
+          "type": "object"
+        },
+        "_fixed": {
+          "title": "Fixed",
+          "properties": {
+            "mean": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "_gama": {
+          "description": "Gama",
+          "properties": {
+            "rate": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            },
+            "shape": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            }
+          },
+          "title": "Gama",
+          "type": "object"
         },
         "_geometric": {
-          "type": "object",
-          "name": "Geometric",
           "description": "Geometric",
           "properties": {
             "probability": {
-              "type": "number",
               "default": 0,
-              "required": true
+              "required": true,
+              "type": "number"
             }
-          }
+          },
+          "title": "Geometric",
+          "type": "object"
         },
-        "_gama": {
-          "type": "object",
-          "name": "Gama",
-          "description": "Gama",
+        "_logistic": {
+          "description": "Logistic",
           "properties": {
-            "shape": {
-              "type": "number",
+            "location": {
               "default": 0,
-              "required": true
-            },
-            "rate": {
-              "type": "number",
-              "default": 0,
-              "required": true
-            }
-          }
-        },
-        "_weibull": {
-          "type": "object",
-          "name": "Weibull",
-          "description": "Weibull",
-          "properties": {
-            "shape": {
-              "type": "number",
-              "default": 0,
-              "required": true
+              "required": true,
+              "type": "number"
             },
             "scale": {
-              "type": "number",
               "default": 0,
-              "required": true
+              "required": true,
+              "type": "number"
             }
-          }
+          },
+          "title": "Logistic",
+          "type": "object"
         },
-        "_fixedFailure": {
-          "type": "object",
-          "name": "Fixed",
-          "description": "Fixed",
+        "_lognormal": {
+          "description": "Lognormal",
           "properties": {
-            "MTTF": {
-              "description": "Mean Time To Failure",
-              "type": "number",
-              "default": 40,
-              "required": true
+            "mean": {
+              "_class": "Dream.Property",
+              "default": 0,
+              "name": "Mean",
+              "type": "number"
             },
-            "MTTR": {
-              "description": "Mean Time To Repair",
-              "type": "number",
-              "default": 10,
-              "required": true
-            },
-            "repairman": {
-              "description": "Repairman",
-              "type": "string",
-              "required": true
+            "stdev": {
+              "_class": "Dream.Property",
+              "default": 0,
+              "name": "Standard Deviation",
+              "type": "number"
             }
-          }
+          },
+          "title": "Lognormal",
+          "type": "object"
         },
         "_no": {
-          "type": "string",
-          "name": "No",
-          "description": "None"
+          "description": "None",
+          "title": "No",
+          "type": "string"
         },
-        "_availability": {
-          "type": "object",
-          "name": "Availability",
-          "description": "Availability",
+        "_normal": {
+          "description": "Normal",
           "properties": {
-            "MTTF": {
-              "description": "Mean Time To Failure",
-              "type": "number",
-              "default": 40,
-              "required": true
-            },
-            "MTTR": {
-              "description": "Mean Time To Failure",
-              "default": 10,
-              "type": "number",
-              "required": true
-            },
-            "availability": {
-              "type": "number",
+            "mean": {
               "default": 0,
-              "required": true
+              "required": true,
+              "type": "number"
             },
-            "repairman": {
-              "description": "Repairman",
-              "type": "string",
-              "required": true
+            "stdev": {
+              "default": 0,
+              "required": true,
+              "type": "number"
             }
-          }
+          },
+          "title": "Normal",
+          "type": "object"
+        },
+        "_poisson": {
+          "description": "Poisson",
+          "properties": {
+            "lambda": {
+              "default": 0,
+              "type": "number"
+            }
+          },
+          "title": "Poisson",
+          "type": "object"
+        },
+        "_weibull": {
+          "description": "Weibull",
+          "properties": {
+            "scale": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            },
+            "shape": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            }
+          },
+          "title": "Weibull",
+          "type": "object"
         }
-      },
+      }
+    },
       "_failureDist": {
         "allOf": [
           {
@@ -233,8 +199,7 @@
                 "default": "No",
                 "enum": [
                   "No",
-                  "Fixed",
-                  "Availability"
+                  "Yes"
                 ]
               }
             }
@@ -242,13 +207,10 @@
           {
             "oneOf": [
               {
-                "$ref": "#/definitions/distributionTypes/_fixedFailure"
+                "$ref": "#/definitions/distributionTypes/_failure"
               },
               {
                 "$ref": "#/definitions/distributionTypes/_no"
-              },
-              {
-                "$ref": "#/definitions/distributionTypes/_availability"
               }
             ]
           }
@@ -270,7 +232,7 @@
                   "Binomial",
                   "Poisson",
                   "Logistic",
-                  "Caucy",
+                  "Cauchy",
                   "Geometric",
                   "Gama",
                   "Weibull"
@@ -302,7 +264,7 @@
                 "$ref": "#/definitions/distributionTypes/_logistic"
               },
               {
-                "$ref": "#/definitions/distributionTypes/_caucy"
+                "$ref": "#/definitions/distributionTypes/_cauchy"
               },
               {
                 "$ref": "#/definitions/distributionTypes/_geometric"
@@ -486,7 +448,7 @@
         }
       ]
     },
-    "Dream.QueueManagedJob": {
+    "Dream.QueueJobShop": {
       "name": "Queue",
       "_class": "node",
       "description": "A queue for jobs",
@@ -575,7 +537,7 @@
         }
       ]
     },
-    "Dream.MachineManagedJob": {
+    "Dream.MachineJobShop": {
       "name": "Machine",
       "description": "A station processing items for some time given by a distribution provided by the entities that are processed",
       "css": {
@@ -633,7 +595,7 @@
         }
       ]
     },
-    "Dream.OperatorManagedJob": {
+    "Dream.Operator": {
       "name": "Operator",
       "_class": "node",
       "description": "A resource that operates stations",
@@ -811,8 +773,7 @@
       }
     },
     "pre_processing": {
-      "description" : "",
-      "_plugin_list": [
+       "plugin_list": [
         {
           "_class": "dream.plugins.Debug.Debug",
           "argument": "Argument Value"
@@ -824,12 +785,10 @@
       ]
     },
     "processing_plugin": {
-      "description": "",
       "_class": "dream.plugins.ACO.ACO"
     },
     "post_processing": {
-      "description": "",
-	  "plugin_list": []
+      "plugin_list": []
     },
     "general": {
       "properties": {
