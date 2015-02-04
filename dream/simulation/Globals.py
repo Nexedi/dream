@@ -174,7 +174,12 @@ def getMethodFromName(dotted_name):
         method = possibles.get(methodName)
     # if the method is in a class
     else:
-        clsName=name[0]+'.'+name[1]
+        clsName=''
+        #clsName=name[0]+'.'+name[1]
+        for i in range(len(name)-1):
+            clsName+=name[i]
+            clsName+='.'
+        clsName=clsName[:-1]
         cls=getClassFromName(clsName)
         method = getattr(cls, methodName)
     if not method:
