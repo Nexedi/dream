@@ -358,7 +358,8 @@ def createWIP():
     #Read the json data
     json_data = G.JSONData
     # read from the dictionary the dicts with key 'BOM' (if there are any)
-    bom=json_data.get('BOM',None)
+    input=json_data.get('input',{})
+    bom=input.get('BOM',None)
     if bom:
         orders=bom.get('productionOrders',[])
         # for every order in the productionOrders list
