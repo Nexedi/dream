@@ -51,6 +51,17 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
                     "data": {}, 
                     "_class": "Dream.Edge"
                  }
+        # add also a CapacityStationController
+        # XXX some of the attributes should be inputted by the user 
+        data['graph']['node']['CSC']={
+            "dueDateThreshold": 14, 
+            "name": "CSC", 
+            "prioritizeIfCanFinish": 1, 
+            "interval": "1", 
+            "start": "0", 
+            "interruptions": {}, 
+            "_class": "dream.simulation.applications.CapacityStations.CapacityStationController.CapacityStationController"
+         }
         return data
     
     # gets the data and the stationId

@@ -15,7 +15,8 @@ class CapacityProjectSpreadsheet(plugin.InputPreparationPlugin):
     def preprocess(self, data):
         strptime = datetime.datetime.strptime
         projectData=data['input'].get('projects_spreadsheet', None)
-        data['input']['BOM']={}     # Put the projects in BOM. Discuss this!
+        data['input']['BOM']={}     
+        data['input']['BOM']['productionOrders']=[] 
         node=data['graph']['node']
         now = strptime(data['general']['currentDate'], '%Y/%m/%d')
         if projectData:
@@ -52,13 +53,16 @@ class CapacityProjectSpreadsheet(plugin.InputPreparationPlugin):
                             earliestStart=strptime(earliestStart, '%Y/%m/%d')
                             earliestStartDict[stationId]=(earliestStart-now).days
                     # define the order in BOM 
-                    data['input']['BOM'][projectId]={
+                    data['input']['BOM']['productionOrders'].append({
                          'orderDate':orderDate,
                          'dueDate':dueDate,
                          'assemblySpaceRequirement':assemblySpaceRequirement,
                          'capacityRequirementDict':capacityRequirementDict,
-                         'earliestStartDict':earliestStartDict
-                     }
+                         'earliestStartDict':earliestStartDict,
+                         'id':projectId,
+                         'name':projectId,
+                         '_class':"dream.simulation.applications.CapacityStations.CapacityProject.CapacityProject"
+                     })
         return data
     
     

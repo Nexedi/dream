@@ -48,7 +48,7 @@ class CapacityStationWIPSpreadsheet(plugin.InputPreparationPlugin):
                     buffer=self.getBuffer(data, stationId)
                     data['graph']['node'][buffer]['wip'].append({
                         "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity", 
-                        "requiredCapacity": requiredCapacity, 
+                        "requiredCapacity": float(requiredCapacity), 
                         "capacityProjectId": projectId, 
                         "name": projectId+'_'+stationId+'_'+str(requiredCapacity)                                                          
                     })
