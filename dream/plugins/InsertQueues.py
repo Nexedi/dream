@@ -4,7 +4,6 @@ import time
 import random
 import operator
 from datetime import datetime
-import copy
 
 from dream.plugins import plugin
 
@@ -55,65 +54,74 @@ class InsertQueues(plugin.InputPreparationPlugin):
     """ inserts buffers before the corresponding stations
     """
 	self.data = copy(data)
-    orders = self.data["BOM"]["orders"]
-	stations = self.data["BOM"]["stations"]
-	graph_data = self.data["graph"]
-	nodes = graph_data["node"]
-	
+    orders = self.data["input"]["BOM"]["orders"]
+	nodes = self.data["graph"]["node"]
 	
 	for order in orders:
 		orderComponents = order.get("componentsList", [])
 		for component in orderComponents:
 			updatedRoute = []
 			route = component.get("route", [])
-# XXX separate mould from design
-			for step in route:
+			index = 0
+			tempRoute = copy.deepcopy(route)
+			for tempIndex, step in enumerate(tempRoute):
 				stationIdsList = step.get("stationIdsList", [])
-				
-				
-
-			for index, step in enumerate(route):
-				stationIdsList = step.get("stationIdsList", [])
-				
-				
+				''' add predecessors wherever needed (buffers, OrderDecomposition) '''
+				predecessor_list = []
 				for predecessor in self.getNotMachineNodePredecessorList(stationIdsList):
-# XXX if the component is a mould then before the assembly do not add AssemblyBuffer
+					# # if the component is a mould then before the assembly do not add AssemblyBuffer
 					if predecessor.startswith("ASSM"):
 						break
-# XXX if there is a QCAM there must an OrderDecomposition come
+					# # if there is a QCAM there must an OrderDecomposition inserted before that
 					if predecessor.startswith("QCAM"):
+						pre_predecessor_list = []
 						for pre_predecessor in self.getNotMachineNodePredecessorList([predecessor]):
-							"""insert this step (pre_predecessor) to the route
-								{"stationIdsList": [pre_predecessor],}
-							"""
-					"""insert this step (predecessor) to the route
-						{"stationIdsList": [predecessor],}
-					"""
-# XXX design case -  add OrderDecomposition
-				if any(station.startswith("CAD") for station in stationIdsList) and index==len(route)-1:
+							pre_predecessor_list.append(pre_predecessor)
+						if pre_predecessor_list:
+							route.insert(index, {"stationIdsList" : pre_predecessor_list,})
+							index+=1
+					predecessor_list.append(predecessor)
+				if predecessor_list:
+					route.insert(index, {"stationIdsList": predecessor_list,})
+					index+=1
+				''' add successors wherever needed (buffers, OrderDecomposition, exit, AssemblyBuffer, Assembly stations) '''
+				# # design case -  add OrderDecomposition at the end of a design route
+				if any(station.startswith("CAD") for station in stationIdsList) and tempIndex==len(tempRoute)-1:
+					successor_list = []
 					for successor in self.getNotMachineNodeSuccessorList(stationIdsList):
-						"""insert this step (successor) to the route
-							{"stationIdsList": [succecssor],}
-						"""
-# XXX mould case - add exit
-				elif any(station.startswith("INJ") for station in stationIdsList) and index == len(route)-1:
+						successor_list.append(successor)
+					if successor_list:
+						route.insert(index, {"stationIdsList": successor_list,})
+						index+=1
+				# # mould case - add exit at the a mould route
+				elif any(station.startswith("INJM") for station in stationIdsList) and tempIndex == len(tempRoute)-1:
 					for successor in self.getNotMachineNodeSuccessorList(stationIdsList):
-						"""insert this step (successor) to the route
-							{"stationIdsList": [succecssor],}
-						"""
-# XXX normal components - add ASSM buffer and ASSM after manual operations?
-				elif index == len(route)-1:
-					exitAssigned=(station.startswith("ASS") for station in stationIdsList)
+						successor_list.append(successor)
+					if successor_list:
+						route.insert(index, {"stationIdsList": successor_list,})
+						index+=1
+				# # normal components - add ASSM buffer and ASSM at the end of their route
+				elif tempIndex == len(tempRoute)-1:
+					exitAssigned=any(station.startswith("ASS") for station in stationIdsList)
 					if not exitAssigned:
-						"""insert ASSM buffer to the route
-							{"stationIdsList": [AssemblyBufferIdsList],}
-						"""
-						"""insert ASSM to the route
-							{"stationIdsList": [AssemblyIdsList],}
-						"""
+						# # add assemble buffers to the route
+						assemblyBufferIDlist = []
+						for nodeID, node in nodes.items():
+							if node["_class"] = "Dream.MouldAssemblyBuffer":
+								assemblyBufferIDlist.append(str(nodeID))
+						if assemblyBufferIDlist:
+							route.insert(index,{"stationIdsList": assemblyBufferIDlist, })
+							index+=1
+						# # add assemblers to the route
+						assemblyIDlist = []
+						for nodeID, node in nodes.items():
+							if node["_class"] = "Dream.MouldAssembly":
+								assemblyIDlist.append(str(nodeID))
+						if assemblyIDlist:
+							route.insert(index,{"stationIdsList": assemblyIDlist, })
+							index+=1
 
-				
-				# XXX route.insert(indexToInsert, additionalStep)
+				index+=1
 			
     return data
 
