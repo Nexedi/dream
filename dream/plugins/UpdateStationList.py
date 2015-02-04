@@ -16,8 +16,8 @@ class UpdateStationList(plugin.InputPreparationPlugin):
   def preprocess(self, data):
     """ substitutes the technology information with stationIDs lists
     """
-    orders = data["BOM"]['orders']
-	stations = data["BOM"]['stations']
+    orders = data["input"]["BOM"]['orders']
+	stations = data["input"]["BOM"]['stations']
 	nodes = data["graph"]["node"]
 	
 	for order in orders:

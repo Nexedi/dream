@@ -58,10 +58,8 @@ class SplitRoute(plugin.InputPreparationPlugin):
     """ splits the routes of mould parts (design + mould)
     """
 	self.data = copy(data)
-    orders = self.data["BOM"]["orders"]
-	stations = self.data["BOM"]["stations"]
-	graph_data = self.data["graph"]
-	nodes = graph_data["node"]
+    orders = self.data["input"]["BOM"]["orders"]
+	stations = self.data["input"]["BOM"]["stations"]
 	
 	
 	for order in orders:
