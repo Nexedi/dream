@@ -332,12 +332,6 @@
      }
     ]
    }
-  }, 
-  {
-   "_class": "Dream.Queue", 
-   "family": "Buffer", 
-   "id": "QD", 
-   "results": {}
   }
  ], 
  "general": {
