@@ -367,7 +367,6 @@ def createWIP():
             orderClass=prodOrder.get('_class',None)
             orderType=Globals.getClassFromName(orderClass)
             # make sure that their type is Dream.Order
-            assert issubclass(orderType, Order), 'a production order must be sub-class of Order'
             if orderClass=='Dream.Order':
                 id=prodOrder.get('id', 'not found')
                 name=prodOrder.get('name', 'not found')
@@ -387,6 +386,15 @@ def createWIP():
                         isCritical=isCritical, componentsList=componentsList,
                         componentsReadyForAssembly=componentsReadyForAssembly, extraPropertyDict=extraPropertyDict)
                 G.OrderList.append(O)
+            else:
+                productionOrderClass=prodOrder.get('_class', None)
+                productionOrderType=Globals.getClassFromName(productionOrderClass)
+                inputDict=dict(prodOrder)
+                inputDict.pop('_class')
+                from dream.simulation.Entity import Entity
+                if issubclass(productionOrderType, Entity):
+                    entity=productionOrderType(**inputDict)
+                    G.EntityList.append(entity)                   
                 
     # read from the dictionary the dicts with key 'nodes'
     nodes = json_data["graph"]['node']
