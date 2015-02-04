@@ -262,1408 +262,1410 @@
           }
      }, 
      "_class": "Dream.Simulation", 
-     "BOM": {
-          "productionOrders": [
-               {
-                    "priority": "1", 
-                    "componentsList": [
-                         {
-                              "route": [
-                                   {
-                                        "stationIdsList": [
-                                             "Q0"
-                                        ], 
-                                        "sequence": "1"
-                                   }, 
-                                   {
-                                        "sequence": "1", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.5
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 1
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "CAD1", 
-                                             "CAD2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O1"
-                                   }
-                              ], 
-                              "_class": "Dream.OrderDesign", 
-                              "id": "OD1", 
-                              "name": "OrderDesign1"
-                         }, 
-                         {
-                              "componentType": "Mold Base", 
-                              "route": [
-                                   {
-                                        "stationIdsList": [
-                                             "OD0"
-                                        ], 
-                                        "sequence": ""
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QCAM"
-                                        ], 
-                                        "sequence": "2"
-                                   }, 
-                                   {
-                                        "sequence": "2", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.5
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 2
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "CAM1", 
-                                             "CAM2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O1"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QMILL"
-                                        ], 
-                                        "sequence": "3"
-                                   }, 
-                                   {
-                                        "sequence": "3", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.5
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 2
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "MILL1", 
-                                             "MILL2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O1"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QEDM"
-                                        ], 
-                                        "sequence": "4"
-                                   }, 
-                                   {
-                                        "sequence": "4", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.5
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 2
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "EDM"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O1"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "AB1"
-                                        ], 
-                                        "sequence": "6"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "MA1", 
-                                             "MA2", 
-                                             "MA3"
-                                        ], 
-                                        "sequence": "6"
-                                   }
-                              ], 
-                              "_class": "Dream.OrderComponent", 
-                              "id": "C1O1", 
-                              "name": "Component1 from Order1"
-                         }, 
-                         {
-                              "componentType": "Misc", 
-                              "route": [
-                                   {
-                                        "stationIdsList": [
-                                             "OD0"
-                                        ], 
-                                        "sequence": ""
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QCAM"
-                                        ], 
-                                        "sequence": "3"
-                                   }, 
-                                   {
-                                        "sequence": "3", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.6
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 1
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "CAM1", 
-                                             "CAM2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O1"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QMILL"
-                                        ], 
-                                        "sequence": "4"
-                                   }, 
-                                   {
-                                        "sequence": "4", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.4
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 4
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "MILL1", 
-                                             "MILL2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O1"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QEDM"
-                                        ], 
-                                        "sequence": "5"
-                                   }, 
-                                   {
-                                        "sequence": "5", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.6
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 1
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "EDM"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O1"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "AB1"
-                                        ], 
-                                        "sequence": "6"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "MA1", 
-                                             "MA2", 
-                                             "MA3"
-                                        ], 
-                                        "sequence": "6"
-                                   }
-                              ], 
-                              "_class": "Dream.OrderComponent", 
-                              "id": "C2O1", 
-                              "name": "Component2 from Order1"
-                         }, 
-                         {
-                              "route": [
-                                   {
-                                        "operator": "O1", 
-                                        "stationIdsList": [
-                                             "MA1", 
-                                             "MA2", 
-                                             "MA3"
-                                        ], 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 1
-                                             }
-                                        }, 
-                                        "operationType": {
-                                             "Processing": 1
-                                        }, 
-                                        "sequence": "6"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QIM"
-                                        ], 
-                                        "sequence": "7"
-                                   }, 
-                                   {
-                                        "sequence": "7", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.5
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 2
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "IM"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 0
-                                        }, 
-                                        "operator": "O1"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "E1"
-                                        ], 
-                                        "sequence": "8"
-                                   }
-                              ], 
-                              "_class": "Dream.Mould", 
-                              "id": "M1O1", 
-                              "name": "Mould1 from Order1"
-                         }
-                    ], 
-                    "_class": "Dream.Order", 
-                    "name": "Order1", 
-                    "id": "O1"
-               }, 
-               {
-                    "priority": "2", 
-                    "componentsList": [
-                         {
-                              "route": [
-                                   {
-                                        "stationIdsList": [
-                                             "Q0"
-                                        ], 
-                                        "sequence": "1"
-                                   }, 
-                                   {
-                                        "sequence": "1", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.7
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 1.4
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "CAD1", 
-                                             "CAD2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O2"
-                                   }
-                              ], 
-                              "_class": "Dream.OrderDesign", 
-                              "id": "OD2", 
-                              "name": "OrderDesign2"
-                         }, 
-                         {
-                              "componentType": "Z-standards", 
-                              "route": [
-                                   {
-                                        "stationIdsList": [
-                                             "OD0"
-                                        ], 
-                                        "sequence": ""
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QCAM"
-                                        ], 
-                                        "sequence": "2"
-                                   }, 
-                                   {
-                                        "sequence": "2", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.1
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.3
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "CAM1", 
-                                             "CAM2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O2"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QMILL"
-                                        ], 
-                                        "sequence": "3"
-                                   }, 
-                                   {
-                                        "sequence": "3", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 1.2
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 3
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "MILL1", 
-                                             "MILL2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O2"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QEDM"
-                                        ], 
-                                        "sequence": "4"
-                                   }, 
-                                   {
-                                        "sequence": "4", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.3
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.9
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "EDM"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O2"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "AB1"
-                                        ], 
-                                        "sequence": "7"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "MA1", 
-                                             "MA2", 
-                                             "MA3"
-                                        ], 
-                                        "sequence": "7"
-                                   }
-                              ], 
-                              "_class": "Dream.OrderComponent", 
-                              "id": "C1O2", 
-                              "name": "Component1 from Order2"
-                         }, 
-                         {
-                              "componentType": "Mold Base", 
-                              "route": [
-                                   {
-                                        "stationIdsList": [
-                                             "OD0"
-                                        ], 
-                                        "sequence": ""
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QCAM"
-                                        ], 
-                                        "sequence": "3"
-                                   }, 
-                                   {
-                                        "sequence": "3", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.2
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.8
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "CAM1", 
-                                             "CAM2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O2"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QMILL"
-                                        ], 
-                                        "sequence": "4"
-                                   }, 
-                                   {
-                                        "sequence": "4", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.1
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.4
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "MILL1", 
-                                             "MILL2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O2"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QEDM"
-                                        ], 
-                                        "sequence": "5"
-                                   }, 
-                                   {
-                                        "sequence": "5", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.3
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 1.4
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "EDM"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O2"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "AB1"
-                                        ], 
-                                        "sequence": "7"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "MA1", 
-                                             "MA2", 
-                                             "MA3"
-                                        ], 
-                                        "sequence": "7"
-                                   }
-                              ], 
-                              "_class": "Dream.OrderComponent", 
-                              "id": "C2O2", 
-                              "name": "Component2 from Order2"
-                         }, 
-                         {
-                              "route": [
-                                   {
-                                        "operator": "O2", 
-                                        "stationIdsList": [
-                                             "MA1", 
-                                             "MA2", 
-                                             "MA3"
-                                        ], 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 2
-                                             }
-                                        }, 
-                                        "operationType": {
-                                             "Processing": 1
-                                        }, 
-                                        "sequence": "7"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QIM"
-                                        ], 
-                                        "sequence": "8"
-                                   }, 
-                                   {
-                                        "sequence": "8", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.1
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.7
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "IM"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 0
-                                        }, 
-                                        "operator": "O2"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "E1"
-                                        ], 
-                                        "sequence": "9"
-                                   }
-                              ], 
-                              "_class": "Dream.Mould", 
-                              "id": "M1O2", 
-                              "name": "Mould1 from Order2"
-                         }
-                    ], 
-                    "_class": "Dream.Order", 
-                    "name": "Order2", 
-                    "id": "O2"
-               }, 
-               {
-                    "priority": "2", 
-                    "componentsList": [
-                         {
-                              "route": [
-                                   {
-                                        "stationIdsList": [
-                                             "Q0"
-                                        ], 
-                                        "sequence": "1"
-                                   }, 
-                                   {
-                                        "sequence": "1", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.7
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 1.4
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "CAD1", 
-                                             "CAD2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O3"
-                                   }
-                              ], 
-                              "_class": "Dream.OrderDesign", 
-                              "id": "OD3", 
-                              "name": "OrderDesign3"
-                         }, 
-                         {
-                              "componentType": "Mold Base", 
-                              "route": [
-                                   {
-                                        "stationIdsList": [
-                                             "OD0"
-                                        ], 
-                                        "sequence": ""
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QCAM"
-                                        ], 
-                                        "sequence": "2"
-                                   }, 
-                                   {
-                                        "sequence": "2", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.1
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.3
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "CAM1", 
-                                             "CAM2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O3"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QMILL"
-                                        ], 
-                                        "sequence": "3"
-                                   }, 
-                                   {
-                                        "sequence": "3", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 1.2
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 3
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "MILL1", 
-                                             "MILL2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O3"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QEDM"
-                                        ], 
-                                        "sequence": "4"
-                                   }, 
-                                   {
-                                        "sequence": "4", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.3
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.9
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "EDM"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O3"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "AB1"
-                                        ], 
-                                        "sequence": "5"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "MA1", 
-                                             "MA2", 
-                                             "MA3"
-                                        ], 
-                                        "sequence": "5"
-                                   }
-                              ], 
-                              "_class": "Dream.OrderComponent", 
-                              "id": "C1O3", 
-                              "name": "Component1 from Order3"
-                         }, 
-                         {
-                              "componentType": "Mold Insert", 
-                              "route": [
-                                   {
-                                        "stationIdsList": [
-                                             "OD0"
-                                        ], 
-                                        "sequence": ""
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QCAM"
-                                        ], 
-                                        "sequence": "2"
-                                   }, 
-                                   {
-                                        "sequence": "2", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.2
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.8
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "CAM1", 
-                                             "CAM2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O3"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QMILL"
-                                        ], 
-                                        "sequence": "3"
-                                   }, 
-                                   {
-                                        "sequence": "3", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.1
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.4
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "MILL1", 
-                                             "MILL2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O3"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QEDM"
-                                        ], 
-                                        "sequence": "4"
-                                   }, 
-                                   {
-                                        "sequence": "4", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.3
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 1.4
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "EDM"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O3"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "AB1"
-                                        ], 
-                                        "sequence": "5"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "MA1", 
-                                             "MA2", 
-                                             "MA3"
-                                        ], 
-                                        "sequence": "5"
-                                   }
-                              ], 
-                              "_class": "Dream.OrderComponent", 
-                              "id": "C2O3", 
-                              "name": "Component2 from Order3"
-                         }, 
-                         {
-                              "route": [
-                                   {
-                                        "operator": "O3", 
-                                        "stationIdsList": [
-                                             "MA1", 
-                                             "MA2", 
-                                             "MA3"
-                                        ], 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 2
-                                             }
-                                        }, 
-                                        "operationType": {
-                                             "Processing": 1
-                                        }, 
-                                        "sequence": "5"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QIM"
-                                        ], 
-                                        "sequence": "6"
-                                   }, 
-                                   {
-                                        "sequence": "6", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.1
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.7
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "IM"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 0
-                                        }, 
-                                        "operator": "O3"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "E1"
-                                        ], 
-                                        "sequence": "7"
-                                   }
-                              ], 
-                              "_class": "Dream.Mould", 
-                              "id": "M1O3", 
-                              "name": "Mould1 from Order3"
-                         }
-                    ], 
-                    "_class": "Dream.Order", 
-                    "name": "Order3", 
-                    "id": "O3"
-               }, 
-               {
-                    "priority": "2", 
-                    "componentsList": [
-                         {
-                              "route": [
-                                   {
-                                        "stationIdsList": [
-                                             "Q0"
-                                        ], 
-                                        "sequence": "1"
-                                   }, 
-                                   {
-                                        "sequence": "1", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.7
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 1.4
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "CAD1", 
-                                             "CAD2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O3"
-                                   }
-                              ], 
-                              "_class": "Dream.OrderDesign", 
-                              "id": "OD4", 
-                              "name": "OrderDesign4"
-                         }, 
-                         {
-                              "componentType": "Misc", 
-                              "route": [
-                                   {
-                                        "stationIdsList": [
-                                             "OD0"
-                                        ], 
-                                        "sequence": ""
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QCAM"
-                                        ], 
-                                        "sequence": "2"
-                                   }, 
-                                   {
-                                        "sequence": "2", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.1
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.3
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "CAM1", 
-                                             "CAM2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O3"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QMILL"
-                                        ], 
-                                        "sequence": "3"
-                                   }, 
-                                   {
-                                        "sequence": "3", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 1.2
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 3
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "MILL1", 
-                                             "MILL2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O3"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QEDM"
-                                        ], 
-                                        "sequence": "4"
-                                   }, 
-                                   {
-                                        "sequence": "4", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.3
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.9
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "EDM"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O3"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "AB1"
-                                        ], 
-                                        "sequence": "5"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "MA1", 
-                                             "MA2", 
-                                             "MA3"
-                                        ], 
-                                        "sequence": "5"
-                                   }
-                              ], 
-                              "_class": "Dream.OrderComponent", 
-                              "id": "C1O4", 
-                              "name": "Component1 from Order4"
-                         }, 
-                         {
-                              "componentType": "Mold Base", 
-                              "route": [
-                                   {
-                                        "stationIdsList": [
-                                             "OD0"
-                                        ], 
-                                        "sequence": ""
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QCAM"
-                                        ], 
-                                        "sequence": "2"
-                                   }, 
-                                   {
-                                        "sequence": "2", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.2
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.8
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "CAM1", 
-                                             "CAM2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O3"
-                                   }, 
-                                   {
-                                        "operator": "O3", 
-                                        "stationIdsList": [
-                                             "QMILL"
-                                        ], 
-                                        "sequence": "3"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "MILL1", 
-                                             "MILL2"
-                                        ], 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.4
-                                             }
-                                        }, 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.1
-                                             }
-                                        }, 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "sequence": "3"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QEDM"
-                                        ], 
-                                        "sequence": "4"
-                                   }, 
-                                   {
-                                        "sequence": "4", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.3
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 1.4
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "EDM"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O3"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "AB1"
-                                        ], 
-                                        "sequence": "5"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "MA1", 
-                                             "MA2", 
-                                             "MA3"
-                                        ], 
-                                        "sequence": "5"
-                                   }
-                              ], 
-                              "_class": "Dream.OrderComponent", 
-                              "id": "C2O4", 
-                              "name": "Component2 from Order4"
-                         }, 
-                         {
-                              "componentType": "Slider", 
-                              "route": [
-                                   {
-                                        "stationIdsList": [
-                                             "OD0"
-                                        ], 
-                                        "sequence": ""
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QCAM"
-                                        ], 
-                                        "sequence": "2"
-                                   }, 
-                                   {
-                                        "sequence": "2", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.2
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.8
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "CAM1", 
-                                             "CAM2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O3"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QMILL"
-                                        ], 
-                                        "sequence": "3"
-                                   }, 
-                                   {
-                                        "sequence": "3", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.1
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.4
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "MILL1", 
-                                             "MILL2"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O3"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QEDM"
-                                        ], 
-                                        "sequence": "4"
-                                   }, 
-                                   {
-                                        "sequence": "4", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.3
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 1.4
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "EDM"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 1
-                                        }, 
-                                        "operator": "O3"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "AB1"
-                                        ], 
-                                        "sequence": "5"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "MA1", 
-                                             "MA2", 
-                                             "MA3"
-                                        ], 
-                                        "sequence": "5"
-                                   }
-                              ], 
-                              "_class": "Dream.OrderComponent", 
-                              "id": "C3O4", 
-                              "name": "Component3 from Order4"
-                         }, 
-                         {
-                              "route": [
-                                   {
-                                        "operator": "O3", 
-                                        "stationIdsList": [
-                                             "MA1", 
-                                             "MA2", 
-                                             "MA3"
-                                        ], 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 2
-                                             }
-                                        }, 
-                                        "operationType": {
-                                             "Processing": 1
-                                        }, 
-                                        "sequence": "5"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "QIM"
-                                        ], 
-                                        "sequence": "6"
-                                   }, 
-                                   {
-                                        "sequence": "6", 
-                                        "setupTime": {
-                                             "Fixed": {
-                                                  "mean": 0.1
-                                             }
-                                        }, 
-                                        "processingTime": {
-                                             "Fixed": {
-                                                  "mean": 0.7
-                                             }
-                                        }, 
-                                        "stationIdsList": [
-                                             "IM"
-                                        ], 
-                                        "operationType": {
-                                             "Setup": 1, 
-                                             "Processing": 0
-                                        }, 
-                                        "operator": "O3"
-                                   }, 
-                                   {
-                                        "stationIdsList": [
-                                             "E1"
-                                        ], 
-                                        "sequence": "7"
-                                   }
-                              ], 
-                              "_class": "Dream.Mould", 
-                              "id": "M1O4", 
-                              "name": "Mould1 from Order4"
-                         }
-                    ], 
-                    "_class": "Dream.Order", 
-                    "name": "Order4", 
-                    "id": "O4"
-               }
-          ]
+     "input": {
+          "BOM": {
+               "productionOrders": [
+                    {
+                         "priority": "1", 
+                         "componentsList": [
+                              {
+                                   "route": [
+                                        {
+                                             "stationIdsList": [
+                                                  "Q0"
+                                             ], 
+                                             "sequence": "1"
+                                        }, 
+                                        {
+                                             "sequence": "1", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.5
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 1
+                                                  }
+                                             }, 
+                                             "operator": "O1", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "CAD1", 
+                                                  "CAD2"
+                                             ]
+                                        }
+                                   ], 
+                                   "_class": "Dream.OrderDesign", 
+                                   "id": "OD1", 
+                                   "name": "OrderDesign1"
+                              }, 
+                              {
+                                   "componentType": "Mold Base", 
+                                   "route": [
+                                        {
+                                             "stationIdsList": [
+                                                  "OD0"
+                                             ], 
+                                             "sequence": ""
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QCAM"
+                                             ], 
+                                             "sequence": "2"
+                                        }, 
+                                        {
+                                             "sequence": "2", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.5
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 2
+                                                  }
+                                             }, 
+                                             "operator": "O1", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "CAM1", 
+                                                  "CAM2"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QMILL"
+                                             ], 
+                                             "sequence": "3"
+                                        }, 
+                                        {
+                                             "sequence": "3", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.5
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 2
+                                                  }
+                                             }, 
+                                             "operator": "O1", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "MILL1", 
+                                                  "MILL2"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QEDM"
+                                             ], 
+                                             "sequence": "4"
+                                        }, 
+                                        {
+                                             "sequence": "4", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.5
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 2
+                                                  }
+                                             }, 
+                                             "operator": "O1", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "EDM"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "AB1"
+                                             ], 
+                                             "sequence": "6"
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "MA1", 
+                                                  "MA2", 
+                                                  "MA3"
+                                             ], 
+                                             "sequence": "6"
+                                        }
+                                   ], 
+                                   "_class": "Dream.OrderComponent", 
+                                   "id": "C1O1", 
+                                   "name": "Component1 from Order1"
+                              }, 
+                              {
+                                   "componentType": "Misc", 
+                                   "route": [
+                                        {
+                                             "stationIdsList": [
+                                                  "OD0"
+                                             ], 
+                                             "sequence": ""
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QCAM"
+                                             ], 
+                                             "sequence": "3"
+                                        }, 
+                                        {
+                                             "sequence": "3", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.6
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 1
+                                                  }
+                                             }, 
+                                             "operator": "O1", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "CAM1", 
+                                                  "CAM2"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QMILL"
+                                             ], 
+                                             "sequence": "4"
+                                        }, 
+                                        {
+                                             "sequence": "4", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.4
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 4
+                                                  }
+                                             }, 
+                                             "operator": "O1", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "MILL1", 
+                                                  "MILL2"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QEDM"
+                                             ], 
+                                             "sequence": "5"
+                                        }, 
+                                        {
+                                             "sequence": "5", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.6
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 1
+                                                  }
+                                             }, 
+                                             "operator": "O1", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "EDM"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "AB1"
+                                             ], 
+                                             "sequence": "6"
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "MA1", 
+                                                  "MA2", 
+                                                  "MA3"
+                                             ], 
+                                             "sequence": "6"
+                                        }
+                                   ], 
+                                   "_class": "Dream.OrderComponent", 
+                                   "id": "C2O1", 
+                                   "name": "Component2 from Order1"
+                              }, 
+                              {
+                                   "route": [
+                                        {
+                                             "operator": "O1", 
+                                             "stationIdsList": [
+                                                  "MA1", 
+                                                  "MA2", 
+                                                  "MA3"
+                                             ], 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 1
+                                                  }
+                                             }, 
+                                             "operationType": {
+                                                  "Processing": 1
+                                             }, 
+                                             "sequence": "6"
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QIM"
+                                             ], 
+                                             "sequence": "7"
+                                        }, 
+                                        {
+                                             "sequence": "7", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.5
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 2
+                                                  }
+                                             }, 
+                                             "operator": "O1", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 0
+                                             }, 
+                                             "stationIdsList": [
+                                                  "IM"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "E1"
+                                             ], 
+                                             "sequence": "8"
+                                        }
+                                   ], 
+                                   "_class": "Dream.Mould", 
+                                   "id": "M1O1", 
+                                   "name": "Mould1 from Order1"
+                              }
+                         ], 
+                         "_class": "Dream.Order", 
+                         "name": "Order1", 
+                         "id": "O1"
+                    }, 
+                    {
+                         "priority": "2", 
+                         "componentsList": [
+                              {
+                                   "route": [
+                                        {
+                                             "stationIdsList": [
+                                                  "Q0"
+                                             ], 
+                                             "sequence": "1"
+                                        }, 
+                                        {
+                                             "sequence": "1", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.7
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 1.4
+                                                  }
+                                             }, 
+                                             "operator": "O2", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "CAD1", 
+                                                  "CAD2"
+                                             ]
+                                        }
+                                   ], 
+                                   "_class": "Dream.OrderDesign", 
+                                   "id": "OD2", 
+                                   "name": "OrderDesign2"
+                              }, 
+                              {
+                                   "componentType": "Z-standards", 
+                                   "route": [
+                                        {
+                                             "stationIdsList": [
+                                                  "OD0"
+                                             ], 
+                                             "sequence": ""
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QCAM"
+                                             ], 
+                                             "sequence": "2"
+                                        }, 
+                                        {
+                                             "sequence": "2", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.1
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.3
+                                                  }
+                                             }, 
+                                             "operator": "O2", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "CAM1", 
+                                                  "CAM2"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QMILL"
+                                             ], 
+                                             "sequence": "3"
+                                        }, 
+                                        {
+                                             "sequence": "3", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 1.2
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 3
+                                                  }
+                                             }, 
+                                             "operator": "O2", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "MILL1", 
+                                                  "MILL2"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QEDM"
+                                             ], 
+                                             "sequence": "4"
+                                        }, 
+                                        {
+                                             "sequence": "4", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.3
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.9
+                                                  }
+                                             }, 
+                                             "operator": "O2", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "EDM"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "AB1"
+                                             ], 
+                                             "sequence": "7"
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "MA1", 
+                                                  "MA2", 
+                                                  "MA3"
+                                             ], 
+                                             "sequence": "7"
+                                        }
+                                   ], 
+                                   "_class": "Dream.OrderComponent", 
+                                   "id": "C1O2", 
+                                   "name": "Component1 from Order2"
+                              }, 
+                              {
+                                   "componentType": "Mold Base", 
+                                   "route": [
+                                        {
+                                             "stationIdsList": [
+                                                  "OD0"
+                                             ], 
+                                             "sequence": ""
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QCAM"
+                                             ], 
+                                             "sequence": "3"
+                                        }, 
+                                        {
+                                             "sequence": "3", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.2
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.8
+                                                  }
+                                             }, 
+                                             "operator": "O2", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "CAM1", 
+                                                  "CAM2"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QMILL"
+                                             ], 
+                                             "sequence": "4"
+                                        }, 
+                                        {
+                                             "sequence": "4", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.1
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.4
+                                                  }
+                                             }, 
+                                             "operator": "O2", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "MILL1", 
+                                                  "MILL2"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QEDM"
+                                             ], 
+                                             "sequence": "5"
+                                        }, 
+                                        {
+                                             "sequence": "5", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.3
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 1.4
+                                                  }
+                                             }, 
+                                             "operator": "O2", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "EDM"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "AB1"
+                                             ], 
+                                             "sequence": "7"
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "MA1", 
+                                                  "MA2", 
+                                                  "MA3"
+                                             ], 
+                                             "sequence": "7"
+                                        }
+                                   ], 
+                                   "_class": "Dream.OrderComponent", 
+                                   "id": "C2O2", 
+                                   "name": "Component2 from Order2"
+                              }, 
+                              {
+                                   "route": [
+                                        {
+                                             "operator": "O2", 
+                                             "stationIdsList": [
+                                                  "MA1", 
+                                                  "MA2", 
+                                                  "MA3"
+                                             ], 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 2
+                                                  }
+                                             }, 
+                                             "operationType": {
+                                                  "Processing": 1
+                                             }, 
+                                             "sequence": "7"
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QIM"
+                                             ], 
+                                             "sequence": "8"
+                                        }, 
+                                        {
+                                             "sequence": "8", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.1
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.7
+                                                  }
+                                             }, 
+                                             "operator": "O2", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 0
+                                             }, 
+                                             "stationIdsList": [
+                                                  "IM"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "E1"
+                                             ], 
+                                             "sequence": "9"
+                                        }
+                                   ], 
+                                   "_class": "Dream.Mould", 
+                                   "id": "M1O2", 
+                                   "name": "Mould1 from Order2"
+                              }
+                         ], 
+                         "_class": "Dream.Order", 
+                         "name": "Order2", 
+                         "id": "O2"
+                    }, 
+                    {
+                         "priority": "2", 
+                         "componentsList": [
+                              {
+                                   "route": [
+                                        {
+                                             "stationIdsList": [
+                                                  "Q0"
+                                             ], 
+                                             "sequence": "1"
+                                        }, 
+                                        {
+                                             "sequence": "1", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.7
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 1.4
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "CAD1", 
+                                                  "CAD2"
+                                             ]
+                                        }
+                                   ], 
+                                   "_class": "Dream.OrderDesign", 
+                                   "id": "OD3", 
+                                   "name": "OrderDesign3"
+                              }, 
+                              {
+                                   "componentType": "Mold Base", 
+                                   "route": [
+                                        {
+                                             "stationIdsList": [
+                                                  "OD0"
+                                             ], 
+                                             "sequence": ""
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QCAM"
+                                             ], 
+                                             "sequence": "2"
+                                        }, 
+                                        {
+                                             "sequence": "2", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.1
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.3
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "CAM1", 
+                                                  "CAM2"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QMILL"
+                                             ], 
+                                             "sequence": "3"
+                                        }, 
+                                        {
+                                             "sequence": "3", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 1.2
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 3
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "MILL1", 
+                                                  "MILL2"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QEDM"
+                                             ], 
+                                             "sequence": "4"
+                                        }, 
+                                        {
+                                             "sequence": "4", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.3
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.9
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "EDM"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "AB1"
+                                             ], 
+                                             "sequence": "5"
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "MA1", 
+                                                  "MA2", 
+                                                  "MA3"
+                                             ], 
+                                             "sequence": "5"
+                                        }
+                                   ], 
+                                   "_class": "Dream.OrderComponent", 
+                                   "id": "C1O3", 
+                                   "name": "Component1 from Order3"
+                              }, 
+                              {
+                                   "componentType": "Mold Insert", 
+                                   "route": [
+                                        {
+                                             "stationIdsList": [
+                                                  "OD0"
+                                             ], 
+                                             "sequence": ""
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QCAM"
+                                             ], 
+                                             "sequence": "2"
+                                        }, 
+                                        {
+                                             "sequence": "2", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.2
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.8
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "CAM1", 
+                                                  "CAM2"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QMILL"
+                                             ], 
+                                             "sequence": "3"
+                                        }, 
+                                        {
+                                             "sequence": "3", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.1
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.4
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "MILL1", 
+                                                  "MILL2"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QEDM"
+                                             ], 
+                                             "sequence": "4"
+                                        }, 
+                                        {
+                                             "sequence": "4", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.3
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 1.4
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "EDM"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "AB1"
+                                             ], 
+                                             "sequence": "5"
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "MA1", 
+                                                  "MA2", 
+                                                  "MA3"
+                                             ], 
+                                             "sequence": "5"
+                                        }
+                                   ], 
+                                   "_class": "Dream.OrderComponent", 
+                                   "id": "C2O3", 
+                                   "name": "Component2 from Order3"
+                              }, 
+                              {
+                                   "route": [
+                                        {
+                                             "operator": "O3", 
+                                             "stationIdsList": [
+                                                  "MA1", 
+                                                  "MA2", 
+                                                  "MA3"
+                                             ], 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 2
+                                                  }
+                                             }, 
+                                             "operationType": {
+                                                  "Processing": 1
+                                             }, 
+                                             "sequence": "5"
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QIM"
+                                             ], 
+                                             "sequence": "6"
+                                        }, 
+                                        {
+                                             "sequence": "6", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.1
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.7
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 0
+                                             }, 
+                                             "stationIdsList": [
+                                                  "IM"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "E1"
+                                             ], 
+                                             "sequence": "7"
+                                        }
+                                   ], 
+                                   "_class": "Dream.Mould", 
+                                   "id": "M1O3", 
+                                   "name": "Mould1 from Order3"
+                              }
+                         ], 
+                         "_class": "Dream.Order", 
+                         "name": "Order3", 
+                         "id": "O3"
+                    }, 
+                    {
+                         "priority": "2", 
+                         "componentsList": [
+                              {
+                                   "route": [
+                                        {
+                                             "stationIdsList": [
+                                                  "Q0"
+                                             ], 
+                                             "sequence": "1"
+                                        }, 
+                                        {
+                                             "sequence": "1", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.7
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 1.4
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "CAD1", 
+                                                  "CAD2"
+                                             ]
+                                        }
+                                   ], 
+                                   "_class": "Dream.OrderDesign", 
+                                   "id": "OD4", 
+                                   "name": "OrderDesign4"
+                              }, 
+                              {
+                                   "componentType": "Misc", 
+                                   "route": [
+                                        {
+                                             "stationIdsList": [
+                                                  "OD0"
+                                             ], 
+                                             "sequence": ""
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QCAM"
+                                             ], 
+                                             "sequence": "2"
+                                        }, 
+                                        {
+                                             "sequence": "2", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.1
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.3
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "CAM1", 
+                                                  "CAM2"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QMILL"
+                                             ], 
+                                             "sequence": "3"
+                                        }, 
+                                        {
+                                             "sequence": "3", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 1.2
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 3
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "MILL1", 
+                                                  "MILL2"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QEDM"
+                                             ], 
+                                             "sequence": "4"
+                                        }, 
+                                        {
+                                             "sequence": "4", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.3
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.9
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "EDM"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "AB1"
+                                             ], 
+                                             "sequence": "5"
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "MA1", 
+                                                  "MA2", 
+                                                  "MA3"
+                                             ], 
+                                             "sequence": "5"
+                                        }
+                                   ], 
+                                   "_class": "Dream.OrderComponent", 
+                                   "id": "C1O4", 
+                                   "name": "Component1 from Order4"
+                              }, 
+                              {
+                                   "componentType": "Mold Base", 
+                                   "route": [
+                                        {
+                                             "stationIdsList": [
+                                                  "OD0"
+                                             ], 
+                                             "sequence": ""
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QCAM"
+                                             ], 
+                                             "sequence": "2"
+                                        }, 
+                                        {
+                                             "sequence": "2", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.2
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.8
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "CAM1", 
+                                                  "CAM2"
+                                             ]
+                                        }, 
+                                        {
+                                             "operator": "O3", 
+                                             "stationIdsList": [
+                                                  "QMILL"
+                                             ], 
+                                             "sequence": "3"
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "MILL1", 
+                                                  "MILL2"
+                                             ], 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.4
+                                                  }
+                                             }, 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.1
+                                                  }
+                                             }, 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "sequence": "3"
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QEDM"
+                                             ], 
+                                             "sequence": "4"
+                                        }, 
+                                        {
+                                             "sequence": "4", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.3
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 1.4
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "EDM"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "AB1"
+                                             ], 
+                                             "sequence": "5"
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "MA1", 
+                                                  "MA2", 
+                                                  "MA3"
+                                             ], 
+                                             "sequence": "5"
+                                        }
+                                   ], 
+                                   "_class": "Dream.OrderComponent", 
+                                   "id": "C2O4", 
+                                   "name": "Component2 from Order4"
+                              }, 
+                              {
+                                   "componentType": "Slider", 
+                                   "route": [
+                                        {
+                                             "stationIdsList": [
+                                                  "OD0"
+                                             ], 
+                                             "sequence": ""
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QCAM"
+                                             ], 
+                                             "sequence": "2"
+                                        }, 
+                                        {
+                                             "sequence": "2", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.2
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.8
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "CAM1", 
+                                                  "CAM2"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QMILL"
+                                             ], 
+                                             "sequence": "3"
+                                        }, 
+                                        {
+                                             "sequence": "3", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.1
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.4
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "MILL1", 
+                                                  "MILL2"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QEDM"
+                                             ], 
+                                             "sequence": "4"
+                                        }, 
+                                        {
+                                             "sequence": "4", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.3
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 1.4
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 1
+                                             }, 
+                                             "stationIdsList": [
+                                                  "EDM"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "AB1"
+                                             ], 
+                                             "sequence": "5"
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "MA1", 
+                                                  "MA2", 
+                                                  "MA3"
+                                             ], 
+                                             "sequence": "5"
+                                        }
+                                   ], 
+                                   "_class": "Dream.OrderComponent", 
+                                   "id": "C3O4", 
+                                   "name": "Component3 from Order4"
+                              }, 
+                              {
+                                   "route": [
+                                        {
+                                             "operator": "O3", 
+                                             "stationIdsList": [
+                                                  "MA1", 
+                                                  "MA2", 
+                                                  "MA3"
+                                             ], 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 2
+                                                  }
+                                             }, 
+                                             "operationType": {
+                                                  "Processing": 1
+                                             }, 
+                                             "sequence": "5"
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "QIM"
+                                             ], 
+                                             "sequence": "6"
+                                        }, 
+                                        {
+                                             "sequence": "6", 
+                                             "setupTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.1
+                                                  }
+                                             }, 
+                                             "processingTime": {
+                                                  "Fixed": {
+                                                       "mean": 0.7
+                                                  }
+                                             }, 
+                                             "operator": "O3", 
+                                             "operationType": {
+                                                  "Setup": 1, 
+                                                  "Processing": 0
+                                             }, 
+                                             "stationIdsList": [
+                                                  "IM"
+                                             ]
+                                        }, 
+                                        {
+                                             "stationIdsList": [
+                                                  "E1"
+                                             ], 
+                                             "sequence": "7"
+                                        }
+                                   ], 
+                                   "_class": "Dream.Mould", 
+                                   "id": "M1O4", 
+                                   "name": "Mould1 from Order4"
+                              }
+                         ], 
+                         "_class": "Dream.Order", 
+                         "name": "Order4", 
+                         "id": "O4"
+                    }
+               ]
+          }
      }, 
      "general": {
           "console": "No", 
