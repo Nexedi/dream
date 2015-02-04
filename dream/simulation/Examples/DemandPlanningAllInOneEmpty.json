@@ -200,15 +200,11 @@
             "plugin_list": [
                 {
                     "_class": "dream.plugins.AddDemandPlannerGenerator.AddDemandPlannerGenerator",
-                    "argument": "Argument Value"
+                    "input_id": "attached_document"
                 },
                 {
                     "_class": "dream.plugins.Debug.Debug",
                     "argument": "Argument Value"
-                },
-                {
-                    "_class": "dream.plugins.ReadDemandPlannerExcelInput.ReadDemandPlannerExcelInput",
-                    "input_id": "attached_document"
                 }
             ]
         },
