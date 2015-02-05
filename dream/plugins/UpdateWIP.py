@@ -81,8 +81,12 @@ class UpdateWIP(plugin.InputPreparationPlugin):
             wip["componentID"]["task_id"] = current_step["task_id"]
             if not exitTime:
               wip["componentID"]["remainingProcessingTime"] = {"Fixed": {"mean": remainingProcessingTime}}
-        # if the entity is not recognized within the current WIP then check if it should be created
-        else:
+      # if the entity is not recognized within the current WIP then check if it should be created
+      # first the flag designComplete and the completedComponents list must be updated 
+      for component in orderComponents:
+        componentID = component["componentID"]
+        route = component["route"] 
+        if not componentID in self.getWIPIds():
           insertWIPitem = False
           # # if the design is complete
           if designComplete:
@@ -104,10 +108,6 @@ class UpdateWIP(plugin.InputPreparationPlugin):
             wip["componentID"]["station"] = route[0]["stationIdsList"][0]
             wip["componentID"]["sequence"] = route[0]["sequence"]
             wip["componentID"]["task_id"] = route[0]["task_id"]
-          
-          
-          
-          
     # remove the idle entities
     for entityID in wipToBeRemoved:
       assert wip.pop(entityID, None), "while trying to remove WIP that has concluded it's route, nothing is removed"

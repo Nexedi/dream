@@ -81,14 +81,14 @@ class InsertQueues(plugin.InputPreparationPlugin):
 							pre_predecessor_list.append(pre_predecessor)
 						if pre_predecessor_list:
 							route.insert(index, {"stationIdsList" : pre_predecessor_list,
-												 "sequence": "",
-												 "task_id": "",})
+                                   "sequence": "",
+                                   "task_id": "",})
 							index+=1
 					predecessor_list.append(predecessor)
 				if predecessor_list:
 					route.insert(index, {"stationIdsList": predecessor_list,
-										 "sequence": sequence,
-										 "task_id": task_id})
+                               "sequence": sequence,
+                               "task_id": task_id})
 					index+=1
 				''' add successors wherever needed (buffers, OrderDecomposition, exit, AssemblyBuffer, Assembly stations) '''
 				# # design case -  add OrderDecomposition at the end of a design route
@@ -98,17 +98,18 @@ class InsertQueues(plugin.InputPreparationPlugin):
 						successor_list.append(successor)
 					if successor_list:
 						route.insert(index, {"stationIdsList": successor_list,
-											 "sequence": "",
-											 "task_id": ""})
+                                 "sequence": "",
+                                 "task_id": ""})
 						index+=1
 				# # mould case - add exit at the a mould route
 				elif any(station.startswith("INJM") for station in stationIdsList) and tempIndex == len(tempRoute)-1:
-					for successor in self.getNotMachineNodeSuccessorList(stationIdsList):
+					successor_list = []
+          for successor in self.getNotMachineNodeSuccessorList(stationIdsList):
 						successor_list.append(successor)
 					if successor_list:
 						route.insert(index, {"stationIdsList": successor_list,
-											 "sequence": sequence,
-											 "task_id": task_id})
+                                 "sequence": sequence,
+                                 "task_id": task_id})
 						index+=1
 				# # normal components - add ASSM buffer and ASSM at the end of their route
 				elif tempIndex == len(tempRoute)-1:
@@ -128,8 +129,8 @@ class InsertQueues(plugin.InputPreparationPlugin):
 								assemblyBufferIDlist.append(str(nodeID))
 						if assemblyBufferIDlist:
 							route.insert(index,{"stationIdsList": assemblyBufferIDlist, 
-												"sequence": assembly_sequence,
-												"task_id": assembly_task_id})
+                                  "sequence": assembly_sequence,
+                                  "task_id": assembly_task_id})
 							index+=1
 						# # add assemblers to the route
 						assemblyIDlist = []
@@ -138,8 +139,8 @@ class InsertQueues(plugin.InputPreparationPlugin):
 								assemblyIDlist.append(str(nodeID))
 						if assemblyIDlist:
 							route.insert(index,{"stationIdsList": assemblyIDlist,
-												"sequence": assembly_sequence,
-												"task_id": assembly_task_id})
+                                  "sequence": assembly_sequence,
+                                  "task_id": assembly_task_id})
 							index+=1
 
 				index+=1
