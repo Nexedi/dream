@@ -61,7 +61,7 @@
             }).push(function(jio_gadget) {
                 return jio_gadget.getAttachment({
                     _id: options.id,
-                    _attachment: "simulation.json"
+                    _attachment: "body.json"
                 });
             }).push(function(sim_json) {
                 var document_list = JSON.parse(sim_json), current = parseInt(options.result, 10);
@@ -94,7 +94,7 @@
             title = gadget.getDeclaredGadget("jio").push(function(jio_gadget) {
                 return jio_gadget.getAttachment({
                     _id: options.id,
-                    _attachment: "simulation.json"
+                    _attachment: "body.json"
                 });
             }).push(function(sim_json) {
                 var document_list = JSON.parse(sim_json).result.result_list;

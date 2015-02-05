@@ -10,7 +10,7 @@
         gadget.props.result = options.result;
         return gadget.aq_getAttachment({
             _id: gadget.props.jio_key,
-            _attachment: "simulation.json"
+            _attachment: "body.json"
         }).push(function(simulation_json) {
             var result = JSON.parse(simulation_json)[0].result, download_link = gadget.props.element.querySelector(".download_link");
             download_link.download = "demandPlannerOutput.xls";

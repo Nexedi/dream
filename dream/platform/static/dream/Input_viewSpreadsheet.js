@@ -1,5 +1,5 @@
-/*global rJS, RSVP, initGadgetMixin, loopEventListener */
-(function(window, rJS, RSVP, initGadgetMixin, loopEventListener) {
+/*global rJS, RSVP, initGadgetMixin, loopEventListener, $ */
+(function(window, rJS, RSVP, initGadgetMixin, loopEventListener, $) {
     "use strict";
     function saveSpreadsheet(evt) {
         var gadget = this, editor_data, editor_gadget;
@@ -50,22 +50,13 @@
         if (options.action_definition.configuration.input_id) {
             gadget.props.name = options.action_definition.configuration.input_id;
         }
-        gadget.props.configuration = options.action_definition.configuration;
         return new RSVP.Queue().push(function() {
             return RSVP.all([ gadget.aq_getAttachment({
                 _id: jio_key,
                 _attachment: "body.json"
             }), gadget.getDeclaredGadget("tableeditor") ]);
         }).push(function(result_list) {
-            var content, result = JSON.parse(result_list[0]);
-            // if there are previously stored data in input for this sprSheet
-            if (result.input[gadget.props.name]) {
-                content = result.input[gadget.props.name];
-            } else {
-                content = options.action_definition.configuration.columns;
-            }
-            // application_configuration.input.view_???_spreasheet.configuration
-            return result_list[1].render(JSON.stringify(content), {
+            var content, result = JSON.parse(result_list[0]), handsontable_options = {
                 minSpareRows: 1,
                 onChange: function() {
                     if (gadget.timeout) {
@@ -73,7 +64,15 @@
                     }
                     gadget.timeout = window.setTimeout(saveSpreadsheet.bind(gadget), 100);
                 }
-            });
+            };
+            // if there are previously stored data in input for this sprSheet
+            if (result.input[gadget.props.name]) {
+                content = result.input[gadget.props.name];
+            } else {
+                content = options.action_definition.configuration.columns;
+            }
+            $.extend(handsontable_options, options.action_definition.configuration.handsontable_options || {});
+            return result_list[1].render(JSON.stringify(content), handsontable_options);
         });
     }).declareMethod("startService", function() {
         var gadget = this;
@@ -81,4 +80,4 @@
             return RSVP.all([ tableeditor.startService(), waitForSave(gadget) ]);
         });
     });
-})(window, rJS, RSVP, initGadgetMixin, loopEventListener);
+})(window, rJS, RSVP, initGadgetMixin, loopEventListener, $);

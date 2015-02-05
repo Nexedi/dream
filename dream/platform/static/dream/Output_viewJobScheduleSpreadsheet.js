@@ -117,7 +117,7 @@
         return new RSVP.Queue().push(function() {
             return RSVP.all([ gadget.aq_getAttachment({
                 _id: jio_key,
-                _attachment: "simulation.json"
+                _attachment: "body.json"
             }), gadget.getDeclaredGadget("tableeditor") ]);
         }).push(function(result_list) {
             return result_list[1].render(JSON.stringify(job_schedule_spreadsheet_widget(JSON.parse(result_list[0]), gadget.props.result)));

@@ -69,7 +69,7 @@
         gadget.props.result = options.result;
         return gadget.aq_getAttachment({
             _id: gadget.props.jio_key,
-            _attachment: "simulation.json"
+            _attachment: "body.json"
         }).push(function(simulation_json) {
             gadget.props.result_list = capacity_utilisation_graph_widget(JSON.parse(simulation_json), gadget.props.result);
         });

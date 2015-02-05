@@ -160,7 +160,7 @@
         gadget.props.action = options.action;
         return gadget.aq_getAttachment({
             _id: gadget.props.jio_key,
-            _attachment: "simulation.json"
+            _attachment: "body.json"
         }).push(function(simulation_json) {
             var json_data = JSON.parse(simulation_json);
             gadget.props.result = gantt_widget(json_data, gadget);

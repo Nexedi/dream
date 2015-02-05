@@ -13,7 +13,7 @@
         this.props.jio_key = options.id;
         return gadget.aq_getAttachment({
             _id: gadget.props.jio_key,
-            _attachment: "simulation.json"
+            _attachment: "body.json"
         }).push(undefined, function(error) {
             if (error.status_code === 404) {
                 // Simulation not yet generated
@@ -22,7 +22,7 @@
             throw error;
         }).push(function(sim_json) {
             var result = JSON.parse(sim_json).result, result_list = [], document_list = [], i;
-            if (result) {
+            if (result && result.result_list) {
                 document_list = result.result_list;
             }
             for (i = 0; i < document_list.length; i += 1) {
