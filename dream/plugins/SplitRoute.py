@@ -18,16 +18,16 @@ class SplitRoute(plugin.InputPreparationPlugin):
   def preprocess(self, data):
     """ splits the routes of mould parts (design + mould)
     """
-	  self.data = copy(data)
-    orders = self.data["input"]["BOM"]["orders"]
-    stations = self.data["input"]["BOM"]["stations"]
+    orders = data["input"]["BOM"]["orders"]
+    stations = data["input"]["BOM"]["stations"]
     for order in orders:
       orderComponents = order.get("componentsList", [])
+      componentsToAdd = []
       for index, component in enumerate(orderComponents):
         route = component.get("route", [])
         design_step_list = []
         # for each step of the components route find out if it is of a design route (ENG - CAD) or of mould route (ASSM-INJM). If the route contains none of these technology-types steps then the component is normal
-        routeList = deepcopy(route)
+        routeList = copy.deepcopy(route)
         i = 0
         for step in routeList:
           stepTechnology = step.get('technology',[])
@@ -38,12 +38,14 @@ class SplitRoute(plugin.InputPreparationPlugin):
           else:
             i+=1
         if design_step_list:
-          design = {"componentName": component.get("componentName","")+"Design",
-                    "componentID": component.get("componentID","")+"D",
+          design = {"componentName": component.get("componentName","")+"_Design",
+                    "componentID": component.get("componentID","")+"_D",
                     "quantity": component.get("quantity", 1),
                     "route": design_step_list}
-          orderComponents.append(design)
-    return self.data
+          componentsToAdd.append(design)
+      for design in componentsToAdd:
+        orderComponents.append(design)
+    return data
 
 if __name__ == '__main__':
     pass
