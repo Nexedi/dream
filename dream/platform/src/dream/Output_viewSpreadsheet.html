@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Shift Spreadsheet</title>
+    <script src="../<%= copy.rsvp.relative_dest %>" type="text/javascript"></script>
+    <script src="../<%= copy.renderjs.relative_dest %>" type="text/javascript"></script>
+    <script src="../<%= curl.jquery.relative_dest %>" type="text/javascript"></script>
+    <script src="../<%= curl.jquerymobilejs.relative_dest %>" type="text/javascript"></script>
+
+    <script src="mixin_gadget.js" type="text/javascript"></script>
+    <script src="Output_viewSpreadsheet.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <div data-gadget-url="../handsontable/index.html"
+         data-gadget-scope="tableeditor"></div>
+    <form class="save_form">
+      <button type="submit" class="ui-btn ui-btn-b ui-btn-inline
+        ui-icon-edit ui-btn-icon-right">Save</button>
+    </form>
+  </body>
+</html>
