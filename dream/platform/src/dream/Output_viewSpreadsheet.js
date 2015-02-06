@@ -1,5 +1,5 @@
-/*global rJS, RSVP, initGadgetMixin, loopEventListener, $ */
-(function (window, rJS, RSVP, initGadgetMixin, loopEventListener, $) {
+/*global rJS, RSVP, initGadgetMixin, $ */
+(function (window, rJS, RSVP, initGadgetMixin, $) {
   "use strict";
 
 
@@ -40,10 +40,9 @@
         });
     })
     .declareMethod("startService", function () {
-      var gadget = this;
       return this.getDeclaredGadget("tableeditor")
         .push(function (tableeditor) {
           return tableeditor.startService();
         });
     });
-}(window, rJS, RSVP, initGadgetMixin, loopEventListener, $));
+}(window, rJS, RSVP, initGadgetMixin, $));
