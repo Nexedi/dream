@@ -836,20 +836,24 @@
         }
       }
     },
-    "pre_processing_plugin_list": [
-      {
-        "_class": "dream.plugins.Debug.Debug",
-        "argument": "Argument Value"
-      },
-      {
-        "_class": "dream.plugins.OldStylePartJobShopWIP.OldStylePartJobShopWIP",
-        "input_id": "old_style_part_jobshop_spreadsheet"
-      }
-    ],
+    "pre_processing": {
+      "plugin_list": [
+        {
+          "_class": "dream.plugins.Debug.Debug",
+          "argument": "Argument Value"
+        },
+        {
+          "_class": "dream.plugins.OldStylePartJobShopWIP.OldStylePartJobShopWIP",
+          "input_id": "old_style_part_jobshop_spreadsheet"
+        }
+      ]
+    },
     "processing_plugin": {
       "_class": "dream.plugins.ACO.ACO"
     },
-    "post_processing_plugin_list": [],
+    "post_processing": {
+      "plugin_list": []
+    },
     "general": {
       "properties": {
         "numberOfReplications": {
