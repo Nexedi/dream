@@ -449,8 +449,11 @@
                             "name": "Station 2 (Rename)",
                             "type": "string"
                         }
-                    ]
-                }
+                    ],
+					 "handsontable_options": {
+						"minSpareCols": 1
+					}
+				}
             },
             "view_projects_spreadsheet": {
                 "gadget": "Input_viewSpreadsheet",
@@ -517,7 +520,10 @@
                             "name": "Project2 (Rename)",
                             "type": "string"
                         }
-                    ]
+                    ],
+					 "handsontable_options": {
+						"minSpareCols": 1
+					}
                 }
             },
             "view_run_simulation": {
