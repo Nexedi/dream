@@ -14,9 +14,12 @@ class DefaultTabularExit(plugin.OutputPreparationPlugin):
 
     def postprocess(self, data):
         node=data['graph']['node']
+        # create the titles of the columns
         data['result']['result_list'][0]['exit_output'] = [['Exit Id','Throughput', 'Takt Time', 'Lifespan']]
+        # loop the results and search for elements that have 'Exit' as family
         for record in data['result']['result_list'][0]['elementList']:
             family=record.get('family',None)
+            # when found, add a row with the results of the specific exit
             if family=='Exit':
                 exitId=record['id']
                 throughput=record['results'].get('throughput','undefined')
