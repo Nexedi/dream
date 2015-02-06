@@ -64,6 +64,9 @@
         });
       }).push(function(data){
         data = JSON.parse(data);
+        if (!data.result.result_list) {
+          data.result.result_list = [];
+        }
         // XXX option to always add ?
         if (data.general.reset_result_list) {
           data.result.result_list = [];
