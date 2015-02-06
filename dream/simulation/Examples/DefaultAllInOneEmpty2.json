@@ -1,961 +1,943 @@
 {
-  "class_definition": {
-    "definitions": {
-      "distributionTypes": {
-        "_fixed": {
-          "description": "Fixed",
-          "title": "Fixed",
-          "type": "object",
-          "properties": {
-            "mean": {
-              "type": "number",
-              "default": 0.75,
-              "required": true
-            }
-          }
-        },
-        "_exp": {
-          "type": "object",
-          "title": "Exp",
-          "description": "Exponential",
-          "properties": {
-            "mean": {
-              "type": "number",
-              "default": 0,
-              "required": true
-            }
-          }
-        },
-        "_normal": {
-          "type": "object",
-          "title": "Normal",
-          "description": "Normal",
-          "properties": {
-            "mean": {
-              "type": "number",
-              "default": 0,
-              "required": true
-            },
-            "stdev": {
-              "type": "number",
-              "default": 0,
-              "required": true
-            }
-          }
-        },
-        "_lognormal": {
-          "type": "object",
-          "title": "Lognormal",
-          "description": "Lognormal",
-          "properties": {
-            "mean": {
-              "_class": "Dream.Property",
-              "name": "Mean",
-              "type": "number",
-              "default": 0
-            },
-            "stdev": {
-              "_class": "Dream.Property",
-              "name": "Standard Deviation",
-              "type": "number",
-              "default": 0
-            }
-          }
-        },
-        "_binomial": {
-          "type": "object",
-          "title": "Binomial",
-          "description": "Binomial",
-          "properties": {
-            "mean": {
-              "type": "number",
-              "default": 0
-            },
-            "size": {
-              "type": "number",
-              "default": 0
-            }
-          }
-        },
-        "_poisson": {
-          "type": "object",
-          "title": "Poisson",
-          "description": "Poisson",
-          "properties": {
-            "lambda": {
-              "type": "number",
-              "default": 0
-            }
-          }
-        },
-        "_logistic": {
-          "type": "object",
-          "title": "Logistic",
-          "description": "Logistic",
-          "properties": {
-            "location": {
-              "type": "number",
-              "default": 0,
-              "required": true
-            },
-            "scale": {
-              "type": "number",
-              "default": 0,
-              "required": true
-            }
-          }
-        },
-        "_cauchy": {
-          "type": "object",
-          "title": "Cauchy",
-          "description": "Cauchy",
-          "properties": {
-            "location": {
-              "type": "number",
-              "default": 0
-            },
-            "scale": {
-              "type": "number",
-              "default": 0
-            }
-          }
-        },
-        "_geometric": {
-          "type": "object",
-          "title": "Geometric",
-          "description": "Geometric",
-          "properties": {
-            "probability": {
-              "type": "number",
-              "default": 0,
-              "required": true
-            }
-          }
-        },
-        "_gama": {
-          "type": "object",
-          "title": "Gama",
-          "description": "Gama",
-          "properties": {
-            "shape": {
-              "type": "number",
-              "default": 0,
-              "required": true
-            },
-            "rate": {
-              "type": "number",
-              "default": 0,
-              "required": true
-            }
-          }
-        },
-        "_weibull": {
-          "type": "object",
-          "title": "Weibull",
-          "description": "Weibull",
-          "properties": {
-            "shape": {
-              "type": "number",
-              "default": 0,
-              "required": true
-            },
-            "scale": {
-              "type": "number",
-              "default": 0,
-              "required": true
-            }
-          }
-        },
-        "_failure": {
-          "type": "object",
-          "title": "Yes",
-          "description": "Fixed",
-          "properties": {
-            "Time to Failure": {
-              "$ref": "#/definitions/_dist"
-            },
-            "Time to Repair": {
-              "$ref": "#/definitions/_dist"
-            },
-            "repairman": {
-              "description": "Repairman",
-              "type": "string",
-              "required": true
-            }
-          }
-        },
-        "_no": {
-          "type": "string",
-          "title": "No",
-          "description": "None"
+  "application_configuration": {
+    "general": {
+      "properties": {
+        "confidenceLevel": {
+          "default": 0.95, 
+          "description": "Confidence level for statistical analysis of stochastic experiments", 
+          "title": "Confidence level", 
+          "type": "number"
+        }, 
+        "currentDate": {
+          "default": "2014/10/01", 
+          "description": "The day the experiment starts, in YYYY/MM/DD format", 
+          "title": "SimulationStartTime", 
+          "type": "string"
+        }, 
+        "ke_url": {
+          "default": "http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
+          "description": "The URL for knowledge extraction to access its data for example http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
+          "title": "URL for Knowledge Extraction Spreadsheet", 
+          "type": "string"
+        }, 
+        "maxSimTime": {
+          "default": 100, 
+          "description": "Length of the simulation run", 
+          "title": "Length of Experiment", 
+          "type": "number"
+        }, 
+        "numberOfReplications": {
+          "default": 10, 
+          "description": "Number of replications to run", 
+          "title": "Number of replications", 
+          "type": "integer"
+        }, 
+        "processTimeout": {
+          "default": 10, 
+          "description": "Number of seconds before the calculation process is interrupted", 
+          "title": "ProcessTimeout", 
+          "type": "number"
+        }, 
+        "seed": {
+          "default": 1, 
+          "description": "When using the same seed, the random number generator produce the same sequence of numbers", 
+          "title": "Seed for random number generator", 
+          "type": "number"
+        }, 
+        "timeUnitPerDay": {
+          "default": 24, 
+          "description": "Used for input and reporting widgets. For example, 24 means that simulation clock time unit is one hour.", 
+          "title": "Number of time units per day", 
+          "type": "number"
+        }, 
+        "trace": {
+          "default": "No", 
+          "description": "Create an excel trace file (Yes or No)", 
+          "enum": [
+            "No", 
+            "Yes"
+          ], 
+          "title": "OutputTrace", 
+          "type": "string"
         }
-      },
-      "_failureDist": {
-        "allOf": [
-          {
-            "type": "object",
-            "properties": {
-              "failureDistribution": {
-                "type": "string",
-                "default": "No",
-                "enum": [
-                  "No",
-                  "Yes"
-                ]
-              }
+      }
+    }, 
+    "input": {
+      "debug": {
+        "gadget": "Input_viewDebugJson", 
+        "title": "Debug JSON", 
+        "type": "object_view"
+      }, 
+      "view": {
+        "gadget": "Input_viewProductionLine", 
+        "title": "ProductionLine", 
+        "type": "object_view"
+      }, 
+      "view_machine_shift_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "format": "date-time", 
+              "name": "Date", 
+              "type": "string"
+            }, 
+            {
+              "name": "Machine", 
+              "type": "string"
+            }, 
+            {
+              "name": "Start", 
+              "type": "string"
+            }, 
+            {
+              "name": "Stop", 
+              "type": "string"
             }
-          },
-          {
-            "oneOf": [
-              {
-                "$ref": "#/definitions/distributionTypes/_failure"
-              },
-              {
-                "$ref": "#/definitions/distributionTypes/_no"
-              }
-            ]
+          ]
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "Machine Shifts Spreadsheet", 
+        "type": "object_view"
+      }, 
+      "view_management": {
+        "gadget": "Input_viewDocumentManagement", 
+        "title": "Manage document", 
+        "type": "object_view"
+      }, 
+      "view_repairman_shift_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "format": "date-time", 
+              "name": "Date", 
+              "type": "string"
+            }, 
+            {
+              "name": "Repairman", 
+              "type": "string"
+            }, 
+            {
+              "name": "Start", 
+              "type": "string"
+            }, 
+            {
+              "name": "Stop", 
+              "type": "string"
+            }
+          ]
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "Repairman Shifts Spreadsheet", 
+        "type": "object_view"
+      }, 
+      "view_result": {
+        "gadget": "Input_viewResultList", 
+        "title": "Results", 
+        "type": "object_view"
+      }, 
+      "view_run_simulation": {
+        "gadget": "Input_viewSimulation", 
+        "title": "Run Simulation", 
+        "type": "object_view"
+      }, 
+      "view_wip_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "name": "ID", 
+              "type": "string"
+            }, 
+            {
+              "name": "StationID", 
+              "type": "string"
+            }, 
+            {
+              "name": "Remaining Processing Time", 
+              "type": "number"
+            }
+          ]
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "WIP Spreadsheet", 
+        "type": "object_view"
+      }
+    }, 
+    "output": {
+      "view_exit_stats": {
+        "configuration": {
+          "properties": {
+            "lifespan": {
+              "type": "number"
+            }, 
+            "taktTime": {
+              "type": "number"
+            }, 
+            "throughput": {
+              "type": "number"
+            }
           }
-        ]
-      },
+        }, 
+        "gadget": "Output_viewExitStatistics", 
+        "title": "Exit Statistics", 
+        "type": "object_view"
+      }, 
+      "view_queue_stats": {
+        "configuration": {
+          "columns": []
+        }, 
+        "gadget": "Output_viewQueueStatGraph", 
+        "title": "Queue Statistics", 
+        "type": "object_view"
+      }, 
+      "view_station_utilization": {
+        "configuration": {
+          "columns": []
+        }, 
+        "gadget": "Output_viewStationUtilisationGraph", 
+        "title": "Station Utilization", 
+        "type": "object_view"
+      }
+    }, 
+    "post_processing": {
+      "description": "", 
+      "plugin_list": []
+    }, 
+    "pre_processing": {
+      "description": "", 
+      "plugin_list": [
+        {
+          "_class": "dream.plugins.GatherWIPStat.GatherWIPStat", 
+          "input_id": "WIPStat"
+        }, 
+        {
+          "_class": "dream.plugins.WIPSpreadsheet.WIPSpreadsheet", 
+          "input_id": "WIPdata"
+        }
+      ]
+    }, 
+    "processing_plugin": {
+      "_class": "dream.plugins.plugin.DefaultExecutionPlugin", 
+      "description": "", 
+      "input_id": "Simulation"
+    }
+  }, 
+  "class_definition": {
+    "Dream.Edge": {
+      "_class": "edge", 
+      "allOf": [
+        {
+          "$ref": "#/edge"
+        }
+      ], 
+      "description": "Connect stations together"
+    }, 
+    "Dream.EventGenerator": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "argumentDict": {
+              "default": "{}", 
+              "description": "arguments to be used by the method", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "duration": {
+              "default": 10, 
+              "description": "duration", 
+              "required": true, 
+              "type": "number"
+            }, 
+            "id": {
+              "default": "A", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "interval": {
+              "default": 10, 
+              "description": "interval time", 
+              "required": true, 
+              "type": "number"
+            }, 
+            "method": {
+              "default": "Globals.countIntervalThroughput", 
+              "description": "method to be performed", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Attainment", 
+              "type": "string"
+            }, 
+            "start": {
+              "default": 1, 
+              "description": "Start time", 
+              "required": true, 
+              "type": "number"
+            }, 
+            "stop": {
+              "default": -1, 
+              "description": "Stop time", 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#fdc", 
+        "backgroundImage": "linear-gradient(to bottom, #fdc 0%, #ecb 100%)", 
+        "border": "1px solid #cba"
+      }, 
+      "description": "Attainment", 
+      "name": "Attainment"
+    }, 
+    "Dream.Exit": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "E", 
+              "required": true
+            }, 
+            "name": {
+              "default": "Exit", 
+              "type": "string"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#eef", 
+        "backgroundImage": "linear-gradient(to bottom, #eef 0%, #dde 100%)", 
+        "border": "1px solid #ccb"
+      }, 
+      "description": "A station where entities exits from the system", 
+      "name": "Exit", 
+      "shape": "rectangle"
+    }, 
+    "Dream.Machine": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "M", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "interruption": {
+              "properties": {
+                "failure": {
+                  "$ref": "#/definitions/_failureDist", 
+                  "required": true
+                }
+              }, 
+              "type": "object"
+            }, 
+            "loadTime": {
+              "$ref": "#/definitions/_dist", 
+              "required": true
+            }, 
+            "name": {
+              "default": "Machine", 
+              "type": "string"
+            }, 
+            "operationType": {
+              "description": "Type Of Operation", 
+              "name": "Operation Type", 
+              "properties": {
+                "load": {
+                  "$ref": "#/definitions/_operationType", 
+                  "description": "Operation type for loading"
+                }, 
+                "processing": {
+                  "$ref": "#/definitions/_operationType", 
+                  "description": "Operation type for processing"
+                }, 
+                "setup": {
+                  "$ref": "#/definitions/_operationType", 
+                  "description": "Operation type for setup"
+                }
+              }, 
+              "required": [
+                "load", 
+                "setup", 
+                "processing"
+              ], 
+              "type": "object"
+            }, 
+            "processingTime": {
+              "$ref": "#/definitions/_dist", 
+              "required": true
+            }, 
+            "setupTime": {
+              "$ref": "#/definitions/_dist", 
+              "required": true
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#fef", 
+        "backgroundImage": "linear-gradient(to bottom, #fef 0%, #ede 100%)", 
+        "border": "1px solid #cbc"
+      }, 
+      "description": "A station processing items for some time given by a distribution", 
+      "name": "Machine"
+    }, 
+    "Dream.Queue": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "capacity": {
+              "$ref": "#/definitions/_capacity", 
+              "required": true
+            }, 
+            "id": {
+              "default": "Q", 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Queue", 
+              "type": "string"
+            }, 
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule", 
+              "required": true
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#eff", 
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)", 
+        "border": "1px solid #bcc"
+      }, 
+      "description": "A buffer where entites can be hold until the next station is ready to process them", 
+      "name": "Queue"
+    }, 
+    "Dream.Repairman": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "capacity": {
+              "$ref": "#/definitions/_capacity", 
+              "required": true
+            }, 
+            "id": {
+              "default": "R", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Repairman", 
+              "type": "string"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#fdd", 
+        "backgroundImage": "linear-gradient(to bottom, #fdd 0%, #dcc 100%)", 
+        "border": "1px solid #cbb"
+      }, 
+      "description": "A resource that repairs stations in failure", 
+      "name": "Repairman"
+    }, 
+    "Dream.Source": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "entity": {
+              "default": "Dream.Part", 
+              "description": "EntityClass", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "id": {
+              "default": "S", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "interArrivalTime": {
+              "$ref": "#/definitions/_dist", 
+              "description": "Inter-arrivaltime", 
+              "required": true
+            }, 
+            "name": {
+              "default": "Source", 
+              "type": "string"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#ffe", 
+        "backgroundImage": "linear-gradient(to bottom, #ffe 0%, #dde 100%)", 
+        "border": "1px solid #bbc"
+      }, 
+      "description": "A station creating entities", 
+      "name": "Source"
+    }, 
+    "definitions": {
+      "_capacity": {
+        "default": 1, 
+        "description": "capacity of the queue. -1 means infinite", 
+        "oneOf": [
+          {
+            "enum": [
+              -1
+            ]
+          }, 
+          {
+            "multipleOf": 1
+          }
+        ], 
+        "type": "number"
+      }, 
       "_dist": {
         "allOf": [
           {
-            "type": "object",
             "properties": {
               "distribution": {
-                "type": "string",
-                "default": "Fixed",
+                "default": "Fixed", 
                 "enum": [
-                  "Fixed",
-                  "Exp",
-                  "Normal",
-                  "Lognormal",
-                  "Binomial",
-                  "Poisson",
-                  "Logistic",
-                  "Cauchy",
-                  "Geometric",
-                  "Gama",
+                  "Fixed", 
+                  "Exp", 
+                  "Normal", 
+                  "Lognormal", 
+                  "Binomial", 
+                  "Poisson", 
+                  "Logistic", 
+                  "Cauchy", 
+                  "Geometric", 
+                  "Gama", 
                   "Weibull"
-                ]
+                ], 
+                "type": "string"
               }
-            }
-          },
+            }, 
+            "type": "object"
+          }, 
           {
             "oneOf": [
               {
                 "$ref": "#/definitions/distributionTypes/_fixed"
-              },
+              }, 
               {
                 "$ref": "#/definitions/distributionTypes/_exp"
-              },
+              }, 
               {
                 "$ref": "#/definitions/distributionTypes/_normal"
-              },
+              }, 
               {
                 "$ref": "#/definitions/distributionTypes/_lognormal"
-              },
+              }, 
               {
                 "$ref": "#/definitions/distributionTypes/_binomial"
-              },
+              }, 
               {
                 "$ref": "#/definitions/distributionTypes/_poisson"
-              },
+              }, 
               {
                 "$ref": "#/definitions/distributionTypes/_logistic"
-              },
+              }, 
               {
                 "$ref": "#/definitions/distributionTypes/_cauchy"
-              },
+              }, 
               {
                 "$ref": "#/definitions/distributionTypes/_geometric"
-              },
+              }, 
               {
                 "$ref": "#/definitions/distributionTypes/_gama"
-              },
+              }, 
               {
                 "$ref": "#/definitions/distributionTypes/_weibull"
               }
             ]
           }
         ]
-      },
-      "_schedulingRule": {
-        "description": "Scheduling Rule, one of FIFO Priority EDD EOD NumStages RPC LPT SPT MS WINQ",
-        "type": "string",
-        "default": "FIFO",
-        "enum": [
-          "FIFO",
-          "Priority",
-          "EDD",
-          "EOD",
-          "NumStages",
-          "RPC",
-          "LPT",
-          "SPT",
-          "MS",
-          "WINQ",
-          "WT"
-        ]
-      },
-      "_capacity": {
-        "description": "capacity of the queue. -1 means infinite",
-        "type": "number",
-        "default": 1,
-        "oneOf": [
+      }, 
+      "_failureDist": {
+        "allOf": [
           {
-            "enum": [
-              -1
+            "properties": {
+              "failureDistribution": {
+                "default": "No", 
+                "enum": [
+                  "No", 
+                  "Yes"
+                ], 
+                "type": "string"
+              }
+            }, 
+            "type": "object"
+          }, 
+          {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/distributionTypes/_failure"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_no"
+              }
             ]
-          },
-          {
-            "multipleOf": 1
           }
         ]
-      },
+      }, 
       "_operationType": {
-        "description": "the type of operations that are performed manually in the machine",
-        "default": "Automatic",
-        "type": "string",
-        "enum" : [
-          "Automatic",
+        "default": "Automatic", 
+        "description": "the type of operations that are performed manually in the machine", 
+        "enum": [
+          "Automatic", 
           "Manual"
-        ]
+        ], 
+        "type": "string"
+      }, 
+      "_schedulingRule": {
+        "default": "FIFO", 
+        "description": "Scheduling Rule, one of FIFO Priority EDD EOD NumStages RPC LPT SPT MS WINQ", 
+        "enum": [
+          "FIFO", 
+          "Priority", 
+          "EDD", 
+          "EOD", 
+          "NumStages", 
+          "RPC", 
+          "LPT", 
+          "SPT", 
+          "MS", 
+          "WINQ", 
+          "WT"
+        ], 
+        "type": "string"
+      }, 
+      "distributionTypes": {
+        "_binomial": {
+          "description": "Binomial", 
+          "properties": {
+            "mean": {
+              "default": 0, 
+              "type": "number"
+            }, 
+            "size": {
+              "default": 0, 
+              "type": "number"
+            }
+          }, 
+          "title": "Binomial", 
+          "type": "object"
+        }, 
+        "_cauchy": {
+          "description": "Cauchy", 
+          "properties": {
+            "location": {
+              "default": 0, 
+              "type": "number"
+            }, 
+            "scale": {
+              "default": 0, 
+              "type": "number"
+            }
+          }, 
+          "title": "Cauchy", 
+          "type": "object"
+        }, 
+        "_exp": {
+          "description": "Exponential", 
+          "properties": {
+            "mean": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Exp", 
+          "type": "object"
+        }, 
+        "_failure": {
+          "description": "Fixed", 
+          "properties": {
+            "Time to Failure": {
+              "$ref": "#/definitions/_dist"
+            }, 
+            "Time to Repair": {
+              "$ref": "#/definitions/_dist"
+            }, 
+            "repairman": {
+              "description": "Repairman", 
+              "required": true, 
+              "type": "string"
+            }
+          }, 
+          "title": "Yes", 
+          "type": "object"
+        }, 
+        "_fixed": {
+          "description": "Fixed", 
+          "properties": {
+            "mean": {
+              "default": 0.75, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Fixed", 
+          "type": "object"
+        }, 
+        "_gama": {
+          "description": "Gama", 
+          "properties": {
+            "rate": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }, 
+            "shape": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Gama", 
+          "type": "object"
+        }, 
+        "_geometric": {
+          "description": "Geometric", 
+          "properties": {
+            "probability": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Geometric", 
+          "type": "object"
+        }, 
+        "_logistic": {
+          "description": "Logistic", 
+          "properties": {
+            "location": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }, 
+            "scale": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Logistic", 
+          "type": "object"
+        }, 
+        "_lognormal": {
+          "description": "Lognormal", 
+          "properties": {
+            "mean": {
+              "_class": "Dream.Property", 
+              "default": 0, 
+              "name": "Mean", 
+              "type": "number"
+            }, 
+            "stdev": {
+              "_class": "Dream.Property", 
+              "default": 0, 
+              "name": "Standard Deviation", 
+              "type": "number"
+            }
+          }, 
+          "title": "Lognormal", 
+          "type": "object"
+        }, 
+        "_no": {
+          "description": "None", 
+          "title": "No", 
+          "type": "string"
+        }, 
+        "_normal": {
+          "description": "Normal", 
+          "properties": {
+            "mean": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }, 
+            "stdev": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Normal", 
+          "type": "object"
+        }, 
+        "_poisson": {
+          "description": "Poisson", 
+          "properties": {
+            "lambda": {
+              "default": 0, 
+              "type": "number"
+            }
+          }, 
+          "title": "Poisson", 
+          "type": "object"
+        }, 
+        "_weibull": {
+          "description": "Weibull", 
+          "properties": {
+            "scale": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }, 
+            "shape": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Weibull", 
+          "type": "object"
+        }
       }
-    },
+    }, 
     "edge": {
-      "description": "Base definition for edge",
+      "description": "Base definition for edge", 
       "properties": {
         "_class": {
           "type": "string"
-        },
-        "source": {
-          "type": "string"
-        },
+        }, 
         "destination": {
           "type": "string"
-        },
+        }, 
         "name": {
           "type": "string"
+        }, 
+        "source": {
+          "type": "string"
         }
-      },
+      }, 
       "required": [
-        "_class",
-        "source",
+        "_class", 
+        "source", 
         "destination"
-      ],
+      ], 
       "type": "object"
-    },
+    }, 
     "node": {
-      "description": "Base definition for node",
+      "description": "Base definition for node", 
       "properties": {
         "_class": {
           "type": "string"
-        },
+        }, 
         "coordinate": {
           "properties": {
-            "left": "number",
+            "left": "number", 
             "top": "number"
-          },
+          }, 
           "type": "object"
-        },
+        }, 
         "name": {
           "type": "string"
         }
-      },
+      }, 
       "required": [
-        "name",
+        "name", 
         "_class"
-      ],
+      ], 
       "type": "object"
-    },
-    "Dream.Edge": {
-      "_class": "edge",
-      "allOf": [
-        {
-          "$ref": "#/edge"
-        }
-      ],
-      "description": "Connect stations together"
-    },
-    "Dream.Exit": {
-      "_class": "node",
-      "name": "Exit",
-      "css": {
-        "border": "1px solid #ccb",
-        "backgroundColor": "#eef",
-        "backgroundImage": "linear-gradient(to bottom, #eef 0%, #dde 100%)"
-      },
-      "shape": "rectangle",
-      "description": "A station where entities exits from the system",
-      "allOf": [
-        {
-          "$ref": "#/node"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string",
-              "default": "Exit"
-            },
-            "id": {
-              "default": "E",
-              "required": true
-            }
-          }
-        }
-      ]
-    },
-    "Dream.Queue": {
-      "name": "Queue",
-      "_class": "node",
-      "css": {
-        "border": "1px solid #bcc",
-        "backgroundColor": "#eff",
-        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)"
-      },
-      "description": "A buffer where entites can be hold until the next station is ready to process them",
-      "allOf": [
-        {
-          "$ref": "#/node"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string",
-              "default": "Queue"
-            },
-            "id": {
-              "type": "string",
-              "default": "Q"
-            },
-            "capacity": {
-              "$ref": "#/definitions/_capacity",
-              "required": true
-            },
-            "schedulingRule": {
-              "$ref": "#/definitions/_schedulingRule",
-              "required": true
-            }
-          }
-        }
-      ]
-    },
-    "Dream.Machine": {
-      "name": "Machine",
-      "description": "A station processing items for some time given by a distribution",
-      "_class": "node",
-      "css": {
-        "border": "1px solid #cbc",
-        "backgroundColor": "#fef",
-        "backgroundImage": "linear-gradient(to bottom, #fef 0%, #ede 100%)"
-      },
-      "allOf": [
-        {
-          "$ref": "#/node"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string",
-              "default": "Machine"
-            },
-            "id": {
-              "type": "string",
-              "default": "M",
-              "required": true
-            },
-            "operationType": {
-              "description": "Type Of Operation",
-              "name" : "Operation Type",
-              "type": "object",
-			  "properties" : {
-                "load": {
-                  "description": "Operation type for loading",
-                  "$ref": "#/definitions/_operationType"
-                },
-                "setup": {
-                  "description": "Operation type for setup",
-                  "$ref": "#/definitions/_operationType"
-                },
-                "processing": {
-                  "description": "Operation type for processing",
-                  "$ref": "#/definitions/_operationType"
-                }
-              },
-              "required" : ["load", "setup", "processing"]
-            },
-            "loadTime": {
-              "$ref": "#/definitions/_dist",
-              "required": true
-            },
-            "setupTime": {
-              "$ref": "#/definitions/_dist",
-              "required": true
-            },
-            "processingTime": {
-              "$ref": "#/definitions/_dist",
-              "required": true
-            },
-            "interruption": {
-              "type": "object",
-              "properties": {
-                "failure": {
-                  "$ref": "#/definitions/_failureDist",
-                  "required": true
-                }
-              }
-            }
-          }
-        }
-      ]
-    },
-    "Dream.Source": {
-      "name": "Source",
-      "_class": "node",
-      "css": {
-        "border": "1px solid #bbc",
-        "backgroundColor": "#ffe",
-        "backgroundImage": "linear-gradient(to bottom, #ffe 0%, #dde 100%)"
-      },
-      "description": "A station creating entities",
-      "allOf": [
-        {
-          "$ref": "#/node"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string",
-              "default": "Source"
-            },
-            "id": {
-              "type": "string",
-              "default": "S",
-              "required": true
-            },
-            "interArrivalTime": {
-              "description": "Inter-arrivaltime",
-              "$ref": "#/definitions/_dist",
-              "required": true
-            },
-            "entity": {
-              "type": "string",
-              "description": "EntityClass",
-              "default": "Dream.Part",
-              "required": true
-            }
-          }
-        }
-      ]
-    },
-    "Dream.EventGenerator": {
-      "name": "Attainment",
-      "_class": "node",
-      "css": {
-        "border": "1px solid #cba",
-        "backgroundColor": "#fdc",
-        "backgroundImage": "linear-gradient(to bottom, #fdc 0%, #ecb 100%)"
-      },
-      "description": "Attainment",
-      "allOf": [
-        {
-          "$ref": "#/node"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string",
-              "default": "Attainment"
-            },
-            "id": {
-              "type": "string",
-              "default": "A",
-              "required": true
-            },
-            "start": {
-              "description": "Start time",
-              "type": "number",
-              "default": 1,
-              "required": true
-            },
-            "stop": {
-              "description": "Stop time",
-              "type": "number",
-              "default": -1,
-              "required": true
-            },
-            "duration": {
-              "description": "duration",
-              "type": "number",
-              "default": 10,
-              "required": true
-            },
-            "interval": {
-              "description": "interval time",
-              "type": "number",
-              "default": 10,
-              "required": true
-            },
-            "method": {
-              "description": "method to be performed",
-              "type": "string",
-              "default": "Globals.countIntervalThroughput",
-              "required": true
-            },
-            "argumentDict": {
-              "description": "arguments to be used by the method",
-              "type": "string",
-              "default": "{}",
-              "required": true
-            }
-          }
-        }
-      ]
-    },
-    "Dream.Repairman": {
-      "name": "Repairman",
-      "_class": "node",
-      "css": {
-        "border": "1px solid #cbb",
-        "backgroundColor": "#fdd",
-        "backgroundImage": "linear-gradient(to bottom, #fdd 0%, #dcc 100%)"
-      },
-      "description": "A resource that repairs stations in failure",
-      "allOf": [
-        {
-          "$ref": "#/node"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string",
-              "default": "Repairman"
-            },
-            "id": {
-              "type": "string",
-              "default": "R",
-              "required": true
-            },
-            "capacity": {
-              "$ref": "#/definitions/_capacity",
-              "required": true
-            }
-          }
-        }
-      ]
     }
-  },
-  "application_configuration": {
-    "input": {
-      "view": {
-        "title": "ProductionLine",
-        "type": "object_view",
-        "gadget": "Input_viewProductionLine"
-      },
-      "view_management": {
-        "gadget": "Input_viewDocumentManagement",
-        "type": "object_view",
-        "title": "Manage document"
-      },
-      "view_machine_shift_spreadsheet": {
-        "gadget": "Input_viewSpreadsheet",
-        "type": "object_view",
-        "title": "Machine Shifts Spreadsheet",
-        "configuration": {
-          "columns": [
-            {
-              "name": "Date",
-              "type": "string",
-              "format": "date-time"
-            },
-            {
-              "name": "Machine",
-              "type": "string"
-            },
-            {
-              "name": "Start",
-              "type": "string"
-            },
-            {
-              "name": "Stop",
-              "type": "string"
-            }
-          ]
-        }
-      },
-      "view_repairman_shift_spreadsheet": {
-        "gadget": "Input_viewSpreadsheet",
-        "type": "object_view",
-        "title": "Repairman Shifts Spreadsheet",
-        "configuration": {
-          "columns": [
-            {
-              "name": "Date",
-              "type": "string",
-              "format": "date-time"
-            },
-            {
-              "name": "Repairman",
-              "type": "string"
-            },
-            {
-              "name": "Start",
-              "type": "string"
-            },
-            {
-              "name": "Stop",
-              "type": "string"
-            }
-          ]
-        }
-      },
-      "view_wip_spreadsheet": {
-        "gadget": "Input_viewSpreadsheet",
-        "type": "object_view",
-        "title": "WIP Spreadsheet",
-        "configuration": {
-          "columns": [
-            {
-              "name": "ID",
-              "type": "string"
-            },
-            {
-              "name": "StationID",
-              "type": "string"
-            },
-            {
-              "name": "Remaining Processing Time",
-              "type": "number"
-            }
-          ]
-        }
-      },
-      "view_run_simulation": {
-        "title": "Run Simulation",
-        "type": "object_view",
-        "gadget": "Input_viewSimulation"
-      },
-      "view_result": {
-        "gadget": "Input_viewResultList",
-        "type": "object_view",
-        "title": "Results"
-      },
-      "debug": {
-        "gadget": "Input_viewDebugJson",
-        "type": "object_view",
-        "title": "Debug JSON"
-      }
-    },
-    "output": {
-      "view_station_utilization": {
-        "title": "Station Utilization",
-        "type": "object_view",
-        "gadget": "Output_viewStationUtilisationGraph",
-        "configuration": {
-          "columns": []
-        }
-      },
-      "view_queue_stats": {
-        "title": "Queue Statistics",
-        "type": "object_view",
-        "gadget": "Output_viewQueueStatGraph",
-        "configuration": {
-          "columns": []
-        }
-      },
-      "view_exit_stats": {
-        "title": "Exit Statistics",
-        "type": "object_view",
-        "gadget": "Output_viewExitStatistics",
-        "configuration": {
-          "properties": {
-            "throughput": {
-              "type": "number"
-            },
-            "taktTime": {
-              "type": "number"
-            },
-            "lifespan": {
-              "type": "number"
-            }
-          }
-        }
-      }
-    },
-    "pre_processing": {
-      "description" : "",
-      "plugin_list": [
-        {
-          "_class": "dream.plugins.GatherWIPStat.GatherWIPStat",
-          "input_id": "WIPStat"
-        },
-        {
-          "_class": "dream.plugins.WIPSpreadsheet.WIPSpreadsheet",
-          "input_id": "WIPdata"
-        }
-      ]
-    },
-    "processing_plugin": {
-      "description" : "",
-      "_class": "dream.plugins.plugin.DefaultExecutionPlugin",
-      "input_id": "Simulation"
-    },
-    "post_processing": {
-      "description" : "",
-      "plugin_list": []
-    },
-    "general": {
-      "properties": {
-        "numberOfReplications": {
-          "title": "Number of replications",
-          "type": "integer",
-          "description": "Number of replications to run",
-          "default": 10
-        },
-        "maxSimTime": {
-          "title": "Length of Experiment",
-          "description": "Length of the simulation run",
-          "type": "number",
-          "default": 100
-        },
-        "confidenceLevel": {
-          "title": "Confidence level",
-          "type": "number",
-          "default": 0.95,
-          "description": "Confidence level for statistical analysis of stochastic experiments"
-        },
-        "processTimeout": {
-          "title": "ProcessTimeout",
-          "type": "number",
-          "default": 10,
-          "description": "Number of seconds before the calculation process is interrupted"
-        },
-        "currentDate": {
-          "default": "2014/10/01",
-          "description": "The day the experiment starts, in YYYY/MM/DD format",
-          "title": "SimulationStartTime",
-          "type": "string"
-        },
-        "timeUnitPerDay": {
-          "default": 24,
-          "description": "Used for input and reporting widgets. For example, 24 means that simulation clock time unit is one hour.",
-          "title": "Number of time units per day",
-          "type": "number"
-        },
-        "trace": {
-          "default": "No",
-          "enum": [
-            "No",
-            "Yes"
-          ],
-          "description": "Create an excel trace file (Yes or No)",
-          "title": "OutputTrace",
-          "type": "string"
-        },
-        "seed": {
-          "default": 1,
-          "description": "When using the same seed, the random number generator produce the same sequence of numbers",
-          "title": "Seed for random number generator",
-          "type": "number"
-        },
-        "ke_url": {
-          "default": "http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
-          "description": "The URL for knowledge extraction to access its data for example http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
-          "title": "URL for Knowledge Extraction Spreadsheet",
-          "type": "string"
-        }
-      }
-    }
-  },
+  }, 
+  "constraints": {}, 
   "general": {
-    "numberOfReplications": "1",
-    "maxSimTime": 1000,
-    "confidenceLevel": 0.95,
-    "processTimeout": 20,
-    "currentDate": "2015/01/01",
-    "timeUnitPerDay": 24,
-    "trace": "No",
-    "seed": null,
-    "ke_url": ""
-  },
+    "confidenceLevel": 0.95, 
+    "currentDate": "2015/01/01", 
+    "ke_url": "", 
+    "maxSimTime": 1000, 
+    "name": "DefaultAllInOneEmpty2.json", 
+    "numberOfReplications": "1", 
+    "processTimeout": 20, 
+    "seed": null, 
+    "timeUnitPerDay": 24, 
+    "trace": "No"
+  }, 
   "graph": {
-    "node": {
-      "Dream.Queue1": {
-        "coordinate": {
-          "left": 0.3449504296674747,
-          "top": 0.28556380952636706
-        },
-        "_class": "Dream.Queue",
-        "name": "Queue"
-      },
-      "Dream.Source1": {
-        "coordinate": {
-          "left": 0.07472477821512047,
-          "top": 0.5900391296173942
-        },
-        "_class": "Dream.Source",
-        "name": "Source"
-      }
-    },
-    "edge": {
-      "con_15": {
-        "_class": "Dream.Edge",
-        "source": "Dream.Source1",
-        "destination": "Dream.Queue1"
-      }
-    }
-  },
+    "edge": {}, 
+    "node": {}
+  }, 
   "input": {
     "machine_shift_spreadsheet": [
       [
-        "Date",
-        "Machine",
-        "Start",
+        "Date", 
+        "Machine", 
+        "Start", 
         "Stop"
-      ],
+      ], 
       [
-        null,
-        null,
-        null,
+        null, 
+        null, 
+        null, 
         null
       ]
-    ],
+    ], 
     "repairman_shift_spreadsheet": [
       [
-        "Date",
-        "Repairman",
-        "Start",
+        "Date", 
+        "Repairman", 
+        "Start", 
         "Stop"
-      ],
+      ], 
       [
-        null,
-        null,
-        null,
+        null, 
+        null, 
+        null, 
         null
       ]
-    ],
+    ], 
     "wip_spreadsheet": [
       [
-        "ID",
-        "StationID",
+        "ID", 
+        "StationID", 
         "Remaining Processing Time"
-      ],
+      ], 
       [
-        null,
-        null,
+        null, 
+        null, 
         null
       ]
     ]
-  },
+  }, 
   "result": {
     "result_list": []
-  },
-  "constraints": {}
+  }
 }
