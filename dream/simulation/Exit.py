@@ -221,25 +221,10 @@ class Exit(CoreObject):
                   'id': self.id,
                   'family': self.family,
                   'results': {} }
-        if(G.numberOfReplications==1):
-            json['results']['throughput']=self.numOfExits
-            if self.totalNumberOfUnitsExited!=self.numOfExits:   #output this only if there was variability in units
-                json['results']['unitsThroughput']=self.totalNumberOfUnitsExited
-            if len(self.intervalThroughPutList):    #output this only if there is an interval throughput
-                                                    #TODO - check how to output in stochastic cases
-                json['results']['intervalThroughputList']=self.intervalThroughPutList
-            json['results']['lifespan']=self.Lifespan[0]
-            json['results']['takt_time']=self.TaktTime[0]
-        else:
-#             json['results']['throughput'] =self.Exits
-#             json['results']['lifespan'] = self.Lifespan
-#             json['results']['takt_time'] = self.TaktTime
-#             if self.Exits!=self.UnitExits:      #output this only if there was variability in units
-#                 json['results']['unitsThroughput'] = self.UnitExits
-            json['results']['throughput'] = getConfidenceIntervals(self.Exits)
-            json['results']['lifespan'] = getConfidenceIntervals(self.Lifespan)
-            json['results']['takt_time'] = getConfidenceIntervals(self.TaktTime)
-            if self.Exits!=self.UnitExits:      #output this only if there was variability in units
-                json['results']['unitsThroughput'] = getConfidenceIntervals(self.UnitExits)
+        json['results']['throughput'] = getConfidenceIntervals(self.Exits)
+        json['results']['lifespan'] = getConfidenceIntervals(self.Lifespan)
+        json['results']['takt_time'] = getConfidenceIntervals(self.TaktTime)
+        if self.Exits!=self.UnitExits:      #output this only if there was variability in units
+            json['results']['unitsThroughput'] = getConfidenceIntervals(self.UnitExits)
 
         G.outputJSON['elementList'].append(json)

@@ -341,21 +341,11 @@ class BatchReassembly(CoreObject):
                     'id': self.id,
                     'family': self.family,
                     'results': {}}
-            if (G.numberOfReplications == 1):
-                # if we had just one replication output the results as numbers
-                json['results']['failure_ratio']=100*self.totalFailureTime/G.maxSimTime
-                json['results']['working_ratio']=100*self.totalWorkingTime/G.maxSimTime
-                json['results']['blockage_ratio']=100*self.totalBlockageTime/G.maxSimTime
-                json['results']['waiting_ratio']=100*self.totalWaitingTime/G.maxSimTime
-                #output the off-shift time only if there is any
-                if self.totalOffShiftTime:
-                    json['results']['off_shift_ratio']=100*self.totalOffShiftTime/G.maxSimTime
-            else:
-                json['results']['failure_ratio'] = getConfidenceIntervals(self.Failure)
-                json['results']['working_ratio'] = getConfidenceIntervals(self.Working)
-                json['results']['blockage_ratio'] = getConfidenceIntervals(self.Blockage)
-                json['results']['waiting_ratio'] = getConfidenceIntervals(self.Waiting)
-                json['results']['off_shift_ratio'] = getConfidenceIntervals(self.OffShift)
+            json['results']['failure_ratio'] = getConfidenceIntervals(self.Failure)
+            json['results']['working_ratio'] = getConfidenceIntervals(self.Working)
+            json['results']['blockage_ratio'] = getConfidenceIntervals(self.Blockage)
+            json['results']['waiting_ratio'] = getConfidenceIntervals(self.Waiting)
+            json['results']['off_shift_ratio'] = getConfidenceIntervals(self.OffShift)
             G.outputJSON['elementList'].append(json)
         
         

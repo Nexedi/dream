@@ -496,15 +496,9 @@ class Conveyer(CoreObject):
         json = {'_class': self.class_name,
                 'id': self.id,
                 'results': {}}
-        if (G.numberOfReplications == 1):
-            # if we had just one replication output the results as numbers
-            json['results']['working_ratio']=100*self.totalWorkingTime/G.maxSimTime
-            json['results']['blockage_ratio']=100*self.totalBlockageTime/G.maxSimTime
-            json['results']['waiting_ratio']=100*self.totalWaitingTime/G.maxSimTime
-        else:
-            json['results']['working_ratio'] = getConfidenceIntervals(self.Working)
-            json['results']['blockage_ratio'] = getConfidenceIntervals(self.Blockage)
-            json['results']['waiting_ratio'] = getConfidenceIntervals(self.Waiting)
+        json['results']['working_ratio'] = getConfidenceIntervals(self.Working)
+        json['results']['blockage_ratio'] = getConfidenceIntervals(self.Blockage)
+        json['results']['waiting_ratio'] = getConfidenceIntervals(self.Waiting)
 
         G.outputJSON['elementList'].append(json)
 
