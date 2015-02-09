@@ -336,7 +336,6 @@ class BatchReassembly(CoreObject):
     def outputResultsJSON(self):
         if self.outputResults:
             from Globals import G
-            from Globals import getConfidenceIntervals
             json = {'_class': 'Dream.%s' % self.__class__.__name__,
                     'id': self.id,
                     'family': self.family,

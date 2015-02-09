@@ -162,61 +162,10 @@ class Exit(CoreObject):
             self.TaktTime.append(0)
             
     # =======================================================================
-    #                        outputs data to "output.xls"
-    # =======================================================================
-    def outputResultsXL(self, MaxSimtime=None):
-        from Globals import G   
-        from Globals import getConfidenceIntervals
-        if MaxSimtime==None:
-            MaxSimtime=G.maxSimTime
-        if(G.numberOfReplications==1): #if we had just one replication output the results to excel
-            G.outputSheet.write(G.outputIndex,0, "The Throughput in " +self.objName + " is:")
-            G.outputSheet.write(G.outputIndex,1,self.numOfExits)
-            G.outputIndex+=1
-            G.outputSheet.write(G.outputIndex,0, "The average lifespan of an entity that exited from "+ self.objName  +" is:")
-            try:
-                G.outputSheet.write(G.outputIndex,1,((self.totalLifespan)/self.numOfExits)/G.Base)
-            except ZeroDivisionError:
-                G.outputSheet.write(G.outputIndex,1,0)
-            G.outputIndex+=1
-            G.outputSheet.write(G.outputIndex,0, "The average takt time in "+ self.objName  +" is:")            
-            try:
-                G.outputSheet.write(G.outputIndex,1,((self.totalTaktTime)/self.numOfExits)/G.Base)
-            except ZeroDivisionError:
-                G.outputSheet.write(G.outputIndex,1,0)
-            G.outputIndex+=1            
-        else:        #if we had multiple replications we output confidence intervals to excel
-                #for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
-                #so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
-                #so for each output value we check if there was difference in the runs' results
-                #if yes we output the Confidence Intervals. if not we output just the fix value                 
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean Throughput in " +self.objName + " is:")
-            throughput_ci = getConfidenceIntervals(self.Exits)
-            G.outputSheet.write(G.outputIndex, 1, throughput_ci['min'])
-            G.outputSheet.write(G.outputIndex, 2, throughput_ci['avg'])
-            G.outputSheet.write(G.outputIndex, 3, throughput_ci['max'])
-            G.outputIndex+=1
-
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean Lifespan of an entity that exited from "+ self.objName  + " is:")
-            lifespan_ci = getConfidenceIntervals(self.Lifespan)
-            G.outputSheet.write(G.outputIndex, 1, lifespan_ci['min'])
-            G.outputSheet.write(G.outputIndex, 2, lifespan_ci['avg'])
-            G.outputSheet.write(G.outputIndex, 3, lifespan_ci['max'])
-            G.outputIndex+=1
-
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the avg takt time in "+ self.objName  + " is:")
-            takt_time_ci = getConfidenceIntervals(self.TaktTime)
-            G.outputSheet.write(G.outputIndex, 1, takt_time_ci['min'])
-            G.outputSheet.write(G.outputIndex, 2, takt_time_ci['avg'])
-            G.outputSheet.write(G.outputIndex, 3, takt_time_ci['max'])
-            G.outputIndex+=1
-        G.outputIndex+=1
-    # =======================================================================
     #                        outputs results to JSON File
     # =======================================================================
     def outputResultsJSON(self):
         from Globals import G
-        from Globals import getConfidenceIntervals
         json = { '_class': 'Dream.%s' % self.__class__.__name__,
                   'id': self.id,
                   'family': self.family,

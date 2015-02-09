@@ -661,13 +661,6 @@ class CoreObject(ManPyObject):
         activeObject.SettingUp.append(100*self.totalSetupTime/MaxSimtime)
         activeObject.OffShift.append(100*self.totalOffShiftTime/MaxSimtime)
        
-               
-    # =======================================================================
-    # outputs data to "output.xls" 
-    # =======================================================================
-    def outputResultsXL(self, MaxSimtime=None):
-        pass
-    
     # =======================================================================
     # outputs results to JSON File 
     # =======================================================================

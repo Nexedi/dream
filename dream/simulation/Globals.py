@@ -306,24 +306,6 @@ def countIntervalThroughput(**kw):
             currentExited+=totalExited-previouslyExited
             obj.intervalThroughPutList.append(currentExited)
 
-
-# =======================================================================
-# Helper function to calculate the confidence intervals of a serie.
-# =======================================================================
-def getConfidenceIntervals(value_list):
-    from Globals import G
-    if len(set(value_list)) == 1:
-        # All values are same, no need to perform statistical analysis
-        return { 'lb': value_list[0],
-                 'ub': value_list[0],
-                 'avg': value_list[0], }
-    from dream.KnowledgeExtraction.ConfidenceIntervals import Intervals
-    from dream.KnowledgeExtraction.StatisticalMeasures import BasicStatisticalMeasures
-    BSM=BasicStatisticalMeasures()
-    lb, ub = Intervals().ConfidIntervals(value_list, G.confidenceLevel)
-    return {'lb': lb,
-            'ub': ub,
-            'avg': BSM.mean(value_list) }
     
 # #===========================================================================
 # # printTrace

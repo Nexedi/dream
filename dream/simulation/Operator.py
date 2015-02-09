@@ -270,56 +270,12 @@ class Operator(ObjectResource):
         self.Waiting.append(100*self.totalWaitingTime/MaxSimtime)
         self.Working.append(100*self.totalWorkingTime/MaxSimtime)
         self.OffShift.append(100*self.totalOffShiftTime/MaxSimtime)
-    
-    # =======================================================================
-    #                    outputs data to "output.xls"
-    # =======================================================================
-    def outputResultsXL(self, MaxSimtime=None):
-        from Globals import G
-        if MaxSimtime==None:
-            MaxSimtime=G.maxSimTime
-        # if we had just one replication output the results to excel
-        if(G.numberOfReplications==1): 
-            G.outputSheet.write(G.outputIndex,0, "The percentage of working of "+self.objName +" is:")
-            G.outputSheet.write(G.outputIndex,1,100*self.totalWorkingTime/MaxSimtime)
-            G.outputIndex+=1
-            G.outputSheet.write(G.outputIndex,0, "The percentage of waiting of "+self.objName +" is:")
-            G.outputSheet.write(G.outputIndex,1,100*self.totalWaitingTime/MaxSimtime)
-            G.outputIndex+=1
-        #if we had multiple replications we output confidence intervals to excel
-            # for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
-            # so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
-            # so for each output value we check if there was difference in the runs' results
-            # if yes we output the Confidence Intervals. if not we output just the fix value    
-        else:
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Working of "+self.objName +" is:")
-            if self.checkIfArrayHasDifValues(self.Working): 
-                G.outputSheet.write(G.outputIndex,1,stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][0])
-                G.outputSheet.write(G.outputIndex,2,stat.bayes_mvs(self.Working, G.confidenceLevel)[0][0])
-                G.outputSheet.write(G.outputIndex,3,stat.bayes_mvs(self.Working, G.confidenceLevel)[0][1][1])  
-            else: 
-                G.outputSheet.write(G.outputIndex,1,self.Working[0])
-                G.outputSheet.write(G.outputIndex,2,self.Working[0])
-                G.outputSheet.write(G.outputIndex,3,self.Working[0])                            
-            G.outputIndex+=1
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Waiting of "+self.objName +" is:")            
-            if self.checkIfArrayHasDifValues(self.Waiting):
-                G.outputSheet.write(G.outputIndex,1,stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][0])
-                G.outputSheet.write(G.outputIndex,2,stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][0])
-                G.outputSheet.write(G.outputIndex,3,stat.bayes_mvs(self.Waiting, G.confidenceLevel)[0][1][1])
-            else: 
-                G.outputSheet.write(G.outputIndex,1,self.Waiting[0])
-                G.outputSheet.write(G.outputIndex,2,self.Waiting[0])
-                G.outputSheet.write(G.outputIndex,3,self.Waiting[0]) 
-            G.outputIndex+=1
-        G.outputIndex+=1
 
     # =======================================================================
     #                    outputs results to JSON File
     # =======================================================================
     def outputResultsJSON(self):
         from Globals import G
-        from Globals import getConfidenceIntervals
         json = {'_class': 'Dream.%s' % self.__class__.__name__,
                 'id': self.id,
                 'family': self.family,

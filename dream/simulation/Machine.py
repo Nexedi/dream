@@ -1171,70 +1171,12 @@ class Machine(CoreObject):
     # =======================================================================
     def isOperated(self):
         return self.toBeOperated
-     
-    # =======================================================================
-    # outputs the the "output.xls"
-    # =======================================================================
-    def outputResultsXL(self, MaxSimtime=None):
-        from Globals import G
-        from Globals import getConfidenceIntervals
-        if MaxSimtime==None:
-            MaxSimtime=G.maxSimTime
-        
-        if(G.numberOfReplications==1): #if we had just one replication output the results to excel    
-            G.outputSheet.write(G.outputIndex,0, "The percentage of Failure of " +self.objName+ " is:")
-            G.outputSheet.write(G.outputIndex,1,100*self.totalFailureTime/MaxSimtime)
-            G.outputIndex+=1 
-            G.outputSheet.write(G.outputIndex,0, "The percentage of Working of " +self.objName+ " is:")
-            G.outputSheet.write(G.outputIndex,1,100*self.totalWorkingTime/MaxSimtime)
-            G.outputIndex+=1 
-            G.outputSheet.write(G.outputIndex,0, "The percentage of Blockage of " +self.objName+ " is:")
-            G.outputSheet.write(G.outputIndex,1,100*self.totalBlockageTime/MaxSimtime)
-            G.outputIndex+=1 
-            G.outputSheet.write(G.outputIndex,0, "The percentage of Waiting of " +self.objName+ " is:")
-            G.outputSheet.write(G.outputIndex,1,100*self.totalWaitingTime/MaxSimtime)
-            G.outputIndex+=1       
-        else:        #if we had multiple replications we output confidence intervals to excel
-                #for some outputs the results may be the same for each run (eg model is stochastic but failures fixed
-                #so failurePortion will be exactly the same in each run). That will give 0 variability and errors.
-                #so for each output value we check if there was difference in the runs' results
-                #if yes we output the Confidence Intervals. if not we output just the fix value    
-            
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Failure of "+ self.objName+" is:")
-            failure_ci = getConfidenceIntervals(self.Failure)
-            G.outputSheet.write(G.outputIndex, 1, failure_ci['min'])
-            G.outputSheet.write(G.outputIndex, 2, failure_ci['avg'])
-            G.outputSheet.write(G.outputIndex, 3, failure_ci['max'])
-            G.outputIndex+=1
-
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Working of "+ self.objName+" is:")
-            working_ci = getConfidenceIntervals(self.Working)
-            G.outputSheet.write(G.outputIndex, 1, working_ci['min'])
-            G.outputSheet.write(G.outputIndex, 2, working_ci['avg'])
-            G.outputSheet.write(G.outputIndex, 3, working_ci['max'])
-            G.outputIndex+=1
-
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Blockage of "+ self.objName+" is:")
-            blockage_ci = getConfidenceIntervals(self.Blockage)
-            G.outputSheet.write(G.outputIndex, 1, blockage_ci['min'])
-            G.outputSheet.write(G.outputIndex, 2, blockage_ci['avg'])
-            G.outputSheet.write(G.outputIndex, 3, blockage_ci['max'])
-            G.outputIndex+=1
-
-            G.outputSheet.write(G.outputIndex,0, "CI "+str(G.confidenceLevel*100)+"% for the mean percentage of Waiting of "+ self.objName+" is:")
-            waiting_ci = getConfidenceIntervals(self.Waiting)
-            G.outputSheet.write(G.outputIndex, 1, waiting_ci['min'])
-            G.outputSheet.write(G.outputIndex, 2, waiting_ci['avg'])
-            G.outputSheet.write(G.outputIndex, 3, waiting_ci['max'])
-            G.outputIndex+=1
-        G.outputIndex+=1
     
     # =======================================================================    
     # outputs results to JSON File
     # =======================================================================
     def outputResultsJSON(self):
         from Globals import G
-        from Globals import getConfidenceIntervals
         json = {'_class': 'Dream.%s' % self.__class__.__name__,
                 'id': self.id,
                 'family': self.family,
