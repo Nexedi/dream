@@ -185,7 +185,8 @@ class CoreObject(ManPyObject):
         # initialize the wipStatList - 
         # TODO, think what to do in multiple runs
         # TODO, this should be also updated in Globals.setWIP (in case we have initial wip)
-        self.wipStatList=[[0,0]]
+        import numpy as np
+        self.wipStatList=np.array([[0,0]])
 
         self.isRequested=self.env.event()
         self.canDispose=self.env.event()
@@ -302,7 +303,8 @@ class CoreObject(ManPyObject):
         
         # update wipStatList
         if self.gatherWipStat:
-            self.wipStatList.append([self.env.now, len(activeObjectQueue)])
+            import numpy
+            self.wipStatList=numpy.concatenate((self.wipStatList,[[self.env.now, len(activeObjectQueue)]]))   
         if self.expectedSignals['entityRemoved']:
             self.printTrace(self.id, signal='(removedEntity)')
             self.sendSignal(receiver=self, signal=self.entityRemoved)
@@ -457,8 +459,8 @@ class CoreObject(ManPyObject):
                     activeObjectQueue.sort(key=lambda x: x==activeEntity, reverse=True)
         # update wipStatList
         if self.gatherWipStat:
-            self.wipStatList.append([self.env.now, len(activeObjectQueue)])
-    
+            import numpy
+            self.wipStatList=numpy.concatenate((self.wipStatList,[[self.env.now, len(activeObjectQueue)]]))   
     
     #===========================================================================
     # find possible receivers
@@ -662,7 +664,7 @@ class CoreObject(ManPyObject):
         activeObject.Loading.append(100*self.totalLoadTime/MaxSimtime)
         activeObject.SettingUp.append(100*self.totalSetupTime/MaxSimtime)
         activeObject.OffShift.append(100*self.totalOffShiftTime/MaxSimtime)
-        activeObject.WipStat.append(self.wipStatList)
+        activeObject.WipStat.append(self.wipStatList.tolist())   
        
     # =======================================================================
     # outputs results to JSON File 
