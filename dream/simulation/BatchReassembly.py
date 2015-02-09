@@ -341,11 +341,11 @@ class BatchReassembly(CoreObject):
                     'id': self.id,
                     'family': self.family,
                     'results': {}}
-            json['results']['failure_ratio'] = getConfidenceIntervals(self.Failure)
-            json['results']['working_ratio'] = getConfidenceIntervals(self.Working)
-            json['results']['blockage_ratio'] = getConfidenceIntervals(self.Blockage)
-            json['results']['waiting_ratio'] = getConfidenceIntervals(self.Waiting)
-            json['results']['off_shift_ratio'] = getConfidenceIntervals(self.OffShift)
+            json['results']['failure_ratio'] = self.Failure
+            json['results']['working_ratio'] = self.Working
+            json['results']['blockage_ratio'] = self.Blockage
+            json['results']['waiting_ratio'] = self.Waiting
+            json['results']['off_shift_ratio'] = self.OffShift
             G.outputJSON['elementList'].append(json)
         
         

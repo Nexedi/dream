@@ -496,9 +496,9 @@ class Conveyer(CoreObject):
         json = {'_class': self.class_name,
                 'id': self.id,
                 'results': {}}
-        json['results']['working_ratio'] = getConfidenceIntervals(self.Working)
-        json['results']['blockage_ratio'] = getConfidenceIntervals(self.Blockage)
-        json['results']['waiting_ratio'] = getConfidenceIntervals(self.Waiting)
+        json['results']['working_ratio'] = self.Working
+        json['results']['blockage_ratio'] = self.Blockage
+        json['results']['waiting_ratio'] = self.Waiting
 
         G.outputJSON['elementList'].append(json)
 

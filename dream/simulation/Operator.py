@@ -324,9 +324,9 @@ class Operator(ObjectResource):
                 'id': self.id,
                 'family': self.family,
                 'results': {}}
-        json['results']['working_ratio'] = getConfidenceIntervals(self.Working)
-        json['results']['waiting_ratio'] = getConfidenceIntervals(self.Waiting)
-        json['results']['off_shift_ratio'] = getConfidenceIntervals(self.OffShift)
+        json['results']['working_ratio'] = self.Working
+        json['results']['waiting_ratio'] = self.Waiting
+        json['results']['off_shift_ratio'] = self.OffShift
         if self.ouputSchedule:
             if self.schedule:
                 json['results']['schedule']=[]

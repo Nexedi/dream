@@ -221,10 +221,9 @@ class Exit(CoreObject):
                   'id': self.id,
                   'family': self.family,
                   'results': {} }
-        json['results']['throughput'] = getConfidenceIntervals(self.Exits)
-        json['results']['lifespan'] = getConfidenceIntervals(self.Lifespan)
-        json['results']['takt_time'] = getConfidenceIntervals(self.TaktTime)
+        json['results']['throughput'] = self.Exits
+        json['results']['lifespan'] = self.Lifespan
+        json['results']['takt_time'] = self.TaktTime
         if self.Exits!=self.UnitExits:      #output this only if there was variability in units
-            json['results']['unitsThroughput'] = getConfidenceIntervals(self.UnitExits)
-
+            json['results']['unitsThroughput'] = self.UnitExits
         G.outputJSON['elementList'].append(json)
