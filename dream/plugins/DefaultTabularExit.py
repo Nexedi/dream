@@ -13,8 +13,8 @@ class DefaultTabularExit(plugin.OutputPreparationPlugin):
     """
 
     def postprocess(self, data):
-        numberOfReplications=data['general']['numberOfReplications']
-        confidenceLevel=data['general']['confidenceLevel']
+        numberOfReplications=int(data['general']['numberOfReplications'])
+        confidenceLevel=float(data['general']['confidenceLevel'])
         if numberOfReplications==1:
             # create the titles of the columns
             data['result']['result_list'][0]['exit_output'] = [['Exit Id','Throughput', 'Takt Time', 'Lifespan']]
