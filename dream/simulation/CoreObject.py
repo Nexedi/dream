@@ -88,6 +88,8 @@ class CoreObject(ManPyObject):
                               }
         # flag notifying the the station can deliver entities that ended their processing while interrupted
         self.canDeliverOnInterruption=False
+        # keep wip stats for every replication
+        self.WipStat=[]
                 
     def initialize(self):
         from Globals import G
@@ -660,6 +662,7 @@ class CoreObject(ManPyObject):
         activeObject.Loading.append(100*self.totalLoadTime/MaxSimtime)
         activeObject.SettingUp.append(100*self.totalSetupTime/MaxSimtime)
         activeObject.OffShift.append(100*self.totalOffShiftTime/MaxSimtime)
+        activeObject.WipStat.append(self.wipStatList)
        
     # =======================================================================
     # outputs results to JSON File 

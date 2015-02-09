@@ -62,8 +62,6 @@ class Queue(CoreObject):
               (scheduling_rule, id))
 
         self.gatherWipStat=gatherWipStat
-        # Will be populated by an event generator
-        self.wip_stat_list = []
         # trigger level for the reallocation of operators
         if level:
             assert level<=self.capacity, "the level cannot be bigger than the capacity of the queue"
@@ -326,10 +324,6 @@ class Queue(CoreObject):
                 'id': str(self.id), 
                 'family': self.family,
                 'results': {} }
-        # XXX this have to be updated to support multiple generations
-#         if G.numberOfReplications == 1 and self.wip_stat_list:
-#           json['wip_stat_list'] = self.wip_stat_list
-        # XXX this have to be updated to support multiple generations
-        if G.numberOfReplications == 1 and self.gatherWipStat:
-            json['results']['wip_stat_list']=self.wipStatList
+        if self.gatherWipStat:
+            json['results']['wip_stat_list']=self.WipStat
         G.outputJSON['elementList'].append(json)
