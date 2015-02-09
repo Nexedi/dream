@@ -8,3 +8,4 @@ class Debug(plugin.InputPreparationPlugin, plugin.OutputPreparationPlugin):
     """
     self.logger.info("%s: %s" % (self.configuration_dict, pformat(data)))
     return data
+  postprocess = preprocess
