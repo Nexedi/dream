@@ -42,9 +42,15 @@
    "family": "Exit", 
    "id": "CE6", 
    "results": {
-    "lifespan": 5.0, 
-    "takt_time": 5.0, 
-    "throughput": 1
+    "lifespan": [
+     5.0
+    ], 
+    "takt_time": [
+     5.0
+    ], 
+    "throughput": [
+     1
+    ]
    }
   }, 
   {

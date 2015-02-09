@@ -18,9 +18,15 @@
    "family": "Exit", 
    "id": "CE2", 
    "results": {
-    "lifespan": 2.5, 
-    "takt_time": 1.5, 
-    "throughput": 2
+    "lifespan": [
+     2.5
+    ], 
+    "takt_time": [
+     1.5
+    ], 
+    "throughput": [
+     2
+    ]
    }
   }, 
   {

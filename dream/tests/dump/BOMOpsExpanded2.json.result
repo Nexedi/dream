@@ -196,12 +196,27 @@
    "family": "Server", 
    "id": "CAD1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "setup_ratio": 2.890173410404624, 
-    "waiting_ratio": 91.32947976878613, 
-    "working_ratio": 5.780346820809248
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     2.890173410404624
+    ], 
+    "waiting_ratio": [
+     91.32947976878613
+    ], 
+    "working_ratio": [
+     5.780346820809248
+    ]
    }
   }, 
   {
@@ -209,12 +224,27 @@
    "family": "Server", 
    "id": "CAD2", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "setup_ratio": 4.0462427745664735, 
-    "waiting_ratio": 87.86127167630057, 
-    "working_ratio": 8.092485549132945
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     4.0462427745664735
+    ], 
+    "waiting_ratio": [
+     87.86127167630057
+    ], 
+    "working_ratio": [
+     8.092485549132945
+    ]
    }
   }, 
   {
@@ -222,12 +252,27 @@
    "family": "Server", 
    "id": "CAM1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "setup_ratio": 2.890173410404624, 
-    "waiting_ratio": 85.54913294797687, 
-    "working_ratio": 11.560693641618496
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     2.890173410404624
+    ], 
+    "waiting_ratio": [
+     85.54913294797687
+    ], 
+    "working_ratio": [
+     11.560693641618496
+    ]
    }
   }, 
   {
@@ -235,12 +280,27 @@
    "family": "Server", 
    "id": "CAM2", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "setup_ratio": 5.202312138728325, 
-    "waiting_ratio": 82.65895953757224, 
-    "working_ratio": 12.13872832369942
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     5.202312138728325
+    ], 
+    "waiting_ratio": [
+     82.65895953757224
+    ], 
+    "working_ratio": [
+     12.13872832369942
+    ]
    }
   }, 
   {
@@ -248,9 +308,15 @@
    "family": "Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 16.8, 
-    "takt_time": 8.65, 
-    "throughput": 2
+    "lifespan": [
+     16.8
+    ], 
+    "takt_time": [
+     8.65
+    ], 
+    "throughput": [
+     2
+    ]
    }
   }, 
   {
@@ -258,12 +324,27 @@
    "family": "Server", 
    "id": "EDM", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "setup_ratio": 9.82658959537573, 
-    "waiting_ratio": 59.53757225433526, 
-    "working_ratio": 30.635838150289022
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     9.82658959537573
+    ], 
+    "waiting_ratio": [
+     59.53757225433526
+    ], 
+    "working_ratio": [
+     30.635838150289022
+    ]
    }
   }, 
   {
@@ -271,12 +352,27 @@
    "family": "Server", 
    "id": "IM", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "setup_ratio": 3.468208092485557, 
-    "waiting_ratio": 80.92485549132948, 
-    "working_ratio": 15.606936416184967
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     3.468208092485557
+    ], 
+    "waiting_ratio": [
+     80.92485549132948
+    ], 
+    "working_ratio": [
+     15.606936416184967
+    ]
    }
   }, 
   {
@@ -336,11 +432,27 @@
    "family": "Server", 
    "id": "MA1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "waiting_ratio": 94.21965317919074, 
-    "working_ratio": 5.780346820809248
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     94.21965317919074
+    ], 
+    "working_ratio": [
+     5.780346820809248
+    ]
    }
   }, 
   {
@@ -348,11 +460,27 @@
    "family": "Server", 
    "id": "MA2", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "waiting_ratio": 88.43930635838151, 
-    "working_ratio": 11.560693641618487
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     88.43930635838151
+    ], 
+    "working_ratio": [
+     11.560693641618487
+    ]
    }
   }, 
   {
@@ -360,11 +488,27 @@
    "family": "Server", 
    "id": "MA3", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "waiting_ratio": 100.0, 
-    "working_ratio": 0.0
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
    }
   }, 
   {
@@ -372,12 +516,27 @@
    "family": "Server", 
    "id": "MILL1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "setup_ratio": 5.202312138728323, 
-    "waiting_ratio": 60.115606936416185, 
-    "working_ratio": 34.68208092485549
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     5.202312138728323
+    ], 
+    "waiting_ratio": [
+     60.115606936416185
+    ], 
+    "working_ratio": [
+     34.68208092485549
+    ]
    }
   }, 
   {
@@ -385,12 +544,27 @@
    "family": "Server", 
    "id": "MILL2", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "setup_ratio": 7.514450867052021, 
-    "waiting_ratio": 72.83236994219654, 
-    "working_ratio": 19.65317919075144
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     7.514450867052021
+    ], 
+    "waiting_ratio": [
+     72.83236994219654
+    ], 
+    "working_ratio": [
+     19.65317919075144
+    ]
    }
   }, 
   {
@@ -398,8 +572,15 @@
    "family": "Operator", 
    "id": "O1", 
    "results": {
-    "waiting_ratio": 52.60115606936416, 
-    "working_ratio": 47.39884393063584
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     52.60115606936416
+    ], 
+    "working_ratio": [
+     47.39884393063584
+    ]
    }
   }, 
   {
@@ -407,8 +588,15 @@
    "family": "Operator", 
    "id": "O2", 
    "results": {
-    "waiting_ratio": 41.61849710982659, 
-    "working_ratio": 58.38150289017341
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     41.61849710982659
+    ], 
+    "working_ratio": [
+     58.38150289017341
+    ]
    }
   }, 
   {
@@ -416,8 +604,15 @@
    "family": "Operator", 
    "id": "O3", 
    "results": {
-    "waiting_ratio": 24.85549132947978, 
-    "working_ratio": 75.14450867052021
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     24.85549132947978
+    ], 
+    "working_ratio": [
+     75.14450867052021
+    ]
    }
   }, 
   {

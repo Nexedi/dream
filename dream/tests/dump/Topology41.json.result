@@ -108,9 +108,15 @@
    "family": "Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 7.0, 
-    "takt_time": 7.0, 
-    "throughput": 1
+    "lifespan": [
+     7.0
+    ], 
+    "takt_time": [
+     7.0
+    ], 
+    "throughput": [
+     1
+    ]
    }
   }, 
   {
@@ -118,10 +124,27 @@
    "family": "Server", 
    "id": "M0", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "waiting_ratio": 85.71428571428571, 
-    "working_ratio": 14.285714285714286
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     85.71428571428571
+    ], 
+    "working_ratio": [
+     14.285714285714286
+    ]
    }
   }, 
   {
@@ -129,10 +152,27 @@
    "family": "Server", 
    "id": "M1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "waiting_ratio": 57.142857142857146, 
-    "working_ratio": 42.857142857142854
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     57.142857142857146
+    ], 
+    "working_ratio": [
+     42.857142857142854
+    ]
    }
   }, 
   {
@@ -140,10 +180,27 @@
    "family": "Server", 
    "id": "M2", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "waiting_ratio": 57.142857142857146, 
-    "working_ratio": 42.857142857142854
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     57.142857142857146
+    ], 
+    "working_ratio": [
+     42.857142857142854
+    ]
    }
   }, 
   {
@@ -151,10 +208,27 @@
    "family": "Server", 
    "id": "MA1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "waiting_ratio": 85.71428571428571, 
-    "working_ratio": 14.285714285714286
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     85.71428571428571
+    ], 
+    "working_ratio": [
+     14.285714285714286
+    ]
    }
   }, 
   {

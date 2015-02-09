@@ -6,9 +6,15 @@
    "family": "Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 0.25, 
-    "takt_time": 0.48214285714285715, 
-    "throughput": 14
+    "lifespan": [
+     0.25
+    ], 
+    "takt_time": [
+     0.48214285714285715
+    ], 
+    "throughput": [
+     14
+    ]
    }
   }, 
   {
@@ -16,11 +22,27 @@
    "family": "Server", 
    "id": "M1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 10.0, 
-    "off_shift_ratio": 20.0, 
-    "waiting_ratio": 35.0, 
-    "working_ratio": 35.0
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     10.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     20.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     35.0
+    ], 
+    "working_ratio": [
+     35.0
+    ]
    }
   }
  ], 

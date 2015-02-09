@@ -334,11 +334,27 @@
    "family": "Server", 
    "id": "CAD1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "waiting_ratio": 92.56965944272446, 
-    "working_ratio": 7.4303405572755405
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     92.56965944272446
+    ], 
+    "working_ratio": [
+     7.4303405572755405
+    ]
    }
   }, 
   {
@@ -346,11 +362,27 @@
    "family": "Server", 
    "id": "CAD2", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "waiting_ratio": 92.56965944272446, 
-    "working_ratio": 7.4303405572755405
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     92.56965944272446
+    ], 
+    "working_ratio": [
+     7.4303405572755405
+    ]
    }
   }, 
   {
@@ -358,11 +390,27 @@
    "family": "Server", 
    "id": "CAM1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "waiting_ratio": 90.09287925696594, 
-    "working_ratio": 9.907120743034055
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     90.09287925696594
+    ], 
+    "working_ratio": [
+     9.907120743034055
+    ]
    }
   }, 
   {
@@ -370,11 +418,27 @@
    "family": "Server", 
    "id": "CAM2", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "waiting_ratio": 92.87925696594428, 
-    "working_ratio": 7.12074303405573
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     92.87925696594428
+    ], 
+    "working_ratio": [
+     7.12074303405573
+    ]
    }
   }, 
   {
@@ -382,9 +446,15 @@
    "family": "Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 27.5, 
-    "takt_time": 10.766666666666667, 
-    "throughput": 3
+    "lifespan": [
+     27.5
+    ], 
+    "takt_time": [
+     10.766666666666667
+    ], 
+    "throughput": [
+     3
+    ]
    }
   }, 
   {
@@ -392,12 +462,27 @@
    "family": "Server", 
    "id": "EDM", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "setup_ratio": 11.145510835913324, 
-    "waiting_ratio": 68.11145510835914, 
-    "working_ratio": 20.74303405572754
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     11.145510835913324
+    ], 
+    "waiting_ratio": [
+     68.11145510835914
+    ], 
+    "working_ratio": [
+     20.74303405572754
+    ]
    }
   }, 
   {
@@ -405,12 +490,27 @@
    "family": "Server", 
    "id": "IM", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "setup_ratio": 2.476780185758516, 
-    "waiting_ratio": 88.23529411764704, 
-    "working_ratio": 9.287925696594437
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     2.476780185758516
+    ], 
+    "waiting_ratio": [
+     88.23529411764704
+    ], 
+    "working_ratio": [
+     9.287925696594437
+    ]
    }
   }, 
   {
@@ -496,12 +596,27 @@
    "family": "Server", 
    "id": "MA1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "setup_ratio": 0.0, 
-    "waiting_ratio": 90.71207430340557, 
-    "working_ratio": 9.287925696594431
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     90.71207430340557
+    ], 
+    "working_ratio": [
+     9.287925696594431
+    ]
    }
   }, 
   {
@@ -509,12 +624,27 @@
    "family": "Server", 
    "id": "MA2", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "setup_ratio": 0.0, 
-    "waiting_ratio": 96.90402476780186, 
-    "working_ratio": 3.095975232198142
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     96.90402476780186
+    ], 
+    "working_ratio": [
+     3.095975232198142
+    ]
    }
   }, 
   {
@@ -522,12 +652,27 @@
    "family": "Server", 
    "id": "MA3", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "setup_ratio": 0.0, 
-    "waiting_ratio": 93.80804953560371, 
-    "working_ratio": 6.191950464396284
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     93.80804953560371
+    ], 
+    "working_ratio": [
+     6.191950464396284
+    ]
    }
   }, 
   {
@@ -535,12 +680,27 @@
    "family": "Server", 
    "id": "MILL1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "setup_ratio": 9.287925696594423, 
-    "waiting_ratio": 69.04024767801859, 
-    "working_ratio": 21.671826625386995
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     9.287925696594423
+    ], 
+    "waiting_ratio": [
+     69.04024767801859
+    ], 
+    "working_ratio": [
+     21.671826625386995
+    ]
    }
   }, 
   {
@@ -548,12 +708,27 @@
    "family": "Server", 
    "id": "MILL2", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "setup_ratio": 5.572755417956661, 
-    "waiting_ratio": 77.70897832817337, 
-    "working_ratio": 16.718266253869963
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     5.572755417956661
+    ], 
+    "waiting_ratio": [
+     77.70897832817337
+    ], 
+    "working_ratio": [
+     16.718266253869963
+    ]
    }
   }, 
   {
@@ -627,8 +802,15 @@
    "family": "Operator", 
    "id": "OP1", 
    "results": {
-    "waiting_ratio": 2.7863777089783235, 
-    "working_ratio": 97.21362229102168
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     2.7863777089783235
+    ], 
+    "working_ratio": [
+     97.21362229102168
+    ]
    }
   }, 
   {
@@ -636,8 +818,15 @@
    "family": "Operator", 
    "id": "OP2", 
    "results": {
-    "waiting_ratio": 49.845201238390096, 
-    "working_ratio": 50.15479876160991
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     49.845201238390096
+    ], 
+    "working_ratio": [
+     50.15479876160991
+    ]
    }
   }, 
   {

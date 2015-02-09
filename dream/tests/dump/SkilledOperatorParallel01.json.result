@@ -12,10 +12,18 @@
    "family": "Exit", 
    "id": "E2", 
    "results": {
-    "lifespan": 80.0, 
-    "takt_time": 80.0, 
-    "throughput": 1, 
-    "unitsThroughput": 80
+    "lifespan": [
+     80.0
+    ], 
+    "takt_time": [
+     80.0
+    ], 
+    "throughput": [
+     1
+    ], 
+    "unitsThroughput": [
+     80
+    ]
    }
   }, 
   {
@@ -23,11 +31,27 @@
    "family": "Server", 
    "id": "M1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 100.0
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
    }
   }, 
   {
@@ -35,11 +59,27 @@
    "family": "Server", 
    "id": "M2", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "load_ratio": 0.0, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 100.0
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
    }
   }, 
   {
@@ -47,14 +87,21 @@
    "family": "Operator", 
    "id": "PB1", 
    "results": {
+    "off_shift_ratio": [
+     0.0
+    ], 
     "schedule": [
      {
       "entranceTime": 0, 
       "stationId": "M1"
      }
     ], 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 100.0
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
    }
   }, 
   {
@@ -62,6 +109,9 @@
    "family": "Operator", 
    "id": "PB2", 
    "results": {
+    "off_shift_ratio": [
+     0.0
+    ], 
     "schedule": [
      {
       "entranceTime": 0, 
@@ -72,8 +122,12 @@
       "stationId": "M2"
      }
     ], 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 100.0
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     100.0
+    ]
    }
   }, 
   {

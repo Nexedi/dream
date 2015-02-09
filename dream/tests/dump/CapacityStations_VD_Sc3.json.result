@@ -422,9 +422,15 @@
    "family": "Exit", 
    "id": "ASBTSTE", 
    "results": {
-    "lifespan": 42.833333333333336, 
-    "takt_time": 3.7777777777777777, 
-    "throughput": 18
+    "lifespan": [
+     42.833333333333336
+    ], 
+    "takt_time": [
+     3.7777777777777777
+    ], 
+    "throughput": [
+     18
+    ]
    }
   }, 
   {

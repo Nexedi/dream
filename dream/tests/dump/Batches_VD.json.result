@@ -66,10 +66,18 @@
    "family": "Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 252.5, 
-    "takt_time": 75.83333333333333, 
-    "throughput": 6, 
-    "unitsThroughput": 480
+    "lifespan": [
+     252.5
+    ], 
+    "takt_time": [
+     75.83333333333333
+    ], 
+    "throughput": [
+     6
+    ], 
+    "unitsThroughput": [
+     480
+    ]
    }
   }, 
   {
@@ -83,11 +91,27 @@
    "family": "Server", 
    "id": "St0M0", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "off_shift_ratio": 37.5, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 62.5
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     37.5
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     62.5
+    ]
    }
   }, 
   {
@@ -95,11 +119,27 @@
    "family": "Server", 
    "id": "St0M1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "off_shift_ratio": 37.5, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 62.5
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     37.5
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     62.5
+    ]
    }
   }, 
   {
@@ -107,11 +147,27 @@
    "family": "Server", 
    "id": "St1M0", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "off_shift_ratio": 40.625, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 59.375
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     40.625
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     59.375
+    ]
    }
   }, 
   {
@@ -119,11 +175,27 @@
    "family": "Server", 
    "id": "St1M1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "off_shift_ratio": 34.375, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 65.625
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     34.375
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     65.625
+    ]
    }
   }, 
   {
@@ -131,11 +203,27 @@
    "family": "Server", 
    "id": "St2M0", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "off_shift_ratio": 43.75, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 56.25
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     43.75
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     56.25
+    ]
    }
   }, 
   {
@@ -143,11 +231,27 @@
    "family": "Server", 
    "id": "St2M1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "off_shift_ratio": 34.375, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 65.625
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     34.375
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     65.625
+    ]
    }
   }, 
   {
@@ -155,11 +259,27 @@
    "family": "Server", 
    "id": "St3M0", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "off_shift_ratio": 68.75, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 31.25
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     68.75
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     31.25
+    ]
    }
   }, 
   {
@@ -167,11 +287,27 @@
    "family": "Server", 
    "id": "St4M0", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "off_shift_ratio": 43.75, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 56.25
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     43.75
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     56.25
+    ]
    }
   }, 
   {
@@ -179,11 +315,27 @@
    "family": "Server", 
    "id": "St5M0", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "off_shift_ratio": 81.25, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 18.75
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     81.25
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     18.75
+    ]
    }
   }, 
   {
@@ -191,11 +343,27 @@
    "family": "Server", 
    "id": "St5M1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "off_shift_ratio": 90.625, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 9.375
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     90.625
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     9.375
+    ]
    }
   }, 
   {
@@ -203,11 +371,27 @@
    "family": "Server", 
    "id": "St6M0", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "off_shift_ratio": 25.0, 
-    "waiting_ratio": 1.0416666666666667, 
-    "working_ratio": 73.95833333333333
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     25.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     1.0416666666666667
+    ], 
+    "working_ratio": [
+     73.95833333333333
+    ]
    }
   }, 
   {
@@ -215,11 +399,27 @@
    "family": "Server", 
    "id": "St6M1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "off_shift_ratio": 28.125, 
-    "waiting_ratio": 1.0416666666666667, 
-    "working_ratio": 70.83333333333333
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     28.125
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     1.0416666666666667
+    ], 
+    "working_ratio": [
+     70.83333333333333
+    ]
    }
   }, 
   {
@@ -227,11 +427,27 @@
    "family": "Server", 
    "id": "St7M0", 
    "results": {
-    "blockage_ratio": 2.0833333333333335, 
-    "failure_ratio": 0.0, 
-    "off_shift_ratio": 40.625, 
-    "waiting_ratio": 3.125, 
-    "working_ratio": 54.166666666666664
+    "blockage_ratio": [
+     2.0833333333333335
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     40.625
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     3.125
+    ], 
+    "working_ratio": [
+     54.166666666666664
+    ]
    }
   }, 
   {
@@ -239,11 +455,27 @@
    "family": "Server", 
    "id": "St8M0", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "off_shift_ratio": 34.375, 
-    "waiting_ratio": 1.0416666666666667, 
-    "working_ratio": 64.58333333333333
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     34.375
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     1.0416666666666667
+    ], 
+    "working_ratio": [
+     64.58333333333333
+    ]
    }
   }, 
   {
@@ -251,11 +483,27 @@
    "family": "Server", 
    "id": "St8M1", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "off_shift_ratio": 65.625, 
-    "waiting_ratio": 1.0416666666666667, 
-    "working_ratio": 33.333333333333336
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     65.625
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     1.0416666666666667
+    ], 
+    "working_ratio": [
+     33.333333333333336
+    ]
    }
   }
  ], 

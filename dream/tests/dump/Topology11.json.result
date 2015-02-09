@@ -12,9 +12,15 @@
    "family": "Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 9.975660639777468, 
-    "takt_time": 2.002086230876217, 
-    "throughput": 719
+    "lifespan": [
+     9.975660639777468
+    ], 
+    "takt_time": [
+     2.002086230876217
+    ], 
+    "throughput": [
+     719
+    ]
    }
   }, 
   {
@@ -22,10 +28,27 @@
    "family": "Server", 
    "id": "M1", 
    "results": {
-    "blockage_ratio": 62.43055555555556, 
-    "failure_ratio": 0.0, 
-    "waiting_ratio": 0.034722222222222224, 
-    "working_ratio": 37.53472222222222
+    "blockage_ratio": [
+     62.43055555555556
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.034722222222222224
+    ], 
+    "working_ratio": [
+     37.53472222222222
+    ]
    }
   }, 
   {
@@ -33,10 +56,27 @@
    "family": "Server", 
    "id": "M2", 
    "results": {
-    "blockage_ratio": 62.395833333333336, 
-    "failure_ratio": 0.0, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 37.604166666666664
+    "blockage_ratio": [
+     62.395833333333336
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     37.604166666666664
+    ]
    }
   }, 
   {
@@ -44,10 +84,27 @@
    "family": "Server", 
    "id": "M3", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "waiting_ratio": 0.10416666666666667, 
-    "working_ratio": 99.89583333333333
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.10416666666666667
+    ], 
+    "working_ratio": [
+     99.89583333333333
+    ]
    }
   }, 
   {
@@ -61,8 +118,15 @@
    "family": "Operator", 
    "id": "W1", 
    "results": {
-    "waiting_ratio": 100.0, 
-    "working_ratio": 0.0
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     100.0
+    ], 
+    "working_ratio": [
+     0.0
+    ]
    }
   }
  ], 

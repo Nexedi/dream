@@ -6,9 +6,15 @@
    "family": "Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 20.0, 
-    "takt_time": 12.5, 
-    "throughput": 2
+    "lifespan": [
+     20.0
+    ], 
+    "takt_time": [
+     12.5
+    ], 
+    "throughput": [
+     2
+    ]
    }
   }, 
   {
@@ -16,11 +22,27 @@
    "family": "Server", 
    "id": "M1A", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "off_shift_ratio": 80.0, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 20.0
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     80.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     20.0
+    ]
    }
   }, 
   {
@@ -28,11 +50,27 @@
    "family": "Server", 
    "id": "M1B", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "off_shift_ratio": 80.0, 
-    "waiting_ratio": 0.0, 
-    "working_ratio": 20.0
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     80.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.0
+    ], 
+    "working_ratio": [
+     20.0
+    ]
    }
   }, 
   {
@@ -40,10 +78,27 @@
    "family": "Server", 
    "id": "M2", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "waiting_ratio": 20.0, 
-    "working_ratio": 80.0
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     20.0
+    ], 
+    "working_ratio": [
+     80.0
+    ]
    }
   }, 
   {

@@ -6,14 +6,18 @@
    "family": "Exit", 
    "id": "E1", 
    "results": {
-    "intervalThroughputList": [
-     9520, 
-     9600
+    "lifespan": [
+     454.0
     ], 
-    "lifespan": 454.0, 
-    "takt_time": 4.006963788300836, 
-    "throughput": 359, 
-    "unitsThroughput": 28720
+    "takt_time": [
+     4.006963788300836
+    ], 
+    "throughput": [
+     359
+    ], 
+    "unitsThroughput": [
+     28720
+    ]
    }
   }, 
   {
@@ -21,10 +25,27 @@
    "family": "Server", 
    "id": "M1", 
    "results": {
-    "blockage_ratio": 49.826388888888886, 
-    "failure_ratio": 0.0, 
-    "waiting_ratio": 0.10416666666666667, 
-    "working_ratio": 50.06944444444444
+    "blockage_ratio": [
+     49.826388888888886
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.10416666666666667
+    ], 
+    "working_ratio": [
+     50.06944444444444
+    ]
    }
   }, 
   {
@@ -32,10 +53,27 @@
    "family": "Server", 
    "id": "M2", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "waiting_ratio": 0.10416666666666667, 
-    "working_ratio": 99.89583333333333
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     0.10416666666666667
+    ], 
+    "working_ratio": [
+     99.89583333333333
+    ]
    }
   }, 
   {
@@ -43,10 +81,27 @@
    "family": "Server", 
    "id": "M3", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 0.0, 
-    "waiting_ratio": 75.06944444444444, 
-    "working_ratio": 24.930555555555557
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     0.0
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     75.06944444444444
+    ], 
+    "working_ratio": [
+     24.930555555555557
+    ]
    }
   }, 
   {

@@ -5,9 +5,15 @@
    "_class": "Dream.Assembly", 
    "id": "A1", 
    "results": {
-    "blockage_ratio": 16.84027777777778, 
-    "waiting_ratio": 0.10416666666666667, 
-    "working_ratio": 83.05555555555556
+    "blockage_ratio": [
+     16.84027777777778
+    ], 
+    "waiting_ratio": [
+     0.10416666666666667
+    ], 
+    "working_ratio": [
+     83.05555555555556
+    ]
    }
   }, 
   {
@@ -15,9 +21,15 @@
    "family": "Exit", 
    "id": "E1", 
    "results": {
-    "lifespan": 126.23994974874371, 
-    "takt_time": 2.411641541038526, 
-    "throughput": 597
+    "lifespan": [
+     126.23994974874371
+    ], 
+    "takt_time": [
+     2.411641541038526
+    ], 
+    "throughput": [
+     597
+    ]
    }
   }, 
   {
@@ -25,10 +37,27 @@
    "family": "Server", 
    "id": "M1", 
    "results": {
-    "blockage_ratio": 17.77777777777778, 
-    "failure_ratio": 7.638888888888889, 
-    "waiting_ratio": 64.21875, 
-    "working_ratio": 10.364583333333334
+    "blockage_ratio": [
+     17.77777777777778
+    ], 
+    "failure_ratio": [
+     7.638888888888889
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     64.21875
+    ], 
+    "working_ratio": [
+     10.364583333333334
+    ]
    }
   }, 
   {
@@ -36,10 +65,27 @@
    "family": "Server", 
    "id": "M2", 
    "results": {
-    "blockage_ratio": 0.0, 
-    "failure_ratio": 19.444444444444443, 
-    "waiting_ratio": 18.368055555555557, 
-    "working_ratio": 62.1875
+    "blockage_ratio": [
+     0.0
+    ], 
+    "failure_ratio": [
+     19.444444444444443
+    ], 
+    "loading_ratio": [
+     0.0
+    ], 
+    "off_shift_ratio": [
+     0.0
+    ], 
+    "setup_ratio": [
+     0.0
+    ], 
+    "waiting_ratio": [
+     18.368055555555557
+    ], 
+    "working_ratio": [
+     62.1875
+    ]
    }
   }, 
   {
