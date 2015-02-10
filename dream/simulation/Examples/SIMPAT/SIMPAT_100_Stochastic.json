@@ -943,7 +943,7 @@
     }
   },
   "general": {
-    "numberOfReplications": 1,
+    "numberOfReplications": 20,
     "maxSimTime": -1,
     "confidenceLevel": 0.95,
     "processTimeout": 60,
