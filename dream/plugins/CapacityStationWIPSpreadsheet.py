@@ -23,33 +23,23 @@ class CapacityStationWIPSpreadsheet(plugin.InputPreparationPlugin):
                 if node_data['_class']=='dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer':
                     node_data['wip']=[]
             # get the number of projects
-            numberOfProjects=0
-            for col in range(1,len(wipData[0])):
-                if wipData[0][col]:
-                    numberOfProjects+=1
-                else:
-                    break
+            numberOfProjects=len([pr for pr in wipData[0] if (pr and not pr=='Operation')])
             # get the number of operations
-            numberOfOperations=0
-            for row in range(1,len(wipData)):
-                if wipData[row][0]:
-                    numberOfOperations+=1 
-                else:
-                    break
+            numberOfOperations=len([op for op in wipData if (op[0] and not op[0]=='Operation')])
             # loop through all the columns>0    
             for col in range(1,numberOfProjects+1):
                 projectId=wipData[0][col]
                 # loop through all the rows>0
-                for row in range(1,numberOfProjects+1):
+                for row in range(1,numberOfOperations+1):
                     stationId=wipData[row][0]
                     assert stationId in node.keys(), 'wip spreadsheet has station id that does not exist in production line'
-                    requiredCapacity=wipData[row][col]
+                    requiredCapacity=float(wipData[row][col])
                     # if the cell has a requiredCapacity>0 create the entity
                     if requiredCapacity:
-                        buffer=self.getBuffer(data, stationId)
-                        data['graph']['node'][buffer]['wip'].append({
+                        capacityBuffer=self.getBuffer(data, stationId)
+                        data['graph']['node'][capacityBuffer]['wip'].append({
                             "_class": "dream.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity", 
-                            "requiredCapacity": float(requiredCapacity), 
+                            "requiredCapacity": requiredCapacity, 
                             "capacityProjectId": projectId, 
                             "name": projectId+'_'+stationId+'_'+str(requiredCapacity)                                                          
                         })

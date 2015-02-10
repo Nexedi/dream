@@ -17,7 +17,10 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
         for (stationId, node) in nodes.iteritems():
             _class=node['_class']
             if _class=='dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation':
-                nextCapacityStationBufferId=self.getSuccessor(data,stationId)                
+                nextCapacityStationBufferId=self.getSuccessor(data,stationId)  
+                # the nextCapacityStationBufferId should point to the buffer  
+                if nextCapacityStationBufferId:
+                    nextCapacityStationBufferId+='_B'            
                 stationName=node['name']
                 # create the CapacityStationBuffer
                 bufferName=stationName+'_Buffer'
@@ -77,4 +80,3 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
         if edgeToErase:
             data['graph']['edge'].pop(edgeToErase,None)
         return successorId
-    
