@@ -18,12 +18,13 @@ class AvailableCapacitySpreadsheet(plugin.InputPreparationPlugin):
         node=data['graph']['node']
         now = strptime(data['general']['currentDate'], '%Y/%m/%d')
         if capacityData:
-            numberOfStations=len(capacityData[0])-1
-            numberOfExceptions=len(capacityData)
+            # get the number of stations
+            numberOfStations=len([st for st in capacityData[0] if (st and not st=='DAY')])
             # loop through stations
             for col in range(numberOfStations):
                 stationId=capacityData[0][col+1]
-                assert stationId in data['graph']['node'].keys(), 'available capacity spreadsheet has station id that does not exist in production line'
+                assert stationId in data['graph']['node'].keys(), ('available capacity spreadsheet has station id:',stationId, 
+                                                            'that does not exist in production line')
                 # for every station read the interval capacity (Monday to Sunday)
                 intervalCapacity=[]
                 for row in range(7):
@@ -31,6 +32,7 @@ class AvailableCapacitySpreadsheet(plugin.InputPreparationPlugin):
                 node[stationId]['intervalCapacity']=intervalCapacity
                 # for every station read the interval capacity exceptions
                 for row in range(8,len(capacityData)):
+                    # at the first empty line break
                     if not capacityData[row][0]:
                         break
                     exeptionDate=strptime(capacityData[row][0], '%Y/%m/%d')   
