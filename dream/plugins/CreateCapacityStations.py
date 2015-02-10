@@ -53,7 +53,29 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
                     "destination": exitId, 
                     "data": {}, 
                     "_class": "Dream.Edge"
-                 }
+                 } 
+                
+                # XXX Patch just for this model to be made more generic
+                if stationId=='PPASB':
+                    data['graph']['node'][bufferId]['notRequiredOperations']=["EEP", "PAINT", "ASBTST"]  
+                # XXX another patch, these should be inputted
+                if stationId=='PPASB':
+                    data['graph']['node'][stationId]['sharedResources']={ 
+                    "sharedResources": {
+                         "stationIds": ["ASBTST"], 
+                         "priority": 3
+                         }, 
+                    }
+                    data['graph']['node'][stationId]['notProcessOutsideThreshold']=1
+                if stationId=='ASBTST':
+                    data['graph']['node'][stationId]['sharedResources']={ 
+                    "sharedResources": {
+                         "stationIds": ["PPASB"], 
+                         "priority": 2
+                         }, 
+                    }
+                    data['graph']['node'][stationId]['notProcessOutsideThreshold']=1
+                
         # add also a CapacityStationController
         # XXX some of the attributes should be inputted by the user 
         data['graph']['node']['CSC']={
