@@ -37,13 +37,11 @@ Then the user is referred to the documentation that is available in this reposit
 Dependencies
 =================
 
-DREAM uses the following Python libraries:
+ManPy uses the following Python libraries:
  + `SimPy3 <http://simpy.readthedocs.org/en/latest/>`_
  + `NumPy <http://www.numpy.org/>`_
  + `xlrd <https://pypi.python.org/pypi/xlrd>`_
  + `xlwt <https://pypi.python.org/pypi/xlwt>`_
- + `rpy2 <http://rpy.sourceforge.net/>`_ (temporary dependency to be dropped soon)
- + `R <http://www.r-project.org/>`_ (temporary dependency to be dropped soon)
 
 KE tool uses the following Python libraries:
  + `xlrd <https://pypi.python.org/pypi/xlrd>`_
