@@ -24,13 +24,14 @@
         "_attachment": "body.json"
       })
         .push(function (simulation_json) {
-          var result = JSON.parse(simulation_json)[0].result,
+          var result = JSON.parse(simulation_json).result.result_list[options.result],
+            output = result[options.action_definition.configuration.output_id],
             download_link = gadget.props.element.querySelector(
               ".download_link"
             );
-          download_link.download = "demandPlannerOutput.xls";
-          download_link.href = "data:application/excel;base64,"
-            + result['demandPlannerOutput.xls'];
+          /* XXX this does not work with Internet Explorer */
+          download_link.download = output.name;
+          download_link.href = "data:" + output.mime_type+ ";base64," + output.data;
         });
     })
 
