@@ -1,213 +1,146 @@
 {
-    "application_configuration": {
-        "general": {
-            "properties": {
-                "TargetPPOS": {
-                    "_default": 1,
-                    "description": "Info on PPOS to be disaggregated",
-                    "name": "PPOS ID",
-                    "type": "number"
-                },
-                "TargetPPOSqty": {
-                    "_default": 430,
-                    "description": "Info on PPOS to be disaggregated",
-                    "name": "PPOS Quantity",
-                    "type": "number"
-                },
-                "TargetPPOSweek": {
-                    "_default": 2,
-                    "description": "Week when the disaggregation has to be performed",
-                    "name": "PPOS Week",
-                    "type": "number"
-                },
-                "planningHorizon": {
-                    "_default": 3,
-                    "description": "Planning horizon (consistent with capacity info)",
-                    "name": "Planning horizon",
-                    "type": "number"
-                },
-                "maxEarliness": {
-                    "_default": 1,
-                    "description": "Info on Time Constraints for Allocation",
-                    "name": "Max Earliness",
-                    "type": "number"
-                },
-                "maxLateness": {
-                    "_default": 1,
-                    "description": "Info on Time Constraints for Allocation",
-                    "name": "Max Lateness",
-                    "type": "number"
-                },
-                "minPackingSize": {
-                    "_default": 10,
-                    "description": "Info on minimum allocable size",
-                    "name": "Min Packing Size",
-                    "type": "number"
-                },
-                "numberOfReplications": {
-                    "_default": 1,
-                    "name": "Number of replications",
-                    "type": "number"
-                },
-                "ke_url": {
-                    "_default": "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/simulation/Examples/DemandProfile.xlsx",
-                    "description": "The URL for knowledge extraction to access its data for example http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
-                    "name": "URL for Knowledge Extraction Spreadsheet",
-                    "type": "string"
-                }
-            }
-        },
-        "input": {
-            "debug": {
-                "gadget": "Input_viewDebugJson",
-                "title": "Debug JSON",
-                "type": "object_view"
-            },
-            "view": {
-                "gadget": "Input_viewProductionLine",
-                "title": "Production Line",
-                "type": "object_view"
-            },
-            "view_attach_spreadsheet": {
-                "gadget": "Input_viewAttachDocument",
-                "input_id": "attached_document",
-                "title": "Attach Document",
-                "type": "object_view"
-            },
-            "view_management": {
-                "gadget": "Input_viewDocumentManagement",
-                "title": "Manage document",
-                "type": "object_view"
-            },
-            "view_result": {
-                "gadget": "Input_viewResultList",
-                "title": "Results",
-                "type": "object_view"
-            },
-            "view_run_simulation": {
-                "gadget": "Input_viewSimulation",
-                "title": "Run Simulation",
-                "type": "object_view"
-            }
-        },
-        "output": {
-            "view_component_gantt": {
-                "configuration": {
-                    "properties": {}
-                },
-                "gadget": "Output_viewJobGantt",
-                "title": "Component Gantt",
-                "type": "object_view"
-            },
-            "view_component_schedule_spreadsheet": {
-                "configuration": {
-                    "columns": [
-                        {
-                            "format": "date-time",
-                            "name": "Component ID",
-                            "type": "string"
-                        },
-                        {
-                            "name": "Sequence",
-                            "type": "string"
-                        },
-                        {
-                            "name": "Station",
-                            "type": "string"
-                        },
-                        {
-                            "format": "date-time",
-                            "name": "Entry",
-                            "type": "string"
-                        },
-                        {
-                            "format": "date-time",
-                            "name": "Exit",
-                            "type": "string"
-                        }
-                    ]
-                },
-                "gadget": "Output_viewJobScheduleSpreadsheet",
-                "title": "Component Schedule",
-                "type": "object_view"
-            },
-            "view_exit_stats": {
-                "configuration": {
-                    "properties": {
-                        "lifespan": {
-                            "type": "number"
-                        },
-                        "taktTime": {
-                            "type": "number"
-                        },
-                        "throughput": {
-                            "type": "number"
-                        }
-                    }
-                },
-                "gadget": "Output_viewExitStatistics",
-                "title": "Exit Statistics",
-                "type": "object_view"
-            },
-            "view_operator_gantt": {
-                "configuration": {
-                    "properties": {}
-                },
-                "gadget": "Output_viewJobGantt",
-                "title": "Operator Gantt",
-                "type": "object_view"
-            },
-            "view_station_utilization": {
-                "configuration": {
-                    "columns": []
-                },
-                "gadget": "Output_viewStationUtilisationGraph",
-                "title": "Station Utilization",
-                "type": "object_view"
-            }
-        },
-        "pre_processing": {
-            "plugin_list": [
-                {
-                    "_class": "dream.plugins.AddDemandPlannerGenerator.AddDemandPlannerGenerator",
-                    "input_id": "attached_document"
-                },
-                {
-                    "_class": "dream.plugins.Debug.Debug",
-                    "argument": "Argument Value"
-                }
-            ]
-        },
-        "processing_plugin": {
-            "_class": "dream.plugins.plugin.DefaultExecutionPlugin",
-            "input_id": "Simulation"
-        },
-        "post_processing": {
-            "plugin_list": []
-        }
-    },
-    "class_definition": {},
-    "constraints": {},
+  "application_configuration": {
     "general": {
-        "confidenceLevel": 0.95,
-        "currentDate": "2015/01/01",
-        "distributorURL": "",
-        "maxSimTime": -1,
-        "max_slave_count": 1,
-        "name": "dream(4).json",
-        "numberOfAntsPerGenerations": 20,
-        "numberOfGenerations": 1,
-        "numberOfReplications": 1,
-        "numberOfSolutions": 10,
-        "processTimeout": 60,
-        "seed": "",
-        "timeUnitPerDay": 24,
-        "trace": "false"
-    },
-    "graph": {
-        "edge": {},
-        "node": {}
-    },
-    "input": {},
-    "result": {}
+      "properties": {
+        "TargetPPOS": {
+          "_default": 1, 
+          "description": "Info on PPOS to be disaggregated", 
+          "name": "PPOS ID", 
+          "type": "number"
+        }, 
+        "TargetPPOSqty": {
+          "_default": 430, 
+          "description": "Info on PPOS to be disaggregated", 
+          "name": "PPOS Quantity", 
+          "type": "number"
+        }, 
+        "TargetPPOSweek": {
+          "_default": 2, 
+          "description": "Week when the disaggregation has to be performed", 
+          "name": "PPOS Week", 
+          "type": "number"
+        }, 
+        "ke_url": {
+          "_default": "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/simulation/Examples/DemandProfile.xlsx", 
+          "description": "The URL for knowledge extraction to access its data for example http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
+          "name": "URL for Knowledge Extraction Spreadsheet", 
+          "type": "string"
+        }, 
+        "maxEarliness": {
+          "_default": 1, 
+          "description": "Info on Time Constraints for Allocation", 
+          "name": "Max Earliness", 
+          "type": "number"
+        }, 
+        "maxLateness": {
+          "_default": 1, 
+          "description": "Info on Time Constraints for Allocation", 
+          "name": "Max Lateness", 
+          "type": "number"
+        }, 
+        "minPackingSize": {
+          "_default": 10, 
+          "description": "Info on minimum allocable size", 
+          "name": "Min Packing Size", 
+          "type": "number"
+        }, 
+        "numberOfReplications": {
+          "_default": 1, 
+          "name": "Number of replications", 
+          "type": "number"
+        }, 
+        "planningHorizon": {
+          "_default": 3, 
+          "description": "Planning horizon (consistent with capacity info)", 
+          "name": "Planning horizon", 
+          "type": "number"
+        }
+      }
+    }, 
+    "input": {
+      "debug": {
+        "gadget": "Input_viewDebugJson", 
+        "title": "Edit Configuration", 
+        "type": "object_view"
+      }, 
+      "view": {
+        "gadget": "Input_viewProductionLine", 
+        "title": "Production Line", 
+        "type": "object_view"
+      }, 
+      "view_attach_spreadsheet": {
+        "gadget": "Input_viewAttachDocument", 
+        "input_id": "attached_document", 
+        "title": "Attach Document", 
+        "type": "object_view"
+      }, 
+      "view_management": {
+        "gadget": "Input_viewDocumentManagement", 
+        "title": "Manage document", 
+        "type": "object_view"
+      }, 
+      "view_result": {
+        "gadget": "Input_viewResultList", 
+        "title": "Results", 
+        "type": "object_view"
+      }, 
+      "view_run_simulation": {
+        "gadget": "Input_viewSimulation", 
+        "title": "Run Simulation", 
+        "type": "object_view"
+      }
+    }, 
+    "output": {
+      "view_downaload_spreadsheet": {
+        "configuration": {
+          "output_id": "demand_planning_spreadsheet"
+        }, 
+        "gadget": "Output_viewDownloadFile", 
+        "title": "Download Result Spreadsheet", 
+        "type": "object_view"
+      }
+    }, 
+    "post_processing": {
+      "plugin_list": [
+        {
+          "_class": "dream.plugins.PostProcessDemandPlanning.PostProcessDemandPlanning", 
+          "output_id": "demand_planning_spreadsheet"
+        }
+      ]
+    }, 
+    "pre_processing": {
+      "plugin_list": [
+        {
+          "_class": "dream.plugins.AddDemandPlannerGenerator.AddDemandPlannerGenerator", 
+          "input_id": "attached_document"
+        }
+      ]
+    }, 
+    "processing_plugin": {
+      "_class": "dream.plugins.plugin.DefaultExecutionPlugin", 
+      "input_id": "Simulation"
+    }
+  }, 
+  "class_definition": {}, 
+  "constraints": {}, 
+  "general": {
+    "TargetPPOS": null, 
+    "TargetPPOSqty": null, 
+    "TargetPPOSweek": null, 
+    "ke_url": "", 
+    "maxEarliness": null, 
+    "maxLateness": null, 
+    "minPackingSize": null, 
+    "numberOfReplications": 1, 
+    "planningHorizon": null
+  }, 
+  "graph": {
+    "edge": {}, 
+    "node": {}
+  }, 
+  "input": {
+  }, 
+  "result": {
+    "result_list": []
+  }
 }
