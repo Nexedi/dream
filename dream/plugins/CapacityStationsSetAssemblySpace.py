@@ -16,6 +16,5 @@ class CapacityStationsSetAssemblySpace(plugin.InputPreparationPlugin):
         assemblySpace=int(copy(data['general']).get('assemblySpace',100))
         data['general']['extraPropertyDict']={}
         data['general']['extraPropertyDict']['assemblySpace']=assemblySpace
-        print data['general']
         return data
     
