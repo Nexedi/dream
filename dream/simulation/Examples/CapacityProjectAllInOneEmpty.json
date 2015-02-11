@@ -541,7 +541,7 @@
             "view_mean_capacity_utilization": {
                 "title": "Average Capacity Utilization",
                 "type": "object_view",
-                "gadget": "Output_viewBarGraph",
+                "gadget": "Output_viewStationUtilisationGraph",
                 "configuration": {
                     "family": "capacityStation",
                     "plot": "bar",
@@ -552,98 +552,8 @@
                         ]
                     }
                 }
-            },
-            "view_capacity_utilization": {
-                "title": "Capacity Utilization",
-                "type": "object_view",
-                "gadget": "Output_viewLineGraph",
-                "configuration": {
-                    "family": "capacityStation",
-                    "plot": "lines",
-                    "group": [
-                        "id"
-                    ],
-                    "data": {
-                        "Capacity": [
-                            "capacity_level"
-                        ],
-                        "Utilization": [
-                            "utilization_level"
-                        ]
-                    }
-                }
-            },
-            "view_expencted_delivery_date": {
-                "title": "Expected Delivery Date",
-                "type": "object_view",
-                "gadget": "Input_viewSpreadSheet",
-                "configuration": {
-                    "type": "output",
-                    "extend": [],
-                    "columns": [
-                        {
-                            "name": "Project ID",
-                            "type": "string"
-                        },
-                        {
-                            "name": "Delivery Date",
-                            "type": "string",
-                            "format": "date"
-                        }
-                    ]
-                }
-            },
-            "view_job_gantt": {
-                "title": "Job Gantt",
-                "type": "object_view",
-                "gadget": "Output_viewGantt",
-                "configuration": {
-                    "family": "??"
-                }
-            },
-            "view_job_schedule": {
-                "title": "Job Schedule",
-                "type": "object_view",
-                "gadget": "Input_viewSpreadSheet",
-                "configuration": {
-                    "type": "output",
-                    "extend": [],
-                    "columns": [
-                        {
-                            "name": "Project ID",
-                            "type": "string"
-                        },
-                        {
-                            "name": "Due Date",
-                            "type": "string",
-                            "format": "date"
-                        },
-                        {
-                            "name": "Assembly Space",
-                            "type": "number"
-                        },
-                        {
-                            "name": "Operation",
-                            "type": "string"
-                        },
-                        {
-                            "name": "Capacity Requirement",
-                            "type": "number"
-                        },
-                        {
-                            "name": "Earliest Start Date",
-                            "type": "string",
-                            "format": "date"
-                        }
-                    ]
-                }
-            },
-            "view_debug_json": {
-                "title": "DebugJson",
-                "type": "object_view",
-                "gadget": "Output_viewDebugJson"
             }
-        },
+		},
         "pre_processing": {
             "plugin_list": [
                 {
