@@ -557,6 +557,10 @@
         "pre_processing": {
             "plugin_list": [
                 {
+                    "_class": "dream.plugins.CapacityStationsSetAssemblySpace.CapacityStationsSetAssemblySpace",
+                    "input_id": "assemblySpace"
+                },
+                {
                     "_class": "dream.plugins.AvailableCapacitySpreadsheet.AvailableCapacitySpreadsheet",
                     "input_id": "availableCapacity"
                 },
@@ -640,6 +644,12 @@
                     "description": "The URL for knowledge extraction to access its data for example http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls",
                     "title": "URL for Knowledge Extraction Spreadsheet",
                     "type": "string"
+                },
+                "assemblySpace": {
+                    "title": "Assembly Space",
+                    "description": "Total assembly Space in square meters",
+                    "type": "number",
+                    "default": 100
                 }
             }
         }
