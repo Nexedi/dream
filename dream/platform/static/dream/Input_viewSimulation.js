@@ -56,10 +56,14 @@
             });
         }).push(function(data) {
             data = JSON.parse(data);
+            if (!data.result.result_list) {
+                data.result.result_list = [];
+            }
             // XXX option to always add ?
             if (data.general.reset_result_list) {
                 data.result.result_list = [];
             }
+            data.result.result_list = [];
             data.result.result_list = data.result.result_list.concat(result_json.data.result.result_list);
             return gadget.aq_putAttachment({
                 _id: gadget.props.jio_key,
