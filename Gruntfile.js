@@ -152,6 +152,16 @@ module.exports = function (grunt) {
         relative_dest: 'lib/dhtmlxgantt.css',
         dest: "<%= global_config.dest %>/<%= copy.dhtmlxganttcss.relative_dest %>"
       },
+      dhtmlxschedulercss: {
+        src: "<%= global_config.lib %>/dhtmlxscheduler.css",
+        relative_dest: 'lib/dhtmlxscheduler.css',
+        dest: "<%= global_config.dest %>/<%= copy.dhtmlxschedulercss.relative_dest %>"
+      },
+      dhtmlxschedulerjs: {
+        src: "<%= global_config.lib %>/dhtmlxscheduler.js",
+        relative_dest: 'lib/dhtmlxscheduler.js',
+        dest: "<%= global_config.dest %>/<%= copy.dhtmlxschedulerjs.relative_dest %>"
+      },
       qunitcss: {
         src: 'node_modules/qunitjs/qunit/qunit.css',
         relative_dest: 'lib/qunit.css',
