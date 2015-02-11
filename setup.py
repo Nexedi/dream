@@ -19,6 +19,7 @@ setup(
         'zope.dottedname',
         'rpy2',
         'pulp',
+        'tablib'
     ],
     entry_points=("""
     [console_scripts]
