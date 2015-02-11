@@ -219,7 +219,9 @@ def outputResults():
     G.reportResults.add_sheet(excessResults)
     
 
-    with open('Results\\rTable.html', 'wb') as h: #completion time, cycle time and delay info in html format
+    with open(os.path.join('Results', 'rTable.html'), 'wb') as h: #completion time, cycle time and delay info in html format
         h.write(G.reportResults.html)
-    with open('Results\\allocation.xlsx', 'wb') as f: #time level schedule info
+    with open(os.path.join('Results', 'allocation.xlsx'), 'wb') as f: #time level schedule info
         f.write(G.reportResults.xlsx)
+
+
