@@ -61,19 +61,15 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
                 # XXX another patch, these should be inputted
                 if stationId=='PPASB':
                     data['graph']['node'][stationId]['sharedResources']={ 
-                    "sharedResources": {
                          "stationIds": ["ASBTST"], 
                          "priority": 3
-                         }, 
-                    }
+                         }
                     data['graph']['node'][stationId]['notProcessOutsideThreshold']=1
                 if stationId=='ASBTST':
                     data['graph']['node'][stationId]['sharedResources']={ 
-                    "sharedResources": {
                          "stationIds": ["PPASB"], 
                          "priority": 2
-                         }, 
-                    }
+                         }
                     data['graph']['node'][stationId]['notProcessOutsideThreshold']=1
                 
         # add also a CapacityStationController
