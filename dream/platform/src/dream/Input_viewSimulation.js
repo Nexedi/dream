@@ -71,6 +71,7 @@
         if (data.general.reset_result_list) {
           data.result.result_list = [];
         }
+        data.result.result_list = [];
         data.result.result_list = data.result.result_list.concat(
           result_json.data.result.result_list
         );
