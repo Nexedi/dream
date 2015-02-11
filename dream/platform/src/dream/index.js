@@ -365,7 +365,22 @@
         .push(function(result) {
           var data;
           if (result) {
-            data = JSON.parse(result);
+            try {
+              data = JSON.parse(result);
+            } catch (error) {
+              portal_type = "Input";
+              options.action = "debug";
+              portal_types.Input = {
+                "debug": {
+                  "gadget": "Input_viewDebugJson",
+                  "type": "object_view",
+                  "title": "Emergency Mode, JSON cannot be parsed"
+                }
+              };
+              return gadget.declareGadget(
+                "Input_viewDebugJson.html"
+              );
+            }
             gadget.props.data = data;
             portal_types.Input = data.application_configuration.input;
             portal_types.Output = data.application_configuration.output;
