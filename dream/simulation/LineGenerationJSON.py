@@ -680,7 +680,20 @@ def main(argv=[], input_data=None):
     #output data to JSON for every object in the topology         
     for object in G.ObjectResourceList + G.EntityList + G.ObjList:
         object.outputResultsJSON()
-                        
+        
+    # output the trace as encoded if it is set on
+    if G.trace=="Yes":
+        import StringIO
+        out = StringIO.StringIO()
+        G.traceFile.save(out)
+        # XXX discuss names on this
+        jsonTRACE = {'_class': 'Dream.Simulation',
+                'id': 'TraceFile',
+                'results': {'Trace':out.getvalue().encode('base64')}
+            }
+        G.outputJSON['elementList'].append(jsonTRACE)
+        
+        
     outputJSONString=json.dumps(G.outputJSON, indent=True)
     if 0:
       G.outputJSONFile=open('outputJSON.json', mode='w')
