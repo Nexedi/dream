@@ -2,59 +2,96 @@
   "application_configuration": {
     "general": {
       "properties": {
-        "TargetPPOS": {
-          "_default": 1, 
-          "description": "Info on PPOS to be disaggregated", 
-          "name": "PPOS ID", 
+        "MaxEarliness": {
+          "default": 2, 
+          "description": "Maximum Earliness", 
+          "name": "Maximum Earliness", 
           "type": "number"
         }, 
-        "TargetPPOSqty": {
-          "_default": 430, 
-          "description": "Info on PPOS to be disaggregated", 
-          "name": "PPOS Quantity", 
+        "MaxLateness": {
+          "default": 2, 
+          "description": "Maximum Lateness", 
+          "name": "Maximum Lateness", 
           "type": "number"
         }, 
-        "TargetPPOSweek": {
-          "_default": 2, 
-          "description": "Week when the disaggregation has to be performed", 
-          "name": "PPOS Week", 
+        "MinDelta": {
+          "default": 0, 
+          "description": "Min Delta Target Utilisation", 
+          "name": "Min Delta Target Utilisation", 
           "type": "number"
         }, 
-        "ke_url": {
-          "_default": "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/simulation/Examples/DemandProfile.xlsx", 
-          "description": "The URL for knowledge extraction to access its data for example http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
-          "name": "URL for Knowledge Extraction Spreadsheet", 
-          "type": "string"
-        }, 
-        "maxEarliness": {
-          "_default": 1, 
-          "description": "Info on Time Constraints for Allocation", 
-          "name": "Max Earliness", 
+        "ACO": {
+          "default": 2, 
+          "description": "ACO", 
+          "name": "ACO", 
           "type": "number"
         }, 
-        "maxLateness": {
-          "_default": 1, 
-          "description": "Info on Time Constraints for Allocation", 
-          "name": "Max Lateness", 
+        "ACOpopulationSize": {
+          "default": 5, 
+          "description": "ACO Population size", 
+          "name": "Population size", 
           "type": "number"
         }, 
-        "minPackingSize": {
-          "_default": 10, 
-          "description": "Info on minimum allocable size", 
-          "name": "Min Packing Size", 
+        "ACO numberOfGenerations": {
+          "default": 8, 
+		  "description": "ACO Number of generations", 
+          "name": "ACO Number of generations", 
           "type": "number"
         }, 
-        "numberOfReplications": {
-          "_default": 1, 
-          "name": "Number of replications", 
+        "maxAssignedQty": {
+          "default": 10, 
+          "description": "Maximum Assigned Quantity", 
+          "name": "Maximum Assigned Quantity", 
+          "type": "number"
+        },
+        "minUtilisation": {
+          "default": 1, 
+          "description": "Minimum Utilisation", 
+          "name": "Minimum Utilisation", 
+          "type": "number"
+        },
+        "MinDeltaTargerUtilisation": {
+          "default": 0, 
+          "description": "Minimum Delta Target Utilisation", 
+          "name": "Minimum Delta Target Utilisation", 
+          "type": "number"
+        },
+        "MinTargerUtilisation": {
+          "default": 2, 
+          "description": "Minimum Delta Utilisation", 
+          "name": "Minimum Delta Utilisation", 
+          "type": "number"
+        },
+        "GA": {
+          "default": 1, 
+          "description": "GA", 
+          "name": "GA", 
+          "type": "number"
+        },
+        "GApopulationSize": {
+          "default": 5, 
+          "description": "GA population Size", 
+          "name": "GA population Size", 
+          "type": "number"
+        },
+        "GA numberOfGenerations": {
+          "default": 8, 
+          "description": "GA Number of Generations", 
+          "name": "GA Number of Generations", 
           "type": "number"
         }, 
-        "planningHorizon": {
-          "_default": 3, 
-          "description": "Planning horizon (consistent with capacity info)", 
-          "name": "Planning horizon", 
+        "XOver": {
+          "default": 0.6, 
+          "description": "x-over Probability", 
+          "name": "x-over Probability", 
           "type": "number"
-        }
+        }, 
+        "mutationProbability": {
+          "default": 0.1, 
+          "description": "Mutation Probability", 
+          "name": "Mutation Probability", 
+          "type": "number"
+        }		
       }
     }, 
     "input": {
