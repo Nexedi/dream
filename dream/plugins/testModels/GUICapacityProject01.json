@@ -1,0 +1,1079 @@
+{
+     "application_configuration": {
+          "pre_processing": {
+               "plugin_list": [
+                    {
+                         "_class": "dream.plugins.CapacityStationsSetAssemblySpace.CapacityStationsSetAssemblySpace", 
+                         "input_id": "assemblySpace"
+                    }, 
+                    {
+                         "_class": "dream.plugins.AvailableCapacitySpreadsheet.AvailableCapacitySpreadsheet", 
+                         "input_id": "availableCapacity"
+                    }, 
+                    {
+                         "_class": "dream.plugins.CapacityProjectSpreadsheet.CapacityProjectSpreadsheet", 
+                         "input_id": "capacityProject"
+                    }, 
+                    {
+                         "_class": "dream.plugins.CreateCapacityStations.CreateCapacityStations", 
+                         "input_id": "createCapacityStations"
+                    }, 
+                    {
+                         "_class": "dream.plugins.CapacityStationWIPSpreadsheet.CapacityStationWIPSpreadsheet", 
+                         "input_id": "createCapacityStationWIP"
+                    }
+               ]
+          }, 
+          "general": {
+               "properties": {
+                    "assemblySpace": {
+                         "default": 100, 
+                         "type": "number", 
+                         "description": "Total assembly Space in square meters", 
+                         "title": "Assembly Space"
+                    }, 
+                    "numberOfReplications": {
+                         "default": 10, 
+                         "type": "integer", 
+                         "description": "Number of replications to run", 
+                         "title": "Number of replications"
+                    }, 
+                    "trace": {
+                         "default": "No", 
+                         "enum": [
+                              "No", 
+                              "Yes"
+                         ], 
+                         "type": "string", 
+                         "description": "Create an excel trace file (Yes or No)", 
+                         "title": "OutputTrace"
+                    }, 
+                    "ke_url": {
+                         "default": "http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
+                         "type": "string", 
+                         "description": "The URL for knowledge extraction to access its data for example http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
+                         "title": "URL for Knowledge Extraction Spreadsheet"
+                    }, 
+                    "processTimeout": {
+                         "default": 10, 
+                         "type": "number", 
+                         "description": "Number of seconds before the calculation process is interrupted", 
+                         "title": "ProcessTimeout"
+                    }, 
+                    "seed": {
+                         "default": "1", 
+                         "type": "number", 
+                         "description": "When using the same seed, the random number generator produce the same sequence of numbers", 
+                         "title": "Seed for random number generator"
+                    }, 
+                    "timeUnitPerDay": {
+                         "default": 24, 
+                         "type": "number", 
+                         "description": "Used for input and reporting widgets. For example, 24 means that simulation clock time unit is one hour.", 
+                         "title": "Number of time units per day"
+                    }, 
+                    "maxSimTime": {
+                         "default": 100, 
+                         "type": "number", 
+                         "description": "Length of the simulation run", 
+                         "title": "Length of Experiment"
+                    }, 
+                    "currentDate": {
+                         "default": "2014/10/01", 
+                         "type": "string", 
+                         "description": "The day the experiment starts, in YYYY/MM/DD format", 
+                         "title": "SimulationStartTime"
+                    }, 
+                    "confidenceLevel": {
+                         "default": 0.95, 
+                         "type": "number", 
+                         "description": "Confidence level for statistical analysis of stochastic experiments", 
+                         "title": "Confidence level"
+                    }
+               }
+          }, 
+          "output": {
+               "view_mean_capacity_utilization": {
+                    "gadget": "Output_viewStationUtilisationGraph", 
+                    "configuration": {
+                         "plot": "bar", 
+                         "group": [], 
+                         "family": "capacityStation", 
+                         "data": {
+                              "utilization": [
+                                   "meanUtilization"
+                              ]
+                         }
+                    }, 
+                    "type": "object_view", 
+                    "title": "Average Capacity Utilization"
+               }
+          }, 
+          "input": {
+               "view_management": {
+                    "gadget": "Input_viewDocumentManagement", 
+                    "type": "object_view", 
+                    "title": "Manage document"
+               }, 
+               "view_wip_spreadsheet": {
+                    "gadget": "Input_viewSpreadsheet", 
+                    "configuration": {
+                         "handsontable_options": {
+                              "minSpareCols": 1
+                         }, 
+                         "columns": [
+                              {
+                                   "type": "string", 
+                                   "name": "Operation"
+                              }, 
+                              {
+                                   "type": "string", 
+                                   "name": "Project1 (Rename)"
+                              }, 
+                              {
+                                   "type": "string", 
+                                   "name": "Project2 (Rename)"
+                              }
+                         ], 
+                         "extend": [
+                              "x", 
+                              "y"
+                         ]
+                    }, 
+                    "type": "object_view", 
+                    "title": "Work in Progress Spreadsheet"
+               }, 
+               "view_projects_spreadsheet": {
+                    "gadget": "Input_viewSpreadsheet", 
+                    "configuration": {
+                         "columns": [
+                              {
+                                   "type": "string", 
+                                   "name": "Project ID"
+                              }, 
+                              {
+                                   "type": "string", 
+                                   "name": "Order Date", 
+                                   "format": "date"
+                              }, 
+                              {
+                                   "type": "string", 
+                                   "name": "Due Date", 
+                                   "format": "date"
+                              }, 
+                              {
+                                   "type": "number", 
+                                   "name": "Assembly Space"
+                              }, 
+                              {
+                                   "type": "string", 
+                                   "name": "Operation"
+                              }, 
+                              {
+                                   "type": "number", 
+                                   "name": "Capacity Requirement"
+                              }, 
+                              {
+                                   "type": "string", 
+                                   "name": "Earliest Start Date", 
+                                   "format": "date"
+                              }
+                         ], 
+                         "extend": [
+                              "y"
+                         ]
+                    }, 
+                    "type": "object_view", 
+                    "title": "Projects Spreadsheet"
+               }, 
+               "view_run_simulation": {
+                    "gadget": "Input_viewSimulation", 
+                    "type": "object_view", 
+                    "title": "Run Simulation"
+               }, 
+               "view_result": {
+                    "gadget": "Input_viewResultList", 
+                    "type": "object_view", 
+                    "title": "Results"
+               }, 
+               "view_available_capacity_spreadsheet": {
+                    "gadget": "Input_viewSpreadsheet", 
+                    "configuration": {
+                         "handsontable_options": {
+                              "minSpareCols": 1
+                         }, 
+                         "columns": [
+                              {
+                                   "type": "string", 
+                                   "name": "Day", 
+                                   "format": "date-time"
+                              }, 
+                              {
+                                   "type": "string", 
+                                   "name": "Station 1 (Rename)"
+                              }, 
+                              {
+                                   "type": "string", 
+                                   "name": "Station 2 (Rename)"
+                              }
+                         ], 
+                         "extend": [
+                              "x", 
+                              "y"
+                         ]
+                    }, 
+                    "type": "object_view", 
+                    "title": "Available Capacity Spreadsheet"
+               }, 
+               "view": {
+                    "gadget": "Input_viewProductionLine", 
+                    "type": "object_view", 
+                    "title": "ProductionLine"
+               }
+          }, 
+          "post_processing": {
+               "plugin_list": []
+          }, 
+          "processing_plugin": {
+               "_class": "dream.plugins.plugin.DefaultExecutionPlugin", 
+               "input_id": "Simulation"
+          }
+     }, 
+     "graph": {
+          "node": {
+               "WELD": {
+                    "coordinate": {
+                         "top": 0.47035271303157006, 
+                         "left": 0.05224682159961414
+                    }, 
+                    "requireFullProject": 0, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
+                    "name": "WELD"
+               }, 
+               "MCH": {
+                    "coordinate": {
+                         "top": 0.06653715527072322, 
+                         "left": 0.3349253399057431
+                    }, 
+                    "requireFullProject": 0, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
+                    "name": "MCH"
+               }, 
+               "ASBTST": {
+                    "coordinate": {
+                         "top": 0.725986317834675, 
+                         "left": 0.4748049078628899
+                    }, 
+                    "requireFullProject": 1, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
+                    "name": "ASBTST"
+               }, 
+               "EEP": {
+                    "coordinate": {
+                         "top": 0.08206596769592567, 
+                         "left": 0.47570913933753145
+                    }, 
+                    "requireFullProject": 0, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
+                    "name": "EEP"
+               }, 
+               "PAINT": {
+                    "coordinate": {
+                         "top": 0.7430615552634912, 
+                         "left": 0.3111040179667153
+                    }, 
+                    "requireFullProject": 0, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
+                    "name": "PAINT"
+               }, 
+               "CNC": {
+                    "coordinate": {
+                         "top": 0.055153702206292815, 
+                         "left": 0.19503291923602395
+                    }, 
+                    "requireFullProject": 0, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
+                    "name": "CNC"
+               }, 
+               "PPASB": {
+                    "coordinate": {
+                         "top": 0.7563202742806299, 
+                         "left": 0.15782822210919625
+                    }, 
+                    "requireFullProject": 1, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
+                    "name": "PPASB", 
+                    "id": "PPASB"
+               }, 
+               "SMF": {
+                    "coordinate": {
+                         "top": 0.06693194658097301, 
+                         "left": 0.0679425723598465
+                    }, 
+                    "requireFullProject": 0, 
+                    "_class": "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation", 
+                    "name": "SMF"
+               }
+          }, 
+          "edge": {
+               "con_53": {
+                    "source": "SMF", 
+                    "destination": "WELD", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_129": {
+                    "source": "EEP", 
+                    "destination": "ASBTST", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_111": {
+                    "source": "MCH", 
+                    "destination": "PPASB", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_143": {
+                    "source": "PPASB", 
+                    "destination": "PAINT", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_69": {
+                    "source": "WELD", 
+                    "destination": "PPASB", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_155": {
+                    "source": "PAINT", 
+                    "destination": "ASBTST", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_91": {
+                    "source": "CNC", 
+                    "destination": "PPASB", 
+                    "_class": "Dream.Edge"
+               }
+          }
+     }, 
+     "general": {
+		  "assemblySpace": 600, 
+          "numberOfReplications": "1", 
+          "trace": "Yes", 
+          "ke_url": "http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
+          "processTimeout": 10, 
+          "seed": 1, 
+          "timeUnitPerDay": 24, 
+          "maxSimTime": -1, 
+          "currentDate": "2014/02/20", 
+          "confidenceLevel": 0.95
+     }, 
+     "class_definition": {
+          "node": {
+               "required": [
+                    "name", 
+                    "_class"
+               ], 
+               "type": "object", 
+               "description": "Base definition for node", 
+               "properties": {
+                    "coordinate": {
+                         "type": "object", 
+                         "properties": {
+                              "top": "number", 
+                              "left": "number"
+                         }
+                    }, 
+                    "_class": {
+                         "type": "string"
+                    }, 
+                    "name": {
+                         "type": "string"
+                    }
+               }
+          }, 
+          "definitions": {
+               "_capacity": {
+                    "default": 1, 
+                    "oneOf": [
+                         {
+                              "enum": [
+                                   -1
+                              ]
+                         }, 
+                         {
+                              "multipleOf": 1
+                         }
+                    ], 
+                    "type": "number", 
+                    "description": "capacity of the queue. -1 means infinite"
+               }, 
+               "_failureDist": {
+                    "allOf": [
+                         {
+                              "type": "object", 
+                              "properties": {
+                                   "failureDistribution": {
+                                        "default": "No", 
+                                        "enum": [
+                                             "No", 
+                                             "Yes"
+                                        ], 
+                                        "type": "string"
+                                   }
+                              }
+                         }, 
+                         {
+                              "oneOf": [
+                                   {
+                                        "$ref": "#/definitions/distributionTypes/_failure"
+                                   }, 
+                                   {
+                                        "$ref": "#/definitions/distributionTypes/_no"
+                                   }
+                              ]
+                         }
+                    ]
+               }, 
+               "_operationType": {
+                    "default": "Automatic", 
+                    "enum": [
+                         "Automatic", 
+                         "Manual"
+                    ], 
+                    "type": "string", 
+                    "description": "the type of operations that are performed manually in the machine"
+               }, 
+               "_dist": {
+                    "allOf": [
+                         {
+                              "type": "object", 
+                              "properties": {
+                                   "distribution": {
+                                        "default": "Fixed", 
+                                        "enum": [
+                                             "Fixed", 
+                                             "Exp", 
+                                             "Normal", 
+                                             "Lognormal", 
+                                             "Binomial", 
+                                             "Poisson", 
+                                             "Logistic", 
+                                             "Cauchy", 
+                                             "Geometric", 
+                                             "Gama", 
+                                             "Weibull"
+                                        ], 
+                                        "type": "string"
+                                   }
+                              }
+                         }, 
+                         {
+                              "oneOf": [
+                                   {
+                                        "$ref": "#/definitions/distributionTypes/_fixed"
+                                   }, 
+                                   {
+                                        "$ref": "#/definitions/distributionTypes/_exp"
+                                   }, 
+                                   {
+                                        "$ref": "#/definitions/distributionTypes/_normal"
+                                   }, 
+                                   {
+                                        "$ref": "#/definitions/distributionTypes/_lognormal"
+                                   }, 
+                                   {
+                                        "$ref": "#/definitions/distributionTypes/_binomial"
+                                   }, 
+                                   {
+                                        "$ref": "#/definitions/distributionTypes/_poisson"
+                                   }, 
+                                   {
+                                        "$ref": "#/definitions/distributionTypes/_logistic"
+                                   }, 
+                                   {
+                                        "$ref": "#/definitions/distributionTypes/_cauchy"
+                                   }, 
+                                   {
+                                        "$ref": "#/definitions/distributionTypes/_geometric"
+                                   }, 
+                                   {
+                                        "$ref": "#/definitions/distributionTypes/_gama"
+                                   }, 
+                                   {
+                                        "$ref": "#/definitions/distributionTypes/_weibull"
+                                   }
+                              ]
+                         }
+                    ]
+               }, 
+               "distributionTypes": {
+                    "_geometric": {
+                         "properties": {
+                              "probability": {
+                                   "default": 0, 
+                                   "required": true, 
+                                   "type": "number"
+                              }
+                         }, 
+                         "type": "object", 
+                         "description": "Geometric", 
+                         "title": "Geometric"
+                    }, 
+                    "_weibull": {
+                         "properties": {
+                              "shape": {
+                                   "default": 0, 
+                                   "required": true, 
+                                   "type": "number"
+                              }, 
+                              "scale": {
+                                   "default": 0, 
+                                   "required": true, 
+                                   "type": "number"
+                              }
+                         }, 
+                         "type": "object", 
+                         "description": "Weibull", 
+                         "title": "Weibull"
+                    }, 
+                    "_exp": {
+                         "properties": {
+                              "mean": {
+                                   "default": 0, 
+                                   "required": true, 
+                                   "type": "number"
+                              }
+                         }, 
+                         "type": "object", 
+                         "description": "Exponential", 
+                         "title": "Exp"
+                    }, 
+                    "_gama": {
+                         "properties": {
+                              "shape": {
+                                   "default": 0, 
+                                   "required": true, 
+                                   "type": "number"
+                              }, 
+                              "rate": {
+                                   "default": 0, 
+                                   "required": true, 
+                                   "type": "number"
+                              }
+                         }, 
+                         "type": "object", 
+                         "description": "Gama", 
+                         "title": "Gama"
+                    }, 
+                    "_lognormal": {
+                         "properties": {
+                              "stdev": {
+                                   "default": 0, 
+                                   "_class": "Dream.Property", 
+                                   "type": "number", 
+                                   "name": "Standard Deviation"
+                              }, 
+                              "mean": {
+                                   "default": 0, 
+                                   "_class": "Dream.Property", 
+                                   "type": "number", 
+                                   "name": "Mean"
+                              }
+                         }, 
+                         "type": "object", 
+                         "description": "Lognormal", 
+                         "title": "Lognormal"
+                    }, 
+                    "_normal": {
+                         "properties": {
+                              "stdev": {
+                                   "default": 0, 
+                                   "required": true, 
+                                   "type": "number"
+                              }, 
+                              "mean": {
+                                   "default": 0, 
+                                   "required": true, 
+                                   "type": "number"
+                              }
+                         }, 
+                         "type": "object", 
+                         "description": "Normal", 
+                         "title": "Normal"
+                    }, 
+                    "_logistic": {
+                         "properties": {
+                              "scale": {
+                                   "default": 0, 
+                                   "required": true, 
+                                   "type": "number"
+                              }, 
+                              "location": {
+                                   "default": 0, 
+                                   "required": true, 
+                                   "type": "number"
+                              }
+                         }, 
+                         "type": "object", 
+                         "description": "Logistic", 
+                         "title": "Logistic"
+                    }, 
+                    "_cauchy": {
+                         "properties": {
+                              "scale": {
+                                   "default": 0, 
+                                   "type": "number"
+                              }, 
+                              "location": {
+                                   "default": 0, 
+                                   "type": "number"
+                              }
+                         }, 
+                         "type": "object", 
+                         "description": "Cauchy", 
+                         "title": "Cauchy"
+                    }, 
+                    "_binomial": {
+                         "properties": {
+                              "size": {
+                                   "default": 0, 
+                                   "type": "number"
+                              }, 
+                              "mean": {
+                                   "default": 0, 
+                                   "type": "number"
+                              }
+                         }, 
+                         "type": "object", 
+                         "description": "Binomial", 
+                         "title": "Binomial"
+                    }, 
+                    "_poisson": {
+                         "properties": {
+                              "lambda": {
+                                   "default": 0, 
+                                   "type": "number"
+                              }
+                         }, 
+                         "type": "object", 
+                         "description": "Poisson", 
+                         "title": "Poisson"
+                    }, 
+                    "_failure": {
+                         "properties": {
+                              "Time to Repair": {
+                                   "$ref": "#/definitions/_dist"
+                              }, 
+                              "repairman": {
+                                   "required": true, 
+                                   "type": "string", 
+                                   "description": "Repairman"
+                              }, 
+                              "Time to Failure": {
+                                   "$ref": "#/definitions/_dist"
+                              }
+                         }, 
+                         "type": "object", 
+                         "description": "Fixed", 
+                         "title": "Yes"
+                    }, 
+                    "_fixed": {
+                         "properties": {
+                              "mean": {
+                                   "default": 0.75, 
+                                   "required": true, 
+                                   "type": "number"
+                              }
+                         }, 
+                         "type": "object", 
+                         "description": "Fixed", 
+                         "title": "Fixed"
+                    }, 
+                    "_no": {
+                         "type": "string", 
+                         "description": "None", 
+                         "title": "No"
+                    }
+               }, 
+               "_schedulingRule": {
+                    "default": "FIFO", 
+                    "enum": [
+                         "FIFO", 
+                         "Priority", 
+                         "EDD", 
+                         "EOD", 
+                         "NumStages", 
+                         "RPC", 
+                         "LPT", 
+                         "SPT", 
+                         "MS", 
+                         "WINQ", 
+                         "WT"
+                    ], 
+                    "type": "string", 
+                    "description": "Scheduling Rule, one of FIFO Priority EDD EOD NumStages RPC LPT SPT MS WINQ"
+               }
+          }, 
+          "dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation": {
+               "allOf": [
+                    {
+                         "$ref": "#/node"
+                    }, 
+                    {
+                         "type": "object", 
+                         "properties": {
+                              "requireFullProject": {
+                                   "_default": 0, 
+                                   "required": true, 
+                                   "type": "number", 
+                                   "description": "Is this station an assembly? Yes: 1, No: 0"
+                              }, 
+                              "name": {
+                                   "default": "Machine", 
+                                   "type": "string"
+                              }, 
+                              "id": {
+                                   "default": "M", 
+                                   "required": true, 
+                                   "type": "string"
+                              }
+                         }
+                    }
+               ], 
+               "_class": "node", 
+               "name": "Machine", 
+               "css": {
+                    "backgroundImage": "linear-gradient(to bottom, #fef 0%, #ede 100%)", 
+                    "border": "1px solid #cbc", 
+                    "backgroundColor": "#fef"
+               }, 
+               "description": "A station processing items for some time given by a distribution"
+          }, 
+          "edge": {
+               "required": [
+                    "_class", 
+                    "source", 
+                    "destination"
+               ], 
+               "type": "object", 
+               "description": "Base definition for edge", 
+               "properties": {
+                    "source": {
+                         "type": "string"
+                    }, 
+                    "destination": {
+                         "type": "string"
+                    }, 
+                    "_class": {
+                         "type": "string"
+                    }, 
+                    "name": {
+                         "type": "string"
+                    }
+               }
+          }, 
+          "Dream.Edge": {
+               "_class": "edge", 
+               "description": "Connect stations together", 
+               "allOf": [
+                    {
+                         "$ref": "#/class_defintion/edge"
+                    }
+               ]
+          }
+     }, 
+     "result": {
+          "result_list": []
+     }, 
+     "input": {
+          "wip_spreadsheet": [
+               [
+                    "Operation", 
+                    "P1", 
+                    ""
+               ], 
+               [
+                    "SMF", 
+                    "80", 
+                    null
+               ], 
+               [
+                    "WELD", 
+                    "0", 
+                    null
+               ], 
+               [
+                    "CNC", 
+                    "130", 
+                    null
+               ], 
+               [
+                    "MCH", 
+                    "125", 
+                    null
+               ], 
+               [
+                    "EEP", 
+                    "30", 
+                    null
+               ], 
+               [
+                    "PPASB", 
+                    "0", 
+                    null
+               ], 
+               [
+                    "PAINT", 
+                    "0", 
+                    null
+               ], 
+               [
+                    "ASBTST", 
+                    "0", 
+                    null
+               ], 
+               [
+                    null, 
+                    null, 
+                    null
+               ]
+          ], 
+          "available_capacity_spreadsheet": [
+               [
+                    "DAY", 
+                    "SMF", 
+                    "WELD", 
+                    "CNC", 
+                    "MCH", 
+                    "EEP", 
+                    "PPASB", 
+                    "ASBTST", 
+                    "PAINT", 
+                    null
+               ], 
+               [
+                    "MONDAY", 
+                    "20", 
+                    "70", 
+                    "90", 
+                    "20", 
+                    "290", 
+                    "170", 
+                    "170", 
+                    "20", 
+                    null
+               ], 
+               [
+                    "TUESDAY", 
+                    "30", 
+                    "170", 
+                    "190", 
+                    "70", 
+                    "100", 
+                    "270", 
+                    "270", 
+                    "20", 
+                    null
+               ], 
+               [
+                    "WEDNESDAY", 
+                    "130", 
+                    "270", 
+                    "290", 
+                    "170", 
+                    "200", 
+                    "370", 
+                    "370", 
+                    "20", 
+                    null
+               ], 
+               [
+                    "THURSDAY", 
+                    "80", 
+                    "80", 
+                    "390", 
+                    "270", 
+                    "300", 
+                    "20", 
+                    "20", 
+                    "320", 
+                    null
+               ], 
+               [
+                    "FRIDAY", 
+                    "180", 
+                    "180", 
+                    "490", 
+                    "370", 
+                    "390", 
+                    "20", 
+                    "20", 
+                    "420", 
+                    null
+               ], 
+               [
+                    "SATURDAY", 
+                    "20", 
+                    "20", 
+                    "20", 
+                    "20", 
+                    "20", 
+                    "20", 
+                    "20", 
+                    "20", 
+                    null
+               ], 
+               [
+                    "SUNDAY", 
+                    "0", 
+                    "0", 
+                    "0", 
+                    "0", 
+                    "0", 
+                    "0", 
+                    "0", 
+                    "0", 
+                    null
+               ], 
+               [
+                    "2014/02/22", 
+                    "70", 
+                    "90", 
+                    "80", 
+                    "20", 
+                    "70", 
+                    "50", 
+                    "50", 
+                    "70", 
+                    null
+               ], 
+               [
+                    "2014/03/01", 
+                    "70", 
+                    "90", 
+                    "80", 
+                    "60", 
+                    "70", 
+                    "80", 
+                    "80", 
+                    "170", 
+                    null
+               ], 
+               [
+                    "2014/03/25", 
+                    "120", 
+                    "170", 
+                    "80", 
+                    "160", 
+                    "370", 
+                    "80", 
+                    "80", 
+                    "170", 
+                    null
+               ], 
+               [
+                    "", 
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    null
+               ]
+          ], 
+          "projects_spreadsheet": [
+               [
+                    "Project ID", 
+                    "Order Date", 
+                    "Due Date", 
+                    "Assembly Space", 
+                    "Operation", 
+                    "Capacity Requirement", 
+                    "Earliest Start Date"
+               ], 
+               [
+                    "P1", 
+                    "2014/01/26", 
+                    "2014/03/26", 
+                    "400", 
+                    "SMF", 
+                    "80", 
+                    ""
+               ], 
+               [
+                    "", 
+                    "", 
+                    "", 
+                    "", 
+                    "WELD", 
+                    "90", 
+                    ""
+               ], 
+               [
+                    "", 
+                    "", 
+                    "", 
+                    "", 
+                    "CNC", 
+                    "130", 
+                    ""
+               ], 
+               [
+                    "", 
+                    "", 
+                    "", 
+                    "", 
+                    "MCH", 
+                    "125", 
+                    ""
+               ], 
+               [
+                    "", 
+                    "", 
+                    "", 
+                    "", 
+                    "EEP", 
+                    "30", 
+                    ""
+               ], 
+               [
+                    "", 
+                    "", 
+                    "", 
+                    "", 
+                    "PPASB", 
+                    "700", 
+                    ""
+               ], 
+               [
+                    "", 
+                    "", 
+                    "", 
+                    "", 
+                    "PAINT", 
+                    "50", 
+                    ""
+               ], 
+               [
+                    "", 
+                    "", 
+                    "", 
+                    "", 
+                    "ASBTST", 
+                    "300", 
+                    ""
+               ], 
+               [
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    null
+               ]
+          ]
+     }, 
+     "constraints": {}
+}

@@ -1,0 +1,733 @@
+{
+ "_class": "Dream.Simulation", 
+ "elementList": [
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "ASBTST", 
+   "results": {
+    "capacityUsed": [
+     {
+      "period": 0.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 1.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 4.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 6.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 7.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P1": 20.0, 
+      "period": 8.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P1": 80.0, 
+      "period": 9.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "period": 10.0, 
+      "utilization": 0
+     }, 
+     {
+      "P1": 170.0, 
+      "period": 11.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P1": 30.0, 
+      "period": 12.0, 
+      "utilization": 0.1111111111111111
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 20.0, 
+      "operation": "ASBTST", 
+      "project": "P1", 
+      "time": 8.0
+     }, 
+     {
+      "allocation": 80.0, 
+      "operation": "ASBTST", 
+      "project": "P1", 
+      "time": 9.0
+     }, 
+     {
+      "allocation": 170.0, 
+      "operation": "ASBTST", 
+      "project": "P1", 
+      "time": 11.0
+     }, 
+     {
+      "allocation": 30.0, 
+      "operation": "ASBTST", 
+      "project": "P1", 
+      "time": 12.0
+     }
+    ], 
+    "meanUtilization": 0.23931623931623933
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "ASBTST_B", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStationExit", 
+   "family": "Exit", 
+   "id": "ASBTST_E", 
+   "results": {
+    "lifespan": [
+     11.0
+    ], 
+    "takt_time": [
+     3.25
+    ], 
+    "throughput": [
+     4
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "CNC", 
+   "results": {
+    "capacityUsed": [
+     {
+      "P1": 130.0, 
+      "period": 0.0, 
+      "utilization": 0.3333333333333333
+     }, 
+     {
+      "period": 1.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 4.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 6.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 7.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 8.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 9.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 10.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 11.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 12.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 130.0, 
+      "operation": "CNC", 
+      "project": "P1", 
+      "time": 0.0
+     }
+    ], 
+    "meanUtilization": 0.02564102564102564
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "CNC_B", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "EEP", 
+   "results": {
+    "capacityUsed": [
+     {
+      "P1": 30.0, 
+      "period": 0.0, 
+      "utilization": 0.1
+     }, 
+     {
+      "period": 1.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 4.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 6.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 7.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 8.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 9.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 10.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 11.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 12.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 30.0, 
+      "operation": "EEP", 
+      "project": "P1", 
+      "time": 0.0
+     }
+    ], 
+    "meanUtilization": 0.007692307692307693
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "EEP_B", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "MCH", 
+   "results": {
+    "capacityUsed": [
+     {
+      "P1": 125.0, 
+      "period": 0.0, 
+      "utilization": 0.46296296296296297
+     }, 
+     {
+      "period": 1.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 4.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 6.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 7.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 8.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 9.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 10.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 11.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 12.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 125.0, 
+      "operation": "MCH", 
+      "project": "P1", 
+      "time": 0.0
+     }
+    ], 
+    "meanUtilization": 0.03561253561253561
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "MCH_B", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityProject", 
+   "family": "Job", 
+   "id": "P1", 
+   "results": {
+    "schedule": [
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "EEP"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "SMF"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "CNC"
+     }, 
+     {
+      "entranceTime": 0.0, 
+      "exitTime": 1.0, 
+      "stationId": "MCH"
+     }, 
+     {
+      "entranceTime": 1.0, 
+      "exitTime": 2.0, 
+      "stationId": "WELD"
+     }, 
+     {
+      "entranceTime": 2.0, 
+      "exitTime": 7.0, 
+      "stationId": "PPASB"
+     }, 
+     {
+      "entranceTime": 7.0, 
+      "exitTime": 8.0, 
+      "stationId": "PAINT"
+     }, 
+     {
+      "entranceTime": 8.0, 
+      "exitTime": 13.0, 
+      "stationId": "ASBTST"
+     }
+    ]
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "PAINT", 
+   "results": {
+    "capacityUsed": [
+     {
+      "period": 0.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 1.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 4.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 6.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P1": 50.0, 
+      "period": 7.0, 
+      "utilization": 0.15625
+     }, 
+     {
+      "period": 8.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 9.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 10.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 11.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 12.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 50.0, 
+      "operation": "PAINT", 
+      "project": "P1", 
+      "time": 7.0
+     }
+    ], 
+    "meanUtilization": 0.01201923076923077
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "PAINT_B", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "PPASB", 
+   "results": {
+    "capacityUsed": [
+     {
+      "period": 0.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 1.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P1": 50.0, 
+      "period": 2.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0
+     }, 
+     {
+      "P1": 170.0, 
+      "period": 4.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P1": 270.0, 
+      "period": 5.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "P1": 210.0, 
+      "period": 6.0, 
+      "utilization": 0.5675675675675675
+     }, 
+     {
+      "period": 7.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 8.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 9.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 10.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 11.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 12.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 50.0, 
+      "operation": "PPASB", 
+      "project": "P1", 
+      "time": 2.0
+     }, 
+     {
+      "allocation": 170.0, 
+      "operation": "PPASB", 
+      "project": "P1", 
+      "time": 4.0
+     }, 
+     {
+      "allocation": 270.0, 
+      "operation": "PPASB", 
+      "project": "P1", 
+      "time": 5.0
+     }, 
+     {
+      "allocation": 210.0, 
+      "operation": "PPASB", 
+      "project": "P1", 
+      "time": 6.0
+     }
+    ], 
+    "meanUtilization": 0.27442827442827444
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "PPASB_B", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "SMF", 
+   "results": {
+    "capacityUsed": [
+     {
+      "P1": 80.0, 
+      "period": 0.0, 
+      "utilization": 1.0
+     }, 
+     {
+      "period": 1.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 4.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 6.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 7.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 8.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 9.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 10.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 11.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 12.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 80.0, 
+      "operation": "SMF", 
+      "project": "P1", 
+      "time": 0.0
+     }
+    ], 
+    "meanUtilization": 0.07692307692307693
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "SMF_B", 
+   "results": {}
+  }, 
+  {
+   "_class": "Dream.CapacityStation", 
+   "family": "CapacityStation", 
+   "id": "WELD", 
+   "results": {
+    "capacityUsed": [
+     {
+      "period": 0.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "P1": 90.0, 
+      "period": 1.0, 
+      "utilization": 0.5
+     }, 
+     {
+      "period": 2.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 3.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 4.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 5.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 6.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 7.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 8.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 9.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 10.0, 
+      "utilization": 0
+     }, 
+     {
+      "period": 11.0, 
+      "utilization": 0.0
+     }, 
+     {
+      "period": 12.0, 
+      "utilization": 0.0
+     }
+    ], 
+    "detailedWorkPlan": [
+     {
+      "allocation": 90.0, 
+      "operation": "WELD", 
+      "project": "P1", 
+      "time": 1.0
+     }
+    ], 
+    "meanUtilization": 0.038461538461538464
+   }
+  }, 
+  {
+   "_class": "Dream.CapacityStationBuffer", 
+   "family": "Buffer", 
+   "id": "WELD_B", 
+   "results": {}
+  }
+ ], 
+ "general": {
+  "_class": "Dream.Configuration"
+ }, 
+ "key": "default", 
+ "score": 0
+}
