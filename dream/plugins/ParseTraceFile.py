@@ -9,12 +9,10 @@ class ParseTraceFile(plugin.OutputPreparationPlugin):
     outPutFile=None
     for record in data['result']['result_list'][-1]['elementList']:
         if record.get('id',None)=='TraceFile':
-            outPutFile=record
-        
+            outPutFile=record['results']['trace']
     data['result']['result_list'][-1][self.configuration_dict['output_id']] = {
-          'name': 'Trace.xlsx',
+          'name': 'Trace.xls',
           'mime_type': 'application/vnd.ms-excel',
           'data': outPutFile
         }
-    print data['result']['result_list'][-1][self.configuration_dict['output_id']]['data']
     return data

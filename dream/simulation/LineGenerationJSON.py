@@ -668,6 +668,10 @@ def main(argv=[], input_data=None):
         #output trace to excel      
         if(G.trace=="Yes"):
             ExcelHandler.outputTrace('trace'+str(i))  
+            import StringIO
+            traceStringIO = StringIO.StringIO()
+            G.traceFile.save(traceStringIO)
+            encodedTrace=traceStringIO.getvalue().encode('base64')
             ExcelHandler.resetTrace()
     
     G.outputJSON['_class'] = 'Dream.Simulation';
@@ -683,13 +687,10 @@ def main(argv=[], input_data=None):
         
     # output the trace as encoded if it is set on
     if G.trace=="Yes":
-        import StringIO
-        out = StringIO.StringIO()
-        G.traceFile.save(out)
         # XXX discuss names on this
         jsonTRACE = {'_class': 'Dream.Simulation',
                 'id': 'TraceFile',
-                'results': {'Trace':out.getvalue().encode('base64')}
+                'results': {'trace':encodedTrace}
             }
         G.outputJSON['elementList'].append(jsonTRACE)
         
