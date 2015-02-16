@@ -41,6 +41,16 @@ class InputPreparationPlugin(Plugin):
     }
     return data
 
+  # returns the predecessors of a node
+  def findPredecessors(self, data, node_id):
+    predecessors=[]
+    from copy import copy    
+    edges=copy(data['graph']['edge'])
+    for edge_id,edge in edges.iteritems():
+        if edge['destination']==node_id:
+            predecessors.append(edge['source'])
+    return predecessors
+
 class OutputPreparationPlugin(Plugin):
   def postprocess(self, data):
     """Postprocess the data after simulation run.
