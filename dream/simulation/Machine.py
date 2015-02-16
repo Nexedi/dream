@@ -74,23 +74,26 @@ class Machine(CoreObject):
         # check whether the operators are provided with a skills set
         # check whether the operators are provided with a skills set
         self.dedicatedOperator=self.checkForDedicatedOperators()
-        if len(G.OperatorPoolsList)>0:
-            for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
-                if(self.id in operatorPool.coreObjectIds):                   # and add it to the machine's operatorPool
-                    machineOperatorPoolList=operatorPool                # there must only one operator pool assigned to the machine,
-                                                                        # otherwise only one of them will be taken into account
-                else:
-                    machineOperatorPoolList=[]                          # if there is no operatorPool assigned to the machine
-        else:                                                           # then machineOperatorPoolList/operatorPool is a list
-            machineOperatorPoolList=[]                                  # if there are no operatorsPool created then the 
-                                                                        # then machineOperatorPoolList/operatorPool is a list
-        if (type(machineOperatorPoolList) is list):                 # if the machineOperatorPoolList is a list
-                                                                    # find the operators assigned to it and add them to the list
-            for operator in G.OperatorsList:                        # check which operator in the G.OperatorsList
-                if(self.id in operator.coreObjectIds):                   # (if any) is assigned to operate
-                    machineOperatorPoolList.append(operator)        # the machine with ID equal to id
-        
-        self.operatorPool=machineOperatorPoolList
+        if operatorPool and not (operatorPool=='None'):
+            self.operatorPool=operatorPool
+        else:
+            if len(G.OperatorPoolsList)>0:
+                for operatorPool in G.OperatorPoolsList:                    # find the operatorPool assigned to the machine
+                    if(self.id in operatorPool.coreObjectIds):                   # and add it to the machine's operatorPool
+                        machineOperatorPoolList=operatorPool                # there must only one operator pool assigned to the machine,
+                                                                            # otherwise only one of them will be taken into account
+                    else:
+                        machineOperatorPoolList=[]                          # if there is no operatorPool assigned to the machine
+            else:                                                           # then machineOperatorPoolList/operatorPool is a list
+                machineOperatorPoolList=[]                                  # if there are no operatorsPool created then the 
+                                                                            # then machineOperatorPoolList/operatorPool is a list
+            if (type(machineOperatorPoolList) is list):                 # if the machineOperatorPoolList is a list
+                                                                        # find the operators assigned to it and add them to the list
+                for operator in G.OperatorsList:                        # check which operator in the G.OperatorsList
+                    if(self.id in operator.coreObjectIds):                   # (if any) is assigned to operate
+                        machineOperatorPoolList.append(operator)        # the machine with ID equal to id
+            
+            self.operatorPool=machineOperatorPoolList
         
         self.dedicatedOperator=self.checkForDedicatedOperators()
         # create an operatorPool if needed
