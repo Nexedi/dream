@@ -400,6 +400,11 @@
               "name": "Processing time", 
               "required": true
             }, 
+			"workingBatchSize": {
+				"default": "sad", 
+			  "name": "Working batch size in this station", 
+			  "type": "number"
+			}, 
             "scrapping": {
               "$ref": "#/definitions/_dist", 
               "description": "TODO: describe scrapping", 
@@ -443,6 +448,11 @@
               "$ref": "#/definitions/_dist", 
               "description": "Inter-arrival time", 
               "name": "Inter-arrival time", 
+              "required": true
+            }, 
+            "numberOfUnits": {
+              "description": "the number of units of the created batches", 
+              "name": "Number Of Units", 
               "required": true
             }, 
             "name": {
