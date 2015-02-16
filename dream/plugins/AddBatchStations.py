@@ -23,6 +23,36 @@ class AddBatchStations(plugin.InputPreparationPlugin):
         for node_id, node in nodes.iteritems():
             if node['_class']=='Dream.BatchSource':
                 standardBatchUnits=int(node['numberOfUnits'])    
+        
+        # loop in BatchScrapMachines to change the classes if need be       
+        for node_id, node in nodes.iteritems():
+            if node['_class']=='Dream.BatchScrapMachine':
+                # get the first successor. If it is BatchReassembly set the class to M3
+                successorIdList=self.getSuccessors(data, node_id)
+                if successorIdList:
+                    successorId=successorIdList[0]
+                    successorClass=nodes[successorId]['_class']
+                    if successorClass=='Dream.BatchReassembly':
+                        data['graph']['node'][node_id]['_class']='Dream.M3'
+                # get the first predecessor. If it is BatchDecomposition set the class to BatchScrapMachineAfterDecompose
+                predecessorIdList=self.getPredecessors(data, node_id)
+                if predecessorIdList:
+                    predecessorId=predecessorIdList[0]
+                    predecessorClass=nodes[predecessorId]['_class']
+                    if predecessorClass=='Dream.BatchDecomposition':
+                        data['graph']['node'][node_id]['_class']='Dream.BatchScrapMachineAfterDecompose'
+                        
+        # loop in BatchDecompositions to change the classes to BatchDecompositionBlocking   
+        # XXX StartTime to be thought upon  
+        for node_id, node in nodes.iteritems():
+            if node['_class']=='Dream.BatchDecomposition':
+                data['graph']['node'][node_id]['_class']='Dream.BatchDecompositionBlocking'
+                
+        # loop in BatchReassemblies to change the classes to BatchReassemblyBlocking   
+        for node_id, node in nodes.iteritems():
+            if node['_class']=='Dream.BatchReassembly':
+                data['graph']['node'][node_id]['_class']='Dream.BatchReassemblyBlocking'
+            
                 
         # loop through the nodes to find the machines that do need addition
         machinesThatNeedAddition={}
@@ -88,7 +118,9 @@ class AddBatchStations(plugin.InputPreparationPlugin):
                     # add an edge from batchReassembly to destination
                     self.addEdge(data, batchReassemblyId, destination)             
         dataString=json.dumps(data['graph']['edge'], indent=5)
-        #print dataString
+       # print dataString
+#         for node_id, node in nodes.iteritems():
+#             print node_id, node['_class']
         return data
 
     # returns true if it is needed to add decomposition/reassembly
@@ -101,7 +133,7 @@ class AddBatchStations(plugin.InputPreparationPlugin):
         # loop in the predecessors   
         currentId=machineId
         while 1:
-            predecessorIdsList=self.findPredecessors(data, currentId)
+            predecessorIdsList=self.getPredecessors(data, currentId)
             # get the first. In this model every machine is fed by one point
             if predecessorIdsList:
                 predecessorId=predecessorIdsList[0]
