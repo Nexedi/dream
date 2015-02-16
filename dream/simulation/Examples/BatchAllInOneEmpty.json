@@ -366,6 +366,41 @@
       "description": "A station that assembles sub-batches back into a parent batch", 
       "name": "Reassembly"
     }, 
+	
+    "Dream.BatchDecomposition": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "D", 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Decomposition", 
+              "type": "string"
+            }, 
+            "numberOfSubBatches": {
+              "default": 10, 
+              "description": "Number Of Sub-Batches", 
+              "type": "number"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#dfd", 
+        "backgroundImage": "linear-gradient(to bottom, #dfd 0%, #cec 100%)", 
+        "border": "1px solid #bcb"
+      }, 
+      "description": "A station that decomposes a batch into sub-batches", 
+      "name": "Decomposition"
+    }, 
+	
     "Dream.BatchScrapMachine": {
       "_class": "node", 
       "allOf": [
