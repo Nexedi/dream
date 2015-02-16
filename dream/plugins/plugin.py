@@ -42,7 +42,7 @@ class InputPreparationPlugin(Plugin):
     return data
 
   # returns the predecessors of a node
-  def findPredecessors(self, data, node_id):
+  def getPredecessors(self, data, node_id):
     predecessors=[]
     from copy import copy    
     edges=copy(data['graph']['edge'])
@@ -50,6 +50,16 @@ class InputPreparationPlugin(Plugin):
         if edge['destination']==node_id:
             predecessors.append(edge['source'])
     return predecessors
+
+  # returns the successors of a node
+  def getSuccessors(self, data, node_id):
+    successors=[]
+    from copy import copy    
+    edges=copy(data['graph']['edge'])
+    for edge_id,edge in edges.iteritems():
+        if edge['source']==node_id:
+            successors.append(edge['destination'])
+    return successors
 
 class OutputPreparationPlugin(Plugin):
   def postprocess(self, data):
