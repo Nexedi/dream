@@ -433,7 +433,7 @@
    }
   }, 
   {
-   "_class": "Dream.M3", 
+   "_class": "Dream.BatchScrapMachine", 
    "family": "Server", 
    "id": "St6M0", 
    "results": {
@@ -483,7 +483,7 @@
    }
   }, 
   {
-   "_class": "Dream.M3", 
+   "_class": "Dream.BatchScrapMachine", 
    "family": "Server", 
    "id": "St6M1", 
    "results": {
