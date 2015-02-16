@@ -2,26 +2,26 @@
   "application_configuration": {
     "general": {
       "properties": {
-        "MaxEarliness": {
+        "maxEarliness": {
           "default": 2, 
           "description": "Maximum Earliness", 
           "name": "Maximum Earliness", 
           "type": "number"
         }, 
-        "MaxLateness": {
+        "maxLateness": {
           "default": 2, 
           "description": "Maximum Lateness", 
           "name": "Maximum Lateness", 
           "type": "number"
         }, 
-        "MinDelta": {
-          "default": 0, 
+        "minDelta": {
+          "default": 1, 
           "description": "Min Delta Target Utilisation", 
           "name": "Min Delta Target Utilisation", 
           "type": "number"
         }, 
         "ACO": {
-          "default": 2, 
+          "default": 0, 
           "description": "ACO", 
           "name": "ACO", 
           "type": "number"
@@ -32,7 +32,7 @@
           "name": "Population size", 
           "type": "number"
         }, 
-        "ACO numberOfGenerations": {
+        "ACOnumberOfGenerations": {
           "default": 8, 
 		  "description": "ACO Number of generations", 
           "name": "ACO Number of generations", 
@@ -50,13 +50,13 @@
           "name": "Minimum Utilisation", 
           "type": "number"
         },
-        "MinDeltaTargerUtilisation": {
+        "minDeltaTargetUtilisation": {
           "default": 0, 
           "description": "Minimum Delta Target Utilisation", 
           "name": "Minimum Delta Target Utilisation", 
           "type": "number"
         },
-        "MinTargerUtilisation": {
+        "minTargetUtilisation": {
           "default": 2, 
           "description": "Minimum Delta Utilisation", 
           "name": "Minimum Delta Utilisation", 
@@ -74,7 +74,7 @@
           "name": "GA population Size", 
           "type": "number"
         },
-        "GA numberOfGenerations": {
+        "GAnumberOfGenerations": {
           "default": 8, 
           "description": "GA Number of Generations", 
           "name": "GA Number of Generations", 
@@ -91,7 +91,13 @@
           "description": "Mutation Probability", 
           "name": "Mutation Probability", 
           "type": "number"
-        }		
+        },
+		"processTimeout": {
+			"default": 300,
+			"description": "Number of seconds before the calculation process is interrupted",
+			"title": "ProcessTimeout",
+			"type": "number"
+		}		
       }
     }, 
     "input": {
@@ -160,17 +166,7 @@
   }, 
   "class_definition": {}, 
   "constraints": {}, 
-  "general": {
-    "TargetPPOS": null, 
-    "TargetPPOSqty": null, 
-    "TargetPPOSweek": null, 
-    "ke_url": "", 
-    "maxEarliness": null, 
-    "maxLateness": null, 
-    "minPackingSize": null, 
-    "numberOfReplications": 1, 
-    "planningHorizon": null
-  }, 
+  "general": {}, 
   "graph": {
     "edge": {}, 
     "node": {}
