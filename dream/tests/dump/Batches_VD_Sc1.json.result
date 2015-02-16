@@ -327,7 +327,7 @@
    }
   }, 
   {
-   "_class": "Dream.M3", 
+   "_class": "Dream.BatchScrapMachine", 
    "family": "Server", 
    "id": "St4M0", 
    "results": {
