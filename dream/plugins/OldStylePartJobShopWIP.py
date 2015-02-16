@@ -6,11 +6,12 @@ import operator
 from datetime import datetime
 
 from dream.plugins import plugin
+from dream.plugins.TimeSupport import TimeSupportMixin
 
 # XXX could use getClassFromName & isinstance instead
 MACHINE_TYPE_SET = set(["Dream.MachineManagedJob", "Dream.MouldAssembly"])
 
-class OldStylePartJobShopWIP(plugin.InputPreparationPlugin):
+class OldStylePartJobShopWIP(plugin.InputPreparationPlugin, TimeSupportMixin):
   """ Input prepration 
       read wip-spreadsheet data and update the wip property of the stations.
   """
@@ -101,11 +102,8 @@ class OldStylePartJobShopWIP(plugin.InputPreparationPlugin):
   def preprocess(self, data):
     """ Set the WIP in queue from spreadsheet data.
     """
+    self.initializeTimeSupport(data)
     self.data = copy(data)
-
-    strptime = datetime.strptime
-    # XXX this format is incorrect we need to include hour too
-    now = strptime(data['general']['currentDate'], '%Y/%m/%d')
 
     input_id = self.configuration_dict['input_id']
     wip_list = []
@@ -120,7 +118,7 @@ class OldStylePartJobShopWIP(plugin.InputPreparationPlugin):
       wip_list.append(order_dict)
       order_id, due_date, priority, project_manager, part, part_type,\
         sequence_list, processing_time_list, prerequisite_string = value_list
-      due_date = (datetime.strptime(due_date, '%Y/%m/%d') - now).days * 24
+      due_date = (datetime.strptime(due_date, '%Y/%m/%d') - self.now).days * 24
       prerequisite_list = self.getListFromString(prerequisite_string)
       sequence_list = sequence_list.split('-')
       processing_time_list = processing_time_list.split('-')
