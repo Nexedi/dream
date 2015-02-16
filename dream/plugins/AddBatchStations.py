@@ -42,19 +42,9 @@ class AddBatchStations(plugin.InputPreparationPlugin):
                         # remove the edge
                         data['graph']['edge'].pop(edge_id,None)
                         # add an edge from source to batchDecomposition
-                        data['graph']['edge'][source+'_to_'+batchDecompositionId]={
-                            "source": source, 
-                            "destination": batchDecompositionId, 
-                            "data": {}, 
-                            "_class": "Dream.Edge"                                                                  
-                        }
+                        self.addEdge(data, source, batchDecompositionId)
                         # add an edge from batchDecomposition machine
-                        data['graph']['edge'][batchDecompositionId+'_to_'+node_id]={
-                            "source": batchDecompositionId, 
-                            "destination": node_id, 
-                            "data": {}, 
-                            "_class": "Dream.Edge"                                                                  
-                        }                
+                        self.addEdge(data, batchDecompositionId, node_id)
                 #create a batchReassembly
                 batchReassemblyId=node_id+'_R'
                 data['graph']['node'][batchReassemblyId]={
@@ -76,20 +66,10 @@ class AddBatchStations(plugin.InputPreparationPlugin):
                         destination=edge['destination']
                         # remove the edge
                         data['graph']['edge'].pop(edge_id,None)
-                        # add an edge from node to destination
-                        data['graph']['edge'][node_id+'_to_'+batchReassemblyId]={
-                            "source": node_id, 
-                            "destination": batchReassemblyId, 
-                            "data": {}, 
-                            "_class": "Dream.Edge"                                                                  
-                        }
-                        # add an edge from batchDecomposition machine
-                        data['graph']['edge'][batchReassemblyId+'_to_'+destination]={
-                            "source": batchReassemblyId, 
-                            "destination": destination, 
-                            "data": {}, 
-                            "_class": "Dream.Edge"                                                                  
-                        }                   
+                        # add an edge from machine to batchReassembly
+                        self.addEdge(data, node_id, batchReassemblyId)
+                        # add an edge from batchReassembly to destination
+                        self.addEdge(data, batchReassemblyId, destination)             
 #         dataString=json.dumps(data['graph']['edge'], indent=5)
 #         print dataString
         return data

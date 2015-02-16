@@ -31,6 +31,16 @@ class InputPreparationPlugin(Plugin):
     """
     return data
 
+  # adds an edge with the given source and destination
+  def addEdge(self, data, source, destination, nodeData={}):
+    data['graph']['edge'][source+'_to_'+destination]={
+        "source": source, 
+        "destination": destination, 
+        "data": {}, 
+        "_class": "Dream.Edge"             
+    }
+    return data
+
 class OutputPreparationPlugin(Plugin):
   def postprocess(self, data):
     """Postprocess the data after simulation run.
