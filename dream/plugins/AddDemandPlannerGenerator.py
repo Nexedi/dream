@@ -16,6 +16,7 @@ class AddDemandPlannerGenerator(plugin.InputPreparationPlugin):
         nodes=data['graph']['node']
         data_uri_encoded_input_data = data['input'].get(self.configuration_dict['input_id'], {})      
         
+        algorithmAttributes=copy(data['general'])
         
         nodes['DPG']={
             "name": "DemandPlannerGenerator", 
@@ -25,7 +26,7 @@ class AddDemandPlannerGenerator(plugin.InputPreparationPlugin):
             "stop": 0.5,
             "_class": "dream.simulation.EventGenerator.EventGenerator",
             "method": "dream.simulation.applications.DemandPlanning.executor_ACO.main",
-            "argumentDict": {'input':data_uri_encoded_input_data}
+            "argumentDict": {'input':data_uri_encoded_input_data, 'algorithmAttributes':algorithmAttributes}
         }
         #print nodes
         return data

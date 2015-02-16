@@ -43,7 +43,7 @@ def my_split(s, seps):
             res += seq.split(sep)
     return res
 
-def ImportInput(input):
+def ImportInput(input, algorithmAttributes):
     
     # general simulation input
     mime_type, attachement_data = input[len('data:'):].split(';base64,', 1)
