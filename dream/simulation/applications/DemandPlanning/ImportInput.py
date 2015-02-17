@@ -43,49 +43,36 @@ def my_split(s, seps):
             res += seq.split(sep)
     return res
 
-def ImportInput(input):
-    
+def ImportInput(input, algorithmAttributes):
     # general simulation input
     mime_type, attachement_data = input[len('data:'):].split(';base64,', 1)
     attachement_data = attachement_data.decode('base64')
     wbin = xlrd.open_workbook(file_contents=attachement_data)
-    sh = wbin.sheet_by_name('Scalar_Var')
-    G.maxEarliness = withoutFormat(3,1,sh,1) 
-    G.maxLateness = withoutFormat(4,1,sh,1) 
+    G.maxEarliness = algorithmAttributes.get('maxEarliness',None)
+    G.maxLateness = algorithmAttributes.get('maxLateness',None)
     
     # utilisation calculation
-    if withoutFormat(9,1,sh,1) != '':
-        G.minDeltaUt = withoutFormat(9,1,sh,1)
-        
+    G.minDeltaUt = algorithmAttributes.get('minDelta',None)
+    
     # ACO parameters
-    if withoutFormat(12,1,sh,1) != '':
-        G.ACO = withoutFormat(12,1,sh,1)
-    if withoutFormat(13,1,sh,1) != '':
-        G.popSize = withoutFormat(13,1,sh,1)
-    if withoutFormat(14,1,sh,1) != '':
-        G.noGen = withoutFormat(14,1,sh,1)
+    G.ACO = algorithmAttributes.get('ACO',None)
+    G.popSize=algorithmAttributes.get('ACOpopulationSize',None)
+    G.noGen=algorithmAttributes.get('ACOnumberOfGenerations',None)
     
     # optimisation weights for forecast IP method
-    if withoutFormat(18,1,sh,1) != '':
-        G.weightFactor[0] = withoutFormat(18,1,sh,1)
-    if withoutFormat(19,1,sh,1) != '':
-        G.weightFactor[1] = withoutFormat(19,1,sh,1)
-    if withoutFormat(20,1,sh,1) != '':
-        G.weightFactor[2] = withoutFormat(20,1,sh,1)
-    if withoutFormat(21,1,sh,1) != '':
-        G.weightFactor[3] = withoutFormat(21,1,sh,1)
+    G.weightFactor[0] = algorithmAttributes.get('maxAssignedQty',None)
+    G.weightFactor[1] = algorithmAttributes.get('minUtilisation',None)
+    G.weightFactor[2] = algorithmAttributes.get('minDeltaTargetUtilisation',None)
+    G.weightFactor[3] = algorithmAttributes.get('minTargetUtilisation',None)
+    
+    
     
     # GA parameters
-    if withoutFormat(23,1,sh,1) != '':
-        G.GA = withoutFormat(23,1,sh,1)
-    if withoutFormat(24,1,sh,1) != '':
-        G.popSizeGA = withoutFormat(24,1,sh,1)
-    if withoutFormat(25,1,sh,1) != '':
-        G.noGenGA = withoutFormat(25,1,sh,1)
-    if withoutFormat(26,1,sh,1) != '':
-        G.probXover = withoutFormat(26,1,sh,1)
-    if withoutFormat(27,1,sh,1) != '':
-        G.probMutation = withoutFormat(27,1,sh,1)
+    G.GA= algorithmAttributes.get('GA',None)
+    G.popSizeGA =algorithmAttributes.get('GApopulationSize',None)
+    G.noGenGA =algorithmAttributes.get('GAnumberOfGenerations',None)
+    G.probXover =algorithmAttributes.get('XOver',None)
+    G.probMutation =algorithmAttributes.get('mutationProbability',None)
     
     # Import capacity information...capacity = {Resource: {week {'originalCapacity':, 'remainingCapacity', 'minUtilisation'}
     sh = wbin.sheet_by_name('BN_Capa')

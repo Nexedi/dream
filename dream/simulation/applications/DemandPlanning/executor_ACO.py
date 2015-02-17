@@ -27,8 +27,8 @@ from AllocManagement_Hybrid import AllocManagement_Hybrid2
 from ImportInput import ImportInput
 from outputResults import outputResults
 
-def main(input):
+def main(input, algorithmAttributes):
     assert input, 'no input is provided, the algorithm cannot run'
-    ImportInput(input)   
+    ImportInput(input, algorithmAttributes)   
     AllocManagement_Hybrid2()
     outputResults()
