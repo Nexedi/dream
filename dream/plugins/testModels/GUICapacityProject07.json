@@ -665,7 +665,7 @@
     "processTimeout": 10, 
     "seed": 1, 
     "timeUnitPerDay": 24, 
-    "trace": "Yes"
+    "trace": "No"
   }, 
   "graph": {
     "edge": {

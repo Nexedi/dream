@@ -356,7 +356,7 @@
      "general": {
 		  "assemblySpace": 600, 
           "numberOfReplications": "1", 
-          "trace": "Yes", 
+          "trace": "No", 
           "ke_url": "http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
           "processTimeout": 10, 
           "seed": 1, 
