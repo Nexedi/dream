@@ -205,11 +205,23 @@
                 "gadget": "Output_viewSpreadsheet",
                 "title": "Tabular_Results",
                 "type": "object_view"
-            }
+            },
+			"view_downaload_spreadsheet": {
+				"configuration": {
+				  "output_id": "trace_spreadSheet"
+				}, 
+			"gadget": "Output_viewDownloadFile", 
+			"title": "Download Result Spreadsheet", 
+			"type": "object_view"
+			}
         },
         "post_processing": {
             "description": "",
             "plugin_list": [
+                {
+					"_class": "dream.plugins.ParseTraceFile.ParseTraceFile", 
+					"output_id": "trace_spreadSheet"  
+				},
                 {
                     "_class": "dream.plugins.DefaultTabularExit.DefaultTabularExit"
                 }

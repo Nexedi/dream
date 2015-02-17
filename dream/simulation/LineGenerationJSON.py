@@ -668,6 +668,10 @@ def main(argv=[], input_data=None):
         #output trace to excel      
         if(G.trace=="Yes"):
             ExcelHandler.outputTrace('trace'+str(i))  
+            import StringIO
+            traceStringIO = StringIO.StringIO()
+            G.traceFile.save(traceStringIO)
+            encodedTrace=traceStringIO.getvalue().encode('base64')
             ExcelHandler.resetTrace()
     
     G.outputJSON['_class'] = 'Dream.Simulation';
@@ -680,7 +684,17 @@ def main(argv=[], input_data=None):
     #output data to JSON for every object in the topology         
     for object in G.ObjectResourceList + G.EntityList + G.ObjList:
         object.outputResultsJSON()
-                        
+        
+    # output the trace as encoded if it is set on
+    if G.trace=="Yes":
+        # XXX discuss names on this
+        jsonTRACE = {'_class': 'Dream.Simulation',
+                'id': 'TraceFile',
+                'results': {'trace':encodedTrace}
+            }
+        G.outputJSON['elementList'].append(jsonTRACE)
+        
+        
     outputJSONString=json.dumps(G.outputJSON, indent=True)
     if 0:
       G.outputJSONFile=open('outputJSON.json', mode='w')
