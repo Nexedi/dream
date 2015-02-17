@@ -692,7 +692,7 @@
                          }
                     }, 
                     "element_id": "DreamNode_13", 
-                    "_class": "Dream.M3", 
+                    "_class": "Dream.BatchScrapMachine", 
                     "id": "St4M0"
                }, 
                "St6M1R": {
