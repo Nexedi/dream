@@ -22,8 +22,8 @@
             _id: gadget.props.jio_key,
             _attachment: "body.json"
         }).push(function(result_json) {
-            var jsonTextArea = gadget.props.element.querySelector(".json"), document = JSON.parse(result_json);
-            jsonTextArea.textContent = JSON.stringify(document, undefined, " ");
+            var jsonTextArea = gadget.props.element.querySelector(".json");
+            jsonTextArea.textContent = result_json;
             gadget.props.codemirror = CodeMirror.fromTextArea(jsonTextArea, {
                 lineNumbers: true,
                 mode: {
