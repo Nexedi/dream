@@ -42,7 +42,7 @@ class TimeSupportMixin(object):
     """Convert real world time (as python datetime object) to simulation clock time.
     """
     assert self.initialized, "initializeTimeSupport has not been called"
-    raise NotImplementedError
+    return (real_world_time - self.now).total_seconds() * self.timeUnitPerDay * 60
 
   def getTimeUnitText(self):
     """Return the time unit as text.
