@@ -475,7 +475,7 @@
         {
           "properties": {
             "entity": {
-              "default": "Dream.Part", 
+              "default": "Dream.Batch", 
               "description": "Manpy class for entities", 
               "name": "Entity Class", 
               "required": true, 
