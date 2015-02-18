@@ -388,7 +388,7 @@
 			]
 		},
 		"Dream.ConditionalBuffer":{
-			"name" : "Cam Queue",
+			"name" : "Queue",
 			"_class":"node",
 			"description" : "A buffer where entities can be hold until the next station is ready to process them and a certain condition is met",
 			"css": {
@@ -808,18 +808,9 @@
 		"pre_processing" : {
 			"description" : "",
 			"plugin_list" : [{
-					"_class" : "dream.plugins.PartJobShop.PartJobShop",
-					"input_id" : "Simulation"
-				}, {
-					"_class" : "dream.plugins.ReadShiftFromSpreadsheet.ReadShiftFromSpreadsheet",
-					"input_id" : "ShiftSpreadsheet"
-				}, {
-					"_class" : "dream.plugins.ReadWipFromSpreadsheet.ReadWipFromSpreadsheet",
-					"input_id" : "WipSpreadsheet"
-				}, {
-					"_class" : "dream.plugins.ReadRouteFromSpreadsheet.ReadRouteFromSpreadsheet",
-					"input_id" : "RouteSpreadsheet"
-				}
+          "_class": "dream.plugins.ReadShiftFromSpreadsheet.ReadShiftFromSpreadsheet", 
+          "input_id": "ShiftSpreadsheet"
+        }
 			]
 		},
 		"processing_plugin" : {

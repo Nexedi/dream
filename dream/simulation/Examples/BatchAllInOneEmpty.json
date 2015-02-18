@@ -377,8 +377,7 @@
       }, 
       "description": "A station that assembles sub-batches back into a parent batch", 
       "name": "Reassembly"
-    }, 
-	
+    },
     "Dream.BatchDecomposition": {
       "_class": "node", 
       "allOf": [
@@ -411,8 +410,7 @@
       }, 
       "description": "A station that decomposes a batch into sub-batches", 
       "name": "Decomposition"
-    }, 
-	
+    },
     "Dream.BatchScrapMachine": {
       "_class": "node", 
       "allOf": [
