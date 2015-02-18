@@ -299,6 +299,10 @@
         {
           "_class": "dream.plugins.ReadShiftFromSpreadsheet.ReadShiftFromSpreadsheet", 
           "input_id": "ShiftSpreadsheet"
+        },
+        {
+          "_class": "dream.plugins.BatchesShiftAttributes.BatchesShiftAttributes", 
+          "input_id": "ShiftSpreadsheet"
         }
       ]
     }, 
