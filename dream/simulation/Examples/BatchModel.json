@@ -51,7 +51,7 @@
           "type": "number"
         },
        "timeUnit": {
-          "default": "hour",
+          "default": "minute",
           "description": "Used for input and reporting widgets.",
           "name": "Time unit",
           "type": "string",
