@@ -8,7 +8,7 @@ import datetime
 from dream.plugins import plugin
 from dream.plugins.TimeSupport import TimeSupportMixin
 
-class ReadShiftFromSpreadsheet(plugin.InputPreparationPlugin):
+class ReadShiftFromSpreadsheet(plugin.InputPreparationPlugin, TimeSupportMixin):
   """ Input prepration 
       read shift-srpeadsheet data and update the wip property of the stations.
   """
