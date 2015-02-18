@@ -50,11 +50,19 @@
           "name": "Daily throughput target", 
           "type": "number"
         }, 
-        "timeUnitPerDay": {
-          "default": 24, 
-          "description": "Used for input and reporting widgets. For example, 24 means that simulation clock time unit is one hour.", 
-          "name": "Number of time units per day", 
-          "type": "number"
+       "timeUnit": {
+          "default": "hour",
+          "description": "Used for input and reporting widgets.",
+          "name": "Time unit",
+          "type": "string",
+          "enum": [
+            "minute",
+            "hour",
+            "day",
+            "week",
+            "month",
+            "year"
+          ]
         }, 
         "trace": {
           "default": "No", 

@@ -822,12 +822,20 @@
           "name": "Simulation start time",
           "type": "string"
         },
-        "timeUnitPerDay": {
-          "default": 24,
-          "description": "Used for input and reporting widgets. Forexample, 24 means that simulation clock time unit is one hour.",
-          "name": "Number of time units per day",
-          "type": "number"
-        },
+       "timeUnit": {
+          "default": "hour",
+          "description": "Used for input and reporting widgets.",
+          "name": "Time unit",
+          "type": "string",
+          "enum": [
+            "minute",
+            "hour",
+            "day",
+            "week",
+            "month",
+            "year"
+          ]
+        }, 
         "trace": {
           "default": false,
           "description": "Create an excel trace file (true or false)",
@@ -867,7 +875,7 @@
     "confidenceLevel": 0.95,
     "processTimeout": 10,
     "currentDate": "2015/01/01",
-    "timeUnitPerDay": 24,
+    "timeUnit": "hour",
     "trace": "false",
     "seed": "",
     "numberOfGenerations": "1",

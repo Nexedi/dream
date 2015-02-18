@@ -66,12 +66,20 @@
                          "description": "When using the same seed, the random number generator produce the same sequence of numbers", 
                          "title": "Seed for random number generator"
                     }, 
-                    "timeUnitPerDay": {
-                         "default": 24, 
-                         "type": "number", 
-                         "description": "Used for input and reporting widgets. For example, 24 means that simulation clock time unit is one hour.", 
-                         "title": "Number of time units per day"
-                    }, 
+                    "timeUnit": {
+                      "default": "hour",
+                      "description": "Used for input and reporting widgets.",
+                      "name": "Time unit",
+                      "type": "string",
+                      "enum": [
+                        "minute",
+                        "hour",
+                        "day",
+                        "week",
+                        "month",
+                        "year"
+                      ]
+                    },
                     "maxSimTime": {
                          "default": 100, 
                          "type": "number", 
@@ -360,7 +368,7 @@
           "ke_url": "http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
           "processTimeout": 10, 
           "seed": 1, 
-          "timeUnitPerDay": 24, 
+          "timeUnit": "hour", 
           "maxSimTime": -1, 
           "currentDate": "2014/02/20", 
           "confidenceLevel": 0.95
