@@ -50,6 +50,7 @@ class AddBatchStations(plugin.InputPreparationPlugin):
         for node_id, node in nodes.iteritems():
             if node['_class']=='Dream.BatchReassembly':
                 data['graph']['node'][node_id]['_class']='Dream.BatchReassemblyBlocking'
+                data['graph']['node'][node_id]['outputResults']=1
             
         # loop in BatchDecompositions to change the classes to BatchDecompositionStartTime for the ones that 
         # are just after the source   
@@ -124,10 +125,9 @@ class AddBatchStations(plugin.InputPreparationPlugin):
                     self.addEdge(data, node_id, batchReassemblyId)
                     # add an edge from batchReassembly to destination
                     self.addEdge(data, batchReassemblyId, destination)             
-        dataString=json.dumps(data['graph']['edge'], indent=5)
-       # print dataString
-#         for node_id, node in nodes.iteritems():
-#             print node_id, node['_class']
+
+
+
         return data
 
     # returns true if it is needed to add decomposition/reassembly
