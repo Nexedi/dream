@@ -578,6 +578,12 @@
 							"name":"Order ID",
 							"type":"string"
 						}, {
+							"name":"Customer",
+							"type":"string"
+						}, {
+							"name":"Order Date",
+							"type":"string"
+						}, {
 							"name":"Due Date",
 							"type":"string"
 						}, {
@@ -601,9 +607,6 @@
 							"type":"string"
 						}, {
 							"name":"Order ID",
-							"type":"string"
-						}, {
-							"name":"Project Manager",
 							"type":"string"
 						}, {
 							"name":"Part Type",
@@ -646,8 +649,58 @@
 							"type":"boolean",
 							"_default":1
 						}, {
-							"id":"operator",
+							"name":"Prerequisites",
+							"type":"string"
+						},{
 							"name":"Responsible Personnel",
+							"type":"string"
+						}
+					]
+				}
+			},
+      "view_workplan_spreadsheet" : {
+				"gadget" : "Input_viewSpreadsheet",
+				"type" : "object_view",
+				"title" : "Workplan Spreadsheet",
+				"configuration" : {
+					"columns" : [{
+							"name":"Part ID",
+							"type":"string"
+						}, {
+							"name":"Order ID",
+							"type":"string"
+						}, {
+							"name":"Part Type",
+							"type":"string",
+							"enum":[
+								"Mould Base","Mould Insert","Slider","Misc","Z-standards","K-standards", "Mold","Injection Molding Part"
+							]
+						}, {
+							"name":"Operation",
+							"type":"string"
+						}, {
+							"name":"Sequence Number",
+							"type":"string"
+						}, {
+							"name":"Responsible personnel",
+							"type":"string"
+						}, {
+							"name":"Quantity",
+							"type":"Number",
+              "_default": 1
+						}, {
+							"name":"Processing Time",
+							"type":"number",
+							"_default":0
+						}, {
+							"name":"Precedent Operations",
+							"type":"string"
+						}, {
+							"name":"Latest finish time",
+							"type":"string",
+              "format": "time"
+						}, {
+							"name":"WP_ID",
 							"type":"string"
 						}
 					]
@@ -685,13 +738,38 @@
 							"type" : "string",
 							"format" : "date-time"
 						}, {
-							"name" : "Repairman",
+							"name" : "Operator",
 							"type" : "string"
 						}, {
 							"name" : "Start",
 							"type" : "string"
 						}, {
 							"name" : "Stop",
+							"type" : "string"
+						}
+					]
+				}
+			},
+      "view_shift_spreadsheet" : {
+				"gadget" : "Input_viewSpreadsheet",
+				"type" : "object_view",
+				"title" : "Operators and Machine Shift Spreadsheet",
+				"configuration" : {
+					"columns" : [{
+							"name" : "Operator/Machine",
+							"type" : "string"
+						}, {
+							"name" : "Date",
+							"type" : "string",
+							"format" : "date-time"
+						}, {
+							"name" : "Shift Start",
+							"type" : "string"
+						}, {
+							"name" : "Shift Stop",
+							"type" : "string"
+						}, {
+							"name" : "Of-shift periods",
 							"type" : "string"
 						}
 					]
@@ -813,16 +891,14 @@
         }
 			]
 		},
-		"processing_plugin" : {
+		"processing_plugin": {
 			"description" : "",
-			"_class" : "",
-			"input_id" : ""
+			"_class" : "dream.plugins.plugin.DefaultExecutionPlugin",
+			"input_id" : "Simulation"
 		},
 		"post_processing" : {
 			"description" : "",
-			"plugin_list" : [{
-				"_class" : "dream.plugins.CalculateConfidenceIntervals.CalculateConfidenceIntervals"
-			}]
+			"plugin_list" : []
 		},
 		"general" : {
 			"properties" : {
