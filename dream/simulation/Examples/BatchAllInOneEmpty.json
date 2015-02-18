@@ -493,7 +493,7 @@
               "name": "Inter-arrival time", 
               "required": true
             }, 
-            "numberOfUnits": {
+            "batchNumberOfUnits": {
               "description": "the number of units of the created batches", 
               "name": "Number Of Units", 
               "required": true
