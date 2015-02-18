@@ -264,6 +264,7 @@
 				]
 			},
 			"_schedulingRule" : {
+        "name": "Scheduling Rule",
 				"description" : "Scheduling Rule, one of FIFO Priority EDD EOD NumStages RPC LPT SPT MS WINQ",
 				"type" : "string",
 				"default" : "FIFO",
@@ -282,6 +283,7 @@
 				]
 			},
 			"_capacity" : {
+        "name": "Capacity",
 				"description" : "capacity of the queue. -1 means infinite",
 				"type" : "number",
 				"default" : 1,
@@ -295,21 +297,15 @@
 				]
 			},
 			"_operationType" : {
-				"_class" : "Dream.PropertyList",
-				"name" : "Operation type",
-				"id" : "operationType",
-				"description" : "the type of operations that are performed manually in the machine",
-				"properties" : {
-					"operationType" : {
-						"type" : "string",
-						"enum" : [
-							"MT-Load",
-							"MT-Load-Setup",
-							"MT-Load-Setup-Processing"
-						]
-					}
-				}
-			}
+        "name" : "Operation type",
+        "description" : "the type of operations that are performed manually in the machine",
+        "type" : "string",
+        "enum" : [
+          "MT-Load",
+          "MT-Load-Setup",
+          "MT-Load-Setup-Processing"
+        ]
+      }
 		},
 		"edge" : {
 			"description" : "Base definition for edge",

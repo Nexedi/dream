@@ -499,7 +499,8 @@
             }, 
             "batchNumberOfUnits": {
               "description": "the number of units of the created batches", 
-              "name": "Number Of Units", 
+              "name": "Number Of Units",
+              "type": "number",
               "required": true
             }, 
             "name": {
@@ -776,6 +777,7 @@
     "definitions": {
       "_capacity": {
         "default": 1, 
+        "name": "Capacity",
         "description": "capacity of the queue. -1 means infinite", 
         "oneOf": [
           {
@@ -874,24 +876,19 @@
           }
         ]
       }, 
-      "_operationType": {
-        "_class": "Dream.PropertyList", 
+      "_operationType": { 
         "description": "the type of operations that are performed manually in the machine", 
-        "id": "operationType", 
         "name": "Operation type", 
-        "properties": {
-          "operationType": {
-            "enum": [
-              "MT-Load", 
-              "MT-Load-Setup", 
-              "MT-Load-Setup-Processing"
-            ], 
-            "type": "string"
-          }
-        }
+        "enum": [
+          "MT-Load", 
+          "MT-Load-Setup", 
+          "MT-Load-Setup-Processing"
+        ], 
+        "type": "string"
       }, 
       "_schedulingRule": {
-        "default": "FIFO", 
+        "default": "FIFO",
+        "name": "Scheduling Rule",
         "description": "Scheduling Rule of this buffer", 
         "enum": [
           "FIFO", 

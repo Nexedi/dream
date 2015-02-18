@@ -382,20 +382,21 @@
               "type": "string"
             }, 
             "operationType": {
-              "description": "Type Of Operation", 
-              "name": "Operation Type", 
               "properties": {
                 "load": {
                   "$ref": "#/definitions/_operationType", 
-                  "description": "Operation type for loading"
+                  "description": "Operation type for loading",
+                  "name": "Load Operation type"
                 }, 
                 "processing": {
                   "$ref": "#/definitions/_operationType", 
-                  "description": "Operation type for processing"
+                  "description": "Operation type for processing",
+                  "name": "Processing Operation type"
                 }, 
                 "setup": {
                   "$ref": "#/definitions/_operationType", 
-                  "description": "Operation type for setup"
+                  "description": "Operation type for setup",
+                  "name": "Setup Operation type"
                 }
               }, 
               "required": [
@@ -537,6 +538,7 @@
     "definitions": {
       "_capacity": {
         "default": 1, 
+        "name": "Capacity",
         "description": "capacity of the queue. -1 means infinite", 
         "oneOf": [
           {
@@ -646,6 +648,7 @@
       }, 
       "_schedulingRule": {
         "default": "FIFO", 
+                "name": "Scheduling Rule",
         "description": "Scheduling Rule, one of FIFO Priority EDD EOD NumStages RPC LPT SPT MS WINQ", 
         "enum": [
           "FIFO", 
