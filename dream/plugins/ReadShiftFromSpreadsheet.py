@@ -16,6 +16,10 @@ class ReadShiftFromSpreadsheet(plugin.InputPreparationPlugin, TimeSupportMixin):
   def preprocess(self, data):
     self.initializeTimeSupport(data)
     strptime = datetime.datetime.strptime
+    try:
+        now = strptime(data['general']['currentDate'], '%Y/%m/%d %H:%M')
+    except ValueError:
+        now = strptime(data['general']['currentDate'], '%Y/%m/%d')
 
     shift_by_station = {}
     # XXX machine_shift_spreadsheet should be configuration
@@ -23,6 +27,12 @@ class ReadShiftFromSpreadsheet(plugin.InputPreparationPlugin, TimeSupportMixin):
       if line[1]:
         start_time = self.convertToSimulationTime(strptime("%s %s" % (line[0], line[2]), '%Y/%m/%d %H:%M'))
         stop_time = self.convertToSimulationTime(strptime("%s %s" % (line[0], line[3]), '%Y/%m/%d %H:%M'))
+        # if the end of shift is before now we do not need this shif in the simulation
+        if stop_time<=0:
+            continue
+        # if the start of the shift is before now, set the start to 0
+        if start_time<0:
+            start_time=0
         for station in line[1].split(','):
           station = station.strip()
           shift_by_station.setdefault(station, []).append(
@@ -34,6 +44,12 @@ class ReadShiftFromSpreadsheet(plugin.InputPreparationPlugin, TimeSupportMixin):
         if line[1]:
           start_time = self.convertToSimulationTime(strptime("%s %s" % (line[0], line[2]), '%Y/%m/%d %H:%M'))
           stop_time = self.convertToSimulationTime(strptime("%s %s" % (line[0], line[3]), '%Y/%m/%d %H:%M'))
+          # if the end of shift is before now we do not need this shif in the simulation
+          if stop_time<=0:
+              continue
+          # if the start of the shift is before now, set the start to 0
+          if start_time<0:
+              start_time=0
           for station in line[1].split(','):
             station = station.strip()
             shift_by_station.setdefault(station, []).append(
