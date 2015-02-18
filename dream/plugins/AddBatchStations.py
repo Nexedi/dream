@@ -16,7 +16,6 @@ class AddBatchStations(plugin.InputPreparationPlugin):
     def preprocess(self, data):
         nodes=copy(data['graph']['node'])
         edges=copy(data['graph']['edge'])
-        data_uri_encoded_input_data = data['input'].get(self.configuration_dict['input_id'], {})  
 
         # get the number of units for a standard batch
         standardBatchUnits=0
@@ -126,7 +125,11 @@ class AddBatchStations(plugin.InputPreparationPlugin):
     # returns true if it is needed to add decomposition/reassembly
     def checkIfMachineNeedsAddition(self, data, machineId,standardBatchUnits):
         nodes=copy(data['graph']['node']) 
-        workingBatchSize=int(nodes[machineId].get('workingBatchSize',standardBatchUnits))
+        workingBatchSize=(nodes[machineId].get('workingBatchSize',standardBatchUnits))
+        if workingBatchSize:
+            workingBatchSize=int(workingBatchSize)
+        else:   # if the workingBatchSize is not defined by the user set it to standardBatchUnits
+            workingBatchSize=standardBatchUnits
         # if the workingBatchSize is equal or higher to standardBatchUnits we do not need to add decomposition/reassembly
         if workingBatchSize>=standardBatchUnits:
              return False   
