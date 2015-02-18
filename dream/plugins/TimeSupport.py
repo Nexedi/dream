@@ -11,7 +11,22 @@ class TimeSupportMixin(object):
   initialized = False
 
   def initializeTimeSupport(self, data):
-    self.timeUnitPerDay = data['general']['timeUnitPerDay']
+    self.timeUnit = data['general']['timeUnit']
+    if self.timeUnit == 'minute':
+      self.timeUnitPerDay = 24 * 60
+    elif self.timeUnit == 'hour':
+      self.timeUnitPerDay = 24
+    elif self.timeUnit == 'day':
+      self.timeUnitPerDay = 1
+    elif self.timeUnit == 'week':
+      self.timeUnitPerDay = 1 / 7.
+    elif self.timeUnit == 'month':
+      self.timeUnitPerDay = 1 / 30.
+    elif self.timeUnit == 'year':
+      self.timeUnitPerDay = 1 / 360.
+    else:
+      raise ValueError("Unsupported time unit %s" % self.timeUnit)
+
     self.dateFormat = data['general'].get('dateFormat', '%Y/%m/%d %H:%M:%S')
     # Convert simulation 0 time to real world time
     self.now = datetime.strptime(data['general']['currentDate'], self.dateFormat)
@@ -33,17 +48,5 @@ class TimeSupportMixin(object):
     """Return the time unit as text.
     """
     assert self.initialized, "initializeTimeSupport has not been called"
-    if self.timeUnitPerDay == 24 * 60:
-      return 'minute'
-    if self.timeUnitPerDay == 24:
-      return 'hour'
-    if self.timeUnitPerDay == 1:
-      return 'day'
-    if self.timeUnitPerDay == 1/7.:
-      return 'week'
-    if self.timeUnitPerDay == 1/30.:
-      return 'month'
-    if timeUnitPerDay == 1/360.:
-      return 'year'
-    raise ValueError("Unsupported time unit %s" % self.timeUnitPerDay)
+    return self.timeUnit
 
