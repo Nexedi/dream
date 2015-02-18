@@ -597,67 +597,6 @@
 					]
 				}
 			},
-			"view_order_components_spreadsheet" : {
-				"gadget" : "Input_viewSpreadsheet",
-				"type" : "object_view",
-				"title" : "Order Components Spreadsheet",
-				"configuration" : {
-					"columns" : [{
-							"name":"Part ID",
-							"type":"string"
-						}, {
-							"name":"Order ID",
-							"type":"string"
-						}, {
-							"name":"Part Type",
-							"type":"string",
-							"enum":[
-								"Mould Base","Mould Insert","Slider","Misc","Z-standards","K-standards", "Mold","Injection Molding Part"
-							]
-						}
-					]
-				}
-			},
-			"view_component_route_spreadsheet" : {
-				"gadget" : "Input_viewSpreadsheet",
-				"type" : "object_view",
-				"title" : "Component Route Spreadsheet",
-				"configuration" : {
-					"columns" : [{
-							"name":"Part ID",
-							"type":"string"
-						}, {
-							"name":"Sequence Number",
-							"type":"string"
-						}, {
-							"name":"Station Id",
-							"type":"string"
-						}, {
-							"name":"Processing Time",
-							"type":"number",
-							"_default":0
-						}, {
-							"name":"Type of processing",
-							"type":"boolean",
-							"_default":1
-						}, {
-							"name":"Setup Time",
-							"type":"number",
-							"_default":0
-						}, {
-							"name":"Type of setup",
-							"type":"boolean",
-							"_default":1
-						}, {
-							"name":"Prerequisites",
-							"type":"string"
-						},{
-							"name":"Responsible Personnel",
-							"type":"string"
-						}
-					]
-				}
-			},
       "view_workplan_spreadsheet" : {
 				"gadget" : "Input_viewSpreadsheet",
 				"type" : "object_view",
@@ -706,50 +645,6 @@
 					]
 				}
 			},
-			"view_machine_shift_spreadsheet" : {
-				"gadget" : "Input_viewSpreadsheet",
-				"type" : "object_view",
-				"title" : "Machine Shifts Spreadsheet",
-				"configuration" : {
-					"columns" : [{
-							"name" : "Date",
-							"type" : "string",
-							"format" : "date-time"
-						}, {
-							"name" : "Machine",
-							"type" : "string"
-						}, {
-							"name" : "Start",
-							"type" : "string"
-						}, {
-							"name" : "Stop",
-							"type" : "string"
-						}
-					]
-				}
-			},
-			"view_operator_shift_spreadsheet" : {
-				"gadget" : "Input_viewSpreadsheet",
-				"type" : "object_view",
-				"title" : "Operators Shifts Spreadsheet",
-				"configuration" : {
-					"columns" : [{
-							"name" : "Date",
-							"type" : "string",
-							"format" : "date-time"
-						}, {
-							"name" : "Operator",
-							"type" : "string"
-						}, {
-							"name" : "Start",
-							"type" : "string"
-						}, {
-							"name" : "Stop",
-							"type" : "string"
-						}
-					]
-				}
-			},
       "view_shift_spreadsheet" : {
 				"gadget" : "Input_viewSpreadsheet",
 				"type" : "object_view",
@@ -781,17 +676,41 @@
 				"title" : "WIP Spreadsheet",
 				"configuration" : {
 					"columns" : [{
-							"name" : "ID",
-							"type" : "string"
+							"name": "Part ID",
+							"type": "string"
 						}, {
-							"name" : "StationID",
-							"type" : "string"
+							"name": "Station ID",
+							"type": "string"
 						}, {
-							"name":"Sequence",
-							"type":"string"
+							"name": "Personnel ID",
+							"type": "string"
 						}, {
-							"name" : "Remaining Processing Time",
-							"type" : "number"
+							"name": "Sequence",
+							"type": "string"
+						}, {
+							"name": "Start time",
+							"type": "string",
+              "format": "date-time"
+						}, {
+							"name": "Finish time",
+							"type": "string",
+              "format": "date-time"
+						}
+					]
+				}
+			},
+      "view_operator_skills_spreadsheet" : {
+				"gadget" : "Input_viewSpreadsheet",
+				"type" : "object_view",
+				"title" : "Operator Skills",
+				"configuration" : {
+					"columns" : [{
+							"name": "Operator ID",
+							"type": "string"
+						}, {
+							"name": "Skill-set",
+							"type": "array",
+              "items": {"type": "string"}
 						}
 					]
 				}
