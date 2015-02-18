@@ -427,9 +427,16 @@
               class_definition.properties[property].$ref,
               full_schema.class_definition),
             full_schema);
-          //expanded_class_definition.properties[property] = referenced;
           $.extend(expanded_class_definition.properties[property], referenced);
           delete expanded_class_definition.properties[property].$ref;
+        } else {
+          if (class_definition.properties[property].type === "object") {
+            // no reference, but we expand anyway because we need to recurse in case there is a ref in an object property
+            referenced = expandSchema(
+              class_definition.properties[property],
+              full_schema);
+            $.extend(expanded_class_definition.properties[property], referenced);
+          }
         }
       }
     }
