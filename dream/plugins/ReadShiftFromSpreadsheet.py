@@ -6,6 +6,7 @@ import operator
 import datetime
 
 from dream.plugins import plugin
+from dream.plugins.TimeSupport import TimeSupportMixin
 
 class ReadShiftFromSpreadsheet(plugin.InputPreparationPlugin):
   """ Input prepration 
@@ -13,19 +14,15 @@ class ReadShiftFromSpreadsheet(plugin.InputPreparationPlugin):
   """
 
   def preprocess(self, data):
+    self.initializeTimeSupport(data)
     strptime = datetime.datetime.strptime
-    now = strptime(data['general']['currentDate'], '%Y/%m/%d')
 
     shift_by_station = {}
     # XXX machine_shift_spreadsheet should be configuration
     for line in data['input']['machine_shift_spreadsheet'][1:]:
       if line[1]:
-        # Get the dates, and convert them to simulation clock time units.
-        # In this class, time unit is a minute (XXX it can be an option)
-        start_date = strptime("%s %s" % (line[0], line[2]), '%Y/%m/%d %H:%M')
-        start_time = (start_date - now).total_seconds() // 60
-        stop_date = strptime("%s %s" % (line[0], line[3]), '%Y/%m/%d %H:%M')
-        stop_time = (stop_date - now).total_seconds() // 60
+        start_time = self.convertToSimulationTime(strptime("%s %s" % (line[0], line[2]), '%Y/%m/%d %H:%M'))
+        stop_time = self.convertToSimulationTime(strptime("%s %s" % (line[0], line[3]), '%Y/%m/%d %H:%M'))
         for station in line[1].split(','):
           station = station.strip()
           shift_by_station.setdefault(station, []).append(
@@ -35,12 +32,8 @@ class ReadShiftFromSpreadsheet(plugin.InputPreparationPlugin):
     if data['input'].get('operator_shift_spreadsheet', None):
       for line in data['input']['operator_shift_spreadsheet'][1:]:
         if line[1]:
-          # Get the dates, and convert them to simulation clock time units.
-          # In this class, time unit is a minute (XXX it can be an option)
-          start_date = strptime("%s %s" % (line[0], line[2]), '%Y/%m/%d %H:%M')
-          start_time = (start_date - now).total_seconds() // 60
-          stop_date = strptime("%s %s" % (line[0], line[3]), '%Y/%m/%d %H:%M')
-          stop_time = (stop_date - now).total_seconds() // 60
+          start_time = self.convertToSimulationTime(strptime("%s %s" % (line[0], line[2]), '%Y/%m/%d %H:%M'))
+          stop_time = self.convertToSimulationTime(strptime("%s %s" % (line[0], line[3]), '%Y/%m/%d %H:%M'))
           for station in line[1].split(','):
             station = station.strip()
             shift_by_station.setdefault(station, []).append(
