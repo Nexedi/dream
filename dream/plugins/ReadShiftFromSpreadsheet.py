@@ -27,12 +27,16 @@ class ReadShiftFromSpreadsheet(plugin.InputPreparationPlugin, TimeSupportMixin):
       if line[1]:
         start_time = self.convertToSimulationTime(strptime("%s %s" % (line[0], line[2]), '%Y/%m/%d %H:%M'))
         stop_time = self.convertToSimulationTime(strptime("%s %s" % (line[0], line[3]), '%Y/%m/%d %H:%M'))
-        # if the end of shift is before now we do not need this shif in the simulation
-        if stop_time<=0:
+        # if the end of shift shift already finished we do not need to consider in simulation
+        if start_time<0 and stop_time<=0:
             continue
         # if the start of the shift is before now, set the start to 0
         if start_time<0:
             start_time=0
+        # sometimes the date may change (e.g. shift from 23:00 to 01:00). 
+        # these would be declared in the date of the start so add a date (1440) to the end
+        if stop_time<start_time:
+            stop_time+=1440
         for station in line[1].split(','):
           station = station.strip()
           shift_by_station.setdefault(station, []).append(
@@ -44,12 +48,16 @@ class ReadShiftFromSpreadsheet(plugin.InputPreparationPlugin, TimeSupportMixin):
         if line[1]:
           start_time = self.convertToSimulationTime(strptime("%s %s" % (line[0], line[2]), '%Y/%m/%d %H:%M'))
           stop_time = self.convertToSimulationTime(strptime("%s %s" % (line[0], line[3]), '%Y/%m/%d %H:%M'))
-          # if the end of shift is before now we do not need this shif in the simulation
-          if stop_time<=0:
+          # if the end of shift shift already finished we do not need to consider in simulation
+          if start_time<0 and stop_time<=0:
               continue
           # if the start of the shift is before now, set the start to 0
           if start_time<0:
               start_time=0
+          # sometimes the date may change (e.g. shift from 23:00 to 01:00). 
+          # these would be declared in the date of the start so add a date (1440) to the end
+          if stop_time<start_time:
+              stop_time+=1440
           for station in line[1].split(','):
             station = station.strip()
             shift_by_station.setdefault(station, []).append(
