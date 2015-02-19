@@ -90,6 +90,10 @@
               });
 
             } else {
+              if (metric_value.length === 1) {
+                metric_value = metric_value[0];
+              }
+              
               if (typeof metric_value === "object") {
                 if (metric_value.ub === metric_value.lb) {
                   metric_value = metric_value.ub;
