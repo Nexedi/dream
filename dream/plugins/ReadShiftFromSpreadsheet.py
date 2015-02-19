@@ -14,13 +14,16 @@ class ReadShiftFromSpreadsheet(plugin.InputPreparationPlugin, TimeSupportMixin):
   """
 
   def preprocess(self, data):
-    self.initializeTimeSupport(data)
     strptime = datetime.datetime.strptime
+    # read the current date and define dateFormat from it
     try:
         now = strptime(data['general']['currentDate'], '%Y/%m/%d %H:%M')
+        data['general']['dateFormat']='%Y/%m/%d %H:%M'
     except ValueError:
         now = strptime(data['general']['currentDate'], '%Y/%m/%d')
-
+        data['general']['dateFormat']='%Y/%m/%d'
+    self.initializeTimeSupport(data)
+    
     shift_by_station = {}
     # XXX machine_shift_spreadsheet should be configuration
     for line in data['input']['machine_shift_spreadsheet'][1:]:
@@ -34,9 +37,9 @@ class ReadShiftFromSpreadsheet(plugin.InputPreparationPlugin, TimeSupportMixin):
         if start_time<0:
             start_time=0
         # sometimes the date may change (e.g. shift from 23:00 to 01:00). 
-        # these would be declared in the date of the start so add a date (1440) to the end
+        # these would be declared in the date of the start so add a date (self.timeUnitPerDay) to the end
         if stop_time<start_time:
-            stop_time+=1440
+            stop_time+=self.timeUnitPerDay
         for station in line[1].split(','):
           station = station.strip()
           shift_by_station.setdefault(station, []).append(
@@ -55,9 +58,9 @@ class ReadShiftFromSpreadsheet(plugin.InputPreparationPlugin, TimeSupportMixin):
           if start_time<0:
               start_time=0
           # sometimes the date may change (e.g. shift from 23:00 to 01:00). 
-          # these would be declared in the date of the start so add a date (1440) to the end
+          # these would be declared in the date of the start so add a date (self.timeUnitPerDay) to the end
           if stop_time<start_time:
-              stop_time+=1440
+              stop_time+=self.timeUnitPerDay
           for station in line[1].split(','):
             station = station.strip()
             shift_by_station.setdefault(station, []).append(
