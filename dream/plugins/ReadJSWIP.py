@@ -5,7 +5,6 @@ import random
 import operator
 from datetime import datetime
 import copy
-import routeQuery
 
 from dream.plugins import plugin
 
@@ -17,8 +16,15 @@ class ReadJSWIP(plugin.InputPreparationPlugin):
   def preprocess(self, data):
     """ inserts the wip as introduced in the GUI to the BOM
     """
-    WIPdata = data["input"]["wip_spreadsheet"]
-    wip = data["input"]["BOM"]["WIP"]
+    WIPdata = data["input"].get("wip_spreadsheet",[])
+    try:
+      BOM = data["input"]["BOM"]
+    except:
+      BOM = data["input"]["BOM"]={}
+    try:
+      wip = BOM["WIP"]
+    except:
+      wip = BOM["WIP"] = {}
     if WIPdata:
       WIPdata.pop(0)  # pop the column names
       for WIPitem in WIPdata:
