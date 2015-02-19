@@ -5,7 +5,6 @@ import random
 import operator
 from datetime import datetime
 import copy
-import routeQuery
 
 from dream.plugins import plugin
 
@@ -31,36 +30,44 @@ class ReadJSWorkPlan(plugin.InputPreparationPlugin):
     """ inserts the retrieved order components and the related information (routing) to the BOM echelon
     """
     self.data=data
-	  WPdata = data["input"]["workplan_spreadsheet"]
+    WPdata = data["input"].get("workplan_spreadsheet",[])
     orders = data["input"]["BOM"].get("orders",{})
     if WPdata:
       WPdata.pop(0)  # pop the column names
       for line in WPdata:
-        orderID = WPdata[1]
+        orderID = line[1]
         order = self.findEntityByID(orderID)
         # if the order is not defined then skip this part
         if not order:
           continue
-        partID = WPdata[0]
+        partID = line[0]
         part = self.findEntityByID(partID)
         # if there is no such part in the BOM then create it
         if not part:
-          partName = WPdata[2]
+          partName = line[2]
           components = order.get("componentsList",[])
-          components.append({
+          # the part is brand new
+          part = {
             "componentID": partID,
             "componentName": partName
-          })
+          }
+          components.append(part)
           order["componentsList"] = components
         # update  the route of the component
         route = part.get("route", [])
-        task_id = WPdata[-1]
-        sequence = WPdata[4]
-        processingTime = WPdata[-4]
-        operator = WPdata[5]
-        partsneeded = WPdata[-2].replace(" ","").split(',')
-        technology = WPdata[3]
-        quantity = WPdata[6]
+        task_id = line[-1]
+        sequence = line[4]
+        processingTime = line[-4]
+        operator = line[5]
+        partsneeded = line[-3]
+        # if there are requested parts then split them
+        if partsneeded:
+          partsneeded = partsneeded.replace(" ","").split(',')
+        else:
+          partsneeded = [""]
+        technology = line[3]
+        quantity = line[6]
+        # append the current step to the route of the part
         route.append({
           "task_id": task_id,
           "sequence": sequence,
