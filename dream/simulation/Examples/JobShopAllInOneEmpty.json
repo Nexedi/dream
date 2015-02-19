@@ -581,6 +581,9 @@
 							"name":"Customer",
 							"type":"string"
 						}, {
+							"name":"Project",
+							"type":"string"
+						}, {
 							"name":"Order Date",
 							"type":"string"
 						}, {
@@ -686,6 +689,9 @@
 							"type": "string"
 						}, {
 							"name": "Sequence",
+							"type": "string"
+						}, {
+							"name": "task ID",
 							"type": "string"
 						}, {
 							"name": "Start time",
