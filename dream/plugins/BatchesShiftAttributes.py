@@ -21,7 +21,6 @@ class BatchesShiftAttributes(plugin.InputPreparationPlugin):
         if interruptions:
             shift=interruptions.get('shift',None)
             if shift:
-                print 11111
                 interruptions['shift']['thresholdTimeIsOnShift']=0
                 interruptions['shift']['receiveBeforeEndThreshold']=7
                 interruptions['shift']['endUnfinished']=1
