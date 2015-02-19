@@ -114,7 +114,7 @@ class Machine(CoreObject):
         #     there can be Setup/Processing operationType
         #     or the combination of both (MT-Load-Setup-Processing) 
         self.multOperationTypeList=[]   
-        if self.operationType.startswith("MT"):
+        if isinstance(self.operationType, basestring) and self.operationType.startswith("MT"):
             OTlist = operationType.split('-')
             self.operationType=OTlist.pop(0)
             self.multOperationTypeList = OTlist
