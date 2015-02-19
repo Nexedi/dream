@@ -46,10 +46,12 @@
         },
         "_failure": {
           "properties": {
-            "Time to Failure": {
+            "TTF": {
+              "name": "Time to Failure",
               "$ref": "#/definitions/_dist"
             },
-            "Time to Repair": {
+            "TTR": {
+              "name": "Time to Repair",
               "$ref": "#/definitions/_dist"
             },
             "repairman": {
