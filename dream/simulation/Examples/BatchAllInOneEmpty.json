@@ -858,24 +858,19 @@
             "properties": {
               "failureDistribution": {
                 "default": "No", 
+                "description": "Is this machine subject to failures, if not then Time to Repair and Time to failure are ignored", 
                 "enum": [
                   "No", 
                   "Yes"
                 ], 
+                "name": "Has failure ?", 
                 "type": "string"
               }
             }, 
             "type": "object"
           }, 
           {
-            "oneOf": [
-              {
-                "$ref": "#/definitions/distributionTypes/_failure"
-              }, 
-              {
-                "$ref": "#/definitions/distributionTypes/_no"
-              }
-            ]
+            "$ref": "#/definitions/distributionTypes/_failure"
           }
         ]
       }, 
