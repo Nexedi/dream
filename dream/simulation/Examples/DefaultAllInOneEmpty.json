@@ -708,11 +708,13 @@
         "_failure": {
           "description": "Fixed", 
           "properties": {
-            "Time to Failure": {
-              "$ref": "#/definitions/_dist"
+            "MTTF": {
+              "$ref": "#/definitions/_dist", 
+              "name": "Time to Failure"
             }, 
-            "Time to Repair": {
-              "$ref": "#/definitions/_dist"
+            "MTTR": {
+              "$ref": "#/definitions/_dist", 
+              "name": "Time to Repair"
             }, 
             "repairman": {
               "description": "Repairman", 
