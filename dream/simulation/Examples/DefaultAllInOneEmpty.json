@@ -191,17 +191,17 @@
       }, 
       "view_queue_stats": {
         "configuration": {
-          "columns": []
+          "output_id": "queue_statistics"
         }, 
-        "gadget": "Output_viewQueueStatGraph", 
+        "gadget": "Output_viewChart", 
         "title": "Queue Statistics", 
         "type": "object_view"
       }, 
       "view_station_utilization": {
         "configuration": {
-          "columns": []
+          "output_id": "station_utilization"
         }, 
-        "gadget": "Output_viewStationUtilisationGraph", 
+        "gadget": "Output_viewChart", 
         "title": "Station Utilization", 
         "type": "object_view"
       }, 
@@ -220,6 +220,11 @@
       "plugin_list": [
         {
           "_class": "dream.plugins.DefaultTabularExit.DefaultTabularExit"
+        }, 
+        {
+          "_class": "dream.plugins.PostProcessStationUtilization.PostProcessStationUtilization", 
+          "family": "Server", 
+          "output_id": "station_utilization"
         }
       ]
     }, 
