@@ -5,7 +5,6 @@ import random
 import operator
 from datetime import datetime
 import copy
-import routeQuery
 
 from dream.plugins import plugin
 
@@ -17,26 +16,28 @@ class ReadJSOrders(plugin.InputPreparationPlugin):
   def preprocess(self, data):
     """ inserts the retrieved production orders to the BOM echelon
     """
-	  POdata = data["input"]["production_orders_spreadsheet"]
+    POdata = data["input"].get("production_orders_spreadsheet",[])
     productionOrders = []
     data["input"]["BOM"]["orders"] = productionOrders
     if POdata:
       POdata.pop(0)  # pop the column names
       for order in POdata:
-        orderID = POdata[0]
+        orderID = order[0]
         if not orderID:
           continue
-        customer = POdata[1]
-        project = POdata[2]
-        orderDate = POdata[3]
-        dueDate = POdata[4]
-        manager = POdata[5]
+        customer = order[1]
+        project = order[2]
+        orderDate = order[3]
+        dueDate = order[4]
+        priority = order[5]
+        manager = order[6]
         productionOrders.append({
           "orderID": orderID,
           "orderName": project,
           "customer": customer,
           "orderDate": orderDate,
           "dueDate": dueDate,
+          "priority": priority,
           "manager": manager
         })
 	
