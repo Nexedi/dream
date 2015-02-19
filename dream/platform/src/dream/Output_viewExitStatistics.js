@@ -109,6 +109,10 @@
               if (typeof metric_value === "number") {
                 metric_value = metric_value.toFixed(2);
               }
+              // Add time unit in some metric
+              if (data.general.timeUnit && (metric === "lifespan" || metric === "takt_time")) {
+                metric_value = metric_value + " " + data.general.timeUnit;
+              }
               // Rename some metric to something more meaningful
               if (metric === "lifespan") {
                 metric = "Cycle Time";
