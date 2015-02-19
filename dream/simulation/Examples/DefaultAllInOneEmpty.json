@@ -78,7 +78,7 @@
       }, 
       "view": {
         "gadget": "Input_viewProductionLine", 
-        "title": "ProductionLine", 
+        "title": "Production Line", 
         "type": "object_view"
       }, 
       "view_machine_shift_spreadsheet": {
