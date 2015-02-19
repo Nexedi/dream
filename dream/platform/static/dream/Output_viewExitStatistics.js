@@ -51,6 +51,9 @@
                                 average: calculate_average(attainment_list)
                             });
                         } else {
+                            if (metric_value.length === 1) {
+                                metric_value = metric_value[0];
+                            }
                             if (typeof metric_value === "object") {
                                 if (metric_value.ub === metric_value.lb) {
                                     metric_value = metric_value.ub;
@@ -64,6 +67,10 @@
                             }
                             if (typeof metric_value === "number") {
                                 metric_value = metric_value.toFixed(2);
+                            }
+                            // Add time unit in some metric
+                            if (data.general.timeUnit && (metric === "lifespan" || metric === "takt_time")) {
+                                metric_value = metric_value + " " + data.general.timeUnit;
                             }
                             // Rename some metric to something more meaningful
                             if (metric === "lifespan") {
