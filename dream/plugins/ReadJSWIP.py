@@ -17,6 +17,7 @@ class ReadJSWIP(plugin.InputPreparationPlugin):
     """ inserts the wip as introduced in the GUI to the BOM
     """
     WIPdata = data["input"].get("wip_spreadsheet",[])
+    workPlanData = data["input"].get("workplan_spreadsheet",[])
     try:
       BOM = data["input"]["BOM"]
     except:
@@ -31,12 +32,12 @@ class ReadJSWIP(plugin.InputPreparationPlugin):
         partID = WIPitem[0]
         if not partID:
           continue
-        stationID = WIPitem[1]
-        operatorID = WIPitem[2]
-        sequence = WIPitem[3]
-        WP_id = WIPitem[4]
+        stationID = WIPitem[3]
+        operatorID = WIPitem[4]
+        sequence = WIPitem[1]
+        WP_id = WIPitem[2]
         start = WIPitem[5]
-        end = WIPitem[6]
+        # end = WIPitem[6]
         wip[partID] = {
           "task_id": WP_id,
           "operator": operatorID,
@@ -46,3 +47,26 @@ class ReadJSWIP(plugin.InputPreparationPlugin):
           "sequence": sequence
         }
     return data
+    
+    '''
+    {
+			"name": "Part ID",
+      "type": "string"
+    }, {
+      "name": "Sequence",
+      "type": "string"
+    }, {
+      "name": "task ID",
+      "type": "string"
+    }, {
+      "name": "Station ID",
+      "type": "string"
+    }, {
+      "name": "Personnel ID",
+      "type": "string"
+    }, {
+      "name": "Start time",
+      "type": "string",
+      "format": "date-time"
+    }
+  '''
