@@ -23,6 +23,7 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
     for node_id, node in nodes.iteritems():
         if node['_class']=='Dream.BatchSource':
             standardBatchUnits=int(node['numberOfUnits']) 
+        node['wip']=[]
 
     if wipData:
       wipData.pop(0)  # pop the column names
@@ -59,5 +60,43 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
         # if the wip is in a server
         else:
             workingBatchSize=int(nodes[stationId].get(('workingBatchSize'), standardBatchUnits))
-            print stationId, workingBatchSize
+            nextObject=self.getSuccessors(data, stationId)[0]
+            previousObject=self.getPredecessors(data, stationId)[0]
+            
+            if nodes[nextObject]['_class'].startswith('Dream.BatchReassembly')\
+                and nodes[previousObject]['_class'].startswith('Dream.BatchDecomposition'):
+                sbId=0
+                SBinReassembly=(int(numberOfUnits)-int(unitsToProcess))/workingBatchSize
+                SBinDecomposition=int(unitsToProcess)/workingBatchSize
+                for i in range(SBinReassembly):
+                    nodes[nextObject]['wip'].append({
+                      "_class": 'Dream.SubBatch',
+                      "id": 'B_'+partId+'_WIP_SB_'+str(sbId), 
+                      "name":'Batch'+partId+'_SubBatch_'+str(sbId)+'_wip',
+                      "numberOfUnits":workingBatchSize,  
+                      "parentBatchId":partId,
+                      "parentBatchName":'Batch'+partId+"WIP"                    
+                    })
+                    sbId+=1  
+                remainingUnitsInWorkingBatch=int(unitsToProcess) % workingBatchSize
+                nodes[stationId]['wip'].append({
+                      "_class": 'Dream.SubBatch',
+                      "id": 'B_'+partId+'_WIP_SB_'+str(sbId), 
+                      "name":'Batch'+partId+'_SubBatch_'+str(sbId)+'_wip',
+                      "numberOfUnits":workingBatchSize,  
+                      "parentBatchId":partId,
+                      "unitsToProcess": remainingUnitsInWorkingBatch, 
+                      "parentBatchName":'Batch'+partId+"WIP"                                                
+                })       
+                sbId+=1   
+                for i in range(SBinDecomposition):
+                    nodes[previousObject]['wip'].append({
+                      "_class": 'Dream.SubBatch',
+                      "id": 'B_'+partId+'_WIP_SB_'+str(sbId), 
+                      "name":'Batch'+partId+'_SubBatch_'+str(sbId)+'_wip',
+                      "numberOfUnits":workingBatchSize,  
+                      "parentBatchId":partId,
+                      "parentBatchName":'Batch'+partId+"WIP"                    
+                    })
+                    sbId+=1            
     return data
