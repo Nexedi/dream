@@ -40,7 +40,13 @@ class AddBatchStations(plugin.InputPreparationPlugin):
                     predecessorClass=nodes[predecessorId]['_class']
                     if predecessorClass=='Dream.BatchDecomposition':
                         data['graph']['node'][node_id]['_class']='Dream.BatchScrapMachineAfterDecompose'
-                        
+
+        # loop through the nodes to find the machines that do need addition
+        machinesThatNeedAddition={}
+        for node_id, node in nodes.iteritems():
+            if node['_class']=='Dream.BatchScrapMachine' and self.checkIfMachineNeedsAddition(data,node_id,standardBatchUnits):
+                machinesThatNeedAddition[node_id]=node
+               
         # loop in BatchDecompositions to change the classes to BatchDecompositionBlocking   
         for node_id, node in nodes.iteritems():
             if node['_class']=='Dream.BatchDecomposition':
@@ -61,12 +67,6 @@ class AddBatchStations(plugin.InputPreparationPlugin):
                 predecessorClass=nodes[predecessorId]['_class']
                 if predecessorClass=='Dream.BatchSource':
                     data['graph']['node'][node_id]['_class']='Dream.BatchDecompositionStartTime'
-
-        # loop through the nodes to find the machines that do need addition
-        machinesThatNeedAddition={}
-        for node_id, node in nodes.iteritems():
-            if node['_class']=='Dream.BatchScrapMachine' and self.checkIfMachineNeedsAddition(data,node_id,standardBatchUnits):
-                machinesThatNeedAddition[node_id]=node
    
         # loop through the nodes
         for node_id, node in machinesThatNeedAddition.iteritems():
