@@ -63,6 +63,7 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
             nextObject=self.getSuccessors(data, stationId)[0]
             previousObject=self.getPredecessors(data, stationId)[0]
             
+            # if the station has inherent decomposition/reassembly
             if nodes[nextObject]['_class'].startswith('Dream.BatchReassembly')\
                 and nodes[previousObject]['_class'].startswith('Dream.BatchDecomposition'):
                 sbId=0
@@ -79,16 +80,17 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
                     })
                     sbId+=1  
                 remainingUnitsInWorkingBatch=int(unitsToProcess) % workingBatchSize
-                nodes[stationId]['wip'].append({
-                      "_class": 'Dream.SubBatch',
-                      "id": 'B_'+partId+'_WIP_SB_'+str(sbId), 
-                      "name":'Batch'+partId+'_SubBatch_'+str(sbId)+'_wip',
-                      "numberOfUnits":workingBatchSize,  
-                      "parentBatchId":partId,
-                      "unitsToProcess": remainingUnitsInWorkingBatch, 
-                      "parentBatchName":'Batch'+partId+"WIP"                                                
-                })       
-                sbId+=1   
+                if remainingUnitsInWorkingBatch:
+                    nodes[stationId]['wip'].append({
+                          "_class": 'Dream.SubBatch',
+                          "id": 'B_'+partId+'_WIP_SB_'+str(sbId), 
+                          "name":'Batch'+partId+'_SubBatch_'+str(sbId)+'_wip',
+                          "numberOfUnits":workingBatchSize,  
+                          "parentBatchId":partId,
+                          "unitsToProcess": remainingUnitsInWorkingBatch, 
+                          "parentBatchName":'Batch'+partId+"WIP"                                                
+                    })       
+                    sbId+=1   
                 for i in range(SBinDecomposition):
                     nodes[previousObject]['wip'].append({
                       "_class": 'Dream.SubBatch',
@@ -99,4 +101,128 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
                       "parentBatchName":'Batch'+partId+"WIP"                    
                     })
                     sbId+=1            
+            # if the station is after routing queue and before reassembly
+            elif nodes[nextObject]['_class'].startswith('Dream.BatchReassembly')\
+                and nodes[previousObject]['_class'].startswith('Dream.RoutingQueue'):    
+                sbId=0
+                SBinReassembly=(int(numberOfUnits)-int(unitsToProcess))/workingBatchSize
+                SBinDecomposition=int(unitsToProcess)/workingBatchSize
+                for i in range(SBinReassembly):
+                    nodes[nextObject]['wip'].append({
+                      "_class": 'Dream.SubBatch',
+                      "id": 'B_'+partId+'_WIP_SB_'+str(sbId), 
+                      "name":'Batch'+partId+'_SubBatch_'+str(sbId)+'_wip',
+                      "numberOfUnits":workingBatchSize,  
+                      "parentBatchId":partId,
+                      "parentBatchName":'Batch'+partId+"WIP"                    
+                    })
+                    sbId+=1  
+                remainingUnitsInWorkingBatch=int(unitsToProcess) % workingBatchSize
+                if remainingUnitsInWorkingBatch:
+                    nodes[stationId]['wip'].append({
+                          "_class": 'Dream.SubBatch',
+                          "id": 'B_'+partId+'_WIP_SB_'+str(sbId), 
+                          "name":'Batch'+partId+'_SubBatch_'+str(sbId)+'_wip',
+                          "numberOfUnits":workingBatchSize,  
+                          "parentBatchId":partId,
+                          "unitsToProcess": remainingUnitsInWorkingBatch, 
+                          "parentBatchName":'Batch'+partId+"WIP"                                                
+                    })       
+                    sbId+=1   
+                for i in range(SBinDecomposition):
+                    nodes[previousObject]['wip'].append({
+                      "_class": 'Dream.SubBatch',
+                      "id": 'B_'+partId+'_WIP_SB_'+str(sbId), 
+                      "name":'Batch'+partId+'_SubBatch_'+str(sbId)+'_wip',
+                      "numberOfUnits":workingBatchSize,  
+                      "parentBatchId":partId,
+                      "parentBatchName":'Batch'+partId+"WIP",          
+                      "receiver":stationId          
+                    })
+                    sbId+=1            
+            # if the station is after batch decomposition and before reassembly
+            elif nodes[nextObject]['_class'].startswith('Dream.RoutingQueue')\
+                and nodes[previousObject]['_class'].startswith('Dream.BatchDecomposition'): 
+                sbId=0
+                SBinReassembly=(int(numberOfUnits)-int(unitsToProcess))/workingBatchSize
+                SBinDecomposition=int(unitsToProcess)/workingBatchSize
+                for i in range(SBinReassembly):
+                    nodes[nextObject]['wip'].append({
+                      "_class": 'Dream.SubBatch',
+                      "id": 'B_'+partId+'_WIP_SB_'+str(sbId), 
+                      "name":'Batch'+partId+'_SubBatch_'+str(sbId)+'_wip',
+                      "numberOfUnits":workingBatchSize,  
+                      "parentBatchId":partId,
+                      "parentBatchName":'Batch'+partId+"WIP"                    
+                    })
+                    sbId+=1  
+                remainingUnitsInWorkingBatch=int(unitsToProcess) % workingBatchSize
+                if remainingUnitsInWorkingBatch:
+                    nodes[stationId]['wip'].append({
+                          "_class": 'Dream.SubBatch',
+                          "id": 'B_'+partId+'_WIP_SB_'+str(sbId), 
+                          "name":'Batch'+partId+'_SubBatch_'+str(sbId)+'_wip',
+                          "numberOfUnits":workingBatchSize,  
+                          "parentBatchId":partId,
+                          "unitsToProcess": remainingUnitsInWorkingBatch, 
+                          "parentBatchName":'Batch'+partId+"WIP"                                                
+                    })       
+                    sbId+=1   
+                for i in range(SBinDecomposition):
+                    nodes[previousObject]['wip'].append({
+                      "_class": 'Dream.SubBatch',
+                      "id": 'B_'+partId+'_WIP_SB_'+str(sbId), 
+                      "name":'Batch'+partId+'_SubBatch_'+str(sbId)+'_wip',
+                      "numberOfUnits":workingBatchSize,  
+                      "parentBatchId":partId,
+                      "parentBatchName":'Batch_'+partId+"_WIP"                    
+                    })
+                    sbId+=1         
+            # for the stations in the end of a sub-line
+            elif nodes[stationId]['_class'] == 'Dream.M3':
+                # if there are no more units to process, put the sub-batch in reassembly
+                if int(unitsToProcess)==0:
+                    nodes[nextObject]['wip'].append({
+                      "_class": _class,
+                      "id": partId, 
+                      "name":'Batch'+parentBatchId+'_SubBatch_'+partId+'_wip',
+                      "numberOfUnits":numberOfUnits,  
+                      "parentBatchId":parentBatchId,
+                      "parentBatchName":'Batch_'+parentBatchId+"_WIP"                    
+                    })
+                # else put the sub-batch in the station   
+                else:
+                    nodes[stationId]['wip'].append({
+                      "_class": _class,
+                      "id": partId, 
+                      "name":'Batch'+parentBatchId+'_SubBatch_'+partId+'_wip',
+                      "numberOfUnits":numberOfUnits,  
+                      "parentBatchId":parentBatchId,
+                      "unitsToProcess": unitsToProcess, 
+                      "parentBatchName":'Batch_'+parentBatchId+"_WIP"                    
+                    })
+            # for the stations at the start of a sub-line
+            elif nodes[stationId]['_class'] == 'Dream.BatchScrapMachineAfterDecompose':
+                # if there are no more units to process, put the sub-batch in reassembly
+                if int(unitsToProcess)==workingBatchSize:
+                    nodes[previousObject]['wip'].append({
+                      "_class": _class,
+                      "id": partId, 
+                      "name":'Batch'+parentBatchId+'_SubBatch_'+partId+'_wip',
+                      "numberOfUnits":numberOfUnits,  
+                      "parentBatchId":parentBatchId,
+                      "parentBatchName":'Batch_'+parentBatchId+"_WIP"                    
+                    })
+                # else put the sub-batch in the station   
+                else:
+                    nodes[stationId]['wip'].append({
+                      "_class": _class,
+                      "id": partId, 
+                      "name":'Batch'+parentBatchId+'_SubBatch_'+partId+'_wip',
+                      "numberOfUnits":numberOfUnits,  
+                      "parentBatchId":parentBatchId,
+                      "unitsToProcess": unitsToProcess, 
+                      "parentBatchName":'Batch_'+parentBatchId+"_WIP"                    
+                    })
+                                 
     return data
