@@ -22,7 +22,7 @@ class BatchesWIPSpreadsheet(plugin.InputPreparationPlugin):
     standardBatchUnits=0
     for node_id, node in nodes.iteritems():
         if node['_class']=='Dream.BatchSource':
-            standardBatchUnits=int(node['numberOfUnits']) 
+            standardBatchUnits=int(node['batchNumberOfUnits']) 
         node['wip']=[]
 
     if wipData:
