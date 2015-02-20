@@ -1,0 +1,5244 @@
+{
+  "application_configuration": {
+    "general": {
+      "properties": {
+        "confidenceLevel": {
+          "default": 0.95, 
+          "description": "Confidence level for statistical analysis of stochastic experiments", 
+          "name": "Confidence level", 
+          "type": "number"
+        }, 
+        "currentDate": {
+          "default": "2014/02/18", 
+          "description": "The day the experiment starts, in YYYY/MM/DD format", 
+          "name": "Simulation start time", 
+          "type": "string"
+        }, 
+        "ke_url": {
+          "default": "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
+          "description": "The URL for knowledge extraction to access its data for example http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
+          "name": "URL for Knowledge Extraction Spreadsheet", 
+          "type": "string"
+        }, 
+        "maxSimTime": {
+          "default": 100, 
+          "description": "Length of the simulation run", 
+          "name": "Length of experiment", 
+          "type": "number"
+        }, 
+        "numberOfReplications": {
+          "default": 10, 
+          "description": "Number of replications to run", 
+          "name": "Number of replications", 
+          "type": "number"
+        }, 
+        "processTimeout": {
+          "default": 10, 
+          "description": "Number of seconds before the calculation process is interrupted", 
+          "name": "Process timeout", 
+          "type": "number"
+        }, 
+        "seed": {
+          "default": "1", 
+          "description": "When using the same seed, the random number generator produce the same sequence of numbers", 
+          "name": "Seed for random number generator", 
+          "type": "number"
+        }, 
+        "throughputTarget": {
+          "default": 10, 
+          "description": "The daily throughput target in units.", 
+          "name": "Daily throughput target", 
+          "type": "number"
+        }, 
+        "timeUnit": {
+          "default": "minute", 
+          "description": "Used for input and reporting widgets.", 
+          "enum": [
+            "minute", 
+            "hour", 
+            "day", 
+            "week", 
+            "month", 
+            "year"
+          ], 
+          "name": "Time unit", 
+          "type": "string"
+        }, 
+        "trace": {
+          "default": "No", 
+          "description": "Create an excel trace file (Yes or No)", 
+          "enum": [
+            "No", 
+            "Yes"
+          ], 
+          "name": "Output Trace", 
+          "type": "string"
+        }
+      }
+    }, 
+    "input": {
+      "view": {
+        "gadget": "Input_viewProductionLine", 
+        "title": "Production Line", 
+        "type": "object_view"
+      }, 
+      "view_machine_shift_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "format": "date-time", 
+              "name": "Date", 
+              "type": "string"
+            }, 
+            {
+              "name": "Machine", 
+              "type": "string"
+            }, 
+            {
+              "name": "Start", 
+              "type": "string"
+            }, 
+            {
+              "name": "Stop", 
+              "type": "string"
+            }
+          ]
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "Machine Shifts Spreadsheet", 
+        "type": "object_view"
+      }, 
+      "view_management": {
+        "gadget": "Input_viewDocumentManagement", 
+        "title": "Manage Document", 
+        "type": "object_view"
+      }, 
+      "view_operator_shift_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "format": "date-time", 
+              "name": "Date", 
+              "type": "string"
+            }, 
+            {
+              "name": "Product Builder", 
+              "type": "string"
+            }, 
+            {
+              "name": "Start", 
+              "type": "string"
+            }, 
+            {
+              "name": "Stop", 
+              "type": "string"
+            }
+          ]
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "Product Builder Shifts Spreadsheet", 
+        "type": "object_view"
+      }, 
+      "view_operator_skill_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "name": "Product Builder", 
+              "type": "string"
+            }, 
+            {
+              "name": "Skills", 
+              "type": "array"
+            }
+          ]
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "Product Builder Skills", 
+        "type": "object_view"
+      }, 
+      "view_result": {
+        "gadget": "Input_viewResultList", 
+        "title": "Results", 
+        "type": "object_view"
+      }, 
+      "view_run_simulation": {
+        "gadget": "Input_viewSimulation", 
+        "title": "Run Simulation", 
+        "type": "object_view"
+      }, 
+      "view_wip_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "name": "ID", 
+              "type": "string"
+            }, 
+            {
+              "name": "StationID", 
+              "type": "string"
+            }, 
+            {
+              "name": "Number of Units", 
+              "type": "number"
+            }, 
+            {
+              "name": "Remaining Units", 
+              "type": "number"
+            }, 
+            {
+              "name": "Type", 
+              "type": "string"
+            }, 
+            {
+              "name": "Batch ID", 
+              "type": "string"
+            }
+          ]
+        }, 
+        "gadget": "Input_viewSpreadsheet", 
+        "title": "WIP Spreadsheet", 
+        "type": "object_view"
+      }
+    }, 
+    "output": {
+      "view_exit_stats": {
+        "configuration": {
+          "properties": {
+            "lifespan": {
+              "type": "number"
+            }, 
+            "taktTime": {
+              "type": "number"
+            }, 
+            "throughput": {
+              "type": "number"
+            }
+          }
+        }, 
+        "gadget": "Output_viewExitStatistics", 
+        "title": "Exit Statistics", 
+        "type": "object_view"
+      }, 
+      "view_operator_gantt": {
+        "configuration": {
+          "data": {
+            "Operator": []
+          }
+        }, 
+        "gadget": "Output_viewGantt", 
+        "title": "Operator Gantt", 
+        "type": "object_view"
+      }, 
+      "view_queue_stats": {
+        "configuration": {
+          "data": {
+            "queue_stat": [
+              "wip_stat_list"
+            ]
+          }, 
+          "family": "Buffer", 
+          "plot": "line"
+        }, 
+        "gadget": "Output_viewQueueStatGraph", 
+        "title": "Queue Utilization Graph", 
+        "type": "object_view"
+      }, 
+      "view_station_utilization": {
+        "configuration": {
+          "data": {
+            "blockage": [
+              "blockage_ratio"
+            ], 
+            "failure": [
+              "failure_ratio"
+            ], 
+            "waiting": [
+              "waiting_ratio"
+            ], 
+            "working": [
+              "working_ratio", 
+              "setup_ratio", 
+              "load_ratio"
+            ]
+          }, 
+          "family": "Server", 
+          "plot": "bars"
+        }, 
+        "gadget": "Output_viewStationUtilisationGraph", 
+        "title": "Station Utilization", 
+        "type": "object_view"
+      }
+    }, 
+    "post_processing": {
+      "description": "", 
+      "plugin_list": []
+    }, 
+    "pre_processing": {
+      "description": "", 
+      "plugin_list": [
+        {
+          "_class": "dream.plugins.AddBatchStations.AddBatchStations", 
+          "input_id": "batchStations"
+        }, 
+        {
+          "_class": "dream.plugins.GatherWIPStat.GatherWIPStat", 
+          "input_id": "WIPStat"
+        }, 
+        {
+          "_class": "dream.plugins.ReadEntryData.ReadEntryData", 
+          "input_id": "EntryData"
+        }, 
+        {
+          "_class": "dream.plugins.BatchesWIPSpreadsheet.BatchesWIPSpreadsheet", 
+          "input_id": "WipSpreadsheet"
+        }, 
+        {
+          "_class": "dream.plugins.ReadSkilledOperators.ReadSkilledOperators", 
+          "input_id": "SkilledOperatorsSpreadsheet"
+        }, 
+        {
+          "_class": "dream.plugins.ReadShiftFromSpreadsheet.ReadShiftFromSpreadsheet", 
+          "input_id": "ShiftSpreadsheet"
+        }, 
+        {
+          "_class": "dream.plugins.BatchesShiftAttributes.BatchesShiftAttributes", 
+          "input_id": "ShiftSpreadsheet"
+        }
+      ]
+    }, 
+    "processing_plugin": {
+      "_class": "dream.plugins.plugin.DefaultExecutionPlugin", 
+      "description": ""
+    }
+  }, 
+  "class_definition": {
+    "Dream.BatchDecomposition": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "D", 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Decomposition", 
+              "type": "string"
+            }, 
+            "numberOfSubBatches": {
+              "default": 10, 
+              "description": "Number Of Sub-Batches", 
+              "type": "number"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#dfd", 
+        "backgroundImage": "linear-gradient(to bottom, #dfd 0%, #cec 100%)", 
+        "border": "1px solid #bcb"
+      }, 
+      "description": "A station that decomposes a batch into sub-batches", 
+      "name": "Decomposition"
+    }, 
+    "Dream.BatchDecompositionStartTime": {
+      "_class": "Dream.BatchDecompositionStartTime", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "D", 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Decomposition", 
+              "type": "string"
+            }, 
+            "numberOfSubBatches": {
+              "default": 10, 
+              "description": "Number Of Sub-Batches", 
+              "type": "number"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#dfd", 
+        "backgroundImage": "linear-gradient(to bottom, #dfd 0%, #cec 100%)", 
+        "border": "1px solid #bcb"
+      }, 
+      "description": "A station that decomposes batches into sub-batches", 
+      "name": "Decomposition"
+    }, 
+    "Dream.BatchReassembly": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "R", 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Reassembly", 
+              "type": "string"
+            }, 
+            "numberOfSubBatches": {
+              "default": 10, 
+              "description": "Number Of Sub-Batches", 
+              "type": "number"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#dfd", 
+        "backgroundImage": "linear-gradient(to bottom, #dfd 0%, #cec 100%)", 
+        "border": "1px solid #bcb"
+      }, 
+      "description": "A station that assembles sub-batches back into a parent batch", 
+      "name": "Reassembly"
+    }, 
+    "Dream.BatchScrapMachine": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "M", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "interruption": {
+              "name": "Interruptions", 
+              "properties": {
+                "failure": {
+                  "$ref": "#/definitions/_failureDist", 
+                  "required": true
+                }
+              }, 
+              "type": "object"
+            }, 
+            "name": {
+              "default": "Machine", 
+              "name": "Name", 
+              "type": "string"
+            }, 
+            "processingTime": {
+              "$ref": "#/definitions/_dist", 
+              "description": "TODO: describe processing time", 
+              "name": "Processing time", 
+              "required": true
+            }, 
+            "scrapping": {
+              "$ref": "#/definitions/_dist", 
+              "description": "TODO: describe scrapping", 
+              "name": "Scrapping", 
+              "required": true
+            }, 
+            "workingBatchSize": {
+              "default": "sad", 
+              "name": "Working batch size in this station", 
+              "type": "number"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#fef", 
+        "backgroundImage": "linear-gradient(to bottom, #fef 0%, #ede 100%)", 
+        "border": "1px solid #cbc"
+      }, 
+      "description": "A station processing batches for some time given by a distribution provided by the entities that are processed. A random number of batch units is scrapped", 
+      "name": "Machine"
+    }, 
+    "Dream.BatchSource": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "batchNumberOfUnits": {
+              "description": "the number of units of the created batches", 
+              "name": "Number Of Units", 
+              "required": true, 
+              "type": "number"
+            }, 
+            "entity": {
+              "default": "Dream.Batch", 
+              "description": "Manpy class for entities", 
+              "name": "Entity Class", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "id": {
+              "default": "S", 
+              "name": "ID", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "interArrivalTime": {
+              "$ref": "#/definitions/_dist", 
+              "description": "Inter-arrival time", 
+              "name": "Inter-arrival time", 
+              "required": true
+            }, 
+            "name": {
+              "default": "Source", 
+              "name": "Name", 
+              "type": "string"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "description": "A station creating entities", 
+      "name": "Source"
+    }, 
+    "Dream.Edge": {
+      "_class": "edge", 
+      "allOf": [
+        {
+          "$ref": "#/edge"
+        }
+      ], 
+      "description": "Connect stations together"
+    }, 
+    "Dream.EventGenerator": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "argumentDict": {
+              "default": "{}", 
+              "description": "arguments to be used by the method", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "duration": {
+              "default": 10, 
+              "description": "duration", 
+              "required": true, 
+              "type": "number"
+            }, 
+            "id": {
+              "default": "A", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "interval": {
+              "default": 10, 
+              "description": "interval time", 
+              "required": true, 
+              "type": "number"
+            }, 
+            "method": {
+              "default": "Globals.countIntervalThroughput", 
+              "description": "method to be performed", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Attainment", 
+              "type": "string"
+            }, 
+            "start": {
+              "default": 1, 
+              "description": "Start time", 
+              "required": true, 
+              "type": "number"
+            }, 
+            "stop": {
+              "default": -1, 
+              "description": "Stop time", 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#fdc", 
+        "backgroundImage": "linear-gradient(to bottom, #fdc 0%, #ecb 100%)", 
+        "border": "1px solid #cba"
+      }, 
+      "description": "Attainment", 
+      "name": "Attainment"
+    }, 
+    "Dream.Exit": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "id": {
+              "default": "E", 
+              "required": true
+            }, 
+            "name": {
+              "default": "Exit", 
+              "type": "string"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#eef", 
+        "backgroundImage": "linear-gradient(to bottom, #eef 0%, #dde 100%)", 
+        "border": "1px solid #ccb"
+      }, 
+      "description": "A station where entities exits from the system", 
+      "name": "Exit", 
+      "shape": "rectangle"
+    }, 
+    "Dream.LineClearance": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "capacity": {
+              "$ref": "#/definitions/_capacity", 
+              "required": true
+            }, 
+            "id": {
+              "default": "C", 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Clearance", 
+              "type": "string"
+            }, 
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule", 
+              "required": true
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#eff", 
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)", 
+        "border": "1px solid #bcc"
+      }, 
+      "description": "A buffer where entities of the same group can be held until the next station is ready to process them. Entities of other groups cannot be accepted", 
+      "name": "Clearance"
+    }, 
+    "Dream.NonStarvingEntry": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "entityData": {
+              "description": "Entity produced related information", 
+              "properties": {
+                "class": {
+                  "default": "Dream.Batch", 
+                  "description": "Entity class", 
+                  "required": true, 
+                  "type": "string"
+                }, 
+                "numberOfUnits": {
+                  "default": 80, 
+                  "description": "Number of units per batch", 
+                  "required": true, 
+                  "type": "number"
+                }
+              }, 
+              "required": true, 
+              "type": "object"
+            }, 
+            "id": {
+              "default": "E", 
+              "required": true, 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Entry", 
+              "type": "string"
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#ffe", 
+        "backgroundImage": "linear-gradient(to bottom, #ffe 0%, #dde 100%)", 
+        "border": "1px solid #bbc"
+      }, 
+      "description": "A station creating batches", 
+      "name": "Entry"
+    }, 
+    "Dream.Queue": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "capacity": {
+              "$ref": "#/definitions/_capacity", 
+              "required": true
+            }, 
+            "id": {
+              "default": "Q", 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "Queue", 
+              "type": "string"
+            }, 
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule", 
+              "required": true
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#eff", 
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)", 
+        "border": "1px solid #bcc"
+      }, 
+      "description": "A buffer where entities can be hold until the next station is ready to process them", 
+      "name": "Queue"
+    }, 
+    "Dream.RoutingQueue": {
+      "_class": "node", 
+      "allOf": [
+        {
+          "$ref": "#/node"
+        }, 
+        {
+          "properties": {
+            "capacity": {
+              "$ref": "#/definitions/_capacity", 
+              "required": true
+            }, 
+            "id": {
+              "default": "RQ", 
+              "type": "string"
+            }, 
+            "name": {
+              "default": "RoutingQueue", 
+              "type": "string"
+            }, 
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule", 
+              "required": true
+            }
+          }, 
+          "type": "object"
+        }
+      ], 
+      "css": {
+        "backgroundColor": "#eff", 
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)", 
+        "border": "1px solid #bcc"
+      }, 
+      "description": "A buffer that directs sub-batches of the same batch directed to the same machine", 
+      "name": "RoutingQueue"
+    }, 
+    "definitions": {
+      "_capacity": {
+        "default": 1, 
+        "description": "capacity of the queue. -1 means infinite", 
+        "name": "Capacity", 
+        "oneOf": [
+          {
+            "enum": [
+              -1
+            ]
+          }, 
+          {
+            "multipleOf": 1
+          }
+        ], 
+        "type": "number"
+      }, 
+      "_dist": {
+        "allOf": [
+          {
+            "properties": {
+              "distribution": {
+                "default": "Fixed", 
+                "enum": [
+                  "Fixed", 
+                  "Exp", 
+                  "Normal", 
+                  "Lognormal", 
+                  "Binomial", 
+                  "Poisson", 
+                  "Logistic", 
+                  "Cauchy", 
+                  "Geometric", 
+                  "Gama", 
+                  "Weibull"
+                ], 
+                "type": "string"
+              }
+            }, 
+            "type": "object"
+          }, 
+          {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/distributionTypes/_fixed"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_exp"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_normal"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_lognormal"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_binomial"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_poisson"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_logistic"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_cauchy"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_geometric"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_gama"
+              }, 
+              {
+                "$ref": "#/definitions/distributionTypes/_weibull"
+              }
+            ]
+          }
+        ]
+      }, 
+      "_failureDist": {
+        "allOf": [
+          {
+            "properties": {
+              "failureDistribution": {
+                "default": "No", 
+                "description": "Is this machine subject to failures, if not then Time to Repair and Time to failure are ignored", 
+                "enum": [
+                  "No", 
+                  "Yes"
+                ], 
+                "name": "Has failure ?", 
+                "type": "string"
+              }
+            }, 
+            "type": "object"
+          }, 
+          {
+            "$ref": "#/definitions/distributionTypes/_failure"
+          }
+        ]
+      }, 
+      "_operationType": {
+        "description": "the type of operations that are performed manually in the machine", 
+        "enum": [
+          "MT-Load", 
+          "MT-Load-Setup", 
+          "MT-Load-Setup-Processing"
+        ], 
+        "name": "Operation type", 
+        "type": "string"
+      }, 
+      "_schedulingRule": {
+        "default": "FIFO", 
+        "description": "Scheduling Rule of this buffer", 
+        "enum": [
+          "FIFO", 
+          "Priority", 
+          "EDD", 
+          "EOD", 
+          "NumStages", 
+          "RPC", 
+          "LPT", 
+          "SPT", 
+          "MS", 
+          "WINQ", 
+          "WT"
+        ], 
+        "name": "Scheduling Rule", 
+        "type": "string"
+      }, 
+      "distributionTypes": {
+        "_binomial": {
+          "description": "Binomial", 
+          "properties": {
+            "mean": {
+              "default": 0, 
+              "type": "number"
+            }, 
+            "size": {
+              "default": 0, 
+              "type": "number"
+            }
+          }, 
+          "title": "Binomial", 
+          "type": "object"
+        }, 
+        "_cauchy": {
+          "description": "Cauchy", 
+          "properties": {
+            "location": {
+              "default": 0, 
+              "type": "number"
+            }, 
+            "scale": {
+              "default": 0, 
+              "type": "number"
+            }
+          }, 
+          "title": "Cauchy", 
+          "type": "object"
+        }, 
+        "_exp": {
+          "description": "Exponential", 
+          "properties": {
+            "mean": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Exp", 
+          "type": "object"
+        }, 
+        "_failure": {
+          "properties": {
+            "TTF": {
+              "$ref": "#/definitions/_dist", 
+              "name": "Time to Failure"
+            }, 
+            "TTR": {
+              "$ref": "#/definitions/_dist", 
+              "name": "Time to Repair"
+            }, 
+            "repairman": {
+              "description": "Repairman", 
+              "required": true, 
+              "type": "string"
+            }
+          }, 
+          "title": "Yes", 
+          "type": "object"
+        }, 
+        "_fixed": {
+          "properties": {
+            "mean": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Fixed", 
+          "type": "object"
+        }, 
+        "_gama": {
+          "description": "Gama", 
+          "properties": {
+            "rate": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }, 
+            "shape": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Gama", 
+          "type": "object"
+        }, 
+        "_geometric": {
+          "description": "Geometric", 
+          "properties": {
+            "probability": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Geometric", 
+          "type": "object"
+        }, 
+        "_logistic": {
+          "description": "Logistic", 
+          "properties": {
+            "location": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }, 
+            "scale": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Logistic", 
+          "type": "object"
+        }, 
+        "_lognormal": {
+          "description": "Lognormal", 
+          "properties": {
+            "mean": {
+              "_class": "Dream.Property", 
+              "default": 0, 
+              "name": "Mean", 
+              "type": "number"
+            }, 
+            "stdev": {
+              "_class": "Dream.Property", 
+              "default": 0, 
+              "name": "Standard Deviation", 
+              "type": "number"
+            }
+          }, 
+          "title": "Lognormal", 
+          "type": "object"
+        }, 
+        "_no": {
+          "description": "None", 
+          "title": "No", 
+          "type": "string"
+        }, 
+        "_normal": {
+          "description": "Normal", 
+          "properties": {
+            "mean": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }, 
+            "stdev": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Normal", 
+          "type": "object"
+        }, 
+        "_poisson": {
+          "description": "Poisson", 
+          "properties": {
+            "lambda": {
+              "default": 0, 
+              "type": "number"
+            }
+          }, 
+          "title": "Poisson", 
+          "type": "object"
+        }, 
+        "_weibull": {
+          "description": "Weibull", 
+          "properties": {
+            "scale": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }, 
+            "shape": {
+              "default": 0, 
+              "required": true, 
+              "type": "number"
+            }
+          }, 
+          "title": "Weibull", 
+          "type": "object"
+        }
+      }
+    }, 
+    "edge": {
+      "description": "Base definition for edge", 
+      "properties": {
+        "_class": {
+          "type": "string"
+        }, 
+        "destination": {
+          "type": "string"
+        }, 
+        "name": {
+          "type": "string"
+        }, 
+        "source": {
+          "type": "string"
+        }
+      }, 
+      "required": [
+        "_class", 
+        "source", 
+        "destination"
+      ], 
+      "type": "object"
+    }, 
+    "node": {
+      "description": "Base definition for node", 
+      "properties": {
+        "_class": {
+          "type": "string"
+        }, 
+        "coordinate": {
+          "properties": {
+            "left": "number", 
+            "top": "number"
+          }, 
+          "type": "object"
+        }, 
+        "name": {
+          "type": "string"
+        }
+      }, 
+      "required": [
+        "name", 
+        "_class"
+      ], 
+      "type": "object"
+    }
+  }, 
+  "constraints": {}, 
+  "general": {
+    "confidenceLevel": 0.95, 
+    "currentDate": "2014/02/18 11:00", 
+    "ke_url": "http://git.erp5.org/gitweb/dream.git/blob_plain/HEAD:/dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
+    "maxSimTime": 5000, 
+    "numberOfReplications": 1, 
+    "processTimeout": 10, 
+    "seed": 1, 
+    "throughputTarget": 1000, 
+    "timeUnit": "minute", 
+    "trace": "No"
+  }, 
+  "graph": {
+    "edge": {
+      "con_1001": {
+        "_class": "Dream.Edge", 
+        "destination": "B8", 
+        "source": "St3M0"
+      }, 
+      "con_1043": {
+        "_class": "Dream.Edge", 
+        "destination": "St4M0", 
+        "source": "B8"
+      }, 
+      "con_1083": {
+        "_class": "Dream.Edge", 
+        "destination": "B9", 
+        "source": "St4M0"
+      }, 
+      "con_1121": {
+        "_class": "Dream.Edge", 
+        "destination": "St5M0", 
+        "source": "B9"
+      }, 
+      "con_1159": {
+        "_class": "Dream.Edge", 
+        "destination": "St5M1", 
+        "source": "B9"
+      }, 
+      "con_1193": {
+        "_class": "Dream.Edge", 
+        "destination": "B10", 
+        "source": "St5M1"
+      }, 
+      "con_1229": {
+        "_class": "Dream.Edge", 
+        "destination": "B10", 
+        "source": "St5M0"
+      }, 
+      "con_1261": {
+        "_class": "Dream.Edge", 
+        "destination": "St6M0", 
+        "source": "B10"
+      }, 
+      "con_1293": {
+        "_class": "Dream.Edge", 
+        "destination": "St6M1", 
+        "source": "B10"
+      }, 
+      "con_1321": {
+        "_class": "Dream.Edge", 
+        "destination": "B11", 
+        "source": "St6M1"
+      }, 
+      "con_1351": {
+        "_class": "Dream.Edge", 
+        "destination": "B11", 
+        "source": "St6M0"
+      }, 
+      "con_1377": {
+        "_class": "Dream.Edge", 
+        "destination": "St7D", 
+        "source": "B11"
+      }, 
+      "con_1401": {
+        "_class": "Dream.Edge", 
+        "destination": "St7M0", 
+        "source": "St7D"
+      }, 
+      "con_1423": {
+        "_class": "Dream.Edge", 
+        "destination": "B12", 
+        "source": "St7M0"
+      }, 
+      "con_1443": {
+        "_class": "Dream.Edge", 
+        "destination": "St8M0", 
+        "source": "B12"
+      }, 
+      "con_1463": {
+        "_class": "Dream.Edge", 
+        "destination": "St8M1", 
+        "source": "B12"
+      }, 
+      "con_1479": {
+        "_class": "Dream.Edge", 
+        "destination": "St8RB", 
+        "source": "St8M1"
+      }, 
+      "con_1497": {
+        "_class": "Dream.Edge", 
+        "destination": "St8RA", 
+        "source": "St8M0"
+      }, 
+      "con_1509": {
+        "_class": "Dream.Edge", 
+        "destination": "Dream.Exit1", 
+        "source": "St8RB"
+      }, 
+      "con_1523": {
+        "_class": "Dream.Edge", 
+        "destination": "Dream.Exit1", 
+        "source": "St8RA"
+      }, 
+      "con_273": {
+        "_class": "Dream.Edge", 
+        "destination": "B1", 
+        "source": "St0M0"
+      }, 
+      "con_339": {
+        "_class": "Dream.Edge", 
+        "destination": "St1M0", 
+        "source": "B1"
+      }, 
+      "con_39": {
+        "_class": "Dream.Edge", 
+        "destination": "BDA", 
+        "source": "Dream.BatchSource1"
+      }, 
+      "con_401": {
+        "_class": "Dream.Edge", 
+        "destination": "B2", 
+        "source": "St1M0"
+      }, 
+      "con_459": {
+        "_class": "Dream.Edge", 
+        "destination": "St2M0", 
+        "source": "B2"
+      }, 
+      "con_513": {
+        "_class": "Dream.Edge", 
+        "destination": "BRA", 
+        "source": "St2M0"
+      }, 
+      "con_57": {
+        "_class": "Dream.Edge", 
+        "destination": "BDB", 
+        "source": "Dream.BatchSource1"
+      }, 
+      "con_581": {
+        "_class": "Dream.Edge", 
+        "destination": "B3", 
+        "source": "St0M1"
+      }, 
+      "con_645": {
+        "_class": "Dream.Edge", 
+        "destination": "St1M1", 
+        "source": "B3"
+      }, 
+      "con_705": {
+        "_class": "Dream.Edge", 
+        "destination": "B4", 
+        "source": "St1M1"
+      }, 
+      "con_71": {
+        "_class": "Dream.Edge", 
+        "destination": "St0M1", 
+        "source": "BDB"
+      }, 
+      "con_761": {
+        "_class": "Dream.Edge", 
+        "destination": "St2M1", 
+        "source": "B4"
+      }, 
+      "con_813": {
+        "_class": "Dream.Edge", 
+        "destination": "BRB", 
+        "source": "St2M1"
+      }, 
+      "con_861": {
+        "_class": "Dream.Edge", 
+        "destination": "B7", 
+        "source": "BRB"
+      }, 
+      "con_87": {
+        "_class": "Dream.Edge", 
+        "destination": "St0M0", 
+        "source": "BDA"
+      }, 
+      "con_911": {
+        "_class": "Dream.Edge", 
+        "destination": "B7", 
+        "source": "BRA"
+      }, 
+      "con_957": {
+        "_class": "Dream.Edge", 
+        "destination": "St3M0", 
+        "source": "B7"
+      }
+    }, 
+    "node": {
+      "B1": {
+        "_class": "Dream.LineClearance", 
+        "capacity": 2, 
+        "coordinate": {
+          "left": 0.3081327478571614, 
+          "top": 0.021036307350047176
+        }, 
+        "id": "B1", 
+        "name": "B1", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B10": {
+        "_class": "Dream.Queue", 
+        "capacity": 4, 
+        "coordinate": {
+          "left": 0.37830510689257246, 
+          "top": 0.7550041875821227
+        }, 
+        "id": "B10", 
+        "name": "B10", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B11": {
+        "_class": "Dream.Queue", 
+        "capacity": 4, 
+        "coordinate": {
+          "left": 0.5418509694588267, 
+          "top": 0.7716845469524345
+        }, 
+        "name": "B11", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B12": {
+        "_class": "Dream.RoutingQueue", 
+        "capacity": 23, 
+        "coordinate": {
+          "left": 0.8289991434559814, 
+          "top": 0.7487532817957058
+        }, 
+        "name": "B12", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B2": {
+        "_class": "Dream.LineClearance", 
+        "capacity": 2, 
+        "coordinate": {
+          "left": 0.5232485073555496, 
+          "top": 0.013666696062206444
+        }, 
+        "name": "B2", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B3": {
+        "_class": "Dream.LineClearance", 
+        "capacity": 2, 
+        "coordinate": {
+          "left": 0.30516154587152466, 
+          "top": 0.21432431691821405
+        }, 
+        "name": "B3", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B4": {
+        "_class": "Dream.LineClearance", 
+        "capacity": 2, 
+        "coordinate": {
+          "left": 0.5187142701900398, 
+          "top": 0.24087466145736686
+        }, 
+        "name": "B4", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B7": {
+        "_class": "Dream.Queue", 
+        "capacity": 4, 
+        "coordinate": {
+          "left": 0.8453666868818541, 
+          "top": 0.07788764399810784
+        }, 
+        "name": "B7", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B8": {
+        "_class": "Dream.Queue", 
+        "capacity": 4, 
+        "coordinate": {
+          "left": 0.004539505060373879, 
+          "top": 0.7695789354655987
+        }, 
+        "name": "B8", 
+        "schedulingRule": "FIFO"
+      }, 
+      "B9": {
+        "_class": "Dream.Queue", 
+        "capacity": 4, 
+        "coordinate": {
+          "left": 0.21072871541220164, 
+          "top": 0.7565175398133711
+        }, 
+        "name": "B9", 
+        "schedulingRule": "FIFO"
+      }, 
+      "BDA": {
+        "_class": "Dream.BatchDecomposition", 
+        "coordinate": {
+          "left": 0.09978623503357781, 
+          "top": 0.01725281110758568
+        }, 
+        "name": "BDA", 
+        "numberOfSubBatches": 4
+      }, 
+      "BDB": {
+        "_class": "Dream.BatchDecomposition", 
+        "coordinate": {
+          "left": 0.09762884137511894, 
+          "top": 0.22590515117972654
+        }, 
+        "name": "BDB", 
+        "numberOfSubBatches": 4
+      }, 
+      "BRA": {
+        "_class": "Dream.BatchReassembly", 
+        "coordinate": {
+          "left": 0.7345017315221779, 
+          "top": 0.005869386959240394
+        }, 
+        "name": "BRA", 
+        "numberOfSubBatches": 4
+      }, 
+      "BRB": {
+        "_class": "Dream.BatchReassembly", 
+        "coordinate": {
+          "left": 0.732266858260719, 
+          "top": 0.22001598561825875
+        }, 
+        "name": "BRB", 
+        "numberOfSubBatches": 4
+      }, 
+      "Dream.BatchSource1": {
+        "_class": "Dream.BatchSource", 
+        "batchNumberOfUnits": "80", 
+        "coordinate": {
+          "left": 0.002304632153726827, 
+          "top": 0.10443803914040899
+        }, 
+        "entity": "Dream.Batch", 
+        "id": "Dream.BatchSource1", 
+        "interArrivalTime": {
+          "Fixed": {
+            "mean": 0.5
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "name": "Source", 
+        "numberOfUnits": "80"
+      }, 
+      "Dream.Exit1": {
+        "_class": "Dream.Exit", 
+        "coordinate": {
+          "left": 0.9994692573189933, 
+          "top": 0.7470423170386943
+        }, 
+        "name": "Exit"
+      }, 
+      "St0M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.2018021659108287, 
+          "top": 0.013666696062206444
+        }, 
+        "id": "St0M0", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "RO_E_M_A_A", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.75
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 20
+      }, 
+      "St0M1": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.2018021659108287, 
+          "top": 0.22399692088997386
+        }, 
+        "id": "St0M1", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "RO_E_M_A_B", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.75
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 20
+      }, 
+      "St1M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.4182614199086073, 
+          "top": 0.015344638650002296
+        }, 
+        "id": "St1M0", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "P_B_A_A", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.75
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 20
+      }, 
+      "St1M1": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.41230602697692575, 
+          "top": 0.2219242159080133
+        }, 
+        "id": "St1M1", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "P_B_A_B", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.75
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 20
+      }, 
+      "St2M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.6332996089721042, 
+          "top": 0.01725281110758568
+        }, 
+        "id": "St2M0", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "D_B_A_A", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.75
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 20
+      }, 
+      "St2M1": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.6340488812407455, 
+          "top": 0.22379953969289082
+        }, 
+        "id": "St2M1", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "D_B_A_B", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.75
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 20
+      }, 
+      "St3M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.9659075094274915, 
+          "top": 0.17454810203462923
+        }, 
+        "id": "St3M0", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "Cut & Bend", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.1875
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 80
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": null
+      }, 
+      "St4M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.11094765779640971, 
+          "top": 0.773362431708059
+        }, 
+        "id": "St4M0", 
+        "interruption": {
+          "failure": ""
+        }, 
+        "name": "Moulding", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.375
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 40
+      }, 
+      "St5M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.2970488955292209, 
+          "top": 0.5764883070945124
+        }, 
+        "id": "St5M0", 
+        "interruption": {
+          "failure": ""
+        }, 
+        "name": "Flag Labelling A", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.1875
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 80
+      }, 
+      "St5M1": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.2918428202821252, 
+          "top": 0.9611889446138
+        }, 
+        "id": "St5M1", 
+        "interruption": {
+          "failure": ""
+        }, 
+        "name": "Flag Labelling B", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.1875
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 80
+      }, 
+      "St6M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.45934164132760386, 
+          "top": 0.5615188546490438
+        }, 
+        "id": "St6M0", 
+        "interruption": {
+          "failure": ""
+        }, 
+        "name": "Pressure A", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 1
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 10
+      }, 
+      "St6M1": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.45918659128971234, 
+          "top": 0.960991679081057
+        }, 
+        "id": "St6M1", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "Pressure B", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 1
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 10
+      }, 
+      "St7D": {
+        "_class": "Dream.BatchDecomposition", 
+        "coordinate": {
+          "left": 0.6385832092381459, 
+          "top": 0.7640847057948053
+        }, 
+        "name": "St7_D", 
+        "numberOfSubBatches": 8
+      }, 
+      "St7M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.7286239090253878, 
+          "top": 0.5916553142335758
+        }, 
+        "id": "St7M0", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "Carding", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 0.5
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 10
+      }, 
+      "St8M0": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.8662814564336495, 
+          "top": 0.5158535320361616
+        }, 
+        "id": "St8M0", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "Packaging A", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 1
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 10
+      }, 
+      "St8M1": {
+        "_class": "Dream.BatchScrapMachine", 
+        "coordinate": {
+          "left": 0.8781921514651204, 
+          "top": 0.9611889446138
+        }, 
+        "id": "St8M1", 
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              }, 
+              "distribution": "Fixed"
+            }, 
+            "failureDistribution": "No", 
+            "repairman": ""
+          }
+        }, 
+        "name": "Packaging B", 
+        "processingTime": {
+          "Fixed": {
+            "mean": 1
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "scrapping": {
+          "Fixed": {
+            "mean": 0
+          }, 
+          "distribution": "Fixed"
+        }, 
+        "workingBatchSize": 10
+      }, 
+      "St8RA": {
+        "_class": "Dream.BatchReassembly", 
+        "coordinate": {
+          "left": 0.9697830337196626, 
+          "top": 0.5350013587825962
+        }, 
+        "id": "St8RA", 
+        "name": "St8R_A", 
+        "numberOfSubBatches": 8
+      }, 
+      "St8RB": {
+        "_class": "Dream.BatchReassembly", 
+        "coordinate": {
+          "left": 0.9770689321903234, 
+          "top": 0.960991679081057
+        }, 
+        "name": "St8R_B", 
+        "numberOfSubBatches": 8
+      }
+    }
+  }, 
+  "input": {
+    "machine_shift_spreadsheet": [
+      [
+        "Date", 
+        "Machines", 
+        "Start", 
+        "Stop"
+      ], 
+      [
+        "2014/02/18", 
+        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M1,St3M0,St4M0,St5M0,St5M1,St6M0,St6M1,St7M0,St8M0,St8M1", 
+        "07:00", 
+        "10:00"
+      ], 
+      [
+        "2014/02/18", 
+        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M1,St3M0,St4M0,St5M0,St5M1,St6M0,St6M1,St7M0,St8M0,St8M1", 
+        "10:30", 
+        "12:45"
+      ], 
+      [
+        "2014/02/18", 
+        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M1,St3M0,St4M0,St5M0,St5M1,St6M0,St6M1,St7M0,St8M0,St8M1", 
+        "13:30", 
+        "16:00"
+      ], 
+      [
+        "2014/02/18", 
+        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M1,St3M0,St4M0,St5M0,St5M1,St6M0,St6M1,St7M0,St8M0,St8M1", 
+        "16:03", 
+        "19:00"
+      ], 
+      [
+        "2014/02/18", 
+        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M1,St3M0,St4M0,St5M0,St5M1,St6M0,St6M1,St7M0,St8M0,St8M1", 
+        "19:30", 
+        "21:45"
+      ], 
+      [
+        "2014/02/18", 
+        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M1,St3M0,St4M0,St5M0,St5M1,St6M0,St6M1,St7M0,St8M0,St8M1", 
+        "22:30", 
+        "01:00"
+      ], 
+      [
+        "2014/02/19", 
+        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M1,St3M0,St4M0,St5M0,St5M1,St6M0,St6M1,St7M0,St8M0,St8M1", 
+        "07:00", 
+        "10:00"
+      ], 
+      [
+        "2014/02/19", 
+        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M1,St3M0,St4M0,St5M0,St5M1,St6M0,St6M1,St7M0,St8M0,St8M1", 
+        "10:30", 
+        "12:45"
+      ], 
+      [
+        "2014/02/19", 
+        "St0M0,St0M1,St1M0,St1M1,St2M0,St2M1,St3M0,St4M0,St5M0,St5M1,St6M0,St6M1,St7M0,St8M0,St8M1", 
+        "13:30", 
+        "14:00"
+      ], 
+      [
+        "", 
+        "", 
+        "", 
+        ""
+      ]
+    ], 
+    "operator_shift_spreadsheet": [
+      [
+        "Date", 
+        "Product Builder", 
+        "Start", 
+        "Stop"
+      ], 
+      [
+        null, 
+        null, 
+        null, 
+        null
+      ]
+    ], 
+    "operator_skill_spreadsheet": [
+      [
+        "Product Builder", 
+        "Skills"
+      ], 
+      [
+        null, 
+        null
+      ]
+    ], 
+    "wip_spreadsheet": [
+      [
+        "ID", 
+        "StationID", 
+        "Number of Units", 
+        "Remaining Units", 
+        "Type", 
+        "Batch ID"
+      ], 
+      [
+        "1", 
+        "St8M0", 
+        "80", 
+        "60", 
+        "Batch", 
+        null
+      ], 
+      [
+        "2", 
+        "St7M0", 
+        "80", 
+        "20", 
+        "Batch", 
+        ""
+      ], 
+      [
+        "3", 
+        "B11", 
+        "80", 
+        "", 
+        "Batch", 
+        null
+      ], 
+      [
+        "4", 
+        "St6M0", 
+        "80", 
+        "45", 
+        "Batch", 
+        ""
+      ], 
+      [
+        "5", 
+        "St6M1", 
+        "80", 
+        "10", 
+        "Batch", 
+        null
+      ], 
+      [
+        "6", 
+        "B10", 
+        "80", 
+        "", 
+        "Batch", 
+        ""
+      ], 
+      [
+        "7", 
+        "B9", 
+        "80", 
+        "", 
+        "Batch", 
+        null
+      ], 
+      [
+        "8", 
+        "B9", 
+        "80", 
+        "", 
+        "Batch", 
+        null
+      ], 
+      [
+        "9", 
+        "B7", 
+        "80", 
+        "", 
+        "Batch", 
+        null
+      ], 
+      [
+        "12", 
+        "B7", 
+        "80", 
+        "", 
+        "Batch", 
+        null
+      ], 
+      [
+        "13", 
+        "B7", 
+        "80", 
+        "", 
+        "Batch", 
+        null
+      ], 
+      [
+        "B10_SB0", 
+        "St2M0", 
+        "20", 
+        "0", 
+        "SubBatch", 
+        "10"
+      ], 
+      [
+        "B10_SB1", 
+        "B2", 
+        "20", 
+        "", 
+        "SubBatch", 
+        "10"
+      ], 
+      [
+        "B10_SB2", 
+        "B1", 
+        "20", 
+        null, 
+        "SubBatch", 
+        "10"
+      ], 
+      [
+        "B10_SB3", 
+        "St0M0", 
+        "20", 
+        "20", 
+        "SubBatch", 
+        "10"
+      ], 
+      [
+        "B11_SB0", 
+        "B4", 
+        "20", 
+        "", 
+        "SubBatch", 
+        "11"
+      ], 
+      [
+        "B11_SB1", 
+        "B3", 
+        "20", 
+        "", 
+        "SubBatch", 
+        "11"
+      ], 
+      [
+        "B11_SB2", 
+        "St0M1", 
+        "20", 
+        "20", 
+        "SubBatch", 
+        "11"
+      ], 
+      [
+        "B11_SB3", 
+        "St0M1", 
+        "20", 
+        "20", 
+        "SubBatch", 
+        "11"
+      ], 
+      [
+        null, 
+        null, 
+        null, 
+        null, 
+        null, 
+        null
+      ]
+    ]
+  }, 
+  "result": {
+    "result_list": [
+      {
+        "_class": "Dream.Simulation", 
+        "elementList": [
+          {
+            "_class": "Dream.BatchScrapMachineAfterDecompose", 
+            "family": "Server", 
+            "id": "St7M0", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "loading_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                79.6
+              ], 
+              "setup_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                0
+              ], 
+              "working_ratio": [
+                20.4
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.BatchScrapMachine", 
+            "family": "Server", 
+            "id": "St5M0", 
+            "results": {
+              "blockage_ratio": [
+                10.1
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "loading_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                79.88
+              ], 
+              "setup_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                5.22
+              ], 
+              "working_ratio": [
+                4.8
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.BatchScrapMachine", 
+            "family": "Server", 
+            "id": "St5M1", 
+            "results": {
+              "blockage_ratio": [
+                9.68
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "loading_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                79.7
+              ], 
+              "setup_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                6.12
+              ], 
+              "working_ratio": [
+                4.5
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.BatchScrapMachine", 
+            "family": "Server", 
+            "id": "St6M1", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "loading_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                79.2
+              ], 
+              "setup_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                0
+              ], 
+              "working_ratio": [
+                20.8
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.BatchScrapMachine", 
+            "family": "Server", 
+            "id": "St6M0", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "loading_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                79.1
+              ], 
+              "setup_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                0
+              ], 
+              "working_ratio": [
+                20.9
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.RoutingQueue", 
+            "family": "Buffer", 
+            "id": "B12", 
+            "results": {}
+          }, 
+          {
+            "_class": "Dream.Queue", 
+            "family": "Buffer", 
+            "id": "B10", 
+            "results": {
+              "wip_stat_list": [
+                [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    0, 
+                    1
+                  ], 
+                  [
+                    0, 
+                    1
+                  ], 
+                  [
+                    10, 
+                    0
+                  ], 
+                  [
+                    15, 
+                    1
+                  ], 
+                  [
+                    15, 
+                    2
+                  ], 
+                  [
+                    45, 
+                    1
+                  ], 
+                  [
+                    45, 
+                    1
+                  ], 
+                  [
+                    60, 
+                    2
+                  ], 
+                  [
+                    90, 
+                    3
+                  ], 
+                  [
+                    90, 
+                    2
+                  ], 
+                  [
+                    90, 
+                    2
+                  ], 
+                  [
+                    165, 
+                    3
+                  ], 
+                  [
+                    170, 
+                    2
+                  ], 
+                  [
+                    170, 
+                    2
+                  ], 
+                  [
+                    195, 
+                    3
+                  ], 
+                  [
+                    220, 
+                    2
+                  ], 
+                  [
+                    220, 
+                    2
+                  ], 
+                  [
+                    225, 
+                    3
+                  ], 
+                  [
+                    250, 
+                    2
+                  ], 
+                  [
+                    250, 
+                    2
+                  ], 
+                  [
+                    255, 
+                    3
+                  ], 
+                  [
+                    285, 
+                    4
+                  ], 
+                  [
+                    300, 
+                    3
+                  ], 
+                  [
+                    300, 
+                    3
+                  ], 
+                  [
+                    318, 
+                    4
+                  ], 
+                  [
+                    333, 
+                    3
+                  ], 
+                  [
+                    333, 
+                    3
+                  ], 
+                  [
+                    348, 
+                    4
+                  ], 
+                  [
+                    383, 
+                    3
+                  ], 
+                  [
+                    383, 
+                    3
+                  ], 
+                  [
+                    383, 
+                    4
+                  ], 
+                  [
+                    413, 
+                    3
+                  ], 
+                  [
+                    413, 
+                    3
+                  ], 
+                  [
+                    413, 
+                    4
+                  ], 
+                  [
+                    463, 
+                    3
+                  ], 
+                  [
+                    463, 
+                    3
+                  ], 
+                  [
+                    463, 
+                    4
+                  ], 
+                  [
+                    530, 
+                    3
+                  ], 
+                  [
+                    530, 
+                    3
+                  ], 
+                  [
+                    530, 
+                    4
+                  ], 
+                  [
+                    580, 
+                    3
+                  ], 
+                  [
+                    580, 
+                    3
+                  ], 
+                  [
+                    580, 
+                    4
+                  ], 
+                  [
+                    610, 
+                    3
+                  ], 
+                  [
+                    610, 
+                    3
+                  ], 
+                  [
+                    610, 
+                    4
+                  ], 
+                  [
+                    710, 
+                    3
+                  ], 
+                  [
+                    710, 
+                    3
+                  ], 
+                  [
+                    710, 
+                    4
+                  ], 
+                  [
+                    740, 
+                    3
+                  ], 
+                  [
+                    740, 
+                    3
+                  ], 
+                  [
+                    740, 
+                    4
+                  ], 
+                  [
+                    790, 
+                    3
+                  ], 
+                  [
+                    790, 
+                    3
+                  ], 
+                  [
+                    790, 
+                    4
+                  ], 
+                  [
+                    820, 
+                    3
+                  ], 
+                  [
+                    820, 
+                    3
+                  ], 
+                  [
+                    820, 
+                    4
+                  ], 
+                  [
+                    1230, 
+                    3
+                  ], 
+                  [
+                    1230, 
+                    3
+                  ], 
+                  [
+                    1230, 
+                    4
+                  ], 
+                  [
+                    1260, 
+                    3
+                  ], 
+                  [
+                    1260, 
+                    3
+                  ], 
+                  [
+                    1260, 
+                    4
+                  ], 
+                  [
+                    1310, 
+                    3
+                  ], 
+                  [
+                    1310, 
+                    3
+                  ], 
+                  [
+                    1310, 
+                    4
+                  ], 
+                  [
+                    1340, 
+                    3
+                  ], 
+                  [
+                    1340, 
+                    3
+                  ], 
+                  [
+                    1340, 
+                    4
+                  ], 
+                  [
+                    1420, 
+                    3
+                  ], 
+                  [
+                    1420, 
+                    3
+                  ], 
+                  [
+                    1420, 
+                    4
+                  ], 
+                  [
+                    1450, 
+                    3
+                  ], 
+                  [
+                    1450, 
+                    3
+                  ], 
+                  [
+                    1450, 
+                    4
+                  ], 
+                  [
+                    1500, 
+                    3
+                  ], 
+                  [
+                    1500, 
+                    3
+                  ], 
+                  [
+                    1500, 
+                    4
+                  ], 
+                  [
+                    1530, 
+                    3
+                  ], 
+                  [
+                    1530, 
+                    3
+                  ], 
+                  [
+                    1530, 
+                    4
+                  ]
+                ]
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.Queue", 
+            "family": "Buffer", 
+            "id": "B11", 
+            "results": {
+              "wip_stat_list": [
+                [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    0, 
+                    1
+                  ], 
+                  [
+                    0, 
+                    1
+                  ], 
+                  [
+                    5, 
+                    1
+                  ], 
+                  [
+                    10, 
+                    0
+                  ], 
+                  [
+                    10, 
+                    1
+                  ], 
+                  [
+                    15, 
+                    1
+                  ], 
+                  [
+                    20, 
+                    1
+                  ], 
+                  [
+                    25, 
+                    1
+                  ], 
+                  [
+                    30, 
+                    1
+                  ], 
+                  [
+                    35, 
+                    1
+                  ], 
+                  [
+                    40, 
+                    1
+                  ], 
+                  [
+                    45, 
+                    1
+                  ], 
+                  [
+                    45, 
+                    2
+                  ], 
+                  [
+                    50, 
+                    1
+                  ], 
+                  [
+                    50, 
+                    1
+                  ], 
+                  [
+                    55, 
+                    1
+                  ], 
+                  [
+                    60, 
+                    1
+                  ], 
+                  [
+                    65, 
+                    1
+                  ], 
+                  [
+                    70, 
+                    1
+                  ], 
+                  [
+                    75, 
+                    1
+                  ], 
+                  [
+                    80, 
+                    1
+                  ], 
+                  [
+                    85, 
+                    1
+                  ], 
+                  [
+                    90, 
+                    0
+                  ], 
+                  [
+                    90, 
+                    1
+                  ], 
+                  [
+                    95, 
+                    1
+                  ], 
+                  [
+                    100, 
+                    1
+                  ], 
+                  [
+                    155, 
+                    1
+                  ], 
+                  [
+                    160, 
+                    1
+                  ], 
+                  [
+                    165, 
+                    1
+                  ], 
+                  [
+                    170, 
+                    1
+                  ], 
+                  [
+                    170, 
+                    2
+                  ], 
+                  [
+                    175, 
+                    2
+                  ], 
+                  [
+                    180, 
+                    1
+                  ], 
+                  [
+                    180, 
+                    1
+                  ], 
+                  [
+                    185, 
+                    1
+                  ], 
+                  [
+                    190, 
+                    1
+                  ], 
+                  [
+                    195, 
+                    1
+                  ], 
+                  [
+                    200, 
+                    1
+                  ], 
+                  [
+                    205, 
+                    1
+                  ], 
+                  [
+                    210, 
+                    1
+                  ], 
+                  [
+                    215, 
+                    1
+                  ], 
+                  [
+                    220, 
+                    0
+                  ], 
+                  [
+                    220, 
+                    1
+                  ], 
+                  [
+                    225, 
+                    1
+                  ], 
+                  [
+                    230, 
+                    1
+                  ], 
+                  [
+                    235, 
+                    1
+                  ], 
+                  [
+                    240, 
+                    1
+                  ], 
+                  [
+                    245, 
+                    1
+                  ], 
+                  [
+                    250, 
+                    1
+                  ], 
+                  [
+                    250, 
+                    2
+                  ], 
+                  [
+                    255, 
+                    2
+                  ], 
+                  [
+                    260, 
+                    1
+                  ], 
+                  [
+                    260, 
+                    1
+                  ], 
+                  [
+                    265, 
+                    1
+                  ], 
+                  [
+                    270, 
+                    1
+                  ], 
+                  [
+                    275, 
+                    1
+                  ], 
+                  [
+                    280, 
+                    1
+                  ], 
+                  [
+                    285, 
+                    1
+                  ], 
+                  [
+                    290, 
+                    1
+                  ], 
+                  [
+                    295, 
+                    1
+                  ], 
+                  [
+                    300, 
+                    2
+                  ], 
+                  [
+                    308, 
+                    1
+                  ], 
+                  [
+                    308, 
+                    1
+                  ], 
+                  [
+                    313, 
+                    1
+                  ], 
+                  [
+                    318, 
+                    1
+                  ], 
+                  [
+                    323, 
+                    1
+                  ], 
+                  [
+                    328, 
+                    1
+                  ], 
+                  [
+                    333, 
+                    1
+                  ], 
+                  [
+                    333, 
+                    2
+                  ], 
+                  [
+                    338, 
+                    2
+                  ], 
+                  [
+                    343, 
+                    2
+                  ], 
+                  [
+                    348, 
+                    1
+                  ], 
+                  [
+                    348, 
+                    1
+                  ], 
+                  [
+                    353, 
+                    1
+                  ], 
+                  [
+                    358, 
+                    1
+                  ], 
+                  [
+                    363, 
+                    1
+                  ], 
+                  [
+                    368, 
+                    1
+                  ], 
+                  [
+                    373, 
+                    1
+                  ], 
+                  [
+                    378, 
+                    1
+                  ], 
+                  [
+                    383, 
+                    1
+                  ], 
+                  [
+                    383, 
+                    2
+                  ], 
+                  [
+                    388, 
+                    1
+                  ], 
+                  [
+                    388, 
+                    1
+                  ], 
+                  [
+                    393, 
+                    1
+                  ], 
+                  [
+                    398, 
+                    1
+                  ], 
+                  [
+                    403, 
+                    1
+                  ], 
+                  [
+                    408, 
+                    1
+                  ], 
+                  [
+                    413, 
+                    1
+                  ], 
+                  [
+                    413, 
+                    2
+                  ], 
+                  [
+                    418, 
+                    2
+                  ], 
+                  [
+                    423, 
+                    2
+                  ], 
+                  [
+                    428, 
+                    1
+                  ], 
+                  [
+                    428, 
+                    1
+                  ], 
+                  [
+                    433, 
+                    1
+                  ], 
+                  [
+                    438, 
+                    1
+                  ], 
+                  [
+                    443, 
+                    1
+                  ], 
+                  [
+                    448, 
+                    1
+                  ], 
+                  [
+                    453, 
+                    1
+                  ], 
+                  [
+                    458, 
+                    1
+                  ], 
+                  [
+                    463, 
+                    1
+                  ], 
+                  [
+                    463, 
+                    2
+                  ], 
+                  [
+                    468, 
+                    1
+                  ], 
+                  [
+                    468, 
+                    1
+                  ], 
+                  [
+                    473, 
+                    1
+                  ], 
+                  [
+                    515, 
+                    1
+                  ], 
+                  [
+                    520, 
+                    1
+                  ], 
+                  [
+                    525, 
+                    1
+                  ], 
+                  [
+                    530, 
+                    1
+                  ], 
+                  [
+                    530, 
+                    2
+                  ], 
+                  [
+                    535, 
+                    2
+                  ], 
+                  [
+                    540, 
+                    2
+                  ], 
+                  [
+                    545, 
+                    1
+                  ], 
+                  [
+                    545, 
+                    1
+                  ], 
+                  [
+                    550, 
+                    1
+                  ], 
+                  [
+                    555, 
+                    1
+                  ], 
+                  [
+                    560, 
+                    1
+                  ], 
+                  [
+                    565, 
+                    1
+                  ], 
+                  [
+                    570, 
+                    1
+                  ], 
+                  [
+                    575, 
+                    1
+                  ], 
+                  [
+                    580, 
+                    1
+                  ], 
+                  [
+                    580, 
+                    2
+                  ], 
+                  [
+                    585, 
+                    1
+                  ], 
+                  [
+                    585, 
+                    1
+                  ], 
+                  [
+                    590, 
+                    1
+                  ], 
+                  [
+                    595, 
+                    1
+                  ], 
+                  [
+                    600, 
+                    1
+                  ], 
+                  [
+                    605, 
+                    1
+                  ], 
+                  [
+                    610, 
+                    1
+                  ], 
+                  [
+                    610, 
+                    2
+                  ], 
+                  [
+                    615, 
+                    2
+                  ], 
+                  [
+                    620, 
+                    2
+                  ], 
+                  [
+                    625, 
+                    1
+                  ], 
+                  [
+                    625, 
+                    1
+                  ], 
+                  [
+                    630, 
+                    1
+                  ], 
+                  [
+                    635, 
+                    1
+                  ], 
+                  [
+                    640, 
+                    1
+                  ], 
+                  [
+                    695, 
+                    1
+                  ], 
+                  [
+                    700, 
+                    1
+                  ], 
+                  [
+                    705, 
+                    1
+                  ], 
+                  [
+                    710, 
+                    1
+                  ], 
+                  [
+                    710, 
+                    2
+                  ], 
+                  [
+                    715, 
+                    1
+                  ], 
+                  [
+                    715, 
+                    1
+                  ], 
+                  [
+                    720, 
+                    1
+                  ], 
+                  [
+                    725, 
+                    1
+                  ], 
+                  [
+                    730, 
+                    1
+                  ], 
+                  [
+                    735, 
+                    1
+                  ], 
+                  [
+                    740, 
+                    1
+                  ], 
+                  [
+                    740, 
+                    2
+                  ], 
+                  [
+                    745, 
+                    2
+                  ], 
+                  [
+                    750, 
+                    2
+                  ], 
+                  [
+                    755, 
+                    1
+                  ], 
+                  [
+                    755, 
+                    1
+                  ], 
+                  [
+                    760, 
+                    1
+                  ], 
+                  [
+                    765, 
+                    1
+                  ], 
+                  [
+                    770, 
+                    1
+                  ], 
+                  [
+                    775, 
+                    1
+                  ], 
+                  [
+                    780, 
+                    1
+                  ], 
+                  [
+                    785, 
+                    1
+                  ], 
+                  [
+                    790, 
+                    1
+                  ], 
+                  [
+                    790, 
+                    2
+                  ], 
+                  [
+                    795, 
+                    1
+                  ], 
+                  [
+                    795, 
+                    1
+                  ], 
+                  [
+                    800, 
+                    1
+                  ], 
+                  [
+                    805, 
+                    1
+                  ], 
+                  [
+                    810, 
+                    1
+                  ], 
+                  [
+                    815, 
+                    1
+                  ], 
+                  [
+                    820, 
+                    1
+                  ], 
+                  [
+                    820, 
+                    2
+                  ], 
+                  [
+                    825, 
+                    2
+                  ], 
+                  [
+                    830, 
+                    2
+                  ], 
+                  [
+                    835, 
+                    1
+                  ], 
+                  [
+                    835, 
+                    1
+                  ], 
+                  [
+                    1205, 
+                    1
+                  ], 
+                  [
+                    1210, 
+                    1
+                  ], 
+                  [
+                    1215, 
+                    1
+                  ], 
+                  [
+                    1220, 
+                    1
+                  ], 
+                  [
+                    1225, 
+                    1
+                  ], 
+                  [
+                    1230, 
+                    1
+                  ], 
+                  [
+                    1230, 
+                    2
+                  ], 
+                  [
+                    1235, 
+                    2
+                  ], 
+                  [
+                    1240, 
+                    1
+                  ], 
+                  [
+                    1240, 
+                    1
+                  ], 
+                  [
+                    1245, 
+                    1
+                  ], 
+                  [
+                    1250, 
+                    1
+                  ], 
+                  [
+                    1255, 
+                    1
+                  ], 
+                  [
+                    1260, 
+                    1
+                  ], 
+                  [
+                    1260, 
+                    2
+                  ], 
+                  [
+                    1265, 
+                    2
+                  ], 
+                  [
+                    1270, 
+                    2
+                  ], 
+                  [
+                    1275, 
+                    2
+                  ], 
+                  [
+                    1280, 
+                    1
+                  ], 
+                  [
+                    1280, 
+                    1
+                  ], 
+                  [
+                    1285, 
+                    1
+                  ], 
+                  [
+                    1290, 
+                    1
+                  ], 
+                  [
+                    1295, 
+                    1
+                  ], 
+                  [
+                    1300, 
+                    1
+                  ], 
+                  [
+                    1305, 
+                    1
+                  ], 
+                  [
+                    1310, 
+                    1
+                  ], 
+                  [
+                    1310, 
+                    2
+                  ], 
+                  [
+                    1315, 
+                    2
+                  ], 
+                  [
+                    1320, 
+                    1
+                  ], 
+                  [
+                    1320, 
+                    1
+                  ], 
+                  [
+                    1325, 
+                    1
+                  ], 
+                  [
+                    1330, 
+                    1
+                  ], 
+                  [
+                    1335, 
+                    1
+                  ], 
+                  [
+                    1340, 
+                    1
+                  ], 
+                  [
+                    1340, 
+                    2
+                  ], 
+                  [
+                    1345, 
+                    2
+                  ], 
+                  [
+                    1350, 
+                    2
+                  ], 
+                  [
+                    1355, 
+                    2
+                  ], 
+                  [
+                    1360, 
+                    1
+                  ], 
+                  [
+                    1360, 
+                    1
+                  ], 
+                  [
+                    1365, 
+                    1
+                  ], 
+                  [
+                    1370, 
+                    1
+                  ], 
+                  [
+                    1375, 
+                    1
+                  ], 
+                  [
+                    1415, 
+                    1
+                  ], 
+                  [
+                    1420, 
+                    1
+                  ], 
+                  [
+                    1420, 
+                    2
+                  ], 
+                  [
+                    1425, 
+                    2
+                  ], 
+                  [
+                    1430, 
+                    2
+                  ], 
+                  [
+                    1435, 
+                    1
+                  ], 
+                  [
+                    1435, 
+                    1
+                  ], 
+                  [
+                    1440, 
+                    1
+                  ], 
+                  [
+                    1445, 
+                    1
+                  ], 
+                  [
+                    1450, 
+                    1
+                  ], 
+                  [
+                    1450, 
+                    2
+                  ], 
+                  [
+                    1455, 
+                    2
+                  ], 
+                  [
+                    1460, 
+                    2
+                  ], 
+                  [
+                    1465, 
+                    2
+                  ], 
+                  [
+                    1470, 
+                    2
+                  ], 
+                  [
+                    1475, 
+                    1
+                  ], 
+                  [
+                    1475, 
+                    1
+                  ], 
+                  [
+                    1480, 
+                    1
+                  ], 
+                  [
+                    1485, 
+                    1
+                  ], 
+                  [
+                    1490, 
+                    1
+                  ], 
+                  [
+                    1495, 
+                    1
+                  ], 
+                  [
+                    1500, 
+                    1
+                  ], 
+                  [
+                    1500, 
+                    2
+                  ], 
+                  [
+                    1505, 
+                    2
+                  ], 
+                  [
+                    1510, 
+                    2
+                  ], 
+                  [
+                    1515, 
+                    1
+                  ], 
+                  [
+                    1515, 
+                    1
+                  ], 
+                  [
+                    1520, 
+                    1
+                  ], 
+                  [
+                    1525, 
+                    1
+                  ], 
+                  [
+                    1530, 
+                    1
+                  ], 
+                  [
+                    1530, 
+                    2
+                  ], 
+                  [
+                    1535, 
+                    2
+                  ], 
+                  [
+                    1540, 
+                    2
+                  ], 
+                  [
+                    1595, 
+                    2
+                  ], 
+                  [
+                    1600, 
+                    2
+                  ], 
+                  [
+                    1605, 
+                    1
+                  ], 
+                  [
+                    1605, 
+                    1
+                  ], 
+                  [
+                    1610, 
+                    1
+                  ], 
+                  [
+                    1615, 
+                    1
+                  ]
+                ]
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.M3", 
+            "family": "Server", 
+            "id": "St8M1", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "loading_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                79.2
+              ], 
+              "setup_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                0
+              ], 
+              "working_ratio": [
+                20.8
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.LineClearance", 
+            "family": "Buffer", 
+            "id": "B4", 
+            "results": {}
+          }, 
+          {
+            "_class": "Dream.M3", 
+            "family": "Server", 
+            "id": "St2M1", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "loading_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                78.7
+              ], 
+              "setup_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                0
+              ], 
+              "working_ratio": [
+                21.3
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.M3", 
+            "family": "Server", 
+            "id": "St2M0", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "loading_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                78.7
+              ], 
+              "setup_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                0
+              ], 
+              "working_ratio": [
+                21.3
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.BatchScrapMachine", 
+            "family": "Server", 
+            "id": "St3M0", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "loading_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                79.12
+              ], 
+              "setup_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                9.78
+              ], 
+              "working_ratio": [
+                11.1
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.BatchScrapMachine", 
+            "family": "Server", 
+            "id": "St4M0", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "loading_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                78.84
+              ], 
+              "setup_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                0.76
+              ], 
+              "working_ratio": [
+                20.4
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.BatchReassemblyBlocking", 
+            "family": "Server", 
+            "id": "St4M0_R", 
+            "results": {
+              "blockage_ratio": [
+                0.46
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                99.54
+              ], 
+              "working_ratio": [
+                0
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.Exit", 
+            "family": "Exit", 
+            "id": "Dream.Exit1", 
+            "results": {
+              "lifespan": [
+                669.1153846153846
+              ], 
+              "takt_time": [
+                62.30769230769231
+              ], 
+              "throughput": [
+                26
+              ], 
+              "unitsThroughput": [
+                2080
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.M3", 
+            "family": "Server", 
+            "id": "St8M0", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "loading_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                79.2
+              ], 
+              "setup_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                0
+              ], 
+              "working_ratio": [
+                20.8
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.BatchReassemblyBlocking", 
+            "family": "Server", 
+            "id": "St6M0_R", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                100
+              ], 
+              "working_ratio": [
+                0
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.BatchScrapMachine", 
+            "family": "Server", 
+            "id": "St1M0", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "loading_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                78.7
+              ], 
+              "setup_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                0
+              ], 
+              "working_ratio": [
+                21.3
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.BatchScrapMachine", 
+            "family": "Server", 
+            "id": "St1M1", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "loading_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                78.7
+              ], 
+              "setup_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                0
+              ], 
+              "working_ratio": [
+                21.3
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.BatchReassemblyBlocking", 
+            "family": "Server", 
+            "id": "BRB", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                100
+              ], 
+              "working_ratio": [
+                0
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.BatchReassemblyBlocking", 
+            "family": "Server", 
+            "id": "St8RA", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                100
+              ], 
+              "working_ratio": [
+                0
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.BatchReassemblyBlocking", 
+            "family": "Server", 
+            "id": "St8RB", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                100
+              ], 
+              "working_ratio": [
+                0
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.BatchScrapMachineAfterDecompose", 
+            "family": "Server", 
+            "id": "St0M1", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "loading_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                78.7
+              ], 
+              "setup_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                0
+              ], 
+              "working_ratio": [
+                21.3
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.BatchScrapMachineAfterDecompose", 
+            "family": "Server", 
+            "id": "St0M0", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "loading_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                78.7
+              ], 
+              "setup_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                0
+              ], 
+              "working_ratio": [
+                21.3
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.BatchReassemblyBlocking", 
+            "family": "Server", 
+            "id": "St6M1_R", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                100
+              ], 
+              "working_ratio": [
+                0
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.Queue", 
+            "family": "Buffer", 
+            "id": "B7", 
+            "results": {
+              "wip_stat_list": [
+                [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    0, 
+                    2
+                  ], 
+                  [
+                    0, 
+                    2
+                  ], 
+                  [
+                    15, 
+                    1
+                  ], 
+                  [
+                    15, 
+                    1
+                  ], 
+                  [
+                    30, 
+                    0
+                  ], 
+                  [
+                    45, 
+                    0
+                  ], 
+                  [
+                    60, 
+                    0
+                  ], 
+                  [
+                    105, 
+                    1
+                  ], 
+                  [
+                    150, 
+                    0
+                  ], 
+                  [
+                    165, 
+                    0
+                  ], 
+                  [
+                    210, 
+                    0
+                  ], 
+                  [
+                    225, 
+                    0
+                  ], 
+                  [
+                    270, 
+                    0
+                  ], 
+                  [
+                    285, 
+                    0
+                  ], 
+                  [
+                    333, 
+                    0
+                  ], 
+                  [
+                    348, 
+                    0
+                  ], 
+                  [
+                    393, 
+                    0
+                  ], 
+                  [
+                    408, 
+                    0
+                  ], 
+                  [
+                    453, 
+                    0
+                  ], 
+                  [
+                    468, 
+                    0
+                  ], 
+                  [
+                    540, 
+                    0
+                  ], 
+                  [
+                    555, 
+                    0
+                  ], 
+                  [
+                    600, 
+                    0
+                  ], 
+                  [
+                    615, 
+                    0
+                  ], 
+                  [
+                    705, 
+                    0
+                  ], 
+                  [
+                    720, 
+                    0
+                  ], 
+                  [
+                    765, 
+                    0
+                  ], 
+                  [
+                    780, 
+                    0
+                  ], 
+                  [
+                    825, 
+                    0
+                  ], 
+                  [
+                    840, 
+                    1
+                  ], 
+                  [
+                    1200, 
+                    0
+                  ], 
+                  [
+                    1245, 
+                    0
+                  ], 
+                  [
+                    1260, 
+                    0
+                  ], 
+                  [
+                    1305, 
+                    0
+                  ], 
+                  [
+                    1320, 
+                    0
+                  ], 
+                  [
+                    1365, 
+                    0
+                  ], 
+                  [
+                    1380, 
+                    1
+                  ], 
+                  [
+                    1410, 
+                    0
+                  ], 
+                  [
+                    1455, 
+                    0
+                  ], 
+                  [
+                    1470, 
+                    0
+                  ], 
+                  [
+                    1515, 
+                    0
+                  ], 
+                  [
+                    1530, 
+                    0
+                  ], 
+                  [
+                    1620, 
+                    1
+                  ]
+                ]
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.LineClearance", 
+            "family": "Buffer", 
+            "id": "B1", 
+            "results": {}
+          }, 
+          {
+            "_class": "Dream.LineClearance", 
+            "family": "Buffer", 
+            "id": "B2", 
+            "results": {}
+          }, 
+          {
+            "_class": "Dream.LineClearance", 
+            "family": "Buffer", 
+            "id": "B3", 
+            "results": {}
+          }, 
+          {
+            "_class": "Dream.Queue", 
+            "family": "Buffer", 
+            "id": "B8", 
+            "results": {
+              "wip_stat_list": [
+                [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    15, 
+                    0
+                  ], 
+                  [
+                    30, 
+                    1
+                  ], 
+                  [
+                    45, 
+                    2
+                  ], 
+                  [
+                    45, 
+                    1
+                  ], 
+                  [
+                    45, 
+                    1
+                  ], 
+                  [
+                    60, 
+                    2
+                  ], 
+                  [
+                    75, 
+                    3
+                  ], 
+                  [
+                    75, 
+                    2
+                  ], 
+                  [
+                    75, 
+                    2
+                  ], 
+                  [
+                    105, 
+                    1
+                  ], 
+                  [
+                    105, 
+                    1
+                  ], 
+                  [
+                    165, 
+                    2
+                  ], 
+                  [
+                    180, 
+                    3
+                  ], 
+                  [
+                    180, 
+                    2
+                  ], 
+                  [
+                    180, 
+                    2
+                  ], 
+                  [
+                    210, 
+                    1
+                  ], 
+                  [
+                    210, 
+                    1
+                  ], 
+                  [
+                    225, 
+                    2
+                  ], 
+                  [
+                    240, 
+                    3
+                  ], 
+                  [
+                    240, 
+                    2
+                  ], 
+                  [
+                    240, 
+                    2
+                  ], 
+                  [
+                    270, 
+                    1
+                  ], 
+                  [
+                    270, 
+                    1
+                  ], 
+                  [
+                    285, 
+                    2
+                  ], 
+                  [
+                    300, 
+                    3
+                  ], 
+                  [
+                    300, 
+                    2
+                  ], 
+                  [
+                    300, 
+                    2
+                  ], 
+                  [
+                    333, 
+                    1
+                  ], 
+                  [
+                    333, 
+                    1
+                  ], 
+                  [
+                    348, 
+                    2
+                  ], 
+                  [
+                    363, 
+                    3
+                  ], 
+                  [
+                    363, 
+                    2
+                  ], 
+                  [
+                    363, 
+                    2
+                  ], 
+                  [
+                    393, 
+                    1
+                  ], 
+                  [
+                    393, 
+                    1
+                  ], 
+                  [
+                    408, 
+                    2
+                  ], 
+                  [
+                    423, 
+                    3
+                  ], 
+                  [
+                    423, 
+                    2
+                  ], 
+                  [
+                    423, 
+                    2
+                  ], 
+                  [
+                    453, 
+                    1
+                  ], 
+                  [
+                    453, 
+                    1
+                  ], 
+                  [
+                    468, 
+                    2
+                  ], 
+                  [
+                    483, 
+                    3
+                  ], 
+                  [
+                    483, 
+                    2
+                  ], 
+                  [
+                    483, 
+                    2
+                  ], 
+                  [
+                    540, 
+                    1
+                  ], 
+                  [
+                    540, 
+                    1
+                  ], 
+                  [
+                    555, 
+                    2
+                  ], 
+                  [
+                    570, 
+                    3
+                  ], 
+                  [
+                    570, 
+                    2
+                  ], 
+                  [
+                    570, 
+                    2
+                  ], 
+                  [
+                    600, 
+                    1
+                  ], 
+                  [
+                    600, 
+                    1
+                  ], 
+                  [
+                    615, 
+                    2
+                  ], 
+                  [
+                    630, 
+                    3
+                  ], 
+                  [
+                    630, 
+                    2
+                  ], 
+                  [
+                    630, 
+                    2
+                  ], 
+                  [
+                    705, 
+                    1
+                  ], 
+                  [
+                    705, 
+                    1
+                  ], 
+                  [
+                    720, 
+                    2
+                  ], 
+                  [
+                    735, 
+                    3
+                  ], 
+                  [
+                    735, 
+                    2
+                  ], 
+                  [
+                    735, 
+                    2
+                  ], 
+                  [
+                    765, 
+                    1
+                  ], 
+                  [
+                    765, 
+                    1
+                  ], 
+                  [
+                    780, 
+                    2
+                  ], 
+                  [
+                    795, 
+                    3
+                  ], 
+                  [
+                    795, 
+                    2
+                  ], 
+                  [
+                    795, 
+                    2
+                  ], 
+                  [
+                    825, 
+                    1
+                  ], 
+                  [
+                    825, 
+                    1
+                  ], 
+                  [
+                    840, 
+                    2
+                  ], 
+                  [
+                    1215, 
+                    3
+                  ], 
+                  [
+                    1215, 
+                    2
+                  ], 
+                  [
+                    1215, 
+                    2
+                  ], 
+                  [
+                    1245, 
+                    1
+                  ], 
+                  [
+                    1245, 
+                    1
+                  ], 
+                  [
+                    1260, 
+                    2
+                  ], 
+                  [
+                    1275, 
+                    3
+                  ], 
+                  [
+                    1275, 
+                    2
+                  ], 
+                  [
+                    1275, 
+                    2
+                  ], 
+                  [
+                    1305, 
+                    1
+                  ], 
+                  [
+                    1305, 
+                    1
+                  ], 
+                  [
+                    1320, 
+                    2
+                  ], 
+                  [
+                    1335, 
+                    3
+                  ], 
+                  [
+                    1335, 
+                    2
+                  ], 
+                  [
+                    1335, 
+                    2
+                  ], 
+                  [
+                    1365, 
+                    1
+                  ], 
+                  [
+                    1365, 
+                    1
+                  ], 
+                  [
+                    1380, 
+                    2
+                  ], 
+                  [
+                    1425, 
+                    3
+                  ], 
+                  [
+                    1425, 
+                    2
+                  ], 
+                  [
+                    1425, 
+                    2
+                  ], 
+                  [
+                    1455, 
+                    1
+                  ], 
+                  [
+                    1455, 
+                    1
+                  ], 
+                  [
+                    1470, 
+                    2
+                  ], 
+                  [
+                    1485, 
+                    3
+                  ], 
+                  [
+                    1500, 
+                    2
+                  ], 
+                  [
+                    1500, 
+                    2
+                  ], 
+                  [
+                    1530, 
+                    3
+                  ], 
+                  [
+                    1530, 
+                    2
+                  ], 
+                  [
+                    1530, 
+                    2
+                  ], 
+                  [
+                    1545, 
+                    3
+                  ]
+                ]
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.Queue", 
+            "family": "Buffer", 
+            "id": "B9", 
+            "results": {
+              "wip_stat_list": [
+                [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    0, 
+                    1
+                  ], 
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    45, 
+                    0
+                  ], 
+                  [
+                    75, 
+                    0
+                  ], 
+                  [
+                    105, 
+                    1
+                  ], 
+                  [
+                    150, 
+                    0
+                  ], 
+                  [
+                    180, 
+                    0
+                  ], 
+                  [
+                    210, 
+                    0
+                  ], 
+                  [
+                    240, 
+                    0
+                  ], 
+                  [
+                    270, 
+                    0
+                  ], 
+                  [
+                    300, 
+                    1
+                  ], 
+                  [
+                    303, 
+                    0
+                  ], 
+                  [
+                    333, 
+                    0
+                  ], 
+                  [
+                    363, 
+                    0
+                  ], 
+                  [
+                    393, 
+                    0
+                  ], 
+                  [
+                    423, 
+                    0
+                  ], 
+                  [
+                    453, 
+                    0
+                  ], 
+                  [
+                    483, 
+                    1
+                  ], 
+                  [
+                    510, 
+                    0
+                  ], 
+                  [
+                    540, 
+                    0
+                  ], 
+                  [
+                    570, 
+                    1
+                  ], 
+                  [
+                    580, 
+                    0
+                  ], 
+                  [
+                    600, 
+                    1
+                  ], 
+                  [
+                    610, 
+                    0
+                  ], 
+                  [
+                    630, 
+                    1
+                  ], 
+                  [
+                    705, 
+                    2
+                  ], 
+                  [
+                    710, 
+                    1
+                  ], 
+                  [
+                    710, 
+                    1
+                  ], 
+                  [
+                    735, 
+                    2
+                  ], 
+                  [
+                    740, 
+                    1
+                  ], 
+                  [
+                    740, 
+                    1
+                  ], 
+                  [
+                    765, 
+                    2
+                  ], 
+                  [
+                    790, 
+                    1
+                  ], 
+                  [
+                    790, 
+                    1
+                  ], 
+                  [
+                    795, 
+                    2
+                  ], 
+                  [
+                    820, 
+                    1
+                  ], 
+                  [
+                    820, 
+                    1
+                  ], 
+                  [
+                    825, 
+                    2
+                  ], 
+                  [
+                    1215, 
+                    3
+                  ], 
+                  [
+                    1230, 
+                    2
+                  ], 
+                  [
+                    1230, 
+                    2
+                  ], 
+                  [
+                    1245, 
+                    3
+                  ], 
+                  [
+                    1260, 
+                    2
+                  ], 
+                  [
+                    1260, 
+                    2
+                  ], 
+                  [
+                    1275, 
+                    3
+                  ], 
+                  [
+                    1305, 
+                    4
+                  ], 
+                  [
+                    1310, 
+                    3
+                  ], 
+                  [
+                    1310, 
+                    3
+                  ], 
+                  [
+                    1335, 
+                    4
+                  ], 
+                  [
+                    1340, 
+                    3
+                  ], 
+                  [
+                    1340, 
+                    3
+                  ], 
+                  [
+                    1365, 
+                    4
+                  ], 
+                  [
+                    1420, 
+                    3
+                  ], 
+                  [
+                    1420, 
+                    3
+                  ], 
+                  [
+                    1425, 
+                    4
+                  ], 
+                  [
+                    1450, 
+                    3
+                  ], 
+                  [
+                    1450, 
+                    3
+                  ], 
+                  [
+                    1455, 
+                    4
+                  ], 
+                  [
+                    1500, 
+                    3
+                  ], 
+                  [
+                    1500, 
+                    3
+                  ], 
+                  [
+                    1500, 
+                    4
+                  ], 
+                  [
+                    1530, 
+                    3
+                  ], 
+                  [
+                    1530, 
+                    3
+                  ], 
+                  [
+                    1530, 
+                    4
+                  ]
+                ]
+              ]
+            }
+          }, 
+          {
+            "_class": "Dream.BatchReassemblyBlocking", 
+            "family": "Server", 
+            "id": "BRA", 
+            "results": {
+              "blockage_ratio": [
+                0
+              ], 
+              "failure_ratio": [
+                0
+              ], 
+              "off_shift_ratio": [
+                0
+              ], 
+              "waiting_ratio": [
+                100
+              ], 
+              "working_ratio": [
+                0
+              ]
+            }
+          }
+        ], 
+        "general": {
+          "_class": "Dream.Configuration", 
+          "totalExecutionTime": 1.1710000038146973
+        }, 
+        "key": "default", 
+        "score": 0
+      }
+    ]
+  }
+}
