@@ -42,11 +42,16 @@ class TimeSupportMixin(object):
     """Convert real world time (as python datetime object) to simulation clock time.
     """
     assert self.initialized, "initializeTimeSupport has not been called"
-    return (real_world_time - self.now).total_seconds() * self.timeUnitPerDay * 60
+    # XXX (real_world_time - self.now).total_seconds() gives seconds
+    # we want to convert this to our units (minutes in batches, but generally).
+    # if our time unit was seconds, the timeUnitPerDay would be 24 * 60 *60 = 86400
+    # so we need to divide with 86400/self.timeUnitPerDay I think. If we have minutes it works
+    # if we had hours it would be self.timeUnitPerDay = 24, 86400/24=3600, which is what we need to divide a num of secs 
+    # to produce hours
+    return (real_world_time - self.now).total_seconds()/(86400/self.timeUnitPerDay)
 
   def getTimeUnitText(self):
     """Return the time unit as text.
     """
     assert self.initialized, "initializeTimeSupport has not been called"
     return self.timeUnit
-
