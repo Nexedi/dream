@@ -21,7 +21,6 @@ class AddBatchStations(plugin.InputPreparationPlugin):
         standardBatchUnits=0
         for node_id, node in nodes.iteritems():
             if node['_class']=='Dream.BatchSource':
-                print node
                 standardBatchUnits=int(node['batchNumberOfUnits'])    
         
         # loop in BatchScrapMachines to change the classes if need be       
