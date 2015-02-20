@@ -245,33 +245,22 @@
       }, 
       "view_station_utilization": {
         "configuration": {
-          "data": {
-            "blockage": [
-              "blockage_ratio"
-            ], 
-            "failure": [
-              "failure_ratio"
-            ], 
-            "waiting": [
-              "waiting_ratio"
-            ], 
-            "working": [
-              "working_ratio", 
-              "setup_ratio", 
-              "load_ratio"
-            ]
-          }, 
-          "family": "Server", 
-          "plot": "bars"
+          "output_id": "station_utilization"
         }, 
-        "gadget": "Output_viewStationUtilisationGraph", 
+        "gadget": "Output_viewChart", 
         "title": "Station Utilization", 
         "type": "object_view"
       }
     }, 
     "post_processing": {
       "description": "", 
-      "plugin_list": []
+      "plugin_list": [
+	    {
+          "_class": "dream.plugins.BatchesStationUtilization.BatchesStationUtilization", 
+          "family": "Server", 
+          "output_id": "station_utilization"
+        }
+	  ]
     }, 
     "pre_processing": {
       "description": "", 
