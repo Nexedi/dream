@@ -12,6 +12,7 @@ class PostProcessStationUtilization(plugin.OutputPreparationPlugin):
     waiting_data = []
     failure_data = []
     blockage_data = []
+    setup_data = []
     
     options = {
       "xaxis": {
@@ -43,6 +44,10 @@ class PostProcessStationUtilization(plugin.OutputPreparationPlugin):
     }, {
       "label": "Blockage",
       "data": blockage_data
+    },
+    {
+      "label": "Setup",
+      "data": setup_data
     }];
 
     out = result[self.configuration_dict['output_id']] = {
@@ -61,6 +66,8 @@ class PostProcessStationUtilization(plugin.OutputPreparationPlugin):
           failure_data.append((i, obj['results']['failure_ratio'][0]))
         if obj['results']['blockage_ratio']:
           blockage_data.append((i, obj['results']['blockage_ratio'][0]))
+        if obj['results']['setup_ratio']:
+          setup_data.append((i, obj['results']['setup_ratio'][0]))
 
         ticks.append((i, obj.get('name', obj['id'])))
         i += 1
