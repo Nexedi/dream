@@ -57,7 +57,7 @@ class BatchesStationUtilization(plugin.OutputPreparationPlugin):
 
     i = 0
     for obj in result['elementList']:
-      if obj.get('_class').startswith('Dream.BatchScrapMachine') or obj.get('class')=='Dream.M3':
+      if obj.get('_class').startswith('Dream.BatchScrapMachine') or obj.get('_class')=='Dream.M3':
         if obj['results']['working_ratio']:
           working_data.append((i, obj['results']['working_ratio'][0]))
         if obj['results']['waiting_ratio']:
