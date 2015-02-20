@@ -10,7 +10,7 @@ class UpdateWIP(plugin.InputPreparationPlugin):
   """
   
   def getWIPIds(self):
-    """"""
+    """returns the ids of the parts that are in the WIP dictionary"""
     wipIDs = []
     for key in self.data["input"]["BOM"].get("WIP", {}).keys()
       wipIDs.append(key)
@@ -76,11 +76,11 @@ class UpdateWIP(plugin.InputPreparationPlugin):
               completedComponents.append(componentID)
           # if the entity is still in the system then update the WIP info
           if not componentID in wipToBeRemoved:
-            wip["componentID"]["station"] = currentStation
-            wip["componentID"]["sequence"] = current_step["sequence"]
-            wip["componentID"]["task_id"] = current_step["task_id"]
+            wip[componentID]["station"] = currentStation
+            wip[componentID]["sequence"] = current_step["sequence"]
+            wip[componentID]["task_id"] = current_step["task_id"]
             if not exitTime:
-              wip["componentID"]["remainingProcessingTime"] = {"Fixed": {"mean": remainingProcessingTime}}
+              wip[componentID]["remainingProcessingTime"] = {"Fixed": {"mean": remainingProcessingTime}}
       # if the entity is not recognized within the current WIP then check if it should be created
       # first the flag designComplete and the completedComponents list must be updated 
       for component in orderComponents:
@@ -105,9 +105,9 @@ class UpdateWIP(plugin.InputPreparationPlugin):
               insertWIPitem = True
               
           if insertWIPitem:    
-            wip["componentID"]["station"] = route[0]["stationIdsList"][0]
-            wip["componentID"]["sequence"] = route[0]["sequence"]
-            wip["componentID"]["task_id"] = route[0]["task_id"]
+            wip[componentID]["station"] = route[0]["stationIdsList"][0]
+            wip[componentID]["sequence"] = route[0]["sequence"]
+            wip[componentID]["task_id"] = route[0]["task_id"]
     # remove the idle entities
     for entityID in wipToBeRemoved:
       assert wip.pop(entityID, None), "while trying to remove WIP that has concluded it's route, nothing is removed"
