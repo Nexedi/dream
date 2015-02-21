@@ -1,4 +1,5 @@
 from dream.plugins import plugin
+from copy import copy
 
 class BatchesStationUtilization(plugin.OutputPreparationPlugin):
   """ Output the station utilization metrics in a format compatible with 
@@ -58,16 +59,32 @@ class BatchesStationUtilization(plugin.OutputPreparationPlugin):
     i = 0
     for obj in result['elementList']:
       if obj.get('_class').startswith('Dream.BatchScrapMachine') or obj.get('_class')=='Dream.M3':
-        if obj['results']['working_ratio']:
-          working_data.append((i, obj['results']['working_ratio'][0]))
-        if obj['results']['waiting_ratio']:
-          waiting_data.append((i, obj['results']['waiting_ratio'][0]))
-        if obj['results']['failure_ratio']:
-          failure_data.append((i, obj['results']['failure_ratio'][0]))
-        if obj['results']['blockage_ratio']:
-          blockage_data.append((i, obj['results']['blockage_ratio'][0]))
-        if obj['results']['off_shift_ratio']:
-          off_shift_data.append((i, obj['results']['off_shift_ratio'][0]))
+        nextId=self.getSuccessors(data, obj['id'])[0]
+        nextClass=data['graph']['node'][nextId]['_class']
+        objResults=copy(obj['results'])
+
+        # if a station is before batch-reassembly then the blockage of reassembly is added to the station
+        # and reducted from its waiting
+        nextResults={}
+        if nextClass.startswith('Dream.BatchReassembly'):
+            for nextObj in result['elementList']:
+                if nextObj['id']==nextId:
+                    nextResults=nextObj["results"]
+            if nextResults:
+                nextBlockage=nextResults['blockage_ratio'][0]
+                objResults['blockage_ratio'][0]=nextBlockage
+                objResults['waiting_ratio'][0]-=nextBlockage         
+        
+        if objResults['working_ratio']:
+          working_data.append((i, objResults['working_ratio'][0]))
+        if objResults['waiting_ratio']:
+          waiting_data.append((i, objResults['waiting_ratio'][0]))
+        if objResults['failure_ratio']:
+          failure_data.append((i, objResults['failure_ratio'][0]))
+        if objResults['blockage_ratio']:
+          blockage_data.append((i, objResults['blockage_ratio'][0]))
+        if objResults['off_shift_ratio']:
+          off_shift_data.append((i, objResults['off_shift_ratio'][0]))
 
         ticks.append((i, obj.get('name', obj['id'])))
         i += 1
