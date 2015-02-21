@@ -11,6 +11,26 @@ class Plugin(object):
   def __init__(self, logger, configuration_dict):
     self.logger = logger
     self.configuration_dict = configuration_dict
+    
+  # returns the predecessors of a node
+  def getPredecessors(self, data, node_id):
+    predecessors=[]
+    from copy import copy    
+    edges=copy(data['graph']['edge'])
+    for edge_id,edge in edges.iteritems():
+        if edge['destination']==node_id:
+            predecessors.append(edge['source'])
+    return predecessors
+
+  # returns the successors of a node
+  def getSuccessors(self, data, node_id):
+    successors=[]
+    from copy import copy    
+    edges=copy(data['graph']['edge'])
+    for edge_id,edge in edges.iteritems():
+        if edge['source']==node_id:
+            successors.append(edge['destination'])
+    return successors
 
 class ExecutionPlugin(Plugin):
   """Plugin to handle the execution of multiple simulation runs.
@@ -40,26 +60,6 @@ class InputPreparationPlugin(Plugin):
         "_class": "Dream.Edge"             
     }
     return data
-
-  # returns the predecessors of a node
-  def getPredecessors(self, data, node_id):
-    predecessors=[]
-    from copy import copy    
-    edges=copy(data['graph']['edge'])
-    for edge_id,edge in edges.iteritems():
-        if edge['destination']==node_id:
-            predecessors.append(edge['source'])
-    return predecessors
-
-  # returns the successors of a node
-  def getSuccessors(self, data, node_id):
-    successors=[]
-    from copy import copy    
-    edges=copy(data['graph']['edge'])
-    for edge_id,edge in edges.iteritems():
-        if edge['source']==node_id:
-            successors.append(edge['destination'])
-    return successors
 
 class OutputPreparationPlugin(Plugin):
   def postprocess(self, data):
