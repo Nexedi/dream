@@ -87,9 +87,9 @@
                          "title": "Length of Experiment"
                     }, 
                     "currentDate": {
-                         "default": "2014/10/01", 
+                         "default": "2014/10/01 08:00:00", 
                          "type": "string", 
-                         "description": "The day the experiment starts, in YYYY/MM/DD format", 
+                         "description": "The day the experiment starts, in YYYY/MM/DD HH:MM:SS format", 
                          "title": "SimulationStartTime"
                     }, 
                     "confidenceLevel": {

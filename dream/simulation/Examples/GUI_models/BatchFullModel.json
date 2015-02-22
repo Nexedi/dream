@@ -9,8 +9,8 @@
           "type": "number"
         }, 
         "currentDate": {
-          "default": "2014/02/18", 
-          "description": "The day the experiment starts, in YYYY/MM/DD format", 
+          "default": "2014/02/18 08:00:00", 
+          "description": "The day the experiment starts, in YYYY/MM/DD HH:MM:SS format", 
           "name": "Simulation start time", 
           "type": "string"
         }, 

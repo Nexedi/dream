@@ -881,8 +881,8 @@
           "description": "Number of seconds before the calculation process is interrupted"
         },
         "currentDate": {
-          "default": "2014/10/01",
-          "description": "The day the experiment starts, in YYYY/MM/DD format",
+          "default": "2014/10/01 09:00:00",
+          "description": "The day the experiment starts, in YYYY/MM/DD HH:MM:SS format",
           "name": "Simulation start time",
           "type": "string"
         },
