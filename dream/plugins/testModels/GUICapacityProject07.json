@@ -203,7 +203,7 @@
 			"configuration": {
 			  "output_id": "station_utilization"
 			}, 
-			"gadget": "Output_viewChart", 
+			"gadget": "Output_viewGraph", 
 			"title": "Station Utilization", 
 			"type": "object_view"
 		  }
