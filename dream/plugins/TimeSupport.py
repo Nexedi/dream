@@ -13,13 +13,13 @@ class TimeSupportMixin(object):
   def initializeTimeSupport(self, data):
     self.timeUnit = data['general']['timeUnit']
     if self.timeUnit == 'second':
-      self.timeUnitPerDay = 24 * 60 * 60
+      self.timeUnitPerDay = 24 * 60 * 60.
     elif self.timeUnit == 'minute':
-      self.timeUnitPerDay = 24 * 60
+      self.timeUnitPerDay = 24 * 60.
     elif self.timeUnit == 'hour':
-      self.timeUnitPerDay = 24
+      self.timeUnitPerDay = 24.
     elif self.timeUnit == 'day':
-      self.timeUnitPerDay = 1
+      self.timeUnitPerDay = 1.
     elif self.timeUnit == 'week':
       self.timeUnitPerDay = 1 / 7.
     elif self.timeUnit == 'month':
