@@ -37,9 +37,6 @@ import simpy
 from flask import Flask, jsonify, redirect, url_for
 from flask import request
 
-global klass_name
-klass_name = None
-
 app = Flask(__name__)
 
 @app.route("/")
@@ -194,16 +191,12 @@ def _runKnowledgeExtraction(parameter_dict):
 
 def main(*args):
   parser = argparse.ArgumentParser(description='Launch the DREAM simulation platform.')
-  parser.add_argument('gui_class', metavar='GUI_KLASS', nargs="?", default="Default",
-                   help='The GUI klass to launch')
   parser.add_argument('--port', default=5000, type=int,
                       help='Port number to listen on')
   parser.add_argument('--host', default="localhost", help='Host address')
   parser.add_argument('--logfile', help='Log to file')
   parser.add_argument('--debug', help='Debug mode', action='store_true')
   arguments = parser.parse_args()
-  global klass_name
-  klass_name = 'dream.simulation.GUI.%s' % arguments.gui_class
   if arguments.logfile:
     file_handler = logging.FileHandler(arguments.logfile)
     file_handler.setLevel(logging.DEBUG)
