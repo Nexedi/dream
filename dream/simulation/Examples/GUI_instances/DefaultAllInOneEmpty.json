@@ -9,7 +9,7 @@
           "type": "number"
         }, 
         "currentDate": {
-          "default": "2014/10/01", 
+          "default": "2014/10/01 09:00:00", 
           "description": "The day the experiment starts, in YYYY/MM/DD HH:MM:SS format", 
           "title": "SimulationStartTime", 
           "type": "string"
@@ -73,7 +73,7 @@
     "input": {
       "debug": {
         "gadget": "Input_viewDebugJson", 
-        "title": "Debug JSON", 
+        "title": "Edit Configuration", 
         "type": "object_view"
       }, 
       "view": {
@@ -911,10 +911,9 @@
   "constraints": {}, 
   "general": {
     "confidenceLevel": 0.95, 
-    "currentDate": "2015/01/01", 
+    "currentDate": "2015/01/01 09:00:00", 
     "ke_url": "", 
     "maxSimTime": 1000, 
-    "name": "DefaultAllInOneEmpty.json", 
     "numberOfReplications": "1", 
     "processTimeout": 20, 
     "seed": null, 
@@ -922,41 +921,8 @@
     "trace": "No"
   }, 
   "graph": {
-    "edge": {
-      "con_15": {
-        "_class": "Dream.Edge", 
-        "destination": "Dream.Machine1", 
-        "source": "Dream.Machine1"
-      }
-    }, 
-    "node": {
-      "Dream.Machine1": {
-        "_class": "Dream.Machine", 
-        "coordinate": {
-          "left": 0.4150799193559014, 
-          "top": 0.14750978240434856
-        }, 
-        "id": "Dream.Machine1", 
-        "name": "Machine"
-      }, 
-      "Dream.Source1": {
-        "_class": "Dream.Source", 
-        "coordinate": {
-          "left": 0.08578563429533574, 
-          "top": 0.10401330810563039
-        }, 
-        "entity": "Dream.Part", 
-        "id": "Dream.Source1", 
-        "interArrivalTime": {
-          "Lognormal": {
-            "mean": 0, 
-            "stdev": 0
-          }, 
-          "distribution": "Lognormal"
-        }, 
-        "name": "Source"
-      }
-    }
+    "edge": {}, 
+    "node": {}
   }, 
   "input": {
     "machine_shift_spreadsheet": [
