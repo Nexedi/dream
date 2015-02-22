@@ -540,22 +540,15 @@
             }
         },
         "output": {
-            "view_mean_capacity_utilization": {
-                "title": "Average Capacity Utilization",
-                "type": "object_view",
-                "gadget": "Output_viewStationUtilisationGraph",
-                "configuration": {
-                    "family": "capacityStation",
-                    "plot": "bar",
-                    "group": [],
-                    "data": {
-                        "utilization": [
-                            "meanUtilization"
-                        ]
-                    }
-                }
-            }
-		},
+			  "view_station_utilization": {
+				"configuration": {
+				  "output_id": "station_utilization"
+				}, 
+				"gadget": "Output_viewChart", 
+				"title": "Station Utilization", 
+				"type": "object_view"
+			  }
+ 		},
         "pre_processing": {
             "plugin_list": [
                 {
@@ -585,7 +578,13 @@
             "input_id": "Simulation"
         },
         "post_processing": {
-            "plugin_list": []
+      "plugin_list": [
+			{
+			  "_class": "dream.plugins.CapacityProjectStationUtilization.CapacityProjectStationUtilization", 
+			  "family": "CapacityStation", 
+			  "output_id": "station_utilization"
+			}
+		  ]
         },
         "general": {
             "properties": {
