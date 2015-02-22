@@ -193,7 +193,7 @@
         "configuration": {
           "output_id": "queue_statistics"
         }, 
-        "gadget": "Output_viewChart", 
+        "gadget": "Output_viewGraph", 
         "title": "Queue Statistics", 
         "type": "object_view"
       }, 
@@ -201,7 +201,7 @@
         "configuration": {
           "output_id": "station_utilization"
         }, 
-        "gadget": "Output_viewChart", 
+        "gadget": "Output_viewGraph", 
         "title": "Station Utilization", 
         "type": "object_view"
       }, 
@@ -225,6 +225,10 @@
           "_class": "dream.plugins.PostProcessStationUtilization.PostProcessStationUtilization", 
           "family": "Server", 
           "output_id": "station_utilization"
+        }, 
+        {
+          "_class": "dream.plugins.PostProcessQueueStatistics.PostProcessQueueStatistics", 
+          "output_id": "queue_statistics"
         }
       ]
     }, 
