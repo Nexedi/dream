@@ -231,16 +231,10 @@
       }, 
       "view_queue_stats": {
         "configuration": {
-          "data": {
-            "queue_stat": [
-              "wip_stat_list"
-            ]
-          }, 
-          "family": "Buffer", 
-          "plot": "line"
-        }, 
-        "gadget": "Output_viewQueueStatGraph", 
-        "title": "Queue Utilization Graph", 
+          "output_id": "queue_statistics"
+        },
+        "gadget": "Output_viewGraph", 
+        "title": "Queue Statistics", 
         "type": "object_view"
       }, 
       "view_station_utilization": {
@@ -259,7 +253,12 @@
           "_class": "dream.plugins.BatchesStationUtilization.BatchesStationUtilization", 
           "family": "Server", 
           "output_id": "station_utilization"
+        },
+        {
+          "_class": "dream.plugins.PostProcessQueueStatistics.PostProcessQueueStatistics", 
+          "output_id": "queue_statistics"
         }
+
 	  ]
     }, 
     "pre_processing": {
