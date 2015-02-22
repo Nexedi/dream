@@ -4564,63 +4564,63 @@
     "ticks": [
      [
       0, 
-      "St7M0"
+      "Carding"
      ], 
      [
       1, 
-      "St5M0"
+      "Flag Labelling A"
      ], 
      [
       2, 
-      "St5M1"
+      "Flag Labelling B"
      ], 
      [
       3, 
-      "St6M1"
+      "Pressure B"
      ], 
      [
       4, 
-      "St6M0"
+      "Pressure A"
      ], 
      [
       5, 
-      "St8M1"
+      "Packaging B"
      ], 
      [
       6, 
-      "St2M1"
+      "D_B_A_B"
      ], 
      [
       7, 
-      "St2M0"
+      "D_B_A_A"
      ], 
      [
       8, 
-      "St3M0"
+      "Cut & Bend"
      ], 
      [
       9, 
-      "St4M0"
+      "Moulding"
      ], 
      [
       10, 
-      "St8M0"
+      "Packaging A"
      ], 
      [
       11, 
-      "St1M0"
+      "P_B_A_A"
      ], 
      [
       12, 
-      "St1M1"
+      "P_B_A_B"
      ], 
      [
       13, 
-      "St0M1"
+      "RO_E_M_A_B"
      ], 
      [
       14, 
-      "St0M0"
+      "RO_E_M_A_A"
      ]
     ]
    }, 
