@@ -1,7 +1,7 @@
 from dream.plugins import plugin
 
 class PostProcessStationUtilization(plugin.OutputPreparationPlugin):
-  """ Output the station utilization metrics in a format compatible with 
+  """ Output the station utilization metrics in a format compatible with Output_viewGraph
   """
 
   def postprocess(self, data):
