@@ -86,7 +86,7 @@ class BatchesStationUtilization(plugin.OutputPreparationPlugin):
         if objResults['off_shift_ratio']:
           off_shift_data.append((i, objResults['off_shift_ratio'][0]))
 
-        ticks.append((i, obj.get('name', obj['id'])))
+        ticks.append((i, obj.get('name', self.getNameFromId(data, obj['id']))))
         i += 1
   
     return data

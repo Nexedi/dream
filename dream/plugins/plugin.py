@@ -32,6 +32,10 @@ class Plugin(object):
             successors.append(edge['destination'])
     return successors
 
+  # returns name of a node given its id
+  def getNameFromId(self, data, node_id):
+      return data['graph']['node'][node_id]['name']
+
 class ExecutionPlugin(Plugin):
   """Plugin to handle the execution of multiple simulation runs.
   """
