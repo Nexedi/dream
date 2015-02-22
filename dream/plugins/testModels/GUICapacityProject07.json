@@ -198,26 +198,25 @@
         "type": "object_view"
       }
     }, 
-    "output": {
-      "view_mean_capacity_utilization": {
-        "configuration": {
-          "data": {
-            "utilization": [
-              "meanUtilization"
-            ]
-          }, 
-          "family": "capacityStation", 
-          "group": [], 
-          "plot": "bar"
-        }, 
-        "gadget": "Output_viewStationUtilisationGraph", 
-        "title": "Average Capacity Utilization", 
-        "type": "object_view"
-      }
-    }, 
+	"output": {
+		  "view_station_utilization": {
+			"configuration": {
+			  "output_id": "station_utilization"
+			}, 
+			"gadget": "Output_viewChart", 
+			"title": "Station Utilization", 
+			"type": "object_view"
+		  }
+	},
     "post_processing": {
-      "plugin_list": []
-    }, 
+      "plugin_list": [
+			{
+			  "_class": "dream.plugins.CapacityProjectStationUtilization.CapacityProjectStationUtilization", 
+			  "family": "CapacityStation", 
+			  "output_id": "station_utilization"
+			}
+		]
+    },
     "pre_processing": {
       "plugin_list": [
         {

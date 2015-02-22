@@ -47,7 +47,6 @@ class CapacityProjectStationUtilization(plugin.OutputPreparationPlugin):
     i = 0
     for obj in result['elementList']:
       if obj.get('family') == self.configuration_dict.get('family'):
-        print obj['id'], obj['results'].keys()  
         if obj['results']['meanUtilization']:
           utilized_data.append((i, obj['results']['meanUtilization']*100))
           idle_data.append((i, (1- obj['results']['meanUtilization'])*100))
