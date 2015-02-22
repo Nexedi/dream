@@ -297,11 +297,7 @@
           "input_id": "SkilledOperatorsSpreadsheet"
         }, 
         {
-          "_class": "dream.plugins.ReadShiftFromSpreadsheet.ReadShiftFromSpreadsheet", 
-          "input_id": "ShiftSpreadsheet"
-        }, 
-        {
-          "_class": "dream.plugins.BatchesShiftAttributes.BatchesShiftAttributes", 
+          "_class": "dream.plugins.BatchesShift.BatchesShift", 
           "input_id": "ShiftSpreadsheet"
         }
       ]
