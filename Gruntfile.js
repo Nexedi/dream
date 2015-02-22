@@ -226,6 +226,11 @@ module.exports = function (grunt) {
         relative_dest: 'lib/jquery.flot.stack.js',
         dest: '<%= global_config.dest %>/<%= curl.jqueryflotstack.relative_dest %>'
       },
+      jqueryflottime: {
+        src: '<%= curl.jqueryflot.url_base%>jquery.flot.stack.js',
+        relative_dest: 'lib/jquery.flot.time.js',
+        dest: '<%= global_config.dest %>/<%= curl.jqueryflottime.relative_dest %>'
+      },
       dhtmlxgantt: {
         src: 'http://dhtmlx.com/x/download/regular/dhtmlxGantt.zip',
         dest: '<%= global_config.tmp %>/dhtmlxGantt.zip'
