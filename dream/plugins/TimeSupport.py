@@ -40,6 +40,11 @@ class TimeSupportMixin(object):
     assert self.initialized, "initializeTimeSupport has not been called"
     return self.now + timedelta(days=simulation_time/self.timeUnitPerDay)
 
+  def convertToTimeStamp(self, simulation_time):
+    """Convert simulation clock time to real world time, as timestamp.
+    """
+    return (self.convertToRealWorldTime(simulation_time) - datetime(1970, 1, 1)).total_seconds()
+
   def convertToSimulationTime(self, real_world_time):
     """Convert real world time (as python datetime object) to simulation clock time.
     """
