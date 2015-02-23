@@ -290,6 +290,10 @@
                     {
                          "output_id": "exit_output", 
                          "_class": "dream.plugins.BatchesTabularExit.BatchesTabularExit"
+                    }, 
+                    {
+                         "output_id": "buffer_output", 
+                         "_class": "dream.plugins.BatchesTabularQueues.BatchesTabularQueues"
                     }
                ]
           }, 
@@ -526,24 +530,15 @@
                     "_class": "Dream.BatchScrapMachine", 
                     "id": "St8M1"
                }, 
-               "B9": {
+               "B4": {
                     "coordinate": {
-                         "top": 0.7565175398133711, 
-                         "left": 0.21072871541220164
+                         "top": 0.24087466145736686, 
+                         "left": 0.5187142701900398
                     }, 
-                    "_class": "Dream.Queue", 
-                    "capacity": 4, 
-                    "name": "B9", 
+                    "_class": "Dream.LineClearance", 
+                    "capacity": 2, 
+                    "name": "B4", 
                     "schedulingRule": "FIFO"
-               }, 
-               "St7D": {
-                    "coordinate": {
-                         "top": 0.7640847057948053, 
-                         "left": 0.6385832092381459
-                    }, 
-                    "_class": "Dream.BatchDecomposition", 
-                    "numberOfSubBatches": 8, 
-                    "name": "St7_D"
                }, 
                "St2M1": {
                     "interruption": {
@@ -836,6 +831,15 @@
                     "_class": "Dream.BatchScrapMachine", 
                     "id": "St1M1"
                }, 
+               "BRB": {
+                    "coordinate": {
+                         "top": 0.22001598561825875, 
+                         "left": 0.732266858260719
+                    }, 
+                    "_class": "Dream.BatchReassembly", 
+                    "numberOfSubBatches": 4, 
+                    "name": "BRB"
+               }, 
                "St8RA": {
                     "coordinate": {
                          "top": 0.5350013587825962, 
@@ -953,15 +957,14 @@
                     "_class": "Dream.BatchSource", 
                     "id": "Dream.BatchSource1"
                }, 
-               "B4": {
+               "St7D": {
                     "coordinate": {
-                         "top": 0.24087466145736686, 
-                         "left": 0.5187142701900398
+                         "top": 0.7640847057948053, 
+                         "left": 0.6385832092381459
                     }, 
-                    "_class": "Dream.LineClearance", 
-                    "capacity": 2, 
-                    "name": "B4", 
-                    "schedulingRule": "FIFO"
+                    "_class": "Dream.BatchDecomposition", 
+                    "numberOfSubBatches": 8, 
+                    "name": "St7_D"
                }, 
                "B7": {
                     "coordinate": {
@@ -1014,14 +1017,15 @@
                     "name": "B8", 
                     "schedulingRule": "FIFO"
                }, 
-               "BRB": {
+               "B9": {
                     "coordinate": {
-                         "top": 0.22001598561825875, 
-                         "left": 0.732266858260719
+                         "top": 0.7565175398133711, 
+                         "left": 0.21072871541220164
                     }, 
-                    "_class": "Dream.BatchReassembly", 
-                    "numberOfSubBatches": 4, 
-                    "name": "BRB"
+                    "_class": "Dream.Queue", 
+                    "capacity": 4, 
+                    "name": "B9", 
+                    "schedulingRule": "FIFO"
                }, 
                "BRA": {
                     "coordinate": {
@@ -1034,190 +1038,190 @@
                }
           }, 
           "edge": {
-               "con_459": {
-                    "destination": "St2M0", 
-                    "_class": "Dream.Edge", 
-                    "source": "B2"
+               "con_1497": {
+                    "source": "St8M0", 
+                    "destination": "St8RA", 
+                    "_class": "Dream.Edge"
                }, 
                "con_1043": {
+                    "source": "B8", 
                     "destination": "St4M0", 
-                    "_class": "Dream.Edge", 
-                    "source": "B8"
+                    "_class": "Dream.Edge"
                }, 
                "con_1001": {
+                    "source": "St3M0", 
                     "destination": "B8", 
-                    "_class": "Dream.Edge", 
-                    "source": "St3M0"
+                    "_class": "Dream.Edge"
                }, 
                "con_1121": {
+                    "source": "B9", 
                     "destination": "St5M0", 
-                    "_class": "Dream.Edge", 
-                    "source": "B9"
+                    "_class": "Dream.Edge"
                }, 
                "con_1229": {
+                    "source": "St5M0", 
                     "destination": "B10", 
-                    "_class": "Dream.Edge", 
-                    "source": "St5M0"
-               }, 
-               "con_57": {
-                    "destination": "BDB", 
-                    "_class": "Dream.Edge", 
-                    "source": "Dream.BatchSource1"
-               }, 
-               "con_581": {
-                    "destination": "B3", 
-                    "_class": "Dream.Edge", 
-                    "source": "St0M1"
-               }, 
-               "con_87": {
-                    "destination": "St0M0", 
-                    "_class": "Dream.Edge", 
-                    "source": "BDA"
-               }, 
-               "con_1479": {
-                    "destination": "St8RB", 
-                    "_class": "Dream.Edge", 
-                    "source": "St8M1"
-               }, 
-               "con_861": {
-                    "destination": "B7", 
-                    "_class": "Dream.Edge", 
-                    "source": "BRB"
-               }, 
-               "con_1377": {
-                    "destination": "St7D", 
-                    "_class": "Dream.Edge", 
-                    "source": "B11"
-               }, 
-               "con_1293": {
-                    "destination": "St6M1", 
-                    "_class": "Dream.Edge", 
-                    "source": "B10"
-               }, 
-               "con_1351": {
-                    "destination": "B11", 
-                    "_class": "Dream.Edge", 
-                    "source": "St6M0"
-               }, 
-               "con_513": {
-                    "destination": "BRA", 
-                    "_class": "Dream.Edge", 
-                    "source": "St2M0"
-               }, 
-               "con_1159": {
-                    "destination": "St5M1", 
-                    "_class": "Dream.Edge", 
-                    "source": "B9"
-               }, 
-               "con_1193": {
-                    "destination": "B10", 
-                    "_class": "Dream.Edge", 
-                    "source": "St5M1"
-               }, 
-               "con_1261": {
-                    "destination": "St6M0", 
-                    "_class": "Dream.Edge", 
-                    "source": "B10"
-               }, 
-               "con_273": {
-                    "destination": "B1", 
-                    "_class": "Dream.Edge", 
-                    "source": "St0M0"
-               }, 
-               "con_1497": {
-                    "destination": "St8RA", 
-                    "_class": "Dream.Edge", 
-                    "source": "St8M0"
-               }, 
-               "con_645": {
-                    "destination": "St1M1", 
-                    "_class": "Dream.Edge", 
-                    "source": "B3"
-               }, 
-               "con_705": {
-                    "destination": "B4", 
-                    "_class": "Dream.Edge", 
-                    "source": "St1M1"
-               }, 
-               "con_761": {
-                    "destination": "St2M1", 
-                    "_class": "Dream.Edge", 
-                    "source": "B4"
-               }, 
-               "con_339": {
-                    "destination": "St1M0", 
-                    "_class": "Dream.Edge", 
-                    "source": "B1"
-               }, 
-               "con_71": {
-                    "destination": "St0M1", 
-                    "_class": "Dream.Edge", 
-                    "source": "BDB"
-               }, 
-               "con_1523": {
-                    "destination": "Dream.Exit1", 
-                    "_class": "Dream.Edge", 
-                    "source": "St8RA"
-               }, 
-               "con_1423": {
-                    "destination": "B12", 
-                    "_class": "Dream.Edge", 
-                    "source": "St7M0"
-               }, 
-               "con_957": {
-                    "destination": "St3M0", 
-                    "_class": "Dream.Edge", 
-                    "source": "B7"
-               }, 
-               "con_1321": {
-                    "destination": "B11", 
-                    "_class": "Dream.Edge", 
-                    "source": "St6M1"
-               }, 
-               "con_39": {
-                    "destination": "BDA", 
-                    "_class": "Dream.Edge", 
-                    "source": "Dream.BatchSource1"
-               }, 
-               "con_1509": {
-                    "destination": "Dream.Exit1", 
-                    "_class": "Dream.Edge", 
-                    "source": "St8RB"
+                    "_class": "Dream.Edge"
                }, 
                "con_1401": {
+                    "source": "St7D", 
                     "destination": "St7M0", 
-                    "_class": "Dream.Edge", 
-                    "source": "St7D"
+                    "_class": "Dream.Edge"
+               }, 
+               "con_581": {
+                    "source": "St0M1", 
+                    "destination": "B3", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_87": {
+                    "source": "BDA", 
+                    "destination": "St0M0", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_1479": {
+                    "source": "St8M1", 
+                    "destination": "St8RB", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_861": {
+                    "source": "BRB", 
+                    "destination": "B7", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_1377": {
+                    "source": "B11", 
+                    "destination": "St7D", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_1293": {
+                    "source": "B10", 
+                    "destination": "St6M1", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_1351": {
+                    "source": "St6M0", 
+                    "destination": "B11", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_513": {
+                    "source": "St2M0", 
+                    "destination": "BRA", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_1159": {
+                    "source": "B9", 
+                    "destination": "St5M1", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_1193": {
+                    "source": "St5M1", 
+                    "destination": "B10", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_1509": {
+                    "source": "St8RB", 
+                    "destination": "Dream.Exit1", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_1261": {
+                    "source": "B10", 
+                    "destination": "St6M0", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_273": {
+                    "source": "St0M0", 
+                    "destination": "B1", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_459": {
+                    "source": "B2", 
+                    "destination": "St2M0", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_645": {
+                    "source": "B3", 
+                    "destination": "St1M1", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_705": {
+                    "source": "St1M1", 
+                    "destination": "B4", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_761": {
+                    "source": "B4", 
+                    "destination": "St2M1", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_339": {
+                    "source": "B1", 
+                    "destination": "St1M0", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_71": {
+                    "source": "BDB", 
+                    "destination": "St0M1", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_1423": {
+                    "source": "St7M0", 
+                    "destination": "B12", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_957": {
+                    "source": "B7", 
+                    "destination": "St3M0", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_1321": {
+                    "source": "St6M1", 
+                    "destination": "B11", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_39": {
+                    "source": "Dream.BatchSource1", 
+                    "destination": "BDA", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_1523": {
+                    "source": "St8RA", 
+                    "destination": "Dream.Exit1", 
+                    "_class": "Dream.Edge"
+               }, 
+               "con_57": {
+                    "source": "Dream.BatchSource1", 
+                    "destination": "BDB", 
+                    "_class": "Dream.Edge"
                }, 
                "con_1443": {
+                    "source": "B12", 
                     "destination": "St8M0", 
-                    "_class": "Dream.Edge", 
-                    "source": "B12"
+                    "_class": "Dream.Edge"
                }, 
                "con_1463": {
+                    "source": "B12", 
                     "destination": "St8M1", 
-                    "_class": "Dream.Edge", 
-                    "source": "B12"
+                    "_class": "Dream.Edge"
                }, 
                "con_1083": {
+                    "source": "St4M0", 
                     "destination": "B9", 
-                    "_class": "Dream.Edge", 
-                    "source": "St4M0"
+                    "_class": "Dream.Edge"
                }, 
                "con_813": {
+                    "source": "St2M1", 
                     "destination": "BRB", 
-                    "_class": "Dream.Edge", 
-                    "source": "St2M1"
+                    "_class": "Dream.Edge"
                }, 
                "con_401": {
+                    "source": "St1M0", 
                     "destination": "B2", 
-                    "_class": "Dream.Edge", 
-                    "source": "St1M0"
+                    "_class": "Dream.Edge"
                }, 
                "con_911": {
+                    "source": "BRA", 
                     "destination": "B7", 
-                    "_class": "Dream.Edge", 
-                    "source": "BRA"
+                    "_class": "Dream.Edge"
                }
           }
      }, 
@@ -1229,9 +1233,9 @@
           "seed": 1, 
           "confidenceLevel": 0.95, 
           "maxSimTime": 5000, 
-          "timeUnit": "minute", 
+          "throughputTarget": 1000, 
           "currentDate": "2014/07/31 11:00", 
-          "throughputTarget": 1000
+          "timeUnit": "minute"
      }, 
      "class_definition": {
           "node": {
@@ -2236,20 +2240,6 @@
                     null
                ]
           ], 
-          "operator_shift_spreadsheet": [
-               [
-                    "Date", 
-                    "Product Builder", 
-                    "Start", 
-                    "Stop"
-               ], 
-               [
-                    null, 
-                    null, 
-                    null, 
-                    null
-               ]
-          ], 
           "machine_shift_spreadsheet": [
                [
                     "Date", 
@@ -2340,6 +2330,20 @@
                     "St0M0,St0M1,St1M0,St1M1,St2M0,St2M1,St3M0,St4M0,St5M0,St5M1,St6M0,St6M1,St7M0,St8M0,St8M1", 
                     "19:30", 
                     "21:45"
+               ], 
+               [
+                    null, 
+                    null, 
+                    null, 
+                    null
+               ]
+          ], 
+          "operator_shift_spreadsheet": [
+               [
+                    "Date", 
+                    "Product Builder", 
+                    "Start", 
+                    "Stop"
                ], 
                [
                     null, 
