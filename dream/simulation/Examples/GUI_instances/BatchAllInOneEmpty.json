@@ -261,6 +261,10 @@
         {
           "_class": "dream.plugins.BatchesTabularExit.BatchesTabularExit", 
           "output_id": "exit_output"
+        },
+        {
+          "_class": "dream.plugins.BatchesTabularQueues.BatchesTabularQueues", 
+          "output_id": "buffer_output"
         }
 	  ]
     }, 
