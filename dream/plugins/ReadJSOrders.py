@@ -18,6 +18,9 @@ class ReadJSOrders(plugin.InputPreparationPlugin):
     """
     POdata = data["input"].get("production_orders_spreadsheet",[])
     productionOrders = []
+    BOM = data["input"].get("BOM",{})
+    if not BOM:
+      BOM = data["input"]["BOM"] = {}
     data["input"]["BOM"]["orders"] = productionOrders
     if POdata:
       POdata.pop(0)  # pop the column names
