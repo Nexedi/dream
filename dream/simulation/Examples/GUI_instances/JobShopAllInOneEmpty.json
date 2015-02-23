@@ -822,6 +822,9 @@
         }, {
           "_class": "dream.plugins.ReadJSWorkPlan.ReadJSWorkPlan", 
           "input_id": "workplan_spreadsheet"
+        }, {
+          "_class": "dream.plugins.ReadJSCompleted.ReadJSCompleted", 
+          "input_id": ""
         }
       ]
     },
