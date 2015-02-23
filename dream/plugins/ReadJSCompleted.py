@@ -26,21 +26,21 @@ class ReadJSCompleted(plugin.InputPreparationPlugin):
         routeConcluded = True
         route = component.get("route", [])
         for index, step in enumerate(route):
-          completed = step.get("completed", )
-          if not completed:
+          completed = step.get("completed", "No")
+          if completed == "No" or completed == "":
             routeConcluded = False
             # check the WIP and see if the current part already resides there
             if not component["componentID"] in wip.keys():
               # if there is a previous task
               if index:
                 previousStep = route[index-1]
-                # XXX: no entry/exit/stationID is defined 
                 wip[component["componentID"]] = {
                   "task_id": previousStep["task_id"],
                   "station": previousStep["technology"],
                   "remainingProcessingTime": 0,
                   "sequence": previousStep["sequence"]
                 }
+            break
         if routeConcluded:
           wip[component["componentID"]] = {
             "task_id": step["task_id"],
