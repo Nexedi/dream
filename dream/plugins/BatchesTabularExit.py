@@ -105,19 +105,3 @@ class BatchesTabularExit(plugin.OutputPreparationPlugin):
                                                                             "%.2f" % avgCycleTimeCI['ub']]
                                                                            ) 
         return data
-    
-    def getConfidenceInterval(self, value_list, confidenceLevel):
-        from dream.KnowledgeExtraction.ConfidenceIntervals import Intervals
-        from dream.KnowledgeExtraction.StatisticalMeasures import BasicStatisticalMeasures
-        BSM=BasicStatisticalMeasures()
-        lb, ub = Intervals().ConfidIntervals(value_list, confidenceLevel)
-        return {'lb': lb,
-                'ub': ub,
-                'avg': BSM.mean(value_list) 
-            }
-        
-    def getAverage(self, value_list):
-        return sum(value_list) / float(len(value_list))
-                                       
-    def getStDev(self, value_list):
-        return numpy.std(value_list)
