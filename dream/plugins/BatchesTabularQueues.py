@@ -5,6 +5,7 @@ import random
 import operator
 import StringIO
 import xlrd
+import math
 
 from dream.plugins import plugin
 
@@ -28,9 +29,28 @@ class BatchesTabularQueues(plugin.OutputPreparationPlugin):
                     bufferId=record['id']
                     wip_stat_list=record['results']['wip_stat_list'][0]
                     bufferLevels=[int(x[1]) for x in wip_stat_list]
-                    minLevel=min(bufferLevels)
                     maxLevel=max(bufferLevels)
-                    self.createTimeListDict(wip_stat_list,maxSimTime)
+                    finalValue=wip_stat_list[-1][1]
+                    timeListDict=self.createTimeListDict(wip_stat_list,maxSimTime)
+                    totalLevel=0
+                    minLevel=float('inf')
+                    # count the minimum that has no zero duration
+                    for level, duration in timeListDict.iteritems():
+                        if duration and (level<minLevel):
+                            minLevel=level
+                            
+                    for level, duration in timeListDict.iteritems():
+                        totalLevel+=level*duration
+                    averageLevel=totalLevel/float(maxSimTime)
+                    totalDistance=0
+                    for level, duration in timeListDict.iteritems():
+                        totalDistance+=((level-averageLevel)*(level-averageLevel))*duration
+                    stdevLevel=math.sqrt(totalDistance/float(maxSimTime-1))
+                    data['result']['result_list'][-1]['buffer_output'].append([bufferId,finalValue,
+                                                                              "%.2f" % averageLevel,
+                                                                              "%.2f" % stdevLevel,
+                                                                              minLevel,maxLevel])
+                                        
         elif numberOfReplications>1:
             # create the titles of the columns
             pass
@@ -51,5 +71,5 @@ class BatchesTabularQueues(plugin.OutputPreparationPlugin):
             if not (level in timeListDict.keys()):
                 timeListDict[level]=0
             timeListDict[level]+=nextTime-time
-        print timeListDict
+        return timeListDict
             
