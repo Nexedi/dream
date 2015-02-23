@@ -126,6 +126,10 @@ class AddBatchStations(plugin.InputPreparationPlugin):
                     # add an edge from batchReassembly to destination
                     self.addEdge(data, batchReassemblyId, destination)             
 
+        # set all the Queue types to gether wip data
+        for node in data["graph"]["node"].values():
+            if node['_class'] in ['Dream.Queue', 'Dream.LineClearance', 'Dream.RoutingQueue']:
+                node['gatherWipStat'] = 1
 
 
         return data
