@@ -257,6 +257,10 @@
         {
           "_class": "dream.plugins.PostProcessQueueStatistics.PostProcessQueueStatistics", 
           "output_id": "queue_statistics"
+        },
+        {
+          "_class": "dream.plugins.BatchesTabularExit.BatchesTabularExit", 
+          "output_id": "exit_output"
         }
 	  ]
     }, 
