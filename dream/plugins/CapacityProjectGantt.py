@@ -37,11 +37,11 @@ class CapacityProjectGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
         id=element['id'],
         text='Project %s' % element['id'],
         type='project',
-        open=True)
+        open=False)
             
         projectSchedule=element['results'].get('schedule',{})
         for record in projectSchedule:
-            task_dict[record['stationId']] = dict(
+            task_dict[element['id']+record['stationId']] = dict(
                 id=record['stationId'],
                 parent=element['id'],
                 text=record['stationId'],
@@ -49,7 +49,7 @@ class CapacityProjectGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
                       record['entranceTime']).strftime(date_format),
                 stop_date=self.convertToRealWorldTime(
                       record['exitTime']).strftime(date_format),
-                open=True,
+                open=False,
                 duration=int(record['exitTime'])-int(record['entranceTime'])
             )
         
@@ -58,9 +58,13 @@ class CapacityProjectGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
     result[self.configuration_dict['output_id']] = dict(
       time_unit=self.getTimeUnitText(),
       task_list=sorted(task_dict.values(),
-        key=lambda task: (task.get('order_id'),
+        key=lambda task: (task.get('id'),
                           task.get('type') == 'project',
                           task.get('start_date'))))
+    import json
+    outputJSONString=json.dumps(task_dict, indent=5)
+    outputJSONFile=open('task_dict.json', mode='w')
+    outputJSONFile.write(outputJSONString)
     return data
     
 # 
