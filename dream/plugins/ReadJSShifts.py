@@ -20,11 +20,11 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
     strptime = datetime.datetime.strptime
     # read the current date and define dateFormat from it
     try:
-        now = strptime(data['general']['currentDate'], '%Y/%m/%d %H:%M')
-        data['general']['dateFormat']='%Y/%m/%d %H:%M'
+      now = strptime(data['general']['currentDate'], '%Y/%m/%d %H:%M')
+      data['general']['dateFormat']='%Y/%m/%d %H:%M'
     except ValueError:
-        now = strptime(data['general']['currentDate'], '%Y/%m/%d')
-        data['general']['dateFormat']='%Y/%m/%d'
+      now = strptime(data['general']['currentDate'], '%Y/%m/%d')
+      data['general']['dateFormat']='%Y/%m/%d'
     self.initializeTimeSupport(data)
     
     shiftData = data["input"].get("shift_spreadsheet",[])
