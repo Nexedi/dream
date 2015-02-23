@@ -547,7 +547,23 @@
 				"gadget": "Output_viewGraph", 
 				"title": "Station Utilization", 
 				"type": "object_view"
-			  }
+			  },
+			  "view_project_gantt": {
+				"configuration": {
+				  "output_id": "capacity_project_gantt"
+				}, 
+				"gadget": "Output_viewGantt", 
+				"title": "Project Schedule", 
+				"type": "object_view"
+			}, 
+			  "view_station_gantt": {
+				"configuration": {
+				  "output_id": "capacity_station_gantt"
+				}, 
+				"gadget": "Output_viewGantt", 
+				"title": "Station Schedule", 
+				"type": "object_view"
+			} 
  		},
         "pre_processing": {
             "plugin_list": [
@@ -583,6 +599,14 @@
 			  "_class": "dream.plugins.CapacityProjectStationUtilization.CapacityProjectStationUtilization", 
 			  "family": "CapacityStation", 
 			  "output_id": "station_utilization"
+			},
+			{
+			  "_class": "dream.plugins.CapacityProjectGantt.CapacityProjectGantt", 
+			  "output_id": "capacity_project_gantt"
+			},
+			{
+			  "_class": "dream.plugins.CapacityStationGantt.CapacityStationGantt", 
+			  "output_id": "capacity_station_gantt"
 			}
 		  ]
         },
