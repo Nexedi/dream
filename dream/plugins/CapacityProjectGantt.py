@@ -24,21 +24,23 @@ class CapacityProjectGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
   def postprocess(self, data):
     """Post process the data for Gantt gadget
     """
-    print 1
+    # in this instance there is not need to define start time
     data['general']['dateFormat']='%Y/%m/%d'
     self.initializeTimeSupport(data)
     date_format = '%d-%m-%Y %H:%M'
     resultElements=data['result']['result_list'][-1]['elementList']
     task_dict = {}
+    # loop in the results to find CapacityProjects
     for element in resultElements:
       if element['_class']=="Dream.CapacityProject":
-        # add the project in the gantt
+        # add the project in the task_dict
         task_dict[element['id']] = dict(
         id=element['id'],
         text='Project %s' % element['id'],
         type='project',
         open=False)
-            
+        
+        # loop in the project schedule to create the sub-tasks    
         projectSchedule=element['results'].get('schedule',{})
         for record in projectSchedule:
             task_dict[element['id']+record['stationId']] = dict(
@@ -50,7 +52,8 @@ class CapacityProjectGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
                 stop_date=self.convertToRealWorldTime(
                       record['exitTime']).strftime(date_format),
                 open=False,
-                duration=int(record['exitTime'])-int(record['entranceTime'])
+                duration=int(record['exitTime'])-int(record['entranceTime']),
+                entranceTime=record['entranceTime']
             )
         
     # return the result to the gadget
@@ -58,46 +61,7 @@ class CapacityProjectGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
     result[self.configuration_dict['output_id']] = dict(
       time_unit=self.getTimeUnitText(),
       task_list=sorted(task_dict.values(),
-        key=lambda task: (task.get('id'),
+        key=lambda task: (task.get('parent'),
                           task.get('type') == 'project',
-                          task.get('start_date'))))
-    import json
-    outputJSONString=json.dumps(task_dict, indent=5)
-    outputJSONFile=open('task_dict.json', mode='w')
-    outputJSONFile.write(outputJSONString)
+                          task.get('entranceTime'),task.get('id'))))
     return data
-    
-# 
-#     date_format = '%d-%m-%Y %H:%M'
-# 
-#     task_dict = {}
-#     for task in self._generateRandomTaskList():
-# 
-#       # Add the order if not already present
-#       if task['order_id'] not in task_dict:
-#         task_dict[task['order_id']] = dict(
-#           id=task['order_id'],
-#           text='Order %s' % task['order_id'],
-#           type='project',
-#           open=True)
-# 
-#       task_dict[task['id']] = dict(
-#           id=task['id'],
-#           parent=task['order_id'],
-#           text='Task %s' % task['id'],
-#           start_date=self.convertToRealWorldTime(
-#             task['start_time']).strftime(date_format),
-#           stop_date=self.convertToRealWorldTime(
-#             task['start_time'] + task['duration']).strftime(date_format),
-#           open=True,
-#           duration=task['duration'])
-# 
-#     result = data['result']['result_list'][-1]
-#     result[self.configuration_dict['output_id']] = dict(
-#       time_unit=self.getTimeUnitText(),
-#       task_list=sorted(task_dict.values(),
-#         key=lambda task: (task.get('order_id'),
-#                           task.get('type') == 'project',
-#                           task.get('start_date'))))
-# 
-#     return data
