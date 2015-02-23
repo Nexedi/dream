@@ -1,5 +1,6 @@
 from copy import deepcopy
 import json
+import numpy
 
 from zope.dottedname.resolve import resolve
 
@@ -31,6 +32,25 @@ class Plugin(object):
         if edge['source']==node_id:
             successors.append(edge['destination'])
     return successors
+
+  # calcualted the confidence inteval for a list and a confidence level
+  def getConfidenceInterval(self, value_list, confidenceLevel):
+    from dream.KnowledgeExtraction.ConfidenceIntervals import Intervals
+    from dream.KnowledgeExtraction.StatisticalMeasures import BasicStatisticalMeasures
+    BSM=BasicStatisticalMeasures()
+    lb, ub = Intervals().ConfidIntervals(value_list, confidenceLevel)
+    return {'lb': lb,
+            'ub': ub,
+            'avg': BSM.mean(value_list) 
+        }
+    
+  # return the average of a list    
+  def getAverage(self, value_list):
+    return sum(value_list) / float(len(value_list))
+  
+  # return the standard deviation of a list                                      
+  def getStDev(self, value_list):
+    return numpy.std(value_list)
 
   # returns name of a node given its id
   def getNameFromId(self, data, node_id):

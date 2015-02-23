@@ -201,24 +201,24 @@
       }
     }, 
     "output": {
-      "view_exit_stats": {
+	  "view_exit_results": {
         "configuration": {
-          "properties": {
-            "lifespan": {
-              "type": "number"
-            }, 
-            "taktTime": {
-              "type": "number"
-            }, 
-            "throughput": {
-              "type": "number"
-            }
-          }
+          "handsontable_options": {}, 
+          "output_id": "exit_output"
         }, 
-        "gadget": "Output_viewExitStatistics", 
-        "title": "Exit Statistics", 
+        "gadget": "Output_viewSpreadsheet", 
+        "title": "Exit statistics", 
         "type": "object_view"
-      }, 
+      },
+      "view_buffer_state": {
+        "configuration": {
+          "handsontable_options": {}, 
+          "output_id": "buffer_output"
+        }, 
+        "gadget": "Output_viewSpreadsheet", 
+        "title": "Buffer Levels", 
+        "type": "object_view"
+      },	  
       "view_operator_gantt": {
         "configuration": {
           "data": {
@@ -257,8 +257,15 @@
         {
           "_class": "dream.plugins.PostProcessQueueStatistics.PostProcessQueueStatistics", 
           "output_id": "queue_statistics"
+        },
+        {
+          "_class": "dream.plugins.BatchesTabularExit.BatchesTabularExit", 
+          "output_id": "exit_output"
+        },
+        {
+          "_class": "dream.plugins.BatchesTabularQueues.BatchesTabularQueues", 
+          "output_id": "buffer_output"
         }
-
 	  ]
     }, 
     "pre_processing": {
