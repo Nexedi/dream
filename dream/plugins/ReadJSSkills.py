@@ -29,6 +29,8 @@ class ReadJSSkills(plugin.InputPreparationPlugin):
         if not PBId:
           continue
         skills=PBitem[1].replace(" ","").split(';')
+        if len(skills)==1:
+          PBitem[1].replace(" ","").split(',')
         node[PBId]={
           "_class": "Dream.Operator",
           "capacity": 1,

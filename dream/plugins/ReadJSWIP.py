@@ -38,7 +38,7 @@ class ReadJSWIP(ReadJSWorkPlan.ReadJSWorkPlan, TimeSupportMixin):
       BOM = data["input"]["BOM"] = {}
     wip = BOM.get("WIP",{})
     if not wip:
-      wip = data["input"]["WIP"] = {}
+      wip = data["input"]["BOM"]["WIP"] = {}
     if WIPdata:
       WIPdata.pop(0)  # pop the column names
       for WIPitem in WIPdata:
