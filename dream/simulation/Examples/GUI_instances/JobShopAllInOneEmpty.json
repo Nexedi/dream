@@ -814,14 +814,14 @@
           "_class": "dream.plugins.ReadJSSkills.ReadJSSkills", 
           "input_id": "operator_skill_spreadsheet"
         }, {
-          "_class": "dream.plugins.ReadJSWIP.ReadJSWIP", 
-          "input_id": "wip_spreadsheet"
-        }, {
           "_class": "dream.plugins.ReadJSOrders.ReadJSOrders", 
           "input_id": "production_orders_spreadsheet"
         }, {
           "_class": "dream.plugins.ReadJSWorkPlan.ReadJSWorkPlan", 
           "input_id": "workplan_spreadsheet"
+        }, {
+          "_class": "dream.plugins.ReadJSWIP.ReadJSWIP", 
+          "input_id": "wip_spreadsheet"
         }, {
           "_class": "dream.plugins.ReadJSCompleted.ReadJSCompleted", 
           "input_id": ""
