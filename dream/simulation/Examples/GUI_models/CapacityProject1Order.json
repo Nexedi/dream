@@ -394,7 +394,7 @@
           "confidenceLevel": 0.95, 
           "maxSimTime": -1, 
           "currentDate": "2014/02/20", 
-          "timeUnit": "hour"
+          "timeUnit": "day"
      }, 
      "class_definition": {
           "node": {

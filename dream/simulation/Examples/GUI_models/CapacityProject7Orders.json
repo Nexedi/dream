@@ -51,7 +51,7 @@
           "type": "number"
         }, 
         "timeUnit": {
-          "default": "hour",
+          "default": "day",
           "description": "Used for input and reporting widgets.",
           "name": "Time unit",
           "type": "string",
@@ -671,7 +671,7 @@
     "numberOfReplications": "1", 
     "processTimeout": 10, 
     "seed": 1, 
-    "timeUnit": "hour", 
+    "timeUnit": "day", 
     "trace": "No"
   }, 
   "graph": {
