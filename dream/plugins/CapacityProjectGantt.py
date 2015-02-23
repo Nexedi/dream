@@ -7,20 +7,6 @@ from dream.plugins.TimeSupport import TimeSupportMixin
 
 class CapacityProjectGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
 
-  def _generateRandomTaskList(self):
-    """Generate some random tasks for the example.
-
-    Take care of not using reserved id '0'
-    """
-    for order_id in range(3):
-      for order_line_id in range(random.randint(1, 6)):
-        start_time = random.random() * 10
-        duration = random.random() * 10
-        yield dict(id='%s_%s' % (order_id, order_line_id),
-                   order_id="O%s" % order_id,
-                   start_time=start_time,
-                   duration=duration)
-
   def postprocess(self, data):
     """Post process the data for Gantt gadget
     """
@@ -42,6 +28,7 @@ class CapacityProjectGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
         
         # loop in the project schedule to create the sub-tasks    
         projectSchedule=element['results'].get('schedule',{})
+        
         for record in projectSchedule:
             task_dict[element['id']+record['stationId']] = dict(
                 id=element['id']+record['stationId'],
