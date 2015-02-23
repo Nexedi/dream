@@ -19,7 +19,6 @@ class UpdateWIP(plugin.InputPreparationPlugin):
   def preprocess(self, data):
     """ updates the Work in Process according to what is provided by the BOM, i.e. if a design just exited the last step of it's sequence
     """
-    currentTime = datetime.datetime.now().time()
     self.data = copy(data)
     orders = self.data["input"]["BOM"]["orders"]
     nodes = self.data["graph"]["node"]
@@ -43,8 +42,7 @@ class UpdateWIP(plugin.InputPreparationPlugin):
           work = wip[componentID]
           # # extract WIP information
           workStation = work["station"]
-          entryTime = float(work.pop("entry"),0)
-          exitTime = float(work.pop("exit", 0))
+          remainingProcessingTime = float(work.get("remainingProcessingTime",0))
           task_id = work["task_id"]
           assert len(route)>0, "the OrderComponent must have a route defined with length more than 0"
           assert task_id, "there must be a task_id defined for the OrderComponent in the WIP"
@@ -54,10 +52,7 @@ class UpdateWIP(plugin.InputPreparationPlugin):
               last_step = step
               break
           # # check if the entity has left the station
-          # the entity is a machine if there is no exitTime
-          if not exitTime:
-            # # calculate remaining processing time
-            remainingProcessingTime = currentTime - entryTime
+          if remainingProcessingTime:
             currentStation = workStation
             current_step = last_step
           # the entity is in a buffer if the step_index is no larger than the length of the route
@@ -79,7 +74,7 @@ class UpdateWIP(plugin.InputPreparationPlugin):
             wip[componentID]["station"] = currentStation
             wip[componentID]["sequence"] = current_step["sequence"]
             wip[componentID]["task_id"] = current_step["task_id"]
-            if not exitTime:
+            if remainingProcessingTime:
               wip[componentID]["remainingProcessingTime"] = {"Fixed": {"mean": remainingProcessingTime}}
       # if the entity is not recognized within the current WIP then check if it should be created
       # first the flag designComplete and the completedComponents list must be updated 
