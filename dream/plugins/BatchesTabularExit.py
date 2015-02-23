@@ -5,6 +5,7 @@ import random
 import operator
 import StringIO
 import xlrd
+import numpy
 
 from dream.plugins import plugin
 
@@ -44,20 +45,23 @@ class BatchesTabularExit(plugin.OutputPreparationPlugin):
                                                                             avgCycleTime])                   
         elif numberOfReplications>1:
             # create the titles of the columns
-            data['result']['result_list'][0]['exit_output'] = [['Exit Id','','Throughput','' , '','Takt Time','','', 'Lifespan',''],
-                                                               ['','LB','AVG','RB','LB','AVG','RB','LB','AVG','RB']]
+            data['result']['result_list'][0]['exit_output'] = [['KPI','Unit','Average','Std Dev','Min',
+                                                                str(float(confidenceLevel)*100)+'% CI LB ',
+                                                                str(float(confidenceLevel)*100)+'% CI UB']]
             for record in data['result']['result_list'][0]['elementList']:
                 family=record.get('family',None)
                 # when found, add a row with the results of the specific exit
                 if family=='Exit':
-                    exitId=record['id']
-                    throughput=self.getConfidenceInterval(record['results'].get('throughput','undefined'),confidenceLevel)
-                    taktTime=self.getConfidenceInterval(record['results'].get('takt_time','undefined'),confidenceLevel)
-                    lifespan=self.getConfidenceInterval(record['results'].get('lifespan','undefined'),confidenceLevel)                 
-                    data['result']['result_list'][0]['exit_output'].append([exitId,
-                                                                            throughput['lb'],throughput['avg'],throughput['ub'],
-                                                                            taktTime['lb'],taktTime['avg'],taktTime['ub'],
-                                                                            lifespan['lb'],lifespan['avg'],lifespan['ub']]) 
+                    batchesThroughputList=record['results']['throughput']
+                    batchesThroughputCI=self.getConfidenceInterval(batchesThroughputList,confidenceLevel)
+                    data['result']['result_list'][0]['exit_output'].append(['Number of batches produced','Batches',
+                                                                            self.getAverage(batchesThroughputList),
+                                                                            self.getStDev(batchesThroughputList),
+                                                                            min(batchesThroughputList),
+                                                                            max(batchesThroughputList),
+                                                                            batchesThroughputCI['lb'],
+                                                                            batchesThroughputCI['ub']]
+                                                                           )    
         return data
     
     def getConfidenceInterval(self, value_list, confidenceLevel):
@@ -69,3 +73,9 @@ class BatchesTabularExit(plugin.OutputPreparationPlugin):
                 'ub': ub,
                 'avg': BSM.mean(value_list) 
             }
+        
+    def getAverage(self, value_list):
+        return sum(value_list) / float(len(value_list))
+                                       
+    def getStDev(self, value_list):
+        return numpy.std(value_list)
