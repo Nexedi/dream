@@ -42,7 +42,7 @@ class CapacityProjectGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
         projectSchedule=element['results'].get('schedule',{})
         for record in projectSchedule:
             task_dict[element['id']+record['stationId']] = dict(
-                id=record['stationId'],
+                id=element['id']+record['stationId'],
                 parent=element['id'],
                 text=record['stationId'],
                 start_date=self.convertToRealWorldTime(
