@@ -3,12 +3,13 @@ import json
 import time
 import random
 import operator
-from datetime import datetime
+import datetime
 import copy
 
 from dream.plugins import plugin
+from dream.plugins.TimeSupport import TimeSupportMixin
 
-class ReadJSWIP(plugin.InputPreparationPlugin):
+class ReadJSWIP(plugin.InputPreparationPlugin, TimeSupportMixin):
   """ Input preparation
       reads the wip from the spreadsheet and inserts it to the BOM
   """
@@ -16,6 +17,16 @@ class ReadJSWIP(plugin.InputPreparationPlugin):
   def preprocess(self, data):
     """ inserts the wip as introduced in the GUI to the BOM
     """
+    strptime = datetime.datetime.strptime
+    # read the current date and define dateFormat from it
+    try:
+      now = strptime(data['general']['currentDate'], '%Y/%m/%d %H:%M')
+      data['general']['dateFormat']='%Y/%m/%d %H:%M'
+    except ValueError:
+      now = strptime(data['general']['currentDate'], '%Y/%m/%d')
+      data['general']['dateFormat']='%Y/%m/%d'
+    self.initializeTimeSupport(data)
+    
     WIPdata = data["input"].get("wip_spreadsheet",[])
     workPlanData = data["input"].get("workplan_spreadsheet",[])
     try:
@@ -36,37 +47,16 @@ class ReadJSWIP(plugin.InputPreparationPlugin):
         operatorID = WIPitem[4]
         sequence = WIPitem[1]
         WP_id = WIPitem[2]
-        start = WIPitem[5]
-        # end = WIPitem[6]
+        # start = WIPitem[5]
+        start = self.convertToSimulationTime(strptime("%s %s" % (data['general']['currentDate'], WIPitem[5]), '%Y/%m/%d %H:%M'))
+        remainingProcessinTime = start - now
         wip[partID] = {
           "task_id": WP_id,
           "operator": operatorID,
           "station": stationID,
-          "entry": start,
-          "exit": end,
+          "remainingProcessinTime": remainingProcessing,
           "sequence": sequence
         }
     return data
     
-    '''
-    {
-			"name": "Part ID",
-      "type": "string"
-    }, {
-      "name": "Sequence",
-      "type": "string"
-    }, {
-      "name": "task ID",
-      "type": "string"
-    }, {
-      "name": "Station ID",
-      "type": "string"
-    }, {
-      "name": "Personnel ID",
-      "type": "string"
-    }, {
-      "name": "Start time",
-      "type": "string",
-      "format": "date-time"
-    }
-  '''
+    
