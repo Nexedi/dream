@@ -19,7 +19,7 @@ class SplitRoute(plugin.InputPreparationPlugin):
     """ splits the routes of mould parts (design + mould)
     """
     orders = data["input"]["BOM"]["orders"]
-    stations = data["input"]["BOM"]["stations"]
+    # stations = data["input"]["BOM"]["stations"]
     for order in orders:
       orderComponents = order.get("componentsList", [])
       componentsToAdd = []
@@ -31,8 +31,8 @@ class SplitRoute(plugin.InputPreparationPlugin):
         i = 0
         for step in routeList:
           stepTechnology = step.get('technology',[])
-          assert stepTechnology in ROUTE_STEPS_SET, 'the technology provided does not exist'
-          if stepTechnology in DESIGN_ROUTE_STEPS_SET:
+          assert stepTechnology in self.ROUTE_STEPS_SET, 'the technology provided does not exist'
+          if stepTechnology in self.DESIGN_ROUTE_STEPS_SET:
             design_step_list.append(step)
             route.pop(i)
           else:

@@ -12,7 +12,7 @@ class UpdateWIP(plugin.InputPreparationPlugin):
   def getWIPIds(self):
     """returns the ids of the parts that are in the WIP dictionary"""
     wipIDs = []
-    for key in self.data["input"]["BOM"].get("WIP", {}).keys()
+    for key in self.data["input"]["BOM"].get("WIP", {}).keys():
       wipIDs.append(key)
     return wipIDs
 
@@ -91,7 +91,7 @@ class UpdateWIP(plugin.InputPreparationPlugin):
           # # if the design is not complete 
           else:
             # # if the component is design then put it at the start of its route
-            if any(station.startswith("OD") for station in route[0]["stationIdsList"]):
+            if any(station.startswith("OD") for station in route[-1]["stationIdsList"]):
               insertWIPitem = True
           # # if the completed components include all the components (exclude mould and design)
           if len(completedComponents) == len(orderComponents)-2:
@@ -99,7 +99,7 @@ class UpdateWIP(plugin.InputPreparationPlugin):
             if any(station.startswith("E") for station in route[-1]["stationIdsList"]):
               insertWIPitem = True
               
-          if insertWIPitem:    
+          if insertWIPitem:
             wip[componentID]["station"] = route[0]["stationIdsList"][0]
             wip[componentID]["sequence"] = route[0]["sequence"]
             wip[componentID]["task_id"] = route[0]["task_id"]
