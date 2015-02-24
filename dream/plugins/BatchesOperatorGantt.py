@@ -36,11 +36,6 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
             open=False)
         
             k=1
-            schedule=element['results']['schedule']
-            schedule.append({
-                 "entranceTime": 90.0, 
-                 "stationId": "M1"
-            })
             for record in schedule:
                 entranceTime=record['entranceTime']
                 try:
@@ -48,8 +43,8 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
                 except IndexError:
                     exitTime=maxSimTime    
                 k+=1     
-                task_dict[operatorId+record['stationId']+str(k)] = dict(
-                    id=operatorId+record['stationId']+str(k),
+                task_dict[operatorId+record['stationId']] = dict(
+                    id=operatorId+record['stationId'],
                     parent=operatorId,
                     text=record['stationId'],
                     start_date=self.convertToRealWorldTime(
