@@ -63,7 +63,7 @@ class MergeSteps(plugin.InputPreparationPlugin):
             if stepToMerge["processingTime"]:
               step["setupTime"] = stepToMerge["processingTime"]
             # setupType + operator for setup
-            if stepToMerge["operator"] == "Automatic"
+            if stepToMerge["operator"] == "Automatic":
               step["operationType"]["setup"] = "Automatic"
             else:
               step["operationType"]["setup"] = "Manual"
