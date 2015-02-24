@@ -40,6 +40,12 @@ class TimeSupportMixin(object):
     assert self.initialized, "initializeTimeSupport has not been called"
     return self.now + timedelta(days=simulation_time/self.timeUnitPerDay)
 
+  def convertToFormattedRealWorldTime(self, simulation_time):
+    """Convert simulation clock time to real world time, as string formatted according to general dateFormat
+    """
+    assert self.initialized, "initializeTimeSupport has not been called"
+    return (self.now + timedelta(days=simulation_time/self.timeUnitPerDay)).strftime(self.dateFormat)
+
   def convertToTimeStamp(self, simulation_time):
     """Convert simulation clock time to real world time, as timestamp.
     """
