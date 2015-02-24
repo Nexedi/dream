@@ -29,7 +29,11 @@ class BatchesTabularExit(plugin.OutputPreparationPlugin):
                     batchesThroughput=record['results']['throughput'][0]
                     data['result']['result_list'][0]['exit_output'].append(['Number of batches produced','Batches',
                                                                             batchesThroughput])                     
-                    unitsThroughput=record['results']['unitsThroughput'][0]
+                    unitsThroughput=record['results'].get('unitsThroughput',None)
+                    if unitsThroughput:
+                        unitsThroughput=unitsThroughput[0]
+                    if not unitsThroughput:
+                        unitsThroughput=batchesThroughput
                     data['result']['result_list'][0]['exit_output'].append(['Number of units produced','Units',
                                                                             unitsThroughput]) 
                     lineThroughput=batchesThroughput/float(maxSimTime)
@@ -62,6 +66,9 @@ class BatchesTabularExit(plugin.OutputPreparationPlugin):
                                                                             "%.2f" % batchesThroughputCI['lb'],
                                                                             "%.2f" % batchesThroughputCI['ub']]
                                                                            )    
+                    unitsThroughputList=record['results'].get('unitsThroughput',None)
+                    if not unitsThroughputList:
+                        unitsThroughputList=batchesThroughputList
                     unitsThroughputList=record['results']['unitsThroughput']
                     unitsThroughputCI=self.getConfidenceInterval(unitsThroughputList,confidenceLevel)
                     data['result']['result_list'][0]['exit_output'].append(['Number of units produced','Units',
