@@ -33,20 +33,21 @@ class ReadJSShifts(plugin.InputPreparationPlugin, TimeSupportMixin):
     shiftPattern = {} #shift pattern dictionary
     if shiftData:
       shiftData.pop(0)
+      defaultPattern = shiftData[1] #_dipo:default shift start and end times as first data in the array
       #iteration through the raw data to structure it into ManPy config
-      for line in shiftData:
+      for line in shiftData[2:]:
         # if all the records of that line are none then continue
         if any(record==None for record in line):
           continue        
         #if no shift start was given, assume standard 8:00
         startTime = line[2]
         if startTime == '':
-          startTime = "08:00"
+          startTime = str(defaultPattern[2]) #_dipo:default shift start time
         shiftStart = self.convertToSimulationTime(strptime("%s %s" % (line[1], startTime), '%Y/%m/%d %H:%M'))
         #if no shift end was given, assume standard 18:00
         endTime = line[3]
         if endTime == '':
-          endTime = "18:00"
+          endTime = str(defaultPattern[3]) #_dipo:default shift end time
         shiftEnd = self.convertToSimulationTime(strptime("%s %s" % (line[1], endTime), '%Y/%m/%d %H:%M'))
         #if it is the current row is an extended row for the information belonging to a resource, and no resource name is entered
         entityID = line[0].split("-")[0]
