@@ -825,6 +825,21 @@
         }, {
           "_class": "dream.plugins.ReadJSCompleted.ReadJSCompleted", 
           "input_id": ""
+        }, {
+          "_class": "dream.plugins.MergeSteps.MergeSteps", 
+          "input_id": ""
+        }, {
+          "_class": "dream.plugins.SplitRoute.SplitRoute", 
+          "input_id": ""
+        }, {
+          "_class": "dream.plugins.UpdateStationList.UpdateStationList", 
+          "input_id": ""
+        }, {
+          "_class": "dream.plugins.InsertQueues.InsertQueues", 
+          "input_id": ""
+        }, {
+          "_class": "dream.plugins.UpdateWIP.UpdateWIP", 
+          "input_id": ""
         }
       ]
     },
