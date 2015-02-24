@@ -124,7 +124,7 @@ class OldStylePartJobShopWIP(plugin.InputPreparationPlugin, TimeSupportMixin):
       processing_time_list = processing_time_list.split('-')
 
       order_dict["_class"] = "Dream.Order"
-      order_dict["id"] = "%i" % i # XXX hack, we use it in UI to retrieve spreadsheet line
+      order_dict["id"] = order_id
       order_dict["manager"] = project_manager
       order_dict["name"] = order_id
       order_dict["dueDate"] = due_date
