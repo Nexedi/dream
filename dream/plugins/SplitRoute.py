@@ -16,7 +16,7 @@ class SplitRoute(plugin.InputPreparationPlugin):
   ROUTE_STEPS_SET=set(["ENG", "CAD","CAM","MILL", "MILL-SET","TURN", "DRILL", "QUAL","EDM", "EDM-SET","ASSM", "MAN","INJM", "INJM-MAN", "INJM-SET"])
   DESIGN_ROUTE_STEPS_SET=set(["ENG", "CAD"])
   def preprocess(self, data):
-    """ splits the routes of mould parts (design + mould)
+    """ splits the routes of mould parts (design + mould) and update the _class attribute of the entities
     """
     orders = data["input"]["BOM"]["productionOrders"]
     for order in orders:
@@ -28,6 +28,7 @@ class SplitRoute(plugin.InputPreparationPlugin):
         # for each step of the components route find out if it is of a design route (ENG - CAD) or of mould route (ASSM-INJM). If the route contains none of these technology-types steps then the component is normal
         routeList = copy.deepcopy(route)
         i = 0
+        # figure out which steps are design steps
         for step in routeList:
           stepTechnology = step.get('technology',[])
           assert stepTechnology in self.ROUTE_STEPS_SET, 'the technology provided does not exist'
@@ -36,12 +37,19 @@ class SplitRoute(plugin.InputPreparationPlugin):
             route.pop(i)
           else:
             i+=1
+        # if the current entity is a mold-design then create the design and update the _class attribute of the mold
         if design_step_list:
           design = {"name": component.get("name","")+"_Design",
                     "id": component.get("id","")+"_D",
                     "quantity": component.get("quantity", 1),
-                    "route": design_step_list}
+                    "route": design_step_list,
+                    "_class": "Dream.OrderDesign"}
           componentsToAdd.append(design)
+          """the current component is a mold"""
+          component["_class"] = "Dream.Mould" # XXX hard-coded value
+        # otherwise we have a normal component, update the _class attribute accordingly
+        else:
+          component["class"] = "Dream.OrderComponent" # XXX hard-coded value
       for design in componentsToAdd:
         orderComponents.append(design)
     return data
