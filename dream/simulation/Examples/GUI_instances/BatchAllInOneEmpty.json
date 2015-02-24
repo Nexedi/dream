@@ -112,6 +112,11 @@
         "gadget": "Input_viewDocumentManagement", 
         "title": "Manage Document", 
         "type": "object_view"
+      },
+      "debug": {
+        "gadget": "Input_viewDebugJson", 
+	"title": "Edit Configuration", 
+	"type": "object_view"
       }, 
       "view_operator_shift_spreadsheet": {
         "configuration": {
@@ -201,7 +206,7 @@
       }
     }, 
     "output": {
-	  "view_exit_results": {
+        "view_exit_results": {
         "configuration": {
           "handsontable_options": {}, 
           "output_id": "exit_output"
@@ -218,7 +223,7 @@
         "gadget": "Output_viewSpreadsheet", 
         "title": "Buffer Levels", 
         "type": "object_view"
-      },	  
+      },  
       "view_operator_gantt": {
         "configuration": {
           "data": {

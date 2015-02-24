@@ -157,6 +157,11 @@
                     "type": "object_view", 
                     "title": "Manage Document"
                }, 
+	      "debug": {
+		"gadget": "Input_viewDebugJson", 
+		"title": "Edit Configuration", 
+		"type": "object_view"
+	      }, 
                "view_operator_shift_spreadsheet": {
                     "gadget": "Input_viewSpreadsheet", 
                     "configuration": {

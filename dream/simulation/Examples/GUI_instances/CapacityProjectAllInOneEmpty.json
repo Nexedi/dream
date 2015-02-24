@@ -423,6 +423,11 @@
                 "type": "object_view",
                 "gadget": "Input_viewProductionLine"
             },
+	    "debug": {
+		"gadget": "Input_viewDebugJson", 
+		"title": "Edit Configuration", 
+		"type": "object_view"
+	    }, 
             "view_management": {
                 "gadget": "Input_viewDocumentManagement",
                 "type": "object_view",
