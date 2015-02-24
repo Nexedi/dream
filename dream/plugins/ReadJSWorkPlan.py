@@ -15,14 +15,14 @@ class ReadJSWorkPlan(plugin.InputPreparationPlugin):
     
   def findEntityByID(self, ID):
     """search within the BOM and find the entity (order or component)"""
-    orders = self.data["input"]["BOM"].get("orders", {})
+    orders = self.data["input"]["BOM"].get("productionOrders", {})
     for order in orders:
       # check if the id corresponds to an order
-      if ID == order["orderID"]:
+      if ID == order["id"]:
         return order
       components = order.get("componentsList", [])
       for component in components:
-        if ID == component["componentID"]:
+        if ID == component["id"]:
           return component
     return {}
 
@@ -47,8 +47,8 @@ class ReadJSWorkPlan(plugin.InputPreparationPlugin):
           components = order.get("componentsList",[])
           # the part is brand new
           part = {
-            "componentID": partID,
-            "componentName": partName
+            "id": partID,
+            "name": partName
           }
           components.append(part)
           order["componentsList"] = components

@@ -43,7 +43,7 @@ class UpdateStationList(plugin.InputPreparationPlugin):
     """ substitutes the technology information with stationIDs lists
     """
     self.data = data
-    orders = data["input"]["BOM"]['orders']
+    orders = data["input"]["BOM"]["productionOrders"]
     try:
       stations = data["input"]["BOM"]['stations']
     except:

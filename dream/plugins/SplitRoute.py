@@ -18,8 +18,7 @@ class SplitRoute(plugin.InputPreparationPlugin):
   def preprocess(self, data):
     """ splits the routes of mould parts (design + mould)
     """
-    orders = data["input"]["BOM"]["orders"]
-    # stations = data["input"]["BOM"]["stations"]
+    orders = data["input"]["BOM"]["productionOrders"]
     for order in orders:
       orderComponents = order.get("componentsList", [])
       componentsToAdd = []
@@ -38,8 +37,8 @@ class SplitRoute(plugin.InputPreparationPlugin):
           else:
             i+=1
         if design_step_list:
-          design = {"componentName": component.get("componentName","")+"_Design",
-                    "componentID": component.get("componentID","")+"_D",
+          design = {"name": component.get("name","")+"_Design",
+                    "id": component.get("id","")+"_D",
                     "quantity": component.get("quantity", 1),
                     "route": design_step_list}
           componentsToAdd.append(design)

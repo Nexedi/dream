@@ -20,7 +20,7 @@ class UpdateWIP(plugin.InputPreparationPlugin):
     """ updates the Work in Process according to what is provided by the BOM, i.e. if a design just exited the last step of it's sequence
     """
     self.data = copy(data)
-    orders = self.data["input"]["BOM"]["orders"]
+    orders = self.data["input"]["BOM"]["productionOrders"]
     nodes = self.data["graph"]["node"]
     wip = self.data["input"]["BOM"].get("WIP", {})
   
@@ -35,7 +35,7 @@ class UpdateWIP(plugin.InputPreparationPlugin):
       completedComponents = []        # list to hold the componentIDs that are concluded
       # # find all the components
       for component in orderComponents:
-        componentID = component["componentID"]
+        componentID = component["id"]
         route = component["route"] 
         # # figure out if they are defined in the WIP
         if componentID in self.getWIPIds():
@@ -79,7 +79,7 @@ class UpdateWIP(plugin.InputPreparationPlugin):
       # if the entity is not recognized within the current WIP then check if it should be created
       # first the flag designComplete and the completedComponents list must be updated 
       for component in orderComponents:
-        componentID = component["componentID"]
+        componentID = component["id"]
         route = component["route"] 
         if not componentID in self.getWIPIds():
           insertWIPitem = False
@@ -100,6 +100,8 @@ class UpdateWIP(plugin.InputPreparationPlugin):
               insertWIPitem = True
               
           if insertWIPitem:
+            if not wip.get(componentID, {}):
+              wip[componentID] = {}
             wip[componentID]["station"] = route[0]["stationIdsList"][0]
             wip[componentID]["sequence"] = route[0]["sequence"]
             wip[componentID]["task_id"] = route[0]["task_id"]

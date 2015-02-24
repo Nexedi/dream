@@ -63,7 +63,7 @@ class InsertQueues(plugin.InputPreparationPlugin):
     """ inserts buffers before the corresponding stations
     """
     self.data = copy(data)
-    orders = self.data["input"]["BOM"]["orders"]
+    orders = self.data["input"]["BOM"]["productionOrders"]
     nodes = self.data["graph"]["node"]
     for order in orders:
       orderComponents = order.get("componentsList", [])
