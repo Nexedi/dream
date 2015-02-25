@@ -47,6 +47,7 @@ class G:
     Lateness = {}
     Excess = {}
     weightFactor = [10.0,1.0,0,2]
+    Utilisation={}
     
     # ACO parameters
     ACO = 1
