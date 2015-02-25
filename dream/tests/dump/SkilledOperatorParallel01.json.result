@@ -115,6 +115,7 @@
     "schedule": [
      {
       "entranceTime": 0, 
+      "exitTime": 80.0, 
       "stationId": "M2"
      }, 
      {
