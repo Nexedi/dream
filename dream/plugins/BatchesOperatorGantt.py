@@ -36,6 +36,7 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
             open=False)
         
             k=1
+            schedule=element['results']['schedule']
             for record in schedule:
                 entranceTime=record['entranceTime']
                 try:
