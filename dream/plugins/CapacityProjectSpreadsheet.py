@@ -25,11 +25,11 @@ class CapacityProjectSpreadsheet(plugin.InputPreparationPlugin):
                     projectId=projectData[row][0]
                     orderDate=strptime(projectData[row][1], '%Y/%m/%d')
                     orderDate=(orderDate-now).days 
-                    try:
+                    if projectData[row][2]:
                         dueDate=strptime(projectData[row][2], '%Y/%m/%d')
                         dueDate=(dueDate-now).days 
                     # if no due date is given set it to 180 (about 6 months)
-                    except ValueError:
+                    else:
                         dueDate=180
                     assemblySpaceRequirement=float(projectData[row][3])
                     capacityRequirementDict={}
