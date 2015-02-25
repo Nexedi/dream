@@ -255,8 +255,8 @@ class SkilledRouter(Router):
                         if signal in receivedEvent:
                             transmitter, eventTime=signal.value
                             assert eventTime==self.env.now, 'the station finished signal must be received on the time of request'
-                            self.expectedFinishSignals.remove(signal)
-                            del self.expectedFinishSignalsDict[station.id]
+                            self.expectedFinishSignals.remove(signal)                   
+                            del self.expectedFinishSignalsDict[transmitter.id]
                             for id in solution.keys():
                                 operator=findObjectById(id)
                                 station=findObjectById(solution[id])
