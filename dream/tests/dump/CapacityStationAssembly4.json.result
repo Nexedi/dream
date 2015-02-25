@@ -303,6 +303,7 @@
   }, 
   {
    "_class": "Dream.CapacityProject", 
+   "dueDate": 0.0, 
    "family": "Job", 
    "id": "P1", 
    "results": {
