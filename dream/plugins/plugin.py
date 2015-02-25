@@ -102,6 +102,36 @@ class DefaultExecutionPlugin(ExecutionPlugin):
     data["result"]["result_list"][-1]["key"] = "default"
     return data
 
+class NewOrderExecutionPlugin(ExecutionPlugin):
+  """ Execution plugin that compares the result with or with the new order.
+  
+  The new order is identified must have "new" in its id.
+  """
+  def removeNewOrder(self, data):
+    data = deepcopy(data)
+    data['input']['BOM']['productionOrders'] = [order for order in 
+      data['input']['BOM']['productionOrders'] if not "new" in order['id'].lower()]
+    for node in data['graph']['node'].values():
+      if node.get('wip'):
+        node['wip'] = [part for part in node['wip'] if not "new" in part['capacityProjectId'].lower()]
+    return data
+
+  def run(self, data):
+    """Run simulation and return result to the GUI.
+    """
+    # before new order
+    data["result"]["result_list"].extend(self.runOneScenario(self.removeNewOrder(data))['result']['result_list'])
+    data["result"]["result_list"][-1]["score"] = 0
+    data["result"]["result_list"][-1]["key"] = "before_new_order"
+    data["result"]["result_list"][-1]["name"] = "Before New Order"
+    # with the new order
+    data["result"]["result_list"].extend(self.runOneScenario(data)['result']['result_list'])
+    data["result"]["result_list"][-1]["score"] = 0
+    data["result"]["result_list"][-1]["key"] = "with_new_order"
+    data["result"]["result_list"][-1]["name"] = "With New Order"
+    return data
+
+
 class PluginRegistry(object):
   """Registry of plugins.
   """
