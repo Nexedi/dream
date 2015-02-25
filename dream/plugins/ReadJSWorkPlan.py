@@ -71,7 +71,7 @@ class ReadJSWorkPlan(plugin.InputPreparationPlugin):
         route.append({
           "task_id": task_id,
           "sequence": sequence,
-          "processingTime": {"fixed":{"mean":processingTime}},
+          "processingTime": {"Fixed":{"mean":processingTime}},
           "operator": operator,
           "partsneeded": partsneeded,
           "technology": technology,
