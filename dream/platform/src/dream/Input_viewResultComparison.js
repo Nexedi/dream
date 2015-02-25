@@ -1,5 +1,4 @@
 /*global rJS, RSVP, initGadgetMixin, jQuery */
-/*jslint loopfunc: true */
 /*jslint nomen: true */
 (function (window, rJS, RSVP, initGadgetMixin, $) {
   "use strict";
@@ -60,7 +59,7 @@
               }
               order_lateness[order_id].push(order);
           };
-          for (i=0; i<result_list.length; i++) {
+          for (i=0; i<result_list.length; i+=1) {
             link = result_list[i][0];
             result = result_list[i][1];
             Object.keys(result.order_lateness).forEach(calculateOrderLateness);
@@ -79,12 +78,13 @@
             data.push(order);
           });
           
+          /*jslint unparam: true */
           function orderHtmlRenderer(instance, td, row, col, prop, value, cellProperties) {
             var a, color = "yellow";
-            if (value.delay < .5) {
+            if (value.delay < 0.5) {
               color = "green";
             }
-            if (value.delay > .5) {
+            if (value.delay > 0.5) {
               color = "red";
             }
             $(td).css({"background-color": color});
@@ -97,7 +97,7 @@
           
           for (i=1; i < data[0].length; i+=1) {
             colHeaders.push("Solution #" + i);
-            columns.push({data: i, renderer: orderHtmlRenderer})
+            columns.push({data: i, renderer: orderHtmlRenderer});
           }
           
           return tableeditor.render(
@@ -111,7 +111,6 @@
         });
       })
       .declareMethod("startService", function () {
-        var gadget = this;
         return this.getDeclaredGadget("tableeditor")
           .push(function (tableeditor) {
             return tableeditor.startService();
