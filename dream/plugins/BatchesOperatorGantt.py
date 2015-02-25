@@ -61,6 +61,7 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
     result = data['result']['result_list'][-1]
     result[self.configuration_dict['output_id']] = dict(
       time_unit=self.getTimeUnitText(),
+      subscales=[dict(unit="hour", step=1, date="%H:%i")],
       task_list=sorted(task_dict.values(),
         key=lambda task: (task.get('parent'),
                           task.get('type') == 'project',
