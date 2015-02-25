@@ -1487,7 +1487,6 @@
   }, 
   {
    "_class": "Dream.CapacityProject", 
-   "dueDate": 34.0, 
    "family": "Job", 
    "id": "P1", 
    "results": {
@@ -1537,7 +1536,6 @@
   }, 
   {
    "_class": "Dream.CapacityProject", 
-   "dueDate": 43.0, 
    "family": "Job", 
    "id": "P2", 
    "results": {
@@ -1587,7 +1585,6 @@
   }, 
   {
    "_class": "Dream.CapacityProject", 
-   "dueDate": 180.0, 
    "family": "Job", 
    "id": "P3", 
    "results": {
@@ -1637,7 +1634,6 @@
   }, 
   {
    "_class": "Dream.CapacityProject", 
-   "dueDate": 45.0, 
    "family": "Job", 
    "id": "P4", 
    "results": {
@@ -1687,7 +1683,6 @@
   }, 
   {
    "_class": "Dream.CapacityProject", 
-   "dueDate": 55.0, 
    "family": "Job", 
    "id": "P5", 
    "results": {
@@ -1737,7 +1732,6 @@
   }, 
   {
    "_class": "Dream.CapacityProject", 
-   "dueDate": 60.0, 
    "family": "Job", 
    "id": "P6", 
    "results": {
@@ -1787,7 +1781,6 @@
   }, 
   {
    "_class": "Dream.CapacityProject", 
-   "dueDate": 49.0, 
    "family": "Job", 
    "id": "P7", 
    "results": {

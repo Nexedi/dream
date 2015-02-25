@@ -114,7 +114,6 @@
   }, 
   {
    "_class": "Dream.CapacityProject", 
-   "dueDate": 10.0, 
    "family": "Job", 
    "id": "P1", 
    "results": {
@@ -134,7 +133,6 @@
   }, 
   {
    "_class": "Dream.CapacityProject", 
-   "dueDate": 10.0, 
    "family": "Job", 
    "id": "P2", 
    "results": {
