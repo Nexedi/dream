@@ -124,11 +124,13 @@ class NewOrderExecutionPlugin(ExecutionPlugin):
     data["result"]["result_list"][-1]["score"] = 0
     data["result"]["result_list"][-1]["key"] = "before_new_order"
     data["result"]["result_list"][-1]["name"] = "Before New Order"
-    # with the new order
-    data["result"]["result_list"].extend(self.runOneScenario(data)['result']['result_list'])
-    data["result"]["result_list"][-1]["score"] = 0
-    data["result"]["result_list"][-1]["key"] = "with_new_order"
-    data["result"]["result_list"][-1]["name"] = "With New Order"
+
+    if [order for order in data['input']['BOM']['productionOrders'] if "new" in order['id'].lower()]:
+      # with the new order
+      data["result"]["result_list"].extend(self.runOneScenario(data)['result']['result_list'])
+      data["result"]["result_list"][-1]["score"] = 0
+      data["result"]["result_list"][-1]["key"] = "with_new_order"
+      data["result"]["result_list"][-1]["name"] = "With New Order"
     return data
 
 
