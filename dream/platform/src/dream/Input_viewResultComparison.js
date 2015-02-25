@@ -19,7 +19,7 @@
     // declared methods
     /////////////////////////////////////////////////////////////////
     .declareMethod("render", function (options) {
-      var gadget = this, order_lateness = {};
+      var gadget = this, order_lateness = {}, json_result;
       this.props.jio_key = options.id;
 
       return gadget.aq_getAttachment({
@@ -38,6 +38,7 @@
             result_list = [],
             document_list = [],
             i;
+          json_result = result;
           if (result && result.result_list) {
             document_list = result.result_list;
           }
@@ -81,22 +82,24 @@
           /*jslint unparam: true */
           function orderHtmlRenderer(instance, td, row, col, prop, value, cellProperties) {
             var a, color = "yellow";
-            if (value.delay < 0.5) {
-              color = "green";
+            if (value) {
+              if (value.delay < 0.5) {
+                color = "green";
+              }
+              if (value.delay > 0.5) {
+                color = "red";
+              }
+              $(td).css({"background-color": color});
+              a = $("<a>").attr("href", value.link)
+                .text(value.completionDate + "\n" + (value.delay || 0).toFixed(0))
+                .css({color: "black", "text-shadow": "none"});
+              a.appendTo(td);
             }
-            if (value.delay > 0.5) {
-              color = "red";
-            }
-            $(td).css({"background-color": color});
-            a = $("<a>").attr("href", value.link)
-              .text(value.completionDate + "\n" + (value.delay || 0).toFixed(0))
-              .css({color: "black", "text-shadow": "none"});
-            a.appendTo(td);
             return td;
           }
           
           for (i=1; i < data[0].length; i+=1) {
-            colHeaders.push("Solution #" + i);
+            colHeaders.push(json_result.result_list[i-1].name || ("Solution #" + i));
             columns.push({data: i, renderer: orderHtmlRenderer});
           }
           
