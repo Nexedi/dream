@@ -60,8 +60,6 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
             for record in schedule:
                 for nextRecord in schedule[k+1:]:
                     if nextRecord['stationId']==record['stationId'] and not record is schedule[-1]:
-                        if operatorId=='PB_1':
-                            print 'removing',nextRecord, 'cause of', record
                         schedule.remove(nextRecord)
                     else:
                         continue    
