@@ -5,7 +5,7 @@
     var gadget_klass = rJS(window);
     initGadgetMixin(gadget_klass);
     gadget_klass.declareAcquiredMethod("aq_getAttachment", "jio_getAttachment").declareAcquiredMethod("whoWantsToDisplayThisResult", "whoWantsToDisplayThisResult").declareMethod("render", function(options) {
-        var gadget = this, order_lateness = {};
+        var gadget = this, order_lateness = {}, general_json;
         this.props.jio_key = options.id;
         return gadget.aq_getAttachment({
             _id: gadget.props.jio_key,
@@ -17,7 +17,8 @@
             }
             throw error;
         }).push(function(sim_json) {
-            var result = JSON.parse(sim_json).result, result_list = [], document_list = [], i;
+            var json = JSON.parse(sim_json), result = json.result, result_list = [], document_list = [], i;
+            general_json = result;
             if (result && result.result_list) {
                 document_list = result.result_list;
             }
@@ -26,56 +27,62 @@
             }
             return RSVP.all(result_list);
         }).push(function(result_list) {
-            var i, link, result, calculateOrderLateness = function(order_id) {
+            var i, link, result, scenario_id, calculateOrderLateness = function(order_id) {
                 var order = result.order_lateness[order_id];
                 order.link = link;
                 if (!order_lateness[order_id]) {
-                    order_lateness[order_id] = [];
+                    order_lateness[order_id] = {};
                 }
-                order_lateness[order_id].push(order);
+                order_lateness[order_id][scenario_id] = order;
             };
             for (i = 0; i < result_list.length; i += 1) {
+                scenario_id = result_list[i][1].name || i;
                 link = result_list[i][0];
                 result = result_list[i][1];
                 Object.keys(result.order_lateness).forEach(calculateOrderLateness);
             }
             return gadget.getDeclaredGadget("tableeditor");
         }).push(function(tableeditor) {
-            var i, data = [], colHeaders = [ "Project" ], columns = [ {
-                data: 0
+            var i, data = {}, data_list = [], colHeaders = [ "Project" ], columns = [ {
+                data: "id"
             } ];
             Object.keys(order_lateness).forEach(function(order_id) {
                 var order = order_lateness[order_id];
-                order.unshift(order_id);
-                data.push(order);
+                order.id = order_id;
+                data[order_id] = order;
             });
             /*jslint unparam: true */
             function orderHtmlRenderer(instance, td, row, col, prop, value, cellProperties) {
                 var a, color = "yellow";
-                if (value.delay < .5) {
-                    color = "green";
+                if (value) {
+                    if (value.delay < .5) {
+                        color = "green";
+                    }
+                    if (value.delay > .5) {
+                        color = "red";
+                    }
+                    $(td).text("").css({
+                        "background-color": color
+                    });
+                    a = $("<a>").attr("href", value.link).text(value.completionDate + "\n" + (value.delay || 0).toFixed(0)).css({
+                        color: "black",
+                        "text-shadow": "none"
+                    });
+                    a.appendTo(td);
                 }
-                if (value.delay > .5) {
-                    color = "red";
-                }
-                $(td).css({
-                    "background-color": color
-                });
-                a = $("<a>").attr("href", value.link).text(value.completionDate + "\n" + (value.delay || 0).toFixed(0)).css({
-                    color: "black",
-                    "text-shadow": "none"
-                });
-                a.appendTo(td);
                 return td;
             }
-            for (i = 1; i < data[0].length; i += 1) {
-                colHeaders.push("Solution #" + i);
+            for (i = 0; i < general_json.result_list.length; i += 1) {
+                colHeaders.push(general_json.result_list[i].name || "Solution #" + (i + 1));
                 columns.push({
-                    data: i,
+                    data: general_json.result_list[i].name || i,
                     renderer: orderHtmlRenderer
                 });
             }
-            return tableeditor.render(JSON.stringify(data), {
+            Object.keys(data).forEach(function(order_id) {
+                data_list.push(order_lateness[order_id]);
+            });
+            return tableeditor.render(JSON.stringify(data_list), {
                 colHeaders: colHeaders,
                 columns: columns,
                 readOnly: true
