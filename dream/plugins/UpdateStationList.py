@@ -12,16 +12,21 @@ class UpdateStationList(plugin.InputPreparationPlugin):
   """ Input preparation
       reads the data from external data base and substitutes the technology information with stationIDs lists
   """
+  # XXX hard-coded allowed station classes
+  STATION_CLASS_SET = set(["Dream.MouldAssembly","Dream.MachineJobShop"])
+  # XXX hardcoded values for CAD1 and CAD2 stations
   @staticmethod
   def getStationTechnologies():
     '''returns the technologies that can be processed on the stations'''
-    return {"CAD": ["ENG", "CAD"],
+    return {"CAD1": ["ENG", "CAD"],         # XXX CAD1 is considered different than CAD2, they are not equivalent
+            "CAD2": ["CAD"],
             "CAM": ["CAM"],
             "MILL": ["MILL"],
             "TURN": ["TURN"],
             "DRILL": ["DRILL"],
             "EDM": ["EDM"],
-            "WORK": ["QUAL", "ASSM", "MAN"],
+            "WORK": ["QUAL", "MAN"],        # XXX currently we consider different stations for QUAL/MAN and ASSM
+            "ASSM": ["ASSM"],
             "INJM": ["INJM"]}
 
   def getStationInitials(self,technology):
@@ -49,7 +54,6 @@ class UpdateStationList(plugin.InputPreparationPlugin):
     except:
       stations = self.getStationNames()
     nodes = data["graph"]["node"]
-    
     for order in orders:
       orderComponents = order.get("componentsList", [])
       for component in orderComponents:
@@ -61,7 +65,8 @@ class UpdateStationList(plugin.InputPreparationPlugin):
           step["technology"] = technology
           technologyStations = []
           for station in stations:
-            if station.startswith(self.getStationInitials(technology)):
+            if station.startswith(self.getStationInitials(technology))\
+               and data["graph"]["node"][station]["_class"] in self.STATION_CLASS_SET:
               found = False # check that the id of the station provided by the db BOM exist in the nodes of the graph
               for node in nodes.keys():
                 if node == station:
