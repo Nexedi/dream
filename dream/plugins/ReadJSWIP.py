@@ -59,9 +59,9 @@ class ReadJSWIP(ReadJSWorkPlan.ReadJSWorkPlan, TimeSupportMixin):
         route = part.get("route",[])
         for step in route:
           if step["task_id"] == WP_id:
-            processingTime = step.get("processingTime", {"fixed":{"meam":0}})
+            processingTime = step.get("processingTime", {"Fixed":{"meam":0}})
             # the distribution of the processing time is supposed to be fixed (see ReadJSWorkPlan))
-            processingTime = float(processingTime["fixed"].get("mean",0))
+            processingTime = float(processingTime["Fixed"].get("mean",0))
         # calculate the remaining Processing Time
         remainingProcessingTime = processingTime - elapsedTime
         assert remainingProcessingTime>=0, "the remaining processing cannot be negative"
