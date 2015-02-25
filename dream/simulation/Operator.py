@@ -284,18 +284,17 @@ class Operator(ObjectResource):
         json['results']['waiting_ratio'] = self.Waiting
         json['results']['off_shift_ratio'] = self.OffShift
         if self.ouputSchedule:
-            if self.schedule:
-                json['results']['schedule']=[]
-                for record in self.schedule:
-                    if len(record)==3:
-                        json['results']['schedule'].append({
-                            'stationId':record[0].id,
-                            'entranceTime':record[1],
-                            'exitTime':record[2]})
-                    else:
-                        json['results']['schedule'].append({
-                            'stationId':record[0].id,
-                            'entranceTime':record[1]})
+            json['results']['schedule']=[]
+            for record in self.schedule:
+                if len(record)==3:
+                    json['results']['schedule'].append({
+                        'stationId':record[0].id,
+                        'entranceTime':record[1],
+                        'exitTime':record[2]})
+                else:
+                    json['results']['schedule'].append({
+                        'stationId':record[0].id,
+                        'entranceTime':record[1]})
         G.outputJSON['elementList'].append(json)
     
     #===========================================================================

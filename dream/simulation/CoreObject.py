@@ -603,6 +603,9 @@ class CoreObject(ManPyObject):
         
         activeObject=self.getActiveObject()
         activeObjectQueue=self.getActiveObjectQueue()
+        
+        import numpy
+        self.wipStatList=numpy.concatenate((self.wipStatList,[[self.env.now, len(activeObjectQueue)]])) 
                
         #calculate the offShift time for current entity
         offShiftTimeInCurrentEntity=0
