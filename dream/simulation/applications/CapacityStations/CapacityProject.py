@@ -63,6 +63,7 @@ class CapacityProject(Entity):
         from dream.simulation.Globals import G
         json = {'_class': 'Dream.%s' % (self.__class__.__name__),
                 'id': self.id,
+                'dueDate': self.dueDate,
                 'family': 'Job',
                 'results': {}}
         if (G.numberOfReplications == 1):
