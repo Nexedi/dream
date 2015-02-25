@@ -25,6 +25,24 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
     resultElements=data['result']['result_list'][-1]['elementList']
     task_dict = {}
     # loop in the results to find Operators
+    
+    colorList=['blue','green','red',
+               'gold','black','white',
+               'DarkRed','Fuchsia','Gray',
+               'magenta','yellow','Olive',
+               'orange','purple','pink']
+    
+    # create a dictionary so that all stations have their own color
+    colorDict={}
+    nodes=data['graph']['node']
+    i=0
+    for node_id, node in nodes.iteritems():
+        if node['_class'].startswith('Dream.BatchScrapMachine') or node['_class']=='Dream.M3':
+            colorDict[node_id]=colorList[i]
+            i+=1
+            if i==len(colorList):   
+                i=0
+             
     for element in resultElements:
         if element['_class']=="Dream.Operator":
             operatorId=element['id']
@@ -55,6 +73,7 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
                     open=False,
                     entranceTime=entranceTime,
                     duration=exitTime-entranceTime,
+                    color=colorDict[record['stationId']]
                 )           
          
     # return the result to the gadget
