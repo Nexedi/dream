@@ -112,43 +112,7 @@ class SkilledRouter(Router):
                 self.availableStations=[]
                 for station in G.MachineList:
                     if station.checkIfActive():
-                        self.availableStations.append(station)
-                
-                
-                
-                
-                if self.waitEndProcess:
-                    #===================================================================
-                    # # XXX wait till all the stations have finished their current WIP
-                    # # XXX find all the machines that are currently busy
-                    #===================================================================
-                    self.busyStations=[]
-                    for station in self.availableStations:
-                        if station.getActiveObjectQueue() and not station.waitToDispose:
-                            self.busyStations.append(station)
-                    #===================================================================
-                    # # XXX create a list of all the events (endLastProcessing)
-                    #===================================================================
-                    self.endProcessingSignals=[]
-                    for station in self.busyStations:
-                        self.endProcessingSignals.append(station.endedLastProcessing)
-                        station.isWorkingOnTheLast=True
-                        # FIX this will fail as the first machine sends the signal (router.waitingSingnal-> False)
-                        self.waitingSignal=True
-                    #===================================================================
-                    # # XXX wait till all the stations have finished their current WIP
-                    #===================================================================
-                    # TODO: fix that, add flags, reset the signals
-                    
-                    self.expectedSignals['endedLastProcessing']=1
-                    
-                    receivedEvent=yield self.env.all_of(self.endProcessingSignals)
-                    
-                    for station in self.busyStations:
-                        if station.endedLastProcessing in receivedEvent:
-                            transmitter, eventTime=station.endedLastProcessing.value
-                            station.endedLastProcessing=self.env.event()
-                
+                        self.availableStations.append(station)               
                 
                 #===================================================================
                 # # XXX if the resources are still assigned then un-assign them from the machines they are currently assigned
