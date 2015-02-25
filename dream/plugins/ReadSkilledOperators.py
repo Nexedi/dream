@@ -34,12 +34,17 @@ class ReadSkilledOperators(plugin.InputPreparationPlugin):
               "ouputSchedule" : 1
             }
             operatorPresent = True
-            # for every station that has one or more skilled operators set operation type to MT-Load-Processing
-            for stationId in skills:
-                node[stationId]["operationType"]="MT-Load-Processing"
-        # add EventGenerator for the allocation every 10 minutes
+                   
+        # if there is at least one operator
         if operatorPresent:
-          node['EV123454321']={   #(random id)
+            nodes=data['graph']['node']
+            for station_id,station in nodes.iteritems():
+                # set the operation type of all machines to MT-Load-Processing
+                if station['_class'] in ['Dream.BatchScrapMachine','Dream.BatchScrapMachineBeforeReassembly',
+                                      'Dream.BatchScrapMachineAfterDecompose','Dream.M3']:
+                    station["operationType"]="MT-Load-Processing"
+            # add EventGenerator for the allocation every 10 minutes
+            node['EV123454321']={   #(random id)
                       "name": "Allocator", 
                       "argumentDict": "{}", 
                       "interval": 10, 
@@ -49,9 +54,6 @@ class ReadSkilledOperators(plugin.InputPreparationPlugin):
                       "interruptions": {}, 
                       "_class": "Dream.EventGenerator", 
                       "method": "Dream.ManPyObject.requestAllocation"      
-          }
-#         print '---------------------------------'
-#         print data['graph']['node']
-#         print '---------------------------------'
+              }
     return data
 
