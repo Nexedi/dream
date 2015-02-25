@@ -10,7 +10,10 @@
 
     Gantt expect data in the following format:
 
-      time_unit: one of minute, hour, day, week, month or year
+      time_unit: one of minute, hour, day, week, month or year. This will set gantt.config.scale_unit ( http://docs.dhtmlx.com/gantt/desktop__configuring_time_scale.html#settingthestepofthescale )
+      
+      subscales: sets gantt.config.subscales ( http://docs.dhtmlx.com/gantt/desktop__configuring_time_scale.html#addingthesecondscales )
+      
       task_list: [
           {
             id: "project_1", # an unique id, different than "0" which is a reserved id
@@ -77,6 +80,11 @@
       };
 
       gantt.config.duration_unit = this.props.result.time_unit;
+      
+      if (this.props.result.subscales) {
+        gantt.config.subscales = this.props.result.subscales;
+      }
+      
       gantt.init($(this.props.element).find('.gant_container')[0]);
       gantt.parse(gantt_tasks);
 
