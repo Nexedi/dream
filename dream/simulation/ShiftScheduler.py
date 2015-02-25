@@ -78,6 +78,10 @@ class ShiftScheduler(ObjectInterruption):
                 # interrupt the victim only if it was not previously interrupted
                 self.interruptVictim()                      # interrupt the victim
             else:
+                if self.victim.schedule:
+                    if len(self.victim.schedule[-1])==2:
+                        self.victim.schedule[-1].append(self.env.now)
+                self.victim.schedule.append([{'id':'off-shift'},self.env.now])
                 self.requestAllocation()
 
             self.victim.timeLastShiftEnded=self.env.now
@@ -98,6 +102,9 @@ class ShiftScheduler(ObjectInterruption):
                 if issubclass(self.victim.__class__, CoreObject): 
                     self.reactivateVictim()                 # re-activate the victim in case it was interrupted
                 else:
+                    if self.victim.schedule:
+                        if len(self.victim.schedule[-1])==2:
+                            self.victim.schedule[-1].append(self.env.now)
                     self.requestAllocation()
 
                 # if the victim has interruptions that measure only the on-shift time, they have to be notified
@@ -149,6 +156,10 @@ class ShiftScheduler(ObjectInterruption):
                     if station:
                         if not self.endUnfinished and station.expectedSignals['processOperatorUnavailable']:
                             self.sendSignal(receiver=station, signal=station.processOperatorUnavailable)
+                    if self.victim.schedule:
+                        if len(self.victim.schedule[-1])==2:
+                            self.victim.schedule[-1].append(self.env.now)
+                    self.victim.schedule.append([{'id':'off-shift'},self.env.now])
                     self.requestAllocation()
 
                 # if the victim has interruptions that measure only the on-shift time, they have to be notified

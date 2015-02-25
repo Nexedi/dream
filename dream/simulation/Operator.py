@@ -286,14 +286,18 @@ class Operator(ObjectResource):
         if self.ouputSchedule:
             json['results']['schedule']=[]
             for record in self.schedule:
+                try:
+                    stationId=record[0].id
+                except AttributeError:
+                    stationId=record[0]['id']                 
                 if len(record)==3:
                     json['results']['schedule'].append({
-                        'stationId':record[0].id,
+                        'stationId':stationId,
                         'entranceTime':record[1],
                         'exitTime':record[2]})
                 else:
                     json['results']['schedule'].append({
-                        'stationId':record[0].id,
+                        'stationId':stationId,
                         'entranceTime':record[1]})
         G.outputJSON['elementList'].append(json)
     
