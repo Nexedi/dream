@@ -28,11 +28,11 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
     # loop in the results to find Operators
     
     colorList=['blue','green','red',
-               'gold','black','white',
+               'gold','black','Aqua',
                'DarkRed','Fuchsia','Gray',
                'magenta','yellow','Olive',
                'orange','purple','pink']
-    
+        
     # create a dictionary so that all stations have their own color
     colorDict={}
     nodes=data['graph']['node']
@@ -43,7 +43,9 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
             i+=1
             if i==len(colorList):   
                 i=0
-             
+    # set off-shift color to white
+    colorDict['off-shift']='white'
+
     for element in resultElements:
         if element['_class']=="Dream.Operator":
             operatorId=element['id']
@@ -55,23 +57,27 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
             open=False)
         
             
-            schedule=copy(element['results']['schedule'])        
+            schedule=copy(element['results']['schedule']) 
+            # in the cases the operator exits and the enters in the same station merge those records
             k=0
             for record in schedule:
                 for nextRecord in schedule[k+1:]:
-                    if nextRecord['stationId']==record['stationId'] and not record is schedule[-1]:
+                    if nextRecord['stationId']==record['stationId']\
+                            and nextRecord['entranceTime']==record['exitTime']\
+                            and not record is schedule[-1]:
+                        nextExitTime=nextRecord.get('exitTime',maxSimTime)
+                        record['exitTime']=nextExitTime
                         schedule.remove(nextRecord)
                     else:
                         continue    
-                k+=1        
-            # print schedule
+                k+=1     
+            # loop though the records   
             k=1
             for record in schedule:
                 entranceTime=record['entranceTime']
-                try:
-                    exitTime=schedule[k]['entranceTime']
-                except IndexError:
-                    exitTime=maxSimTime    
+                exitTime=record.get('exitTime',None)
+                if not exitTime:
+                    exitTime=maxSimTime
                 k+=1     
                 task_dict[operatorId+record['stationId']+str(k)] = dict(
                     id=operatorId+record['stationId']+str(k),
