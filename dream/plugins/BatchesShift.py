@@ -19,7 +19,8 @@ class BatchesShift(ReadShiftFromSpreadsheet):
   def preprocess(self, data):
     nodes=data['graph']['node']
     machineshiftData=data['input'].get('machine_shift_spreadsheet', None)
-    
+    operatorshiftData=data['input'].get('operator_shift_spreadsheet', None)
+     
     # create a string with all station ids separated by commas
     allString=''
     for node_id, node in nodes.iteritems():
@@ -29,7 +30,19 @@ class BatchesShift(ReadShiftFromSpreadsheet):
     # if in machine shift there is a 
     for element in machineshiftData:
         if element[1] in ['ALL','All','all']:
-            element[1]=allString        
+            element[1]=allString   
+            
+    # create a string with all operator ids separated by commas
+    allString=''
+    for node_id, node in nodes.iteritems():
+        if node['_class']=='Dream.Operator':
+            allString+=node_id
+            allString+=','
+    print allString
+    # if in machine shift there is a 
+    for element in operatorshiftData:
+        if element[1] in ['ALL','All','all']:
+            element[1]=allString             
     
     # run the standard shift plugin  
     data=ReadShiftFromSpreadsheet.preprocess(self, data)
