@@ -5,6 +5,7 @@ from pprint import pformat
 from dream.plugins import plugin
 from dream.plugins.TimeSupport import TimeSupportMixin
 import datetime
+from copy import copy
 
 class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
 
@@ -53,8 +54,20 @@ class BatchesOperatorGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
             type='operator',
             open=False)
         
+            
+            schedule=copy(element['results']['schedule'])        
+            k=0
+            for record in schedule:
+                for nextRecord in schedule[k+1:]:
+                    if nextRecord['stationId']==record['stationId'] and not record is schedule[-1]:
+                        if operatorId=='PB_1':
+                            print 'removing',nextRecord, 'cause of', record
+                        schedule.remove(nextRecord)
+                    else:
+                        continue    
+                k+=1        
+            # print schedule
             k=1
-            schedule=element['results']['schedule']
             for record in schedule:
                 entranceTime=record['entranceTime']
                 try:
