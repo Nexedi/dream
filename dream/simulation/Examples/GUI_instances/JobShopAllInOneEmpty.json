@@ -814,6 +814,9 @@
           "_class": "dream.plugins.ReadJSSkills.ReadJSSkills", 
           "input_id": "operator_skill_spreadsheet"
         }, {
+          "_class": "dream.plugins.ReadJSSkillsToStations.ReadJSSkillsToStations", 
+          "input_id": ""
+        }, {
           "_class": "dream.plugins.ReadJSOrders.ReadJSOrders", 
           "input_id": "production_orders_spreadsheet"
         }, {
@@ -839,6 +842,12 @@
           "input_id": ""
         }, {
           "_class": "dream.plugins.UpdateWIP.UpdateWIP", 
+          "input_id": ""
+        }, {
+          "_class": "dream.plugins.InsertWIP.InsertWIP", 
+          "input_id": ""
+        }, {
+          "_class": "dream.plugins.ReadJSShifts.ReadJSShifts", 
           "input_id": ""
         }
       ]
