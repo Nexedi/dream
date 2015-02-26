@@ -14,54 +14,55 @@ class CapacityStationGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
     data['general']['dateFormat']='%Y/%m/%d'
     self.initializeTimeSupport(data)
     date_format = '%d-%m-%Y %H:%M'
-    resultElements=data['result']['result_list'][-1]['elementList']
-    task_dict = {}
-    # loop in the results to find CapacityProjects
-    for element in resultElements:
-      if element['_class']=="Dream.CapacityStation":
-        # add the project in the task_dict
-        task_dict[element['id']] = dict(
-        id=element['id'],
-        text='Station %s' % element['id'],
-        type='station',
-        open=False)
-        
-        # loop in the project schedule to create the sub-tasks    
-        detailedWorkPlan=element['results'].get('detailedWorkPlan',{})
-        
-        projectIds=[]
-        for record in detailedWorkPlan:
-            if record['project'] not in projectIds:
-                projectIds.append(record['project'])
-        for projectId in projectIds:
-            timesInStation=[]
-            for record in detailedWorkPlan:
-                if record['project']==projectId:
-                    timesInStation.append(float(record['time']))
-            entranceTime=int(min(timesInStation))
-            exitTime=int(max(timesInStation)+1)
-            task_dict[element['id']+projectId] = dict(
-                id=element['id']+projectId,
-                parent=element['id'],
-                text=projectId,
-                start_date=self.convertToRealWorldTime(entranceTime).strftime(date_format),
-                stop_date=self.convertToRealWorldTime(exitTime).strftime(date_format),
-                open=False,
-                duration=exitTime-entranceTime,
-                entranceTime=entranceTime
-            )
-    import json
-    outputJSONString=json.dumps(task_dict, indent=5)
-    outputJSONFile=open('taskDict.json', mode='w')
-    outputJSONFile.write(outputJSONString)
-        
-    # return the result to the gadget
-    result = data['result']['result_list'][-1]
-    result[self.configuration_dict['output_id']] = dict(
-      time_unit=self.getTimeUnitText(),
-      task_list=sorted(task_dict.values(),
-        key=lambda task: (task.get('parent'),
-                          task.get('type') == 'station',
-                          task.get('entranceTime'),
-                          task.get('id'))))
+    for result in data['result']['result_list']:
+      resultElements = result['elementList']
+      task_dict = {}
+      # loop in the results to find CapacityProjects
+      for element in resultElements:
+        if element['_class']=="Dream.CapacityStation":
+          # add the project in the task_dict
+          task_dict[element['id']] = dict(
+          id=element['id'],
+          text='Station %s' % element['id'],
+          type='station',
+          open=False)
+          
+          # loop in the project schedule to create the sub-tasks    
+          detailedWorkPlan=element['results'].get('detailedWorkPlan',{})
+          
+          projectIds=[]
+          for record in detailedWorkPlan:
+              if record['project'] not in projectIds:
+                  projectIds.append(record['project'])
+          for projectId in projectIds:
+              timesInStation=[]
+              for record in detailedWorkPlan:
+                  if record['project']==projectId:
+                      timesInStation.append(float(record['time']))
+              entranceTime=int(min(timesInStation))
+              exitTime=int(max(timesInStation)+1)
+              task_dict[element['id']+projectId] = dict(
+                  id=element['id']+projectId,
+                  parent=element['id'],
+                  text=projectId,
+                  start_date=self.convertToRealWorldTime(entranceTime).strftime(date_format),
+                  stop_date=self.convertToRealWorldTime(exitTime).strftime(date_format),
+                  open=False,
+                  duration=exitTime-entranceTime,
+                  entranceTime=entranceTime
+              )
+              
+      import json
+      outputJSONString=json.dumps(task_dict, indent=5)
+      outputJSONFile=open('taskDict.json', mode='w')
+      outputJSONFile.write(outputJSONString)
+          
+      # return the result to the gadget
+      result[self.configuration_dict['output_id']] = dict(
+        time_unit=self.getTimeUnitText(),
+        task_list=sorted(task_dict.values(),
+          key=lambda task: (task.get('parent'),
+                            task.get('type') == 'station',
+                            task.get('entranceTime'),
+                            task.get('id'))))
     return data
