@@ -48,7 +48,8 @@ class ReadJSWorkPlan(plugin.InputPreparationPlugin):
           # the part is brand new
           part = {
             "id": partID,
-            "name": partName
+            "name": partID,
+            "componentType": partName
           }
           components.append(part)
           order["componentsList"] = components
