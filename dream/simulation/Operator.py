@@ -81,6 +81,13 @@ class Operator(ObjectResource):
         self.skillsList=skills
         # skils dict (defining also if the skill is regarding different operations on the same technology)
         self.skillDict = skillDict
+        # if there is a skillDict add the stations defined to the operators coreObjectIds
+        if skillDict:
+            for operation_stations in skillDict.values():
+                for station in operation_stations:
+                    if not station in self.coreObjectIds:
+                        # append the station ID to the correObjectIds
+                        self.coreObjectIds.append(station)
         # flag to show if the resource is available at the start of simulation
         self.available=available
         from Globals import G
