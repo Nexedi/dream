@@ -31,8 +31,12 @@ class MergeSteps(plugin.InputPreparationPlugin):
           technology = technology.split("-")[0]
           # XXX loadType is always manual for this pilot
           step["operationType"] = {"Load" : "Manual"}
-          # processingType + operator for processing
-          if step["operator"] == "Automatic":
+          '''processingType + operator for processing'''
+          # if the operator is defined as automatic or
+          # XXX if the technology is EDM
+          # then set the processing type as automatic and remove the operator property
+          if step["operator"] == "Automatic"\
+              or step["technology"] == "EDM":
             step["operationType"]["Processing"] = "Automatic"
             step.pop("operator")
           else:
@@ -41,7 +45,7 @@ class MergeSteps(plugin.InputPreparationPlugin):
             step["operator"] = {}
             step["operator"]["processing"] = [tempOperator]
             step["operator"]["load"] = [tempOperator]
-          # find out if there is there is any previous step to merge with
+          '''find out if there is there is any previous step to merge with''' 
           if technologySequence:
             if technology == technologySequence[-1]:
               if len(route[index-1]["technology"].split("-")):
@@ -49,7 +53,7 @@ class MergeSteps(plugin.InputPreparationPlugin):
                   idxToMerge = index-1
                 else:
                   idxToMerge = None
-          # if we must merge two steps
+          '''if we must merge two steps'''
           if idxToMerge != None:
             # remove the previous step from the updatedRoute and technologySequence
             updatedRoute.pop(-1)
