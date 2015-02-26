@@ -40,7 +40,17 @@ def outputResults():
         G.CapacityResults.append([bottleneck, 'Capa Pegging Resource Capacity (UoM)',]+initialCap)
         G.CapacityResults.append(['', 'Capa Pegging Resource Total Load (UoM)',]+[G.Capacity[bottleneck][week]['OriginalCapacity']-G.CurrentCapacityDict[bottleneck][week] for week in G.WeekList])
         G.CapacityResults.append(['', 'Capa Pegging Resource Total Util (Percent)',]+[float(G.Capacity[bottleneck][week]['OriginalCapacity']-G.CurrentCapacityDict[bottleneck][week])/G.Capacity[bottleneck][week]['OriginalCapacity']*100 for week in G.WeekList])       
-
+        
+    # utilisation results
+    for bottleneck in G.Bottlenecks:
+        G.Utilisation[bottleneck] = {}
+        for week in G.WeekList:
+            G.Utilisation[bottleneck][week] = {}
+            G.Utilisation[bottleneck][week]['averageUtilization'] = float(G.Capacity[bottleneck][week]['OriginalCapacity']-G.CurrentCapacityDict[bottleneck][week])/G.Capacity[bottleneck][week]['OriginalCapacity']
+            G.Utilisation[bottleneck][week]['minUtilization'] = G.Capacity[bottleneck][week]['minUtilisation']
+            G.Utilisation[bottleneck][week]['maxUtilization'] = G.Capacity[bottleneck][week]['targetUtilisation']
+            
+        
     # report allocation results
     head = ['PPOS', 'Demand_Items_Product_DCBNO - SP', 'Demand_Items_Product_DCBNO - MA', 'Demand_Type - Group', 'Priority','Values'] + G.WeekList
     G.allocationResults.headers = head

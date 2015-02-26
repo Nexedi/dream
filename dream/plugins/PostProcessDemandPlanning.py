@@ -14,4 +14,8 @@ class PostProcessDemandPlanning(plugin.OutputPreparationPlugin):
       'mime_type': 'application/vnd.ms-excel',
       'data': G.reportResults.xlsx.encode('base64')
     }
+    import json
+    utilisationString=json.dumps(G.Utilisation, indent=5)
+    outputJSONFile=open('Utilisation.json', mode='w')
+    outputJSONFile.write(utilisationString)
     return data

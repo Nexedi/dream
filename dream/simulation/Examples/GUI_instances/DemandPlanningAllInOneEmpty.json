@@ -141,13 +141,25 @@
         "gadget": "Output_viewDownloadFile", 
         "title": "Download Result Spreadsheet", 
         "type": "object_view"
-      }
+      },
+      "view_utilization_stats": {
+        "configuration": {
+          "output_id": "bottleneck_utilization"
+        }, 
+        "gadget": "Output_viewGraph", 
+        "title": "Bottleneck Utilization", 
+        "type": "object_view"
+      } 
     }, 
     "post_processing": {
       "plugin_list": [
         {
           "_class": "dream.plugins.PostProcessDemandPlanning.PostProcessDemandPlanning", 
           "output_id": "demand_planning_spreadsheet"
+        },
+        {
+          "_class": "dream.plugins.DemandPlanningLine.DemandPlanningLine", 
+          "output_id": "bottleneck_utilization"
         }
       ]
     }, 
