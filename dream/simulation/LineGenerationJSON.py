@@ -161,7 +161,13 @@ def createObjectResourcesAndCoreObjects():
             inputDict=dict(element)
             # create the CoreObject
             objectResource=objectType(**inputDict)
-            objectResource.coreObjectIds=getSuccessorList(element['id'])    
+            # if there already coreObjectsIds defined then append the successors to them
+            if objectResource.coreObjectIds:
+                for element in getSuccessorList(element['id']):
+                    if not element in objectResource.coreObjectIds:
+                        objectResource.coreObjectIds.append(element)
+            else:
+                objectResource.coreObjectIds=getSuccessorList(element['id'])
 
     '''
     loop through all the model resources 
