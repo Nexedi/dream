@@ -10,8 +10,10 @@ class DemandPlanningLine(plugin.OutputPreparationPlugin, TimeSupportMixin):
  
     from dream.simulation.applications.DemandPlanning.Globals import G
     utilisation=G.Utilisation
+    # XXX current implementation for one bottleneck
     bottleNeckUtilization=G.Utilisation['BE_T_BE1S_TEST_EQ_FLEX_T417_3']      
     dateList=[]
+    # get the current date from the data
     for record_id,record in bottleNeckUtilization.iteritems():
         year=str(record_id)[0:4]
         week=str(record_id)[4:]
@@ -19,7 +21,6 @@ class DemandPlanningLine(plugin.OutputPreparationPlugin, TimeSupportMixin):
         dateList.append(fullDate)
     currentDate=str(min(dateList))
     currentDate=currentDate.replace('-', '/')
-    print currentDate
     data['general']['currentDate']=currentDate
     data['general']['timeUnit']='week'
     self.initializeTimeSupport(data)
@@ -38,6 +39,7 @@ class DemandPlanningLine(plugin.OutputPreparationPlugin, TimeSupportMixin):
       "options": options
     }
     
+    # create the 3 lines
     for utilizationType in ['averageUtilization','minUtilization','maxUtilization']:
         utilizationList=[]
         for record_id,record in bottleNeckUtilization.iteritems():
@@ -47,7 +49,6 @@ class DemandPlanningLine(plugin.OutputPreparationPlugin, TimeSupportMixin):
             utilizationList.append([fullDate,record[utilizationType]])
             
         utilizationList.sort(key=lambda x: x[0], reverse=True)    
-        print utilizationList
         series.append({
             "label": utilizationType,
             "data": [((time-datetime(1970, 1, 1)).total_seconds()*1000, value) for (time, value) in utilizationList]
