@@ -18,6 +18,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-curl');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-manifest');
   grunt.loadNpmTasks('grunt-zip');
 
   grunt.initConfig({
@@ -290,6 +291,21 @@ module.exports = function (grunt) {
         src: '<%= curl.dhtmlxgantt.dest %>',
         dest: '<%= global_config.tmp %>/dhtmlxGantt/'
       }
+    },
+    manifest: {
+      generate: {
+        options: {
+          basePath: "<%= global_config.dest %>",
+          verbose: true,
+          timestamp: true,
+          hash: true
+        },
+        src: [
+          '**/*.js',
+          '**/*.css'
+        ],
+        dest: '<%= global_config.dest %>/manifest.appcache'
+      }
     }
 
   });
@@ -299,6 +315,6 @@ module.exports = function (grunt) {
   grunt.registerTask('lint', ['jslint']);
   grunt.registerTask('dep', ['curl', 'unzip']);
 //   grunt.registerTask('test', ['qunit']);
-  grunt.registerTask('build', ['copy', 'uglify', 'less']);
+  grunt.registerTask('build', ['copy', 'uglify', 'less', 'manifest']);
 
 };
