@@ -738,73 +738,45 @@
       }
     },
     "output" : {
-      "view_station_utilization" : {
-        "title" : "StationUtilization",
-        "type" : "object_view",
-        "gadget" : "Output_viewStationUtilisationGraph",
-        "configuration" : {
-          "columns" : []
-        }
+      "view_station_utilization": {
+        "configuration": {
+          "output_id": "station_utilization"
+        }, 
+        "gadget": "Output_viewGraph", 
+        "title": "Station Utilization", 
+        "type": "object_view"
       },
-      "view_exit_stats" : {
-        "title" : "ExitStatistics",
-        "type" : "object_view",
-        "gadget" : "Output_viewExitStatistics",
-        "configuration" : {
-          "properties" : {
-            "throughput" : {
-              "type" : "number"
-            },
-            "taktTime" : {
-              "type" : "number"
-            },
-            "lifespan" : {
-              "type" : "number"
-            }
-          }
-        }
-      },
+      "view_operator_utilization": {
+        "configuration": {
+          "output_id": "operator_utilization"
+        }, 
+        "gadget": "Output_viewGraph", 
+        "title": "Operator Utilization", 
+        "type": "object_view"
+      }, 
       "view_component_gantt" : {
-        "title" : "Component Gantt",
+        "title" : "Orders Schedule",
         "type" : "object_view",
-        "gadget" : "Output_viewJobGantt",
+        "gadget" : "Output_viewGantt",
         "configuration" : {
-          "properties" : {}
+          "output_id": "component_gantt"
         }
       },
-      "view_operator_gantt" : {
-        "title" : "Operator Gantt",
-        "type" : "object_view",
-        "gadget" : "Output_viewJobGantt",
-        "configuration" : {
-          "properties" : {}
-        }
-      },
+      "view_operator_gantt": {
+        "configuration": {
+          "output_id": "operator_gantt"
+        }, 
+        "gadget": "Output_viewGantt", 
+        "title": "Operator Schedule", 
+        "type": "object_view"
+      }, 
       "view_component_schedule_spreadsheet" : {
         "title" : "Component Schedule",
         "type" : "object_view",
-        "gadget" : "Output_viewJobScheduleSpreadsheet",
-        "configuration" : {
-          "columns" : [{
-              "name" : "Component ID",
-              "type" : "string",
-              "format" : "date-time"
-            }, {
-              "name" : "Sequence",
-              "type" : "string"
-            }, {
-              "name" : "Station",
-              "type" : "string"
-            }, {
-              "name" : "Entry",
-              "type" : "string",
-              "format" : "date-time"
-            }, {
-              "name" : "Exit",
-              "type" : "string",
-              "format" : "date-time"
-            }
-          ]
+        "gadget" : "Output_viewSpreadsheet",
+        "configuration": {
+          "handsontable_options": {}, 
+          "output_id": "component_schedule"
         }
       }
     },
@@ -857,9 +829,31 @@
       "_class" : "dream.plugins.plugin.DefaultExecutionPlugin",
       "input_id" : "Simulation"
     },
-    "post_processing" : {
-      "description" : "",
-      "plugin_list" : []
+    "post_processing": {
+      "description": "", 
+      "plugin_list": [
+        {
+          "_class": "dream.plugins.JSStationUtilization.JSStationUtilization", 
+          "family": "Server", 
+          "output_id": "station_utilization"
+        },
+        {
+          "_class": "dream.plugins.JSOperatorUtilization.JSOperatorUtilization", 
+          "output_id": "operator_utilization"
+        },
+        {
+          "_class": "dream.plugins.JSOperatorGantt.JSOperatorGantt", 
+          "output_id": "operator_gantt"
+        },
+        {
+          "_class": "dream.plugins.JSComponentGantt.JSComponentGantt", 
+          "output_id": "component_gantt"
+        },
+        {
+          "_class": "dream.plugins.JSComponentTabSchedule.JSComponentTabSchedule", 
+          "output_id": "component_schedule"
+        }
+      ]
     },
     "general" : {
       "properties" : {
