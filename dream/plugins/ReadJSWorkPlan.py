@@ -57,7 +57,7 @@ class ReadJSWorkPlan(plugin.InputPreparationPlugin):
         route = part.get("route", [])
         task_id = line[-2]
         sequence = line[4]
-        processingTime = line[-5]
+        processingTime = float(line[-5])
         operator = line[5]
         partsneeded = line[-4]
         # if there are requested parts then split them
@@ -66,13 +66,13 @@ class ReadJSWorkPlan(plugin.InputPreparationPlugin):
         else:
           partsneeded = [""]
         technology = line[3]
-        quantity = line[6]
+        quantity = int(line[6])
         completed = line[-1]
         # append the current step to the route of the part
         route.append({
           "task_id": task_id,
           "sequence": sequence,
-          "processingTime": {"Fixed":{"mean":processingTime}},
+          "processingTime": {"Fixed":{"mean":processingTime*quantity}},
           "operator": operator,
           "partsneeded": partsneeded,
           "technology": technology,
