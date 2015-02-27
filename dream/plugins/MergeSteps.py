@@ -25,7 +25,6 @@ class MergeSteps(plugin.InputPreparationPlugin):
         route = component.get("route", [])
         updatedRoute = []
         technologySequence = []
-        idxToMerge = None
         for index, step in enumerate(route):
           technology = step["technology"]
           technology = technology.split("-")[0]
@@ -46,6 +45,7 @@ class MergeSteps(plugin.InputPreparationPlugin):
             step["operator"]["processing"] = [tempOperator]
             step["operator"]["load"] = [tempOperator]
           '''find out if there is there is any previous step to merge with''' 
+          idxToMerge = None
           if technologySequence:
             if technology == technologySequence[-1]:
               if len(route[index-1]["technology"].split("-")):
