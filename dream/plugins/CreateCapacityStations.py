@@ -1,4 +1,4 @@
-from copy import copy
+from copy import copy, deepcopy
 import json
 import time
 import random
@@ -14,10 +14,11 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
 
     def preprocess(self, data):
         nodes=copy(data['graph']['node'])
+        originalData=deepcopy(data)
         for (stationId, node) in nodes.iteritems():
             _class=node['_class']
             if _class=='dream.simulation.applications.CapacityStations.CapacityStation.CapacityStation':
-                nextCapacityStationBufferId=self.getSuccessor(data,stationId)  
+                nextCapacityStationBufferId=self.getNextCapacityStationBufferId(data,stationId)  
                 # the nextCapacityStationBufferId should point to the buffer  
                 if nextCapacityStationBufferId:
                     nextCapacityStationBufferId+='_B'            
@@ -25,19 +26,23 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
                 # create the CapacityStationBuffer
                 bufferName=stationName+'_Buffer'
                 bufferId=stationId+'_B'
+                requireFullProject=data['graph']['node'][stationId].pop('requireFullProject',None)
                 data['graph']['node'][bufferId]={
                     "_class": "dream.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer", 
                     "name": bufferName, 
                     "wip": [],
-                    'requireFullProject':data['graph']['node'][stationId].pop('requireFullProject',None)
+                    'requireFullProject':requireFullProject
                 }
+                if requireFullProject:
+                    data['graph']['node'][bufferId]['notRequiredOperations']=self.findNotRequiredOperations(originalData,stationId)                
+
                 # create an edge that connects the CapacityStationBuffer to the CapacityStation
                 data['graph']['edge'][bufferId+'_to_'+stationId]={
                     "source": bufferId, 
                     "destination": stationId, 
                     "data": {}, 
                     "_class": "Dream.Edge"
-                 }
+                }
                 # create the CapacityStationExit
                 exitName=stationName+'_Exit'
                 exitId=stationId+'_E'
@@ -53,11 +58,8 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
                     "destination": exitId, 
                     "data": {}, 
                     "_class": "Dream.Edge"
-                 } 
-                
-                # XXX Patch just for this model to be made more generic
-                if stationId=='PPASB':
-                    data['graph']['node'][bufferId]['notRequiredOperations']=["EEP", "PAINT", "ASBTST"]  
+                }                    
+                        
                 # XXX another patch, these should be inputted
                 if stationId=='PPASB':
                     data['graph']['node'][stationId]['sharedResources']={ 
@@ -87,7 +89,7 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
     
     # gets the data and the stationId
     # returns the successorId and erases the edge
-    def getSuccessor(self, data,stationId):
+    def getNextCapacityStationBufferId(self,data,stationId):
         successorId=None
         edgeToErase=None
         for (edgeId, edge) in data['graph']['edge'].iteritems():
@@ -98,3 +100,28 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
         if edgeToErase:
             data['graph']['edge'].pop(edgeToErase,None)
         return successorId
+    
+    # for an assembly station finds which are the not required operations
+    def findNotRequiredOperations(self,data,stationId):
+        requiredOperations=[]
+        nodes=data['graph']['node']
+        notRequiredOperations=nodes.keys()
+        for node_id, node in nodes.iteritems():
+            currentId=node_id
+            while 1:
+                successorList = self.getSuccessors(data, currentId)
+                if not successorList:
+                    break
+                successorId=successorList[0]
+                if successorId==stationId:
+                    requiredOperations.append(node_id)
+                    break
+                currentId=successorId
+        for element in deepcopy(notRequiredOperations):
+            if element in requiredOperations:
+                notRequiredOperations.remove(element)
+        return notRequiredOperations
+        
+
+
+
