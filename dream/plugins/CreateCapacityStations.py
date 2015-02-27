@@ -35,6 +35,8 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
                 }
                 if requireFullProject:
                     data['graph']['node'][bufferId]['notRequiredOperations']=self.findNotRequiredOperations(originalData,stationId)                
+                    data['graph']['node'][stationId]['notProcessOutsideThreshold']=1
+                    
 
                 # create an edge that connects the CapacityStationBuffer to the CapacityStation
                 data['graph']['edge'][bufferId+'_to_'+stationId]={
@@ -58,21 +60,24 @@ class CreateCapacityStations(plugin.InputPreparationPlugin):
                     "destination": exitId, 
                     "data": {}, 
                     "_class": "Dream.Edge"
-                }                    
-                        
-                # XXX another patch, these should be inputted
-                if stationId=='PPASB':
+                }      
+            
+                # if projects shares from a pool read which others share resources and create
+                # the sharedResources element
+                pool = data['graph']['node'][stationId].get('pool','')
+                if pool:
+                    sharingStations=[]
+                    priority=data['graph']['node'][stationId].get('priority',None)
+                    for other_id, other_node in originalData['graph']['node'].iteritems():
+                        if other_id==stationId:
+                            continue
+                        otherPool=other_node.get('pool','')
+                        if otherPool==pool:
+                            sharingStations.append(other_id)
                     data['graph']['node'][stationId]['sharedResources']={ 
-                         "stationIds": ["ASBTST"], 
-                         "priority": 3
-                         }
-                    data['graph']['node'][stationId]['notProcessOutsideThreshold']=1
-                if stationId=='ASBTST':
-                    data['graph']['node'][stationId]['sharedResources']={ 
-                         "stationIds": ["PPASB"], 
-                         "priority": 2
-                         }
-                    data['graph']['node'][stationId]['notProcessOutsideThreshold']=1
+                             "stationIds": sharingStations, 
+                             "priority": priority
+                         }           
                 
         # add also a CapacityStationController
         # XXX some of the attributes should be inputted by the user 
