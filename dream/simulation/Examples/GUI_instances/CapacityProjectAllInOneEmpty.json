@@ -410,6 +410,12 @@
                             "description": "Is this station an assembly? Yes: 1, No: 0",
                             "type": "number",
                             "required": true
+                        },
+                        "pool": {
+                            "_default": "",
+                            "description": "The pool of workers that is used for this station. If this station does not share resources leave empty",
+                            "type": "string",
+                            "required": false
                         }
                     }
                 }
