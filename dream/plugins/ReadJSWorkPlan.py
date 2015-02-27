@@ -62,7 +62,7 @@ class ReadJSWorkPlan(plugin.InputPreparationPlugin):
         partsneeded = line[-4]
         # if there are requested parts then split them
         if partsneeded:
-          partsneeded = partsneeded.replace(" ","").split(',')
+          partsneeded = partsneeded.replace(" ","").split(';')
         else:
           partsneeded = [""]
         technology = line[3]
