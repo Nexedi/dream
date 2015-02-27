@@ -1,5 +1,254 @@
 {
  "_class": "Dream.Simulation", 
+ "capacity_project_gantt": {
+  "task_list": [
+   {
+    "color": "DodgerBlue", 
+    "id": "P1", 
+    "open": false, 
+    "text": "Project P1", 
+    "type": "project"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0.0, 
+    "id": "P1CNC", 
+    "open": false, 
+    "parent": "P1", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "CNC"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0.0, 
+    "id": "P1EEP", 
+    "open": false, 
+    "parent": "P1", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "EEP"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0.0, 
+    "id": "P1MCH", 
+    "open": false, 
+    "parent": "P1", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "MCH"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0.0, 
+    "id": "P1SMF", 
+    "open": false, 
+    "parent": "P1", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "SMF"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 1.0, 
+    "id": "P1WELD", 
+    "open": false, 
+    "parent": "P1", 
+    "start_date": "21-02-2014 00:00", 
+    "stop_date": "22-02-2014 00:00", 
+    "text": "WELD"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 5, 
+    "entranceTime": 2.0, 
+    "id": "P1PPASB", 
+    "open": false, 
+    "parent": "P1", 
+    "start_date": "22-02-2014 00:00", 
+    "stop_date": "27-02-2014 00:00", 
+    "text": "PPASB"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 7.0, 
+    "id": "P1PAINT", 
+    "open": false, 
+    "parent": "P1", 
+    "start_date": "27-02-2014 00:00", 
+    "stop_date": "28-02-2014 00:00", 
+    "text": "PAINT"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 5, 
+    "entranceTime": 8.0, 
+    "id": "P1ASBTST", 
+    "open": false, 
+    "parent": "P1", 
+    "start_date": "28-02-2014 00:00", 
+    "stop_date": "05-03-2014 00:00", 
+    "text": "ASBTST"
+   }
+  ], 
+  "time_unit": "day"
+ }, 
+ "capacity_station_gantt": {
+  "task_list": [
+   {
+    "color": "DodgerBlue", 
+    "id": "ASBTST", 
+    "open": false, 
+    "text": "Station ASBTST", 
+    "type": "station"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "CNC", 
+    "open": false, 
+    "text": "Station CNC", 
+    "type": "station"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "EEP", 
+    "open": false, 
+    "text": "Station EEP", 
+    "type": "station"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "MCH", 
+    "open": false, 
+    "text": "Station MCH", 
+    "type": "station"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "PAINT", 
+    "open": false, 
+    "text": "Station PAINT", 
+    "type": "station"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "PPASB", 
+    "open": false, 
+    "text": "Station PPASB", 
+    "type": "station"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "SMF", 
+    "open": false, 
+    "text": "Station SMF", 
+    "type": "station"
+   }, 
+   {
+    "color": "DodgerBlue", 
+    "id": "WELD", 
+    "open": false, 
+    "text": "Station WELD", 
+    "type": "station"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 5, 
+    "entranceTime": 8, 
+    "id": "ASBTSTP1", 
+    "open": false, 
+    "parent": "ASBTST", 
+    "start_date": "28-02-2014 00:00", 
+    "stop_date": "05-03-2014 00:00", 
+    "text": "P1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0, 
+    "id": "CNCP1", 
+    "open": false, 
+    "parent": "CNC", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "P1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0, 
+    "id": "EEPP1", 
+    "open": false, 
+    "parent": "EEP", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "P1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0, 
+    "id": "MCHP1", 
+    "open": false, 
+    "parent": "MCH", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "P1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 7, 
+    "id": "PAINTP1", 
+    "open": false, 
+    "parent": "PAINT", 
+    "start_date": "27-02-2014 00:00", 
+    "stop_date": "28-02-2014 00:00", 
+    "text": "P1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 5, 
+    "entranceTime": 2, 
+    "id": "PPASBP1", 
+    "open": false, 
+    "parent": "PPASB", 
+    "start_date": "22-02-2014 00:00", 
+    "stop_date": "27-02-2014 00:00", 
+    "text": "P1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 0, 
+    "id": "SMFP1", 
+    "open": false, 
+    "parent": "SMF", 
+    "start_date": "20-02-2014 00:00", 
+    "stop_date": "21-02-2014 00:00", 
+    "text": "P1"
+   }, 
+   {
+    "color": "cyan", 
+    "duration": 1, 
+    "entranceTime": 1, 
+    "id": "WELDP1", 
+    "open": false, 
+    "parent": "WELD", 
+    "start_date": "21-02-2014 00:00", 
+    "stop_date": "22-02-2014 00:00", 
+    "text": "P1"
+   }
+  ], 
+  "time_unit": "day"
+ }, 
  "elementList": [
   {
    "_class": "Dream.CapacityStation", 
@@ -729,5 +978,133 @@
   "_class": "Dream.Configuration"
  }, 
  "key": "default", 
- "score": 0
+ "score": 0, 
+ "station_utilization": {
+  "options": {
+   "series": {
+    "bars": {
+     "align": "center", 
+     "barWidth": 0.8, 
+     "show": true
+    }, 
+    "stack": true
+   }, 
+   "xaxis": {
+    "minTickSize": 1, 
+    "ticks": [
+     [
+      0, 
+      "EEP"
+     ], 
+     [
+      1, 
+      "SMF"
+     ], 
+     [
+      2, 
+      "WELD"
+     ], 
+     [
+      3, 
+      "ASBTST"
+     ], 
+     [
+      4, 
+      "PAINT"
+     ], 
+     [
+      5, 
+      "CNC"
+     ], 
+     [
+      6, 
+      "MCH"
+     ], 
+     [
+      7, 
+      "PPASB"
+     ]
+    ]
+   }, 
+   "yaxis": {
+    "max": 100
+   }
+  }, 
+  "series": [
+   {
+    "data": [
+     [
+      0, 
+      0.7692307692307693
+     ], 
+     [
+      1, 
+      7.6923076923076925
+     ], 
+     [
+      2, 
+      3.8461538461538463
+     ], 
+     [
+      3, 
+      23.931623931623932
+     ], 
+     [
+      4, 
+      1.201923076923077
+     ], 
+     [
+      5, 
+      2.564102564102564
+     ], 
+     [
+      6, 
+      3.561253561253561
+     ], 
+     [
+      7, 
+      27.442827442827443
+     ]
+    ], 
+    "label": "Utilized"
+   }, 
+   {
+    "data": [
+     [
+      0, 
+      99.23076923076923
+     ], 
+     [
+      1, 
+      92.3076923076923
+     ], 
+     [
+      2, 
+      96.15384615384616
+     ], 
+     [
+      3, 
+      76.06837606837607
+     ], 
+     [
+      4, 
+      98.79807692307693
+     ], 
+     [
+      5, 
+      97.43589743589743
+     ], 
+     [
+      6, 
+      96.43874643874643
+     ], 
+     [
+      7, 
+      72.55717255717255
+     ]
+    ], 
+    "label": "Idle"
+   }
+  ]
+ }
 }

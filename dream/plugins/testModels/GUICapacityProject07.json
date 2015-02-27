@@ -15,8 +15,8 @@
           "type": "number"
         }, 
         "currentDate": {
-          "default": "2014/10/01 08:00:00", 
-          "description": "The day the experiment starts, in YYYY/MM/DD HH:MM:SS format", 
+          "default": "2014/10/01", 
+          "description": "The day the experiment starts, in YYYY/MM/DD format", 
           "title": "SimulationStartTime", 
           "type": "string"
         }, 
@@ -51,19 +51,19 @@
           "type": "number"
         }, 
         "timeUnit": {
-          "default": "hour",
-          "description": "Used for input and reporting widgets.",
-          "name": "Time unit",
-          "type": "string",
+          "default": "day", 
+          "description": "Used for input and reporting widgets.", 
           "enum": [
-            "minute",
-            "hour",
-            "day",
-            "week",
-            "month",
+            "minute", 
+            "hour", 
+            "day", 
+            "week", 
+            "month", 
             "year"
-          ]
-        },
+          ], 
+          "name": "Time unit", 
+          "type": "string"
+        }, 
         "trace": {
           "default": "No", 
           "description": "Create an excel trace file (Yes or No)", 
@@ -77,6 +77,11 @@
       }
     }, 
     "input": {
+      "debug": {
+        "gadget": "Input_viewDebugJson", 
+        "title": "Edit Configuration", 
+        "type": "object_view"
+      }, 
       "view": {
         "gadget": "Input_viewProductionLine", 
         "title": "ProductionLine", 
@@ -198,25 +203,49 @@
         "type": "object_view"
       }
     }, 
-	"output": {
-		  "view_station_utilization": {
-			"configuration": {
-			  "output_id": "station_utilization"
-			}, 
-			"gadget": "Output_viewGraph", 
-			"title": "Station Utilization", 
-			"type": "object_view"
-		  }
-	},
+    "output": {
+      "view_project_gantt": {
+        "configuration": {
+          "output_id": "capacity_project_gantt"
+        }, 
+        "gadget": "Output_viewGantt", 
+        "title": "Project Schedule", 
+        "type": "object_view"
+      }, 
+      "view_station_gantt": {
+        "configuration": {
+          "output_id": "capacity_station_gantt"
+        }, 
+        "gadget": "Output_viewGantt", 
+        "title": "Station Schedule", 
+        "type": "object_view"
+      }, 
+      "view_station_utilization": {
+        "configuration": {
+          "output_id": "station_utilization"
+        }, 
+        "gadget": "Output_viewGraph", 
+        "title": "Station Utilization", 
+        "type": "object_view"
+      }
+    }, 
     "post_processing": {
       "plugin_list": [
-			{
-			  "_class": "dream.plugins.CapacityProjectStationUtilization.CapacityProjectStationUtilization", 
-			  "family": "CapacityStation", 
-			  "output_id": "station_utilization"
-			}
-		]
-    },
+        {
+          "_class": "dream.plugins.CapacityProjectStationUtilization.CapacityProjectStationUtilization", 
+          "family": "CapacityStation", 
+          "output_id": "station_utilization"
+        }, 
+        {
+          "_class": "dream.plugins.CapacityProjectGantt.CapacityProjectGantt", 
+          "output_id": "capacity_project_gantt"
+        }, 
+        {
+          "_class": "dream.plugins.CapacityStationGantt.CapacityStationGantt", 
+          "output_id": "capacity_station_gantt"
+        }
+      ]
+    }, 
     "pre_processing": {
       "plugin_list": [
         {
@@ -435,11 +464,13 @@
         "_failure": {
           "description": "Fixed", 
           "properties": {
-            "Time to Failure": {
-              "$ref": "#/definitions/_dist"
+            "TTF": {
+              "$ref": "#/definitions/_dist", 
+              "name": "Time to Failure"
             }, 
-            "Time to Repair": {
-              "$ref": "#/definitions/_dist"
+            "TTR": {
+              "$ref": "#/definitions/_dist", 
+              "name": "Time to Repair"
             }, 
             "repairman": {
               "description": "Repairman", 
@@ -596,6 +627,18 @@
               "default": "Machine", 
               "type": "string"
             }, 
+            "pool": {
+              "_default": "", 
+              "description": "The pool of workers that is used for this station. If this station does not share resources leave empty", 
+              "required": false, 
+              "type": "string"
+            }, 
+            "priority": {
+              "_default": "", 
+              "description": "The priority against other stations. If this station does not share resources leave empty", 
+              "required": false, 
+              "type": "number"
+            }, 
             "requireFullProject": {
               "_default": 0, 
               "description": "Is this station an assembly? Yes: 1, No: 0", 
@@ -668,10 +711,11 @@
     "currentDate": "2014/02/20", 
     "ke_url": "http: //git.erp5.org/gitweb/dream.git/blob_plain/HEAD: /dream/KnowledgeExtraction/Mockup_Processingtimes.xls", 
     "maxSimTime": -1, 
+    "name": "CapacityProject7Orders.json", 
     "numberOfReplications": "1", 
     "processTimeout": 10, 
     "seed": 1, 
-    "timeUnit": "hour", 
+    "timeUnit": "day", 
     "trace": "No"
   }, 
   "graph": {
@@ -719,7 +763,10 @@
           "left": 0.4748049078628899, 
           "top": 0.725986317834675
         }, 
+        "id": "ASBTST", 
         "name": "ASBTST", 
+        "pool": "ASB", 
+        "priority": 3, 
         "requireFullProject": 1
       }, 
       "CNC": {
@@ -766,6 +813,8 @@
         }, 
         "id": "PPASB", 
         "name": "PPASB", 
+        "pool": "ASB", 
+        "priority": 1, 
         "requireFullProject": 1
       }, 
       "SMF": {
@@ -797,10 +846,9 @@
         "CNC", 
         "MCH", 
         "EEP", 
-        "PPASB", 
-        "ASBTST", 
+        "ASB", 
         "PAINT", 
-        null
+        ""
       ], 
       [
         "MONDAY", 
@@ -810,9 +858,8 @@
         "20", 
         "290", 
         "170", 
-        "170", 
         "20", 
-        null
+        ""
       ], 
       [
         "TUESDAY", 
@@ -822,9 +869,8 @@
         "70", 
         "100", 
         "270", 
-        "270", 
         "20", 
-        null
+        ""
       ], 
       [
         "WEDNESDAY", 
@@ -834,9 +880,8 @@
         "170", 
         "200", 
         "370", 
-        "370", 
         "20", 
-        null
+        ""
       ], 
       [
         "THURSDAY", 
@@ -846,9 +891,8 @@
         "270", 
         "300", 
         "20", 
-        "20", 
         "320", 
-        null
+        ""
       ], 
       [
         "FRIDAY", 
@@ -858,9 +902,8 @@
         "370", 
         "390", 
         "20", 
-        "20", 
         "420", 
-        null
+        ""
       ], 
       [
         "SATURDAY", 
@@ -871,8 +914,7 @@
         "20", 
         "20", 
         "20", 
-        "20", 
-        null
+        ""
       ], 
       [
         "SUNDAY", 
@@ -883,8 +925,7 @@
         "0", 
         "0", 
         "0", 
-        "0", 
-        null
+        ""
       ], 
       [
         "2014/03/22", 
@@ -894,9 +935,8 @@
         "20", 
         "70", 
         "50", 
-        "50", 
         "70", 
-        null
+        ""
       ], 
       [
         "2014/04/24", 
@@ -906,9 +946,8 @@
         "60", 
         "70", 
         "80", 
-        "80", 
         "170", 
-        null
+        ""
       ], 
       [
         "2014/03/25", 
@@ -918,13 +957,11 @@
         "160", 
         "370", 
         "80", 
-        "80", 
         "170", 
-        null
+        ""
       ], 
       [
         "", 
-        null, 
         null, 
         null, 
         null, 
@@ -1573,1759 +1610,6 @@
     ]
   }, 
   "result": {
-    "result_list": [
-      {
-        "_class": "Dream.Simulation", 
-        "elementList": [
-          {
-            "_class": "Dream.CapacityProject", 
-            "family": "Job", 
-            "id": "P1", 
-            "results": {
-              "schedule": [
-                {
-                  "entranceTime": 0, 
-                  "exitTime": 1, 
-                  "stationId": "EEP"
-                }, 
-                {
-                  "entranceTime": 0, 
-                  "exitTime": 1, 
-                  "stationId": "SMF"
-                }, 
-                {
-                  "entranceTime": 0, 
-                  "exitTime": 1, 
-                  "stationId": "CNC"
-                }, 
-                {
-                  "entranceTime": 0, 
-                  "exitTime": 1, 
-                  "stationId": "MCH"
-                }, 
-                {
-                  "entranceTime": 1, 
-                  "exitTime": 2, 
-                  "stationId": "WELD"
-                }, 
-                {
-                  "entranceTime": 2, 
-                  "exitTime": 7, 
-                  "stationId": "PPASB"
-                }, 
-                {
-                  "entranceTime": 7, 
-                  "exitTime": 8, 
-                  "stationId": "PAINT"
-                }, 
-                {
-                  "entranceTime": 16, 
-                  "exitTime": 20, 
-                  "stationId": "ASBTST"
-                }
-              ]
-            }
-          }, 
-          {
-            "_class": "Dream.CapacityProject", 
-            "family": "Job", 
-            "id": "P2", 
-            "results": {
-              "schedule": [
-                {
-                  "entranceTime": 0, 
-                  "exitTime": 1, 
-                  "stationId": "EEP"
-                }, 
-                {
-                  "entranceTime": 0, 
-                  "exitTime": 1, 
-                  "stationId": "CNC"
-                }, 
-                {
-                  "entranceTime": 0, 
-                  "exitTime": 1, 
-                  "stationId": "MCH"
-                }, 
-                {
-                  "entranceTime": 1, 
-                  "exitTime": 2, 
-                  "stationId": "SMF"
-                }, 
-                {
-                  "entranceTime": 2, 
-                  "exitTime": 6, 
-                  "stationId": "WELD"
-                }, 
-                {
-                  "entranceTime": 7, 
-                  "exitTime": 16, 
-                  "stationId": "PPASB"
-                }, 
-                {
-                  "entranceTime": 16, 
-                  "exitTime": 22, 
-                  "stationId": "PAINT"
-                }, 
-                {
-                  "entranceTime": 26, 
-                  "exitTime": 28, 
-                  "stationId": "ASBTST"
-                }
-              ]
-            }
-          }, 
-          {
-            "_class": "Dream.CapacityProject", 
-            "family": "Job", 
-            "id": "P3", 
-            "results": {
-              "schedule": [
-                {
-                  "entranceTime": 0, 
-                  "exitTime": 1, 
-                  "stationId": "EEP"
-                }, 
-                {
-                  "entranceTime": 0, 
-                  "exitTime": 1, 
-                  "stationId": "CNC"
-                }, 
-                {
-                  "entranceTime": 0, 
-                  "exitTime": 2, 
-                  "stationId": "MCH"
-                }, 
-                {
-                  "entranceTime": 1, 
-                  "exitTime": 3, 
-                  "stationId": "SMF"
-                }, 
-                {
-                  "entranceTime": 5, 
-                  "exitTime": 7, 
-                  "stationId": "WELD"
-                }, 
-                {
-                  "entranceTime": 20, 
-                  "exitTime": 26, 
-                  "stationId": "PPASB"
-                }, 
-                {
-                  "entranceTime": 26, 
-                  "exitTime": 29, 
-                  "stationId": "PAINT"
-                }, 
-                {
-                  "entranceTime": 29, 
-                  "exitTime": 33, 
-                  "stationId": "ASBTST"
-                }
-              ]
-            }
-          }, 
-          {
-            "_class": "Dream.CapacityStationExit", 
-            "family": "Exit", 
-            "id": "ASBTST_E", 
-            "results": {
-              "lifespan": [
-                25.625
-              ], 
-              "takt_time": [
-                4.125
-              ], 
-              "throughput": [
-                8
-              ]
-            }
-          }, 
-          {
-            "_class": "Dream.CapacityStation", 
-            "family": "CapacityStation", 
-            "id": "EEP", 
-            "results": {
-              "capacityUsed": [
-                {
-                  "P1": 30, 
-                  "P2": 50, 
-                  "P3": 35, 
-                  "period": 0, 
-                  "utilization": 0.38333333333333336
-                }, 
-                {
-                  "period": 1, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 2, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 3, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 4, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 5, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 6, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 7, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 8, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 9, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 10, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 11, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 12, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 13, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 14, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 15, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 16, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 17, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 18, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 19, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 20, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 21, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 22, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 23, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 24, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 25, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 26, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 27, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 28, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 29, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 30, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 31, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 32, 
-                  "utilization": 0
-                }
-              ], 
-              "detailedWorkPlan": [
-                {
-                  "allocation": 30, 
-                  "operation": "EEP", 
-                  "project": "P1", 
-                  "time": 0
-                }, 
-                {
-                  "allocation": 50, 
-                  "operation": "EEP", 
-                  "project": "P2", 
-                  "time": 0
-                }, 
-                {
-                  "allocation": 35, 
-                  "operation": "EEP", 
-                  "project": "P3", 
-                  "time": 0
-                }
-              ], 
-              "meanUtilization": 0.011616161616161616
-            }
-          }, 
-          {
-            "_class": "Dream.CapacityStationBuffer", 
-            "family": "Buffer", 
-            "id": "CNC_B", 
-            "results": {}
-          }, 
-          {
-            "_class": "Dream.CapacityStation", 
-            "family": "CapacityStation", 
-            "id": "SMF", 
-            "results": {
-              "capacityUsed": [
-                {
-                  "P1": 80, 
-                  "period": 0, 
-                  "utilization": 1
-                }, 
-                {
-                  "P2": 70, 
-                  "P3": 110, 
-                  "period": 1, 
-                  "utilization": 1
-                }, 
-                {
-                  "P3": 20, 
-                  "period": 2, 
-                  "utilization": 1
-                }, 
-                {
-                  "period": 3, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 4, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 5, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 6, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 7, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 8, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 9, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 10, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 11, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 12, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 13, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 14, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 15, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 16, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 17, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 18, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 19, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 20, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 21, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 22, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 23, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 24, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 25, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 26, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 27, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 28, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 29, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 30, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 31, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 32, 
-                  "utilization": 0
-                }
-              ], 
-              "detailedWorkPlan": [
-                {
-                  "allocation": 80, 
-                  "operation": "SMF", 
-                  "project": "P1", 
-                  "time": 0
-                }, 
-                {
-                  "allocation": 70, 
-                  "operation": "SMF", 
-                  "project": "P2", 
-                  "time": 1
-                }, 
-                {
-                  "allocation": 110, 
-                  "operation": "SMF", 
-                  "project": "P3", 
-                  "time": 1
-                }, 
-                {
-                  "allocation": 20, 
-                  "operation": "SMF", 
-                  "project": "P3", 
-                  "time": 2
-                }
-              ], 
-              "meanUtilization": 0.09090909090909091
-            }
-          }, 
-          {
-            "_class": "Dream.CapacityStation", 
-            "family": "CapacityStation", 
-            "id": "WELD", 
-            "results": {
-              "capacityUsed": [
-                {
-                  "period": 0, 
-                  "utilization": 0
-                }, 
-                {
-                  "P1": 90, 
-                  "period": 1, 
-                  "utilization": 0.5
-                }, 
-                {
-                  "P2": 20, 
-                  "period": 2, 
-                  "utilization": 1
-                }, 
-                {
-                  "period": 3, 
-                  "utilization": 0
-                }, 
-                {
-                  "P2": 70, 
-                  "period": 4, 
-                  "utilization": 1
-                }, 
-                {
-                  "P2": 90, 
-                  "P3": 80, 
-                  "period": 5, 
-                  "utilization": 1
-                }, 
-                {
-                  "P3": 35, 
-                  "period": 6, 
-                  "utilization": 0.12962962962962962
-                }, 
-                {
-                  "period": 7, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 8, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 9, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 10, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 11, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 12, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 13, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 14, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 15, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 16, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 17, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 18, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 19, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 20, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 21, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 22, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 23, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 24, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 25, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 26, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 27, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 28, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 29, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 30, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 31, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 32, 
-                  "utilization": 0
-                }
-              ], 
-              "detailedWorkPlan": [
-                {
-                  "allocation": 90, 
-                  "operation": "WELD", 
-                  "project": "P1", 
-                  "time": 1
-                }, 
-                {
-                  "allocation": 20, 
-                  "operation": "WELD", 
-                  "project": "P2", 
-                  "time": 2
-                }, 
-                {
-                  "allocation": 70, 
-                  "operation": "WELD", 
-                  "project": "P2", 
-                  "time": 4
-                }, 
-                {
-                  "allocation": 90, 
-                  "operation": "WELD", 
-                  "project": "P2", 
-                  "time": 5
-                }, 
-                {
-                  "allocation": 80, 
-                  "operation": "WELD", 
-                  "project": "P3", 
-                  "time": 5
-                }, 
-                {
-                  "allocation": 35, 
-                  "operation": "WELD", 
-                  "project": "P3", 
-                  "time": 6
-                }
-              ], 
-              "meanUtilization": 0.10998877665544332
-            }
-          }, 
-          {
-            "_class": "Dream.CapacityStation", 
-            "family": "CapacityStation", 
-            "id": "ASBTST", 
-            "results": {
-              "capacityUsed": [
-                {
-                  "period": 0, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 1, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 2, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 3, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 4, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 5, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 6, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 7, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 8, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 9, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 10, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 11, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 12, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 13, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 14, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 15, 
-                  "utilization": 0
-                }, 
-                {
-                  "P1": 20, 
-                  "period": 16, 
-                  "utilization": 1
-                }, 
-                {
-                  "period": 17, 
-                  "utilization": 0
-                }, 
-                {
-                  "P1": 170, 
-                  "period": 18, 
-                  "utilization": 1
-                }, 
-                {
-                  "P1": 110, 
-                  "period": 19, 
-                  "utilization": 0.4074074074074074
-                }, 
-                {
-                  "period": 20, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 21, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 22, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 23, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 24, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 25, 
-                  "utilization": 0
-                }, 
-                {
-                  "P2": 270, 
-                  "period": 26, 
-                  "utilization": 1
-                }, 
-                {
-                  "P2": 110, 
-                  "period": 27, 
-                  "utilization": 0.2972972972972973
-                }, 
-                {
-                  "period": 28, 
-                  "utilization": 0
-                }, 
-                {
-                  "P3": 20, 
-                  "period": 29, 
-                  "utilization": 1
-                }, 
-                {
-                  "P3": 50, 
-                  "period": 30, 
-                  "utilization": 1
-                }, 
-                {
-                  "period": 31, 
-                  "utilization": 0
-                }, 
-                {
-                  "P3": 60, 
-                  "period": 32, 
-                  "utilization": 0.35294117647058826
-                }
-              ], 
-              "detailedWorkPlan": [
-                {
-                  "allocation": 20, 
-                  "operation": "ASBTST", 
-                  "project": "P1", 
-                  "time": 16
-                }, 
-                {
-                  "allocation": 170, 
-                  "operation": "ASBTST", 
-                  "project": "P1", 
-                  "time": 18
-                }, 
-                {
-                  "allocation": 110, 
-                  "operation": "ASBTST", 
-                  "project": "P1", 
-                  "time": 19
-                }, 
-                {
-                  "allocation": 270, 
-                  "operation": "ASBTST", 
-                  "project": "P2", 
-                  "time": 26
-                }, 
-                {
-                  "allocation": 110, 
-                  "operation": "ASBTST", 
-                  "project": "P2", 
-                  "time": 27
-                }, 
-                {
-                  "allocation": 20, 
-                  "operation": "ASBTST", 
-                  "project": "P3", 
-                  "time": 29
-                }, 
-                {
-                  "allocation": 50, 
-                  "operation": "ASBTST", 
-                  "project": "P3", 
-                  "time": 30
-                }, 
-                {
-                  "allocation": 60, 
-                  "operation": "ASBTST", 
-                  "project": "P3", 
-                  "time": 32
-                }
-              ], 
-              "meanUtilization": 0.18356502670228164
-            }
-          }, 
-          {
-            "_class": "Dream.CapacityStationBuffer", 
-            "family": "Buffer", 
-            "id": "SMF_B", 
-            "results": {}
-          }, 
-          {
-            "_class": "Dream.CapacityStationBuffer", 
-            "family": "Buffer", 
-            "id": "WELD_B", 
-            "results": {}
-          }, 
-          {
-            "_class": "Dream.CapacityStationBuffer", 
-            "family": "Buffer", 
-            "id": "PPASB_B", 
-            "results": {}
-          }, 
-          {
-            "_class": "Dream.CapacityStation", 
-            "family": "CapacityStation", 
-            "id": "PAINT", 
-            "results": {
-              "capacityUsed": [
-                {
-                  "period": 0, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 1, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 2, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 3, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 4, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 5, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 6, 
-                  "utilization": 0
-                }, 
-                {
-                  "P1": 50, 
-                  "period": 7, 
-                  "utilization": 0.15625
-                }, 
-                {
-                  "period": 8, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 9, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 10, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 11, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 12, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 13, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 14, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 15, 
-                  "utilization": 0
-                }, 
-                {
-                  "P2": 20, 
-                  "period": 16, 
-                  "utilization": 1
-                }, 
-                {
-                  "period": 17, 
-                  "utilization": 0
-                }, 
-                {
-                  "P2": 20, 
-                  "period": 18, 
-                  "utilization": 1
-                }, 
-                {
-                  "P2": 20, 
-                  "period": 19, 
-                  "utilization": 1
-                }, 
-                {
-                  "P2": 20, 
-                  "period": 20, 
-                  "utilization": 1
-                }, 
-                {
-                  "P2": 170, 
-                  "period": 21, 
-                  "utilization": 0.53125
-                }, 
-                {
-                  "period": 22, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 23, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 24, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 25, 
-                  "utilization": 0
-                }, 
-                {
-                  "P3": 20, 
-                  "period": 26, 
-                  "utilization": 1
-                }, 
-                {
-                  "P3": 20, 
-                  "period": 27, 
-                  "utilization": 1
-                }, 
-                {
-                  "P3": 60, 
-                  "period": 28, 
-                  "utilization": 0.1875
-                }, 
-                {
-                  "period": 29, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 30, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 31, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 32, 
-                  "utilization": 0
-                }
-              ], 
-              "detailedWorkPlan": [
-                {
-                  "allocation": 50, 
-                  "operation": "PAINT", 
-                  "project": "P1", 
-                  "time": 7
-                }, 
-                {
-                  "allocation": 20, 
-                  "operation": "PAINT", 
-                  "project": "P2", 
-                  "time": 16
-                }, 
-                {
-                  "allocation": 20, 
-                  "operation": "PAINT", 
-                  "project": "P2", 
-                  "time": 18
-                }, 
-                {
-                  "allocation": 20, 
-                  "operation": "PAINT", 
-                  "project": "P2", 
-                  "time": 19
-                }, 
-                {
-                  "allocation": 20, 
-                  "operation": "PAINT", 
-                  "project": "P2", 
-                  "time": 20
-                }, 
-                {
-                  "allocation": 170, 
-                  "operation": "PAINT", 
-                  "project": "P2", 
-                  "time": 21
-                }, 
-                {
-                  "allocation": 20, 
-                  "operation": "PAINT", 
-                  "project": "P3", 
-                  "time": 26
-                }, 
-                {
-                  "allocation": 20, 
-                  "operation": "PAINT", 
-                  "project": "P3", 
-                  "time": 27
-                }, 
-                {
-                  "allocation": 60, 
-                  "operation": "PAINT", 
-                  "project": "P3", 
-                  "time": 28
-                }
-              ], 
-              "meanUtilization": 0.20833333333333331
-            }
-          }, 
-          {
-            "_class": "Dream.CapacityStation", 
-            "family": "CapacityStation", 
-            "id": "CNC", 
-            "results": {
-              "capacityUsed": [
-                {
-                  "P1": 130, 
-                  "P2": 45, 
-                  "P3": 145, 
-                  "period": 0, 
-                  "utilization": 0.8205128205128205
-                }, 
-                {
-                  "period": 1, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 2, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 3, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 4, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 5, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 6, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 7, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 8, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 9, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 10, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 11, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 12, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 13, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 14, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 15, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 16, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 17, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 18, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 19, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 20, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 21, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 22, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 23, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 24, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 25, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 26, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 27, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 28, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 29, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 30, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 31, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 32, 
-                  "utilization": 0
-                }
-              ], 
-              "detailedWorkPlan": [
-                {
-                  "allocation": 130, 
-                  "operation": "CNC", 
-                  "project": "P1", 
-                  "time": 0
-                }, 
-                {
-                  "allocation": 45, 
-                  "operation": "CNC", 
-                  "project": "P2", 
-                  "time": 0
-                }, 
-                {
-                  "allocation": 145, 
-                  "operation": "CNC", 
-                  "project": "P3", 
-                  "time": 0
-                }
-              ], 
-              "meanUtilization": 0.024864024864024864
-            }
-          }, 
-          {
-            "_class": "Dream.CapacityStationBuffer", 
-            "family": "Buffer", 
-            "id": "EEP_B", 
-            "results": {}
-          }, 
-          {
-            "_class": "Dream.CapacityStationBuffer", 
-            "family": "Buffer", 
-            "id": "MCH_B", 
-            "results": {}
-          }, 
-          {
-            "_class": "Dream.CapacityStationBuffer", 
-            "family": "Buffer", 
-            "id": "ASBTST_B", 
-            "results": {}
-          }, 
-          {
-            "_class": "Dream.CapacityStation", 
-            "family": "CapacityStation", 
-            "id": "MCH", 
-            "results": {
-              "capacityUsed": [
-                {
-                  "P1": 125, 
-                  "P2": 90, 
-                  "P3": 55, 
-                  "period": 0, 
-                  "utilization": 1
-                }, 
-                {
-                  "P3": 35, 
-                  "period": 1, 
-                  "utilization": 0.0945945945945946
-                }, 
-                {
-                  "period": 2, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 3, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 4, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 5, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 6, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 7, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 8, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 9, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 10, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 11, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 12, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 13, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 14, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 15, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 16, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 17, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 18, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 19, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 20, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 21, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 22, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 23, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 24, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 25, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 26, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 27, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 28, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 29, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 30, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 31, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 32, 
-                  "utilization": 0
-                }
-              ], 
-              "detailedWorkPlan": [
-                {
-                  "allocation": 125, 
-                  "operation": "MCH", 
-                  "project": "P1", 
-                  "time": 0
-                }, 
-                {
-                  "allocation": 90, 
-                  "operation": "MCH", 
-                  "project": "P2", 
-                  "time": 0
-                }, 
-                {
-                  "allocation": 55, 
-                  "operation": "MCH", 
-                  "project": "P3", 
-                  "time": 0
-                }, 
-                {
-                  "allocation": 35, 
-                  "operation": "MCH", 
-                  "project": "P3", 
-                  "time": 1
-                }
-              ], 
-              "meanUtilization": 0.03316953316953317
-            }
-          }, 
-          {
-            "_class": "Dream.CapacityStation", 
-            "family": "CapacityStation", 
-            "id": "PPASB", 
-            "results": {
-              "capacityUsed": [
-                {
-                  "period": 0, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 1, 
-                  "utilization": 0
-                }, 
-                {
-                  "P1": 20, 
-                  "period": 2, 
-                  "utilization": 1
-                }, 
-                {
-                  "period": 3, 
-                  "utilization": 0
-                }, 
-                {
-                  "P1": 170, 
-                  "period": 4, 
-                  "utilization": 1
-                }, 
-                {
-                  "P1": 270, 
-                  "period": 5, 
-                  "utilization": 1
-                }, 
-                {
-                  "P1": 240, 
-                  "period": 6, 
-                  "utilization": 0.6486486486486487
-                }, 
-                {
-                  "P2": 20, 
-                  "period": 7, 
-                  "utilization": 1
-                }, 
-                {
-                  "P2": 20, 
-                  "period": 8, 
-                  "utilization": 1
-                }, 
-                {
-                  "P2": 20, 
-                  "period": 9, 
-                  "utilization": 1
-                }, 
-                {
-                  "period": 10, 
-                  "utilization": 0
-                }, 
-                {
-                  "P2": 170, 
-                  "period": 11, 
-                  "utilization": 1
-                }, 
-                {
-                  "P2": 270, 
-                  "period": 12, 
-                  "utilization": 1
-                }, 
-                {
-                  "P2": 370, 
-                  "period": 13, 
-                  "utilization": 1
-                }, 
-                {
-                  "P2": 20, 
-                  "period": 14, 
-                  "utilization": 1
-                }, 
-                {
-                  "P2": 10, 
-                  "period": 15, 
-                  "utilization": 0.5
-                }, 
-                {
-                  "period": 16, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 17, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 18, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 19, 
-                  "utilization": 0
-                }, 
-                {
-                  "P3": 370, 
-                  "period": 20, 
-                  "utilization": 1
-                }, 
-                {
-                  "P3": 20, 
-                  "period": 21, 
-                  "utilization": 1
-                }, 
-                {
-                  "P3": 20, 
-                  "period": 22, 
-                  "utilization": 1
-                }, 
-                {
-                  "P3": 20, 
-                  "period": 23, 
-                  "utilization": 1
-                }, 
-                {
-                  "period": 24, 
-                  "utilization": 0
-                }, 
-                {
-                  "P3": 170, 
-                  "period": 25, 
-                  "utilization": 1
-                }, 
-                {
-                  "period": 26, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 27, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 28, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 29, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 30, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 31, 
-                  "utilization": 0
-                }, 
-                {
-                  "period": 32, 
-                  "utilization": 0
-                }
-              ], 
-              "detailedWorkPlan": [
-                {
-                  "allocation": 20, 
-                  "operation": "PPASB", 
-                  "project": "P1", 
-                  "time": 2
-                }, 
-                {
-                  "allocation": 170, 
-                  "operation": "PPASB", 
-                  "project": "P1", 
-                  "time": 4
-                }, 
-                {
-                  "allocation": 270, 
-                  "operation": "PPASB", 
-                  "project": "P1", 
-                  "time": 5
-                }, 
-                {
-                  "allocation": 240, 
-                  "operation": "PPASB", 
-                  "project": "P1", 
-                  "time": 6
-                }, 
-                {
-                  "allocation": 20, 
-                  "operation": "PPASB", 
-                  "project": "P2", 
-                  "time": 7
-                }, 
-                {
-                  "allocation": 20, 
-                  "operation": "PPASB", 
-                  "project": "P2", 
-                  "time": 8
-                }, 
-                {
-                  "allocation": 20, 
-                  "operation": "PPASB", 
-                  "project": "P2", 
-                  "time": 9
-                }, 
-                {
-                  "allocation": 170, 
-                  "operation": "PPASB", 
-                  "project": "P2", 
-                  "time": 11
-                }, 
-                {
-                  "allocation": 270, 
-                  "operation": "PPASB", 
-                  "project": "P2", 
-                  "time": 12
-                }, 
-                {
-                  "allocation": 370, 
-                  "operation": "PPASB", 
-                  "project": "P2", 
-                  "time": 13
-                }, 
-                {
-                  "allocation": 20, 
-                  "operation": "PPASB", 
-                  "project": "P2", 
-                  "time": 14
-                }, 
-                {
-                  "allocation": 10, 
-                  "operation": "PPASB", 
-                  "project": "P2", 
-                  "time": 15
-                }, 
-                {
-                  "allocation": 370, 
-                  "operation": "PPASB", 
-                  "project": "P3", 
-                  "time": 20
-                }, 
-                {
-                  "allocation": 20, 
-                  "operation": "PPASB", 
-                  "project": "P3", 
-                  "time": 21
-                }, 
-                {
-                  "allocation": 20, 
-                  "operation": "PPASB", 
-                  "project": "P3", 
-                  "time": 22
-                }, 
-                {
-                  "allocation": 20, 
-                  "operation": "PPASB", 
-                  "project": "P3", 
-                  "time": 23
-                }, 
-                {
-                  "allocation": 170, 
-                  "operation": "PPASB", 
-                  "project": "P3", 
-                  "time": 25
-                }
-              ], 
-              "meanUtilization": 0.4893529893529892
-            }
-          }, 
-          {
-            "_class": "Dream.CapacityStationBuffer", 
-            "family": "Buffer", 
-            "id": "PAINT_B", 
-            "results": {}
-          }
-        ], 
-        "general": {
-          "_class": "Dream.Configuration", 
-          "totalExecutionTime": 0.06999993324279785
-        }, 
-        "key": "default", 
-        "score": 0
-      }
-    ]
+    "result_list": []
   }
 }
