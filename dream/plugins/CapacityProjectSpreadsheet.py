@@ -39,7 +39,7 @@ class CapacityProjectSpreadsheet(plugin.InputPreparationPlugin):
                     i=1
                     while not projectData[row+i][0]:
                         # if a completely empty line is found break
-                        if all(v is None for v in projectData[row+i]):
+                        if all(v in [None, ''] for v in projectData[row+i]):
                             break
                         numberOfOperations+=1
                         i+=1
