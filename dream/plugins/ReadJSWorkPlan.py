@@ -58,7 +58,7 @@ class ReadJSWorkPlan(plugin.InputPreparationPlugin):
         task_id = line[-2]
         sequence = line[4]
         processingTime = float(line[-5])
-        operator = line[5]
+        operator = line[5].replace(" ","").split("-")[0]
         partsneeded = line[-4]
         # if there are requested parts then split them
         if partsneeded:
