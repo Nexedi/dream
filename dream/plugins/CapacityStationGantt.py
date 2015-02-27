@@ -25,7 +25,8 @@ class CapacityStationGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
           id=element['id'],
           text='Station %s' % element['id'],
           type='station',
-          open=False)
+          open=False,
+          color='DodgerBlue')
           
           # loop in the project schedule to create the sub-tasks    
           detailedWorkPlan=element['results'].get('detailedWorkPlan',{})
@@ -49,6 +50,7 @@ class CapacityStationGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
                   stop_date=self.convertToRealWorldTime(exitTime).strftime(date_format),
                   open=False,
                   duration=exitTime-entranceTime,
+                  color='cyan',
                   entranceTime=entranceTime
               )
               

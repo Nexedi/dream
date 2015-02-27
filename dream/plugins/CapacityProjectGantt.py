@@ -26,6 +26,7 @@ class CapacityProjectGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
           id=element['id'],
           text='Project %s' % element['id'],
           type='project',
+          color='DodgerBlue',
           open=False)
           
           # loop in the project schedule to create the sub-tasks    
@@ -42,7 +43,8 @@ class CapacityProjectGantt(plugin.OutputPreparationPlugin, TimeSupportMixin):
                         record['exitTime']).strftime(date_format),
                   open=False,
                   duration=int(record['exitTime'])-int(record['entranceTime']),
-                  entranceTime=record['entranceTime']
+                  entranceTime=record['entranceTime'],
+                  color='cyan'
               )
           
       # return the result to the gadget
