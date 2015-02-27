@@ -60,7 +60,7 @@ class MergeSteps(plugin.InputPreparationPlugin):
             technologySequence.pop(-1)
             stepToMerge = route[idxToMerge]
             # parts needed
-            step["parts_needed"] = stepToMerge["parts_needed"]
+            step["partsneeded"] = stepToMerge["partsneeded"]
             # technology
             step["technology"] = technology
             # setupTime
