@@ -416,6 +416,12 @@
                             "description": "The pool of workers that is used for this station. If this station does not share resources leave empty",
                             "type": "string",
                             "required": false
+                        },
+                        "priority": {
+                            "_default": "",
+                            "description": "The priority against other stations. If this station does not share resources leave empty",
+                            "type": "number",
+                            "required": false
                         }
                     }
                 }

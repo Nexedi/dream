@@ -633,6 +633,12 @@
               "required": false, 
               "type": "string"
             }, 
+            "priority": {
+              "_default": "", 
+              "description": "The priority against other stations. If this station does not share resources leave empty", 
+              "required": false, 
+              "type": "number"
+            }, 
             "requireFullProject": {
               "_default": 0, 
               "description": "Is this station an assembly? Yes: 1, No: 0", 
@@ -760,6 +766,7 @@
         "id": "ASBTST", 
         "name": "ASBTST", 
         "pool": "ASB", 
+        "priority": 3, 
         "requireFullProject": 1
       }, 
       "CNC": {
@@ -807,6 +814,7 @@
         "id": "PPASB", 
         "name": "PPASB", 
         "pool": "ASB", 
+        "priority": 1, 
         "requireFullProject": 1
       }, 
       "SMF": {
