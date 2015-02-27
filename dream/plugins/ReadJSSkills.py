@@ -61,7 +61,7 @@ class ReadJSSkills(plugin.InputPreparationPlugin):
         node[PBId]={
           "_class": "Dream.Operator",
           "capacity": 1,
-          "name":PBId,
+          "name":PBitem[0],
           "skillDict":skillDict,
           "ouputSchedule" : 1
         }
