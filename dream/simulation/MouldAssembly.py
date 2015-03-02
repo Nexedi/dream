@@ -183,7 +183,7 @@ class MouldAssembly(MachineJobShop):
         temp_activeObjectQueue=list(activeObjectQueue)
         for element in temp_activeObjectQueue:
             # update their schedule
-            element.schedule[-1].append(self.env.now)
+            element.schedule[-1]["exitTime"] = self.env.now
             # remove the elements from the activeObjectQueue and reset the current station of the entity
             activeObjectQueue.remove(element)
             element.currentStation=None

@@ -47,9 +47,9 @@ def outputLog(fileName='Log', entityList=G.EntityList):
     for entity in entityList:
         for stop in entity.schedule:
             logSheet.write(logIndex,0,entity.name)
-            logSheet.write(logIndex,1,stop[0].id)
-            logSheet.write(logIndex,2,stop[0].objName)   
-            logSheet.write(logIndex,3,stop[1])        
+            logSheet.write(logIndex,1,stop["station"].id)
+            logSheet.write(logIndex,2,stop["station"].objName)   
+            logSheet.write(logIndex,3,stop["entranceTime"])
             logIndex+=1       #increment the row
             #if we reach row 65536 we need to create a new sheet (excel limitation)  
             if(logIndex==65536):

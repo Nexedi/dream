@@ -183,7 +183,7 @@ class Operator(ObjectResource):
             for part in activeObjectQ:
                 part.factor=0
                 if part.schedule:
-                   part.factor=self.env.now-part.schedule[-1][1] 
+                   part.factor=self.env.now-part.schedule[-1]["entranceTime"]
             
             activeObjectQ.sort(key=lambda x: x.factor, reverse=True)
         #if the schedulingRule is earliest due date
@@ -294,18 +294,18 @@ class Operator(ObjectResource):
             json['results']['schedule']=[]
             for record in self.schedule:
                 try:
-                    stationId=record[0].id
+                    stationId=record["station"].id
                 except AttributeError:
-                    stationId=record[0]['id']                 
-                if len(record)==3:
+                    stationId=record["station"]['id']
+                if record.get("exitTime", None) != None:
                     json['results']['schedule'].append({
                         'stationId':stationId,
-                        'entranceTime':record[1],
-                        'exitTime':record[2]})
+                        'entranceTime':record["entranceTime"],
+                        'exitTime':record["exitTime"]})
                 else:
                     json['results']['schedule'].append({
                         'stationId':stationId,
-                        'entranceTime':record[1]})
+                        'entranceTime':record["entranceTime"]})
         G.outputJSON['elementList'].append(json)
     
     #===========================================================================
@@ -315,22 +315,22 @@ class Operator(ObjectResource):
         if self.schedule:
             for record in self.schedule:
                 # find the station of this step
-                station=record[0]               # XXX should also hold a list with all the machines G.MachineList?
+                station=record["station"]               # XXX should also hold a list with all the machines G.MachineList?
                 # find the column corresponding to the machine
                 from Globals import G
                 # XXX each machine should have at least 3 columns, 2 for the jobs and one for operators
                 if station in G.MachineList:
                     machine_index=G.MachineList.index(station)
                     # find the entrance time of this step
-                    entrance_time=record[1]         # the time entity entered station
+                    entrance_time=record["entranceTime"]         # the time entity entered station
                     # find the row corresponding to the event and start placing the name of the Job in the G.cells_to_write
                     entrance_time_index=G.events_list.index(entrance_time)
                     # find the exit time of this step
-                    if len(record)==3:
-                        exit_time=record[2]             # the time the entity exited the station
+                    try:
+                        exit_time=record["exitTime"]             # the time the entity exited the station
                         # find the row corresponding to the event and place the name of the Job in the cell, this is the last cell of this processing
                         exit_time_index=G.events_list.index(exit_time)
-                    elif len(record)!=3:
+                    except:
                         exit_time_index=len(G.events_list)
                     # for the rows with indices entrance_time_index to exit_time_index print the id of the Job in the column of the machine_index
                     for step in range(entrance_time_index,exit_time_index+1, 1):

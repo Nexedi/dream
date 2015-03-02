@@ -57,13 +57,13 @@ def main(test=0):
         returnSchedule=[]     
         for job in [J1,J2,J3]: 
             for record in job.schedule:
-                returnSchedule.append([record[0].objName,record[1]])
+                returnSchedule.append([record["station"].objName,record["entranceTime"]])
         return returnSchedule
     
     # print the results
     for job in [J1,J2,J3]: 
         for record in job.schedule:
-            print job.name, "got into", record[0].objName, "at", record[1]
+            print job.name, "got into", record["station"].objName, "at", record["entranceTime"]
         print "-"*30    
         
 if __name__ == '__main__':

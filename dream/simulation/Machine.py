@@ -1163,7 +1163,8 @@ class Machine(CoreObject):
         # this checks if the operator is working on the last element. 
         # If yes the time that he was set off-shift should be updated
         operator=self.currentOperator
-        operator.schedule[-1].append(self.env.now)
+        operator.schedule[-1]["exitTime"] = self.env.now
+        operator.schedule[-1]["entity"] = self.getActiveObjectQueue()[0]
         if not self.currentOperator.onShift:
             operator.timeLastShiftEnded=self.env.now      
             operator.unAssign()     # set the flag operatorAssignedTo to None     

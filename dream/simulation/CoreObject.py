@@ -299,7 +299,7 @@ class CoreObject(ManPyObject):
         #remember that every entity has it's schedule which is supposed to be updated every time 
         # he entity enters a new object
         if entity.schedule:
-            entity.schedule[-1].append(self.env.now)
+            entity.schedule[-1]["exitTime"] = self.env.now
         
         # update wipStatList
         if self.gatherWipStat:
@@ -369,8 +369,9 @@ class CoreObject(ManPyObject):
         
         #append the time to schedule so that it can be read in the result
         #remember that every entity has it's schedule which is supposed to be updated every time 
-        # he entity enters a new object
-        activeEntity.schedule.append([self,self.env.now])
+        # the entity enters a new object
+        activeEntity.schedule.append({"station": self,
+                                      "entranceTime": self.env.now})
         #update variables
         activeEntity.currentStation=self
         self.timeLastEntityEntered=self.env.now

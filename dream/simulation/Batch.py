@@ -51,6 +51,6 @@ class Batch(Entity):
         route=[]
         for child in self.subBatchList:
             for step in child.schedule:
-                route.append(step[0])
+                route.append(step["station"])
         route=list(set(route))
         return route

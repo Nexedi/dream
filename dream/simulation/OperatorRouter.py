@@ -363,13 +363,16 @@ class Router(ObjectInterruption):
     # Sort candidateOperators
     # sort the operators according to their idle time
     #=======================================================================
-    def sortOperators(self): 
+    def sortOperators(self):
         if self.candidateOperators:
             # calculate the time the operators have been waiting
             for op in self.candidateOperators:
                 op.waitingTime=0
                 if op.schedule:
-                    op.waitingTime=self.env.now-op.schedule[-1][-1]
+                    if op.schedule[-1].get("exitTime", None) != None:
+                        op.waitingTime=self.env.now-op.schedule[-1]["exitTime"]
+                    elif op.schedule[-1].get("entranceTime", None) != None:
+                        op.waitingTime = 0
                 elif self.env.now>0:
                     op.waitingTime=self.env.now
             self.candidateOperators.sort(key=lambda x: x.waitingTime, reverse=True)

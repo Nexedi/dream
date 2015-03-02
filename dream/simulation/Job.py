@@ -85,21 +85,21 @@ class Job(Entity):                                  # inherits from the Entity c
             # if there is schedule
             if self.schedule:
                 #if the Job has reached an exit, input completion time in the results
-                if self.schedule[-1][0].type=='Exit':
-                    json['results']['completionTime']=self.schedule[-1][1]  
-                    completionTime=self.schedule[-1][1]  
+                if self.schedule[-1]["station"].type=='Exit':
+                    json['results']['completionTime']=self.schedule[-1]["entranceTime"]  
+                    completionTime=self.schedule[-1]["entranceTime"]
                 # TODO
                 # if the entity is of type Mould and the last object holding it is orderDecomposition
                 # XXX now Orders do not run through the system but OrderDesigns do
-                elif self.type=='OrderDesign' and self.schedule[-1][0].type=='OrderDecomposition': #
-                    json['results']['completionTime']=self.schedule[-1][1]  
-                    completionTime=self.schedule[-1][1]  
+                elif self.type=='OrderDesign' and self.schedule[-1]["station"].type=='OrderDecomposition': #
+                    json['results']['completionTime']=self.schedule[-1]["entranceTime"]
+                    completionTime=self.schedule[-1]["entranceTime"]
                 # TODO : check if there is a need for setting a different 'type' for the MouldAssembly than 'Machine'
                 #    ask Georgios if the method __class__.__name__ of finding the class type of the last step is correct
                 # if the entity is of type orderComponent and the last step in it's schedule is Assembly
-                elif self.type=='OrderComponent' and self.schedule[-1][0].__class__.__name__ in set(['MouldAssemblyManaged','MouldAssembly']):
-                    json['results']['completionTime']=self.schedule[-1][1]  
-                    completionTime=self.schedule[-1][1]  
+                elif self.type=='OrderComponent' and self.schedule[-1]["station"].__class__.__name__ in set(['MouldAssemblyManaged','MouldAssembly']):
+                    json['results']['completionTime']=self.schedule[-1]["entranceTime"]
+                    completionTime=self.schedule[-1]["entranceTime"]  
                 #else input "still in progress"
                 else:
                     json['results']['completionTime']="still in progress"  
@@ -112,9 +112,9 @@ class Job(Entity):                                  # inherits from the Entity c
                 json['results']['schedule']=[]
                 i=0
                 for record in self.schedule:               
-                    json['results']['schedule'].append({})                              # dictionary holding time and 
-                    json['results']['schedule'][i]['stationId']=record[0].id            # id of the Object
-                    json['results']['schedule'][i]['entranceTime']=record[1]            # time entering the Object
+                    json['results']['schedule'].append({})                                  # dictionary holding time and 
+                    json['results']['schedule'][i]['stationId']=record["station"].id        # id of the Object
+                    json['results']['schedule'][i]['entranceTime']=record["entranceTime"]   # time entering the Object
                     i+=1             
                 G.outputJSON['elementList'].append(json)
     
@@ -322,21 +322,21 @@ class Job(Entity):                                  # inherits from the Entity c
         if self.schedule:
             for record in self.schedule:
                 # find the station of this step
-                station=record[0]               # XXX should also hold a list with all the machines G.MachineList?
+                station=record["station"]               # XXX should also hold a list with all the machines G.MachineList?
                 # find the column corresponding to the machine
                 # XXX each machine should have at least 3 columns, 2 for the jobs and one for operators
                 if station in G.MachineList:
                     machine_index=G.MachineList.index(station)
                     # find the entrance time of this step
-                    entrance_time=record[1]         # the time entity entered station
+                    entrance_time=record["entranceTime"]         # the time entity entered station
                     # find the row corresponding to the event and start placing the name of the Job in the cells
                     entrance_time_index=G.events_list.index(entrance_time)
                     # find the exit time of this step
-                    if len(record)==3:
-                        exit_time=record[2]             # the time the entity exited the station
+                    if record.get("exitTime", None) != None:
+                        exit_time=record["exitTime"]             # the time the entity exited the station
                         # find the row corresponding to the event and place the name of the Job in the cell, this is the last cell of this processing
                         exit_time_index=G.events_list.index(exit_time)
-                    elif len(record)!=3:
+                    else:
                         exit_time_index=len(G.events_list)
                     # for the rows with indices entrance_time_index to exit_time_index print the id of the Job in the column of the machine_index
                     for step in range(entrance_time_index,exit_time_index+1, 1):

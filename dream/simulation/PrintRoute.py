@@ -21,11 +21,12 @@ def getEventsList(objectsList=[]):
     for object in objectsList:
         if object.schedule:
             for record in object.schedule:
-                if not record[1] in events_list:
-                    events_list.append(record[1])
-                if len(record)==3:
-                    if not record[2] in events_list:
-                        events_list.append(record[2]) 
+                if not record["entranceTime"] in events_list:
+                    events_list.append(record["entranceTime"])
+                exit_time = record.get("exitTime", None)
+                if exit_time != None:
+                    if not exit_time in events_list:
+                        events_list.append(exit_time)
     return events_list
 
 def outputRoute():
