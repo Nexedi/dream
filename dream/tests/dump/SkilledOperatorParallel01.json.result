@@ -92,7 +92,8 @@
     ], 
     "schedule": [
      {
-      "entranceTime": 0.0, 
+      "entityId": "Batch22047", 
+      "entranceTime": 0, 
       "stationId": "M1"
      }
     ], 
@@ -114,11 +115,13 @@
     ], 
     "schedule": [
      {
+      "entityId": "Batch22048", 
       "entranceTime": 0, 
       "exitTime": 80.0, 
       "stationId": "M2"
      }, 
      {
+      "entityId": "Batch22049", 
       "entranceTime": 80.0, 
       "stationId": "M2"
      }
