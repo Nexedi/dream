@@ -62,6 +62,12 @@
           "name": "Minimum Delta Utilisation", 
           "type": "number"
         },
+        "MAProportionality": {
+          "default": 0.5, 
+          "description": "Mutation Proportionality", 
+          "name": "Mutation Proportionality", 
+          "type": "number"
+        },
         "GA": {
           "default": 1, 
           "description": "GA", 
@@ -142,14 +148,22 @@
         "title": "Download Result Spreadsheet", 
         "type": "object_view"
       },
-      "view_utilization_stats": {
+      "view_utilization_stats1": {
         "configuration": {
-          "output_id": "bottleneck_utilization"
+          "output_id": "BE_A_VF78_DSO_3"
         }, 
         "gadget": "Output_viewGraph", 
-        "title": "Bottleneck Utilization", 
+        "title": "BE_A_VF78_DSO_3 Utilization", 
         "type": "object_view"
-      } 
+      },
+      "view_utilization_stats2": {
+        "configuration": {
+          "output_id": "BE_A_VK18_DKO_5"
+        }, 
+        "gadget": "Output_viewGraph", 
+        "title": "BE_A_VK18_DKO_5 Utilization", 
+        "type": "object_view"
+      }	  
     }, 
     "post_processing": {
       "plugin_list": [
