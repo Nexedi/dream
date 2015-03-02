@@ -57,6 +57,8 @@ def ImportInput(input, algorithmAttributes):
     # ACO parameters
     G.ACO = algorithmAttributes.get('ACO',None)
     G.popSize=algorithmAttributes.get('ACOpopulationSize',None)
+    if (not G.popSize) and G.ACO:
+        G.ACOdefault = 1    
     G.noGen=algorithmAttributes.get('ACOnumberOfGenerations',None)
     
     # optimisation weights for forecast IP method
@@ -64,12 +66,13 @@ def ImportInput(input, algorithmAttributes):
     G.weightFactor[1] = algorithmAttributes.get('minUtilisation',None)
     G.weightFactor[2] = algorithmAttributes.get('minDeltaTargetUtilisation',None)
     G.weightFactor[3] = algorithmAttributes.get('minTargetUtilisation',None)
-    
-    
-    
+    G.weightFactor[4] = algorithmAttributes.get('MAProportionality',None)
+
     # GA parameters
     G.GA= algorithmAttributes.get('GA',None)
     G.popSizeGA =algorithmAttributes.get('GApopulationSize',None)
+    if (not G.popSizeGA) and G.GA:
+        G.GAdefault = 1
     G.noGenGA =algorithmAttributes.get('GAnumberOfGenerations',None)
     G.probXover =algorithmAttributes.get('XOver',None)
     G.probMutation =algorithmAttributes.get('mutationProbability',None)

@@ -77,6 +77,9 @@ def AllocManagement_Hybrid2():
             if week in G.sortedOrders['order'][priority]:
                 print 'order week', week 
                 if G.ACO:
+                    if G.ACOdefault:
+                        G.popSize = int(0.75*len(G.sortedOrders['order'][priority][week]) - 0.75*len(G.sortedOrders['order'][priority][week])%2)
+                        G.noGen = 20*G.popSize
                     ACOresults = Allocation_ACO(week, G.sortedOrders['order'][priority][week],'order',ACOresults)  
                 else:
                     AllocationRoutine2(week, G.sortedOrders['order'][priority][week],'order')        
@@ -99,6 +102,10 @@ def AllocManagement_Hybrid2():
                 
                 # if GA is required perform order sequence optimisation combined with internal LP optimisation
                 if G.GA:
+                    if G.GAdefault:
+                        G.popSizeGA = int(0.75*len(G.sortedOrders['forecast'][priority][week]) - 0.75*len(G.sortedOrders['forecast'][priority][week])%2)
+                        G.noGenGA = 20*G.popSizeGA
+                        
                     GAresults = Allocation_GA(week,itemList,'forecast',GAresults)
                     
                 # if GA is not require perform allocation with internal LP optimisation

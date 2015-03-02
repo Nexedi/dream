@@ -46,13 +46,14 @@ class G:
     Earliness = {}
     Lateness = {}
     Excess = {}
-    weightFactor = [10.0,1.0,0,2]
+    weightFactor = [10.0,1.0,0,2,0.5]
     Utilisation={}
     
     # ACO parameters
     ACO = 1
     noGen = 5
     popSize = 10
+    ACOdefault = 0
     
     # GA parameters
     GA = 0          # suggests whether application of GA to forecast diseggragation is required
@@ -62,6 +63,7 @@ class G:
     probMutation = 0.1
     elitistSelection = 1
     terminationGA = 4
+    GAdefault = 0
     
     # utilisation calculation
     minDeltaUt = 0
