@@ -297,15 +297,13 @@ class Operator(ObjectResource):
                     stationId=record["station"].id
                 except AttributeError:
                     stationId=record["station"]['id']
+                json['results']['schedule'].append({
+                  'stationId':stationId,
+                  'entranceTime':record["entranceTime"]})
                 if record.get("exitTime", None) != None:
-                    json['results']['schedule'].append({
-                        'stationId':stationId,
-                        'entranceTime':record["entranceTime"],
-                        'exitTime':record["exitTime"]})
-                else:
-                    json['results']['schedule'].append({
-                        'stationId':stationId,
-                        'entranceTime':record["entranceTime"]})
+                    json['results']['schedule'][-1]["exitTime"] = record["exitTime"]
+                # if record.get("entity", None):
+                    # json['results']['schedule'][-1]["entityId"] = record["entity"].id
         G.outputJSON['elementList'].append(json)
     
     #===========================================================================
