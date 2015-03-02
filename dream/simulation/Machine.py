@@ -1077,7 +1077,10 @@ class Machine(CoreObject):
     # get an entity from the giver
     # =======================================================================
     def getEntity(self):
-        activeEntity=CoreObject.getEntity(self)          # run the default method   
+        activeEntity=CoreObject.getEntity(self)          # run the default method
+        # update the entity attribute of the operator's schedule
+        if self.currentOperator:
+            self.currentOperator.schedule[-1]["entity"] = activeEntity
         # after the machine receives an entity, it must be removed from the pendingEntities list
         from Globals import G
         if G.Router:
@@ -1149,7 +1152,7 @@ class Machine(CoreObject):
         # If yes the time that he was set off-shift should be updated
         operator=self.currentOperator
         operator.schedule[-1]["exitTime"] = self.env.now
-        operator.schedule[-1]["entity"] = self.getActiveObjectQueue()[0]
+        # operator.schedule[-1]["entity"] = self.getActiveObjectQueue()[0]
         if not self.currentOperator.onShift:
             operator.timeLastShiftEnded=self.env.now      
             operator.unAssign()     # set the flag operatorAssignedTo to None     

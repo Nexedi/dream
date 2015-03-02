@@ -161,6 +161,30 @@ class Broker(ObjectInterruption):
                     # update the schedule of the operator
                     self.victim.currentOperator.schedule.append({"station": self.victim,
                                                                  "entranceTime": self.env.now})
+                    # if the victim holds an entity (load is already performed)
+                    if self.victim.getActiveObjectQueue():
+                        # update the entity value of the schedule current step dict
+                        if self.victim.currentOperator.schedule[-1].get("entity", None) == None:
+                            self.victim.currentOperator.schedule[-1]["entity"] = self.victim.getActiveObjectQueue()[0]
+                        # update the task_id of the current schedule step dict
+                        currentStep = None
+                        # if the task_id of the last step is not already updated
+                        if self.victim.currentOperator.schedule[-1].get("task_id", None) == None:
+                            # find the currentStep within the entity's route
+                            try:
+                                if self.victim.getActiveObjectQueue()[0].remainingRoute:
+                                    nextStep = self.victim.getActiveObjectQueue()[0].remainingRoute[0]
+                                    # if the steps have a task_id key
+                                    if nextStep.get("task_id", None):
+                                        for step in self.victim.getActiveObjectQueue()[0].route:
+                                            if step["task_id"] == nextStep["task_id"] and\
+                                               step.get("technology", None) != None:
+                                                currentStep = step
+                                                break
+                            except:
+                                pass
+                        if currentStep:
+                            self.victim.currentOperator.schedule[-1]["task_id"] = currentStep["task_id"]
                     
                     # wait till the processing is over
                     self.expectedSignals['isCalled']=1
